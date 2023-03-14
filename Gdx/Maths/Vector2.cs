@@ -478,7 +478,7 @@
             return this.Set( MathUtils.Cos( theta ), MathUtils.Sin( theta ) );
         }
 
-        public int HashCode()
+        public new int GetHashCode()
         {
             var prime  = 31;
             var result = 1;

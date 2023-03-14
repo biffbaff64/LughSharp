@@ -624,7 +624,7 @@
             return this;
         }
 
-        public int HashCode()
+        public new int GetHashCode()
         {
             const int prime  = 31;
             var       result = 1;

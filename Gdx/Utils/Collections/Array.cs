@@ -649,7 +649,7 @@ namespace LibGDXSharp.Utils.Collections
             return result;
         }
 
-        public int HashCode()
+        public new int GetHashCode()
         {
             if ( !Ordered || ( Items == null ) ) return base.GetHashCode();
 

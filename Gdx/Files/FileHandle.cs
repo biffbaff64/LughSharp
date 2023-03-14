@@ -1,5 +1,9 @@
 ﻿using System.Text;
 
+using LibGDXSharp.Core;
+
+using StringBuilder = LibGDXSharp.Utils.StringBuilder;
+
 namespace LibGDXSharp.Files
 {
     /// <summary>
@@ -26,9 +30,8 @@ namespace LibGDXSharp.Files
         }
 
         /// <summary>
-        /// 
+        /// Creates a new absolute FileHandle for the file name.
         /// </summary>
-        /// <param name="fileName"></param>
         public FileHandle( string fileName )
         {
             this.File = new FileInfo( fileName );
@@ -54,6 +57,7 @@ namespace LibGDXSharp.Files
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="type"></param>
+        // ReSharper disable once MemberCanBeProtected.Global
         public FileHandle( string fileName, IFile.FileType type )
         {
             this.File = new FileInfo( fileName );
@@ -63,7 +67,9 @@ namespace LibGDXSharp.Files
         }
 
         /// <summary>
-        /// 
+        /// the path of the file as specified on construction,
+        /// e.g. Gdx.IFile.Internal("dir/file.png") -> dir/file.png.
+        /// Backward slashes will be replaced by forward slashes.
         /// </summary>
         /// <returns></returns>
         public string Path()
@@ -77,7 +83,7 @@ namespace LibGDXSharp.Files
         }
 
         /// <summary>
-        /// 
+        /// Returns the name of the file, without any parent paths.
         /// </summary>
         /// <returns></returns>
         public string Name()
@@ -91,9 +97,7 @@ namespace LibGDXSharp.Files
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <returns></returns>
         public string Extension()
         {
             if ( this.File != null )
@@ -105,7 +109,7 @@ namespace LibGDXSharp.Files
         }
 
         /// <summary>
-        /// 
+        /// Returns the name of the file, without parent paths or the extension.
         /// </summary>
         /// <returns></returns>
         public string NameWithoutExtension()
@@ -237,12 +241,11 @@ namespace LibGDXSharp.Files
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="charset"></param>
         /// <returns></returns>
         /// <exception cref="GdxRuntimeException"></exception>
-        public string ReadString( Encoding? charset = null )
+        public string? ReadString( Encoding? charset = null )
         {
             var           output = new StringBuilder( EstimateLength() );
             StreamReader? reader = null;
@@ -373,6 +376,8 @@ namespace LibGDXSharp.Files
         /// <exception cref="GdxRuntimeException"></exception>
         public FileStream Write( bool append )
         {
+            if ( File == null ) throw new GdxRuntimeException( " File is null! " );
+            
             if ( Type == IFile.FileType.Classpath )
             {
                 throw new GdxRuntimeException( "Cannot write to a classpath file: " + File, null );
@@ -402,7 +407,7 @@ namespace LibGDXSharp.Files
 
         public void Write( FileStream input, bool append )
         {
-            FileStream output = null;
+            FileStream? output = null;
 
             try
             {

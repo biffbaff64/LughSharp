@@ -26,5 +26,21 @@
         {
             return BitConverter.Int32BitsToSingle( value );
         }
+
+        public static float IntToFloatColor( int value )
+        {
+            return 0;
+        }
+
+        public static int FloatToIntColor( float value )
+        {
+            return 0;
+        }
+        
+        public static bool FloatsNearlyEqual(float a, float b)
+        {
+            // TODO:
+            throw new NotImplementedException();
+        }
     }
 }

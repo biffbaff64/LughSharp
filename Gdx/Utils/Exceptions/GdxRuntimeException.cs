@@ -7,7 +7,7 @@
         {
         }
 
-        public GdxRuntimeException( string invalidVersion, Exception exception )
+        public GdxRuntimeException( string invalidVersion, Exception? exception )
             : base( invalidVersion, exception )
         {
         }

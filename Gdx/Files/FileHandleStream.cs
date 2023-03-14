@@ -1,5 +1,12 @@
-﻿namespace LibGDXSharp.Files
+﻿using LibGDXSharp.Core;
+
+namespace LibGDXSharp.Files
 {
+    /// <summary>
+    /// A FileHandle intended to be subclassed for the purpose of implementing Read()
+    /// and/or Write(boolean). Methods that would manipulate the file instead throw
+    /// UnsupportedOperationException.
+    /// </summary>
     public class FileHandleStream : FileHandle
     {
         public FileHandleStream( string path )
@@ -7,20 +14,11 @@
         {
         }
 
-        public bool IsDirectory()
-        {
-            return false;
-        }
+        public bool IsDirectory() => false;
 
-        public new long Length()
-        {
-            return 0;
-        }
+        public new long Length() => 0;
 
-        public bool Exists()
-        {
-            return true;
-        }
+        public bool Exists() => true;
 
         public FileHandle Child( string name )
         {

@@ -81,7 +81,7 @@ GRAPHICS
     - DONE - BufferFormat
     -      - Camera
     - DONE - Color
-    -      - Colors
+    - DONE - Colors
     -      - Cubemap
     - DONE - DisplayMode
     -      - FPSLogger
@@ -246,8 +246,8 @@ MAPS/TILED/TILES
 
 MATH
 ----
-    - IP   - Affine2
-    -      - Bezier
+    - DONE - Affine2
+    - IP   - Bezier
     -      - Bresenham
     -      - BSpline
     -      - CatmullRomSpline
@@ -454,7 +454,7 @@ UTILS
     -      - Sort
     -      - SortedIntList
     -      - StreamUtils
-    -      - StringBuilder
+    - IP   - StringBuilder
     -      - TextFormatter
     -      - Timer
     -      - TimeUtils
@@ -476,7 +476,7 @@ UTILS/COLLECTIONS
     -      - BooleanArray
     -      - ByteArray
     -      - CharArray
-    -      - Collections
+    - DONE - Collections
     - IP   - DelayedRemovalArray
     -      - FloatArray
     -      - IdentityMap

@@ -35,12 +35,12 @@ namespace LibGDXSharp.Utils.Collections
         /// </summary>
         internal int _mask;
 
-        [NonSerialized] private Entries? _entries1;
-        [NonSerialized] private Entries? _entries2;
-        [NonSerialized] private Values?  _values1;
-        [NonSerialized] private Values?  _values2;
-        [NonSerialized] private Keys?    _keys1;
-        [NonSerialized] private Keys?    _keys2;
+        [NonSerialized] private Entries< TK, TV >? _entries1;
+        [NonSerialized] private Entries< TK, TV >? _entries2;
+        [NonSerialized] private Values< TV >?      _values1;
+        [NonSerialized] private Values< TV >?      _values2;
+        [NonSerialized] private Keys< TK >?        _keys1;
+        [NonSerialized] private Keys< TK >?        _keys2;
 
         /// <summary>
         /// </summary>
@@ -454,7 +454,7 @@ namespace LibGDXSharp.Utils.Collections
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public int HashCode()
+        public new int GetHashCode()
         {
             var h = Size;
 
@@ -464,13 +464,13 @@ namespace LibGDXSharp.Utils.Collections
 
                 if ( key != null )
                 {
-                    h += key.HashCode();
+                    h += key.GetHashCode();
 
                     var value = _valueTable![ i ];
 
                     if ( value != null )
                     {
-                        h += value.HashCode();
+                        h += value.GetHashCode();
                     }
                 }
             }
@@ -529,45 +529,60 @@ namespace LibGDXSharp.Utils.Collections
 
         protected string ToString( string separator, bool braces )
         {
+            if ( _keyTable == null || _valueTable == null )
+            {
+                return ( "[ERROR: one or both tables is null!" );
+            }
+
             if ( Size == 0 ) return braces ? "{}" : "";
 
             var buffer = new StringBuilder( 32 );
 
             if ( braces ) buffer.Append( '{' );
 
-            var keyTable   = this._keyTable;
-            var valueTable = this._valueTable;
-
-            int i = _keyTable.Length;
+            var i = _keyTable.Length;
 
             while ( i-- > 0 )
             {
-                K key = keyTable[ i ];
+                var key = _keyTable[ i ];
 
                 if ( key == null ) continue;
-                buffer.append( key == this ? "(this)" : key );
-                buffer.append( '=' );
-                V value = valueTable[ i ];
-                buffer.append( value == this ? "(this)" : value );
+
+                buffer.Append( key == this ? "(this)" : key );
+                buffer.Append( '=' );
+
+                var value = _valueTable[ i ];
+
+                buffer.Append( value == this ? "(this)" : value );
 
                 break;
             }
 
             while ( i-- > 0 )
             {
-                K key = keyTable[ i ];
+                var key = _keyTable[ i ];
 
                 if ( key == null ) continue;
-                buffer.append( separator );
-                buffer.append( key == this ? "(this)" : key );
-                buffer.append( '=' );
-                V value = valueTable[ i ];
-                buffer.append( value == this ? "(this)" : value );
+
+                buffer.Append( separator );
+                buffer.Append( key == this ? "(this)" : key );
+                buffer.Append( '=' );
+
+                var value = _valueTable[ i ];
+
+                if ( Equals( value, this ) )
+                {
+                    buffer.Append( "(this)" );
+                }
+                else
+                {
+                    buffer.Append( value );
+                }
             }
 
-            if ( braces ) buffer.append( '}' );
+            if ( braces ) buffer.Append( '}' );
 
-            return buffer.tostring();
+            return buffer.ToString();
         }
 
         /// <summary>
@@ -588,30 +603,33 @@ namespace LibGDXSharp.Utils.Collections
             return Size == 0;
         }
 
-        public Keys< TK > Keys()
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public Keys< TK > GetKeys()
         {
-            if ( Collections.AllocateIterators ) return new Keys( this );
+            if ( Collections.AllocateIterators ) return new Keys< TK >( this );
 
-            if ( keys1 == null )
+            if ( _keys1 == null )
             {
-                keys1 = new Keys( this );
-                keys2 = new Keys( this );
+                _keys1 = new Keys< TK >( this );
+                _keys2 = new Keys< TK >( this );
             }
 
-            if ( !keys1.valid )
+            if ( !_keys1.valid )
             {
-                keys1.reset();
-                keys1.valid = true;
-                keys2.valid = false;
+                _keys1.Reset();
+                _keys1.valid  = true;
+                _keys2!.valid = false;
 
-                return keys1;
+                return _keys1;
             }
 
-            keys2.reset();
-            keys2.valid = true;
-            keys1.valid = false;
+            _keys2!.Reset();
+            _keys2.valid = true;
+            _keys1.valid = false;
 
-            return keys2;
+            return _keys2;
         }
 
         public IEnumerator< Entry< TK, TV > > GetEnumerator()
@@ -623,208 +641,217 @@ namespace LibGDXSharp.Utils.Collections
         {
             return GetEnumerator();
         }
-    }
 
-    /// <summary>
-    /// </summary>
-    /// <typeparam name="TKe"></typeparam>
-    /// <typeparam name="TVe"></typeparam>
-    public class Entry<TKe, TVe>
-    {
-        public TKe? key;
-        public TVe? value;
-
-        public override string ToString()
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="TKe"></typeparam>
+        /// <typeparam name="TVe"></typeparam>
+        public class Entry<TKe, TVe>
         {
-            return key + " = " + value;
-        }
-    }
+            public TKe? key;
+            public TVe? value;
 
-    /// <summary>
-    /// </summary>
-    /// <typeparam name="TKm"></typeparam>
-    /// <typeparam name="TVm"></typeparam>
-    /// <typeparam name="TI"></typeparam>
-    public abstract class MapIterator<TKm, TVm, TI> //: Iterable<TI>, Iterator<TI>
-    {
-        protected bool                  hasNext;
-        protected ObjectMap< TKm, TVm > map;
-        protected bool                  valid        = true;
-        protected int                   nextIndex    = 0;
-        protected int                   currentIndex = 0;
-
-        protected MapIterator( ObjectMap< TKm, TVm > map )
-        {
-            this.map = map;
-            Reset();
-        }
-
-        public void Reset()
-        {
-            currentIndex = -1;
-            nextIndex    = -1;
-
-            FindNextIndex();
-        }
-
-        protected void FindNextIndex()
-        {
-            for ( var n = map._keyTable!.Length; ++nextIndex < n; )
+            public override string ToString()
             {
-                if ( map._keyTable[ nextIndex ] != null )
-                {
-                    hasNext = true;
+                return key + " = " + value;
+            }
+        }
 
-                    return;
-                }
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="TKm"></typeparam>
+        /// <typeparam name="TVm"></typeparam>
+        /// <typeparam name="TI"></typeparam>
+        public abstract class MapIterator<TKm, TVm, TI> //: Iterable<TI>, Iterator<TI>
+        {
+            protected bool                  hasNext;
+            protected ObjectMap< TKm, TVm > map;
+            public    bool                  valid        = true;
+            protected int                   nextIndex    = 0;
+            protected int                   currentIndex = 0;
+
+            protected MapIterator( ObjectMap< TKm, TVm > map )
+            {
+                this.map = map;
+                Reset();
             }
 
-            hasNext = false;
-        }
-
-        public void Remove()
-        {
-            var i = currentIndex;
-
-            if ( i < 0 ) throw new IllegalStateException( "next must be called before remove." );
-
-            var mask = map._mask;
-            var next = ( i + 1 ) & mask;
-            TKm key;
-
-            while ( ( key = map._keyTable![ next ] ) != null )
+            public void Reset()
             {
-                var placement = map.Place( key );
+                currentIndex = -1;
+                nextIndex    = -1;
 
-                if ( ( ( next - placement ) & mask ) > ( ( i - placement ) & mask ) )
+                FindNextIndex();
+            }
+
+            /// <summary>
+            /// </summary>
+            protected void FindNextIndex()
+            {
+                for ( var n = map._keyTable!.Length; ++nextIndex < n; )
                 {
-                    map._keyTable[ i ]    = key;
-                    map._valueTable![ i ] = map._valueTable[ next ];
+                    if ( map._keyTable[ nextIndex ] != null )
+                    {
+                        hasNext = true;
 
-                    i = next;
+                        return;
+                    }
                 }
 
-                next = ( next + 1 ) & mask;
+                hasNext = false;
             }
 
-            map._keyTable[ i ]    = default!;
-            map._valueTable![ i ] = default!;
-
-            map.Size--;
-
-            if ( i != currentIndex )
+            /// <summary>
+            /// </summary>
+            /// <exception cref="IllegalStateException"></exception>
+            public void Remove()
             {
-                --nextIndex;
+                var i = currentIndex;
+
+                if ( i < 0 ) throw new IllegalStateException( "next must be called before remove." );
+
+                var mask = map._mask;
+                var next = ( i + 1 ) & mask;
+                TKm key;
+
+                while ( ( key = map._keyTable![ next ] ) != null )
+                {
+                    var placement = map.Place( key );
+
+                    if ( ( ( next - placement ) & mask ) > ( ( i - placement ) & mask ) )
+                    {
+                        map._keyTable[ i ]    = key;
+                        map._valueTable![ i ] = map._valueTable[ next ];
+
+                        i = next;
+                    }
+
+                    next = ( next + 1 ) & mask;
+                }
+
+                map._keyTable[ i ]    = default!;
+                map._valueTable![ i ] = default!;
+
+                map.Size--;
+
+                if ( i != currentIndex )
+                {
+                    --nextIndex;
+                }
+
+                currentIndex = -1;
             }
-
-            currentIndex = -1;
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <typeparam name="TKe"></typeparam>
-    /// <typeparam name="TVe"></typeparam>
-    public class Entries<TKe, TVe> : MapIterator< TKe, TVe, Entry< TKe, TVe > >
-    {
-        private readonly Entry< TKe, TVe > _entry = new Entry< TKe, TVe >();
-
-        public Entries( ObjectMap< TKe, TVe > map ) : base( map )
-        {
         }
 
         /// <summary>
-        /// Note the same entry instance is returned each time this method is called.
         /// </summary>
-        public Entry< TKe, TVe > Next()
+        /// <typeparam name="TKe"></typeparam>
+        /// <typeparam name="TVe"></typeparam>
+        public class Entries<TKe, TVe> : MapIterator< TKe, TVe, Entry< TKe, TVe > >
         {
-            if ( !hasNext ) throw new NoSuchElementException();
+            private readonly Entry< TKe, TVe > _entry = new Entry< TKe, TVe >();
 
-            if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
-
-            _entry.key   = map._keyTable![ nextIndex ];
-            _entry.value = map._valueTable![ nextIndex ];
-
-            currentIndex = nextIndex;
-
-            FindNextIndex();
-
-            return _entry;
-        }
-
-        public bool HasNext()
-        {
-            if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
-
-            return hasNext;
-        }
-
-        public Entries< TKe, TVe > Iterator()
-        {
-            return this;
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <typeparam name="TVv"></typeparam>
-    public class Values<TVv> : MapIterator< object, TVv, TVv >
-    {
-    }
-
-    /// <summary>
-    /// </summary>
-    public class Keys<TKk> : MapIterator< TKk, object, TKk >
-    {
-        public Keys( ObjectMap< TKk, object > map ) : base( ( ObjectMap< TKk, object > )map )
-        {
-        }
-
-        public bool HasNext()
-        {
-            if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
-
-            return hasNext;
-        }
-
-        public TKk Next()
-        {
-            if ( !hasNext ) throw new NoSuchElementException();
-            if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
-
-            var key = map._keyTable![ nextIndex ];
-
-            currentIndex = nextIndex;
-
-            FindNextIndex();
-
-            return key;
-        }
-
-        public Keys< TKk > Iterator()
-        {
-            return this;
-        }
-
-        /// <summary>
-        /// Returns a new array containing the remaining keys.
-        /// </summary>
-        public Array< TKk > ToArray()
-        {
-            return ToArray( new Array< TKk >( true, map.Size ) );
-        }
-
-        /// <summary>
-        /// Adds the remaining keys to the array.
-        /// </summary>
-        public Array< TKk > ToArray( Array< TKk > array )
-        {
-            while ( base.hasNext )
+            public Entries( ObjectMap< TKe, TVe > map ) : base( map )
             {
-                array.Add( Next() );
             }
 
-            return array;
+            /// <summary>
+            /// Note the same entry instance is returned each time this method is called.
+            /// </summary>
+            public Entry< TKe, TVe > Next()
+            {
+                if ( !hasNext ) throw new NoSuchElementException();
+
+                if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+
+                _entry.key   = map._keyTable![ nextIndex ];
+                _entry.value = map._valueTable![ nextIndex ];
+
+                currentIndex = nextIndex;
+
+                FindNextIndex();
+
+                return _entry;
+            }
+
+            /// <summary>
+            /// </summary>
+            /// <returns></returns>
+            /// <exception cref="GdxRuntimeException"></exception>
+            public bool HasNext()
+            {
+                if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+
+                return hasNext;
+            }
+
+            public Entries< TKe, TVe > Iterator()
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="TVv"></typeparam>
+        public class Values<TVv> : MapIterator< object, TVv, TVv >
+        {
+        }
+
+        /// <summary>
+        /// </summary>
+        public class Keys<TKk> : MapIterator< TKk, object, TKk >
+        {
+            public Keys( ObjectMap< TKk, object > map ) : base( ( ObjectMap< TKk, object > )map )
+            {
+            }
+
+            public bool HasNext()
+            {
+                if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+
+                return hasNext;
+            }
+
+            public TKk Next()
+            {
+                if ( !hasNext ) throw new NoSuchElementException();
+                if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+
+                var key = map._keyTable![ nextIndex ];
+
+                currentIndex = nextIndex;
+
+                FindNextIndex();
+
+                return key;
+            }
+
+            public Keys< TKk > Iterator()
+            {
+                return this;
+            }
+
+            /// <summary>
+            /// Returns a new array containing the remaining keys.
+            /// </summary>
+            public Array< TKk > ToArray()
+            {
+                return ToArray( new Array< TKk >( true, map.Size ) );
+            }
+
+            /// <summary>
+            /// Adds the remaining keys to the array.
+            /// </summary>
+            public Array< TKk > ToArray( Array< TKk > array )
+            {
+                while ( base.hasNext )
+                {
+                    array.Add( Next() );
+                }
+
+                return array;
+            }
         }
     }
 }
