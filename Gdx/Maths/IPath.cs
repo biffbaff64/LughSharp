@@ -1,8 +1,46 @@
 ﻿namespace LibGDXSharp.Maths
 {
-    public interface IPath
+    // ReSharper disable InvalidXmlDocComment
+    public interface IPath<T>
     {
-        
+        T DerivativeAt( T @out, float t );
+
+        /// <summary>
+        /// </summary>
+        /// <returns>The value of the path at t where 0<=t<=1</returns>
+        T ValueAt( T value, float t );
+
+        /// <summary>
+        /// </summary>
+        /// <returns>
+        /// The approximated value (between 0 and 1) on the path which is closest
+        /// to the specified value. Note that the implementation of this method
+        /// might be optimized for speed against precision.
+        /// See <seealso cref="Locate"/> for a more precise (but more
+        /// intensive) method.
+        /// </returns>
+        float Approximate( T v );
+
+        /// <summary>
+        /// </summary>
+        /// <returns>
+        /// The precise location (between 0 and 1) on the path which is closest
+        /// to the specified value. Note that the implementation of this method
+        /// might be CPU intensive. see <seealso cref="Approximate"/> for a
+        /// faster (but less precise) method.
+        /// </returns>
+        float Locate( T v );
+
+        /// <summary>
+        /// </summary>
+        /// <param name="samples">
+        /// The amount of divisions used to approximate length. Higher values
+        /// will produce more precise results but will be more CPU intensive.
+        /// </param>
+        /// <returns>
+        /// An approximated length of the spline through sampling the curve and
+        /// accumulating the euclidean distances between the sample points.
+        /// </returns>
+        float ApproxLength( int samples );
     }
 }
-

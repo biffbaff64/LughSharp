@@ -1,6 +1,6 @@
 ﻿- IP = In Progress
 - - - - - - - - -
-- DONE = Class finished but may not be fully CSharp-ified
+- DONE = Class finished but may not be fully 'CSharp-ified'
 - - - - - - - - - - - - - - - - - - - - - - - - -
 CORE
 ----
@@ -222,8 +222,8 @@ MAPS/TILED/LOADERS
 ------------------
     -      - AtlasTmxMapLoader
     - IP   - BaseTmxMapLoader
-    -      - TideMapLoader
     - IP   - TmxMapLoader
+    - ???? - TideMapLoader      Q: Should I support Tide?
 
 MAPS/TILED/OBJECTS
 ------------------
@@ -247,11 +247,11 @@ MAPS/TILED/TILES
 MATH
 ----
     - DONE - Affine2
-    - IP   - Bezier
+    - DONE - Bezier
     -      - Bresenham
     -      - BSpline
     -      - CatmullRomSpline
-    -      - Circle
+    - DONE - Circle
     -      - ConvexHull
     -      - CumulativeDistribution
     -      - DelaunayTriangulator
@@ -264,10 +264,10 @@ MATH
     -      - GridPoint3
     -      - Interpolation
     -      - Intersector
-    -      - IPath
+    - DONE - IPath
     - DONE - IShape2D
     - DONE - IVector
-    - IP   - MathUtils
+    - DONE - MathUtils
     - IP   - Matrix3
     - IP   - Matrix4
     -      - Plane
@@ -275,14 +275,14 @@ MATH
     -      - Polyline
     -      - Quaternion
     -      - RandomXS128
-    - IP   - Rectangle
+    - DONE - Rectangle
     - DONE - Vector2
     - DONE - Vector3        ( Needs documentation comments )
     -      - WindowedMean
 
 MATH/COLLISION
 --------------
-    -      - BoundingBox
+    - IP   - BoundingBox
     -      - Ray
     -      - Segment
     -      - Sphere
