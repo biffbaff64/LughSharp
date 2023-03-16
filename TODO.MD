@@ -565,6 +565,6 @@ UTILS/VIEWPORT
 
 UTILS/XML
 ---------
-    -      - XmlReader
-    -      - XmlWriter
+    -      - XmlReader              Use System.Xml.XmlReader instead
+    -      - XmlWriter              Use System.Xml.XmlWriter instead
 
