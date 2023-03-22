@@ -9,46 +9,36 @@
     /// </summary>
     public interface IPreferences
     {
-        public IPreferences PutBoolean (string key, bool val);
+        public IPreferences PutEntry( string key, object? val );
 
-        public IPreferences PutInteger (string key, int val);
+        public IPreferences PutAll( Dictionary< string, object > vals );
 
-        public IPreferences PutLong (string key, long val);
+        public bool GetBoolean( string key );
 
-        public IPreferences PutFloat (string key, float val);
+        public int GetInteger( string key );
 
-        public IPreferences PutString (string key, string val);
+        public long GetLong( string key );
 
-        public IPreferences Put (Dictionary<string, object> vals);
+        public float GetFloat( string key );
 
-        public bool GetBoolean (string key);
+        public bool GetBoolean( string key, bool defValue );
 
-        public int GetInteger (string key);
+        public int GetInteger( string key, int defValue );
 
-        public long GetLong (string key);
+        public long GetLong( string key, long defValue );
 
-        public float GetFloat (string key);
+        public float GetFloat( string key, float defValue );
 
-        public string GetString (string key);
+        public string GetString( string key, string defValue );
 
-        public bool GetBoolean (string key, bool defValue);
+        public Dictionary< string, object > Get();
 
-        public int GetInteger (string key, int defValue);
+        public bool Contains( string key );
 
-        public long GetLong (string key, long defValue);
+        public void Clear();
 
-        public float GetFloat (string key, float defValue);
+        public void Remove( string key );
 
-        public string GetString (string key, string defValue);
-
-        public Dictionary<string, object> Get ();
-
-        public bool Contains (string key);
-
-        public void Clear ();
-
-        public void Remove (string key);
-
-        public void Flush ();
+        public void Flush();
     }
 }

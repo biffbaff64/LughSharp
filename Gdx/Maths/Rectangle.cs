@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Maths
+﻿using LibGDXSharp.Scenes.Scene2D;
+
+namespace LibGDXSharp.Maths
 {
     public sealed class Rectangle : IShape2D
     {

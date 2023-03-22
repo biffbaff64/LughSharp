@@ -28,7 +28,7 @@
         public HdpiMode       HdpiMode             { get; set; } = HdpiMode.Logical;
         public PrintStream    DebugStream          { get; set; } = System.Err;
 
-        static GLApplicationConfiguration Copy( GLApplicationConfiguration config )
+        public static GLApplicationConfiguration Copy( GLApplicationConfiguration config )
         {
             var copy = new GLApplicationConfiguration();
 

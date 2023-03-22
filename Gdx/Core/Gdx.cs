@@ -11,6 +11,7 @@
         public static IAudio?      Audio    { get; set; }
         public static IInput?      Input    { get; set; }
         public static IFile?       Files    { get; set; }
+        public static INet?        Net      { get; set; }
         public static IGL20?       Gl       { get; set; }
         public static IGL20?       Gl20     { get; set; }
         public static IGL30?       Gl30     { get; set; }

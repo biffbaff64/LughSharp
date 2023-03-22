@@ -2,13 +2,16 @@
 {
     public class GdxRuntimeException : Exception
     {
-        public GdxRuntimeException( string invalidVersion )
-            : base( invalidVersion )
+        public GdxRuntimeException( string message ) : base( message )
         {
         }
 
-        public GdxRuntimeException( string invalidVersion, Exception? exception )
-            : base( invalidVersion, exception )
+        public GdxRuntimeException( Exception e ) : this( "", e )
+        {
+        }
+        
+        public GdxRuntimeException( string message, Exception? exception )
+            : base( message, exception )
         {
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop
+﻿using LibGDXSharp.Core;
+
+namespace LibGDXSharp.Backends.Desktop
 {
     public class GLApplicationLogger : IApplicationLogger
     {

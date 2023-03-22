@@ -64,16 +64,16 @@
         public const int LogInfo  = 2;
         public const int LogDebug = 3;
 
-        public int  LogLevel  { get; set; }
+        public int  LogLevel  { get; set; } = LogNone;
         public bool IsRunning { get; set; } = true;
 
-        public IApplicationListener ApplicationListener { get; set; }
-        public IApplicationLogger   ApplicationLogger   { get; set; }
-        public IGraphics            Graphics            { get; set; }
-        public IAudio               Audio               { get; set; }
-        public IInput               Input               { get; set; }
-        public IFile                Files               { get; set; }
-        public INet                 Net                 { get; set; }
+        public IApplicationListener? ApplicationListener { get; set; }
+        public IApplicationLogger?   ApplicationLogger   { get; set; }
+        public IGraphics?            Graphics            { get; set; }
+        public IAudio?               Audio               { get; set; }
+        public IInput?               Input               { get; set; }
+        public IFile?                Files               { get; set; }
+        public INet?                 Net                 { get; set; }
 
         public abstract void Log( string tag, string message );
         public abstract void Log( string tag, string message, Exception exception );
@@ -85,7 +85,7 @@
         public abstract int GetVersion();
 
         public abstract ApplicationType Type { get; set; }
-        public abstract IPreferences    GetPreferences( string name );
+        public abstract IPreferences?   GetPreferences( string name );
 
         public abstract void Exit();
         public abstract void AddLifecycleListener( ILifecycleListener listener );

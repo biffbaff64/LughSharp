@@ -150,7 +150,7 @@ GRAPHICS/GLUTILS
     -      - FrameBufferCubemap
     -      - GLFrameBuffer
     -      - GLOnlyTextureData
-    -      - GLVersion
+    - IP   - GLVersion
     - IP   - HdpiMode
     -      - HdpiUtils
     -      - ImmediateModeRenderer
@@ -502,28 +502,28 @@ UTILS/COLLECTIONS
 
 UTILS/COMPRESSION
 -----------------
-    -      - CRC
-    -      - ICodeProgress
-    -      - LzmaAdapted
+    -      - CRC                        Needed??
+    -      - ICodeProgress              Needed??
+    -      - LzmaAdapted                Needed??
 
     UTILS/COMPRESSION/LZ
     --------------------
-            -      - BinTree
-            -      - InWindow
-            -      - OutWindow
+            -      - BinTree            Needed??
+            -      - InWindow           Needed??
+            -      - OutWindow          Needed??
     
     UTILS/COMPRESSION/LZMA
     ----------------------
-            -      - Base
-            -      - Decoder
-            -      - Encoder
+            -      - Base               Needed??
+            -      - Decoder            Needed??
+            -      - Encoder            Needed??
     
     UTILS/COMPRESSION/RANGECODER
     ----------------------------
-            -      - BitTreeDecoder
-            -      - BitTreeEncoder
-            -      - Decoder
-            -      - Encoder
+            -      - BitTreeDecoder     Needed??
+            -      - BitTreeEncoder     Needed??
+            -      - Decoder            Needed??
+            -      - Encoder            Needed??
 
 UTILS/EXCEPTIONS
 ----------------
@@ -535,23 +535,23 @@ UTILS/EXCEPTIONS
 
 UTILS/JSON
 ----------
-    -      - IBaseJsonReader
-    -      - Json
-    -      - JsonReader
-    -      - JsonValue
-    -      - JsonWriter
-    -      - UBJsonReader
-    -      - UBJsonWriter
+    -      - IBaseJsonReader            Needed??
+    -      - Json                       Needed??
+    -      - JsonReader                 Needed??
+    -      - JsonValue                  Needed??
+    -      - JsonWriter                 Needed??
+    -      - UBJsonReader               Needed??
+    -      - UBJsonWriter               Needed??
 
 UTILS/REFLECT
 -------------
-    -      - Annotation
-    -      - ArrayReflection
-    -      - ClassReflection
-    -      - Constructor
-    -      - Field
-    -      - Method
-    -      - ReflectionException
+    -      - Annotation                 Needed??
+    -      - ArrayReflection            Needed??
+    -      - ClassReflection            Needed??
+    -      - Constructor                Needed??
+    -      - Field                      Needed??
+    -      - Method                     Needed??
+    -      - ReflectionException        Needed??
 
 UTILS/VIEWPORT
 --------------
@@ -565,6 +565,6 @@ UTILS/VIEWPORT
 
 UTILS/XML
 ---------
-    -      - XmlReader              Use System.Xml.XmlReader instead
-    -      - XmlWriter              Use System.Xml.XmlWriter instead
+    -      - XmlReader                  Use System.Xml.XmlReader instead
+    -      - XmlWriter                  Use System.Xml.XmlWriter instead
 

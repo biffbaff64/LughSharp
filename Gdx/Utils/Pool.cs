@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Utils
+﻿using LibGDXSharp.Utils.Collections;
+
+namespace LibGDXSharp.Utils
 {
     public abstract class Pool<T>
     {
@@ -23,11 +25,12 @@
         /// <param name="max">The maximum number of free objects to store in this pool.</param>
         protected Pool( int initialCapacity, int max = int.MaxValue )
         {
-            _freeObjects = new Array< T >( initialCapacity );
-            this.Max     = max;
+            _freeObjects = new Array< T >( false, initialCapacity );
+
+            this.Max = max;
         }
 
-        protected abstract T NewObject();
+        protected abstract T? NewObject();
 
         /// <summary>
         /// Returns an object from this pool.
@@ -35,17 +38,12 @@
         /// </summary>
         public T Obtain()
         {
-            if ( _freeObjects.Count == 0 )
+            if ( _freeObjects.Size == 0 )
             {
                 return NewObject();
             }
-            else
-            {
-                var item = _freeObjects[ ^1 ];
-                _freeObjects.RemoveAt( _freeObjects.Count - 1 );
 
-                return item;
-            }
+            return _freeObjects.Pop();
         }
 
         /// <summary>
@@ -64,11 +62,12 @@
                 throw new ArgumentException( "object cannot be null." );
             }
 
-            if ( _freeObjects.Count < Max )
+            if ( _freeObjects.Size < Max )
             {
                 _freeObjects.Add( obj );
-                Peak = System.Math.Max( Peak, _freeObjects.Count );
-                
+
+                Peak = Math.Max( Peak, _freeObjects.Size );
+
                 Reset( obj );
             }
             else
@@ -87,13 +86,13 @@
         {
             for ( var i = 0; i < size; i++ )
             {
-                if ( _freeObjects.Count < Max )
+                if ( _freeObjects.Size < Max )
                 {
                     _freeObjects.Add( NewObject() );
                 }
             }
 
-            Peak = System.Math.Max( Peak, _freeObjects.Count );
+            Peak = Math.Max( Peak, _freeObjects.Size );
         }
 
         /// <summary>
@@ -129,13 +128,13 @@
             var freeObjects = this._freeObjects;
             var max         = this.Max;
 
-            for ( int i = 0, n = objects.Count; i < n; i++ )
+            for ( int i = 0, n = objects.Size; i < n; i++ )
             {
-                var obj = objects[ i ];
+                var obj = objects.Get( i );
 
                 if ( obj == null ) continue;
 
-                if ( freeObjects.Count < max )
+                if ( freeObjects.Size < max )
                 {
                     freeObjects.Add( obj );
                     Reset( obj );
@@ -146,7 +145,7 @@
                 }
             }
 
-            Peak = System.Math.Max( Peak, freeObjects.Count );
+            Peak = Math.Max( Peak, freeObjects.Size );
         }
 
         /// <summary>
@@ -154,7 +153,7 @@
         /// </summary>
         public void Clear()
         {
-            for ( var i = 0; i < _freeObjects.Count; i++ )
+            for ( var i = 0; i < _freeObjects.Size; i++ )
             {
                 var obj = _freeObjects.Pop();
                 Discard( obj );
@@ -166,7 +165,7 @@
         /// </summary>
         public int Free()
         {
-            return _freeObjects.Count;
+            return _freeObjects.Size;
         }
     }
 }

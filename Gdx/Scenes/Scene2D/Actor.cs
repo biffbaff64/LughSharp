@@ -1,35 +1,37 @@
-﻿using System.Numerics;
-
+﻿using LibGDXSharp.Core;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Utils.Reflect;
 
 namespace LibGDXSharp.Scenes.Scene2D
 {
     public class Actor
     {
-        public Stage? Stage  { get; set; }
-        public Group? Parent { get; set; }
+        public Stage?    Stage     { get; set; }
+        public Group?    Parent    { get; set; }
+        public string?   Name      { get; set; }
+        public Touchable Touchable { get; set; } = Touchable.Enabled;
+        public bool      Visible   { get; set; } = true;
 
         public DelayedRemovalArray< IEventListener > Listeners        { get; set; } = new DelayedRemovalArray< IEventListener >( 0 );
         public DelayedRemovalArray< IEventListener > CaptureListeners { get; set; } = new DelayedRemovalArray< IEventListener >( 0 );
 
-        private Array< Action > _actions   = new Array< Action >( 0 );
-        private Touchable       _touchable = Touchable.Enabled;
-        private bool            _visible   = true;
-        private bool            _debug;
-        private Color           _color = new Color( 1, 1, 1, 1 );
-        private string          _name;
-        private float           _x;
-        private float           _y;
-        private float           _width;
-        private float           _height;
-        private float           _originX;
-        private float           _originY;
-        private float           _scaleX = 1;
-        private float           _scaleY = 1;
-        private float           _rotation;
-        private object          _userObject;
+        private Array< Action > _actions = new Array< Action >()
+
+        private bool   _debug;
+        private Color  _color = new Color( 1, 1, 1, 1 );
+        private float  _x;
+        private float  _y;
+        private float  _width;
+        private float  _height;
+        private float  _originX;
+        private float  _originY;
+        private float  _scaleX = 1;
+        private float  _scaleY = 1;
+        private float  _rotation;
+        private object _userObject;
 
         /// <summary>
         /// Draws the actor. The batch is configured to draw in the parent's coordinate
@@ -48,34 +50,31 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="delta"></param>
         /// <exception cref="SystemException"></exception>
         public void Act( float delta )
         {
-            if ( _actions.Count == 0 ) return;
+            if ( _actions.Size == 0 ) return;
 
             if ( ( Stage != null ) && Stage.GetActionsRequestRendering() )
             {
-                Gdx.Graphics.RequestRendering();
+                Gdx.Graphics!.RequestRendering();
             }
 
             try
             {
-                for ( var i = 0; i < _actions.Count; i++ )
+                for ( var i = 0; i < _actions.Size; i++ )
                 {
-                    var action = _actions[ i ];
-
-                    if ( _actions[ i ].Act( delta ) && i < _actions.Count )
+                    if ( _actions.Get( i ).Act( delta ) && i < _actions.Size )
                     {
-                        var current     = _actions[ i ];
-                        var actionIndex = current == action ? i : _actions.IndexOf( action );
+                        var current     = _actions.Get( i );
+                        var actionIndex = current == _actions.Get( i ) ? i : _actions.IndexOf( _actions.Get( i ) );
 
                         if ( actionIndex != -1 )
                         {
-                            _actions.RemoveAt( actionIndex );
-                            _actions[ i ].SetActor( null );
+                            _actions.RemoveIndex( actionIndex );
+                            _actions.Get( i ).SetActor( null );
                             i--;
                         }
                     }
@@ -125,12 +124,12 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             // Collect ascendants so event propagation is unaffected by
             // hierarchy changes.
-            var ascendants = Pools.Obtain( typeof(Array) );
+            Array<Group> ascendants = Pools.Obtain( typeof(Array) );
             var parent     = this.Parent;
 
             while ( parent != null )
             {
-                ascendants.add( parent );
+                ascendants.Add( parent );
                 parent = parent.Parent;
             }
 
@@ -241,9 +240,9 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// <returns></returns>
         public Actor? Hit( float x, float y, bool touchable )
         {
-            if ( touchable && this._touchable != Touchable.Enabled ) return null;
+            if ( touchable && this.Touchable != Touchable.Enabled ) return null;
 
-            if ( !_visible ) return null;
+            if ( !Visible ) return null;
 
             return ( ( x >= 0 ) && ( x < _width ) && ( y >= 0 ) && ( y < _height ) ) ? this : null;
         }
@@ -401,32 +400,39 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
 
-        /** Returns true if this actor is the same as or is the ascendant of the specified actor. */
-        public bool isAscendantOf( Actor actor )
+        /// <summary>
+        /// Returns true if this actor is the same as or is the ascendant of the specified actor.
+        /// </summary>
+        public bool IsAscendantOf( Actor actor )
         {
-            if ( actor == null ) throw new IllegalArgumentException( "actor cannot be null." );
+            if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
 
             do
             {
                 if ( actor == this ) return true;
-                actor = actor.parent;
+
+                actor = actor.Parent;
             }
             while ( actor != null );
 
             return false;
         }
 
-        /** Returns this actor or the first ascendant of this actor that is assignable with the specified type, or null if none were
-	 * found. */
-        public @Null< T extends Actor> T firstAscendant( Class< T > type )
+        /// <summary>
+        /// Returns this actor or the first ascendant of this actor that is assignable
+        /// with the specified type, or null if none were found.
+        /// </summary>
+        public T FirstAscendant<T>( Type type ) where T : Actor
         {
-            if ( type == null ) throw new IllegalArgumentException( "actor cannot be null." );
-            Actor actor = this;
+            if ( type == null ) throw new ArgumentException( "actor cannot be null." );
+
+            var actor = this;
 
             do
             {
-                if ( ClassReflection.isInstance( type, actor ) ) return ( T )actor;
-                actor = actor.parent;
+                if ( ClassReflection.IsInstance( type, actor ) ) return ( T )actor;
+
+                actor = actor.Parent;
             }
             while ( actor != null );
 
@@ -436,26 +442,13 @@ namespace LibGDXSharp.Scenes.Scene2D
         /** Returns true if the actor's parent is not null. */
         public bool hasParent()
         {
-            return parent != null;
-        }
-
-        /** Returns the parent actor, or null if not in a group. */
-        public @Null Group getParent()
-        {
-            return parent;
-        }
-
-        /** Called by the framework when an actor is added to or removed from a group.
-	 * @param parent May be null if the actor has been removed from the parent. */
-        protected void setParent( @Null Group parent )
-        {
-            this.parent = parent;
+            return Parent != null;
         }
 
         /** Returns true if input events are processed by this actor. */
         public bool isTouchable()
         {
-            return touchable == Touchable.enabled;
+            return touchable == Scene2D.Touchable.enabled;
         }
 
         public Touchable getTouchable()
@@ -978,122 +971,136 @@ namespace LibGDXSharp.Scenes.Scene2D
             this.name = name;
         }
 
-        /** Changes the z-order for this actor so it is in front of all siblings. */
-        public void toFront()
+        /// <summary>
+        /// Changes the z-order for this actor so it is in front of all siblings.
+        /// </summary>
+        public void ToFront()
         {
-            SetZIndex( Integer.MAX_VALUE );
+            SetZIndex( int.MaxValue );
         }
 
-        /** Changes the z-order for this actor so it is in back of all siblings. */
-        public void toBack()
+        /// <summary>
+        /// Changes the z-order for this actor so it is in back of all siblings.
+        /// </summary>
+        public void ToBack()
         {
             SetZIndex( 0 );
         }
 
-        /** Sets the z-index of this actor. The z-index is the index into the parent's {@link Group#getChildren() children}, where a
-	     * lower index is below a higher index. Setting a z-index higher than the number of children will move the child to the front.
-	     * Setting a z-index less than zero is invalid.
-	     * @return true if the z-index changed. */
+        /// <summary>
+        /// Sets the z-index of this actor. The z-index is the index into the parent's
+        /// <see cref="Group.Children"/> children, where a lower index is below a
+        /// higher index. Setting a z-index higher than the number of children will move
+        /// the child to the front. Setting a z-index less than zero is invalid.
+        /// </summary>
+        /// <returns>true if the z-index changed.</returns>
         public bool SetZIndex( int index )
         {
             if ( index < 0 ) throw new ArgumentException( "ZIndex cannot be < 0." );
-            Group parent = this.parent;
 
-            if ( parent == null ) return false;
-            Array< Actor > children = parent.children;
+            if ( this.Parent == null ) return false;
 
-            if ( children.size <= 1 ) return false;
-            index = Math.min( index, children.size - 1 );
+            if ( Parent.Children.Size <= 1 ) return false;
 
-            if ( children.get( index ) == this ) return false;
-            if ( !children.removeValue( this, true ) ) return false;
-            children.insert( index, this );
+            index = Math.Min( index, this.Parent.Children.Size - 1 );
+
+            if ( Parent.Children.Get( index ) == this ) return false;
+            if ( !Parent.Children.RemoveValue( this ) ) return false;
+
+            Parent.Children.Insert( index, this );
 
             return true;
         }
 
-        /**
-         * 
-    	 * @see #setZIndex(int)
-         */
         /// <summary>
         /// Returns the z-index of this actor, or -1 if the actor is not in a group.
         /// </summary>
-        /// <seealso cref="SetZIndex"/>
+        /// <seealso cref="SetZIndex(int)"/>
         /// <returns></returns>
         public int GetZIndex()
         {
             if ( Parent == null ) return -1;
 
-            return Parent.Children.IndexOf( this, true );
+            return Parent.Children.IndexOf( this );
         }
 
-        /** Calls {@link #clipBegin(float, float, float, float)} to clip this actor's bounds. */
+        /// <summary>
+        /// Calls <see cref="ClipBegin(float, float, float, float)"/> to clip this actor's bounds.
+        /// </summary>
         public bool ClipBegin()
         {
             return ClipBegin( _x, _y, _width, _height );
         }
 
-        /**
-         * Clips the specified screen aligned rectangle, specified relative to the transform matrix of the stage's Batch. The
-	     * transform matrix and the stage's camera must not have rotational components. Calling this method must be followed by a call
-	     * to {@link #clipEnd()} if true is returned.
-	     * @return false if the clipping area is zero and no drawing should occur.
-	     * @see ScissorStack
-         */
+        /// <summary>
+        /// Clips the specified screen aligned rectangle, specified relative to the
+        /// transform matrix of the stage's Batch. The transform matrix and the stage's
+        /// camera must not have rotational components. Calling this method must be
+        /// followed by a call to <see cref="ClipEnd()"/> if true is returned.
+        /// </summary>
+        /// <returns>false if the clipping area is zero and no drawing should occur.</returns>
+        /// <seealso cref="ScissorStack"/>
         public bool ClipBegin( float x, float y, float width, float height )
         {
             if ( width <= 0 || height <= 0 ) return false;
 
-            Stage? stage = this.Stage;
-
-            if ( stage == null ) return false;
+            if ( this.Stage == null ) return false;
 
             var tableBounds = Rectangle.Tmp;
+
             tableBounds.X      = x;
             tableBounds.Y      = y;
             tableBounds.Width  = width;
             tableBounds.Height = height;
 
-            Rectangle scissorBounds = Pools.Obtain( typeof(Rectangle) );
+            var scissorBounds = Pools.Obtain( typeof(Rectangle) );
 
-            stage.CalculateScissors( tableBounds, scissorBounds );
+            this.Stage.CalculateScissors( tableBounds, scissorBounds );
 
             if ( ScissorStack.PushScissors( scissorBounds ) ) return true;
-            
-            Pools.free( scissorBounds );
+
+            Pools.Free( scissorBounds );
 
             return false;
         }
 
-        /** Ends clipping begun by {@link #clipBegin(float, float, float, float)}. */
+        /// <summary>
+        /// Ends clipping begun by <see cref="ClipBegin(float, float, float, float)"/>.
+        /// </summary>
         public void ClipEnd()
         {
             Pools.Free( ScissorStack.PopScissors() );
         }
 
-        /** Transforms the specified point in screen coordinates to the actor's local coordinate system.
-    	 * @see Stage#screenToStageCoordinates(Vector2) */
+        /// <summary>
+        /// Transforms the specified point in screen coordinates to the actor's
+        /// local coordinate system.
+        /// </summary>
+        /// <seealso cref="Stage.ScreenToStageCoordinates(Vector2)"/>
         public Vector2 ScreenToLocalCoordinates( Vector2 screenCoords )
         {
-            Stage? stage = this.Stage;
+            if ( this.Stage == null ) return screenCoords;
 
-            if ( stage == null ) return screenCoords;
-
-            return StageToLocalCoordinates( stage.ScreenToStageCoordinates( screenCoords ) );
+            return StageToLocalCoordinates( this.Stage.ScreenToStageCoordinates( screenCoords ) );
         }
 
-        /** Transforms the specified point in the stage's coordinates to the actor's local coordinate system. */
+        /// <summary>
+        /// Transforms the specified point in the stage's coordinates to
+        /// the actor's local coordinate system.
+        /// </summary>
         public Vector2 StageToLocalCoordinates( Vector2 stageCoords )
         {
-            if ( Parent != null ) Parent.StageToLocalCoordinates( stageCoords );
+            Parent?.StageToLocalCoordinates( stageCoords );
 
             ParentToLocalCoordinates( stageCoords );
 
             return stageCoords;
         }
 
-        /** Converts the coordinates given in the parent's coordinate system to this actor's coordinate system. */
+        /// <summary>
+        /// Converts the coordinates given in the parent's coordinate system
+        /// to this actor's coordinate system.
+        /// </summary>
         public Vector2 ParentToLocalCoordinates( Vector2 parentCoords )
         {
             var rotation = this._rotation;
@@ -1104,7 +1111,8 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             if ( rotation == 0 )
             {
-                if ( scaleX == 1 && scaleY == 1 )
+                if ( ( Math.Abs( scaleX - 1f ) < 0.001f )
+                     && ( Math.Abs( scaleY - 1f ) < 0.001f ) )
                 {
                     parentCoords.X -= childX;
                     parentCoords.Y -= childY;
@@ -1113,14 +1121,16 @@ namespace LibGDXSharp.Scenes.Scene2D
                 {
                     var originX = this._originX;
                     var originY = this._originY;
+
                     parentCoords.X = ( parentCoords.X - childX - originX ) / scaleX + originX;
                     parentCoords.Y = ( parentCoords.Y - childY - originY ) / scaleY + originY;
                 }
             }
             else
             {
-                var cos     = ( float )System.Math.Cos( rotation * MathUtils.DegreesToRadians );
-                var sin     = ( float )System.Math.Sin( rotation * MathUtils.DegreesToRadians );
+                var cos = ( float )System.Math.Cos( rotation * MathUtils.DegreesToRadians );
+                var sin = ( float )System.Math.Sin( rotation * MathUtils.DegreesToRadians );
+
                 var originX = this._originX;
                 var originY = this._originY;
                 var tox     = parentCoords.X - childX - originX;
@@ -1133,17 +1143,15 @@ namespace LibGDXSharp.Scenes.Scene2D
             return parentCoords;
         }
 
-        /**
-         * Transforms the specified point in the actor's coordinates to be in screen coordinates.
-    	 * @see Stage#stageToScreenCoordinates(Vector2)
-         */
+        /// <summary>
+        /// Transforms the specified point in the actor's coordinates to be in screen coordinates.
+        /// </summary>
+        /// <seealso cref="Stage.StageToScreenCoordinates(Vector2)"/>
         public Vector2 LocalToScreenCoordinates( Vector2 localCoords )
         {
-            var stage = this.Stage;
+            if ( this.Stage == null ) return localCoords;
 
-            if ( stage == null ) return localCoords;
-
-            return stage.StageToScreenCoordinates( LocalToAscendantCoordinates( null, localCoords ) );
+            return this.Stage.StageToScreenCoordinates( LocalToAscendantCoordinates( null, localCoords ) );
         }
 
         /// <system>
@@ -1169,8 +1177,8 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             if ( rotation == 0 )
             {
-                if ( ( System.Math.Abs( scaleX - 1f ) < 0.001f )
-                     && ( System.Math.Abs( scaleY - 1f ) < 0.001f ) )
+                if ( ( Math.Abs( scaleX - 1f ) < 0.001f )
+                     && ( Math.Abs( scaleY - 1f ) < 0.001f ) )
                 {
                     localCoords.X += x;
                     localCoords.Y += y;
@@ -1186,8 +1194,9 @@ namespace LibGDXSharp.Scenes.Scene2D
             }
             else
             {
-                var cos     = ( float )System.Math.Cos( rotation * MathUtils.DegreesToRadians );
-                var sin     = ( float )System.Math.Sin( rotation * MathUtils.DegreesToRadians );
+                var cos = ( float )Math.Cos( rotation * MathUtils.DegreesToRadians );
+                var sin = ( float )Math.Sin( rotation * MathUtils.DegreesToRadians );
+
                 var originX = this._originX;
                 var originY = this._originY;
                 var tox     = ( localCoords.X - originX ) * scaleX;
@@ -1224,12 +1233,15 @@ namespace LibGDXSharp.Scenes.Scene2D
             return localCoords;
         }
 
-        /** Converts coordinates for this actor to those of another actor, which can be anywhere in the stage. */
+        /// <summary>
+        /// Converts coordinates for this actor to those of another actor,
+        /// which can be anywhere in the stage.
+        /// </summary>
         public Vector2 LocalToActorCoordinates( Actor actor, Vector2 localCoords )
         {
             LocalToStageCoordinates( localCoords );
 
-            return Actor.StageToLocalCoordinates( localCoords );
+            return actor.StageToLocalCoordinates( localCoords );
         }
 
         /// <summary>
@@ -1240,13 +1252,16 @@ namespace LibGDXSharp.Scenes.Scene2D
             DrawDebugBounds( shapes );
         }
 
-        /** Draws a rectangle for the bounds of this actor if {@link #getDebug()} is true. */
+        /// <summary>
+        /// Draws a rectangle for the bounds of this actor
+        /// if <see cref="DebugFlag"/> is true.
+        /// </summary>
         protected void DrawDebugBounds( ShapeRenderer shapes )
         {
             if ( !DebugFlag ) return;
 
             // TODO: ShapeRenderer needs implementing
-            shapes.Set( ShapeType.Line );
+            shapes.Set( ShapeRenderer.ShapeType.Line );
 
             if ( Stage != null )
             {
@@ -1264,15 +1279,22 @@ namespace LibGDXSharp.Scenes.Scene2D
             get => _debug;
             set
             {
-                _debug = value;
-
-                if ( value )
+                if ( Stage != null )
                 {
-                    Stage.Debug = true;
+                    _debug = value;
+
+                    if ( value )
+                    {
+                        this.Stage.Debug = true;
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// Enables Debug for this actor.
+        /// </summary>
+        /// <returns>This Actor for chaining.</returns>
         public Actor Debug()
         {
             DebugFlag = true;
@@ -1280,9 +1302,12 @@ namespace LibGDXSharp.Scenes.Scene2D
             return this;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         public new string ToString()
         {
-            return this._name;
+            return this.Name;
         }
     }
 }
