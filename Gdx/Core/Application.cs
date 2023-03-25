@@ -49,7 +49,6 @@
     public abstract class Application
     {
         /// <summary>
-        /// 
         /// </summary>
         public enum ApplicationType
         {

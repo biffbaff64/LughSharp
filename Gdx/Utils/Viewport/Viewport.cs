@@ -1,20 +1,25 @@
 ﻿using LibGDXSharp.Core;
+using LibGDXSharp.Maths;
+using LibGDXSharp.Maths.Collision;
+using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Utils.Viewport
 {
+    /// <summary>
+    /// Manages a <see cref="Camera"/> and determines how world coordinates
+    /// are mapped to and from the screen.
+    /// </summary>
     public abstract class Viewport
     {
-        private Camera _camera;
-        private float  _worldWidth;
-        private float  _worldHeight;
-        private int    _screenX;
-        private int    _screenY;
-        private int    _screenWidth;
-        private int    _screenHeight;
+        public Camera? Camera       { get; set; }
+        public float   WorldWidth   { get; set; }
+        public float   WorldHeight  { get; set; }
+        public int     ScreenX      { get; set; }
+        public int     ScreenY      { get; set; }
+        public int     ScreenWidth  { get; set; }
+        public int     ScreenHeight { get; set; }
 
-        public void Apply()
-        {
-        }
+        private readonly Vector3 _tmp = new Vector3();
 
         /// <summary>
         /// Applies the viewport to the camera and sets the glViewport.
@@ -22,19 +27,19 @@ namespace LibGDXSharp.Utils.Viewport
         /// <param name="centerCamera">
         /// If true, the camera position is set to the center of the world.
         /// </param>
-        public virtual void Apply( bool centerCamera )
+        public virtual void Apply( bool centerCamera = false )
         {
-            HdpiUtils.GLViewport( _screenX, _screenY, _screenWidth, _screenHeight );
+            HdpiUtils.GLViewport( ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
-            _camera.ViewportWidth  = _worldWidth;
-            _camera.ViewportHeight = _worldHeight;
+            Camera.ViewportWidth  = WorldWidth;
+            Camera.ViewportHeight = WorldHeight;
 
             if ( centerCamera )
             {
-                _camera.Position.Set( _worldWidth / 2, _worldHeight / 2, 0 );
+                Camera.Position.Set( WorldWidth / 2, WorldHeight / 2, 0 );
             }
 
-            _camera.Update();
+            Camera.Update();
         }
 
         /// <summary>
@@ -52,38 +57,43 @@ namespace LibGDXSharp.Utils.Viewport
         }
 
         /// <summary>
-        /// Transforms the specified screen coordinate to world coordinates. </summary>
-        /// <returns> The vector that was passed in, transformed to world coordinates. </returns>
-        /// <seealso cref="Camera.Unproject(Vector3) "/>
+        /// Transforms the specified screen coordinate to world coordinates.
+        /// </summary>
+        /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
+        /// <seealso cref="Camera.Unproject(Vector3)"/>
         public virtual Vector2 Unproject( Vector2 screenCoords )
         {
-            tmp.set( screenCoords.x, screenCoords.y, 1 );
-            camera.unproject( tmp, screenX, screenY, screenWidth, screenHeight );
-            screenCoords.set( tmp.x, tmp.y );
+            _tmp.Set( screenCoords.X, screenCoords.Y, 1f );
+
+            Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
+            screenCoords.Set( _tmp.X, _tmp.Y );
 
             return screenCoords;
         }
 
         /// <summary>
-        /// Transforms the specified world coordinate to screen coordinates. </summary>
-        /// <returns> The vector that was passed in, transformed to screen coordinates. </returns>
-        /// <seealso cref="Camera.project(Vector3) "/>
+        /// Transforms the specified world coordinate to screen coordinates.
+        /// </summary>
+        /// <returns> The vector that was passed in, transformed to screen coordinates.</returns>
+        /// <seealso cref="Camera.Project(Vector3) "/>
         public virtual Vector2 Project( Vector2 worldCoords )
         {
-            tmp.set( worldCoords.x, worldCoords.y, 1 );
-            camera.project( tmp, screenX, screenY, screenWidth, screenHeight );
-            worldCoords.set( tmp.x, tmp.y );
+            _tmp.Set( worldCoords.X, worldCoords.Y, 1 );
+
+            Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
+            worldCoords.Set( _tmp.X, _tmp.Y );
 
             return worldCoords;
         }
 
         /// <summary>
-        /// Transforms the specified screen coordinate to world coordinates. </summary>
-        /// <returns> The vector that was passed in, transformed to world coordinates. </returns>
-        /// <seealso cref="Camera.unproject(Vector3) "/>
+        /// Transforms the specified screen coordinate to world coordinates.
+        /// </summary>
+        /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
+        /// <seealso cref="Camera.Unproject(Vector3)"/>
         public virtual Vector3 Unproject( Vector3 screenCoords )
         {
-            camera.unproject( screenCoords, screenX, screenY, screenWidth, screenHeight );
+            Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
             return screenCoords;
         }
@@ -91,67 +101,126 @@ namespace LibGDXSharp.Utils.Viewport
         /// <summary>
         /// Transforms the specified world coordinate to screen coordinates. </summary>
         /// <returns> The vector that was passed in, transformed to screen coordinates. </returns>
-        /// <seealso cref="Camera.project(Vector3) "/>
+        /// <seealso cref="Camera.Project(Vector3) "/>
         public virtual Vector3 Project( Vector3 worldCoords )
         {
-            camera.project( worldCoords, screenX, screenY, screenWidth, screenHeight );
+            Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
             return worldCoords;
         }
 
-        /// <seealso cref="Camera.getPickRay(float, float, float, float, float, float) "/>
+        /// <summary>
+        /// </summary>
+        /// <seealso cref="Camera.GetPickRay(float, float, float, float, float, float) "/>
         public virtual Ray GetPickRay( float screenX, float screenY )
         {
-            return camera.getPickRay( screenX, screenY, this.screenX, this.screenY, screenWidth, screenHeight );
-        }
-
-        /// <seealso cref="ScissorStack.calculateScissors(Camera, float, float, float, float, Matrix4, Rectangle, Rectangle) "/>
-        public virtual void CalculateScissors( Matrix4 batchTransform, Rectangle area, Rectangle scissor )
-        {
-            ScissorStack.calculateScissors( camera, screenX, screenY, screenWidth, screenHeight, batchTransform, area, scissor );
+            return Camera.GetPickRay( screenX, screenY, this.ScreenX, this.ScreenY, ScreenWidth, ScreenHeight );
         }
 
         /// <summary>
-        /// Transforms a point to real screen coordinates (as opposed to OpenGL ES window coordinates), where the origin is in the top
-        /// left and the the y-axis is pointing downwards. 
+        /// </summary>
+        /// <seealso cref="ScissorStack.CalculateScissors"/>
+        public virtual void CalculateScissors( Matrix4 batchTransform, Rectangle area, Rectangle scissor )
+        {
+            ScissorStack.CalculateScissors
+                (
+                 Camera,
+                 ScreenX,
+                 ScreenY,
+                 ScreenWidth,
+                 ScreenHeight,
+                 batchTransform,
+                 area,
+                 scissor
+                );
+        }
+
+        /// <summary>
+        /// Transforms a point to real screen coordinates (as opposed to OpenGL
+        /// window coordinates), where the origin is in the top left and the
+        /// the y-axis is pointing downwards. 
         /// </summary>
         public virtual Vector2 ToScreenCoordinates( Vector2 worldCoords, Matrix4 transformMatrix )
         {
-            tmp.set( worldCoords.x, worldCoords.y, 0 );
-            tmp.mul( transformMatrix );
-            camera.project( tmp, screenX, screenY, screenWidth, screenHeight );
-            tmp.y         = Gdx.graphics.getHeight() - tmp.y;
-            worldCoords.x = tmp.x;
-            worldCoords.y = tmp.y;
+            _tmp.Set( worldCoords.X, worldCoords.Y, 0 );
+            _tmp.Mul( transformMatrix );
+
+            Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
+
+            _tmp.Y = Gdx.Graphics.GetHeight() - _tmp.Y;
+
+            worldCoords.X = _tmp.X;
+            worldCoords.Y = _tmp.Y;
 
             return worldCoords;
         }
 
-        public virtual Camera Camera
-        {
-            get { return camera; }
-            set { this.camera = value; }
-        }
-
-
-        public virtual float WorldWidth
-        {
-            get { return worldWidth; }
-            set { this.worldWidth = value; }
-        }
-
-
-        public virtual float WorldHeight
-        {
-            get { return worldHeight; }
-            set { this.worldHeight = value; }
-        }
-
-
         public virtual void SetWorldSize( float worldWidth, float worldHeight )
         {
-            this.worldWidth  = worldWidth;
-            this.worldHeight = worldHeight;
+            this.WorldWidth  = worldWidth;
+            this.WorldHeight = worldHeight;
         }
+
+        /// <summary>
+        /// Sets the viewport's position in screen coordinates.
+        /// This is typically set by <seealso cref="Update(int, int, bool)"/>.
+        /// </summary>
+        public virtual void SetScreenPosition( int screenX, int screenY )
+        {
+            this.ScreenX = screenX;
+            this.ScreenY = screenY;
+        }
+
+        /// <summary>
+        /// Sets the viewport's size in screen coordinates.
+        /// This is typically set by <seealso cref="Update(int, int, bool)"/>.
+        /// </summary>
+        public virtual void SetScreenSize( int screenWidth, int screenHeight )
+        {
+            this.ScreenWidth  = screenWidth;
+            this.ScreenHeight = screenHeight;
+        }
+
+        /// <summary>
+        /// Sets the viewport's bounds in screen coordinates.
+        /// This is typically set by <seealso cref="Update(int, int, bool)"/>.
+        /// </summary>
+        public virtual void SetScreenBounds( int screenX, int screenY, int screenWidth, int screenHeight )
+        {
+            this.ScreenX      = screenX;
+            this.ScreenY      = screenY;
+            this.ScreenWidth  = screenWidth;
+            this.ScreenHeight = screenHeight;
+        }
+
+        /// <summary>
+        /// Returns the left gutter (black bar) width in screen coordinates.
+        /// </summary>
+        public virtual int LeftGutterWidth => ScreenX;
+
+        /// <summary>
+        /// Returns the right gutter (black bar) x in screen coordinates.
+        /// </summary>
+        public virtual int RightGutterX => ScreenX + ScreenWidth;
+
+        /// <summary>
+        /// Returns the right gutter (black bar) width in screen coordinates.
+        /// </summary>
+        public virtual int RightGutterWidth => ( Gdx.Graphics!.GetWidth() - ( ScreenX + ScreenWidth ) );
+
+        /// <summary>
+        /// Returns the bottom gutter (black bar) height in screen coordinates.
+        /// </summary>
+        public virtual int BottomGutterHeight => ScreenY;
+
+        /// <summary>
+        /// Returns the top gutter (black bar) y in screen coordinates.
+        /// </summary>
+        public virtual int TopGutterY => ScreenY + ScreenHeight;
+
+        /// <summary>
+        /// Returns the top gutter (black bar) height in screen coordinates.
+        /// </summary>
+        public virtual int TopGutterHeight => ( Gdx.Graphics!.GetHeight() - ( ScreenY + ScreenHeight ) );
     }
 }

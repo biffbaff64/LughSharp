@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop
+﻿using LibGDXSharp.Core;
+
+namespace LibGDXSharp.Backends.Desktop
 {
     public class GLGraphics : AbstractGraphics, IDisposable
     {
@@ -25,13 +27,13 @@
             UpdateFramebufferInfo();
             InitiateGL();
             
-            GLFW.glfwSetFramebufferSizeCallback( window.getWindowHandle(), resizeCallback );
+            Glfw.GetApi().SetFramebufferSizeCallback( window.getWindowHandle(), resizeCallback );
         }
 
-        public class Monitor
+        public class GLDisplayMode
         {
         }
-
+        
         protected virtual void Dispose( bool disposing )
         {
             if ( disposing )

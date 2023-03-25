@@ -141,24 +141,20 @@
         /// <summary>
         /// Gets the currently active display mode for the primary monitor.
         /// </summary>
-        public static DisplayMode GetDisplayMode()
+        public static unsafe DisplayMode GetDisplayMode()
         {
             GLApplication.InitialiseGL();
 
-//            Glfw.GetApi().SetVideoMode();
-
             var videoMode = Glfw.GetApi().GetVideoMode( Glfw.GetApi().GetPrimaryMonitor() );
             
-            return new DisplayMode
+            return new GLGraphics.GLDisplayMode
                 (
                  Glfw.GetApi().GetPrimaryMonitor(),
-                 videoMode.width(),
-                 videoMode.height(),
-                 videoMode.refreshRate(),
-                 videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits()
+                 videoMode->Width,
+                 videoMode->Height,
+                 videoMode->RefreshRate,
+                 videoMode->RedBits + videoMode->GreenBits + videoMode->BlueBits
                 );
         }
-
-
     }
 }

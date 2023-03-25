@@ -1,7 +1,12 @@
 ﻿- IP = In Progress
 - - - - - - - - -
 - DONE = Class finished but may not be fully 'CSharp-ified'
-- - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- PRIORITY is 2D classes first
+- - - - - - - - - - - - - - - -
+- Restructure, where necessary, to cut the number of exceptions that can be thrown
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 CORE
 ----
     - DONE - AbstractGraphics
@@ -79,7 +84,7 @@ FILES
 GRAPHICS
 --------
     - DONE - BufferFormat
-    -      - Camera
+    - IP   - Camera
     - DONE - Color
     - DONE - Colors
     -      - Cubemap
@@ -152,7 +157,7 @@ GRAPHICS/GLUTILS
     -      - GLOnlyTextureData
     - IP   - GLVersion
     - IP   - HdpiMode
-    -      - HdpiUtils
+    - IP   - HdpiUtils
     -      - ImmediateModeRenderer
     -      - ImmediateModeRenderer20
     -      - IndexArray
@@ -403,7 +408,7 @@ SCENES.SCENE2D/UTILS
     -      - ILayout
     -      - ITransformDrawable
     -      - NinePatchDrawable
-    -      - ScissorStack
+    - IP   - ScissorStack
     -      - Selection
     -      - SpriteDrawable
     -      - TextureRegionDrawable
@@ -413,7 +418,6 @@ SCENES.SCENE2D/UTILS
 UTILS
 -----
     - DONE - Align
-    -      - AtomicQueue
     -      - Base64Coder
     -      - BinaryHeap
     -      - Bits
@@ -466,6 +470,12 @@ UTILS/ASYNC
     -      - AsyncResult
     -      - IAsyncTask
     -      - ThreadUtils
+
+UTILS/ATOMIC
+------------
+    -      - AtomicInteger
+    -      - AtomicQueue
+    -      - AtomicReferenceArray
 
 UTILS/COLLECTIONS
 -----------------
@@ -527,7 +537,7 @@ UTILS/COMPRESSION
 
 UTILS/EXCEPTIONS
 ----------------
-    - Done - GdxREuntimeException
+    - Done - GdxRuntimeException
     - Done - IllegalStateException
     - Done - NoSuchElementException
     - Done - NumberFormatException
@@ -561,7 +571,7 @@ UTILS/VIEWPORT
     -      - ScalingViewport
     -      - ScreenViewport
     -      - StretchViewport
-    -      - Viewport
+    - DONE - Viewport
 
 UTILS/XML
 ---------

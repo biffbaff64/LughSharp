@@ -218,7 +218,7 @@
 
             public const int MaxKeycode = 255;
 
-            public static string ToString( int keycode )
+            public static string? ToString( int keycode )
             {
                 if ( keycode < 0 )
                 {
@@ -406,8 +406,7 @@
             }
         }
 
-        // TODO: LibGDX uses ObjectIntMap here.
-        private static List< string > _keyNames;
+        private static List< string >? _keyNames;
 
         public static int ValueOf( string keyname )
         {
@@ -427,7 +426,7 @@
             {
                 var name = Keys.ToString( i );
 
-                if ( name != null )
+                if ( ( name != null ) && ( _keyNames != null ) )
                 {
                     _keyNames[ i ] = name;
                 }

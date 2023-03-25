@@ -1,4 +1,6 @@
-﻿using LibGDXSharp.Core;
+﻿using System.Text.RegularExpressions;
+
+using LibGDXSharp.Core;
 
 namespace LibGDXSharp.Graphics.GLUtils
 {
@@ -85,11 +87,15 @@ namespace LibGDXSharp.Graphics.GLUtils
         /// <param name="versionString"></param>
         private void ExtractVersion( string patternString, string versionString )
         {
-            Pattern pattern = Pattern.compile( patternString );
-            Matcher matcher = pattern.matcher( versionString );
-            bool    found   = matcher.find();
+            var rx      = new Regex( patternString );
+            var matches = rx.Matches( versionString );
+            
+//            Pattern pattern = Pattern.compile( patternString );
+//            Matcher matcher = pattern.matcher( versionString );
 
-            if ( found )
+//            bool found = matcher.find();
+
+            if ( matches.Count > 0 )
             {
                 string   result      = matcher.group( 1 );
                 string[] resultSplit = result.Split( "\\." );
@@ -107,6 +113,57 @@ namespace LibGDXSharp.Graphics.GLUtils
                 ReleaseVersion = 0;
             }
         }
+
+        /// <summary>
+        /// Forgiving parsing of gl major, minor and release versions as
+        /// some manufacturers don't adhere to spec
+        /// </summary>
+        private int ParseInt( string v, int defaultValue )
+        {
+            try
+            {
+                return int.Parse( v );
+            }
+            catch ( FormatException )
+            {
+                Gdx.App!.Error( "LibGDXSharp GL", "Error parsing number: " + v + ", assuming: " + defaultValue );
+
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
+        /// Checks to see if the current GL connection version is higher, or equal to the provided test versions.
+        /// </summary>
+        /// <param name="testMajorVersion"> the major version to test against </param>
+        /// <param name="testMinorVersion"> the minor version to test against </param>
+        /// <returns> true if the current version is higher or equal to the test version </returns>
+        public bool IsVersionEqualToOrHigher( int testMajorVersion, int testMinorVersion )
+        {
+            return MajorVersion > testMajorVersion
+                   || ( MajorVersion == testMajorVersion && MinorVersion >= testMinorVersion );
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns> a string with the current GL connection data </returns>
+        public string DebugVersionString()
+        {
+            return "Type: "
+                   + Gltype
+                   + "\n"
+                   + "Version: "
+                   + MajorVersion
+                   + ":"
+                   + MinorVersion
+                   + ":"
+                   + ReleaseVersion
+                   + "\n"
+                   + "Vendor: "
+                   + VendorString
+                   + "\n"
+                   + "Renderer: "
+                   + RendererString;
+        }
     }
 }
-

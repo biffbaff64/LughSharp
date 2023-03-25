@@ -4,8 +4,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils
 {
     public class ScissorStack
     {
-
-        public static object PopScissors()
+        public static object? PopScissors()
         {
             return null;
         }
@@ -14,6 +13,16 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils
         {
             return false;
         }
+
+        public static void CalculateScissors( Camera? camera,
+                                              float screenX,
+                                              float screenY,
+                                              float screenWidth,
+                                              float screenHeight,
+                                              Matrix4 batchTransform,
+                                              Rectangle area,
+                                              Rectangle scissor )
+        {
+        }
     }
 }
-
