@@ -11,13 +11,13 @@ namespace LibGDXSharp.Utils.Viewport
     /// </summary>
     public abstract class Viewport
     {
-        public Camera? Camera       { get; set; }
-        public float   WorldWidth   { get; set; }
-        public float   WorldHeight  { get; set; }
-        public int     ScreenX      { get; set; }
-        public int     ScreenY      { get; set; }
-        public int     ScreenWidth  { get; set; }
-        public int     ScreenHeight { get; set; }
+        public Camera Camera       { get; set; } = null!;
+        public float  WorldWidth   { get; set; }
+        public float  WorldHeight  { get; set; }
+        public int    ScreenX      { get; set; }
+        public int    ScreenY      { get; set; }
+        public int    ScreenWidth  { get; set; }
+        public int    ScreenHeight { get; set; }
 
         private readonly Vector3 _tmp = new Vector3();
 
@@ -206,7 +206,7 @@ namespace LibGDXSharp.Utils.Viewport
         /// <summary>
         /// Returns the right gutter (black bar) width in screen coordinates.
         /// </summary>
-        public virtual int RightGutterWidth => ( Gdx.Graphics!.GetWidth() - ( ScreenX + ScreenWidth ) );
+        public virtual int RightGutterWidth => ( Gdx.Graphics.GetWidth() - ( ScreenX + ScreenWidth ) );
 
         /// <summary>
         /// Returns the bottom gutter (black bar) height in screen coordinates.
@@ -221,6 +221,6 @@ namespace LibGDXSharp.Utils.Viewport
         /// <summary>
         /// Returns the top gutter (black bar) height in screen coordinates.
         /// </summary>
-        public virtual int TopGutterHeight => ( Gdx.Graphics!.GetHeight() - ( ScreenY + ScreenHeight ) );
+        public virtual int TopGutterHeight => ( Gdx.Graphics.GetHeight() - ( ScreenY + ScreenHeight ) );
     }
 }

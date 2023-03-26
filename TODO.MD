@@ -84,7 +84,7 @@ FILES
 GRAPHICS
 --------
     - DONE - BufferFormat
-    - IP   - Camera
+    - DONE - Camera
     - DONE - Color
     - DONE - Colors
     -      - Cubemap
@@ -283,14 +283,14 @@ MATH
     - DONE - Rectangle
     - DONE - Vector2
     - DONE - Vector3        ( Needs documentation comments )
-    -      - WindowedMean
+    - DONE - WindowedMean
 
 MATH/COLLISION
 --------------
-    - IP   - BoundingBox
-    -      - Ray
-    -      - Segment
-    -      - Sphere
+    - DONE - BoundingBox
+    - DONE - Ray
+    - DONE - Segment
+    - DONE - Sphere
 
 NETWORK
 -------
@@ -421,7 +421,7 @@ UTILS
     -      - Base64Coder
     -      - BinaryHeap
     -      - Bits
-    -      - Buffer
+    - IP   - Buffer
     -      - BufferUtils
     -      - IClipboard
     -      - ComparableTimSort
@@ -434,6 +434,7 @@ UTILS
     - DONE - GdxRuntimeException
     -      - I18NBundle
     - DONE - IllegalStateException
+    -      - IntBuffer
     - IP   - IPoolable
     - IP   - IRunnable
     -      - LittleEndianInputStream

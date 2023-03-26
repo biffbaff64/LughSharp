@@ -2,7 +2,9 @@
 {
     public class Frustrum
     {
-        
+        public Frustrum()
+        {
+        }
     }
 }
 
