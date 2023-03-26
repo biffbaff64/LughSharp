@@ -9,29 +9,27 @@ namespace LibGDXSharp.Scenes.Scene2D
 {
     public class Actor
     {
-        public Stage?    Stage     { get; set; }
-        public Group?    Parent    { get; set; }
-        public string?   Name      { get; set; }
-        public Touchable Touchable { get; set; } = Touchable.Enabled;
-        public bool      Visible   { get; set; } = true;
+        public Stage?    Stage      { get; set; }
+        public Group?    Parent     { get; set; }
+        public string?   Name       { get; set; }
+        public object?   UserObject { get; set; }
+        public Touchable Touchable  { get; set; } = Touchable.Enabled;
+        public bool      Visible    { get; set; } = true;
+        public Color     Color      { get; set; } = new Color( 1, 1, 1, 1 );
+        public float     OriginX    { get; set; }
+        public float     OriginY    { get; set; }
 
         public DelayedRemovalArray< IEventListener > Listeners        { get; set; } = new DelayedRemovalArray< IEventListener >( 0 );
         public DelayedRemovalArray< IEventListener > CaptureListeners { get; set; } = new DelayedRemovalArray< IEventListener >( 0 );
 
-        private Array< Action > _actions = new Array< Action >()
+        private readonly Array< Action > _actions = new Array< Action >();
 
-        private bool   _debug;
-        private Color  _color = new Color( 1, 1, 1, 1 );
-        private float  _x;
-        private float  _y;
-        private float  _width;
-        private float  _height;
-        private float  _originX;
-        private float  _originY;
-        private float  _scaleX = 1;
-        private float  _scaleY = 1;
-        private float  _rotation;
-        private object _userObject;
+        private bool  _debug;
+        private float _x;
+        private float _y;
+        private float _scaleX = 1;
+        private float _scaleY = 1;
+        private float _rotation;
 
         /// <summary>
         /// Draws the actor. The batch is configured to draw in the parent's coordinate
@@ -59,7 +57,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             if ( ( Stage != null ) && Stage.GetActionsRequestRendering() )
             {
-                Gdx.Graphics!.RequestRendering();
+                Gdx.Graphics.RequestRendering();
             }
 
             try
@@ -124,8 +122,8 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             // Collect ascendants so event propagation is unaffected by
             // hierarchy changes.
-            Array<Group> ascendants = Pools.Obtain( typeof(Array) );
-            var parent     = this.Parent;
+            Array< Group > ascendants = Pools.Obtain( typeof(Array) );
+            var            parent     = this.Parent;
 
             while ( parent != null )
             {
@@ -135,10 +133,13 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             try
             {
-                // Notify ascendants' capture listeners, starting at the root. Ascendants may stop an event before children receive it.
-                var ascendantsArray = ascendants.items;
+                // Notify ascendants' capture listeners, starting at the root.
+                // Ascendants may stop an event before children receive it.
+                var ascendantsArray = ascendants.Items;
 
-                for ( var i = ascendants.size - 1; i >= 0; i-- )
+                if ( ascendantsArray == null ) return ev.IsCancelled;
+
+                for ( var i = ascendants.Size - 1; i >= 0; i-- )
                 {
                     var currentTarget = ( Group )ascendantsArray[ i ];
 
@@ -160,7 +161,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
                 // Notify ascendants' actor listeners, starting at the target.
                 // Children may stop an event before ascendants receive it.
-                for ( int i = 0, n = ascendants.size; i < n; i++ )
+                for ( int i = 0, n = ascendants.Size; i < n; i++ )
                 {
                     ( ( Group )ascendantsArray[ i ] ).Notify( ev, false );
 
@@ -171,7 +172,7 @@ namespace LibGDXSharp.Scenes.Scene2D
             }
             finally
             {
-                ascendants.clear();
+                ascendants.Clear();
 
                 Pools.Free( ascendants );
             }
@@ -542,116 +543,129 @@ namespace LibGDXSharp.Scenes.Scene2D
             return false;
         }
 
-        /** Returns an application specific object for convenience, or null. */
-        public @Null Object getUserObject()
+        /// <summary>
+        /// The X position of the actor's left edge.
+        /// </summary>
+        public virtual float X
         {
-            return userObject;
+            get => _x;
+            set
+            {
+                if ( MathUtils.IsNotEqual( this._x, value ) )
+                {
+                    this._x = value;
+                    PositionChanged();
+                }
+            }
         }
 
-        /** Sets an application specific object for convenience. */
-        public void setUserObject( @Null Object userObject )
+        /// <summary>
+        /// Returns the X position of the specified <seealso cref="Align"/>.
+        /// </summary>
+        public virtual float GetX( int alignment )
         {
-            this.userObject = userObject;
-        }
+            var x = this._x;
 
-        /** Returns the X position of the actor's left edge. */
-        public float getX()
-        {
+            if ( ( alignment & Align.Right ) != 0 )
+            {
+                x += _width;
+            }
+            else if ( ( alignment & Align.Left ) == 0 )
+            {
+                x += _width / 2;
+            }
+
             return x;
         }
 
-        /** Returns the X position of the specified {@link Align alignment}. */
-        public float getX( int alignment )
+        /// <summary>
+        /// Sets the x position using the specified <seealso cref="Align"/>.
+        /// Note this may set the position to non-integer coordinates. 
+        /// </summary>
+        public virtual void SetX( float x, int alignment )
         {
-            float x = this.x;
-
-            if ( ( alignment & right ) != 0 )
-                x += width;
-            else if ( ( alignment & left ) == 0 ) //
-                x += width / 2;
-
-            return x;
-        }
-
-        public void setX( float x )
-        {
-            if ( this.x != x )
+            if ( ( alignment & Align.Right ) != 0 )
             {
-                this.x = x;
-                positionChanged();
+                x -= _width;
+            }
+            else if ( ( alignment & Align.Left ) == 0 )
+            {
+                x -= _width / 2;
+            }
+
+            if ( MathUtils.IsNotEqual( this._x, x ) )
+            {
+                this._x = x;
+                PositionChanged();
             }
         }
 
-        /** Sets the x position using the specified {@link Align alignment}. Note this may set the position to non-integer
-	 * coordinates. */
-        public void setX( float x, int alignment )
+        /// <summary>
+        /// Returns the Y position of the actor's bottom edge.
+        /// </summary>
+        public virtual float Y
         {
-
-            if ( ( alignment & right ) != 0 )
-                x -= width;
-            else if ( ( alignment & left ) == 0 ) //
-                x -= width / 2;
-
-            if ( this.x != x )
+            get => _y;
+            set
             {
-                this.x = x;
-                positionChanged();
+                if ( MathUtils.IsNotEqual( this._y, value ) )
+                {
+                    this._y = value;
+                    PositionChanged();
+                }
             }
         }
 
-        /** Returns the Y position of the actor's bottom edge. */
-        public float getY()
+        /// <summary>
+        /// Sets the y position using the specified <seealso cref="Align"/>.
+        /// Note this may set the position to non-integer
+        /// coordinates. 
+        /// </summary>
+        public virtual void SetY( float y, int alignment )
         {
-            return y;
-        }
-
-        public void setY( float y )
-        {
-            if ( this.y != y )
+            if ( ( alignment & Align.Top ) != 0 )
             {
-                this.y = y;
-                positionChanged();
+                y -= _height;
+            }
+            else if ( ( alignment & Align.Bottom ) == 0 )
+            {
+                y -= _height / 2;
+            }
+
+            if ( MathUtils.IsNotEqual( this._y, y ) )
+            {
+                this._y = y;
+                PositionChanged();
             }
         }
 
-        /** Sets the y position using the specified {@link Align alignment}. Note this may set the position to non-integer
-	 * coordinates. */
-        public void setY( float y, int alignment )
+        /// <summary>
+        /// Returns the Y position of the specified <seealso cref="Align"/>.
+        /// </summary>
+        public virtual float GetY( int alignment )
         {
+            float y = this._y;
 
-            if ( ( alignment & top ) != 0 )
-                y -= height;
-            else if ( ( alignment & bottom ) == 0 ) //
-                y -= height / 2;
-
-            if ( this.y != y )
+            if ( ( alignment & Align.Top ) != 0 )
             {
-                this.y = y;
-                positionChanged();
+                y += _height;
             }
-        }
-
-        /** Returns the Y position of the specified {@link Align alignment}. */
-        public float getY( int alignment )
-        {
-            float y = this.y;
-
-            if ( ( alignment & top ) != 0 )
-                y += height;
-            else if ( ( alignment & bottom ) == 0 ) //
-                y += height / 2;
+            else if ( ( alignment & Align.Bottom ) == 0 )
+            {
+                y += _height / 2;
+            }
 
             return y;
         }
 
         /** Sets the position of the actor's bottom left corner. */
-        public void setPosition( float x, float y )
+        public void SetPosition( float x, float y )
         {
             if ( this.x != x || this.y != y )
             {
                 this.x = x;
                 this.y = y;
-                positionChanged();
+                PositionChanged();
             }
         }
 
@@ -673,175 +687,166 @@ namespace LibGDXSharp.Scenes.Scene2D
             {
                 this.x = x;
                 this.y = y;
-                positionChanged();
+                PositionChanged();
             }
         }
 
-        /** Add x and y to current position */
-        public void moveBy( float x, float y )
+        /// <summary>
+        /// Add x and y to current position
+        /// </summary>
+        public void MoveBy( float x, float y )
         {
             if ( x != 0 || y != 0 )
             {
-                this.x += x;
-                this.y += y;
-                positionChanged();
+                this._x += x;
+                this._y += y;
+                PositionChanged();
             }
         }
 
-        public float getWidth()
-        {
-            return width;
-        }
+        private float _width;
+        private float _height;
 
-        public void setWidth( float width )
+        public float Width
         {
-            if ( this.width != width )
+            get => _width;
+            set
             {
-                this.width = width;
-                sizeChanged();
+                if ( MathUtils.IsNotEqual( this._width, value ) )
+                {
+                    this._width = value;
+                    SizeChanged();
+                }
             }
         }
 
-        public float getHeight()
+        public float Height
         {
-            return height;
-        }
-
-        public void setHeight( float height )
-        {
-            if ( this.height != height )
+            get => _height;
+            set
             {
-                this.height = height;
-                sizeChanged();
+                if ( MathUtils.IsNotEqual( this._height, value ) )
+                {
+                    this._height = value;
+                    SizeChanged();
+                }
             }
         }
 
-        /** Returns y plus height. */
-        public float getTop()
-        {
-            return y + height;
-        }
+        public float Top   => _y + _height;
+        public float Right => _x + _width;
 
-        /** Returns x plus width. */
-        public float getRight()
-        {
-            return x + width;
-        }
-
-        /** Called when the actor's position has been changed. */
-        protected void positionChanged()
+        /// <summary>
+        /// Called when the actor's position has been changed.
+        /// </summary>
+        protected virtual void PositionChanged()
         {
         }
 
-        /** Called when the actor's size has been changed. */
-        protected void sizeChanged()
+        /// <summary>
+        /// Called when the actor's size has been changed.
+        /// </summary>
+        protected virtual void SizeChanged()
         {
         }
 
-        /** Called when the actor's scale has been changed. */
-        protected void scaleChanged()
+        /// <summary>
+        /// Called when the actor's scale has been changed.
+        /// </summary>
+        protected virtual void ScaleChanged()
         {
         }
 
-        /** Called when the actor's rotation has been changed. */
-        protected void rotationChanged()
+        /// <summary>
+        /// Called when the actor's rotation has been changed.
+        /// </summary>
+        protected virtual void RotationChanged()
         {
         }
 
-        /** Sets the width and height. */
-        public void setSize( float width, float height )
+        /// <summary>
+        /// Sets the width and height.
+        /// </summary>
+        public virtual void SetSize( float width, float height )
         {
-            if ( this.width != width || this.height != height )
+            if ( MathUtils.IsNotEqual( this._width, width )
+                 || MathUtils.IsNotEqual( this._height, height ) )
             {
-                this.width  = width;
-                this.height = height;
-                sizeChanged();
+                this._width  = width;
+                this._height = height;
+                SizeChanged();
             }
         }
 
-        /** Adds the specified size to the current size. */
-        public void sizeBy( float size )
+        /// <summary>
+        /// Adds the specified size to the current size.
+        /// </summary>
+        public virtual void SizeBy( float size )
         {
             if ( size != 0 )
             {
-                width  += size;
-                height += size;
-                sizeChanged();
+                _width  += size;
+                _height += size;
+                SizeChanged();
             }
         }
 
-        /** Adds the specified size to the current size. */
-        public void sizeBy( float width, float height )
+        /// <summary>
+        /// Adds the specified size to the current size.
+        /// </summary>
+        public virtual void SizeBy( float width, float height )
         {
             if ( width != 0 || height != 0 )
             {
-                this.width  += width;
-                this.height += height;
-                sizeChanged();
+                this._width  += width;
+                this._height += height;
+                SizeChanged();
             }
         }
 
-        /** Set bounds the x, y, width, and height. */
-        public void setBounds( float x, float y, float width, float height )
+        /// <summary>
+        /// Set bounds the x, y, width, and height.
+        /// </summary>
+        public void SetBounds( float x, float y, float width, float height )
         {
-            if ( this.x != x || this.y != y )
+            if ( MathUtils.IsNotEqual( this._x, x ) || MathUtils.IsNotEqual( this._y, y ) )
             {
-                this.x = x;
-                this.y = y;
-                positionChanged();
+                this._x = x;
+                this._y = y;
+                PositionChanged();
             }
 
-            if ( this.width != width || this.height != height )
+            if ( MathUtils.IsNotEqual( this._width, width ) || MathUtils.IsNotEqual( this._height, height ) )
             {
-                this.width  = width;
-                this.height = height;
-                sizeChanged();
+                this._width  = width;
+                this._height = height;
+                SizeChanged();
             }
-        }
-
-        public float getOriginX()
-        {
-            return originX;
-        }
-
-        public void setOriginX( float originX )
-        {
-            this.originX = originX;
-        }
-
-        public float getOriginY()
-        {
-            return originY;
-        }
-
-        public void setOriginY( float originY )
-        {
-            this.originY = originY;
         }
 
         /** Sets the origin position which is relative to the actor's bottom left corner. */
         public void setOrigin( float originX, float originY )
         {
-            this.originX = originX;
-            this.originY = originY;
+            this.OriginX = originX;
+            this.OriginY = originY;
         }
 
         /** Sets the origin position to the specified {@link Align alignment}. */
         public void setOrigin( int alignment )
         {
             if ( ( alignment & left ) != 0 )
-                originX = 0;
+                OriginX = 0;
             else if ( ( alignment & right ) != 0 )
-                originX = width;
+                OriginX = width;
             else
-                originX = width / 2;
+                OriginX = width / 2;
 
             if ( ( alignment & bottom ) != 0 )
-                originY = 0;
+                OriginY = 0;
             else if ( ( alignment & top ) != 0 )
-                originY = height;
+                OriginY = height;
             else
-                originY = height / 2;
+                OriginY = height / 2;
         }
 
         public float getScaleX()
@@ -956,21 +961,6 @@ namespace LibGDXSharp.Scenes.Scene2D
             return color;
         }
 
-        /** @see #setName(string)
-	 * @return May be null. */
-        public @Null string getName()
-        {
-            return name;
-        }
-
-        /** Set the actor's name, which is used for identification convenience and by {@link #toString()}.
-	 * @param name May be null.
-	 * @see Group#findActor(string) */
-        public void setName( @Null string name )
-        {
-            this.name = name;
-        }
-
         /// <summary>
         /// Changes the z-order for this actor so it is in front of all siblings.
         /// </summary>
@@ -1053,7 +1043,7 @@ namespace LibGDXSharp.Scenes.Scene2D
             tableBounds.Width  = width;
             tableBounds.Height = height;
 
-            var scissorBounds = Pools.Obtain( typeof(Rectangle) );
+            var scissorBounds = Pools.Obtain< Rectangle >( typeof(Rectangle) );
 
             this.Stage.CalculateScissors( tableBounds, scissorBounds );
 
@@ -1119,8 +1109,8 @@ namespace LibGDXSharp.Scenes.Scene2D
                 }
                 else
                 {
-                    var originX = this._originX;
-                    var originY = this._originY;
+                    var originX = this.OriginX;
+                    var originY = this.OriginY;
 
                     parentCoords.X = ( parentCoords.X - childX - originX ) / scaleX + originX;
                     parentCoords.Y = ( parentCoords.Y - childY - originY ) / scaleY + originY;
@@ -1128,11 +1118,11 @@ namespace LibGDXSharp.Scenes.Scene2D
             }
             else
             {
-                var cos = ( float )System.Math.Cos( rotation * MathUtils.DegreesToRadians );
-                var sin = ( float )System.Math.Sin( rotation * MathUtils.DegreesToRadians );
+                var cos = ( float )Math.Cos( rotation * MathUtils.DegreesToRadians );
+                var sin = ( float )Math.Sin( rotation * MathUtils.DegreesToRadians );
 
-                var originX = this._originX;
-                var originY = this._originY;
+                var originX = this.OriginX;
+                var originY = this.OriginY;
                 var tox     = parentCoords.X - childX - originX;
                 var toy     = parentCoords.Y - childY - originY;
 
@@ -1185,8 +1175,8 @@ namespace LibGDXSharp.Scenes.Scene2D
                 }
                 else
                 {
-                    var originX = this._originX;
-                    var originY = this._originY;
+                    var originX = this.OriginX;
+                    var originY = this.OriginY;
 
                     localCoords.X = ( localCoords.X - originX ) * scaleX + originX + x;
                     localCoords.Y = ( localCoords.Y - originY ) * scaleY + originY + y;
@@ -1197,8 +1187,8 @@ namespace LibGDXSharp.Scenes.Scene2D
                 var cos = ( float )Math.Cos( rotation * MathUtils.DegreesToRadians );
                 var sin = ( float )Math.Sin( rotation * MathUtils.DegreesToRadians );
 
-                var originX = this._originX;
-                var originY = this._originY;
+                var originX = this.OriginX;
+                var originY = this.OriginY;
                 var tox     = ( localCoords.X - originX ) * scaleX;
                 var toy     = ( localCoords.Y - originY ) * scaleY;
 
@@ -1260,7 +1250,6 @@ namespace LibGDXSharp.Scenes.Scene2D
         {
             if ( !DebugFlag ) return;
 
-            // TODO: ShapeRenderer needs implementing
             shapes.Set( ShapeRenderer.ShapeType.Line );
 
             if ( Stage != null )
@@ -1268,7 +1257,7 @@ namespace LibGDXSharp.Scenes.Scene2D
                 shapes.SetColor( Stage.GetDebugColor() );
             }
 
-            shapes.Rect( _x, _y, _originX, _originY, _width, _height, _scaleX, _scaleY, _rotation );
+            shapes.Rect( _x, _y, OriginX, OriginY, _width, _height, _scaleX, _scaleY, _rotation );
         }
 
         /// <summary>
@@ -1305,7 +1294,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public new string ToString()
+        public new string? ToString()
         {
             return this.Name;
         }

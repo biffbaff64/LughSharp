@@ -424,6 +424,16 @@
             return Math.Abs( value ) <= tolerance;
         }
 
+        public static bool IsNotEqual( float a, float b )
+        {
+            return !IsEqual( a, b );
+        }
+
+        public static bool IsNotEqual( float a, float b, float tolerance )
+        {
+            return !IsEqual( a, b, tolerance );
+        }
+        
         /// <summary>
         /// Returns true if a is nearly equal to b.
         /// The function uses the default floating error tolerance.

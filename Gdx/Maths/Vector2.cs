@@ -481,9 +481,8 @@
         public new int GetHashCode()
         {
             var prime  = 31;
-            var result = 1;
 
-            result = prime + NumberUtils.FloatToIntBits( X );
+            var result = prime + NumberUtils.FloatToIntBits( X );
             result = prime * result + NumberUtils.FloatToIntBits( Y );
 
             return result;

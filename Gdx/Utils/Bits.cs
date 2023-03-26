@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Utils
+﻿using LibGDXSharp.Core;
+
+namespace LibGDXSharp.Utils
 {
     /// <summary>
     /// A bitset, without size limitation, allows comparison via
@@ -131,7 +133,7 @@
         /// <returns> the number of bits currently stored, <b>not</b> the highset set bit!</returns>
         public virtual int NumBits()
         {
-            return _bits.length << 6;
+            return _bits.Length << 6;
         }
 
         /// <summary>
@@ -141,15 +143,13 @@
         /// <returns> the logical size of this bitset  </returns>
         public virtual int Length()
         {
-            long[] bits = this.bits;
-
-            for ( int word = bits.Length - 1; word >= 0; --word )
+            for ( var word = _bits.Length - 1; word >= 0; --word )
             {
-                long bitsAtWord = bits[ word ];
+                var bitsAtWord = _bits[ word ];
 
                 if ( bitsAtWord != 0 )
                 {
-                    for ( int bit = 63; bit >= 0; --bit )
+                    for ( var bit = 63; bit >= 0; --bit )
                     {
                         if ( ( bitsAtWord & ( 1L << ( bit & 0x3F ) ) ) != 0L )
                         {
@@ -162,23 +162,24 @@
             return 0;
         }
 
+        /// <summary>
+        /// </summary>
         /// <returns> true if this bitset contains at least one bit set to true </returns>
         public virtual bool NotEmpty()
         {
             return !Empty;
         }
 
+        /// <summary>
+        /// </summary>
         /// <returns> true if this bitset contains no bits that are set to true </returns>
         public virtual bool Empty
         {
             get
             {
-                long[] bits   = this.bits;
-                int    length = bits.Length;
-
-                for ( int i = 0; i < length; i++ )
+                foreach ( var t in _bits )
                 {
-                    if ( bits[ i ] != 0L )
+                    if ( t != 0L )
                     {
                         return false;
                     }
@@ -189,25 +190,24 @@
         }
 
         /// <summary>
-        /// Returns the index of the first bit that is set to true that occurs on or after the specified starting index. If no such bit
-        /// exists then -1 is returned. 
+        /// Returns the index of the first bit that is set to true that occurs on
+        /// or after the specified starting index. If no such bit exists then -1
+        /// is returned. 
         /// </summary>
         public virtual int NextSetBit( int fromIndex )
         {
-            long[] bits       = this.bits;
-            int    word       = ( int )( ( uint )fromIndex >> 6 );
-            int    bitsLength = bits.Length;
+            var word = fromIndex >>> 6;
 
-            if ( word >= bitsLength )
+            if ( word >= _bits.Length )
             {
                 return -1;
             }
 
-            long bitsAtWord = bits[ word ];
+            var bitsAtWord = _bits[ word ];
 
             if ( bitsAtWord != 0 )
             {
-                for ( int i = fromIndex & 0x3f; i < 64; i++ )
+                for ( var i = fromIndex & 0x3f; i < 64; i++ )
                 {
                     if ( ( bitsAtWord & ( 1L << ( i & 0x3F ) ) ) != 0L )
                     {
@@ -216,15 +216,15 @@
                 }
             }
 
-            for ( word++; word < bitsLength; word++ )
+            for ( word++; word < _bits.Length; word++ )
             {
                 if ( word != 0 )
                 {
-                    bitsAtWord = bits[ word ];
+                    bitsAtWord = _bits[ word ];
 
                     if ( bitsAtWord != 0 )
                     {
-                        for ( int i = 0; i < 64; i++ )
+                        for ( var i = 0; i < 64; i++ )
                         {
                             if ( ( bitsAtWord & ( 1L << ( i & 0x3F ) ) ) != 0L )
                             {
@@ -239,21 +239,21 @@
         }
 
         /// <summary>
-        /// Returns the index of the first bit that is set to false that occurs on or after the specified starting index. </summary>
+        /// Returns the index of the first bit that is set to false that occurs on
+        /// or after the specified starting index.
+        /// </summary>
         public virtual int NextClearBit( int fromIndex )
         {
-            long[] bits       = this.bits;
-            int    word       = ( int )( ( uint )fromIndex >> 6 );
-            int    bitsLength = bits.Length;
+            var word = fromIndex >>> 6;
 
-            if ( word >= bitsLength )
+            if ( word >= _bits.Length )
             {
-                return bits.Length << 6;
+                return _bits.Length << 6;
             }
 
-            long bitsAtWord = bits[ word ];
+            var bitsAtWord = _bits[ word ];
 
-            for ( int i = fromIndex & 0x3f; i < 64; i++ )
+            for ( var i = fromIndex & 0x3f; i < 64; i++ )
             {
                 if ( ( bitsAtWord & ( 1L << ( i & 0x3F ) ) ) == 0L )
                 {
@@ -261,16 +261,16 @@
                 }
             }
 
-            for ( word++; word < bitsLength; word++ )
+            for ( word++; word < _bits.Length; word++ )
             {
                 if ( word == 0 )
                 {
                     return word << 6;
                 }
 
-                bitsAtWord = bits[ word ];
+                bitsAtWord = _bits[ word ];
 
-                for ( int i = 0; i < 64; i++ )
+                for ( var i = 0; i < 64; i++ )
                 {
                     if ( ( bitsAtWord & ( 1L << ( i & 0x3F ) ) ) == 0L )
                     {
@@ -279,7 +279,215 @@
                 }
             }
 
-            return bits.Length << 6;
+            return _bits.Length << 6;
+        }
+
+        /// <summary>
+        /// Performs a logical <b>AND</b> of this target bit set with the argument
+        /// bit set. This bit set is modified so that each bit in it has the value
+        /// true if and only if it both initially had the value true and the
+        /// corresponding bit in the bit set argument also had the value true.
+        /// </summary>
+        /// <param name="other"> a bit set  </param>
+        public virtual void And( Bits other )
+        {
+            var commonWords = Math.Min( _bits.Length, other._bits.Length );
+
+            for ( var i = 0; commonWords > i; i++ )
+            {
+                _bits[ i ] &= other._bits[ i ];
+            }
+
+            if ( _bits.Length > commonWords )
+            {
+                for ( int i = commonWords, s = _bits.Length; s > i; i++ )
+                {
+                    _bits[ i ] = 0L;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears all of the bits in this bit set whose corresponding bit is
+        /// set in the specified bit set.
+        /// </summary>
+        /// <param name="other"> a bit set  </param>
+        public virtual void AndNot( Bits other )
+        {
+            for ( int i = 0, j = _bits.Length, k = other._bits.Length; i < j && i < k; i++ )
+            {
+                _bits[ i ] &= ~other._bits[ i ];
+            }
+        }
+
+        /// <summary>
+        /// Performs a logical <b>OR</b> of this bit set with the bit set argument.
+        /// This bit set is modified so that a bit in it has the value true if and
+        /// only if it either already had the value true or the corresponding bit
+        /// in the bit set argument has the value true.
+        /// </summary>
+        /// <param name="other"> a bit set  </param>
+        public virtual void Or( Bits other )
+        {
+            var commonWords = Math.Min( _bits.Length, other._bits.Length );
+
+            for ( var i = 0; commonWords > i; i++ )
+            {
+                _bits[ i ] |= other._bits[ i ];
+            }
+
+            if ( commonWords < other._bits.Length )
+            {
+                CheckCapacity( other._bits.Length );
+
+                for ( int i = commonWords, s = other._bits.Length; s > i; i++ )
+                {
+                    _bits[ i ] = other._bits[ i ];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Performs a logical <b>XOR</b> of this bit set with the bit set argument.
+        /// This bit set is modified so that a bit in it has the value true if and
+        /// only if one of the following statements holds:
+        /// <ul>
+        /// <li>
+        /// The bit initially has the value true, and the corresponding bit
+        /// in the argument has the value false.
+        /// </li>
+        /// <li>
+        /// The bit initially has the value false, and the corresponding bit
+        /// in the argument has the value true.
+        /// </li>
+        /// </ul>
+        /// </summary>
+        /// <param name="other">  </param>
+        public virtual void Xor( Bits other )
+        {
+            var commonWords = Math.Min( _bits.Length, other._bits.Length );
+
+            for ( var i = 0; commonWords > i; i++ )
+            {
+                _bits[ i ] ^= other._bits[ i ];
+            }
+
+            if ( commonWords < other._bits.Length )
+            {
+                CheckCapacity( other._bits.Length );
+
+                for ( int i = commonWords, s = other._bits.Length; s > i; i++ )
+                {
+                    _bits[ i ] = other._bits[ i ];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the specified BitSet has any bits set to true that are
+        /// also set to true in this BitSet.
+        /// </summary>
+        /// <param name="other"> a bit set </param>
+        /// <returns>boolean indicating whether this bit set intersects the specified bit set</returns>
+        public virtual bool Intersects( Bits other )
+        {
+            var bits      = this._bits;
+            var otherBits = other._bits;
+
+            for ( var i = Math.Min( bits.Length, otherBits.Length ) - 1; i >= 0; i-- )
+            {
+                if ( ( bits[ i ] & otherBits[ i ] ) != 0 )
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if this bit set is a super set of the specified set, i.e. it
+        /// has all bits set to true that are also set to true in the specified BitSet.
+        /// </summary>
+        /// <param name="other"> a bit set </param>
+        /// <returns> boolean indicating whether this bit set is a super set of the specified set  </returns>
+        public virtual bool ContainsAll( Bits other )
+        {
+            var bits            = this._bits;
+            var otherBits       = other._bits;
+            var otherBitsLength = otherBits.Length;
+            var bitsLength      = bits.Length;
+
+            for ( var i = bitsLength; i < otherBitsLength; i++ )
+            {
+                if ( otherBits[ i ] != 0 )
+                {
+                    return false;
+                }
+            }
+
+            for ( var i = Math.Min( bitsLength, otherBitsLength ) - 1; i >= 0; i-- )
+            {
+                if ( ( bits[ i ] & otherBits[ i ] ) != otherBits[ i ] )
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
+        public override int GetHashCode()
+        {
+            const int prime = 73;
+            
+            // _bits is not readonly so can't be used in GetHashCode().
+            
+//            var word = Length() >>> 6;
+//            var hash = 0;
+//
+//            for ( var i = 0; word >= i; i++ )
+//            {
+//                hash = 127 * hash + ( int )( _bits[ i ] ^ ( ( int )( ( uint )_bits[ i ] >> 32 ) ) );
+//            }
+
+            var hash = prime + Gdx.App.GetVersion().GetHashCode();
+            hash = prime * hash + Gdx.App.GetHashCode();
+            
+            return hash;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals( object? obj )
+        {
+            if ( this == obj ) return true;
+
+            if ( obj == null ) return false;
+
+            if ( this.GetType() != obj.GetType() ) return false;
+
+            var other     = ( Bits )obj;
+            var otherBits = other._bits;
+
+            var commonWords = Math.Min( _bits.Length, otherBits.Length );
+
+            for ( var i = 0; commonWords > i; i++ )
+            {
+                if ( _bits[ i ] != otherBits[ i ] )
+                {
+                    return false;
+                }
+            }
+
+            if ( _bits.Length == otherBits.Length )
+            {
+                return true;
+            }
+
+            return Length() == other.Length();
         }
     }
 }

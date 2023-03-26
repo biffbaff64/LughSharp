@@ -4,7 +4,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils
 {
     public class ScissorStack
     {
-        public static object? PopScissors()
+        public static object PopScissors()
         {
             return null;
         }

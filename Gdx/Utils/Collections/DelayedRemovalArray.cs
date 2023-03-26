@@ -67,8 +67,8 @@ namespace LibGDXSharp.Utils
                 _clear = 0;
             }
         }
-        
-        private void Remove( int index )
+
+        public void Remove( int index )
         {
             if ( index < _clear ) return;
 
@@ -89,14 +89,14 @@ namespace LibGDXSharp.Utils
             _remove.Add( index );
         }
 
-        public bool RemoveValue( T value, bool identity )
+        public bool RemoveValue( T value )
         {
             if ( _iterating > 0 )
             {
                 int index = IndexOf( value );
 
                 if ( index == -1 ) return false;
-                
+
                 Remove( index );
 
                 return true;
@@ -154,24 +154,33 @@ namespace LibGDXSharp.Utils
         public new void Insert( int index, T value )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+
             base.Insert( index, value );
         }
 
         public void InsertRange( int index, int count )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+
             base.InsertRange( index, count );
         }
 
-        public void Swap( int first, int second )
+        /// <summary>
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <exception cref="GdxRuntimeException"></exception>
+        public new void Swap( int first, int second )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+
             base.Swap( first, second );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="GdxRuntimeException"></exception>
         public new T Pop()
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
@@ -179,54 +188,68 @@ namespace LibGDXSharp.Utils
             return base.Pop();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <exception cref="GdxRuntimeException"></exception>
         public new void Sort()
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+
             base.Sort();
         }
 
         public void Sort( Comparator<? super T> comparator)
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+
             base.Sort( comparator );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <exception cref="GdxRuntimeException"></exception>
         public new void Reverse()
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+
             base.Reverse();
         }
 
-        public void Shuffle()
+        /// <summary>
+        /// </summary>
+        /// <exception cref="GdxRuntimeException"></exception>
+        public new void Shuffle()
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+
             base.Shuffle();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="newSize"></param>
+        /// <exception cref="GdxRuntimeException"></exception>
         public new void Truncate( int newSize )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+
             base.Truncate( newSize );
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="newSize"></param>
         /// <returns></returns>
         /// <exception cref="GdxRuntimeException"></exception>
-        public T[] SetSize( int newSize )
+        public new T[] SetSize( int newSize )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
             return base.SetSize( newSize );
         }
 
+        /// <summary>
+        /// </summary>
         private void Reset()
         {
             _iterating = 0;

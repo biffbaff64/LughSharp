@@ -420,7 +420,7 @@ UTILS
     - DONE - Align
     -      - Base64Coder
     -      - BinaryHeap
-    -      - Bits
+    - DONE - Bits
     - IP   - Buffer
     -      - BufferUtils
     -      - IClipboard
@@ -428,7 +428,7 @@ UTILS
     -      - DataBuffer
     -      - DataInput
     -      - DataOutput
-    - IP   - FloatConsts
+    - DONE - FloatConsts
     -      - FlushablePool
     -      - GdxNativesLoader
     - DONE - GdxRuntimeException
@@ -436,10 +436,10 @@ UTILS
     - DONE - IllegalStateException
     -      - IntBuffer
     - IP   - IPoolable
-    - IP   - IRunnable
+    - DONE - IRunnable
     -      - LittleEndianInputStream
     -      - Logger
-    - IP   - NumberUtils
+    - DONE - NumberUtils
     -      - PauseableThread
     -      - PerformanceCounter
     -      - PerformanceCounters
