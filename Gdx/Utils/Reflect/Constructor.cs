@@ -2,7 +2,9 @@
 {
     public class Constructor
     {
-        
+        public void SetAccessible( bool state )
+        {
+        }
     }
 }
 

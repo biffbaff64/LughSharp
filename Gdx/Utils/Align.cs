@@ -14,4 +14,3 @@
         public const int BottomRight = Bottom | Right;
     }
 }
-

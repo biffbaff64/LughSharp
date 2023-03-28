@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.G2D
 {
-    public class SpriteBatch
+    public class SpriteBatch : IBatch
     {
         
     }

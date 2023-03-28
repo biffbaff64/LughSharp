@@ -19,17 +19,21 @@ namespace LibGDXSharp.Scenes.Scene2D
         public float     OriginX    { get; set; }
         public float     OriginY    { get; set; }
 
-        public DelayedRemovalArray< IEventListener > Listeners        { get; set; } = new DelayedRemovalArray< IEventListener >( 0 );
-        public DelayedRemovalArray< IEventListener > CaptureListeners { get; set; } = new DelayedRemovalArray< IEventListener >( 0 );
+        public DelayedRemovalArray< IEventListener > Listeners        { get; private set; }
+        public DelayedRemovalArray< IEventListener > CaptureListeners { get; private set; }
 
         private readonly Array< Action > _actions = new Array< Action >();
 
         private bool  _debug;
-        private float _x;
-        private float _y;
         private float _scaleX = 1;
         private float _scaleY = 1;
         private float _rotation;
+
+        public Actor()
+        {
+            Listeners        = new DelayedRemovalArray< IEventListener >( 0 );
+            CaptureListeners = new DelayedRemovalArray< IEventListener >( 0 );
+        }
 
         /// <summary>
         /// Draws the actor. The batch is configured to draw in the parent's coordinate
@@ -286,7 +290,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         {
             if ( listener == null ) throw new ArgumentException( "listener cannot be null." );
 
-            return Listeners.Remove( listener );
+            return Listeners.RemoveValue( listener );
         }
 
         /// <summary>
@@ -314,11 +318,10 @@ namespace LibGDXSharp.Scenes.Scene2D
         {
             if ( listener == null ) throw new ArgumentException( "listener cannot be null." );
 
-            return CaptureListeners.Remove( listener );
+            return CaptureListeners.RemoveValue( listener );
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="action"></param>
         public void AddAction( Action action )
@@ -327,16 +330,21 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             _actions.Add( action );
 
-            if ( Stage != null && Stage.GetActionsRequestRendering() ) Gdx.Graphics.RequestRendering();
+            if ( Stage != null && Stage.GetActionsRequestRendering() )
+            {
+                Gdx.Graphics.RequestRendering();
+            }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="action"></param>
         public void RemoveAction( Action? action )
         {
-            if ( ( action != null ) && _actions.Remove( action ) ) action.SetActor( null );
+            if ( ( action != null ) && _actions.RemoveValue( action ) )
+            {
+                action.SetActor( null );
+            }
         }
 
         /// <summary>
@@ -344,7 +352,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// </summary>
         public bool HasActions()
         {
-            return _actions.Count > 0;
+            return _actions.Size > 0;
         }
 
         /// <summary>
@@ -352,9 +360,9 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// </summary>
         public void ClearActions()
         {
-            for ( var i = _actions.Count - 1; i >= 0; i-- )
+            for ( var i = _actions.Size - 1; i >= 0; i-- )
             {
-                _actions[ i ].SetActor( null );
+                _actions.Get( i ).SetActor( null );
             }
 
             _actions.Clear();
@@ -369,7 +377,9 @@ namespace LibGDXSharp.Scenes.Scene2D
             CaptureListeners.Clear();
         }
 
-        /** Removes all actions and listeners on this actor. */
+        /// <summary>
+        /// Removes all actions and listeners on this actor.
+        /// </summary>
         public void Clear()
         {
             ClearActions();
@@ -528,20 +538,27 @@ namespace LibGDXSharp.Scenes.Scene2D
             return false;
         }
 
-        /** Returns true if this actor is a listener actor for touch focus.
-	 * @see Stage#addTouchFocus(EventListener, Actor, Actor, int, int) */
-        public bool isTouchFocusListener()
+        /// <summary>
+        /// Returns true if this actor is a listener actor for touch focus.
+        /// <see cref="Stage.AddTouchFocus(IEventListener, Actor, Actor, int, int)"/>
+        /// </summary>
+        public bool IsTouchFocusListener()
         {
-            Stage stage = getStage();
+            if ( Stage == null ) return false;
 
-            if ( stage == null ) return false;
-
-            for ( int i = 0, n = stage.touchFocuses.size; i < n; i++ )
-                if ( stage.touchFocuses.get( i ).listenerActor == this )
+            for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
+            {
+                if ( Stage.touchFocuses.Get( i ).TouchFocus1.listenerActor == this )
+                {
                     return true;
+                }
+            }
 
             return false;
         }
+
+        private float _x;
+        private float _y;
 
         /// <summary>
         /// The X position of the actor's left edge.
@@ -1274,7 +1291,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
                     if ( value )
                     {
-                        this.Stage.Debug = true;
+                        this.Stage.debug = true;
                     }
                 }
             }

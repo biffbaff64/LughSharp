@@ -30,7 +30,7 @@ namespace LibGDXSharp.Utils
             this.Max = max;
         }
 
-        protected abstract T? NewObject();
+        protected abstract T NewObject();
 
         /// <summary>
         /// Returns an object from this pool.

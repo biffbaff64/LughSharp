@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils.Viewport
 {
-    public class ScalingViewport
+    public class ScalingViewport : Viewport
     {
         
     }

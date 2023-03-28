@@ -314,7 +314,7 @@ SCENES.SCENE2D
     - DONE - Event
     -      - Group
     - DONE - IEventListener
-    -      - InputEvent
+    - DONE - InputEvent
     -      - InputListener
     - IP   - Stage
     - DONE - Touchable

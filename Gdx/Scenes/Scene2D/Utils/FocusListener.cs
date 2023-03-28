@@ -2,7 +2,9 @@
 {
     public class FocusListener
     {
-        
+        public class FocusEvent : Event
+        {
+        }
     }
 }
 

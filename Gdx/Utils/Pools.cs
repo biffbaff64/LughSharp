@@ -1,4 +1,5 @@
 ﻿using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Utils.Reflect;
 
 namespace LibGDXSharp.Utils
 {
@@ -17,11 +18,11 @@ namespace LibGDXSharp.Utils
         /// </summary>
         public static Pool< T > Get<T>( Type type, int max )
         {
-            Pool< T > pool = _typePools.Get( type );
+            var pool = _typePools.Get( type );
 
             if ( pool == null )
             {
-                pool = new ReflectionPool<T>( type, 4, max );
+                pool = new ReflectionPool( type, 4, max );
                 
                 _typePools.Put( type, pool );
             }
@@ -49,7 +50,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         public static T Obtain<T>( Type type )
         {
-            return Get( type ).Obtain();
+            return Get<T>( type ).Obtain();
         }
 
         /// <summary>

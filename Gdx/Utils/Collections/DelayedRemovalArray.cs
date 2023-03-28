@@ -89,7 +89,11 @@ namespace LibGDXSharp.Utils
             _remove.Add( index );
         }
 
-        public bool RemoveValue( T value )
+        /// <summary>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public new bool RemoveValue( T value )
         {
             if ( _iterating > 0 )
             {
@@ -102,7 +106,7 @@ namespace LibGDXSharp.Utils
                 return true;
             }
 
-            return base.Remove( value );
+            return base.RemoveValue( value );
         }
 
         public T RemoveIndex( int index )
