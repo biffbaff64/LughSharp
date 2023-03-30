@@ -383,11 +383,11 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Applies a touch moved event to the stage and returns true if an actor in
-        /// the scene <seealso cref="Event.handle() handled"/> the event.
-        /// Only <seealso cref="InputListener listeners"/> that returned true for
+        /// the scene <see cref="Event.handle()"/> handled the event.
+        /// Only <see cref="InputListener"/> listeners that returned true for
         /// touchDown will receive this event. 
         /// </summary>
-        public bool TouchDragged( int screenX, int screenY, int pointer )
+        public new bool TouchDragged( int screenX, int screenY, int pointer )
         {
             _pointerScreenX[ pointer ] = screenX;
             _pointerScreenY[ pointer ] = screenY;
@@ -409,7 +409,7 @@ namespace LibGDXSharp.Scenes.Scene2D
             inputEvent.StageY  = _tempCoords.X;
             inputEvent.Pointer = pointer;
 
-            TouchFocus[] focuses = this.touchFocuses.Begin();
+            var focuses = this.touchFocuses.Begin();
 
             for ( int i = 0, n = this.touchFocuses.Size; i < n; i++ )
             {
@@ -423,8 +423,8 @@ namespace LibGDXSharp.Scenes.Scene2D
                     continue;
                 }
 
-                inputEvent.SetTarget( focus.target );
-                inputEvent.SetListenerActor( focus.listenerActor );
+                inputEvent.TargetActor   = focus.target;
+                inputEvent.ListenerActor = focus.listenerActor;
 
                 if ( ( focus.listener != null ) && focus.listener.Handle( inputEvent ) )
                 {
@@ -443,11 +443,11 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Applies a touch up event to the stage and returns true if an actor in the
-        /// scene <seealso cref="Event.handle() handled"/> the event.
-        /// Only <seealso cref="InputListener listeners"/> that returned true for
+        /// scene <see cref="Event.Handle()"/> handled the event.
+        /// Only <see cref="InputListener"/> listeners that returned true for
         /// touchDown will receive this event. 
         /// </summary>
-        public bool TouchUp( int screenX, int screenY, int pointer, int button )
+        public new bool TouchUp( int screenX, int screenY, int pointer, int button )
         {
             _pointerTouched[ pointer ] = false;
             _pointerScreenX[ pointer ] = screenX;
@@ -466,7 +466,7 @@ namespace LibGDXSharp.Scenes.Scene2D
             inputEvent.Pointer = pointer;
             inputEvent.Button  = button;
 
-            TouchFocus[] focuses = touchFocuses.Begin();
+            var focuses = touchFocuses.Begin();
 
             for ( int i = 0, n = this.touchFocuses.Size; i < n; i++ )
             {
@@ -479,13 +479,14 @@ namespace LibGDXSharp.Scenes.Scene2D
 
                 if ( !this.touchFocuses.RemoveValue( focus ) )
                 {
-                    continue; // Touch focus already gone.
+                    // Touch focus already gone.
+                    continue;
                 }
 
-                inputEvent.SetTarget( focus.target );
-                inputEvent.SetListenerActor( focus.listenerActor );
+                inputEvent.TargetActor = focus.target;
+                inputEvent.ListenerActor = focus.listenerActor;
 
-                if ( focus.listener.Handle( inputEvent ) )
+                if ( focus.listener != null && focus.listener.Handle( inputEvent ) )
                 {
                     inputEvent.Handle();
                 }

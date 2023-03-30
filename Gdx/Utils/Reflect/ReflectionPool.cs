@@ -8,7 +8,7 @@
     /// </summary>
     public class ReflectionPool<T> : Pool< T >
     {
-        private readonly System.Reflection.ConstructorInfo? _constructor;
+        private readonly Constructor? _constructor;
 
         /// <summary>
         /// </summary>
@@ -44,13 +44,13 @@
         {
             try
             {
-                return ClassReflection.GetConstructor( type, ( Type[] )null );
+                return ClassReflection.GetConstructor( type, null );
             }
             catch ( Exception )
             {
                 try
                 {
-                    Constructor constructor = ClassReflection.GetDeclaredConstructor( type, ( Type[] )null );
+                    Constructor constructor = ClassReflection.GetDeclaredConstructor( type, null );
 
                     constructor.SetAccessible( true );
 
@@ -71,14 +71,14 @@
         {
             try
             {
-                return ( T )_constructor.NewInstance( ( object[] )null );
+                return ( T )_constructor?.NewInstance( null );
             }
             catch ( Exception ex )
             {
                 throw new GdxRuntimeException
                 (
                     "Unable to create new instance: "
-                    + _constructor.GetDeclaringClass().GetName(), ex
+                    + _constructor?.GetDeclaringClass().Name, ex
                 );
             }
         }

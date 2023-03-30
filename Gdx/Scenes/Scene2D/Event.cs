@@ -46,6 +46,17 @@
         public bool IsCancelled { get; set; }
 
         /// <summary>
+        /// Marks this event as handled. This does not affect event propagation inside
+        /// scene2d, but causes the <see cref="Stage"/> <see cref="InputProcessor"/>
+        /// methods to return true, which will eat the event so it is not passed on to
+        /// the application under the stage. 
+        /// </summary>
+        public void Handle()
+        {
+            IsHandled = true;
+        }
+
+        /// <summary>
         /// Marks this event cancelled. This handles the event and stops
         /// the event propagation. It also cancels any default action that
         /// would have been taken by the code that fired the event.
@@ -57,6 +68,16 @@
             IsCancelled = true;
             IsStopped   = true;
             IsHandled   = true;
+        }
+
+        /// <summary>
+        /// Marks this event has being stopped. This halts event propagation. Any other
+        /// listeners on the {@link #getListenerActor() listener actor} are notified, but
+        /// after that no other listeners are notified.
+        /// </summary>
+        public void Stop()
+        {
+            IsStopped = true;
         }
 
         public void Reset()

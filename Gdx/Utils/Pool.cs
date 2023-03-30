@@ -4,20 +4,22 @@ namespace LibGDXSharp.Utils
 {
     public abstract class Pool<T>
     {
-        public int Max  { get; set; } // The maximum number of objects that will be pooled.
-        public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
+        // The maximum number of objects that will be pooled.
+        public int Max  { get; set; }
+
+        // The highest number of free objects. Can be reset any time.
+        public int Peak { get; set; }
 
         private readonly Array< T > _freeObjects;
 
         /// <summary>
         /// Creates a pool with an initial capacity of 16 and no maximum.
         /// </summary>
-        protected Pool() : this( 16, int.MaxValue )
+        protected Pool() : this( 16 )
         {
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="initialCapacity">
         /// The initial size of the array supporting the pool. No objects are created/pre-allocated.
@@ -30,20 +32,20 @@ namespace LibGDXSharp.Utils
             this.Max = max;
         }
 
-        protected abstract T NewObject();
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        protected abstract T? NewObject();
 
         /// <summary>
         /// Returns an object from this pool.
-        /// The object may be new (from <see cref="NewObject"/>) or reused (previously <see cref="Free(T)"/> freed).
+        /// The object may be new (from <see cref="NewObject"/>) or reused
+        /// (previously <see cref="Free(T)"/> freed).
         /// </summary>
-        public T Obtain()
+        public T? Obtain()
         {
-            if ( _freeObjects.Size == 0 )
-            {
-                return NewObject();
-            }
+            return _freeObjects.Size == 0 ? NewObject() : _freeObjects.Pop();
 
-            return _freeObjects.Pop();
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace LibGDXSharp.Utils
         /// The pool does not check if an object is already freed, so the same object must not be
         /// freed multiple times.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">The object to add to the pool.</param>
         /// <exception cref="ArgumentException"></exception>
         public void Free( T obj )
         {
@@ -110,7 +112,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// Called when an object is discarded. This is the case when an object is
         /// freed, but the maximum capacity of the pool is reached, and when the
-        /// pool is cleared.
+        /// pool is <see cref="Clear"/>ed.
         /// </summary>
         protected void Discard( T obj )
         {
@@ -125,18 +127,18 @@ namespace LibGDXSharp.Utils
         {
             if ( objects == null ) throw new ArgumentException( "objects cannot be null." );
 
-            var freeObjects = this._freeObjects;
-            var max         = this.Max;
+            var max = this.Max;
 
             for ( int i = 0, n = objects.Size; i < n; i++ )
             {
-                var obj = objects.Get( i );
+                T obj = objects.Get( i );
 
                 if ( obj == null ) continue;
 
-                if ( freeObjects.Size < max )
+                if ( this._freeObjects.Size < max )
                 {
-                    freeObjects.Add( obj );
+                    this._freeObjects.Add( obj );
+
                     Reset( obj );
                 }
                 else
@@ -145,7 +147,7 @@ namespace LibGDXSharp.Utils
                 }
             }
 
-            Peak = Math.Max( Peak, freeObjects.Size );
+            Peak = Math.Max( Peak, this._freeObjects.Size );
         }
 
         /// <summary>
@@ -155,7 +157,7 @@ namespace LibGDXSharp.Utils
         {
             for ( var i = 0; i < _freeObjects.Size; i++ )
             {
-                var obj = _freeObjects.Pop();
+                T obj = _freeObjects.Pop();
                 Discard( obj );
             }
         }
@@ -163,7 +165,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// The number of objects available to be obtained.
         /// </summary>
-        public int Free()
+        public int GetFree()
         {
             return _freeObjects.Size;
         }

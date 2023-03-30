@@ -1,19 +1,18 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Utils.Collections
 {
     [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
-    public class Array<T> //: IEnumerator< T >, IEnumerable
+    public class Array<T>
     {
-        public T[]? Items   { get; private set; }
+        public T?[]? Items   { get; private set; }
         public int  Size    { get; private set; }
         public bool Ordered { get; private set; }
 
-        private ArrayIterable< T >?        _iterable;
+        private ArrayIterable< T >?     _iterable;
         private PredicateIterable< T >? _predicateIEnumerable;
 
         /// <summary>
@@ -36,9 +35,14 @@ namespace LibGDXSharp.Utils.Collections
         /// <summary>
         /// </summary>
         /// <param name="array"></param>
-        public Array( Array< T > array ) : this( array.Ordered, array.Size )
+        public Array( Array< T > array )
         {
-            Size = array.Size;
+            if ( array == null ) throw new GdxRuntimeException( "array cannot be null!" );
+            if ( array.Items == null ) throw new GdxRuntimeException( "array cannot be null!" );
+
+            Ordered = array.Ordered;
+            Size    = array.Size;
+            Items   = new T[ Size ];
 
             Array.Copy( array.Items, 0, Items, 0, Size );
         }
@@ -56,9 +60,11 @@ namespace LibGDXSharp.Utils.Collections
         /// <param name="array"></param>
         /// <param name="start"></param>
         /// <param name="count"></param>
-        public Array( bool ordered, T[] array, int start, int count ) : this( ordered, count )
+        public Array( bool ordered, T[] array, int start, int count )
         {
-            Size = count;
+            Ordered = ordered;
+            Size    = count;
+            Items   = new T[ Size ];
 
             Array.Copy( array, start, Items, 0, Size );
         }
@@ -68,9 +74,11 @@ namespace LibGDXSharp.Utils.Collections
         /// <param name="value"></param>
         public void Add( T value )
         {
+            Debug.Assert( Items != null, nameof( Items ) + " != null" );
+
             if ( Size == Items.Length )
             {
-                Items = Resize( System.Math.Max( 8, ( int )( Size * 1.75f ) ) );
+                Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
             }
 
             Items[ Size++ ] = value;
@@ -87,8 +95,18 @@ namespace LibGDXSharp.Utils.Collections
         /// <summary>
         /// </summary>
         /// <param name="array"></param>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
+        public void AddAll( params T[] array )
+        {
+            AddAll( array, 0, array.Length );
+        }
+
+        /// <summary>
+        /// Copy 'count' items from the supplied array to this array,
+        /// starting from position 'start'.
+        /// </summary>
+        /// <param name="array">The array of items to add.</param>
+        /// <param name="start">The start index.</param>
+        /// <param name="count">The number of items to copy.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void AddAll( Array< T > array, int start, int count )
         {
@@ -98,15 +116,9 @@ namespace LibGDXSharp.Utils.Collections
                     ( "start + count must be <= size - " + start + " + " + count + " <= " + array.Size );
             }
 
-            AddAll( array.Items, start, count );
-        }
+            Debug.Assert( array.Items != null, "array.Items != null" );
 
-        /// <summary>
-        /// </summary>
-        /// <param name="array"></param>
-        public void AddAll( params T[] array )
-        {
-            AddAll( array, 0, array.Length );
+            AddAll( array.Items, start, count );
         }
 
         /// <summary>
@@ -114,38 +126,43 @@ namespace LibGDXSharp.Utils.Collections
         /// <param name="array"></param>
         /// <param name="start"></param>
         /// <param name="count"></param>
-        public void AddAll( T[] array, int start, int count )
+        public void AddAll( T?[] array, int start, int count )
         {
-            var sizeNeeded = Size + count;
+            Debug.Assert( Items != null, nameof( Items ) + " != null" );
 
-            if ( sizeNeeded > Items.Length )
+            if ( Items != null )
             {
-                Items = Resize( System.Math.Max( 8, ( int )( sizeNeeded * 1.75f ) ) );
+                var sizeNeeded = Size + count;
+
+                if ( sizeNeeded > Items.Length )
+                {
+                    Items = Resize( Math.Max( 8, ( int )( sizeNeeded * 1.75f ) ) );
+                }
+
+                Array.Copy( array, start, Items, Size, count );
+
+                Size += count;
             }
-
-            Array.Copy( array, start, Items, Size, count );
-
-            Size += count;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public T Get( int index )
+        public T? Get( int index )
         {
             if ( index >= Size )
             {
                 throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
             }
 
+            Debug.Assert( Items != null, nameof( Items ) + " != null" );
+
             return Items[ index ];
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="index"></param>
         /// <param name="value"></param>
@@ -157,11 +174,12 @@ namespace LibGDXSharp.Utils.Collections
                 throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
             }
 
+            Debug.Assert( Items != null, nameof( Items ) + " != null" );
+
             Items[ index ] = value;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="index"></param>
         /// <param name="value"></param>
@@ -173,9 +191,11 @@ namespace LibGDXSharp.Utils.Collections
                 throw new ArgumentOutOfRangeException( "index can't be > size - " + index + " > " + Size );
             }
 
+            if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+            
             if ( Size == Items.Length )
             {
-                Items = Resize( System.Math.Max( 8, ( int )( Size * 1.75f ) ) );
+                Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
             }
 
             if ( Ordered )
@@ -203,11 +223,13 @@ namespace LibGDXSharp.Utils.Collections
                 throw new IndexOutOfRangeException( "index can't be > size - " + index + " > " + Size );
             }
 
+            if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+
             var sizeNeeded = Size + count;
 
             if ( sizeNeeded > Items.Length )
             {
-                Items = Resize( System.Math.Max( System.Math.Max( 8, sizeNeeded ), ( int )( Size * 1.75f ) ) );
+                Items = Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int )( Size * 1.75f ) ) );
             }
 
             Array.Copy( Items, index, Items, index + count, Size - index );
@@ -215,6 +237,11 @@ namespace LibGDXSharp.Utils.Collections
             Size = sizeNeeded;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void Swap( int first, int second )
         {
             if ( first >= Size )
@@ -227,11 +254,12 @@ namespace LibGDXSharp.Utils.Collections
                 throw new ArgumentOutOfRangeException( "second can't be >= size - " + second + " >= " + Size );
             }
 
+            if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+
             ( Items[ first ], Items[ second ] ) = ( Items[ second ], Items[ first ] );
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -241,7 +269,7 @@ namespace LibGDXSharp.Utils.Collections
 
             while ( i >= 0 )
             {
-                if ( Items[ i-- ]!.Equals( value ) )
+                if ( Items![ i-- ]!.Equals( value ) )
                 {
                     return true;
                 }
@@ -251,17 +279,18 @@ namespace LibGDXSharp.Utils.Collections
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public int IndexOf( T value )
+        public int IndexOf( T? value )
         {
+            if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+            
             if ( value == null )
             {
                 for ( int i = 0, n = Size; i < n; i++ )
                 {
-                    if ( Items[ i ]!.Equals( value ) )
+                    if ( Items![ i ]!.Equals( value ) )
                     {
                         return i;
                     }
@@ -282,15 +311,14 @@ namespace LibGDXSharp.Utils.Collections
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public int LastIndexOf( T value )
+        public int LastIndexOf( T? value )
         {
             for ( var i = Size - 1; i >= 0; i-- )
             {
-                if ( value!.Equals( Items[ i ] ) )
+                if ( value.Equals( Items[i] ) )
                 {
                     return i;
                 }
@@ -300,7 +328,6 @@ namespace LibGDXSharp.Utils.Collections
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -320,19 +347,18 @@ namespace LibGDXSharp.Utils.Collections
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public T RemoveIndex( int index )
+        public T? RemoveIndex( int index )
         {
             if ( index >= Size )
             {
                 throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
             }
 
-            var value = Items[ index ];
+            T? value = Items[ index ];
 
             Size--;
 
@@ -350,6 +376,11 @@ namespace LibGDXSharp.Utils.Collections
             return value;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void RemoveRange( int start, int end )
         {
             if ( end >= Size )
@@ -381,6 +412,11 @@ namespace LibGDXSharp.Utils.Collections
             Size -= count;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="identity"></param>
+        /// <returns></returns>
         public bool RemoveAll( Array< T > array, bool identity )
         {
             var size      = this.Size;
@@ -388,7 +424,7 @@ namespace LibGDXSharp.Utils.Collections
 
             for ( int i = 0, n = array.Size; i < n; i++ )
             {
-                var item = array.Get( i );
+                T? item = array.Get( i );
 
                 for ( var ii = 0; ii < size; ii++ )
                 {
@@ -409,7 +445,7 @@ namespace LibGDXSharp.Utils.Collections
         /// Removes and returns the last item.
         /// </summary>
         /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-        public T Pop()
+        public T? Pop()
         {
             if ( Size == 0 )
             {
@@ -418,7 +454,7 @@ namespace LibGDXSharp.Utils.Collections
 
             --Size;
 
-            var item = Items[ Size ];
+            T? item = Items[ Size ];
 
             Items[ Size ] = default!;
 
@@ -429,7 +465,7 @@ namespace LibGDXSharp.Utils.Collections
         /// Returns the last item in the array.
         /// </summary>
         /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-        public T Peek()
+        public T? Peek()
         {
             if ( Size == 0 )
             {
@@ -443,29 +479,29 @@ namespace LibGDXSharp.Utils.Collections
         /// Returns the first item in the array.
         /// </summary>
         /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-        public T First()
+        public T? First()
         {
-            if ( Size == 0 )
-            {
-                throw new NullReferenceException( "Array is empty." );
-            }
+            if ( Size == 0 ) throw new NullReferenceException( "Array is empty." );
 
             return Items[ 0 ];
         }
 
+        /// <summary>
+        /// </summary>
         public void Clear()
         {
-            var localItems = this.Items;
-
             for ( int i = 0, n = Size; i < n; i++ )
             {
-                localItems[ i ] = default( T );
+                Items[ i ] = default( T );
             }
 
             Size = 0;
         }
 
-        public T[] Shrink()
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public T?[] Shrink()
         {
             if ( Items.Length != Size )
             {
@@ -475,7 +511,11 @@ namespace LibGDXSharp.Utils.Collections
             return Items;
         }
 
-        public T[] SetSize( int newSize )
+        /// <summary>
+        /// </summary>
+        /// <param name="newSize"></param>
+        /// <returns></returns>
+        public T?[] SetSize( int newSize )
         {
             Truncate( newSize );
 
@@ -489,7 +529,11 @@ namespace LibGDXSharp.Utils.Collections
             return Items;
         }
 
-        public T[] EnsureCapacity( int additionalCapacity )
+        /// <summary>
+        /// </summary>
+        /// <param name="additionalCapacity"></param>
+        /// <returns></returns>
+        public T?[] EnsureCapacity( int additionalCapacity )
         {
             var sizeNeeded = Size + additionalCapacity;
 
@@ -501,9 +545,13 @@ namespace LibGDXSharp.Utils.Collections
             return Items;
         }
 
-        protected T[] Resize( int newSize )
+        /// <summary>
+        /// </summary>
+        /// <param name="newSize"></param>
+        /// <returns></returns>
+        protected T?[] Resize( int newSize )
         {
-            var newItems = ( T[] )Array.CreateInstance( Items.GetType().BaseType, newSize );
+            var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
 
             Array.Copy( Items, 0, newItems, 0, System.Math.Min( Size, newItems.Length ) );
 
@@ -512,16 +560,27 @@ namespace LibGDXSharp.Utils.Collections
             return newItems;
         }
 
+        /// <summary>
+        /// </summary>
         public void Sort()
         {
-            SortUtils.Instance().Sort( Items as object[], 0, Size );
+            SortUtils.Instance.Sort( Items as object[], 0, Size );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="comparator"></param>
         public void Sort( IComparer< T > comparator )
         {
-            SortUtils.Instance().Sort( Items, comparator, 0, Size );
+            SortUtils.Instance.Sort( Items, comparator, 0, Size );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="comparator"></param>
+        /// <param name="kthLowest"></param>
+        /// <returns></returns>
+        /// <exception cref="GdxRuntimeException"></exception>
         public T SelectRanked( IComparer< T > comparator, int kthLowest )
         {
             if ( kthLowest < 1 )
@@ -529,7 +588,7 @@ namespace LibGDXSharp.Utils.Collections
                 throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
             }
 
-            return Select< T >.Instance().Selecting( Items, comparator, kthLowest, Size );
+            return Selector< T >.Instance().Selecting( Items, comparator, kthLowest, Size );
         }
 
         public int SelectRankedIndex( IComparer< T > comparator, int kthLowest )
@@ -539,7 +598,7 @@ namespace LibGDXSharp.Utils.Collections
                 throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
             }
 
-            return Select< T >.instance().SelectIndex( Items, comparator, kthLowest, Size );
+            return Selector< T >.Instance().SelectIndex( Items, comparator, kthLowest, Size );
         }
 
         /// <summary>
@@ -547,8 +606,6 @@ namespace LibGDXSharp.Utils.Collections
         /// </summary>
         public void Reverse()
         {
-            if ( Items == null ) return;
-
             for ( int i = 0, lastIndex = Size - 1, n = Size / 2; i < n; i++ )
             {
                 var ii = lastIndex - i;
@@ -562,8 +619,6 @@ namespace LibGDXSharp.Utils.Collections
         /// </summary>
         public void Shuffle()
         {
-            if ( Items == null ) return;
-
             for ( var i = Size - 1; i >= 0; i-- )
             {
                 var ii = MathUtils.Random( i );
@@ -573,7 +628,6 @@ namespace LibGDXSharp.Utils.Collections
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         public IEnumerator< T > Enumerator()
@@ -584,19 +638,23 @@ namespace LibGDXSharp.Utils.Collections
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
         public IEnumerable< T > Select( IPredicate< T > predicate )
         {
+            if ( Items == null )
+            {
+                throw new NullReferenceException( "Items cannot be null at this point" );
+            }
+            
             if ( _predicateIEnumerable == null )
             {
-                _predicateIEnumerable = new PredicateIterable< T >( Items, predicate );
+                _predicateIEnumerable = new PredicateIterable< T >( Items!, predicate );
             }
             else
             {
-                _predicateIEnumerable.Set( Items, predicate );
+                _predicateIEnumerable.Set( Items!, predicate );
             }
 
             return _predicateIEnumerable;

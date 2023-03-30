@@ -312,7 +312,7 @@ SCENES.SCENE2D
     - DONE - Action
     - IP   - Actor
     - DONE - Event
-    -      - Group
+    - IP   - Group
     - DONE - IEventListener
     - DONE - InputEvent
     -      - InputListener
@@ -435,7 +435,7 @@ UTILS
     -      - I18NBundle
     - DONE - IllegalStateException
     -      - IntBuffer
-    - IP   - IPoolable
+    - DONE - IPoolable
     - DONE - IRunnable
     -      - LittleEndianInputStream
     -      - Logger
@@ -443,20 +443,19 @@ UTILS
     -      - PauseableThread
     -      - PerformanceCounter
     -      - PerformanceCounters
-    -      - Pool
+    - DONE - Pool
     -      - PooledLinkedList
-    -      - Pools
+    - DONE - Pools
     -      - PropertiesUtils
     -      - QuadTreeFloat
     -      - Queue
     -      - QuickSelect
-    -      - ReflectionPool
     -      - Scaling
     -      - ScreenUtils
     - IP   - Selector (aka Libgdx Select)
     -      - SerializationException
     -      - SharedLibraryLoader
-    -      - Sort
+    - DONE - SortUtils
     -      - SortedIntList
     -      - StreamUtils
     - IP   - StringBuilder
@@ -558,11 +557,12 @@ UTILS/REFLECT
 -------------
     -      - Annotation                 Needed??
     -      - ArrayReflection            Needed??
-    -      - ClassReflection            Needed??
-    -      - Constructor                Needed??
+    - IP   - ClassReflection            Needed??
+    - IP   - Constructor                Needed??
     -      - Field                      Needed??
     -      - Method                     Needed??
     -      - ReflectionException        Needed??
+    - IP   - ReflectionPool             Needed??
 
 UTILS/VIEWPORT
 --------------
