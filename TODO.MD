@@ -438,7 +438,7 @@ UTILS
     - DONE - IPoolable
     - DONE - IRunnable
     -      - LittleEndianInputStream
-    -      - Logger
+    - DONE - Logger
     - DONE - NumberUtils
     -      - PauseableThread
     -      - PerformanceCounter

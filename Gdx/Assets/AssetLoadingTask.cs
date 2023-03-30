@@ -1,8 +1,9 @@
-﻿using LibGDXSharp.Utils.Collections;
+﻿using LibGDXSharp.Utils.Async;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Assets
 {
-    public class AssetLoadingTask<T> : IAsyncTask< bool > where T : AssetLoaderParameters< T >
+    public class AssetLoadingTask<T> : IAsyncTask where T : AssetLoaderParameters< T >
     {
         private AssetManager         _manager;
         private AssetDescriptor< T > _assetDesc;
@@ -10,21 +11,31 @@ namespace LibGDXSharp.Assets
         private AsyncExecutor        _executor;
         private long                 _startTime;
 
-        private volatile bool                          _asyncDone;
-        private volatile bool                          _dependenciesLoaded;
         private volatile Array< AssetDescriptor< T > > _dependencies;
         private volatile AsyncResult                   _depsFuture;
         private volatile AsyncResult                   _loadFuture;
         private volatile object                        _asset;
-        private volatile bool                          _cancel;
 
-        public AssetLoadingTask( AssetManager manager, AssetDescriptor< T > assetDesc, AssetLoader< T, T > loader, AsyncExecutor threadPool )
+        private volatile bool _asyncDone;
+        private volatile bool _dependenciesLoaded;
+        private volatile bool _cancel;
+
+        /// <summary>
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="assetDesc"></param>
+        /// <param name="loader"></param>
+        /// <param name="threadPool"></param>
+        public AssetLoadingTask( AssetManager manager,
+                                 AssetDescriptor< T > assetDesc,
+                                 AssetLoader< T, T > loader,
+                                 AsyncExecutor threadPool )
         {
             this._manager   = manager;
             this._assetDesc = assetDesc;
             this._loader    = loader;
             this._executor  = threadPool;
-            this._startTime = manager.Log.GetLevel() == Logger.DEBUG ? TimeUtils.NanoTime() : 0;
+            this._startTime = manager.Log.GetLevel() == Logger.LogDebug ? TimeUtils.NanoTime() : 0;
         }
 
         public bool Call()

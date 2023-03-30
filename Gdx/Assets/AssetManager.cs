@@ -1,4 +1,5 @@
-﻿using LibGDXSharp.G2D;
+﻿using LibGDXSharp.Core;
+using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Utils.Async;
 using LibGDXSharp.Utils.Collections;
@@ -48,6 +49,8 @@ namespace LibGDXSharp.Assets
 
             if ( defaultLoaders )
             {
+                SetLoader( typeof(BitmapFont), new BitmapFontLoader( resolver ) );
+
                 SetLoader( BitmapFont.class, new BitmapFontLoader( resolver ));
                 SetLoader( Music.class, new MusicLoader( resolver ));
                 SetLoader( Pixmap.class, new PixmapLoader( resolver ));
@@ -83,7 +86,7 @@ namespace LibGDXSharp.Assets
         public T Get<T>( string name )
         {
             T asset;
-            
+
             lock ( this )
             {
                 var type = _assetTypes.Get( name );
@@ -109,22 +112,22 @@ namespace LibGDXSharp.Assets
         public T Get<T>( string name, Type type )
         {
             T asset;
-            
-            lock( this )
+
+            lock ( this )
             {
                 ObjectMap< string, RefCountedContainer > assetsByType = _assets.Get( type );
 
                 if ( assetsByType == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
-                
+
                 RefCountedContainer assetContainer = assetsByType.Get( name );
 
                 if ( assetContainer == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
-                
+
                 asset = assetContainer.GetObject( type );
 
                 if ( asset == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
             }
-            
+
             return asset;
         }
 
@@ -780,8 +783,8 @@ namespace LibGDXSharp.Assets
 	 * @param suffix the suffix the filename must have for this loader to be used or null to specify the default loader.
 	 * @param loader the loader */
         public synchronized< T, P Extends AssetLoaderParameters< T >> void SetLoader( Class< T > type,
-            string suffix,
-            AssetLoader< T, P > loader )
+                                                                                      string suffix,
+                                                                                      AssetLoader< T, P > loader )
         {
             if ( type == null ) throw new IllegalArgumentException( "type cannot be null." );
             if ( loader == null ) throw new IllegalArgumentException( "loader cannot be null." );
@@ -922,42 +925,53 @@ namespace LibGDXSharp.Assets
             _assets.get( type ).get( fileName ).setRefCount( refCount );
         }
 
-        /** @return a string containing ref count and dependency information for all assets. */
-        public synchronized string GetDiagnostics()
+        /// <summary>
+        /// </summary>
+        /// <returns> a string containing ref count and dependency information for all assets.</returns>
+        public string GetDiagnostics()
         {
-            StringBuilder sb = new StringBuilder( 256 );
-            for ( string fileName :
-            _assetTypes.keys()) {
-                if ( sb.length() > 0 ) sb.append( "\n" );
-                sb.append( FileName );
-                sb.append( ", " );
+            lock ( this )
+            {
+                var sb = new StringBuilder( 256 );
 
-                Class               type         = _assetTypes.get( FileName );
-                RefCountedContainer assetRef     = _assets.get( type ).get( FileName );
-                Array< string >     dependencies = _assetDependencies.get( FileName );
-
-                sb.append( ClassReflection.getSimpleName( type ) );
-
-                sb.append( ", refs: " );
-                sb.append( assetRef.GetRefCount() );
-
-                if ( dependencies != null )
+                foreach ( string fileName in _assetTypes.Keys() )
                 {
-                    sb.append( ", deps: [" );
-                    for ( string dep :
-                    dependencies) {
-                        sb.append( dep );
-                        sb.append( "," );
+                    if ( sb.Length > 0 )
+                    {
+                        sb.Append( "\n" );
                     }
 
-                    sb.append( "]" );
-                }
-            }
+                    sb.Append( FileName );
+                    sb.Append( ", " );
 
-            return sb.toString();
+                    Type                type         = _assetTypes.Get( FileName );
+                    RefCountedContainer assetRef     = _assets.Get( type ).Get( FileName );
+                    Array< string >     dependencies = _assetDependencies.Get( FileName );
+
+                    sb.Append( ClassReflection.GetSimpleName( type ) );
+
+                    sb.Append( ", refs: " );
+                    sb.Append( assetRef.GetRefCount() );
+
+                    if ( dependencies != null )
+                    {
+                        sb.Append( ", deps: [" );
+
+                        foreach ( string dep in dependencies )
+                        {
+                            sb.Append( dep );
+                            sb.Append( "," );
+                        }
+
+                        sb.Append( "]" );
+                    }
+                }
+
+                return sb.ToString();
+            }
         }
 
-        public Array<string> GetAssetNames()
+        public Array< string > GetAssetNames()
         {
             lock ( this )
             {
@@ -965,20 +979,30 @@ namespace LibGDXSharp.Assets
             }
         }
 
-        public Array<string> GetDependencies( string name )
+        /// <summary>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Array< string >? GetDependencies( string name )
         {
             lock ( this )
             {
-                Array< string > array = _assetDependencies.Get( name );
+                var array = _assetDependencies.Get( name );
+
                 return array;
             }
         }
 
-        public Type GetAssetType( string name )
+        /// <summary>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Type? GetAssetType( string name )
         {
             lock ( this )
             {
-                Type type = _assetTypes.Get( name );
+                Type? type = _assetTypes.Get( name );
+
                 return type;
             }
         }

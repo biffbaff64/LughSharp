@@ -3,6 +3,25 @@ using System.Diagnostics;
 
 namespace LibGDXSharp.Utils.Collections
 {
+    /// <summary>
+    /// <p>An unordered map where the keys and values are objects.</p>
+    /// <p>Null keys are not allowed.</p>
+    /// <p>No allocation is done except when growing the table size.</p>
+    /// <p>
+    /// This class performs fast contains and remove (typically O(1), worst case O(n) but
+    /// that is rare in practice). Add may be slightly slower, depending on hash collisions.
+    /// Hashcodes are rehashed to reduce collisions and the need to resize. Load factors
+    /// greater than 0.91 greatly increase the chances to resize to the next higher POT size.
+    /// Unordered sets and maps are not designed to provide especially fast iteration.
+    /// </p>
+    /// <p>Iteration is faster with OrderedSet and OrderedMap.</p>
+    /// <p>
+    /// This implementation uses linear probing with the backward shift algorithm for removal.
+    /// Hashcodes are rehashed using Fibonacci hashing, instead of the more common power-of-two
+    /// mask, to better distribute poor hashCodes (see Malte Skarupke's blog post). Linear
+    /// probing continues to work even when all hashCodes collide, just more slowly.
+    /// </p>
+    /// </summary>
     public class ObjectMap<TK, TV> : IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV > >
     {
         public int Size { get; set; }
@@ -802,7 +821,7 @@ namespace LibGDXSharp.Utils.Collections
         /// </summary>
         public class Keys<TKk> : MapIterator< TKk, object, TKk >
         {
-            public Keys( ObjectMap< TKk, object > map ) : base( ( ObjectMap< TKk, object > )map )
+            public Keys( ObjectMap< TKk, object > map ) : base( map )
             {
             }
 
@@ -818,7 +837,7 @@ namespace LibGDXSharp.Utils.Collections
                 if ( !hasNext ) throw new NoSuchElementException();
                 if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
 
-                var key = map._keyTable![ nextIndex ];
+                TKk key = map._keyTable![ nextIndex ];
 
                 currentIndex = nextIndex;
 
