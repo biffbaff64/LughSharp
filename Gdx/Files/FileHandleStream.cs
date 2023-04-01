@@ -10,7 +10,7 @@ namespace LibGDXSharp.Files
     public class FileHandleStream : FileHandle
     {
         public FileHandleStream( string path )
-            : base( path, IFile.FileType.Absolute )
+            : base( path, IFiles.FileType.Absolute )
         {
         }
 

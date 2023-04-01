@@ -1,5 +1,6 @@
 ﻿using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Assets.Loaders
 {
@@ -49,9 +50,9 @@ namespace LibGDXSharp.Assets.Loaders
                 for ( var i = 0; i < _data.GetImagePaths().Length; i++ )
                 {
                     var path     = _data.GetImagePath( i );
-                    var resolved = Resolve( path );
+                    FileHandle? resolved = Resolve( path );
 
-                    TextureLoader.TextureParameter textureParams = new TextureLoader.TextureParameter();
+                    var textureParams = new TextureLoader.TextureParameter();
 
                     if ( parameter != null )
                     {
@@ -70,29 +71,47 @@ namespace LibGDXSharp.Assets.Loaders
 
         public class BitmapFontParameter : AssetLoaderParameters< BitmapFont >
         {
+            /// <summary>
             /// Flips the font vertically if <code>true</code>. Defaults to <code>false</code>.
+            /// </summary>
             public bool Flip { get; set; } = false;
 
+            /// <summary>
             /// Generates mipmaps for the font if <code>true</code>. Defaults to <code>false</code>.
+            /// </summary>
             public bool GenMipMaps { get; set; } = false;
 
+            /// <summary>
             /// The <see cref="TextureFilter"/> to use when scaling down the <see cref="BitmapFont"/>.
             /// Defaults to <see cref="TextureFilter#Nearest"/>.
+            /// </summary>
             public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
 
+            /// <summary>
             /// The <see cref="TextureFilter"/> to use when scaling up the <see cref="BitmapFont"/>.
             /// Defaults to <see cref="TextureFilter#Nearest"/>.
+            /// </summary>
             public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
 
+            /// <summary>
             /// optional <see cref="BitmapFont.BitmapFontData"/> to be used instead of loading the <see cref="Texture"/>
             /// directly. Use this if your font is embedded in a <see cref="Skin"/>.
-            public BitmapFont.BitmapFontData BitmapFontData { get; set; } = null;
+            /// </summary>
+            public BitmapFont.BitmapFontData? BitmapFontData { get; set; } = null;
 
+            /// <summary>
             /// The name of the <see cref="TextureAtlas"/> to load the <see cref="BitmapFont"/> Optional;
             /// if null, will look for a separate image.
-            public string AtlasName { get; set; } = null;
+            /// </summary>
+            public string? AtlasName { get; set; } = null;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="fileName"></param>
+        /// <param name="file"></param>
+        /// <param name="parameter"></param>
         public override void LoadAsync( AssetManager manager,
                                         string fileName,
                                         FileHandle file,

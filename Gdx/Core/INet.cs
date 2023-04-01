@@ -95,7 +95,7 @@ namespace LibGDXSharp.Core
 
             public void SetFollowRedirects( bool followRedirects )
             {
-                if ( followRedirects || Gdx.App!.Type != Application.ApplicationType.WebGL )
+                if ( followRedirects || Gdx.App!.AppType != IApplication.ApplicationType.WebGL )
                 {
                     this._followRedirects = followRedirects;
                 }

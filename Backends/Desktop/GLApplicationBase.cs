@@ -3,7 +3,7 @@ using LibGDXSharp.Core;
 
 namespace LibGDXSharp.Backends.Desktop
 {
-    public abstract class GLApplicationBase : Application
+    public abstract class GLApplicationBase : IApplication
     {
         public abstract IGLAudio CreateAudio( GLApplicationConfiguration config );
 

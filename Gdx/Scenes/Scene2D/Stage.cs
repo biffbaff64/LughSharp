@@ -277,9 +277,9 @@ namespace LibGDXSharp.Scenes.Scene2D
             }
 
             // Update over actor for the mouse on the desktop.
-            Application.ApplicationType type = Gdx.App.Type;
+            IApplication.ApplicationType type = Gdx.App.AppType;
 
-            if ( type is Application.ApplicationType.Desktop or Application.ApplicationType.WebGL )
+            if ( type is IApplication.ApplicationType.Desktop or IApplication.ApplicationType.WebGL )
             {
                 _mouseOverActor = FireEnterAndExit( _mouseOverActor, _mouseScreenX, _mouseScreenY, -1 );
             }

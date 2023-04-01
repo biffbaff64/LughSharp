@@ -3,9 +3,9 @@
 namespace LibGDXSharp.Utils
 {
     /// <summary>
-    /// Simple logger that uses the <see cref="Application"/> logging facilities to
+    /// Simple logger that uses the <see cref="IApplication"/> logging facilities to
     /// output messages.
-    /// The log level set with <see cref="Application.LogLevel"/> overrides
+    /// The log level set with <see cref="IApplication.LogLevel"/> overrides
     /// the log level set here.
     /// </summary>
     public class Logger

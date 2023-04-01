@@ -2,7 +2,7 @@
 
 namespace LibGDXSharp.Backends.Desktop
 {
-    public class GLFiles : IFile
+    public class GLFiles : IFiles
     {
         /// <summary>
         /// Returns a handle representing a file or directory.
@@ -12,15 +12,15 @@ namespace LibGDXSharp.Backends.Desktop
         /// <exception cref="GdxRuntimeException">
         /// if the type is classpath or internal and the file does not exist.
         /// </exception>
-        /// <seealso cref="IFile.FileType"/>
+        /// <seealso cref="IFiles.FileType"/>
         /// 
-        public FileHandle GetFileHandle( string path, IFile.FileType type )
+        public FileHandle GetFileHandle( string path, IFiles.FileType type )
         {
             return null;
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFile.FileType.Classpath"/> file handle.
+        /// Convenience method that returns a <see cref="IFiles.FileType.Classpath"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -30,7 +30,7 @@ namespace LibGDXSharp.Backends.Desktop
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFile.FileType.Internal"/> file handle.
+        /// Convenience method that returns a <see cref="IFiles.FileType.Internal"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -40,7 +40,7 @@ namespace LibGDXSharp.Backends.Desktop
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFile.FileType.External"/> file handle.
+        /// Convenience method that returns a <see cref="IFiles.FileType.External"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -50,7 +50,7 @@ namespace LibGDXSharp.Backends.Desktop
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFile.FileType.Absolute"/> file handle.
+        /// Convenience method that returns a <see cref="IFiles.FileType.Absolute"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -60,7 +60,7 @@ namespace LibGDXSharp.Backends.Desktop
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFile.FileType.Local"/> file handle.
+        /// Convenience method that returns a <see cref="IFiles.FileType.Local"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>

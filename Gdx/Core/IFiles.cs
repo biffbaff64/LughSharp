@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Core
 {
-    public interface IFile
+    public interface IFiles
     {
         public enum FileType
         {

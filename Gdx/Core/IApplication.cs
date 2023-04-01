@@ -46,7 +46,7 @@
     /// facilities.
     /// The Application also has a simple logging method which will print to standard out on the desktop.
     /// </summary>
-    public abstract class Application
+    public interface IApplication
     {
         /// <summary>
         /// </summary>
@@ -63,31 +63,43 @@
         public const int LogInfo  = 2;
         public const int LogDebug = 3;
 
-        public int  LogLevel  { get; set; } = LogNone;
-        public bool IsRunning { get; set; } = true;
+        /// <summary>
+        /// Getter and Setter for the log level.
+        /// LogNone will mute all log output.
+        /// LogError will only let error messages through.
+        /// LogInfo will let all non-debug messages through.
+        /// LogDebug will let all messages through.
+        /// </summary>
+        public int             LogLevel { get; set; }
+        public ApplicationType AppType  { get; set; }
 
-        public IApplicationListener? ApplicationListener { get; set; }
-        public IApplicationLogger?   ApplicationLogger   { get; set; }
-        public IGraphics?            Graphics            { get; set; }
-        public IAudio?               Audio               { get; set; }
-        public IInput?               Input               { get; set; }
-        public IFile?                Files               { get; set; }
-        public INet?                 Net                 { get; set; }
+        public IApplicationListener? GetApplicationListener();
+        public IApplicationLogger?   GetApplicationLogger();
+        public IGraphics?            GetGraphics();
+        public IAudio?               GetAudio();
+        public IInput?               GetInput();
+        public IFiles?                GetFiles();
+        public INet?                 GetNet();
 
-        public abstract void Log( string tag, string message );
-        public abstract void Log( string tag, string message, Exception exception );
-        public abstract void Error( string tag, string message );
-        public abstract void Error( string tag, string message, Exception exception );
-        public abstract void Debug( string tag, string message );
-        public abstract void Debug( string tag, string message, Exception exception );
+        public void Log( string tag, string message );
+        public void Log( string tag, string message, Exception exception );
 
-        public abstract int GetVersion();
+        public void Error( string tag, string message );
+        public void Error( string tag, string message, Exception exception );
 
-        public abstract ApplicationType Type { get; set; }
-        public abstract IPreferences?   GetPreferences( string name );
+        public void Debug( string tag, string message );
+        public void Debug( string tag, string message, Exception exception );
 
-        public abstract void Exit();
-        public abstract void AddLifecycleListener( ILifecycleListener listener );
-        public abstract void RemoveLifecycleListener( ILifecycleListener listener );
+        public int GetVersion();
+
+        public IPreferences? GetPreferences( string name );
+
+        public void Exit();
+        public void AddLifecycleListener( ILifecycleListener listener );
+        public void RemoveLifecycleListener( ILifecycleListener listener );
+
+        public IClipBoard GetClipBoard();
+
+        public void PostRunnable( IRunnable runnable );
     }
 }

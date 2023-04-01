@@ -12,17 +12,17 @@
     public interface ILifecycleListener
     {
         /// <summary>
-        /// Called when the <see cref="Application"/> is about to be paused.
+        /// Called when the <see cref="IApplication"/> is about to be paused.
         /// </summary>
         public void Pause();
 
         /// <summary>
-        /// Called when the <see cref="Application"/> is about to be resumed.
+        /// Called when the <see cref="IApplication"/> is about to be resumed.
         /// </summary>
         public void Resume();
 
         /// <summary>
-        /// Called when the <see cref="Application"/> is about to be disposed.
+        /// Called when the <see cref="IApplication"/> is about to be disposed.
         /// </summary>
         public void Dispose();
     }

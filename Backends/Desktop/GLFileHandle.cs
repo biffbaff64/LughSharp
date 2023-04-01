@@ -10,7 +10,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="type"></param>
-        public GLFileHandle( string fileName, IFile.FileType type )
+        public GLFileHandle( string fileName, IFiles.FileType type )
             : base( fileName, type )
         {
         }
@@ -19,7 +19,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="file"></param>
         /// <param name="type"></param>
-        public GLFileHandle( FileInfo file, IFile.FileType type )
+        public GLFileHandle( FileInfo file, IFiles.FileType type )
             : base( file, type )
         {
         }

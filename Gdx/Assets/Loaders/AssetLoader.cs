@@ -1,11 +1,13 @@
-﻿namespace LibGDXSharp.Assets.Loaders
+﻿using LibGDXSharp.Utils.Collections;
+
+namespace LibGDXSharp.Assets.Loaders
 {
     /// <summary>
     /// Abstract base class for asset loaders.
     /// </summary>
     /// <typeparam name="T">The class of the asset the loader supports.</typeparam>
     /// <typeparam name="TP">The class of the loading parameters the loader supports.</typeparam>
-    public abstract class AssetLoader<T, TP> where TP : AssetLoaderParameters< T >
+    public abstract class AssetLoader<T, TP> : IAssetLoader where TP : AssetLoaderParameters< T >
     {
         public IFileHandleResolver Resolver { get; set; }
 

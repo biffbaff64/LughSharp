@@ -29,6 +29,16 @@
         public abstract void LoadAsync( AssetManager manager, string fileName, FileHandle file, TP parameter );
 
         /// <summary>
+        /// Loads the OpenGL part of the asset.
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="fileName"></param>
+        /// <param name="file"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public abstract T LoadSync( AssetManager manager, string fileName, FileHandle file, TP parameter );
+
+        /// <summary>
         /// Called if this task is unloaded before loadSync is called. This method may
         /// be invoked on any thread, but will not be invoked during or after loadSync.
         /// This method is not invoked when a task is cancelled because it threw an
@@ -46,15 +56,5 @@
         public void UnloadAsync( AssetManager manager, string fileName, FileHandle file, TP parameter )
         {
         }
-
-        /// <summary>
-        /// Loads the OpenGL part of the asset.
-        /// </summary>
-        /// <param name="manager"></param>
-        /// <param name="fileName"></param>
-        /// <param name="file"></param>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
-        public abstract T LoadSync( AssetManager manager, string fileName, FileHandle file, TP parameter );
     }
 }

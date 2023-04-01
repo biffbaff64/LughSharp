@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Assets.Loaders.Resolvers
+﻿using LibGDXSharp.Core;
+
+namespace LibGDXSharp.Assets.Loaders.Resolvers
 {
     public class AbsoluteFileHandleResolver : IFileHandleResolver
     {

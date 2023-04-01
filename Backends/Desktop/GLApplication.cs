@@ -226,7 +226,7 @@ namespace LibGDXSharp
             throw new NotImplementedException();
         }
 
-        protected IFile CreateFiles()
+        protected IFiles CreateFiles()
         {
             return new GLFiles();
         }

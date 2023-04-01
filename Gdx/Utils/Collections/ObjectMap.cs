@@ -24,42 +24,44 @@ namespace LibGDXSharp.Utils.Collections
     /// </summary>
     public class ObjectMap<TK, TV> : IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV > >
     {
-        public int Size { get; set; }
+        private TK[] _keyTable;
+        private TV[] _valueTable;
 
-        internal TK[]? _keyTable;
-        internal TV[]? _valueTable;
+        private readonly float _loadFactor;
+        private          int   _threshold;
 
-        private float _loadFactor;
-        private int   _threshold;
-
-        private readonly object? _dummy = new object();
+        private readonly object _dummy = new object();
 
         /// <summary>
-        /// Used by <see cref="Place"/> to bit shift the upper bits of a <code>long</code>
-        /// into a usable range (greater than or equal to 0 and less than or equal to
-        /// <see cref="_mask"/>). The shift can be negative, which is convenient to match the
-        /// number of bits in mask: if mask is a 7-bit number, a shift of -7 shifts the upper
-        /// 7 bits into the lowest 7 positions. This class sets the shift &gt; 32 and &lt; 64,
-        /// which if used with an int will still move the upper bits of an int to the lower bits.
-        /// <see cref="_mask"/>) can also be used to mask the low bits of a number, which may
-        /// be faster for some hashcodes, if <see cref="Place"/> is overridden.
+        /// Used by <see cref="Place"/> to bit shift the upper bits of a <b>long</b>
+        /// into a usable range (&gt;= 0 and &lt;= <see cref="_mask"/>).
+        /// <p>
+        /// The shift can be negative, which is convenient to match the number of bits in
+        /// mask: if mask is a 7-bit number, a shift of -7 shifts the upper 7 bits into the
+        /// lowest 7 positions. This class sets the shift &gt; 32 and &lt; 64, which if used
+        /// with an int will still move the upper bits of an int to the lower bits.
+        /// </p>
+        /// <p>
+        /// <see cref="_mask"/> can also be used to mask the low bits of a number, which may
+        /// be faster for some hashcodes if <see cref="Place"/> is overridden.
+        /// </p>
         /// </summary>
         private int _shift;
 
         /// <summary>
         /// A bitmask used to confine hashcodes to the size of the table. Must be all
         /// 1 bits in its low positions, ie a power of two minus 1.
-        /// If <see cref="Place"/> is overriden, this can be used instead of <see cref="Shift"/>
+        /// If <see cref="Place"/> is overriden, this can be used instead of <see cref="_shift"/>
         /// to isolate usable bits of a hash.
         /// </summary>
-        internal int _mask;
+        private int _mask;
 
-        [NonSerialized] private Entries< TK, TV >? _entries1;
-        [NonSerialized] private Entries< TK, TV >? _entries2;
-        [NonSerialized] private Values< TV >?      _values1;
-        [NonSerialized] private Values< TV >?      _values2;
-        [NonSerialized] private Keys< TK >?        _keys1;
-        [NonSerialized] private Keys< TK >?        _keys2;
+        [NonSerialized] private Entries< TK, TV > _entries1;
+        [NonSerialized] private Entries< TK, TV > _entries2;
+        [NonSerialized] private Values< TV >      _values1;
+        [NonSerialized] private Values< TV >      _values2;
+        [NonSerialized] private Keys< TK >        _keys1;
+        [NonSerialized] private Keys< TK >        _keys2;
 
         /// <summary>
         /// </summary>
@@ -76,10 +78,9 @@ namespace LibGDXSharp.Utils.Collections
 
             var tableSize = ObjectSet< TK >.TableSize( initialCapacity, loadFactor );
 
-            _threshold = ( int )( tableSize * loadFactor );
-            _mask      = tableSize - 1;
-            _shift     = int.LeadingZeroCount( _mask );
-
+            _threshold  = ( int )( tableSize * loadFactor );
+            _mask       = tableSize - 1;
+            _shift      = int.LeadingZeroCount( _mask );
             _keyTable   = new TK[ tableSize ];
             _valueTable = new TV[ tableSize ];
         }
@@ -87,7 +88,7 @@ namespace LibGDXSharp.Utils.Collections
         /// <summary>
         /// Copy Constructor
         /// </summary>
-        /// <param name="map"></param>
+        /// <param name="map">The ObjectMap to copy.</param>
         /// <exception cref="ArgumentException"></exception>
         public ObjectMap( ObjectMap< TK, TV > map )
         {
@@ -102,7 +103,7 @@ namespace LibGDXSharp.Utils.Collections
 
             var tableSize = ObjectSet< TK >.TableSize
                 (
-                 ( int )( map._keyTable!.Length * map._loadFactor ),
+                 ( int )( map._keyTable.Length * map._loadFactor ),
                  _loadFactor
                 );
 
@@ -120,12 +121,16 @@ namespace LibGDXSharp.Utils.Collections
         }
 
         /// <summary>
+        /// </summary>
+        public int Size { get; set; }
+
+        /// <summary>
         /// Returns an index greater than or equal to 0 and less than or equal
         /// to <see cref="_mask"/> for the specified <code>item</code>.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public virtual int Place( TK item )
+        public int Place( TK item )
         {
             if ( item == null )
             {
@@ -165,7 +170,7 @@ namespace LibGDXSharp.Utils.Collections
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public TV? Put( TK key, TV? value )
+        public TV Put( TK key, TV value )
         {
             if ( _keyTable == null ) throw new NullReferenceException( "Put(): _keyTable is null" );
             if ( _valueTable == null ) throw new NullReferenceException( "Put(): _valueTable is null" );
@@ -176,7 +181,7 @@ namespace LibGDXSharp.Utils.Collections
             {
                 // Existing key was found.
                 var oldValue = _valueTable[ i ];
-                _valueTable[ i ] = value!;
+                _valueTable[ i ] = value;
 
                 return oldValue;
             }
@@ -184,7 +189,7 @@ namespace LibGDXSharp.Utils.Collections
             i = -( i + 1 ); // Empty space was found.
 
             _keyTable[ i ]   = key;
-            _valueTable[ i ] = value!;
+            _valueTable[ i ] = value;
 
             if ( ++Size >= _threshold ) Resize( _keyTable.Length << 1 );
 
@@ -198,11 +203,11 @@ namespace LibGDXSharp.Utils.Collections
         {
             EnsureCapacity( map.Size );
 
-            for ( int i = 0, n = _keyTable!.Length; i < n; i++ )
+            for ( int i = 0, n = _keyTable.Length; i < n; i++ )
             {
                 var key = _keyTable[ i ];
 
-                if ( key != null ) Put( key, _valueTable![ i ] );
+                if ( key != null ) Put( key, _valueTable[ i ] );
             }
         }
 
@@ -211,7 +216,7 @@ namespace LibGDXSharp.Utils.Collections
         /// <param name="newSize"></param>
         void Resize( int newSize )
         {
-            var oldCapacity = _keyTable!.Length;
+            var oldCapacity = _keyTable.Length;
             _threshold = ( int )( newSize * _loadFactor );
 
             _mask  = newSize - 1;
@@ -231,7 +236,7 @@ namespace LibGDXSharp.Utils.Collections
 
                     if ( key != null )
                     {
-                        PutResize( key, oldValueTable![ i ] );
+                        PutResize( key, oldValueTable[ i ] );
                     }
                 }
             }
@@ -246,14 +251,14 @@ namespace LibGDXSharp.Utils.Collections
         /// </remarks>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        private void PutResize( TK key, TV? value )
+        private void PutResize( TK key, TV value )
         {
             for ( var i = Place( key );; i = ( i + 1 ) & _mask )
             {
-                if ( _keyTable![ i ] == null )
+                if ( _keyTable[ i ] == null )
                 {
-                    _keyTable[ i ]    = key;
-                    _valueTable![ i ] = value!;
+                    _keyTable[ i ]   = key;
+                    _valueTable[ i ] = value;
 
                     return;
                 }
@@ -265,11 +270,11 @@ namespace LibGDXSharp.Utils.Collections
         /// <param name="key"></param>
         /// <typeparam name="TT"></typeparam>
         /// <returns></returns>
-        public TV? Get<TT>( TT key ) where TT : TK
+        public TV Get<TT>( TT key ) where TT : TK
         {
             var i = LocateKey( key );
 
-            return ( i < 0 ) ? default : _valueTable![ i ];
+            return ( i < 0 ) ? default : _valueTable[ i ];
         }
 
         /// <summary>
@@ -281,7 +286,7 @@ namespace LibGDXSharp.Utils.Collections
         {
             var i = LocateKey( key );
 
-            return i < 0 ? defaultValue : _valueTable![ i ];
+            return i < 0 ? defaultValue : _valueTable[ i ];
         }
 
         /// <summary>
@@ -316,8 +321,8 @@ namespace LibGDXSharp.Utils.Collections
                 next = ( next + 1 ) & _mask;
             }
 
-            _keyTable[ i ]   = default( TK )!;
-            _valueTable[ i ] = default( TV )!;
+            _keyTable[ i ]   = default( TK );
+            _valueTable[ i ] = default( TV );
 
             Size--;
 
@@ -433,9 +438,9 @@ namespace LibGDXSharp.Utils.Collections
         {
             if ( value == null )
             {
-                for ( var i = _valueTable!.Length - 1; i >= 0; i-- )
+                for ( var i = _valueTable.Length - 1; i >= 0; i-- )
                 {
-                    if ( _keyTable![ i ] != null && _valueTable[ i ] == null )
+                    if ( _keyTable[ i ] != null && _valueTable[ i ] == null )
                     {
                         return _keyTable[ i ];
                     }
@@ -443,11 +448,11 @@ namespace LibGDXSharp.Utils.Collections
             }
             else
             {
-                for ( var i = _valueTable!.Length - 1; i >= 0; i-- )
+                for ( var i = _valueTable.Length - 1; i >= 0; i-- )
                 {
                     if ( value.Equals( _valueTable[ i ] ) )
                     {
-                        return _keyTable![ i ];
+                        return _keyTable[ i ];
                     }
                 }
             }
@@ -464,7 +469,7 @@ namespace LibGDXSharp.Utils.Collections
         {
             int tableSize = TableSize( Size + additionalCapacity, _loadFactor );
 
-            if ( _keyTable!.Length < tableSize )
+            if ( _keyTable.Length < tableSize )
             {
                 Resize( tableSize );
             }
@@ -477,7 +482,7 @@ namespace LibGDXSharp.Utils.Collections
         {
             var h = Size;
 
-            for ( int i = 0, n = _keyTable!.Length; i < n; i++ )
+            for ( int i = 0, n = _keyTable.Length; i < n; i++ )
             {
                 var key = _keyTable[ i ];
 
@@ -514,7 +519,7 @@ namespace LibGDXSharp.Utils.Collections
 
             if ( other.Size != Size ) return false;
 
-            for ( int i = 0, n = _keyTable!.Length; i < n; i++ )
+            for ( int i = 0, n = _keyTable.Length; i < n; i++ )
             {
                 var key = _keyTable[ i ];
 
@@ -638,13 +643,13 @@ namespace LibGDXSharp.Utils.Collections
             if ( !_keys1.valid )
             {
                 _keys1.Reset();
-                _keys1.valid  = true;
-                _keys2!.valid = false;
+                _keys1.valid = true;
+                _keys2.valid = false;
 
                 return _keys1;
             }
 
-            _keys2!.Reset();
+            _keys2.Reset();
             _keys2.valid = true;
             _keys1.valid = false;
 
@@ -681,13 +686,11 @@ namespace LibGDXSharp.Utils.Collections
         /// <typeparam name="TKm"></typeparam>
         /// <typeparam name="TVm"></typeparam>
         /// <typeparam name="TI"></typeparam>
-        public abstract class MapIterator<TKm, TVm, TI> //: Iterable<TI>, Iterator<TI>
+        public abstract class MapIterator<TKm, TVm, TI> : IEnumerable< TI >, IEnumerator< TI >
         {
-            protected bool                  hasNext;
-            protected ObjectMap< TKm, TVm > map;
-            public    bool                  valid        = true;
-            protected int                   nextIndex    = 0;
-            protected int                   currentIndex = 0;
+            protected readonly ObjectMap< TKm, TVm > map;
+
+            public bool valid = true;
 
             protected MapIterator( ObjectMap< TKm, TVm > map )
             {
@@ -695,70 +698,79 @@ namespace LibGDXSharp.Utils.Collections
                 Reset();
             }
 
+            /// <summary>
+            /// Advances the enumerator to the next element of the collection.
+            /// </summary>
+            /// <exception cref="T:System.InvalidOperationException">
+            /// The collection was modified after the enumerator was created.
+            /// </exception>
+            /// <returns>
+            /// <see langword="true" />if the enumerator was successfully advanced to the next element;
+            /// <see langword="false" />if the enumerator has passed the end of the collection.
+            /// </returns>
+            public bool MoveNext()
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            /// Sets the enumerator to its initial position,
+            /// which is before the first element in the collection.
+            /// </summary>
+            /// <exception cref="T:System.InvalidOperationException">
+            /// The collection was modified after the enumerator was created.
+            /// </exception>
             public void Reset()
             {
-                currentIndex = -1;
-                nextIndex    = -1;
-
-                FindNextIndex();
             }
 
             /// <summary>
+            /// Gets the element in the collection at the current position
+            /// of the enumerator.
             /// </summary>
-            protected void FindNextIndex()
+            /// <returns>
+            /// The element in the collection at the current position of the enumerator.
+            /// </returns>
+            public TI Current { get; }
+
+            /// <summary>
+            /// Gets the element in the collection at the current position
+            /// of the enumerator.
+            /// </summary>
+            /// <returns>
+            /// The element in the collection at the current position of the enumerator.
+            /// </returns>
+            object IEnumerator.Current => Current;
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// An enumerator that can be used to iterate through the collection.
+            /// </returns>
+            public IEnumerator< TI > GetEnumerator()
             {
-                for ( var n = map._keyTable!.Length; ++nextIndex < n; )
-                {
-                    if ( map._keyTable[ nextIndex ] != null )
-                    {
-                        hasNext = true;
-
-                        return;
-                    }
-                }
-
-                hasNext = false;
+                throw new NotImplementedException();
             }
 
             /// <summary>
+            /// Returns an enumerator that iterates through a collection.
             /// </summary>
-            /// <exception cref="IllegalStateException"></exception>
-            public void Remove()
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator" /> object that can be
+            /// used to iterate through the collection.
+            /// </returns>
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                var i = currentIndex;
+                return GetEnumerator();
+            }
 
-                if ( i < 0 ) throw new IllegalStateException( "next must be called before remove." );
-
-                var mask = map._mask;
-                var next = ( i + 1 ) & mask;
-                TKm key;
-
-                while ( ( key = map._keyTable![ next ] ) != null )
-                {
-                    var placement = map.Place( key );
-
-                    if ( ( ( next - placement ) & mask ) > ( ( i - placement ) & mask ) )
-                    {
-                        map._keyTable[ i ]    = key;
-                        map._valueTable![ i ] = map._valueTable[ next ];
-
-                        i = next;
-                    }
-
-                    next = ( next + 1 ) & mask;
-                }
-
-                map._keyTable[ i ]    = default!;
-                map._valueTable![ i ] = default!;
-
-                map.Size--;
-
-                if ( i != currentIndex )
-                {
-                    --nextIndex;
-                }
-
-                currentIndex = -1;
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing,
+            /// or resetting unmanaged resources.
+            /// </summary>
+            public void Dispose()
+            {
             }
         }
 
@@ -768,45 +780,11 @@ namespace LibGDXSharp.Utils.Collections
         /// <typeparam name="TVe"></typeparam>
         public class Entries<TKe, TVe> : MapIterator< TKe, TVe, Entry< TKe, TVe > >
         {
-            private readonly Entry< TKe, TVe > _entry = new Entry< TKe, TVe >();
-
+            /// <summary>
+            /// </summary>
+            /// <param name="map"></param>
             public Entries( ObjectMap< TKe, TVe > map ) : base( map )
             {
-            }
-
-            /// <summary>
-            /// Note the same entry instance is returned each time this method is called.
-            /// </summary>
-            public Entry< TKe, TVe > Next()
-            {
-                if ( !hasNext ) throw new NoSuchElementException();
-
-                if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
-
-                _entry.key   = map._keyTable![ nextIndex ];
-                _entry.value = map._valueTable![ nextIndex ];
-
-                currentIndex = nextIndex;
-
-                FindNextIndex();
-
-                return _entry;
-            }
-
-            /// <summary>
-            /// </summary>
-            /// <returns></returns>
-            /// <exception cref="GdxRuntimeException"></exception>
-            public bool HasNext()
-            {
-                if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
-
-                return hasNext;
-            }
-
-            public Entries< TKe, TVe > Iterator()
-            {
-                return this;
             }
         }
 
@@ -815,61 +793,21 @@ namespace LibGDXSharp.Utils.Collections
         /// <typeparam name="TVv"></typeparam>
         public class Values<TVv> : MapIterator< object, TVv, TVv >
         {
+            /// <summary>
+            /// </summary>
+            /// <param name="map"></param>
+            public Values( ObjectMap< object, TVv > map ) : base( map )
+            {
+            }
         }
 
         /// <summary>
         /// </summary>
+        /// <typeparam name="TKk"></typeparam>
         public class Keys<TKk> : MapIterator< TKk, object, TKk >
         {
             public Keys( ObjectMap< TKk, object > map ) : base( map )
             {
-            }
-
-            public bool HasNext()
-            {
-                if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
-
-                return hasNext;
-            }
-
-            public TKk Next()
-            {
-                if ( !hasNext ) throw new NoSuchElementException();
-                if ( !valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
-
-                TKk key = map._keyTable![ nextIndex ];
-
-                currentIndex = nextIndex;
-
-                FindNextIndex();
-
-                return key;
-            }
-
-            public Keys< TKk > Iterator()
-            {
-                return this;
-            }
-
-            /// <summary>
-            /// Returns a new array containing the remaining keys.
-            /// </summary>
-            public Array< TKk > ToArray()
-            {
-                return ToArray( new Array< TKk >( true, map.Size ) );
-            }
-
-            /// <summary>
-            /// Adds the remaining keys to the array.
-            /// </summary>
-            public Array< TKk > ToArray( Array< TKk > array )
-            {
-                while ( base.hasNext )
-                {
-                    array.Add( Next() );
-                }
-
-                return array;
             }
         }
     }

@@ -31,20 +31,20 @@ namespace LibGDXSharp.Graphics.GLUtils
         /// <param name="versionString"></param>
         /// <param name="vendorString"></param>
         /// <param name="rendererString"></param>
-        public GLVersion( Application.ApplicationType appType,
+        public GLVersion( IApplication.ApplicationType appType,
                           string versionString,
                           string vendorString,
                           string rendererString )
         {
-            if ( appType == Application.ApplicationType.Android )
+            if ( appType == IApplication.ApplicationType.Android )
             {
                 this.Gltype = GLType.GLES;
             }
-            else if ( appType == Application.ApplicationType.Desktop )
+            else if ( appType == IApplication.ApplicationType.Desktop )
             {
                 this.Gltype = GLType.OpenGL;
             }
-            else if ( appType == Application.ApplicationType.WebGL )
+            else if ( appType == IApplication.ApplicationType.WebGL )
             {
                 this.Gltype = GLType.WebGL;
             }

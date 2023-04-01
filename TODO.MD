@@ -11,10 +11,10 @@ CORE
 ----
     - DONE - AbstractGraphics
     - DONE - AbstractInput
-    - DONE - Application
     - DONE - ApplicationAdapter
     - DONE - Game
     - DONE - Gdx
+    - DONE - IApplication
     - DONE - IApplicationListener
     - DONE - IApplicationLogger
     - DONE - IAudio
@@ -62,12 +62,12 @@ ASSETS/LOADERS
 ASSETS/LOADERS/RESOLVERS
 ------------------------
     - DONE - AbsoluteFileHandleResolver
-    -      - ClasspathFileHandleResolver
-    -      - ExternalFileHandleResolver
-    -      - InternalFileHandleResolver
-    -      - LocalFileHandleResolver
-    -      - PrefixFileHandleResolver
-    -      - ResolutionFileResolver
+    - DONE - ClasspathFileHandleResolver
+    - DONE - ExternalFileHandleResolver
+    - DONE - InternalFileHandleResolver
+    - DONE - LocalFileHandleResolver
+    - DONE - PrefixFileHandleResolver
+    - IP   - ResolutionFileResolver
 
 AUDIO
 -----
@@ -89,12 +89,12 @@ GRAPHICS
     - DONE - Colors
     -      - Cubemap
     - DONE - DisplayMode
-    -      - FPSLogger
+    - DONE - FPSLogger
     -      - GLTexture
     - DONE - GraphicsType
     -      - ICubemapData
     - DONE - ICursor
-    - IP   - IGL20
+    - DONE - IGL20
     -      - IGL30
     - IP   - ITextureData
     -      - Mesh
@@ -460,8 +460,8 @@ UTILS
     -      - StreamUtils
     - IP   - StringBuilder
     -      - TextFormatter
-    -      - Timer
-    -      - TimeUtils
+    - IP   - Timer
+    - DONE - TimeUtils
     -      - TimSort
 
 UTILS/ASYNC
