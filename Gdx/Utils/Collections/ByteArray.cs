@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils.Collections
 {
-    public class ByteArray
+    public class ByteArray : List< byte >
     {
     }
 }

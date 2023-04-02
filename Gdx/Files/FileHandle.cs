@@ -265,7 +265,7 @@ namespace LibGDXSharp.Files
                 reader?.Close();
             }
 
-            return output.ToString();
+            return StringBuilder.ToString();
         }
 
         /// <summary>

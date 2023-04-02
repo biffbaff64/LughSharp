@@ -12,5 +12,49 @@
         public const int TopRight    = Top | Right;
         public const int BottomLeft  = Bottom | Left;
         public const int BottomRight = Bottom | Right;
+
+        public static bool IsLeft( int align )             => ( align & Left ) != 0;
+        public static bool IsRight( int align )            => ( align & Right ) != 0;
+        public static bool IsTop( int align )              => ( align & Top ) != 0;
+        public static bool IsBottom( int align )           => ( align & Bottom ) != 0;
+        public static bool IsCenterHorizontal( int align ) => ( ( align & Left ) == 0 && ( align & Right ) == 0 );
+        public static bool IsCenterVertical( int align )   => ( ( align & Top ) == 0 && ( align & Bottom ) == 0 );
+
+        /// <summary>
+        /// </summary>
+        /// <param name="align"></param>
+        /// <returns></returns>
+        public static string ToString( int align )
+        {
+            var buffer = new StringBuilder();
+
+            if ( ( align & Top ) != 0 )
+            {
+                buffer.Append( "Top," );
+            }
+            else if ( ( align & Bottom ) != 0 )
+            {
+                buffer.Append( "Bottom," );
+            }
+            else
+            {
+                buffer.Append( "Center," );
+            }
+
+            if ( ( align & Left ) != 0 )
+            {
+                buffer.Append( "Left" );
+            }
+            else if ( ( align & Right ) != 0 )
+            {
+                buffer.Append( "Right" );
+            }
+            else
+            {
+                buffer.Append( "Center" );
+            }
+
+            return buffer.ToString();
+        }
     }
 }

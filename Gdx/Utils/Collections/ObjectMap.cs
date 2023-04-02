@@ -606,7 +606,7 @@ namespace LibGDXSharp.Utils.Collections
 
             if ( braces ) buffer.Append( '}' );
 
-            return buffer.ToString();
+            return StringBuilder.ToString();
         }
 
         /// <summary>

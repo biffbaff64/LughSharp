@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils
 {
-    public class FloatConsts
+    public record FloatConsts
     {
         public const float Positive_Infinity = float.PositiveInfinity;
         public const float Negative_Infinity = float.NegativeInfinity;
@@ -16,9 +16,5 @@
         public const int   Sign_Bit_Mask     = int.MinValue;
         public const int   Exp_Bit_Mask      = 2139095040;
         public const int   Signif_Bit_Mask   = 8388607;
-
-        private FloatConsts()
-        {
-        }
     }
 }

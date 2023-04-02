@@ -783,7 +783,7 @@ namespace LibGDXSharp.Utils.Collections
 
             buffer.Append( ']' );
 
-            return buffer.ToString();
+            return StringBuilder.ToString();
         }
 
         public string ToString( string separator )
@@ -801,7 +801,7 @@ namespace LibGDXSharp.Utils.Collections
                 buffer.Append( Items[ i ] );
             }
 
-            return buffer.ToString();
+            return StringBuilder.ToString();
         }
     }
 }

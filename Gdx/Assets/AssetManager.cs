@@ -1011,7 +1011,7 @@ namespace LibGDXSharp.Assets
                     }
                 }
 
-                return sb.ToString();
+                return StringBuilder.ToString();
             }
         }
 

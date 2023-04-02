@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils.Collections
 {
-    public class BooleanArray
+    public class BooleanArray : List< bool >
     {
     }
 }

@@ -7,9 +7,9 @@ namespace LibGDXSharp.Utils
     /// Stores a map of <see cref="Pool{T}"/>s (usually <see ref="ReflectionPools"/>) by
     /// type for convenient static access.
     /// </summary>
-    public class Pools<T>
+    public class Pools
     {
-        private readonly static ObjectMap< Type, Pool<T> > typePools = new ObjectMap< Type, Pool<T> >();
+        private readonly static ObjectMap< Type, Pool<Type> > typePools = new ObjectMap< Type, Pool<Type> >();
 
         private Pools()
         {
@@ -20,9 +20,9 @@ namespace LibGDXSharp.Utils
         /// to map. Note the max size is ignored if this is not the first time this
         /// pool has been requested. 
         /// </summary>
-        public static Pool<T> Get( Type type, int max = 100 )
+        public static Pool<T> Get<T>( Type type, int max = 100 )
         {
-            var pool = typePools.Get( type );
+            var pool = typePools.Get<T>( type );
 
             if ( pool == null )
             {

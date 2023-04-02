@@ -29,7 +29,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         private float _scaleY = 1;
         private float _rotation;
 
-        public Actor()
+        protected Actor()
         {
             Listeners        = new DelayedRemovalArray< IEventListener >( 0 );
             CaptureListeners = new DelayedRemovalArray< IEventListener >( 0 );
@@ -61,14 +61,14 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             if ( ( Stage != null ) && Stage.GetActionsRequestRendering() )
             {
-                Gdx.Graphics.RequestRendering();
+                Gdx.Graphics?.RequestRendering();
             }
 
             try
             {
                 for ( var i = 0; i < _actions.Size; i++ )
                 {
-                    if ( _actions.Get( i ).Act( delta ) && i < _actions.Size )
+                    if ( _actions.Get( i )!.Act( delta ) && i < _actions.Size )
                     {
                         var current     = _actions.Get( i );
                         var actionIndex = current == _actions.Get( i ) ? i : _actions.IndexOf( _actions.Get( i ) );
@@ -76,7 +76,8 @@ namespace LibGDXSharp.Scenes.Scene2D
                         if ( actionIndex != -1 )
                         {
                             _actions.RemoveIndex( actionIndex );
-                            _actions.Get( i ).SetActor( null );
+                            _actions.Get( i )?.SetActor( null );
+                            
                             i--;
                         }
                     }

@@ -1,9 +1,8 @@
-﻿- IP = In Progress
-- - - - - - - - -
+﻿- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - DONE = Class finished but may not be fully 'CSharp-ified'
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - PRIORITY is 2D classes first
-- - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -33,21 +32,21 @@ CORE
 
 ASSETS
 ------
-    - DONE - AssetDescriptor
-    - DONE - AssetLoaderParameters
-    - IP   - AssetLoadingTask
-    - IP   - AssetManager
-    - DONE - IAssetErrorListener
-    - DONE - RefCountedContainer
+    -      - AssetDescriptor
+    -      - AssetLoaderParameters
+    -      - AssetLoadingTask
+    -      - AssetManager
+    -      - IAssetErrorListener
+    -      - RefCountedContainer
 
 ASSETS/LOADERS
 --------------
-    - IP   - AssetLoader
-    - DONE - AsynchronousAssetLoader
-    - IP   - BitmapFontLoader
+    -      - AssetLoader
+    -      - AsynchronousAssetLoader
+    -      - BitmapFontLoader
     -      - CubemapLoader
     -      - I18NBundleLoader
-    - DONE - IFileHandleResolver
+    -      - IFileHandleResolver
     -      - ModelLoader
     -      - MusicLoader
     -      - ParticleEffectLoader
@@ -55,19 +54,19 @@ ASSETS/LOADERS
     -      - ShaderProgramLoader
     -      - SkinLoader
     -      - SoundLoader
-    - DONE - SynchronousAssetLoader
+    -      - SynchronousAssetLoader
     -      - TextureAtlasLoader
-    - IP   - TextureLoader
+    -      - TextureLoader
 
 ASSETS/LOADERS/RESOLVERS
 ------------------------
-    - DONE - AbsoluteFileHandleResolver
-    - DONE - ClasspathFileHandleResolver
-    - DONE - ExternalFileHandleResolver
-    - DONE - InternalFileHandleResolver
-    - DONE - LocalFileHandleResolver
-    - DONE - PrefixFileHandleResolver
-    - IP   - ResolutionFileResolver
+    -      - AbsoluteFileHandleResolver
+    -      - ClasspathFileHandleResolver
+    -      - ExternalFileHandleResolver
+    -      - InternalFileHandleResolver
+    -      - LocalFileHandleResolver
+    -      - PrefixFileHandleResolver
+    -      - ResolutionFileResolver
 
 AUDIO
 -----
@@ -78,42 +77,42 @@ AUDIO
 
 FILES
 -----
-    - DONE - FileHandle
-    - DONE - FileHandleStream
+    -      - FileHandle
+    -      - FileHandleStream
 
 GRAPHICS
 --------
-    - DONE - BufferFormat
-    - DONE - Camera
+    -      - BufferFormat               record class
+    -      - Camera
     - DONE - Color
-    - DONE - Colors
+    -      - Colors
     -      - Cubemap
-    - DONE - DisplayMode
+    -      - DisplayMode
     - DONE - FPSLogger
     -      - GLTexture
-    - DONE - GraphicsType
+    -      - GraphicsType
     -      - ICubemapData
-    - DONE - ICursor
+    -      - ICursor
     - DONE - IGL20
-    -      - IGL30
-    - IP   - ITextureData
+    - DONE - IGL30
+    -      - ITextureData
     -      - Mesh
-    - DONE - Monitor
+    -      - Monitor
     -      - OrthographicCamera
     -      - PerspectiveCamera
-    - IP   - Pixmap
+    -      - Pixmap
     -      - PixmapIO
-    - IP   - Texture
+    -      - Texture
     -      - TextureArray
     -      - TextureArrayData
-    - DONE - TextureFilter
+    -      - TextureFilter
     -      - VertexAttribute
     -      - VertexAttributes
 
 GRAPHICS/G2D
 ------------
     -      - Animation
-    - IP   - BitmapFont
+    -      - BitmapFont
     -      - BitmapFontCache
     -      - CpuSpriteBatch
     -      - DistanceFieldFont
@@ -136,7 +135,7 @@ GRAPHICS/G2D
     -      - SpriteBatch
     -      - SpriteCache
     -      - TextureAtlas
-    - IP   - TextureRegion
+    -      - TextureRegion
 
 GRAPHICS/G3D
 ------------
@@ -155,9 +154,9 @@ GRAPHICS/GLUTILS
     -      - FrameBufferCubemap
     -      - GLFrameBuffer
     -      - GLOnlyTextureData
-    - IP   - GLVersion
-    - IP   - HdpiMode
-    - IP   - HdpiUtils
+    -      - GLVersion
+    -      - HdpiMode
+    -      - HdpiUtils
     -      - ImmediateModeRenderer
     -      - ImmediateModeRenderer20
     -      - IndexArray
@@ -195,15 +194,15 @@ INPUT
 
 MAPS
 ----
-    - IP   - IImageResolver
-    - IP   - IMapRenderer
-    - IP   - Map
-    - DONE - MapGroupLayer
-    - IP   - MapLayer
-    - DONE - MapLayers
-    - DONE - MapObject
-    - DONE - MapObjects
-    - DONE - MapProperties
+    -      - IImageResolver
+    -      - IMapRenderer
+    -      - Map
+    -      - MapGroupLayer
+    -      - MapLayer
+    -      - MapLayers
+    -      - MapObject
+    -      - MapObjects
+    -      - MapProperties
 
 MAPS/OBJECTS
 ------------
@@ -216,18 +215,18 @@ MAPS/OBJECTS
 
 MAPS/TILED
 ----------
-    - IP   - ITiledMapTile
-    - DONE - TiledMap
-    - DONE - TiledMapImageLayer
-    - DONE - TiledMapTileLayer
-    - DONE - TiledMapTileSet
-    - IP   - TiledMapTileSets
+    -      - ITiledMapTile
+    -      - TiledMap
+    -      - TiledMapImageLayer
+    -      - TiledMapTileLayer
+    -      - TiledMapTileSet
+    -      - TiledMapTileSets
 
 MAPS/TILED/LOADERS
 ------------------
     -      - AtlasTmxMapLoader
-    - IP   - BaseTmxMapLoader
-    - IP   - TmxMapLoader
+    -      - BaseTmxMapLoader
+    -      - TmxMapLoader
     - ???? - TideMapLoader      Q: Should I support Tide?
 
 MAPS/TILED/OBJECTS
@@ -236,13 +235,13 @@ MAPS/TILED/OBJECTS
 
 MAPS/TILED/RENDERERS
 --------------------
-    - IP   - BatchTiledMapRenderer
+    -      - BatchTiledMapRenderer
     -      - HexagonalTiledMapRenderer
     -      - IsometricStaggeredTiledMapRenderer
     -      - IsometricTiledMapRenderer
     -      - ITiledMapRenderer
     -      - OrthoCachedTiledMapRenderer
-    - IP   - OrthogonalTiledMapRenderer
+    -      - OrthogonalTiledMapRenderer
 
 MAPS/TILED/TILES
 ----------------
@@ -251,12 +250,12 @@ MAPS/TILED/TILES
 
 MATH
 ----
-    - DONE - Affine2
-    - DONE - Bezier
+    -      - Affine2
+    -      - Bezier
     -      - Bresenham
     -      - BSpline
     -      - CatmullRomSpline
-    - DONE - Circle
+    -      - Circle
     -      - ConvexHull
     -      - CumulativeDistribution
     -      - DelaunayTriangulator
@@ -269,28 +268,28 @@ MATH
     -      - GridPoint3
     -      - Interpolation
     -      - Intersector
-    - DONE - IPath
-    - DONE - IShape2D
-    - DONE - IVector
-    - DONE - MathUtils
-    - IP   - Matrix3
-    - IP   - Matrix4
+    -      - IPath
+    -      - IShape2D
+    -      - IVector
+    -      - MathUtils
+    -      - Matrix3
+    -      - Matrix4
     -      - Plane
     -      - Polygon
     -      - Polyline
     -      - Quaternion
     -      - RandomXS128
-    - DONE - Rectangle
-    - DONE - Vector2
-    - DONE - Vector3        ( Needs documentation comments )
-    - DONE - WindowedMean
+    -      - Rectangle
+    -      - Vector2                make struct
+    -      - Vector3                make struct
+    -      - WindowedMean
 
 MATH/COLLISION
 --------------
-    - DONE - BoundingBox
-    - DONE - Ray
-    - DONE - Segment
-    - DONE - Sphere
+    -      - BoundingBox
+    -      - Ray
+    -      - Segment
+    -      - Sphere
 
 NETWORK
 -------
@@ -309,15 +308,15 @@ NETWORK
 
 SCENES.SCENE2D
 --------------
-    - DONE - Action
-    - IP   - Actor
-    - DONE - Event
-    - IP   - Group
-    - DONE - IEventListener
-    - DONE - InputEvent
+    -      - Action
+    -      - Actor
+    -      - Event
+    -      - Group
+    -      - IEventListener
+    -      - InputEvent
     -      - InputListener
-    - IP   - Stage
-    - DONE - Touchable
+    -      - Stage
+    -      - Touchable
 
 SCENES.SCENE2D/ACTIONS
 ----------------------
@@ -408,7 +407,7 @@ SCENES.SCENE2D/UTILS
     -      - ILayout
     -      - ITransformDrawable
     -      - NinePatchDrawable
-    - IP   - ScissorStack
+    -      - ScissorStack
     -      - Selection
     -      - SpriteDrawable
     -      - TextureRegionDrawable
@@ -420,48 +419,47 @@ UTILS
     - DONE - Align
     -      - Base64Coder
     -      - BinaryHeap
-    - DONE - Bits
-    - IP   - Buffer
+    -      - Bits
+    -      - Buffer
     -      - BufferUtils
     -      - IClipboard
     -      - ComparableTimSort
     -      - DataBuffer
     -      - DataInput
     -      - DataOutput
-    - DONE - FloatConsts
+    - DONE - FloatConsts                Doner, but is it needed?
     -      - FlushablePool
     -      - GdxNativesLoader
-    - DONE - GdxRuntimeException
     -      - I18NBundle
-    - DONE - IllegalStateException
+    -      - IllegalStateException
     -      - IntBuffer
-    - DONE - IPoolable
-    - DONE - IRunnable
+    -      - IPoolable
+    -      - IRunnable
     -      - LittleEndianInputStream
-    - DONE - Logger
-    - DONE - NumberUtils
+    -      - Logger
+    -      - NumberUtils
     -      - PauseableThread
     -      - PerformanceCounter
     -      - PerformanceCounters
-    - DONE - Pool
+    -      - Pool
     -      - PooledLinkedList
-    - DONE - Pools
+    -      - Pools
     -      - PropertiesUtils
     -      - QuadTreeFloat
     -      - Queue
     -      - QuickSelect
     -      - Scaling
     -      - ScreenUtils
-    - IP   - Selector (aka Libgdx Select)
+    -      - Selector (aka Libgdx Select)
     -      - SerializationException
     -      - SharedLibraryLoader
-    - DONE - SortUtils
+    -      - SortUtils
     -      - SortedIntList
     -      - StreamUtils
-    - IP   - StringBuilder
+    -      - StringBuilder
     -      - TextFormatter
-    - IP   - Timer
-    - DONE - TimeUtils
+    -      - Timer                  Use System.Timer instead??
+    -      - TimeUtils
     -      - TimSort
 
 UTILS/ASYNC
@@ -479,36 +477,36 @@ UTILS/ATOMIC
 
 UTILS/COLLECTIONS
 -----------------
-    - IP   - Array
-    - IP   - ArrayIterable
-    - IP   - ArrayIterator
-    - IP   - ArrayMap
-    -      - BooleanArray
-    -      - ByteArray
-    -      - CharArray
-    - DONE - Collections
-    - IP   - DelayedRemovalArray
-    -      - FloatArray
+    -      - Array              Just use List<>?
+    -      - ArrayIterable      Needed??
+    -      - ArrayIterator      Needed??
+    - DONE - ArrayMap                   Dictionary<K, V>
+    - DONE - BooleanArray               List< bool >
+    - DONE - ByteArray                  List< byte >
+    - DONE - CharArray                  List< char >
+    -      - Collections
+    -      - DelayedRemovalArray
+    - DONE - FloatArray                 List< float >
     -      - IdentityMap
-    -      - IntArray
-    -      - IntFloatMap
-    -      - IntIntMap
-    -      - IntMap
+    - DONE - IntArray                   List< int >
+    - DONE - IntFloatMap                Dictionary< int, float >
+    - DONE - IntIntMap                  Dictionary< int, int >
+    - DONE - IntMap                     Dictionary< int, V >
     -      - IntSet
-    - IP   - IPredicate
-    -      - LongArray
-    -      - LongMap
+    -      - IPredicate
+    - DONE - LongArray                  List< long >
+    - DONE - LongMap                    Dictionary< long, V >
     -      - ObjectFloatMap
     -      - ObjectIntMap
     -      - ObjectLongMap
-    - IP   - ObjectMap
+    -      - ObjectMap
     -      - ObjectSet
     -      - OrderedMap
     -      - OrderedSet
-    - IP   - PredicateIterable
-    - IP   - PredicateIterator
-    -      - ShortArray
-    - IP   - SnapshotArray
+    -      - PredicateIterable
+    -      - PredicateIterator
+    -      - ShortArray                 List< short >
+    -      - SnapshotArray
 
 UTILS/COMPRESSION
 -----------------
@@ -557,12 +555,12 @@ UTILS/REFLECT
 -------------
     -      - Annotation                 Needed??
     -      - ArrayReflection            Needed??
-    - IP   - ClassReflection            Needed??
-    - IP   - Constructor                Needed??
+    -      - ClassReflection            Needed??
+    -      - Constructor                Needed??
     -      - Field                      Needed??
     -      - Method                     Needed??
     -      - ReflectionException        Needed??
-    - IP   - ReflectionPool             Needed??
+    -      - ReflectionPool             Needed??
 
 UTILS/VIEWPORT
 --------------
@@ -572,7 +570,7 @@ UTILS/VIEWPORT
     -      - ScalingViewport
     -      - ScreenViewport
     -      - StretchViewport
-    - DONE - Viewport
+    -      - Viewport
 
 UTILS/XML
 ---------

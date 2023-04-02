@@ -31,6 +31,15 @@
         }
 
         /// <summary>
+        /// Converts the CURRENT time in nanoseconds to milliseconds.
+        /// </summary>
+        /// <returns></returns>
+        public static long NanosToMillis()
+        {
+            return NanoTime() / NanosPerMilli;
+        }
+        
+        /// <summary>
         /// Convert milliseconds time to nanoseconds
         /// </summary>
         /// <param name="millis">Must be in milliseconds.</param>

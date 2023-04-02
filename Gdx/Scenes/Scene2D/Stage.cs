@@ -62,7 +62,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         public IBatch   Batch    { get; }
 
         /// <summary>
-        /// Creates a stage with a <seealso cref="ScalingViewport"/> set to
+        /// Creates a stage with a <see cref="ScalingViewport"/> set to
         /// <see cref="Scaling.Stretch"/>. The stage will use its own <see cref="Batch"/>
         /// which will be disposed when the stage is disposed. 
         /// </summary>
@@ -71,8 +71,8 @@ namespace LibGDXSharp.Scenes.Scene2D
              new ScalingViewport
                  (
                   Scaling.Stretch,
-                  Gdx.Graphics.GetWidth(),
-                  Gdx.Graphics.GetHeight(),
+                  Gdx.Graphics?.GetWidth(),
+                  Gdx.Graphics?.GetHeight(),
                   new OrthographicCamera()
                  ),
              new SpriteBatch()
@@ -83,7 +83,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Creates a stage with the specified viewport. The stage will use its own
-        /// <seealso cref="IBatch"/> which will be disposed when the stage is disposed. 
+        /// <see cref="IBatch"/> which will be disposed when the stage is disposed. 
         /// </summary>
         public Stage( Viewport viewport ) : this( viewport, new SpriteBatch() )
         {
@@ -96,35 +96,34 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// </summary>
         /// <param name="viewport"></param>
         /// <param name="batch">
-        /// Will not be disposed if <seealso cref="Dispose()"/> is called,
+        /// Will not be disposed if <see cref="Dispose()"/> is called,
         /// handle disposal yourself.
         /// </param>
         public Stage( Viewport? viewport, IBatch? batch )
         {
-            this.Viewport = viewport ?? throw new System.ArgumentException( "viewport cannot be null." );
-            this.Batch    = batch ?? throw new System.ArgumentException( "batch cannot be null." );
+            this.Viewport = viewport ?? throw new ArgumentException( "viewport cannot be null." );
+            this.Batch    = batch ?? throw new ArgumentException( "batch cannot be null." );
 
             _root = new Group();
             _root.SetStage( this );
 
-            viewport.Update( Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight(), true );
+            viewport.Update( Gdx.Graphics!.GetWidth(), Gdx.Graphics.GetHeight(), true );
         }
 
         /// <summary>
         /// </summary>
         public void Draw()
         {
-            var camera = Viewport.Camera;
+            Camera camera = Viewport.Camera;
             camera.Update();
 
             if ( !_root.isVisible() ) return;
 
-            var batch = this.Batch;
-            batch.SetProjectionMatrix( camera.Combined );
+            Batch.SetProjectionMatrix( camera.Combined );
 
-            batch.Begin();
-            _root.Draw( batch, 1 );
-            batch.End();
+            Batch.Begin();
+            _root.Draw( Batch, 1 );
+            Batch.End();
 
             if ( debug ) DrawDebug();
         }
@@ -139,15 +138,15 @@ namespace LibGDXSharp.Scenes.Scene2D
                 _debugShapes.SetAutoShapeType( true );
             }
 
-            if ( _debugUnderMouse || _debugParentUnderMouse || _debugTableUnderMouse != Table.DebugType.None )
+            if ( _debugUnderMouse || _debugParentUnderMouse || ( _debugTableUnderMouse != Table.DebugType.None ) )
             {
-                ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input.GetX(), Gdx.Input.GetY() ) );
+                ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input!.GetX(), Gdx.Input.GetY() ) );
 
                 Actor? actor = Hit( _tempCoords.X, _tempCoords.Y, true );
 
                 if ( actor == null ) return;
 
-                if ( _debugParentUnderMouse && actor.Parent != null )
+                if ( _debugParentUnderMouse && ( actor.Parent != null ) )
                 {
                     actor = actor.Parent;
                 }
@@ -185,14 +184,14 @@ namespace LibGDXSharp.Scenes.Scene2D
                 }
             }
 
-            Gdx.Gl.GLEnable( IGL20.GL_Blend );
+            Gdx.Gl?.GLEnable( IGL20.GL_Blend );
 
             _debugShapes.SetProjectionMatrix( Viewport.Camera.Combined );
             _debugShapes.Begin();
             _root.DrawDebug( _debugShapes );
             _debugShapes.End();
 
-            Gdx.Gl.GLDisable( IGL20.GL_Blend );
+            Gdx.Gl?.GLDisable( IGL20.GL_Blend );
         }
 
         /// <summary>
@@ -212,22 +211,22 @@ namespace LibGDXSharp.Scenes.Scene2D
 
                 for ( int i = 0, n = children.Size; i < n; i++ )
                 {
-                    DisableDebug( children.Get( i ), except );
+                    DisableDebug( children.Get( i )!, except );
                 }
             }
         }
 
         /// <summary>
-        /// Calls <seealso cref="Act(float)"/> with Gdx.Graphics.GetDeltaTime(),
+        /// Calls <see cref="Act(float)"/> with Gdx.Graphics.GetDeltaTime(),
         /// limited to a minimum of 30fps.
         /// </summary>
         public void Act()
         {
-            Act( Math.Min( Gdx.Graphics.GetDeltaTime(), 1 / 30f ) );
+            Act( Math.Min( Gdx.Graphics!.GetDeltaTime(), 1 / 30f ) );
         }
 
         /// <summary>
-        /// Calls the <seealso cref="Actor.Act(float)"/> method on each actor in the
+        /// Calls the <see cref="Actor.Act(float)"/> method on each actor in the
         /// stage. Typically called each frame. This method also fires enter and exit
         /// events.
         /// </summary>
@@ -249,7 +248,7 @@ namespace LibGDXSharp.Scenes.Scene2D
                         ScreenToStageCoordinates( _tempCoords.Set( _pointerScreenX[ pointer ], _pointerScreenY[ pointer ] ) );
 
                         // Exit over last.
-                        var inputEvent = Pools.Obtain< InputEvent >( typeof(InputEvent) );
+                        var inputEvent = Pools< InputEvent >.Obtain( typeof(InputEvent) );
 
                         inputEvent.Type         = InputEvent.EventType.Exit;
                         inputEvent.Stage        = this;
@@ -260,7 +259,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
                         overLast.Fire( inputEvent );
 
-                        Pools.Free( inputEvent );
+                        Pools< InputEvent >.Free( inputEvent );
                     }
 
                     continue;
@@ -503,7 +502,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// Applies a mouse moved event to the stage and returns true if an actor in the scene <seealso cref="Event.handle() handled"/> the
+        /// Applies a mouse moved event to the stage and returns true if an actor in the scene <see cref="Event.handle() handled"/> the
         /// event. This event only occurs on the desktop. 
         /// </summary>
         public bool MouseMoved( int screenX, int screenY )
@@ -539,7 +538,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// Applies a mouse scroll event to the stage and returns true if an actor in the scene <seealso cref="Event.handle() handled"/> the
+        /// Applies a mouse scroll event to the stage and returns true if an actor in the scene <see cref="Event.handle() handled"/> the
         /// event. This event only occurs on the desktop. 
         /// </summary>
         public bool Scrolled( float amountX, float amountY )
@@ -563,8 +562,8 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// Applies a key down event to the actor that has <seealso cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns
-        /// true if the event was <seealso cref="Event.handle() handled"/>. 
+        /// Applies a key down event to the actor that has <see cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns
+        /// true if the event was <see cref="Event.handle() handled"/>. 
         /// </summary>
         public bool KeyDown( int keyCode )
         {
@@ -581,8 +580,8 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// Applies a key up event to the actor that has <seealso cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns true
-        /// if the event was <seealso cref="Event.handle() handled"/>. 
+        /// Applies a key up event to the actor that has <see cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns true
+        /// if the event was <see cref="Event.handle() handled"/>. 
         /// </summary>
         public bool KeyUp( int keyCode )
         {
@@ -599,8 +598,8 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// Applies a key typed event to the actor that has <seealso cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns
-        /// true if the event was <seealso cref="Event.handle() handled"/>. 
+        /// Applies a key typed event to the actor that has <see cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns
+        /// true if the event was <see cref="Event.handle() handled"/>. 
         /// </summary>
         public bool KeyTyped( char character )
         {
@@ -619,8 +618,8 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// <summary>
         /// Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button. Touch focus
         /// is added automatically when true is returned from {@link InputListener#touchDown(InputEvent, float, float, int, int)
-        /// touchDown}. The specified actors will be used as the <seealso cref="Event.getListenerActor() listener actor"/> and
-        /// <seealso cref="Event.getTarget() target"/> for the touchDragged and touchUp events. 
+        /// touchDown}. The specified actors will be used as the <see cref="Event.getListenerActor() listener actor"/> and
+        /// <see cref="Event.getTarget() target"/> for the touchDragged and touchUp events. 
         /// </summary>
         public void AddTouchFocus( EventListener listener, Actor listenerActor, Actor target, int pointer, int button )
         {
@@ -655,7 +654,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Cancels touch focus for all listeners with the specified listener actor. </summary>
-        /// <seealso cref=".cancelTouchFocus() "/>
+        /// <see cref=".cancelTouchFocus() "/>
         public void CancelTouchFocus( Actor listenerActor )
         {
             // Cancel all current touch focuses for the specified listener, allowing for concurrent modification, and never cancel the
@@ -705,8 +704,8 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Removes all touch focus listeners, sending a touchUp event to each listener. Listeners typically expect to receive a
-        /// touchUp event when they have touch focus. The location of the touchUp is <seealso cref="Integer.MIN_VALUE"/>. Listeners can use
-        /// <seealso cref="InputEvent.isTouchFocusCancel()"/> to ignore this event if needed. 
+        /// touchUp event when they have touch focus. The location of the touchUp is <see cref="Integer.MIN_VALUE"/>. Listeners can use
+        /// <see cref="InputEvent.isTouchFocusCancel()"/> to ignore this event if needed. 
         /// </summary>
         public void CancelTouchFocus()
         {
@@ -715,7 +714,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Cancels touch focus for all listeners except the specified listener. </summary>
-        /// <seealso cref=".cancelTouchFocus() "/>
+        /// <see cref=".cancelTouchFocus() "/>
 //JAVA TO C# CONVERTER TASK: Most Java annotations will not have direct .NET equivalent attributes:
 //ORIGINAL LINE: public void cancelTouchFocusExcept(@Null EventListener exceptListener, @Null Actor exceptActor)
         public void CancelTouchFocusExcept( EventListener exceptListener, Actor exceptActor )
@@ -760,7 +759,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Adds an actor to the root of the stage. </summary>
-        /// <seealso cref="Group.addActor(Actor) "/>
+        /// <see cref="Group.addActor(Actor) "/>
         public void AddActor( Actor actor )
         {
             root.AddActor( actor );
@@ -768,7 +767,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Adds an action to the root of the stage. </summary>
-        /// <seealso cref="Group.addAction(Action) "/>
+        /// <see cref="Group.addAction(Action) "/>
         public void AddAction( Action action )
         {
             root.AddAction( action );
@@ -776,7 +775,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Returns the root's child actors. </summary>
-        /// <seealso cref="Group.getChildren() "/>
+        /// <see cref="Group.getChildren() "/>
         public Array< Actor > Actors
         {
             get { return root.children; }
@@ -784,7 +783,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Adds a listener to the root. </summary>
-        /// <seealso cref="Actor.addListener(EventListener) "/>
+        /// <see cref="Actor.addListener(EventListener) "/>
         public bool AddListener( EventListener listener )
         {
             return root.AddListener( listener );
@@ -792,7 +791,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Removes a listener from the root. </summary>
-        /// <seealso cref="Actor.removeListener(EventListener) "/>
+        /// <see cref="Actor.removeListener(EventListener) "/>
         public bool RemoveListener( EventListener listener )
         {
             return root.RemoveListener( listener );
@@ -800,7 +799,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Adds a capture listener to the root. </summary>
-        /// <seealso cref="Actor.addCaptureListener(EventListener) "/>
+        /// <see cref="Actor.addCaptureListener(EventListener) "/>
         public bool AddCaptureListener( EventListener listener )
         {
             return root.AddCaptureListener( listener );
@@ -808,7 +807,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Removes a listener from the root. </summary>
-        /// <seealso cref="Actor.removeCaptureListener(EventListener) "/>
+        /// <see cref="Actor.removeCaptureListener(EventListener) "/>
         public bool RemoveCaptureListener( EventListener listener )
         {
             return root.RemoveCaptureListener( listener );
@@ -851,7 +850,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// <summary>
         /// Sets the actor that will receive key events. </summary>
         /// <param name="actor"> May be null. </param>
-        /// <returns> true if the unfocus and focus events were not cancelled by a <seealso cref="FocusListener"/>.  </returns>
+        /// <returns> true if the unfocus and focus events were not cancelled by a <see cref="FocusListener"/>.  </returns>
 //JAVA TO C# CONVERTER TASK: Most Java annotations will not have direct .NET equivalent attributes:
 //ORIGINAL LINE: public boolean setKeyboardFocus(@Null Actor actor)
         public bool setKeyboardFocus( Actor actor )
@@ -913,7 +912,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// <param name="actor"> May be null. </param>
         /// <returns>
         /// true if the unfocus and focus events were not cancelled
-        /// by a <seealso cref="FocusListener"/>.
+        /// by a <see cref="FocusListener"/>.
         /// </returns>
         public bool SetScrollFocus( Actor actor )
         {
@@ -998,7 +997,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
 
         /// <summary>
-        /// Returns the <seealso cref="Actor"/> at the specified location in stage coordinates.
+        /// Returns the <see cref="Actor"/> at the specified location in stage coordinates.
         /// Hit testing is performed in the order the actors were inserted into the stage, last
         /// inserted actors being tested first. To get stage coordinates from screen coordinates,
         /// use <see cref="ScreenToStageCoordinates(Vector2)"/>.
@@ -1048,9 +1047,9 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// anywhere in the stage since the transform matrix describes how to convert
         /// them.
         /// The transform matrix is typically obtained from <see cref="IBatch.GetTransformMatrix()"/>
-        /// during <seealso cref="Actor.Draw(IBatch, float)"/>.
+        /// during <see cref="Actor.Draw(IBatch, float)"/>.
         /// </summary>
-        /// <seealso cref="Actor.LocalToStageCoordinates(Vector2)"/>
+        /// <see cref="Actor.LocalToStageCoordinates(Vector2)"/>
         public Vector2 ToScreenCoordinates( Vector2 coords, Matrix4 transformMatrix )
         {
             return Viewport.ToScreenCoordinates( coords, transformMatrix );
@@ -1077,10 +1076,10 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// If true, any actions executed during a call to <seealso cref="Act()"/>)
-        /// will result in a call to <seealso cref="IGraphics.RequestRendering()"/>.
+        /// If true, any actions executed during a call to <see cref="Act()"/>)
+        /// will result in a call to <see cref="IGraphics.RequestRendering()"/>.
         /// Widgets that animate or otherwise require additional rendering may check
-        /// this setting before calling <seealso cref="IGraphics.RequestRendering()"/>.
+        /// this setting before calling <see cref="IGraphics.RequestRendering()"/>.
         /// Default is true. 
         /// </summary>
         public bool ActionsRequestRendering { set; get; } = true;
@@ -1092,7 +1091,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// If true, debug lines are shown for actors even when
-        /// <seealso cref="Actor.isVisible()"/> is false.
+        /// <see cref="Actor.isVisible()"/> is false.
         /// </summary>
         public bool DebugInvisibleActors { get; set; }
 
@@ -1122,7 +1121,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// If true, debug is enabled only for the actor under the mouse.
-        /// Can be combined with <seealso cref="DebugAll"/>.
+        /// Can be combined with <see cref="DebugAll"/>.
         /// </summary>
         public bool DebugUnderMouse
         {
@@ -1145,7 +1144,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// If true, debug is enabled only for the parent of the actor under
-        /// the mouse. Can be combined with <seealso cref="DebugAll"/>. 
+        /// the mouse. Can be combined with <see cref="DebugAll"/>. 
         /// </summary>
         public bool DebugParentUnderMouse
         {
@@ -1167,23 +1166,23 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// If not <seealso cref="Debug.None"/>, debug is enabled only for the first
+        /// If not <see cref="Table.DebugType.None"/>, debug is enabled only for the first
         /// ascendant of the actor under the mouse that is a table.
-        /// Can be combined with <seealso cref="DebugAll"/>.
+        /// Can be combined with <see cref="DebugAll"/>.
         /// </summary>
-        /// <param name="debugTableUnderMouse">May be null for <seealso cref="Debug.None"/>.</param>
-        public void SetDebugTableUnderMouse( Table.Debug? debugTableUnderMouse )
+        /// <param name="debugTableUnderMouse">May be null for <see cref="Table.DebugType.None"/>.</param>
+        public void SetDebugTableUnderMouse( Table.DebugType? debugTableUnderMouse )
         {
             if ( debugTableUnderMouse == null )
             {
-                _debugTableUnderMouse = Table.Debug.None;
+                _debugTableUnderMouse = Table.DebugType.None;
             }
 
             if ( this._debugTableUnderMouse == debugTableUnderMouse ) return;
 
             this._debugTableUnderMouse = debugTableUnderMouse;
 
-            if ( debugTableUnderMouse != Table.Debug.None )
+            if ( debugTableUnderMouse != Table.DebugType.None )
             {
                 debug = true;
             }
@@ -1196,11 +1195,11 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// <summary>
         /// If true, debug is enabled only for the first ascendant of the actor
         /// under the mouse that is a table.
-        /// Can be combined with <seealso cref="DebugAll"/>. 
+        /// Can be combined with <see cref="DebugAll"/>. 
         /// </summary>
         public void SetDebugTableUnderMouse( bool debugTableUnderMouse )
         {
-            SetDebugTableUnderMouse( debugTableUnderMouse ? Table.Debug.All : Table.Debug.None );
+            SetDebugTableUnderMouse( debugTableUnderMouse ? Table.DebugType.All : Table.DebugType.None );
         }
 
         /// <summary>
@@ -1220,14 +1219,14 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// <summary>
         /// Check if screen coordinates are inside the viewport's screen area.
         /// </summary>
-        internal bool IsInsideViewport( int screenX, int screenY )
+        public bool IsInsideViewport( int screenX, int screenY )
         {
             var x0 = Viewport.ScreenX;
             var x1 = x0 + Viewport.ScreenWidth;
             var y0 = Viewport.ScreenY;
             var y1 = y0 + Viewport.ScreenHeight;
 
-            screenY = Gdx.Graphics.GetHeight() - 1 - screenY;
+            screenY = Gdx.Graphics!.GetHeight() - 1 - screenY;
 
             return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
         }

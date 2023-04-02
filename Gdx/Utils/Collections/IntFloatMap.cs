@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils.Collections
 {
-    public class IntFloatMap
+    public class IntFloatMap : Dictionary< int, float >
     {
     }
 }

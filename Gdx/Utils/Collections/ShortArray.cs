@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils.Collections
 {
-    public class ShortArray
+    public class ShortArray : List< short >
     {
         
     }

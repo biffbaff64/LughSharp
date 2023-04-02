@@ -2,7 +2,7 @@
 {
     public class StringBuilder
     {
-        public StringBuilder( int capacity )
+        public StringBuilder( int capacity = 16 )
         {
         }
         
@@ -32,6 +32,11 @@
 
         public void Append( long value )
         {
+        }
+
+        public new string ToString()
+        {
+            return string.Empty;
         }
     }
 }

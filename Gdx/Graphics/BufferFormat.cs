@@ -4,7 +4,7 @@
     /// Class describing the bits per pixel, depth buffer precision,
     /// stencil precision and number of MSAA samples.
     /// </summary>
-    public class BufferFormat
+    public record BufferFormat
     {
         public int  R                { get; set; }  // number of bits per color channel.
         public int  G                { get; set; }  // ...
@@ -16,20 +16,7 @@
         public bool CoverageSampling { get; set; }  // whether coverage sampling anti-aliasing is used.
                                                     // If so, you have to clear the coverage buffer as well!
 
-        public BufferFormat( int  r, int g, int b, int a, int depth, int stencil, int samples,
-                             bool coverageSampling )
-        {
-            this.R                = r;
-            this.G                = g;
-            this.B                = b;
-            this.A                = a;
-            this.Depth            = depth;
-            this.Stencil          = stencil;
-            this.Samples          = samples;
-            this.CoverageSampling = coverageSampling;
-        }
-
-        public new string ToString()
+        public override string ToString()
         {
             return "r - " + R + ", g - " + G + ", b - " + B + ", a - " + A
                    + ", depth - " + Depth + ", stencil - " + Stencil
