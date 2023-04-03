@@ -147,14 +147,14 @@
 //            Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.ORDERED;
 
         // Invariants: mark <= position <= limit <= capacity
-        private int _mark     = -1;
-        private int _position = 0;
-        private int _limit;
-        private int _capacity;
+        protected int mark     = -1;
+        protected int position = 0;
+        protected int limit;
+        protected int capacity;
 
         // Used only by direct buffers
         // NOTE: hoisted here for speed in JNI GetDirectBufferAddress
-        long address;
+        internal long address;
 
     }
 }

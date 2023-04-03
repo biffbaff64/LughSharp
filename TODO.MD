@@ -8,55 +8,55 @@
 
 CORE
 ----
-    - DONE - AbstractGraphics
-    - DONE - AbstractInput
-    - DONE - ApplicationAdapter
-    - DONE - Game
-    - DONE - Gdx
-    - DONE - IApplication
-    - DONE - IApplicationListener
-    - DONE - IApplicationLogger
-    - DONE - IAudio
-    - DONE - IFile
-    - DONE - IGraphics
-    - DONE - IInput
-    - DONE - IInputProcessor
-    - DONE - ILifecycleListener
-    - DONE - INet
-    - DONE - InputAdapter
-    - DONE - InputEventQueue
-    - DONE - IPreferences
-    - DONE - IScreen
-    - DONE - ScreenAdapter
-    - DONE - Version
+    - DONE - AbstractGraphics               Convert
+    - DONE - AbstractInput                  Convert
+    - DONE - ApplicationAdapter             Convert
+    - DONE - Game                           Convert
+    - DONE - Gdx                            Convert
+    - DONE - IApplication                   Convert
+    - DONE - IApplicationListener           Convert
+    - DONE - IApplicationLogger             Convert
+    - DONE - IAudio                         Convert
+    - DONE - IFile                          Convert
+    - DONE - IGraphics                      Convert
+    - DONE - IInput                         Convert
+    - DONE - IInputProcessor                Convert
+    - DONE - ILifecycleListener             Convert
+    - DONE - INet                           Convert
+    - DONE - InputAdapter                   Convert
+    - DONE - InputEventQueue                Convert
+    - DONE - IPreferences                   Convert
+    - DONE - IScreen                        Convert
+    - DONE - ScreenAdapter                  Convert
+    - DONE - Version                        Convert
 
 ASSETS
 ------
-    -      - AssetDescriptor
-    -      - AssetLoaderParameters
-    -      - AssetLoadingTask
-    -      - AssetManager
-    -      - IAssetErrorListener
-    -      - RefCountedContainer
+    -      - AssetDescriptor                Convert
+    -      - AssetLoaderParameters          Convert
+    -      - AssetLoadingTask               Convert
+    -      - AssetManager                   Convert
+    -      - IAssetErrorListener            Convert
+    -      - RefCountedContainer            Convert
 
 ASSETS/LOADERS
 --------------
-    -      - AssetLoader
-    -      - AsynchronousAssetLoader
-    -      - BitmapFontLoader
-    -      - CubemapLoader
-    -      - I18NBundleLoader
-    -      - IFileHandleResolver
-    -      - ModelLoader
-    -      - MusicLoader
-    -      - ParticleEffectLoader
-    -      - PixmapLoader
-    -      - ShaderProgramLoader
-    -      - SkinLoader
-    -      - SoundLoader
-    -      - SynchronousAssetLoader
-    -      - TextureAtlasLoader
-    -      - TextureLoader
+    -      - AssetLoader                    Convert
+    -      - AsynchronousAssetLoader        Convert
+    -      - BitmapFontLoader               Convert
+    -      - CubemapLoader                  Convert
+    -      - I18NBundleLoader               Convert
+    -      - IFileHandleResolver            Convert
+    -      - ModelLoader                    Convert
+    -      - MusicLoader                    Convert
+    -      - ParticleEffectLoader           Convert
+    -      - PixmapLoader                   Convert
+    -      - ShaderProgramLoader            Convert
+    -      - SkinLoader                     Convert
+    -      - SoundLoader                    Convert
+    -      - SynchronousAssetLoader         Convert
+    -      - TextureAtlasLoader             Convert
+    -      - TextureLoader                  Convert
 
 ASSETS/LOADERS/RESOLVERS
 ------------------------
@@ -70,10 +70,10 @@ ASSETS/LOADERS/RESOLVERS
 
 AUDIO
 -----
-    - DONE - IAudioDevice
-    - DONE - IAudioRecorder
-    - DONE - IMusic
-    - DONE - ISound
+    - DONE - IAudioDevice                   Convert
+    - DONE - IAudioRecorder                 Convert
+    - DONE - IMusic                         Convert
+    - DONE - ISound                         Convert
 
 FILES
 -----
@@ -82,60 +82,60 @@ FILES
 
 GRAPHICS
 --------
-    -      - BufferFormat               record class
-    -      - Camera
-    - DONE - Color
-    -      - Colors
-    -      - Cubemap
-    -      - DisplayMode
-    - DONE - FPSLogger
-    -      - GLTexture
-    -      - GraphicsType
-    -      - ICubemapData
-    -      - ICursor
-    - DONE - IGL20
-    - DONE - IGL30
-    -      - ITextureData
-    -      - Mesh
-    -      - Monitor
-    -      - OrthographicCamera
-    -      - PerspectiveCamera
-    -      - Pixmap
-    -      - PixmapIO
-    -      - Texture
-    -      - TextureArray
-    -      - TextureArrayData
-    -      - TextureFilter
-    -      - VertexAttribute
-    -      - VertexAttributes
+    -      - BufferFormat                   Convert - record class
+    -      - Camera                         Convert
+    - DONE - Color                          Convert
+    -      - Colors                         Convert
+    -      - Cubemap                        Convert
+    -      - DisplayMode                    Convert
+    - DONE - FPSLogger                      Convert
+    -      - GLTexture                      Convert
+    -      - GraphicsType                   Convert
+    -      - ICubemapData                   Convert
+    -      - ICursor                        Convert
+    - DONE - IGL20                          Convert
+    - DONE - IGL30                          Convert
+    -      - ITextureData                   Convert
+    -      - Mesh                           Convert
+    -      - Monitor                        Convert
+    -      - OrthographicCamera             Convert
+    -      - PerspectiveCamera              Convert
+    -      - Pixmap                         Convert
+    -      - PixmapIO                       Convert
+    -      - Texture                        Convert
+    -      - TextureArray                   Convert
+    -      - TextureArrayData               Convert
+    -      - TextureFilter                  Convert
+    -      - VertexAttribute                Convert
+    -      - VertexAttributes               Convert
 
 GRAPHICS/G2D
 ------------
-    -      - Animation
-    -      - BitmapFont
-    -      - BitmapFontCache
-    -      - CpuSpriteBatch
-    -      - DistanceFieldFont
-    -      - Gdx2DPixmap
-    -      - GlyphLayout
-    -      - IBatch
-    -      - IPolygonBatch
-    -      - NinePatch
-    -      - ParticleEffect
-    -      - ParticleEffectPool
-    -      - ParticleEmitter
-    -      - PixmapPacker
-    -      - PixmapPacker10
-    -      - PolygonRegion
-    -      - PolygonRegionLoader
-    -      - PolygonSprite
-    -      - PolygonSpriteBatch
-    -      - RepeatablePolygonSprite
-    -      - Sprite
-    -      - SpriteBatch
-    -      - SpriteCache
-    -      - TextureAtlas
-    -      - TextureRegion
+    -      - Animation                      Convert
+    -      - BitmapFont                     Convert
+    -      - BitmapFontCache                Convert
+    -      - CpuSpriteBatch                 Convert
+    -      - DistanceFieldFont              Convert
+    -      - Gdx2DPixmap                    Convert
+    -      - GlyphLayout                    Convert
+    -      - IBatch                         Convert
+    -      - IPolygonBatch                  Convert
+    -      - NinePatch                      Convert
+    -      - ParticleEffect                 Convert
+    -      - ParticleEffectPool             Convert
+    -      - ParticleEmitter                Convert
+    -      - PixmapPacker                   Convert
+    -      - PixmapPacker10                 Convert
+    -      - PolygonRegion                  Convert
+    -      - PolygonRegionLoader            Convert
+    -      - PolygonSprite                  Convert
+    -      - PolygonSpriteBatch             Convert
+    -      - RepeatablePolygonSprite        Convert
+    -      - Sprite                         Convert
+    -      - SpriteBatch                    Convert
+    -      - SpriteCache                    Convert
+    -      - TextureAtlas                   Convert
+    -      - TextureRegion                  Convert
 
 GRAPHICS/G3D
 ------------
@@ -194,59 +194,59 @@ INPUT
 
 MAPS
 ----
-    -      - IImageResolver
-    -      - IMapRenderer
-    -      - Map
-    -      - MapGroupLayer
-    -      - MapLayer
-    -      - MapLayers
-    -      - MapObject
-    -      - MapObjects
-    -      - MapProperties
+    -      - IImageResolver                         Convert
+    -      - IMapRenderer                           Convert
+    -      - Map                                    Convert
+    -      - MapGroupLayer                          Convert
+    -      - MapLayer                               Convert
+    -      - MapLayers                              Convert
+    -      - MapObject                              Convert
+    -      - MapObjects                             Convert
+    -      - MapProperties                          Convert
 
 MAPS/OBJECTS
 ------------
-    -      - CircleMapObject
-    -      - EllipseMapObject
-    -      - PolygonMapObject
-    -      - PolylineMapObject
-    -      - RectangleMapObject
-    -      - TextureMapObject
+    -      - CircleMapObject                        Convert
+    -      - EllipseMapObject                       Convert
+    -      - PolygonMapObject                       Convert
+    -      - PolylineMapObject                      Convert
+    -      - RectangleMapObject                     Convert
+    -      - TextureMapObject                       Convert
 
 MAPS/TILED
 ----------
-    -      - ITiledMapTile
-    -      - TiledMap
-    -      - TiledMapImageLayer
-    -      - TiledMapTileLayer
-    -      - TiledMapTileSet
-    -      - TiledMapTileSets
+    -      - ITiledMapTile                          Convert
+    -      - TiledMap                               Convert
+    -      - TiledMapImageLayer                     Convert
+    -      - TiledMapTileLayer                      Convert
+    -      - TiledMapTileSet                        Convert
+    -      - TiledMapTileSets                       Convert
 
 MAPS/TILED/LOADERS
 ------------------
-    -      - AtlasTmxMapLoader
-    -      - BaseTmxMapLoader
-    -      - TmxMapLoader
+    -      - AtlasTmxMapLoader                      Convert
+    -      - BaseTmxMapLoader                       Convert
+    -      - TmxMapLoader                           Convert
     - ???? - TideMapLoader      Q: Should I support Tide?
 
 MAPS/TILED/OBJECTS
 ------------------
-    -      - TiledMapTileMapObject
+    -      - TiledMapTileMapObject                  Convert
 
 MAPS/TILED/RENDERERS
 --------------------
-    -      - BatchTiledMapRenderer
-    -      - HexagonalTiledMapRenderer
-    -      - IsometricStaggeredTiledMapRenderer
-    -      - IsometricTiledMapRenderer
-    -      - ITiledMapRenderer
-    -      - OrthoCachedTiledMapRenderer
-    -      - OrthogonalTiledMapRenderer
+    -      - BatchTiledMapRenderer                  Convert
+    -      - HexagonalTiledMapRenderer              Convert
+    -      - IsometricStaggeredTiledMapRenderer     Convert
+    -      - IsometricTiledMapRenderer              Convert
+    -      - ITiledMapRenderer                      Convert
+    -      - OrthoCachedTiledMapRenderer            Convert
+    -      - OrthogonalTiledMapRenderer             Convert
 
 MAPS/TILED/TILES
 ----------------
-    -      - AnimatedTileMapTile
-    -      - StaticTiledMapTile
+    -      - AnimatedTileMapTile                    Convert
+    -      - StaticTiledMapTile                     Convert
 
 MATH
 ----
@@ -286,13 +286,16 @@ MATH
 
 MATH/COLLISION
 --------------
-    -      - BoundingBox
-    -      - Ray
-    -      - Segment
-    -      - Sphere
+    -      - BoundingBox            Convert
+    -      - Ray                    Convert
+    -      - Segment                Convert
+    -      - Sphere                 Convert
 
 NETWORK
 -------
+
+    Note:- All this is probably already supported by C# System
+
     -      - HttpParametersUtils
     -      - HttpRequestBuilder
     -      - HttpStatus
@@ -308,272 +311,301 @@ NETWORK
 
 SCENES.SCENE2D
 --------------
-    -      - Action
-    -      - Actor
-    -      - Event
-    -      - Group
-    -      - IEventListener
-    -      - InputEvent
-    -      - InputListener
-    -      - Stage
-    -      - Touchable
+    -      - Action                         Convert
+    -      - Actor                          Convert
+    -      - Event                          Convert
+    -      - Group                          Convert
+    -      - IEventListener                 Convert
+    -      - InputEvent                     Convert
+    -      - InputListener                  Convert
+    -      - Stage                          Convert
+    -      - Touchable                      Convert
 
 SCENES.SCENE2D/ACTIONS
 ----------------------
-    -      - Actions
-    -      - AddAction
-    -      - AddListenerAction
-    -      - AfterAction
-    -      - AlphaAction
-    -      - ColorAction
-    -      - CountdownEventAction
-    -      - DelayAction
-    -      - DelegateAction
-    -      - EventAction
-    -      - FloatAction
-    -      - IntAction
-    -      - LayoutAction
-    -      - MoveByAction
-    -      - MoveToAction
-    -      - ParallelAction
-    -      - RelativeTemporalAction
-    -      - RemoveAction
-    -      - RemoveActorAction
-    -      - RemoveListenerAction
-    -      - RepeatAction
-    -      - RotateByAction
-    -      - RotateToAction
-    -      - RunnableAction
-    -      - ScaleByAction
-    -      - ScaleToAction
-    -      - SequenceAction
-    -      - SizeByAction
-    -      - SizeToAction
-    -      - TemporalAction
-    -      - TimeScaleAction
-    -      - TouchableAction
-    -      - VisibleAction
+    -      - Actions                        Convert
+    -      - AddAction                      Convert
+    -      - AddListenerAction              Convert
+    -      - AfterAction                    Convert
+    -      - AlphaAction                    Convert
+    -      - ColorAction                    Convert
+    -      - CountdownEventAction           Convert
+    -      - DelayAction                    Convert
+    -      - DelegateAction                 Convert
+    -      - EventAction                    Convert
+    -      - FloatAction                    Convert
+    -      - IntAction                      Convert
+    -      - LayoutAction                   Convert
+    -      - MoveByAction                   Convert
+    -      - MoveToAction                   Convert
+    -      - ParallelAction                 Convert
+    -      - RelativeTemporalAction         Convert
+    -      - RemoveAction                   Convert
+    -      - RemoveActorAction              Convert
+    -      - RemoveListenerAction           Convert
+    -      - RepeatAction                   Convert
+    -      - RotateByAction                 Convert
+    -      - RotateToAction                 Convert
+    -      - RunnableAction                 Convert
+    -      - ScaleByAction                  Convert
+    -      - ScaleToAction                  Convert
+    -      - SequenceAction                 Convert
+    -      - SizeByAction                   Convert
+    -      - SizeToAction                   Convert
+    -      - TemporalAction                 Convert
+    -      - TimeScaleAction                Convert
+    -      - TouchableAction                Convert
+    -      - VisibleAction                  Convert
 
 SCENES.SCENE2D/UI
 -----------------
-    -      - Button
-    -      - ButtonGroup
-    -      - Cell
-    -      - CheckBox
-    -      - Container
-    -      - Dialog
-    -      - HorizontalGroup
-    -      - Image
-    -      - ImageButton
-    -      - ImageTextButton
-    -      - Label
-    -      - List
-    -      - ParticleEffectActor
-    -      - ProgressBar
-    -      - ScrollPane
-    -      - SelectBox
-    -      - Skin
-    -      - Slider
-    -      - SplitPane
-    -      - Stack
-    -      - Table
-    -      - TextArea
-    -      - TextButton
-    -      - TextField
-    -      - TextTooltip
-    -      - TooltipManager
-    -      - Touchpad
-    -      - Tree
-    -      - Value
-    -      - VerticalGroup
-    -      - Widget
-    -      - WidgetGroup
-    -      - Window
+    -      - Button                         Convert
+    -      - ButtonGroup                    Convert
+    -      - Cell                           Convert
+    -      - CheckBox                       Convert
+    -      - Container                      Convert
+    -      - Dialog                         Convert
+    -      - HorizontalGroup                Convert
+    -      - Image                          Convert
+    -      - ImageButton                    Convert
+    -      - ImageTextButton                Convert
+    -      - Label                          Convert
+    -      - List                           Convert
+    -      - ParticleEffectActor            Convert
+    -      - ProgressBar                    Convert
+    -      - ScrollPane                     Convert
+    -      - SelectBox                      Convert
+    -      - Skin                           Convert
+    -      - Slider                         Convert
+    -      - SplitPane                      Convert
+    -      - Stack                          Convert
+    -      - Table                          Convert
+    -      - TextArea                       Convert
+    -      - TextButton                     Convert
+    -      - TextField                      Convert
+    -      - TextTooltip                    Convert
+    -      - TooltipManager                 Convert
+    -      - Touchpad                       Convert
+    -      - Tree                           Convert
+    -      - Value                          Convert
+    -      - VerticalGroup                  Convert
+    -      - Widget                         Convert
+    -      - WidgetGroup                    Convert
+    -      - Window                         Convert
 
 SCENES.SCENE2D/UTILS
 --------------------
-    -      - ActorGestureListener
-    -      - ArraySelection
-    -      - BaseDrawable
-    -      - ChangeListener
-    -      - ClickListener
-    -      - DragAndDrop
-    -      - DragListener
-    -      - DragScrollListener
-    -      - FocusListener
-    -      - ICullable
-    -      - IDisableable
-    -      - IDrawable
-    -      - ILayout
-    -      - ITransformDrawable
-    -      - NinePatchDrawable
-    -      - ScissorStack
-    -      - Selection
-    -      - SpriteDrawable
-    -      - TextureRegionDrawable
-    -      - TiledDrawable
-    -      - UIUtils
+    -      - ActorGestureListener           Convert
+    -      - ArraySelection                 Convert
+    -      - BaseDrawable                   Convert
+    -      - ChangeListener                 Convert
+    -      - ClickListener                  Convert
+    -      - DragAndDrop                    Convert
+    -      - DragListener                   Convert
+    -      - DragScrollListener             Convert
+    -      - FocusListener                  Convert
+    -      - ICullable                      Convert
+    -      - IDisableable                   Convert
+    -      - IDrawable                      Convert
+    -      - ILayout                        Convert
+    -      - ITransformDrawable             Convert
+    -      - NinePatchDrawable              Convert
+    -      - ScissorStack                   Convert
+    -      - Selection                      Convert
+    -      - SpriteDrawable                 Convert
+    -      - TextureRegionDrawable          Convert
+    -      - TiledDrawable                  Convert
+    -      - UIUtils                        Convert
 
 UTILS
 -----
-    - DONE - Align
-    -      - Base64Coder
+    NOTE:   I think the majority of these utils classes can be removed and
+            replaced by C# standard classes. From what I understand, or have
+            been told, some of these classes have been written because the
+            standard java libraries do not have that functionality, whereas
+            C# does.
+
+    Buffers
+    -------
+    -      - Buffer                         Needed??
+    -      - BufferUtils                    Needed??
+    -      - DataBuffer                     Needed??
+    -      - IntBuffer                      Needed??
+
+    Clipboard
+    ---------
+    -      - IClipboard                     Convert - Interface, actual clipboard handled in backend.                 
+
+    Pools
+    -----
+    -      - FlushablePool                  Needed??
+    -      - IPoolable                      Needed??
+    -      - Pool                           Needed??
+    -      - PooledLinkedList               Needed??
+    -      - Pools                          Needed??
+
+    Misc
+    ----
+    - DONE - Align                          Convert
+    -      - Base64Coder                    Use System.Convert classes??
     -      - BinaryHeap
-    -      - Bits
-    -      - Buffer
-    -      - BufferUtils
-    -      - IClipboard
-    -      - ComparableTimSort
-    -      - DataBuffer
-    -      - DataInput
-    -      - DataOutput
-    - DONE - FloatConsts                Doner, but is it needed?
-    -      - FlushablePool
+    - DONE - Bits                           Convert
+    -      - ComparableTimSort              Check
+    -      - DataInput                      Check
+    -      - DataOutput                     Check
+    - DONE - FloatConsts                    Done, but is it needed?
     -      - GdxNativesLoader
-    -      - I18NBundle
-    -      - IllegalStateException
-    -      - IntBuffer
-    -      - IPoolable
+    -      - I18NBundle                     Check
     -      - IRunnable
-    -      - LittleEndianInputStream
-    -      - Logger
-    -      - NumberUtils
+    -      - LittleEndianInputStream        Check
+    - DONE - Logger                         Convert
+    - DONE - NumberUtils                    Convert
     -      - PauseableThread
-    -      - PerformanceCounter
-    -      - PerformanceCounters
-    -      - Pool
-    -      - PooledLinkedList
-    -      - Pools
-    -      - PropertiesUtils
+    -      - PerformanceCounter             Check
+    -      - PerformanceCounters            Check
+    -      - PropertiesUtils                Convert, but check first
     -      - QuadTreeFloat
     -      - Queue
     -      - QuickSelect
     -      - Scaling
-    -      - ScreenUtils
-    -      - Selector (aka Libgdx Select)
-    -      - SerializationException
-    -      - SharedLibraryLoader
+    -      - ScreenUtils                    Convert
+    -      - Select                     
+    -      - SharedLibraryLoader            Check
     -      - SortUtils
     -      - SortedIntList
     -      - StreamUtils
-    -      - StringBuilder
+    -      - StringBuilder                  Use System.Text.StringBuilder
     -      - TextFormatter
-    -      - Timer                  Use System.Timer instead??
+    -      - Timer                          Use System.Timer instead??
     -      - TimeUtils
     -      - TimSort
 
 UTILS/ASYNC
 -----------
-    -      - AsyncExecutor
-    -      - AsyncResult
-    -      - IAsyncTask
-    -      - ThreadUtils
+    -      - AsyncExecutor                  Needed??
+    -      - AsyncResult                    Needed??
+    -      - IAsyncTask                     Needed??
+    -      - ThreadUtils                    Needed??
 
 UTILS/ATOMIC
 ------------
-    -      - AtomicInteger
-    -      - AtomicQueue
-    -      - AtomicReferenceArray
+    -      - AtomicInteger                  Needed??
+    -      - AtomicQueue                    Needed??
+    -      - AtomicReferenceArray           Needed??
 
 UTILS/COLLECTIONS
 -----------------
-    -      - Array              Just use List<>?
-    -      - ArrayIterable      Needed??
-    -      - ArrayIterator      Needed??
-    - DONE - ArrayMap                   Dictionary<K, V>
-    - DONE - BooleanArray               List< bool >
-    - DONE - ByteArray                  List< byte >
-    - DONE - CharArray                  List< char >
-    -      - Collections
-    -      - DelayedRemovalArray
-    - DONE - FloatArray                 List< float >
-    -      - IdentityMap
-    - DONE - IntArray                   List< int >
-    - DONE - IntFloatMap                Dictionary< int, float >
-    - DONE - IntIntMap                  Dictionary< int, int >
-    - DONE - IntMap                     Dictionary< int, V >
-    -      - IntSet
-    -      - IPredicate
-    - DONE - LongArray                  List< long >
-    - DONE - LongMap                    Dictionary< long, V >
-    -      - ObjectFloatMap
-    -      - ObjectIntMap
-    -      - ObjectLongMap
-    -      - ObjectMap
-    -      - ObjectSet
-    -      - OrderedMap
-    -      - OrderedSet
-    -      - PredicateIterable
-    -      - PredicateIterator
-    -      - ShortArray                 List< short >
+
+    Note: C# has IEnumerable and IEnumerator interfaces...
+
+    Arrays
+    ------
+    -      - Array                          List<>
+    -      - ArrayIterable                  Needed??    - IEnumerable?
+    -      - ArrayIterator                  Needed??    - IEnumerator?
+    -      - BooleanArray                   List< bool >
+    -      - ByteArray                      List< byte >
+    -      - CharArray                      List< char >
+    -      - IntArray                       List< int >
+    -      - DelayedRemovalArray            
+    -      - FloatArray                     List< float >
+    -      - LongArray                      List< long >
+    -      - ShortArray                     List< short >
     -      - SnapshotArray
 
+    Maps
+    ----
+    - DONE - ArrayMap                       Replace with Dictionary<K, V>
+    -      - IdentityMap                    Replace with 
+    -      - IntFloatMap                    Replace with Dictionary< int, float >
+    -      - IntIntMap                      Replace with Dictionary< int, int >
+    -      - IntMap                         Replace with Dictionary< int, V >
+    -      - LongMap                        Replace with Dictionary< long, V >
+    -      - ObjectFloatMap                 Replace with 
+    -      - ObjectIntMap                   Replace with 
+    -      - ObjectLongMap                  Replace with 
+    -      - ObjectMap                      Replace with 
+    -      - OrderedMap                     Replace with 
+
+    Sets
+    ----
+    -      - IntSet                         Replace with 
+    -      - ObjectSet                      Replace with 
+    -      - OrderedSet                     Replace with 
+                                            
+    Misc                                    
+    ----                                    
+    -      - Collections                    Needed??
+    -      - IPredicate                     Needed??
+    -      - PredicateIterable              Needed??
+    -      - PredicateIterator              Needed??
+                                            
 UTILS/COMPRESSION
 -----------------
-    -      - CRC                        Needed??
-    -      - ICodeProgress              Needed??
-    -      - LzmaAdapted                Needed??
+    -      - CRC                            Needed??
+    -      - ICodeProgress                  Needed??
+    -      - LzmaAdapted                    Needed??
 
     UTILS/COMPRESSION/LZ
     --------------------
-            -      - BinTree            Needed??
-            -      - InWindow           Needed??
-            -      - OutWindow          Needed??
+            -      - BinTree                Needed??
+            -      - InWindow               Needed??
+            -      - OutWindow              Needed??
     
     UTILS/COMPRESSION/LZMA
     ----------------------
-            -      - Base               Needed??
-            -      - Decoder            Needed??
-            -      - Encoder            Needed??
+            -      - Base                   Needed??
+            -      - Decoder                Needed??
+            -      - Encoder                Needed??
     
     UTILS/COMPRESSION/RANGECODER
     ----------------------------
-            -      - BitTreeDecoder     Needed??
-            -      - BitTreeEncoder     Needed??
-            -      - Decoder            Needed??
-            -      - Encoder            Needed??
+            -      - BitTreeDecoder         Needed??
+            -      - BitTreeEncoder         Needed??
+            -      - Decoder                Needed??
+            -      - Encoder                Needed??
 
 UTILS/EXCEPTIONS
 ----------------
-    - Done - GdxRuntimeException
-    - Done - IllegalStateException
-    - Done - NoSuchElementException
-    - Done - NumberFormatException
-    - Done - SerializationException
+    - Done - GdxRuntimeException            Convert
+    - Done - IllegalStateException          Convert
+    - Done - NoSuchElementException         Convert
+    - Done - NumberFormatException          Convert
+    - Done - SerializationException         Convert
 
 UTILS/JSON
 ----------
-    -      - IBaseJsonReader            Needed??
-    -      - Json                       Needed??
-    -      - JsonReader                 Needed??
-    -      - JsonValue                  Needed??
-    -      - JsonWriter                 Needed??
-    -      - UBJsonReader               Needed??
-    -      - UBJsonWriter               Needed??
+    -      - IBaseJsonReader                Needed??
+    -      - Json                           Needed??
+    -      - JsonReader                     Needed??
+    -      - JsonValue                      Needed??
+    -      - JsonWriter                     Needed??
+    -      - UBJsonReader                   Needed??
+    -      - UBJsonWriter                   Needed??
 
 UTILS/REFLECT
 -------------
-    -      - Annotation                 Needed??
-    -      - ArrayReflection            Needed??
-    -      - ClassReflection            Needed??
-    -      - Constructor                Needed??
-    -      - Field                      Needed??
-    -      - Method                     Needed??
-    -      - ReflectionException        Needed??
-    -      - ReflectionPool             Needed??
+    -      - Annotation                     Needed??
+    -      - ArrayReflection                Needed??
+    -      - ClassReflection                Needed??
+    -      - Constructor                    Needed??
+    -      - Field                          Needed??
+    -      - Method                         Needed??
+    -      - ReflectionException            Needed??
+    -      - ReflectionPool                 Needed??
 
 UTILS/VIEWPORT
 --------------
-    -      - ExtendedViewport
-    -      - FillViewport
-    -      - FitViewport
-    -      - ScalingViewport
-    -      - ScreenViewport
-    -      - StretchViewport
-    -      - Viewport
+    -      - ExtendedViewport               Convert
+    -      - FillViewport                   Convert
+    -      - FitViewport                    Convert
+    -      - ScalingViewport                Convert
+    -      - ScreenViewport                 Convert
+    -      - StretchViewport                Convert
+    -      - Viewport                       Convert
 
 UTILS/XML
 ---------
-    -      - XmlReader                  Use System.Xml.XmlReader instead
-    -      - XmlWriter                  Use System.Xml.XmlWriter instead
+    -      - XmlReader                      Use System.Xml.XmlReader instead
+    -      - XmlWriter                      Use System.Xml.XmlWriter instead
 
