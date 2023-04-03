@@ -12,7 +12,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// <exception cref="GdxRuntimeException">
         /// if the type is classpath or internal and the file does not exist.
         /// </exception>
-        /// <seealso cref="IFiles.FileType"/>
+        /// <see cref="IFiles.FileType"/>
         /// 
         public FileHandle GetFileHandle( string path, IFiles.FileType type )
         {

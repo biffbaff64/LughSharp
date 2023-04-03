@@ -28,9 +28,9 @@ namespace LibGDXSharp.Maps.Tiled
         }
 
         /// <summary>
-        /// Gets the <seealso cref="ITiledMapTile"/> that has the given id.
+        /// Gets the <see cref="ITiledMapTile"/> that has the given id.
         /// </summary>
-        /// <param name="id"> the id of the <seealso cref="ITiledMapTile"/> to retrieve. </param>
+        /// <param name="id"> the id of the <see cref="ITiledMapTile"/> to retrieve. </param>
         /// <returns> tile matching id, null if it doesn't exist  </returns>
         public ITiledMapTile GetTile( int id )
         {
@@ -40,8 +40,8 @@ namespace LibGDXSharp.Maps.Tiled
         /// <summary>
         /// Adds or replaces tile with that id
         /// </summary>
-        /// <param name="id"> the id of the <seealso cref="ITiledMapTile"/> to add or replace. </param>
-        /// <param name="tile"> the <seealso cref="ITiledMapTile"/> to add or replace. </param>
+        /// <param name="id"> the id of the <see cref="ITiledMapTile"/> to add or replace. </param>
+        /// <param name="tile"> the <see cref="ITiledMapTile"/> to add or replace. </param>
         public void PutTile( int id, ITiledMapTile tile )
         {
             _tiles[ id ] = tile;

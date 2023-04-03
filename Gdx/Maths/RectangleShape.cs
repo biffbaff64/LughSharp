@@ -1,23 +1,24 @@
-﻿using LibGDXSharp.Scenes.Scene2D;
+﻿using System.Numerics;
 
 namespace LibGDXSharp.Maths
 {
-    public sealed class Rectangle : IShape2D
+    /// <summary>
+    /// Rectangle class that is independent of any backends.
+    /// This has no drawing methods, just those that handle the shape.
+    /// </summary>
+    public sealed class RectangleShape : IShape2D
     {
-        public readonly static Rectangle Tmp  = new Rectangle();
-        public readonly static Rectangle Tmp2 = new Rectangle();
+        public readonly static RectangleShape Tmp = new RectangleShape();
 
         public float X      { get; set; }
         public float Y      { get; set; }
         public float Width  { get; set; }
         public float Height { get; set; }
 
-        private readonly Vector2 _vector2 = new Vector2();
-
         /// <summary>
         /// Constructs a new rectangle with all values set to zero
         /// </summary>
-        public Rectangle() : this( 0, 0, 0, 0 )
+        public RectangleShape() : this( 0, 0, 0, 0 )
         {
         }
 
@@ -28,7 +29,7 @@ namespace LibGDXSharp.Maths
         /// <param name="y"> The corner point y-coordinate </param>
         /// <param name="width"> The width </param>
         /// <param name="height"> The height  </param>
-        public Rectangle( float x, float y, float width, float height )
+        public RectangleShape( float x, float y, float width, float height )
         {
             this.X      = x;
             this.Y      = y;
@@ -40,7 +41,7 @@ namespace LibGDXSharp.Maths
         /// Constructs a rectangle based on the given rectangle
         /// </summary>
         /// <param name="rect"> The rectangle  </param>
-        public Rectangle( Rectangle rect )
+        public RectangleShape( RectangleShape rect )
         {
             X      = rect.X;
             Y      = rect.Y;
@@ -55,7 +56,7 @@ namespace LibGDXSharp.Maths
         /// <param name="width"> width </param>
         /// <param name="height"> height </param>
         /// <returns> this rectangle for chaining  </returns>
-        public Rectangle Set( float x, float y, float width, float height )
+        public RectangleShape Set( float x, float y, float width, float height )
         {
             this.X      = x;
             this.Y      = y;
@@ -70,7 +71,7 @@ namespace LibGDXSharp.Maths
         /// </summary>
         public Vector2 GetPosition()
         {
-            return _vector2.Set( X, Y );
+            return new Vector2( X, Y );
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace LibGDXSharp.Maths
         /// from the supplied vector.
         /// </summary>
         /// <returns>This rectangle for chaining.</returns>
-        public Rectangle SetPosition( Vector2 position )
+        public RectangleShape SetPosition( Vector2 position )
         {
             this.X = position.X;
             this.Y = position.Y;
@@ -91,7 +92,7 @@ namespace LibGDXSharp.Maths
         /// from the supplied x and y values.
         /// </summary>
         /// <returns>This rectangle for chaining.</returns>
-        public Rectangle SetPosition( float x, float y )
+        public RectangleShape SetPosition( float x, float y )
         {
             this.X = x;
             this.Y = y;
@@ -105,7 +106,7 @@ namespace LibGDXSharp.Maths
         /// <param name="width">The new width.</param>
         /// <param name="height">The new height.</param>
         /// <returns>This rectangle for chaining.</returns>
-        public Rectangle SetSize( float width, float height )
+        public RectangleShape SetSize( float width, float height )
         {
             this.Width  = width;
             this.Height = height;
@@ -118,7 +119,7 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="sizeXY">The new width and height value.</param>
         /// <returns>This rectangle for chaining.</returns>
-        public Rectangle SetSize( float sizeXY )
+        public RectangleShape SetSize( float sizeXY )
         {
             this.Width  = sizeXY;
             this.Height = sizeXY;
@@ -131,7 +132,7 @@ namespace LibGDXSharp.Maths
         /// </summary>
         public Vector2 GetSize()
         {
-            return _vector2.Set( Width, Height );
+            return new Vector2( Width, Height );
         }
 
         /// <summary>
@@ -167,9 +168,9 @@ namespace LibGDXSharp.Maths
 
         /// <summary>
         /// </summary>
-        /// <param name="rectangle"> the other <seealso cref="Rectangle"/>.</param>
+        /// <param name="rectangle"> the other <see cref="RectangleShape"/>.</param>
         /// <returns> whether the other rectangle is contained in this rectangle.</returns>
-        public bool Contains( Rectangle rectangle )
+        public bool Contains( RectangleShape rectangle )
         {
             var xmin = rectangle.X;
             var xmax = xmin + rectangle.Width;
@@ -184,9 +185,9 @@ namespace LibGDXSharp.Maths
         /// <summary>
         /// Checks for overlap between this rectangle and the specified rectangle.
         /// </summary>
-        /// <param name="r"> the other <seealso cref="Rectangle"/> </param>
+        /// <param name="r"> the other <see cref="RectangleShape"/> </param>
         /// <returns> whether this rectangle overlaps the other rectangle.  </returns>
-        public bool Overlaps( Rectangle r )
+        public bool Overlaps( RectangleShape r )
         {
             return X < r.X + r.Width && X + Width > r.X && Y < r.Y + r.Height && Y + Height > r.Y;
         }
@@ -196,7 +197,7 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="rect"> the other rectangle </param>
         /// <returns> this rectangle for chaining  </returns>
-        public Rectangle Set( Rectangle rect )
+        public RectangleShape Set( RectangleShape rect )
         {
             this.X      = rect.X;
             this.Y      = rect.Y;
@@ -212,7 +213,7 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="rect"> the other rectangle </param>
         /// <returns> this rectangle for chaining  </returns>
-        public Rectangle Merge( Rectangle rect )
+        public RectangleShape Merge( RectangleShape rect )
         {
             var minX = Math.Min( X, rect.X );
             var maxX = Math.Max( X + Width, rect.X + rect.Width );
@@ -236,7 +237,7 @@ namespace LibGDXSharp.Maths
         /// <param name="x"> the x coordinate of the point </param>
         /// <param name="y"> the y coordinate of the point </param>
         /// <returns> this rectangle for chaining  </returns>
-        public Rectangle Merge( float x, float y )
+        public RectangleShape Merge( float x, float y )
         {
             var minX = Math.Min( this.X, x );
             var maxX = Math.Max( this.X + Width, x );
@@ -259,7 +260,7 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="vec"> the vector describing the point </param>
         /// <returns> this rectangle for chaining  </returns>
-        public Rectangle Merge( Vector2 vec )
+        public RectangleShape Merge( Vector2 vec )
         {
             return Merge( vec.X, vec.Y );
         }
@@ -270,7 +271,7 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="vecs"> the vectors describing the points </param>
         /// <returns> this rectangle for chaining  </returns>
-        public Rectangle Merge( Vector2[] vecs )
+        public RectangleShape Merge( Vector2[] vecs )
         {
             var minX = X;
             var maxX = X + Width;
@@ -324,7 +325,7 @@ namespace LibGDXSharp.Maths
         /// <param name="x"> the position's x </param>
         /// <param name="y"> the position's y </param>
         /// <returns> this for chaining  </returns>
-        public Rectangle SetCenter( float x, float y )
+        public RectangleShape SetCenter( float x, float y )
         {
             SetPosition( x - Width / 2, y - Height / 2 );
 
@@ -336,7 +337,7 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="position"> the position </param>
         /// <returns> this for chaining  </returns>
-        public Rectangle SetCenter( Vector2 position )
+        public RectangleShape SetCenter( Vector2 position )
         {
             SetPosition( position.X - Width / 2, position.Y - Height / 2 );
 
@@ -350,8 +351,8 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="rect"> the other rectangle to fit this rectangle around </param>
         /// <returns> this rectangle for chaining </returns>
-        /// <seealso cref="Scaling "/>
-        public Rectangle FitOutside( Rectangle rect )
+        /// <see cref="Scaling "/>
+        public RectangleShape FitOutside( RectangleShape rect )
         {
             var ratio = GetAspectRatio();
 
@@ -378,8 +379,8 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="rect"> the other rectangle to fit this rectangle inside </param>
         /// <returns> this rectangle for chaining </returns>
-        /// <seealso cref="Scaling "/>
-        public Rectangle FitInside( Rectangle rect )
+        /// <see cref="Scaling "/>
+        public RectangleShape FitInside( RectangleShape rect )
         {
             float ratio = GetAspectRatio();
 
@@ -411,17 +412,19 @@ namespace LibGDXSharp.Maths
 
         /// <summary>
         /// Sets this {@code Rectangle} to the value represented by the
-        /// specified string according to the format of <seealso cref="ToString()"/>.
+        /// specified string according to the format of <see cref="ToString()"/>.
         /// </summary>
         /// <param name="v"> the string. </param>
         /// <returns> this rectangle for chaining  </returns>
-        public Rectangle FromString( string v )
+        public RectangleShape FromString( string v )
         {
             var s0 = v.IndexOf( ',', 1 );
             var s1 = v.IndexOf( ',', s0 + 1 );
             var s2 = v.IndexOf( ',', s1 + 1 );
 
-            if ( s0 != -1 && s1 != -1 && s2 != -1 && v[ 0 ] == '[' && v[ v.Length - 1 ] == ']' )
+            // Note: v[ ^1 ] is equivalent to v[ v.Length - 1 ]
+
+            if ( s0 != -1 && s1 != -1 && s2 != -1 && v[ 0 ] == '[' && v[ ^1 ] == ']' )
             {
                 try
                 {
@@ -432,9 +435,9 @@ namespace LibGDXSharp.Maths
 
                     return this.Set( x, y, width, height );
                 }
-                catch ( System.FormatException )
+                catch ( FormatException )
                 {
-                    // Throw a GdxRuntimeException
+                    throw new GdxRuntimeException( "Malformed Rectangle: " + v );
                 }
             }
 
@@ -444,18 +447,12 @@ namespace LibGDXSharp.Maths
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public float Area()
-        {
-            return this.Width * this.Height;
-        }
+        public float Area() => this.Width * this.Height;
 
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public float Perimeter()
-        {
-            return 2 * ( this.Width + this.Height );
-        }
+        public float Perimeter() => 2 * ( this.Width + this.Height );
 
         /// <summary>
         /// </summary>
@@ -464,9 +461,7 @@ namespace LibGDXSharp.Maths
         {
             const int prime = 31;
 
-            var result = 1;
-
-            result = prime + NumberUtils.FloatToRawIntBits( Height );
+            var result = prime + NumberUtils.FloatToRawIntBits( Height );
             result = prime * result + NumberUtils.FloatToRawIntBits( Width );
             result = prime * result + NumberUtils.FloatToRawIntBits( X );
             result = prime * result + NumberUtils.FloatToRawIntBits( Y );
@@ -484,7 +479,7 @@ namespace LibGDXSharp.Maths
             if ( obj == null ) return false;
             if ( this.GetType() != obj.GetType() ) return false;
 
-            var other = ( Rectangle )obj;
+            var other = ( RectangleShape )obj;
 
             if ( NumberUtils.FloatToRawIntBits( Height ) != NumberUtils.FloatToRawIntBits( other.Height ) )
             {
@@ -501,12 +496,7 @@ namespace LibGDXSharp.Maths
                 return false;
             }
 
-            if ( NumberUtils.FloatToRawIntBits( Y ) != NumberUtils.FloatToRawIntBits( other.Y ) )
-            {
-                return false;
-            }
-
-            return true;
+            return NumberUtils.FloatToRawIntBits( Y ) == NumberUtils.FloatToRawIntBits( other.Y );
         }
     }
 }

@@ -2,7 +2,10 @@
 
 namespace LibGDXSharp.Utils
 {
-    public abstract class Pool<T>
+    /// <summary>
+    /// A pool of objects that can be reused to avoid allocation.
+    /// </summary>
+    public class Pool<T>
     {
         // The maximum number of objects that will be pooled.
         public int Max  { get; set; }
@@ -10,12 +13,12 @@ namespace LibGDXSharp.Utils
         // The highest number of free objects. Can be reset any time.
         public int Peak { get; set; }
 
-        private readonly Array< T > _freeObjects;
+        private readonly Array< T? > _freeObjects;
 
         /// <summary>
         /// Creates a pool with an initial capacity of 16 and no maximum.
         /// </summary>
-        protected Pool() : this( 16 )
+        public Pool() : this( 16 )
         {
         }
 
@@ -25,9 +28,9 @@ namespace LibGDXSharp.Utils
         /// The initial size of the array supporting the pool. No objects are created/pre-allocated.
         /// </param>
         /// <param name="max">The maximum number of free objects to store in this pool.</param>
-        protected Pool( int initialCapacity, int max = int.MaxValue )
+        public Pool( int initialCapacity, int max = int.MaxValue )
         {
-            _freeObjects = new Array< T >( false, initialCapacity );
+            _freeObjects = new Array< T? >( false, initialCapacity );
 
             this.Max = max;
         }
@@ -35,7 +38,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        protected abstract T? NewObject();
+        public Func<T>? NewObject { get; set; }
 
         /// <summary>
         /// Returns an object from this pool.
@@ -114,7 +117,7 @@ namespace LibGDXSharp.Utils
         /// freed, but the maximum capacity of the pool is reached, and when the
         /// pool is <see cref="Clear"/>ed.
         /// </summary>
-        protected void Discard( T obj )
+        protected void Discard( T? obj )
         {
         }
 
@@ -131,7 +134,7 @@ namespace LibGDXSharp.Utils
 
             for ( int i = 0, n = objects.Size; i < n; i++ )
             {
-                T obj = objects.Get( i );
+                T? obj = objects.Get( i );
 
                 if ( obj == null ) continue;
 
@@ -157,7 +160,7 @@ namespace LibGDXSharp.Utils
         {
             for ( var i = 0; i < _freeObjects.Size; i++ )
             {
-                T obj = _freeObjects.Pop();
+                T? obj = _freeObjects.Pop();
                 Discard( obj );
             }
         }

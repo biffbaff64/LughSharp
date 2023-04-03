@@ -1,8 +1,8 @@
 ﻿namespace LibGDXSharp.Utils.Atomic
 {
     /// <summary>
-    /// A queue that allows one thread to call <seealso cref="Put(object)"/> and another
-    /// thread to call <seealso cref="Poll()"/>. Multiple threads must not call these methods.
+    /// A queue that allows one thread to call <see cref="Put(object)"/> and another
+    /// thread to call <see cref="Poll()"/>. Multiple threads must not call these methods.
     /// </summary>
     public class AtomicQueue<T>
     {

@@ -90,7 +90,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         }
 
         /// <summary>
-        /// Returns true if this event is a touchUp triggered by <seealso cref="Stage.CancelTouchFocus()"/>.
+        /// Returns true if this event is a touchUp triggered by <see cref="Stage.CancelTouchFocus()"/>.
         /// </summary>
         public bool TouchFocusCancel => MathUtils.IsEqual( StageX, int.MinValue )
                                                 || MathUtils.IsEqual( StageY, int.MinValue );
@@ -129,7 +129,7 @@ namespace LibGDXSharp.Scenes.Scene2D
             /// </summary>
             MouseMoved,
             /// <summary>
-            /// The mouse pointer or an active touch have entered (i.e., <seealso cref="Actor.Hit(float, float, bool)"/>) an actor.
+            /// The mouse pointer or an active touch have entered (i.e., <see cref="Actor.Hit(float, float, bool)"/>) an actor.
             /// </summary>
             Enter,
             /// <summary>

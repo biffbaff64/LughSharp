@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Maths
 {
-    public class Matrix3
+    public class Matrix3X3
     {
         public const int M00 = 0;
         public const int M01 = 3;

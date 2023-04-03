@@ -36,7 +36,7 @@ namespace LibGDXSharp.Utils
 
         /// <summary>
         /// Sets an existing pool for the specified type, stored in a Class
-        /// to <seealso cref="Pool{T}"/> map.
+        /// to <see cref="Pool{T}"/> map.
         /// </summary>
         public static void Set( Type type, Pool< T > pool )
         {
@@ -65,7 +65,7 @@ namespace LibGDXSharp.Utils
         }
 
         /// <summary>
-        /// Frees the specified objects from the <seealso cref="Get() pool"/>.
+        /// Frees the specified objects from the <see cref="Get() pool"/>.
         /// Null objects within the array are silently ignored.
         /// </summary>
         /// <param name="objects"></param>

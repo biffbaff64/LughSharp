@@ -4,8 +4,8 @@
     /// Low level interface for receiving events.
     /// Typically there is a listener class for each specific event class.
     /// </summary>
-    /// <seealso cref="InputListener"/>
-    /// <seealso cref="InputEvent"/>
+    /// <see cref="InputListener"/>
+    /// <see cref="InputEvent"/>
     public interface IEventListener
     {
         /// <summary>

@@ -1,16 +1,22 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D
+﻿using LibGDXSharp.Core;
+
+namespace LibGDXSharp.Scenes.Scene2D
 {
     /// <summary>
     /// The base class for all events.
     /// By default an event will "bubble" up through an actor's parent's handlers
     /// (see <see cref="Bubbles"/>).
+    /// <p>
     /// An actor's capture listeners can stop() an event to prevent child actors
     /// from seeing it.
+    /// </p>
+    /// <p>
     /// An Event may be marked as "handled" which will end its propagation outside
     /// of the Stage (see <see cref="IsHandled"/>). The default Actor.fire(Event)
     /// will mark events handled if an EventListener returns true.
     /// A cancelled event will be stopped and handled. Additionally, many actors
     /// will undo the side-effects of a canceled event. (See <see cref="IsCancelled"/>)
+    /// </p>
     /// </summary>
     /// <remarks>
     /// The original getters and setters for 'cancelled', 'handled', 'bubbles',
@@ -47,7 +53,7 @@
 
         /// <summary>
         /// Marks this event as handled. This does not affect event propagation inside
-        /// scene2d, but causes the <see cref="Stage"/> <see cref="InputProcessor"/>
+        /// scene2d, but causes the <see cref="Stage"/> <see cref="IInputProcessor"/>
         /// methods to return true, which will eat the event so it is not passed on to
         /// the application under the stage. 
         /// </summary>

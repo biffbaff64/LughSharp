@@ -133,7 +133,7 @@ namespace LibGDXSharp.Graphics
 
         /// <summary>
         /// Rotates the direction and up vector of this camera by the given
-        /// <seealso cref="Quaternion"/>. The direction and up vector will not
+        /// <see cref="Quaternion"/>. The direction and up vector will not
         /// be orthogonalized.
         /// </summary>
         /// <param name="quat">The quaternion.</param>
@@ -198,7 +198,7 @@ namespace LibGDXSharp.Graphics
         /// It's the same as GLU gluUnProject, but does not rely on OpenGL. The x- and
         /// y-coordinate of vec are assumed to be in screen coordinates (origin is the
         /// top left corner, y pointing down, x pointing to the right) as reported by the
-        /// touch methods in <seealso cref="Input"/>. A z-coordinate of 0 will return a
+        /// touch methods in <see cref="Input"/>. A z-coordinate of 0 will return a
         /// point on the near plane, a z-coordinate of 1 will return a point on the far
         /// plane.
         /// This method allows you to specify the viewport position and dimensions in the
@@ -236,11 +236,11 @@ namespace LibGDXSharp.Graphics
         /// <see cref="Gdx.Graphics.GetWidth()"/> and <see cref="Gdx.Graphics.GetHeight()"/>.
         /// The x- and y-coordinate of vec are assumed to be in screen coordinates (origin
         /// is the top left corner, y pointing down, x pointing to the right) as reported by
-        /// the touch methods in <seealso cref="Input"/>. A z-coordinate of 0 will return a
+        /// the touch methods in <see cref="Input"/>. A z-coordinate of 0 will return a
         /// point on the near plane, a z-coordinate of 1 will return a point on the far plane.
         /// </summary>
         /// <param name="screenCoords">The point in screen coordinates.</param>
-        /// <returns> the mutated and unprojected screenCoords <seealso cref="Vector3"/></returns>
+        /// <returns> the mutated and unprojected screenCoords <see cref="Vector3"/></returns>
         public virtual Vector3 Unproject( Vector3 screenCoords )
         {
             Unproject( screenCoords, 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
@@ -249,14 +249,14 @@ namespace LibGDXSharp.Graphics
         }
 
         /// <summary>
-        /// Projects the <seealso cref="Vector3"/> given in world space to screen coordinates.
+        /// Projects the <see cref="Vector3"/> given in world space to screen coordinates.
         /// It's the same as GLU gluProject with one small deviation: The viewport is assumed
         /// to span the whole screen. The screen coordinate system has its origin in the
         /// <b>bottom</b> left, with the y-axis pointing <b>upwards</b> and the x-axis pointing
-        /// to the right. This makes it easily useable in conjunction with <seealso cref="Batch"/>
+        /// to the right. This makes it easily useable in conjunction with <see cref="Batch"/>
         /// and similar classes.
         /// </summary>
-        /// <returns>The mutated and projected worldCoords <seealso cref="Vector3"/>.</returns>
+        /// <returns>The mutated and projected worldCoords <see cref="Vector3"/>.</returns>
         public virtual Vector3 Project( Vector3 worldCoords )
         {
             Project( worldCoords, 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
@@ -265,14 +265,14 @@ namespace LibGDXSharp.Graphics
         }
 
         /// <summary>
-        /// Projects the <seealso cref="Vector3"/> given in world space to screen coordinates.
+        /// Projects the <see cref="Vector3"/> given in world space to screen coordinates.
         /// It's the same as GLU gluProject with one small deviation: The viewport is assumed
         /// to span the whole screen. The screen coordinate system has its origin in the
         /// <b>bottom</b> left, with the y-axis pointing <b>upwards</b> and the x-axis pointing
-        /// to the right. This makes it easily useable in conjunction with <seealso cref="Batch"/>
+        /// to the right. This makes it easily useable in conjunction with <see cref="Batch"/>
         /// and similar classes.
         /// This method allows you to specify the viewport position and dimensions in the coordinate
-        /// system expected by <seealso cref="GL20.GlViewport(int, int, int, int)"/>, with the origin
+        /// system expected by <see cref="GL20.GlViewport(int, int, int, int)"/>, with the origin
         /// in the bottom left corner of the screen.
         /// </summary>
         /// <param name="worldCoords"></param>
@@ -280,7 +280,7 @@ namespace LibGDXSharp.Graphics
         /// <param name="viewportY"> the coordinate of the bottom left corner of the viewport in glViewport coordinates.</param>
         /// <param name="viewportWidth"> the width of the viewport in pixels.</param>
         /// <param name="viewportHeight"> the height of the viewport in pixels.</param>
-        /// <returns> the mutated and projected worldCoords <seealso cref="Vector3"/>.</returns>
+        /// <returns> the mutated and projected worldCoords <see cref="Vector3"/>.</returns>
         public virtual Vector3 Project( Vector3 worldCoords, float viewportX, float viewportY,
                                         float viewportWidth, float viewportHeight )
         {
@@ -293,7 +293,7 @@ namespace LibGDXSharp.Graphics
         }
 
         /// <summary>
-        /// Creates a picking <seealso cref="Ray"/> from the coordinates given in screen
+        /// Creates a picking <see cref="Ray"/> from the coordinates given in screen
         /// coordinates. It is assumed that the viewport spans the whole screen. The screen
         /// coordinates origin is assumed to be in the top left corner, its y-axis pointing
         /// down, the x-axis pointing to the right. The returned instance is not a new
@@ -322,7 +322,7 @@ namespace LibGDXSharp.Graphics
         }
 
         /// <summary>
-        /// Creates a picking <seealso cref="Ray"/> from the coordinates given in screen
+        /// Creates a picking <see cref="Ray"/> from the coordinates given in screen
         /// coordinates. It is assumed that the viewport spans the whole screen. The screen
         /// coordinates origin is assumed to be in the top left corner, its y-axis pointing
         /// down, the x-axis pointing to the right. The returned instance is not a new

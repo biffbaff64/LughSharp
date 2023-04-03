@@ -38,7 +38,7 @@ namespace LibGDXSharp.Utils
         }
 
         /// <summary>
-        /// The specified objects must implement <seealso cref="System.IComparable"/>.
+        /// The specified objects must implement <see cref="System.IComparable"/>.
         /// </summary>
         public void Sort( object[] a )
         {
@@ -51,7 +51,7 @@ namespace LibGDXSharp.Utils
         }
 
         /// <summary>
-        /// The specified objects must implement <seealso cref="System.IComparable"/>.
+        /// The specified objects must implement <see cref="System.IComparable"/>.
         /// </summary>
         public void Sort( object[]? a, int fromIndex, int toIndex )
         {

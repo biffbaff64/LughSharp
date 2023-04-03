@@ -60,7 +60,7 @@
         /// Returns the value of the specified number as a <code>byte</code>
         /// which may involve rounding or truncation.
         /// <para>
-        /// This implementation returns the result of <seealso cref="IntValue"/> cast
+        /// This implementation returns the result of <see cref="IntValue"/> cast
         /// to a <code>byte</code>.
         /// </para>
         /// </summary>
@@ -77,7 +77,7 @@
         /// Returns the value of the specified number as a <code>short</code>
         /// which may involve rounding or truncation.
         /// <para>
-        /// This implementation returns the result of <seealso cref="IntValue"/>
+        /// This implementation returns the result of <see cref="IntValue"/>
         /// cast to a <code>short</code>.
         /// </para>
         /// </summary>

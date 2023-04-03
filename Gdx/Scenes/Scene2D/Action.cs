@@ -74,7 +74,7 @@
         {
             this._actor = actor;
 
-            if ( Target == null ) Target = actor;
+            Target ??= actor;
 
             if ( actor == null )
             {
@@ -94,6 +94,9 @@
             return _actor;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var name     = GetType().Name;
@@ -101,14 +104,14 @@
 
             if ( dotIndex != -1 )
             {
-                name = name.Substring( dotIndex + 1 );
+                // Note: equivalent to name.SubString(startIndex: dotIndex+1)
+                name = name[ (dotIndex + 1).. ];
             }
 
             if ( name.EndsWith( "Action" ) )
             {
-                // NB: Rider suggested using 'range indexer' here. I opted
-                // against it because, to me, name[ ..^6 ] looks like gibberish...
-                name = name.Substring( 0, name.Length - 6 );
+                // Note: equivalent to name.Substring( 0, name.Length - 6 );
+                name = name[ ..^6 ];
             }
 
             return name;

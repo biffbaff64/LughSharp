@@ -44,12 +44,12 @@ namespace LibGDXSharp.Utils.Viewport
 
         /// <summary>
         /// Configures this viewport's screen bounds using the specified screen
-        /// size and calls <seealso cref="Apply(bool)"/>. Typically called
-        /// from <seealso cref="IApplicationListener.Resize(int, int)"/> or
-        /// <seealso cref="IScreen.Resize(int, int)"/>.
+        /// size and calls <see cref="Apply(bool)"/>. Typically called
+        /// from <see cref="IApplicationListener.Resize(int, int)"/> or
+        /// <see cref="IScreen.Resize(int, int)"/>.
         /// </summary>
         /// <para>
-        /// The default implementation only calls <seealso cref="Apply(bool)"/>. 
+        /// The default implementation only calls <see cref="Apply(bool)"/>. 
         /// </para>
         public virtual void Update( int screenWidth, int screenHeight, bool centerCamera = false )
         {
@@ -60,7 +60,7 @@ namespace LibGDXSharp.Utils.Viewport
         /// Transforms the specified screen coordinate to world coordinates.
         /// </summary>
         /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
-        /// <seealso cref="Camera.Unproject(Vector3)"/>
+        /// <see cref="Camera.Unproject(Vector3)"/>
         public virtual Vector2 Unproject( Vector2 screenCoords )
         {
             _tmp.Set( screenCoords.X, screenCoords.Y, 1f );
@@ -75,7 +75,7 @@ namespace LibGDXSharp.Utils.Viewport
         /// Transforms the specified world coordinate to screen coordinates.
         /// </summary>
         /// <returns> The vector that was passed in, transformed to screen coordinates.</returns>
-        /// <seealso cref="Camera.Project(Vector3) "/>
+        /// <see cref="Camera.Project(Vector3) "/>
         public virtual Vector2 Project( Vector2 worldCoords )
         {
             _tmp.Set( worldCoords.X, worldCoords.Y, 1 );
@@ -90,7 +90,7 @@ namespace LibGDXSharp.Utils.Viewport
         /// Transforms the specified screen coordinate to world coordinates.
         /// </summary>
         /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
-        /// <seealso cref="Camera.Unproject(Vector3)"/>
+        /// <see cref="Camera.Unproject(Vector3)"/>
         public virtual Vector3 Unproject( Vector3 screenCoords )
         {
             Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
@@ -101,7 +101,7 @@ namespace LibGDXSharp.Utils.Viewport
         /// <summary>
         /// Transforms the specified world coordinate to screen coordinates. </summary>
         /// <returns> The vector that was passed in, transformed to screen coordinates. </returns>
-        /// <seealso cref="Camera.Project(Vector3) "/>
+        /// <see cref="Camera.Project(Vector3) "/>
         public virtual Vector3 Project( Vector3 worldCoords )
         {
             Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
@@ -111,7 +111,7 @@ namespace LibGDXSharp.Utils.Viewport
 
         /// <summary>
         /// </summary>
-        /// <seealso cref="Camera.GetPickRay(float, float, float, float, float, float) "/>
+        /// <see cref="Camera.GetPickRay(float, float, float, float, float, float) "/>
         public virtual Ray GetPickRay( float screenX, float screenY )
         {
             return Camera.GetPickRay( screenX, screenY, this.ScreenX, this.ScreenY, ScreenWidth, ScreenHeight );
@@ -119,8 +119,8 @@ namespace LibGDXSharp.Utils.Viewport
 
         /// <summary>
         /// </summary>
-        /// <seealso cref="ScissorStack.CalculateScissors"/>
-        public virtual void CalculateScissors( Matrix4 batchTransform, Rectangle area, Rectangle scissor )
+        /// <see cref="ScissorStack.CalculateScissors"/>
+        public virtual void CalculateScissors( Matrix4 batchTransform, RectangleShape area, RectangleShape scissor )
         {
             ScissorStack.CalculateScissors
                 (
@@ -163,7 +163,7 @@ namespace LibGDXSharp.Utils.Viewport
 
         /// <summary>
         /// Sets the viewport's position in screen coordinates.
-        /// This is typically set by <seealso cref="Update(int, int, bool)"/>.
+        /// This is typically set by <see cref="Update(int, int, bool)"/>.
         /// </summary>
         public virtual void SetScreenPosition( int screenX, int screenY )
         {
@@ -173,7 +173,7 @@ namespace LibGDXSharp.Utils.Viewport
 
         /// <summary>
         /// Sets the viewport's size in screen coordinates.
-        /// This is typically set by <seealso cref="Update(int, int, bool)"/>.
+        /// This is typically set by <see cref="Update(int, int, bool)"/>.
         /// </summary>
         public virtual void SetScreenSize( int screenWidth, int screenHeight )
         {
@@ -183,7 +183,7 @@ namespace LibGDXSharp.Utils.Viewport
 
         /// <summary>
         /// Sets the viewport's bounds in screen coordinates.
-        /// This is typically set by <seealso cref="Update(int, int, bool)"/>.
+        /// This is typically set by <see cref="Update(int, int, bool)"/>.
         /// </summary>
         public virtual void SetScreenBounds( int screenX, int screenY, int screenWidth, int screenHeight )
         {

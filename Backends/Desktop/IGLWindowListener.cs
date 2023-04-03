@@ -11,7 +11,7 @@
 		/// For the main window, this is an immediate callback from inside
 		/// <see cref="DesktopApplication(IApplicationListener, GLApplicationConfiguration)"/>
 		/// <param name="window">the window instance.</param>
-		/// <seealso cref="GLApplication"/>
+		/// <see cref="GLApplication"/>
         void Created( GLWindow window );
 
         /// <summary>

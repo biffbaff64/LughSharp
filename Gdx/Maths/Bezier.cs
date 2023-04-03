@@ -50,7 +50,7 @@ namespace LibGDXSharp.Maths
         /// <summary>
         /// Simple linear interpolation
         /// </summary>
-        /// <param name="alist"> The <seealso cref="System.Collections.ArrayList"/> to set to the result.</param>
+        /// <param name="alist"> The <see cref="System.Collections.ArrayList"/> to set to the result.</param>
         /// <param name="t"> The location (ranging 0..1) on the line.</param>
         /// <param name="p0"> The start point.</param>
         /// <param name="p1"> The end point.</param>
@@ -65,7 +65,7 @@ namespace LibGDXSharp.Maths
         /// <summary>
         /// Simple linear interpolation derivative
         /// </summary>
-        /// <param name="vec"> The <seealso cref="System.Collections.ArrayList"/> to set to the result.</param>
+        /// <param name="vec"> The <see cref="System.Collections.ArrayList"/> to set to the result.</param>
         /// <param name="t"> The location (ranging 0..1) on the line.</param>
         /// <param name="p0"> The start point.</param>
         /// <param name="p1"> The end point.</param>
@@ -80,7 +80,7 @@ namespace LibGDXSharp.Maths
         /// <summary>
         /// Quadratic Bezier curve
         /// </summary>
-        /// <param name="list"> The <seealso cref="System.Collections.ArrayList"/> to set to the result. </param>
+        /// <param name="list"> The <see cref="System.Collections.ArrayList"/> to set to the result. </param>
         /// <param name="t"> The location (ranging 0..1) on the curve. </param>
         /// <param name="p0"> The first bezier point. </param>
         /// <param name="p1"> The second bezier point. </param>
@@ -98,7 +98,7 @@ namespace LibGDXSharp.Maths
         /// <summary>
         /// Quadratic Bezier curve derivative
         /// </summary>
-        /// <param name="alist"> The <seealso cref="System.Collections.ArrayList"/> to set to the result. </param>
+        /// <param name="alist"> The <see cref="System.Collections.ArrayList"/> to set to the result. </param>
         /// <param name="t"> The location (ranging 0..1) on the curve. </param>
         /// <param name="p0"> The first bezier point. </param>
         /// <param name="p1"> The second bezier point. </param>
@@ -116,7 +116,7 @@ namespace LibGDXSharp.Maths
         /// <summary>
         /// Cubic Bezier curve
         /// </summary>
-        /// <param name="alist"> The <seealso cref="System.Collections.ArrayList"/> to set to the result.</param>
+        /// <param name="alist"> The <see cref="System.Collections.ArrayList"/> to set to the result.</param>
         /// <param name="t"> The location (ranging 0..1) on the curve.</param>
         /// <param name="p0"> The first bezier point. </param>
         /// <param name="p1"> The second bezier point. </param>
@@ -136,7 +136,7 @@ namespace LibGDXSharp.Maths
 
         /// <summary>
         /// Cubic Bezier curve derivative </summary>
-        /// <param name="alist"> The <seealso cref="System.Collections.ArrayList"/> to set to the result. </param>
+        /// <param name="alist"> The <see cref="System.Collections.ArrayList"/> to set to the result. </param>
         /// <param name="t"> The location (ranging 0..1) on the curve. </param>
         /// <param name="p0"> The first bezier point. </param>
         /// <param name="p1"> The second bezier point. </param>

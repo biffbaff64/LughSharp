@@ -9,7 +9,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils
             return null;
         }
 
-        public static bool PushScissors( Rectangle scissorBounds )
+        public static bool PushScissors( RectangleShape scissorBounds )
         {
             return false;
         }
@@ -20,8 +20,8 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils
                                               float screenWidth,
                                               float screenHeight,
                                               Matrix4 batchTransform,
-                                              Rectangle area,
-                                              Rectangle scissor )
+                                              RectangleShape area,
+                                              RectangleShape scissor )
         {
         }
     }

@@ -47,7 +47,7 @@
         /// <exception cref="GdxRuntimeException">
         /// if the type is classpath or internal and the file does not exist.
         /// </exception>
-        /// <seealso cref="FileType"/>
+        /// <see cref="FileType"/>
         /// 
         FileHandle GetFileHandle( string path, FileType type );
 

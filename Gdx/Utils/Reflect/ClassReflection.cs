@@ -181,7 +181,7 @@ namespace LibGDXSharp.Utils.Reflect
         }
 
         /// <summary>
-        /// Returns a <seealso cref="System.Reflection.ConstructorInfo"/> that represents the constructor for the supplied class which takes the supplied parameter
+        /// Returns a <see cref="System.Reflection.ConstructorInfo"/> that represents the constructor for the supplied class which takes the supplied parameter
         /// types. 
         /// </summary>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
@@ -212,7 +212,7 @@ namespace LibGDXSharp.Utils.Reflect
         }
 
         /// <summary>
-        /// Returns an array of <seealso cref="System.Reflection.MethodInfo"/> containing the public member methods of the class represented by the supplied Class. </summary>
+        /// Returns an array of <see cref="System.Reflection.MethodInfo"/> containing the public member methods of the class represented by the supplied Class. </summary>
         public static System.Reflection.MethodInfo[] GetMethods( Type c )
         {
             System.Reflection.MethodInfo[] methods = c.GetMethods();
@@ -227,7 +227,7 @@ namespace LibGDXSharp.Utils.Reflect
         }
 
         /// <summary>
-        /// Returns a <seealso cref="System.Reflection.MethodInfo"/> that represents the public member method for the supplied class which takes the supplied parameter
+        /// Returns a <see cref="System.Reflection.MethodInfo"/> that represents the public member method for the supplied class which takes the supplied parameter
         /// types. 
         /// </summary>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
@@ -251,7 +251,7 @@ namespace LibGDXSharp.Utils.Reflect
         }
 
         /// <summary>
-        /// Returns an array of <seealso cref="System.Reflection.MethodInfo"/> containing the methods declared by the class represented by the supplied Class. </summary>
+        /// Returns an array of <see cref="System.Reflection.MethodInfo"/> containing the methods declared by the class represented by the supplied Class. </summary>
         public static System.Reflection.MethodInfo[] GetDeclaredMethods( Type c )
         {
             System.Reflection.MethodInfo[] methods = c.GetMethods( BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance );
@@ -266,7 +266,7 @@ namespace LibGDXSharp.Utils.Reflect
         }
 
         /// <summary>
-        /// Returns a <seealso cref="System.Reflection.MethodInfo"/> that represents the method declared by the supplied class which takes the supplied parameter types. </summary>
+        /// Returns a <see cref="System.Reflection.MethodInfo"/> that represents the method declared by the supplied class which takes the supplied parameter types. </summary>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
 //ORIGINAL LINE: public static Method getDeclaredMethod(Class c, String name, Class... parameterTypes) throws ReflectionException
         public static System.Reflection.MethodInfo GetDeclaredMethod( Type c, string name, params Type[] parameterTypes )
@@ -288,7 +288,7 @@ namespace LibGDXSharp.Utils.Reflect
         }
 
         /// <summary>
-        /// Returns an array of <seealso cref="System.Reflection.FieldInfo"/> containing the public fields of the class represented by the supplied Class. </summary>
+        /// Returns an array of <see cref="System.Reflection.FieldInfo"/> containing the public fields of the class represented by the supplied Class. </summary>
         public static System.Reflection.FieldInfo[] GetFields( Type c )
         {
             System.Reflection.FieldInfo[] fields = c.GetFields();
@@ -303,7 +303,7 @@ namespace LibGDXSharp.Utils.Reflect
         }
 
         /// <summary>
-        /// Returns a <seealso cref="System.Reflection.FieldInfo"/> that represents the specified public member field for the supplied class. </summary>
+        /// Returns a <see cref="System.Reflection.FieldInfo"/> that represents the specified public member field for the supplied class. </summary>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
 //ORIGINAL LINE: public static Field getField(Class c, String name) throws ReflectionException
         public static System.Reflection.FieldInfo GetField( Type c, string name )

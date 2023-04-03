@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Maths
+﻿using System.Numerics;
+
+namespace LibGDXSharp.Maths
 {
     public interface IShape2D
     {

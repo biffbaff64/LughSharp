@@ -1,10 +1,10 @@
 ﻿namespace LibGDXSharp.Assets.Loaders
 {
     /// <summary>
-    /// <seealso cref="AssetLoader{T,TP}"/> for <seealso cref="Texture"/> instances.
+    /// <see cref="AssetLoader{T,TP}"/> for <see cref="Texture"/> instances.
     /// The pixel data is loaded asynchronously. The texture is then created on the
-    /// rendering thread, synchronously. Passing a <seealso cref="TextureParameter"/>
-    /// to <seealso cref="AssetManager"/>.Load() allows one to specify parameters as
+    /// rendering thread, synchronously. Passing a <see cref="TextureParameter"/>
+    /// to <see cref="AssetManager"/>.Load() allows one to specify parameters as
     /// can be passed to the various Texture constructors, e.g. filtering, whether
     /// to generate mipmaps and so on.
     /// </summary>
@@ -108,7 +108,7 @@
             public bool GenMipMaps { get; set; } = false;
 
             /// <summary>
-            /// The texture to put the <seealso cref="TextureData"/> in, optional.
+            /// The texture to put the <see cref="TextureData"/> in, optional.
             /// </summary>
             public Texture? Texture { get; set; } = null;
 

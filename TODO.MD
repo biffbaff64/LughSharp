@@ -272,21 +272,21 @@ MATH
     -      - IShape2D
     -      - IVector
     -      - MathUtils
-    -      - Matrix3
-    -      - Matrix4
+    -      - Matrix3                Convert, C# has no Matrix3x3 only Matrix3x2
+    -      - Matrix4                use System.Numerics.Matrix4x4
     -      - Plane
     -      - Polygon
     -      - Polyline
     -      - Quaternion
     -      - RandomXS128
-    -      - Rectangle
-    -      - Vector2                make struct
-    -      - Vector3                make struct
+    -      - RectangleShape
+    -      - Vector2                use System.Numerics.Vector2
+    -      - Vector3                use System.Numerics.Vector3
     -      - WindowedMean
 
 MATH/COLLISION
 --------------
-    -      - BoundingBox            Convert
+    -      - BoundingBox            Convert     Struct? / Record?
     -      - Ray                    Convert
     -      - Segment                Convert
     -      - Sphere                 Convert
@@ -311,9 +311,9 @@ NETWORK
 
 SCENES.SCENE2D
 --------------
-    -      - Action                         Convert
+    - DONE - Action                         Convert
     -      - Actor                          Convert
-    -      - Event                          Convert
+    - DONE - Event                          Convert
     -      - Group                          Convert
     -      - IEventListener                 Convert
     -      - InputEvent                     Convert
@@ -438,11 +438,11 @@ UTILS
 
     Pools
     -----
-    -      - FlushablePool                  Needed??
-    -      - IPoolable                      Needed??
-    -      - Pool                           Needed??
-    -      - PooledLinkedList               Needed??
-    -      - Pools                          Needed??
+    -      - FlushablePool                  Convert
+    - DONE - IPoolable                      Convert
+    - DONE - Pool                           Convert
+    -      - PooledLinkedList               Convert
+    -      - Pools                          Convert
 
     Misc
     ----
@@ -524,7 +524,7 @@ UTILS/COLLECTIONS
     -      - ObjectFloatMap                 Replace with 
     -      - ObjectIntMap                   Replace with 
     -      - ObjectLongMap                  Replace with 
-    -      - ObjectMap                      Replace with 
+    -      - ObjectMap                      Replace with Dictionary< object, object >
     -      - OrderedMap                     Replace with 
 
     Sets

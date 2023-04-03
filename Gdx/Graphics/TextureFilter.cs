@@ -10,7 +10,7 @@
         /// Fetch four nearest texels that best maps to the pixel on screen. </summary>
         public readonly static TextureFilter Linear = new TextureFilter( "Linear", InnerEnum.Linear, IGL20.GL_Linear );
 
-        /// <seealso cref="TextureFilter.MipMapLinearLinear "/>
+        /// <see cref="TextureFilter.MipMapLinearLinear "/>
         public readonly static TextureFilter MipMap = new TextureFilter( "MipMap", InnerEnum.MipMap, IGL20.GL_Linear_Mipmap_Linear );
 
         /// <summary>

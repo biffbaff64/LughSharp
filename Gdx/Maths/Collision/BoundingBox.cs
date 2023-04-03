@@ -120,7 +120,7 @@
         /// Vector3. The modified vector is returned but can be thrown away.
         /// </summary>
         /// <param name="vec3">
-        /// The <seealso cref="Vector3"/> to receive the center of the bounding box.
+        /// The <see cref="Vector3"/> to receive the center of the bounding box.
         /// </param>
         /// <returns>The vector specified with the vec3 argument.</returns>
         public Vector3 GetCenter( ref Vector3 vec3 )
@@ -230,7 +230,7 @@
 
         /// <summary>
         /// </summary>
-        /// <param name="vec3">The <seealso cref="Vector3"/> to receive the maximum values.</param>
+        /// <param name="vec3">The <see cref="Vector3"/> to receive the maximum values.</param>
         /// <returns> The vector specified with the out argument</returns>
         public Vector3 GetMax( in Vector3 vec3 )
         {
@@ -253,7 +253,7 @@
         }
 
         /// <summary>
-        /// Extends the bounding box to incorporate the given <seealso cref="Vector3"/>.
+        /// Extends the bounding box to incorporate the given <see cref="Vector3"/>.
         /// </summary>
         /// <param name="point"> The vector</param>
         /// <returns> This bounding box for chaining.</returns>

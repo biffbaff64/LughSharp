@@ -81,7 +81,7 @@ namespace LibGDXSharp.Maps.Tiled
         /// <param name="tmxFile">The Filehandle of the tmx file </param>
         /// <param name="parameter"></param>
         /// <param name="imageResolver"></param>
-        /// <returns>The <seealso cref="TiledMap"/>.</returns>
+        /// <returns>The <see cref="TiledMap"/>.</returns>
         protected TiledMap LoadTiledMap( FileHandle tmxFile, TP? parameter, IImageResolver imageResolver )
         {
             this.Map = new TiledMap();

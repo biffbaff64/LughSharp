@@ -117,7 +117,7 @@ namespace LibGDXSharp.Scenes.Scene2D
             Camera camera = Viewport.Camera;
             camera.Update();
 
-            if ( !_root.isVisible() ) return;
+            if ( !_root.IsVisible() ) return;
 
             Batch.SetProjectionMatrix( camera.Combined );
 
@@ -364,7 +364,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             if ( target == null )
             {
-                if ( _root.getTouchable() == Touchable.Enabled )
+                if ( _root.GetTouchable() == Touchable.Enabled )
                 {
                     _root.Fire( inputEvent );
                 }
@@ -759,7 +759,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Adds an actor to the root of the stage. </summary>
-        /// <see cref="Group.addActor(Actor) "/>
+        /// <see cref="Group.AddActor "/>
         public void AddActor( Actor actor )
         {
             root.AddActor( actor );
@@ -775,7 +775,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// Returns the root's child actors. </summary>
-        /// <see cref="Group.getChildren() "/>
+        /// <see cref="Group.GetChildren "/>
         public Array< Actor > Actors
         {
             get { return root.children; }
@@ -1005,7 +1005,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// <param name="stageX"></param>
         /// <param name="stageY"></param>
         /// <param name="touchable">
-        /// If true, the hit detection will respect the <see cref="Actor.setTouchable(Touchable) touchability"/>.
+        /// If true, the hit detection will respect the <see cref="Actor.SetTouchable"/>.
         /// </param>
         /// <returns> May be null if no actor was hit.  </returns>
         public Actor? Hit( float stageX, float stageY, bool touchable )
@@ -1059,7 +1059,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// Calculates window scissor coordinates from local coordinates using the
         /// batch's current transformation matrix.
         /// </summary>
-        public void CalculateScissors( Rectangle localRect, Rectangle scissorRect )
+        public void CalculateScissors( RectangleShape localRect, RectangleShape scissorRect )
         {
             Matrix4 transformMatrix;
 
@@ -1091,7 +1091,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
         /// <summary>
         /// If true, debug lines are shown for actors even when
-        /// <see cref="Actor.isVisible()"/> is false.
+        /// <see cref="Actor.IsVisible"/> is false.
         /// </summary>
         public bool DebugInvisibleActors { get; set; }
 

@@ -16,7 +16,7 @@
         /// The approximated value (between 0 and 1) on the path which is closest
         /// to the specified value. Note that the implementation of this method
         /// might be optimized for speed against precision.
-        /// See <seealso cref="Locate"/> for a more precise (but more
+        /// See <see cref="Locate"/> for a more precise (but more
         /// intensive) method.
         /// </returns>
         float Approximate( T v );
@@ -26,7 +26,7 @@
         /// <returns>
         /// The precise location (between 0 and 1) on the path which is closest
         /// to the specified value. Note that the implementation of this method
-        /// might be CPU intensive. see <seealso cref="Approximate"/> for a
+        /// might be CPU intensive. see <see cref="Approximate"/> for a
         /// faster (but less precise) method.
         /// </returns>
         float Locate( T v );

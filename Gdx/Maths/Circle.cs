@@ -30,9 +30,9 @@
         }
 
         /// <summary>
-        /// Constructs a new circle using a given <seealso cref="Vector2"/> that contains the desired X and Y coordinates, and a given radius.
+        /// Constructs a new circle using a given <see cref="Vector2"/> that contains the desired X and Y coordinates, and a given radius.
         /// </summary>
-        /// <param name="position"> The position <seealso cref="Vector2"/>. </param>
+        /// <param name="position"> The position <see cref="Vector2"/>. </param>
         /// <param name="radius"> The radius  </param>
         public Circle( Vector2 position, float radius )
         {
@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Creates a new <seealso cref="Circle"/> in terms of its center and a point on its edge.
+        /// Creates a new <see cref="Circle"/> in terms of its center and a point on its edge.
         /// </summary>
         /// <param name="center"> The center of the new circle </param>
         /// <param name="edge"> Any point on the edge of the given circle  </param>
@@ -80,7 +80,7 @@
         /// <summary>
         /// Sets a new location and radius for this circle.
         /// </summary>
-        /// <param name="position"> Position <seealso cref="Vector2"/> for this circle. </param>
+        /// <param name="position"> Position <see cref="Vector2"/> for this circle. </param>
         /// <param name="radius"> Circle radius  </param>
         public virtual void Set( Vector2 position, float radius )
         {
@@ -101,7 +101,7 @@
         }
 
         /// <summary>
-        /// Sets this <seealso cref="Circle"/>'s values in terms of its center and a point on its edge.
+        /// Sets this <see cref="Circle"/>'s values in terms of its center and a point on its edge.
         /// </summary>
         /// <param name="center"> The new center of the circle </param>
         /// <param name="edge"> Any point on the edge of the given circle  </param>
@@ -151,7 +151,7 @@
         /// <summary>
         /// Checks whether or not this circle contains a given point.
         /// </summary>
-        /// <param name="point"> The <seealso cref="Vector2"/> that contains the point coordinates.
+        /// <param name="point"> The <see cref="Vector2"/> that contains the point coordinates.
         /// </param>
         /// <returns> true if this circle contains this point; false otherwise.  </returns>
         public virtual bool Contains( Vector2 point )
@@ -164,7 +164,7 @@
 
         /// <summary>
         /// </summary>
-        /// <param name="c"> the other <seealso cref="Circle"/> </param>
+        /// <param name="c"> the other <see cref="Circle"/> </param>
         /// <returns> whether this circle contains the other circle.  </returns>
         public virtual bool Contains( Circle c )
         {
@@ -185,7 +185,7 @@
 
         /// <summary>
         /// </summary>
-        /// <param name="c"> the other <seealso cref="Circle"/> </param>
+        /// <param name="c"> the other <see cref="Circle"/> </param>
         /// <returns> whether this circle overlaps the other circle.  </returns>
         public virtual bool Overlaps( Circle c )
         {
@@ -198,8 +198,8 @@
         }
 
         /// <summary>
-        /// Returns a <seealso cref="string"/> representation of this
-        /// <seealso cref="Circle"/> of the form <code>x,y,radius</code>.
+        /// Returns a <see cref="string"/> representation of this
+        /// <see cref="Circle"/> of the form <code>x,y,radius</code>.
         /// </summary>
         public override string ToString()
         {
@@ -210,7 +210,7 @@
         /// </summary>
         /// <returns>
         /// The circumference of this circle:-
-        /// (as 2 * <seealso cref="MathUtils.PI2"/>) * <code>radius</code>
+        /// (as 2 * <see cref="MathUtils.PI2"/>) * <code>radius</code>
         /// </returns>
         public virtual float Circumference()
         {
@@ -220,7 +220,7 @@
         /// <summary>
         /// </summary>
         /// <returns>
-        /// The area of this circle (as <seealso cref="MathUtils.PI"/> * radius * radius).
+        /// The area of this circle (as <see cref="MathUtils.PI"/> * radius * radius).
         /// </returns>
         public virtual float Area()
         {
