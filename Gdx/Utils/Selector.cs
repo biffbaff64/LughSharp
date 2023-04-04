@@ -19,8 +19,19 @@
 
         public static Selector< T > Instance() => instance;
 
-        public T Select( T[] items, IComparator< T > comp, int kthLowest, int size )
+        public T Select( T[] items, IComparer< T > comp, int kthLowest, int size )
         {
+            throw new NotImplementedException();
+        }
+
+        public T Selecting<T>( T[]? items, IComparer< T > comparator, int kthLowest, int size )
+        {
+            throw new NotImplementedException();
+        }
+
+        public int SelectIndex<T>( T[]? items, IComparer< T > comparator, int kthLowest, int size )
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,19 +1,25 @@
-﻿using LibGDXSharp.Utils.Collections;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace LibGDXSharp.Utils
 {
     /// <summary>
     /// A pool of objects that can be reused to avoid allocation.
     /// </summary>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public class Pool<T>
     {
         // The maximum number of objects that will be pooled.
-        public int Max  { get; set; }
+        public int Max { get; set; }
 
         // The highest number of free objects. Can be reset any time.
         public int Peak { get; set; }
 
-        private readonly Array< T? > _freeObjects;
+        private readonly List< T? > _freeObjects;
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        public Func< T > NewObject { get; set; } = null!;
 
         /// <summary>
         /// Creates a pool with an initial capacity of 16 and no maximum.
@@ -30,25 +36,25 @@ namespace LibGDXSharp.Utils
         /// <param name="max">The maximum number of free objects to store in this pool.</param>
         public Pool( int initialCapacity, int max = int.MaxValue )
         {
-            _freeObjects = new Array< T? >( false, initialCapacity );
+            _freeObjects = new List< T? >( initialCapacity );
 
             this.Max = max;
         }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public Func<T>? NewObject { get; set; }
 
         /// <summary>
         /// Returns an object from this pool.
         /// The object may be new (from <see cref="NewObject"/>) or reused
         /// (previously <see cref="Free(T)"/> freed).
         /// </summary>
-        public T? Obtain()
+        public virtual T Obtain()
         {
-            return _freeObjects.Size == 0 ? NewObject() : _freeObjects.Pop();
+            if ( _freeObjects.Count == 0 ) return NewObject();
 
+            T? item = _freeObjects[ ^1 ];
+
+            _freeObjects[ ^1 ] = default;
+
+            return item!;
         }
 
         /// <summary>
@@ -60,18 +66,15 @@ namespace LibGDXSharp.Utils
         /// </summary>
         /// <param name="obj">The object to add to the pool.</param>
         /// <exception cref="ArgumentException"></exception>
-        public void Free( T obj )
+        public virtual void Free( T obj )
         {
-            if ( obj == null )
-            {
-                throw new ArgumentException( "object cannot be null." );
-            }
+            if ( obj == null ) throw new ArgumentException( "obj cannot be null." );
 
-            if ( _freeObjects.Size < Max )
+            if ( _freeObjects.Count < Max )
             {
                 _freeObjects.Add( obj );
 
-                Peak = Math.Max( Peak, _freeObjects.Size );
+                Peak = Math.Max( Peak, _freeObjects.Count );
 
                 Reset( obj );
             }
@@ -91,20 +94,21 @@ namespace LibGDXSharp.Utils
         {
             for ( var i = 0; i < size; i++ )
             {
-                if ( _freeObjects.Size < Max )
+                if ( _freeObjects.Count < Max )
                 {
                     _freeObjects.Add( NewObject() );
                 }
             }
 
-            Peak = Math.Max( Peak, _freeObjects.Size );
+            Peak = Math.Max( Peak, _freeObjects.Count );
         }
 
         /// <summary>
         /// Called when an object is freed to clear the state of the object for possible
-        /// later reuse. The default implementation calls IPoolable.Reset if the object is Poolable.
+        /// later reuse. The default implementation calls <see cref="IPoolable.Reset"/>
+        /// if the object is Poolable.
         /// </summary>
-        protected void Reset( T obj )
+        public void Reset( T obj )
         {
             if ( obj is IPoolable poolable )
             {
@@ -126,31 +130,29 @@ namespace LibGDXSharp.Utils
         /// are silently ignored. The pool does not check if an object is already
         /// freed, so the same object must not be freed multiple times.
         /// </summary>
-        public void FreeAll( Array< T > objects )
+        public virtual void FreeAll( List< T > objects )
         {
             if ( objects == null ) throw new ArgumentException( "objects cannot be null." );
 
             var max = this.Max;
 
-            for ( int i = 0, n = objects.Size; i < n; i++ )
+            for ( int i = 0, n = objects.Count; i < n; i++ )
             {
-                T? obj = objects.Get( i );
+                if ( objects[ i ] == null ) continue;
 
-                if ( obj == null ) continue;
-
-                if ( this._freeObjects.Size < max )
+                if ( this._freeObjects.Count < max )
                 {
-                    this._freeObjects.Add( obj );
+                    this._freeObjects.Add( objects[ i ] );
 
-                    Reset( obj );
+                    Reset( objects[ i ] );
                 }
                 else
                 {
-                    Discard( obj );
+                    Discard( objects[ i ] );
                 }
             }
 
-            Peak = Math.Max( Peak, this._freeObjects.Size );
+            Peak = Math.Max( Peak, this._freeObjects.Count );
         }
 
         /// <summary>
@@ -158,9 +160,10 @@ namespace LibGDXSharp.Utils
         /// </summary>
         public void Clear()
         {
-            for ( var i = 0; i < _freeObjects.Size; i++ )
+            for ( var i = 0; i < _freeObjects.Count; i++ )
             {
-                T? obj = _freeObjects.Pop();
+                T? obj = _freeObjects[ i ];
+                _freeObjects.RemoveAt( i );
                 Discard( obj );
             }
         }
@@ -170,7 +173,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         public int GetFree()
         {
-            return _freeObjects.Size;
+            return _freeObjects.Count;
         }
     }
 }

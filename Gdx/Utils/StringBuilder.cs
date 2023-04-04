@@ -6,7 +6,7 @@
         {
         }
         
-        public void Append( object value )
+        public void Append( object? value )
         {
         }
         
@@ -18,7 +18,7 @@
         {
         }
 
-        public void Append( string str )
+        public void Append( string? str )
         {
         }
 

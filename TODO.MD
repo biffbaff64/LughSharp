@@ -419,11 +419,6 @@ SCENES.SCENE2D/UTILS
 
 UTILS
 -----
-    NOTE:   I think the majority of these utils classes can be removed and
-            replaced by C# standard classes. From what I understand, or have
-            been told, some of these classes have been written because the
-            standard java libraries do not have that functionality, whereas
-            C# does.
 
     Buffers
     -------
@@ -438,10 +433,10 @@ UTILS
 
     Pools
     -----
-    -      - FlushablePool                  Convert
+    - DONE - FlushablePool                  Convert
     - DONE - IPoolable                      Convert
     - DONE - Pool                           Convert
-    -      - PooledLinkedList               Convert
+    - DONE - PooledLinkedList               Convert
     -      - Pools                          Convert
 
     Misc
@@ -507,7 +502,7 @@ UTILS/COLLECTIONS
     -      - ByteArray                      List< byte >
     -      - CharArray                      List< char >
     -      - IntArray                       List< int >
-    -      - DelayedRemovalArray            
+    -      - DelayedRemovalArray            Extend List<>
     -      - FloatArray                     List< float >
     -      - LongArray                      List< long >
     -      - ShortArray                     List< short >
