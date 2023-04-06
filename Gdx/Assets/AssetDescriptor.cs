@@ -1,12 +1,14 @@
-﻿using StringBuilder = System.Text.StringBuilder;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using StringBuilder = System.Text.StringBuilder;
 
 namespace LibGDXSharp.Assets
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AssetDescriptor<T>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class AssetDescriptor<T>
     {
         public string                      FileName   { get; set; }
         public Type                        Type       { get; set; }
@@ -14,7 +16,6 @@ namespace LibGDXSharp.Assets
         public FileHandle?                 File       { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="assetType"></param>
@@ -27,7 +28,6 @@ namespace LibGDXSharp.Assets
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="file"></param>
         /// <param name="assetType"></param>

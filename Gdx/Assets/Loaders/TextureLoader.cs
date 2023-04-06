@@ -52,7 +52,7 @@
                 Info.Texture = parameter.Texture;
             }
 
-            if ( !Info.Data.isPrepared() )
+            if ( !Info.Data.IsPrepared() )
             {
                 Info.Data.prepare();
             }

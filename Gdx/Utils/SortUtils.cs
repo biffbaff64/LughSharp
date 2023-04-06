@@ -20,21 +20,18 @@ namespace LibGDXSharp.Utils
             [DebuggerStepThrough] get => instance;
         }
 
-        private TimSort?           _timSort;
+        private TimSort<>? _timSort;
         private ComparableTimSort? _comparableTimSort;
 
         /// <summary>
         /// </summary>
         /// <param name="a"></param>
         /// <typeparam name="T"></typeparam>
-        public void Sort<T>( Array< T > a ) where T : IComparable
+        public void Sort<T>( List< T > a ) where T : IComparable
         {
-            if ( _comparableTimSort == null )
-            {
-                _comparableTimSort = new ComparableTimSort();
-            }
+            _comparableTimSort ??= new ComparableTimSort();
 
-            _comparableTimSort.DoSort( a.Items, 0, a.Size );
+            _comparableTimSort.DoSort( a.ToArray(), 0, a.Count );
         }
 
         /// <summary>
@@ -42,10 +39,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         public void Sort( object[] a )
         {
-            if ( _comparableTimSort == null )
-            {
-                _comparableTimSort = new ComparableTimSort();
-            }
+            _comparableTimSort ??= new ComparableTimSort();
 
             _comparableTimSort.DoSort( a, 0, a.Length );
         }
@@ -55,10 +49,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         public void Sort( object[]? a, int fromIndex, int toIndex )
         {
-            if ( _comparableTimSort == null )
-            {
-                _comparableTimSort = new ComparableTimSort();
-            }
+            _comparableTimSort ??= new ComparableTimSort();
 
             _comparableTimSort.DoSort( a, fromIndex, toIndex );
         }
@@ -69,14 +60,14 @@ namespace LibGDXSharp.Utils
         /// <param name="c"></param>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="T1"></typeparam>
-        public void Sort<T, T1>( Array< T > a, IComparer< T1 > c )
+        public void Sort<T, T1>( List< T > a, IComparer< T1 > c )
         {
             if ( _timSort == null )
             {
-                _timSort = new TimSort();
+                _timSort = new TimSort< T >();
             }
 
-            _timSort.DoSort( a.Items, c, 0, a.Size );
+            _timSort.DoSort( a.ToArray(), c, 0, a.Count );
         }
 
         /// <summary>
@@ -89,7 +80,7 @@ namespace LibGDXSharp.Utils
         {
             if ( _timSort == null )
             {
-                _timSort = new TimSort();
+                _timSort = new TimSort< T >();
             }
 
             _timSort.DoSort( a, c, 0, a.Length );
@@ -107,7 +98,7 @@ namespace LibGDXSharp.Utils
         {
             if ( _timSort == null )
             {
-                _timSort = new TimSort();
+                _timSort = new TimSort< T >();
             }
 
             _timSort.DoSort( a, c, fromIndex, toIndex );

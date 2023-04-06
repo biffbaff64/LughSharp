@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils
 {
-    public class TimeUtils
+    public static class TimeUtils
     {
         private const long NanosPerMilli = 1000000;
 

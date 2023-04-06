@@ -3,18 +3,17 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Assets
 {
-    public class AssetLoadingTask<T> : IAsyncTask where T : AssetLoaderParameters< T >
+    internal class AssetLoadingTask<T> : IAsyncTask
     {
-        private AssetManager         _manager;
-        private AssetDescriptor< T > _assetDesc;
-        private AssetLoader< T, T >  _loader;
-        private AsyncExecutor        _executor;
-        private long                 _startTime;
+        private AssetManager        _manager;
+        private AssetLoader< T, T > _loader;
+        private AsyncExecutor       _executor;
+        private long                _startTime;
 
-        private volatile Array< AssetDescriptor< T > > _dependencies;
-        private volatile AsyncResult                   _depsFuture;
-        private volatile AsyncResult                   _loadFuture;
-        private volatile object                        _asset;
+        private volatile List< AssetDescriptor< T > > _dependencies;
+        private volatile AsyncResult                  _depsFuture;
+        private volatile AsyncResult                  _loadFuture;
+        private volatile object                       _asset;
 
         private volatile bool _asyncDone;
         private volatile bool _dependenciesLoaded;
@@ -31,13 +30,21 @@ namespace LibGDXSharp.Assets
                                  AssetLoader< T, T > loader,
                                  AsyncExecutor threadPool )
         {
-            this._manager   = manager;
-            this._assetDesc = assetDesc;
-            this._loader    = loader;
-            this._executor  = threadPool;
-            this._startTime = manager.Log.GetLevel() == Logger.LogDebug ? TimeUtils.NanoTime() : 0;
+            this._manager        = manager;
+            this.AssetDescriptor = assetDesc;
+            this._loader         = loader;
+            this._executor       = threadPool;
+            this._startTime      = manager.Log.GetLevel() == Logger.LogDebug ? TimeUtils.NanoTime() : 0;
         }
 
+        public AssetDescriptor< T > AssetDescriptor { get; set; }
+
+        public bool Cancel
+        {
+            get => _cancel;
+            set => _cancel = value;
+        }
+        
         public bool Call()
         {
             return false;
@@ -65,7 +72,7 @@ namespace LibGDXSharp.Assets
         {
         }
 
-        private void RemoveDuplicates( Array< AssetDescriptor< T > > array )
+        private void RemoveDuplicates( List< AssetDescriptor< T > > array )
         {
         }
     }

@@ -1,9 +1,17 @@
 ﻿- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- STEP 1: Complete all conversions so that the code will build.
+- STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
+- STEP 3: Resolve ALL remaining TODOs.
+- STEP 4: Ensure code is fully documented.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - DONE = Class finished but may not be fully 'CSharp-ified'
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - PRIORITY is 2D classes first
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CORE
@@ -30,14 +38,20 @@ CORE
     - DONE - ScreenAdapter                  Convert
     - DONE - Version                        Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 ASSETS
 ------
-    -      - AssetDescriptor                Convert
-    -      - AssetLoaderParameters          Convert
+    - DONE - AssetDescriptor                Convert
+    - DONE - AssetLoaderParameters          Convert
     -      - AssetLoadingTask               Convert
     -      - AssetManager                   Convert
-    -      - IAssetErrorListener            Convert
-    -      - RefCountedContainer            Convert
+    - DONE - IAssetErrorListener            Convert
+    - DONE - RefCountedContainer            Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ASSETS/LOADERS
 --------------
@@ -58,6 +72,9 @@ ASSETS/LOADERS
     -      - TextureAtlasLoader             Convert
     -      - TextureLoader                  Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 ASSETS/LOADERS/RESOLVERS
 ------------------------
     -      - AbsoluteFileHandleResolver
@@ -68,6 +85,9 @@ ASSETS/LOADERS/RESOLVERS
     -      - PrefixFileHandleResolver
     -      - ResolutionFileResolver
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 AUDIO
 -----
     - DONE - IAudioDevice                   Convert
@@ -75,10 +95,16 @@ AUDIO
     - DONE - IMusic                         Convert
     - DONE - ISound                         Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 FILES
 -----
     -      - FileHandle
     -      - FileHandleStream
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 GRAPHICS
 --------
@@ -109,6 +135,9 @@ GRAPHICS
     -      - VertexAttribute                Convert
     -      - VertexAttributes               Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 GRAPHICS/G2D
 ------------
     -      - Animation                      Convert
@@ -137,9 +166,15 @@ GRAPHICS/G2D
     -      - TextureAtlas                   Convert
     -      - TextureRegion                  Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 GRAPHICS/G3D
 ------------
     -      - 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 GRAPHICS/GLUTILS
 ----------------
@@ -178,6 +213,9 @@ GRAPHICS/GLUTILS
     -      - VertexBufferObjectWithVAO
     -      - VertexData
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 GRAPHICS/PROFILING
 ------------------
     -      - GL20Interceptor
@@ -186,11 +224,17 @@ GRAPHICS/PROFILING
     -      - GLInterceptor
     -      - GLProfiler
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 INPUT
 -----
     -      - GestureDetector
     -      - RemoteInput
     -      - RemoteSender
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MAPS
 ----
@@ -204,6 +248,9 @@ MAPS
     -      - MapObjects                             Convert
     -      - MapProperties                          Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 MAPS/OBJECTS
 ------------
     -      - CircleMapObject                        Convert
@@ -212,6 +259,9 @@ MAPS/OBJECTS
     -      - PolylineMapObject                      Convert
     -      - RectangleMapObject                     Convert
     -      - TextureMapObject                       Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MAPS/TILED
 ----------
@@ -222,16 +272,25 @@ MAPS/TILED
     -      - TiledMapTileSet                        Convert
     -      - TiledMapTileSets                       Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 MAPS/TILED/LOADERS
 ------------------
     -      - AtlasTmxMapLoader                      Convert
     -      - BaseTmxMapLoader                       Convert
     -      - TmxMapLoader                           Convert
-    - ???? - TideMapLoader      Q: Should I support Tide?
+    -      - TideMapLoader                          Q: Should I support Tide?
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MAPS/TILED/OBJECTS
 ------------------
     -      - TiledMapTileMapObject                  Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MAPS/TILED/RENDERERS
 --------------------
@@ -243,10 +302,16 @@ MAPS/TILED/RENDERERS
     -      - OrthoCachedTiledMapRenderer            Convert
     -      - OrthogonalTiledMapRenderer             Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 MAPS/TILED/TILES
 ----------------
     -      - AnimatedTileMapTile                    Convert
     -      - StaticTiledMapTile                     Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MATH
 ----
@@ -284,12 +349,18 @@ MATH
     -      - Vector3                use System.Numerics.Vector3
     -      - WindowedMean
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 MATH/COLLISION
 --------------
     -      - BoundingBox            Convert     Struct? / Record?
     -      - Ray                    Convert
     -      - Segment                Convert
     -      - Sphere                 Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 NETWORK
 -------
@@ -309,6 +380,9 @@ NETWORK
     -      - ServerSocketHints
     -      - SocketHints
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 SCENES.SCENE2D
 --------------
     - DONE - Action                         Convert
@@ -320,6 +394,9 @@ SCENES.SCENE2D
     -      - InputListener                  Convert
     -      - Stage                          Convert
     -      - Touchable                      Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 SCENES.SCENE2D/ACTIONS
 ----------------------
@@ -357,6 +434,9 @@ SCENES.SCENE2D/ACTIONS
     -      - TouchableAction                Convert
     -      - VisibleAction                  Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 SCENES.SCENE2D/UI
 -----------------
     -      - Button                         Convert
@@ -393,6 +473,9 @@ SCENES.SCENE2D/UI
     -      - WidgetGroup                    Convert
     -      - Window                         Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 SCENES.SCENE2D/UTILS
 --------------------
     -      - ActorGestureListener           Convert
@@ -416,6 +499,9 @@ SCENES.SCENE2D/UTILS
     -      - TextureRegionDrawable          Convert
     -      - TiledDrawable                  Convert
     -      - UIUtils                        Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS
 -----
@@ -445,7 +531,7 @@ UTILS
     -      - Base64Coder                    Use System.Convert classes??
     -      - BinaryHeap
     - DONE - Bits                           Convert
-    -      - ComparableTimSort              Check
+    -      - ComparableTimSort              Convert
     -      - DataInput                      Check
     -      - DataOutput                     Check
     - DONE - FloatConsts                    Done, but is it needed?
@@ -466,14 +552,17 @@ UTILS
     -      - ScreenUtils                    Convert
     -      - Select                     
     -      - SharedLibraryLoader            Check
-    -      - SortUtils
+    - IP   - SortUtils
     -      - SortedIntList
     -      - StreamUtils
     -      - StringBuilder                  Use System.Text.StringBuilder
-    -      - TextFormatter
+    -      - TextFormatter                  Remove, look in to C# localisation
     -      - Timer                          Use System.Timer instead??
-    -      - TimeUtils
-    -      - TimSort
+    - DONE - TimeUtils
+    - DONE - TimSort
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/ASYNC
 -----------
@@ -482,11 +571,17 @@ UTILS/ASYNC
     -      - IAsyncTask                     Needed??
     -      - ThreadUtils                    Needed??
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 UTILS/ATOMIC
 ------------
     -      - AtomicInteger                  Needed??
     -      - AtomicQueue                    Needed??
     -      - AtomicReferenceArray           Needed??
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/COLLECTIONS
 -----------------
@@ -496,8 +591,8 @@ UTILS/COLLECTIONS
     Arrays
     ------
     -      - Array                          List<>
-    -      - ArrayIterable                  Needed??    - IEnumerable?
-    -      - ArrayIterator                  Needed??    - IEnumerator?
+    -      - ArrayIterable                  Use IEnumerable?
+    -      - ArrayIterator                  Use IEnumerator?
     -      - BooleanArray                   List< bool >
     -      - ByteArray                      List< byte >
     -      - CharArray                      List< char >
@@ -506,27 +601,27 @@ UTILS/COLLECTIONS
     -      - FloatArray                     List< float >
     -      - LongArray                      List< long >
     -      - ShortArray                     List< short >
-    -      - SnapshotArray
+    -      - SnapshotArray                  Convert / extend List<T>
 
     Maps
     ----
     - DONE - ArrayMap                       Replace with Dictionary<K, V>
-    -      - IdentityMap                    Replace with 
+    -      - IdentityMap                    Convert / extend Dictionary< object, object > 
     -      - IntFloatMap                    Replace with Dictionary< int, float >
     -      - IntIntMap                      Replace with Dictionary< int, int >
     -      - IntMap                         Replace with Dictionary< int, V >
     -      - LongMap                        Replace with Dictionary< long, V >
-    -      - ObjectFloatMap                 Replace with 
-    -      - ObjectIntMap                   Replace with 
-    -      - ObjectLongMap                  Replace with 
+    -      - ObjectFloatMap                 Replace with Dictionary< object, float >
+    -      - ObjectIntMap                   Replace with Dictionary< object, int >
+    -      - ObjectLongMap                  Replace with Dictionary< object, long >
     -      - ObjectMap                      Replace with Dictionary< object, object >
-    -      - OrderedMap                     Replace with 
+    -      - OrderedMap                     Convert / extend Dictionary< object, object >
 
     Sets
     ----
-    -      - IntSet                         Replace with 
-    -      - ObjectSet                      Replace with 
-    -      - OrderedSet                     Replace with 
+    -      - IntSet                         Replace with List<int>
+    -      - ObjectSet<T>                   Replace with List<T>
+    -      - OrderedSet<T>                  Convert / extend List<T>
                                             
     Misc                                    
     ----                                    
@@ -534,6 +629,9 @@ UTILS/COLLECTIONS
     -      - IPredicate                     Needed??
     -      - PredicateIterable              Needed??
     -      - PredicateIterator              Needed??
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                                             
 UTILS/COMPRESSION
 -----------------
@@ -560,13 +658,19 @@ UTILS/COMPRESSION
             -      - Decoder                Needed??
             -      - Encoder                Needed??
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 UTILS/EXCEPTIONS
 ----------------
-    - Done - GdxRuntimeException            Convert
-    - Done - IllegalStateException          Convert
-    - Done - NoSuchElementException         Convert
-    - Done - NumberFormatException          Convert
-    - Done - SerializationException         Convert
+    - DONE - GdxRuntimeException            Convert
+    - DONE - IllegalStateException          Convert
+    - DONE - NoSuchElementException         Convert
+    - DONE - NumberFormatException          Convert
+    - DONE - SerializationException         Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/JSON
 ----------
@@ -577,6 +681,9 @@ UTILS/JSON
     -      - JsonWriter                     Needed??
     -      - UBJsonReader                   Needed??
     -      - UBJsonWriter                   Needed??
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/REFLECT
 -------------
@@ -589,6 +696,9 @@ UTILS/REFLECT
     -      - ReflectionException            Needed??
     -      - ReflectionPool                 Needed??
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 UTILS/VIEWPORT
 --------------
     -      - ExtendedViewport               Convert
@@ -599,8 +709,14 @@ UTILS/VIEWPORT
     -      - StretchViewport                Convert
     -      - Viewport                       Convert
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 UTILS/XML
 ---------
     -      - XmlReader                      Use System.Xml.XmlReader instead
     -      - XmlWriter                      Use System.Xml.XmlWriter instead
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

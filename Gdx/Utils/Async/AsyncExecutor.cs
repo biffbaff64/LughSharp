@@ -2,7 +2,11 @@
 {
     public class AsyncExecutor
     {
-        
+        public AsyncExecutor( int i, string assetmanager )
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
 
