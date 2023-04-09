@@ -1,19 +1,27 @@
-﻿using LibGDXSharp.G2D;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.G2D;
+
+using Blendmode = LibGDXSharp.Maps.Tiled.ITiledMapTile.Blendmode;
 
 namespace LibGDXSharp.Maps.Tiled.Tiles
 {
-    public class AnimatedTiledMapTile : ITiledMapTile
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class AnimatedTiledMapTile : ITiledMapTile
     {
-        private static long _initialTimeOffset      = DateTime.Now.Millisecond;
+        private readonly static long initialTimeOffset = DateTime.Now.Millisecond;
+
         private static long _lastTiledMapRenderTime = 0;
 
-        private int                     _id;
-        private MapProperties?          _properties;
-        private MapObjects?             _mapObjects;
-        private int                     _loopDuration;
-        private StaticTiledMapTile[]    _frameTiles;
-        private ITiledMapTile.BlendMode _blendMode = ITiledMapTile.BlendMode.Alpha;
-        private int[]                   _animationIntervals;
+        public int       ID        { get; set; }
+        public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
+
+        private readonly int                  _loopDuration;
+        private readonly StaticTiledMapTile[] _frameTiles;
+        private readonly int[]                _animationIntervals;
+
+        private MapProperties? _properties;
+        private MapObjects?    _mapObjects;
 
         /// <summary>
         /// Creates an animated tile with the given animation interval and frame tiles.
@@ -59,10 +67,9 @@ namespace LibGDXSharp.Maps.Tiled.Tiles
             }
         }
 
-        public ITiledMapTile GetCurrentFrame()
-        {
-            return _frameTiles[ GetCurrentFrameIndex() ];
-        }
+        public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
+
+        public ITiledMapTile GetCurrentFrame() => _frameTiles[ GetCurrentFrameIndex() ];
 
         public int GetCurrentFrameIndex()
         {
@@ -88,68 +95,35 @@ namespace LibGDXSharp.Maps.Tiled.Tiles
 
         public static void UpdateAnimationBaseTime()
         {
-            _lastTiledMapRenderTime = DateTime.Now.Millisecond - _initialTimeOffset;
+            _lastTiledMapRenderTime = DateTime.Now.Millisecond - initialTimeOffset;
         }
 
-        public int GetId() => _id;
-
-        public void SetId( int id ) => _id = id;
-
-        public ITiledMapTile.BlendMode GetBlendMode() => _blendMode;
-
-        public void SetBlendMode( ITiledMapTile.BlendMode blendMode ) => _blendMode = blendMode;
-
-        public TextureRegion GetTextureRegion()
+        public TextureRegion TextureRegion
         {
-            return GetCurrentFrame().GetTextureRegion();
+            get => GetCurrentFrame().TextureRegion;
+            set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
         }
 
-        public void SetTextureRegion( TextureRegion textureRegion )
+        public float OffsetX
         {
-            // TODO: Illegal
+            get => GetCurrentFrame().OffsetX;
+            set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
         }
 
-        public float GetOffsetX()
+        public float OffsetY
         {
-            return GetCurrentFrame().GetOffsetX();
-        }
-
-        public void SetOffsetX( float offsetX )
-        {
-            // TODO: Illegal
-        }
-
-        public float GetOffsetY()
-        {
-            return GetCurrentFrame().GetOffsetY();
-        }
-
-        public void SetOffsetY( float offsetY )
-        {
-            // TODO: Illegal
+            get => GetCurrentFrame().OffsetY;
+            set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
         }
 
         public MapProperties GetProperties()
         {
-            if ( _properties == null )
-            {
-                _properties = new MapProperties();
-            }
-
-            return _properties;
+            return _properties ??= new MapProperties();
         }
 
         public MapObjects GetObjects()
         {
-            if ( _mapObjects == null )
-            {
-                _mapObjects = new MapObjects();
-            }
-
-            return _mapObjects;
+            return _mapObjects ??= new MapObjects();
         }
-
-        public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
     }
 }
-

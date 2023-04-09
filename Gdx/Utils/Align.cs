@@ -1,6 +1,8 @@
-﻿namespace LibGDXSharp.Utils
+﻿using System.Text;
+
+namespace LibGDXSharp.Utils
 {
-    public class Align
+    public static class Align
     {
         public const int Center = 1 << 0;
         public const int Top    = 1 << 1;

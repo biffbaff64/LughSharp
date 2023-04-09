@@ -239,12 +239,12 @@ INPUT
 MAPS
 ----
     -      - IImageResolver                         Convert
-    -      - IMapRenderer                           Convert
-    -      - Map                                    Convert
-    -      - MapGroupLayer                          Convert
-    -      - MapLayer                               Convert
-    -      - MapLayers                              Convert
-    -      - MapObject                              Convert
+    - DONE - IMapRenderer                           Convert
+    - DONE - Map                                    Convert
+    - DONE - MapGroupLayer                          Convert
+    - DONE - MapLayer                               Convert
+    - DONE - MapLayers                              Convert
+    - DONE - MapObject                              Convert
     -      - MapObjects                             Convert
     -      - MapProperties                          Convert
 
@@ -265,12 +265,12 @@ MAPS/OBJECTS
 
 MAPS/TILED
 ----------
-    -      - ITiledMapTile                          Convert
-    -      - TiledMap                               Convert
-    -      - TiledMapImageLayer                     Convert
-    -      - TiledMapTileLayer                      Convert
-    -      - TiledMapTileSet                        Convert
-    -      - TiledMapTileSets                       Convert
+    - DONE - ITiledMapTile                          Convert
+    - DONE - TiledMap                               Convert
+    - DONE - TiledMapImageLayer                     Convert
+    - DONE - TiledMapTileLayer                      Convert
+    - DONE - TiledMapTileSet                        Convert
+    - DONE - TiledMapTileSets                       Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -294,11 +294,11 @@ MAPS/TILED/OBJECTS
 
 MAPS/TILED/RENDERERS
 --------------------
-    -      - BatchTiledMapRenderer                  Convert
+    - DONE - BatchTiledMapRenderer                  Convert
     -      - HexagonalTiledMapRenderer              Convert
     -      - IsometricStaggeredTiledMapRenderer     Convert
     -      - IsometricTiledMapRenderer              Convert
-    -      - ITiledMapRenderer                      Convert
+    - DONE - ITiledMapRenderer                      Convert
     -      - OrthoCachedTiledMapRenderer            Convert
     -      - OrthogonalTiledMapRenderer             Convert
 
@@ -307,15 +307,15 @@ MAPS/TILED/RENDERERS
 
 MAPS/TILED/TILES
 ----------------
-    -      - AnimatedTileMapTile                    Convert
-    -      - StaticTiledMapTile                     Convert
+    - DONE - AnimatedTileMapTile                    Convert
+    - DONE - StaticTiledMapTile                     Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MATH
 ----
-    -      - Affine2
+    - DONE - Affine2
     -      - Bezier
     -      - Bresenham
     -      - BSpline
@@ -337,16 +337,16 @@ MATH
     -      - IShape2D
     -      - IVector
     -      - MathUtils
-    -      - Matrix3                Convert, C# has no Matrix3x3 only Matrix3x2
-    -      - Matrix4                use System.Numerics.Matrix4x4
+    -      - Matrix3                Convert
+    -      - Matrix4                Convert
     -      - Plane
     -      - Polygon
     -      - Polyline
     -      - Quaternion
     -      - RandomXS128
     -      - RectangleShape
-    -      - Vector2                use System.Numerics.Vector2
-    -      - Vector3                use System.Numerics.Vector3
+    -      - Vector2                Convert, I prefer the way the LibGDX class works.
+    -      - Vector3                Convert, I prefer the way the LibGDX class works.
     -      - WindowedMean
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -367,18 +367,18 @@ NETWORK
 
     Note:- All this is probably already supported by C# System
 
-    -      - HttpParametersUtils
-    -      - HttpRequestBuilder
-    -      - HttpStatus
-    -      - IHttpRequestHeader
-    -      - IHttpResponseHeader
-    -      - IServerSocket
-    -      - ISocket
-    -      - NetJavaImpl
-    -      - NetJavaServerSocketImpl
-    -      - NetJavaSocketImpl
-    -      - ServerSocketHints
-    -      - SocketHints
+    - **** - HttpParametersUtils
+    - **** - HttpRequestBuilder
+    - **** - HttpStatus
+    - **** - IHttpRequestHeader
+    - **** - IHttpResponseHeader
+    - **** - IServerSocket
+    - **** - ISocket
+    - **** - NetJavaImpl
+    - **** - NetJavaServerSocketImpl
+    - **** - NetJavaSocketImpl
+    - **** - ServerSocketHints
+    - **** - SocketHints
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -548,14 +548,14 @@ UTILS
     -      - QuadTreeFloat
     -      - Queue
     -      - QuickSelect
-    -      - Scaling
+    - DONE - Scaling
     -      - ScreenUtils                    Convert
     -      - Select                     
     -      - SharedLibraryLoader            Check
-    - IP   - SortUtils
+    -      - SortUtils
     -      - SortedIntList
     -      - StreamUtils
-    -      - StringBuilder                  Use System.Text.StringBuilder
+    - **** - StringBuilder                  Use System.Text.StringBuilder
     -      - TextFormatter                  Remove, look in to C# localisation
     -      - Timer                          Use System.Timer instead??
     - DONE - TimeUtils
@@ -566,19 +566,19 @@ UTILS
 
 UTILS/ASYNC
 -----------
-    -      - AsyncExecutor                  Needed??
-    -      - AsyncResult                    Needed??
-    -      - IAsyncTask                     Needed??
-    -      - ThreadUtils                    Needed??
+    - **** - AsyncExecutor                  Needed??
+    - **** - AsyncResult                    Needed??
+    - **** - IAsyncTask                     Needed??
+    - **** - ThreadUtils                    Needed??
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/ATOMIC
 ------------
-    -      - AtomicInteger                  Needed??
-    -      - AtomicQueue                    Needed??
-    -      - AtomicReferenceArray           Needed??
+    - **** - AtomicInteger                  Needed??
+    - **** - AtomicQueue                    Needed??
+    - **** - AtomicReferenceArray           Needed??
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -590,73 +590,73 @@ UTILS/COLLECTIONS
 
     Arrays
     ------
-    -      - Array                          List<>
-    -      - ArrayIterable                  Use IEnumerable?
-    -      - ArrayIterator                  Use IEnumerator?
-    -      - BooleanArray                   List< bool >
-    -      - ByteArray                      List< byte >
-    -      - CharArray                      List< char >
-    -      - IntArray                       List< int >
+    - **** - Array                          List<>
+    - **** - ArrayIterable                  Use IEnumerable?
+    - **** - ArrayIterator                  Use IEnumerator?
+    - **** - BooleanArray                   List< bool >
+    - **** - ByteArray                      List< byte >
+    - **** - CharArray                      List< char >
+    - **** - IntArray                       List< int >
     -      - DelayedRemovalArray            Extend List<>
-    -      - FloatArray                     List< float >
-    -      - LongArray                      List< long >
-    -      - ShortArray                     List< short >
+    - **** - FloatArray                     List< float >
+    - **** - LongArray                      List< long >
+    - **** - ShortArray                     List< short >
     -      - SnapshotArray                  Convert / extend List<T>
 
     Maps
     ----
-    - DONE - ArrayMap                       Replace with Dictionary<K, V>
-    -      - IdentityMap                    Convert / extend Dictionary< object, object > 
-    -      - IntFloatMap                    Replace with Dictionary< int, float >
-    -      - IntIntMap                      Replace with Dictionary< int, int >
-    -      - IntMap                         Replace with Dictionary< int, V >
-    -      - LongMap                        Replace with Dictionary< long, V >
-    -      - ObjectFloatMap                 Replace with Dictionary< object, float >
-    -      - ObjectIntMap                   Replace with Dictionary< object, int >
-    -      - ObjectLongMap                  Replace with Dictionary< object, long >
-    -      - ObjectMap                      Replace with Dictionary< object, object >
-    -      - OrderedMap                     Convert / extend Dictionary< object, object >
+    - **** - ArrayMap                       Replace with Dictionary<K, V>
+    - **** - IdentityMap                    Convert / extend Dictionary< object, object > 
+    - **** - IntFloatMap                    Replace with Dictionary< int, float >
+    - **** - IntIntMap                      Replace with Dictionary< int, int >
+    - **** - IntMap                         Replace with Dictionary< int, V >
+    - **** - LongMap                        Replace with Dictionary< long, V >
+    - **** - ObjectFloatMap                 Replace with Dictionary< object, float >
+    - **** - ObjectIntMap                   Replace with Dictionary< object, int >
+    - **** - ObjectLongMap                  Replace with Dictionary< object, long >
+    - **** - ObjectMap                      Replace with Dictionary< object, object >
+    - **** - OrderedMap                     Convert / extend Dictionary< object, object >
 
     Sets
     ----
-    -      - IntSet                         Replace with List<int>
-    -      - ObjectSet<T>                   Replace with List<T>
-    -      - OrderedSet<T>                  Convert / extend List<T>
+    - **** - IntSet                         Replace with List<int>
+    - **** - ObjectSet<T>                   Replace with List<T>
+    - **** - OrderedSet<T>                  Convert / extend List<T>
                                             
     Misc                                    
     ----                                    
-    -      - Collections                    Needed??
-    -      - IPredicate                     Needed??
-    -      - PredicateIterable              Needed??
-    -      - PredicateIterator              Needed??
+    - **** - Collections                    Needed??
+    - **** - IPredicate                     Needed??
+    - **** - PredicateIterable              Needed??
+    - **** - PredicateIterator              Needed??
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                                             
 UTILS/COMPRESSION
 -----------------
-    -      - CRC                            Needed??
-    -      - ICodeProgress                  Needed??
-    -      - LzmaAdapted                    Needed??
+    - **** - CRC                            Needed??
+    - **** - ICodeProgress                  Needed??
+    - **** - LzmaAdapted                    Needed??
 
     UTILS/COMPRESSION/LZ
     --------------------
-            -      - BinTree                Needed??
-            -      - InWindow               Needed??
-            -      - OutWindow              Needed??
+            - **** - BinTree                Needed??
+            - **** - InWindow               Needed??
+            - **** - OutWindow              Needed??
     
     UTILS/COMPRESSION/LZMA
     ----------------------
-            -      - Base                   Needed??
-            -      - Decoder                Needed??
-            -      - Encoder                Needed??
+            - **** - Base                   Needed??
+            - **** - Decoder                Needed??
+            - **** - Encoder                Needed??
     
     UTILS/COMPRESSION/RANGECODER
     ----------------------------
-            -      - BitTreeDecoder         Needed??
-            -      - BitTreeEncoder         Needed??
-            -      - Decoder                Needed??
-            -      - Encoder                Needed??
+            - **** - BitTreeDecoder         Needed??
+            - **** - BitTreeEncoder         Needed??
+            - **** - Decoder                Needed??
+            - **** - Encoder                Needed??
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -674,40 +674,40 @@ UTILS/EXCEPTIONS
 
 UTILS/JSON
 ----------
-    -      - IBaseJsonReader                Needed??
-    -      - Json                           Needed??
-    -      - JsonReader                     Needed??
-    -      - JsonValue                      Needed??
-    -      - JsonWriter                     Needed??
-    -      - UBJsonReader                   Needed??
-    -      - UBJsonWriter                   Needed??
+    - **** - IBaseJsonReader                Needed??
+    - **** - Json                           Needed??
+    - **** - JsonReader                     Needed??
+    - **** - JsonValue                      Needed??
+    - **** - JsonWriter                     Needed??
+    - **** - UBJsonReader                   Needed??
+    - **** - UBJsonWriter                   Needed??
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/REFLECT
 -------------
-    -      - Annotation                     Needed??
-    -      - ArrayReflection                Needed??
-    -      - ClassReflection                Needed??
-    -      - Constructor                    Needed??
-    -      - Field                          Needed??
-    -      - Method                         Needed??
-    -      - ReflectionException            Needed??
-    -      - ReflectionPool                 Needed??
+    - **** - Annotation                     Needed??
+    - **** - ArrayReflection                Needed??
+    - **** - ClassReflection                Needed??
+    - **** - Constructor                    Needed??
+    - **** - Field                          Needed??
+    - **** - Method                         Needed??
+    - **** - ReflectionException            Needed??
+    - **** - ReflectionPool                 Needed??
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/VIEWPORT
 --------------
-    -      - ExtendedViewport               Convert
-    -      - FillViewport                   Convert
-    -      - FitViewport                    Convert
-    -      - ScalingViewport                Convert
-    -      - ScreenViewport                 Convert
-    -      - StretchViewport                Convert
-    -      - Viewport                       Convert
+    - DONE - ExtendedViewport               Convert
+    - DONE - FillViewport                   Convert
+    - DONE - FitViewport                    Convert
+    - DONE - ScalingViewport                Convert
+    - DONE - ScreenViewport                 Convert
+    - DONE - StretchViewport                Convert
+    - DONE - Viewport                       Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

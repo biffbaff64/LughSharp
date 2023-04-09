@@ -3,22 +3,17 @@
     /// <summary>
     /// Map layer containing a set of MapLayers, objects and properties.
     /// </summary>
-    public class MapGroupLayer : MapLayer
+    public sealed class MapGroupLayer : MapLayer
     {
-        private readonly MapLayers _layers = new MapLayers();
-
-        public MapLayers GetLayers()
-        {
-            return _layers;
-        }
+        public MapLayers Layers { get; private set; } = new MapLayers();
 
         public new void InvalidateRenderOffset()
         {
             base.InvalidateRenderOffset();
 
-            for ( var i = 0; i < _layers.Size(); i++ )
+            for ( var i = 0; i < Layers.Size(); i++ )
             {
-                var child = _layers.Get( i );
+                MapLayer child = Layers.Get( i );
                 child.InvalidateRenderOffset();
             }
         }

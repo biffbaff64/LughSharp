@@ -3,17 +3,19 @@ using LibGDXSharp.Core;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
 
+using Quaternion = LibGDXSharp.Maths.Quaternion;
+
 namespace LibGDXSharp.Graphics
 {
     public abstract class Camera
     {
-        /// the position of the camera
+        // the position of the camera
         public Vector3 Position { get; set; } = new Vector3();
 
-        /// the unit length direction vector of the camera
+        // the unit length direction vector of the camera
         public Vector3 Direction { get; set; } = new Vector3( 0, 0, -1 );
 
-        /// the unit length up vector of the camera
+        // the unit length up vector of the camera
         public Vector3 Up { get; set; } = new Vector3( 0, 1, 0 );
 
         public Matrix4 Projection        { get; set; } = new Matrix4();
@@ -21,17 +23,17 @@ namespace LibGDXSharp.Graphics
         public Matrix4 Combined          { get; set; } = new Matrix4();
         public Matrix4 InvProjectionView { get; set; } = new Matrix4();
 
-        /// the near clipping plane distance, has to be positive
+        // the near clipping plane distance, has to be positive
         public float Near { get; set; } = 1;
 
-        /// the far clipping plane distance, has to be positive
+        // the far clipping plane distance, has to be positive
         public float Far { get; set; } = 100;
 
         public float    ViewportWidth  { get; set; } = 0;
         public float    ViewportHeight { get; set; } = 0;
         public Frustrum Frustum        { get; set; } = new Frustrum();
 
-        private readonly Vector3 _tmpVec = new Vector3();
+        private          Vector3 _tmpVec = new Vector3();
         private readonly Ray     _ray    = new Ray( new Vector3(), new Vector3() );
 
         /// <summary>
@@ -133,7 +135,7 @@ namespace LibGDXSharp.Graphics
 
         /// <summary>
         /// Rotates the direction and up vector of this camera by the given
-        /// <see cref="Quaternion"/>. The direction and up vector will not
+        /// <see cref="Maths.Quaternion"/>. The direction and up vector will not
         /// be orthogonalized.
         /// </summary>
         /// <param name="quat">The quaternion.</param>
@@ -211,14 +213,17 @@ namespace LibGDXSharp.Graphics
         /// <param name="viewportWidth">The width of the viewport in pixels </param>
         /// <param name="viewportHeight">The height of the viewport in pixels </param>
         /// <returns> the mutated and unprojected screenCoords <see cref="Vector3"/>  </returns>
-        public virtual Vector3 Unproject( Vector3 screenCoords, float viewportX, float viewportY,
-                                          float viewportWidth, float viewportHeight )
+        public virtual Vector3 Unproject( Vector3 screenCoords,
+                                          float viewportX,
+                                          float viewportY,
+                                          float viewportWidth,
+                                          float viewportHeight )
         {
             var x = screenCoords.X;
             var y = screenCoords.Y;
 
             x -= viewportX;
-            y = Gdx.Graphics.GetHeight() - y;
+            y =  Gdx.Graphics.GetHeight() - y;
             y -= viewportY;
 
             screenCoords.X = ( 2 * x ) / viewportWidth - 1;
@@ -257,7 +262,7 @@ namespace LibGDXSharp.Graphics
         /// and similar classes.
         /// </summary>
         /// <returns>The mutated and projected worldCoords <see cref="Vector3"/>.</returns>
-        public virtual Vector3 Project( Vector3 worldCoords )
+        public virtual Vector3 Project( Vector3? worldCoords )
         {
             Project( worldCoords, 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
 
@@ -281,8 +286,11 @@ namespace LibGDXSharp.Graphics
         /// <param name="viewportWidth"> the width of the viewport in pixels.</param>
         /// <param name="viewportHeight"> the height of the viewport in pixels.</param>
         /// <returns> the mutated and projected worldCoords <see cref="Vector3"/>.</returns>
-        public virtual Vector3 Project( Vector3 worldCoords, float viewportX, float viewportY,
-                                        float viewportWidth, float viewportHeight )
+        public virtual Vector3 Project( Vector3? worldCoords,
+                                        float viewportX,
+                                        float viewportY,
+                                        float viewportWidth,
+                                        float viewportHeight )
         {
             worldCoords.Prj( Combined );
             worldCoords.X = viewportWidth * ( worldCoords.X + 1 ) / 2 + viewportX;
@@ -310,8 +318,12 @@ namespace LibGDXSharp.Graphics
         /// <param name="viewportWidth">The width of the viewport in pixels</param>
         /// <param name="viewportHeight">The height of the viewport in pixels</param>
         /// <returns>The picking Ray.</returns>
-        public virtual Ray GetPickRay( float screenX, float screenY, float viewportX,
-                                       float viewportY, float viewportWidth, float viewportHeight )
+        public virtual Ray GetPickRay( float screenX,
+                                       float screenY,
+                                       float viewportX,
+                                       float viewportY,
+                                       float viewportWidth,
+                                       float viewportHeight )
         {
             Unproject( _ray.origin.Set( screenX, screenY, 0 ), viewportX, viewportY, viewportWidth, viewportHeight );
             Unproject( _ray.direction.Set( screenX, screenY, 1 ), viewportX, viewportY, viewportWidth, viewportHeight );

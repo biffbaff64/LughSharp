@@ -2,109 +2,76 @@
 {
     public class MapLayer
     {
-        private string        _name    = "";
-        private float         _opacity = 1.0f;
-        private bool          _visible = true;
-        private float         _offsetX;
-        private float         _offsetY;
-        private float         _renderOffsetX;
-        private float         _renderOffsetY;
-        private bool          _renderOffsetDirty = true;
-        private MapLayer      _parent;
-        
-        private readonly MapObjects    _objects    = new MapObjects();
-        private readonly MapProperties _properties = new MapProperties();
+        public MapObjects    Objects    { get; private set; } = new MapObjects();
+        public MapProperties Properties { get; private set; } = new MapProperties();
+        public string?       Name       { get; set; }
+        public float         Opacity    { get; set; }
+        public bool          Visible    { get; set; } = true;
 
-        public string GetName()
+        private float     _offsetX;
+        private float     _offsetY;
+        private float     _renderOffsetX;
+        private float     _renderOffsetY;
+        private bool      _renderOffsetDirty = true;
+        private MapLayer? _parent            = null!;
+
+        public float OffsetX
         {
-            return _name;
+            get => _offsetX;
+            set
+            {
+                _offsetX = value;
+                InvalidateRenderOffset();
+            }
         }
 
-        public void SetName( string name )
+        public float OffsetY
         {
-            this._name = name;
+            get => _offsetY;
+            set
+            {
+                _offsetY = value;
+                InvalidateRenderOffset();
+            }
         }
 
-        public float GetOpacity()
+        public float RenderOffsetX
         {
-            return _opacity;
+            get
+            {
+                if ( _renderOffsetDirty ) CalculateRenderOffsets();
+
+                return _renderOffsetX;
+            }
         }
 
-        public void SetOpacity( float opacity )
+        public float RenderOffsetY
         {
-            this._opacity = opacity;
+            get
+            {
+                if ( _renderOffsetDirty ) CalculateRenderOffsets();
+
+                return _renderOffsetY;
+            }
         }
 
-        public float GetOffsetX()
+        public MapLayer? Parent
         {
-            return _offsetX;
+            get => _parent;
+            set
+            {
+                if ( value == this )
+                {
+                    throw new GdxRuntimeException( "Can't set self as the parent" );
+                }
+
+                this._parent = value;
+            }
         }
 
-        public void SetOffsetX( float offsetX )
-        {
-            this._offsetX = offsetX;
-            InvalidateRenderOffset();
-        }
-
-        public float GetOffsetY()
-        {
-            return _offsetY;
-        }
-
-        public void SetOffsetY( float offsetY )
-        {
-            this._offsetY = offsetY;
-            InvalidateRenderOffset();
-        }
-
-        public float GetRenderOffsetX()
-        {
-            if ( _renderOffsetDirty ) CalculateRenderOffsets();
-
-            return _renderOffsetX;
-        }
-
-        public float GetRenderOffsetY()
-        {
-            if ( _renderOffsetDirty ) CalculateRenderOffsets();
-
-            return _renderOffsetY;
-        }
-
-        public void InvalidateRenderOffset()
+        internal void InvalidateRenderOffset()
         {
             _renderOffsetDirty = true;
-        }
-
-        public MapLayer GetParent()
-        {
-            return _parent;
-        }
-
-        public void SetParent( MapLayer parent )
-        {
-            if ( parent == this ) throw new GdxRuntimeException( "Can't set self as the parent" );
-            this._parent = parent;
-        }
-
-        public MapObjects GetObjects()
-        {
-            return _objects;
-        }
-
-        public bool IsVisible()
-        {
-            return _visible;
-        }
-
-        public void SetVisible( bool visible )
-        {
-            this._visible = visible;
-        }
-
-        public MapProperties GetProperties()
-        {
-            return _properties;
         }
 
         protected void CalculateRenderOffsets()
@@ -112,8 +79,8 @@
             if ( _parent != null )
             {
                 _parent.CalculateRenderOffsets();
-                _renderOffsetX = _parent.GetRenderOffsetX() + _offsetX;
-                _renderOffsetY = _parent.GetRenderOffsetY() + _offsetY;
+                _renderOffsetX = _parent.RenderOffsetX + _offsetX;
+                _renderOffsetY = _parent.RenderOffsetY + _offsetY;
             }
             else
             {

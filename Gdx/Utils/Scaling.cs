@@ -1,10 +1,159 @@
-﻿using LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace LibGDXSharp.Utils
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class Scaling
     {
-        protected readonly static Vector2 Tmp = new Vector2();
+        protected readonly static Vector2 Temp = new Vector2();
+
+        /// <summary>
+        /// Returns the size of the source scaled to the target.
+        /// Note the same Vector2 instance is always returned and should
+        /// never be cached.
+        /// </summary>
+        public abstract Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight );
+
+        public readonly static Scaling Fit      = new FitScalingAnonymousInnerClass();
+        public readonly static Scaling Fill     = new FillScalingAnonymousInnerClass();
+        public readonly static Scaling FillX    = new FillXScalingAnonymousInnerClass();
+        public readonly static Scaling FillY    = new FillYScalingAnonymousInnerClass();
+        public readonly static Scaling Stretch  = new StretchScalingAnonymousInnerClass();
+        public readonly static Scaling StretchX = new StretchXScalingAnonymousInnerClass();
+        public readonly static Scaling StretchY = new StretchYScalingAnonymousInnerClass();
+        public readonly static Scaling None     = new NoScalingAnonymousInnerClass();
+
+        /// <summary>
+        /// Scales the source to fit the target while keeping the same aspect ratio.
+        /// This may cause the source to be smaller than the target in one direction. 
+        /// </summary>
+        private sealed class FitScalingAnonymousInnerClass : Scaling
+        {
+            public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
+            {
+                var targetRatio = targetHeight / targetWidth;
+                var sourceRatio = sourceHeight / sourceWidth;
+                var scale       = targetRatio > sourceRatio ? targetWidth / sourceWidth : targetHeight / sourceHeight;
+
+                Temp.X = sourceWidth * scale;
+                Temp.Y = sourceHeight * scale;
+
+                return Temp;
+            }
+        }
+
+        /// <summary>
+        /// Scales the source to fill the target while keeping the same aspect ratio.
+        /// This may cause the source to be larger than the target in one direction. 
+        /// </summary>
+        private sealed class FillScalingAnonymousInnerClass : Scaling
+        {
+            public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
+            {
+                var targetRatio = targetHeight / targetWidth;
+                var sourceRatio = sourceHeight / sourceWidth;
+                var scale       = targetRatio < sourceRatio ? targetWidth / sourceWidth : targetHeight / sourceHeight;
+
+                Temp.X = sourceWidth * scale;
+                Temp.Y = sourceHeight * scale;
+
+                return Temp;
+            }
+        }
+
+        /// <summary>
+        /// Scales the source to fill the target in the x direction while keeping
+        /// the same aspect ratio. This may cause the source to be smaller or larger
+        /// than the target in the y direction. 
+        /// </summary>
+        private sealed class FillXScalingAnonymousInnerClass : Scaling
+        {
+            public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
+            {
+                var scale = targetWidth / sourceWidth;
+
+                Temp.X = sourceWidth * scale;
+                Temp.Y = sourceHeight * scale;
+
+                return Temp;
+            }
+        }
+
+        /// <summary>
+        /// Scales the source to fill the target in the y direction while keeping the
+        /// same aspect ratio. This may cause the source to be smaller or larger than
+        /// the target in the x direction. 
+        /// </summary>
+        private sealed class FillYScalingAnonymousInnerClass : Scaling
+        {
+            public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
+            {
+                var scale = targetHeight / sourceHeight;
+
+                Temp.X = sourceWidth * scale;
+                Temp.Y = sourceHeight * scale;
+
+                return Temp;
+            }
+        }
+
+        /// <summary>
+        /// Scales the source to fill the target.
+        /// This may cause the source to not keep the same aspect ratio.
+        /// </summary>
+        private sealed class StretchScalingAnonymousInnerClass : Scaling
+        {
+            public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
+            {
+                Temp.X = targetWidth;
+                Temp.Y = targetHeight;
+
+                return Temp;
+            }
+        }
+
+        /// <summary>
+        /// Scales the source to fill the target in the x direction, without changing the
+        /// y direction. This may cause the source to not keep the same aspect ratio. 
+        /// </summary>
+        private sealed class StretchXScalingAnonymousInnerClass : Scaling
+        {
+            public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
+            {
+                Temp.X = targetWidth;
+                Temp.Y = sourceHeight;
+
+                return Temp;
+            }
+        }
+
+        /// <summary>
+        /// Scales the source to fill the target in the y direction, without changing the
+        /// x direction. This may cause the source to not keep the same aspect ratio. 
+        /// </summary>
+        private class StretchYScalingAnonymousInnerClass : Scaling
+        {
+            public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
+            {
+                Temp.X = sourceWidth;
+                Temp.Y = targetHeight;
+
+                return Temp;
+            }
+        }
+
+        /// <summary>
+        /// The source is not scaled.
+        /// </summary>
+        private sealed class NoScalingAnonymousInnerClass : Scaling
+        {
+            public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
+            {
+                Temp.X = sourceWidth;
+                Temp.Y = sourceHeight;
+
+                return Temp;
+            }
+        }
     }
 }
-

@@ -1,8 +1,79 @@
 ﻿namespace LibGDXSharp.Utils.Viewport
 {
+    /// <summary>
+    /// A viewport that scales the world using <see cref="Scaling"/>.
+    /// <para>
+    /// <see cref="Scaling.Fit"/> keeps the aspect ratio by scaling the world up to
+    /// fit the screen, adding black bars (letterboxing) for the remaining space.
+    /// </para>
+    /// <para>
+    /// <see cref="Scaling.Fill"/> keeps the aspect ratio by scaling the world up to
+    /// take the whole screen (some of the world may be off screen).
+    /// </para>
+    /// <para>
+    /// <see cref="Scaling.Stretch"/> does not keep the aspect ratio, the world is
+    /// scaled to take the whole screen.
+    /// </para>
+    /// <para>
+    /// <see cref="Scaling.None"/> keeps the aspect ratio by using a fixed size world
+    /// (the world may not fill the screen or some of the world may be off screen).
+    /// </para>
+    /// </summary>
     public class ScalingViewport : Viewport
     {
-        
+        public Scaling Scaling { get; set; }
+
+        /// <summary>
+        /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
+        /// </summary>
+        public ScalingViewport( Scaling scaling, float worldWidth, float worldHeight )
+            : this( scaling, worldWidth, worldHeight, new OrthographicCamera() )
+        {
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="scaling"></param>
+        /// <param name="worldWidth"></param>
+        /// <param name="worldHeight"></param>
+        /// <param name="camera"></param>
+        public ScalingViewport( Scaling scaling, float worldWidth, float worldHeight, Camera camera )
+        {
+            this.Scaling = scaling;
+
+            SetWorldSize( worldWidth, worldHeight );
+
+            Camera = camera;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="screenWidth"></param>
+        /// <param name="screenHeight"></param>
+        /// <param name="centerCamera"></param>
+        public new void Update( int screenWidth, int screenHeight, bool centerCamera )
+        {
+            Vector2 scaled = Scaling.Apply
+                (
+                 WorldWidth,
+                 WorldHeight,
+                 screenWidth,
+                 screenHeight
+                );
+
+            var viewportWidth  = ( int )Math.Round( scaled.X, MidpointRounding.AwayFromZero );
+            var viewportHeight = ( int )Math.Round( scaled.Y, MidpointRounding.AwayFromZero );
+
+            // Center.
+            SetScreenBounds
+                (
+                 ( screenWidth - viewportWidth ) / 2,
+                 ( screenHeight - viewportHeight ) / 2,
+                 viewportWidth,
+                 viewportHeight
+                );
+
+            Apply( centerCamera );
+        }
     }
 }
-

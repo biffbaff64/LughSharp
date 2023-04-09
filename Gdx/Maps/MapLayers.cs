@@ -2,7 +2,7 @@
 
 namespace LibGDXSharp.Maps
 {
-    public class MapLayers : IEnumerable< MapLayer >
+    public sealed class MapLayers : IEnumerable< MapLayer >
     {
         private readonly List< MapLayer > _layers = new List< MapLayer >();
 
@@ -11,13 +11,15 @@ namespace LibGDXSharp.Maps
             return _layers[ index ];
         }
 
-        public MapLayer Get( string name )
+        public MapLayer? Get( string name )
         {
+            if ( name.Equals( string.Empty ) ) return null;
+            
             for ( int i = 0, n = _layers.Count; i < n; i++ )
             {
-                var layer = _layers[ i ];
+                MapLayer layer = _layers[ i ];
 
-                if ( name.Equals( layer.GetName() ) )
+                if ( name.Equals( layer.Name ) )
                 {
                     return layer;
                 }
@@ -28,7 +30,9 @@ namespace LibGDXSharp.Maps
 
         public int GetIndex( string name )
         {
-            return GetIndex( Get( name ) );
+            MapLayer? layer = Get( name );
+            
+            return layer != null ? GetIndex( layer ) : throw new NullReferenceException();
         }
 
         public int GetIndex( MapLayer layer )
@@ -61,11 +65,20 @@ namespace LibGDXSharp.Maps
             return _layers.Count;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public List< T > GetByType<T>() where T : MapLayer
         {
             return GetByType( new List< T >() );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="fill"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public List< T > GetByType<T>( List< T > fill ) where T : MapLayer
         {
             fill.Clear();

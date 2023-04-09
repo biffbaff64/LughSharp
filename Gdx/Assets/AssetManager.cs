@@ -97,7 +97,7 @@ namespace LibGDXSharp.Assets
 
                 if ( assetContainer == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
 
-                asset = ( T? )assetContainer.GetObject< T >( type );
+                asset = ( T? )assetContainer.Object;
 
                 if ( asset == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
             }
@@ -126,7 +126,7 @@ namespace LibGDXSharp.Assets
 
                 if ( assetContainer == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
 
-                asset = ( T? )assetContainer.GetObject< T >( type );
+                asset = ( T? )assetContainer.Object;
 
                 if ( asset == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
             }
@@ -150,11 +150,9 @@ namespace LibGDXSharp.Assets
                 {
                     foreach ( RefCountedContainer? asset in assetsByType.Values )
                     {
-                        var obj = asset.GetObject< T >( type );
-
-                        if ( obj != null )
+                        if ( asset?.Object != null )
                         {
-                            outArray.Add( (T)obj );
+                            outArray.Add( ( T )asset.Object );
                         }
                     }
                 }
@@ -183,7 +181,7 @@ namespace LibGDXSharp.Assets
             {
                 return true;
             }
-            
+
             for ( var i = 0; i < _loadQueue?.Count; i++ )
             {
                 if ( _loadQueue[ i ].FileName.Equals( fileName ) )
@@ -239,7 +237,7 @@ namespace LibGDXSharp.Assets
                     Log.Info( "Unload (from tasks): " + fileName );
 
                     currentTask.Cancel = true;
-                    
+
                     currentTask.Unload();
 
                     return;
@@ -247,13 +245,13 @@ namespace LibGDXSharp.Assets
             }
 
             Type? type = _assetTypes?[ fileName ];
-            
+
             // check if it's in the queue
-            int foundIndex = -1;
+            var foundIndex = -1;
 
             for ( var i = 0; i < _loadQueue?.Count; i++ )
             {
-                if ( _loadQueue.get( i ).fileName.equals( fileName ) )
+                if ( _loadQueue[ i ].FileName.Equals( fileName ) )
                 {
                     foundIndex = i;
 
@@ -264,115 +262,142 @@ namespace LibGDXSharp.Assets
             if ( foundIndex != -1 )
             {
                 _toLoad--;
-                AssetDescriptor desc = _loadQueue.removeIndex( foundIndex );
-                Log.info( "Unload (from queue): " + fileName );
+
+                var desc = _loadQueue?[ foundIndex ];
+                _loadQueue?.RemoveAt( foundIndex );
+
+                Log.Info( "Unload (from queue): " + fileName );
 
                 // if the queued asset was already loaded, let the callback know it is available.
-                if ( type != null && desc.params != null && desc.params.loadedCallback != null)
-                desc.params.loadedCallback.finishedLoading( this, desc.fileName, desc.type );
+                if ( ( type != null ) && ( desc?.Parameters != null ) && ( desc.Parameters.LoadedCallback != null ) )
+                {
+                    desc.Parameters.LoadedCallback.FinishedLoading( this, desc.FileName, desc.Type );
+                }
 
                 return;
             }
 
             if ( type == null ) throw new GdxRuntimeException( "Asset not loaded: " + fileName );
 
-            RefCountedContainer assetRef = _assets.get( type ).get( fileName );
+            Dictionary< string, RefCountedContainer >? assetRef = null;
+
+            _assets?.TryGetValue( type, out assetRef );
 
             // if it is reference counted, decrement ref count and check if we can really get rid of it.
-            assetRef.DecRefCount();
-
-            if ( assetRef.GetRefCount() <= 0 )
+            if ( assetRef != null )
             {
-                Log.info( "Unload (dispose): " + fileName );
+                assetRef[ fileName ].RefCount--;
+            }
+
+            if ( assetRef?[ fileName ].RefCount <= 0 )
+            {
+                Log.Info( "Unload (dispose): " + fileName );
 
                 // if it is disposable dispose it
-                if ( assetRef.GetObject
-                        ( Object.class) instanceof disposable) ( ( Disposable )assetRef.GetObject( Object.class)).Dispose();
+                if ( assetRef[ fileName ].Object is IDisposable )
+                {
+                    ( ( IDisposable )assetRef[ fileName ].Object ).Dispose();
+                }
 
                 // remove the asset from the manager.
-                _assetTypes.remove( fileName );
-                _assets.get( type ).remove( fileName );
+                _assetTypes?.Remove( fileName );
+                _assets?[ type ].Remove( fileName );
             }
             else
-                Log.info( "Unload (decrement): " + fileName );
+            {
+                Log.Info( "Unload (decrement): " + fileName );
+            }
 
             // remove any dependencies (or just decrement their ref count).
-            Array< string > dependencies = _assetDependencies.get( fileName );
+            var dependencies = _assetDependencies?[ fileName ];
 
             if ( dependencies != null )
             {
-                for ( string dependency :
-                dependencies)
-                if ( isLoaded( dependency ) ) Unload( dependency );
+                foreach ( var dependency in dependencies )
+                {
+                    if ( IsLoaded( dependency ) ) Unload( dependency );
+                }
             }
 
             // remove dependencies if ref count < 0
-            if ( assetRef.GetRefCount() <= 0 ) _assetDependencies.remove( fileName );
+            if ( assetRef?[ fileName ].RefCount <= 0 )
+            {
+                _assetDependencies?.Remove( fileName );
+            }
         }
 
-        /** @param asset the asset
-	 * @return whether the asset is contained in this manager */
-        public bool ContainsAsset( T asset )
+        /// <summary>
+        /// </summary>
+        /// <param name="asset">the asset</param>
+        /// <returns>whether the asset is contained in this manager</returns>
+        public bool ContainsAsset<T>( T asset )
         {
-            ObjectMap< string, RefCountedContainer > assetsByType = _assets.get( asset.getClass() );
+            if ( asset == null ) return false;
+
+            var assetsByType = _assets?[ asset.GetType() ];
 
             if ( assetsByType == null ) return false;
-            for ( string fileName :
-            assetsByType.keys()) {
-                T otherAsset = ( T )assetsByType.get( FileName ).getObject( Object.class);
 
-                if ( otherAsset == asset || asset.equals( otherAsset ) ) return true;
+            foreach ( var fileName in assetsByType.Keys )
+            {
+                var otherAsset = ( T )assetsByType[ fileName ].Object;
+
+                if ( otherAsset?.GetType() == asset.GetType() || asset.Equals( otherAsset ) ) return true;
             }
 
             return false;
         }
 
-        /** @param asset the asset
-	 * @return the filename of the asset or null */
-        public string GetAssetFileName( T asset )
+        /// <summary>
+        /// </summary>
+        /// <param name="asset">the asset</param>
+        /// <returns>the filename of the asset or null</returns>
+        public string? GetAssetFileName<T>( T asset )
         {
-            for ( _class assetType :
-            _assets.keys()) {
-                ObjectMap< string, RefCountedContainer > assetsByType = _assets.get( assetType );
-                for ( string fileName :
-                assetsByType.keys()) {
-                    T otherAsset = ( T )assetsByType.get( FileName ).getObject( Object.class);
+            if ( _assets == null ) return null;
+            if ( asset == null ) return null;
 
-                    if ( otherAsset == asset || asset.equals( otherAsset ) ) return FileName;
+            foreach ( Type assetType in _assets.Keys )
+            {
+                var assetsByType = _assets[ assetType ];
+
+                foreach ( var fileName in assetsByType.Keys )
+                {
+                    var otherAsset = ( T )assetsByType[ fileName ].Object;
+
+                    if ( otherAsset?.GetType() == asset.GetType() || asset.Equals( otherAsset ) ) return fileName;
                 }
             }
 
             return null;
         }
 
-        /** @param assetDesc the AssetDescriptor of the asset
-	 * @return whether the asset is loaded */
-        public bool IsLoaded( AssetDescriptor assetDesc )
+        /// <summary>
+        /// </summary>
+        /// <param name="fileName">the file name of the asset</param>
+	    /// <returns>whether the asset is loaded</returns>
+        public bool IsLoaded( string? fileName )
         {
-            return isLoaded( assetDesc.fileName );
+            if ( _assetTypes == null ) return false;
+            
+            return fileName != null && _assetTypes.ContainsKey( fileName );
+
         }
 
-        /** @param fileName the file name of the asset
-	 * @return whether the asset is loaded */
-        public bool IsLoaded( string fileName )
-        {
-            if ( fileName == null ) return false;
-
-            return _assetTypes.containsKey( fileName );
-        }
-
-        /** @param fileName the file name of the asset
-	 * @return whether the asset is loaded */
+        /// <summary>
+        /// </summary>
+        /// <param name="fileName">the file name of the asset</param>
+        /// <param name="type"></param>
+        /// <returns>whether the asset is loaded</returns>
         public bool IsLoaded( string fileName, Type type )
         {
-            ObjectMap< string, RefCountedContainer > assetsByType = _assets.get( type );
+            var assetsByType = _assets?[ type ];
 
             if ( assetsByType == null ) return false;
-            RefCountedContainer assetContainer = assetsByType.get( fileName );
+            
+            RefCountedContainer assetContainer = assetsByType[ fileName ];
 
-            if ( assetContainer == null ) return false;
-
-            return assetContainer.GetObject( type ) != null;
+            return assetContainer?.Object != null;
         }
 
         /** Returns the default loader for the given type.
@@ -492,7 +517,7 @@ namespace LibGDXSharp.Assets
             _toLoad++;
             AssetDescriptor assetDesc = new AssetDescriptor( fileName, type, parameter );
             _loadQueue.add( assetDesc );
-            Log.debug( "Queued: " + assetDesc );
+            Log.Debug( "Queued: " + assetDesc );
         }
 
         /** Adds the given asset to the loading queue of the AssetManager.
@@ -556,12 +581,12 @@ namespace LibGDXSharp.Assets
         /** Blocks until all assets are loaded. */
         public void FinishLoading()
         {
-            Log.debug( "Waiting for loading to complete..." );
+            Log.Debug( "Waiting for loading to complete..." );
 
             while ( !Update() )
                 ThreadUtils.yield();
 
-            Log.debug( "Loading complete." );
+            Log.Debug( "Loading complete." );
         }
 
         /** Blocks until the specified asset is loaded.
@@ -575,7 +600,7 @@ namespace LibGDXSharp.Assets
 	 * @param fileName the file name (interpretation depends on {@link AssetLoader}) */
         public <T> T FinishLoadingAsset( string fileName )
         {
-            Log.debug( "Waiting for asset to be loaded: " + fileName );
+            Log.Debug( "Waiting for asset to be loaded: " + fileName );
 
             while ( true )
             {
@@ -596,7 +621,7 @@ namespace LibGDXSharp.Assets
 
                                 if ( asset != null )
                                 {
-                                    Log.debug( "Asset loaded: " + fileName );
+                                    Log.Debug( "Asset loaded: " + fileName );
 
                                     return asset;
                                 }
@@ -640,7 +665,7 @@ namespace LibGDXSharp.Assets
             // if the asset is already loaded, increase its reference count.
             if ( isLoaded( dependendAssetDesc.fileName ) )
             {
-                Log.debug( "Dependency already loaded: " + dependendAssetDesc );
+                Log.Debug( "Dependency already loaded: " + dependendAssetDesc );
                 Class               type     = _assetTypes.get( dependendAssetDesc.fileName );
                 RefCountedContainer assetRef = _assets.get( type ).get( dependendAssetDesc.fileName );
                 assetRef.IncRefCount();
@@ -649,7 +674,7 @@ namespace LibGDXSharp.Assets
             else
             {
                 // else add a new task for the asset.
-                Log.info( "Loading dependency: " + dependendAssetDesc );
+                Log.Info( "Loading dependency: " + dependendAssetDesc );
                 AddTask( dependendAssetDesc );
             }
         }
@@ -663,7 +688,7 @@ namespace LibGDXSharp.Assets
             // if the asset not meant to be reloaded and is already loaded, increase its reference count
             if ( isLoaded( assetDesc.fileName ) )
             {
-                Log.debug( "Already loaded: " + assetDesc );
+                Log.Debug( "Already loaded: " + assetDesc );
                 Class               type     = _assetTypes.get( assetDesc.fileName );
                 RefCountedContainer assetRef = _assets.get( type ).get( assetDesc.fileName );
                 assetRef.IncRefCount();
@@ -675,7 +700,7 @@ namespace LibGDXSharp.Assets
             else
             {
                 // else add a new task for the asset.
-                Log.info( "Loading: " + assetDesc );
+                Log.Info( "Loading: " + assetDesc );
                 AddTask( assetDesc );
             }
         }
@@ -748,7 +773,7 @@ namespace LibGDXSharp.Assets
                 task.assetDesc.params.loadedCallback.finishedLoading( this, task.assetDesc.fileName, task.assetDesc.type );
 
                 long endTime = TimeUtils.nanoTime();
-                Log.debug( "Loaded: " + ( endTime - task.startTime ) / 1000000f + "ms " + task.assetDesc );
+                Log.Debug( "Loaded: " + ( endTime - task.startTime ) / 1000000f + "ms " + task.assetDesc );
 
                 return true;
             }
@@ -893,7 +918,7 @@ namespace LibGDXSharp.Assets
 
         public void Dispose()
         {
-            Log.debug( "Disposing." );
+            Log.Debug( "Disposing." );
             Clear();
             _executor.dispose();
         }

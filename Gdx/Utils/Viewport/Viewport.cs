@@ -1,4 +1,7 @@
-﻿using LibGDXSharp.Core;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Core;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
 using LibGDXSharp.Scenes.Scene2D.Utils;
@@ -8,18 +11,21 @@ namespace LibGDXSharp.Utils.Viewport
     /// <summary>
     /// Manages a <see cref="Camera"/> and determines how world coordinates
     /// are mapped to and from the screen.
+    /// Extending classes should initialise <see cref="Camera"/> to avoid
+    /// causing exceptions.
     /// </summary>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class Viewport
     {
-        public Camera Camera       { get; set; } = null!;
-        public float  WorldWidth   { get; set; }
-        public float  WorldHeight  { get; set; }
-        public int    ScreenX      { get; set; }
-        public int    ScreenY      { get; set; }
-        public int    ScreenWidth  { get; set; }
-        public int    ScreenHeight { get; set; }
+        public Camera? Camera       { get; set; }
+        public float   WorldWidth   { get; set; }
+        public float   WorldHeight  { get; set; }
+        public int     ScreenX      { get; set; }
+        public int     ScreenY      { get; set; }
+        public int     ScreenWidth  { get; set; }
+        public int     ScreenHeight { get; set; }
 
-        private readonly Vector3 _tmp = new Vector3();
+        private Vector3 _tmp = Vector3.Zero;
 
         /// <summary>
         /// Applies the viewport to the camera and sets the glViewport.
@@ -29,6 +35,8 @@ namespace LibGDXSharp.Utils.Viewport
         /// </param>
         public virtual void Apply( bool centerCamera = false )
         {
+            if ( Camera == null ) throw new NullReferenceException();
+            
             HdpiUtils.GLViewport( ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
             Camera.ViewportWidth  = WorldWidth;
@@ -48,9 +56,12 @@ namespace LibGDXSharp.Utils.Viewport
         /// from <see cref="IApplicationListener.Resize(int, int)"/> or
         /// <see cref="IScreen.Resize(int, int)"/>.
         /// </summary>
-        /// <para>
+        /// <param name="screenWidth"></param>
+        /// <param name="screenHeight"></param>
+        /// <param name="centerCamera"></param>
+        /// <remarks>
         /// The default implementation only calls <see cref="Apply(bool)"/>. 
-        /// </para>
+        /// </remarks>
         public virtual void Update( int screenWidth, int screenHeight, bool centerCamera = false )
         {
             Apply( centerCamera );
@@ -63,9 +74,17 @@ namespace LibGDXSharp.Utils.Viewport
         /// <see cref="Camera.Unproject(Vector3)"/>
         public virtual Vector2 Unproject( Vector2 screenCoords )
         {
-            _tmp.Set( screenCoords.X, screenCoords.Y, 1f );
+            if ( Camera == null ) throw new NullReferenceException();
+
+            _tmp = new Vector3
+            {
+                X = screenCoords.X,
+                Y = screenCoords.Y,
+                Z = 1.0f
+            };
 
             Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
+
             screenCoords.Set( _tmp.X, _tmp.Y );
 
             return screenCoords;
@@ -78,6 +97,8 @@ namespace LibGDXSharp.Utils.Viewport
         /// <see cref="Camera.Project(Vector3) "/>
         public virtual Vector2 Project( Vector2 worldCoords )
         {
+            if ( Camera == null ) throw new NullReferenceException();
+
             _tmp.Set( worldCoords.X, worldCoords.Y, 1 );
 
             Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
@@ -93,6 +114,8 @@ namespace LibGDXSharp.Utils.Viewport
         /// <see cref="Camera.Unproject(Vector3)"/>
         public virtual Vector3 Unproject( Vector3 screenCoords )
         {
+            if ( Camera == null ) throw new NullReferenceException();
+
             Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
             return screenCoords;
@@ -104,6 +127,8 @@ namespace LibGDXSharp.Utils.Viewport
         /// <see cref="Camera.Project(Vector3) "/>
         public virtual Vector3 Project( Vector3 worldCoords )
         {
+            if ( Camera == null ) throw new NullReferenceException();
+
             Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
             return worldCoords;
@@ -114,7 +139,10 @@ namespace LibGDXSharp.Utils.Viewport
         /// <see cref="Camera.GetPickRay(float, float, float, float, float, float) "/>
         public virtual Ray GetPickRay( float screenX, float screenY )
         {
-            return Camera.GetPickRay( screenX, screenY, this.ScreenX, this.ScreenY, ScreenWidth, ScreenHeight );
+            if ( Camera == null ) throw new NullReferenceException();
+
+            return Camera.GetPickRay( screenX, screenY, this.ScreenX,
+                                      this.ScreenY, ScreenWidth, ScreenHeight );
         }
 
         /// <summary>
@@ -142,12 +170,16 @@ namespace LibGDXSharp.Utils.Viewport
         /// </summary>
         public virtual Vector2 ToScreenCoordinates( Vector2 worldCoords, Matrix4 transformMatrix )
         {
+            if ( Camera == null ) throw new NullReferenceException();
+
             _tmp.Set( worldCoords.X, worldCoords.Y, 0 );
             _tmp.Mul( transformMatrix );
 
             Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
-            _tmp.Y = Gdx.Graphics.GetHeight() - _tmp.Y;
+            Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
+            
+            _tmp.Y = (Gdx.Graphics.GetHeight() - _tmp.Y);
 
             worldCoords.X = _tmp.X;
             worldCoords.Y = _tmp.Y;
@@ -155,7 +187,11 @@ namespace LibGDXSharp.Utils.Viewport
             return worldCoords;
         }
 
-        public virtual void SetWorldSize( float worldWidth, float worldHeight )
+        /// <summary>
+        /// </summary>
+        /// <param name="worldWidth"></param>
+        /// <param name="worldHeight"></param>
+        public void SetWorldSize( float worldWidth, float worldHeight )
         {
             this.WorldWidth  = worldWidth;
             this.WorldHeight = worldHeight;
@@ -206,7 +242,15 @@ namespace LibGDXSharp.Utils.Viewport
         /// <summary>
         /// Returns the right gutter (black bar) width in screen coordinates.
         /// </summary>
-        public virtual int RightGutterWidth => ( Gdx.Graphics.GetWidth() - ( ScreenX + ScreenWidth ) );
+        public virtual int RightGutterWidth
+        {
+            get
+            {
+                Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
+
+                return ( Gdx.Graphics.GetWidth() - ( ScreenX + ScreenWidth ) );
+            }
+        }
 
         /// <summary>
         /// Returns the bottom gutter (black bar) height in screen coordinates.
@@ -221,6 +265,14 @@ namespace LibGDXSharp.Utils.Viewport
         /// <summary>
         /// Returns the top gutter (black bar) height in screen coordinates.
         /// </summary>
-        public virtual int TopGutterHeight => ( Gdx.Graphics.GetHeight() - ( ScreenY + ScreenHeight ) );
+        public virtual int TopGutterHeight
+        {
+            get
+            {
+                Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
+
+                return ( Gdx.Graphics.GetHeight() - ( ScreenY + ScreenHeight ) );
+            }
+        }
     }
 }

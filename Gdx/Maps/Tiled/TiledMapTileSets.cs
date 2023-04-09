@@ -1,33 +1,36 @@
-﻿namespace LibGDXSharp.Maps.Tiled
+﻿using System.Collections;
+
+namespace LibGDXSharp.Maps.Tiled
 {
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// A Collection of <see cref="TiledMapTileSet"/> objects.
+    /// </summary>
     public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     {
-        private readonly List< TiledMapTileSet > _tilesets;
 
-        /**
-         * Creates an empty collection of tilesets.
-         */
+        private List< TiledMapTileSet > _tilesets;
+
+        /// <summary>
+        /// Creates an empty collection of tilesets. </summary>
         public TiledMapTileSets()
         {
             _tilesets = new List< TiledMapTileSet >();
         }
 
-        /**
-         * @param index index to get the desired {@link TiledMapTileSet} at.
-    	 * @return tileset at index
-         */
-        public TiledMapTileSet GetTileSet( int index )
+        /// <param name="index"> index to get the desired <seealso cref="TiledMapTileSet"/> at. </param>
+        /// <returns> tileset at index  </returns>
+        public virtual TiledMapTileSet GetTileSet( int index )
         {
             return _tilesets[ index ];
         }
 
-        /**
-         * @param name Name of the {@link TiledMapTileSet} to retrieve.
-    	 * @return tileset with matching name, null if it doesn't exist
-         */
-        public TiledMapTileSet? GetTileSet( string name )
+        /// <param name="name"> Name of the <see cref="TiledMapTileSet"/> to retrieve.</param>
+        /// <returns> tileset with matching name, null if it doesn't exist  </returns>
+        public virtual TiledMapTileSet? GetTileSet( string name )
         {
-            foreach ( var tileset in _tilesets)
+            foreach ( TiledMapTileSet tileset in _tilesets )
             {
                 if ( name.Equals( tileset.Name ) )
                 {
@@ -38,36 +41,30 @@
             return null;
         }
 
-        /**
-         * @param tileset set to be added to the collection
-         */
-        public void AddTileSet( TiledMapTileSet tileset )
+        /// <param name="tileset"> set to be added to the collection </param>
+        public virtual void AddTileSet( TiledMapTileSet tileset )
         {
             _tilesets.Add( tileset );
         }
 
-        /**
-         * Removes tileset at index
-    	 * @param index index at which to remove a tileset.
-         */
-        public void RemoveTileSet( int index )
+        /// <summary>
+        /// Removes tileset at index
+        /// </summary>
+        /// <param name="index"> index at which to remove a tileset. </param>
+        public virtual void RemoveTileSet( int index )
         {
             _tilesets.RemoveAt( index );
         }
 
-        /**
-         * @param tileset set to be removed
-         */
-        public void RemoveTileSet( TiledMapTileSet tileset )
+        /// <param name="tileset"> set to be removed </param>
+        public virtual void RemoveTileSet( TiledMapTileSet tileset )
         {
             _tilesets.Remove( tileset );
         }
 
-        /**
-         * @param id id of the {@link TiledMapTile} to get.
-	     * @return tile with matching id, null if it doesn't exist
-         */
-        public TiledMapTile? GetTile( int id )
+        /// <param name="id"> id of the <seealso cref="ITiledMapTile"/> to get. </param>
+        /// <returns> tile with matching id, null if it doesn't exist  </returns>
+        public virtual ITiledMapTile? GetTile( int id )
         {
             // The purpose of backward iteration here is to maintain backwards compatibility
             // with maps created with earlier versions of a shared tileset.  The assumption
@@ -75,10 +72,10 @@
             // iterating precedence for conflicts is given to later tilesets in the list, 
             // which are likely to be the earlier version of any given gid.  
             // See TiledMapModifiedExternalTilesetTest for example of this issue.
-            for ( var i = _tilesets.Count - 1; i >= 0; i-- )
+            for ( int i = _tilesets.Count - 1; i >= 0; i-- )
             {
                 TiledMapTileSet tileset = _tilesets[ i ];
-                TiledMapTile    tile    = tileset.GetTile( id );
+                ITiledMapTile?  tile    = tileset.GetTile( id );
 
                 if ( tile != null )
                 {
@@ -89,15 +86,20 @@
             return null;
         }
 
-        public IEnumerator< TiledMapTileSet > GetEnumerator()
+        /// <returns> iterator to tilesets </returns>
+        public virtual IEnumerator< TiledMapTileSet > GetEnumerator()
         {
-            yield break;
+            return _tilesets.GetEnumerator();
         }
 
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used
+        /// to iterate through the collection.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
     }
 }
-

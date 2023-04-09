@@ -1,28 +1,11 @@
-﻿using IDisposable = System.IDisposable;
-
-namespace LibGDXSharp.Maps
+﻿namespace LibGDXSharp.Maps
 {
-    public class Map : IDisposable
+    /// <summary>
+    /// This is a base type so cannot be a record or struct.
+    /// </summary>
+    public class Map
     {
-        private readonly MapLayers     _layers     = new MapLayers();
-        private readonly MapProperties _properties = new MapProperties();
-
-        public Map()
-        {
-        }
-
-        public MapLayers GetLayers()
-        {
-            return _layers;
-        }
-
-        public MapProperties GetProperties()
-        {
-            return _properties;
-        }
-
-        public void Dispose()
-        {
-        }
+        public MapLayers     Layers     { get; } = new MapLayers();
+        public MapProperties Properties { get; } = new MapProperties();
     }
 }

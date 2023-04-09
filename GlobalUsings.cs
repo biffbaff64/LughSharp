@@ -16,6 +16,10 @@ global using LibGDXSharp.Assets.Loaders.Resolvers;
 global using LibGDXSharp.Files;
 global using LibGDXSharp.Graphics;
 global using LibGDXSharp.Graphics.GLUtils;
+
+global using Vector2 = LibGDXSharp.Maths.Vector2;
+global using Vector3 = LibGDXSharp.Maths.Vector3;
+
 global using LibGDXSharp.Utils;
 
 //

@@ -5,34 +5,30 @@ namespace LibGDXSharp.Maps.Tiled
     public class TiledMapTileSet : IEnumerable< ITiledMapTile >
     {
         public string Name { get; set; }
-        
+
         private readonly Dictionary< int, ITiledMapTile > _tiles;
-        private readonly MapProperties                   _properties;
 
         /// <summary>
         /// Creates empty tileset
         /// </summary>
         public TiledMapTileSet()
         {
-            Name       = string.Empty;
+            Name        = string.Empty;
             _tiles      = new Dictionary< int, ITiledMapTile >();
-            _properties = new MapProperties();
+            Properties = new MapProperties();
         }
 
         /// <summary>
         /// </summary>
         /// <returns>tileset's properties set.</returns>
-        public MapProperties GetProperties()
-        {
-            return _properties;
-        }
+        public MapProperties Properties { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="ITiledMapTile"/> that has the given id.
         /// </summary>
         /// <param name="id"> the id of the <see cref="ITiledMapTile"/> to retrieve. </param>
         /// <returns> tile matching id, null if it doesn't exist  </returns>
-        public ITiledMapTile GetTile( int id )
+        public ITiledMapTile? GetTile( int id )
         {
             return _tiles[ id ];
         }
@@ -59,7 +55,7 @@ namespace LibGDXSharp.Maps.Tiled
         /// </summary>
         /// <returns> the size of this TiledMapTileSet. </returns>
         public int Size() => _tiles.Count;
-        
+
         /// <summary>
         /// </summary>
         /// <returns></returns>
@@ -77,4 +73,3 @@ namespace LibGDXSharp.Maps.Tiled
         }
     }
 }
-

@@ -9,9 +9,9 @@ namespace LibGDXSharp.Maps
 
         public class DirectImageResolver : IImageResolver
         {
-            private readonly ObjectMap< string, Texture > _images;
+            private readonly Dictionary< string, Texture > _images;
 
-            public DirectImageResolver( ObjectMap< string, Texture > images )
+            public DirectImageResolver( Dictionary< string, Texture > images )
             {
                 this._images = images;
             }

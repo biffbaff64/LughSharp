@@ -76,16 +76,16 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="matrix"> The matrix to copy, assumed to be an affine transformation. </param>
         /// <returns> This matrix for the purposes of chaining.  </returns>
-        public Affine2 SetFrom( Matrix3X3 matrix )
+        public Affine2 SetFrom( Matrix3 matrix )
         {
             var other = matrix.val;
 
-            m00 = other[ Matrix3X3.M00 ];
-            m01 = other[ Matrix3X3.M01 ];
-            m02 = other[ Matrix3X3.M02 ];
-            m10 = other[ Matrix3X3.M10 ];
-            m11 = other[ Matrix3X3.M11 ];
-            m12 = other[ Matrix3X3.M12 ];
+            m00 = other[ Matrix3.M00 ];
+            m01 = other[ Matrix3.M01 ];
+            m02 = other[ Matrix3.M02 ];
+            m10 = other[ Matrix3.M10 ];
+            m11 = other[ Matrix3.M11 ];
+            m12 = other[ Matrix3.M12 ];
 
             return this;
         }
