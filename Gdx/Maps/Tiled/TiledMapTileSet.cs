@@ -4,7 +4,7 @@ namespace LibGDXSharp.Maps.Tiled
 {
     public class TiledMapTileSet : IEnumerable< ITiledMapTile >
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         private readonly Dictionary< int, ITiledMapTile > _tiles;
 

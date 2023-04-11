@@ -5,7 +5,6 @@ using LibGDXSharp.Maps.Objects;
 using LibGDXSharp.Maps.Tiled.Objects;
 using LibGDXSharp.Maps.Tiled.Tiles;
 using LibGDXSharp.Maths;
-using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Xml;
 
 namespace LibGDXSharp.Maps.Tiled
@@ -15,22 +14,22 @@ namespace LibGDXSharp.Maps.Tiled
         public class Parameters : AssetLoaderParameters< TiledMap >
         {
             // generate mipmaps?
-            public bool GenerateMipMaps { get; set; } = false;
+            internal bool GenerateMipMaps { get; set; } = false;
 
             // The TextureFilter to use for minification
-            public TextureFilter TextureMinFilter { get; set; } = TextureFilter.Nearest;
+            internal TextureFilter TextureMinFilter { get; set; } = TextureFilter.Nearest;
 
             // The TextureFilter to use for magnification
-            public TextureFilter TextureMagFilter { get; set; } = TextureFilter.Nearest;
+            internal TextureFilter TextureMagFilter { get; set; } = TextureFilter.Nearest;
 
             // Whether to convert the objects' pixel position and size to the equivalent in tile space.
-            public bool ConvertObjectToTileSpace { get; set; } = false;
+            internal bool ConvertObjectToTileSpace { get; set; } = false;
 
             // Whether to flip all Y coordinates so that Y positive is up.
             // All LibGDX renderers require flipped Y coordinates, and thus flipY set to true.
             // This parameter is included for non-rendering related purposes of TMX files,
             // or custom renderers.
-            public bool FlipY { get; set; } = true;
+            internal bool FlipY { get; set; } = true;
         }
 
         protected const uint Flag_Flip_Horizontally = 0x80000000;
@@ -38,10 +37,10 @@ namespace LibGDXSharp.Maps.Tiled
         protected const uint Flag_Flip_Diagonally   = 0x20000000;
         protected const uint Mask_Clear             = 0xE0000000;
 
-        protected readonly XmlReader          xml = new XmlReader();
-        protected          XmlReader.Element? root;
-        protected          bool               convertObjectToTileSpace;
-        protected          bool               flipY = true;
+        protected readonly XmlReader  xml;
+        protected          XmlElement root;
+        protected          bool       convertObjectToTileSpace;
+        protected          bool       flipY = true;
 
         protected int mapTileWidth;
         protected int mapTileHeight;
@@ -286,7 +285,7 @@ namespace LibGDXSharp.Maps.Tiled
                 var layer = new MapLayer();
 
                 LoadBasicLayerInfo( layer, element );
-                
+
                 var properties = element.GetChildByName( "properties" );
 
                 if ( properties != null )
@@ -303,8 +302,10 @@ namespace LibGDXSharp.Maps.Tiled
             }
         }
 
-        protected void LoadImageLayer( TiledMap map, MapLayers parentLayers,
-                                       XmlReader.Element element, FileHandle tmxFile,
+        protected void LoadImageLayer( TiledMap map,
+                                       MapLayers parentLayers,
+                                       XmlReader.Element element,
+                                       FileHandle tmxFile,
                                        IImageResolver imageResolver )
         {
             if ( element.GetName().equals( "imagelayer" ) )
@@ -340,7 +341,7 @@ namespace LibGDXSharp.Maps.Tiled
                 {
                     var source = image.getAttribute( "source" );
                     var handle = GetRelativeFileHandle( tmxFile, source );
-                
+
                     texture =  imageResolver.GetImage( handle.Path() );
                     y       -= texture.RegionHeight;
                 }
@@ -865,7 +866,7 @@ namespace LibGDXSharp.Maps.Tiled
                                                 TiledMapTileSet tileset,
                                                 XmlReader.Element element,
                                                 List< XmlReader.Element > tileElements,
-                                                string name,
+                                                string? name,
                                                 int firstgid,
                                                 int tilewidth,
                                                 int tileheight,
@@ -881,14 +882,14 @@ namespace LibGDXSharp.Maps.Tiled
 
         protected void AddTileProperties( ITiledMapTile tile, XmlReader.Element tileElement )
         {
-            string terrain = tileElement.GetAttribute( "terrain", null );
+            string? terrain = tileElement.GetAttribute( "terrain", null );
 
             if ( terrain != null )
             {
                 tile.GetProperties().Put( "terrain", terrain );
             }
 
-            string probability = tileElement.GetAttribute( "probability", null );
+            string? probability = tileElement.GetAttribute( "probability", null );
 
             if ( probability != null )
             {
@@ -926,16 +927,19 @@ namespace LibGDXSharp.Maps.Tiled
             if ( animationElement != null )
             {
                 var staticTiles = new List< StaticTiledMapTile >();
-                var intervals   = new IntArray();
+                var intervals   = new List< int >();
 
                 foreach ( var frameElement in animationElement.GetChildrenByName( "frame" ) )
                 {
-                    staticTiles.Add( ( StaticTiledMapTile )tileSet.GetTile( firstgid + frameElement.GetIntAttribute( "tileid" ) ) );
+                    staticTiles.Add( ( StaticTiledMapTile )tileSet
+                                         .GetTile( firstgid + frameElement.GetIntAttribute( "tileid" ) ) );
                     intervals.Add( frameElement.GetIntAttribute( "duration" ) );
                 }
 
-                var animatedTile = new AnimatedTiledMapTile( intervals, staticTiles );
-                animatedTile.SetId( tile.GetId() );
+                var animatedTile = new AnimatedTiledMapTile( intervals, staticTiles )
+                {
+                    ID = tile.ID
+                };
 
                 return animatedTile;
             }
@@ -943,6 +947,13 @@ namespace LibGDXSharp.Maps.Tiled
             return null;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="tileSet"></param>
+        /// <param name="textureRegion"></param>
+        /// <param name="tileId"></param>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
         protected void AddStaticTiledMapTile( TiledMapTileSet tileSet,
                                               TextureRegion textureRegion,
                                               int tileId,
@@ -951,9 +962,10 @@ namespace LibGDXSharp.Maps.Tiled
         {
             ITiledMapTile tile = new StaticTiledMapTile( textureRegion );
 
-            tile.SetId( tileId );
-            tile.SetOffsetX( offsetX );
-            tile.SetOffsetY( flipY ? -offsetY : offsetY );
+            tile.ID      = tileId;
+            tile.OffsetX = offsetX;
+            tile.OffsetY = flipY ? -offsetY : offsetY;
+
             tileSet.PutTile( tileId, tile );
         }
     }

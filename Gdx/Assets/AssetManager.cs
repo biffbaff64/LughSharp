@@ -3,7 +3,6 @@
 using LibGDXSharp.Core;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Utils.Async;
-using LibGDXSharp.Utils.Reflect;
 
 namespace LibGDXSharp.Assets
 {
@@ -15,8 +14,8 @@ namespace LibGDXSharp.Assets
         private readonly List< string >?                                                                               _injected;
         private readonly Dictionary< Type, Dictionary< string, AssetLoader< Type, AssetLoaderParameters< Type > > > >? _loaders;
         private readonly List< AssetDescriptor< Type > >?                                                              _loadQueue;
-        private          Stack< AssetLoadingTask< AssetLoaderParameters< Type > > >                                    _tasks;
         private readonly AsyncExecutor                                                                                 _executor;
+        private          Stack< AssetLoadingTask< AssetLoaderParameters< Type > > >                                    _tasks;
 
         private IAssetErrorListener _listener;
         private int                 _loaded;
@@ -400,29 +399,35 @@ namespace LibGDXSharp.Assets
             return assetContainer?.Object != null;
         }
 
-        /** Returns the default loader for the given type.
-	 * @param type The type of the loader to get
-	 * @return The loader capable of loading the type, or null if none exists */
-        public <T> AssetLoader GetLoader( final @class<T> type) {
-            return getLoader( type, null );
+        /// <summary>
+        /// Returns the default loader for the given type.
+        /// </summary>
+        /// <param name="type">The type of the loader to get</param>
+        /// <returns>The loader capable of loading the type, or null if none exists.</returns>
+        public AssetLoader<T, TP> GetLoader<T, TP>( T type) where TP : AssetLoaderParameters<T>
+        {
+            return GetLoader( type, null );
         }
 
-        /** Returns the loader for the given type and the specified filename. If no loader exists for the specific filename, the
-	 * default loader for that type is returned.
-	 * @param type The type of the loader to get
-	 * @param fileName The filename of the asset to get a loader for, or null to get the default loader
-	 * @return The loader capable of loading the type and filename, or null if none exists */
-        public <T> AssetLoader GetLoader( final @class<T> type, final string FileName) {
-            final ObjectMap< string, AssetLoader >
-                loaders = this._loaders.get( type );
+        /// <summary>
+        /// Returns the loader for the given type and the specified filename. If no loader
+        /// exists for the specific filename, the default loader for that type is returned.
+        /// </summary>
+	    /// <param name="type">The type of the loader to get</param>
+	    /// <param name="fileName">The filename of the asset to get a loader for, or null to get the default loader
+	    /// @return The loader capable of loading the type and filename, or null if none exists
+        public AssetLoader<T, TP> GetLoader<T, TP>( T type, string fileName) where TP : AssetLoaderParameters<T>
+        {
+            Dictionary< string, AssetLoader<T, TP> > loaders = this._loaders[ type.GetType() ];
 
             if ( loaders == null || loaders.size < 1 ) return null;
             if ( fileName == null ) return loaders.get( "" );
-            AssetLoader result = null;
-            int         l      = -1;
-            for ( ObjectMap.Entry< string, AssetLoader > entry :
-            loaders.entries())
 
+            AssetLoader result = null;
+
+            int l = -1;
+
+            foreach ( ObjectMap.Entry< string, AssetLoader > entry in loaders.entries() )
             {
                 if ( entry.key.length() > l && FileName.endsWith( entry.key ) )
                 {
@@ -435,9 +440,10 @@ namespace LibGDXSharp.Assets
         }
 
         /** Adds the given asset to the loading queue of the AssetManager.
-	 * @param fileName the file name (interpretation depends on {@link AssetLoader})
-	 * @param type the type of the asset. */
-        public void Load( string fileName, Class< T > type )
+    	  * @param fileName the file name (interpretation depends on {@link AssetLoader})
+    	  * @param type the type of the asset.
+          */
+            public void Load( string fileName, Type type )
         {
             Load( fileName, type, null );
         }
@@ -1032,8 +1038,6 @@ namespace LibGDXSharp.Assets
                     sb.Append( ", " );
 
                     Type type = _assetTypes[ fileName ];
-
-//                    RefCountedContainer assetRef     = _assets.Get( type ).Get( FileName );
 
                     RefCountedContainer assetRef = _assets.Values[ fileName ];
 

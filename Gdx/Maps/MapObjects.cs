@@ -2,10 +2,16 @@
 
 namespace LibGDXSharp.Maps
 {
-    public class MapObjects : IEnumerable<MapObject>
+    /// <summary>
+    /// A Collection of <see cref="MapObject"/> instances.
+    /// </summary>
+    public sealed class MapObjects : IEnumerable< MapObject >
     {
         private readonly List< MapObject > _objects;
 
+        /// <summary>
+        /// Creates an empty set of MapObjects
+        /// </summary>
         public MapObjects()
         {
             _objects = new List< MapObject >();
@@ -20,9 +26,9 @@ namespace LibGDXSharp.Maps
         {
             for ( int i = 0, n = _objects.Count; i < n; i++ )
             {
-                var obj = _objects[ i ];
+                MapObject obj = _objects[ i ];
 
-                if ( name.Equals( obj.GetName() ) )
+                if ( name.Equals( obj.Name ) )
                 {
                     return obj;
                 }
@@ -51,7 +57,7 @@ namespace LibGDXSharp.Maps
             _objects.Add( obj );
         }
 
-        public void Remove( int index )
+        public void RemoveIndex( int index )
         {
             _objects.RemoveAt( index );
         }
@@ -61,19 +67,37 @@ namespace LibGDXSharp.Maps
             _objects.Remove( obj );
         }
 
-        public List< T > GetByType<T>() where T : MapObject
+        /// <param name="type"> class of the objects we want to retrieve </param>
+        /// <returns> array filled with all the objects in the collection matching type  </returns>
+        public List< T > GetByType<T>( T type ) where T : MapObject
         {
-            return GetByType( new List< T >() );
+            return GetByType( type, new List< T >() );
         }
 
-        public List< T > GetByType<T>( List< T > fill ) where T : MapObject
+        /// <param name="type"> class of the objects we want to retrieve </param>
+        /// <param name="fill"> collection to put the returned objects in </param>
+        /// <returns> array filled with all the objects in the collection matching type  </returns>
+        public List< T > GetByType<T>( T type, List< T > fill ) where T : MapObject
         {
             fill.Clear();
-            fill.AddRange( _objects.OfType<T>() );
+
+            for ( int i = 0, n = _objects.Count; i < n; i++ )
+            {
+                MapObject obj = _objects[ i ];
+
+                if ( obj.GetType() == typeof(T) )
+                {
+                    fill.Add( ( T )obj );
+                }
+            }
 
             return fill;
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerator{T}"/> object.</returns>
         public IEnumerator< MapObject > GetEnumerator()
         {
             return _objects.GetEnumerator();
@@ -85,4 +109,3 @@ namespace LibGDXSharp.Maps
         }
     }
 }
-

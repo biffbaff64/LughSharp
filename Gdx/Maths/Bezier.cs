@@ -1,13 +1,11 @@
-﻿using LibGDXSharp.Utils.Collections;
-
-namespace LibGDXSharp.Maths
+﻿namespace LibGDXSharp.Maths
 {
     /// <summary>
     /// Implementation of the Bezier curve.
     /// </summary>
-    public class Bezier<T> : IPath where T : IVector< T >
+    public class Bezier<T> : IPath<T> where T : IVector< T >
     {
-        public Array< T > Points { get; set; } = new Array< T >();
+        public List< T > Points { get; set; } = new List< T >();
 
         private T? _tmp;
         private T? _tmp2;
@@ -42,7 +40,7 @@ namespace LibGDXSharp.Maths
         /// <param name="points"></param>
         /// <param name="offset"></param>
         /// <param name="length"></param>
-        public Bezier( in Array< T > points, in int offset, in int length )
+        public Bezier( in List< T > points, in int offset, in int length )
         {
             Set( points, offset, length );
         }
@@ -50,7 +48,7 @@ namespace LibGDXSharp.Maths
         /// <summary>
         /// Simple linear interpolation
         /// </summary>
-        /// <param name="alist"> The <see cref="System.Collections.ArrayList"/> to set to the result.</param>
+        /// <param name="alist"> The collection in which to set to the result.</param>
         /// <param name="t"> The location (ranging 0..1) on the line.</param>
         /// <param name="p0"> The start point.</param>
         /// <param name="p1"> The end point.</param>
@@ -58,7 +56,7 @@ namespace LibGDXSharp.Maths
         /// <returns> The value specified by out for chaining </returns>
         public static T Linear( in T alist, in float t, in T p0, in T p1, in T tmp )
         {
-            // B1(t) = p0 + (p1-p0)*t`
+            // B1(t) = p0 + (p1 - p0) * t
             return alist.Set( p0 ).Scl( 1f - t ).Add( tmp.Set( p1 ).Scl( t ) );
         }
 
@@ -73,7 +71,7 @@ namespace LibGDXSharp.Maths
         /// <returns> The value specified by out for chaining</returns>
         public static T LinearDerivative( in T vec, in float t, in T p0, in T p1, in T tmp )
         {
-            // B1'(t) = p1-p0
+            // B1'(t) = p1 - p0
             return vec.Set( p1 ).Sub( p0 );
         }
 
@@ -89,7 +87,7 @@ namespace LibGDXSharp.Maths
         /// <returns> The value specified by out for chaining  </returns>
         public static T Quadratic( in T list, in float t, in T p0, in T p1, in T p2, in T tmp )
         {
-            // B2(t) = (1 - t) * (1 - t) * p0 + 2 * (1-t) * t * p1 + t*t*p2
+            // B2(t) = (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2
             var dt = 1f - t;
 
             return list.Set( p0 ).Scl( dt * dt ).Add( tmp.Set( p1 ).Scl( 2 * dt * t ) ).Add( tmp.Set( p2 ).Scl( t * t ) );
@@ -184,7 +182,13 @@ namespace LibGDXSharp.Maths
             _tmp3 ??= points[ 0 ].Cpy();
 
             this.Points.Clear();
-            this.Points.AddAll( points, offset, length );
+
+            for ( int i = offset, n = length; i < n; i++ )
+            {
+                this.Points.Add( points[ i ] );
+            }
+
+//            this.Points.AddAll( points, offset, length );
 
             return this;
         }
@@ -196,21 +200,21 @@ namespace LibGDXSharp.Maths
         /// <param name="length"></param>
         /// <returns></returns>
         /// <exception cref="GdxRuntimeException"></exception>
-        public Bezier< T > Set( in Array< T > points, in int offset, in int length )
+        public Bezier< T > Set( in List< T > points, in int offset, in int length )
         {
             if ( length is < 2 or > 4 )
             {
                 throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
             }
 
-            _tmp ??= points.Get( 0 ).Cpy();
+            _tmp ??= points[ 0 ].Cpy();
 
-            _tmp2 ??= points.Get( 0 ).Cpy();
+            _tmp2 ??= points[ 0 ].Cpy();
 
-            _tmp3 ??= points.Get( 0 ).Cpy();
+            _tmp3 ??= points[ 0 ].Cpy();
 
-            this.Points.Clear();
-            this.Points.AddAll( points, offset, length );
+            Points.Clear();
+            Points.AddAll( points, offset, length );
 
             return this;
         }
@@ -272,8 +276,8 @@ namespace LibGDXSharp.Maths
         public float Approximate( in T v )
         {
             // TODO: make a real approximate method
-            var p1 = Points.Get( 0 );
-            var p2 = Points.Get( Points.Size - 1 );
+            var p1 = Points[ 0 ];
+            var p2 = Points[ Points.Size - 1 ];
             var p3 = v;
 
             var l1Sqr = p1.Dst2( p2 );
@@ -311,7 +315,7 @@ namespace LibGDXSharp.Maths
             {
                 _tmp2.Set( _tmp3 );
 
-                ValueAt( _tmp3, ( i ) / ( ( float )samples - 1 ) );
+                ValueAt( _tmp3, i / ( ( float )samples - 1 ) );
 
                 if ( i > 0 )
                 {

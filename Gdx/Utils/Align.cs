@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace LibGDXSharp.Utils
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public static class Align
     {
         public const int Center = 1 << 0;

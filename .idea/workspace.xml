@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ada46c8d-28f1-4051-801e-5fa74d1e1a7c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Gdx/Assets/AssetManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Assets/AssetManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Graphics/G2D/TextureAtlas.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Graphics/G2D/TextureAtlas.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/IImageResolver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/IImageResolver.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/MapObjects.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/MapObjects.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/MapProperties.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/MapProperties.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/Objects/CircleMapObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/Objects/CircleMapObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/Objects/EllipseMapObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/Objects/EllipseMapObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/Objects/PolygonMapObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/Objects/PolygonMapObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/Objects/PolylineMapObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/Objects/PolylineMapObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/Objects/RectangleMapObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/Objects/RectangleMapObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/Objects/TextureMapObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/Objects/TextureMapObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maps/Tiled/Objects/TiledMapTileMapObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maps/Tiled/Objects/TiledMapTileMapObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maths/Bezier.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maths/Bezier.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maths/Frustrum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maths/Frustrum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maths/IPath.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maths/IPath.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maths/Plane.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maths/Plane.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maths/Polygon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maths/Polygon.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Maths/Polyline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Maths/Polyline.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Align.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Gdx/Utils/Align.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Json/IBaseJsonReader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Json/Json.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Json/JsonReader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Json/JsonValue.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Json/JsonWriter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Json/UBJsonReader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Json/UBJsonWriter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Reflect/Annotation.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Reflect/ArrayReflection.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Reflect/ClassReflection.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Reflect/Constructor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Reflect/Field.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Reflect/Method.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Reflect/ReflectionException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gdx/Utils/Reflect/ReflectionPool.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.MD" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.MD" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2OI1iOgDc5ko5qwxiTerBJKPPiE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Development/Projects/CSharp/LibGDXSharp",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ada46c8d-28f1-4051-801e-5fa74d1e1a7c" name="Changes" comment="" />
+      <created>1681233410924</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681233410924</updated>
+    </task>
+    <servers />
+  </component>
+</project>

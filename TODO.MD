@@ -238,27 +238,27 @@ INPUT
 
 MAPS
 ----
-    -      - IImageResolver                         Convert
+    - DONE - IImageResolver                         Convert
     - DONE - IMapRenderer                           Convert
     - DONE - Map                                    Convert
     - DONE - MapGroupLayer                          Convert
     - DONE - MapLayer                               Convert
     - DONE - MapLayers                              Convert
     - DONE - MapObject                              Convert
-    -      - MapObjects                             Convert
-    -      - MapProperties                          Convert
+    - DONE - MapObjects                             Convert
+    - DONE - MapProperties                          Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MAPS/OBJECTS
 ------------
-    -      - CircleMapObject                        Convert
-    -      - EllipseMapObject                       Convert
-    -      - PolygonMapObject                       Convert
-    -      - PolylineMapObject                      Convert
-    -      - RectangleMapObject                     Convert
-    -      - TextureMapObject                       Convert
+    - DONE - CircleMapObject                        Convert
+    - DONE - EllipseMapObject                       Convert
+    - DONE - PolygonMapObject                       Convert
+    - DONE - PolylineMapObject                      Convert
+    - DONE - RectangleMapObject                     Convert
+    - DONE - TextureMapObject                       Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -287,7 +287,7 @@ MAPS/TILED/LOADERS
 
 MAPS/TILED/OBJECTS
 ------------------
-    -      - TiledMapTileMapObject                  Convert
+    - DONE - TiledMapTileMapObject                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -316,7 +316,7 @@ MAPS/TILED/TILES
 MATH
 ----
     - DONE - Affine2
-    -      - Bezier
+    - DONE - Bezier
     -      - Bresenham
     -      - BSpline
     -      - CatmullRomSpline
@@ -537,7 +537,7 @@ UTILS
     - DONE - FloatConsts                    Done, but is it needed?
     -      - GdxNativesLoader
     -      - I18NBundle                     Check
-    -      - IRunnable
+    -      - IRunnable                      Done, but is it needed?
     -      - LittleEndianInputStream        Check
     - DONE - Logger                         Convert
     - DONE - NumberUtils                    Convert
@@ -635,28 +635,28 @@ UTILS/COLLECTIONS
                                             
 UTILS/COMPRESSION
 -----------------
-    - **** - CRC                            Needed??
-    - **** - ICodeProgress                  Needed??
-    - **** - LzmaAdapted                    Needed??
+    - **** - CRC                            N0
+    - **** - ICodeProgress                  N0
+    - **** - LzmaAdapted                    N0
 
     UTILS/COMPRESSION/LZ
     --------------------
-            - **** - BinTree                Needed??
-            - **** - InWindow               Needed??
-            - **** - OutWindow              Needed??
+            - **** - BinTree                No
+            - **** - InWindow               No
+            - **** - OutWindow              No
     
     UTILS/COMPRESSION/LZMA
     ----------------------
-            - **** - Base                   Needed??
-            - **** - Decoder                Needed??
-            - **** - Encoder                Needed??
+            - **** - Base                   No
+            - **** - Decoder                No
+            - **** - Encoder                No
     
     UTILS/COMPRESSION/RANGECODER
     ----------------------------
-            - **** - BitTreeDecoder         Needed??
-            - **** - BitTreeEncoder         Needed??
-            - **** - Decoder                Needed??
-            - **** - Encoder                Needed??
+            - **** - BitTreeDecoder         No
+            - **** - BitTreeEncoder         No
+            - **** - Decoder                No
+            - **** - Encoder                No
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -674,27 +674,27 @@ UTILS/EXCEPTIONS
 
 UTILS/JSON
 ----------
-    - **** - IBaseJsonReader                Needed??
-    - **** - Json                           Needed??
-    - **** - JsonReader                     Needed??
-    - **** - JsonValue                      Needed??
-    - **** - JsonWriter                     Needed??
-    - **** - UBJsonReader                   Needed??
-    - **** - UBJsonWriter                   Needed??
+    -      - IBaseJsonReader                Convert
+    -      - Json                           Convert
+    -      - JsonReader                     Convert
+    -      - JsonValue                      Convert
+    -      - JsonWriter                     Convert
+    -      - UBJsonReader                   Convert
+    -      - UBJsonWriter                   Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/REFLECT
 -------------
-    - **** - Annotation                     Needed??
-    - **** - ArrayReflection                Needed??
-    - **** - ClassReflection                Needed??
-    - **** - Constructor                    Needed??
-    - **** - Field                          Needed??
-    - **** - Method                         Needed??
-    - **** - ReflectionException            Needed??
-    - **** - ReflectionPool                 Needed??
+    - **** - Annotation                     No
+    - **** - ArrayReflection                No
+    - **** - ClassReflection                No
+    - **** - Constructor                    No
+    - **** - Field                          No
+    - **** - Method                         No
+    - **** - ReflectionException            No
+    - **** - ReflectionPool                 No
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -714,8 +714,8 @@ UTILS/VIEWPORT
 
 UTILS/XML
 ---------
-    -      - XmlReader                      Use System.Xml.XmlReader instead
-    -      - XmlWriter                      Use System.Xml.XmlWriter instead
+    -      - XmlReader                      Convert
+    -      - XmlWriter                      Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

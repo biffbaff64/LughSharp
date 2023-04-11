@@ -2,7 +2,11 @@
 {
     public class TextureAtlas
     {
-        
+
+        public TextureRegion FindRegion( string name )
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
