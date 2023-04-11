@@ -2,7 +2,9 @@
 {
     public class Polyline
     {
-        
+        public Polyline( float[] vertices )
+        {
+        }
     }
 }
 

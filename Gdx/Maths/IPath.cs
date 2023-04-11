@@ -1,14 +1,13 @@
 ﻿namespace LibGDXSharp.Maths
 {
-    // ReSharper disable InvalidXmlDocComment
     public interface IPath<T>
     {
-        T DerivativeAt( T @out, float t );
+        T DerivativeAt( in T outParam, in float t );
 
         /// <summary>
         /// </summary>
         /// <returns>The value of the path at t where 0<=t<=1</returns>
-        T ValueAt( T value, float t );
+        T ValueAt( in T value, in float t );
 
         /// <summary>
         /// </summary>
@@ -19,7 +18,7 @@
         /// See <see cref="Locate"/> for a more precise (but more
         /// intensive) method.
         /// </returns>
-        float Approximate( T v );
+        float Approximate( in T v );
 
         /// <summary>
         /// </summary>

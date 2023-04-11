@@ -15,4 +15,8 @@
       <PackageReference Include="Silk.NET.Windowing.Glfw" Version="2.16.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Gdx\Utils\Json\" />
+    </ItemGroup>
+
 </Project>
