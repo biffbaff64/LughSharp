@@ -542,8 +542,8 @@ UTILS
     - DONE - Logger                         Convert
     - DONE - NumberUtils                    Convert
     -      - PauseableThread
-    -      - PerformanceCounter             Check
-    -      - PerformanceCounters            Check
+    - DONE - PerformanceCounter             Check
+    - DONE - PerformanceCounters            Check
     -      - PropertiesUtils                Convert, but check first
     -      - QuadTreeFloat
     -      - Queue
@@ -556,8 +556,8 @@ UTILS
     -      - SortedIntList
     -      - StreamUtils
     - **** - StringBuilder                  Use System.Text.StringBuilder
-    -      - TextFormatter                  Remove, look in to C# localisation
-    -      - Timer                          Use System.Timer instead??
+    - **** - TextFormatter                  Remove, look in to C# localisation
+    - DONE - Timer                          Use System.Timer instead??
     - DONE - TimeUtils
     - DONE - TimSort
 

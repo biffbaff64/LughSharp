@@ -1,9 +1,12 @@
-﻿namespace LibGDXSharp.Core
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Core
 {
     /// <summary>
     /// Environment class holding references to the Application,
     /// Graphics, Audio, Files and Input instances.
     /// </summary>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public static class Gdx
     {
         public static bool DevMode { get; set; } = false;

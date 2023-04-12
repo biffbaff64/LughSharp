@@ -4,9 +4,9 @@ namespace LibGDXSharp.Utils
 {
     public class Timer
     {
-        private readonly static object       threadLock = new object();
-        private static          TimerThread? _thread;
-        private readonly        List< Task > _tasks = new List< Task >( 8 );
+        private readonly static object        threadLock = new object();
+        private readonly        List< Task? > _tasks     = new List< Task? >( 8 );
+        private static          TimerThread?  _thread;
 
         public Timer()
         {
@@ -32,7 +32,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        private static TimerThread? Thread()
+        private static TimerThread Thread()
         {
             lock ( threadLock )
             {
@@ -126,7 +126,7 @@ namespace LibGDXSharp.Utils
         {
             lock ( threadLock )
             {
-                Thread().Thread().instances.RemoveValue( this );
+                Thread().instances.Remove( this );
             }
         }
 
@@ -150,14 +150,14 @@ namespace LibGDXSharp.Utils
         /// </summary>
         public void Clear()
         {
-            for ( int i = 0, n = _tasks.Size; i < n; i++ )
+            for ( int i = 0, n = _tasks.Count; i < n; i++ )
             {
-                if ( _tasks.Get( i ) != null )
+                if ( _tasks[ i ] != null )
                 {
-                    lock ( _tasks.Get( i )! )
+                    lock ( _tasks[ i ]! )
                     {
-                        _tasks.Get( i )!.executeTimeMillis = 0;
-                        _tasks.Get( i )!.timer             = null;
+                        _tasks[ i ]!.executeTimeMillis = 0;
+                        _tasks[ i ]!.timer             = null;
                     }
                 }
             }
@@ -175,7 +175,7 @@ namespace LibGDXSharp.Utils
         {
             lock ( threadLock )
             {
-                return _tasks.Size == 0;
+                return _tasks.Count == 0;
             }
         }
 
@@ -220,7 +220,7 @@ namespace LibGDXSharp.Utils
                             }
                         }
 
-                        _tasks[ i ]!.Gdx.App!.PostRunnable( _tasks.Get( i )! );
+                        _tasks[ i ]!.app!.PostRunnable( _tasks[ i ]! );
                     }
                 }
 
@@ -236,9 +236,9 @@ namespace LibGDXSharp.Utils
         {
             lock ( threadLock )
             {
-                for ( int i = 0, n = _tasks.Size; i < n; i++ )
+                for ( int i = 0, n = _tasks.Count; i < n; i++ )
                 {
-                    Task task = _tasks.Get( i )!;
+                    Task task = _tasks[ i ]!;
 
                     lock ( task )
                     {
@@ -289,14 +289,17 @@ namespace LibGDXSharp.Utils
         /// </summary>
         public abstract class Task : IRunnable
         {
-            internal volatile Timer? timer;
-            internal          long   executeTimeMillis;
-            internal          long   intervalMillis;
-            internal          int    repeatCount;
+            internal volatile Timer?        timer;
+            internal readonly IApplication? app;
+            internal          long          executeTimeMillis;
+            internal          long          intervalMillis;
+            internal          int           repeatCount;
 
             protected Task()
             {
-                if ( Gdx.App == null )
+                app = Core.Gdx.App;
+
+                if ( app == null )
                 {
                     throw new GdxRuntimeException( "Gdx.App not available!" );
                 }
@@ -324,7 +327,7 @@ namespace LibGDXSharp.Utils
                             executeTimeMillis = 0;
                             this.timer        = null;
 
-                            timer?._tasks.RemoveValue( this );
+                            timer?._tasks.Remove( this );
                         }
                     }
                 }
@@ -360,25 +363,32 @@ namespace LibGDXSharp.Utils
             {
                 return timer != null;
             }
+
+            /// <summary>
+            /// Returns the time in milliseconds when this task will be executed next.
+            /// </summary>
+            public long GetExecuteTimeMillis()
+            {
+                return executeTimeMillis;
+            }
         }
 
-        public class TimerThread : IRunnable, ILifecycleListener
+        public sealed class TimerThread : IRunnable, ILifecycleListener
         {
-            private readonly Array< Timer > _instances = new Array< Timer >( capacity: 1 );
-
-            internal readonly IFiles? files;
-            internal          Timer?  instance;
-            internal          long    pauseTimeMillis;
+            internal readonly List< Timer > instances = new List< Timer >( capacity: 1 );
+            internal readonly IFiles?       files;
+            internal          Timer?        instance;
+            internal          long          pauseTimeMillis;
 
             public TimerThread()
             {
-                files = Gdx.Files;
+                files = Core.Gdx.Files;
 
-                Gdx.App?.AddLifecycleListener( this );
+                Core.Gdx.App?.AddLifecycleListener( this );
 
                 Resume();
 
-                var thread = new Thread( new ThreadStart( this.Run ) )
+                var thread = new Thread( this.Run )
                 {
                     Name = "Timer"
                 };
@@ -390,10 +400,42 @@ namespace LibGDXSharp.Utils
             {
                 lock ( threadLock )
                 {
-                    if ( _thread != this || files != Gdx.Files ) break;
+                    if ( _thread != this || files != Core.Gdx.Files ) goto exitlabel;
 
+                    long waitMillis = 5000;
 
+                    if ( pauseTimeMillis == 0 )
+                    {
+                        long timeMillis = TimeUtils.NanoTime() / 1000000;
+
+                        for ( int i = 0, n = instances.Count; i < n; i++ )
+                        {
+                            try
+                            {
+                                waitMillis = instances[ i ].Update( timeMillis, waitMillis );
+                            }
+                            catch ( Exception ex )
+                            {
+                                throw new GdxRuntimeException( "Task failed: " + instances[ i ].GetType().Name, ex );
+                            }
+                        }
+                    }
+
+                    if ( _thread != this || files != Core.Gdx.Files ) goto exitlabel;
+
+                    try
+                    {
+                        if ( waitMillis > 0 ) Monitor.Wait( threadLock, ( int )waitMillis );
+                    }
+                    catch ( ThreadInterruptedException ignored )
+                    {
+                        // ...
+                    }
                 }
+
+                exitlabel:
+
+                Dispose();
             }
 
             public void Pause()
@@ -412,9 +454,9 @@ namespace LibGDXSharp.Utils
                 {
                     var delayMillis = TimeUtils.NanosToMillis() - pauseTimeMillis;
 
-                    for ( int i = 0, n = _instances.Size; i < n; i++ )
+                    for ( int i = 0, n = instances.Count; i < n; i++ )
                     {
-                        _instances.Get( i )?.Delay( delayMillis );
+                        instances[ i ].Delay( delayMillis );
                     }
 
                     pauseTimeMillis = 0;
@@ -429,12 +471,12 @@ namespace LibGDXSharp.Utils
                 {
                     if ( _thread == this ) _thread = null;
 
-                    _instances.Clear();
+                    instances.Clear();
 
                     Monitor.PulseAll( threadLock );
                 }
 
-                Gdx.App?.RemoveLifecycleListener( this );
+                Core.Gdx.App?.RemoveLifecycleListener( this );
             }
         }
     }
