@@ -13,7 +13,7 @@
         public static IGraphics?    Graphics { get; set; }
         public static IAudio?       Audio    { get; set; }
         public static IInput?       Input    { get; set; }
-        public static IFiles?        Files    { get; set; }
+        public static IFiles?       Files    { get; set; }
         public static INet?         Net      { get; set; }
         public static IGL20?        Gl       { get; set; }
         public static IGL20?        Gl20     { get; set; }

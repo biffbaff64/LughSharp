@@ -1,21 +1,22 @@
-﻿using LibGDXSharp.Core;
-using LibGDXSharp.Utils.Collections;
-
-using Monitor = System.Threading.Monitor;
+﻿using Monitor = System.Threading.Monitor;
 
 namespace LibGDXSharp.Utils
 {
     public class Timer
     {
-        private readonly static object        threadLock = new object();
-        private static          TimerThread?  _thread;
-        private readonly        Array< Task > _tasks = new Array< Task >( false, 8 );
+        private readonly static object       threadLock = new object();
+        private static          TimerThread? _thread;
+        private readonly        List< Task > _tasks = new List< Task >( 8 );
 
         public Timer()
         {
             Start();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="GdxRuntimeException"></exception>
         public static Timer Instance()
         {
             lock ( threadLock )
@@ -28,11 +29,14 @@ namespace LibGDXSharp.Utils
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         private static TimerThread? Thread()
         {
             lock ( threadLock )
             {
-                if ( _thread == null || _thread.files != Gdx.Files )
+                if ( _thread == null || _thread.files != Core.Gdx.Files )
                 {
                     _thread?.Dispose();
 
@@ -44,7 +48,8 @@ namespace LibGDXSharp.Utils
         }
 
         /// <summary>
-        /// Schedules a task to occur once as soon as possible, but not sooner than the start of the next frame.
+        /// Schedules a task to occur once as soon as possible, but not sooner
+        /// than the start of the next frame.
         /// </summary>
         public Task PostTask( Task task )
         {
@@ -60,7 +65,8 @@ namespace LibGDXSharp.Utils
         }
 
         /// <summary>
-        /// Schedules a task to occur once after the specified delay and then repeatedly at the specified interval until cancelled.
+        /// Schedules a task to occur once after the specified delay and then repeatedly
+        /// at the specified interval until cancelled.
         /// </summary>
         public Task ScheduleTask( Task task, float delaySeconds, float intervalSeconds )
         {
@@ -120,7 +126,7 @@ namespace LibGDXSharp.Utils
         {
             lock ( threadLock )
             {
-                Thread().instances.RemoveValue( this );
+                Thread().Thread().instances.RemoveValue( this );
             }
         }
 
@@ -173,42 +179,48 @@ namespace LibGDXSharp.Utils
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="timeMillis"></param>
+        /// <param name="waitMillis"></param>
+        /// <returns></returns>
         public long Update( long timeMillis, long waitMillis )
         {
             lock ( threadLock )
             {
-                for ( int i = 0, n = _tasks.Size; i < n; i++ )
+                for ( int i = 0, n = _tasks.Count; i < n; i++ )
                 {
-                    lock ( _tasks.Get( i )! )
+                    lock ( _tasks[ i ]! )
                     {
-                        if ( _tasks.Get( i )!.executeTimeMillis > timeMillis )
+                        if ( _tasks[ i ]!.executeTimeMillis > timeMillis )
                         {
-                            waitMillis = Math.Min( waitMillis, _tasks.Get( i )!.executeTimeMillis - timeMillis );
+                            waitMillis = Math.Min( waitMillis, _tasks[ i ]!.executeTimeMillis - timeMillis );
 
                             continue;
                         }
 
-                        if ( _tasks.Get( i )!.repeatCount == 0 )
+                        if ( _tasks[ i ]!.repeatCount == 0 )
                         {
-                            _tasks.Get( i )!.timer = null;
+                            _tasks[ i ]!.timer = null;
 
-                            _tasks.RemoveIndex( i );
+                            _tasks.RemoveAt( i );
 
                             i--;
                             n--;
                         }
                         else
                         {
-                            _tasks.Get( i )!.executeTimeMillis = timeMillis + _tasks.Get( i )!.intervalMillis;
-                            waitMillis                         = Math.Min( waitMillis, _tasks.Get( i )!.intervalMillis );
+                            _tasks[ i ]!.executeTimeMillis = timeMillis + _tasks[ i ]!.intervalMillis;
 
-                            if ( _tasks.Get( i )!.repeatCount > 0 )
+                            waitMillis = Math.Min( waitMillis, _tasks[ i ]!.intervalMillis );
+
+                            if ( _tasks[ i ]!.repeatCount > 0 )
                             {
-                                _tasks.Get( i )!.repeatCount--;
+                                _tasks[ i ]!.repeatCount--;
                             }
                         }
 
-                        _tasks.Get( i )!.app!.PostRunnable( _tasks.Get( i )! );
+                        _tasks[ i ]!.Gdx.App!.PostRunnable( _tasks.Get( i )! );
                     }
                 }
 
@@ -379,8 +391,8 @@ namespace LibGDXSharp.Utils
                 lock ( threadLock )
                 {
                     if ( _thread != this || files != Gdx.Files ) break;
-                    
-                    
+
+
                 }
             }
 
@@ -406,7 +418,7 @@ namespace LibGDXSharp.Utils
                     }
 
                     pauseTimeMillis = 0;
-                    
+
                     Monitor.PulseAll( threadLock );
                 }
             }

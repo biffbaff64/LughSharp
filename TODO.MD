@@ -597,7 +597,7 @@ UTILS/COLLECTIONS
     - **** - ByteArray                      List< byte >
     - **** - CharArray                      List< char >
     - **** - IntArray                       List< int >
-    -      - DelayedRemovalArray            Extend List<>
+    - DONE - DelayedRemovalArray            Extend List<>
     - **** - FloatArray                     List< float >
     - **** - LongArray                      List< long >
     - **** - ShortArray                     List< short >

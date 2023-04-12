@@ -1,41 +1,72 @@
-﻿using LibGDXSharp.Utils.Collections;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Gdx.Utils.Collections;
 
 namespace LibGDXSharp.Utils
 {
-    public class DelayedRemovalArray<T> : Array< T >
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class DelayedRemovalArray<T> : List< T >
     {
-        private          int      _iterating = 0;
-        private          int      _clear     = 0;
-        private readonly IntArray _remove    = new IntArray();
+        private int _iterating = 0;
+        private int _clear     = 0;
 
-        public DelayedRemovalArray( Array< T > array ) : base( array )
+        private readonly List< int > _remove = new List< int >();
+
+        /// <summary>
+        /// </summary>
+        /// <param name="array"></param>
+        public DelayedRemovalArray( List< T > array ) : base( array )
         {
             Reset();
         }
 
-        public DelayedRemovalArray( T[] array )
+        /// <summary>
+        /// </summary>
+        /// <param name="array"></param>
+        public DelayedRemovalArray( T[] array ) : base( array )
         {
             Reset();
         }
 
-        public DelayedRemovalArray( T[] array, int startIndex, int count ) : base( array, startIndex, count )
+        /// <summary>
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="count"></param>
+        public DelayedRemovalArray( T[] array, int startIndex, int count )
         {
+            for ( var i = 0; i < count; i++ )
+            {
+                Add( array[ startIndex + i ] );
+            }
+            
             Reset();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="initialCapacity"></param>
         public DelayedRemovalArray( int initialCapacity = 16 ) : base( initialCapacity )
         {
             Reset();
         }
 
+        /// <summary>
+        /// </summary>
         public void Begin()
         {
             _iterating++;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <exception cref="GdxRuntimeException"></exception>
         public void End()
         {
-            if ( _iterating == 0 ) throw new GdxRuntimeException( "Begin() must be called before End()!" );
+            if ( _iterating == 0 )
+            {
+                throw new GdxRuntimeException( "Begin() must be called before End()!" );
+            }
 
             _iterating--;
 
@@ -68,6 +99,9 @@ namespace LibGDXSharp.Utils
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="index"></param>
         public void Remove( int index )
         {
             if ( index < _clear ) return;
@@ -93,7 +127,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public new bool RemoveValue( T value )
+        public bool RemoveValue( T value )
         {
             if ( _iterating > 0 )
             {
@@ -106,9 +140,14 @@ namespace LibGDXSharp.Utils
                 return true;
             }
 
-            return base.RemoveValue( value );
+            return base.Remove( value );
         }
 
+        /// <summary>
+        /// Removes the element at the specified index of the List.
+        /// </summary>
+        /// <param name="index">The zero-based index of the element to remove.</param>
+        /// <returns></returns>
         public T RemoveIndex( int index )
         {
             if ( _iterating > 0 )
@@ -118,9 +157,15 @@ namespace LibGDXSharp.Utils
                 return this[ index ];
             }
 
-            return base.RemoveAt( index );
+            base.RemoveAt( index );
+
+            return this[ index ];
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
         public new void RemoveRange( int start, int end )
         {
             if ( _iterating > 0 )
@@ -136,6 +181,8 @@ namespace LibGDXSharp.Utils
             }
         }
 
+        /// <summary>
+        /// </summary>
         public new void Clear()
         {
             if ( _iterating > 0 )
@@ -148,6 +195,11 @@ namespace LibGDXSharp.Utils
             base.Clear();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <exception cref="GdxRuntimeException"></exception>
         public void Set( int index, T value )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
@@ -155,6 +207,11 @@ namespace LibGDXSharp.Utils
             this[ index ] = value;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <exception cref="GdxRuntimeException"></exception>
         public new void Insert( int index, T value )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
@@ -162,11 +219,24 @@ namespace LibGDXSharp.Utils
             base.Insert( index, value );
         }
 
+        /// <summary>
+        /// Inserts the specified number of items at the specified index.
+        /// The new items will have values equal to the values at those indices
+        /// before the insertion.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <exception cref="GdxRuntimeException"></exception>
         public void InsertRange( int index, int count )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-            base.InsertRange( index, count );
+            T insertItem = base[ index ];
+
+            for ( var i = 0; i < count; i++ )
+            {
+                base.Insert( index + i, insertItem );
+            }
         }
 
         /// <summary>
@@ -174,22 +244,26 @@ namespace LibGDXSharp.Utils
         /// <param name="first"></param>
         /// <param name="second"></param>
         /// <exception cref="GdxRuntimeException"></exception>
-        public new void Swap( int first, int second )
+        public void Swap( int first, int second )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-            base.Swap( first, second );
+            ( this[ first ], this[ second ] ) = ( this[ second ], this[ first ] );
         }
 
         /// <summary>
         /// </summary>
         /// <returns></returns>
         /// <exception cref="GdxRuntimeException"></exception>
-        public new T Pop()
+        public T Pop()
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-            return base.Pop();
+            T t = base[ Count - 1 ];
+            
+            base.RemoveAt( Count - 1);
+
+            return t;
         }
 
         /// <summary>
@@ -202,7 +276,10 @@ namespace LibGDXSharp.Utils
             base.Sort();
         }
 
-        public void Sort( Comparator<? super T> comparator)
+        /// <summary>
+        /// </summary>
+        /// <param name="comparator"></param>
+        public new void Sort( IComparer<T> comparator)
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
@@ -222,34 +299,42 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <exception cref="GdxRuntimeException"></exception>
-        public new void Shuffle()
+        public void Shuffle()
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-            base.Shuffle();
+            ListExtensions.Shuffle( this );
         }
 
         /// <summary>
         /// </summary>
         /// <param name="newSize"></param>
         /// <exception cref="GdxRuntimeException"></exception>
-        public new void Truncate( int newSize )
+        public void Truncate( int newSize )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+            if ( newSize < 0 ) throw new GdxRuntimeException( "New size must be >= 0: {newSize}");
+            if ( Count < newSize ) return;
+            
+            if ( newSize < Count )
+            {
+                var removeCount = Count - newSize;
 
-            base.Truncate( newSize );
+                base.RemoveRange( newSize + 1, removeCount );
+            }
         }
 
         /// <summary>
         /// </summary>
         /// <param name="newSize"></param>
-        /// <returns></returns>
+        /// <returns>The new capacity</returns>
         /// <exception cref="GdxRuntimeException"></exception>
-        public new T[] SetSize( int newSize )
+        public int SetSize( int newSize )
         {
             if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+            if ( base.Count >= newSize ) throw new GdxRuntimeException( $"Invalid new size: {newSize} (current: {Count} )" );
 
-            return base.SetSize( newSize );
+            return base.EnsureCapacity( newSize );
         }
 
         /// <summary>
