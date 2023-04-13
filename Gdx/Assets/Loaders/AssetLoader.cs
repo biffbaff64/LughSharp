@@ -9,17 +9,22 @@ namespace LibGDXSharp.Assets.Loaders
     /// <typeparam name="TP">The class of the loading parameters the loader supports.</typeparam>
     public abstract class AssetLoader<T, TP> : IAssetLoader where TP : AssetLoaderParameters< T >
     {
-        public IFileHandleResolver Resolver { get; set; }
+        public IFileHandleResolver Resolver      { get; set; }
+        public bool                IsSynchronous { get; set; } = false;
 
         /// <summary>
-        /// Constructor, sets the FileHandleResolver to use to resolve
-        /// the file associated with the asset name.
+        /// Constructor, sets the FileHandleResolver to use to resolve the file
+        /// associated with the asset name.
         /// </summary>
         protected AssetLoader( IFileHandleResolver resolver )
         {
             this.Resolver = resolver;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public FileHandle? Resolve( string fileName )
         {
             return Resolver.Resolve( fileName );
@@ -32,6 +37,6 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="fileName">name of the asset to load</param>
         /// <param name="file">the resolved file to load</param>
         /// <param name="parameter">parameters for loading the asset</param>
-        public abstract Array< AssetDescriptor< T > > GetDependencies( string fileName, FileHandle file, TP parameter );
+        public abstract List< AssetDescriptor< T > > GetDependencies( string fileName, FileHandle file, TP parameter );
     }
 }

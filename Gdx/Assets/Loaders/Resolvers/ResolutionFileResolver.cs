@@ -93,8 +93,8 @@ namespace LibGDXSharp.Assets.Loaders.Resolvers
         /// <returns></returns>
         public static Resolution Choose( params Resolution[] descriptors )
         {
-            var w = Gdx.Graphics?.GetBackBufferWidth();
-            var h = Gdx.Graphics?.GetBackBufferHeight();
+            var w = Gdx.Graphics.GetBackBufferWidth();
+            var h = Gdx.Graphics.GetBackBufferHeight();
 
             // Prefer the shortest side.
             Resolution best = descriptors[ 0 ];

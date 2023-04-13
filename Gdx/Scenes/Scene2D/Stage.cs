@@ -71,8 +71,8 @@ namespace LibGDXSharp.Scenes.Scene2D
              new ScalingViewport
                  (
                   Scaling.Stretch,
-                  Gdx.Graphics?.GetWidth(),
-                  Gdx.Graphics?.GetHeight(),
+                  Gdx.Graphics.GetWidth(),
+                  Gdx.Graphics.GetHeight(),
                   new OrthographicCamera()
                  ),
              new SpriteBatch()
@@ -184,14 +184,14 @@ namespace LibGDXSharp.Scenes.Scene2D
                 }
             }
 
-            Gdx.Gl?.GLEnable( IGL20.GL_Blend );
+            Gdx.Gl.GLEnable( IGL20.GL_Blend );
 
             _debugShapes.SetProjectionMatrix( Viewport.Camera.Combined );
             _debugShapes.Begin();
             _root.DrawDebug( _debugShapes );
             _debugShapes.End();
 
-            Gdx.Gl?.GLDisable( IGL20.GL_Blend );
+            Gdx.Gl.GLDisable( IGL20.GL_Blend );
         }
 
         /// <summary>

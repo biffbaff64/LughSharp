@@ -61,7 +61,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             if ( ( Stage != null ) && Stage.GetActionsRequestRendering() )
             {
-                Gdx.Graphics?.RequestRendering();
+                Gdx.Graphics.RequestRendering();
             }
 
             try
@@ -323,7 +323,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             if ( Stage != null && Stage.GetActionsRequestRendering() )
             {
-                Gdx.Graphics?.RequestRendering();
+                Gdx.Graphics.RequestRendering();
             }
         }
 

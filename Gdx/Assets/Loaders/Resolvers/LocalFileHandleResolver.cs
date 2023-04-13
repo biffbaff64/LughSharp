@@ -6,7 +6,7 @@ namespace LibGDXSharp.Assets.Loaders.Resolvers
     {
         public FileHandle? Resolve( string fileName )
         {
-            return Gdx.Files?.Local( fileName );
+            return Gdx.Files.Local( fileName );
         }
     }
 }

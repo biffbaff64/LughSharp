@@ -2,8 +2,8 @@
 {
     internal sealed class RefCountedContainer
     {
-        public object Object   { get; set; }
-        public int    RefCount { get; set; } = 1;
+        public object? Object   { get; set; }
+        public int     RefCount { get; set; } = 1;
 
         public RefCountedContainer( object? obj )
         {

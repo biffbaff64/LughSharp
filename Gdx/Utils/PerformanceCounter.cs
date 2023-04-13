@@ -86,7 +86,7 @@ namespace LibGDXSharp.Utils
         {
             if ( !Valid )
             {
-                Core.Gdx.App?.Error
+                Core.Gdx.App.Error
                     (
                      "PerformanceCounter",
                      "Invalid data, check if you called PerformanceCounter#stop()"

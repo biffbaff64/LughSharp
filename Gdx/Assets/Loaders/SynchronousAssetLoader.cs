@@ -4,6 +4,7 @@
     {
         protected SynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
         {
+            IsSynchronous = true;
         }
 
         public abstract T Load( AssetManager assetManager, string fileName, FileHandle file, TP parameter );

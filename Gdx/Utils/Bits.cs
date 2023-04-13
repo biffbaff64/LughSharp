@@ -1,6 +1,4 @@
-﻿using LibGDXSharp.Core;
-
-namespace LibGDXSharp.Utils
+﻿namespace LibGDXSharp.Utils
 {
     /// <summary>
     /// A bitset, without size limitation, allows comparison via
@@ -20,9 +18,11 @@ namespace LibGDXSharp.Utils
             CheckCapacity( nbits >>> 6 );
         }
 
+        /// <summary>
+        /// </summary>
         /// <param name="index"> the index of the bit </param>
         /// <returns> whether the bit is set </returns>
-        public virtual bool Get( int index )
+        public bool Get( int index )
         {
             var word = index >>> 6;
 
@@ -39,7 +39,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         /// <param name="index"> the index of the bit </param>
         /// <returns> whether the bit was set before invocation </returns>
-        public virtual bool GetAndClear( int index )
+        public bool GetAndClear( int index )
         {
             var word = index >>> 6;
 
@@ -57,7 +57,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         /// <param name="index">the index of the bit</param>
         /// <returns>whether the bit was set before invocation</returns>
-        public virtual bool GetAndSet( int index )
+        public bool GetAndSet( int index )
         {
             var word = index >>> 6;
 
@@ -72,7 +72,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <param name="index"> the index of the bit to set </param>
-        public virtual void Set( int index )
+        public void Set( int index )
         {
             var word = index >>> 6;
 
@@ -84,7 +84,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <param name="index"> the index of the bit to flip </param>
-        public virtual void Flip( int index )
+        public void Flip( int index )
         {
             var word = index >>> 6;
 
@@ -111,7 +111,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <param name="index"> the index of the bit to clear </param>
-        public virtual void Clear( int index )
+        public void Clear( int index )
         {
             var word = index >>> 6;
 
@@ -123,7 +123,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// Clears the entire bitset
         /// </summary>
-        public virtual void Clear()
+        public void Clear()
         {
             Array.Fill( _bits, 0 );
         }
@@ -131,7 +131,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <returns> the number of bits currently stored, <b>not</b> the highset set bit!</returns>
-        public virtual int NumBits()
+        public int NumBits()
         {
             return _bits.Length << 6;
         }
@@ -141,7 +141,7 @@ namespace LibGDXSharp.Utils
         /// bitset contains no set bits.
         /// </summary>
         /// <returns> the logical size of this bitset  </returns>
-        public virtual int Length()
+        public int Length()
         {
             for ( var word = _bits.Length - 1; word >= 0; --word )
             {
@@ -165,7 +165,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <returns> true if this bitset contains at least one bit set to true </returns>
-        public virtual bool NotEmpty()
+        public bool NotEmpty()
         {
             return !Empty;
         }
@@ -173,7 +173,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <returns> true if this bitset contains no bits that are set to true </returns>
-        public virtual bool Empty
+        public bool Empty
         {
             get
             {
@@ -194,7 +194,7 @@ namespace LibGDXSharp.Utils
         /// or after the specified starting index. If no such bit exists then -1
         /// is returned. 
         /// </summary>
-        public virtual int NextSetBit( int fromIndex )
+        public int NextSetBit( int fromIndex )
         {
             var word = fromIndex >>> 6;
 
@@ -242,7 +242,7 @@ namespace LibGDXSharp.Utils
         /// Returns the index of the first bit that is set to false that occurs on
         /// or after the specified starting index.
         /// </summary>
-        public virtual int NextClearBit( int fromIndex )
+        public int NextClearBit( int fromIndex )
         {
             var word = fromIndex >>> 6;
 
@@ -289,7 +289,7 @@ namespace LibGDXSharp.Utils
         /// corresponding bit in the bit set argument also had the value true.
         /// </summary>
         /// <param name="other"> a bit set  </param>
-        public virtual void And( Bits other )
+        public void And( Bits other )
         {
             var commonWords = Math.Min( _bits.Length, other._bits.Length );
 
@@ -312,7 +312,7 @@ namespace LibGDXSharp.Utils
         /// set in the specified bit set.
         /// </summary>
         /// <param name="other"> a bit set  </param>
-        public virtual void AndNot( Bits other )
+        public void AndNot( Bits other )
         {
             for ( int i = 0, j = _bits.Length, k = other._bits.Length; i < j && i < k; i++ )
             {
@@ -327,7 +327,7 @@ namespace LibGDXSharp.Utils
         /// in the bit set argument has the value true.
         /// </summary>
         /// <param name="other"> a bit set  </param>
-        public virtual void Or( Bits other )
+        public void Or( Bits other )
         {
             var commonWords = Math.Min( _bits.Length, other._bits.Length );
 
@@ -363,7 +363,7 @@ namespace LibGDXSharp.Utils
         /// </ul>
         /// </summary>
         /// <param name="other">  </param>
-        public virtual void Xor( Bits other )
+        public void Xor( Bits other )
         {
             var commonWords = Math.Min( _bits.Length, other._bits.Length );
 
@@ -389,7 +389,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         /// <param name="other"> a bit set </param>
         /// <returns>boolean indicating whether this bit set intersects the specified bit set</returns>
-        public virtual bool Intersects( Bits other )
+        public bool Intersects( Bits other )
         {
             var bits      = this._bits;
             var otherBits = other._bits;
@@ -411,7 +411,7 @@ namespace LibGDXSharp.Utils
         /// </summary>
         /// <param name="other"> a bit set </param>
         /// <returns> boolean indicating whether this bit set is a super set of the specified set  </returns>
-        public virtual bool ContainsAll( Bits other )
+        public bool ContainsAll( Bits other )
         {
             var bits            = this._bits;
             var otherBits       = other._bits;

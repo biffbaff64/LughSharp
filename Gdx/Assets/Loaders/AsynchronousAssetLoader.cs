@@ -11,11 +11,11 @@
     public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader< T, TP > where TP : AssetLoaderParameters< T >
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="resolver"></param>
         protected AsynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
         {
+            IsSynchronous = false;
         }
 
         /// <summary>

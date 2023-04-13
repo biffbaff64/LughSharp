@@ -106,7 +106,7 @@ namespace LibGDXSharp.Graphics.GLUtils
             }
             else
             {
-                Gdx.App!.Log( Tag, "Invalid version string: " + versionString );
+                Gdx.App.Log( Tag, "Invalid version string: " + versionString );
 
                 MajorVersion   = 2;
                 MinorVersion   = 0;
@@ -126,7 +126,7 @@ namespace LibGDXSharp.Graphics.GLUtils
             }
             catch ( FormatException )
             {
-                Gdx.App!.Error( "LibGDXSharp GL", "Error parsing number: " + v + ", assuming: " + defaultValue );
+                Gdx.App.Error( "LibGDXSharp GL", "Error parsing number: " + v + ", assuming: " + defaultValue );
 
                 return defaultValue;
             }

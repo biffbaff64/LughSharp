@@ -384,7 +384,7 @@ namespace LibGDXSharp.Utils
             {
                 files = Core.Gdx.Files;
 
-                Core.Gdx.App?.AddLifecycleListener( this );
+                Core.Gdx.App.AddLifecycleListener( this );
 
                 Resume();
 
@@ -476,7 +476,7 @@ namespace LibGDXSharp.Utils
                     Monitor.PulseAll( threadLock );
                 }
 
-                Core.Gdx.App?.RemoveLifecycleListener( this );
+                Core.Gdx.App.RemoveLifecycleListener( this );
             }
         }
     }

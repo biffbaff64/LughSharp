@@ -45,7 +45,7 @@ ASSETS
 ------
     - DONE - AssetDescriptor                Convert
     - DONE - AssetLoaderParameters          Convert
-    -      - AssetLoadingTask               Convert
+    - DONE - AssetLoadingTask               Convert
     -      - AssetManager                   Convert
     - DONE - IAssetErrorListener            Convert
     - DONE - RefCountedContainer            Convert
@@ -55,7 +55,7 @@ ASSETS
 
 ASSETS/LOADERS
 --------------
-    -      - AssetLoader                    Convert
+    - DONE - AssetLoader                    Convert
     -      - AsynchronousAssetLoader        Convert
     -      - BitmapFontLoader               Convert
     -      - CubemapLoader                  Convert
@@ -537,7 +537,7 @@ UTILS
     - DONE - FloatConsts                    Done, but is it needed?
     -      - GdxNativesLoader
     -      - I18NBundle                     Check
-    -      - IRunnable                      Done, but is it needed?
+    - DONE - IRunnable                      Done, but is it needed?
     -      - LittleEndianInputStream        Check
     - DONE - Logger                         Convert
     - DONE - NumberUtils                    Convert
