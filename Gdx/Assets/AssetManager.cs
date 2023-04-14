@@ -1,55 +1,58 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
-using JetBrains.Annotations;
-
+using LibGDXSharp.Audio;
 using LibGDXSharp.G2D;
+using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Utils.Async;
 
 namespace LibGDXSharp.Assets
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public sealed class AssetManager
     {
         /// <summary>
         /// </summary>
-        private readonly Dictionary< Type, Dictionary< string, RefCountedContainer > > _assets =
-            new Dictionary< Type, Dictionary< string, RefCountedContainer > >();
+        private readonly Dictionary< Type, Dictionary< string, RefCountedContainer >? > _assets =
+            new Dictionary< Type, Dictionary< string, RefCountedContainer >? >();
 
         /// <summary>
         /// </summary>
-        private readonly Dictionary< string, Type > _assetTypes = new Dictionary< string, Type >();
-        
+        private readonly Dictionary< string, Type? > _assetTypes = new Dictionary< string, Type? >();
+
         /// <summary>
         /// </summary>
-        private readonly Dictionary< string, List< string > > _assetDependencies =
-            new Dictionary< string, List< string > >();
-        
+        private readonly Dictionary< string, List< string >? > _assetDependencies =
+            new Dictionary< string, List< string >? >();
+
         /// <summary>
         /// </summary>
         private readonly List< string > _injected = new List< string >();
-        
+
         /// <summary>
         /// </summary>
         private readonly Dictionary< Type, Dictionary< string, AssetLoader< Type, AssetLoaderParameters< Type > > > > _loaders =
             new Dictionary< Type, Dictionary< string, AssetLoader< Type, AssetLoaderParameters< Type > > > >();
-        
+
         /// <summary>
         /// </summary>
         private readonly List< AssetDescriptor< Type > > _loadQueue = new List< AssetDescriptor< Type > >();
-        
+
         /// <summary>
         /// </summary>
         private readonly Stack< AssetLoadingTask< AssetLoaderParameters< Type > > > _tasks =
             new Stack< AssetLoadingTask< AssetLoaderParameters< Type > > >();
 
-        private readonly AsyncExecutor _executor;
-        private IAssetErrorListener _listener;
-        private int                 _loaded;
-        private int                 _toLoad;
-        private int                 _peakTasks;
+        private readonly AsyncExecutor       _executor;
+        private          IAssetErrorListener _listener;
+        private          int                 _loaded;
+        private          int                 _toLoad;
+        private          int                 _peakTasks;
 
         private readonly IFileHandleResolver _resolver;
 
-        internal Logger Log { get; private set; }
+        internal Logger Log { get; }
 
         /// <summary>
         /// Creates a new AssetManager with all default loaders.
@@ -159,6 +162,7 @@ namespace LibGDXSharp.Assets
         }
 
         /// <summary>
+        /// Returns all assets matching the requested type.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="outArray"></param>
@@ -170,9 +174,11 @@ namespace LibGDXSharp.Assets
             {
                 var assetsByType = _assets[ type ];
 
+                Debug.Assert( assetsByType != null, nameof( assetsByType ) + " != null" );
+
                 foreach ( RefCountedContainer? asset in assetsByType.Values )
                 {
-                    if ( asset?.Object != null )
+                    if ( asset.Object != null )
                     {
                         outArray.Add( ( T )asset.Object );
                     }
@@ -263,12 +269,12 @@ namespace LibGDXSharp.Assets
                 }
             }
 
-            Type? type = _assetTypes?[ fileName ];
+            Type? type = _assetTypes[ fileName ];
 
             // check if it's in the queue
             var foundIndex = -1;
 
-            for ( var i = 0; i < _loadQueue?.Count; i++ )
+            for ( var i = 0; i < _loadQueue.Count; i++ )
             {
                 if ( _loadQueue[ i ].FileName.Equals( fileName ) )
                 {
@@ -282,13 +288,14 @@ namespace LibGDXSharp.Assets
             {
                 _toLoad--;
 
-                var desc = _loadQueue?[ foundIndex ];
-                _loadQueue?.RemoveAt( foundIndex );
+                var desc = _loadQueue[ foundIndex ];
+
+                _loadQueue.RemoveAt( foundIndex );
 
                 Log.Info( "Unload (from queue): " + fileName );
 
                 // if the queued asset was already loaded, let the callback know it is available.
-                if ( ( type != null ) && ( desc?.Parameters != null ) && ( desc.Parameters.LoadedCallback != null ) )
+                if ( ( type != null ) && desc.Parameters is { LoadedCallback: not null } )
                 {
                     desc.Parameters.LoadedCallback.FinishedLoading( this, desc.FileName, desc.Type );
                 }
@@ -303,22 +310,21 @@ namespace LibGDXSharp.Assets
             // if it is reference counted, decrement ref count and check if we can really get rid of it.
             if ( assetRef != null )
             {
-                assetRef[ fileName ]!.RefCount--;
+                assetRef[ fileName ].RefCount--;
             }
 
-            if ( assetRef?[ fileName ]!.RefCount <= 0 )
+            if ( assetRef?[ fileName ].RefCount <= 0 )
             {
                 Log.Info( "Unload (dispose): " + fileName );
 
-                // if it is disposable dispose it
-                if ( assetRef[ fileName ]!.Object is IDisposable )
+                if ( assetRef[ fileName ].Object is IDisposable )
                 {
-                    ( ( IDisposable )assetRef[ fileName ].Object ).Dispose();
+                    ( ( IDisposable )assetRef[ fileName ].Object! ).Dispose();
                 }
 
                 // remove the asset from the manager.
-                _assetTypes?.Remove( fileName );
-                _assets?[ type ].Remove( fileName );
+                _assetTypes.Remove( fileName );
+                _assets[ type ]?.Remove( fileName );
             }
             else
             {
@@ -326,7 +332,7 @@ namespace LibGDXSharp.Assets
             }
 
             // remove any dependencies (or just decrement their ref count).
-            var dependencies = _assetDependencies?[ fileName ];
+            var dependencies = _assetDependencies[ fileName ];
 
             if ( dependencies != null )
             {
@@ -339,7 +345,7 @@ namespace LibGDXSharp.Assets
             // remove dependencies if ref count < 0
             if ( assetRef?[ fileName ].RefCount <= 0 )
             {
-                _assetDependencies?.Remove( fileName );
+                _assetDependencies.Remove( fileName );
             }
         }
 
@@ -351,13 +357,13 @@ namespace LibGDXSharp.Assets
         {
             if ( asset == null ) return false;
 
-            var assetsByType = _assets?[ asset.GetType() ];
+            var assetsByType = _assets[ asset.GetType() ];
 
             if ( assetsByType == null ) return false;
 
             foreach ( var fileName in assetsByType.Keys )
             {
-                var otherAsset = ( T )assetsByType[ fileName ].Object;
+                var otherAsset = ( T? )assetsByType[ fileName ].Object;
 
                 if ( otherAsset?.GetType() == asset.GetType() || asset.Equals( otherAsset ) ) return true;
             }
@@ -371,18 +377,20 @@ namespace LibGDXSharp.Assets
         /// <returns>the filename of the asset or null</returns>
         public string? GetAssetFileName<T>( T asset )
         {
-            if ( _assets == null ) return null;
             if ( asset == null ) return null;
 
             foreach ( Type assetType in _assets.Keys )
             {
                 var assetsByType = _assets[ assetType ];
 
-                foreach ( var fileName in assetsByType.Keys )
+                if ( assetsByType != null )
                 {
-                    var otherAsset = ( T )assetsByType[ fileName ].Object;
+                    foreach ( var fileName in assetsByType.Keys )
+                    {
+                        var otherAsset = ( T? )assetsByType[ fileName ].Object;
 
-                    if ( otherAsset?.GetType() == asset.GetType() || asset.Equals( otherAsset ) ) return fileName;
+                        if ( otherAsset?.GetType() == asset.GetType() || asset.Equals( otherAsset ) ) return fileName;
+                    }
                 }
             }
 
@@ -395,8 +403,6 @@ namespace LibGDXSharp.Assets
         /// <returns>whether the asset is loaded</returns>
         public bool IsLoaded( string? fileName )
         {
-            if ( _assetTypes == null ) return false;
-
             return fileName != null && _assetTypes.ContainsKey( fileName );
         }
 
@@ -407,28 +413,15 @@ namespace LibGDXSharp.Assets
         /// <returns>whether the asset is loaded</returns>
         public bool IsLoaded( string fileName, Type type )
         {
-            var assetsByType = _assets?[ type ];
+            var assetsByType = _assets[ type ];
 
-            if ( assetsByType == null ) return false;
-
-            RefCountedContainer assetContainer = assetsByType[ fileName ];
+            RefCountedContainer? assetContainer = assetsByType?[ fileName ];
 
             return assetContainer?.Object != null;
         }
 
         /// <summary>
-        /// Returns the default loader for the given type.
-        /// </summary>
-        /// <param name="type">The type of the loader to get</param>
-        /// <returns>The loader capable of loading the type, or null if none exists.</returns>
-        public AssetLoader< T, TP >? GetLoader<T, TP>( T type ) where TP : AssetLoaderParameters< T >
-        {
-            return GetLoader< T, TP >( type, null );
-        }
-
-        /// <summary>
-        /// Returns the loader for the given type and the specified filename. If no loader
-        /// exists for the specific filename, the default loader for that type is returned.
+        /// Returns the loader for the given type and the specified filename.
         /// </summary>
         /// <param name="type">The type of the loader to get</param>
         /// <param name="fileName">
@@ -437,23 +430,24 @@ namespace LibGDXSharp.Assets
         /// <returns>
         /// The loader capable of loading the type and filename, or null if none exists.
         /// </returns>
-        public AssetLoader< T, TP >? GetLoader<T, TP>( T type, string? fileName ) where TP : AssetLoaderParameters< T >
+        public AssetLoader< T, AssetLoaderParameters< T > >? GetLoader<T>( T type, string? fileName = null )
         {
-            var loaders = this._loaders?[ type!.GetType() ];
+            var loaders = this._loaders[ type!.GetType() ];
 
-            if ( loaders == null || loaders.Count < 1 ) return null;
-            if ( fileName == null ) return loaders.Get( "" );
+            if ( loaders.Count < 1 ) return null;
 
-            AssetLoader< T, TP >? result = null;
+            if ( fileName == null ) return null;
 
-            var l = -1;
+            AssetLoader< T, AssetLoaderParameters< T > >? result = null;
+
+            var length = -1;
 
             foreach ( var entry in loaders.Entries() )
             {
-                if ( ( entry.key.length() > l ) && FileName.endsWith( entry.key ) )
+                if ( ( entry.key.length() > length ) && fileName.EndsWith( entry.key ) )
                 {
                     result = entry.value;
-                    l      = entry.key.length();
+                    length = entry.key.length();
                 }
             }
 
@@ -472,8 +466,7 @@ namespace LibGDXSharp.Assets
         {
             var loader = GetLoader( type, fileName );
 
-            if ( loader == null )
-                throw new GdxRuntimeException( "No loader for type: " + type.Name );
+            if ( loader == null ) throw new GdxRuntimeException( "No loader for type: " + type.Name );
 
             if ( _loadQueue?.Count == 0 )
             {
@@ -486,11 +479,11 @@ namespace LibGDXSharp.Assets
             // check if an asset with the same name but a different type has already been added.
 
             // check preload queue
-            for ( int i = 0; i < _loadQueue.Count; i++ )
+            for ( var i = 0; i < _loadQueue?.Count; i++ )
             {
-                var desc = _loadQueue.Get( i );
+                var desc = _loadQueue[ i ];
 
-                if ( desc.fileName.equals( fileName ) && !desc.type.equals( type ) )
+                if ( desc.FileName.Equals( fileName ) && desc.Type != type )
                 {
                     throw new GdxRuntimeException
                         (
@@ -499,7 +492,7 @@ namespace LibGDXSharp.Assets
                          + "' already in preload queue, but has different type (expected: "
                          + type.Name
                          + ", found: "
-                         + desc.type.Name
+                         + desc.Type.Name
                          + ")"
                         );
                 }
@@ -890,8 +883,8 @@ namespace LibGDXSharp.Assets
         /// the suffix the filename must have for this loader to be used or null
         /// to specify the default loader.
         /// </param>
-        /// <param name="loader"> the loader  </param>
-        public void SetLoader<T, P>( Type type, string suffix, AssetLoader< T, P > loader ) where P : AssetLoaderParameters< T >
+        /// <param name="loader"> the loader</param>
+        public void SetLoader<T>( Type type, string suffix, AssetLoader< Type, AssetLoaderParameters< Type > > loader )
         {
             lock ( this )
             {
@@ -900,96 +893,120 @@ namespace LibGDXSharp.Assets
 
                 Log.Debug( "Loader set: " + type.Name + " -> " + loader.GetType().Name );
 
-                ObjectMap< string, AssetLoader > loaders = this._loaders.Get( type );
+                var loaders = this._loaders[ type ];
 
-                if ( loaders == null )
-                {
-                    this.loaders.put( type, loaders = new ObjectMap< string, AssetLoader >() );
-                }
+//                if ( loaders == null )
+//                {
+//                    this._loaders[ type ][ loaders = new Dictionary< string, AssetLoader<T, TP >() ];
+//                }
 
-                loaders.put( string.ReferenceEquals( suffix, null ) ? "" : suffix, loader );
+                loaders[ string.ReferenceEquals( suffix, null ) ? "" : suffix ] = loader;
             }
         }
 
-        /** @return the number of loaded assets */
+        /// <summary>
+        /// </summary>
+        /// <returns>The number of loaded assets.</returns>
         public int GetLoadedAssetsCount()
         {
             return _assetTypes.Count;
         }
 
-        /** @return the number of currently queued assets */
-        public int GetQueuedAssets()
-        {
-            return _loadQueue.size + _tasks.size();
-        }
+        /// <summary>
+        /// </summary>
+        /// <returns>the number of currently queued assets.</returns>
+        public int GetQueuedAssets() => _loadQueue.Count + _tasks.Count;
 
-        /** @return the progress in percent of completion. */
+        /// <summary>
+        /// </summary>
+        /// <returns>the progress in percent of completion.</returns>
         public float GetProgress()
         {
             if ( _toLoad == 0 ) return 1;
+
             float fractionalLoaded = _loaded;
 
             if ( _peakTasks > 0 )
             {
-                fractionalLoaded += ( ( _peakTasks - _tasks.size() ) / ( float )_peakTasks );
+                fractionalLoaded += ( ( _peakTasks - _tasks.Count ) / ( float )_peakTasks );
             }
 
-            return Math.min( 1, fractionalLoaded / _toLoad );
+            return Math.Min( 1, fractionalLoaded / _toLoad );
         }
 
-        /** Sets an {@link AssetErrorListener} to be invoked in case loading an asset failed.
-	 * @param listener the listener or null */
-        public void SetErrorListener( AssetErrorListener listener )
+        /// <summary>
+        /// Sets an <see cref="IAssetErrorListener"/> to be invoked in case loading an asset failed.
+        /// </summary>
+        /// <param name="listener">the listener or null</param>
+        public void SetErrorListener( IAssetErrorListener listener )
         {
             this._listener = listener;
         }
 
-        /** Disposes all assets in the manager and stops all asynchronous loading. */
-        @Override
-
+        /// <summary>
+        /// Disposes all assets in the manager and stops all asynchronous loading.
+        /// </summary>
         public void Dispose()
         {
             Log.Debug( "Disposing." );
+
             Clear();
-            _executor.dispose();
+
+            _executor.Dispose();
         }
 
-        /** Clears and disposes all assets and the preloading queue. */
+        /// <summary>
+        /// Clears and disposes all assets and the preloading queue.
+        /// </summary>
         public void Clear()
         {
             _loadQueue.Clear();
 
             while ( !Update() )
-                ;
+            {
+            }
 
-            ObjectIntMap< string > dependencyCount = new ObjectIntMap< string >();
+            var dependencyCount = new Dictionary< string, int >();
 
-            while ( _assetTypes.size > 0 )
+            while ( _assetTypes.Count > 0 )
             {
                 // for each asset, figure out how often it was referenced
                 dependencyCount.Clear();
-                Array< string > assets = _assetTypes.keys().toArray();
-                for ( string asset :
-                assets)
-                dependencyCount.put( Asset, 0 );
 
-                for ( string asset :
-                assets) {
-                    Array< string > dependencies = _assetDependencies.get( Asset );
+                var assets = _assetTypes.Keys.ToList();
 
-                    if ( dependencies == null ) continue;
-                    for ( string dependency :
-                    dependencies) {
-                        int count = dependencyCount.get( dependency, 0 );
+                foreach ( var asset in assets )
+                {
+                    dependencyCount[ asset ] = 0;
+                }
+
+                foreach ( var asset in assets )
+                {
+                    var dependencies = _assetDependencies[ asset ];
+
+//                    if ( dependencies == null ) continue;
+
+                    foreach ( var dependency in dependencies )
+                    {
+                        var count = 0;
+
+                        if ( dependencyCount.TryGetValue( dependency, out var value ) )
+                        {
+                            count = value == default ? 0 : value;
+                        }
+
                         count++;
-                        dependencyCount.put( dependency, count );
+                        dependencyCount[ dependency ] = count;
                     }
                 }
 
                 // only dispose of assets that are root assets (not referenced)
-                foreach ( string asset in assets )
+                foreach ( var asset in assets )
                 {
-                    if ( dependencyCount.get( Asset, 0 ) == 0 ) Unload( Asset );
+                    if ( dependencyCount.TryGetValue( asset, out var value ) == default )
+                    {
+                        Unload( asset );
+                    }
                 }
             }
 
@@ -1004,27 +1021,16 @@ namespace LibGDXSharp.Assets
         }
 
         /// <summary>
-        /// Returns the <see cref="Logger"/> used by the <see cref="AssetManager"/>
+        /// Returns the reference count of an asset.
         /// </summary>
-        public Logger GetLogger()
-        {
-            return Log;
-        }
-
-        public void SetLogger( Logger logger )
-        {
-            Log = logger;
-        }
-
-        /** Returns the reference count of an asset.
-	 * @param fileName */
+        /// <param name="fileName"></param>
         public int GetReferenceCount( string fileName )
         {
-            Class type = _assetTypes.get( fileName );
+            Type type = _assetTypes[ fileName ];
 
             if ( type == null ) throw new GdxRuntimeException( "Asset not loaded: " + fileName );
 
-            return _assets.get( type ).get( fileName ).getRefCount();
+            return _assets[ type ][ fileName ].RefCount;
         }
 
         /// <summary>
@@ -1034,18 +1040,16 @@ namespace LibGDXSharp.Assets
         /// <param name="refCount"></param>
         public void SetReferenceCount( string fileName, int refCount )
         {
-            Type type = _assetTypes.get( fileName );
+            Type type = _assetTypes[ fileName ];
 
             if ( type == null ) throw new GdxRuntimeException( "Asset not loaded: " + fileName );
 
-            _assets.get( type ).get( fileName ).setRefCount( refCount );
+            _assets[ type ][ fileName ].RefCount = refCount;
         }
 
         /// <summary>
+        /// Returns a string containing ref count and dependency information for all assets.
         /// </summary>
-        /// <returns>
-        /// a string containing ref count and dependency information for all assets.
-        /// </returns>
         public string GetDiagnostics()
         {
             lock ( this )
@@ -1059,25 +1063,25 @@ namespace LibGDXSharp.Assets
                         sb.Append( '\n' );
                     }
 
-                    sb.Append( FileName );
+                    sb.Append( fileName );
                     sb.Append( ", " );
 
                     Type type = _assetTypes[ fileName ];
 
-                    RefCountedContainer assetRef = _assets.Values[ fileName ];
+                    RefCountedContainer assetRef = _assets[ type ][ fileName ];
 
-                    List< string > dependencies = _assetDependencies.Get( FileName );
+                    var dependencies = _assetDependencies[ fileName ];
 
-                    sb.Append( ClassReflection.GetSimpleName( type ) );
+                    sb.Append( type.Name );
 
                     sb.Append( ", refs: " );
-                    sb.Append( assetRef.GetRefCount() );
+                    sb.Append( assetRef.RefCount );
 
-                    if ( dependencies != null )
+//                    if ( dependencies != null )
                     {
                         sb.Append( ", deps: [" );
 
-                        foreach ( string dep in dependencies )
+                        foreach ( var dep in dependencies )
                         {
                             sb.Append( dep );
                             sb.Append( ',' );
@@ -1120,11 +1124,11 @@ namespace LibGDXSharp.Assets
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public Type? GetAssetType( string name )
+        public Type GetAssetType( string name )
         {
             lock ( this )
             {
-                Type? type = _assetTypes[ name ];
+                Type type = _assetTypes[ name ];
 
                 return type;
             }

@@ -1,13 +1,12 @@
 ﻿using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Assets.Loaders
 {
     /// <summary>
-    /// 
     /// </summary>
-    public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontLoader.BitmapFontParameter >
+    public class BitmapFontLoader
+        : AsynchronousAssetLoader< BitmapFont, BitmapFontLoader.BitmapFontParameter >, IDisposable
     {
         private BitmapFont.BitmapFontData _data;
 
@@ -143,7 +142,7 @@ namespace LibGDXSharp.Assets.Loaders
             else
             {
                 var n    = _data.GetImagePaths().Length;
-                var regs = new Array<TextureRegion>( capacity: n );
+                var regs = new List<TextureRegion>( capacity: n );
 
                 for ( var i = 0; i < n; i++ )
                 {
@@ -152,6 +151,14 @@ namespace LibGDXSharp.Assets.Loaders
 
                 return new BitmapFont( _data, regs, true );
             }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing,
+        /// releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
         }
     }
 }

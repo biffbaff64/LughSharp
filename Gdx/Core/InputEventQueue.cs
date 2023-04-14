@@ -15,8 +15,12 @@
         private readonly List< int > _queue           = new List< int >();
         private readonly List< int > _processingQueue = new List< int >();
 
-        private long _currentEventTime;
+        public long CurrentEventTime { get; set; }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="processor"></param>
+        /// <exception cref="SystemException"></exception>
         public void Drain( IInputProcessor? processor )
         {
             lock ( this )
@@ -37,7 +41,7 @@
             for ( int i = 0, n = _processingQueue.Count; i < n; )
             {
                 var type = q[ i++ ];
-                _currentEventTime = ( ( long )q[ i++ ] << 32 ) | ( q[ i++ ] & 0xFFFFFFFFL );
+                CurrentEventTime = ( ( long )q[ i++ ] << 32 ) | ( q[ i++ ] & 0xFFFFFFFFL );
 
                 switch ( type )
                 {
@@ -94,6 +98,12 @@
             _processingQueue.Clear();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="nextType"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        /// <exception cref="SystemException"></exception>
         private int Next( int nextType, int i )
         {
             lock ( this )
@@ -164,12 +174,20 @@
             return -1;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="time"></param>
         private void QueueTime( long time )
         {
             _queue.Add( ( int )( time >> 32 ) );
             _queue.Add( ( int )time );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="keycode"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool KeyDown( int keycode, long time )
         {
             lock ( this )
@@ -182,6 +200,11 @@
             return false;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="keycode"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool KeyUp( int keycode, long time )
         {
             lock ( this )
@@ -196,6 +219,11 @@
             return false;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool KeyTyped( char character, long time )
         {
             lock ( this )
@@ -208,6 +236,14 @@
             return false;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="screenX"></param>
+        /// <param name="screenY"></param>
+        /// <param name="pointer"></param>
+        /// <param name="button"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool TouchDown( int screenX, int screenY, int pointer, int button, long time )
         {
             lock ( this )
@@ -225,6 +261,14 @@
             return false;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="screenX"></param>
+        /// <param name="screenY"></param>
+        /// <param name="pointer"></param>
+        /// <param name="button"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool TouchUp( int screenX, int screenY, int pointer, int button, long time )
         {
             lock ( this )
@@ -242,6 +286,13 @@
             return false;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="screenX"></param>
+        /// <param name="screenY"></param>
+        /// <param name="pointer"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool TouchDragged( int screenX, int screenY, int pointer, long time )
         {
             lock ( this )
@@ -268,6 +319,12 @@
             return false;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="screenX"></param>
+        /// <param name="screenY"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool MouseMoved( int screenX, int screenY, long time )
         {
             lock ( this )
@@ -290,6 +347,12 @@
             return false;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="amountX"></param>
+        /// <param name="amountY"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool Scrolled( float amountX, float amountY, long time )
         {
             lock ( this )
@@ -303,11 +366,6 @@
             }
 
             return false;
-        }
-
-        public long GetCurrentEventTime()
-        {
-            return _currentEventTime;
         }
     }
 }

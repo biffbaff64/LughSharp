@@ -8,7 +8,8 @@
     /// can be passed to the various Texture constructors, e.g. filtering, whether
     /// to generate mipmaps and so on.
     /// </summary>
-    public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.TextureParameter >
+    public class TextureLoader
+        : AsynchronousAssetLoader< Texture, TextureLoader.TextureParameter >, IDisposable
     {
         public class TextureLoaderInfo
         {
@@ -121,6 +122,14 @@
             public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
             public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
             public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing,
+        /// releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
         }
     }
 }

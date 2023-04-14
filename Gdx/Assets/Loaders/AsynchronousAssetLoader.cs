@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Assets.Loaders
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Assets.Loaders
 {
     /// <summary>
     /// Base class for asynchronous AssetLoader instances. Such loaders try to
@@ -8,6 +10,7 @@
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TP"></typeparam>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader< T, TP > where TP : AssetLoaderParameters< T >
     {
         /// <summary>

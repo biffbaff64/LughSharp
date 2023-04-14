@@ -1,5 +1,8 @@
-﻿namespace LibGDXSharp.Assets.Loaders
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Assets.Loaders
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class SynchronousAssetLoader<T, TP> : AssetLoader< T, TP > where TP : AssetLoaderParameters< T >
     {
         protected SynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
