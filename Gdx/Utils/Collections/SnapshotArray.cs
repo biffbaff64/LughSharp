@@ -1,4 +1,5 @@
-﻿
+﻿using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Utils.Collections
 {
     /// <summary>
@@ -10,35 +11,24 @@ namespace LibGDXSharp.Utils.Collections
     /// array that was returned by begin() is unaffected. To avoid allocation,
     /// an attempt is made to reuse any extra array created as a result of this
     /// copy on subsequent copies.
+    /// <para>
     /// Note that SnapshotArray is not for thread safety, only for modification
     /// during iteration.
+    /// </para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SnapshotArray<T> : Array< T >
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class SnapshotArray<T> : List< T >
     {
-        private T[] _snapshot;
-        private T[] _recycled;
-        private int _snapshots;
+        private T?[] _snapshot;
+        private T?[] _recycled;
+        private int  _snapshots;
 
         public SnapshotArray( int capacity = 0 ) : base( capacity )
         {
         }
 
-        public SnapshotArray( Array< T > array ) : base( array )
-        {
-        }
-
-        public SnapshotArray( bool ordered, int capacity = 0 ) : base( ordered, capacity )
-        {
-        }
-
-        public SnapshotArray( bool ordered, int capacity, Type arrayType )
-            : base( ordered, capacity, arrayType )
-        {
-        }
-
-        public SnapshotArray( bool ordered, T[] array, int startIndex, int count )
-            : base( ordered, array, startIndex, count )
+        public SnapshotArray( List< T > array ) : base( array )
         {
         }
 
@@ -46,7 +36,11 @@ namespace LibGDXSharp.Utils.Collections
         {
         }
 
-        public T[] Begin()
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        public T?[] Begin()
         {
             if ( _snapshot == null )
             {
@@ -55,20 +49,20 @@ namespace LibGDXSharp.Utils.Collections
 
             Modified();
 
-            CopyTo( _snapshot );
+            CopyTo( _snapshot! );
 
             _snapshots++;
 
             return ToArray();
         }
 
+        /// <summary>
+        /// </summary>
         public void End()
         {
             _snapshots = System.Math.Max( 0, _snapshots - 1 );
 
-            if ( _snapshot == null ) return;
-
-            if ( _snapshot != _items && _snapshots == 0 )
+            if ( _snapshot != base.ToArray() && _snapshots == 0 )
             {
                 // The backing array was copied, keep around the old array.
                 _recycled = _snapshot;
@@ -79,45 +73,71 @@ namespace LibGDXSharp.Utils.Collections
                 }
             }
 
-            _snapshot = null;
+            _snapshot = null!;
         }
 
+        /// <summary>
+        /// </summary>
         private void Modified()
         {
-            if ( _snapshot == null || _snapshot != _items ) return;
+            if ( _snapshot != base.ToArray() ) return;
 
             // Snapshot is in use, copy backing array to recycled array or create new backing array.
-            if ( _recycled != null && _recycled.Length >= Count )
+            if ( _recycled.Length >= Count )
             {
-                Array.Copy( _items, 0, _recycled, 0, Count );
-                _items    = _recycled;
-                _recycled = null;
+                // Copy the contents of items[] to recycled
+                for ( var i = 0; i < Count; i++ )
+                {
+                    _recycled[ i ] = base[ i ];
+                }
+                
+                // 'recycled' now references nothing 
+                _recycled = default!;
             }
             else
             {
-                Resize( _items.length );
+                this.Resize( base.Count );
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
         public void Set( int index, T value )
         {
             Modified();
             this[ index ] = value;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
         public new void Insert( int index, T value )
         {
             Modified();
             base.Insert( index, value );
         }
 
-        public new void InsertRange( int index, IEnumerable<T> collection )
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="collection"></param>
+        public new void InsertRange( int index, IEnumerable< T > collection )
         {
             Modified();
             base.InsertRange( index, collection );
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public new bool Remove( T value )
         {
             Modified();
@@ -134,7 +154,7 @@ namespace LibGDXSharp.Utils.Collections
         {
             Modified();
 
-            return base.RemoveAt( index );
+            return this.RemoveIndex( index );
         }
 
         /// <summary>

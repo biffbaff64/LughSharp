@@ -29,7 +29,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="fileName"></param>
         /// <param name="file"></param>
         /// <param name="parameter"></param>
-        public abstract void LoadAsync( AssetManager manager, string fileName, FileHandle file, TP parameter );
+        public abstract void LoadAsync( AssetManager? manager, string? fileName, FileHandle? file, TP? parameter );
 
         /// <summary>
         /// Loads the OpenGL part of the asset.
@@ -39,7 +39,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="file"></param>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        public abstract T LoadSync( AssetManager manager, string fileName, FileHandle file, TP parameter );
+        public abstract T LoadSync( AssetManager? manager, string? fileName, FileHandle? file, TP? parameter );
 
         /// <summary>
         /// Called if this task is unloaded before loadSync is called. This method may
@@ -56,7 +56,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="fileName"></param>
         /// <param name="file"></param>
         /// <param name="parameter"></param>
-        public void UnloadAsync( AssetManager manager, string fileName, FileHandle file, TP parameter )
+        public void UnloadAsync( AssetManager? manager, string? fileName, FileHandle? file, TP? parameter )
         {
         }
     }

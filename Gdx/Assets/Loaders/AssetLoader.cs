@@ -1,4 +1,4 @@
-﻿using LibGDXSharp.Utils.Collections;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace LibGDXSharp.Assets.Loaders
 {
@@ -7,10 +7,11 @@ namespace LibGDXSharp.Assets.Loaders
     /// </summary>
     /// <typeparam name="T">The class of the asset the loader supports.</typeparam>
     /// <typeparam name="TP">The class of the loading parameters the loader supports.</typeparam>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class AssetLoader<T, TP> : IAssetLoader where TP : AssetLoaderParameters< T >
     {
         public IFileHandleResolver Resolver      { get; set; }
-        public bool                IsSynchronous { get; set; } = false;
+        public bool                IsSynchronous { get; protected init; } = false;
 
         /// <summary>
         /// Constructor, sets the FileHandleResolver to use to resolve the file
@@ -37,6 +38,6 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="fileName">name of the asset to load</param>
         /// <param name="file">the resolved file to load</param>
         /// <param name="parameter">parameters for loading the asset</param>
-        public abstract List< AssetDescriptor< T > > GetDependencies( string fileName, FileHandle file, TP parameter );
+        public abstract List< AssetDescriptor< T > > GetDependencies( string? fileName, FileHandle? file, TP? parameter );
     }
 }

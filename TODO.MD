@@ -1,4 +1,6 @@
 ﻿- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+LIBGDX CSharp CONVERSION - ROUND 1
+----------------------------------
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - STEP 1: Complete all conversions so that the code will build.
 - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
@@ -603,7 +605,7 @@ UTILS/COLLECTIONS
     - **** - FloatArray                     List< float >
     - **** - LongArray                      List< long >
     - **** - ShortArray                     List< short >
-    -      - SnapshotArray                  Convert / extend List<T>
+    - DONE - SnapshotArray                  Convert / extend List<T>
 
     Maps
     ----

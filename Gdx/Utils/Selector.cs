@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Utils
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Utils
 {
     /// <summary>
     /// This class is for selecting a ranked element (kth ordered statistic) from an
@@ -12,24 +14,25 @@
     /// The underlying algorithms used are a naive single-pass for k = min and k =max, and
     /// Hoare's quickselect for values in between.
     /// </summary>
-    public class Selector<T>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class Selector<T>
     {
         private readonly static Selector< T > instance = new Selector< T >();
-        private                 QuickSelect   _quickSelect;
+        private                 QuickSelect?  _quickSelect;
 
         public static Selector< T > Instance() => instance;
 
-        public T Select( T[] items, IComparer< T > comp, int kthLowest, int size )
+        public T Select( T?[] items, IComparer< T > comp, int kthLowest, int size )
         {
             throw new NotImplementedException();
         }
 
-        public T Selecting<T>( T[]? items, IComparer< T > comparator, int kthLowest, int size )
+        public T Selecting( T?[] items, IComparer< T > comparator, int kthLowest, int size )
         {
             throw new NotImplementedException();
         }
 
-        public int SelectIndex<T>( T[]? items, IComparer< T > comparator, int kthLowest, int size )
+        public int SelectIndex( T?[] items, IComparer< T > comparator, int kthLowest, int size )
         {
             throw new NotImplementedException();
         }

@@ -1,21 +1,25 @@
 ﻿using LibGDXSharp.Utils.Async;
+using LibGDXSharp.Assets.Loaders;
 
 namespace LibGDXSharp.Assets
 {
-    internal class AssetLoadingTask<T> : IAsyncTask
+    internal sealed class AssetLoadingTask : IAsyncTask
     {
-        private AssetManager                                 _manager;
-        private AssetLoader< T, AssetLoaderParameters< T > > _loader;
-        private AsyncExecutor                                _executor;
-        private long                                         _startTime;
+        private readonly AssetManager?                                       _manager;
+        private readonly AssetLoader< Type, AssetLoaderParameters< Type > >? _loader;
+        private readonly AsyncExecutor?                                      _executor;
 
-        private volatile List< AssetDescriptor< T > >? _dependencies;
-        private volatile AsyncResult?                  _depsFuture;
-        private volatile AsyncResult?                  _loadFuture;
-        private volatile object?                       _asset;
+        private volatile List< AssetDescriptor< Type > >? _dependencies;
+        private volatile AsyncResult?                     _depsFuture;
+        private volatile AsyncResult?                     _loadFuture;
+        private volatile object?                          _asset;
 
+        private          long _startTime;
         private volatile bool _asyncDone;
         private volatile bool _dependenciesLoaded;
+
+        public AssetDescriptor< Type > AssetDesc { get; set; }
+        public bool                    Cancel    { get; set; }
 
         /// <summary>
         /// </summary>
@@ -35,34 +39,34 @@ namespace LibGDXSharp.Assets
             this._startTime = manager.Log.Level == Logger.LogDebug ? TimeUtils.NanoTime() : 0;
         }
 
-        public AssetDescriptor< T > AssetDesc { get; set; }
-
-        public bool Cancel { get; set; }
-
-        public virtual void Call()
+        /// <summary>
+        /// Loads parts of the asset asynchronously if the loader is
+        /// an <see cref="AsynchronousAssetLoader{T,TP}"/>.
+        /// </summary>
+        public void Call()
         {
             if ( Cancel ) return;
 
-            var asyncLoader = ( AsynchronousAssetLoader< T, AssetLoaderParameters< T > > )_loader;
+            var asyncLoader = _loader as AsynchronousAssetLoader< T, AssetLoaderParameters< T > >;
 
             if ( !_dependenciesLoaded )
             {
-                _dependencies = asyncLoader.GetDependencies
+                _dependencies = asyncLoader?.GetDependencies
                     (
                      AssetDesc.FileName,
-                     Resolve( _loader, AssetDesc ),
+                     Resolve( asyncLoader, AssetDesc ),
                      AssetDesc.Parameters
                     );
 
                 if ( _dependencies != null )
                 {
                     RemoveDuplicates( _dependencies );
-                    _manager.InjectDependencies( AssetDesc.FileName, _dependencies );
+                    _manager?.InjectDependencies( AssetDesc.FileName, _dependencies );
                 }
                 else
                 {
                     // if we have no dependencies, we load the async part of the task immediately.
-                    asyncLoader.LoadAsync
+                    asyncLoader?.LoadAsync
                         (
                          _manager,
                          AssetDesc.FileName,
@@ -135,9 +139,9 @@ namespace LibGDXSharp.Assets
         private FileHandle? Resolve( AssetLoader< T, AssetLoaderParameters< T > > loader,
                                      AssetDescriptor< T > assetDesc )
         {
-            if ( AssetDesc.File == null )
+            if ( assetDesc.File == null )
             {
-                AssetDesc.File = loader.Resolve( assetDesc.FileName );
+                assetDesc.File = loader.Resolve( assetDesc.FileName );
             }
 
             return assetDesc.File;
@@ -192,13 +196,17 @@ namespace LibGDXSharp.Assets
         /// </summary>
         private void HandleAsyncLoader()
         {
-            var asyncLoader = ( AsynchronousAssetLoader< T, AssetLoaderParameters< T > > )_loader;
+//            if ( AssetDesc == null ) throw new GdxRuntimeException( "Unable to load asset: AssetDesc is null" );
+
+            var asyncLoader = ( AsynchronousAssetLoader< T, AssetLoaderParameters< T > >? )_loader;
+
+//            if ( asyncLoader == null ) throw new GdxRuntimeException( "asyncLoader is null" );
 
             if ( !_dependenciesLoaded )
             {
                 if ( _depsFuture == null )
                 {
-                    _depsFuture = _executor.Submit( this );
+                    _depsFuture = _executor?.Submit( this );
                 }
                 else if ( _depsFuture.IsDone() )
                 {
@@ -209,7 +217,7 @@ namespace LibGDXSharp.Assets
                     catch ( Exception e )
                     {
                         throw new GdxRuntimeException
-                            ( "Couldn't load dependencies of asset: " + AssetDesc.FileName, e );
+                            ( "Couldn't load dependencies of asset: " + AssetDesc?.FileName, e );
                     }
 
                     _dependenciesLoaded = true;
@@ -264,12 +272,12 @@ namespace LibGDXSharp.Assets
         /// <summary>
         /// </summary>
         /// <param name="array"></param>
-        private void RemoveDuplicates( List< AssetDescriptor< T > > array )
+        private static void RemoveDuplicates( IList< AssetDescriptor< T > > array )
         {
             for ( var i = 0; i < array.Count; ++i )
             {
-                string fn   = array[ i ].FileName;
-                Type   type = array[ i ].Type;
+                var   fn   = array[ i ].FileName;
+                Type? type = array[ i ].Type;
 
                 for ( var j = array.Count - 1; j > i; --j )
                 {

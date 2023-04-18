@@ -11,6 +11,11 @@
         {
             throw new NotImplementedException();
         }
+
+        public AsyncResult Submit<T>( AssetLoadingTask< T > p0 )
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

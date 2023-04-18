@@ -2,12 +2,23 @@
 {
     internal sealed class RefCountedContainer
     {
-        public object? Object   { get; set; }
-        public int     RefCount { get; set; } = 1;
+        public int RefCount { get; set; } = 1;
 
-        public RefCountedContainer( object? obj )
+        private object? _object;
+
+        public RefCountedContainer( object obj )
         {
-            this.Object = obj ?? throw new System.ArgumentException( "Object must not be null" );
+            this._object = obj ?? throw new System.ArgumentException( "Object must not be null" );
+        }
+        
+        public object? GetObject()
+        {
+            return _object;
+        }
+        
+        public void SetObject<T>( T obj )
+        {
+            this._object = obj!;
         }
     }
 }

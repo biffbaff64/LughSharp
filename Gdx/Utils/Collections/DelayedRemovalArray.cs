@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.Gdx.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Utils
 {
@@ -81,7 +82,7 @@ namespace LibGDXSharp.Utils
                 {
                     for ( int i = 0, n = _remove.Count; i < n; i++ )
                     {
-                        int index = _remove.Pop();
+                        var index = _remove.Pop();
 
                         if ( index >= _clear )
                         {
@@ -89,7 +90,7 @@ namespace LibGDXSharp.Utils
                         }
                     }
 
-                    for ( int i = _clear - 1; i >= 0; i-- )
+                    for ( var i = _clear - 1; i >= 0; i-- )
                     {
                         RemoveAt( i );
                     }
@@ -131,7 +132,7 @@ namespace LibGDXSharp.Utils
         {
             if ( _iterating > 0 )
             {
-                int index = IndexOf( value );
+                var index = IndexOf( value );
 
                 if ( index == -1 ) return false;
 
@@ -170,7 +171,7 @@ namespace LibGDXSharp.Utils
         {
             if ( _iterating > 0 )
             {
-                for ( int i = end; i >= start; i-- )
+                for ( var i = end; i >= start; i-- )
                 {
                     Remove( i );
                 }

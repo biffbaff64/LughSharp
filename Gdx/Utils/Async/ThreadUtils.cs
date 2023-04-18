@@ -2,7 +2,11 @@
 {
     public class ThreadUtils
     {
-        
+
+        public static void Yield()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

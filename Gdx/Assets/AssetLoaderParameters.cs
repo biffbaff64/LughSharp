@@ -7,7 +7,7 @@
         /// </summary>
         public interface ILoadedCallback
         {
-            public void FinishedLoading( AssetManager assetManager, string fileName, Type type );
+            public void FinishedLoading( AssetManager assetManager, string fileName, Type? type );
         }
 
         public ILoadedCallback? LoadedCallback { get; set; }
