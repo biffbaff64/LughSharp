@@ -160,5 +160,17 @@ namespace LibGDXSharp.Assets.Loaders
         public void Dispose()
         {
         }
+
+        /// <summary>
+        /// Returns the assets this asset requires to be loaded first.
+        /// This method may be called on a thread other than the GL thread.
+        /// </summary>
+        /// <param name="fileName">name of the asset to load</param>
+        /// <param name="file">the resolved file to load</param>
+        /// <param name="parameter">parameters for loading the asset</param>
+        public override List< AssetDescriptor > GetDependencies( string? fileName, FileHandle? file, IAssetLoaderParameters parameter )
+        {
+            throw new NotImplementedException();
+        }
     }
 }

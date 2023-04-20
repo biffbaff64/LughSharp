@@ -2,6 +2,21 @@
 
 namespace LibGDXSharp.Assets.Loaders
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public abstract class AsynchronousAssetLoader : AssetLoader
+    {
+        /// <summary>
+        /// </summary>
+        /// <param name="resolver"></param>
+        protected AsynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
+        {
+            IsSynchronous = false;
+        }
+        
+        public abstract void LoadAsync( AssetManager? manager, string? fileName, FileHandle? file, IAssetLoaderParameters parameter );
+        public abstract object LoadSync( AssetManager? manager, string? fileName, FileHandle? file, IAssetLoaderParameters parameter );
+    }
+    
     /// <summary>
     /// Base class for asynchronous AssetLoader instances. Such loaders try to
     /// load parts of an OpenGL resource, like the Pixmap, on a separate thread
@@ -11,7 +26,7 @@ namespace LibGDXSharp.Assets.Loaders
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TP"></typeparam>
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader< T, TP > where TP : AssetLoaderParameters< T >
+    public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader where TP : AssetLoaderParameters
     {
         /// <summary>
         /// </summary>
@@ -29,7 +44,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="fileName"></param>
         /// <param name="file"></param>
         /// <param name="parameter"></param>
-        public abstract void LoadAsync( AssetManager? manager, string? fileName, FileHandle? file, TP? parameter );
+        public abstract void LoadAsync( AssetManager? manager, string? fileName, FileHandle? file, IAssetLoaderParameters parameter );
 
         /// <summary>
         /// Loads the OpenGL part of the asset.
@@ -39,7 +54,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="file"></param>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        public abstract T LoadSync( AssetManager? manager, string? fileName, FileHandle? file, TP? parameter );
+        public abstract T LoadSync( AssetManager? manager, string? fileName, FileHandle? file, IAssetLoaderParameters parameter );
 
         /// <summary>
         /// Called if this task is unloaded before loadSync is called. This method may
@@ -56,7 +71,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="fileName"></param>
         /// <param name="file"></param>
         /// <param name="parameter"></param>
-        public void UnloadAsync( AssetManager? manager, string? fileName, FileHandle? file, TP? parameter )
+        public void UnloadAsync( AssetManager? manager, string? fileName, FileHandle? file, IAssetLoaderParameters parameter )
         {
         }
     }

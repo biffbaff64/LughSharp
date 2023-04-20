@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Utils.Collections
+namespace LibGDXSharp.Utils.Collections.Extensions
 {
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public static class ListExtensions

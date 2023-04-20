@@ -2,6 +2,6 @@
 {
     public interface IAssetErrorListener
     {
-        public void Error<T>( AssetDescriptor<T> asset, Exception throwable );
+        public void Error<T>( AssetDescriptor asset, Exception throwable );
     }
 }

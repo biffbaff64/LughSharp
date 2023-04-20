@@ -12,7 +12,7 @@
             throw new NotImplementedException();
         }
 
-        public AsyncResult Submit<T>( AssetLoadingTask< T > p0 )
+        public AsyncResult Submit( AssetLoadingTask p0 )
         {
             throw new NotImplementedException();
         }

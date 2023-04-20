@@ -6,17 +6,20 @@ namespace LibGDXSharp.Assets
 {
     /// <summary>
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public sealed class AssetDescriptor<T>
+    public sealed class AssetDescriptor
     {
-        public string                      FileName   { get; set; }
-        public Type?                       Type       { get; set; }
-        public AssetLoaderParameters< T >? Parameters { get; set; }
-        public FileHandle?                 File       { get; set; }
+        public Type                   Type       { get; init; }
+        public string                 FileName   { get; init; }
+        public IAssetLoaderParameters Parameters { get; init; }
+        public FileHandle?            File       { get; set; }
 
         public AssetDescriptor()
         {
+            FileName   = string.Empty;
+            Type       = null!;
+            Parameters = null!;
+            File       = null!;
         }
 
         /// <summary>
@@ -24,11 +27,12 @@ namespace LibGDXSharp.Assets
         /// <param name="fileName"></param>
         /// <param name="assetType"></param>
         /// <param name="parameters"></param>
-        public AssetDescriptor( string fileName, Type? assetType, AssetLoaderParameters< T >? parameters = null )
+        public AssetDescriptor( string fileName, Type assetType, IAssetLoaderParameters parameters )
         {
             FileName   = fileName.Replace( '\\', '/' );
             Type       = assetType;
             Parameters = parameters;
+            File       = null!;
         }
 
         /// <summary>
@@ -36,7 +40,7 @@ namespace LibGDXSharp.Assets
         /// <param name="file"></param>
         /// <param name="assetType"></param>
         /// <param name="parameters"></param>
-        public AssetDescriptor( FileHandle file, Type? assetType, AssetLoaderParameters< T >? parameters = null )
+        public AssetDescriptor( FileHandle file, Type assetType, IAssetLoaderParameters parameters )
         {
             FileName   = file.Path().Replace( '\\', '/' );
             File       = file;
@@ -53,7 +57,7 @@ namespace LibGDXSharp.Assets
             var sb = new StringBuilder();
             sb.Append( FileName );
             sb.Append( ", " );
-            sb.Append( Type?.FullName );
+            sb.Append( Type.FullName );
 
             return sb.ToString();
         }
