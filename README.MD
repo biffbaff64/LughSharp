@@ -16,3 +16,4 @@ Candidates for this may be:-
 
 Classes need checking to see if any methods should be made virtual.
 
+Project name is to change. Current possibility is LughEngine, or just Lugh.
