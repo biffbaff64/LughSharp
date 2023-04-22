@@ -2,7 +2,7 @@
 
 namespace LibGDXSharp.Backends.Desktop
 {
-    public class GLFiles : IFiles
+    public sealed class GLFiles : IFiles
     {
         /// <summary>
         /// Returns a handle representing a file or directory.
@@ -14,7 +14,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </exception>
         /// <see cref="IFiles.FileType"/>
         /// 
-        public FileHandle GetFileHandle( string path, IFiles.FileType type )
+        public FileInfo GetFileHandle( string path, IFiles.FileType type )
         {
             return null;
         }
@@ -24,7 +24,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public FileHandle Classpath( string path )
+        public FileInfo Classpath( string path )
         {
             return null;
         }
@@ -34,7 +34,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public FileHandle Internal( string path )
+        public FileInfo Internal( string path )
         {
             return null;
         }
@@ -44,7 +44,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public FileHandle External( string path )
+        public FileInfo External( string path )
         {
             return null;
         }
@@ -54,7 +54,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public FileHandle? Absolute( string path )
+        public FileInfo? Absolute( string path )
         {
             return null;
         }
@@ -64,7 +64,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public FileHandle Local( string path )
+        public FileInfo Local( string path )
         {
             return null;
         }
@@ -76,7 +76,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         public string GetExternalStoragePath()
         {
-            return null;
+            return string.Empty;
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         public string GetLocalStoragePath()
         {
-            return null;
+            return string.Empty;
         }
 
         /// <summary>

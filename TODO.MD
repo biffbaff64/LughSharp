@@ -58,7 +58,7 @@ ASSETS
 ASSETS/LOADERS
 --------------
     - DONE - AssetLoader                    Convert
-    -      - AsynchronousAssetLoader        Convert
+    - DONE - AsynchronousAssetLoader        Convert
     -      - BitmapFontLoader               Convert
     -      - CubemapLoader                  Convert
     -      - I18NBundleLoader               Convert
@@ -70,7 +70,7 @@ ASSETS/LOADERS
     -      - ShaderProgramLoader            Convert
     -      - SkinLoader                     Convert
     -      - SoundLoader                    Convert
-    -      - SynchronousAssetLoader         Convert
+    - DONE - SynchronousAssetLoader         Convert
     -      - TextureAtlasLoader             Convert
     -      - TextureLoader                  Convert
 
@@ -79,13 +79,14 @@ ASSETS/LOADERS
 
 ASSETS/LOADERS/RESOLVERS
 ------------------------
-    -      - AbsoluteFileHandleResolver
-    -      - ClasspathFileHandleResolver
-    -      - ExternalFileHandleResolver
-    -      - InternalFileHandleResolver
-    -      - LocalFileHandleResolver
-    -      - PrefixFileHandleResolver
-    -      - ResolutionFileResolver
+    - DONE - AbsoluteFileHandleResolver
+    - DONE - IFileInfoResolver
+    - **** - ClasspathFileHandleResolver    Not Needed
+    - **** - ExternalFileHandleResolver     Not Needed
+    - **** - InternalFileHandleResolver     Not Needed
+    - **** - LocalFileHandleResolver        Not Needed
+    - **** - PrefixFileHandleResolver       Not Needed
+    - **** - ResolutionFileResolver         Not Needed
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -319,37 +320,38 @@ MATH
 ----
     - DONE - Affine2
     - DONE - Bezier
-    -      - Bresenham
+    - DONE - Bresenham2
     -      - BSpline
     -      - CatmullRomSpline
-    -      - Circle
+    - DONE - Circle
     -      - ConvexHull
     -      - CumulativeDistribution
     -      - DelaunayTriangulator
     -      - EarClippingTriangulator
     -      - Ellipse
-    -      - FloatCounter
+    - DONE - FloatCounter
     -      - Frustrum
     -      - GeometryUtils
-    -      - GridPoint2
+    - DONE - GridPoint2
     -      - GridPoint3
     -      - Interpolation
     -      - Intersector
-    -      - IPath
-    -      - IShape2D
-    -      - IVector
-    -      - MathUtils
+    - DONE - IPath
+    - DONE - IShape2D
+    - DONE - IVector
+    - DONE - MathUtils
     -      - Matrix3                Convert
     -      - Matrix4                Convert
+    - DONE - Number
     -      - Plane
     -      - Polygon
     -      - Polyline
     -      - Quaternion
     -      - RandomXS128
-    -      - RectangleShape
-    -      - Vector2                Convert, I prefer the way the LibGDX class works.
-    -      - Vector3                Convert, I prefer the way the LibGDX class works.
-    -      - WindowedMean
+    - DONE - RectangleShape
+    - DONE - Vector2                Convert, I prefer the way the LibGDX class works.
+    - DONE - Vector3                Convert, I prefer the way the LibGDX class works.
+    - DONE - WindowedMean
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
