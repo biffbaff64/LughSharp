@@ -36,7 +36,7 @@ namespace LibGDXSharp.Utils
         {
             lock ( threadLock )
             {
-                if ( _thread == null || _thread.files != Core.Gdx.Files )
+                if ( _thread == null || _thread.files != Gdx.Files )
                 {
                     _thread?.Dispose();
 
@@ -297,7 +297,7 @@ namespace LibGDXSharp.Utils
 
             protected Task()
             {
-                app = Core.Gdx.App;
+                app = Gdx.App;
 
                 if ( app == null )
                 {
@@ -382,9 +382,9 @@ namespace LibGDXSharp.Utils
 
             public TimerThread()
             {
-                files = Core.Gdx.Files;
+                files = Gdx.Files;
 
-                Core.Gdx.App.AddLifecycleListener( this );
+                Gdx.App?.AddLifecycleListener( this );
 
                 Resume();
 
@@ -400,13 +400,13 @@ namespace LibGDXSharp.Utils
             {
                 lock ( threadLock )
                 {
-                    if ( _thread != this || files != Core.Gdx.Files ) goto exitlabel;
+                    if ( _thread != this || files != Gdx.Files ) goto exitlabel;
 
                     long waitMillis = 5000;
 
                     if ( pauseTimeMillis == 0 )
                     {
-                        long timeMillis = TimeUtils.NanoTime() / 1000000;
+                        var timeMillis = TimeUtils.NanoTime() / 1000000;
 
                         for ( int i = 0, n = instances.Count; i < n; i++ )
                         {
@@ -421,7 +421,7 @@ namespace LibGDXSharp.Utils
                         }
                     }
 
-                    if ( _thread != this || files != Core.Gdx.Files ) goto exitlabel;
+                    if ( _thread != this || files != Gdx.Files ) goto exitlabel;
 
                     try
                     {
@@ -476,7 +476,7 @@ namespace LibGDXSharp.Utils
                     Monitor.PulseAll( threadLock );
                 }
 
-                Core.Gdx.App.RemoveLifecycleListener( this );
+                Gdx.App.RemoveLifecycleListener( this );
             }
         }
     }

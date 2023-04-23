@@ -2,7 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
+using LibGDXSharp.Audio;
 using LibGDXSharp.G2D;
+using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Utils.Async;
 using LibGDXSharp.Utils.Collections.Extensions;
 
@@ -32,12 +34,11 @@ namespace LibGDXSharp.Assets
 
         private readonly AsyncExecutor        _executor;
         private          IAssetErrorListener? _listener;
+        private          IFileInfoResolver    _resolver;
 
         private int _loaded;
         private int _toLoad;
         private int _peakTasks;
-
-        private readonly IFileInfoResolver _resolver;
 
         internal Logger Log { get; }
 
@@ -64,11 +65,11 @@ namespace LibGDXSharp.Assets
                 //@formatter:off
                 SetLoader( typeof(BitmapFont),      new BitmapFontLoader( resolver ) );
                 SetLoader( typeof(Texture),         new TextureLoader( resolver ) );
-//                SetLoader( typeof(TextureAtlas),    new TextureAtlasLoader( resolver ) );
-//                SetLoader( typeof(Pixmap),          new PixmapLoader( resolver ) );
-//                SetLoader( typeof(Skin),            new SkinLoader( resolver ) );
-//                SetLoader( typeof(IMusic),          new MusicLoader( resolver ) );
-//                SetLoader( typeof(ISound),          new SoundLoader( resolver ) );
+                SetLoader( typeof(TextureAtlas),    new TextureAtlasLoader( resolver ) );
+                SetLoader( typeof(Pixmap),          new PixmapLoader( resolver ) );
+                SetLoader( typeof(Skin),            new SkinLoader( resolver ) );
+                SetLoader( typeof(IMusic),          new MusicLoader( resolver ) );
+                SetLoader( typeof(ISound),          new SoundLoader( resolver ) );
 
 //                SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
 //                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
@@ -83,12 +84,13 @@ namespace LibGDXSharp.Assets
         }
 
         /// <summary>
-        /// Returns the <see cref="IFileInfoResolver"/> for which this AssetManager was loaded with.
+        /// Returns the <see cref="IFileInfoResolver"/> which this AssetManager was loaded with.
         /// </summary>
         /// <returns>the file handle resolver which this AssetManager uses.</returns>
-        public IFileInfoResolver GetFileHandleResolver()
+        public IFileInfoResolver FileHandleResolver
         {
-            return _resolver;
+            get => _resolver;
+            set => _resolver = value;
         }
 
         /// <summary>

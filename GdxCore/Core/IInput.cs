@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Core
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Core
 {
     /// <summary>
     /// Interface to the input facilities. This allows polling the state of the
@@ -14,6 +16,8 @@
     /// like vibration, compass, on-screen keyboards, and cursor capture.
     /// Support for simple input dialogs is also provided.
     /// </summary>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    [SuppressMessage( "ReSharper", "MemberCanBePrivate.Global" )]
     public interface IInput
     {
         /// <summary>

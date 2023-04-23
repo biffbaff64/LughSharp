@@ -1,8 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-using LibGDXSharp.Gdx.Utils.Collections;
-using LibGDXSharp.Utils.Collections;
-
 namespace LibGDXSharp.Utils
 {
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]

@@ -6,7 +6,7 @@ namespace LibGDXSharp.Assets.Loaders.Resolvers
     {
         public FileInfo? Resolve( string fileName )
         {
-            return Core.Gdx.Files.Absolute( fileName );
+            return Gdx.Files.Absolute( fileName );
         }
     }
 }

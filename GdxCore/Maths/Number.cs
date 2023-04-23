@@ -68,7 +68,7 @@
         /// the numeric value represented by this object after conversion
         /// to type <code>byte</code>.
         /// </returns>
-        public virtual sbyte ByteValue()
+        public sbyte ByteValue()
         {
             return ( sbyte )IntValue();
         }
@@ -85,7 +85,7 @@
         /// the numeric value represented by this object after conversion
         /// to type <code>short</code>.
         /// </returns>
-        public virtual short ShortValue()
+        public short ShortValue()
         {
             return ( short )IntValue();
         }

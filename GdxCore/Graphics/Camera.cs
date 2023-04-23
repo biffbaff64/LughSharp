@@ -223,7 +223,7 @@ namespace LibGDXSharp.Graphics
             var y = screenCoords.Y;
 
             x -= viewportX;
-            y =  Gdx.Graphics.GetHeight() - y;
+            y = Gdx.Graphics.GetHeight() - y;
             y -= viewportY;
 
             screenCoords.X = ( 2 * x ) / viewportWidth - 1;

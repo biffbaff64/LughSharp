@@ -18,7 +18,7 @@ namespace LibGDXSharp.Utils
         /// <param name="color">Color to clear the color buffers with.</param>
         public static void Clear( Color color )
         {
-            Clear( color.R, color.G, color.B, color.A, false );
+            Clear( color.R, color.G, color.B, color.A );
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace LibGDXSharp.Utils
         /// <param name="b"></param>
         public static void Clear( float r, float g, float b, float a, bool clearDepth = false )
         {
-            Gdx.Gl.GLClearColor( r, g, b, a );
+            Gdx.Gl?.GLClearColor( r, g, b, a );
 
             var mask = IGL20.GL_Color_Buffer_Bit;
 
@@ -50,7 +50,7 @@ namespace LibGDXSharp.Utils
                 mask |= IGL20.GL_Depth_Buffer_Bit;
             }
 
-            Gdx.Gl.GLClear( mask );
+            Gdx.Gl?.GLClear( mask );
         }
 
         /// <summary>
@@ -70,6 +70,8 @@ namespace LibGDXSharp.Utils
         {
             get
             {
+                if ( Gdx.Graphics == null ) throw new NullReferenceException();
+                
                 var w = Gdx.Graphics.GetBackBufferWidth();
                 var h = Gdx.Graphics.GetBackBufferHeight();
 
@@ -99,7 +101,7 @@ namespace LibGDXSharp.Utils
             Pixmap pixmap    = Pixmap.CreateFromFrameBuffer( x, y, w, h );
             var    potPixmap = new Pixmap( potW, potH, Pixmap.Format.RGBA8888 );
 
-            potPixmap.SetBlending( Blending.None );
+            potPixmap.SetBlending( Pixmap.Blending.None );
             potPixmap.DrawPixmap( pixmap, 0, 0 );
 
             var texture       = new Texture( potPixmap );
@@ -127,6 +129,8 @@ namespace LibGDXSharp.Utils
         /// <param name="flipY"> whether to flip pixels along Y axis</param>
         public static sbyte[] GetFrameBufferPixels( bool flipY )
         {
+            if ( Gdx.Graphics == null ) throw new NullReferenceException();
+            
             var w = Gdx.Graphics.GetBackBufferWidth();
             var h = Gdx.Graphics.GetBackBufferHeight();
 
@@ -148,8 +152,10 @@ namespace LibGDXSharp.Utils
         /// <param name="flipY"> whether to flip pixels along Y axis  </param>
         public static sbyte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
         {
-            Gdx.Gl.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
-            ByteBuffer pixels = BufferUtils.NewByteBuffer( w * h * 4 );
+            Gdx.Gl?.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
+            
+            var pixels = new MemoryStream( w * h * 4 );
+            
             Gdx.Gl.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
 
             var numBytes = w * h * 4;
@@ -161,14 +167,14 @@ namespace LibGDXSharp.Utils
 
                 for ( var i = 0; i < h; i++ )
                 {
-                    ( ( Buffer )pixels ).Position( ( h - i - 1 ) * numBytesPerLine );
+                    pixels.Position = ( ( h - i - 1 ) * numBytesPerLine );
 
                     pixels.get( lines, i * numBytesPerLine, numBytesPerLine );
                 }
             }
             else
             {
-                ( ( Buffer )pixels ).Clear();
+                pixels.Clear();
 
                 pixels.get( lines );
             }

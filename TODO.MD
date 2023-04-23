@@ -16,13 +16,17 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+ROOT
+----
+
+    - DONE - Gdx                            Convert
+
 CORE
 ----
     - DONE - AbstractGraphics               Convert
     - DONE - AbstractInput                  Convert
     - DONE - ApplicationAdapter             Convert
     - DONE - Game                           Convert
-    - DONE - Gdx                            Convert
     - DONE - IApplication                   Convert
     - DONE - IApplicationListener           Convert
     - DONE - IApplicationLogger             Convert
@@ -330,7 +334,7 @@ MATH
     -      - EarClippingTriangulator
     -      - Ellipse
     - DONE - FloatCounter
-    -      - Frustrum
+    - DONE - Frustrum
     -      - GeometryUtils
     - DONE - GridPoint2
     -      - GridPoint3
@@ -343,11 +347,11 @@ MATH
     -      - Matrix3                Convert
     -      - Matrix4                Convert
     - DONE - Number
-    -      - Plane
+    - DONE - Plane
     -      - Polygon
     -      - Polyline
     -      - Quaternion
-    -      - RandomXS128
+    - DONE - RandomXS128
     - DONE - RectangleShape
     - DONE - Vector2                Convert, I prefer the way the LibGDX class works.
     - DONE - Vector3                Convert, I prefer the way the LibGDX class works.
@@ -358,10 +362,10 @@ MATH
 
 MATH/COLLISION
 --------------
-    -      - BoundingBox            Convert     Struct? / Record?
-    -      - Ray                    Convert
-    -      - Segment                Convert
-    -      - Sphere                 Convert
+    - DONE - BoundingBox            Convert     Struct? / Record?
+    - DONE - Ray                    Convert
+    - DONE - Segment                Convert
+    - DONE - Sphere                 Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -393,8 +397,8 @@ SCENES.SCENE2D
     -      - Actor                          Convert
     - DONE - Event                          Convert
     -      - Group                          Convert
-    -      - IEventListener                 Convert
-    -      - InputEvent                     Convert
+    - DONE - IEventListener                 Convert
+    - DONE - InputEvent                     Convert
     -      - InputListener                  Convert
     -      - Stage                          Convert
     -      - Touchable                      Convert
@@ -560,12 +564,12 @@ UTILS
     -      - SortedIntList
     -      - StreamUtils
     - **** - StringBuilder                  Use System.Text.StringBuilder
-    - **** - TextFormatter                  Remove, look in to C# localisation
+    - **** - TextFormatter                  Remove, look into C# localisation
     - DONE - Timer                          Use System.Timer instead??
     - DONE - TimeUtils
     - DONE - TimSort
     -      - Vector                         
-    - DONE - VStack                         
+    -      - VStack                         
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -603,10 +607,11 @@ UTILS/COLLECTIONS
     - **** - ByteArray                      List< byte >
     - **** - CharArray                      List< char >
     - **** - IntArray                       List< int >
-    - DONE - DelayedRemovalArray            Extend List<>
     - **** - FloatArray                     List< float >
     - **** - LongArray                      List< long >
     - **** - ShortArray                     List< short >
+
+    - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - SnapshotArray                  Convert / extend List<T>
 
     Maps

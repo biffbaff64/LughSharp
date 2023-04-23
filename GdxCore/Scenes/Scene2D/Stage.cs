@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Tracing;
 using System.Reflection.Metadata;
 
@@ -28,6 +29,7 @@ namespace LibGDXSharp.Scenes.Scene2D
     /// thread). Methods should be reentrant, so you can update Actors and Stages from within
     /// callbacks and handlers.
     /// </summary>
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     public class Stage : InputAdapter
     {
         // True if any actor has ever had debug enabled.
@@ -482,7 +484,7 @@ namespace LibGDXSharp.Scenes.Scene2D
                     continue;
                 }
 
-                inputEvent.TargetActor = focus.target;
+                inputEvent.TargetActor   = focus.target;
                 inputEvent.ListenerActor = focus.listenerActor;
 
                 if ( focus.listener != null && focus.listener.Handle( inputEvent ) )
@@ -1225,8 +1227,8 @@ namespace LibGDXSharp.Scenes.Scene2D
             var x1 = x0 + Viewport.ScreenWidth;
             var y0 = Viewport.ScreenY;
             var y1 = y0 + Viewport.ScreenHeight;
-
-            screenY = Gdx.Graphics!.GetHeight() - 1 - screenY;
+            
+            screenY = Gdx.Graphics.GetHeight() - 1 - screenY;
 
             return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
         }

@@ -1,4 +1,6 @@
-﻿using LibGDXSharp.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Core;
 
 namespace LibGDXSharp.Scenes.Scene2D
 {
@@ -24,6 +26,7 @@ namespace LibGDXSharp.Scenes.Scene2D
     /// been removed and replaced with C# Properties.
     /// Therefore, Event.isHandled() is now Event.IsHandled etc.
     /// </remarks>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public class Event : IPoolable
     {
         // The Stage for the Actor the event was fired on.

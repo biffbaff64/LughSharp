@@ -4,7 +4,7 @@
     {
         public FileInfo Resolve( string fileName )
         {
-            return Core.Gdx.Files.Internal( fileName );
+            return Gdx.Files.Internal( fileName );
         }
     }
 }

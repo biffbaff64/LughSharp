@@ -1,4 +1,4 @@
-﻿namespace LibGDXSharp.Gdx.Utils.Collections
+﻿namespace LibGDXSharp.Utils.Collections
 {
     public class ArrayUtils
     {

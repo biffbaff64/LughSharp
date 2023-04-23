@@ -11,36 +11,36 @@ namespace LibGDXSharp.Maths
     {
         protected readonly static Vector3[] ClipSpacePlanePoints = new Vector3[]
         {
-            new Vector3(-1, -1, -1),
-            new Vector3(1, -1, -1),
-            new Vector3(1, 1, -1),
-            new Vector3(-1, 1, -1),
-            new Vector3(-1, -1, 1),
-            new Vector3(1, -1, 1),
-            new Vector3(1, 1, 1),
-            new Vector3(-1, 1, 1)
+            new Vector3( -1, -1, -1 ),
+            new Vector3( 1, -1, -1 ),
+            new Vector3( 1, 1, -1 ),
+            new Vector3( -1, 1, -1 ),
+            new Vector3( -1, -1, 1 ),
+            new Vector3( 1, -1, 1 ),
+            new Vector3( 1, 1, 1 ),
+            new Vector3( -1, 1, 1 )
         };
 
-        protected readonly static float[] ClipSpacePlanePointsArray = new float[8 * 3];
+        protected readonly static float[] ClipSpacePlanePointsArray = new float[ 8 * 3 ];
 
         static Frustrum()
         {
             int j = 0;
-            
-            foreach (Vector3 v in ClipSpacePlanePoints )
+
+            foreach ( Vector3 v in ClipSpacePlanePoints )
             {
                 ClipSpacePlanePointsArray[ j++ ] = v.X;
                 ClipSpacePlanePointsArray[ j++ ] = v.Y;
                 ClipSpacePlanePointsArray[ j++ ] = v.Z;
             }
         }
-	
+
         private readonly static Vector3 tmpV = new Vector3();
 
         /// <system>
         /// the six clipping planes, near, far, left, right, top, bottom
         /// </system>
-        public Plane[] Planes { get; set; } = new Plane[6];
+        public Plane[] Planes { get; set; } = new Plane[ 6 ];
 
         /// <system>
         /// eight points making up the near and far clipping "rectangles".
@@ -58,7 +58,7 @@ namespace LibGDXSharp.Maths
         {
             for ( int i = 0; i < 6; i++ )
             {
-                this.Planes[i] = new Plane( new Vector3(), 0 );
+                this.Planes[ i ] = new Plane( new Vector3(), 0 );
             }
         }
 
@@ -68,27 +68,27 @@ namespace LibGDXSharp.Maths
         /// or <see cref="PerspectiveCamera"/>.
         /// </summary>
         /// <param name="inverseProjectionView">The combined projection and view matrices.</param>
-        public virtual void Update(Matrix4 inverseProjectionView)
+        public virtual void Update( Matrix4 inverseProjectionView )
         {
             Array.Copy( ClipSpacePlanePointsArray, 0, planePointsArray, 0, ClipSpacePlanePointsArray.Length );
 
-            Matrix4.Prj(inverseProjectionView.val, planePointsArray, 0, 8, 3);
-            
-            for (int i = 0, j = 0; i < 8; i++)
+            Matrix4.Prj( inverseProjectionView.val, planePointsArray, 0, 8, 3 );
+
+            for ( int i = 0, j = 0; i < 8; i++ )
             {
                 Vector3 v = planePoints[ i ];
-            
+
                 v.X = planePointsArray[ j++ ];
                 v.Y = planePointsArray[ j++ ];
                 v.Z = planePointsArray[ j++ ];
             }
 
-            Planes[0].Set( planePoints[ 1 ], planePoints[ 0 ], planePoints[ 2 ] );
-            Planes[1].Set( planePoints[ 4 ], planePoints[ 5 ], planePoints[ 7 ] );
-            Planes[2].Set( planePoints[ 0 ], planePoints[ 4 ], planePoints[ 3 ] );
-            Planes[3].Set( planePoints[ 5 ], planePoints[ 1 ], planePoints[ 6 ] );
-            Planes[4].Set( planePoints[ 2 ], planePoints[ 3 ], planePoints[ 6 ] );
-            Planes[5].Set( planePoints[ 4 ], planePoints[ 0 ], planePoints[ 1 ] );
+            Planes[ 0 ].Set( planePoints[ 1 ], planePoints[ 0 ], planePoints[ 2 ] );
+            Planes[ 1 ].Set( planePoints[ 4 ], planePoints[ 5 ], planePoints[ 7 ] );
+            Planes[ 2 ].Set( planePoints[ 0 ], planePoints[ 4 ], planePoints[ 3 ] );
+            Planes[ 3 ].Set( planePoints[ 5 ], planePoints[ 1 ], planePoints[ 6 ] );
+            Planes[ 4 ].Set( planePoints[ 2 ], planePoints[ 3 ], planePoints[ 6 ] );
+            Planes[ 5 ].Set( planePoints[ 4 ], planePoints[ 0 ], planePoints[ 1 ] );
         }
 
         /// <summary>
@@ -96,19 +96,19 @@ namespace LibGDXSharp.Maths
         /// </summary>
         /// <param name="point"> The point </param>
         /// <returns> Whether the point is in the frustum.  </returns>
-        public virtual bool PointInFrustum(Vector3 point)
+        public virtual bool PointInFrustum( Vector3 point )
         {
-            for (int i = 0; i < planes.length; i++)
+            foreach ( Plane t in Planes )
             {
-                PlaneSide result = planes[i].testPoint(point);
-                if (result == PlaneSide.Back)
+                Plane.PlaneSide result = t.TestPoint( point );
+
+                if ( result == Plane.PlaneSide.Back )
                 {
                     return false;
                 }
             }
+
             return true;
         }
     }
 }
-
-

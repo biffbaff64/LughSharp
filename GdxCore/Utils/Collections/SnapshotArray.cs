@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+using LibGDXSharp.Utils.Collections.Extensions;
+
 namespace LibGDXSharp.Utils.Collections
 {
     /// <summary>
@@ -20,8 +22,8 @@ namespace LibGDXSharp.Utils.Collections
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public sealed class SnapshotArray<T> : List< T >
     {
-        private T?[] _snapshot;
-        private T?[] _recycled;
+        private T[]? _snapshot;
+        private T[]? _recycled;
         private int  _snapshots;
 
         public SnapshotArray( int capacity = 0 ) : base( capacity )
@@ -49,7 +51,7 @@ namespace LibGDXSharp.Utils.Collections
 
             Modified();
 
-            CopyTo( _snapshot! );
+            CopyTo( _snapshot );
 
             _snapshots++;
 
@@ -67,9 +69,12 @@ namespace LibGDXSharp.Utils.Collections
                 // The backing array was copied, keep around the old array.
                 _recycled = _snapshot;
 
-                for ( int i = 0, n = _recycled.Length; i < n; i++ )
+                if ( _recycled != null )
                 {
-                    _recycled[ i ] = default;
+                    for ( int i = 0, n = _recycled.Length; i < n; i++ )
+                    {
+                        _recycled[ i ] = default!;
+                    }
                 }
             }
 
@@ -83,7 +88,7 @@ namespace LibGDXSharp.Utils.Collections
             if ( _snapshot != base.ToArray() ) return;
 
             // Snapshot is in use, copy backing array to recycled array or create new backing array.
-            if ( _recycled.Length >= Count )
+            if ( _recycled?.Length >= Count )
             {
                 // Copy the contents of items[] to recycled
                 for ( var i = 0; i < Count; i++ )

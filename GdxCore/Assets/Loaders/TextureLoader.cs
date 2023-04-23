@@ -89,14 +89,14 @@
             return texture;
         }
 
-        public override Array< AssetDescriptor >? GetDependencies( string fileName,
+        public override List< AssetDescriptor >? GetDependencies( string fileName,
                                                                    FileHandle file,
                                                                    TextureParameter parameter )
         {
             return null;
         }
 
-        public class TextureParameter : AssetLoaderParameters< Texture >
+        public class TextureParameter : AssetLoaderParameters
         {
             /// <summary>
             /// the format of the final Texture. Uses the source images format if null

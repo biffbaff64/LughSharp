@@ -1,7 +1,11 @@
-﻿using LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Scenes.Scene2D
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     public class InputEvent : Event
     {
         /// <summary>
@@ -18,7 +22,6 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// TouchDragged, TouchUp, MouseMoved, Enter, and Exit. 
         /// </summary>
         public float StageX { get; set; }
-
 
         /// <summary>
         /// The stage x coordinate where the event occurred. Valid for: TouchDown,
@@ -93,10 +96,10 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// Returns true if this event is a touchUp triggered by <see cref="Stage.CancelTouchFocus()"/>.
         /// </summary>
         public bool TouchFocusCancel => MathUtils.IsEqual( StageX, int.MinValue )
-                                                || MathUtils.IsEqual( StageY, int.MinValue );
+                                        || MathUtils.IsEqual( StageY, int.MinValue );
 
         /// <summary>
-        /// If false, <see cref="Handle"/> will not add the listener
+        /// If false, <see cref="Event.Handle()"/> will not add the listener
         /// to the stage's touch focus when a touch down event is handled.
         /// Default is true. 
         /// </summary>

@@ -23,8 +23,8 @@
         public BitmapFont()
             : this
                 (
-                 Core.Gdx.Files.Internal( FontName ),
-                 Core.Gdx.Files.Internal( FontName ),
+                 Gdx.Files.Internal( FontName ),
+                 Gdx.Files.Internal( FontName ),
                  false,
                  true
                 )
@@ -41,8 +41,8 @@
         public BitmapFont( bool flip )
             : this
                 (
-                 Core.Gdx.Files.Internal( FontName ),
-                 Core.Gdx.Files.Internal( FontName ),
+                 Gdx.Files.Internal( FontName ),
+                 Gdx.Files.Internal( FontName ),
                  flip,
                  true
                 )
