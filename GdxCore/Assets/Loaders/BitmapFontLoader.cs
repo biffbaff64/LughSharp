@@ -101,6 +101,7 @@ namespace LibGDXSharp.Assets.Loaders
 
             return deps;
         }
+        
         /// <summary>
         /// </summary>
         /// <param name="manager"></param>
@@ -108,21 +109,21 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="file"></param>
         /// <param name="parameter"></param>
         public void LoadAsync( AssetManager manager,
-                                        string fileName,
-                                        FileHandle file,
+                                        string? fileName,
+                                        FileInfo? file,
                                         BitmapFontParameter parameter )
         {
         }
 
         public BitmapFont LoadSync( AssetManager manager,
-                                             string fileName,
-                                             FileHandle file,
-                                             BitmapFontParameter? parameter )
+                                             string? fileName,
+                                             FileInfo? file,
+                                             BitmapFontParameter parameter )
         {
             if ( parameter?.AtlasName != null )
             {
-                var atlas  = manager.Get( parameter.AtlasName, typeof(TextureAtlas) );
-                var name   = file.Sibling( _data.imagePaths[ 0 ] ).nameWithoutExtension().toString();
+                var atlas  = manager.Get<TextureAtlas>( parameter.AtlasName );
+                var name   = file.Sibling( _data.imagePaths[ 0 ] ).Name.toString();
                 var region = atlas.FindRegion( name );
 
                 if ( region == null )

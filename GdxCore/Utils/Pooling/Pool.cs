@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+using LibGDXSharp.Utils.Pooling;
+
 namespace LibGDXSharp.Utils
 {
     /// <summary>
@@ -14,12 +16,12 @@ namespace LibGDXSharp.Utils
         // The highest number of free objects. Can be reset any time.
         public int Peak { get; set; }
 
-        private readonly List< T? > _freeObjects;
-
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public Func< T > NewObject { get; set; } = null!;
+        public Func< T > NewObject { get; init; } = null!;
+
+        private readonly List< T? > _freeObjects;
 
         /// <summary>
         /// Creates a pool with an initial capacity of 16 and no maximum.
@@ -29,6 +31,7 @@ namespace LibGDXSharp.Utils
         }
 
         /// <summary>
+        /// Creates a new pool with a specified initial capacity,
         /// </summary>
         /// <param name="initialCapacity">
         /// The initial size of the array supporting the pool. No objects are created/pre-allocated.
@@ -121,7 +124,7 @@ namespace LibGDXSharp.Utils
         /// freed, but the maximum capacity of the pool is reached, and when the
         /// pool is <see cref="Clear"/>ed.
         /// </summary>
-        protected void Discard( T? obj )
+        protected virtual void Discard( T? obj )
         {
         }
 

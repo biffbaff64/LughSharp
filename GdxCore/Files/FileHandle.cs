@@ -15,35 +15,39 @@ namespace LibGDXSharp.Files
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public class FileHandle
     {
-        protected FileInfo?       FileInfo { get; set; }
-        protected IFiles.FileType Type     { get; set; }
-
-        private readonly string _targetFilename = string.Empty;
-
-        protected FileHandle()
+        public FileType Type { get; set; }
+        public File File
         {
+            get
+            {
+                if ( Type == FileType.External )
+                {
+                    return new File(Gdx.Files.GetExternalStoragePath(), File.GetPath());
+                }
+
+                return _file;
+            }
+            set => _file = value;
         }
 
+        private File? _file;
+        
         /// <summary>
         /// Creates a new absolute FileHandle for the file name.
         /// </summary>
         public FileHandle( string fileName )
         {
-            this.FileInfo = new FileInfo( fileName );
-            this.Type     = IFiles.FileType.Absolute;
-
-            _targetFilename = fileName;
+            this.Type = FileType.Absolute;
+            this.File = new File( fileName );
         }
 
         /// <summary>
         /// </summary>
-        /// <param name="fileInfo"></param>
-        public FileHandle( FileInfo fileInfo )
+        /// <param name="file"></param>
+        public FileHandle( File file )
         {
-            this.FileInfo = fileInfo;
-            this.Type     = IFiles.FileType.Absolute;
-
-            _targetFilename = fileInfo.Name;
+            this.Type = FileType.Absolute;
+            this.File = file;
         }
 
         /// <summary>
@@ -51,24 +55,20 @@ namespace LibGDXSharp.Files
         /// <param name="fileName"></param>
         /// <param name="type"></param>
         // ReSharper disable once MemberCanBeProtected.Global
-        public FileHandle( string fileName, IFiles.FileType type )
+        public FileHandle( string fileName, FileType type )
         {
-            this.FileInfo = new FileInfo( fileName );
-            this.Type     = type;
-
-            _targetFilename = fileName;
+            this.Type = type;
+            this.File = new File( fileName );
         }
 
         /// <summary>
         /// </summary>
         /// <param name="file"></param>
         /// <param name="type"></param>
-        public FileHandle( FileInfo file, IFiles.FileType type )
+        public FileHandle( File file, FileType type )
         {
-            this.FileInfo = file;
-            this.Type     = type;
-
-            _targetFilename = file.Name;
+            this.Type = type;
+            this.File = file;
         }
 
         /// <summary>
@@ -77,40 +77,22 @@ namespace LibGDXSharp.Files
         /// Backward slashes will be replaced by forward slashes.
         /// </summary>
         /// <returns></returns>
-        public string Path()
-        {
-            if ( this.FileInfo != null )
-            {
-                return FileInfo.FullName;
-            }
-
-            throw new GdxRuntimeException( "FileHandle:Path - file does not exist: " + _targetFilename );
-        }
+        public string Path() => File.GetPath().Replace( '\\', '/' );
 
         /// <summary>
         /// Returns the name of the file, without any parent paths.
         /// </summary>
         /// <returns></returns>
-        public string Name()
-        {
-            if ( this.FileInfo != null )
-            {
-                return FileInfo.Name;
-            }
-
-            throw new GdxRuntimeException( "FileHandle:Name - file does not exist: " + _targetFilename );
-        }
+        public string Name() => File.GetName();
 
         /// <summary>
         /// </summary>
         public string Extension()
         {
-            if ( this.FileInfo != null )
-            {
-                return FileInfo.Extension;
-            }
+            var name     = File.GetName();
+            var dotIndex = name.LastIndexOf( '.' );
 
-            throw new GdxRuntimeException( "FileHandle:Extension - file does not exist: " + _targetFilename );
+            return dotIndex == -1 ? "" : name[ ( dotIndex + 1 ).. ];
         }
 
         /// <summary>
@@ -119,15 +101,10 @@ namespace LibGDXSharp.Files
         /// <returns></returns>
         public string NameWithoutExtension()
         {
-            if ( this.FileInfo != null )
-            {
-                var fileName = this.FileInfo.Name;
-                var dotIndex = fileName.LastIndexOf( ".", StringComparison.Ordinal );
+            var fileName = this.File.GetName();
+            var dotIndex = fileName.LastIndexOf( ".", StringComparison.Ordinal );
 
-                return dotIndex == -1 ? fileName : fileName.Substring( 0, dotIndex );
-            }
-
-            throw new GdxRuntimeException( "FileHandle:NameWithoutExtension - file does not exist: " + _targetFilename );
+            return dotIndex == -1 ? fileName : fileName[ ..dotIndex ];
         }
 
         /// <summary>
@@ -135,15 +112,10 @@ namespace LibGDXSharp.Files
         /// <returns></returns>
         public string PathWithoutExtension()
         {
-            if ( this.FileInfo != null )
-            {
-                var filePath = this.FileInfo.FullName;
-                var dotIndex = filePath.LastIndexOf( ".", StringComparison.Ordinal );
+            var filePath = this.File.GetPath();
+            var dotIndex = filePath.LastIndexOf( ".", StringComparison.Ordinal );
 
-                return dotIndex == -1 ? filePath : filePath.Substring( 0, dotIndex );
-            }
-
-            throw new GdxRuntimeException( "FileHandle.PathWithoutExtension - file does not exist: " + _targetFilename );
+            return dotIndex == -1 ? filePath : filePath[ ..dotIndex ];
         }
 
         /// <summary>
@@ -152,28 +124,7 @@ namespace LibGDXSharp.Files
         /// <exception cref="GdxRuntimeException"></exception>
         public FileStream Read()
         {
-            if ( FileInfo == null )
-            {
-                throw new GdxRuntimeException( "FileHandle.Read - file not found: " + _targetFilename );
-            }
-
-            if ( this.Type == IFiles.FileType.Classpath
-                 || ( this.Type == IFiles.FileType.Internal && !this.FileInfo.Exists )
-                 || ( this.Type == IFiles.FileType.Local && !this.FileInfo.Exists ) )
-            {
-                try
-                {
-                    var input = FileInfo.OpenRead();
-
-                    return input;
-                }
-                catch ( Exception ex )
-                {
-                    throw new GdxRuntimeException( "File not found: " + FileInfo.Name + " (" + Type + ")", ex );
-                }
-            }
-
-            return FileInfo.OpenRead();
+            return new FileStream( File.GetName(), FileMode.OpenOrCreate );
         }
 
         /// <summary>
@@ -182,12 +133,7 @@ namespace LibGDXSharp.Files
         /// <returns></returns>
         public BufferedStream Read( int bufferSize )
         {
-            if ( FileInfo == null )
-            {
-                throw new GdxRuntimeException( "FileHandle.Read - file not found: " + _targetFilename );
-            }
-
-            return new BufferedStream( FileInfo.OpenRead(), bufferSize );
+            return new BufferedStream( this.Read(), bufferSize );
         }
 
         /// <summary>
@@ -205,7 +151,7 @@ namespace LibGDXSharp.Files
         /// <exception cref="GdxRuntimeException"></exception>
         public StreamReader Reader( Encoding charset )
         {
-            var stream = Read();
+            FileStream stream = Read();
 
             try
             {
@@ -243,7 +189,7 @@ namespace LibGDXSharp.Files
         /// <param name="charset"></param>
         /// <returns></returns>
         /// <exception cref="GdxRuntimeException"></exception>
-        public string? ReadString( Encoding? charset = null )
+        public string ReadString( Encoding? charset = null )
         {
             var           output = new StringBuilder( EstimateLength() );
             StreamReader? reader = null;
@@ -356,7 +302,7 @@ namespace LibGDXSharp.Files
 	 * @throws GdxRuntimeException if this file handle represents a directory, doesn't exist, or could not be read, or memory mapping fails, or is a {@link FileType#Classpath} file. */
         public ByteBuffer Map( FileChannel.MapMode mode )
         {
-            if ( Type == IFiles.FileType.Classpath )
+            if ( Type == FileType.Classpath )
             {
                 throw new GdxRuntimeException( "Cannot map a classpath file: " + this );
             }
@@ -365,10 +311,10 @@ namespace LibGDXSharp.Files
 
             try
             {
-                raf = new RandomAccessFile( FileInfo, mode == MapMode.READ_ONLY ? "r" : "rw" );
+                raf = new RandomAccessFile( File, mode == MapMode.READ_ONLY ? "r" : "rw" );
 
                 FileChannel fileChannel = raf.getChannel();
-                ByteBuffer  map         = fileChannel.map( mode, 0, FileInfo?.Length );
+                ByteBuffer  map         = fileChannel.map( mode, 0, File?.Length );
 
                 map.order( ByteOrder.nativeOrder() );
 
@@ -391,25 +337,25 @@ namespace LibGDXSharp.Files
         /// <exception cref="GdxRuntimeException"></exception>
         public FileStream Write( bool append )
         {
-            if ( FileInfo == null ) throw new GdxRuntimeException( " File is null! " );
+            if ( File == null ) throw new GdxRuntimeException( " File is null! " );
 
-            if ( Type == IFiles.FileType.Classpath )
+            if ( Type == FileType.Classpath )
             {
-                throw new GdxRuntimeException( "Cannot write to a classpath file: " + FileInfo, null );
+                throw new GdxRuntimeException( "Cannot write to a classpath file: " + File, null );
             }
 
-            if ( Type == IFiles.FileType.Internal )
+            if ( Type == FileType.Internal )
             {
-                throw new GdxRuntimeException( "Cannot write to an internal file: " + FileInfo, null );
+                throw new GdxRuntimeException( "Cannot write to an internal file: " + File, null );
             }
 
             try
             {
-                return System.IO.File.OpenWrite( FileInfo.FullName );
+                return System.IO.File.OpenWrite( File.FullName );
             }
             catch ( Exception ex )
             {
-                throw new GdxRuntimeException( "Error Writing File: " + FileInfo + " (" + Type + ")", ex );
+                throw new GdxRuntimeException( "Error Writing File: " + File + " (" + Type + ")", ex );
             }
         }
 
@@ -432,7 +378,7 @@ namespace LibGDXSharp.Files
             }
             catch ( Exception ex )
             {
-                throw new GdxRuntimeException( "Error stream writing to file: " + FileInfo + " (" + Type + ")", ex );
+                throw new GdxRuntimeException( "Error stream writing to file: " + File + " (" + Type + ")", ex );
             }
             finally
             {
@@ -450,8 +396,8 @@ namespace LibGDXSharp.Files
         /// <returns></returns>
         public Writer Writer( bool append, string? charset = null )
         {
-            if ( type == IFiles.FileType.Classpath ) throw new GdxRuntimeException( "Cannot write to a classpath file: " + file );
-            if ( type == IFiles.FileType.Internal ) throw new GdxRuntimeException( "Cannot write to an internal file: " + file );
+            if ( type == FileType.Classpath ) throw new GdxRuntimeException( "Cannot write to a classpath file: " + file );
+            if ( type == FileType.Internal ) throw new GdxRuntimeException( "Cannot write to an internal file: " + file );
             parent().mkdirs();
 
             try
@@ -480,8 +426,8 @@ namespace LibGDXSharp.Files
         /// <returns></returns>
         public long Length()
         {
-            if ( FileInfo != null
-                 && ( Type == IFiles.FileType.Classpath || ( Type == IFiles.FileType.Internal && !FileInfo.Exists ) ) )
+            if ( File != null
+                 && ( Type == FileType.Classpath || ( Type == FileType.Internal && !this.File.Exists ) ) )
             {
                 var input  = Read();
                 var length = input.Length;
@@ -491,7 +437,7 @@ namespace LibGDXSharp.Files
                 return length;
             }
 
-            return FileInfo!.Length;
+            return File!.Length;
         }
     }
 }

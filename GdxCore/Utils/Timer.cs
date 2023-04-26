@@ -384,7 +384,7 @@ namespace LibGDXSharp.Utils
             {
                 files = Gdx.Files;
 
-                Gdx.App?.AddLifecycleListener( this );
+                Gdx.App.AddLifecycleListener( this );
 
                 Resume();
 

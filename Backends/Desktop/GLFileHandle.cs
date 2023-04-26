@@ -10,7 +10,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="type"></param>
-        public GLFileHandle( string fileName, IFiles.FileType type )
+        public GLFileHandle( string fileName, FileType type )
             : base( fileName, type )
         {
         }
@@ -19,7 +19,7 @@ namespace LibGDXSharp.Backends.Desktop
         /// </summary>
         /// <param name="file"></param>
         /// <param name="type"></param>
-        public GLFileHandle( FileInfo file, IFiles.FileType type )
+        public GLFileHandle( FileInfo file, FileType type )
             : base( file, type )
         {
         }
@@ -30,9 +30,9 @@ namespace LibGDXSharp.Backends.Desktop
         /// <returns></returns>
         public FileHandle Child( string name )
         {
-            if ( FileInfo != null )
+            if ( base.File != null )
             {
-                if ( FileInfo.FullName.Length == 0 )
+                if ( base.File.FullName.Length == 0 )
                 {
                     return new GLFileHandle( new FileInfo( name ), Type );
                 }
@@ -98,7 +98,7 @@ namespace LibGDXSharp.Backends.Desktop
 //                return new FileInfo( GLFiles.LocalPath + FileInfo!.FullName );
 //            }
 
-            return FileInfo;
+            return base.File;
         }
     }
 }

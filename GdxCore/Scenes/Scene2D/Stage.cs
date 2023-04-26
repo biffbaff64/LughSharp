@@ -109,7 +109,7 @@ namespace LibGDXSharp.Scenes.Scene2D
             _root = new Group();
             _root.SetStage( this );
 
-            viewport.Update( Gdx.Graphics!.GetWidth(), Gdx.Graphics.GetHeight(), true );
+            viewport.Update( Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight(), true );
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace LibGDXSharp.Scenes.Scene2D
 
             if ( _debugUnderMouse || _debugParentUnderMouse || ( _debugTableUnderMouse != Table.DebugType.None ) )
             {
-                ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input!.GetX(), Gdx.Input.GetY() ) );
+                ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input.GetX(), Gdx.Input.GetY() ) );
 
                 Actor? actor = Hit( _tempCoords.X, _tempCoords.Y, true );
 
@@ -224,7 +224,7 @@ namespace LibGDXSharp.Scenes.Scene2D
         /// </summary>
         public void Act()
         {
-            Act( Math.Min( Gdx.Graphics!.GetDeltaTime(), 1 / 30f ) );
+            Act( Math.Min( Gdx.Graphics.GetDeltaTime(), 1 / 30f ) );
         }
 
         /// <summary>

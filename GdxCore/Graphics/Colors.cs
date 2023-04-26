@@ -1,5 +1,5 @@
 ﻿using LibGDXSharp.G2D;
-using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Graphics
 {
@@ -10,7 +10,7 @@ namespace LibGDXSharp.Graphics
     /// </summary>
     public class Colors
     {
-        private readonly static ObjectMap< string, Color > map = new ObjectMap< string, Color >();
+        private readonly static Dictionary< string, Color > map = new Dictionary< string, Color >();
 
         static Colors()
         {
@@ -24,7 +24,7 @@ namespace LibGDXSharp.Graphics
         /// <summary>
         /// Returns the Color map.
         /// </summary>
-        public static ObjectMap< string, Color > GetColors()
+        public static Dictionary< string, Color > GetColors()
         {
             return map;
         }
@@ -39,15 +39,15 @@ namespace LibGDXSharp.Graphics
         /// The Color to which the specified <code>name</code> is mapped,
         /// or <code>null</code> if no mapping was found.
         /// </returns>
-        public static Color? Get( string name )
+        public static Color Get( string name )
         {
-            return map.Get( name );
+            return map[ name ];
         }
 
         /// <summary>
         /// Convenience method to add a color with its <code>name</code>.
         /// The invocation of this method is equivalent to the expression
-        /// <code>Colors.GetColors().Put(name, color)</code>
+        /// <tt>Colors.GetColors().Put(name, color)</tt>
         /// </summary>
         /// <param name="name">The name of the color.</param>
         /// <param name="color">The color.</param>
@@ -55,9 +55,9 @@ namespace LibGDXSharp.Graphics
         /// The previous Color associated with <code>name</code> or <code>null</code>
         /// if no mapping was found.
         /// </returns>
-        public static Color? Put( string name, Color color )
+        public static Color Put( string name, Color color )
         {
-            return map.Put( name, color );
+            return map[ name ] = color;
         }
 
         /// <summary>

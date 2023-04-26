@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace LibGDXSharp.Utils
+namespace LibGDXSharp.Utils.Pooling
 {
     /// <summary>
     /// A simple linked list that pools its nodes.

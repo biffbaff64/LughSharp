@@ -441,20 +441,10 @@
         {
             const int prime = 73;
             
-            // _bits is not readonly so can't be used in GetHashCode().
-            
-//            var word = Length() >>> 6;
-//            var hash = 0;
-//
-//            for ( var i = 0; word >= i; i++ )
-//            {
-//                hash = 127 * hash + ( int )( _bits[ i ] ^ ( ( int )( ( uint )_bits[ i ] >> 32 ) ) );
-//            }
-
             var hash = prime + Gdx.App.GetVersion().GetHashCode();
             hash = prime * hash + Gdx.App.GetHashCode();
-            
-            return hash;
+
+            return hash!;
         }
 
         /// <summary>

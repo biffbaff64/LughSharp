@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
-
-using LibGDXSharp.Utils.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LibGDXSharp.Utils
 {
@@ -10,17 +9,19 @@ namespace LibGDXSharp.Utils
     /// to avoid allocation. The sorting is otherwise identical to the Arrays.sort
     /// methods (uses timsort).
     /// </summary>
-    public class SortUtils
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class SortUtils
     {
         private readonly static SortUtils instance = new SortUtils();
 
         // ReSharper disable once ConvertToAutoProperty
         public static SortUtils Instance
         {
-            [DebuggerStepThrough] get => instance;
+            [DebuggerStepThrough]
+            get => instance;
         }
 
-        private TimSort<>? _timSort;
+        private TimSort<object>? _timSort;
         private ComparableTimSort? _comparableTimSort;
 
         /// <summary>
@@ -30,8 +31,8 @@ namespace LibGDXSharp.Utils
         public void Sort<T>( List< T > a ) where T : IComparable
         {
             _comparableTimSort ??= new ComparableTimSort();
-
-            _comparableTimSort.DoSort( a.ToArray(), 0, a.Count );
+            
+            _comparableTimSort.DoSort( a.Cast<object>().ToArray(), 0, a.Count );
         }
 
         /// <summary>
@@ -59,15 +60,11 @@ namespace LibGDXSharp.Utils
         /// <param name="a"></param>
         /// <param name="c"></param>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="T1"></typeparam>
-        public void Sort<T, T1>( List< T > a, IComparer< T1 > c )
+        public void Sort<T>( List< T > a, IComparer< object > c )
         {
-            if ( _timSort == null )
-            {
-                _timSort = new TimSort< T >();
-            }
+            _timSort ??= new TimSort< object >();
 
-            _timSort.DoSort( a.ToArray(), c, 0, a.Count );
+            _timSort.DoSort( a.Cast<object>().ToArray(), c, 0, a.Count );
         }
 
         /// <summary>
@@ -76,14 +73,11 @@ namespace LibGDXSharp.Utils
         /// <param name="c"></param>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="T1"></typeparam>
-        public void Sort<T, T1>( T[] a, IComparer< T1 > c )
+        public void Sort<T, T1>( T[] a, IComparer< object > c )
         {
-            if ( _timSort == null )
-            {
-                _timSort = new TimSort< T >();
-            }
+            _timSort ??= new TimSort< object >();
 
-            _timSort.DoSort( a, c, 0, a.Length );
+            _timSort.DoSort( a.Cast<object>().ToArray(), c, 0, a.Length );
         }
 
         /// <summary>
@@ -94,14 +88,11 @@ namespace LibGDXSharp.Utils
         /// <param name="toIndex"></param>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="T1"></typeparam>
-        public void Sort<T, T1>( T[] a, IComparer< T1 > c, int fromIndex, int toIndex )
+        public void Sort<T, T1>( IEnumerable< T > a, IComparer< object > c, int fromIndex, int toIndex )
         {
-            if ( _timSort == null )
-            {
-                _timSort = new TimSort< T >();
-            }
+            _timSort ??= new TimSort< object >();
 
-            _timSort.DoSort( a, c, fromIndex, toIndex );
+            _timSort.DoSort( a.Cast<object>().ToArray(), c, fromIndex, toIndex );
         }
     }
 }

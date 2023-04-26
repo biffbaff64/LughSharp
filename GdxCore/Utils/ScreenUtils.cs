@@ -1,5 +1,4 @@
-﻿using LibGDXSharp.Backends.Desktop;
-using LibGDXSharp.G2D;
+﻿using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Utils
@@ -41,7 +40,7 @@ namespace LibGDXSharp.Utils
         /// <param name="b"></param>
         public static void Clear( float r, float g, float b, float a, bool clearDepth = false )
         {
-            Gdx.Gl?.GLClearColor( r, g, b, a );
+            Gdx.Gl.GLClearColor( r, g, b, a );
 
             var mask = IGL20.GL_Color_Buffer_Bit;
 
@@ -50,7 +49,7 @@ namespace LibGDXSharp.Utils
                 mask |= IGL20.GL_Depth_Buffer_Bit;
             }
 
-            Gdx.Gl?.GLClear( mask );
+            Gdx.Gl.GLClear( mask );
         }
 
         /// <summary>
@@ -149,17 +148,21 @@ namespace LibGDXSharp.Utils
         /// Flipping is not a cheap operation, so use this functionality wisely.
         /// </p>
         /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
         /// <param name="flipY"> whether to flip pixels along Y axis  </param>
         public static sbyte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
         {
-            Gdx.Gl?.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
+            Gdx.Gl.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
             
-            var pixels = new MemoryStream( w * h * 4 );
+            var pixels = Utils.BufferUtils.NewByteBuffer( w * h * 4 );
             
             Gdx.Gl.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
 
             var numBytes = w * h * 4;
-            var lines    = new sbyte[ numBytes ];
+            var lines = new Span< byte >();
 
             if ( flipY )
             {
@@ -176,7 +179,7 @@ namespace LibGDXSharp.Utils
             {
                 pixels.Clear();
 
-                pixels.get( lines );
+                pixels.Read( lines );
             }
 
             return lines;

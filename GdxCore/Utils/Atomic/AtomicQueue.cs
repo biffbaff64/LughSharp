@@ -24,7 +24,7 @@
         /// <returns></returns>
         private int Next( int idx )
         {
-            return ( idx + 1 ) % _queue.Length();
+            return ( idx + 1 ) % _queue;
         }
 
         /// <summary>

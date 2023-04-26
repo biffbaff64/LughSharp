@@ -36,15 +36,13 @@
     /// Each subclass of this class defines two categories of get and put operations:
     /// Relative operations read or write one or more elements starting at the current
     /// position and then increment the position by the number of elements transferred.
-    /// If the requested transfer exceeds the limit then a relative get operation
-    /// throws a BufferUnderflowException and a relative put operation throws a
-    /// BufferOverflowException; in either case, no data is transferred.
-    /// Absolute operations take an explicit element index and do not affect the position.
-    /// Absolute get and put operations throw an IndexOutOfBoundsException if the index
-    /// argument exceeds the limit.
-    /// Data may also, of course, be transferred in to or out of a buffer by the I/O
-    /// operations of an appropriate channel, which are always relative to the current
-    /// position.
+    /// If the requested transfer exceeds the limit then a relative get operation throws
+    /// a BufferUnderflowException and a relative put operation throws a BufferOverflowException;
+    /// in either case, no data is transferred. Absolute operations take an explicit element
+    /// index and do not affect the position. Absolute get and put operations throw an
+    /// IndexOutOfBoundsException if the index argument exceeds the limit. Data may also,
+    /// of course, be transferred in to or out of a buffer by the I/O operations of an
+    /// appropriate channel, which are always relative to the current position.
     /// </p>
     /// <p></p>
     /// <p>
@@ -52,10 +50,10 @@
     /// <p><b>---------------------</b></p>
     /// A buffer's mark is the index to which its position will be reset when the reset
     /// method is invoked. The mark is not always defined, but when it is defined it is
-    /// never negative and is never greater than the position.
-    /// If the mark is defined then it is discarded when the position or the limit is
-    /// adjusted to a value smaller than the mark. If the mark is not defined then invoking
-    /// the reset method causes an InvalidMarkException to be thrown.
+    /// never negative and is never greater than the position. If the mark is defined then
+    /// it is discarded when the position or the limit is adjusted to a value smaller than
+    /// the mark. If the mark is not defined then invoking the reset method causes an
+    /// InvalidMarkException to be thrown.
     /// </p>
     /// <p></p>
     /// <p>
@@ -63,7 +61,7 @@
     /// <p><b>----------</b></p>
     /// The following invariant holds for the mark, position, limit, and capacity values:
     /// <p></p>
-    /// 0 &lt;= mark &lt;= position &lt;= limit &lt;= capacity
+    /// <tt><i>0 &lt;= mark &lt;= position &lt;= limit &lt;= capacity</i></tt>
     /// <p></p>
     /// A newly-created buffer always has a position of zero and a mark that is undefined.
     /// The initial limit may be zero, or it may be some other value that depends upon the
@@ -77,13 +75,19 @@
     /// In addition to methods for accessing the position, limit, and capacity values and
     /// for marking and resetting, this class also defines the following operations upon
     /// buffers:
-    /// <b>clear</b> makes a buffer ready for a new sequence of channel-read or relative put
+    /// <p>
+    /// <b>Clear</b> makes a buffer ready for a new sequence of channel-read or relative put
     /// operations: It sets the limit to the capacity and the position to zero.
-    /// <b>flip</b> makes a buffer ready for a new sequence of channel-write or relative get
+    /// </p>
+    /// <p>
+    /// <b>Flip</b> makes a buffer ready for a new sequence of channel-write or relative get
     /// operations: It sets the limit to the current position and then sets the position to
     /// zero.
-    /// <b>rewind</b> makes a buffer ready for re-reading the data that it already contains:
+    /// </p>
+    /// <p>
+    /// <b>Rewind</b> makes a buffer ready for re-reading the data that it already contains:
     /// It leaves the limit unchanged and sets the position to zero.
+    /// </p>
     /// </p>
     /// <p></p>
     /// <p>
@@ -112,49 +116,46 @@
     /// to return the buffer upon which they are invoked. This allows method invocations
     /// to be chained; for example, the sequence of statements
     /// <p></p>
+    /// <tt><i>
     /// <p>  b.flip();</p>
     /// <p>  b.position(23);</p>
     /// <p>  b.limit(42);</p>
+    /// </i></tt>
     /// <p></p>
     /// <p>
     /// can be replaced by the single, more compact statement
     /// </p>
     /// <p></p>
     /// <p>
-    ///   b.flip().position(23).limit(42);
+    /// <tt><i>  b.flip().position(23).limit(42);</i></tt>
     /// </p>
     /// </p>
     /// <p></p>
     /// </summary>
     public abstract class Buffer
     {
-        // The characteristics of Spliterators that traverse and split elements
-        // maintained in Buffers.
-//        private readonly static int spliteratorCharacteristics =
-//            Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.ORDERED;
-
         // Invariants: mark <= position <= limit <= capacity
-        protected int mark     = -1;
-        protected int position = 0;
-        protected int limit;
-        protected int capacity;
+        public int Mark     { get; set; } = -1;
+        public int Capacity { get; set; }
+        public int Position { get; set; } = 0;
+        public int Limit    { get; set; }
 
-        // Used only by direct buffers
-        internal long address;
-
+        protected Buffer()
+        {
+        }
+        
         // Creates a new buffer with the given mark, position, limit, and capacity,
         // after checking invariants.
-        public Buffer( int mark, int pos, int lim, int cap )
+        protected Buffer( int mark, int pos, int lim, int cap )
         {
-            // package-private
             if ( cap < 0 )
             {
                 throw new System.ArgumentException( "Negative capacity: " + cap );
             }
 
-            this.capacity = cap;
-            Limit( lim );
-            Position( pos );
+            this.Capacity = cap;
+            SetLimit( lim );
+            SetPosition( pos );
 
             if ( mark >= 0 )
             {
@@ -163,65 +164,37 @@
                     throw new System.ArgumentException( "mark > position: (" + mark + " > " + pos + ")" );
                 }
 
-                this.mark = mark;
+                this.Mark = mark;
             }
         }
 
         /// <summary>
-        /// Returns this buffer's capacity.
-        /// </summary>
-        /// <returns>  The capacity of this buffer </returns>
-        public int Capacity()
-        {
-            return capacity;
-        }
-
-        /// <summary>
-        /// Returns this buffer's position.
-        /// </summary>
-        /// <returns>  The position of this buffer </returns>
-        public int Position()
-        {
-            return position;
-        }
-
-        /// <summary>
-        /// Sets this buffer's position.  If the mark is defined and larger than the
+        /// Sets this buffer's position. If the mark is defined and larger than the
         /// new position then it is discarded.
         /// </summary>
         /// <param name="newPosition">
         ///         The new position value; must be non-negative
         ///         and no larger than the current limit
         /// </param>
-        /// <returns>  This buffer
-        /// </returns>
+        /// <returns>This buffer</returns>
         /// <exception cref="ArgumentException">
         /// If the preconditions on <tt>newPosition</tt> do not hold
         /// </exception>
-        public Buffer Position( int newPosition )
+        public Buffer SetPosition( int newPosition )
         {
-            if ( ( newPosition > limit ) || ( newPosition < 0 ) )
+            if ( ( newPosition > Limit ) || ( newPosition < 0 ) )
             {
                 throw new System.ArgumentException();
             }
 
-            position = newPosition;
+            Position = newPosition;
 
-            if ( mark > position )
+            if ( Mark > Position )
             {
-                mark = -1;
+                Mark = -1;
             }
 
             return this;
-        }
-
-        /// <summary>
-        /// Returns this buffer's limit.
-        /// </summary>
-        /// <returns>  The limit of this buffer </returns>
-        public int Limit()
-        {
-            return limit;
         }
 
         /// <summary>
@@ -235,26 +208,21 @@
         /// </param>
         /// <returns>  This buffer
         /// </returns>
-        /// <exception cref="IllegalArgumentException">
-        ///          If the preconditions on <tt>newLimit</tt> do not hold </exception>
-        public Buffer Limit( int newLimit )
+        /// <exception cref="ArgumentException">
+        ///          If the preconditions on <tt>newLimit</tt> do not hold
+        /// </exception>
+        public Buffer SetLimit( int newLimit )
         {
-            if ( ( newLimit > capacity ) || ( newLimit < 0 ) )
+            if ( ( newLimit > Capacity ) || ( newLimit < 0 ) )
             {
                 throw new System.ArgumentException();
             }
 
-            limit = newLimit;
+            Limit = newLimit;
 
-            if ( position > limit )
-            {
-                position = limit;
-            }
+            if ( Position > Limit ) Position = Limit;
 
-            if ( mark > limit )
-            {
-                mark = -1;
-            }
+            if ( Mark > Limit ) Mark = -1;
 
             return this;
         }
@@ -262,34 +230,31 @@
         /// <summary>
         /// Sets this buffer's mark at its position.
         /// </summary>
-        /// <returns>  This buffer </returns>
-        public Buffer Mark()
+        /// <returns>This buffer</returns>
+        public Buffer SetMark()
         {
-            mark = position;
+            Mark = Position;
 
             return this;
         }
 
         /// <summary>
         /// Resets this buffer's position to the previously-marked position.
-        /// 
-        /// <para> Invoking this method neither changes nor discards the mark's
-        /// value. </para>
+        /// <para>
+        /// Invoking this method neither changes nor discards the mark's value.
+        /// </para>
         /// </summary>
-        /// <returns>  This buffer
-        /// </returns>
-        /// <exception cref="InvalidMarkException">
-        ///          If the mark has not been set </exception>
+        /// <returns>This buffer</returns>
+        /// <exception cref="InvalidOperationException">
+        ///          If the mark has not been set
+        /// </exception>
         public Buffer Reset()
         {
-            var m = mark;
+            var m = Mark;
 
-            if ( m < 0 )
-            {
-                throw new InvalidMarkException();
-            }
+            if ( m < 0 ) throw new InvalidOperationException();
 
-            position = m;
+            Position = m;
 
             return this;
         }
@@ -298,24 +263,27 @@
         /// Clears this buffer.  The position is set to zero, the limit is set to
         /// the capacity, and the mark is discarded.
         /// 
-        /// <para> Invoke this method before using a sequence of channel-read or
-        /// <i>put</i> operations to fill this buffer.  For example:
-        /// 
-        /// <blockquote><pre>
-        /// buf.clear();     // Prepare buffer for reading
-        /// in.read(buf);    // Read data</pre></blockquote>
+        /// <para>
+        /// Invoke this method before using a sequence of channel-read or <i>put</i>
+        /// operations to fill this buffer.  For example:
+        ///
+        /// <para></para>
+        /// <para>buf.clear();     // Prepare buffer for reading</para>
+        /// <para>in.read(buf);    // Read data</para>
         /// 
         /// </para>
-        /// <para> This method does not actually erase the data in the buffer, but it
+        /// <para>
+        /// This method does not actually erase the data in the buffer, but it
         /// is named as if it did because it will most often be used in situations
-        /// in which that might as well be the case. </para>
+        /// in which that might as well be the case.
+        /// </para>
         /// </summary>
         /// <returns>  This buffer </returns>
         public Buffer Clear()
         {
-            position = 0;
-            limit    = capacity;
-            mark     = -1;
+            Position = 0;
+            Limit    = Capacity;
+            Mark     = -1;
 
             return this;
         }
@@ -327,25 +295,24 @@
         /// 
         /// <para> After a sequence of channel-read or <i>put</i> operations, invoke
         /// this method to prepare for a sequence of channel-write or relative
-        /// <i>get</i> operations.  For example:
-        /// 
-        /// <blockquote><pre>
-        /// buf.put(magic);    // Prepend header
-        /// in.read(buf);      // Read data into rest of buffer
-        /// buf.flip();        // Flip buffer
-        /// out.write(buf);    // Write header + data to channel</pre></blockquote>
-        /// 
+        /// <tt><i>get</i></tt> operations.  For example:
         /// </para>
-        /// <para> This method is often used in conjunction with the {@link
-        /// java.nio.ByteBuffer#compact compact} method when transferring data from
-        /// one place to another.  </para>
+        /// 
+        /// <para>buf.put(magic);    // Prepend header</para>
+        /// <para>in.read(buf);      // Read data into rest of buffer</para>
+        /// <para>buf.flip();        // Flip buffer</para>
+        /// <para>out.write(buf);    // Write header + data to channel</para>
+        /// <para>
+        /// This method is often used in conjunction with the <see cref="ByteBuffer.Compact()"/>
+        /// method when transferring data from one place to another.
+        /// </para>
         /// </summary>
-        /// <returns>  This buffer </returns>
+        /// <returns>This buffer</returns>
         public Buffer Flip()
         {
-            limit    = position;
-            position = 0;
-            mark     = -1;
+            Limit    = Position;
+            Position = 0;
+            Mark     = -1;
 
             return this;
         }
@@ -353,82 +320,73 @@
         /// <summary>
         /// Rewinds this buffer.  The position is set to zero and the mark is
         /// discarded.
-        /// 
         /// <para> Invoke this method before a sequence of channel-write or <i>get</i>
         /// operations, assuming that the limit has already been set
         /// appropriately.  For example:
-        /// 
-        /// <blockquote><pre>
-        /// out.write(buf);    // Write remaining data
-        /// buf.rewind();      // Rewind buffer
-        /// buf.get(array);    // Copy data into array</pre></blockquote>
+        /// <para></para>
+        /// <para>out.write(buf);    // Write remaining data</para>
+        /// <para>buf.rewind();      // Rewind buffer</para>
+        /// <para>buf.get(array);    // Copy data into array</para>
         /// 
         /// </para>
         /// </summary>
         /// <returns>  This buffer </returns>
         public Buffer Rewind()
         {
-            position = 0;
-            mark     = -1;
+            Position = 0;
+            Mark     = -1;
 
             return this;
         }
 
         /// <summary>
-        /// Returns the number of elements between the current position and the
-        /// limit.
         /// </summary>
         /// <returns>  The number of elements remaining in this buffer </returns>
         public int Remaining()
         {
-            return limit - position;
+            return Limit - Position;
         }
 
         /// <summary>
         /// Tells whether there are any elements between the current position and
         /// the limit.
         /// </summary>
-        /// <returns>  <tt>true</tt> if, and only if, there is at least one element
+        /// <returns>  <tt>true</tt> if there is at least one element
         ///          remaining in this buffer </returns>
         public bool HasRemaining()
         {
-            return position < limit;
+            return Position < Limit;
         }
 
         /// <summary>
         /// Tells whether or not this buffer is read-only.
         /// </summary>
-        /// <returns>  <tt>true</tt> if, and only if, this buffer is read-only </returns>
+        /// <returns>  <tt>true</tt> if this buffer is read-only </returns>
         public abstract bool ReadOnly { get; }
 
         /// <summary>
         /// Tells whether or not this buffer is backed by an accessible
         /// array.
         /// 
-        /// <para> If this method returns <tt>true</tt> then the <seealso cref="array() array"/>
-        /// and <seealso cref="arrayOffset() arrayOffset"/> methods may safely be invoked.
+        /// <para> If this method returns <tt>true</tt> then the <see cref="Array()"/>
+        /// and <see cref="ArrayOffset()"/> methods may safely be invoked.
         /// </para>
         /// </summary>
-        /// <returns>  <tt>true</tt> if, and only if, this buffer
+        /// <returns>  <tt>true</tt> if this buffer
         ///          is backed by an array and is not read-only
-        /// 
-        /// @since 1.6 </returns>
+        /// </returns>
         public abstract bool HasArray();
 
         /// <summary>
-        /// Returns the array that backs this
-        /// buffer&nbsp;&nbsp;<i>(optional operation)</i>.
+        /// Returns the array that backs this buffer.
         /// 
-        /// <para> This method is intended to allow array-backed buffers to be
-        /// passed to native code more efficiently. Concrete subclasses
-        /// provide more strongly-typed return values for this method.
-        /// 
+        /// <para>
+        /// Modifications to this buffer's content will cause the returned array's
+        /// content to be modified, and vice versa.
         /// </para>
-        /// <para> Modifications to this buffer's content will cause the returned
-        /// array's content to be modified, and vice versa.
         /// 
-        /// </para>
-        /// <para> Invoke the <seealso cref="hasArray hasArray"/> method before invoking this
+        /// <para>
+        /// Invoke the <see cref="HasArray()"/> method before invoking this
         /// method in order to ensure that this buffer has an accessible backing
         /// array.  </para>
         /// </summary>
@@ -437,21 +395,20 @@
         /// <exception cref="ReadOnlyBufferException">
         ///          If this buffer is backed by an array but is read-only
         /// </exception>
-        /// <exception cref="UnsupportedOperationException">
+        /// <exception cref="NotSupportedException">
         ///          If this buffer is not backed by an accessible array
-        /// 
-        /// @since 1.6 </exception>
+        /// </exception>
         public abstract object Array();
 
         /// <summary>
         /// Returns the offset within this buffer's backing array of the first
-        /// element of the buffer&nbsp;&nbsp;<i>(optional operation)</i>.
+        /// element of the buffer <i>(optional operation)</i>.
         /// 
         /// <para> If this buffer is backed by an array then buffer position <i>p</i>
-        /// corresponds to array index <i>p</i>&nbsp;+&nbsp;<tt>arrayOffset()</tt>.
+        /// corresponds to array index <i>p</i> + <tt>arrayOffset()</tt>.
         /// 
         /// </para>
-        /// <para> Invoke the <seealso cref="hasArray hasArray"/> method before invoking this
+        /// <para> Invoke the <see cref="HasArray"/> method before invoking this
         /// method in order to ensure that this buffer has an accessible backing
         /// array.  </para>
         /// </summary>
@@ -461,17 +418,15 @@
         /// <exception cref="ReadOnlyBufferException">
         ///          If this buffer is backed by an array but is read-only
         /// </exception>
-        /// <exception cref="UnsupportedOperationException">
+        /// <exception cref="NotSupportedException">
         ///          If this buffer is not backed by an accessible array
-        /// 
-        /// @since 1.6 </exception>
+        /// </exception>
         public abstract int ArrayOffset();
 
         /// <summary>
-        /// Tells whether or not this buffer is
-        /// <a href="ByteBuffer.html#direct"><i>direct</i></a>.
+        /// Tells whether or not this buffer is <tt><i>direct</i></tt>
         /// </summary>
-        /// <returns> <tt>true</tt> if, and only if, this buffer is direct
+        /// <returns> <tt>true</tt> if, and only if, this buffer is direct</returns>
         public abstract bool Direct { get; }
 
         // -------------------------------------------------------
@@ -484,27 +439,25 @@
         /// increments the position.
         /// </summary>
         /// <returns>  The current position value, before it is incremented </returns>
-        // package-private
         internal int NextGetIndex()
         {
-            if ( position >= limit )
+            if ( Position >= Limit )
             {
                 throw new BufferUnderflowException();
             }
 
-            return position++;
+            return Position++;
         }
 
-        // package-private
         internal int NextGetIndex( int nb )
         {
-            if ( limit - position < nb )
+            if ( Limit - Position < nb )
             {
                 throw new BufferUnderflowException();
             }
 
-            var p = position;
-            position += nb;
+            var p = Position;
+            Position += nb;
 
             return p;
         }
@@ -515,27 +468,25 @@
         /// increments the position.
         /// </summary>
         /// <returns>  The current position value, before it is incremented </returns>
-        // package-private
         internal int NextPutIndex()
         {
-            if ( position >= limit )
+            if ( Position >= Limit )
             {
                 throw new BufferOverflowException();
             }
 
-            return position++;
+            return Position++;
         }
 
-        // package-private
         internal int NextPutIndex( int nb )
         {
-            if ( limit - position < nb )
+            if ( Limit - Position < nb )
             {
                 throw new BufferOverflowException();
             }
 
-            var p = position;
-            position += nb;
+            var p = Position;
+            Position += nb;
 
             return p;
         }
@@ -545,10 +496,9 @@
         /// <see cref="IndexOutOfRangeException"/> if it is not smaller
         /// than the limit or is smaller than zero.
         /// </summary>
-        // package-private
         internal int CheckIndex( int i )
         {
-            if ( ( i < 0 ) || ( i >= limit ) )
+            if ( ( i < 0 ) || ( i >= Limit ) )
             {
                 throw new System.IndexOutOfRangeException();
             }
@@ -556,10 +506,9 @@
             return i;
         }
 
-        // package-private
         internal int CheckIndex( int i, int nb )
         {
-            if ( ( i < 0 ) || ( nb > limit - i ) )
+            if ( ( i < 0 ) || ( nb > Limit - i ) )
             {
                 throw new System.IndexOutOfRangeException();
             }
@@ -567,28 +516,24 @@
             return i;
         }
 
-        // package-private
         internal int MarkValue()
         {
-            return mark;
+            return Mark;
         }
 
-        // package-private
         internal void Truncate()
         {
-            mark     = -1;
-            position = 0;
-            limit    = 0;
-            capacity = 0;
+            Mark     = -1;
+            Position = 0;
+            Limit    = 0;
+            Capacity = 0;
         }
 
-        // package-private
         internal void DiscardMark()
         {
-            mark = -1;
+            Mark = -1;
         }
 
-        // package-private
         internal static void CheckBounds( int off, int len, int size )
         {
             if ( ( off | len | ( off + len ) | ( size - ( off + len ) ) ) < 0 )

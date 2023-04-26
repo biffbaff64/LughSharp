@@ -2,12 +2,7 @@
 {
     public enum GraphicsType
     {
-        AndroidGL,
-        Lwjgl,
-        WebGL,
-        Iosgl,
-        Jglfw,
-        Mock,
-        Lwjgl3
+        GL2,
+        GL3,
     }
 }

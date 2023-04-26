@@ -8,6 +8,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - STEP 4: Ensure code is fully documented.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- IP   = Conversion In Progress.
 - DONE = Class finished but may not be fully 'CSharp-ified'
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - PRIORITY is 2D classes first
@@ -52,7 +53,7 @@ ASSETS
     - DONE - AssetDescriptor                Convert
     - DONE - AssetLoaderParameters          Convert
     - DONE - AssetLoadingTask               Convert
-    -      - AssetManager                   Convert
+    - IP   - AssetManager                   Convert
     - DONE - IAssetErrorListener            Convert
     - DONE - RefCountedContainer            Convert
 
@@ -63,12 +64,12 @@ ASSETS/LOADERS
 --------------
     - DONE - AssetLoader                    Convert
     - DONE - AsynchronousAssetLoader        Convert
-    -      - BitmapFontLoader               Convert
+    - IP   - BitmapFontLoader               Convert
     -      - CubemapLoader                  Convert
     -      - I18NBundleLoader               Convert
     -      - IFileHandleResolver            Convert
     -      - ModelLoader                    Convert
-    -      - MusicLoader                    Convert
+    - IP   - MusicLoader                    Convert
     -      - ParticleEffectLoader           Convert
     -      - PixmapLoader                   Convert
     -      - ShaderProgramLoader            Convert
@@ -76,7 +77,7 @@ ASSETS/LOADERS
     -      - SoundLoader                    Convert
     - DONE - SynchronousAssetLoader         Convert
     -      - TextureAtlasLoader             Convert
-    -      - TextureLoader                  Convert
+    - IP   - TextureLoader                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -107,6 +108,7 @@ AUDIO
 
 FILES
 -----
+    -      - File
     -      - FileHandle
     -      - FileHandleStream
 
@@ -115,30 +117,31 @@ FILES
 
 GRAPHICS
 --------
-    -      - BufferFormat                   Convert - record class
-    -      - Camera                         Convert
+    - DONE - BufferFormat                   Convert - record class
+    - DONE - Camera                         Convert
     - DONE - Color                          Convert
-    -      - Colors                         Convert
+    - DONE - Colors                         Convert
     -      - Cubemap                        Convert
-    -      - DisplayMode                    Convert
+    - DONE - DisplayMode                    Convert
     - DONE - FPSLogger                      Convert
     -      - GLTexture                      Convert
-    -      - GraphicsType                   Convert
+    - DONE - GraphicsType                   Convert
     -      - ICubemapData                   Convert
-    -      - ICursor                        Convert
+    - DONE - ICursor                        Convert
     - DONE - IGL20                          Convert
-    - DONE - IGL30                          Convert
-    -      - ITextureData                   Convert
+    - IP   - IGL30                          Convert
+    - IP   - ITextureData                   Convert
     -      - Mesh                           Convert
-    -      - Monitor                        Convert
-    -      - OrthographicCamera             Convert
+    - DONE - Monitor                        Convert
+    - IP   - OrthographicCamera             Convert
     -      - PerspectiveCamera              Convert
-    -      - Pixmap                         Convert
+    - IP   - Pixmap                         Convert
     -      - PixmapIO                       Convert
-    -      - Texture                        Convert
+    - IP   - Texture                        Convert
     -      - TextureArray                   Convert
     -      - TextureArrayData               Convert
-    -      - TextureFilter                  Convert
+    - DONE - TextureFilter                  Convert
+    -      - TextureWrap                    Convert
     -      - VertexAttribute                Convert
     -      - VertexAttributes               Convert
 
@@ -148,13 +151,13 @@ GRAPHICS
 GRAPHICS/G2D
 ------------
     -      - Animation                      Convert
-    -      - BitmapFont                     Convert
+    - IP   - BitmapFont                     Convert
     -      - BitmapFontCache                Convert
     -      - CpuSpriteBatch                 Convert
     -      - DistanceFieldFont              Convert
     -      - Gdx2DPixmap                    Convert
     -      - GlyphLayout                    Convert
-    -      - IBatch                         Convert
+    - IP   - IBatch                         Convert
     -      - IPolygonBatch                  Convert
     -      - NinePatch                      Convert
     -      - ParticleEffect                 Convert
@@ -168,10 +171,10 @@ GRAPHICS/G2D
     -      - PolygonSpriteBatch             Convert
     -      - RepeatablePolygonSprite        Convert
     -      - Sprite                         Convert
-    -      - SpriteBatch                    Convert
+    - IP   - SpriteBatch                    Convert
     -      - SpriteCache                    Convert
     -      - TextureAtlas                   Convert
-    -      - TextureRegion                  Convert
+    - IP   - TextureRegion                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -196,9 +199,9 @@ GRAPHICS/GLUTILS
     -      - FrameBufferCubemap
     -      - GLFrameBuffer
     -      - GLOnlyTextureData
-    -      - GLVersion
-    -      - HdpiMode
-    -      - HdpiUtils
+    - IP   - GLVersion
+    - IP   - HdpiMode
+    - IP   - HdpiUtils
     -      - ImmediateModeRenderer
     -      - ImmediateModeRenderer20
     -      - IndexArray
@@ -213,7 +216,7 @@ GRAPHICS/GLUTILS
     -      - MipMapTextureData
     -      - PixmapTextureData
     -      - ShaderProgram
-    -      - ShapeRenderer
+    - IP   - ShapeRenderer
     -      - VertexArray
     -      - VertexBufferObject
     -      - VertexBufferObjectSubData
@@ -284,30 +287,30 @@ MAPS/TILED
 
 MAPS/TILED/LOADERS
 ------------------
-    -      - AtlasTmxMapLoader                      Convert
-    -      - BaseTmxMapLoader                       Convert
-    -      - TmxMapLoader                           Convert
+    - IP   - AtlasTmxMapLoader                      Convert
+    - IP   - BaseTmxMapLoader                       Convert
     -      - TideMapLoader                          Q: Should I support Tide?
+    - IP   - TmxMapLoader                           Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MAPS/TILED/OBJECTS
 ------------------
-    - DONE - TiledMapTileMapObject                  Convert
+    - IP   - TiledMapTileMapObject                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MAPS/TILED/RENDERERS
 --------------------
-    - DONE - BatchTiledMapRenderer                  Convert
+    - IP   - BatchTiledMapRenderer                  Convert
     -      - HexagonalTiledMapRenderer              Convert
     -      - IsometricStaggeredTiledMapRenderer     Convert
     -      - IsometricTiledMapRenderer              Convert
     - DONE - ITiledMapRenderer                      Convert
     -      - OrthoCachedTiledMapRenderer            Convert
-    -      - OrthogonalTiledMapRenderer             Convert
+    - IP   - OrthogonalTiledMapRenderer             Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -393,14 +396,14 @@ NETWORK
 
 SCENES.SCENE2D
 --------------
-    - DONE - Action                         Convert
-    -      - Actor                          Convert
-    - DONE - Event                          Convert
-    -      - Group                          Convert
+    - IP - Action                         Convert
+    - IP   - Actor                          Convert
+    - IP - Event                          Convert
+    - IP   - Group                          Convert
     - DONE - IEventListener                 Convert
     - DONE - InputEvent                     Convert
     -      - InputListener                  Convert
-    -      - Stage                          Convert
+    - IP   - Stage                          Convert
     -      - Touchable                      Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -467,7 +470,7 @@ SCENES.SCENE2D/UI
     -      - Slider                         Convert
     -      - SplitPane                      Convert
     -      - Stack                          Convert
-    -      - Table                          Convert
+    - IP   - Table                          Convert
     -      - TextArea                       Convert
     -      - TextButton                     Convert
     -      - TextField                      Convert
@@ -478,7 +481,7 @@ SCENES.SCENE2D/UI
     -      - Value                          Convert
     -      - VerticalGroup                  Convert
     -      - Widget                         Convert
-    -      - WidgetGroup                    Convert
+    - IP   - WidgetGroup                    Convert
     -      - Window                         Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -523,15 +526,7 @@ UTILS
 
     Clipboard
     ---------
-    -      - IClipboard                     Convert - Interface, actual clipboard handled in backend.                 
-
-    Pools
-    -----
-    - DONE - FlushablePool                  Convert
-    - DONE - IPoolable                      Convert
-    - DONE - Pool                           Convert
-    - DONE - PooledLinkedList               Convert
-    -      - Pools                          Convert
+    - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backend.                 
 
     Misc
     ----
@@ -542,6 +537,7 @@ UTILS
     -      - ComparableTimSort              Convert
     -      - DataInput                      Check
     -      - DataOutput                     Check
+    - DONE - DataUtils                      Added Class
     - DONE - FloatConsts                    Done, but is it needed?
     -      - GdxNativesLoader
     -      - I18NBundle                     Check
@@ -557,10 +553,10 @@ UTILS
     -      - Queue
     -      - QuickSelect
     - DONE - Scaling
-    -      - ScreenUtils                    Convert
-    -      - Select                     
+    - IP   - ScreenUtils                    Convert
+    - IP   - Select                         Renamed Selector
     -      - SharedLibraryLoader            Check
-    -      - SortUtils
+    - DONE - SortUtils
     -      - SortedIntList
     -      - StreamUtils
     - **** - StringBuilder                  Use System.Text.StringBuilder
@@ -568,8 +564,6 @@ UTILS
     - DONE - Timer                          Use System.Timer instead??
     - DONE - TimeUtils
     - DONE - TimSort
-    -      - Vector                         
-    -      - VStack                         
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -674,11 +668,14 @@ UTILS/COMPRESSION
 
 UTILS/EXCEPTIONS
 ----------------
+    - DONE - AssetNotLoadedException        Convert
+    - DONE - BufferOverflowException        Convert
+    - DONE - BufferUnderflowException       Convert
     - DONE - GdxRuntimeException            Convert
     - DONE - IllegalStateException          Convert
     - DONE - NoSuchElementException         Convert
     - DONE - NumberFormatException          Convert
-    - DONE - SerializationException         Convert
+    - DONE - ReadOnlyBufferException        Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -692,6 +689,18 @@ UTILS/JSON
     -      - JsonWriter                     Convert
     -      - UBJsonReader                   Convert
     -      - UBJsonWriter                   Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UTILS/POOLING
+-------------
+    - DONE - FlushablePool                  Convert
+    - DONE - IPoolable                      Convert
+    - DONE - Pool                           Convert
+    - DONE - PooledLinkedList               Convert
+    - DONE - Pools                          Convert
+    - DONE - ReflectionPool                 Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

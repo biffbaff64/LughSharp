@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LibGDXSharp.Utils
 {
@@ -33,8 +34,7 @@ namespace LibGDXSharp.Utils
     /// to warrant the full-blown TimSort. Small arrays are sorted in place, using a binary insertion sort.
     /// </p>
     /// </summary>
-    // ReSharper disable once MemberCanBeInternal
-    //TODO: Remove remaining "Dereference of a possibly null reference" warnings
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public sealed class TimSort<T>
     {
         /// <summary>
@@ -109,6 +109,7 @@ namespace LibGDXSharp.Utils
         /// </p>
         /// </summary>
         private int _stackSize = 0; // Number of pending runs on stack
+        
         private readonly int[] _runBase;
         private readonly int[] _runLen;
 
@@ -592,7 +593,7 @@ namespace LibGDXSharp.Utils
 
             // Find where the first element of run2 goes in run1. Prior elements in run1 can
             // be ignored (because they're already in place).
-            var k = GallopRight( _a[ base2 ], _a, base1, len1, 0, _c );
+            var k = GallopRight( _a![ base2 ], _a, base1, len1, 0, _c );
 
             if ( AllowAsserts ) Debug.Assert( k >= 0 );
 
@@ -642,14 +643,14 @@ namespace LibGDXSharp.Utils
         /// last n - k should follow it.
         /// </p>
         /// </returns>
-        private static int GallopLeft( T key, T[] a, int baseIndex, int len, int hint, IComparer< T >? c )
+        private static int GallopLeft( T? key, IReadOnlyList< T > a, int baseIndex, int len, int hint, IComparer< T >? c )
         {
             if ( AllowAsserts ) Debug.Assert( len > 0 && hint >= 0 && hint < len );
 
             var lastOfs = 0;
             var ofs     = 1;
 
-            if ( c.Compare( key, a[ baseIndex + hint ] ) > 0 )
+            if ( c?.Compare( key, a[ baseIndex + hint ] ) > 0 )
             {
                 // Gallop right until a[base+hint+lastOfs] < key <= a[base+hint+ofs]
                 var maxOfs = len - hint;
@@ -677,7 +678,7 @@ namespace LibGDXSharp.Utils
                 // Gallop left until a[base+hint-ofs] < key <= a[base+hint-lastOfs]
                 var maxOfs = hint + 1;
 
-                while ( ofs < maxOfs && c.Compare( key, a[ baseIndex + hint - ofs ] ) <= 0 )
+                while ( ofs < maxOfs && c?.Compare( key, a[ baseIndex + hint - ofs ] ) <= 0 )
                 {
                     lastOfs = ofs;
                     ofs     = ( ofs << 1 ) + 1;
@@ -708,7 +709,7 @@ namespace LibGDXSharp.Utils
             {
                 var m = lastOfs + ( ( ofs - lastOfs ) >>> 1 );
 
-                if ( c.Compare( key, a[ baseIndex + m ] ) > 0 )
+                if ( c?.Compare( key, a[ baseIndex + m ] ) > 0 )
                 {
                     lastOfs = m + 1; // a[base + m] < key
                 }
@@ -739,25 +740,27 @@ namespace LibGDXSharp.Utils
         /// <returns>
         /// the int k, 0 &lt;= k &lt;= n such that a[b + k - 1] &lt;= key &lt; a[b + k].
         /// </returns>
-        private static int GallopRight( T key, T[]? a, int baseIndex, int len, int hint, IComparer< T >? c )
+        private static int GallopRight( T? key, IReadOnlyList< T >? a, int baseIndex, int len, int hint, IComparer< T >? c )
         {
             if ( AllowAsserts ) Debug.Assert( len > 0 && hint >= 0 && hint < len );
 
             var ofs     = 1;
             var lastOfs = 0;
 
-            if ( c.Compare( key, a[ baseIndex + hint ] ) < 0 )
+            if ( c?.Compare( key, a![ baseIndex + hint ] ) < 0 )
             {
                 // Gallop left until a[b+hint - ofs] <= key < a[b+hint - lastOfs]
                 var maxOfs = hint + 1;
 
-                while ( ofs < maxOfs && c.Compare( key, a[ baseIndex + hint - ofs ] ) < 0 )
+                while ( ofs < maxOfs && c.Compare( key, a![ baseIndex + hint - ofs ] ) < 0 )
                 {
                     lastOfs = ofs;
                     ofs     = ( ofs << 1 ) + 1;
 
                     if ( ofs <= 0 ) // int overflow
+                    {
                         ofs = maxOfs;
+                    }
                 }
 
                 if ( ofs > maxOfs ) ofs = maxOfs;
@@ -773,13 +776,15 @@ namespace LibGDXSharp.Utils
                 // Gallop right until a[b+hint + lastOfs] <= key < a[b+hint + ofs]
                 var maxOfs = len - hint;
 
-                while ( ofs < maxOfs && c.Compare( key, a[ baseIndex + hint + ofs ] ) >= 0 )
+                while ( ofs < maxOfs && c?.Compare( key, a![ baseIndex + hint + ofs ] ) >= 0 )
                 {
                     lastOfs = ofs;
                     ofs     = ( ofs << 1 ) + 1;
 
                     if ( ofs <= 0 ) // int overflow
+                    {
                         ofs = maxOfs;
+                    }
                 }
 
                 if ( ofs > maxOfs ) ofs = maxOfs;
@@ -800,7 +805,7 @@ namespace LibGDXSharp.Utils
             {
                 var m = lastOfs + ( ( ofs - lastOfs ) >>> 1 );
 
-                if ( c.Compare( key, a[ baseIndex + m ] ) < 0 )
+                if ( c?.Compare( key, a![ baseIndex + m ] ) < 0 )
                 {
                     ofs = m; // key < a[b + m]
                 }
@@ -880,7 +885,7 @@ namespace LibGDXSharp.Utils
                 {
                     if ( AllowAsserts ) Debug.Assert( len1 > 1 && len2 > 0 );
 
-                    if ( c.Compare( a[ cursor2 ], tmp[ cursor1 ] ) < 0 )
+                    if ( c?.Compare( a[ cursor2 ], tmp[ cursor1 ] ) < 0 )
                     {
                         a[ dest++ ] = a[ cursor2++ ];
                         count2++;

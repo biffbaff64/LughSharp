@@ -1,5 +1,7 @@
-﻿using LibGDXSharp.Backends.Desktop;
-using LibGDXSharp.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Backends.Desktop;
+using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
 
@@ -7,6 +9,7 @@ using Quaternion = LibGDXSharp.Maths.Quaternion;
 
 namespace LibGDXSharp.Graphics
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class Camera
     {
         // the position of the camera
@@ -33,7 +36,7 @@ namespace LibGDXSharp.Graphics
         public float    ViewportHeight { get; set; } = 0;
         public Frustrum Frustum        { get; set; } = new Frustrum();
 
-        private          Vector3 _tmpVec = new Vector3();
+        private readonly Vector3 _tmpVec = new Vector3();
         private readonly Ray     _ray    = new Ray( new Vector3(), new Vector3() );
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace LibGDXSharp.Graphics
         /// <param name="x"> the x-coordinate of the point to look at.</param>
         /// <param name="y"> the y-coordinate of the point to look at.</param>
         /// <param name="z"> the z-coordinate of the point to look at.</param>
-        public virtual void LookAt( float x, float y, float z )
+        protected virtual void LookAt( float x, float y, float z )
         {
             _tmpVec.Set( x, y, z ).Sub( Position ).Nor();
 
@@ -88,7 +91,7 @@ namespace LibGDXSharp.Graphics
         /// cross product between direction and up, and then recalculating the up
         /// vector via a cross product between right and direction. 
         /// </summary>
-        public virtual void NormalizeUp()
+        protected virtual void NormalizeUp()
         {
             _tmpVec.Set( Direction ).Crs( Up );
             Up.Set( _tmpVec ).Crs( Direction ).Nor();
@@ -204,7 +207,7 @@ namespace LibGDXSharp.Graphics
         /// point on the near plane, a z-coordinate of 1 will return a point on the far
         /// plane.
         /// This method allows you to specify the viewport position and dimensions in the
-        /// coordinate system expected by <see cref="GL20.GlViewport(int, int, int, int)"/>,
+        /// coordinate system expected by <see cref="IGL20.GLViewport(int, int, int, int)"/>,
         /// with the origin in the bottom left corner of the screen.
         /// </summary>
         /// <param name="screenCoords">The point in screen coordinates (origin top left)</param>
@@ -238,7 +241,7 @@ namespace LibGDXSharp.Graphics
         /// Function to translate a point given in screen coordinates to world space.
         /// It's the same as GLU gluUnProject but does not rely on OpenGL.
         /// The viewport is assumed to span the whole screen and is fetched from
-        /// <see cref="Gdx.Graphics.GetWidth()"/> and <see cref="Gdx.Graphics.GetHeight()"/>.
+        /// <see cref="IGraphics.GetWidth"/> and <see cref="IGraphics.GetHeight()"/>.
         /// The x- and y-coordinate of vec are assumed to be in screen coordinates (origin
         /// is the top left corner, y pointing down, x pointing to the right) as reported by
         /// the touch methods in <see cref="Input"/>. A z-coordinate of 0 will return a
@@ -258,11 +261,11 @@ namespace LibGDXSharp.Graphics
         /// It's the same as GLU gluProject with one small deviation: The viewport is assumed
         /// to span the whole screen. The screen coordinate system has its origin in the
         /// <b>bottom</b> left, with the y-axis pointing <b>upwards</b> and the x-axis pointing
-        /// to the right. This makes it easily useable in conjunction with <see cref="Batch"/>
+        /// to the right. This makes it easily useable in conjunction with <see cref="IBatch"/>
         /// and similar classes.
         /// </summary>
         /// <returns>The mutated and projected worldCoords <see cref="Vector3"/>.</returns>
-        public virtual Vector3 Project( Vector3? worldCoords )
+        public virtual Vector3? Project( Vector3? worldCoords )
         {
             Project( worldCoords, 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
 
@@ -286,7 +289,7 @@ namespace LibGDXSharp.Graphics
         /// <param name="viewportWidth"> the width of the viewport in pixels.</param>
         /// <param name="viewportHeight"> the height of the viewport in pixels.</param>
         /// <returns> the mutated and projected worldCoords <see cref="Vector3"/>.</returns>
-        public virtual Vector3 Project( Vector3? worldCoords,
+        public virtual Vector3 Project( Vector3 worldCoords,
                                         float viewportX,
                                         float viewportY,
                                         float viewportWidth,
@@ -325,8 +328,11 @@ namespace LibGDXSharp.Graphics
                                        float viewportWidth,
                                        float viewportHeight )
         {
-            Unproject( _ray.origin.Set( screenX, screenY, 0 ), viewportX, viewportY, viewportWidth, viewportHeight );
-            Unproject( _ray.direction.Set( screenX, screenY, 1 ), viewportX, viewportY, viewportWidth, viewportHeight );
+            Unproject( _ray.origin.Set( screenX, screenY, 0 ),
+                       viewportX, viewportY, viewportWidth, viewportHeight );
+            
+            Unproject( _ray.direction.Set( screenX, screenY, 1 ),
+                       viewportX, viewportY, viewportWidth, viewportHeight );
 
             _ray.direction.Sub( _ray.origin ).Nor();
 

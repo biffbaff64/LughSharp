@@ -12,15 +12,15 @@ namespace LibGDXSharp.Backends.Desktop
         /// <exception cref="GdxRuntimeException">
         /// if the type is classpath or internal and the file does not exist.
         /// </exception>
-        /// <see cref="IFiles.FileType"/>
+        /// <see cref="FileType"/>
         /// 
-        public FileInfo GetFileHandle( string path, IFiles.FileType type )
+        public FileInfo GetFileHandle( string path, FileType type )
         {
             return null;
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFiles.FileType.Classpath"/> file handle.
+        /// Convenience method that returns a <see cref="FileType.Classpath"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -30,7 +30,7 @@ namespace LibGDXSharp.Backends.Desktop
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFiles.FileType.Internal"/> file handle.
+        /// Convenience method that returns a <see cref="FileType.Internal"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -40,7 +40,7 @@ namespace LibGDXSharp.Backends.Desktop
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFiles.FileType.External"/> file handle.
+        /// Convenience method that returns a <see cref="FileType.External"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -50,7 +50,7 @@ namespace LibGDXSharp.Backends.Desktop
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFiles.FileType.Absolute"/> file handle.
+        /// Convenience method that returns a <see cref="FileType.Absolute"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -60,7 +60,7 @@ namespace LibGDXSharp.Backends.Desktop
         }
 
         /// <summary>
-        /// Convenience method that returns a <see cref="IFiles.FileType.Local"/> file handle.
+        /// Convenience method that returns a <see cref="FileType.Local"/> file handle.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
