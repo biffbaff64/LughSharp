@@ -1,5 +1,8 @@
-﻿namespace LibGDXSharp.G2D
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.G2D
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public sealed class BitmapFont
     {
         private const string FontName       = "Resources/arial-15.fnt";
@@ -7,10 +10,11 @@
         private const int    Page_Size      = 1 << Log2_Page_Size;
         private const int    Pages          = 0x10000 / Page_Size;
 
+        public bool Flipped { get; set; }
+
         private readonly BitmapFontData        _data;
         private readonly List< TextureRegion > _regions;
         private readonly BitmapFontCache       _cache;
-        private readonly bool                  _flipped;
 
         private bool _integer;
         private bool _ownsTexture;
@@ -27,9 +31,7 @@
                  Gdx.Files.Internal( FontName ),
                  false,
                  true
-                )
-        {
-        }
+                ) { }
 
         /**
          * Creates a BitmapFont using the default 15pt Arial font included in the libgdx JAR file.
@@ -45,9 +47,7 @@
                  Gdx.Files.Internal( FontName ),
                  flip,
                  true
-                )
-        {
-        }
+                ) { }
 
         /** Creates a BitmapFont with the glyphs relative to the specified region. If the region is null, the glyph textures are loaded
 	 * from the image file given in the font file. The {@link #dispose()} method will not dispose the region's texture in this
@@ -58,9 +58,7 @@
 	 * @param region The texture region containing the glyphs. The glyphs must be relative to the lower left corner (ie, the region
 	 *           should not be flipped). If the region is null the glyph images are loaded from the image path in the font file. */
         public BitmapFont( FileInfo fontFile, TextureRegion region )
-            : this( fontFile, region, false )
-        {
-        }
+            : this( fontFile, region, false ) { }
 
         /** Creates a BitmapFont with the glyphs relative to the specified region. If the region is null, the glyph textures are loaded
 	 * from the image file given in the font file. The {@link #dispose()} method will not dispose the region's texture in this
@@ -69,32 +67,24 @@
 	 *           should not be flipped). If the region is null the glyph images are loaded from the image path in the font file.
 	 * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner. */
         public BitmapFont( FileInfo fontFile, TextureRegion region, bool flip )
-            : this( new BitmapFontData( fontFile, flip ), region, true )
-        {
-        }
+            : this( new BitmapFontData( fontFile, flip ), region, true ) { }
 
         /** Creates a BitmapFont from a BMFont file. The image file name is read from the BMFont file and the image is loaded from the
 	 * same directory. The font data is not flipped. */
         public BitmapFont( FileInfo fontFile )
-            : this( fontFile, false )
-        {
-        }
+            : this( fontFile, false ) { }
 
         /** Creates a BitmapFont from a BMFont file. The image file name is read from the BMFont file and the image is loaded from the
 	 * same directory.
 	 * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner. */
         public BitmapFont( FileInfo fontFile, bool flip )
-            : this( new BitmapFontData( fontFile, flip ), ( TextureRegion )null, true )
-        {
-        }
+            : this( new BitmapFontData( fontFile, flip ), ( TextureRegion )null, true ) { }
 
         /** Creates a BitmapFont from a BMFont file, using the specified image for glyphs. Any image specified in the BMFont file is
 	 * ignored.
 	 * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner. */
         public BitmapFont( FileInfo fontFile, FileInfo imageFile, bool flip )
-            : this( fontFile, imageFile, flip, true )
-        {
-        }
+            : this( fontFile, imageFile, flip, true ) { }
 
         /** Creates a BitmapFont from a BMFont file, using the specified image for glyphs. Any image specified in the BMFont file is
 	 * ignored.
@@ -120,9 +110,7 @@
 	 * manually with the TextureRegion[] constructor.
 	 * @param integer If true, rendering positions will be at integer values to avoid filtering artifacts. */
         public BitmapFont( BitmapFontData data, TextureRegion region, bool integer )
-            : this( data, region != null ? List.With( region ) : null, integer )
-        {
-        }
+            : this( data, region != null ? List.With( region ) : null, integer ) { }
 
         /**
          * Constructs a new BitmapFont from the given {@link BitmapFontData} and array of {@link TextureRegion}. If the TextureRegion
@@ -132,20 +120,20 @@
          */
         public BitmapFont( BitmapFontData data, List< TextureRegion > pageRegions, bool integer )
         {
-            this._flipped = data.flipped;
+            this.Flipped  = data.Flipped;
             this._data    = data;
             this._integer = integer;
 
-            if ( pageRegions == null || pageRegions.Size == 0 )
+            if ( ( pageRegions == null ) || ( pageRegions.Size == 0 ) )
             {
-                if ( data.imagePaths == null )
+                if ( data.ImagePaths == null )
                 {
                     throw new ArgumentException
                         ( "If no regions are specified, the font data must have an images path." );
                 }
 
                 // Load each path.
-                var n = data.imagePaths.Length;
+                var n = data.ImagePaths.Length;
 
                 _regions = new List< TextureRegion >( capacity: n );
 
@@ -155,11 +143,11 @@
 
                     if ( data.FontFile == null )
                     {
-                        file = Gdx.Files.Internal( data.imagePaths[ i ] );
+                        file = Gdx.Files.Internal( data.ImagePaths[ i ] );
                     }
                     else
                     {
-                        file = Gdx.Files.GetFileHandle( data.imagePaths[ i ], data.FontFile.Type );
+                        file = Gdx.Files.GetFileHandle( data.ImagePaths[ i ], data.FontFile.Type );
                     }
 
                     _regions.Add( new TextureRegion( new Texture( file, false ) ) );
@@ -190,7 +178,7 @@
                 }
             }
 
-            if ( data.missingGlyph != null ) data.setGlyphRegion( data.missingGlyph, _regions.get( data.missingGlyph.page ) );
+            if ( data.MissingGlyph != null ) data.setGlyphRegion( data.MissingGlyph, _regions.get( data.MissingGlyph.page ) );
         }
 
         /** Draws text at the specified position.
@@ -283,12 +271,12 @@
 
         public float GetScaleX()
         {
-            return _data.scaleX;
+            return _data.ScaleX;
         }
 
         public float GetScaleY()
         {
-            return _data.scaleY;
+            return _data.ScaleY;
         }
 
         /** Returns the first texture region. This is included for backwards compatibility, and for convenience since most fonts only
@@ -316,45 +304,39 @@
         /** Returns the line height, which is the distance from one line of text to the next. */
         public float GetLineHeight()
         {
-            return _data.lineHeight;
+            return _data.LineHeight;
         }
 
         /** Returns the x-advance of the space character. */
         public float GetSpaceXadvance()
         {
-            return _data.spaceXadvance;
+            return _data.SpaceXadvance;
         }
 
         /** Returns the x-height, which is the distance from the top of most lowercase characters to the baseline. */
         public float GetXHeight()
         {
-            return _data.xHeight;
+            return _data.XHeight;
         }
 
         /** Returns the cap height, which is the distance from the top of most uppercase characters to the baseline. Since the drawing
  * position is the cap height of the first line, the cap height can be used to get the location of the baseline. */
         public float GetCapHeight()
         {
-            return _data.capHeight;
+            return _data.CapHeight;
         }
 
         /** Returns the ascent, which is the distance from the cap height to the top of the tallest glyph. */
         public float GetAscent()
         {
-            return _data.ascent;
+            return _data.Ascent;
         }
 
         /** Returns the descent, which is the distance from the bottom of the glyph that extends the lowest to the baseline. This
  * number is negative. */
         public float GetDescent()
         {
-            return _data.descent;
-        }
-
-        /** Returns true if this BitmapFont has been flipped for use with a y-down coordinate system. */
-        public bool IsFlipped()
-        {
-            return _flipped;
+            return _data.Descent;
         }
 
         /** Disposes the texture used by this BitmapFont's region IF this BitmapFont created the texture. */
@@ -378,7 +360,7 @@
             {
                 Glyph g = data.getGlyph( glyphs.charAt( index ) );
 
-                if ( g != null && g.xadvance > maxAdvance )
+                if ( ( g != null ) && ( g.xadvance > maxAdvance ) )
                 {
                     maxAdvance = g.xadvance;
                 }
@@ -474,7 +456,7 @@
                 {
                     var page = kerning[ ch >>> Log2_Page_Size ];
 
-                    if ( page != null ) return page[ ch & Page_Size - 1 ];
+                    if ( page != null ) return page[ ch & ( Page_Size - 1 ) ];
                 }
 
                 return 0;
@@ -485,7 +467,7 @@
                 if ( kerning == null ) kerning                       = new byte[ Pages ][];
                 var page                                             = kerning[ ch >>> Log2_Page_Size ];
                 if ( page == null ) kerning[ ch >>> Log2_Page_Size ] = page = new byte[ Page_Size ];
-                page[ ch & Page_Size - 1 ] = ( byte )value;
+                page[ ch & ( Page_Size - 1 ) ] = ( byte )value;
             }
 
             public string ToString()
@@ -514,74 +496,78 @@
             public string? Name { get; private set; }
 
             // An array of the image paths, for multiple texture pages.
-            public string[]? imagePaths;
+            public string[]? ImagePaths { get; set; }
 
-            public FileInfo FontFile { get; set; }
-            public bool     flipped;
-
-            public float padTop;
-            public float padRight;
-            public float padBottom;
-            public float padLeft;
+            public FileInfo FontFile  { get; set; }
+            public bool     Flipped   { get; set; }
+            public float    PadTop    { get; set; }
+            public float    PadRight  { get; set; }
+            public float    PadBottom { get; set; }
+            public float    PadLeft   { get; set; }
 
             /// <summary>
             /// The distance from one line of text to the next.
             /// </summary>
-            public float lineHeight;
+            public float LineHeight { get; set; }
+
             /// <summary>
             /// The distance from the top of most uppercase characters to the
             /// baseline. Since the drawing position is the cap height of the
             /// first line, the cap height can be used to get the location of
             /// the baseline. 
             /// </summary>
-            public float capHeight = 1;
+            public float CapHeight { get; set; } = 1;
+
             /// <summary>
             /// The distance from the cap height to the top of the tallest glyph.
             /// </summary>
-            public float ascent;
+            public float Ascent { get; set; }
+
             /// <summary>
             /// The distance from the bottom of the glyph that extends the lowest
             /// to the baseline. This number is negative.
             /// </summary>
-            public float descent;
+            public float Descent { get; set; }
+
             /// <summary>
             /// The distance to move down when \n is encountered.
             /// </summary>
-            public float down;
+            public float Down { get; set; }
 
             /// <summary>
             /// Multiplier for the line height of blank lines. down * blankLineHeight is
             /// used as the distance to move down for a blank line. 
             /// </summary>
-            public float blankLineScale = 1;
-            public float scaleX = 1;
-            public float scaleY = 1;
-            public bool  markupEnabled;
+            public float BlankLineScale { get; set; } = 1;
+
+            public float ScaleX        { get; set; } = 1;
+            public float ScaleY        { get; set; } = 1;
+            public bool  MarkupEnabled { get; set; }
 
             /// <summary>
             /// The amount to add to the glyph X position when drawing a cursor between
             /// glyphs. This field is not set by the BMFont file, it needs to be set
             /// manually depending on how the glyphs are rendered on the backing textures. 
             /// </summary>
-            public float cursorX;
+            public float CursorX { get; set; }
 
-            public readonly Glyph[][] glyphs = new Glyph[ Pages ][];
+            public Glyph?[][] Glyphs { get; set; } = new Glyph[ Pages ][];
 
             /// <summary>
             /// The glyph to display for characters not in the font. May be null.
             /// </summary>
-            public Glyph? missingGlyph;
+            public Glyph? MissingGlyph { get; set; }
 
             /// <summary>
             /// The width of the space character.
             /// </summary>
-            public float spaceXadvance;
+            public float SpaceXadvance { get; set; }
 
             /// <summary>
             /// The x-height, which is the distance from the top of most lowercase
             /// characters to the baseline.
             /// </summary>
-            public float xHeight = 1;
+            public float XHeight { get; set; } = 1;
 
             /// <summary>
             /// Additional characters besides whitespace where text is wrapped.
@@ -597,21 +583,20 @@
             /// <see cref="Load(FileInfo, bool)"/>, to subclass, or to populate
             /// yourself, e.g. using stb-truetype or FreeType.
             /// </summary>
-            public BitmapFontData()
-            {
-            }
+            public BitmapFontData() { }
 
             public BitmapFontData( FileInfo fontFile, bool flip )
             {
                 this.FontFile = fontFile;
-                this.flipped  = flip;
+                this.Flipped  = flip;
 
                 Load( fontFile, flip );
             }
 
             public void Load( FileInfo file, bool flip )
             {
-                if ( imagePaths != null ) throw new InvalidOperationException( "Already loaded." );
+                if ( ImagePaths != null )
+                    throw new InvalidOperationException( "Already loaded." );
 
                 Name = file.Name;
 
@@ -631,12 +616,12 @@
 
                     if ( padding.Length != 4 ) throw new GdxRuntimeException( "Invalid padding." );
 
-                    padTop    = int.Parse( padding[ 0 ] );
-                    padRight  = int.Parse( padding[ 1 ] );
-                    padBottom = int.Parse( padding[ 2 ] );
-                    padLeft   = int.Parse( padding[ 3 ] );
+                    PadTop    = int.Parse( padding[ 0 ] );
+                    PadRight  = int.Parse( padding[ 1 ] );
+                    PadBottom = int.Parse( padding[ 2 ] );
+                    PadLeft   = int.Parse( padding[ 3 ] );
 
-                    var padY = padTop + padBottom;
+                    var padY = PadTop + PadBottom;
 
                     line = reader.readLine();
 
@@ -649,7 +634,7 @@
 
                     if ( !common[ 1 ].StartsWith( "lineHeight=" ) ) throw new GdxRuntimeException( "Missing: lineHeight" );
 
-                    lineHeight = int.Parse( common[ 1 ].Substring( 11 ) );
+                    LineHeight = int.Parse( common[ 1 ].Substring( 11 ) );
 
                     if ( !common[ 2 ].StartsWith( "base=" ) ) throw new GdxRuntimeException( "Missing: base" );
 
@@ -669,7 +654,7 @@
                         }
                     }
 
-                    imagePaths = new string[ pageCount ];
+                    ImagePaths = new string[ pageCount ];
 
                     // Read each page definition.
                     for ( var p = 0; p < pageCount; p++ )
@@ -704,10 +689,10 @@
                         if ( !matcher.find() ) throw new GdxRuntimeException( "Missing: file" );
                         string fileName = matcher.group( 1 );
 
-                        imagePaths[ p ] = file.parent().child( fileName ).path().replaceAll( "\\\\", "/" );
+                        ImagePaths[ p ] = file.parent().child( fileName ).path().replaceAll( "\\\\", "/" );
                     }
 
-                    descent = 0;
+                    Descent = 0;
 
                     while ( true )
                     {
@@ -730,7 +715,7 @@
 
                         if ( ch <= 0 )
                         {
-                            missingGlyph = glyph;
+                            MissingGlyph = glyph;
                         }
                         else if ( ch <= Character.MAX_VALUE )
                         {
@@ -776,18 +761,16 @@
                             {
                                 glyph.page = int.Parse( tokens.nextToken() );
                             }
-                            catch ( NumberFormatException ignored )
-                            {
-                            }
+                            catch ( NumberFormatException ignored ) { }
                         }
 
-                        if ( glyph.width > 0 && glyph.height > 0 )
+                        if ( ( glyph.width > 0 ) && ( glyph.height > 0 ) )
                         {
-                            descent = Math.Min( baseLine + glyph.yoffset, descent );
+                            Descent = Math.Min( baseLine + glyph.yoffset, Descent );
                         }
                     }
 
-                    descent += padBottom;
+                    Descent += PadBottom;
 
                     while ( true )
                     {
@@ -807,7 +790,7 @@
 
                         int second = int.Parse( tokens.nextToken() );
 
-                        if ( first < 0 || first > Character.MAX_VALUE || second < 0 || second > Character.MAX_VALUE )
+                        if ( ( first < 0 ) || ( first > Character.MAX_VALUE ) || ( second < 0 ) || ( second > Character.MAX_VALUE ) )
                         {
                             continue;
                         }
@@ -834,7 +817,7 @@
                     float overrideXHeight       = 0;
 
                     // Metrics override
-                    if ( line != null && line.StartsWith( "metrics " ) )
+                    if ( ( line != null ) && line.StartsWith( "metrics " ) )
                     {
 
                         hasMetricsOverride = true;
@@ -882,14 +865,14 @@
 
                     if ( spaceGlyph.width == 0 )
                     {
-                        spaceGlyph.width   = ( int )( padLeft + spaceGlyph.xadvance + padRight );
-                        spaceGlyph.xoffset = ( int )-padLeft;
+                        spaceGlyph.width   = ( int )( PadLeft + spaceGlyph.xadvance + PadRight );
+                        spaceGlyph.xoffset = ( int )-PadLeft;
                     }
 
-                    spaceXadvance = spaceGlyph.xadvance;
+                    SpaceXadvance = spaceGlyph.xadvance;
 
                     Glyph xGlyph = null;
-                    
+
                     foreach ( char xChar in xChars )
                     {
                         xGlyph = GetGlyph( xChar );
@@ -898,7 +881,7 @@
                     }
 
                     if ( xGlyph == null ) xGlyph = getFirstGlyph();
-                    xHeight = xGlyph.height - padY;
+                    XHeight = xGlyph.height - padY;
 
                     Glyph capGlyph = null;
                     for ( char capChar :
@@ -915,34 +898,34 @@
                             if ( page == null ) continue;
                             for ( glyph glyph :
                             page) {
-                                if ( glyph == null || glyph.height == 0 || glyph.width == 0 ) continue;
-                                capHeight = Math.max( capHeight, glyph.height );
+                                if ( ( glyph == null ) || ( glyph.height == 0 ) || ( glyph.width == 0 ) ) continue;
+                                CapHeight = Math.max( CapHeight, glyph.height );
                             }
                         }
                     }
                     else
-                        capHeight = capGlyph.height;
+                        CapHeight = capGlyph.height;
 
-                    capHeight -= padY;
+                    CapHeight -= padY;
 
-                    ascent = baseLine - capHeight;
-                    down   = -lineHeight;
+                    Ascent = baseLine - CapHeight;
+                    Down   = -LineHeight;
 
                     if ( flip )
                     {
-                        ascent = -ascent;
-                        down   = -down;
+                        Ascent = -Ascent;
+                        Down   = -Down;
                     }
 
                     if ( hasMetricsOverride )
                     {
-                        this.ascent        = overrideAscent;
-                        this.descent       = overrideDescent;
-                        this.down          = overrideDown;
-                        this.capHeight     = overrideCapHeight;
-                        this.lineHeight    = overrideLineHeight;
-                        this.spaceXadvance = overrideSpaceXAdvance;
-                        this.xHeight       = overrideXHeight;
+                        this.Ascent        = overrideAscent;
+                        this.Descent       = overrideDescent;
+                        this.Down          = overrideDown;
+                        this.CapHeight     = overrideCapHeight;
+                        this.LineHeight    = overrideLineHeight;
+                        this.SpaceXadvance = overrideSpaceXAdvance;
+                        this.XHeight       = overrideXHeight;
                     }
 
                 }
@@ -958,31 +941,32 @@
 
             public void SetGlyphRegion( Glyph glyph, TextureRegion region )
             {
-                Texture texture      = region.GetTexture();
-                var     invTexWidth  = 1.0f / texture.GetWidth();
-                var     invTexHeight = 1.0f / texture.GetHeight();
+                var invTexWidth  = 1.0f / region.Texture.Width;
+                var invTexHeight = 1.0f / region.Texture.Height;
 
-                float offsetX      = 0, offsetY = 0;
-                float u            = region.u;
-                float v            = region.v;
-                float regionWidth  = region.GetRegionWidth();
-                float regionHeight = region.GetRegionHeight();
+                var u = region.U;
+                var v = region.V;
 
-                if ( region is AtlasRegion )
+                var offsetX = 0;
+                var offsetY = 0;
+
+                if ( region is TextureAtlas.AtlasRegion )
                 {
                     // Compensate for whitespace stripped from left and top edges.
-                    AtlasRegion atlasRegion = ( AtlasRegion )region;
-                    offsetX = atlasRegion.offsetX;
-                    offsetY = atlasRegion.originalHeight - atlasRegion.packedHeight - atlasRegion.offsetY;
+                    var atlasRegion = ( TextureAtlas.AtlasRegion )region;
+
+                    offsetX = ( int )atlasRegion.OffsetX;
+                    offsetY = ( int )( atlasRegion.OriginalHeight - atlasRegion.PackedHeight - atlasRegion.OffsetY );
                 }
 
-                float x  = glyph.srcX;
-                float x2 = glyph.srcX + glyph.width;
-                float y  = glyph.srcY;
-                float y2 = glyph.srcY + glyph.height;
+                var x  = glyph.srcX;
+                var x2 = glyph.srcX + glyph.width;
+                var y  = glyph.srcY;
+                var y2 = glyph.srcY + glyph.height;
 
-                // Shift glyph for left and top edge stripped whitespace. Clip glyph for right and bottom edge stripped whitespace.
-                // Note if the font region has padding, whitespace stripping must not be used.
+                // Shift glyph for left and top edge stripped whitespace.
+                // Clip glyph for right and bottom edge stripped whitespace.
+                // Note: if the font region has padding, whitespace stripping must not be used.
                 if ( offsetX > 0 )
                 {
                     x -= offsetX;
@@ -991,15 +975,17 @@
                     {
                         glyph.width   += x;
                         glyph.xoffset -= x;
-                        x             =  0;
+
+                        x = 0;
                     }
 
                     x2 -= offsetX;
 
-                    if ( x2 > regionWidth )
+                    if ( x2 > region.RegionWidth )
                     {
-                        glyph.width -= x2 - regionWidth;
-                        x2          =  regionWidth;
+                        glyph.width -= x2 - region.RegionWidth;
+
+                        x2 = region.RegionWidth;
                     }
                 }
 
@@ -1010,59 +996,78 @@
                     if ( y < 0 )
                     {
                         glyph.height += y;
+
                         if ( glyph.height < 0 ) glyph.height = 0;
+
                         y = 0;
                     }
 
                     y2 -= offsetY;
 
-                    if ( y2 > regionHeight )
+                    if ( y2 > region.RegionHeight )
                     {
-                        var amount = y2 - regionHeight;
+                        var amount = y2 - region.RegionHeight;
+
                         glyph.height  -= amount;
                         glyph.yoffset += amount;
-                        y2            =  regionHeight;
+
+                        y2 = region.RegionHeight;
                     }
                 }
 
-                glyph.u  = u + x * invTexWidth;
-                glyph.u2 = u + x2 * invTexWidth;
+                glyph.u  = u + ( x * invTexWidth );
+                glyph.u2 = u + ( x2 * invTexWidth );
 
-                if ( flipped )
+                if ( Flipped )
                 {
-                    glyph.v  = v + y * invTexHeight;
-                    glyph.v2 = v + y2 * invTexHeight;
+                    glyph.v  = v + ( y * invTexHeight );
+                    glyph.v2 = v + ( y2 * invTexHeight );
                 }
                 else
                 {
-                    glyph.v2 = v + y * invTexHeight;
-                    glyph.v  = v + y2 * invTexHeight;
+                    glyph.v2 = v + ( y * invTexHeight );
+                    glyph.v  = v + ( y2 * invTexHeight );
                 }
             }
 
-            /** Sets the line height, which is the distance from one line of text to the next. */
+            /// <summary>
+            /// Sets the line height, which is the distance from one line of text to the next.
+            /// </summary>
             public void SetLineHeight( float height )
             {
-                lineHeight = height * scaleY;
-                down       = flipped ? lineHeight : -lineHeight;
+                LineHeight = height * ScaleY;
+                Down       = Flipped ? LineHeight : -LineHeight;
             }
 
+            /// <summary>
+            /// </summary>
+            /// <param name="ch"></param>
+            /// <param name="glyph"></param>
             public void SetGlyph( int ch, Glyph glyph )
             {
-                var page                                     = glyphs[ ch / Page_Size ];
-                if ( page == null ) glyphs[ ch / Page_Size ] = page = new Glyph[ Page_Size ];
-                page[ ch & Page_Size - 1 ] = glyph;
+                var page = Glyphs?[ ch / Page_Size ];
+
+                if ( page == null )
+                {
+                    page = new Glyph[ Page_Size ];
+
+                    this.Glyphs![ ch / Page_Size ] = page;
+                }
+
+                page[ ch & ( Page_Size - 1 ) ] = glyph;
             }
 
+            /// <summary>
+            /// </summary>
+            /// <returns></returns>
+            /// <exception cref="GdxRuntimeException"></exception>
             public Glyph GetFirstGlyph()
             {
-                foreach ( var page in this.glyphs )
+                foreach ( var page in this.Glyphs )
                 {
-                    if ( page == null ) continue;
-
-                    foreach ( var glyph in page )
+                    foreach ( Glyph? glyph in page )
                     {
-                        if ( glyph == null || glyph.height == 0 || glyph.width == 0 ) continue;
+                        if ( ( glyph == null ) || ( glyph.height == 0 ) || ( glyph.width == 0 ) ) continue;
 
                         return glyph;
                     }
@@ -1071,70 +1076,87 @@
                 throw new GdxRuntimeException( "No glyphs found." );
             }
 
-            /** Returns true if the font has the glyph, or if the font has a {@link #missingGlyph}. */
+            /// <summary>
+            /// Returns true if the font has the glyph, or if the font has a <see cref="MissingGlyph"/>.
+            /// </summary>
             public bool HasGlyph( char ch )
             {
-                if ( missingGlyph != null ) return true;
+                if ( MissingGlyph != null ) return true;
 
-                return getGlyph( ch ) != null;
+                return GetGlyph( ch ) != null;
             }
 
-            /** Returns the glyph for the specified character, or null if no such glyph exists. Note that
-		 * {@link #getGlyphs(GlyphRun, CharSequence, int, int, Glyph)} should be be used to shape a string of characters into a list
-		 * of glyphs. */
-            public Glyph GetGlyph( char ch )
-            {
-                var page = glyphs[ ch / Page_Size ];
+            /// <summary>
+            /// Returns the glyph for the specified character, or null if no such
+            /// glyph exists. Note that
+            /// </summary>
+            /// See also <see cref="GetGlyphs"/> should be be used to shape a string
+            /// of characters into a list of glyphs. 
+            public Glyph? GetGlyph( char ch ) => Glyphs[ ch / Page_Size ][ ch & ( Page_Size - 1 ) ];
 
-                if ( page != null ) return page[ ch & Page_Size - 1 ];
-
-                return null;
-            }
-
-            /** Using the specified string, populates the glyphs and positions of the specified glyph run.
-		 * @param str Characters to convert to glyphs. Will not contain newline or color tags. May contain "[[" for an escaped left
-		 *           square bracket.
-		 * @param lastGlyph The glyph immediately before this run, or null if this is run is the first on a line of text. */
-            public void GetGlyphs( GlyphRun run, CharSequence str, int start, int end, Glyph lastGlyph )
+            /// <summary>
+            /// Using the specified string, populates the glyphs and positions of the
+            /// specified glyph run.
+            /// </summary>
+            /// <param name="run"></param>
+            /// <param name="str">
+            /// Characters to convert to glyphs. Will not contain newline or color tags.
+            /// May contain "[[" for an escaped left square bracket.
+            /// </param>
+            /// <param name="start"></param>
+            /// <param name="end"></param>
+            /// <param name="lastGlyph">
+            /// The glyph immediately before this run, or null if this is run is the
+            /// first on a line of text.
+            /// </param>
+            public void GetGlyphs( GlyphLayout.GlyphRun run, string str, int start, int end, Glyph lastGlyph )
             {
                 var max = end - start;
 
                 if ( max == 0 ) return;
-                var           markupEnabled = this.markupEnabled;
-                var           scaleX        = this.scaleX;
-                List< Glyph > glyphs        = run.glyphs;
-                FloatArray    xAdvances     = run.xAdvances;
+
+                var markupEnabled = this.MarkupEnabled;
+                var scaleX        = this.ScaleX;
+
+                var glyphs    = run.Glyphs;
+                var xAdvances = run.XAdvances;
 
                 // Guess at number of glyphs needed.
-                glyphs.ensureCapacity( max );
-                run.xAdvances.ensureCapacity( max + 1 );
+                glyphs.EnsureCapacity( max );
+                run.XAdvances.EnsureCapacity( max + 1 );
 
                 do
                 {
-                    char ch = str.charAt( start++ );
+                    var ch = str[ start++ ];
 
                     if ( ch == '\r' ) continue; // Ignore.
-                    Glyph glyph = getGlyph( ch );
+                    Glyph? glyph = GetGlyph( ch );
 
                     if ( glyph == null )
                     {
-                        if ( missingGlyph == null ) continue;
-                        glyph = missingGlyph;
+                        if ( MissingGlyph == null ) continue;
+                        glyph = MissingGlyph;
                     }
 
-                    glyphs.add( glyph );
+                    glyphs.Add( glyph );
 
-                    xAdvances.add
+                    xAdvances.Add
                         (
                          lastGlyph == null // First glyph on line, adjust the position so it isn't drawn left of 0.
-                             ? ( glyph.fixedWidth ? 0 : -glyph.xoffset * scaleX - padLeft )
-                             : ( lastGlyph.xadvance + lastGlyph.getKerning( ch ) ) * scaleX
+                             ? ( glyph.fixedWidth ? 0 : ( -glyph.xoffset * scaleX ) - PadLeft )
+                             : ( lastGlyph.xadvance + lastGlyph.GetKerning( ch ) ) * scaleX
                         );
 
                     lastGlyph = glyph;
 
                     // "[[" is an escaped left square bracket, skip second character.
-                    if ( markupEnabled && ch == '[' && start < end && str.charAt( start ) == '[' ) start++;
+                    if ( markupEnabled
+                         && ( ch == '[' )
+                         && ( start < end )
+                         && ( str[ start ] == '[' ) )
+                    {
+                        start++;
+                    }
                 }
                 while ( start < end );
 
@@ -1142,26 +1164,28 @@
                 {
                     var lastGlyphWidth = lastGlyph.fixedWidth
                         ? lastGlyph.xadvance * scaleX
-                        : ( lastGlyph.width + lastGlyph.xoffset ) * scaleX - padRight;
+                        : ( ( lastGlyph.width + lastGlyph.xoffset ) * scaleX ) - PadRight;
 
                     xAdvances.Add( lastGlyphWidth );
                 }
             }
 
-            /** Returns the first valid glyph index to use to wrap to the next line, starting at the specified start index and
-		 * (typically) moving toward the beginning of the glyphs array. */
-            public int GetWrapIndex( List< Glyph > glyphs, int start )
+            /// <summary>
+            /// Returns the first valid glyph index to use to wrap to the next line,
+            /// starting at the specified start index and (typically) moving toward
+            /// the beginning of the glyphs array.
+            /// </summary>
+            public int GetWrapIndex( List< Glyph > glyphList, int start )
             {
-                var      i           = start - 1;
-                Object[] glyphsItems = glyphs.items;
-                var      ch          = ( char )( ( Glyph )glyphsItems[ i ] ).id;
+                var i  = start - 1;
+                var ch = ( char )( glyphList[ i ] ).id;
 
                 if ( IsWhitespace( ch ) ) return i;
                 if ( IsBreakChar( ch ) ) i--;
 
                 for ( ; i > 0; i-- )
                 {
-                    ch = ( char )( ( Glyph )glyphsItems[ i ] ).id;
+                    ch = ( char )( glyphList[ i ] ).id;
 
                     if ( IsWhitespace( ch ) || IsBreakChar( ch ) ) return i + 1;
                 }
@@ -1169,15 +1193,18 @@
                 return 0;
             }
 
-            public virtual @bool IsBreakChar( char c )
+            /// <summary>
+            /// </summary>
+            /// <param name="c"></param>
+            /// <returns></returns>
+            public bool IsBreakChar( char c )
             {
                 if ( breakChars == null )
                 {
                     return false;
                 }
 
-                @foreach( char br @in breakChars )
-
+                foreach ( var br in breakChars )
                 {
                     if ( c == br )
                     {
@@ -1188,7 +1215,11 @@
                 return false;
             }
 
-            public virtual @bool IsWhitespace( char c )
+            /// <summary>
+            /// </summary>
+            /// <param name="c"></param>
+            /// <returns></returns>
+            public static bool IsWhitespace( char c )
             {
                 switch ( c )
                 {
@@ -1201,25 +1232,6 @@
                     default:
                         return false;
                 }
-            }
-
-            /// <summary>
-            /// Returns the image path for the texture page at the given
-            /// index (the "id" in the BMFont file).
-            /// </summary>
-            public string GetImagePath( int index )
-            {
-                return imagePaths[ index ];
-            }
-
-            public string[] GetImagePaths()
-            {
-                return imagePaths;
-            }
-
-            public FileHandle GetFontFile()
-            {
-                return FontFile;
             }
 
             /// <summary>
@@ -1240,22 +1252,23 @@
                 if ( scaley == 0 )
                     throw new ArgumentException( "scaleY cannot be 0." );
 
-                var x = scalex / this.scaleX;
-                var y = scaley / this.scaleY;
+                var x = scalex / this.ScaleX;
+                var y = scaley / this.ScaleY;
 
-                lineHeight    *= y;
-                spaceXadvance *= x;
-                xHeight       *= y;
-                capHeight     *= y;
-                ascent        *= y;
-                descent       *= y;
-                down          *= y;
-                padLeft       *= x;
-                padRight      *= x;
-                padTop        *= y;
-                padBottom     *= y;
-                this.scaleX   =  scalex;
-                this.scaleY   =  scaley;
+                this.ScaleX = scalex;
+                this.ScaleY = scaley;
+
+                LineHeight    *= y;
+                SpaceXadvance *= x;
+                XHeight       *= y;
+                CapHeight     *= y;
+                Ascent        *= y;
+                Descent       *= y;
+                Down          *= y;
+                PadLeft       *= x;
+                PadRight      *= x;
+                PadTop        *= y;
+                PadBottom     *= y;
             }
 
             /// <summary>
@@ -1275,7 +1288,7 @@
             /// <exception cref="ArgumentException">if the resulting scale is zero.</exception>
             public void Scale( float amount )
             {
-                SetScale( scaleX + amount, scaleY + amount );
+                SetScale( ScaleX + amount, ScaleY + amount );
             }
 
             public override string? ToString()

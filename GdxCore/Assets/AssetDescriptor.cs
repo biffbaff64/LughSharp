@@ -27,7 +27,7 @@ namespace LibGDXSharp.Assets
         /// <param name="filepath"></param>
         /// <param name="assetType"></param>
         /// <param name="parameters"></param>
-        public AssetDescriptor( string filepath, Type assetType, IAssetLoaderParameters parameters )
+        public AssetDescriptor( string? filepath, Type assetType, IAssetLoaderParameters parameters )
         {
             FilePath   = filepath.Replace( '\\', '/' );
             Type       = assetType;

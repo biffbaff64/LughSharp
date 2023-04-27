@@ -1,102 +1,121 @@
-﻿namespace LibGDXSharp.Assets.Loaders
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Assets.Loaders
 {
     /// <summary>
-    /// <see cref="AssetLoader{T,TP}"/> for <see cref="Texture"/> instances.
+    /// <see cref="AssetLoader"/> for <see cref="Texture"/> instances.
     /// The pixel data is loaded asynchronously. The texture is then created on the
     /// rendering thread, synchronously. Passing a <see cref="TextureParameter"/>
     /// to <see cref="AssetManager"/>.Load() allows one to specify parameters as
     /// can be passed to the various Texture constructors, e.g. filtering, whether
     /// to generate mipmaps and so on.
     /// </summary>
-    public class TextureLoader
-        : AsynchronousAssetLoader< Texture, TextureLoader.TextureParameter >, IDisposable
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
     {
-        public class TextureLoaderInfo
+        public sealed class TextureLoaderInfo
         {
-            public string?      Filename { get; set; }
+            public string?       Filename { get; set; }
             public ITextureData? Data     { get; set; }
-            public Texture?     Texture  { get; set; }
+            public Texture?      Texture  { get; set; }
         }
 
-        public TextureLoaderInfo Info { get; set; } = new TextureLoaderInfo();
+        private readonly TextureLoaderInfo _loaderInfo;
 
         public TextureLoader( IFileInfoResolver resolver ) : base( resolver )
         {
+            _loaderInfo = new TextureLoaderInfo();
         }
 
-        public override void LoadAsync( AssetManager manager,
-                                        string fileName,
-                                        FileHandle file,
-                                        TextureParameter? parameter )
+        /// <summary>
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="fileName"></param>
+        /// <param name="file"></param>
+        /// <param name="parameter"></param>
+        public override void LoadAsync( AssetManager? manager,
+                                        string? fileName,
+                                        FileInfo? file,
+                                        IAssetLoaderParameters parameter )
         {
-            Info.Filename = fileName;
+            _loaderInfo.Filename = fileName;
 
-            if ( parameter == null || parameter.TextureData == null )
+            if ( ( ( TextureParameter )parameter ).TextureData == null )
             {
-                Pixmap.Format? format    = null;
-                var           genMipMaps = false;
+                Pixmap.Format? format     = null;
+                var            genMipMaps = false;
 
-                Info.Texture = null;
+                _loaderInfo.Texture = null;
 
                 if ( parameter != null )
                 {
-                    format       = parameter.Format;
-                    genMipMaps   = parameter.GenMipMaps;
-                    Info.Texture = parameter.Texture;
+                    format              = ( ( TextureParameter )parameter ).Format;
+                    genMipMaps          = ( ( TextureParameter )parameter ).GenMipMaps;
+                    _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
                 }
 
-                Info.Data = ITextureData.Factory.LoadFromFile( file, format, genMipMaps );
+                _loaderInfo.Data = ITextureData.Factory.LoadFromFile( file, format, genMipMaps );
             }
             else
             {
-                Info.Data    = parameter.TextureData;
-                Info.Texture = parameter.Texture;
+                _loaderInfo.Data    = ( ( TextureParameter )parameter ).TextureData;
+                _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
             }
 
-            if ( !Info.Data.IsPrepared() )
+            if ( _loaderInfo.Data != null && !_loaderInfo.Data.IsPrepared() )
             {
-                Info.Data.prepare();
+                _loaderInfo.Data.Prepare();
             }
         }
 
-        public override Texture LoadSync( AssetManager manager,
-                                          string fileName,
-                                          FileHandle file,
-                                          TextureParameter? parameter )
+        /// <summary>
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="fileName"></param>
+        /// <param name="file"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public override Texture LoadSync( AssetManager? manager,
+                                          string? fileName,
+                                          FileInfo? file,
+                                          IAssetLoaderParameters parameter )
         {
-            if ( Info == null )
-            {
-                return null;
-            }
-
-            Texture texture = Info.Texture;
+            Texture? texture = _loaderInfo.Texture;
 
             if ( texture != null )
             {
-                texture.load( Info.Data );
+                texture.Load( _loaderInfo.Data );
             }
             else
             {
-                texture = new Texture( Info.Data );
+                texture = new Texture( _loaderInfo.Data );
             }
 
-            if ( parameter != null )
-            {
-                texture.SetFilter( parameter.MinFilter, parameter.MagFilter );
-                texture.SetWrap( parameter.WrapU, parameter.WrapV );
-            }
+            texture.SetFilter( ( ( TextureParameter )parameter ).MinFilter,
+                               ( ( TextureParameter )parameter ).MagFilter );
+
+            texture.SetWrap( ( ( TextureParameter )parameter ).WrapU,
+                             ( ( TextureParameter )parameter ).WrapV );
 
             return texture;
         }
 
-        public override List< AssetDescriptor >? GetDependencies( string fileName,
-                                                                   FileHandle file,
-                                                                   TextureParameter parameter )
+        /// <summary>
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="file"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                                  FileInfo? file,
+                                                                  IAssetLoaderParameters parameter )
         {
-            return null;
+            return null!;
         }
 
-        public class TextureParameter : AssetLoaderParameters
+        /// <summary>
+        /// </summary>
+        public sealed class TextureParameter : AssetLoaderParameters
         {
             /// <summary>
             /// the format of the final Texture. Uses the source images format if null

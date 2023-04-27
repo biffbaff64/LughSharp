@@ -1,5 +1,9 @@
-﻿namespace LibGDXSharp.Graphics
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Graphics
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     public class Pixmap : IDisposable
     {
         public enum Blending
@@ -13,6 +17,11 @@
         }
 
         public Pixmap( int potW, int potH, Format rgba8888 )
+        {
+            throw new NotImplementedException();
+        }
+
+        public Pixmap( FileInfo potW )
         {
             throw new NotImplementedException();
         }
@@ -37,7 +46,7 @@
             throw new NotImplementedException();
         }
 
-        protected void Dispose( bool disposing )
+        private void Dispose( bool disposing )
         {
             if ( disposing )
             {

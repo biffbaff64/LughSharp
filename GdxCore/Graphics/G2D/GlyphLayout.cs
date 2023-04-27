@@ -2,7 +2,10 @@
 {
     public class GlyphLayout
     {
-        
+        public class GlyphRun
+        {
+            public List< BitmapFont.Glyph > Glyphs    { get; set; }
+            public List< float >            XAdvances { get; set; }
+        }
     }
 }
-

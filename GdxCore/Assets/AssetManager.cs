@@ -34,7 +34,6 @@ namespace LibGDXSharp.Assets
 
         private readonly AsyncExecutor        _executor;
         private          IAssetErrorListener? _listener;
-        private          IFileInfoResolver    _resolver;
 
         private int _loaded;
         private int _toLoad;
@@ -79,7 +78,7 @@ namespace LibGDXSharp.Assets
                 //@formatter:on
             }
 
-            this._resolver = resolver;
+            this.FileHandleResolver = resolver;
             this._executor = new AsyncExecutor( 1, "AssetManager" );
         }
 
@@ -87,11 +86,7 @@ namespace LibGDXSharp.Assets
         /// Returns the <see cref="IFileInfoResolver"/> which this AssetManager was loaded with.
         /// </summary>
         /// <returns>the file handle resolver which this AssetManager uses.</returns>
-        public IFileInfoResolver FileHandleResolver
-        {
-            get => _resolver;
-            set => _resolver = value;
-        }
+        public IFileInfoResolver FileHandleResolver { get; set; }
 
         /// <summary>
         ///

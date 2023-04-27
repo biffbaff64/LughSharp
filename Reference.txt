@@ -1,0 +1,12 @@
+﻿
+T?[] - Array of nullable Ts
+T[]? - Nullable array of Ts
+
+string - keyword
+String - Class
+
+virtual method - can be redefined in child class
+
+new - HIDES base method
+override - does what its says...
+

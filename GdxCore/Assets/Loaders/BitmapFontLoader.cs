@@ -1,17 +1,21 @@
-﻿using LibGDXSharp.G2D;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
 
 namespace LibGDXSharp.Assets.Loaders
 {
-    public class BitmapFontParameter : AssetLoaderParameters
+    internal class BitmapFontParameter : AssetLoaderParameters
     {
         /// <summary>
-        /// Flips the font vertically if <tt>true</tt>. Defaults to <tt>false</tt>.
+        /// Flips the font vertically if <tt>true</tt>.
+        /// Defaults to <tt>false</tt>.
         /// </summary>
         internal bool Flip { get; set; } = false;
 
         /// <summary>
-        /// Generates mipmaps for the font if <tt>true</tt>. Defaults to <tt>false</tt>.
+        /// Generates mipmaps for the font if <tt>true</tt>.
+        /// Defaults to <tt>false</tt>.
         /// </summary>
         internal bool GenMipMaps { get; set; } = false;
 
@@ -43,6 +47,7 @@ namespace LibGDXSharp.Assets.Loaders
 
     /// <summary>
     /// </summary>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     {
         private BitmapFont.BitmapFontData? _data;
@@ -50,9 +55,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <summary>
         /// </summary>
         /// <param name="resolver"></param>
-        public BitmapFontLoader( IFileInfoResolver resolver ) : base( resolver )
-        {
-        }
+        public BitmapFontLoader( IFileInfoResolver resolver ) : base( resolver ) { }
 
         /// <summary>
         /// Returns the assets this asset requires to be loaded first.
@@ -61,22 +64,36 @@ namespace LibGDXSharp.Assets.Loaders
         /// <param name="fileName">name of the asset to load</param>
         /// <param name="file">the resolved file to load</param>
         /// <param name="parameter">parameters for loading the asset</param>
-        public List< AssetDescriptor > GetDependencies( string? fileName, FileInfo? file, BitmapFontParameter parameter )
+        public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                                 FileInfo? file,
+                                                                 IAssetLoaderParameters parameter )
         {
+            if ( file == null ) throw new NullReferenceException();
+
             var deps = new List< AssetDescriptor >();
 
-            if ( parameter?.BitmapFontData != null )
+            if ( ( ( BitmapFontParameter )parameter ).BitmapFontData != null )
             {
-                _data = parameter.BitmapFontData;
+                _data = ( ( BitmapFontParameter )parameter ).BitmapFontData;
 
                 return deps;
             }
 
-            _data = new BitmapFont.BitmapFontData( file, parameter is { Flip: true } );
+            _data = new BitmapFont.BitmapFontData
+                (
+                 file,
+                 ( ( BitmapFontParameter )parameter! ).Flip
+                );
 
-            if ( parameter?.AtlasName != null )
+            if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
             {
-                deps.Add( new AssetDescriptor( parameter.AtlasName, typeof(TextureAtlas), parameter ) );
+                deps.Add( new AssetDescriptor
+                              ( 
+                               ( ( BitmapFontParameter )parameter ).AtlasName, 
+                               typeof(TextureAtlas), 
+                               ( ( BitmapFontParameter )parameter )
+                               )
+                         );
             }
             else
             {
@@ -89,9 +106,9 @@ namespace LibGDXSharp.Assets.Loaders
 
                     if ( parameter != null )
                     {
-                        textureParams.GenMipMaps = parameter.GenMipMaps;
-                        textureParams.MinFilter  = parameter.MinFilter;
-                        textureParams.MagFilter  = parameter.MagFilter;
+                        textureParams.GenMipMaps = ( ( BitmapFontParameter )parameter ).GenMipMaps;
+                        textureParams.MinFilter  = ( ( BitmapFontParameter )parameter ).MinFilter;
+                        textureParams.MagFilter  = ( ( BitmapFontParameter )parameter ).MagFilter;
                     }
 
                     var descriptor = new AssetDescriptor( resolved, typeof(Texture), textureParams );
@@ -101,36 +118,45 @@ namespace LibGDXSharp.Assets.Loaders
 
             return deps;
         }
-        
+
         /// <summary>
         /// </summary>
         /// <param name="manager"></param>
         /// <param name="fileName"></param>
         /// <param name="file"></param>
         /// <param name="parameter"></param>
-        public void LoadAsync( AssetManager manager,
+        public override void LoadAsync( AssetManager? manager,
                                         string? fileName,
                                         FileInfo? file,
-                                        BitmapFontParameter parameter )
-        {
-        }
+                                        IAssetLoaderParameters parameter ) { }
 
-        public BitmapFont LoadSync( AssetManager manager,
+        /// <summary>
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="fileName"></param>
+        /// <param name="file"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        /// <exception cref="GdxRuntimeException"></exception>
+        public override BitmapFont LoadSync( AssetManager? manager,
                                              string? fileName,
                                              FileInfo? file,
-                                             BitmapFontParameter parameter )
+                                             IAssetLoaderParameters parameter )
         {
-            if ( parameter?.AtlasName != null )
+            if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
             {
-                var atlas  = manager.Get<TextureAtlas>( parameter.AtlasName );
-                var name   = file.Sibling( _data.imagePaths[ 0 ] ).Name.toString();
-                var region = atlas.FindRegion( name );
+                var atlas  = manager?.Get< TextureAtlas >( ( ( BitmapFontParameter )parameter ).AtlasName! );
+                var name = _data?.ImagePaths[ 0 ];
+                
+//                string name   = file.Sibling( _data?.imagePaths?[ 0 ] ).Name.toString();
+                TextureRegion? region = atlas?.FindRegion( name );
 
                 if ( region == null )
                 {
                     throw new GdxRuntimeException
                         (
-                         $"Could not find font region {name} in atlas {parameter.AtlasName}"
+                         $"Could not find font region {name} in atlas "
+                         + $"{( ( BitmapFontParameter )parameter ).AtlasName}"
                         );
                 }
 
@@ -138,7 +164,7 @@ namespace LibGDXSharp.Assets.Loaders
             }
             else
             {
-                var n    = _data.GetImagePaths().Length;
+                var n    = _data?.GetImagePaths().Length;
                 var regs = new List< TextureRegion >( capacity: n );
 
                 for ( var i = 0; i < n; i++ )
@@ -154,8 +180,6 @@ namespace LibGDXSharp.Assets.Loaders
         /// Performs application-defined tasks associated with freeing,
         /// releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
     }
 }

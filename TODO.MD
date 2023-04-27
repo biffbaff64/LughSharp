@@ -77,7 +77,7 @@ ASSETS/LOADERS
     -      - SoundLoader                    Convert
     - DONE - SynchronousAssetLoader         Convert
     -      - TextureAtlasLoader             Convert
-    - IP   - TextureLoader                  Convert
+    - DONE - TextureLoader                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -130,18 +130,18 @@ GRAPHICS
     - DONE - ICursor                        Convert
     - DONE - IGL20                          Convert
     - IP   - IGL30                          Convert
-    - IP   - ITextureData                   Convert
+    - DONE - ITextureData                   Convert
     -      - Mesh                           Convert
     - DONE - Monitor                        Convert
     - IP   - OrthographicCamera             Convert
     -      - PerspectiveCamera              Convert
     - IP   - Pixmap                         Convert
-    -      - PixmapIO                       Convert
+    - IP   - PixmapIO                       Convert
     - IP   - Texture                        Convert
     -      - TextureArray                   Convert
     -      - TextureArrayData               Convert
     - DONE - TextureFilter                  Convert
-    -      - TextureWrap                    Convert
+    - DONE - TextureWrap                    Convert
     -      - VertexAttribute                Convert
     -      - VertexAttributes               Convert
 
@@ -173,7 +173,7 @@ GRAPHICS/G2D
     -      - Sprite                         Convert
     - IP   - SpriteBatch                    Convert
     -      - SpriteCache                    Convert
-    -      - TextureAtlas                   Convert
+    - IP   - TextureAtlas                   Convert
     - IP   - TextureRegion                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -189,10 +189,10 @@ GRAPHICS/G3D
 GRAPHICS/GLUTILS
 ----------------
     -      - ETC1
-    -      - ETC1TextureData
+    - IP   - ETC1TextureData
     -      - FacedCubemapData
     -      - FileTextureArrayData
-    -      - FileTextureData
+    - IP   - FileTextureData
     -      - FloatFrameBuffer
     -      - FloatTextureData
     -      - FrameBuffer
@@ -211,7 +211,7 @@ GRAPHICS/GLUTILS
     -      - InstanceBufferObject
     -      - InstanceBufferObjectSubData
     -      - InstanceData
-    -      - KTXTTextureData
+    - IP   - KTXTTextureData
     -      - MipMapGenerator
     -      - MipMapTextureData
     -      - PixmapTextureData
