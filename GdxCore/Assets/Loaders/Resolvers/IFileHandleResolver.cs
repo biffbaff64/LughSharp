@@ -5,7 +5,7 @@
     /// Used to allow the AssetManager to load files from anywhere, or
     /// implement caching strategies.
     /// </summary>
-    public interface IFileInfoResolver
+    public interface IFileHandleResolver
     {
         public FileInfo Resolve( string fileName );
     }

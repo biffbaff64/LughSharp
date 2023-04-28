@@ -22,7 +22,7 @@ namespace LibGDXSharp.Assets.Loaders
 
         private readonly TextureLoaderInfo _loaderInfo;
 
-        public TextureLoader( IFileInfoResolver resolver ) : base( resolver )
+        public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
         {
             _loaderInfo = new TextureLoaderInfo();
         }

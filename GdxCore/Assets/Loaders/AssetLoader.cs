@@ -8,14 +8,14 @@ namespace LibGDXSharp.Assets.Loaders
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class AssetLoader
     {
-        public IFileInfoResolver Resolver      { get; set; }
+        public IFileHandleResolver Resolver      { get; set; }
         public bool              IsSynchronous { get; protected init; } = false;
 
         /// <summary>
         /// Constructor, sets the FileHandleResolver to use to resolve the file
         /// associated with the asset name.
         /// </summary>
-        protected AssetLoader( IFileInfoResolver resolver )
+        protected AssetLoader( IFileHandleResolver resolver )
         {
             this.Resolver = resolver;
         }

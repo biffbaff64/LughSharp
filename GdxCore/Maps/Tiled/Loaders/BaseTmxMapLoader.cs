@@ -49,7 +49,7 @@ namespace LibGDXSharp.Maps.Tiled
 
         protected TiledMap? Map { get; set; }
 
-        protected BaseTmxMapLoader( IFileInfoResolver resolver ) : base( resolver )
+        protected BaseTmxMapLoader( IFileHandleResolver resolver ) : base( resolver )
         {
         }
 

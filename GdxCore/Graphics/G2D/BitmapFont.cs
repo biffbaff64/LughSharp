@@ -575,16 +575,32 @@ namespace LibGDXSharp.G2D
             /// </summary>
             public char[]? breakChars;
 
-            public char[] xChars   = { 'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z' };
-            public char[] capChars = { 'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J', 'L', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+            public readonly char[] xChars =
+            {
+                'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z'
+            };
+
+            public readonly char[] capChars =
+            {
+                'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J',
+                'L', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+            };
 
             /// <summary>
             /// Creates an empty BitmapFontData for configuration before calling
             /// <see cref="Load(FileInfo, bool)"/>, to subclass, or to populate
             /// yourself, e.g. using stb-truetype or FreeType.
             /// </summary>
-            public BitmapFontData() { }
+            public BitmapFontData()
+            {
+                this.FontFile = null!;
+                this.Flipped  = false;
+            }
 
+            /// <summary>
+            /// </summary>
+            /// <param name="fontFile"></param>
+            /// <param name="flip"></param>
             public BitmapFontData( FileInfo fontFile, bool flip )
             {
                 this.FontFile = fontFile;
@@ -593,6 +609,12 @@ namespace LibGDXSharp.G2D
                 Load( fontFile, flip );
             }
 
+            /// <summary>
+            /// </summary>
+            /// <param name="file"></param>
+            /// <param name="flip"></param>
+            /// <exception cref="InvalidOperationException"></exception>
+            /// <exception cref="GdxRuntimeException"></exception>
             public void Load( FileInfo file, bool flip )
             {
                 if ( ImagePaths != null )
@@ -711,13 +733,13 @@ namespace LibGDXSharp.G2D
                         tokens.nextToken();
                         tokens.nextToken();
 
-                        int ch = int.Parse( tokens.nextToken() );
+                        var ch = int.Parse( tokens.nextToken() );
 
                         if ( ch <= 0 )
                         {
                             MissingGlyph = glyph;
                         }
-                        else if ( ch <= Character.MAX_VALUE )
+                        else if ( ch <= char.MaxValue )
                         {
                             SetGlyph( ch, glyph );
                         }
@@ -808,6 +830,7 @@ namespace LibGDXSharp.G2D
                     }
 
                     var   hasMetricsOverride    = false;
+                    
                     float overrideAscent        = 0;
                     float overrideDescent       = 0;
                     float overrideDown          = 0;
@@ -819,39 +842,35 @@ namespace LibGDXSharp.G2D
                     // Metrics override
                     if ( ( line != null ) && line.StartsWith( "metrics " ) )
                     {
-
                         hasMetricsOverride = true;
 
                         StringTokenizer tokens = new StringTokenizer( line, " =" );
 
-                        tokens.nextToken();
-                        tokens.nextToken();
+                        tokens.NextToken();
+                        tokens.NextToken();
 
-                        overrideAscent = float.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        overrideDescent = float.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        overrideDown = float.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        overrideCapHeight = float.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        overrideLineHeight = float.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        overrideSpaceXAdvance = float.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        overrideXHeight = float.Parse( tokens.nextToken() );
+                        overrideAscent = float.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        overrideDescent = float.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        overrideDown = float.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        overrideCapHeight = float.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        overrideLineHeight = float.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        overrideSpaceXAdvance = float.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        overrideXHeight = float.Parse( tokens.NextToken() );
                     }
 
-                    Glyph spaceGlyph = GetGlyph( ' ' );
+                    Glyph? spaceGlyph = GetGlyph( ' ' );
 
                     if ( spaceGlyph == null )
                     {
-                        spaceGlyph = new Glyph
-                        {
-                            id = ' '
-                        };
+                        spaceGlyph = new Glyph { id = ' ' };
 
-                        Glyph xadvanceGlyph = GetGlyph( 'l' );
+                        Glyph? xadvanceGlyph = GetGlyph( 'l' );
 
                         if ( xadvanceGlyph == null )
                         {
@@ -871,40 +890,51 @@ namespace LibGDXSharp.G2D
 
                     SpaceXadvance = spaceGlyph.xadvance;
 
-                    Glyph xGlyph = null;
+                    Glyph? xGlyph = null;
 
-                    foreach ( char xChar in xChars )
+                    foreach ( var xChar in xChars )
                     {
                         xGlyph = GetGlyph( xChar );
 
                         if ( xGlyph != null ) break;
                     }
 
-                    if ( xGlyph == null ) xGlyph = getFirstGlyph();
+                    xGlyph ??= GetFirstGlyph();
+                    
                     XHeight = xGlyph.height - padY;
 
-                    Glyph capGlyph = null;
-                    for ( char capChar :
-                    capChars) {
-                        capGlyph = getGlyph( capChar );
+                    Glyph? capGlyph = null;
+
+                    foreach ( var capChar in capChars )
+                    {
+                        capGlyph = GetGlyph( capChar );
 
                         if ( capGlyph != null ) break;
                     }
 
                     if ( capGlyph == null )
                     {
-                        for ( glyph[] page :
-                        this.glyphs) {
+                        foreach ( var page in Glyphs )
+                        {
                             if ( page == null ) continue;
-                            for ( glyph glyph :
-                            page) {
-                                if ( ( glyph == null ) || ( glyph.height == 0 ) || ( glyph.width == 0 ) ) continue;
-                                CapHeight = Math.max( CapHeight, glyph.height );
+                            
+                            foreach ( Glyph? glyph in page )
+                            {
+                                if ( ( glyph == null )
+                                     || ( glyph.height == 0 )
+                                     || ( glyph.width == 0 ) )
+                                {
+                                    continue;
+                                }
+                                
+                                CapHeight = Math.Max( CapHeight, glyph.height );
                             }
                         }
                     }
                     else
+                    {
                         CapHeight = capGlyph.height;
+                    }
 
                     CapHeight -= padY;
 
@@ -927,7 +957,6 @@ namespace LibGDXSharp.G2D
                         this.SpaceXadvance = overrideSpaceXAdvance;
                         this.XHeight       = overrideXHeight;
                     }
-
                 }
                 catch ( Exception ex )
                 {
@@ -939,7 +968,14 @@ namespace LibGDXSharp.G2D
                 }
             }
 
-            public void SetGlyphRegion( Glyph glyph, TextureRegion region )
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="glyph">
+            /// A reference to the Glyph whose region is to be set.
+            /// </param>
+            /// <param name="region"></param>
+            public void SetGlyphRegion( ref Glyph glyph, TextureRegion region )
             {
                 var invTexWidth  = 1.0f / region.Texture.Width;
                 var invTexHeight = 1.0f / region.Texture.Height;

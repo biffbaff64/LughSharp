@@ -13,25 +13,12 @@ namespace LibGDXSharp.Files
     /// platform independent code.
     /// </summary>
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
     public class FileHandle
     {
         public FileType Type { get; set; }
-        public File File
-        {
-            get
-            {
-                if ( Type == FileType.External )
-                {
-                    return new File(Gdx.Files.GetExternalStoragePath(), File.GetPath());
-                }
+        public File     File { get; set; }
 
-                return _file;
-            }
-            set => _file = value;
-        }
-
-        private File? _file;
-        
         /// <summary>
         /// Creates a new absolute FileHandle for the file name.
         /// </summary>
@@ -86,6 +73,8 @@ namespace LibGDXSharp.Files
         public string Name() => File.GetName();
 
         /// <summary>
+        /// Returns the file extension (without the dot) or an empty
+        /// string if the file name doesn't contain a dot.
         /// </summary>
         public string Extension()
         {
@@ -108,6 +97,9 @@ namespace LibGDXSharp.Files
         }
 
         /// <summary>
+        /// Returns the path and filename without the extension.
+        /// e.g. dir/dir2/file.png -> dir/dir2/file.
+        /// Backward slashes will be returned as forward slashes.
         /// </summary>
         /// <returns></returns>
         public string PathWithoutExtension()
@@ -124,6 +116,11 @@ namespace LibGDXSharp.Files
         /// <exception cref="GdxRuntimeException"></exception>
         public FileStream Read()
         {
+            if ( File.IsDirectory )
+            {
+                throw new GdxRuntimeException( "Cannot open a stream to a Directory!" );
+            }
+            
             return new FileStream( File.GetName(), FileMode.OpenOrCreate );
         }
 
@@ -261,8 +258,8 @@ namespace LibGDXSharp.Files
         /// <exception cref="GdxRuntimeException"></exception>
         public int ReadBytes( byte[] bytes, int offset, int size )
         {
-            var input    = Read();
-            var position = 0;
+            FileStream input    = Read();
+            var        position = 0;
 
             try
             {

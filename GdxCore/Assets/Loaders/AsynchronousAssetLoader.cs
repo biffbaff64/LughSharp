@@ -8,7 +8,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <summary>
         /// </summary>
         /// <param name="resolver"></param>
-        protected AsynchronousAssetLoader( IFileInfoResolver resolver ) : base( resolver )
+        protected AsynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
         {
             IsSynchronous = false;
         }
@@ -35,7 +35,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <summary>
         /// </summary>
         /// <param name="resolver"></param>
-        protected AsynchronousAssetLoader( IFileInfoResolver resolver ) : base( resolver )
+        protected AsynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
         {
             IsSynchronous = false;
         }

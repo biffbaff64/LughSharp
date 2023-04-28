@@ -44,7 +44,7 @@ namespace LibGDXSharp.Assets
         /// <summary>
         /// Creates a new AssetManager with all default loaders.
         ///</summary>
-        public AssetManager() : this( new AbsoluteFileInfoResolver() )
+        public AssetManager() : this( new AbsoluteFileHandleResolver() )
         {
         }
 
@@ -55,7 +55,7 @@ namespace LibGDXSharp.Assets
         /// </summary>
         /// <param name="resolver"></param>
         /// <param name="defaultLoaders">Whether to add the default loaders (default is true).</param>
-        public AssetManager( IFileInfoResolver resolver, bool defaultLoaders = true )
+        public AssetManager( IFileHandleResolver resolver, bool defaultLoaders = true )
         {
             this.Log = new Logger( "AssetManager", IApplication.LogNone );
 
@@ -83,10 +83,10 @@ namespace LibGDXSharp.Assets
         }
 
         /// <summary>
-        /// Returns the <see cref="IFileInfoResolver"/> which this AssetManager was loaded with.
+        /// Returns the <see cref="IFileHandleResolver"/> which this AssetManager was loaded with.
         /// </summary>
         /// <returns>the file handle resolver which this AssetManager uses.</returns>
-        public IFileInfoResolver FileHandleResolver { get; set; }
+        public IFileHandleResolver FileHandleResolver { get; set; }
 
         /// <summary>
         ///

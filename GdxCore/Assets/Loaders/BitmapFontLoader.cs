@@ -55,7 +55,7 @@ namespace LibGDXSharp.Assets.Loaders
         /// <summary>
         /// </summary>
         /// <param name="resolver"></param>
-        public BitmapFontLoader( IFileInfoResolver resolver ) : base( resolver ) { }
+        public BitmapFontLoader( IFileHandleResolver resolver ) : base( resolver ) { }
 
         /// <summary>
         /// Returns the assets this asset requires to be loaded first.

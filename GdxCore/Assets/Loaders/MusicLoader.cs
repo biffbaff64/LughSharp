@@ -3,7 +3,7 @@
     public class MusicLoader
         : AsynchronousAssetLoader< Texture, TextureLoader.TextureParameter >, IDisposable
     {
-        public MusicLoader( IFileInfoResolver resolver ) : base( resolver )
+        public MusicLoader( IFileHandleResolver resolver ) : base( resolver )
         {
         }
 

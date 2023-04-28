@@ -67,7 +67,6 @@ ASSETS/LOADERS
     - IP   - BitmapFontLoader               Convert
     -      - CubemapLoader                  Convert
     -      - I18NBundleLoader               Convert
-    -      - IFileHandleResolver            Convert
     -      - ModelLoader                    Convert
     - IP   - MusicLoader                    Convert
     -      - ParticleEffectLoader           Convert
@@ -85,10 +84,10 @@ ASSETS/LOADERS
 ASSETS/LOADERS/RESOLVERS
 ------------------------
     - DONE - AbsoluteFileHandleResolver
-    - DONE - IFileInfoResolver
+    - DONE - IFileHandleResolver
+    - DONE - InternalFileHandleResolver
     - **** - ClasspathFileHandleResolver    Not Needed
     - **** - ExternalFileHandleResolver     Not Needed
-    - **** - InternalFileHandleResolver     Not Needed
     - **** - LocalFileHandleResolver        Not Needed
     - **** - PrefixFileHandleResolver       Not Needed
     - **** - ResolutionFileResolver         Not Needed
@@ -108,9 +107,13 @@ AUDIO
 
 FILES
 -----
-    -      - File
-    -      - FileHandle
-    -      - FileHandleStream
+    -      - BufferedReader                 No
+    -      - File                           No
+    -      - FileHandle                     No
+    -      - FileHandleStream               No
+    -      - InputStreamReader              No
+
+    Use StreamReader / StreamWriter etc instead.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

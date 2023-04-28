@@ -3,6 +3,7 @@
     public class File
     {
         public bool Exists { get; set; }
+        public bool IsDirectory { get; set; }
         
         public File( string fileName )
         {
@@ -23,6 +24,7 @@
         {
             throw new NotImplementedException();
         }
+
     }
 }
 

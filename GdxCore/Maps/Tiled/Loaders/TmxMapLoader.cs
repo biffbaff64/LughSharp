@@ -8,7 +8,7 @@ namespace LibGDXSharp.Maps.Tiled
         {
         }
 
-        public TmxMapLoader() : base( new InternalFileInfoResolver() )
+        public TmxMapLoader() : base( new InternalFileHandleResolver() )
         {
         }
 
@@ -16,7 +16,7 @@ namespace LibGDXSharp.Maps.Tiled
      * Creates loader
 	 * @param resolver
      */
-        public TmxMapLoader( IFileInfoResolver resolver ) : base( resolver )
+        public TmxMapLoader( IFileHandleResolver resolver ) : base( resolver )
         {
         }
 
