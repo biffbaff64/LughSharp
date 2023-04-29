@@ -12,14 +12,15 @@ namespace LibGDXSharp.G2D
         private const int    Page_Size      = 1 << Log2_Page_Size;
         private const int    Pages          = 0x10000 / Page_Size;
 
-        public bool Flipped { get; set; }
+        public bool Flipped     { get; set; }
+        public bool OwnsTexture { get; set; }
 
         private readonly BitmapFontData        _data;
         private readonly List< TextureRegion > _regions;
         private readonly BitmapFontCache       _cache;
 
-        private bool _integer;
-        private bool _ownsTexture;
+        private bool     _integer;
+        private FileType _fileType;
 
         /// <summary>
         /// Creates a BitmapFont using the default 15pt Arial font included in the library.
@@ -31,10 +32,10 @@ namespace LibGDXSharp.G2D
                 (
                  Gdx.Files.Internal( FontName ),
                  Gdx.Files.Internal( FontName ),
-                 false,
-                 true
+                 false
                 )
         {
+            _fileType = FileType.Internal;
         }
 
         /// <summary>
@@ -52,6 +53,7 @@ namespace LibGDXSharp.G2D
         public BitmapFont( bool flip )
             : this( Gdx.Files.Internal( FontName ), Gdx.Files.Internal( FontName ), flip )
         {
+            _fileType = FileType.Internal;
         }
 
         /// <summary>
@@ -73,6 +75,7 @@ namespace LibGDXSharp.G2D
         public BitmapFont( FileInfo fontFile, TextureRegion region, bool flip = false )
             : this( new BitmapFontData( fontFile, flip ), region, true )
         {
+            _fileType = FileType.Local;
         }
 
         /// <summary>
@@ -87,6 +90,7 @@ namespace LibGDXSharp.G2D
         public BitmapFont( FileInfo fontFile, bool flip = false )
             : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? )null, true )
         {
+            _fileType = FileType.Local;
         }
 
         /// <summary>
@@ -108,7 +112,8 @@ namespace LibGDXSharp.G2D
                  integer
                 )
         {
-            _ownsTexture = true;
+            OwnsTexture = true;
+            _fileType   = FileType.Local;
         }
 
         /// <summary>
@@ -135,6 +140,7 @@ namespace LibGDXSharp.G2D
         public BitmapFont( BitmapFontData data, TextureRegion? region, bool integer )
             : this( data, region != null ? ListExtensions.With( region ) : null, integer )
         {
+            _fileType = FileType.Local;
         }
 
         /// <summary>
@@ -150,9 +156,10 @@ namespace LibGDXSharp.G2D
         /// </param>
         public BitmapFont( BitmapFontData data, List< TextureRegion >? pageRegions, bool integer )
         {
-            this.Flipped  = data.Flipped;
-            this._data    = data;
-            this._integer = integer;
+            this.Flipped   = data.Flipped;
+            this._data     = data;
+            this._integer  = integer;
+            this._fileType = FileType.Local;
 
             if ( ( pageRegions == null ) || ( pageRegions.Count == 0 ) )
             {
@@ -171,17 +178,17 @@ namespace LibGDXSharp.G2D
                 {
                     FileInfo file = data.FontFile == null
                         ? Gdx.Files.Internal( data.ImagePaths[ i ] )
-                        : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], data.FontFile.Type );
+                        : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
 
                     _regions.Add( new TextureRegion( new Texture( file, false ) ) );
                 }
 
-                _ownsTexture = true;
+                OwnsTexture = true;
             }
             else
             {
-                _regions     = pageRegions;
-                _ownsTexture = false;
+                _regions    = pageRegions;
+                OwnsTexture = false;
             }
 
             _cache = NewFontCache();
@@ -197,16 +204,19 @@ namespace LibGDXSharp.G2D
 
                 foreach ( Glyph? glyph in page )
                 {
-                    data.SetGlyphRegion( glyph, _regions[ glyph.Page ] );
+                    if ( glyph != null )
+                    {
+                        data.SetGlyphRegion( glyph, _regions[ glyph.Page ] );
+                    }
                 }
             }
 
             if ( data.MissingGlyph != null )
             {
-                data.SetGlyphRegion
+                data.MissingGlyph = data.SetGlyphRegion
                     (
                      data.MissingGlyph,
-                     _regions.Get( data.MissingGlyph.Page )
+                     _regions[ data.MissingGlyph.Page ]
                     );
             }
         }
@@ -230,21 +240,25 @@ namespace LibGDXSharp.G2D
             return layout;
         }
 
-        /** Draws text at the specified position.
- * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, bool, string) */
-        public GlyphLayout Draw( Batch batch, CharSequence str, float x, float y, float targetWidth, int halign, bool wrap )
+        /// <summary>
+        /// Draws text at the specified position.
+        /// </summary>
+        public GlyphLayout Draw( IBatch batch, string str, float x, float y, float targetWidth, int halign, bool wrap )
         {
-            _cache.clear();
-            GlyphLayout layout = _cache.addText( str, x, y, targetWidth, halign, wrap );
-            _cache.draw( batch );
+            _cache.Clear();
+
+            GlyphLayout layout = _cache.AddText( str, x, y, targetWidth, halign, wrap );
+
+            _cache.Draw( batch );
 
             return layout;
         }
 
-        /** Draws text at the specified position.
- * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, bool, string) */
-        public GlyphLayout Draw( Batch batch,
-                                 CharSequence str,
+        /// <summary>
+        /// Draws text at the specified position.
+        /// </summary>
+        public GlyphLayout Draw( IBatch batch,
+                                 string str,
                                  float x,
                                  float y,
                                  int start,
@@ -253,17 +267,30 @@ namespace LibGDXSharp.G2D
                                  int halign,
                                  bool wrap )
         {
-            _cache.clear();
-            GlyphLayout layout = _cache.addText( str, x, y, start, end, targetWidth, halign, wrap );
-            _cache.draw( batch );
+            _cache.Clear();
+
+            GlyphLayout layout = _cache.AddText
+                (
+                 str,
+                 x,
+                 y,
+                 start,
+                 end,
+                 targetWidth,
+                 halign,
+                 wrap
+                );
+
+            _cache.Draw( batch );
 
             return layout;
         }
 
-        /** Draws text at the specified position.
- * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, bool, string) */
-        public GlyphLayout Draw( Batch batch,
-                                 CharSequence str,
+        /// <summary>
+        /// Draws text at the specified position.
+        /// </summary>
+        public GlyphLayout Draw( IBatch batch,
+                                 string str,
                                  float x,
                                  float y,
                                  int start,
@@ -273,130 +300,140 @@ namespace LibGDXSharp.G2D
                                  bool wrap,
                                  string truncate )
         {
-            _cache.clear();
-            GlyphLayout layout = _cache.addText( str, x, y, start, end, targetWidth, halign, wrap, truncate );
-            _cache.draw( batch );
+            _cache.Clear();
+
+            GlyphLayout layout = _cache.AddText
+                (
+                 str,
+                 x,
+                 y,
+                 start,
+                 end,
+                 targetWidth,
+                 halign,
+                 wrap,
+                 truncate
+                );
+
+            _cache.Draw( batch );
 
             return layout;
         }
 
-        /** Draws text at the specified position.
- * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, bool, string) */
-        public void Draw( Batch batch, GlyphLayout layout, float x, float y )
+        /// <summary>
+        /// Draws text at the specified position.
+        /// </summary>
+        public void Draw( IBatch batch, GlyphLayout layout, float x, float y )
         {
-            _cache.clear();
-            _cache.addText( layout, x, y );
-            _cache.draw( batch );
+            _cache.Clear();
+            _cache.AddText( layout, x, y );
+            _cache.Draw( batch );
         }
 
-        /** Returns the color of text drawn with this font. */
-        public Color GetColor()
-        {
-            return _cache.getColor();
-        }
+        /// <summary>
+        /// Returns the color of text drawn with this font.
+        /// </summary>
+        public Color GetColor() => _cache.GetColor();
 
-        /** A convenience method for setting the font color. The color can also be set by modifying {@link #getColor()}. */
-        public void SetColor( Color color )
-        {
-            _cache.getColor().set( color );
-        }
+        /// <summary>
+        /// A convenience method for setting the font color.
+        /// </summary>
+        public void SetColor( Color color ) => _cache.GetColor().Set( color );
 
-        /** A convenience method for setting the font color. The color can also be set by modifying {@link #getColor()}. */
+        /// <summary>
+        /// A convenience method for setting the font color.
+        /// </summary>
         public void SetColor( float r, float g, float b, float a )
         {
-            _cache.GetColor().set( r, g, b, a );
+            _cache.GetColor().Set( r, g, b, a );
         }
 
-        public float GetScaleX()
-        {
-            return _data.ScaleX;
-        }
+        public float GetScaleX() => _data.ScaleX;
 
-        public float GetScaleY()
-        {
-            return _data.ScaleY;
-        }
+        public float GetScaleY() => _data.ScaleY;
 
-        /** Returns the first texture region. This is included for backwards compatibility, and for convenience since most fonts only
- * use one texture page. For multi-page fonts, use {@link #getRegions()}.
- * @return the first texture region */
-        public TextureRegion GetRegion()
-        {
-            return _regions.first();
-        }
+        /// <summary>
+        /// Returns the first texture region. This is included for backwards
+        /// compatibility, and for convenience since most fonts only use one
+        /// texture page.
+        /// <para>
+        /// For multi-page fonts, use <see cref="GetRegions()"/>.
+        /// </para>
+        /// </summary>
+        /// <returns>the first texture region</returns>
+        public TextureRegion GetRegion() => _regions.First();
 
-        /** Returns the array of TextureRegions that represents each texture page of glyphs.
- * @return the array of texture regions; modifying it may produce undesirable results */
-        public List< TextureRegion > GetRegions()
-        {
-            return _regions;
-        }
+        /// <summary>
+        /// Returns the array of TextureRegions that represents each texture page of glyphs.
+        /// </summary>
+        /// <returns>
+        /// the array of texture regions; modifying it may produce undesirable results
+        /// </returns>
+        public List< TextureRegion > GetRegions() => _regions;
 
-        /** Returns the texture page at the given index.
- * @return the texture page at the given index */
-        public TextureRegion GetRegion( int index )
-        {
-            return _regions.get( index );
-        }
+        /// <summary>
+        /// Returns the texture page at the given index.
+        /// </summary>
+        public TextureRegion GetRegion( int index ) => _regions[ index ];
 
-        /** Returns the line height, which is the distance from one line of text to the next. */
-        public float GetLineHeight()
-        {
-            return _data.LineHeight;
-        }
+        /// <summary>
+        /// Returns the line height, which is the distance from one line of text to the next.
+        /// </summary>
+        public float GetLineHeight() => _data.LineHeight;
 
         /** Returns the x-advance of the space character. */
-        public float GetSpaceXadvance()
-        {
-            return _data.SpaceXadvance;
-        }
+        public float GetSpaceXadvance() => _data.SpaceXadvance;
 
         /** Returns the x-height, which is the distance from the top of most lowercase characters to the baseline. */
-        public float GetXHeight()
-        {
-            return _data.XHeight;
-        }
+        public float GetXHeight() => _data.XHeight;
 
-        /** Returns the cap height, which is the distance from the top of most uppercase characters to the baseline. Since the drawing
- * position is the cap height of the first line, the cap height can be used to get the location of the baseline. */
-        public float GetCapHeight()
-        {
-            return _data.CapHeight;
-        }
+        /// <summary>
+        /// Returns the cap height, which is the distance from the top of most uppercase
+        /// characters to the baseline. Since the drawing position is the cap height of
+        /// the first line, the cap height can be used to get the location of the baseline. 
+        /// </summary>
+        public float GetCapHeight() => _data.CapHeight;
 
-        /** Returns the ascent, which is the distance from the cap height to the top of the tallest glyph. */
-        public float GetAscent()
-        {
-            return _data.Ascent;
-        }
+        /// <summary>
+        /// Returns the ascent, which is the distance from the cap height to the top of
+        /// the tallest glyph.
+        /// </summary>
+        public float GetAscent() => _data.Ascent;
 
-        /** Returns the descent, which is the distance from the bottom of the glyph that extends the lowest to the baseline. This
- * number is negative. */
-        public float GetDescent()
-        {
-            return _data.Descent;
-        }
+        /// <summary>
+        /// Returns the descent, which is the distance from the bottom of the glyph that
+        /// extends the lowest to the baseline. This number is negative. 
+        /// </summary>
+        public float GetDescent() => _data.Descent;
 
-        /** Disposes the texture used by this BitmapFont's region IF this BitmapFont created the texture. */
+        /// <summary>
+        /// Disposes the texture used by this BitmapFont's region IF this BitmapFont
+        /// created the texture.
+        /// </summary>
         public void Dispose()
         {
-            if ( _ownsTexture )
+            if ( OwnsTexture )
             {
-                for ( var i = 0; i < _regions.size; i++ )
-                    _regions.get( i ).getTexture().dispose();
+                foreach ( TextureRegion t in _regions )
+                {
+                    t.Texture.Dispose();
+                }
             }
         }
 
-        /** Makes the specified glyphs fixed width. This can be useful to make the numbers in a font fixed width. Eg, when horizontally
- * centering a score or loading percentage text, it will not jump around as different numbers are shown. */
-        public void SetFixedWidthGlyphs( CharSequence glyphs )
+        /// <summary>
+        /// Makes the specified glyphs fixed width. This can be useful to make the numbers
+        /// in a font fixed width. Eg, when horizontally centering a score or loading
+        /// percentage text, it will not jump around as different numbers are shown. 
+        /// </summary>
+        public void SetFixedWidthGlyphs( string glyphs )
         {
-            var data       = this._data;
-            var maxAdvance = 0;
+            BitmapFontData data       = this._data;
+            var            maxAdvance = 0;
 
-            for ( int index = 0, end = glyphs.length(); index < end; index++ )
+            for ( int index = 0, end = glyphs.Length; index < end; index++ )
             {
-                Glyph g = data.getGlyph( glyphs.charAt( index ) );
+                Glyph? g = data.GetGlyph( glyphs[ index ] );
 
                 if ( ( g != null ) && ( g.xadvance > maxAdvance ) )
                 {
@@ -404,9 +441,9 @@ namespace LibGDXSharp.G2D
                 }
             }
 
-            for ( int index = 0, end = glyphs.length(); index < end; index++ )
+            for ( int index = 0, end = glyphs.Length; index < end; index++ )
             {
-                Glyph? g = data.GetGlyph( glyphs.charAt( index ) );
+                Glyph? g = data.GetGlyph( glyphs[ index ] );
 
                 if ( g == null ) continue;
 
@@ -417,63 +454,56 @@ namespace LibGDXSharp.G2D
             }
         }
 
-        /** Specifies whether to use integer positions. Default is to use them so filtering doesn't kick in as badly. */
+        /// <summary>
+        /// Specifies whether to use integer positions.
+        /// Default is to use them so filtering doesn't kick in as badly.
+        /// </summary>
+        /// <param name="integer"></param>
         public void SetUseIntegerPositions( bool integer )
         {
             this._integer = integer;
+
             _cache.SetUseIntegerPositions( integer );
         }
 
-        /** Checks whether this font uses integer positions for drawing. */
-        public bool UsesIntegerPositions()
-        {
-            return _integer;
-        }
+        /// <summary>
+        /// Checks whether this font uses integer positions for drawing.
+        /// </summary>
+        public bool UsesIntegerPositions() => _integer;
 
-        /** For expert usage -- returns the BitmapFontCache used by this font, for rendering to a sprite batch. This can be used, for
- * example, to manipulate glyph colors within a specific index.
- * @return the bitmap font cache used by this font */
-        public BitmapFontCache GetCache()
-        {
-            return _cache;
-        }
+        /// <summary>
+        /// For expert usage -- returns the BitmapFontCache used by this font, for rendering
+        /// to a sprite batch. This can be used, for example, to manipulate glyph colors
+        /// within a specific index.
+        /// </summary>
+        /// <returns> the bitmap font cache used by this font  </returns>
+        public BitmapFontCache GetCache() => _cache;
 
-        /** Gets the underlying {@link BitmapFontData} for this BitmapFont. */
-        public BitmapFontData GetData()
-        {
-            return _data;
-        }
+        /// <summary>
+        /// Gets the underlying <see cref="BitmapFontData"/> for this BitmapFont.
+        /// </summary>
+        public BitmapFontData GetData() => _data;
 
-        /** @return whether the texture is owned by the font, font disposes the texture itself if true */
-        public bool OwnsTexture()
-        {
-            return _ownsTexture;
-        }
-
-        /** Sets whether the font owns the texture. In case it does, the font will also dispose of the texture when {@link #dispose()}
- * is called. Use with care!
- * @param ownsTexture whether the font owns the texture */
-        public void SetOwnsTexture( bool ownsTexture )
-        {
-            this._ownsTexture = ownsTexture;
-        }
-
-        /** Creates a new BitmapFontCache for this font. Using this method allows the font to provide the BitmapFontCache
- * implementation to customize rendering.
- * <p>
- * Note this method is called by the BitmapFont constructors. If a subclass overrides this method, it will be called before the
- * subclass constructors. */
+        /// <summary>
+        /// Creates a new BitmapFontCache for this font. Using this method allows the
+        /// font to provide the BitmapFontCache implementation to customize rendering.
+        /// </summary>
+        /// <para>
+        /// Note this method is called by the BitmapFont constructors. If a subclass
+        /// overrides this method, it will be called before the subclass constructors. 
+        /// </para>
         public BitmapFontCache NewFontCache()
         {
             return new BitmapFontCache( this, _integer );
         }
 
-        public string ToString()
+        public new string? ToString()
         {
-            return _data.Name != null ? _data.Name : base.ToString();
+            return _data.Name ?? base.ToString();
         }
 
-        /** Represents a single character in a font page. */
+        /// <summary>
+        /// Represents a single character in a font page. </summary>
         public sealed class Glyph
         {
             public int        id;
@@ -1027,13 +1057,13 @@ namespace LibGDXSharp.G2D
             }
 
             /// <summary>
-            /// 
             /// </summary>
             /// <param name="glyph">
             /// A reference to the Glyph whose region is to be set.
             /// </param>
             /// <param name="region"></param>
-            public void SetGlyphRegion( Glyph glyph, TextureRegion region )
+            /// <remarks>This method is a candidate for reworking using 'ref'</remarks>
+            public Glyph SetGlyphRegion( Glyph glyph, TextureRegion region )
             {
                 var invTexWidth  = 1.0f / region.Texture.Width;
                 var invTexHeight = 1.0f / region.Texture.Height;
@@ -1122,6 +1152,8 @@ namespace LibGDXSharp.G2D
                     glyph.v2 = v + ( y * invTexHeight );
                     glyph.v  = v + ( y2 * invTexHeight );
                 }
+
+                return glyph;
             }
 
             /// <summary>
@@ -1139,13 +1171,13 @@ namespace LibGDXSharp.G2D
             /// <param name="glyph"></param>
             public void SetGlyph( int ch, Glyph glyph )
             {
-                var page = Glyphs?[ ch / Page_Size ];
+                var page = Glyphs[ ch / Page_Size ];
 
                 if ( page == null )
                 {
                     page = new Glyph[ Page_Size ];
 
-                    this.Glyphs![ ch / Page_Size ] = page;
+                    this.Glyphs[ ch / Page_Size ] = page;
                 }
 
                 page[ ch & ( Page_Size - 1 ) ] = glyph;
@@ -1159,11 +1191,14 @@ namespace LibGDXSharp.G2D
             {
                 foreach ( var page in this.Glyphs )
                 {
-                    foreach ( Glyph? glyph in page )
+                    if ( page != null )
                     {
-                        if ( ( glyph == null ) || ( glyph.height == 0 ) || ( glyph.width == 0 ) ) continue;
+                        foreach ( Glyph? glyph in page )
+                        {
+                            if ( ( glyph == null ) || ( glyph.height == 0 ) || ( glyph.width == 0 ) ) continue;
 
-                        return glyph;
+                            return glyph;
+                        }
                     }
                 }
 
@@ -1186,7 +1221,7 @@ namespace LibGDXSharp.G2D
             /// </summary>
             /// See also <see cref="GetGlyphs"/> should be be used to shape a string
             /// of characters into a list of glyphs. 
-            public Glyph? GetGlyph( char ch ) => Glyphs[ ch / Page_Size ][ ch & ( Page_Size - 1 ) ];
+            public Glyph? GetGlyph( char ch ) => Glyphs[ ch / Page_Size ]?[ ch & ( Page_Size - 1 ) ];
 
             /// <summary>
             /// Using the specified string, populates the glyphs and positions of the
