@@ -27,6 +27,22 @@ namespace LibGDXSharp.Utils.Collections.Extensions
         }
 
         /// <summary>
+        /// </summary>
+        /// <param name="ts"></param>
+        /// <param name="t"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static List< T > With<T>( T t )
+        {
+            var list = new List< T >
+            {
+                t
+            };
+
+            return list;
+        }
+        
+        /// <summary>
         /// Shuffles the element order of the specified list.
         /// </summary>
         public static void Shuffle<T>( this IList< T > ts )

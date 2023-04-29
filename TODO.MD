@@ -527,16 +527,13 @@ UTILS
     -      - DataBuffer                     Needed??
     -      - IntBuffer                      Needed??
 
-    Clipboard
-    ---------
-    - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backend.                 
-
     Misc
     ----
     - DONE - Align                          Convert
     -      - Base64Coder                    Use System.Convert classes??
     -      - BinaryHeap
     - DONE - Bits                           Convert
+    - IP   - CharHelper
     -      - ComparableTimSort              Convert
     -      - DataInput                      Check
     -      - DataOutput                     Check
@@ -544,6 +541,7 @@ UTILS
     - DONE - FloatConsts                    Done, but is it needed?
     -      - GdxNativesLoader
     -      - I18NBundle                     Check
+    - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backend.                 
     - DONE - IRunnable                      Done, but is it needed?
     -      - LittleEndianInputStream        Check
     - DONE - Logger                         Convert
@@ -562,6 +560,7 @@ UTILS
     - DONE - SortUtils
     -      - SortedIntList
     -      - StreamUtils
+    - DONE - StringTokenizer
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter                  Remove, look into C# localisation
     - DONE - Timer                          Use System.Timer instead??

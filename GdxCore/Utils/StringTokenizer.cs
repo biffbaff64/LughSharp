@@ -170,7 +170,7 @@ namespace LibGDXSharp.Utils
             {
                 c = _delimiters[ i ];
 
-                if ( c is >= CharConsts.Min_High_Surrogate and <= CharConsts.Max_Low_Surrogate )
+                if ( c is >= CharHelper.Min_High_Surrogate and <= CharHelper.Max_Low_Surrogate )
                 {
                     c = char.ConvertToUtf32( _delimiters, i );
 
@@ -218,8 +218,8 @@ namespace LibGDXSharp.Utils
             {
                 if ( !_hasSurrogates )
                 {
-                    var c = _str?[ position ];
-
+                    var c = _str![ position ];
+                    
                     if ( ( c > _maxDelimCodePoint ) || ( _delimiters.IndexOf( c ) < 0 ) )
                     {
                         break;
@@ -229,14 +229,14 @@ namespace LibGDXSharp.Utils
                 }
                 else
                 {
-                    int c = _str.CodePointAt( position );
+                    var c = char.ConvertToUtf32( _str!, position );
 
                     if ( ( c > _maxDelimCodePoint ) || !IsDelimiter( c ) )
                     {
                         break;
                     }
 
-                    position += char.CharCount( c );
+                    position += CharHelper.CharCount( c );
                 }
             }
 
@@ -255,7 +255,7 @@ namespace LibGDXSharp.Utils
             {
                 if ( !_hasSurrogates )
                 {
-                    var c = _str?[ position ];
+                    var c = _str![ position ];
 
                     if ( ( c <= _maxDelimCodePoint ) && ( _delimiters?.IndexOf( c ) >= 0 ) )
                     {
@@ -266,14 +266,14 @@ namespace LibGDXSharp.Utils
                 }
                 else
                 {
-                    int c = _str.CodePointAt( position );
+                    var c = char.ConvertToUtf32( _str!, position );
 
                     if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) )
                     {
                         break;
                     }
 
-                    position += char.CharCount( c );
+                    position += CharHelper.CharCount( c );
                 }
             }
 
@@ -281,7 +281,7 @@ namespace LibGDXSharp.Utils
             {
                 if ( !_hasSurrogates )
                 {
-                    var c = _str?[ position ];
+                    var c = _str![ position ];
 
                     if ( ( c <= _maxDelimCodePoint ) && ( _delimiters?.IndexOf( c ) >= 0 ) )
                     {
@@ -290,11 +290,11 @@ namespace LibGDXSharp.Utils
                 }
                 else
                 {
-                    int c = _str.CodePointAt( position );
+                    int c = char.ConvertToUtf32( _str!, position );
 
                     if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) )
                     {
-                        position += char.CharCount( c );
+                        position += CharHelper.CharCount( c );
                     }
                 }
             }
@@ -345,7 +345,7 @@ namespace LibGDXSharp.Utils
         /// Returns the next token from this string tokenizer.
         /// </summary>
         /// <returns>the next token from this string tokenizer.</returns>
-        public string? NextToken()
+        public string NextToken()
         {
             // If next position already computed in hasMoreElements() and
             // delimiters have changed between the computation and this invocation,
@@ -368,7 +368,7 @@ namespace LibGDXSharp.Utils
 
             _currentPosition = ScanToken( _currentPosition );
 
-            return _str?.Substring( start, _currentPosition - start );
+            return _str!.Substring( start, _currentPosition - start );
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+using LibGDXSharp.Utils.Collections.Extensions;
+
 namespace LibGDXSharp.G2D
 {
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -31,66 +33,74 @@ namespace LibGDXSharp.G2D
                  Gdx.Files.Internal( FontName ),
                  false,
                  true
-                ) { }
+                )
+        {
+        }
 
-        /**
-         * Creates a BitmapFont using the default 15pt Arial font included in the libgdx JAR file.
-         * This is convenient to easily display text without bothering without generating a
-         * bitmap font yourself.
-	     * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is
-         * the upper left corner.
-         */
+        /// <summary>
+        /// Creates a BitmapFont using the default 15pt Arial font included in the
+        /// libGDXSharp project.
+        /// <para>
+        /// This is convenient to easily display text without bothering without generating a
+        /// bitmap font yourself.
+        /// </para>
+        /// </summary>
+        /// <param name="flip">
+        /// If true, the glyphs will be flipped for use with a perspective where 0,0 is
+        /// the upper left corner.
+        /// </param>
         public BitmapFont( bool flip )
-            : this
-                (
-                 Gdx.Files.Internal( FontName ),
-                 Gdx.Files.Internal( FontName ),
-                 flip,
-                 true
-                ) { }
+            : this( Gdx.Files.Internal( FontName ), Gdx.Files.Internal( FontName ), flip )
+        {
+        }
 
-        /** Creates a BitmapFont with the glyphs relative to the specified region. If the region is null, the glyph textures are loaded
-	 * from the image file given in the font file. The {@link #dispose()} method will not dispose the region's texture in this
-	 * case!
-	 * <p>
-	 * The font data is not flipped.
-	 * @param fontFile the font definition file
-	 * @param region The texture region containing the glyphs. The glyphs must be relative to the lower left corner (ie, the region
-	 *           should not be flipped). If the region is null the glyph images are loaded from the image path in the font file. */
-        public BitmapFont( FileInfo fontFile, TextureRegion region )
-            : this( fontFile, region, false ) { }
+        /// <summary>
+        /// Creates a BitmapFont with the glyphs relative to the specified region.
+        /// If the region is null, the glyph textures are loaded from the image file
+        /// given in the font file. The Dispose() method will not dispose the region's
+        /// texture in this case!
+        /// </summary>
+        /// <param name="fontFile"> the font definition file.</param>
+        /// <param name="region">
+        /// The texture region containing the glyphs. The glyphs must be relative to
+        /// the lower left corner (ie, the region should not be flipped). If the region
+        /// is null the glyph images are loaded from the image path in the font file.
+        /// </param>
+        /// <param name="flip">
+        /// If true, the glyphs will be flipped for use with a perspective where 0,0
+        /// is the upper left corner.
+        /// </param>
+        public BitmapFont( FileInfo fontFile, TextureRegion region, bool flip = false )
+            : this( new BitmapFontData( fontFile, flip ), region, true )
+        {
+        }
 
-        /** Creates a BitmapFont with the glyphs relative to the specified region. If the region is null, the glyph textures are loaded
-	 * from the image file given in the font file. The {@link #dispose()} method will not dispose the region's texture in this
-	 * case!
-	 * @param region The texture region containing the glyphs. The glyphs must be relative to the lower left corner (ie, the region
-	 *           should not be flipped). If the region is null the glyph images are loaded from the image path in the font file.
-	 * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner. */
-        public BitmapFont( FileInfo fontFile, TextureRegion region, bool flip )
-            : this( new BitmapFontData( fontFile, flip ), region, true ) { }
+        /// <summary>
+        /// Creates a BitmapFont from a BMFont file. The image file name is read from
+        /// the BMFont file and the image is loaded from the same directory.
+        /// </summary>
+        /// <param name="fontFile"> the font definition file.</param>
+        /// <param name="flip">
+        /// If true, the glyphs will be flipped for use with a perspective where 0,0
+        /// is the upper left corner.
+        /// </param>
+        public BitmapFont( FileInfo fontFile, bool flip = false )
+            : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? )null, true )
+        {
+        }
 
-        /** Creates a BitmapFont from a BMFont file. The image file name is read from the BMFont file and the image is loaded from the
-	 * same directory. The font data is not flipped. */
-        public BitmapFont( FileInfo fontFile )
-            : this( fontFile, false ) { }
-
-        /** Creates a BitmapFont from a BMFont file. The image file name is read from the BMFont file and the image is loaded from the
-	 * same directory.
-	 * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner. */
-        public BitmapFont( FileInfo fontFile, bool flip )
-            : this( new BitmapFontData( fontFile, flip ), ( TextureRegion )null, true ) { }
-
-        /** Creates a BitmapFont from a BMFont file, using the specified image for glyphs. Any image specified in the BMFont file is
-	 * ignored.
-	 * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner. */
-        public BitmapFont( FileInfo fontFile, FileInfo imageFile, bool flip )
-            : this( fontFile, imageFile, flip, true ) { }
-
-        /** Creates a BitmapFont from a BMFont file, using the specified image for glyphs. Any image specified in the BMFont file is
-	 * ignored.
-	 * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner.
-	 * @param integer If true, rendering positions will be at integer values to avoid filtering artifacts. */
-        public BitmapFont( FileInfo fontFile, FileInfo imageFile, bool flip, bool integer )
+        /// <summary>
+        /// Creates a BitmapFont from a BMFont file, using the specified image for
+        /// glyphs. Any image specified in the BMFont file is ignored.
+        /// </summary>
+        /// <param name="fontFile"> the font definition file.</param>
+        /// <param name="imageFile"></param>
+        /// <param name="flip">
+        /// If true, the glyphs will be flipped for use with a perspective where
+        /// 0,0 is the upper left corner.
+        /// </param>
+        /// <param name="integer"></param>
+        public BitmapFont( FileInfo fontFile, FileInfo imageFile, bool flip, bool integer = true )
             : this
                 (
                  new BitmapFontData( fontFile, flip ),
@@ -101,30 +111,50 @@ namespace LibGDXSharp.G2D
             _ownsTexture = true;
         }
 
-        /** Constructs a new BitmapFont from the given {@link BitmapFontData} and {@link TextureRegion}. If the TextureRegion is null,
-	 * the image path(s) will be read from the BitmapFontData. The dispose() method will not dispose the texture of the region(s)
-	 * if the region is != null.
-	 * <p>
-	 * Passing a single TextureRegion assumes that your font only needs a single texture page. If you need to support multiple
-	 * pages, either let the Font read the images themselves (by specifying null as the TextureRegion), or by specifying each page
-	 * manually with the TextureRegion[] constructor.
-	 * @param integer If true, rendering positions will be at integer values to avoid filtering artifacts. */
-        public BitmapFont( BitmapFontData data, TextureRegion region, bool integer )
-            : this( data, region != null ? List.With( region ) : null, integer ) { }
+        /// <summary>
+        /// Constructs a new BitmapFont from the given <see cref="BitmapFontData"/> and
+        /// <see cref="TextureRegion"/>. If the TextureRegion is null, the image path(s)
+        /// will be read from the BitmapFontData.
+        /// <para>
+        /// The dispose() method will not dispose the texture of the region(s) if the
+        /// region is != null.
+        /// </para>
+        /// <para>
+        /// Passing a single TextureRegion assumes that your font only needs a single
+        /// texture page. If you need to support multiple pages, either let the Font read
+        /// the images themselves (by specifying null as the TextureRegion), or by
+        /// specifying each page manually with the TextureRegion[] constructor.
+        /// </para>
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="region"></param>
+        /// <param name="integer">
+        /// If true, rendering positions will be at integer values to avoid filtering
+        /// artifacts.
+        /// </param>
+        public BitmapFont( BitmapFontData data, TextureRegion? region, bool integer )
+            : this( data, region != null ? ListExtensions.With( region ) : null, integer )
+        {
+        }
 
-        /**
-         * Constructs a new BitmapFont from the given {@link BitmapFontData} and array of {@link TextureRegion}. If the TextureRegion
-	     * is null or empty, the image path(s) will be read from the BitmapFontData. The dispose() method will not dispose the texture
-	     * of the region(s) if the regions array is != null and not empty.
-	     * @param integer If true, rendering positions will be at integer values to avoid filtering artifacts.
-         */
-        public BitmapFont( BitmapFontData data, List< TextureRegion > pageRegions, bool integer )
+        /// <summary>
+        /// Constructs a new BitmapFont from the given <see cref="BitmapFontData"/> and array
+        /// of <see cref="TextureRegion"/>. If the TextureRegion is null or empty, the image
+        /// path(s) will be read from the BitmapFontData. The dispose() method will not dispose
+        /// the texture of the region(s) if the regions array is != null and not empty.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="pageRegions"></param>
+        /// <param name="integer">
+        /// If true, rendering positions will be at integer values to avoid filtering artifacts.
+        /// </param>
+        public BitmapFont( BitmapFontData data, List< TextureRegion >? pageRegions, bool integer )
         {
             this.Flipped  = data.Flipped;
             this._data    = data;
             this._integer = integer;
 
-            if ( ( pageRegions == null ) || ( pageRegions.Size == 0 ) )
+            if ( ( pageRegions == null ) || ( pageRegions.Count == 0 ) )
             {
                 if ( data.ImagePaths == null )
                 {
@@ -139,16 +169,9 @@ namespace LibGDXSharp.G2D
 
                 for ( var i = 0; i < n; i++ )
                 {
-                    FileHandle file;
-
-                    if ( data.FontFile == null )
-                    {
-                        file = Gdx.Files.Internal( data.ImagePaths[ i ] );
-                    }
-                    else
-                    {
-                        file = Gdx.Files.GetFileHandle( data.ImagePaths[ i ], data.FontFile.Type );
-                    }
+                    FileInfo file = data.FontFile == null
+                        ? Gdx.Files.Internal( data.ImagePaths[ i ] )
+                        : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], data.FontFile.Type );
 
                     _regions.Add( new TextureRegion( new Texture( file, false ) ) );
                 }
@@ -166,28 +189,43 @@ namespace LibGDXSharp.G2D
             Load( data );
         }
 
-        protected void Load( BitmapFontData data )
+        public void Load( BitmapFontData data )
         {
-            foreach ( var page in data.glyphs )
+            foreach ( var page in data.Glyphs )
             {
                 if ( page == null ) continue;
 
-                foreach ( var glyph in page )
+                foreach ( Glyph? glyph in page )
                 {
-                    if ( glyph != null ) data.setGlyphRegion( glyph, _regions.get( glyph.page ) );
+                    data.SetGlyphRegion( glyph, _regions[ glyph.Page ] );
                 }
             }
 
-            if ( data.MissingGlyph != null ) data.setGlyphRegion( data.MissingGlyph, _regions.get( data.MissingGlyph.page ) );
+            if ( data.MissingGlyph != null )
+            {
+                data.SetGlyphRegion
+                    (
+                     data.MissingGlyph,
+                     _regions.Get( data.MissingGlyph.Page )
+                    );
+            }
         }
 
-        /** Draws text at the specified position.
- * @see BitmapFontCache#addText(CharSequence, float, float) */
-        public GlyphLayout Draw( Batch batch, CharSequence str, float x, float y )
+        /// <summary>
+        /// Draws text at the specified position.
+        /// </summary>
+        /// <param name="batch"></param>
+        /// <param name="str"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public GlyphLayout Draw( IBatch batch, string str, float x, float y )
         {
-            _cache.clear();
-            GlyphLayout layout = _cache.addText( str, x, y );
-            _cache.draw( batch );
+            _cache.Clear();
+
+            GlyphLayout layout = _cache.AddText( str, x, y );
+
+            _cache.Draw( batch );
 
             return layout;
         }
@@ -368,9 +406,10 @@ namespace LibGDXSharp.G2D
 
             for ( int index = 0, end = glyphs.length(); index < end; index++ )
             {
-                Glyph g = data.getGlyph( glyphs.charAt( index ) );
+                Glyph? g = data.GetGlyph( glyphs.charAt( index ) );
 
                 if ( g == null ) continue;
+
                 g.xoffset    += ( maxAdvance - g.xadvance ) / 2;
                 g.xadvance   =  maxAdvance;
                 g.kerning    =  null;
@@ -431,58 +470,67 @@ namespace LibGDXSharp.G2D
 
         public string ToString()
         {
-            return _data.Name != null ? _data.Name : base.toString();
+            return _data.Name != null ? _data.Name : base.ToString();
         }
 
         /** Represents a single character in a font page. */
-        public class Glyph
+        public sealed class Glyph
         {
-            public int      id;
-            public int      srcX;
-            public int      srcY;
-            public int      width,   height;
-            public float    u,       v, u2, v2;
-            public int      xoffset, yoffset;
-            public int      xadvance;
-            public byte[][] kerning;
-            public bool     fixedWidth;
+            public int        id;
+            public int        srcX;
+            public int        srcY;
+            public int        width;
+            public int        height;
+            public float      u;
+            public float      v;
+            public float      u2;
+            public float      v2;
+            public int        xoffset, yoffset;
+            public int        xadvance;
+            public byte[]?[]? kerning;
+            public bool       fixedWidth;
 
-            /** The index to the texture page that holds this glyph. */
-            public int page = 0;
+            /// <summary>
+            /// The index to the texture page that holds this glyph.
+            /// </summary>
+            public int Page { get; set; } = 0;
 
             public int GetKerning( char ch )
             {
-                if ( kerning != null )
-                {
-                    var page = kerning[ ch >>> Log2_Page_Size ];
+                var page = kerning?[ ch >>> Log2_Page_Size ];
 
-                    if ( page != null ) return page[ ch & ( Page_Size - 1 ) ];
-                }
+                return page != null ? page[ ch & ( Page_Size - 1 ) ] : 0;
 
-                return 0;
             }
 
             public void SetKerning( int ch, int value )
             {
-                if ( kerning == null ) kerning                       = new byte[ Pages ][];
-                var page                                             = kerning[ ch >>> Log2_Page_Size ];
+                kerning ??= new byte[ Pages ][];
+
+                var page = kerning[ ch >>> Log2_Page_Size ];
+
                 if ( page == null ) kerning[ ch >>> Log2_Page_Size ] = page = new byte[ Page_Size ];
+
                 page[ ch & ( Page_Size - 1 ) ] = ( byte )value;
             }
 
-            public string ToString()
+            public new string ToString()
             {
-                return Character.ToString( ( char )id );
+                return id.ToString();
             }
         }
 
-        static int IndexOf( CharSequence text, char ch, int start )
+        private static int IndexOf( string text, char ch, int start )
         {
-            final int n = text.length();
+            int n = text.Length;
 
             for ( ; start < n; start++ )
-                if ( text.charAt( start ) == ch )
+            {
+                if ( text[ start ] == ch )
+                {
                     return start;
+                }
+            }
 
             return n;
         }
@@ -551,7 +599,7 @@ namespace LibGDXSharp.G2D
             /// </summary>
             public float CursorX { get; set; }
 
-            public Glyph?[][] Glyphs { get; set; } = new Glyph[ Pages ][];
+            public Glyph?[]?[] Glyphs { get; set; } = new Glyph[ Pages ][];
 
             /// <summary>
             /// The glyph to display for characters not in the font. May be null.
@@ -618,7 +666,9 @@ namespace LibGDXSharp.G2D
             public void Load( FileInfo file, bool flip )
             {
                 if ( ImagePaths != null )
+                {
                     throw new InvalidOperationException( "Already loaded." );
+                }
 
                 Name = file.Name;
 
@@ -695,7 +745,7 @@ namespace LibGDXSharp.G2D
 
                             try
                             {
-                                int pageID = int.Parse( id );
+                                var pageID = int.Parse( id );
 
                                 if ( pageID != p )
                                     throw new GdxRuntimeException( "Page IDs must be indices starting at 0: " + id );
@@ -711,7 +761,7 @@ namespace LibGDXSharp.G2D
                         if ( !matcher.find() ) throw new GdxRuntimeException( "Missing: file" );
                         string fileName = matcher.group( 1 );
 
-                        ImagePaths[ p ] = file.parent().child( fileName ).path().replaceAll( "\\\\", "/" );
+                        ImagePaths[ p ] = file.Parent().child( fileName ).path().replaceAll( "\\\\", "/" );
                     }
 
                     Descent = 0;
@@ -721,19 +771,19 @@ namespace LibGDXSharp.G2D
                         line = reader.readLine();
 
                         if ( line == null ) break;                   // EOF
-                        if ( line.startsWith( "kernings " ) ) break; // Starting kernings block.
-                        if ( line.startsWith( "metrics " ) ) break;  // Starting metrics block.
+                        if ( line.StartsWith( "kernings " ) ) break; // Starting kernings block.
+                        if ( line.StartsWith( "metrics " ) ) break;  // Starting metrics block.
 
-                        if ( !line.startsWith( "char " ) ) continue;
+                        if ( !line.StartsWith( "char " ) ) continue;
 
                         var glyph = new Glyph();
 
-                        StringTokenizer tokens = new StringTokenizer( line, " =" );
+                        var tokens = new StringTokenizer( line, " =" );
 
-                        tokens.nextToken();
-                        tokens.nextToken();
+                        tokens.NextToken();
+                        tokens.NextToken();
 
-                        var ch = int.Parse( tokens.nextToken() );
+                        var ch = int.Parse( tokens.NextToken() );
 
                         if ( ch <= 0 )
                         {
@@ -749,44 +799,46 @@ namespace LibGDXSharp.G2D
                         }
 
                         glyph.id = ch;
-                        tokens.nextToken();
-                        glyph.srcX = int.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        glyph.srcY = int.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        glyph.width = int.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        glyph.height = int.Parse( tokens.nextToken() );
-                        tokens.nextToken();
-                        glyph.xoffset = int.Parse( tokens.nextToken() );
-                        tokens.nextToken();
+                        tokens.NextToken();
+                        glyph.srcX = int.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        glyph.srcY = int.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        glyph.width = int.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        glyph.height = int.Parse( tokens.NextToken() );
+                        tokens.NextToken();
+                        glyph.xoffset = int.Parse( tokens.NextToken() );
+                        tokens.NextToken();
 
                         if ( flip )
                         {
-                            glyph.yoffset = int.Parse( tokens.nextToken() );
+                            glyph.yoffset = int.Parse( tokens.NextToken() );
                         }
                         else
                         {
-                            glyph.yoffset = -( glyph.height + int.Parse( tokens.nextToken() ) );
+                            glyph.yoffset = -( glyph.height + int.Parse( tokens.NextToken() ) );
                         }
 
-                        tokens.nextToken();
+                        tokens.NextToken();
 
-                        glyph.xadvance = int.Parse( tokens.nextToken() );
+                        glyph.xadvance = int.Parse( tokens.NextToken() );
 
                         // Check for page safely, it could be omitted or invalid.
-                        if ( tokens.hasMoreTokens() ) tokens.nextToken();
+                        if ( tokens.HasMoreTokens() ) tokens.NextToken();
 
-                        if ( tokens.hasMoreTokens() )
+                        if ( tokens.HasMoreTokens() )
                         {
                             try
                             {
-                                glyph.page = int.Parse( tokens.nextToken() );
+                                glyph.Page = int.Parse( tokens.NextToken() );
                             }
-                            catch ( NumberFormatException ignored ) { }
+                            catch ( NumberFormatException ignored )
+                            {
+                            }
                         }
 
-                        if ( ( glyph.width > 0 ) && ( glyph.height > 0 ) )
+                        if ( glyph is { width: > 0, height: > 0 } )
                         {
                             Descent = Math.Min( baseLine + glyph.yoffset, Descent );
                         }
@@ -801,36 +853,36 @@ namespace LibGDXSharp.G2D
                         if ( line == null ) break;
                         if ( !line.StartsWith( "kerning " ) ) break;
 
-                        StringTokenizer tokens = new StringTokenizer( line, " =" );
+                        var tokens = new StringTokenizer( line, " =" );
 
-                        tokens.nextToken();
-                        tokens.nextToken();
+                        tokens.NextToken();
+                        tokens.NextToken();
 
-                        int first = int.Parse( tokens.nextToken() );
+                        var first = int.Parse( tokens.NextToken() );
 
-                        tokens.nextToken();
+                        tokens.NextToken();
 
-                        int second = int.Parse( tokens.nextToken() );
+                        var second = int.Parse( tokens.NextToken() );
 
-                        if ( ( first < 0 ) || ( first > Character.MAX_VALUE ) || ( second < 0 ) || ( second > Character.MAX_VALUE ) )
+                        if ( ( first < 0 )
+                             || ( first > CharHelper.Max_Value )
+                             || ( second < 0 )
+                             || ( second > CharHelper.Max_Value ) )
                         {
                             continue;
                         }
 
-                        Glyph glyph = getGlyph( ( char )first );
-                        tokens.nextToken();
+                        Glyph? glyph = GetGlyph( ( char )first );
+                        tokens.NextToken();
 
-                        int amount = int.Parse( tokens.nextToken() );
+                        var amount = int.Parse( tokens.NextToken() );
 
-                        if ( glyph != null )
-                        {
-                            // Kernings may exist for glyph pairs not contained in the font.
-                            glyph.SetKerning( second, amount );
-                        }
+                        // Kernings may exist for glyph pairs not contained in the font.
+                        glyph?.SetKerning( second, amount );
                     }
 
-                    var   hasMetricsOverride    = false;
-                    
+                    var hasMetricsOverride = false;
+
                     float overrideAscent        = 0;
                     float overrideDescent       = 0;
                     float overrideDown          = 0;
@@ -844,23 +896,29 @@ namespace LibGDXSharp.G2D
                     {
                         hasMetricsOverride = true;
 
-                        StringTokenizer tokens = new StringTokenizer( line, " =" );
+                        var tokens = new StringTokenizer( line, " =" );
 
                         tokens.NextToken();
                         tokens.NextToken();
 
                         overrideAscent = float.Parse( tokens.NextToken() );
                         tokens.NextToken();
+
                         overrideDescent = float.Parse( tokens.NextToken() );
                         tokens.NextToken();
+
                         overrideDown = float.Parse( tokens.NextToken() );
                         tokens.NextToken();
+
                         overrideCapHeight = float.Parse( tokens.NextToken() );
                         tokens.NextToken();
+
                         overrideLineHeight = float.Parse( tokens.NextToken() );
                         tokens.NextToken();
+
                         overrideSpaceXAdvance = float.Parse( tokens.NextToken() );
                         tokens.NextToken();
+
                         overrideXHeight = float.Parse( tokens.NextToken() );
                     }
 
@@ -900,7 +958,7 @@ namespace LibGDXSharp.G2D
                     }
 
                     xGlyph ??= GetFirstGlyph();
-                    
+
                     XHeight = xGlyph.height - padY;
 
                     Glyph? capGlyph = null;
@@ -917,7 +975,7 @@ namespace LibGDXSharp.G2D
                         foreach ( var page in Glyphs )
                         {
                             if ( page == null ) continue;
-                            
+
                             foreach ( Glyph? glyph in page )
                             {
                                 if ( ( glyph == null )
@@ -926,7 +984,7 @@ namespace LibGDXSharp.G2D
                                 {
                                     continue;
                                 }
-                                
+
                                 CapHeight = Math.Max( CapHeight, glyph.height );
                             }
                         }
@@ -975,7 +1033,7 @@ namespace LibGDXSharp.G2D
             /// A reference to the Glyph whose region is to be set.
             /// </param>
             /// <param name="region"></param>
-            public void SetGlyphRegion( ref Glyph glyph, TextureRegion region )
+            public void SetGlyphRegion( Glyph glyph, TextureRegion region )
             {
                 var invTexWidth  = 1.0f / region.Texture.Width;
                 var invTexHeight = 1.0f / region.Texture.Height;

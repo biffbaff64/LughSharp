@@ -7,6 +7,11 @@
             throw new NotImplementedException();
         }
 
+        public Texture( FileInfo imageFile, bool b )
+        {
+            throw new NotImplementedException();
+        }
+
         public int Width  { get; set; }
         public int Height { get; set; }
 
