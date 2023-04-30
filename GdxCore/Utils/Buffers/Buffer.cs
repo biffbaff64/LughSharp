@@ -541,5 +541,15 @@
                 throw new System.IndexOutOfRangeException();
             }
         }
+
+        public void Get( Span< byte > lines, int numBytesPerLine, int i )
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read( Span< byte > lines )
+        {
+            throw new NotImplementedException();
+        }
     }
 }

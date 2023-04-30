@@ -1,12 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 using LibGDXSharp.Utils.Collections.Extensions;
+using LibGDXSharp.Utils.Regex;
 
 namespace LibGDXSharp.G2D
 {
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public sealed class BitmapFont
+    public sealed partial class BitmapFont
     {
+        private const string RegexPattern   = ".*id=(\\d+)";
         private const string FontName       = "Resources/arial-15.fnt";
         private const int    Log2_Page_Size = 9;
         private const int    Page_Size      = 1 << Log2_Page_Size;
@@ -156,10 +159,10 @@ namespace LibGDXSharp.G2D
         /// </param>
         public BitmapFont( BitmapFontData data, List< TextureRegion >? pageRegions, bool integer )
         {
-            this.Flipped   = data.Flipped;
-            this._data     = data;
-            this._integer  = integer;
-            this._fileType = FileType.Local;
+            Flipped   = data.Flipped;
+            _data     = data;
+            _integer  = integer;
+            _fileType = FileType.Local;
 
             if ( ( pageRegions == null ) || ( pageRegions.Count == 0 ) )
             {
@@ -428,7 +431,7 @@ namespace LibGDXSharp.G2D
         /// </summary>
         public void SetFixedWidthGlyphs( string glyphs )
         {
-            BitmapFontData data       = this._data;
+            BitmapFontData data       = _data;
             var            maxAdvance = 0;
 
             for ( int index = 0, end = glyphs.Length; index < end; index++ )
@@ -461,7 +464,7 @@ namespace LibGDXSharp.G2D
         /// <param name="integer"></param>
         public void SetUseIntegerPositions( bool integer )
         {
-            this._integer = integer;
+            _integer = integer;
 
             _cache.SetUseIntegerPositions( integer );
         }
@@ -568,7 +571,7 @@ namespace LibGDXSharp.G2D
         /// <summary>
         /// Backing data for a <see cref="BitmapFont"/>.
         /// </summary>
-        public sealed class BitmapFontData
+        public sealed partial class BitmapFontData
         {
             // The name of the font, or null.
             public string? Name { get; private set; }
@@ -671,8 +674,8 @@ namespace LibGDXSharp.G2D
             /// </summary>
             public BitmapFontData()
             {
-                this.FontFile = null!;
-                this.Flipped  = false;
+                FontFile = null!;
+                Flipped  = false;
             }
 
             /// <summary>
@@ -681,8 +684,8 @@ namespace LibGDXSharp.G2D
             /// <param name="flip"></param>
             public BitmapFontData( FileInfo fontFile, bool flip )
             {
-                this.FontFile = fontFile;
-                this.Flipped  = flip;
+                FontFile = fontFile;
+                Flipped  = flip;
 
                 Load( fontFile, flip );
             }
@@ -702,11 +705,13 @@ namespace LibGDXSharp.G2D
 
                 Name = file.Name;
 
-                BufferedReader reader = new BufferedReader( new InputStreamReader( file.Read() ), 512 );
+                var reader = new StreamReader( file.FullName );
+
+//                BufferedReader reader = new BufferedReader( new InputStreamReader( file.Read() ), 512 );
 
                 try
                 {
-                    string line = reader.readLine(); // info
+                    var line = reader.ReadLine(); // info
 
                     if ( line == null ) throw new GdxRuntimeException( "File is empty." );
 
@@ -725,7 +730,7 @@ namespace LibGDXSharp.G2D
 
                     var padY = PadTop + PadBottom;
 
-                    line = reader.readLine();
+                    line = reader.ReadLine();
 
                     if ( line == null ) throw new GdxRuntimeException( "Missing common header." );
 
@@ -762,16 +767,17 @@ namespace LibGDXSharp.G2D
                     for ( var p = 0; p < pageCount; p++ )
                     {
                         // Read each "page" info line.
-                        line = reader.readLine();
+                        line = reader.ReadLine();
 
-                        if ( line == null ) throw new GdxRuntimeException( "Missing additional page definitions." );
+                        if ( line == null )
+                            throw new GdxRuntimeException( "Missing additional page definitions." );
 
                         // Expect ID to mean "index".
-                        Matcher matcher = Pattern.compile( ".*id=(\\d+)" ).matcher( line );
+                        Matcher matcher = Pattern.Compile(".*id=(\\d+)").matcher(line);
 
-                        if ( matcher.find() )
+                        if ( matcher.Find() )
                         {
-                            string id = matcher.group( 1 );
+                            string id = matcher.Group( 1 );
 
                             try
                             {
@@ -786,10 +792,10 @@ namespace LibGDXSharp.G2D
                             }
                         }
 
-                        matcher = Pattern.compile( ".*file=\"?([^\"]+)\"?" ).matcher( line );
+                        matcher = Pattern.Compile( ".*file=\"?([^\"]+)\"?" ).matcher( line );
 
-                        if ( !matcher.find() ) throw new GdxRuntimeException( "Missing: file" );
-                        string fileName = matcher.group( 1 );
+                        if ( !matcher.Find() ) throw new GdxRuntimeException( "Missing: file" );
+                        string fileName = matcher.Group( 1 );
 
                         ImagePaths[ p ] = file.Parent().child( fileName ).path().replaceAll( "\\\\", "/" );
                     }
@@ -798,7 +804,7 @@ namespace LibGDXSharp.G2D
 
                     while ( true )
                     {
-                        line = reader.readLine();
+                        line = reader.ReadLine();
 
                         if ( line == null ) break;                   // EOF
                         if ( line.StartsWith( "kernings " ) ) break; // Starting kernings block.
@@ -878,7 +884,7 @@ namespace LibGDXSharp.G2D
 
                     while ( true )
                     {
-                        line = reader.readLine();
+                        line = reader.ReadLine();
 
                         if ( line == null ) break;
                         if ( !line.StartsWith( "kerning " ) ) break;
@@ -1037,13 +1043,13 @@ namespace LibGDXSharp.G2D
 
                     if ( hasMetricsOverride )
                     {
-                        this.Ascent        = overrideAscent;
-                        this.Descent       = overrideDescent;
-                        this.Down          = overrideDown;
-                        this.CapHeight     = overrideCapHeight;
-                        this.LineHeight    = overrideLineHeight;
-                        this.SpaceXadvance = overrideSpaceXAdvance;
-                        this.XHeight       = overrideXHeight;
+                        Ascent        = overrideAscent;
+                        Descent       = overrideDescent;
+                        Down          = overrideDown;
+                        CapHeight     = overrideCapHeight;
+                        LineHeight    = overrideLineHeight;
+                        SpaceXadvance = overrideSpaceXAdvance;
+                        XHeight       = overrideXHeight;
                     }
                 }
                 catch ( Exception ex )
@@ -1177,7 +1183,7 @@ namespace LibGDXSharp.G2D
                 {
                     page = new Glyph[ Page_Size ];
 
-                    this.Glyphs[ ch / Page_Size ] = page;
+                    Glyphs[ ch / Page_Size ] = page;
                 }
 
                 page[ ch & ( Page_Size - 1 ) ] = glyph;
@@ -1189,7 +1195,7 @@ namespace LibGDXSharp.G2D
             /// <exception cref="GdxRuntimeException"></exception>
             public Glyph GetFirstGlyph()
             {
-                foreach ( var page in this.Glyphs )
+                foreach ( var page in Glyphs )
                 {
                     if ( page != null )
                     {
@@ -1244,8 +1250,8 @@ namespace LibGDXSharp.G2D
 
                 if ( max == 0 ) return;
 
-                var markupEnabled = this.MarkupEnabled;
-                var scaleX        = this.ScaleX;
+                var markupEnabled = MarkupEnabled;
+                var scaleX        = ScaleX;
 
                 var glyphs    = run.Glyphs;
                 var xAdvances = run.XAdvances;
@@ -1272,7 +1278,7 @@ namespace LibGDXSharp.G2D
                     xAdvances.Add
                         (
                          lastGlyph == null // First glyph on line, adjust the position so it isn't drawn left of 0.
-                             ? ( glyph.fixedWidth ? 0 : ( -glyph.xoffset * scaleX ) - PadLeft )
+                             ? glyph.fixedWidth ? 0 : ( -glyph.xoffset * scaleX ) - PadLeft
                              : ( lastGlyph.xadvance + lastGlyph.GetKerning( ch ) ) * scaleX
                         );
 
@@ -1307,14 +1313,14 @@ namespace LibGDXSharp.G2D
             public int GetWrapIndex( List< Glyph > glyphList, int start )
             {
                 var i  = start - 1;
-                var ch = ( char )( glyphList[ i ] ).id;
+                var ch = ( char )glyphList[ i ].id;
 
                 if ( IsWhitespace( ch ) ) return i;
                 if ( IsBreakChar( ch ) ) i--;
 
                 for ( ; i > 0; i-- )
                 {
-                    ch = ( char )( glyphList[ i ] ).id;
+                    ch = ( char )glyphList[ i ].id;
 
                     if ( IsWhitespace( ch ) || IsBreakChar( ch ) ) return i + 1;
                 }
@@ -1381,11 +1387,11 @@ namespace LibGDXSharp.G2D
                 if ( scaley == 0 )
                     throw new ArgumentException( "scaleY cannot be 0." );
 
-                var x = scalex / this.ScaleX;
-                var y = scaley / this.ScaleY;
+                var x = scalex / ScaleX;
+                var y = scaley / ScaleY;
 
-                this.ScaleX = scalex;
-                this.ScaleY = scaley;
+                ScaleX = scalex;
+                ScaleY = scaley;
 
                 LineHeight    *= y;
                 SpaceXadvance *= x;
@@ -1425,6 +1431,5 @@ namespace LibGDXSharp.G2D
                 return Name ?? base.ToString();
             }
         }
-
     }
 }

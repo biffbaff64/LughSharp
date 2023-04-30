@@ -7,6 +7,11 @@
             throw new NotImplementedException();
         }
 
+        public Texture( Pixmap? potPixmap )
+        {
+            throw new NotImplementedException();
+        }
+
         public Texture( FileInfo imageFile, bool b )
         {
             throw new NotImplementedException();

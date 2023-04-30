@@ -522,10 +522,10 @@ UTILS
 
     Buffers
     -------
-    -      - Buffer                         Needed??
-    -      - BufferUtils                    Needed??
-    -      - DataBuffer                     Needed??
-    -      - IntBuffer                      Needed??
+    -      - Buffer                         
+    -      - BufferUtils                    
+    -      - DataBuffer                     
+    -      - IntBuffer                      
 
     Misc
     ----
@@ -554,7 +554,7 @@ UTILS
     -      - Queue
     -      - QuickSelect
     - DONE - Scaling
-    - IP   - ScreenUtils                    Convert
+    - DONE - ScreenUtils                    Convert
     - IP   - Select                         Renamed Selector
     -      - SharedLibraryLoader            Check
     - DONE - SortUtils
@@ -721,6 +721,18 @@ UTILS/REFLECT
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+UTILS/REGEX
+-----------
+    - DONE - ASCII                          Convert
+    - DONE - IMatchResult                   Convert
+    -      - Matcher                        Convert
+    -      - Pattern                        Convert
+    -      - PatternSyntaxException         Convert
+    - IP   - UnicodeProp                    Convert
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 UTILS/VIEWPORT
 --------------
     - DONE - ExtendedViewport               Convert
@@ -736,7 +748,7 @@ UTILS/VIEWPORT
 
 UTILS/XML
 ---------
-    -      - XmlReader                      Convert
+    - IP   - XmlReader                      Convert
     -      - XmlWriter                      Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

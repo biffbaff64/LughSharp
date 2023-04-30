@@ -41,6 +41,22 @@ namespace LibGDXSharp.Utils.Collections.Extensions
 
             return list;
         }
+
+        public static void AddAll<T>( this IList< T > ts, T[] array, int start, int count )
+        {
+            for ( var i = start; i < count; i++ )
+            {
+                ts.Add( array[ i ] );
+            }
+        }
+
+        public static void AddAll<T>( this IList< T > ts, List<T> array, int start, int count )
+        {
+            for ( var i = start; i < count; i++ )
+            {
+                ts.Add( array[ i ] );
+            }
+        }
         
         /// <summary>
         /// Shuffles the element order of the specified list.

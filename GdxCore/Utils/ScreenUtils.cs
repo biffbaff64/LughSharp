@@ -81,12 +81,19 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// Returns a portion of the current framebuffer contents specified by x, y,
         /// width and height as a <see cref="TextureRegion"/> with the same dimensions.
+        /// <para>
         /// The base <see cref="Texture"/> always has <see cref="MathUtils.NextPowerOfTwo"/>
         /// dimensions and RGBA8888 <see cref="Pixmap.Format"/>. It can be accessed via
-        /// <see cref="TextureRegion.Texture"/>. This texture is not managed and has to be
-        /// reloaded manually on a context loss. If the width and height specified are
-        /// larger than the framebuffer dimensions, the Texture will be padded accordingly.
+        /// <see cref="TextureRegion.Texture"/>.
+        /// </para>
+        /// <para>
+        /// This texture is not managed and has to be reloaded manually on a context loss.
+        /// If the width and height specified are larger than the framebuffer dimensions,
+        /// the Texture will be padded accordingly.
+        /// </para>
+        /// <para>
         /// Pixels that fall outside of the current screen will have RGBA values of 0.
+        /// </para>
         /// </summary>
         /// <param name="x"> the x position of the framebuffer contents to capture </param>
         /// <param name="y"> the y position of the framebuffer contents to capture </param>
@@ -126,7 +133,7 @@ namespace LibGDXSharp.Utils
         /// Flipping is not a cheap operation, so use this functionality wisely.
         /// </summary>
         /// <param name="flipY"> whether to flip pixels along Y axis</param>
-        public static sbyte[] GetFrameBufferPixels( bool flipY )
+        public static byte[] GetFrameBufferPixels( bool flipY )
         {
             if ( Gdx.Graphics == null ) throw new NullReferenceException();
             
@@ -153,16 +160,17 @@ namespace LibGDXSharp.Utils
         /// <param name="w"></param>
         /// <param name="h"></param>
         /// <param name="flipY"> whether to flip pixels along Y axis  </param>
-        public static sbyte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
+        public static byte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
         {
+            var numBytes = w * h * 4;
+
             Gdx.Gl.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
             
-            var pixels = Utils.BufferUtils.NewByteBuffer( w * h * 4 );
+            Buffer pixels = Utils.BufferUtils.NewByteBuffer( numBytes );
             
             Gdx.Gl.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
 
-            var numBytes = w * h * 4;
-            var lines = new Span< byte >();
+            var lines = new byte[ numBytes ];
 
             if ( flipY )
             {
@@ -172,7 +180,7 @@ namespace LibGDXSharp.Utils
                 {
                     pixels.Position = ( ( h - i - 1 ) * numBytesPerLine );
 
-                    pixels.get( lines, i * numBytesPerLine, numBytesPerLine );
+                    pixels.Get( lines, i * numBytesPerLine, numBytesPerLine );
                 }
             }
             else

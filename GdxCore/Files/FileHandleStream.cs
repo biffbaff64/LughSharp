@@ -9,16 +9,16 @@ namespace LibGDXSharp.Files
     /// </summary>
     public class FileHandleStream : FileHandle
     {
-        public FileHandleStream( string path )
-            : base( path, FileType.Absolute )
+        /// <summary>
+        /// </summary>
+        /// <param name="path"></param>
+        public FileHandleStream( string path ) : base( path, FileType.Absolute )
         {
         }
 
-        public bool IsDirectory() => false;
-
-        public new long Length() => 0;
-
-        public bool Exists() => true;
+        public     bool IsDirectory() => false;
+        public new long Length()      => 0;
+        public     bool Exists()      => true;
 
         public FileHandle Child( string name )
         {
