@@ -6,6 +6,11 @@ namespace LibGDXSharp.G2D
     [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     public class TextureAtlas
     {
+        public TextureAtlas( TextureAtlasData? data )
+        {
+            throw new NotImplementedException();
+        }
+
         public TextureRegion FindRegion( string? name )
         {
             throw new NotImplementedException();
@@ -84,9 +89,98 @@ namespace LibGDXSharp.G2D
             /// Values for name/value pairs other than the fields provided on this class,
             /// each entry corresponding to <see cref="Names"/>.
             /// </summary>
-            public int[][]? values;
+            public readonly int[]?[]? values;
+
+            public AtlasRegion( Texture texture, int x, int y, int width, int height )
+                : base( texture, x, y, width, height )
+            {
+                OriginalWidth  = width;
+                OriginalHeight = height;
+                PackedWidth    = width;
+                PackedHeight   = height;
+            }
+
+            public AtlasRegion( AtlasRegion region )
+            {
+                SetRegion( region );
+
+                Index          = region.Index;
+                Name           = region.Name;
+                OffsetX        = region.OffsetX;
+                OffsetY        = region.OffsetY;
+                PackedWidth    = region.PackedWidth;
+                PackedHeight   = region.PackedHeight;
+                OriginalWidth  = region.OriginalWidth;
+                OriginalHeight = region.OriginalHeight;
+                Rotate         = region.Rotate;
+                Degrees        = region.Degrees;
+                Names          = region.Names;
+                values         = region.values;
+            }
+
+            public AtlasRegion( TextureRegion region )
+            {
+                SetRegion( region );
+                
+                PackedWidth    = region.RegionWidth;
+                PackedHeight   = region.RegionHeight;
+                OriginalWidth  = PackedWidth;
+                OriginalHeight = PackedHeight;
+            }
+
+            public new void Flip( bool x, bool y )
+            {
+                base.Flip( x, y );
+
+                if ( x )
+                {
+                    OffsetX = OriginalWidth - OffsetX - RotatedPackedWidth;
+                }
+
+                if ( y )
+                {
+                    OffsetY = OriginalHeight - OffsetY - RotatedPackedHeight;
+                }
+            }
+
+            /// <summary>
+            /// Returns the packed width considering the <see cref="Rotate"/> value,
+            /// if it is true then it returns the packedHeight, otherwise it returns
+            /// the packedWidth. 
+            /// </summary>
+            protected virtual float RotatedPackedWidth => Rotate ? PackedHeight : PackedWidth;
+
+            /// <summary>
+            /// Returns the packed height considering the <seealso cref="Rotate"/> value,
+            /// if it is true then it returns the packedWidth, otherwise it returns the
+            /// packedHeight. 
+            /// </summary>
+            protected virtual float RotatedPackedHeight => Rotate ? PackedWidth : PackedHeight;
+
+            public virtual int[]? FindValue( string name )
+            {
+                if ( Names != null )
+                {
+                    for ( int i = 0, n = Names.Length; i < n; i++ )
+                    {
+                        if ( name.Equals( Names[ i ] ) )
+                        {
+                            return values?[ i ];
+                        }
+                    }
+                }
+
+                return null;
+            }
+
+            public override string? ToString()
+            {
+                return Name;
+            }
         }
 
-        public class AtlasSprite : Sprite { }
+        public class AtlasSprite : Sprite
+        {
+        }
     }
 }

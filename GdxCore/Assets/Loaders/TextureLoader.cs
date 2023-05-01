@@ -62,7 +62,7 @@ namespace LibGDXSharp.Assets.Loaders
                 _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
             }
 
-            if ( _loaderInfo.Data != null && !_loaderInfo.Data.IsPrepared() )
+            if ( ( _loaderInfo.Data != null ) && !_loaderInfo.Data.IsPrepared() )
             {
                 _loaderInfo.Data.Prepare();
             }

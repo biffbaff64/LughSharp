@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+using LibGDXSharp.Utils.Collections.Extensions;
+
 namespace LibGDXSharp.Utils
 {
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -13,7 +15,7 @@ namespace LibGDXSharp.Utils
         /// <summary>
         /// </summary>
         /// <param name="array"></param>
-        public DelayedRemovalArray( List< T > array ) : base( array )
+        public DelayedRemovalArray( IEnumerable< T > array ) : base( array )
         {
             Reset();
         }
@@ -31,7 +33,7 @@ namespace LibGDXSharp.Utils
         /// <param name="array"></param>
         /// <param name="startIndex"></param>
         /// <param name="count"></param>
-        public DelayedRemovalArray( T[] array, int startIndex, int count )
+        public DelayedRemovalArray( IReadOnlyList< T > array, int startIndex, int count )
         {
             for ( var i = 0; i < count; i++ )
             {
@@ -70,7 +72,7 @@ namespace LibGDXSharp.Utils
 
             if ( _iterating == 0 )
             {
-                if ( _clear > 0 && _clear == Count )
+                if ( ( _clear > 0 ) && ( _clear == Count ) )
                 {
                     _remove.Clear();
                     Clear();
@@ -316,9 +318,7 @@ namespace LibGDXSharp.Utils
             
             if ( newSize < Count )
             {
-                var removeCount = Count - newSize;
-
-                base.RemoveRange( newSize + 1, removeCount );
+                base.RemoveRange( newSize + 1, Count - newSize );
             }
         }
 
@@ -329,8 +329,11 @@ namespace LibGDXSharp.Utils
         /// <exception cref="GdxRuntimeException"></exception>
         public int SetSize( int newSize )
         {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            if ( base.Count >= newSize ) throw new GdxRuntimeException( $"Invalid new size: {newSize} (current: {Count} )" );
+            if ( _iterating > 0 )
+                throw new GdxRuntimeException( "Invalid between begin/end." );
+            
+            if ( base.Count >= newSize )
+                throw new GdxRuntimeException( $"Invalid new size: {newSize} (current: {Count} )" );
 
             return base.EnsureCapacity( newSize );
         }

@@ -613,7 +613,6 @@ UTILS/COLLECTIONS
     Maps
     ----
     - **** - ArrayMap                       Replace with Dictionary<K, V>
-    - **** - IdentityMap                    Convert / extend Dictionary< object, object > 
     - **** - IntFloatMap                    Replace with Dictionary< int, float >
     - **** - IntIntMap                      Replace with Dictionary< int, int >
     - **** - IntMap                         Replace with Dictionary< int, V >
@@ -622,7 +621,9 @@ UTILS/COLLECTIONS
     - **** - ObjectIntMap                   Replace with Dictionary< object, int >
     - **** - ObjectLongMap                  Replace with Dictionary< object, long >
     - **** - ObjectMap                      Replace with Dictionary< object, object >
-    - **** - OrderedMap                     Convert / extend Dictionary< object, object >
+
+    -      - IdentityMap                    Convert / extend Dictionary< object, object > 
+    -      - OrderedMap                     Convert / extend Dictionary< object, object >
 
     Sets
     ----
@@ -642,9 +643,9 @@ UTILS/COLLECTIONS
                                             
 UTILS/COMPRESSION
 -----------------
-    - **** - CRC                            N0
-    - **** - ICodeProgress                  N0
-    - **** - LzmaAdapted                    N0
+    - **** - CRC                            No
+    - **** - ICodeProgress                  No
+    - **** - LzmaAdapted                    No
 
     UTILS/COMPRESSION/LZ
     --------------------
