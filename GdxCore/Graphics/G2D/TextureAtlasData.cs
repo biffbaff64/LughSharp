@@ -5,7 +5,8 @@ using LibGDXSharp.Utils.Collections.Extensions;
 namespace LibGDXSharp.G2D
 {
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public class TextureAtlasData
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    public partial class TextureAtlasData
     {
         public List< Page >   Pages   { get; set; } = new List< Page >();
         public List< Region > Regions { get; set; } = new List< Region >();
@@ -19,51 +20,19 @@ namespace LibGDXSharp.G2D
             Load( packFile, imagesDir, flip );
         }
 
+        protected readonly static string[]                     Entry      = new string[ 5 ];
+        protected readonly        Dictionary< string, IField > pageFields = new(15);
+
         public void Load( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
         {
-            var entry = new string[ 5 ];
+            Array.Clear( Entry );
+            pageFields.Clear();
 
-            var pageFields = new Dictionary< string, IField< Page > >( 15, 0.99f ); // Size needed to avoid collisions.
-
-            pageFields.Put( "size", new IField< Page >()
-            {
-                public void parse (Page page)
-                {
-                    page.width = Integer.parseInt(entry[1]);
-                    page.height = Integer.parseInt(entry[2]);
-                }
-            });
-
-            pageFields.Put( "format", new IField< Page >()
-            {
-                public void parse (Page page)
-                {
-                    page.format = Format.valueOf(entry[1]);
-                }
-            });
-
-            pageFields.put
-                ( "filter", new Field< Page >()
-                {
- 
-                    public void parse (Page page) {
-                    page.minFilter = TextureFilter.valueOf(entry[1]);
-                    page.magFilter = TextureFilter.valueOf(entry[2]);
-                    page.useMipMaps = page.minFilter.isMipMap();
-                }
-
-            });
-
-            pageFields.put
-                ( "repeat", new Field< Page >()
-                {
- 
-                    public void parse (Page page) {
-                    if (entry[1].indexOf('x') != -1) page.uWrap = TextureWrap.Repeat;
-                    if (entry[1].indexOf('y') != -1) page.vWrap = TextureWrap.Repeat;
-                }
-
-            });
+            pageFields.Put( "size", new PageFieldParseClass() );
+            pageFields.Put( "format", new PageFieldFormatClass() );
+            pageFields.Put( "filter", new PageFieldFilterClass() );
+            pageFields.Put( "repeat", new PageFieldRepeatClass() );
+            pageFields.Put( "pma", new PageFieldPmaClass() );
         }
 
         /// <summary>
@@ -104,9 +73,9 @@ namespace LibGDXSharp.G2D
             }
         }
 
-        private interface IField<in T>
+        protected interface IField
         {
-            void Parse( T obj );
+            void Parse( ref Page page );
         }
 
         public record Page
@@ -149,29 +118,24 @@ namespace LibGDXSharp.G2D
             public bool      Rotate         { get; set; }
             public bool      Flip           { get; set; }
             public int       Index          { get; set; } = -1;
-            public string[]? names;
-            public int[][]   values;
+            public string[]? Names          { get; set; }
+            public int[]?[]? Values         { get; set; }
 
             public virtual int[]? FindValue( string name )
             {
-                if ( names != null )
+                if ( Names != null )
                 {
-                    for ( int i = 0, n = names.Length; i < n; i++ )
+                    for ( int i = 0, n = Names.Length; i < n; i++ )
                     {
-                        if ( name.Equals( names[ i ] ) )
+                        if ( name.Equals( Names[ i ] ) )
                         {
-                            return values[ i ];
+                            return Values?[ i ];
                         }
                     }
                 }
 
                 return null;
             }
-        }
-
-        public IEnumerable< Page > GetPages()
-        {
-            throw new NotImplementedException();
         }
     }
 }

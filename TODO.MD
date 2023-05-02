@@ -158,7 +158,7 @@ GRAPHICS/G2D
     -      - BitmapFontCache                Convert
     -      - CpuSpriteBatch                 Convert
     -      - DistanceFieldFont              Convert
-    -      - Gdx2DPixmap                    Convert
+    - IP   - Gdx2DPixmap                    Convert
     -      - GlyphLayout                    Convert
     - IP   - IBatch                         Convert
     -      - IPolygonBatch                  Convert
@@ -177,6 +177,8 @@ GRAPHICS/G2D
     - IP   - SpriteBatch                    Convert
     -      - SpriteCache                    Convert
     - IP   - TextureAtlas                   Convert
+    - IP   - TextureAtlasData               Convert
+    - DONE - TextureAtlasDataExtensions     Convert
     - IP   - TextureRegion                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

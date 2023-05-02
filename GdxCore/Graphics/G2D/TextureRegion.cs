@@ -29,7 +29,7 @@
         {
         }
 
-        public TextureRegion( Texture texture, int x, int y, int width, int height )
+        public TextureRegion( Texture? texture, int x, int y, int width, int height )
         {
             Texture = texture;
             SetRegion( x, y, width, height );
@@ -109,7 +109,7 @@
             SetRegion( region.RegionX + x, region.RegionY + y, width, height );
         }
 
-        public Texture Texture { get; set; }
+        public Texture? Texture { get; set; }
 
         public float U
         {

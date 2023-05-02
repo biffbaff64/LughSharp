@@ -1,5 +1,8 @@
-﻿namespace LibGDXSharp.Graphics
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Graphics
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public sealed class TextureFilter
     {
         /// <summary>
@@ -61,33 +64,27 @@
             MipMapLinearLinear
         }
 
-        public readonly  InnerEnum innerEnumValue;
-        private readonly string    _nameValue;
-        private readonly int       _ordinalValue;
-        private static   int       _nextOrdinal = 0;
+        public readonly InnerEnum innerEnumValue;
 
-        internal readonly int glEnum;
+        private readonly string _nameValue;
+        private readonly int    _ordinalValue;
+
+        private static int _nextOrdinal = 0;
 
         internal TextureFilter( string name, InnerEnum innerEnum, int glEnum )
         {
-            this.glEnum = glEnum;
+            this.GLEnum = glEnum;
 
             _nameValue     = name;
             _ordinalValue  = _nextOrdinal++;
             innerEnumValue = innerEnum;
         }
 
-        public bool IsMipMap()
-        {
-            return glEnum != IGL20.GL_Nearest && glEnum != IGL20.GL_Linear;
-        }
+        public bool IsMipMap() => ( GLEnum != IGL20.GL_Nearest ) && ( GLEnum != IGL20.GL_Linear );
 
-        public int GLEnum => glEnum;
+        public int GLEnum { get; }
 
-        public static TextureFilter[] Values()
-        {
-            return valueList.ToArray();
-        }
+        public static TextureFilter[] Values() => valueList.ToArray();
 
         public int Ordinal()
         {

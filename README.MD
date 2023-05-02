@@ -1,4 +1,6 @@
 ﻿
+DISCLAIMER:- THE CODE QUALITY IN THIS PROJECT WILL IMPROVE OVER TIME. C# IS NEW TO ME.
+
 This project is intended to be a C# conversion of the Java LibGDX Game Framework.
 
 I have created files, many of which are essentially empty classes, for each file found in LibGDX.

@@ -2,7 +2,17 @@
 {
     public class Sprite
     {
-        
+        public Sprite( TextureAtlas.AtlasRegion region )
+        {
+        }
+
+        public void SetBounds( int i, int i1, int regionRegionHeight, int regionRegionWidth )
+        {
+        }
+
+        public void Rotate90( bool b )
+        {
+        }
     }
 }
 
