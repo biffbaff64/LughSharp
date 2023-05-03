@@ -16,21 +16,14 @@ namespace LibGDXSharp.Assets
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public sealed class AssetManager
     {
-        /// <summary>
-        /// </summary>
-        private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets =
-            new Dictionary< Type, Dictionary< string, IRefCountedContainer > >();
+        private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets = new();
 
-        /// <summary>
-        /// </summary>
-        private readonly Dictionary< string, List< string > >? _assetDependencies =
-            new Dictionary< string, List< string > >();
-
-        private readonly Stack< AssetLoadingTask >       _tasks      = new Stack< AssetLoadingTask >();
-        private readonly Dictionary< Type, AssetLoader > _loaders    = new Dictionary< Type, AssetLoader >();
-        private readonly Dictionary< string, Type? >     _assetTypes = new Dictionary< string, Type? >();
-        private readonly List< AssetDescriptor >         _loadQueue  = new List< AssetDescriptor >();
-        private readonly List< string >                  _injected   = new List< string >();
+        private readonly Dictionary< string, List< string > >? _assetDependencies = new();
+        private readonly Stack< AssetLoadingTask >             _tasks             = new();
+        private readonly Dictionary< Type, AssetLoader >       _loaders           = new();
+        private readonly Dictionary< string, Type? >           _assetTypes        = new();
+        private readonly List< AssetDescriptor >               _loadQueue         = new();
+        private readonly List< string >                        _injected          = new();
 
         private readonly AsyncExecutor        _executor;
         private          IAssetErrorListener? _listener;
@@ -79,7 +72,7 @@ namespace LibGDXSharp.Assets
             }
 
             this.FileHandleResolver = resolver;
-            this._executor = new AsyncExecutor( 1, "AssetManager" );
+            this._executor          = new AsyncExecutor( 1, "AssetManager" );
         }
 
         /// <summary>
@@ -101,7 +94,7 @@ namespace LibGDXSharp.Assets
 
                 if ( type == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
 
-                var assetsByType = _assets[ type ];
+                Dictionary< string, IRefCountedContainer >? assetsByType = _assets[ type ];
 
                 if ( assetsByType == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
 
@@ -130,7 +123,7 @@ namespace LibGDXSharp.Assets
 
             lock ( this )
             {
-                var assetsByType = _assets[ type ];
+                Dictionary< string, IRefCountedContainer >? assetsByType = _assets[ type ];
 
                 if ( assetsByType == null ) throw new GdxRuntimeException( "Asset not loaded - " + name );
 
@@ -166,7 +159,7 @@ namespace LibGDXSharp.Assets
         {
             lock ( this )
             {
-                var assetsByType = _assets[ type ];
+                Dictionary< string, IRefCountedContainer >? assetsByType = _assets[ type ];
 
                 Debug.Assert( assetsByType != null, nameof( assetsByType ) + " != null" );
 
@@ -215,16 +208,16 @@ namespace LibGDXSharp.Assets
             if ( _tasks.Count > 0 )
             {
                 if ( _tasks.First().AssetDesc is { } assetDesc
-                     && assetDesc.Type == type
+                     && ( assetDesc.Type == type )
                      && assetDesc.FilePath.Equals( fileName ) )
                 {
                     return true;
                 }
             }
 
-            foreach ( var assetDesc in _loadQueue )
+            foreach ( AssetDescriptor assetDesc in _loadQueue )
             {
-                if ( assetDesc.Type == type && assetDesc.FilePath.Equals( fileName ) )
+                if ( ( assetDesc.Type == type ) && assetDesc.FilePath.Equals( fileName ) )
                 {
                     return true;
                 }
@@ -295,7 +288,7 @@ namespace LibGDXSharp.Assets
 
             if ( type == null ) throw new GdxRuntimeException( "Asset not loaded: " + fileName );
 
-            _assets.TryGetValue( type, out var assetRef );
+            _assets.TryGetValue( type, out Dictionary< string, IRefCountedContainer >? assetRef );
 
             // if it is reference counted, decrement ref count and check if we can really get rid of it.
             if ( assetRef != null )
@@ -321,7 +314,7 @@ namespace LibGDXSharp.Assets
                 }
 
                 // remove any dependencies (or just decrement their ref count).
-                var dependencies = _assetDependencies?[ fileName ];
+                List< string >? dependencies = _assetDependencies?[ fileName ];
 
                 if ( dependencies != null )
                 {
@@ -347,13 +340,13 @@ namespace LibGDXSharp.Assets
         {
             if ( asset == null ) return false;
 
-            var assetsByType = _assets[ asset.GetType() ];
+            Dictionary< string, IRefCountedContainer > assetsByType = _assets[ asset.GetType() ];
 
             foreach ( var fileName in assetsByType.Keys )
             {
                 var otherAsset = ( T? )assetsByType[ fileName ].Asset;
 
-                if ( otherAsset?.GetType() == asset.GetType() || asset.Equals( otherAsset ) ) return true;
+                if ( ( otherAsset?.GetType() == asset.GetType() ) || asset.Equals( otherAsset ) ) return true;
             }
 
             return false;
@@ -369,7 +362,7 @@ namespace LibGDXSharp.Assets
 
             foreach ( Type? assetType in _assets.Keys )
             {
-                var assetsByType = _assets[ assetType ];
+                Dictionary< string, IRefCountedContainer > assetsByType = _assets[ assetType ];
 
 //                if ( assetsByType != null )
                 {
@@ -394,7 +387,7 @@ namespace LibGDXSharp.Assets
         /// <returns>whether the asset is loaded</returns>
         public bool IsLoaded( string? fileName )
         {
-            return fileName != null && _assetTypes.ContainsKey( fileName );
+            return ( fileName != null ) && _assetTypes.ContainsKey( fileName );
         }
 
         /// <summary>
@@ -456,7 +449,7 @@ namespace LibGDXSharp.Assets
             // check preload queue
             foreach ( AssetDescriptor desc in _loadQueue )
             {
-                if ( desc.FilePath.Equals( fileName ) && desc.Type != type )
+                if ( desc.FilePath.Equals( fileName ) && ( desc.Type != type ) )
                 {
                     throw new GdxRuntimeException
                         (
@@ -472,7 +465,7 @@ namespace LibGDXSharp.Assets
             {
                 AssetDescriptor desc = _tasks.ElementAt( i ).AssetDesc;
 
-                if ( desc.FilePath.Equals( fileName ) && desc.Type != type )
+                if ( desc.FilePath.Equals( fileName ) && ( desc.Type != type ) )
                 {
                     throw new GdxRuntimeException
                         (
@@ -486,7 +479,7 @@ namespace LibGDXSharp.Assets
             // check loaded assets
             Type? otherType = _assetTypes[ fileName ];
 
-            if ( otherType != null && otherType != type )
+            if ( ( otherType != null ) && ( otherType != type ) )
             {
                 throw new GdxRuntimeException
                     (
@@ -531,7 +524,7 @@ namespace LibGDXSharp.Assets
                 if ( _tasks.Count == 0 )
                 {
                     // loop until we have a new task ready to be processed
-                    while ( _loadQueue.Count != 0 && _tasks.Count == 0 )
+                    while ( ( _loadQueue.Count != 0 ) && ( _tasks.Count == 0 ) )
                     {
                         NextTask();
                     }
@@ -540,7 +533,7 @@ namespace LibGDXSharp.Assets
                     if ( _tasks.Count == 0 ) return true;
                 }
 
-                return UpdateTask() && _loadQueue.Count == 0 && _tasks.Count == 0;
+                return UpdateTask() && ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
             }
             catch ( Exception t )
             {
@@ -565,7 +558,7 @@ namespace LibGDXSharp.Assets
             {
                 var done = Update();
 
-                if ( done || TimeUtils.Millis() > endTime )
+                if ( done || ( TimeUtils.Millis() > endTime ) )
                 {
                     return done;
                 }
@@ -580,7 +573,7 @@ namespace LibGDXSharp.Assets
         /// </summary>
         public bool IsFinished()
         {
-            return _loadQueue.Count == 0 && _tasks.Count == 0;
+            return ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
         }
 
         /// <summary>
@@ -625,7 +618,7 @@ namespace LibGDXSharp.Assets
 
                     if ( type != null )
                     {
-                        var assetsByType = _assets[ type ];
+                        Dictionary< string, IRefCountedContainer > assetsByType = _assets[ type ];
 
                         if ( assetsByType[ fileName ] is { } assetContainer )
                         {
@@ -649,7 +642,7 @@ namespace LibGDXSharp.Assets
 
         public void InjectDependencies( string parentAssetFilename, IList< AssetDescriptor > dependendAssetDescs )
         {
-            var injected = this._injected;
+            List< string > injected = this._injected;
 
             foreach ( AssetDescriptor desc in dependendAssetDescs )
             {
@@ -675,7 +668,7 @@ namespace LibGDXSharp.Assets
         private void InjectDependency( string parentAssetFilename, AssetDescriptor dependendAssetDesc )
         {
             // add the asset as a dependency of the parent asset
-            var dependencies = _assetDependencies?[ parentAssetFilename ];
+            List< string >? dependencies = _assetDependencies?[ parentAssetFilename ];
 
             if ( dependencies == null )
             {
@@ -695,7 +688,7 @@ namespace LibGDXSharp.Assets
 
                 if ( type == null ) throw new GdxRuntimeException( "type cannot be null!" );
 
-                var assetsByType = _assets[ type ];
+                Dictionary< string, IRefCountedContainer > assetsByType = _assets[ type ];
 
                 IRefCountedContainer assetRef = assetsByType[ dependendAssetDesc.FilePath ];
 
@@ -731,7 +724,7 @@ namespace LibGDXSharp.Assets
 
                 if ( type == null ) throw new GdxRuntimeException( "type cannot be null!" );
 
-                var assetsByType = _assets[ type ];
+                Dictionary< string, IRefCountedContainer > assetsByType = _assets[ type ];
 
                 IRefCountedContainer assetRef = assetsByType[ assetDesc.FilePath ];
 
@@ -797,7 +790,7 @@ namespace LibGDXSharp.Assets
         /// <returns>true if the asset is loaded or the task was cancelled.</returns>
         private bool UpdateTask()
         {
-            var task = _tasks.Peek();
+            AssetLoadingTask task = _tasks.Peek();
 
             var complete = true;
 
@@ -862,7 +855,7 @@ namespace LibGDXSharp.Assets
         /// <param name="parent"></param>
         private void IncrementRefCountedDependencies( string parent )
         {
-            var dependencies = _assetDependencies?[ parent ];
+            List< string >? dependencies = _assetDependencies?[ parent ];
 
             if ( dependencies == null ) return;
 
@@ -872,7 +865,7 @@ namespace LibGDXSharp.Assets
 
                 if ( type == null ) throw new GdxRuntimeException( "type cannot be null!" );
 
-                var assetsByType = _assets[ type ];
+                Dictionary< string, IRefCountedContainer > assetsByType = _assets[ type ];
 
                 IRefCountedContainer assetRef = assetsByType[ dependency ];
 
@@ -1015,7 +1008,7 @@ namespace LibGDXSharp.Assets
                 // for each asset, figure out how often it was referenced
                 dependencyCount.Clear();
 
-                var assets = _assetTypes.Keys.ToList();
+                List< string > assets = _assetTypes.Keys.ToList();
 
                 foreach ( var asset in assets )
                 {
@@ -1024,7 +1017,7 @@ namespace LibGDXSharp.Assets
 
                 foreach ( var asset in assets )
                 {
-                    var dependencies = _assetDependencies?[ asset ];
+                    List< string >? dependencies = _assetDependencies?[ asset ];
 
                     if ( dependencies != null )
                     {
@@ -1125,7 +1118,7 @@ namespace LibGDXSharp.Assets
                         }
                         else
                         {
-                            var dependencies = _assetDependencies?[ fileName ];
+                            List< string >? dependencies = _assetDependencies?[ fileName ];
 
                             if ( dependencies != null )
                             {
@@ -1171,7 +1164,7 @@ namespace LibGDXSharp.Assets
         {
             lock ( this )
             {
-                var array = _assetDependencies?[ name ];
+                List< string >? array = _assetDependencies?[ name ];
 
                 return array;
             }

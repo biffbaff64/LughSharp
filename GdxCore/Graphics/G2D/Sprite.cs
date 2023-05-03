@@ -2,7 +2,7 @@
 {
     public class Sprite
     {
-        public Sprite( TextureAtlas.AtlasRegion region )
+        public Sprite( AtlasRegion region )
         {
         }
 

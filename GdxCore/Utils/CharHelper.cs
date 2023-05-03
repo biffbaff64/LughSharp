@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Text;
 
 namespace LibGDXSharp.Utils
 {
@@ -369,6 +367,11 @@ namespace LibGDXSharp.Utils
         public static bool IsTitleCase( char ch )
         {
             return false;
+        }
+
+        public static int GetCharCat( char ch )
+        {
+            return 0;
         }
     }
 }

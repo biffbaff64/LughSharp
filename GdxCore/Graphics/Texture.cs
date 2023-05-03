@@ -1,9 +1,12 @@
 ﻿namespace LibGDXSharp.Graphics
 {
-    public class Texture
+    public class Texture : GLTexture
     {
         public int Width  { get; set; }
         public int Height { get; set; }
+
+        private AssetManager                                _assetManager;
+        private Dictionary< IApplication, List< Texture > > _managedTextures = new();
 
         public Texture( ITextureData? potPixmap )
         {

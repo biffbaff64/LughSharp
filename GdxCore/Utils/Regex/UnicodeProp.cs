@@ -158,19 +158,38 @@
                     return char.IsAsciiLetterOrDigit( ch );
 
                 case UnicodeProp.Blank:
-                    return char.IsWhiteSpace( ch );
+                    return ( ch == CharHelper.SpaceSeparator ) || ( ch == 0x09 );
 
                 case UnicodeProp.Graph:
-                    return char.IsWhiteSpace( ch );
+                    return ( ( ( ( 1 << CharHelper.SpaceSeparator )
+                                 | ( 1 << CharHelper.LineSeparator )
+                                 | ( 1 << CharHelper.ParagraphSeparator )
+                                 | ( 1 << CharHelper.Control )
+                                 | ( 1 << CharHelper.Surrogate )
+                                 | ( 1 << CharHelper.Unassigned ) )
+                               >> CharHelper.GetCharCat( ch ) )
+                             & 1 )
+                           == 0;
 
                 case UnicodeProp.Print:
-                    return char.IsWhiteSpace( ch );
+                    return Is( UnicodeProp.Graph, ch )
+                           || Is( UnicodeProp.Blank, ch )
+                           || Is( UnicodeProp.Control, ch );
 
                 case UnicodeProp.Word:
-                    return char.IsWhiteSpace( ch );
+                    return Is( UnicodeProp.Alphabetic, ch )
+                           || ( ( ( ( ( 1 << CharHelper.NonSpacingMark )
+                                      | ( 1 << CharHelper.EnclosingMark )
+                                      | ( 1 << CharHelper.CombiningSpacingMark )
+                                      | ( 1 << CharHelper.DecimalDigitNumber )
+                                      | ( 1 << CharHelper.ConnectorPunctuation ) )
+                                    >> CharHelper.GetCharCat( ch ) )
+                                  & 1 )
+                                == 0 )
+                           || Is( UnicodeProp.Join_Control, ch );
 
                 case UnicodeProp.Join_Control:
-                    return char.IsWhiteSpace( ch );
+                    return ( ( ch == 0x200C ) || ( ch == 0x200D ) );
 
                 default:
                     return false;

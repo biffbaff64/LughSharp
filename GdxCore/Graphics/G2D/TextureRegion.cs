@@ -1,10 +1,13 @@
-﻿namespace LibGDXSharp.G2D
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.G2D
 {
     /// <summary>
     /// Defines a rectangular area of a texture. The coordinate system used has
     /// its origin in the upper left corner with the x-axis pointing to the
     /// right and the y axis pointing downwards.
     /// </summary>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public class TextureRegion
     {
         private int   _regionWidth;
@@ -14,71 +17,134 @@
         private float _u2;
         private float _v2;
 
+        /// <summary>
+        /// Constructs a region that cannot be used until a texture
+        /// and texture coordinates are set.
+        /// </summary>
         public TextureRegion()
         {
         }
 
+        /// <summary>
+        /// Constructs a region the size of the specified texture.
+        /// </summary>
+        /// <param name="texture"></param>
         public TextureRegion( Texture texture )
         {
             Texture = texture;
+
             SetRegion( 0, 0, texture.Width, texture.Height );
         }
 
+        /// <param name="texture"></param>
+        /// <param name="width">
+        /// The width of the texture region. May be negative to flip the sprite when drawn.
+        /// </param>
+        /// <param name="height">
+        /// The height of the texture region. May be negative to flip the sprite when drawn.
+        /// </param>
         public TextureRegion( Texture texture, int width, int height )
             : this( texture, 0, 0, width, height )
         {
         }
 
-        public TextureRegion( Texture? texture, int x, int y, int width, int height )
+        /// <param name="texture"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width">
+        /// The width of the texture region. May be negative to flip the sprite when drawn.
+        /// </param>
+        /// <param name="height">
+        /// The height of the texture region. May be negative to flip the sprite when drawn.
+        /// </param>
+        public TextureRegion( Texture texture, int x, int y, int width, int height )
         {
             Texture = texture;
             SetRegion( x, y, width, height );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="u"></param>
+        /// <param name="v"></param>
+        /// <param name="u2"></param>
+        /// <param name="v2"></param>
         public TextureRegion( Texture texture, float u, float v, float u2, float v2 )
         {
             Texture = texture;
             SetRegion( u, v, u2, v2 );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="region"></param>
         public TextureRegion( TextureRegion region )
         {
             SetRegion( region );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="region"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public TextureRegion( TextureRegion region, int x, int y, int width, int height )
         {
             SetRegion( region, x, y, width, height );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="texture"></param>
         public void SetRegion( Texture texture )
         {
             Texture = texture;
             SetRegion( 0, 0, texture.Width, texture.Height );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <exception cref="GdxRuntimeException"></exception>
         public void SetRegion( int x, int y, int width, int height )
         {
+            if ( Texture == null ) throw new GdxRuntimeException( "Texture cannot be null" );
+
             var invTexWidth  = 1f / Texture.Width;
             var invTexHeight = 1f / Texture.Height;
 
             SetRegion( x * invTexWidth, y * invTexHeight, ( x + width ) * invTexWidth, ( y + height ) * invTexHeight );
 
-            RegionWidth  = System.Math.Abs( width );
-            RegionHeight = System.Math.Abs( height );
+            RegionWidth  = Math.Abs( width );
+            RegionHeight = Math.Abs( height );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="u"></param>
+        /// <param name="v"></param>
+        /// <param name="u2"></param>
+        /// <param name="v2"></param>
+        /// <exception cref="GdxRuntimeException"></exception>
         public void SetRegion( float u, float v, float u2, float v2 )
         {
+            if ( Texture == null ) throw new GdxRuntimeException( "Texture cannot be null" );
+
             var texWidth  = Texture.Width;
             var texHeight = Texture.Height;
 
-            RegionWidth  = ( int )System.Math.Round( System.Math.Abs( u2 - u ) * texWidth );
-            RegionHeight = ( int )System.Math.Round( System.Math.Abs( v2 - v ) * texHeight );
+            RegionWidth  = ( int )Math.Round( Math.Abs( u2 - u ) * texWidth );
+            RegionHeight = ( int )Math.Round( Math.Abs( v2 - v ) * texHeight );
 
             // For a 1x1 region, adjust UVs toward pixel center to avoid filtering
             // artifacts on AMD GPUs when drawing very stretched.
-            if ( RegionWidth == 1 && RegionHeight == 1 )
+            if ( ( RegionWidth == 1 ) && ( RegionHeight == 1 ) )
             {
                 var adjustX = 0.25f / texWidth;
 
@@ -97,72 +163,101 @@
             this.V2 = v2;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="region"></param>
+        // ReSharper disable once MemberCanBeProtected.Global
         public void SetRegion( TextureRegion region )
         {
             Texture = region.Texture;
             SetRegion( region.U, region.V, region.U2, region.V2 );
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="region"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public void SetRegion( TextureRegion region, int x, int y, int width, int height )
         {
             Texture = region.Texture;
             SetRegion( region.RegionX + x, region.RegionY + y, width, height );
         }
 
-        public Texture? Texture { get; set; }
+        public Texture Texture { get; set; } = null!;
 
+        /// <summary>
+        /// </summary>
         public float U
         {
             get => _u;
             set
             {
-                _u          = value;
-                RegionWidth = ( int )System.Math.Round( System.Math.Abs( _u2 - _u ) * Texture.Width );
+                _u = value;
+
+                RegionWidth = ( int )Math.Round( Math.Abs( _u2 - _u ) * Texture.Width );
             }
         }
 
+        /// <summary>
+        /// </summary>
         public float U2
         {
             get => _u2;
             set
             {
-                _u2         = value;
-                RegionWidth = ( int )System.Math.Round( System.Math.Abs( _u2 - _u ) * Texture.Width );
+                _u2 = value;
+
+                RegionWidth = ( int )Math.Round( Math.Abs( _u2 - _u ) * Texture.Width );
             }
         }
 
+        /// <summary>
+        /// </summary>
         public float V
         {
             get => _v;
             set
             {
-                _v           = value;
-                RegionHeight = ( int )System.Math.Round( System.Math.Abs( _v2 - _v ) * Texture.Height );
+                _v = value;
+
+                RegionHeight = ( int )Math.Round( Math.Abs( _v2 - _v ) * Texture.Height );
             }
         }
 
+        /// <summary>
+        /// </summary>
         public float V2
         {
             get => _v2;
             set
             {
-                _v2          = value;
-                RegionHeight = ( int )System.Math.Round( System.Math.Abs( _v2 - _v ) * Texture.Height );
+                _v2 = value;
+
+                RegionHeight = ( int )Math.Round( Math.Abs( _v2 - _v ) * Texture.Height );
             }
         }
 
+        /// <summary>
+        /// </summary>
         public int RegionX
         {
-            get => ( int )System.Math.Round( U * Texture.Width );
+            get => ( int )Math.Round( U * Texture.Width );
             set => U = ( value / ( float )Texture.Width );
         }
 
+        /// <summary>
+        /// </summary>
         public int RegionY
         {
-            get => ( int )System.Math.Round( V * Texture.Height );
+            get => ( int )Math.Round( V * Texture.Height );
             set => V = ( value / ( float )Texture.Height );
         }
 
+        /// <summary>
+        /// </summary>
         public int RegionWidth
         {
             get => _regionWidth;
@@ -170,15 +265,19 @@
             {
                 if ( IsFlipX() )
                 {
-                    U = ( U2 + value / ( float )Texture.Width );
+                    U = ( U2 + ( value / ( float )Texture.Width ) );
                 }
                 else
                 {
-                    U2 = ( U + value / ( float )Texture.Width );
+                    U2 = ( U + ( value / ( float )Texture.Width ) );
                 }
+
+                _regionWidth = value;
             }
         }
 
+        /// <summary>
+        /// </summary>
         public int RegionHeight
         {
             get => _regionHeight;
@@ -186,15 +285,21 @@
             {
                 if ( IsFlipY() )
                 {
-                    V = ( V2 + value / ( float )Texture.Height );
+                    V = ( V2 + ( value / ( float )Texture.Height ) );
                 }
                 else
                 {
-                    V2 = ( V + value / ( float )Texture.Height );
+                    V2 = ( V + ( value / ( float )Texture.Height ) );
                 }
+
+                _regionHeight = value;
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void Flip( bool x, bool y )
         {
             if ( x )
@@ -228,7 +333,7 @@
                 var width = ( U2 - U ) * Texture.Width;
 
                 U  = ( U + xAmount ) % 1;
-                U2 = U + width / Texture.Width;
+                U2 = U + ( width / Texture.Width );
             }
 
             if ( yAmount != 0 )
@@ -236,7 +341,7 @@
                 var height = ( V2 - V ) * Texture.Height;
 
                 V  = ( V + yAmount ) % 1;
-                V2 = V + height / Texture.Height;
+                V2 = V + ( height / Texture.Height );
             }
         }
 

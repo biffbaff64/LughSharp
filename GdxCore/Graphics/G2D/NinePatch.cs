@@ -2,7 +2,7 @@
 {
     public class NinePatch
     {
-        public NinePatch( TextureAtlas.AtlasRegion region, int split, int i, int split1, int i1 )
+        public NinePatch( AtlasRegion region, int split, int i, int split1, int i1 )
         {
             throw new NotImplementedException();
         }

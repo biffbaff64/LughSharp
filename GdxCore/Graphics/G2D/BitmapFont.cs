@@ -749,7 +749,8 @@ namespace LibGDXSharp.G2D
 
                     var pageCount = 1;
 
-                    if ( common is [_, _, _, _, _, not null, ..] && common[ 5 ].StartsWith( "pages=" ) )
+                    if ( common is [var _, var _, var _, var _, var _, not null, ..]
+                         && common[ 5 ].StartsWith( "pages=" ) )
                     {
                         try
                         {
@@ -773,7 +774,7 @@ namespace LibGDXSharp.G2D
                             throw new GdxRuntimeException( "Missing additional page definitions." );
 
                         // Expect ID to mean "index".
-                        Matcher matcher = Pattern.Compile(".*id=(\\d+)").matcher(line);
+                        Matcher matcher = Pattern.Compile( ".*id=(\\d+)" ).matcher( line );
 
                         if ( matcher.Find() )
                         {

@@ -53,7 +53,7 @@ ASSETS
     - DONE - AssetDescriptor                Convert
     - DONE - AssetLoaderParameters          Convert
     - DONE - AssetLoadingTask               Convert
-    - IP   - AssetManager                   Convert
+    - DONE - AssetManager                   Convert
     - DONE - IAssetErrorListener            Convert
     - DONE - RefCountedContainer            Convert
 
@@ -70,12 +70,12 @@ ASSETS/LOADERS
     -      - ModelLoader                    Convert
     - IP   - MusicLoader                    Convert
     -      - ParticleEffectLoader           Convert
-    -      - PixmapLoader                   Convert
+    - IP   - PixmapLoader                   Convert
     -      - ShaderProgramLoader            Convert
-    -      - SkinLoader                     Convert
-    -      - SoundLoader                    Convert
+    - IP   - SkinLoader                     Convert
+    - IP   - SoundLoader                    Convert
     - DONE - SynchronousAssetLoader         Convert
-    -      - TextureAtlasLoader             Convert
+    - IP   - TextureAtlasLoader             Convert
     - DONE - TextureLoader                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -154,6 +154,8 @@ GRAPHICS
 GRAPHICS/G2D
 ------------
     -      - Animation                      Convert
+    - DONE - AtlasRegion                    Convert
+    - IP   - AtlasSprite                    Convert
     - IP   - BitmapFont                     Convert
     -      - BitmapFontCache                Convert
     -      - CpuSpriteBatch                 Convert
@@ -176,10 +178,10 @@ GRAPHICS/G2D
     -      - Sprite                         Convert
     - IP   - SpriteBatch                    Convert
     -      - SpriteCache                    Convert
-    - IP   - TextureAtlas                   Convert
+    - DONE - TextureAtlas                   Convert
     - IP   - TextureAtlasData               Convert
     - DONE - TextureAtlasDataExtensions     Convert
-    - IP   - TextureRegion                  Convert
+    - DONE - TextureRegion                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -728,12 +730,12 @@ UTILS/REGEX
 -----------
     - DONE - ASCII                          Convert
     - DONE - IMatchResult                   Convert
-    -      - Matcher                        Convert
-    -      - Pattern                        Convert
-    -      - PatternSyntaxException         Convert
-    - IP   - UnicodeProp                    Convert
+    - IP   - Matcher                        Convert
+    - IP   - Pattern                        Convert
+    - DONE - PatternSyntaxException         Convert
+    - DONE - UnicodeProp                    Convert
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+02- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/VIEWPORT
