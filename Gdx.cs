@@ -18,8 +18,8 @@ namespace LibGDXSharp
         [AllowNull] public static IInput       Input    { get; set; }
         [AllowNull] public static IFiles       Files    { get; set; }
         [AllowNull] public static INet         Net      { get; set; }
-        [AllowNull] public static IGL20        Gl       { get; set; }
-        [AllowNull] public static IGL20        Gl20     { get; set; }
-        [AllowNull] public static IGL30        Gl30     { get; set; }
+        [AllowNull] public static IGL20        GL       { get; set; }
+        [AllowNull] public static IGL20        GL20     { get; set; }
+        [AllowNull] public static IGL30        GL30     { get; set; }
     }
 }

@@ -186,14 +186,14 @@ namespace LibGDXSharp.Scenes.Scene2D
                 }
             }
 
-            Gdx.Gl.GLEnable( IGL20.GL_Blend );
+            Gdx.GL.GLEnable( IGL20.GL_Blend );
 
             _debugShapes.SetProjectionMatrix( Viewport.Camera.Combined );
             _debugShapes.Begin();
             _root.DrawDebug( _debugShapes );
             _debugShapes.End();
 
-            Gdx.Gl.GLDisable( IGL20.GL_Blend );
+            Gdx.GL.GLDisable( IGL20.GL_Blend );
         }
 
         /// <summary>

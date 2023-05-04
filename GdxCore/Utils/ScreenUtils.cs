@@ -40,7 +40,7 @@ namespace LibGDXSharp.Utils
         /// <param name="b"></param>
         public static void Clear( float r, float g, float b, float a, bool clearDepth = false )
         {
-            Gdx.Gl.GLClearColor( r, g, b, a );
+            Gdx.GL.GLClearColor( r, g, b, a );
 
             var mask = IGL20.GL_Color_Buffer_Bit;
 
@@ -49,7 +49,7 @@ namespace LibGDXSharp.Utils
                 mask |= IGL20.GL_Depth_Buffer_Bit;
             }
 
-            Gdx.Gl.GLClear( mask );
+            Gdx.GL.GLClear( mask );
         }
 
         /// <summary>
@@ -164,11 +164,11 @@ namespace LibGDXSharp.Utils
         {
             var numBytes = w * h * 4;
 
-            Gdx.Gl.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
+            Gdx.GL.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
             
             Buffer pixels = Utils.BufferUtils.NewByteBuffer( numBytes );
             
-            Gdx.Gl.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
+            Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
 
             var lines = new byte[ numBytes ];
 

@@ -86,7 +86,7 @@
         /// For a matcher <i>m</i> with input sequence <i>s</i>, the expressions:-
         /// <para>
         /// <i>m.</i><tt>group()</tt> and
-        /// <i>s.</i><tt>substring(</tt><i>m.</i><tt>start(),</tt>&nbsp;<i>m.</i><tt>end())</tt>
+        /// <i>s.</i><tt>substring(</tt><i>m.</i><tt>start(),</tt><i> m.</i><tt>end())</tt>
         /// </para>
         /// are equivalent.
         /// </para>
@@ -103,7 +103,7 @@
         /// <exception cref="IllegalStateException">
         /// If no match has yet been attempted, or if the previous match operation failed.
         /// </exception>
-        public string Group();
+        public string? Group();
 
         /// <summary>
         /// Returns the input subsequence captured by the given group during the
@@ -151,7 +151,7 @@
         /// <exception cref="IndexOutOfRangeException">
         /// If there is no capturing group in the pattern with the given index.
         /// </exception>
-        public string Group( int group );
+        public string? Group( int group );
 
         /// <summary>
         /// Returns the number of capturing groups in this match result's pattern.
