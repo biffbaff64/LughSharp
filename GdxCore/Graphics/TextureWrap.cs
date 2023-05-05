@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-using LibGDXSharp.Backends.Desktop;
-
 namespace LibGDXSharp.Graphics
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// 
+    /// </summary>
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public sealed class TextureWrap
     {

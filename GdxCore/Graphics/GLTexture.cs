@@ -1,4 +1,8 @@
-﻿namespace LibGDXSharp.Graphics
+﻿using LibGDXSharp.Maths;
+
+using Buffer = Silk.NET.OpenGLES.Buffer;
+
+namespace LibGDXSharp.Graphics
 {
     /// <summary>
     /// Class representing an OpenGL texture by its target and handle.
@@ -8,14 +12,14 @@
     /// </summary>
     public abstract class GLTexture
     {
-        public int GLTarget { get; set; }
+        public int   GLTarget               { get; set; }
+        public float AnisotropicFilterLevel { get; set; } = 1.0f;
 
-        protected int           glHandle;
-        protected TextureFilter minFilter              = TextureFilter.Nearest;
-        protected TextureFilter magFilter              = TextureFilter.Nearest;
-        protected TextureWrap   uWrap                  = TextureWrap.ClampToEdge;
-        protected TextureWrap   vWrap                  = TextureWrap.ClampToEdge;
-        protected float         anisotropicFilterLevel = 1.0f;
+        private int           _glHandle;
+        private TextureFilter _minFilter = TextureFilter.Nearest;
+        private TextureFilter _magFilter = TextureFilter.Nearest;
+        private TextureWrap   _uWrap     = TextureWrap.ClampToEdge;
+        private TextureWrap   _vWrap     = TextureWrap.ClampToEdge;
 
         private static float _maxAnisotropicFilterLevel = 0;
 
@@ -31,20 +35,26 @@
         /// <summary>
         /// Generates a new OpenGL texture with the specified target.
         /// </summary>
-        protected GLTexture( int glTarget )
-            : this( glTarget, Gdx.GL.GLGenTexture() )
+        protected GLTexture( int glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
         {
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="glTarget"></param>
+        /// <param name="glHandle"></param>
         protected GLTexture( int glTarget, int glHandle )
         {
             this.GLTarget = glTarget;
-            this.glHandle = glHandle;
+            this._glHandle = glHandle;
         }
 
         /// <returns>whether this texture is managed or not.</returns>
         public abstract bool IsManaged();
 
+        /// <summary>
+        /// </summary>
         protected abstract void Reload();
 
         /// <summary>
@@ -53,7 +63,7 @@
         /// </summary>
         public void Bind()
         {
-            Gdx.GL.GLBindTexture( GLTarget, glHandle );
+            Gdx.GL.GLBindTexture( GLTarget, _glHandle );
         }
 
         /// <summary>
@@ -66,50 +76,49 @@
         public void Bind( int unit )
         {
             Gdx.GL.GLActiveTexture( IGL20.GL_Texture0 + unit );
-            Gdx.GL.GLBindTexture( GLTarget, glHandle );
+            Gdx.GL.GLBindTexture( GLTarget, _glHandle );
         }
 
         /// <returns> The <see cref="TextureFilter"/> used for minification. </returns>
-        public TextureFilter MinFilter => minFilter;
+        public TextureFilter MinFilter => _minFilter;
 
         /// <returns> The <see cref="TextureFilter"/> used for magnification. </returns>
-        public TextureFilter MagFilter => magFilter;
+        public TextureFilter MagFilter => _magFilter;
 
-        /// <returns> The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates. </returns>
-        public TextureWrap UWrap => uWrap;
+        /// <returns>
+        /// The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
+        /// </returns>
+        public TextureWrap UWrap => _uWrap;
 
-        /// <returns> The <see cref="TextureWrap"/> used for vertical (V) texture coordinates. </returns>
-        public TextureWrap VWrap => vWrap;
+        /// <returns>
+        /// The <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
+        /// </returns>
+        public TextureWrap VWrap => _vWrap;
 
         /// <returns> The OpenGL handle for this texture. </returns>
-        public int TextureObjectHandle => glHandle;
+        public int TextureObjectHandle => _glHandle;
 
         /// <summary>
-        /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis. Assumes the texture is bound and active! </summary>
-        /// <param name="u"> the u wrap </param>
-        /// <param name="v"> the v wrap  </param>
-        public void UnsafeSetWrap( TextureWrap u, TextureWrap v )
-        {
-            UnsafeSetWrap( u, v, false );
-        }
-
-        /// <summary>
-        /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis. Assumes the texture is bound and active! </summary>
+        /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.
+        /// Assumes the texture is bound and active!
+        /// </summary>
         /// <param name="u"> the u wrap </param>
         /// <param name="v"> the v wrap </param>
-        /// <param name="force"> True to always set the values, even if they are the same as the current values.  </param>
-        public void UnsafeSetWrap( TextureWrap u, TextureWrap v, bool force )
+        /// <param name="force">
+        /// True to always set the values, even if they are the same as the current values.
+        /// </param>
+        public void UnsafeSetWrap( TextureWrap? u, TextureWrap? v, bool force = false )
         {
-            if ( u != null && ( force || uWrap != u ) )
+            if ( (u != null) && ( force || (_uWrap != u) ) )
             {
-                Gdx.gl.glTexParameteri( glTarget, IGL20.GL_TEXTURE_WRAP_S, u.getGLEnum() );
-                uWrap = u;
+                Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_S, u.GLEnum );
+                _uWrap = u;
             }
 
-            if ( v != null && ( force || vWrap != v ) )
+            if ( (v != null) && ( force || (_vWrap != v) ) )
             {
-                Gdx.gl.glTexParameteri( glTarget, IGL20.GL_TEXTURE_WRAP_T, v.getGLEnum() );
-                vWrap = v;
+                Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_T, v.GLEnum );
+                _vWrap = v;
             }
         }
 
@@ -117,69 +126,228 @@
         /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.
         /// This will bind this texture!
         /// </summary>
-        /// <param name="u"> the u wrap </param>
-        /// <param name="v"> the v wrap  </param>
+        /// <param name="u">the u wrap</param>
+        /// <param name="v">the v wrap</param>
         public void SetWrap( TextureWrap u, TextureWrap v )
         {
-            this.uWrap = u;
-            this.vWrap = v;
-            
+            this._uWrap = u;
+            this._vWrap = v;
+
             Bind();
-            
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_S, u.GetGLEnum() );
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_T, v.GetGLEnum() );
+
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_S, u.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_T, v.GLEnum );
         }
 
         /// <summary>
-        /// Sets the <see cref="TextureFilter"/> for this texture for minification and magnification. Assumes the texture is bound and active! </summary>
+        /// Sets the <see cref="TextureFilter"/> for this texture for minification and
+        /// magnification. Assumes the texture is bound and active!
+        /// </summary>
         /// <param name="minFilter"> the minification filter </param>
         /// <param name="magFilter"> the magnification filter  </param>
-        public void UnsafeSetFilter( TextureFilter minFilter, TextureFilter magFilter )
+        /// <param name="force">
+        /// True to always set the values, even if they are the same as the current values.
+        /// Default is false.
+        /// </param>
+        public void UnsafeSetFilter( TextureFilter? minFilter, TextureFilter? magFilter, bool force = false )
         {
-            UnsafeSetFilter( minFilter, magFilter, false );
-        }
-
-        /// <summary>
-        /// Sets the <see cref="TextureFilter"/> for this texture for minification and magnification. Assumes the texture is bound and active! </summary>
-        /// <param name="minFilter"> the minification filter </param>
-        /// <param name="magFilter"> the magnification filter </param>
-        /// <param name="force"> True to always set the values, even if they are the same as the current values.  </param>
-        public void UnsafeSetFilter( TextureFilter minFilter, TextureFilter magFilter, bool force )
-        {
-            if ( minFilter != null && ( force || this.minFilter != minFilter ) )
+            if ( ( minFilter != null ) && ( force || ( this._minFilter != minFilter ) ) )
             {
-                Gdx.gl.glTexParameteri( glTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.getGLEnum() );
-                this.minFilter = minFilter;
+                Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Min_Filter, minFilter.GLEnum );
+                this._minFilter = minFilter;
             }
 
-            if ( magFilter != null && ( force || this.magFilter != magFilter ) )
+            if ( ( magFilter != null ) && ( force || ( this._magFilter != magFilter ) ) )
             {
-                Gdx.gl.glTexParameteri( glTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.getGLEnum() );
-                this.magFilter = magFilter;
+                Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Mag_Filter, magFilter.GLEnum );
+                this._magFilter = magFilter;
             }
         }
 
         /// <summary>
-        /// Sets the <see cref="TextureFilter"/> for this texture for minification and magnification. This will bind this texture! </summary>
+        /// Sets the <see cref="TextureFilter"/> for this texture for minification and
+        /// magnification. This will bind this texture!
+        /// </summary>
         /// <param name="minFilter"> the minification filter </param>
         /// <param name="magFilter"> the magnification filter  </param>
         public void SetFilter( TextureFilter minFilter, TextureFilter magFilter )
         {
-            this.minFilter = minFilter;
-            this.magFilter = magFilter;
-            bind();
-            Gdx.gl.glTexParameteri( glTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.getGLEnum() );
-            Gdx.gl.glTexParameteri( glTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.getGLEnum() );
+            this._minFilter = minFilter;
+            this._magFilter = magFilter;
+
+            Bind();
+
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Min_Filter, minFilter.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Mag_Filter, magFilter.GLEnum );
         }
 
         /// <summary>
-        /// Sets the anisotropic filter level for the texture. Assumes the texture is bound and active!
+        /// Sets the anisotropic filter level for the texture.
+        /// Assumes the texture is bound and active!
         /// </summary>
-        /// <param name="level"> The desired level of filtering. The maximum level supported by the device up to this value will be used. </param>
-        /// <returns> The actual level set, which may be lower than the provided value due to device limitations. </returns>
-        public float UnsafeSetAnisotropicFilter( float level )
+        /// <param name="level">
+        /// The desired level of filtering. The maximum level supported by
+        /// the device up to this value will be used.
+        /// </param>
+        /// <param name="force"></param>
+        /// <returns>
+        /// The actual level set, which may be lower than the provided value
+        /// due to device limitations.
+        /// </returns>
+        public float UnsafeSetAnisotropicFilter( float level, bool force = false )
         {
-            return UnsafeSetAnisotropicFilter( level, false );
+            var max = GetMaxAnisotropicFilterLevel();
+
+            if ( Math.Abs( max - 1f ) < 0.1f ) return 1f;
+
+            level = Math.Min( level, max );
+
+            if ( !force && MathUtils.IsEqual( level, AnisotropicFilterLevel, 0.1f ) )
+            {
+                return AnisotropicFilterLevel;
+            }
+
+            Gdx.GL20.GLTexParameterf( IGL20.GL_Texture_2D, 
+                                      IGL20.GL_Texture_Max_Anisotropy_Ext,
+                                      level );
+
+            return AnisotropicFilterLevel = level;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public float SetAnisotropicFilter( float level )
+        {
+            var max = GetMaxAnisotropicFilterLevel();
+
+            if ( Math.Abs( max - 1f ) < 0.1f ) return 1f;
+
+            level = Math.Min( level, max );
+
+            if ( MathUtils.IsEqual( level, AnisotropicFilterLevel, 0.1f ) )
+            {
+                return level;
+            }
+
+            Bind();
+
+            Gdx.GL20.GLTexParameterf( IGL20.GL_Texture_2D, 
+                                      IGL20.GL_Texture_Max_Anisotropy_Ext,
+                                      level );
+
+            return AnisotropicFilterLevel = level;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public static float GetMaxAnisotropicFilterLevel()
+        {
+            if ( _maxAnisotropicFilterLevel > 0 ) return _maxAnisotropicFilterLevel;
+
+            if ( Gdx.Graphics.SupportsExtension( "GL_EXT_texture_filter_anisotropic" ) )
+            {
+                FloatBuffer buffer = BufferUtils.NewFloatBuffer( 16 );
+
+                ( ( Buffer )buffer ).Position( 0 );
+                ( ( Buffer )buffer ).Limit( buffer.Capacity() );
+
+                Gdx.GL20.GLGetFloatv( IGL20.GL_Max_Texture_Max_Anisotropy_Ext, buffer );
+
+                return _maxAnisotropicFilterLevel = buffer.Get( 0 );
+            }
+
+            return _maxAnisotropicFilterLevel = 1f;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        protected void Delete()
+        {
+            if ( _glHandle != 0 )
+            {
+                Gdx.GL.GLDeleteTexture( _glHandle );
+                _glHandle = 0;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="data"></param>
+        /// <param name="miplevel"></param>
+        public static void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
+        {
+            if ( data == null )
+            {
+                // FIXME: remove texture on target?
+                return;
+            }
+
+            if ( !data.IsPrepared() ) data.Prepare();
+
+            ITextureData.TextureDataType type = data.GetType();
+
+            if ( type == ITextureData.TextureDataType.Custom )
+            {
+                data.ConsumeCustomData( target );
+
+                return;
+            }
+
+            Pixmap pixmap        = data.ConsumePixmap();
+            bool   disposePixmap = data.DisposePixmap();
+
+            if ( data.GetFormat() != pixmap.PixFormat )
+            {
+                var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.GetFormat() );
+
+                tmp.BlendValue = Pixmap.Blending.None;
+                tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
+
+                if ( data.DisposePixmap() )
+                {
+                    pixmap.Dispose();
+                }
+
+                pixmap        = tmp;
+                disposePixmap = true;
+            }
+
+            Gdx.GL.GLPixelStorei( IGL20.GL_Unpack_Alignment, 1 );
+
+            if ( data.UseMipMaps() )
+            {
+                MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
+            }
+            else
+            {
+                Gdx.GL.GLTexImage2D
+                    (
+                     target,
+                     miplevel,
+                     pixmap.GLInternalFormat,
+                     pixmap.Width,
+                     pixmap.Height,
+                     0,
+                     pixmap.GLFormat,
+                     pixmap.GLType,
+                     pixmap.Pixels
+                    );
+            }
+
+            if ( disposePixmap ) pixmap.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Delete();
         }
     }
 }

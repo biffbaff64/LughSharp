@@ -17,6 +17,13 @@ namespace LibGDXSharp.G2D
 
         public const int Gdx2D_Blend_None     = 0;
         public const int Gdx2D_Blend_Src_Over = 1;
-
+        
+        public Gdx2DPixmap( int width, int height, int gdx2DPixmapFormat )
+        {
+        }
+        
+        public Gdx2DPixmap( byte[] encodedData, int offset, int len, int requestedFormat )
+        {
+        }
     }
 }

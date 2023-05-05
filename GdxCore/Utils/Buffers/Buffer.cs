@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Utils
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Utils
 {
     /// <summary>
     /// <p>
@@ -132,6 +134,7 @@
     /// </p>
     /// <p></p>
     /// </summary>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class Buffer
     {
         // Invariants: mark <= position <= limit <= capacity
@@ -144,8 +147,10 @@
         {
         }
         
-        // Creates a new buffer with the given mark, position, limit, and capacity,
-        // after checking invariants.
+        /// <summary>
+        /// Creates a new buffer with the given mark, position, limit, and capacity,
+        /// after checking invariants.
+        /// </summary>
         protected Buffer( int mark, int pos, int lim, int cap )
         {
             if ( cap < 0 )
@@ -451,7 +456,7 @@
 
         internal int NextGetIndex( int nb )
         {
-            if ( Limit - Position < nb )
+            if ( ( Limit - Position ) < nb )
             {
                 throw new BufferUnderflowException();
             }
@@ -480,7 +485,7 @@
 
         internal int NextPutIndex( int nb )
         {
-            if ( Limit - Position < nb )
+            if ( ( Limit - Position ) < nb )
             {
                 throw new BufferOverflowException();
             }
@@ -508,17 +513,12 @@
 
         internal int CheckIndex( int i, int nb )
         {
-            if ( ( i < 0 ) || ( nb > Limit - i ) )
+            if ( ( i < 0 ) || ( nb > ( Limit - i ) ) )
             {
                 throw new System.IndexOutOfRangeException();
             }
 
             return i;
-        }
-
-        internal int MarkValue()
-        {
-            return Mark;
         }
 
         internal void Truncate()
@@ -529,10 +529,7 @@
             Capacity = 0;
         }
 
-        internal void DiscardMark()
-        {
-            Mark = -1;
-        }
+        internal void DiscardMark() => Mark = -1;
 
         internal static void CheckBounds( int off, int len, int size )
         {
@@ -544,12 +541,10 @@
 
         public void Get( Span< byte > lines, int numBytesPerLine, int i )
         {
-            throw new NotImplementedException();
         }
 
         public void Read( Span< byte > lines )
         {
-            throw new NotImplementedException();
         }
     }
 }
