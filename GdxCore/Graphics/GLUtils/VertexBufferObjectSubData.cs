@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils
-{
-    public class VertexBufferObjectSubData
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics.GLUtils;
 
+public class VertexBufferObjectSubData
+{
+        
+}

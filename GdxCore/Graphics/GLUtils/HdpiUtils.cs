@@ -1,11 +1,9 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils
+﻿namespace LibGDXSharp.Graphics.GLUtils;
+
+public class HdpiUtils
 {
-    public class HdpiUtils
+    public static void GLViewport( int screenX, int screenY, int screenWidth, int screenHeight )
     {
-        public static void GLViewport( int screenX, int screenY, int screenWidth, int screenHeight )
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }
-

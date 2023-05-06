@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.UI
-{
-    public class ImageTextButton
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Scenes.Scene2D.UI;
 
+public class ImageTextButton
+{
+        
+}

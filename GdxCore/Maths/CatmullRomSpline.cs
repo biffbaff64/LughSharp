@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class CatmullRomSpline
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class CatmullRomSpline
+{
+        
+}

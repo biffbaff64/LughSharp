@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Utils
+﻿namespace LibGDXSharp.Scenes.Scene2D.Utils;
+
+public interface ITransformDrawable
 {
-    public interface ITransformDrawable
-    {
         
-    }
 }

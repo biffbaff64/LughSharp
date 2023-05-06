@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class TextFormatter
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class TextFormatter
+{
+        
+}

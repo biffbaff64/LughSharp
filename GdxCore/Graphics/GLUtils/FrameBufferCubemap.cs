@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils
-{
-    public class FrameBufferCubemap
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics.GLUtils;
 
+public class FrameBufferCubemap
+{
+        
+}

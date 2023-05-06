@@ -1,24 +1,23 @@
-﻿namespace LibGDXSharp.Core
+﻿namespace LibGDXSharp.Core;
+
+/// <summary>
+/// Represents one of many application screens, such as a main menu,
+/// a settings menu, the game screen and so on.
+/// Note that Dispose() is not called automatically.
+/// </summary>
+public interface IScreen
 {
-    /// <summary>
-    /// Represents one of many application screens, such as a main menu,
-    /// a settings menu, the game screen and so on.
-    /// Note that Dispose() is not called automatically.
-    /// </summary>
-    public interface IScreen
-    {
-        void Show();
+    void Show();
 
-        void Render( float delta );
+    void Render( float delta );
 
-        void Resize( int width, int height );
+    void Resize( int width, int height );
 
-        void Pause();
+    void Pause();
 
-        void Resume();
+    void Resume();
 
-        void Hide();
+    void Hide();
 
-        void Dispose();
-    }
+    void Dispose();
 }

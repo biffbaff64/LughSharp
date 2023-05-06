@@ -1,12 +1,10 @@
-﻿namespace LibGDXSharp.Graphics
-{
-    public class PixmapIO
-    {
+﻿namespace LibGDXSharp.Graphics;
 
-        public static object ReadCIM( FileInfo file )
-        {
-            throw new NotImplementedException();
-        }
+public class PixmapIO
+{
+
+    public static object ReadCIM( FileInfo file )
+    {
+        throw new NotImplementedException();
     }
 }
-

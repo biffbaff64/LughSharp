@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class PropertiesUtils
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class PropertiesUtils
+{
+        
+}

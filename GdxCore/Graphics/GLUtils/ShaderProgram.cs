@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils
-{
-    public class ShaderProgram
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics.GLUtils;
 
+public class ShaderProgram
+{
+        
+}

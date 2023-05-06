@@ -1,11 +1,9 @@
-﻿namespace LibGDXSharp.Assets.Loaders.Resolvers
+﻿namespace LibGDXSharp.Assets.Loaders.Resolvers;
+
+public sealed class InternalFileHandleResolver : IFileHandleResolver
 {
-    public sealed class InternalFileHandleResolver : IFileHandleResolver
+    public FileInfo Resolve( string fileName )
     {
-        public FileInfo Resolve( string fileName )
-        {
-            return Gdx.Files.Internal( fileName );
-        }
+        return Gdx.Files.Internal( fileName );
     }
 }
-

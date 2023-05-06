@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.UI
-{
-    public class ButtonGroup
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Scenes.Scene2D.UI;
 
+public class ButtonGroup
+{
+        
+}

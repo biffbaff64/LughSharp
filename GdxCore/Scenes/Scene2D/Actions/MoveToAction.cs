@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Actions
-{
-    public class MoveToAction
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+public class MoveToAction
+{
+        
+}

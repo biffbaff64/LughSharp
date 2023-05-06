@@ -1,16 +1,16 @@
 ﻿using LibGDXSharp.G2D;
 
-namespace LibGDXSharp.Graphics
+namespace LibGDXSharp.Graphics;
+
+public static class PixmapFormat
 {
-    public static class PixmapFormat
+    /// <summary>
+    /// </summary>
+    /// <param name="format"></param>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public static int ToGdx2DPixmapFormat( Pixmap.Format format )
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="format"></param>
-        /// <returns></returns>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public static int ToGdx2DPixmapFormat( Pixmap.Format format )
-        {
             //@formatter:off
             return format switch
                    {
@@ -24,17 +24,17 @@ namespace LibGDXSharp.Graphics
                        
                        _ => throw new GdxRuntimeException( $"Unknown Format: {format}" )
                    };
-            //@formatter:on
-        }
+        //@formatter:on
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="f"></param>
-        /// <param name="format"></param>
-        /// <returns></returns>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public static Pixmap.Format FromGdx2DPixmapFormat( int format )
-        {
+    /// <summary>
+    /// </summary>
+    /// <param name="f"></param>
+    /// <param name="format"></param>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public static Pixmap.Format FromGdx2DPixmapFormat( int format )
+    {
             //@formatter:off
             return format switch
                    {
@@ -47,27 +47,26 @@ namespace LibGDXSharp.Graphics
                        
                        _ => throw new GdxRuntimeException( "Unknown Gdx2DPixmap Format: " + format )
                    };
-            //@formatter:on
-        }
+        //@formatter:on
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="f"></param>
-        /// <param name="format"></param>
-        /// <returns></returns>
-        public static int ToGLFormat( Pixmap.Format format )
-        {
-            return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
-        }
+    /// <summary>
+    /// </summary>
+    /// <param name="f"></param>
+    /// <param name="format"></param>
+    /// <returns></returns>
+    public static int ToGLFormat( Pixmap.Format format )
+    {
+        return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="f"></param>
-        /// <param name="format"></param>
-        /// <returns></returns>
-        public static int ToGLType( Pixmap.Format format )
-        {
-            return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
-        }
+    /// <summary>
+    /// </summary>
+    /// <param name="f"></param>
+    /// <param name="format"></param>
+    /// <returns></returns>
+    public static int ToGLType( Pixmap.Format format )
+    {
+        return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
     }
 }

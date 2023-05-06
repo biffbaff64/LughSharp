@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Collections
-{
-    public class IdentityMap
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Collections;
 
+public class IdentityMap
+{
+        
+}

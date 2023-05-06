@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop
-{
-    public class DefaultGLInput
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Backends.Desktop;
 
+public class DefaultGLInput
+{
+        
+}

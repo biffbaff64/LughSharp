@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Input
-{
-    public class RemoteSender
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Input;
 
+public class RemoteSender
+{
+        
+}

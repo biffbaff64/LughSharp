@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop
-{
-    public class GLClipboard
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Backends.Desktop;
 
+public class GLClipboard
+{
+        
+}

@@ -1,7 +1,5 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class NoSuchElementException : InvalidOperationException
-    {
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class NoSuchElementException : InvalidOperationException
+{
+}

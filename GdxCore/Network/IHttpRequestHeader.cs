@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Network
+﻿namespace LibGDXSharp.Network;
+
+public interface IHttpRequestHeader
 {
-    public interface IHttpRequestHeader
-    {
         
-    }
 }

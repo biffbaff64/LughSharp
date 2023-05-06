@@ -1,7 +1,5 @@
-﻿namespace LibGDXSharp.Network
-{
-    public class HttpRequestBuilder
-    {
-    }
-}
+﻿namespace LibGDXSharp.Network;
 
+public class HttpRequestBuilder
+{
+}

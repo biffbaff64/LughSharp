@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics.Profiling
-{
-    public class GLProfiler
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics.Profiling;
 
+public class GLProfiler
+{
+        
+}

@@ -1,253 +1,252 @@
 ﻿using LibGDXSharp.Utils.Collections;
 
-namespace LibGDXSharp.Core
+namespace LibGDXSharp.Core;
+
+public class InputMultiplexer : IInputProcessor
 {
-    public class InputMultiplexer : IInputProcessor
+    private readonly SnapshotArray< IInputProcessor > _processors;
+
+    public InputMultiplexer()
     {
-        private readonly SnapshotArray< IInputProcessor > _processors;
+        _processors = new SnapshotArray< IInputProcessor >( 4 );
+    }
 
-        public InputMultiplexer()
+    public InputMultiplexer( params IInputProcessor[] processors )
+    {
+        _processors = new SnapshotArray< IInputProcessor >();
+        _processors.AddAll( processors );
+    }
+
+    public void AddProcessor( int index, IInputProcessor processor )
+    {
+        if ( processor == null )
         {
-            _processors = new SnapshotArray< IInputProcessor >( 4 );
+            throw new NullReferenceException( "processor cannot be null" );
         }
 
-        public InputMultiplexer( params IInputProcessor[] processors )
+        _processors.Insert( index, processor );
+    }
+
+    public void RemoveProcessor( int index )
+    {
+        _processors.RemoveAt( index );
+    }
+
+    public void AddProcessor( IInputProcessor processor )
+    {
+        if ( processor == null )
         {
-            _processors = new SnapshotArray< IInputProcessor >();
-            _processors.AddAll( processors );
+            throw new NullReferenceException( "processor cannot be null" );
         }
 
-        public void AddProcessor( int index, IInputProcessor processor )
+        _processors.Add( processor );
+    }
+
+    public void RemoveProcessor( IInputProcessor processor )
+    {
+        _processors.Remove( processor );
+    }
+
+    public int Size()
+    {
+        return _processors.Count;
+    }
+
+    public void Clear()
+    {
+        _processors.Clear();
+    }
+
+    public void SetProcessors( params IInputProcessor[] processorList )
+    {
+        this._processors.Clear();
+        this._processors.AddAll( processorList );
+    }
+
+    public void SetProcessors( Array< IInputProcessor > processorList )
+    {
+        this._processors.Clear();
+        this._processors.AddAll( processorList.ToArray() );
+    }
+
+    public SnapshotArray< IInputProcessor > GetProcessors()
+    {
+        return _processors;
+    }
+
+    public bool KeyDown( int keycode )
+    {
+        var items = _processors.Begin();
+
+        try
         {
-            if ( processor == null )
+            for ( int i = 0, n = _processors.Size; i < n; i++ )
             {
-                throw new NullReferenceException( "processor cannot be null" );
-            }
-
-            _processors.Insert( index, processor );
-        }
-
-        public void RemoveProcessor( int index )
-        {
-            _processors.RemoveAt( index );
-        }
-
-        public void AddProcessor( IInputProcessor processor )
-        {
-            if ( processor == null )
-            {
-                throw new NullReferenceException( "processor cannot be null" );
-            }
-
-            _processors.Add( processor );
-        }
-
-        public void RemoveProcessor( IInputProcessor processor )
-        {
-            _processors.Remove( processor );
-        }
-
-        public int Size()
-        {
-            return _processors.Count;
-        }
-
-        public void Clear()
-        {
-            _processors.Clear();
-        }
-
-        public void SetProcessors( params IInputProcessor[] processorList )
-        {
-            this._processors.Clear();
-            this._processors.AddAll( processorList );
-        }
-
-        public void SetProcessors( Array< IInputProcessor > processorList )
-        {
-            this._processors.Clear();
-            this._processors.AddAll( processorList.ToArray() );
-        }
-
-        public SnapshotArray< IInputProcessor > GetProcessors()
-        {
-            return _processors;
-        }
-
-        public bool KeyDown( int keycode )
-        {
-            var items = _processors.Begin();
-
-            try
-            {
-                for ( int i = 0, n = _processors.Size; i < n; i++ )
+                if ( ( ( IInputProcessor )items[ i ] ).KeyDown( keycode ) )
                 {
-                    if ( ( ( IInputProcessor )items[ i ] ).KeyDown( keycode ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            finally
-            {
-                _processors.End();
-            }
-
-            return false;
+        }
+        finally
+        {
+            _processors.End();
         }
 
-        public bool KeyUp( int keycode )
-        {
-            var items = _processors.Begin();
+        return false;
+    }
 
-            try
+    public bool KeyUp( int keycode )
+    {
+        var items = _processors.Begin();
+
+        try
+        {
+            for ( int i = 0, n = _processors.Size; i < n; i++ )
             {
-                for ( int i = 0, n = _processors.Size; i < n; i++ )
+                if ( ( ( IInputProcessor )items[ i ] ).KeyUp( keycode ) )
                 {
-                    if ( ( ( IInputProcessor )items[ i ] ).KeyUp( keycode ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            finally
-            {
-                _processors.End();
-            }
-
-            return false;
+        }
+        finally
+        {
+            _processors.End();
         }
 
-        public bool KeyTyped( char character )
-        {
-            var items = _processors.Begin();
+        return false;
+    }
 
-            try
+    public bool KeyTyped( char character )
+    {
+        var items = _processors.Begin();
+
+        try
+        {
+            for ( int i = 0, n = _processors.Size; i < n; i++ )
             {
-                for ( int i = 0, n = _processors.Size; i < n; i++ )
+                if ( ( ( IInputProcessor )items[ i ] ).KeyTyped( character ) )
                 {
-                    if ( ( ( IInputProcessor )items[ i ] ).KeyTyped( character ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            finally
-            {
-                _processors.End();
-            }
-
-            return false;
+        }
+        finally
+        {
+            _processors.End();
         }
 
-        public bool TouchDown( int screenX, int screenY, int pointer, int button )
-        {
-            var items = _processors.Begin();
+        return false;
+    }
 
-            try
+    public bool TouchDown( int screenX, int screenY, int pointer, int button )
+    {
+        var items = _processors.Begin();
+
+        try
+        {
+            for ( int i = 0, n = _processors.Size; i < n; i++ )
             {
-                for ( int i = 0, n = _processors.Size; i < n; i++ )
+                if ( ( ( IInputProcessor )items[ i ] ).TouchDown( screenX, screenY, pointer, button ) )
                 {
-                    if ( ( ( IInputProcessor )items[ i ] ).TouchDown( screenX, screenY, pointer, button ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            finally
-            {
-                _processors.End();
-            }
-
-            return false;
+        }
+        finally
+        {
+            _processors.End();
         }
 
-        public bool TouchUp( int screenX, int screenY, int pointer, int button )
-        {
-            var items = _processors.Begin();
+        return false;
+    }
 
-            try
+    public bool TouchUp( int screenX, int screenY, int pointer, int button )
+    {
+        var items = _processors.Begin();
+
+        try
+        {
+            for ( int i = 0, n = _processors.Size; i < n; i++ )
             {
-                for ( int i = 0, n = _processors.Size; i < n; i++ )
+                if ( ( ( IInputProcessor )items[ i ] ).TouchUp( screenX, screenY, pointer, button ) )
                 {
-                    if ( ( ( IInputProcessor )items[ i ] ).TouchUp( screenX, screenY, pointer, button ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            finally
-            {
-                _processors.End();
-            }
-
-            return false;
+        }
+        finally
+        {
+            _processors.End();
         }
 
-        public bool TouchDragged( int screenX, int screenY, int pointer )
-        {
-            var items = _processors.Begin();
+        return false;
+    }
 
-            try
+    public bool TouchDragged( int screenX, int screenY, int pointer )
+    {
+        var items = _processors.Begin();
+
+        try
+        {
+            for ( int i = 0, n = _processors.Size; i < n; i++ )
             {
-                for ( int i = 0, n = _processors.Size; i < n; i++ )
+                if ( ( ( IInputProcessor )items[ i ] ).TouchDragged( screenX, screenY, pointer ) )
                 {
-                    if ( ( ( IInputProcessor )items[ i ] ).TouchDragged( screenX, screenY, pointer ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            finally
-            {
-                _processors.End();
-            }
-
-            return false;
+        }
+        finally
+        {
+            _processors.End();
         }
 
-        public bool MouseMoved( int screenX, int screenY )
-        {
-            var items = _processors.Begin();
+        return false;
+    }
 
-            try
+    public bool MouseMoved( int screenX, int screenY )
+    {
+        var items = _processors.Begin();
+
+        try
+        {
+            for ( int i = 0, n = _processors.Size; i < n; i++ )
             {
-                for ( int i = 0, n = _processors.Size; i < n; i++ )
+                if ( ( ( IInputProcessor )items[ i ] ).MouseMoved( screenX, screenY ) )
                 {
-                    if ( ( ( IInputProcessor )items[ i ] ).MouseMoved( screenX, screenY ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            finally
-            {
-                _processors.End();
-            }
-
-            return false;
+        }
+        finally
+        {
+            _processors.End();
         }
 
-        public bool Scrolled( float amountX, float amountY )
-        {
-            var items = _processors.Begin();
+        return false;
+    }
 
-            try
+    public bool Scrolled( float amountX, float amountY )
+    {
+        var items = _processors.Begin();
+
+        try
+        {
+            for ( int i = 0, n = _processors.Size; i < n; i++ )
             {
-                for ( int i = 0, n = _processors.Size; i < n; i++ )
+                if ( ( ( IInputProcessor )items[ i ] ).Scrolled( amountX, amountY ) )
                 {
-                    if ( ( ( IInputProcessor )items[ i ] ).Scrolled( amountX, amountY ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            finally
-            {
-                _processors.End();
-            }
-
-            return false;
         }
+        finally
+        {
+            _processors.End();
+        }
+
+        return false;
     }
 }

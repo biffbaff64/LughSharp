@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Utils
-{
-    public interface IDrawable
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
+public interface IDrawable
+{
+        
+}

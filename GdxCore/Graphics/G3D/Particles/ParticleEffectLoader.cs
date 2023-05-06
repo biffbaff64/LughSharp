@@ -1,7 +1,5 @@
-﻿namespace LibGDXSharp.Graphics.G3D.Particles
-{
-    public class ParticleEffectLoader
-    {
-    }
-}
+﻿namespace LibGDXSharp.Graphics.G3D.Particles;
 
+public class ParticleEffectLoader
+{
+}

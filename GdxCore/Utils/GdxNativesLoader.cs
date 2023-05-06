@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class GdxNativesLoader
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class GdxNativesLoader
+{
+        
+}

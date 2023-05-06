@@ -1,15 +1,13 @@
-﻿namespace LibGDXSharp.Assets.Loaders
+﻿namespace LibGDXSharp.Assets.Loaders;
+
+public class CubemapLoader
 {
-    public class CubemapLoader
-    {
         
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing,
-        /// releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-        }
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
     }
 }
-

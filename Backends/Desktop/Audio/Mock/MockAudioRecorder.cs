@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop.Audio.Mock
-{
-    public class MockAudioRecorder
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
+public class MockAudioRecorder
+{
+        
+}

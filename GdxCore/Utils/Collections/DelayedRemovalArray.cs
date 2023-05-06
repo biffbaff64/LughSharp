@@ -2,348 +2,347 @@
 
 using LibGDXSharp.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.Utils
+namespace LibGDXSharp.Utils;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class DelayedRemovalArray<T> : List< T >
 {
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public sealed class DelayedRemovalArray<T> : List< T >
+    private int _iterating = 0;
+    private int _clear     = 0;
+
+    private readonly List< int > _remove = new List< int >();
+
+    /// <summary>
+    /// </summary>
+    /// <param name="array"></param>
+    public DelayedRemovalArray( IEnumerable< T > array ) : base( array )
     {
-        private int _iterating = 0;
-        private int _clear     = 0;
+        Reset();
+    }
 
-        private readonly List< int > _remove = new List< int >();
+    /// <summary>
+    /// </summary>
+    /// <param name="array"></param>
+    public DelayedRemovalArray( T[] array ) : base( array )
+    {
+        Reset();
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="array"></param>
-        public DelayedRemovalArray( IEnumerable< T > array ) : base( array )
+    /// <summary>
+    /// </summary>
+    /// <param name="array"></param>
+    /// <param name="startIndex"></param>
+    /// <param name="count"></param>
+    public DelayedRemovalArray( IReadOnlyList< T > array, int startIndex, int count )
+    {
+        for ( var i = 0; i < count; i++ )
         {
-            Reset();
+            Add( array[ startIndex + i ] );
         }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="array"></param>
-        public DelayedRemovalArray( T[] array ) : base( array )
-        {
-            Reset();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="array"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="count"></param>
-        public DelayedRemovalArray( IReadOnlyList< T > array, int startIndex, int count )
-        {
-            for ( var i = 0; i < count; i++ )
-            {
-                Add( array[ startIndex + i ] );
-            }
             
-            Reset();
+        Reset();
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="initialCapacity"></param>
+    public DelayedRemovalArray( int initialCapacity = 16 ) : base( initialCapacity )
+    {
+        Reset();
+    }
+
+    /// <summary>
+    /// </summary>
+    public void Begin()
+    {
+        _iterating++;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public void End()
+    {
+        if ( _iterating == 0 )
+        {
+            throw new GdxRuntimeException( "Begin() must be called before End()!" );
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="initialCapacity"></param>
-        public DelayedRemovalArray( int initialCapacity = 16 ) : base( initialCapacity )
-        {
-            Reset();
-        }
+        _iterating--;
 
-        /// <summary>
-        /// </summary>
-        public void Begin()
+        if ( _iterating == 0 )
         {
-            _iterating++;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public void End()
-        {
-            if ( _iterating == 0 )
+            if ( ( _clear > 0 ) && ( _clear == Count ) )
             {
-                throw new GdxRuntimeException( "Begin() must be called before End()!" );
+                _remove.Clear();
+                Clear();
             }
-
-            _iterating--;
-
-            if ( _iterating == 0 )
+            else
             {
-                if ( ( _clear > 0 ) && ( _clear == Count ) )
+                for ( int i = 0, n = _remove.Count; i < n; i++ )
                 {
-                    _remove.Clear();
-                    Clear();
-                }
-                else
-                {
-                    for ( int i = 0, n = _remove.Count; i < n; i++ )
-                    {
-                        var index = _remove.Pop();
+                    var index = _remove.Pop();
 
-                        if ( index >= _clear )
-                        {
-                            RemoveAt( index );
-                        }
-                    }
-
-                    for ( var i = _clear - 1; i >= 0; i-- )
+                    if ( index >= _clear )
                     {
-                        RemoveAt( i );
+                        RemoveAt( index );
                     }
                 }
 
-                _clear = 0;
-            }
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="index"></param>
-        public void Remove( int index )
-        {
-            if ( index < _clear ) return;
-
-            for ( int i = 0, n = _remove.Count; i < n; i++ )
-            {
-                var removeIndex = _remove[ i ];
-
-                if ( index == removeIndex ) return;
-
-                if ( index < removeIndex )
+                for ( var i = _clear - 1; i >= 0; i-- )
                 {
-                    _remove.Insert( i, index );
-
-                    return;
+                    RemoveAt( i );
                 }
             }
 
-            _remove.Add( index );
+            _clear = 0;
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="index"></param>
+    public void Remove( int index )
+    {
+        if ( index < _clear ) return;
+
+        for ( int i = 0, n = _remove.Count; i < n; i++ )
+        {
+            var removeIndex = _remove[ i ];
+
+            if ( index == removeIndex ) return;
+
+            if ( index < removeIndex )
+            {
+                _remove.Insert( i, index );
+
+                return;
+            }
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public bool RemoveValue( T value )
+        _remove.Add( index );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public bool RemoveValue( T value )
+    {
+        if ( _iterating > 0 )
         {
-            if ( _iterating > 0 )
-            {
-                var index = IndexOf( value );
+            var index = IndexOf( value );
 
-                if ( index == -1 ) return false;
+            if ( index == -1 ) return false;
 
-                Remove( index );
+            Remove( index );
 
-                return true;
-            }
-
-            return base.Remove( value );
+            return true;
         }
 
-        /// <summary>
-        /// Removes the element at the specified index of the List.
-        /// </summary>
-        /// <param name="index">The zero-based index of the element to remove.</param>
-        /// <returns></returns>
-        public T RemoveIndex( int index )
+        return base.Remove( value );
+    }
+
+    /// <summary>
+    /// Removes the element at the specified index of the List.
+    /// </summary>
+    /// <param name="index">The zero-based index of the element to remove.</param>
+    /// <returns></returns>
+    public T RemoveIndex( int index )
+    {
+        if ( _iterating > 0 )
         {
-            if ( _iterating > 0 )
-            {
-                Remove( index );
-
-                return this[ index ];
-            }
-
-            base.RemoveAt( index );
+            Remove( index );
 
             return this[ index ];
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        public new void RemoveRange( int start, int end )
+        base.RemoveAt( index );
+
+        return this[ index ];
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    public new void RemoveRange( int start, int end )
+    {
+        if ( _iterating > 0 )
         {
-            if ( _iterating > 0 )
+            for ( var i = end; i >= start; i-- )
             {
-                for ( var i = end; i >= start; i-- )
-                {
-                    Remove( i );
-                }
-            }
-            else
-            {
-                base.RemoveRange( start, end );
-            }
-        }
-
-        /// <summary>
-        /// </summary>
-        public new void Clear()
-        {
-            if ( _iterating > 0 )
-            {
-                _clear = Count;
-
-                return;
-            }
-
-            base.Clear();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public void Set( int index, T value )
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-
-            this[ index ] = value;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public new void Insert( int index, T value )
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-
-            base.Insert( index, value );
-        }
-
-        /// <summary>
-        /// Inserts the specified number of items at the specified index.
-        /// The new items will have values equal to the values at those indices
-        /// before the insertion.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public void InsertRange( int index, int count )
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-
-            T insertItem = base[ index ];
-
-            for ( var i = 0; i < count; i++ )
-            {
-                base.Insert( index + i, insertItem );
+                Remove( i );
             }
         }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public void Swap( int first, int second )
+        else
         {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+            base.RemoveRange( start, end );
+        }
+    }
 
-            ( this[ first ], this[ second ] ) = ( this[ second ], this[ first ] );
+    /// <summary>
+    /// </summary>
+    public new void Clear()
+    {
+        if ( _iterating > 0 )
+        {
+            _clear = Count;
+
+            return;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public T Pop()
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        base.Clear();
+    }
 
-            T t = base[ Count - 1 ];
+    /// <summary>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="value"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public void Set( int index, T value )
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+
+        this[ index ] = value;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="value"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public new void Insert( int index, T value )
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+
+        base.Insert( index, value );
+    }
+
+    /// <summary>
+    /// Inserts the specified number of items at the specified index.
+    /// The new items will have values equal to the values at those indices
+    /// before the insertion.
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="count"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public void InsertRange( int index, int count )
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+
+        T insertItem = base[ index ];
+
+        for ( var i = 0; i < count; i++ )
+        {
+            base.Insert( index + i, insertItem );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="first"></param>
+    /// <param name="second"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public void Swap( int first, int second )
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+
+        ( this[ first ], this[ second ] ) = ( this[ second ], this[ first ] );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public T Pop()
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+
+        T t = base[ Count - 1 ];
             
-            base.RemoveAt( Count - 1);
+        base.RemoveAt( Count - 1);
 
-            return t;
-        }
+        return t;
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public new void Sort()
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+    /// <summary>
+    /// </summary>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public new void Sort()
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-            base.Sort();
-        }
+        base.Sort();
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="comparator"></param>
-        public new void Sort( IComparer<T> comparator)
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+    /// <summary>
+    /// </summary>
+    /// <param name="comparator"></param>
+    public new void Sort( IComparer<T> comparator)
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-            base.Sort( comparator );
-        }
+        base.Sort( comparator );
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public new void Reverse()
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+    /// <summary>
+    /// </summary>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public new void Reverse()
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-            base.Reverse();
-        }
+        base.Reverse();
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public void Shuffle()
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+    /// <summary>
+    /// </summary>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public void Shuffle()
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-            ListExtensions.Shuffle( this );
-        }
+        ListExtensions.Shuffle( this );
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="newSize"></param>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public void Truncate( int newSize )
-        {
-            if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-            if ( newSize < 0 ) throw new GdxRuntimeException( "New size must be >= 0: {newSize}");
-            if ( Count < newSize ) return;
+    /// <summary>
+    /// </summary>
+    /// <param name="newSize"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public void Truncate( int newSize )
+    {
+        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( newSize < 0 ) throw new GdxRuntimeException( "New size must be >= 0: {newSize}");
+        if ( Count < newSize ) return;
             
-            if ( newSize < Count )
-            {
-                base.RemoveRange( newSize + 1, Count - newSize );
-            }
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="newSize"></param>
-        /// <returns>The new capacity</returns>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public int SetSize( int newSize )
+        if ( newSize < Count )
         {
-            if ( _iterating > 0 )
-                throw new GdxRuntimeException( "Invalid between begin/end." );
+            base.RemoveRange( newSize + 1, Count - newSize );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="newSize"></param>
+    /// <returns>The new capacity</returns>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public int SetSize( int newSize )
+    {
+        if ( _iterating > 0 )
+            throw new GdxRuntimeException( "Invalid between begin/end." );
             
-            if ( base.Count >= newSize )
-                throw new GdxRuntimeException( $"Invalid new size: {newSize} (current: {Count} )" );
+        if ( base.Count >= newSize )
+            throw new GdxRuntimeException( $"Invalid new size: {newSize} (current: {Count} )" );
 
-            return base.EnsureCapacity( newSize );
-        }
+        return base.EnsureCapacity( newSize );
+    }
 
-        /// <summary>
-        /// </summary>
-        private void Reset()
-        {
-            _iterating = 0;
-            _clear     = 0;
-        }
+    /// <summary>
+    /// </summary>
+    private void Reset()
+    {
+        _iterating = 0;
+        _clear     = 0;
     }
 }

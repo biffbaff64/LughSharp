@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics
-{
-    public interface ICubemapData
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics;
 
+public interface ICubemapData
+{
+        
+}

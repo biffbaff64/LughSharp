@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Utils
-{
-    public class ChangeListener
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
+public class ChangeListener
+{
+        
+}

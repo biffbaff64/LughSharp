@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Utils
-{
-    public class ClickListener
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
+public class ClickListener
+{
+        
+}

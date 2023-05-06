@@ -1,125 +1,124 @@
 ﻿using System.Collections;
 
-namespace LibGDXSharp.Utils.Collections
+namespace LibGDXSharp.Utils.Collections;
+
+public class PredicateIterator<T> : IEnumerator< T >
 {
-    public class PredicateIterator<T> : IEnumerator< T >
+    public IEnumerator< T? > Enumerator { get; set; }
+    public IPredicate< T >   Predicate  { get; set; }
+    public bool              End        { get; set; } = false;
+    public bool              Peeked     { get; set; } = false;
+    public T?                NextItem   { get; set; } = default;
+
+    /// <summary>
+    /// </summary>
+    /// <param name="enumerable"></param>
+    /// <param name="predicate"></param>
+    public PredicateIterator( IEnumerable< T? > enumerable, IPredicate< T > predicate )
+        : this( enumerable.GetEnumerator(), predicate )
     {
-        public IEnumerator< T? > Enumerator { get; set; }
-        public IPredicate< T >   Predicate  { get; set; }
-        public bool              End        { get; set; } = false;
-        public bool              Peeked     { get; set; } = false;
-        public T?                NextItem   { get; set; } = default;
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="enumerable"></param>
-        /// <param name="predicate"></param>
-        public PredicateIterator( IEnumerable< T? > enumerable, IPredicate< T > predicate )
-            : this( enumerable.GetEnumerator(), predicate )
+    /// <summary>
+    /// </summary>
+    /// <param name="enumerator"></param>
+    /// <param name="predicate"></param>
+    public PredicateIterator( IEnumerator< T? > enumerator, IPredicate< T > predicate )
+    {
+        this.Enumerator = enumerator;
+        this.Predicate  = predicate;
+        End             = false;
+        Peeked          = false;
+        NextItem        = default;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="enumerable"></param>
+    /// <param name="predicate"></param>
+    public void Set( IEnumerable< T? > enumerable, IPredicate< T > predicate )
+    {
+        Set( enumerable.GetEnumerator(), predicate );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="iterator"></param>
+    /// <param name="predicate"></param>
+    public void Set( IEnumerator< T? > iterator, IPredicate< T > predicate )
+    {
+        this.Enumerator = iterator;
+        this.Predicate  = predicate;
+        End             = false;
+        Peeked          = false;
+        NextItem        = default;
+    }
+
+    public bool HasNext()
+    {
+        if ( End ) return false;
+
+        if ( NextItem != null ) return true;
+
+        Peeked = true;
+
+        while ( Enumerator.MoveNext() )
         {
-        }
+            var n = Enumerator.Current;
 
-        /// <summary>
-        /// </summary>
-        /// <param name="enumerator"></param>
-        /// <param name="predicate"></param>
-        public PredicateIterator( IEnumerator< T? > enumerator, IPredicate< T > predicate )
-        {
-            this.Enumerator = enumerator;
-            this.Predicate  = predicate;
-            End             = false;
-            Peeked          = false;
-            NextItem        = default;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="enumerable"></param>
-        /// <param name="predicate"></param>
-        public void Set( IEnumerable< T? > enumerable, IPredicate< T > predicate )
-        {
-            Set( enumerable.GetEnumerator(), predicate );
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="iterator"></param>
-        /// <param name="predicate"></param>
-        public void Set( IEnumerator< T? > iterator, IPredicate< T > predicate )
-        {
-            this.Enumerator = iterator;
-            this.Predicate  = predicate;
-            End             = false;
-            Peeked          = false;
-            NextItem        = default;
-        }
-
-        public bool HasNext()
-        {
-            if ( End ) return false;
-
-            if ( NextItem != null ) return true;
-
-            Peeked = true;
-
-            while ( Enumerator.MoveNext() )
+            if ( Predicate.Evaluate( n ) )
             {
-                var n = Enumerator.Current;
+                NextItem = n;
 
-                if ( Predicate.Evaluate( n ) )
-                {
-                    NextItem = n;
-
-                    return true;
-                }
+                return true;
             }
-
-            End = true;
-
-            return false;
         }
 
-        public T? Next()
+        End = true;
+
+        return false;
+    }
+
+    public T? Next()
+    {
+        if ( NextItem == null && !HasNext() )
         {
-            if ( NextItem == null && !HasNext() )
-            {
-                return default( T );
-            }
-
-            var result = NextItem;
-            NextItem = default( T );
-            Peeked   = false;
-
-            return result;
+            return default( T );
         }
 
-        public void Remove()
+        var result = NextItem;
+        NextItem = default( T );
+        Peeked   = false;
+
+        return result;
+    }
+
+    public void Remove()
+    {
+        if ( Peeked )
         {
-            if ( Peeked )
-            {
-                throw new GdxRuntimeException( "Cannot remove between a call to hasNext() and next()." );
-            }
-
-            Enumerator.Dispose();
+            throw new GdxRuntimeException( "Cannot remove between a call to hasNext() and next()." );
         }
 
-        public bool MoveNext()
-        {
-            throw new NotImplementedException();
-        }
+        Enumerator.Dispose();
+    }
 
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
+    public bool MoveNext()
+    {
+        throw new NotImplementedException();
+    }
 
-        object? IEnumerator.Current => Current;
+    public void Reset()
+    {
+        throw new NotImplementedException();
+    }
 
-        public T Current { get; }
+    object? IEnumerator.Current => Current;
 
-        public void Dispose()
-        {
-            Remove();
-        }
+    public T Current { get; }
+
+    public void Dispose()
+    {
+        Remove();
     }
 }

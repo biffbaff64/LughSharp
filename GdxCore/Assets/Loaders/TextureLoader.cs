@@ -1,154 +1,153 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Assets.Loaders
+namespace LibGDXSharp.Assets.Loaders;
+
+/// <summary>
+/// <see cref="AssetLoader"/> for <see cref="Texture"/> instances.
+/// The pixel data is loaded asynchronously. The texture is then created on the
+/// rendering thread, synchronously. Passing a <see cref="TextureParameter"/>
+/// to <see cref="AssetManager"/>.Load() allows one to specify parameters as
+/// can be passed to the various Texture constructors, e.g. filtering, whether
+/// to generate mipmaps and so on.
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
 {
-    /// <summary>
-    /// <see cref="AssetLoader"/> for <see cref="Texture"/> instances.
-    /// The pixel data is loaded asynchronously. The texture is then created on the
-    /// rendering thread, synchronously. Passing a <see cref="TextureParameter"/>
-    /// to <see cref="AssetManager"/>.Load() allows one to specify parameters as
-    /// can be passed to the various Texture constructors, e.g. filtering, whether
-    /// to generate mipmaps and so on.
-    /// </summary>
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
+    public sealed class TextureLoaderInfo
     {
-        public sealed class TextureLoaderInfo
+        public string?       Filename { get; set; }
+        public ITextureData? Data     { get; set; }
+        public Texture?      Texture  { get; set; }
+    }
+
+    private readonly TextureLoaderInfo _loaderInfo;
+
+    public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
+    {
+        _loaderInfo = new TextureLoaderInfo();
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="fileName"></param>
+    /// <param name="file"></param>
+    /// <param name="parameter"></param>
+    public override void LoadAsync( AssetManager? manager,
+                                    string? fileName,
+                                    FileInfo? file,
+                                    IAssetLoaderParameters parameter )
+    {
+        _loaderInfo.Filename = fileName;
+
+        if ( ( ( TextureParameter )parameter ).TextureData == null )
         {
-            public string?       Filename { get; set; }
-            public ITextureData? Data     { get; set; }
-            public Texture?      Texture  { get; set; }
-        }
+            Pixmap.Format? format     = null;
+            var            genMipMaps = false;
 
-        private readonly TextureLoaderInfo _loaderInfo;
+            _loaderInfo.Texture = null;
 
-        public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
-        {
-            _loaderInfo = new TextureLoaderInfo();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="manager"></param>
-        /// <param name="fileName"></param>
-        /// <param name="file"></param>
-        /// <param name="parameter"></param>
-        public override void LoadAsync( AssetManager? manager,
-                                        string? fileName,
-                                        FileInfo? file,
-                                        IAssetLoaderParameters parameter )
-        {
-            _loaderInfo.Filename = fileName;
-
-            if ( ( ( TextureParameter )parameter ).TextureData == null )
+            if ( parameter != null )
             {
-                Pixmap.Format? format     = null;
-                var            genMipMaps = false;
-
-                _loaderInfo.Texture = null;
-
-                if ( parameter != null )
-                {
-                    format              = ( ( TextureParameter )parameter ).Format;
-                    genMipMaps          = ( ( TextureParameter )parameter ).GenMipMaps;
-                    _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
-                }
-
-                _loaderInfo.Data = ITextureData.Factory.LoadFromFile( file, format, genMipMaps );
-            }
-            else
-            {
-                _loaderInfo.Data    = ( ( TextureParameter )parameter ).TextureData;
+                format              = ( ( TextureParameter )parameter ).Format;
+                genMipMaps          = ( ( TextureParameter )parameter ).GenMipMaps;
                 _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
             }
 
-            if ( ( _loaderInfo.Data != null ) && !_loaderInfo.Data.IsPrepared() )
-            {
-                _loaderInfo.Data.Prepare();
-            }
+            _loaderInfo.Data = ITextureData.Factory.LoadFromFile( file, format, genMipMaps );
         }
+        else
+        {
+            _loaderInfo.Data    = ( ( TextureParameter )parameter ).TextureData;
+            _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
+        }
+
+        if ( ( _loaderInfo.Data != null ) && !_loaderInfo.Data.IsPrepared() )
+        {
+            _loaderInfo.Data.Prepare();
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="fileName"></param>
+    /// <param name="file"></param>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
+    public override Texture LoadSync( AssetManager? manager,
+                                      string? fileName,
+                                      FileInfo? file,
+                                      IAssetLoaderParameters parameter )
+    {
+        Texture? texture = _loaderInfo.Texture;
+
+        if ( texture != null )
+        {
+            texture.Load( _loaderInfo.Data );
+        }
+        else
+        {
+            texture = new Texture( _loaderInfo.Data );
+        }
+
+        texture.SetFilter( ( ( TextureParameter )parameter ).MinFilter,
+                           ( ( TextureParameter )parameter ).MagFilter );
+
+        texture.SetWrap( ( ( TextureParameter )parameter ).WrapU,
+                         ( ( TextureParameter )parameter ).WrapV );
+
+        return texture;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="fileName"></param>
+    /// <param name="file"></param>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
+                                                             IAssetLoaderParameters parameter )
+    {
+        return null!;
+    }
+
+    /// <summary>
+    /// </summary>
+    public sealed class TextureParameter : AssetLoaderParameters
+    {
+        /// <summary>
+        /// the format of the final Texture. Uses the source images format if null
+        /// </summary>
+        public Pixmap.Format? Format { get; set; } = null;
 
         /// <summary>
+        /// whether to generate mipmaps
         /// </summary>
-        /// <param name="manager"></param>
-        /// <param name="fileName"></param>
-        /// <param name="file"></param>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
-        public override Texture LoadSync( AssetManager? manager,
-                                          string? fileName,
-                                          FileInfo? file,
-                                          IAssetLoaderParameters parameter )
-        {
-            Texture? texture = _loaderInfo.Texture;
-
-            if ( texture != null )
-            {
-                texture.Load( _loaderInfo.Data );
-            }
-            else
-            {
-                texture = new Texture( _loaderInfo.Data );
-            }
-
-            texture.SetFilter( ( ( TextureParameter )parameter ).MinFilter,
-                               ( ( TextureParameter )parameter ).MagFilter );
-
-            texture.SetWrap( ( ( TextureParameter )parameter ).WrapU,
-                             ( ( TextureParameter )parameter ).WrapV );
-
-            return texture;
-        }
+        public bool GenMipMaps { get; set; } = false;
 
         /// <summary>
+        /// The texture to put the <see cref="TextureData"/> in, optional.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="file"></param>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
-        public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                                  FileInfo? file,
-                                                                  IAssetLoaderParameters parameter )
-        {
-            return null!;
-        }
+        public Texture? Texture { get; set; } = null;
 
         /// <summary>
+        /// TextureData for textures created on the fly, optional. When set, all format and genMipMaps are ignored
         /// </summary>
-        public sealed class TextureParameter : AssetLoaderParameters
-        {
-            /// <summary>
-            /// the format of the final Texture. Uses the source images format if null
-            /// </summary>
-            public Pixmap.Format? Format { get; set; } = null;
+        public ITextureData? TextureData { get; set; } = null;
 
-            /// <summary>
-            /// whether to generate mipmaps
-            /// </summary>
-            public bool GenMipMaps { get; set; } = false;
+        public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
+        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
+        public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
+        public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
+    }
 
-            /// <summary>
-            /// The texture to put the <see cref="TextureData"/> in, optional.
-            /// </summary>
-            public Texture? Texture { get; set; } = null;
-
-            /// <summary>
-            /// TextureData for textures created on the fly, optional. When set, all format and genMipMaps are ignored
-            /// </summary>
-            public ITextureData? TextureData { get; set; } = null;
-
-            public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
-            public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
-            public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
-            public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing,
-        /// releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-        }
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
     }
 }

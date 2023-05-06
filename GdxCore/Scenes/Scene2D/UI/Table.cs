@@ -1,36 +1,35 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.UI
+﻿namespace LibGDXSharp.Scenes.Scene2D.UI;
+
+public class Table : WidgetGroup
 {
-    public class Table : WidgetGroup
+    public enum DebugType
     {
-        public enum DebugType
-        {
-            None,
-            All,
-            Table,
-            Cell,
-            Actor
-        }
+        None,
+        All,
+        Table,
+        Cell,
+        Actor
+    }
 
-        /** Turns debug lines on or off. */
-        public Table DebugLines( DebugType? debug )
-        {
-            base.SetDebug( debug != DebugType.None );
+    /** Turns debug lines on or off. */
+    public Table DebugLines( DebugType? debug )
+    {
+        base.SetDebug( debug != DebugType.None );
 
-            if ( this.debug != debug )
+        if ( this.debug != debug )
+        {
+            this.debug = debug;
+
+            if ( debug == DebugType.None )
             {
-                this.debug = debug;
-
-                if ( debug == DebugType.None )
-                {
-                    ClearDebugRects();
-                }
-                else
-                {
-                    Invalidate();
-                }
+                ClearDebugRects();
             }
-
-            return this;
+            else
+            {
+                Invalidate();
+            }
         }
+
+        return this;
     }
 }

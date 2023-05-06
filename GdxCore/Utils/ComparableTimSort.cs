@@ -1,12 +1,10 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class ComparableTimSort
-    {
+﻿namespace LibGDXSharp.Utils;
 
-        public void DoSort( object[]? objects, int i, int aLength )
-        {
-            throw new NotImplementedException();
-        }
+public class ComparableTimSort
+{
+
+    public void DoSort( object[]? objects, int i, int aLength )
+    {
+        throw new NotImplementedException();
     }
 }
-

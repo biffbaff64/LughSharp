@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Input
-{
-    public class GestureDetector
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Input;
 
+public class GestureDetector
+{
+        
+}

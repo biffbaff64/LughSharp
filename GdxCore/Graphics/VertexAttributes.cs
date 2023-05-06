@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics
-{
-    public class VertexAttributes
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics;
 
+public class VertexAttributes
+{
+        
+}

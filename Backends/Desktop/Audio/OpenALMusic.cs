@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop.Audio
-{
-    public class OpenALMusic
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Backends.Desktop.Audio;
 
+public class OpenALMusic
+{
+        
+}

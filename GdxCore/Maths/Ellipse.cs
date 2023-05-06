@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class Ellipse
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class Ellipse
+{
+        
+}

@@ -1,7 +1,5 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class NumberFormatException : FormatException
-    {
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class NumberFormatException : FormatException
+{
+}

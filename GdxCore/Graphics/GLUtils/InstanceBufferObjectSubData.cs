@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils
-{
-    public class InstanceBufferObjectSubData
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics.GLUtils;
 
+public class InstanceBufferObjectSubData
+{
+        
+}

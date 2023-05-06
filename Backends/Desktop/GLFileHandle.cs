@@ -1,53 +1,53 @@
 ﻿using LibGDXSharp.Core;
 
-namespace LibGDXSharp.Backends.Desktop
+namespace LibGDXSharp.Backends.Desktop;
+
+/// <summary>
+/// </summary>
+public sealed class GLFileHandle : FileHandle
 {
     /// <summary>
     /// </summary>
-    public sealed class GLFileHandle : FileHandle
+    /// <param name="fileName"></param>
+    /// <param name="type"></param>
+    public GLFileHandle( string fileName, FileType type )
+        : base( fileName, type )
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="type"></param>
-        public GLFileHandle( string fileName, FileType type )
-            : base( fileName, type )
-        {
-        }
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="type"></param>
-        public GLFileHandle( FileInfo file, FileType type )
-            : base( file, type )
-        {
-        }
+    /// <summary>
+    /// </summary>
+    /// <param name="file"></param>
+    /// <param name="type"></param>
+    public GLFileHandle( FileInfo file, FileType type )
+        : base( file, type )
+    {
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public FileHandle Child( string name )
+    /// <summary>
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public FileHandle Child( string name )
+    {
+        if ( base.File != null )
         {
-            if ( base.File != null )
+            if ( base.File.FullName.Length == 0 )
             {
-                if ( base.File.FullName.Length == 0 )
-                {
-                    return new GLFileHandle( new FileInfo( name ), Type );
-                }
+                return new GLFileHandle( new FileInfo( name ), Type );
             }
-
-            return new GLFileHandle( new FileInfo( name ), Type );
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        /// <exception cref="GdxRuntimeException"></exception>
-        public FileHandle Sibling( string name )
-        {
+        return new GLFileHandle( new FileInfo( name ), Type );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public FileHandle Sibling( string name )
+    {
 //            if ( FileInfo != null )
 //            {
 //                if ( FileInfo.FullName.Length == 0 )
@@ -57,14 +57,14 @@ namespace LibGDXSharp.Backends.Desktop
 //            }
 
 //            return new GLFileHandle( new File( file.getParent(), name ), type );
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public FileHandle Parent()
-        {
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public FileHandle Parent()
+    {
 //            File parent = file.getParentFile();
 //
 //            if ( parent == null )
@@ -80,14 +80,14 @@ namespace LibGDXSharp.Backends.Desktop
 //            }
 //
 //            return new GLFileHandle( parent, type );
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public FileInfo? File()
-        {
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public FileInfo? File()
+    {
 //            if ( Type == IFile.FileType.External )
 //            {
 //                return new FileInfo( GLFiles.ExternalPath + FileInfo!.FullName );
@@ -98,7 +98,6 @@ namespace LibGDXSharp.Backends.Desktop
 //                return new FileInfo( GLFiles.LocalPath + FileInfo!.FullName );
 //            }
 
-            return base.File;
-        }
+        return base.File;
     }
 }

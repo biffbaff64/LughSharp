@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop
-{
-    public class Callback
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Backends.Desktop;
 
+public class Callback
+{
+        
+}

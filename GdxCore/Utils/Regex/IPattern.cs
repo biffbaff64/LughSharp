@@ -1,12 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Utils.Regex
+namespace LibGDXSharp.Utils.Regex;
+
+/// <summary>
+/// 
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public interface IPattern
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public interface IPattern
-    {
-    }
 }

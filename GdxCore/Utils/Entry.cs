@@ -1,14 +1,12 @@
-﻿namespace LibGDXSharp.Utils
-{
-    internal class Entry<TKe, TVe>
-    {
-        public TKe? key;
-        public TVe? value;
+﻿namespace LibGDXSharp.Utils;
 
-        public override string ToString()
-        {
-            return key + " = " + value;
-        }
+internal class Entry<TKe, TVe>
+{
+    public TKe? key;
+    public TVe? value;
+
+    public override string ToString()
+    {
+        return key + " = " + value;
     }
 }
-

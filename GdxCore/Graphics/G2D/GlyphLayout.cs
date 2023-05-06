@@ -1,11 +1,10 @@
-﻿namespace LibGDXSharp.G2D
+﻿namespace LibGDXSharp.G2D;
+
+public class GlyphLayout
 {
-    public class GlyphLayout
+    public class GlyphRun
     {
-        public class GlyphRun
-        {
-            public List< BitmapFont.Glyph > Glyphs    { get; set; }
-            public List< float >            XAdvances { get; set; }
-        }
+        public List< BitmapFont.Glyph > Glyphs    { get; set; }
+        public List< float >            XAdvances { get; set; }
     }
 }

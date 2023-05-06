@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class SharedLibraryLoader
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class SharedLibraryLoader
+{
+        
+}

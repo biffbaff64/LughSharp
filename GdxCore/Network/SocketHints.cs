@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Network
-{
-    public class SocketHints
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Network;
 
+public class SocketHints
+{
+        
+}

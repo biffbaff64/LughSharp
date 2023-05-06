@@ -1,27 +1,26 @@
-﻿namespace LibGDXSharp.Utils.Collections.Extensions
+﻿namespace LibGDXSharp.Utils.Collections.Extensions;
+
+/// <summary>
+/// List-based implementation of a Stack.
+/// </summary>
+public class ListStack<T> : List< T >
 {
-    /// <summary>
-    /// List-based implementation of a Stack.
-    /// </summary>
-    public class ListStack<T> : List< T >
+    public T Peek()
     {
-        public T Peek()
-        {
-            return this[ Count - 1 ];
-        }
+        return this[ Count - 1 ];
+    }
 
-        public void Push( T element )
-        {
-            Add( element );
-        }
+    public void Push( T element )
+    {
+        Add( element );
+    }
 
-        public T Pop()
-        {
-            T result = Peek();
+    public T Pop()
+    {
+        T result = Peek();
             
-            Remove( result );
+        Remove( result );
 
-            return result;
-        }
+        return result;
     }
 }

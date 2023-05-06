@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class GeometryUtils
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class GeometryUtils
+{
+        
+}

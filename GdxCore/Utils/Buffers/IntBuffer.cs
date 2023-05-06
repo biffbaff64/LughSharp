@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class IntBuffer
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class IntBuffer
+{
+        
+}

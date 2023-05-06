@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop
-{
-    public class Sync
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Backends.Desktop;
 
+public class Sync
+{
+        
+}

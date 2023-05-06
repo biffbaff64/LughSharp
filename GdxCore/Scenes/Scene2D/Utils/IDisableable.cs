@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Utils
-{
-    public interface IDisableable
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
+public interface IDisableable
+{
+        
+}

@@ -1,7 +1,5 @@
-﻿namespace LibGDXSharp.Assets.Loaders
-{
-    public interface IAssetLoaderType : IDisposable
-    {
-    }
-}
+﻿namespace LibGDXSharp.Assets.Loaders;
 
+public interface IAssetLoaderType : IDisposable
+{
+}

@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Test
+﻿namespace LibGDXSharp.Utils.Test;
+
+public interface IIterable
 {
-    public interface IIterable
-    {
         
-    }
 }

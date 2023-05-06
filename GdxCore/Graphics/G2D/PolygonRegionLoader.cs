@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.G2D
-{
-    public class PolygonRegionLoader
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.G2D;
 
+public class PolygonRegionLoader
+{
+        
+}

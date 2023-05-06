@@ -1,14 +1,12 @@
-﻿namespace LibGDXSharp.Backends.Desktop
+﻿namespace LibGDXSharp.Backends.Desktop;
+
+public interface IGLInput : IInput, IDisposable
 {
-    public interface IGLInput : IInput, IDisposable
-    {
-        void WindowHandleChanged (long windowHandle);
+    void WindowHandleChanged (long windowHandle);
 
-        void Update ();
+    void Update ();
 
-        void PrepareNext ();
+    void PrepareNext ();
 
-        void ResetPollingStates ();
-    }
+    void ResetPollingStates ();
 }
-

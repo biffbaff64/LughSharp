@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maps.Tiled.Renderers
-{
-    public class HexagonalTiledMapRenderer
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maps.Tiled.Renderers;
 
+public class HexagonalTiledMapRenderer
+{
+        
+}

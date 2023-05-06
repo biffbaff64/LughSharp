@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maps.Tiled.Renderers
-{
-    public class OrthoCachedTiledMapRenderer
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maps.Tiled.Renderers;
 
+public class OrthoCachedTiledMapRenderer
+{
+        
+}

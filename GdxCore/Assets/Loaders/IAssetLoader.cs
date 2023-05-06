@@ -1,6 +1,5 @@
-﻿namespace LibGDXSharp.Assets.Loaders
+﻿namespace LibGDXSharp.Assets.Loaders;
+
+public interface IAssetLoader
 {
-    public interface IAssetLoader
-    {
-    }
 }

@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class LittleEndianInputStream
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class LittleEndianInputStream
+{
+        
+}

@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Json
-{
-    public class Json
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Json;
 
+public class Json
+{
+        
+}

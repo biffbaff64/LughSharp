@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Graphics
+﻿namespace LibGDXSharp.Graphics;
+
+public interface IGL30 : IGL20
 {
-    public interface IGL30 : IGL20
-    {
         
-    }
 }

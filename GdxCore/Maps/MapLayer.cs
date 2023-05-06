@@ -1,94 +1,93 @@
-﻿namespace LibGDXSharp.Maps
+﻿namespace LibGDXSharp.Maps;
+
+public class MapLayer
 {
-    public class MapLayer
+    public MapObjects    Objects    { get; private set; } = new MapObjects();
+    public MapProperties Properties { get; private set; } = new MapProperties();
+    public string?       Name       { get; set; }
+    public float         Opacity    { get; set; }
+    public bool          Visible    { get; set; } = true;
+
+    private float     _offsetX;
+    private float     _offsetY;
+    private float     _renderOffsetX;
+    private float     _renderOffsetY;
+    private bool      _renderOffsetDirty = true;
+    private MapLayer? _parent            = null!;
+
+    public float OffsetX
     {
-        public MapObjects    Objects    { get; private set; } = new MapObjects();
-        public MapProperties Properties { get; private set; } = new MapProperties();
-        public string?       Name       { get; set; }
-        public float         Opacity    { get; set; }
-        public bool          Visible    { get; set; } = true;
-
-        private float     _offsetX;
-        private float     _offsetY;
-        private float     _renderOffsetX;
-        private float     _renderOffsetY;
-        private bool      _renderOffsetDirty = true;
-        private MapLayer? _parent            = null!;
-
-        public float OffsetX
+        get => _offsetX;
+        set
         {
-            get => _offsetX;
-            set
-            {
-                _offsetX = value;
-                InvalidateRenderOffset();
-            }
+            _offsetX = value;
+            InvalidateRenderOffset();
         }
+    }
 
-        public float OffsetY
+    public float OffsetY
+    {
+        get => _offsetY;
+        set
         {
-            get => _offsetY;
-            set
-            {
-                _offsetY = value;
-                InvalidateRenderOffset();
-            }
+            _offsetY = value;
+            InvalidateRenderOffset();
         }
+    }
 
-        public float RenderOffsetX
+    public float RenderOffsetX
+    {
+        get
         {
-            get
-            {
-                if ( _renderOffsetDirty ) CalculateRenderOffsets();
+            if ( _renderOffsetDirty ) CalculateRenderOffsets();
 
-                return _renderOffsetX;
-            }
+            return _renderOffsetX;
         }
+    }
 
-        public float RenderOffsetY
+    public float RenderOffsetY
+    {
+        get
         {
-            get
-            {
-                if ( _renderOffsetDirty ) CalculateRenderOffsets();
+            if ( _renderOffsetDirty ) CalculateRenderOffsets();
 
-                return _renderOffsetY;
-            }
+            return _renderOffsetY;
         }
+    }
 
-        public MapLayer? Parent
+    public MapLayer? Parent
+    {
+        get => _parent;
+        set
         {
-            get => _parent;
-            set
+            if ( value == this )
             {
-                if ( value == this )
-                {
-                    throw new GdxRuntimeException( "Can't set self as the parent" );
-                }
-
-                this._parent = value;
-            }
-        }
-
-        internal void InvalidateRenderOffset()
-        {
-            _renderOffsetDirty = true;
-        }
-
-        protected void CalculateRenderOffsets()
-        {
-            if ( _parent != null )
-            {
-                _parent.CalculateRenderOffsets();
-                _renderOffsetX = _parent.RenderOffsetX + _offsetX;
-                _renderOffsetY = _parent.RenderOffsetY + _offsetY;
-            }
-            else
-            {
-                _renderOffsetX = _offsetX;
-                _renderOffsetY = _offsetY;
+                throw new GdxRuntimeException( "Can't set self as the parent" );
             }
 
-            _renderOffsetDirty = false;
+            this._parent = value;
         }
+    }
+
+    internal void InvalidateRenderOffset()
+    {
+        _renderOffsetDirty = true;
+    }
+
+    protected void CalculateRenderOffsets()
+    {
+        if ( _parent != null )
+        {
+            _parent.CalculateRenderOffsets();
+            _renderOffsetX = _parent.RenderOffsetX + _offsetX;
+            _renderOffsetY = _parent.RenderOffsetY + _offsetY;
+        }
+        else
+        {
+            _renderOffsetX = _offsetX;
+            _renderOffsetY = _offsetY;
+        }
+
+        _renderOffsetDirty = false;
     }
 }

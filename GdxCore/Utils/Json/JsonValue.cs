@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Json
-{
-    public class JsonValue
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Json;
 
+public class JsonValue
+{
+        
+}

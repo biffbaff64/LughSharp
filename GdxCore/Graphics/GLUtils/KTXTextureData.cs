@@ -1,12 +1,10 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils
+﻿namespace LibGDXSharp.Graphics.GLUtils;
+
+public class KTXTextureData : ITextureData
 {
-    public class KTXTextureData : ITextureData
+    public KTXTextureData( FileInfo file, bool useMipMaps )
     {
-        public KTXTextureData( FileInfo file, bool useMipMaps )
-        {
-            throw new NotImplementedException();
-        }
-
+        throw new NotImplementedException();
     }
-}
 
+}

@@ -1,15 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Utils.Collections.Extensions
+namespace LibGDXSharp.Utils.Collections.Extensions;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public static class ListExtensions
 {
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public static class ListExtensions
+    public static T[] Resize<T>( this IList< T > ts, int newSize )
     {
-        public static T[] Resize<T>( this IList< T > ts, int newSize )
-        {
-            var newItems = new T[ newSize ];
+        var newItems = new T[ newSize ];
             
-            Array.Copy( ts.ToArray(), newItems, newSize  );
+        Array.Copy( ts.ToArray(), newItems, newSize  );
 
 //            if ( newSize < ts. )
             
@@ -23,96 +23,95 @@ namespace LibGDXSharp.Utils.Collections.Extensions
 //            System.arraycopy( items, 0, newItems, 0, Math.min( size, newItems.length ) );
 //            this.items = newItems;
 
-            return newItems;
-        }
+        return newItems;
+    }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="ts"></param>
-        /// <param name="t"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static List< T > With<T>( T t )
+    /// <summary>
+    /// </summary>
+    /// <param name="ts"></param>
+    /// <param name="t"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static List< T > With<T>( T t )
+    {
+        var list = new List< T >
         {
-            var list = new List< T >
-            {
-                t
-            };
+            t
+        };
 
-            return list;
-        }
+        return list;
+    }
 
-        public static void AddAll<T>( this IList< T > ts, T[] array, int start, int count )
+    public static void AddAll<T>( this IList< T > ts, T[] array, int start, int count )
+    {
+        for ( var i = start; i < count; i++ )
         {
-            for ( var i = start; i < count; i++ )
-            {
-                ts.Add( array[ i ] );
-            }
+            ts.Add( array[ i ] );
         }
+    }
 
-        public static void AddAll<T>( this IList< T > ts, List<T> array, int start, int count )
+    public static void AddAll<T>( this IList< T > ts, List<T> array, int start, int count )
+    {
+        for ( var i = start; i < count; i++ )
         {
-            for ( var i = start; i < count; i++ )
-            {
-                ts.Add( array[ i ] );
-            }
+            ts.Add( array[ i ] );
         }
+    }
         
-        /// <summary>
-        /// Shuffles the element order of the specified list.
-        /// </summary>
-        public static void Shuffle<T>( this IList< T > ts )
+    /// <summary>
+    /// Shuffles the element order of the specified list.
+    /// </summary>
+    public static void Shuffle<T>( this IList< T > ts )
+    {
+        var count = ts.Count;
+        var last  = count - 1;
+
+        var random = new Random();
+
+        for ( var i = 0; i < last; ++i )
         {
-            var count = ts.Count;
-            var last  = count - 1;
+            var r = random.Next( i, count );
 
-            var random = new Random();
+            ( ts[ i ], ts[ r ] ) = ( ts[ r ], ts[ i ] );
+        }
+    }
 
-            for ( var i = 0; i < last; ++i )
-            {
-                var r = random.Next( i, count );
+    /// <summary>
+    /// Removes and returns the last item in the list.
+    /// </summary>
+    /// <param name="ts"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="IllegalStateException"></exception>
+    public static T Pop<T>( this IList< T > ts )
+    {
+        if ( ts.Count == 0 ) throw new IllegalStateException( "Array is empty." );
 
-                ( ts[ i ], ts[ r ] ) = ( ts[ r ], ts[ i ] );
-            }
+        T item = ts[ ^1 ];
+
+        ts.RemoveAt( ts.Count - 1 );
+
+        return item;
+    }
+
+    /// <summary>
+    /// Removes and returns the item at the specified index.
+    /// </summary>
+    /// <param name="ts"></param>
+    /// <param name="index"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T RemoveIndex<T>( this IList< T > ts, int index )
+    {
+        if ( index >= ts.Count )
+        {
+            throw new IndexOutOfRangeException( "index can't be >= size: " + index + " >= " + ts.Count );
         }
 
-        /// <summary>
-        /// Removes and returns the last item in the list.
-        /// </summary>
-        /// <param name="ts"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        /// <exception cref="IllegalStateException"></exception>
-        public static T Pop<T>( this IList< T > ts )
-        {
-            if ( ts.Count == 0 ) throw new IllegalStateException( "Array is empty." );
+        T value = ts[ index ];
 
-            T item = ts[ ^1 ];
+        ts.RemoveAt( index );
 
-            ts.RemoveAt( ts.Count - 1 );
-
-            return item;
-        }
-
-        /// <summary>
-        /// Removes and returns the item at the specified index.
-        /// </summary>
-        /// <param name="ts"></param>
-        /// <param name="index"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static T RemoveIndex<T>( this IList< T > ts, int index )
-        {
-            if ( index >= ts.Count )
-            {
-                throw new IndexOutOfRangeException( "index can't be >= size: " + index + " >= " + ts.Count );
-            }
-
-            T value = ts[ index ];
-
-            ts.RemoveAt( index );
-
-            return value;
-        }
+        return value;
     }
 }

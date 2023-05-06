@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics
-{
-    public class TextureArray
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics;
 
+public class TextureArray
+{
+        
+}

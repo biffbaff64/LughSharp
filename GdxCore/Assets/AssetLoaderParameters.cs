@@ -1,20 +1,19 @@
-﻿namespace LibGDXSharp.Assets
+﻿namespace LibGDXSharp.Assets;
+
+public interface IAssetLoaderParameters
 {
-    public interface IAssetLoaderParameters
+    /// <summary>
+    /// Callback interface that will be invoked when the <see cref="AssetManager"/> loaded an asset.
+    /// </summary>
+    public interface ILoadedCallback
     {
-        /// <summary>
-        /// Callback interface that will be invoked when the <see cref="AssetManager"/> loaded an asset.
-        /// </summary>
-        public interface ILoadedCallback
-        {
-            public void FinishedLoading( AssetManager assetManager, string fileName, Type? type );
-        }
-
-        public ILoadedCallback? LoadedCallBack { get; set; }
+        public void FinishedLoading( AssetManager assetManager, string fileName, Type? type );
     }
 
-    public class AssetLoaderParameters : IAssetLoaderParameters
-    {
-        public IAssetLoaderParameters.ILoadedCallback? LoadedCallBack { get; set; }
-    }
+    public ILoadedCallback? LoadedCallBack { get; set; }
+}
+
+public class AssetLoaderParameters : IAssetLoaderParameters
+{
+    public IAssetLoaderParameters.ILoadedCallback? LoadedCallBack { get; set; }
 }

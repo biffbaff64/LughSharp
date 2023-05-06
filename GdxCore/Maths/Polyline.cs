@@ -1,10 +1,8 @@
-﻿namespace LibGDXSharp.Maths
+﻿namespace LibGDXSharp.Maths;
+
+public class Polyline
 {
-    public class Polyline
+    public Polyline( float[] vertices )
     {
-        public Polyline( float[] vertices )
-        {
-        }
     }
 }
-

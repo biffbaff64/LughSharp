@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class ConvexHull
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class ConvexHull
+{
+        
+}

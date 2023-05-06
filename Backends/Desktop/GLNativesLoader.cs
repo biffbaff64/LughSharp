@@ -1,10 +1,8 @@
-﻿namespace LibGDXSharp.Backends.Desktop
+﻿namespace LibGDXSharp.Backends.Desktop;
+
+public class GLNativesLoader
 {
-    public class GLNativesLoader
+    public static void Load()
     {
-        public static void Load()
-        {
-        }
     }
 }
-

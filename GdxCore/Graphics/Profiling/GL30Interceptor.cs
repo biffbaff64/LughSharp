@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics.Profiling
-{
-    public class GL30Interceptor
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics.Profiling;
 
+public class GL30Interceptor
+{
+        
+}

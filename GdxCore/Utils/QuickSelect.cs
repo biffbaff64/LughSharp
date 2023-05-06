@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class QuickSelect
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class QuickSelect
+{
+        
+}

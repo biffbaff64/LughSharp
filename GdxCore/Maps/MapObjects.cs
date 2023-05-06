@@ -1,111 +1,110 @@
 ﻿using System.Collections;
 
-namespace LibGDXSharp.Maps
+namespace LibGDXSharp.Maps;
+
+/// <summary>
+/// A Collection of <see cref="MapObject"/> instances.
+/// </summary>
+public sealed class MapObjects : IEnumerable< MapObject >
 {
+    private readonly List< MapObject > _objects;
+
     /// <summary>
-    /// A Collection of <see cref="MapObject"/> instances.
+    /// Creates an empty set of MapObjects
     /// </summary>
-    public sealed class MapObjects : IEnumerable< MapObject >
+    public MapObjects()
     {
-        private readonly List< MapObject > _objects;
+        _objects = new List< MapObject >();
+    }
 
-        /// <summary>
-        /// Creates an empty set of MapObjects
-        /// </summary>
-        public MapObjects()
-        {
-            _objects = new List< MapObject >();
-        }
+    public MapObject Get( int index )
+    {
+        return _objects[ index ];
+    }
 
-        public MapObject Get( int index )
+    public MapObject Get( string name )
+    {
+        for ( int i = 0, n = _objects.Count; i < n; i++ )
         {
-            return _objects[ index ];
-        }
+            MapObject obj = _objects[ i ];
 
-        public MapObject Get( string name )
-        {
-            for ( int i = 0, n = _objects.Count; i < n; i++ )
+            if ( name.Equals( obj.Name ) )
             {
-                MapObject obj = _objects[ i ];
-
-                if ( name.Equals( obj.Name ) )
-                {
-                    return obj;
-                }
+                return obj;
             }
-
-            return null!;
         }
 
-        public int GetIndex( string name )
-        {
-            return GetIndex( Get( name ) );
-        }
+        return null!;
+    }
 
-        public int GetIndex( MapObject obj )
-        {
-            return _objects.IndexOf( obj );
-        }
+    public int GetIndex( string name )
+    {
+        return GetIndex( Get( name ) );
+    }
 
-        public int GetCount()
-        {
-            return _objects.Count;
-        }
+    public int GetIndex( MapObject obj )
+    {
+        return _objects.IndexOf( obj );
+    }
 
-        public void Add( MapObject obj )
-        {
-            _objects.Add( obj );
-        }
+    public int GetCount()
+    {
+        return _objects.Count;
+    }
 
-        public void RemoveIndex( int index )
-        {
-            _objects.RemoveAt( index );
-        }
+    public void Add( MapObject obj )
+    {
+        _objects.Add( obj );
+    }
 
-        public void Remove( MapObject obj )
-        {
-            _objects.Remove( obj );
-        }
+    public void RemoveIndex( int index )
+    {
+        _objects.RemoveAt( index );
+    }
 
-        /// <param name="type"> class of the objects we want to retrieve </param>
-        /// <returns> array filled with all the objects in the collection matching type  </returns>
-        public List< T > GetByType<T>( T type ) where T : MapObject
-        {
-            return GetByType( type, new List< T >() );
-        }
+    public void Remove( MapObject obj )
+    {
+        _objects.Remove( obj );
+    }
 
-        /// <param name="type"> class of the objects we want to retrieve </param>
-        /// <param name="fill"> collection to put the returned objects in </param>
-        /// <returns> array filled with all the objects in the collection matching type  </returns>
-        public List< T > GetByType<T>( T type, List< T > fill ) where T : MapObject
-        {
-            fill.Clear();
+    /// <param name="type"> class of the objects we want to retrieve </param>
+    /// <returns> array filled with all the objects in the collection matching type  </returns>
+    public List< T > GetByType<T>( T type ) where T : MapObject
+    {
+        return GetByType( type, new List< T >() );
+    }
 
-            for ( int i = 0, n = _objects.Count; i < n; i++ )
+    /// <param name="type"> class of the objects we want to retrieve </param>
+    /// <param name="fill"> collection to put the returned objects in </param>
+    /// <returns> array filled with all the objects in the collection matching type  </returns>
+    public List< T > GetByType<T>( T type, List< T > fill ) where T : MapObject
+    {
+        fill.Clear();
+
+        for ( int i = 0, n = _objects.Count; i < n; i++ )
+        {
+            MapObject obj = _objects[ i ];
+
+            if ( obj.GetType() == typeof(T) )
             {
-                MapObject obj = _objects[ i ];
-
-                if ( obj.GetType() == typeof(T) )
-                {
-                    fill.Add( ( T )obj );
-                }
+                fill.Add( ( T )obj );
             }
-
-            return fill;
         }
 
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerator{T}"/> object.</returns>
-        public IEnumerator< MapObject > GetEnumerator()
-        {
-            return _objects.GetEnumerator();
-        }
+        return fill;
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>An <see cref="IEnumerator{T}"/> object.</returns>
+    public IEnumerator< MapObject > GetEnumerator()
+    {
+        return _objects.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

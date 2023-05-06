@@ -1,12 +1,10 @@
-﻿namespace LibGDXSharp.Utils.Async
-{
-    public class ThreadUtils
-    {
+﻿namespace LibGDXSharp.Utils.Async;
 
-        public static void Yield()
-        {
-            throw new NotImplementedException();
-        }
+public class ThreadUtils
+{
+
+    public static void Yield()
+    {
+        throw new NotImplementedException();
     }
 }
-

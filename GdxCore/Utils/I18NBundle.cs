@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class I18NBundle
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class I18NBundle
+{
+        
+}

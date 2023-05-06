@@ -1,10 +1,8 @@
-﻿namespace LibGDXSharp.Maths
+﻿namespace LibGDXSharp.Maths;
+
+public class Polygon
 {
-    public class Polygon
+    public Polygon( float[] vertices )
     {
-        public Polygon( float[] vertices )
-        {
-        }
     }
 }
-

@@ -1,10 +1,8 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Utils
+﻿namespace LibGDXSharp.Scenes.Scene2D.Utils;
+
+public class FocusListener
 {
-    public class FocusListener
+    public class FocusEvent : Event
     {
-        public class FocusEvent : Event
-        {
-        }
     }
 }
-

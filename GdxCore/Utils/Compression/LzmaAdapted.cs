@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Compression
-{
-    public class LzmaAdapted
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Compression;
 
+public class LzmaAdapted
+{
+        
+}

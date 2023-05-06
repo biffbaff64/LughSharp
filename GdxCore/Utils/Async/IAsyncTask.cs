@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Async
+﻿namespace LibGDXSharp.Utils.Async;
+
+public interface IAsyncTask
 {
-    public interface IAsyncTask
-    {
-        void Call();
-    }
+    void Call();
 }

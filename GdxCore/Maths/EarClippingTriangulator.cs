@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class EarClippingTriangulator
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class EarClippingTriangulator
+{
+        
+}

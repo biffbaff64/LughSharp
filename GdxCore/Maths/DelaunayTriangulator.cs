@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class DelaunayTriangulator
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class DelaunayTriangulator
+{
+        
+}

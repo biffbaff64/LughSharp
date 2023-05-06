@@ -1,19 +1,18 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D
+﻿namespace LibGDXSharp.Scenes.Scene2D;
+
+/// <summary>
+/// Low level interface for receiving events.
+/// Typically there is a listener class for each specific event class.
+/// </summary>
+/// <see cref="InputListener"/>
+/// <see cref="InputEvent"/>
+public interface IEventListener
 {
     /// <summary>
-    /// Low level interface for receiving events.
-    /// Typically there is a listener class for each specific event class.
+    /// Try to handle the given event, if it is applicable.
     /// </summary>
-    /// <see cref="InputListener"/>
-    /// <see cref="InputEvent"/>
-    public interface IEventListener
-    {
-        /// <summary>
-        /// Try to handle the given event, if it is applicable.
-        /// </summary>
-        /// <returns>
-        /// True if the event should be considered as handled by scene2d.
-        /// </returns>
-        public bool Handle( Event e );
-    }
+    /// <returns>
+    /// True if the event should be considered as handled by scene2d.
+    /// </returns>
+    public bool Handle( Event e );
 }

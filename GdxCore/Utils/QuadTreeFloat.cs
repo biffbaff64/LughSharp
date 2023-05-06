@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class QuadTreeFloat
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class QuadTreeFloat
+{
+        
+}

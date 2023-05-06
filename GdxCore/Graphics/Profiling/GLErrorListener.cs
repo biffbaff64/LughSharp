@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics.Profiling
-{
-    public interface IGLErrorListener
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics.Profiling;
 
+public interface IGLErrorListener
+{
+        
+}

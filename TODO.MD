@@ -127,7 +127,7 @@ GRAPHICS
     -      - Cubemap                            Convert
     - DONE - DisplayMode                        Convert
     - DONE - FPSLogger                          Convert
-    - IP   - GLTexture                          Convert
+    - DONE - GLTexture                          Convert
     - DONE - GraphicsType                       Convert
     -      - ICubemapData                       Convert
     - DONE - ICursor                            Convert
@@ -139,7 +139,7 @@ GRAPHICS
     - DONE - Monitor                            Convert
     - IP   - OrthographicCamera                 Convert
     -      - PerspectiveCamera                  Convert
-    - IP   - Pixmap                             Convert
+    - DONE - Pixmap                             Convert
     - IP   - PixmapIO                           Convert
     - IP   - Texture                            Convert
     -      - TextureArray                       Convert
@@ -161,7 +161,7 @@ GRAPHICS/G2D
     -      - BitmapFontCache                Convert
     -      - CpuSpriteBatch                 Convert
     -      - DistanceFieldFont              Convert
-    - IP   - Gdx2DPixmap                    Convert
+    - DONE - Gdx2DPixmap                    Convert
     -      - GlyphLayout                    Convert
     - IP   - IBatch                         Convert
     -      - IPolygonBatch                  Convert

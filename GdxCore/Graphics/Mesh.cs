@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics
-{
-    public class Mesh
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics;
 
+public class Mesh
+{
+        
+}

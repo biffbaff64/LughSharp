@@ -1,10 +1,8 @@
-﻿namespace LibGDXSharp.Utils
+﻿namespace LibGDXSharp.Utils;
+
+public class ReadOnlyBufferException : Exception
 {
-    public class ReadOnlyBufferException : Exception
+    public ReadOnlyBufferException( string message ) : base( message )
     {
-        public ReadOnlyBufferException( string message ) : base( message )
-        {
-        }
     }
 }
-

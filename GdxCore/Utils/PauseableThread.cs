@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class PauseableThread
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class PauseableThread
+{
+        
+}

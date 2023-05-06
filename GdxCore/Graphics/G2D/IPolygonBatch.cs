@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.G2D
-{
-    public interface IPolygonBatch
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.G2D;
 
+public interface IPolygonBatch
+{
+        
+}

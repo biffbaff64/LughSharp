@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class Base64Coder
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class Base64Coder
+{
+        
+}

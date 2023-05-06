@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class Gridpoint3
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class Gridpoint3
+{
+        
+}

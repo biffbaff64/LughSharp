@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class Intersector
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class Intersector
+{
+        
+}

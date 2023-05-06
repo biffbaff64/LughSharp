@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Json
-{
-    public class JsonWriter
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Json;
 
+public class JsonWriter
+{
+        
+}

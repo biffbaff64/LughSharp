@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Input
-{
-    public class RemoteInput
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Input;
 
+public class RemoteInput
+{
+        
+}

@@ -1,12 +1,10 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class StreamUtils
-    {
+﻿namespace LibGDXSharp.Utils;
 
-        public static void CloseQuietly( BufferedReader reader )
-        {
-            throw new NotImplementedException();
-        }
+public class StreamUtils
+{
+
+    public static void CloseQuietly( BufferedReader reader )
+    {
+        throw new NotImplementedException();
     }
 }
-

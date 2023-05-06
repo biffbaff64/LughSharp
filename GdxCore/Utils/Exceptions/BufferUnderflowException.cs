@@ -1,25 +1,23 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Utils
+namespace LibGDXSharp.Utils;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class BufferUnderflowException : Exception
 {
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public class BufferUnderflowException : Exception
+    public BufferUnderflowException() : base()
     {
-        public BufferUnderflowException() : base()
-        {
-        }
+    }
         
-        public BufferUnderflowException( string message ) : base( message )
-        {
-        }
+    public BufferUnderflowException( string message ) : base( message )
+    {
+    }
 
-        public BufferUnderflowException( Exception e ) : this( "", e )
-        {
-        }
+    public BufferUnderflowException( Exception e ) : this( "", e )
+    {
+    }
 
-        public BufferUnderflowException( string message, Exception? exception ) : base( message, exception )
-        {
-        }
+    public BufferUnderflowException( string message, Exception? exception ) : base( message, exception )
+    {
     }
 }
-

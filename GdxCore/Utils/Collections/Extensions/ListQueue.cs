@@ -1,28 +1,26 @@
-﻿namespace LibGDXSharp.Utils.Collections.Extensions
+﻿namespace LibGDXSharp.Utils.Collections.Extensions;
+
+/// <summary>
+/// List-based implementation of a Queue.
+/// </summary>
+public class ListQueue<T> : List<T>
 {
-    /// <summary>
-    /// List-based implementation of a Queue.
-    /// </summary>
-    public class ListQueue<T> : List<T>
+    public T Peek()
     {
-        public T Peek()
-        {
-            return this[0];
-        }
+        return this[0];
+    }
 
-        public void Enqueue( T element )
-        {
-            Add( element );
-        }
+    public void Enqueue( T element )
+    {
+        Add( element );
+    }
 
-        public T Dequeue()
-        {
-            T result = Peek();
+    public T Dequeue()
+    {
+        T result = Peek();
             
-            Remove( result );
+        Remove( result );
             
-            return result;
-        }
+        return result;
     }
 }
-

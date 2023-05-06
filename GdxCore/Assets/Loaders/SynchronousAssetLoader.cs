@@ -1,15 +1,14 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Assets.Loaders
-{
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public abstract class SynchronousAssetLoader<T, TP> : AssetLoader
-    {
-        protected SynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
-        {
-            IsSynchronous = true;
-        }
+namespace LibGDXSharp.Assets.Loaders;
 
-        public abstract T? Load( AssetManager assetManager, string fileName, FileInfo? file, TP parameter );
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public abstract class SynchronousAssetLoader<T, TP> : AssetLoader
+{
+    protected SynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
+    {
+        IsSynchronous = true;
     }
+
+    public abstract T? Load( AssetManager assetManager, string fileName, FileInfo? file, TP parameter );
 }

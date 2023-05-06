@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Network
-{
-    public class NetJavaSocketImpl
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Network;
 
+public class NetJavaSocketImpl
+{
+        
+}

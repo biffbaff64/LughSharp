@@ -1,68 +1,67 @@
 ﻿using System.Text;
 
-namespace LibGDXSharp.Utils
+namespace LibGDXSharp.Utils;
+
+public class PerformanceCounters
 {
-    public class PerformanceCounters
+    private const float Nano2Seconds = 1f / 1000000000.0f;
+
+    public readonly List< PerformanceCounter > counters = new List< PerformanceCounter >();
+
+    private long _lastTick = 0L;
+
+    public PerformanceCounter Add( in string name, in int windowSize )
     {
-        private const float Nano2Seconds = 1f / 1000000000.0f;
+        var result = new PerformanceCounter( name, windowSize );
 
-        public readonly List< PerformanceCounter > counters  = new List< PerformanceCounter >();
+        counters.Add( result );
 
-        private long _lastTick = 0L;
+        return result;
+    }
 
-        public PerformanceCounter Add( in string name, in int windowSize )
+    public PerformanceCounter Add( in string name )
+    {
+        var result = new PerformanceCounter( name );
+
+        counters.Add( result );
+
+        return result;
+    }
+
+    public void Tick()
+    {
+        long t = TimeUtils.NanoTime();
+
+        if ( _lastTick > 0L )
         {
-            var result = new PerformanceCounter( name, windowSize );
-
-            counters.Add( result );
-
-            return result;
+            Tick( ( t - _lastTick ) * Nano2Seconds );
         }
 
-        public PerformanceCounter Add( in string name )
+        _lastTick = t;
+    }
+
+    public void Tick( in float deltaTime )
+    {
+        foreach ( PerformanceCounter t in counters )
         {
-            var result = new PerformanceCounter( name );
-
-            counters.Add( result );
-
-            return result;
+            t.Tick( deltaTime );
         }
+    }
 
-        public void Tick()
+    public StringBuilder ToString( in StringBuilder sb )
+    {
+        sb.Length = 0;
+
+        for ( var i = 0; i < counters.Count; i++ )
         {
-            long t = TimeUtils.NanoTime();
-
-            if ( _lastTick > 0L )
+            if ( i != 0 )
             {
-                Tick( ( t - _lastTick ) * Nano2Seconds );
+                sb.Append( "; " );
             }
 
-            _lastTick = t;
+            counters[ i ].ToString( sb );
         }
 
-        public void Tick( in float deltaTime )
-        {
-            foreach ( PerformanceCounter t in counters )
-            {
-                t.Tick( deltaTime );
-            }
-        }
-
-        public StringBuilder ToString( in StringBuilder sb )
-        {
-            sb.Length = 0;
-
-            for ( var i = 0; i < counters.Count; i++ )
-            {
-                if ( i != 0 )
-                {
-                    sb.Append( "; " );
-                }
-
-                counters[ i ].ToString( sb );
-            }
-
-            return sb;
-        }
+        return sb;
     }
 }

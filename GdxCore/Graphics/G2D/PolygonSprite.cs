@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.G2D
-{
-    public class PolygonSprite
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.G2D;
 
+public class PolygonSprite
+{
+        
+}

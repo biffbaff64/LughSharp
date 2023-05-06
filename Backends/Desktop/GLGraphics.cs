@@ -1,52 +1,51 @@
 ﻿using LibGDXSharp.Core;
 
-namespace LibGDXSharp.Backends.Desktop
+namespace LibGDXSharp.Backends.Desktop;
+
+public class GLGraphics : AbstractGraphics, IDisposable
 {
-    public class GLGraphics : AbstractGraphics, IDisposable
+    public GLWindow? Window { get; set; }
+
+    private IGL20? _gl20;
+    private IGL30? _gl30;
+        
+    public GLGraphics( GLWindow window )
     {
-        public GLWindow? Window { get; set; }
+        this.Window = window;
 
-        private IGL20? _gl20;
-        private IGL30? _gl30;
-        
-        public GLGraphics( GLWindow window )
+        if ( window.GetConfig().useGL30 )
         {
-            this.Window = window;
+            this._gl30 = new GL30();
+            this._gl20 = this._gl30;
+        }
+        else
+        {
+            this._gl20 = new GL20();
+            this._gl30 = null;
+        }
 
-            if ( window.GetConfig().useGL30 )
-            {
-                this._gl30 = new GL30();
-                this._gl20 = this._gl30;
-            }
-            else
-            {
-                this._gl20 = new GL20();
-                this._gl30 = null;
-            }
-
-            UpdateFramebufferInfo();
-            InitiateGL();
+        UpdateFramebufferInfo();
+        InitiateGL();
             
-            Glfw.GetApi().SetFramebufferSizeCallback( window.getWindowHandle(), resizeCallback );
-        }
+        Glfw.GetApi().SetFramebufferSizeCallback( window.getWindowHandle(), resizeCallback );
+    }
 
-        public class GLDisplayMode
-        {
-        }
+    public class GLDisplayMode
+    {
+    }
         
-        protected virtual void Dispose( bool disposing )
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
         {
-            if ( disposing )
-            {
-                this._gl20 = null;
-                this._gl30 = null;
-            }
+            this._gl20 = null;
+            this._gl30 = null;
         }
+    }
 
-        public void Dispose()
-        {
-            Dispose( true );
-            GC.SuppressFinalize( this );
-        }
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 }

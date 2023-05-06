@@ -1,12 +1,10 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils
+﻿namespace LibGDXSharp.Graphics.GLUtils;
+
+public class FileTextureData : ITextureData
 {
-    public class FileTextureData : ITextureData
+    public FileTextureData( FileInfo file, object readCim, Pixmap.Format? format, bool useMipMaps )
     {
-        public FileTextureData( FileInfo file, object readCim, Pixmap.Format? format, bool useMipMaps )
-        {
-            throw new NotImplementedException();
-        }
-
+        throw new NotImplementedException();
     }
-}
 
+}

@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class CumulativeDistribution
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class CumulativeDistribution
+{
+        
+}

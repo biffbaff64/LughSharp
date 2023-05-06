@@ -1,11 +1,9 @@
-﻿namespace LibGDXSharp.Utils.Collections
+﻿namespace LibGDXSharp.Utils.Collections;
+
+public class ArrayUtils
 {
-    public class ArrayUtils
+    public static int TableSize( int keyTableLength, float loadFactor )
     {
-        public static int TableSize( int keyTableLength, float loadFactor )
-        {
-            return 0;
-        }
+        return 0;
     }
 }
-

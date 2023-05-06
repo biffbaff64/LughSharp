@@ -1,7 +1,5 @@
-﻿namespace LibGDXSharp.Network
-{
-    public class HttpParametersUtils
-    {
-    }
-}
+﻿namespace LibGDXSharp.Network;
 
+public class HttpParametersUtils
+{
+}

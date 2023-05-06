@@ -4,126 +4,125 @@ using LibGDXSharp.G2D;
 
 using Blendmode = LibGDXSharp.Maps.Tiled.ITiledMapTile.Blendmode;
 
-namespace LibGDXSharp.Maps.Tiled.Tiles
+namespace LibGDXSharp.Maps.Tiled.Tiles;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class AnimatedTiledMapTile : ITiledMapTile
 {
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public sealed class AnimatedTiledMapTile : ITiledMapTile
+    private readonly static long initialTimeOffset = DateTime.Now.Millisecond;
+
+    private static long _lastTiledMapRenderTime = 0;
+
+    public int       ID        { get; set; }
+    public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
+
+    private readonly int                  _loopDuration;
+    private readonly StaticTiledMapTile[] _frameTiles;
+    private readonly int[]                _animationIntervals;
+
+    private MapProperties? _properties;
+    private MapObjects?    _mapObjects;
+
+    /// <summary>
+    /// Creates an animated tile with the given animation interval and frame tiles.
+    /// </summary>
+    /// <param name="interval">The interval between each individual frame tile.</param>
+    /// <param name="frameTiles">
+    /// An array of <see cref="StaticTiledMapTile"/> that make up the animation.
+    /// </param>
+    public AnimatedTiledMapTile( float interval, List< StaticTiledMapTile > frameTiles )
     {
-        private readonly static long initialTimeOffset = DateTime.Now.Millisecond;
+        this._frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
 
-        private static long _lastTiledMapRenderTime = 0;
+        this._loopDuration       = frameTiles.Count * ( int )( interval * 1000f );
+        this._animationIntervals = new int[ frameTiles.Count ];
 
-        public int       ID        { get; set; }
-        public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
-
-        private readonly int                  _loopDuration;
-        private readonly StaticTiledMapTile[] _frameTiles;
-        private readonly int[]                _animationIntervals;
-
-        private MapProperties? _properties;
-        private MapObjects?    _mapObjects;
-
-        /// <summary>
-        /// Creates an animated tile with the given animation interval and frame tiles.
-        /// </summary>
-        /// <param name="interval">The interval between each individual frame tile.</param>
-        /// <param name="frameTiles">
-        /// An array of <see cref="StaticTiledMapTile"/> that make up the animation.
-        /// </param>
-        public AnimatedTiledMapTile( float interval, List< StaticTiledMapTile > frameTiles )
+        for ( var i = 0; i < frameTiles.Count; ++i )
         {
-            this._frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
-
-            this._loopDuration       = frameTiles.Count * ( int )( interval * 1000f );
-            this._animationIntervals = new int[ frameTiles.Count ];
-
-            for ( var i = 0; i < frameTiles.Count; ++i )
-            {
-                this._frameTiles[ i ]         = frameTiles[ i ];
-                this._animationIntervals[ i ] = ( int )( interval * 1000f );
-            }
+            this._frameTiles[ i ]         = frameTiles[ i ];
+            this._animationIntervals[ i ] = ( int )( interval * 1000f );
         }
+    }
 
-        /// <summary>
-        /// Creates an animated tile with the given animation intervals and frame tiles.
-        /// </summary>
-        /// <param name="intervals">
-        /// The intervals between each individual frame tile in milliseconds.
-        /// </param>
-        /// <param name="frameTiles">
-        /// An array of <see cref="StaticTiledMapTile"/> that make up the animation.
-        /// </param>
-        public AnimatedTiledMapTile( List< int > intervals, List< StaticTiledMapTile > frameTiles )
+    /// <summary>
+    /// Creates an animated tile with the given animation intervals and frame tiles.
+    /// </summary>
+    /// <param name="intervals">
+    /// The intervals between each individual frame tile in milliseconds.
+    /// </param>
+    /// <param name="frameTiles">
+    /// An array of <see cref="StaticTiledMapTile"/> that make up the animation.
+    /// </param>
+    public AnimatedTiledMapTile( List< int > intervals, List< StaticTiledMapTile > frameTiles )
+    {
+        this._frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
+
+        this._animationIntervals = intervals.ToArray();
+        this._loopDuration       = 0;
+
+        for ( int i = 0; i < intervals.Count; ++i )
         {
-            this._frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
-
-            this._animationIntervals = intervals.ToArray();
-            this._loopDuration       = 0;
-
-            for ( int i = 0; i < intervals.Count; ++i )
-            {
-                this._frameTiles[ i ] =  frameTiles[ i ];
-                this._loopDuration    += intervals[ i ];
-            }
+            this._frameTiles[ i ] =  frameTiles[ i ];
+            this._loopDuration    += intervals[ i ];
         }
+    }
 
-        public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
+    public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
 
-        public ITiledMapTile GetCurrentFrame() => _frameTiles[ GetCurrentFrameIndex() ];
+    public ITiledMapTile GetCurrentFrame() => _frameTiles[ GetCurrentFrameIndex() ];
 
-        public int GetCurrentFrameIndex()
+    public int GetCurrentFrameIndex()
+    {
+        var currentTime = ( int )( _lastTiledMapRenderTime % _loopDuration );
+
+        for ( var i = 0; i < _animationIntervals.Length; ++i )
         {
-            var currentTime = ( int )( _lastTiledMapRenderTime % _loopDuration );
+            var animationInterval = _animationIntervals[ i ];
 
-            for ( var i = 0; i < _animationIntervals.Length; ++i )
+            if ( currentTime <= animationInterval )
             {
-                var animationInterval = _animationIntervals[ i ];
-
-                if ( currentTime <= animationInterval )
-                {
-                    return i;
-                }
-
-                currentTime -= animationInterval;
+                return i;
             }
 
-            throw new SystemException
-                (
-                 "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen."
-                );
+            currentTime -= animationInterval;
         }
 
-        public static void UpdateAnimationBaseTime()
-        {
-            _lastTiledMapRenderTime = DateTime.Now.Millisecond - initialTimeOffset;
-        }
+        throw new SystemException
+            (
+             "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen."
+            );
+    }
 
-        public TextureRegion TextureRegion
-        {
-            get => GetCurrentFrame().TextureRegion;
-            set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
-        }
+    public static void UpdateAnimationBaseTime()
+    {
+        _lastTiledMapRenderTime = DateTime.Now.Millisecond - initialTimeOffset;
+    }
 
-        public float OffsetX
-        {
-            get => GetCurrentFrame().OffsetX;
-            set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
-        }
+    public TextureRegion TextureRegion
+    {
+        get => GetCurrentFrame().TextureRegion;
+        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
+    }
 
-        public float OffsetY
-        {
-            get => GetCurrentFrame().OffsetY;
-            set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
-        }
+    public float OffsetX
+    {
+        get => GetCurrentFrame().OffsetX;
+        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
+    }
 
-        public MapProperties GetProperties()
-        {
-            return _properties ??= new MapProperties();
-        }
+    public float OffsetY
+    {
+        get => GetCurrentFrame().OffsetY;
+        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
+    }
 
-        public MapObjects GetObjects()
-        {
-            return _mapObjects ??= new MapObjects();
-        }
+    public MapProperties GetProperties()
+    {
+        return _properties ??= new MapProperties();
+    }
+
+    public MapObjects GetObjects()
+    {
+        return _mapObjects ??= new MapObjects();
     }
 }

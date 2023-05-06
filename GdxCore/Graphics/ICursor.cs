@@ -1,15 +1,14 @@
-﻿namespace LibGDXSharp.Graphics
+﻿namespace LibGDXSharp.Graphics;
+
+public interface ICursor
 {
-    public interface ICursor
+    public enum SystemCursor
     {
-        public enum SystemCursor
-        {
-            Arrow,
-            Ibeam,
-            Crosshair,
-            Hand,
-            HorizontalResize,
-            VerticalResize
-        }
+        Arrow,
+        Ibeam,
+        Crosshair,
+        Hand,
+        HorizontalResize,
+        VerticalResize
     }
 }

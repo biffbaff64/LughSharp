@@ -1,6 +1,5 @@
-﻿namespace LibGDXSharp.Network
+﻿namespace LibGDXSharp.Network;
+
+public interface ISocket
 {
-    public interface ISocket
-    {
-    }
 }

@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Xml
-{
-    public class XmlWriter
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Xml;
 
+public class XmlWriter
+{
+        
+}

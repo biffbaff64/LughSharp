@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Compression
-{
-    public interface ICodeProgress
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Compression;
 
+public interface ICodeProgress
+{
+        
+}

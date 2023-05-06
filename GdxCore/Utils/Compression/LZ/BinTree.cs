@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Compression.LZ
-{
-    public class BinTree
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Compression.LZ;
 
+public class BinTree
+{
+        
+}

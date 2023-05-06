@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Test
+﻿namespace LibGDXSharp.Utils.Test;
+
+public interface IIterator< T >
 {
-    public interface IIterator< T >
-    {
-        IIterator< T > Iterator();
-    }
+    IIterator< T > Iterator();
 }

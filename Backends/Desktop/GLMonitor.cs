@@ -1,7 +1,5 @@
-﻿namespace LibGDXSharp.Backends.Desktop
-{
-    public class GLMonitor
-    {
-    }
-}
+﻿namespace LibGDXSharp.Backends.Desktop;
 
+public class GLMonitor
+{
+}

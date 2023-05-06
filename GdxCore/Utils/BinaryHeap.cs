@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class BinaryHeap
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class BinaryHeap
+{
+        
+}

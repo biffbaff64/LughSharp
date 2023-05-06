@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class Queue
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class Queue
+{
+        
+}

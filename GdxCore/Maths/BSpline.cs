@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Maths
-{
-    public class BSpline
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Maths;
 
+public class BSpline
+{
+        
+}

@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop.Audio
-{
-    public class Mp3
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Backends.Desktop.Audio;
 
+public class Mp3
+{
+        
+}

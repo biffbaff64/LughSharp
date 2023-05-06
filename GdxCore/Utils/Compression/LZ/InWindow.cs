@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Compression.LZ
-{
-    public class InWindow
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Compression.LZ;
 
+public class InWindow
+{
+        
+}

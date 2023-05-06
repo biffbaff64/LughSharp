@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class SortedIntList
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class SortedIntList
+{
+        
+}

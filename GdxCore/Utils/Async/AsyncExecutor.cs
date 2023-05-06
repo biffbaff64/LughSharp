@@ -1,21 +1,19 @@
-﻿namespace LibGDXSharp.Utils.Async
+﻿namespace LibGDXSharp.Utils.Async;
+
+public class AsyncExecutor
 {
-    public class AsyncExecutor
+    public AsyncExecutor( int i, string assetmanager )
     {
-        public AsyncExecutor( int i, string assetmanager )
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
+    }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+    public void Dispose()
+    {
+        throw new NotImplementedException();
+    }
 
-        public AsyncResult Submit( AssetLoadingTask p0 )
-        {
-            throw new NotImplementedException();
-        }
+    public AsyncResult Submit( AssetLoadingTask p0 )
+    {
+        throw new NotImplementedException();
     }
 }
-

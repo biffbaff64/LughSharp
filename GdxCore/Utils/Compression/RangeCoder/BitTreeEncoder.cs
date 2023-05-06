@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Compression.RangeCoder
-{
-    public class BitTreeEncoder
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Compression.RangeCoder;
 
+public class BitTreeEncoder
+{
+        
+}

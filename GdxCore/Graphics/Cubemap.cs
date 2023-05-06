@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Graphics
-{
-    public class Cubemap
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Graphics;
 
+public class Cubemap
+{
+        
+}

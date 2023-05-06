@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Json
+﻿namespace LibGDXSharp.Utils.Json;
+
+public interface IBaseJsonReader
 {
-    public interface IBaseJsonReader
-    {
         
-    }
 }

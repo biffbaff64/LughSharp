@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Compression.LZMA
-{
-    public class Decoder
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Compression.LZMA;
 
+public class Decoder
+{
+        
+}

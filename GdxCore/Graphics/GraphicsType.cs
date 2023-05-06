@@ -1,8 +1,7 @@
-﻿namespace LibGDXSharp.Graphics
+﻿namespace LibGDXSharp.Graphics;
+
+public enum GraphicsType
 {
-    public enum GraphicsType
-    {
-        GL2,
-        GL3,
-    }
+    GL2,
+    GL3,
 }

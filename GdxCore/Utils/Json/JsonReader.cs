@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Json
-{
-    public class JsonReader
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils.Json;
 
+public class JsonReader
+{
+        
+}

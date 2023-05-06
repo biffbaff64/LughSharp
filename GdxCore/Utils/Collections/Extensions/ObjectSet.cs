@@ -1,6 +1,5 @@
-﻿namespace LibGDXSharp.Utils.Collections.Extensions
+﻿namespace LibGDXSharp.Utils.Collections.Extensions;
+
+public class ObjectSet<T>
 {
-    public class ObjectSet<T>
-    {
-    }
 }

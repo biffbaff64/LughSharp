@@ -1,8 +1,6 @@
-﻿namespace LibGDXSharp.Utils
-{
-    public class DataOutput
-    {
-        
-    }
-}
+﻿namespace LibGDXSharp.Utils;
 
+public class DataOutput
+{
+        
+}
