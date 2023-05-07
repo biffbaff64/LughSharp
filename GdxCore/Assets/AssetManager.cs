@@ -278,9 +278,9 @@ public sealed class AssetManager
             Log.Info( "Unload (from queue): " + fileName );
 
             // if the queued asset was already loaded, let the callback know it is available.
-            if ( ( type != null ) && desc.Parameters is { LoadedCallBack: not null } )
+            if ( ( type != null ) && desc.Parameters is { LoadedCallback: not null } )
             {
-                desc.Parameters.LoadedCallBack?.FinishedLoading( this, desc.FilePath, desc.Type );
+                desc.Parameters.LoadedCallback?.FinishedLoading( this, desc.FilePath, desc.Type );
             }
 
             return;
@@ -732,7 +732,7 @@ public sealed class AssetManager
 
             IncrementRefCountedDependencies( assetDesc.FilePath );
 
-            assetDesc.Parameters.LoadedCallBack?.FinishedLoading
+            assetDesc.Parameters.LoadedCallback?.FinishedLoading
                 (
                  this,
                  assetDesc.FilePath,
@@ -822,7 +822,7 @@ public sealed class AssetManager
             AddAsset( task.AssetDesc.FilePath, task.AssetDesc.Type, task.Asset );
 
             // otherwise, if a listener was found in the parameter invoke it
-            task.AssetDesc.Parameters.LoadedCallBack?.FinishedLoading
+            task.AssetDesc.Parameters.LoadedCallback?.FinishedLoading
                 (
                  this,
                  task.AssetDesc.FilePath,

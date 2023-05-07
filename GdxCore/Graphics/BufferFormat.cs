@@ -14,7 +14,7 @@ public record BufferFormat
     public int  Stencil          { get; set; } // ...
     public int  Samples          { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
     public bool CoverageSampling { get; set; } // whether coverage sampling anti-aliasing is used.
-    // If so, you have to clear the coverage buffer as well!
+//                                                 If so, you have to clear the coverage buffer as well!
 
     public override string ToString()
     {

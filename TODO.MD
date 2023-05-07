@@ -137,7 +137,7 @@ GRAPHICS
     - DONE - ITextureData                       Convert
     -      - Mesh                               Convert
     - DONE - Monitor                            Convert
-    - IP   - OrthographicCamera                 Convert
+    - DONE - OrthographicCamera                 Convert
     -      - PerspectiveCamera                  Convert
     - DONE - Pixmap                             Convert
     - IP   - PixmapIO                           Convert
@@ -222,7 +222,7 @@ GRAPHICS/GLUTILS
     - IP   - KTXTTextureData
     -      - MipMapGenerator
     -      - MipMapTextureData
-    -      - PixmapTextureData
+    - DONE - PixmapTextureData
     -      - ShaderProgram
     - IP   - ShapeRenderer
     -      - VertexArray

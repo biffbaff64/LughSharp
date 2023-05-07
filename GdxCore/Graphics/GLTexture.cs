@@ -1,4 +1,6 @@
-﻿using LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Maths;
 
 using Buffer = Silk.NET.OpenGLES.Buffer;
 
@@ -10,12 +12,12 @@ namespace LibGDXSharp.Graphics;
 /// Also provides some (protected) static methods to create TextureData
 /// and upload image data.
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class GLTexture
 {
-    public int   GLTarget               { get; set; }
-    public float AnisotropicFilterLevel { get; set; } = 1.0f;
+    protected int   GLTarget               { get; set; }
+    protected float AnisotropicFilterLevel { get; set; } = 1.0f;
 
-    private int           _glHandle;
     private TextureFilter _minFilter = TextureFilter.Nearest;
     private TextureFilter _magFilter = TextureFilter.Nearest;
     private TextureWrap   _uWrap     = TextureWrap.ClampToEdge;
@@ -47,7 +49,7 @@ public abstract class GLTexture
     protected GLTexture( int glTarget, int glHandle )
     {
         this.GLTarget  = glTarget;
-        this._glHandle = glHandle;
+        this.TextureObjectHandle = glHandle;
     }
 
     /// <returns>whether this texture is managed or not.</returns>
@@ -61,9 +63,9 @@ public abstract class GLTexture
     /// Binds this texture. The texture will be bound to the currently active
     /// texture unit specified via <see cref="IGL20.GLActiveTexture(int)"/>. 
     /// </summary>
-    public void Bind()
+    protected void Bind()
     {
-        Gdx.GL.GLBindTexture( GLTarget, _glHandle );
+        Gdx.GL.GLBindTexture( GLTarget, TextureObjectHandle );
     }
 
     /// <summary>
@@ -76,27 +78,27 @@ public abstract class GLTexture
     public void Bind( int unit )
     {
         Gdx.GL.GLActiveTexture( IGL20.GL_Texture0 + unit );
-        Gdx.GL.GLBindTexture( GLTarget, _glHandle );
+        Gdx.GL.GLBindTexture( GLTarget, TextureObjectHandle );
     }
 
     /// <returns> The <see cref="TextureFilter"/> used for minification. </returns>
-    public TextureFilter MinFilter => _minFilter;
+    protected TextureFilter MinFilter => _minFilter;
 
     /// <returns> The <see cref="TextureFilter"/> used for magnification. </returns>
-    public TextureFilter MagFilter => _magFilter;
+    protected TextureFilter MagFilter => _magFilter;
 
     /// <returns>
     /// The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
     /// </returns>
-    public TextureWrap UWrap => _uWrap;
+    protected TextureWrap UWrap => _uWrap;
 
     /// <returns>
     /// The <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
     /// </returns>
-    public TextureWrap VWrap => _vWrap;
+    protected TextureWrap VWrap => _vWrap;
 
     /// <returns> The OpenGL handle for this texture. </returns>
-    public int TextureObjectHandle => _glHandle;
+    protected int TextureObjectHandle { get; set; }
 
     /// <summary>
     /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.
@@ -107,7 +109,7 @@ public abstract class GLTexture
     /// <param name="force">
     /// True to always set the values, even if they are the same as the current values.
     /// </param>
-    public void UnsafeSetWrap( TextureWrap? u, TextureWrap? v, bool force = false )
+    protected void UnsafeSetWrap( TextureWrap? u, TextureWrap? v, bool force = false )
     {
         if ( (u != null) && ( force || (_uWrap != u) ) )
         {
@@ -149,7 +151,7 @@ public abstract class GLTexture
     /// True to always set the values, even if they are the same as the current values.
     /// Default is false.
     /// </param>
-    public void UnsafeSetFilter( TextureFilter? minFilter, TextureFilter? magFilter, bool force = false )
+    protected void UnsafeSetFilter( TextureFilter? minFilter, TextureFilter? magFilter, bool force = false )
     {
         if ( ( minFilter != null ) && ( force || ( this._minFilter != minFilter ) ) )
         {
@@ -194,7 +196,7 @@ public abstract class GLTexture
     /// The actual level set, which may be lower than the provided value
     /// due to device limitations.
     /// </returns>
-    public float UnsafeSetAnisotropicFilter( float level, bool force = false )
+    protected float UnsafeSetAnisotropicFilter( float level, bool force = false )
     {
         var max = GetMaxAnisotropicFilterLevel();
 
@@ -269,10 +271,10 @@ public abstract class GLTexture
     /// </summary>
     protected void Delete()
     {
-        if ( _glHandle != 0 )
+        if ( TextureObjectHandle != 0 )
         {
-            Gdx.GL.GLDeleteTexture( _glHandle );
-            _glHandle = 0;
+            Gdx.GL.GLDeleteTexture( TextureObjectHandle );
+            TextureObjectHandle = 0;
         }
     }
 
@@ -282,7 +284,7 @@ public abstract class GLTexture
     /// <param name="target"></param>
     /// <param name="data"></param>
     /// <param name="miplevel"></param>
-    public static void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
+    protected static void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
     {
         if ( data == null )
         {

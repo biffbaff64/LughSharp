@@ -10,10 +10,10 @@ public interface IAssetLoaderParameters
         public void FinishedLoading( AssetManager assetManager, string fileName, Type? type );
     }
 
-    public ILoadedCallback? LoadedCallBack { get; set; }
+    public ILoadedCallback? LoadedCallback { get; set; }
 }
 
 public class AssetLoaderParameters : IAssetLoaderParameters
 {
-    public IAssetLoaderParameters.ILoadedCallback? LoadedCallBack { get; set; }
+    public IAssetLoaderParameters.ILoadedCallback? LoadedCallback { get; set; }
 }
