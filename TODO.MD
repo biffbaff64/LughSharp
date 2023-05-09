@@ -129,21 +129,21 @@ GRAPHICS
     - DONE - FPSLogger                          Convert
     - DONE - GLTexture                          Convert
     - DONE - GraphicsType                       Convert
-    -      - ICubemapData                       Convert
+    - DONE - ICubemapData                       Convert
     - DONE - ICursor                            Convert
     - DONE - IDownloadPixmapResponseListener    Convert
     - DONE - IGL20                              Convert
-    - IP   - IGL30                              Convert
+    - DONE - IGL30                              Convert
+    - DONE - ITextureArrayData                  Convert
     - DONE - ITextureData                       Convert
     -      - Mesh                               Convert
     - DONE - Monitor                            Convert
     - DONE - OrthographicCamera                 Convert
-    -      - PerspectiveCamera                  Convert
+    - IP   - PerspectiveCamera                  Convert
     - DONE - Pixmap                             Convert
     - IP   - PixmapIO                           Convert
-    - IP   - Texture                            Convert
-    -      - TextureArray                       Convert
-    -      - TextureArrayData                   Convert
+    - DONE - Texture                            Convert
+    - DONE - TextureArray                       Convert
     - DONE - TextureFilter                      Convert
     - DONE - TextureWrap                        Convert
     -      - VertexAttribute                    Convert
@@ -199,7 +199,7 @@ GRAPHICS/GLUTILS
     -      - ETC1
     - IP   - ETC1TextureData
     -      - FacedCubemapData
-    -      - FileTextureArrayData
+    - IP   - FileTextureArrayData
     - IP   - FileTextureData
     -      - FloatFrameBuffer
     -      - FloatTextureData

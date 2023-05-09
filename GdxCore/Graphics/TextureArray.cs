@@ -1,6 +1,203 @@
-﻿namespace LibGDXSharp.Graphics;
+﻿using System.Text;
 
-public class TextureArray
+namespace LibGDXSharp.Graphics;
+
+public class TextureArray : GLTexture
 {
+    private readonly static Dictionary< IApplication, List< TextureArray > > managedTextureArrays = new();
+
+    private ITextureArrayData _data;
+
+    /// <summary>
+    /// </summary>
+    /// <param name="internalPaths"></param>
+    public TextureArray( params string[] internalPaths )
+        : this( GetInternalHandles( internalPaths ) )
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="files"></param>
+    public TextureArray( params FileInfo[] files ) : this( false, files )
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="useMipMaps"></param>
+    /// <param name="files"></param>
+    public TextureArray( bool useMipMaps, params FileInfo[] files )
+        : this( useMipMaps, Pixmap.Format.RGBA8888, files )
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="useMipMaps"></param>
+    /// <param name="format"></param>
+    /// <param name="files"></param>
+    public TextureArray( bool useMipMaps, Pixmap.Format format, params FileInfo[] files )
+        : this( TextureArrayDataFactory.LoadFromFiles( format, useMipMaps, files ) )
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="data"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public TextureArray( ITextureArrayData data )
+        : base( IGL30.GL_Texture_2D_Array, Gdx.GL.GLGenTexture() )
+    {
+        if ( Gdx.GL30 == null )
+        {
+            throw new GdxRuntimeException( "TextureArray requires a device"
+                                           + "running with GLES 3.0 compatibilty" );
+        }
+
+        _data = null!;
         
+        Load( data );
+
+        if ( data.Managed ) AddManagedTexture( Gdx.App, this );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="internalPaths"></param>
+    /// <returns></returns>
+    private static FileInfo[] GetInternalHandles( params string[] internalPaths )
+    {
+        var handles = new FileInfo[ internalPaths.Length ];
+
+        for ( var i = 0; i < internalPaths.Length; i++ )
+        {
+            handles[ i ] = Gdx.Files.Internal( internalPaths[ i ] );
+        }
+
+        return handles;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="data"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    private void Load( ITextureArrayData data )
+    {
+        if ( ( this._data != null ) && ( data.Managed != this._data.Managed ) )
+        {
+            throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
+        }
+
+        this._data = data;
+
+        Bind();
+
+        Gdx.GL30.GLTexImage3D
+            (
+             IGL30.GL_Texture_2D_Array,
+             0,
+             data.InternalFormat,
+             data.Width,
+             data.Height,
+             data.Depth,
+             0,
+             data.InternalFormat,
+             data.GLType,
+             null!
+            );
+
+        if ( !data.Prepared )
+        {
+            data.Prepare();
+        }
+
+        data.ConsumeTextureArrayData();
+
+        SetFilter( MinFilter, MagFilter );
+        SetWrap( UWrap, VWrap );
+        Gdx.GL.GLBindTexture( GLTarget, 0 );
+    }
+
+    public override int Width => _data.Width;
+
+    public override int Height => _data.Height;
+
+    public override int Depth => _data.Depth;
+
+    public override bool IsManaged() => _data.Managed;
+
+    /// <summary>
+    /// </summary>
+    /// <exception cref="GdxRuntimeException"></exception>
+    protected override void Reload()
+    {
+        if ( !IsManaged() )
+        {
+            throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
+        }
+
+        GLHandle = Gdx.GL.GLGenTexture();
+
+        Load( this._data );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="texture"></param>
+    private static void AddManagedTexture( IApplication app, TextureArray texture )
+    {
+        List< TextureArray > managedTextureArray = managedTextureArrays[ app ];
+
+        managedTextureArrays[ app ].Add( texture );
+        managedTextureArrays[ app ] = managedTextureArray;
+    }
+
+
+    /// <summary>
+    /// Clears all managed TextureArrays.
+    /// </summary>
+    public static void ClearAllTextureArrays( IApplication app )
+    {
+        managedTextureArrays.Remove( app );
+    }
+
+    /// <summary>
+    /// Invalidate all managed TextureArrays.
+    /// </summary>
+    public static void InvalidateAllTextureArrays( IApplication app )
+    {
+        foreach ( TextureArray textureArray in managedTextureArrays[ app ] )
+        {
+            textureArray.Reload();
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    public string ManagedStatus
+    {
+        get
+        {
+            var builder = new StringBuilder();
+            builder.Append( "Managed TextureArrays/app: { " );
+
+            foreach ( IApplication app in managedTextureArrays.Keys )
+            {
+                builder.Append( managedTextureArrays[ app ].Count );
+                builder.Append( ' ' );
+            }
+
+            builder.Append( '}' );
+
+            return builder.ToString();
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <returns> the number of managed TextureArrays currently loaded.
+    /// </returns>
+    public int NumManagedTextureArrays => managedTextureArrays[ Gdx.App ].Count;
 }

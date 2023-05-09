@@ -1,6 +1,157 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
-public class FileTextureArrayData
+namespace LibGDXSharp.Graphics.GLUtils;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+public class FileTextureArrayData : ITextureArrayData
 {
-        
+    private readonly ITextureData?[] _textureDatas;
+
+    private Pixmap.Format _format;
+    private int           _depth;
+    private bool          _useMipMaps;
+    private bool          _prepared;
+
+    public FileTextureArrayData( Pixmap.Format format, bool useMipMaps, FileInfo[] files )
+    {
+        this._format     = format;
+        this._useMipMaps = useMipMaps;
+        this._depth      = files.Length;
+        _textureDatas    = new ITextureData?[ files.Length ];
+
+        for ( int i = 0; i < files.Length; i++ )
+        {
+            _textureDatas[ i ] = ITextureData.Factory.LoadFromFile( files[ i ], format, useMipMaps );
+        }
+    }
+
+    /// <returns> whether the TextureArrayData is prepared or not. </returns>
+    public bool Prepared { get; set; }
+
+    /// <returns> the width of this TextureArray </returns>
+    public int Width { get; set; }
+
+    /// <returns> the height of this TextureArray </returns>
+    public int Height { get; set; }
+
+    /// <returns> the layer count of this TextureArray </returns>
+    public int Depth { get; set; }
+
+    /// <returns> whether this implementation can cope with a EGL context loss. </returns>
+    public bool Managed { get; set; }
+
+    /// <returns> the internal format of this TextureArray </returns>
+    public int InternalFormat { get; set; }
+
+    /// <returns> the GL type of this TextureArray </returns>
+    public int GLType { get; set; }
+
+    /// <summary>
+    /// Prepares the TextureArrayData for a call to <see cref="ITextureArrayData.ConsumeTextureArrayData"/>.
+    /// This method can be called from a non OpenGL thread and should thus not interact
+    /// with OpenGL. 
+    /// </summary>
+    public void Prepare()
+    {
+        int width  = -1;
+        int height = -1;
+
+        foreach ( ITextureData? data in _textureDatas )
+        {
+            if ( data == null ) continue;
+
+            data.Prepare();
+
+            if ( width == -1 )
+            {
+                width  = data.GetWidth();
+                height = data.GetHeight();
+
+                continue;
+            }
+
+            if ( ( width != data.GetWidth() ) || ( height != data.GetHeight() ) )
+            {
+                throw new GdxRuntimeException
+                    (
+                     "Error whilst preparing TextureArray:"
+                     + "TextureArray Textures must have equal dimensions."
+                    );
+            }
+        }
+
+        Prepared = true;
+    }
+
+    /// <summary>
+    /// Uploads the pixel data of the TextureArray layers of the TextureArray to the OpenGL
+    /// ES texture. The caller must bind an OpenGL ES texture.
+    /// <para></para>
+    /// <para>
+    /// A call to <see cref="ITextureArrayData.Prepare"/> must preceed a call to this method.
+    /// </para>
+    /// <para>
+    /// Any internal data structures created in <see cref="ITextureArrayData.Prepare"/>
+    /// should be disposed of here. 
+    /// </para>
+    /// </summary>
+    public void ConsumeTextureArrayData()
+    {
+        for ( var i = 0; i < _textureDatas.Length; i++ )
+        {
+            if ( _textureDatas[ i ]?.GetType() == ITextureData.TextureDataType.Custom )
+            {
+                _textureDatas[ i ]?.ConsumeCustomData( IGL30.GL_Texture_2D_Array );
+            }
+            else
+            {
+                ITextureData? texData       = _textureDatas[ i ];
+                Pixmap?       pixmap        = texData?.ConsumePixmap();
+                var           disposePixmap = texData?.DisposePixmap() ?? false;
+
+                Debug.Assert( texData != null, nameof( texData ) + " != null" );
+                Debug.Assert( pixmap != null, nameof( pixmap ) + " != null" );
+
+                if ( texData.GetFormat() != pixmap.GetFormat() )
+                {
+                    var temp = new Pixmap( pixmap.Width, pixmap.Height, texData.GetFormat() );
+
+                    temp.Blend = Pixmap.Blending.None;
+                    temp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
+
+                    if ( texData.DisposePixmap() )
+                    {
+                        pixmap.Dispose();
+                    }
+
+                    pixmap        = temp;
+                    disposePixmap = true;
+                }
+
+                Gdx.GL30.GLTexSubImage3D
+                    (
+                     IGL30.GL_Texture_2D_Array,
+                     0,
+                     0,
+                     0,
+                     i,
+                     pixmap.Width,
+                     pixmap.Height,
+                     1,
+                     pixmap.GLInternalFormat,
+                     pixmap.GLType,
+                     pixmap.Pixels
+                    );
+
+                if ( _useMipMaps )
+                {
+                    Gdx.GL20.GLGenerateMipmap( IGL30.GL_Texture_2D_Array );
+                }
+
+                if ( disposePixmap ) pixmap.Dispose();
+            }
+        }
+    }
 }

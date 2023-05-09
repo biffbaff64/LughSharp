@@ -57,6 +57,14 @@ public static class ListExtensions
             ts.Add( array[ i ] );
         }
     }
+
+    public static void AddAll<T>( this IList< T > ts, List<T> array )
+    {
+        foreach ( T tex in array )
+        {
+            ts.Add( tex );
+        }
+    }
         
     /// <summary>
     /// Shuffles the element order of the specified list.

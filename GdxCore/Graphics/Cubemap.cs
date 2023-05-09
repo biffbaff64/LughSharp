@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics;
 
-public class Cubemap
+public class Cubemap : GLTexture
 {
         
 }

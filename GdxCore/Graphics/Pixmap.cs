@@ -439,7 +439,7 @@ public class Pixmap : IDisposable
     }
 
     /// <returns> the <see cref="Pixmap.Format"/> of this Pixmap. </returns>
-    public Format PixFormat => PixmapFormat.FromGdx2DPixmapFormat( gdx2DPixmap.format );
+    public Format GetFormat() => PixmapFormat.FromGdx2DPixmapFormat( gdx2DPixmap.format );
 
     // #############################################################
 

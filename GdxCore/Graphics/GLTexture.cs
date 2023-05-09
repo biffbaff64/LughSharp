@@ -15,13 +15,9 @@ namespace LibGDXSharp.Graphics;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class GLTexture
 {
+    protected int   GLHandle               { get; set; }
     protected int   GLTarget               { get; set; }
-    protected float AnisotropicFilterLevel { get; set; } = 1.0f;
-
-    private TextureFilter _minFilter = TextureFilter.Nearest;
-    private TextureFilter _magFilter = TextureFilter.Nearest;
-    private TextureWrap   _uWrap     = TextureWrap.ClampToEdge;
-    private TextureWrap   _vWrap     = TextureWrap.ClampToEdge;
+    protected float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
     private static float _maxAnisotropicFilterLevel = 0;
 
@@ -37,7 +33,8 @@ public abstract class GLTexture
     /// <summary>
     /// Generates a new OpenGL texture with the specified target.
     /// </summary>
-    protected GLTexture( int glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
+    protected GLTexture( int glTarget )
+        : this( glTarget, Gdx.GL.GLGenTexture() )
     {
     }
 
@@ -48,8 +45,8 @@ public abstract class GLTexture
     /// <param name="glHandle"></param>
     protected GLTexture( int glTarget, int glHandle )
     {
-        this.GLTarget  = glTarget;
-        this.TextureObjectHandle = glHandle;
+        this.GLTarget = glTarget;
+        this.GLHandle = glHandle;
     }
 
     /// <returns>whether this texture is managed or not.</returns>
@@ -65,7 +62,7 @@ public abstract class GLTexture
     /// </summary>
     protected void Bind()
     {
-        Gdx.GL.GLBindTexture( GLTarget, TextureObjectHandle );
+        Gdx.GL.GLBindTexture( GLTarget, GLHandle );
     }
 
     /// <summary>
@@ -78,27 +75,24 @@ public abstract class GLTexture
     public void Bind( int unit )
     {
         Gdx.GL.GLActiveTexture( IGL20.GL_Texture0 + unit );
-        Gdx.GL.GLBindTexture( GLTarget, TextureObjectHandle );
+        Gdx.GL.GLBindTexture( GLTarget, GLHandle );
     }
 
     /// <returns> The <see cref="TextureFilter"/> used for minification. </returns>
-    protected TextureFilter MinFilter => _minFilter;
+    protected TextureFilter MinFilter { get; private set; } = TextureFilter.Nearest;
 
     /// <returns> The <see cref="TextureFilter"/> used for magnification. </returns>
-    protected TextureFilter MagFilter => _magFilter;
+    protected TextureFilter MagFilter { get; private set; } = TextureFilter.Nearest;
 
     /// <returns>
     /// The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
     /// </returns>
-    protected TextureWrap UWrap => _uWrap;
+    protected TextureWrap UWrap { get; private set; } = TextureWrap.ClampToEdge;
 
     /// <returns>
     /// The <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
     /// </returns>
-    protected TextureWrap VWrap => _vWrap;
-
-    /// <returns> The OpenGL handle for this texture. </returns>
-    protected int TextureObjectHandle { get; set; }
+    protected TextureWrap VWrap { get; private set; } = TextureWrap.ClampToEdge;
 
     /// <summary>
     /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.
@@ -111,16 +105,16 @@ public abstract class GLTexture
     /// </param>
     protected void UnsafeSetWrap( TextureWrap? u, TextureWrap? v, bool force = false )
     {
-        if ( (u != null) && ( force || (_uWrap != u) ) )
+        if ( ( u != null ) && ( force || ( UWrap != u ) ) )
         {
             Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_S, u.GLEnum );
-            _uWrap = u;
+            UWrap = u;
         }
 
-        if ( (v != null) && ( force || (_vWrap != v) ) )
+        if ( ( v != null ) && ( force || ( VWrap != v ) ) )
         {
             Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_T, v.GLEnum );
-            _vWrap = v;
+            VWrap = v;
         }
     }
 
@@ -132,8 +126,8 @@ public abstract class GLTexture
     /// <param name="v">the v wrap</param>
     public void SetWrap( TextureWrap u, TextureWrap v )
     {
-        this._uWrap = u;
-        this._vWrap = v;
+        this.UWrap = u;
+        this.VWrap = v;
 
         Bind();
 
@@ -153,16 +147,16 @@ public abstract class GLTexture
     /// </param>
     protected void UnsafeSetFilter( TextureFilter? minFilter, TextureFilter? magFilter, bool force = false )
     {
-        if ( ( minFilter != null ) && ( force || ( this._minFilter != minFilter ) ) )
+        if ( ( minFilter != null ) && ( force || ( this.MinFilter != minFilter ) ) )
         {
             Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Min_Filter, minFilter.GLEnum );
-            this._minFilter = minFilter;
+            this.MinFilter = minFilter;
         }
 
-        if ( ( magFilter != null ) && ( force || ( this._magFilter != magFilter ) ) )
+        if ( ( magFilter != null ) && ( force || ( this.MagFilter != magFilter ) ) )
         {
             Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Mag_Filter, magFilter.GLEnum );
-            this._magFilter = magFilter;
+            this.MagFilter = magFilter;
         }
     }
 
@@ -174,8 +168,8 @@ public abstract class GLTexture
     /// <param name="magFilter"> the magnification filter  </param>
     public void SetFilter( TextureFilter minFilter, TextureFilter magFilter )
     {
-        this._minFilter = minFilter;
-        this._magFilter = magFilter;
+        this.MinFilter = minFilter;
+        this.MagFilter = magFilter;
 
         Bind();
 
@@ -209,9 +203,12 @@ public abstract class GLTexture
             return AnisotropicFilterLevel;
         }
 
-        Gdx.GL20.GLTexParameterf( IGL20.GL_Texture_2D, 
-                                  IGL20.GL_Texture_Max_Anisotropy_Ext,
-                                  level );
+        Gdx.GL20.GLTexParameterf
+            (
+             IGL20.GL_Texture_2D,
+             IGL20.GL_Texture_Max_Anisotropy_Ext,
+             level
+            );
 
         return AnisotropicFilterLevel = level;
     }
@@ -236,9 +233,12 @@ public abstract class GLTexture
 
         Bind();
 
-        Gdx.GL20.GLTexParameterf( IGL20.GL_Texture_2D, 
-                                  IGL20.GL_Texture_Max_Anisotropy_Ext,
-                                  level );
+        Gdx.GL20.GLTexParameterf
+            (
+             IGL20.GL_Texture_2D,
+             IGL20.GL_Texture_Max_Anisotropy_Ext,
+             level
+            );
 
         return AnisotropicFilterLevel = level;
     }
@@ -271,10 +271,10 @@ public abstract class GLTexture
     /// </summary>
     protected void Delete()
     {
-        if ( TextureObjectHandle != 0 )
+        if ( GLHandle != 0 )
         {
-            Gdx.GL.GLDeleteTexture( TextureObjectHandle );
-            TextureObjectHandle = 0;
+            Gdx.GL.GLDeleteTexture( GLHandle );
+            GLHandle = 0;
         }
     }
 
@@ -304,9 +304,9 @@ public abstract class GLTexture
         }
 
         Pixmap pixmap        = data.ConsumePixmap();
-        var   disposePixmap = data.DisposePixmap();
+        var    disposePixmap = data.DisposePixmap();
 
-        if ( data.GetFormat() != pixmap.PixFormat )
+        if ( data.GetFormat() != pixmap.GetFormat )
         {
             var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.GetFormat() );
 

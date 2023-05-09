@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
+using LibGDXSharp.Utils.Collections.Extensions;
+
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
@@ -142,12 +144,12 @@ public class Texture : GLTexture
     /// </summary>
     protected override void Reload()
     {
-        if ( !Managed )
+        if ( !IsManaged() )
         {
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        TextureObjectHandle = Gdx.GL.GLGenTexture();
+        GLHandle = Gdx.GL.GLGenTexture();
         Load( TextureData );
     }
 
@@ -187,7 +189,7 @@ public class Texture : GLTexture
 
     public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
 
-    protected virtual bool Managed => ( TextureData != null ) && TextureData.IsManaged();
+    public override bool IsManaged() => ( TextureData != null ) && TextureData.IsManaged();
 
     /// <summary>
     /// Disposes all resources associated with the texture.
@@ -198,7 +200,7 @@ public class Texture : GLTexture
         // reloaded through the asset manager as we first remove (and thus dispose) the texture
         // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
         // removal from the asset manager.
-        if ( TextureObjectHandle == 0 )
+        if ( GLHandle == 0 )
         {
             return;
         }
@@ -268,7 +270,7 @@ public class Texture : GLTexture
                     // already reloaded textures.
                     var refCount = AssetManager.GetReferenceCount( fileName );
                     AssetManager.SetReferenceCount( fileName, 0 );
-                    texture.TextureObjectHandle = 0;
+                    texture.GLHandle = 0;
 
                     // create the parameters, passing the reference to the texture as
                     // well as a callback that sets the ref count.
@@ -279,15 +281,15 @@ public class Texture : GLTexture
                         MagFilter   = texture.MagFilter,
                         WrapU       = texture.UWrap,
                         WrapV       = texture.VWrap,
-                        GenMipMaps  = ( texture.TextureData != null ) && texture.TextureData.UseMipMaps(), // not sure about this?
-                        Texture     = texture // special parameter which will ensure that the references stay the same.
+                        GenMipMaps = ( texture.TextureData != null )
+                                     && texture.TextureData.UseMipMaps(), // not sure about this?
+                        Texture        = texture,
+                        LoadedCallback = new LoadedCallbackInnerClass( refCount )
                     };
-
-                    parameters.LoadedCallback = new LoadedCallbackAnonymousInnerClass( refCount );
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.glHandle = Gdx.GL.GLGenTexture();
+                    texture.GLHandle = Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof(Texture), parameters );
                 }
             }
@@ -297,11 +299,11 @@ public class Texture : GLTexture
         }
     }
 
-    private sealed class LoadedCallbackAnonymousInnerClass : IAssetLoaderParameters.ILoadedCallback
+    private sealed class LoadedCallbackInnerClass : IAssetLoaderParameters.ILoadedCallback
     {
         private readonly int _refCount;
 
-        public LoadedCallbackAnonymousInnerClass( int refCount )
+        public LoadedCallbackInnerClass( int refCount )
         {
             this._refCount = refCount;
         }
