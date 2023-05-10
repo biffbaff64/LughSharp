@@ -11,6 +11,11 @@ public class BufferUtils
         return ByteBuffer.AllocateDirect( capacity );
     }
 
+    public static IntBuffer NewIntBuffer( int capacity )
+    {
+        return IntBuffer.AllocateDirect( capacity );
+    }
+
     public static FloatBuffer NewFloatBuffer( int capacity )
     {
         throw new NotImplementedException();

@@ -39,7 +39,7 @@ public sealed class OrthographicCamera : Camera
     /// <summary>
     /// </summary>
     /// <param name="updateFrustrum"></param>
-    public override void Update( bool updateFrustrum = true )
+    public new void Update( bool updateFrustrum = true )
     {
         Projection.SetToOrtho
             (

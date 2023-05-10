@@ -1,5 +1,8 @@
-﻿namespace LibGDXSharp.Utils;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace LibGDXSharp.Utils;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class IntBuffer : Buffer, IComparable< IntBuffer >
 {
     /// <summary>
@@ -32,4 +35,13 @@ public abstract class IntBuffer : Buffer, IComparable< IntBuffer >
     /// </list>
     /// </returns>
     public int CompareTo( IntBuffer? other ) => throw new NotImplementedException();
+
+    public int Get( int index )
+    {
+        return 0;
+    }
+
+    public void Put( int i, int i1 )
+    {
+    }
 }

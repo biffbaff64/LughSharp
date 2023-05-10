@@ -139,7 +139,7 @@ public class VertexAttribute
             (
              VertexAttributes.Usage.Position,
              3,
-             ShaderProgram.Position_Attribute
+             ShaderProgram.PositionAttribute
             );
     }
 
@@ -149,7 +149,7 @@ public class VertexAttribute
             (
              VertexAttributes.Usage.TextureCoordinates,
              2,
-             ShaderProgram.Texcoord_Attribute + unit,
+             ShaderProgram.TexcoordAttribute + unit,
              unit
             );
     }
@@ -157,39 +157,39 @@ public class VertexAttribute
     public static VertexAttribute Normal()
     {
         return new VertexAttribute( VertexAttributes.Usage.Normal, 
-                                    3, ShaderProgram.Normal_Attribute );
+                                    3, ShaderProgram.NormalAttribute );
     }
 
     public static VertexAttribute ColorPacked()
     {
         return new VertexAttribute( VertexAttributes.Usage.ColorPacked, 
                                     4, IGL20.GL_Unsigned_Byte,
-                                    true, ShaderProgram.Color_Attribute );
+                                    true, ShaderProgram.ColorAttribute );
     }
 
     public static VertexAttribute ColorUnpacked()
     {
         return new VertexAttribute( VertexAttributes.Usage.ColorUnpacked, 
                                     4, IGL20.GL_Float, 
-                                    false, ShaderProgram.Color_Attribute );
+                                    false, ShaderProgram.ColorAttribute );
     }
 
     public static VertexAttribute Tangent()
     {
         return new VertexAttribute( VertexAttributes.Usage.Tangent, 
-                                    3, ShaderProgram.Tangent_Attribute );
+                                    3, ShaderProgram.TangentAttribute );
     }
 
     public static VertexAttribute Binormal()
     {
         return new VertexAttribute( VertexAttributes.Usage.BiNormal, 
-                                    3, ShaderProgram.Binormal_Attribute );
+                                    3, ShaderProgram.BinormalAttribute );
     }
 
     public static VertexAttribute BoneWeight( int unit )
     {
         return new VertexAttribute( VertexAttributes.Usage.BoneWeight, 2, 
-                                    ShaderProgram.Boneweight_Attribute + unit, unit );
+                                    ShaderProgram.BoneweightAttribute + unit, unit );
     }
 
     /** Tests to determine if the passed object was created with the same parameters */
@@ -247,7 +247,7 @@ public class VertexAttribute
         var result = GetKey();
         
         result = ( 541 * result ) + numComponents;
-        result = ( 541 * result ) + alias.HashCode();
+        result = ( 541 * result ) + ( alias.Length * unit );
 
         return result;
     }

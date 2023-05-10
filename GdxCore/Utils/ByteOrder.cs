@@ -16,18 +16,20 @@ public sealed class ByteOrder
         this._name = name;
     }
 
+    public readonly static ByteOrder NativeOrder = new("NativeOrder");
+
     /// <summary>
     /// Constant denoting big-endian byte order.  In this order, the bytes of a
     /// multibyte value are ordered from most significant to least significant.
     /// </summary>
-    public readonly static ByteOrder BigEndian = new ByteOrder( "BigEndian" );
+    public readonly static ByteOrder BigEndian = new( "BigEndian" );
 
     /// <summary>
     /// Constant denoting little-endian byte order.  In this order, the bytes of
     /// a multibyte value are ordered from least significant to most
     /// significant.
     /// </summary>
-    public readonly static ByteOrder LittleEndian = new ByteOrder( "LittleEndian" );
+    public readonly static ByteOrder LittleEndian = new( "LittleEndian" );
 
     /// <summary>
     /// Constructs a string describing this object.

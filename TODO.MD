@@ -139,15 +139,15 @@ GRAPHICS
     -      - Mesh                               Convert
     - DONE - Monitor                            Convert
     - DONE - OrthographicCamera                 Convert
-    - IP   - PerspectiveCamera                  Convert
+    - DONE - PerspectiveCamera                  Convert
     - DONE - Pixmap                             Convert
     - IP   - PixmapIO                           Convert
     - DONE - Texture                            Convert
     - DONE - TextureArray                       Convert
     - DONE - TextureFilter                      Convert
     - DONE - TextureWrap                        Convert
-    -      - VertexAttribute                    Convert
-    -      - VertexAttributes                   Convert
+    - DONE - VertexAttribute                    Convert
+    - DONE - VertexAttributes                   Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -223,7 +223,7 @@ GRAPHICS/GLUTILS
     -      - MipMapGenerator
     -      - MipMapTextureData
     - DONE - PixmapTextureData
-    -      - ShaderProgram
+    - DONE - ShaderProgram
     - IP   - ShapeRenderer
     -      - VertexArray
     -      - VertexBufferObject

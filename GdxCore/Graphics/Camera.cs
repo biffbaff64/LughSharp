@@ -15,51 +15,53 @@ namespace LibGDXSharp.Graphics;
 public abstract class Camera
 {
     #region Properties
-    
+
     // the position of the camera
     public Vector3 Position { get; set; } = new();
 
     // the unit length direction vector of the camera
-    public Vector3 Direction { get; set; } = new( 0, 0, -1 );
+    protected Vector3 Direction { get; set; } = new(0, 0, -1);
 
     // the unit length up vector of the camera
-    public Vector3 Up { get; set; } = new( 0, 1, 0 );
+    public Vector3 Up { get; set; } = new(0, 1, 0);
 
-    public Matrix4 Projection        { get; set; } = new();
-    public Matrix4 View              { get; set; } = new();
-    public Matrix4 Combined          { get; set; } = new();
-    public Matrix4 InvProjectionView { get; set; } = new();
+    protected Matrix4 Projection        { get; set; } = new();
+    protected Matrix4 View              { get; set; } = new();
+    public    Matrix4 Combined          { get; set; } = new();
+    protected Matrix4 InvProjectionView { get; set; } = new();
 
     // the near clipping plane distance, has to be positive
-    public float Near { get; set; } = 1;
+    protected float Near { get; set; } = 1;
 
     // the far clipping plane distance, has to be positive
-    public float Far { get; set; } = 100;
+    protected float Far { get; set; } = 100;
 
-    public float    ViewportWidth  { get; set; } = 0;
-    public float    ViewportHeight { get; set; } = 0;
-    public Frustrum Frustum        { get; set; } = new();
+    public    float    ViewportWidth  { get; set; } = 0;
+    public    float    ViewportHeight { get; set; } = 0;
+    protected Frustrum Frustum        { get; set; } = new();
 
     #endregion
-    
+
     #region PrivateMembers
-    
+
     private readonly Vector3 _tmpVec = new();
-    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
+    private readonly Ray     _ray    = new(new Vector3(), new Vector3());
 
     #endregion
-    
+
     /// <summary>
     /// Recalculates the projection and view matrix of this camera and the Frustum
     /// planes. Use this after you've manipulated any of the attributes of the camera.
     /// </summary>
-    public abstract void Update( bool updateFrustrum = true );
+    public void Update( bool updateFrustrum = true )
+    {
+    }
 
     /// <summary>
     /// Recalculates the direction of the camera to look at the point (x, y, z).
     /// </summary>
     /// <param name="target">the point to look at.</param>
-    public virtual void LookAt( Vector3 target )
+    public void LookAt( Vector3 target )
     {
         LookAt( target.X, target.Y, target.Z );
     }
@@ -71,7 +73,7 @@ public abstract class Camera
     /// <param name="x"> the x-coordinate of the point to look at.</param>
     /// <param name="y"> the y-coordinate of the point to look at.</param>
     /// <param name="z"> the z-coordinate of the point to look at.</param>
-    protected virtual void LookAt( float x, float y, float z )
+    protected void LookAt( float x, float y, float z )
     {
         _tmpVec.Set( x, y, z ).Sub( Position ).Nor();
 
@@ -101,7 +103,7 @@ public abstract class Camera
     /// cross product between direction and up, and then recalculating the up
     /// vector via a cross product between right and direction. 
     /// </summary>
-    protected virtual void NormalizeUp()
+    protected void NormalizeUp()
     {
         _tmpVec.Set( Direction ).Crs( Up );
         Up.Set( _tmpVec ).Crs( Direction ).Nor();
@@ -116,7 +118,7 @@ public abstract class Camera
     /// <param name="axisX">the x-component of the axis.</param>
     /// <param name="axisY">the y-component of the axis.</param>
     /// <param name="axisZ">the z-component of the axis.</param>
-    public virtual void Rotate( float angle, float axisX, float axisY, float axisZ )
+    public void Rotate( float angle, float axisX, float axisY, float axisZ )
     {
         Direction.Rotate( angle, axisX, axisY, axisZ );
         Up.Rotate( angle, axisX, axisY, axisZ );
@@ -129,7 +131,7 @@ public abstract class Camera
     /// </summary>
     /// <param name="axis">the axis to rotate around</param>
     /// <param name="angle">the angle, in degrees</param>
-    protected virtual void Rotate( Vector3 axis, float angle )
+    protected void Rotate( Vector3 axis, float angle )
     {
         Direction.Rotate( axis, angle );
         Up.Rotate( axis, angle );
@@ -140,7 +142,7 @@ public abstract class Camera
     /// matrix. The direction and up vector will not be orthogonalized.
     /// </summary>
     /// <param name="transform"> The rotation matrix  </param>
-    protected virtual void Rotate( in Matrix4 transform )
+    protected void Rotate( in Matrix4 transform )
     {
         Direction.Rot( transform );
         Up.Rot( transform );
@@ -152,7 +154,7 @@ public abstract class Camera
     /// be orthogonalized.
     /// </summary>
     /// <param name="quat">The quaternion.</param>
-    public virtual void Rotate( in Quaternion quat )
+    public void Rotate( in Quaternion quat )
     {
         quat.Transform( Direction );
         quat.Transform( Up );
@@ -166,7 +168,7 @@ public abstract class Camera
     /// <param name="point"> the point to attach the axis to </param>
     /// <param name="axis"> the axis to rotate around </param>
     /// <param name="angle"> the angle, in degrees  </param>
-    public virtual void RotateAround( Vector3 point, Vector3 axis, float angle )
+    public void RotateAround( Vector3 point, Vector3 axis, float angle )
     {
         _tmpVec.Set( point );
         _tmpVec.Sub( Position );
@@ -183,7 +185,7 @@ public abstract class Camera
     /// Transform the position, direction and up vector by the given matrix
     /// </summary>
     /// <param name="transform"> The transform matrix</param>
-    public virtual void Transform( in Matrix4 transform )
+    public void Transform( in Matrix4 transform )
     {
         Position.Mul( transform );
         Rotate( transform );
@@ -195,7 +197,7 @@ public abstract class Camera
     /// <param name="x"> the displacement on the x-axis</param>
     /// <param name="y"> the displacement on the y-axis</param>
     /// <param name="z"> the displacement on the z-axis</param>
-    protected virtual void Translate( float x, float y, float z )
+    protected void Translate( float x, float y, float z )
     {
         Position.Add( x, y, z );
     }
@@ -203,7 +205,7 @@ public abstract class Camera
     /// <summary>
     /// Moves the camera by the given vector. </summary>
     /// <param name="vec"> the displacement vector  </param>
-    protected virtual void Translate( Vector3 vec )
+    protected void Translate( Vector3 vec )
     {
         Position.Add( vec );
     }
@@ -226,7 +228,7 @@ public abstract class Camera
     /// <param name="viewportWidth">The width of the viewport in pixels </param>
     /// <param name="viewportHeight">The height of the viewport in pixels </param>
     /// <returns> the mutated and unprojected screenCoords <see cref="Vector3"/>  </returns>
-    public virtual Vector3 Unproject( Vector3 screenCoords,
+    public Vector3 Unproject( Vector3 screenCoords,
                                       float viewportX,
                                       float viewportY,
                                       float viewportWidth,
@@ -259,7 +261,7 @@ public abstract class Camera
     /// </summary>
     /// <param name="screenCoords">The point in screen coordinates.</param>
     /// <returns> the mutated and unprojected screenCoords <see cref="Vector3"/></returns>
-    public virtual Vector3 Unproject( Vector3 screenCoords )
+    public Vector3 Unproject( Vector3 screenCoords )
     {
         Unproject( screenCoords, 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
 
@@ -275,7 +277,7 @@ public abstract class Camera
     /// and similar classes.
     /// </summary>
     /// <returns>The mutated and projected worldCoords <see cref="Vector3"/>.</returns>
-    public virtual Vector3? Project( Vector3? worldCoords )
+    public Vector3? Project( Vector3? worldCoords )
     {
         Project( worldCoords, 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
 
@@ -303,14 +305,14 @@ public abstract class Camera
     /// <param name="viewportWidth"> the width of the viewport in pixels.</param>
     /// <param name="viewportHeight"> the height of the viewport in pixels.</param>
     /// <returns> the mutated and projected worldCoords <see cref="Vector3"/>.</returns>
-    public virtual Vector3 Project( Vector3? worldCoords,
+    public Vector3 Project( Vector3? worldCoords,
                                     float viewportX,
                                     float viewportY,
                                     float viewportWidth,
                                     float viewportHeight )
     {
         if ( worldCoords == null ) throw new NullReferenceException();
-        
+
         worldCoords.Prj( Combined );
         worldCoords.X = ( ( viewportWidth * ( worldCoords.X + 1 ) ) / 2 ) + viewportX;
         worldCoords.Y = ( ( viewportHeight * ( worldCoords.Y + 1 ) ) / 2 ) + viewportY;
@@ -337,18 +339,30 @@ public abstract class Camera
     /// <param name="viewportWidth">The width of the viewport in pixels</param>
     /// <param name="viewportHeight">The height of the viewport in pixels</param>
     /// <returns>The picking Ray.</returns>
-    public virtual Ray GetPickRay( float screenX,
+    public Ray GetPickRay( float screenX,
                                    float screenY,
                                    float viewportX,
                                    float viewportY,
                                    float viewportWidth,
                                    float viewportHeight )
     {
-        Unproject( _ray.origin.Set( screenX, screenY, 0 ),
-                   viewportX, viewportY, viewportWidth, viewportHeight );
-            
-        Unproject( _ray.direction.Set( screenX, screenY, 1 ),
-                   viewportX, viewportY, viewportWidth, viewportHeight );
+        Unproject
+            (
+             _ray.origin.Set( screenX, screenY, 0 ),
+             viewportX,
+             viewportY,
+             viewportWidth,
+             viewportHeight
+            );
+
+        Unproject
+            (
+             _ray.direction.Set( screenX, screenY, 1 ),
+             viewportX,
+             viewportY,
+             viewportWidth,
+             viewportHeight
+            );
 
         _ray.direction.Sub( _ray.origin ).Nor();
 
@@ -363,9 +377,16 @@ public abstract class Camera
     /// instance but an internal member only accessible via this function.
     /// </summary>
     /// <returns>The picking Ray.</returns>
-    public virtual Ray GetPickRay( float screenX, float screenY )
+    public Ray GetPickRay( float screenX, float screenY )
     {
-        return GetPickRay( screenX, screenY, 0, 
-                           0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
+        return GetPickRay
+            (
+             screenX,
+             screenY,
+             0,
+             0,
+             Gdx.Graphics.GetWidth(),
+             Gdx.Graphics.GetHeight()
+            );
     }
 }
