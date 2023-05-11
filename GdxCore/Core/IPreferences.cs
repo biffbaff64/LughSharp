@@ -13,7 +13,7 @@ public interface IPreferences
 
     public IPreferences PutAll( Dictionary< string, object > vals );
 
-    public bool GetBoolean( string key );
+    public bool Getbool( string key );
 
     public int GetInteger( string key );
 
@@ -21,7 +21,7 @@ public interface IPreferences
 
     public float GetFloat( string key );
 
-    public bool GetBoolean( string key, bool defValue );
+    public bool Getbool( string key, bool defValue );
 
     public int GetInteger( string key, int defValue );
 

@@ -124,15 +124,15 @@ public class MathUtils
     /// <summary>
     /// Returns a random bool value.
     /// </summary>
-    public static bool RandomBoolean()
+    public static bool Randombool()
     {
-        return Convert.ToBoolean( random.Next( 1 ) );
+        return Convert.Tobool( random.Next( 1 ) );
     }
 
     /// <summary>
     /// Returns true if a random value between 0 and 1 is less than the specified value.
     /// </summary>
-    public static bool RandomBoolean( float chance )
+    public static bool Randombool( float chance )
     {
         return Random() < chance;
     }

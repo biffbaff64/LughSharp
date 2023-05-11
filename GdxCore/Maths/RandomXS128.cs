@@ -167,13 +167,13 @@ public class RandomXS128 : Random
     }
 
     /// <summary>
-    /// Returns a pseudo-random, uniformly distributed boolean value from
+    /// Returns a pseudo-random, uniformly distributed bool value from
     /// this random number generator's sequence.
     /// <para>
     /// This implementation uses <see cref="NextLong()"/> internally. 
     /// </para>
     /// </summary>
-    public bool NextBoolean()
+    public bool Nextbool()
     {
         return ( NextLong() & 1 ) != 0;
     }

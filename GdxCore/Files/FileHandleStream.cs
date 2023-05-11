@@ -4,7 +4,7 @@ namespace LibGDXSharp.Files;
 
 /// <summary>
 /// A FileHandle intended to be subclassed for the purpose of implementing Read()
-/// and/or Write(boolean). Methods that would manipulate the file instead throw
+/// and/or Write(bool). Methods that would manipulate the file instead throw
 /// UnsupportedOperationException.
 /// </summary>
 public class FileHandleStream : FileHandle

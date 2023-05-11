@@ -107,11 +107,11 @@ AUDIO
 
 FILES
 -----
-    -      - BufferedReader                 No
-    -      - File                           No
-    -      - FileHandle                     No
-    -      - FileHandleStream               No
-    -      - InputStreamReader              No
+    -      - BufferedReader
+    - IP   - File
+    - IP   - FileHandle
+    - IP   - FileHandleStream
+    -      - InputStreamReader
 
     Use StreamReader / StreamWriter etc instead.
 
@@ -525,13 +525,6 @@ SCENES.SCENE2D/UTILS
 UTILS
 -----
 
-    Buffers
-    -------
-    -      - Buffer                         
-    -      - BufferUtils                    
-    -      - DataBuffer                     
-    -      - IntBuffer                      
-
     Misc
     ----
     - DONE - Align                          Convert
@@ -594,6 +587,26 @@ UTILS/ATOMIC
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+UTILS/BUFFERS
+-------------
+
+    Task:   Find a way of doing in C# what these were doing in Java LibGDX.
+            Otherwise these will need converting.
+
+    -      - Buffer
+    -      - BufferUtils
+    -      - ByteBuffer
+    -      - DataBuffer
+    -      - DirectByteBuffer
+    -      - DoubleBuffer
+    -      - FloatBuffer
+    -      - HeapLongBuffer
+    -      - IntBuffer                      
+    -      - LongBuffer
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 UTILS/COLLECTIONS
 -----------------
 
@@ -604,7 +617,7 @@ UTILS/COLLECTIONS
     - **** - Array                          List<>
     - **** - ArrayIterable                  Use IEnumerable?
     - **** - ArrayIterator                  Use IEnumerator?
-    - **** - BooleanArray                   List< bool >
+    - **** - BoolArray                      List< bool >
     - **** - ByteArray                      List< byte >
     - **** - CharArray                      List< char >
     - **** - IntArray                       List< int >
@@ -627,14 +640,14 @@ UTILS/COLLECTIONS
     - **** - ObjectLongMap                  Replace with Dictionary< object, long >
     - **** - ObjectMap                      Replace with Dictionary< object, object >
 
-    -      - IdentityMap                    Convert / extend Dictionary< object, object > 
-    -      - OrderedMap                     Convert / extend Dictionary< object, object >
+    - IP   - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    - IP   - OrderedMap<K, V>               Convert / extend Dictionary< object, object >
 
     Sets
     ----
     - **** - IntSet                         Replace with List<int>
     - **** - ObjectSet<T>                   Replace with List<T>
-    - **** - OrderedSet<T>                  Convert / extend List<T>
+    - IP   - OrderedSet<T>                  Convert / extend List<T>
                                             
     Misc                                    
     ----                                    

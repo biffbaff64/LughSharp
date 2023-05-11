@@ -854,7 +854,7 @@ public class Stage : InputAdapter
     /// <param name="actor"> May be null. </param>
     /// <returns> true if the unfocus and focus events were not cancelled by a <see cref="FocusListener"/>.  </returns>
 //JAVA TO C# CONVERTER TASK: Most Java annotations will not have direct .NET equivalent attributes:
-//ORIGINAL LINE: public boolean setKeyboardFocus(@Null Actor actor)
+//ORIGINAL LINE: public bool setKeyboardFocus(@Null Actor actor)
     public bool setKeyboardFocus( Actor actor )
     {
         if ( _keyboardFocus == actor )

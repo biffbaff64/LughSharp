@@ -529,7 +529,7 @@ public interface IGL20
 
     public int GLGetAttribLocation( int program, String name );
 
-    public void GLGetBooleanv( int pname, Utils.Buffer parameters );
+    public void GLGetboolv( int pname, Utils.Buffer parameters );
 
     public void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters );
 

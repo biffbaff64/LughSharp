@@ -416,7 +416,7 @@ public class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool GetBooleanAttribute( string name )
+        public bool GetboolAttribute( string name )
         {
             return bool.Parse( GetAttribute( name ) );
         }
@@ -426,7 +426,7 @@ public class XmlReader
         /// <param name="name"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public bool GetBooleanAttribute( string name, bool defaultValue )
+        public bool GetboolAttribute( string name, bool defaultValue )
         {
             var value = GetAttribute( name, null );
 
@@ -563,7 +563,7 @@ public class XmlReader
         /// is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        public virtual bool GetBoolean( string name )
+        public virtual bool Getbool( string name )
         {
             var value = Get( name, null );
 
@@ -586,7 +586,7 @@ public class XmlReader
         /// is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        public virtual bool GetBoolean( string name, bool defaultValue )
+        public virtual bool Getbool( string name, bool defaultValue )
         {
             var value = Get( name, null );
 

@@ -174,8 +174,5 @@ public class Pool<T>
     /// <summary>
     /// The number of objects available to be obtained.
     /// </summary>
-    public int GetFree()
-    {
-        return _freeObjects.Count;
-    }
+    public int GetFree() => _freeObjects.Count;
 }

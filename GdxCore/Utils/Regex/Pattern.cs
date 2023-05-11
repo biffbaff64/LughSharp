@@ -410,7 +410,7 @@ public class Pattern : IPattern
         for ( int x = 0, offset = 0; x < nCodePoints; x++, offset += len )
         {
             len = CountChars( input, offset, 1 );
-            boolean skip = false;
+            bool skip = false;
 
             for ( int y = x - 1; y >= 0; y-- )
             {

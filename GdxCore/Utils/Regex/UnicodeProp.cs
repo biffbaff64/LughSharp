@@ -58,6 +58,7 @@ public static class UnicodePropExtensions
     }
 
     /// <summary>
+    /// Returns the property which matches the supplied string.
     /// </summary>
     /// <param name="propName"></param>
     /// <returns></returns>

@@ -40,7 +40,7 @@ public class PooledLinkedList<T>
     /// </summary>
     public void Add( T obj )
     {
-        var item = _pool.Obtain();
+        Item< T > item = _pool.Obtain();
 
         item.payload = obj;
         item.next    = null;
@@ -69,7 +69,7 @@ public class PooledLinkedList<T>
     /// </summary>
     public void AddFirst( T obj )
     {
-        var item = _pool.Obtain();
+        Item< T > item = _pool.Obtain();
 
         item.payload = obj;
         item.next    = _head;
@@ -92,7 +92,7 @@ public class PooledLinkedList<T>
     /// <summary>
     /// Starts iterating over the list's items from the head of the list
     /// </summary>
-    protected virtual void Iter()
+    protected void Iter()
     {
         _iter = _head;
     }
@@ -100,7 +100,7 @@ public class PooledLinkedList<T>
     /// <summary>
     /// Starts iterating over the list's items from the tail of the list
     /// </summary>
-    public virtual void IterReverse()
+    public void IterReverse()
     {
         _iter = _tail;
     }
@@ -109,7 +109,7 @@ public class PooledLinkedList<T>
     /// Gets the next item in the list
     /// </summary>
     /// <returns> the next item in the list or null if there are no more items</returns>
-    protected virtual T? Next()
+    protected T? Next()
     {
         if ( _iter == null ) return default;
 
@@ -125,7 +125,7 @@ public class PooledLinkedList<T>
     /// Gets the previous item in the list
     /// </summary>
     /// <returns> the previous item in the list or null if there are no more items  </returns>
-    public virtual T? Previous()
+    public T? Previous()
     {
         if ( _iter == null ) return default;
 
@@ -140,15 +140,15 @@ public class PooledLinkedList<T>
     /// <summary>
     /// Removes the current list item based on the iterator position.
     /// </summary>
-    protected virtual void Remove()
+    protected void Remove()
     {
         if ( _curr == null ) return;
 
         Size--;
 
-        var c = _curr;
-        var n = _curr.next;
-        var p = _curr.prev;
+        Item< T >? c = _curr;
+        Item< T >? n = _curr.next;
+        Item< T >? p = _curr.prev;
 
         Debug.Assert( c != null, nameof( c ) + " != null" );
         Debug.Assert( n != null, nameof( n ) + " != null" );
@@ -196,7 +196,7 @@ public class PooledLinkedList<T>
 
         Size--;
 
-        var p = _tail.prev;
+        Item< T >? p = _tail.prev;
 
         _pool.Free( _tail );
 
@@ -232,7 +232,7 @@ public class PooledLinkedList<T>
 
     // ------------------------------------------------
 
-    private Item< T > NewObjectImplementation()
+    private static Item< T > NewObjectImplementation()
     {
         return new Item< T >();
     }

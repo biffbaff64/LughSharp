@@ -29,7 +29,7 @@ namespace LibGDXSharp.Utils;
 /// </p>
 /// <p></p>
 /// <p>
-/// There is one subclass of this class for each non-boolean primitive type.
+/// There is one subclass of this class for each non-bool primitive type.
 /// </p>
 /// <p></p>
 /// <p>
@@ -348,21 +348,16 @@ public abstract class Buffer
     /// <summary>
     /// </summary>
     /// <returns>  The number of elements remaining in this buffer </returns>
-    public int Remaining()
-    {
-        return Limit - Position;
-    }
+    public int Remaining() => ( Limit - Position );
 
     /// <summary>
     /// Tells whether there are any elements between the current position and
     /// the limit.
     /// </summary>
-    /// <returns>  <tt>true</tt> if there is at least one element
-    ///          remaining in this buffer </returns>
-    public bool HasRemaining()
-    {
-        return Position < Limit;
-    }
+    /// <returns>
+    /// <tt>true</tt> if there is at least one element remaining in this buffer.
+    /// </returns>
+    public bool HasRemaining() => ( Position < Limit );
 
     /// <summary>
     /// Tells whether or not this buffer is read-only.
@@ -374,12 +369,13 @@ public abstract class Buffer
     /// Tells whether or not this buffer is backed by an accessible
     /// array.
     /// 
-    /// <para> If this method returns <tt>true</tt> then the <see cref="Array()"/>
+    /// <para>
+    /// If this method returns <tt>true</tt> then the <see cref="Array()"/>
     /// and <see cref="ArrayOffset()"/> methods may safely be invoked.
     /// </para>
     /// </summary>
-    /// <returns>  <tt>true</tt> if this buffer
-    ///          is backed by an array and is not read-only
+    /// <returns>
+    /// <tt>true</tt> if this buffer is backed by an array and is not read-only.
     /// </returns>
     public abstract bool HasArray();
 
@@ -399,10 +395,10 @@ public abstract class Buffer
     /// <returns>  The array that backs this buffer
     /// </returns>
     /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is backed by an array but is read-only
+    /// If this buffer is backed by an array but is read-only
     /// </exception>
     /// <exception cref="NotSupportedException">
-    ///          If this buffer is not backed by an accessible array
+    /// If this buffer is not backed by an accessible array
     /// </exception>
     public abstract object Array();
 
@@ -410,22 +406,23 @@ public abstract class Buffer
     /// Returns the offset within this buffer's backing array of the first
     /// element of the buffer <i>(optional operation)</i>.
     /// 
-    /// <para> If this buffer is backed by an array then buffer position <i>p</i>
+    /// <para>
+    /// If this buffer is backed by an array then buffer position <i>p</i>
     /// corresponds to array index <i>p</i> + <tt>arrayOffset()</tt>.
-    /// 
     /// </para>
-    /// <para> Invoke the <see cref="HasArray"/> method before invoking this
-    /// method in order to ensure that this buffer has an accessible backing
-    /// array.  </para>
+    /// <para>
+    /// Invoke the <see cref="HasArray"/> method before invoking this method
+    /// in order to ensure that this buffer has an accessible backing array.
+    /// </para>
     /// </summary>
-    /// <returns>  The offset within this buffer's array
-    ///          of the first element of the buffer
+    /// <returns>
+    /// The offset within this buffer's array of the first element of the buffer
     /// </returns>
     /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is backed by an array but is read-only
+    /// If this buffer is backed by an array but is read-only
     /// </exception>
     /// <exception cref="NotSupportedException">
-    ///          If this buffer is not backed by an accessible array
+    /// If this buffer is not backed by an accessible array
     /// </exception>
     public abstract int ArrayOffset();
 
@@ -444,7 +441,7 @@ public abstract class Buffer
     /// BufferUnderflowException} if it is not smaller than the limit, and then
     /// increments the position.
     /// </summary>
-    /// <returns>  The current position value, before it is incremented </returns>
+    /// <returns>The current position value, before it is incremented.</returns>
     internal int NextGetIndex()
     {
         if ( Position >= Limit )

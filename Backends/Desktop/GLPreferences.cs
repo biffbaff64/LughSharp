@@ -56,9 +56,9 @@ public class GLPreferences : IPreferences
         return this;
     }
 
-    public bool GetBoolean( string key )
+    public bool Getbool( string key )
     {
-        return GetBoolean( key, false );
+        return Getbool( key, false );
     }
 
     public int GetInteger( string key )
@@ -81,7 +81,7 @@ public class GLPreferences : IPreferences
     /// <param name="key"></param>
     /// <param name="defValue"></param>
     /// <returns></returns>
-    public bool GetBoolean( string key, bool defValue )
+    public bool Getbool( string key, bool defValue )
     {
         var value = _properties?[ key ];
 
@@ -91,7 +91,7 @@ public class GLPreferences : IPreferences
             return defValue;
         }
 
-        return Convert.ToBoolean( value );
+        return Convert.Tobool( value );
     }
 
     /// <summary>

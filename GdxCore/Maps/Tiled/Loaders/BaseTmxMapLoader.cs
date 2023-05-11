@@ -555,7 +555,7 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
         }
         else if ( type.equals( "bool" ) )
         {
-            return Boolean.valueOf( value );
+            return bool.valueOf( value );
         }
         else if ( type.equals( "color" ) )
         {

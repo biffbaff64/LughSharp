@@ -388,7 +388,7 @@ public class Bits
     /// also set to true in this BitSet.
     /// </summary>
     /// <param name="other"> a bit set </param>
-    /// <returns>boolean indicating whether this bit set intersects the specified bit set</returns>
+    /// <returns>bool indicating whether this bit set intersects the specified bit set</returns>
     public bool Intersects( Bits other )
     {
         var bits      = this._bits;
@@ -410,7 +410,7 @@ public class Bits
     /// has all bits set to true that are also set to true in the specified BitSet.
     /// </summary>
     /// <param name="other"> a bit set </param>
-    /// <returns> boolean indicating whether this bit set is a super set of the specified set  </returns>
+    /// <returns> bool indicating whether this bit set is a super set of the specified set  </returns>
     public bool ContainsAll( Bits other )
     {
         var bits            = this._bits;

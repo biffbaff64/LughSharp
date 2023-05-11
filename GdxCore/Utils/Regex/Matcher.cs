@@ -28,7 +28,7 @@ public sealed class Matcher : IMatchResult
     public int[] locals;
 
     /// <summary>
-    /// Boolean indicating whether or not more input could change
+    /// bool indicating whether or not more input could change
     /// the results of the last match.
     /// 
     /// If hitEnd is true, and a match was found, then more input
@@ -43,7 +43,7 @@ public sealed class Matcher : IMatchResult
     public bool HitEnd { get; set; }
 
     /// <summary>
-    /// Boolean indicating whether or not more input could change
+    /// bool indicating whether or not more input could change
     /// a positive match into a negative one.
     /// 
     /// If requireEnd is true, and a match was found, then more

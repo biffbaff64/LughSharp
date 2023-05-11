@@ -9,7 +9,7 @@ namespace LibGDXSharp.Utils.Pooling;
 /// </summary>
 public class Pools<T> where T : Type
 {
-    private readonly static Dictionary< Type, Pool<T>? > typePools = new Dictionary< Type, Pool<T>? >();
+    private readonly static Dictionary< Type, Pool<T>? > typePools = new();
 
     private Pools()
     {
@@ -22,7 +22,7 @@ public class Pools<T> where T : Type
     /// </summary>
     public static Pool<T> Get( int max = 100 )
     {
-        var pool = typePools[ typeof(T) ];
+        Pool< T >? pool = typePools[ typeof(T) ];
 
         if ( pool == null )
         {
@@ -45,10 +45,7 @@ public class Pools<T> where T : Type
 
     /// <summary>
     /// </summary>
-    public static T Obtain()
-    {
-        return Get().Obtain();
-    }
+    public static T Obtain() => Get().Obtain();
 
     /// <summary>
     /// </summary>
@@ -56,7 +53,7 @@ public class Pools<T> where T : Type
     {
         if ( obj == null ) throw new ArgumentException( "object cannot be null." );
 
-        var pool = typePools.Get( obj );
+        Pool< T >? pool = typePools.Get( obj );
 
         // Ignore freeing an object that was never retained.
 

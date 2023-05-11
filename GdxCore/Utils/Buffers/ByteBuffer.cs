@@ -12,7 +12,7 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
     private readonly byte[] _hb;
     private readonly int    _offset;
 
-    internal bool isReadOnly;
+    public bool isReadOnly;
 
     /// <summary>
     /// Creates a new buffer with the given mark, position, limit, capacity,
