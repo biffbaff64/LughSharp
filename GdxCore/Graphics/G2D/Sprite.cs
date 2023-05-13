@@ -1,8 +1,12 @@
-﻿namespace LibGDXSharp.G2D;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace LibGDXSharp.G2D;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Sprite
 {
-    public const int SpriteSize = 0;
+    public readonly static int VertexSize = 2 + 1 + 2;
+    public readonly static int SpriteSize = 4 * VertexSize;
     
     public Sprite( AtlasRegion region )
     {
