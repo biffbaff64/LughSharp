@@ -79,10 +79,10 @@ public abstract class GLTexture
     }
 
     /// <returns> The <see cref="TextureFilter"/> used for minification. </returns>
-    protected TextureFilter MinFilter { get; private set; } = TextureFilter.Nearest;
+    public TextureFilter MinFilter { get; private set; } = TextureFilter.Nearest;
 
     /// <returns> The <see cref="TextureFilter"/> used for magnification. </returns>
-    protected TextureFilter MagFilter { get; private set; } = TextureFilter.Nearest;
+    public TextureFilter MagFilter { get; private set; } = TextureFilter.Nearest;
 
     /// <returns>
     /// The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
