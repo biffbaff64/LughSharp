@@ -47,7 +47,8 @@ public class PixmapIO
     /// <param name="file"></param>
     /// <param name="pixmap"></param>
     /// <param name="compression">
-    /// Sets the deflate compression level. Default is <see cref="Deflater.Default_Compression"/>
+    /// Sets the deflate compression level.
+    /// Default is <see cref="Deflater.Default_Compression"/>
     /// </param>
     /// <param name="flipY">Flips the Pixmap vertically if true</param>
     public static void WritePNG( FileInfo file,
@@ -62,8 +63,8 @@ public class PixmapIO
 
             try
             {
-                writer.setFlipY( flipY );
-                writer.setCompression( compression );
+                writer.SetFlipY( flipY );
+                writer.SetCompression( compression );
                 writer.Write( file, pixmap );
             }
             finally
@@ -81,8 +82,8 @@ public class PixmapIO
     {
         private const int BufferSize = 32000;
 
-        private readonly static byte[] _writeBuffer = new byte[ BufferSize ];
-        private readonly static byte[] _readBuffer  = new byte[ BufferSize ];
+        private readonly static byte[] writeBuffer = new byte[ BufferSize ];
+        private readonly static byte[] readBuffer  = new byte[ BufferSize ];
 
         public static void Write( FileInfo file, Pixmap pixmap )
         {
@@ -105,16 +106,16 @@ public class PixmapIO
                 var remainingBytes = pixelBuf.Capacity % BufferSize;
                 var iterations     = pixelBuf.Capacity / BufferSize;
 
-                lock ( _writeBuffer )
+                lock ( writeBuffer )
                 {
                     for ( var i = 0; i < iterations; i++ )
                     {
-                        pixelBuf.Get( _writeBuffer );
-                        output.write( _writeBuffer );
+                        pixelBuf.Get( writeBuffer );
+                        output.write( writeBuffer );
                     }
 
-                    pixelBuf.Get( _writeBuffer, 0, remainingBytes );
-                    output.Write( _writeBuffer, 0, remainingBytes );
+                    pixelBuf.Get( writeBuffer, 0, remainingBytes );
+                    output.Write( writeBuffer, 0, remainingBytes );
                 }
 
                 pixelBuf.Position = 0;
@@ -150,13 +151,13 @@ public class PixmapIO
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
-                lock ( _readBuffer )
+                lock ( readBuffer )
                 {
                     var readBytes = 0;
 
-                    while ( ( readBytes = input.read( _readBuffer ) ) > 0 )
+                    while ( ( readBytes = input.read( readBuffer ) ) > 0 )
                     {
-                        pixelBuf.Put( _readBuffer, 0, readBytes );
+                        pixelBuf.Put( readBuffer, 0, readBytes );
                     }
                 }
 
@@ -176,27 +177,27 @@ public class PixmapIO
         }
     }
 
-    public class PNG : IDisposable
+    public sealed class PNG : IDisposable
     {
-        private const int  IHDR                = 0x49484452;
-        private const int  IDAT                = 0x49444154;
-        private const int  IEND                = 0x49454E44;
-        private const byte COLOR_ARGB          = 6;
-        private const byte COMPRESSION_DEFLATE = 0;
-        private const byte FILTER_NONE         = 0;
-        private const byte INTERLACE_NONE      = 0;
-        private const byte PAETH               = 4;
+        private const int  Ihdr                = 0x49484452;
+        private const int  Idat                = 0x49444154;
+        private const int  Iend                = 0x49454E44;
+        private const byte Color_ARGB          = 6;
+        private const byte Compression_Deflate = 0;
+        private const byte Filter_None         = 0;
+        private const byte Interlace_None      = 0;
+        private const byte Paeth               = 4;
 
-        private readonly byte[] SIGNATURE = { 137, 80, 78, 71, 13, 10, 26, 10 };
+        private readonly byte[] _signature = { 137, 80, 78, 71, 13, 10, 26, 10 };
 
-        private readonly Deflater    deflater;
-        private readonly ChunkBuffer buffer;
+        private readonly Deflater    _deflater;
+        private readonly ChunkBuffer _buffer;
 
-        private List< byte >? lineOutBytes;
-        private List< byte >? curLineBytes;
-        private List< byte >? prevLineBytes;
-        private bool          flipY = true;
-        private int           lastLineLen;
+        private List< byte >? _lineOutBytes;
+        private List< byte >? _curLineBytes;
+        private List< byte >? _prevLineBytes;
+        private bool          _flipY = true;
+        private int           _lastLineLen;
 
         public PNG()
             : this( 128 * 128 )
@@ -205,25 +206,25 @@ public class PixmapIO
 
         public PNG( int initialBufferSize )
         {
-            buffer   = new ChunkBuffer( initialBufferSize );
-            deflater = new Deflater();
+            _buffer   = new ChunkBuffer( initialBufferSize );
+            _deflater = new Deflater();
         }
 
         /// <summary>
         /// If true, the resulting PNG is flipped vertically. Default is true.
         /// </summary>
-        public void setFlipY( bool flip )
+        public void SetFlipY( bool flip )
         {
-            this.flipY = flip;
+            this._flipY = flip;
         }
 
         /// <summary>
         /// Sets the deflate compression level.
         /// Default is <see cref="Deflater.Default_Compression"/>. 
         /// </summary>
-        public void setCompression( int level )
+        public void SetCompression( int level )
         {
-            deflater.SetLevel( level );
+            _deflater.SetLevel( level );
         }
 
         public void Write( FileInfo file, Pixmap pixmap )
@@ -246,6 +247,7 @@ public class PixmapIO
         /// </summary>
         public void Dispose()
         {
+            _deflater.End();
         }
 
         /// <summary>
@@ -253,23 +255,23 @@ public class PixmapIO
         /// </summary>
         public void Write( OutputStream output, Pixmap pixmap )
         {
-            var deflaterOutput = new DeflaterOutputStream( buffer, deflater );
+            var deflaterOutput = new DeflaterOutputStream( _buffer, _deflater );
             var dataOutput     = new DataOutputStream( output );
 
-            dataOutput.write( SIGNATURE );
+            dataOutput.write( _signature );
 
-            buffer.WriteInt( IHDR );
-            buffer.WriteInt( pixmap.Width );
-            buffer.WriteInt( pixmap.Height );
-            buffer.WriteByte( 8 ); // 8 bits per component.
-            buffer.WriteByte( COLOR_ARGB );
-            buffer.WriteByte( COMPRESSION_DEFLATE );
-            buffer.WriteByte( FILTER_NONE );
-            buffer.WriteByte( INTERLACE_NONE );
-            buffer.EndChunk( dataOutput );
-            buffer.WriteInt( IDAT );
+            _buffer.WriteInt( Ihdr );
+            _buffer.WriteInt( pixmap.Width );
+            _buffer.WriteInt( pixmap.Height );
+            _buffer.WriteByte( 8 ); // 8 bits per component.
+            _buffer.WriteByte( Color_ARGB );
+            _buffer.WriteByte( Compression_Deflate );
+            _buffer.WriteByte( Filter_None );
+            _buffer.WriteByte( Interlace_None );
+            _buffer.EndChunk( dataOutput );
+            _buffer.WriteInt( Idat );
 
-            deflater.Reset();
+            _deflater.Reset();
 
             var lineLen = pixmap.Width * 4;
 
@@ -277,36 +279,32 @@ public class PixmapIO
             byte[] curLine  = default!;
             byte[] prevLine = default!;
 
-            if ( lineOutBytes == null )
+            if ( _lineOutBytes == null )
             {
-                lineOut  = ( lineOutBytes  = new List< byte >( lineLen ) ).ToArray();
-                curLine  = ( curLineBytes  = new List< byte >( lineLen ) ).ToArray();
-                prevLine = ( prevLineBytes = new List< byte >( lineLen ) ).ToArray();
+                lineOut  = ( _lineOutBytes  = new List< byte >( lineLen ) ).ToArray();
+                curLine  = ( _curLineBytes  = new List< byte >( lineLen ) ).ToArray();
+                prevLine = ( _prevLineBytes = new List< byte >( lineLen ) ).ToArray();
             }
             else
             {
-                ArrayUtils.EnsureCapacity( ref lineOut, lineLen );
-                ArrayUtils.EnsureCapacity( ref curLine, lineLen );
-                ArrayUtils.EnsureCapacity( ref prevLine, lineLen );
+                ArrayUtils.EnsureCapacity( ref lineOut, lineLen );  // lineOut  = lineOutBytes.EnsureCapacity( lineLen );
+                ArrayUtils.EnsureCapacity( ref curLine, lineLen );  // curLine  = curLineBytes.EnsureCapacity( lineLen );
+                ArrayUtils.EnsureCapacity( ref prevLine, lineLen ); // prevLine = prevLineBytes.EnsureCapacity( lineLen );
 
-//                lineOut  = lineOutBytes.EnsureCapacity( lineLen );
-//                curLine  = curLineBytes.EnsureCapacity( lineLen );
-//                prevLine = prevLineBytes.EnsureCapacity( lineLen );
-
-                for ( int i = 0, n = lastLineLen; i < n; i++ )
+                for ( int i = 0, n = _lastLineLen; i < n; i++ )
                 {
                     prevLine[ i ] = 0;
                 }
             }
 
-            lastLineLen = lineLen;
+            _lastLineLen = lineLen;
 
             var oldPosition = pixmap.Pixels.Position;
             var isRgba8888  = pixmap.GetFormat() == Pixmap.Format.RGBA8888;
 
             for ( int y = 0, h = pixmap.Height; y < h; y++ )
             {
-                var py = flipY ? ( h - y - 1 ) : y;
+                var py = _flipY ? ( h - y - 1 ) : y;
 
                 if ( isRgba8888 )
                 {
@@ -361,7 +359,7 @@ public class PixmapIO
                     lineOut[ x ] = ( byte )( curLine[ x ] - c );
                 }
 
-                deflaterOutput.write( PAETH );
+                deflaterOutput.write( Paeth );
                 deflaterOutput.write( lineOut, 0, lineLen );
 
                 ( curLine, prevLine ) = ( prevLine, curLine );
@@ -370,23 +368,18 @@ public class PixmapIO
             pixmap.Pixels.Position = oldPosition;
 
             deflaterOutput.finish();
-            buffer.EndChunk( dataOutput );
+            _buffer.EndChunk( dataOutput );
 
-            buffer.WriteInt( IEND );
-            buffer.EndChunk( dataOutput );
+            _buffer.WriteInt( Iend );
+            _buffer.EndChunk( dataOutput );
 
             output.flush();
         }
 
-        public void dispose()
-        {
-            deflater.End();
-        }
-
         public sealed class ChunkBuffer : DataOutputStream
         {
-            private ByteArrayOutputStream buffer;
-            private CRC32                 crc;
+            private ByteArrayOutputStream _buffer;
+            private CRC32                 _crc;
 
             public ChunkBuffer( int initialSize )
                 : this( new ByteArrayOutputStream( initialSize ), new CRC32() )
@@ -396,21 +389,21 @@ public class PixmapIO
             private ChunkBuffer( ByteArrayOutputStream buffer, CRC32 crc )
                 : base( new CheckedOutputStream( buffer, crc ) )
             {
-                this.buffer = buffer;
-                this.crc    = crc;
+                this._buffer = buffer;
+                this._crc    = crc;
             }
 
             public void EndChunk( DataOutputStream target )
             {
                 Flush();
 
-                target.WriteInt( buffer.size() - 4 );
-                buffer.WriteTo( target );
+                target.WriteInt( _buffer.size() - 4 );
+                _buffer.WriteTo( target );
 
-                target.WriteInt( ( int )crc.getValue() );
-                buffer.Reset();
+                target.WriteInt( ( int )_crc.getValue() );
+                _buffer.Reset();
 
-                crc.Reset();
+                _crc.Reset();
             }
         }
     }

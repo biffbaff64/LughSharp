@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+using LibGDXSharp.GdxCore.Utils.Buffers;
+
 #pragma warning disable CS0184
 namespace LibGDXSharp.Utils;
 
@@ -14,6 +16,11 @@ public class BufferUtils
     public static IntBuffer NewIntBuffer( int capacity )
     {
         return IntBuffer.AllocateDirect( capacity );
+    }
+
+    public static ShortBuffer NewShortBuffer( int capacity )
+    {
+        return ShortBuffer.AllocateDirect( capacity );
     }
 
     public static FloatBuffer NewFloatBuffer( int capacity )

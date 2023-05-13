@@ -1,11 +1,14 @@
-﻿namespace LibGDXSharp.Graphics;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Graphics;
 
 /// <summary>
 /// A color class, holding the r, g, b and alpha component as floats in
 /// the range [0,1].
 /// All methods perform clamping on the internal values after execution.
 /// </summary>
-public class Color
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class Color
 {
     public readonly static Color White      = new Color( 1, 1, 1, 1 );
     public readonly static Color LightGray  = new Color( 0xbfbfbfff );
@@ -41,6 +44,11 @@ public class Color
     public readonly static Color Purple     = new Color( 0xa020f0ff );
     public readonly static Color Violet     = new Color( 0xee82eeff );
     public readonly static Color Maroon     = new Color( 0xb03060ff );
+
+    /// <summary>
+    /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
+    /// </summary>
+    public readonly static float WhiteFloatBits = White.ToFloatBits();
 
     public float R { get; set; }
     public float G { get; set; }

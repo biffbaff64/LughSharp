@@ -124,7 +124,7 @@ public class Pool<T>
     /// freed, but the maximum capacity of the pool is reached, and when the
     /// pool is <see cref="Clear"/>ed.
     /// </summary>
-    protected virtual void Discard( T? obj )
+    protected void Discard( T? obj )
     {
     }
 

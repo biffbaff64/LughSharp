@@ -2,6 +2,8 @@
 
 public class Sprite
 {
+    public const int SpriteSize = 0;
+    
     public Sprite( AtlasRegion region )
     {
     }

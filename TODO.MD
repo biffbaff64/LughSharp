@@ -115,6 +115,9 @@ FILES
 
     Use StreamReader / StreamWriter etc instead.
 
+    Note:   I am considering adapting the java File/FileHandle classes but
+            this may be a lot of unnecessary work.
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -154,7 +157,7 @@ GRAPHICS
 
 GRAPHICS/G2D
 ------------
-    -      - Animation                      Convert
+    - DONE - Animation                      Convert
     - DONE - AtlasRegion                    Convert
     - IP   - AtlasSprite                    Convert
     - IP   - BitmapFont                     Convert
@@ -177,7 +180,7 @@ GRAPHICS/G2D
     -      - PolygonSpriteBatch             Convert
     -      - RepeatablePolygonSprite        Convert
     -      - Sprite                         Convert
-    - IP   - SpriteBatch                    Convert
+    - DONE - SpriteBatch                    Convert
     -      - SpriteCache                    Convert
     - DONE - TextureAtlas                   Convert
     - IP   - TextureAtlasData               Convert

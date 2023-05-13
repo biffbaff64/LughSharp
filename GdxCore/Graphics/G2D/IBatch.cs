@@ -83,22 +83,14 @@ public interface IBatch : IDisposable
 
     /// <returns>
     /// the rendering color of this Batch. If the returned instance is manipulated,
-    /// <see cref="SetColor()"/> must be called afterward.
+    /// <see cref="SetColor"/> must be called afterward.
     /// </returns>
     public Color GetColor();
-
-    /// <summary>
-    /// Sets the rendering color of this Batch, expanding the alpha from 0-254 to 0-255.
-    /// </summary>
-    /// <seealso cref=".SetColor(Color)"/>
-    /// <seealso cref="Color.ToFloatBits() "/>
-    public void SetPackedColor( float packedColor );
 
     /// <returns>
     /// the rendering color of this Batch in vertex format (alpha compressed to 0-254)
     /// </returns>
-    /// <seealso cref="Color.ToFloatBits() "/>
-    public float GetPackedColor();
+    public float PackedColor { get; set; }
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the given width and height in
@@ -391,18 +383,8 @@ public interface IBatch : IDisposable
     /// It can be called inbetween <see cref="Begin()"/> and <see cref="End()"/>.
     /// </para>
     /// </summary>
-    /// <param name="shader"> the <see cref="ShaderProgram"/> or null to use the default shader.
-    /// </param>
-    public void SetShader( ShaderProgram shader );
-
-    /// <returns>
-    /// the current <see cref="ShaderProgram"/> set by <see cref="SetShader"/> or the defaultShader
-    /// </returns>
-    public ShaderProgram GetShader();
-
-    /// <returns> true if blending for sprites is enabled </returns>
-    public bool IsBlendingEnabled();
+    public ShaderProgram? Shader { get; set; }
 
     /// <returns> true if currently between begin and end. </returns>
-    public bool IsDrawing();
+    public bool IsDrawing { get; set; }
 }

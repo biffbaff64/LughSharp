@@ -60,7 +60,7 @@ public abstract class GLTexture
     /// Binds this texture. The texture will be bound to the currently active
     /// texture unit specified via <see cref="IGL20.GLActiveTexture(int)"/>. 
     /// </summary>
-    protected void Bind()
+    public void Bind()
     {
         Gdx.GL.GLBindTexture( GLTarget, GLHandle );
     }
