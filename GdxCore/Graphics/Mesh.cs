@@ -5,9 +5,16 @@ using LibGDXSharp.GdxCore.Utils.Buffers;
 namespace LibGDXSharp.Graphics;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Mesh
 {
+    private readonly ShortBuffer _shortBuffer = BufferUtils.NewShortBuffer( 100 );
+
     public Mesh( VertexDataType vertexDataType, bool b, int size, int i, VertexAttribute vertexAttribute, VertexAttribute vertexAttribute1, VertexAttribute vertexAttribute2 )
+    {
+    }
+
+    public Mesh( bool b, int size, int i, VertexAttribute vertexAttribute, VertexAttribute vertexAttribute1, VertexAttribute vertexAttribute2 )
     {
     }
 
@@ -23,10 +30,6 @@ public class Mesh
     {
     }
 
-    public void Dispose()
-    {
-    }
-
     public void Render( ShaderProgram? customShader, int glTriangles, int i, int count )
     {
     }
@@ -35,10 +38,34 @@ public class Mesh
     {
     }
 
-    private readonly ShortBuffer _shortBuffer = BufferUtils.NewShortBuffer( 100 );
+    public void SetAutoBind( bool b )
+    {
+    }
+
+    public void Bind( ShaderProgram? customShader )
+    {
+    }
+
+    public void Unbind( ShaderProgram? customShader )
+    {
+    }
     
     public ShortBuffer GetIndicesBuffer()
     {
         return _shortBuffer;
+    }
+
+    public FloatBuffer GetVerticesBuffer()
+    {
+        return null!;
+    }
+
+    public int GetNumIndices()
+    {
+        return 0;
+    }
+    
+    public void Dispose()
+    {
     }
 }

@@ -27,7 +27,7 @@ namespace LibGDXSharp.G2D;
 /// </para>
 /// <para>
 /// A Batch works with OpenGL ES 2.0. It will use its own custom shader to draw all provided
-/// sprites. You can set your own custom shader via <see cref="SetShader(ShaderProgram)"/>.
+/// sprites. You can set your own custom shader via the <see cref="Shader"/> property.
 /// </para>
 /// <para>
 /// A Batch has to be disposed if it is no longer used.
@@ -78,12 +78,13 @@ public interface IBatch : IDisposable
     /// </summary>
     public void SetColor( Color tint );
 
-    /// <see cref=".SetColor(Color) "/>
+    /// <see cref="SetColor(Color) "/>
     public void SetColor( float r, float g, float b, float a );
 
     /// <returns>
-    /// the rendering color of this Batch. If the returned instance is manipulated,
-    /// <see cref="SetColor"/> must be called afterward.
+    /// The rendering color of this Batch. If the returned instance is manipulated,
+    /// <see cref="SetColor(Color)"/> or <see cref="SetColor(float,float,float,float)"/>
+    /// must be called afterward.
     /// </returns>
     public Color GetColor();
 
@@ -367,8 +368,8 @@ public interface IBatch : IDisposable
     /// called "a_position", the texture coordinates attribute is called "a_texCoord0", the
     /// color attribute is called "a_color".
     /// <p>
-    /// See <see cref="ShaderProgram.POSITION_ATTRIBUTE"/>, <see cref="ShaderProgram.COLOR_ATTRIBUTE"/>
-    /// and <seealso cref="ShaderProgram.TEXCOORD_ATTRIBUTE"/> which gets "0" appended to indicate
+    /// See <see cref="ShaderProgram.PositionAttribute"/>, <see cref="ShaderProgram.ColorAttribute"/>
+    /// and <seealso cref="ShaderProgram.TexcoordAttribute"/> which gets "0" appended to indicate
     /// the use of the first texture unit.
     /// </p>
     /// <p>

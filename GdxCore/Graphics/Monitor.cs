@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics;
 
-public class Monitor
+public struct Monitor
 {
     public int    VirtualX { get; set; }
     public int    VirtualY { get; set; }

@@ -306,7 +306,7 @@ public abstract class GLTexture
         Pixmap pixmap        = data.ConsumePixmap();
         var    disposePixmap = data.DisposePixmap();
 
-        if ( data.GetFormat() != pixmap.GetFormat )
+        if ( data.GetFormat() != pixmap.GetFormat() )
         {
             var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.GetFormat() );
 

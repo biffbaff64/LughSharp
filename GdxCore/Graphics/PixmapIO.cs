@@ -177,6 +177,11 @@ public class PixmapIO
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <remarks>
+    /// Paeth filter - a filtering algorithm used in the compression of PNG images
+    /// </remarks>
     public sealed class PNG : IDisposable
     {
         private const int  Ihdr                = 0x49484452;

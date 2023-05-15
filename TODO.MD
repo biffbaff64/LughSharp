@@ -4,6 +4,9 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - STEP 1: Complete all conversions so that the code will build.
 - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
+-         Some classes can become structs / records instead.
+-         Some Get / Set method declarations in interfaces could become Properties.
+-         switch expressions instead of switch statements where appropriate.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -133,7 +136,7 @@ GRAPHICS
     - DONE - GLTexture                          Convert
     - DONE - GraphicsType                       Convert
     - DONE - ICubemapData                       Convert
-    - DONE - ICursor                            Convert
+    - IP   - ICursor                            Convert
     - DONE - IDownloadPixmapResponseListener    Convert
     - DONE - IGL20                              Convert
     - DONE - IGL30                              Convert
@@ -166,7 +169,7 @@ GRAPHICS/G2D
     -      - DistanceFieldFont              Convert
     - DONE - Gdx2DPixmap                    Convert
     -      - GlyphLayout                    Convert
-    - IP   - IBatch                         Convert
+    - DONE - IBatch                         Convert
     -      - IPolygonBatch                  Convert
     - DONE - NinePatch                      Convert
     -      - ParticleEffect                 Convert
@@ -181,7 +184,7 @@ GRAPHICS/G2D
     -      - RepeatablePolygonSprite        Convert
     -      - Sprite                         Convert
     - DONE - SpriteBatch                    Convert
-    -      - SpriteCache                    Convert
+    - DONE - SpriteCache                    Convert
     - DONE - TextureAtlas                   Convert
     - IP   - TextureAtlasData               Convert
     - DONE - TextureAtlasDataExtensions     Convert
@@ -567,6 +570,7 @@ UTILS
     - DONE - Timer                          Use System.Timer instead??
     - DONE - TimeUtils
     - DONE - TimSort
+    -      - Trace                          Addition
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

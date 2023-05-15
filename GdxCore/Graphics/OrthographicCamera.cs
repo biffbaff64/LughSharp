@@ -76,7 +76,7 @@ public sealed class OrthographicCamera : Camera
     /// <param name="yDown">whether y should be pointing down.</param>
     public void SetToOrtho( bool yDown )
     {
-        SetToOrtho( yDown, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
+        SetToOrtho( yDown, Gdx.Graphics.Width, Gdx.Graphics.Height );
     }
 
     /// <summary>

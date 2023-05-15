@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Backends.Desktop;
+﻿using VideoMode = Silk.NET.GLFW.VideoMode;
+
+namespace LibGDXSharp.Backends.Desktop;
 
 public class GLApplicationConfiguration : GLWindowConfiguration
 {
@@ -145,7 +147,7 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     {
         GLApplication.InitialiseGL();
 
-        var videoMode = Glfw.GetApi().GetVideoMode( Glfw.GetApi().GetPrimaryMonitor() );
+        VideoMode* videoMode = Glfw.GetApi().GetVideoMode( Glfw.GetApi().GetPrimaryMonitor() );
             
         return new GLGraphics.GLDisplayMode
             (

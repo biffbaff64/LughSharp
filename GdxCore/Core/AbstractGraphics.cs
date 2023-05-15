@@ -16,7 +16,7 @@ public abstract class AbstractGraphics : IGraphics
 
     public float GetBackBufferScale()
     {
-        return GetBackBufferWidth() / (float)GetWidth();
+        return GetBackBufferWidth() / (float)Width;
     }
 
     // ========================================================================
@@ -81,9 +81,9 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract void SetGl30( IGL30 gl30 );
 
-    public abstract int GetWidth();
+    public abstract int Width { get; }
 
-    public abstract int GetHeight();
+    public abstract int Height { get; }
 
     public abstract int GetBackBufferWidth();
 

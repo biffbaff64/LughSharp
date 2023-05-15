@@ -29,7 +29,7 @@ public abstract class Game : IApplicationListener
 
                 if ( Gdx.Graphics != null )
                 {
-                    _screen.Resize( Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
+                    _screen.Resize( Gdx.Graphics.Width, Gdx.Graphics.Height );
                 }
             }
 

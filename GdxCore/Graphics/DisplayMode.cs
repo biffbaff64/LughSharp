@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics;
 
-public class DisplayMode
+public struct DisplayMode
 {
     public int Width        { get; set; }
     public int Height       { get; set; }

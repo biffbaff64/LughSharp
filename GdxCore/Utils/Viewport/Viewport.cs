@@ -179,7 +179,7 @@ public abstract class Viewport
 
         Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
             
-        _tmp.Y = (Gdx.Graphics.GetHeight() - _tmp.Y);
+        _tmp.Y = (Gdx.Graphics.Height - _tmp.Y);
 
         worldCoords.X = _tmp.X;
         worldCoords.Y = _tmp.Y;
@@ -248,7 +248,7 @@ public abstract class Viewport
         {
             Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
 
-            return ( Gdx.Graphics.GetWidth() - ( ScreenX + ScreenWidth ) );
+            return ( Gdx.Graphics.Width - ( ScreenX + ScreenWidth ) );
         }
     }
 
@@ -271,7 +271,7 @@ public abstract class Viewport
         {
             Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
 
-            return ( Gdx.Graphics.GetHeight() - ( ScreenY + ScreenHeight ) );
+            return ( Gdx.Graphics.Height - ( ScreenY + ScreenHeight ) );
         }
     }
 }

@@ -238,7 +238,7 @@ public abstract class Camera
         var y = screenCoords.Y;
 
         x -= viewportX;
-        y =  Gdx.Graphics.GetHeight() - y;
+        y =  Gdx.Graphics.Height - y;
         y -= viewportY;
 
         screenCoords.X = ( ( 2 * x ) / viewportWidth ) - 1;
@@ -253,7 +253,7 @@ public abstract class Camera
     /// Function to translate a point given in screen coordinates to world space.
     /// It's the same as GLU gluUnProject but does not rely on OpenGL.
     /// The viewport is assumed to span the whole screen and is fetched from
-    /// <see cref="IGraphics.GetWidth"/> and <see cref="IGraphics.GetHeight()"/>.
+    /// <see cref="IGraphics.Width"/> and <see cref="IGraphics.GetHeight()"/>.
     /// The x- and y-coordinate of vec are assumed to be in screen coordinates (origin
     /// is the top left corner, y pointing down, x pointing to the right) as reported by
     /// the touch methods in <see cref="Input"/>. A z-coordinate of 0 will return a
@@ -263,7 +263,7 @@ public abstract class Camera
     /// <returns> the mutated and unprojected screenCoords <see cref="Vector3"/></returns>
     public Vector3 Unproject( Vector3 screenCoords )
     {
-        Unproject( screenCoords, 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
+        Unproject( screenCoords, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
         return screenCoords;
     }
@@ -279,7 +279,7 @@ public abstract class Camera
     /// <returns>The mutated and projected worldCoords <see cref="Vector3"/>.</returns>
     public Vector3? Project( Vector3? worldCoords )
     {
-        Project( worldCoords, 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
+        Project( worldCoords, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
         return worldCoords;
     }
@@ -385,8 +385,8 @@ public abstract class Camera
              screenY,
              0,
              0,
-             Gdx.Graphics.GetWidth(),
-             Gdx.Graphics.GetHeight()
+             Gdx.Graphics.Width,
+             Gdx.Graphics.Height
             );
     }
 }

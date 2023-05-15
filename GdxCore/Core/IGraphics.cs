@@ -39,9 +39,9 @@ public interface IGraphics
     /// <remarks>MAY be replaced by a property.</remarks>
     void SetGl30( IGL30 gl30 );
 
-    int GetWidth();
+    int Width { get; }
 
-    int GetHeight();
+    int Height { get; }
 
     int GetBackBufferWidth();
 

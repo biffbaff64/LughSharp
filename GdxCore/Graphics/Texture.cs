@@ -51,7 +51,7 @@ public class Texture : GLTexture
     {
     }
 
-    public Texture( FileInfo file, Pixmap.Format format = default!, bool useMipMaps = false )
+    public Texture( FileInfo? file, Pixmap.Format format = default, bool useMipMaps = false )
         : this( ITextureData.Factory.LoadFromFile( file, format, useMipMaps ) )
     {
     }

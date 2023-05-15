@@ -53,5 +53,4 @@ public interface ICubemapData
     /// Returns true if this implementation can cope with a EGL context loss.
     /// </summary>
     bool Managed { get; }
-
 }

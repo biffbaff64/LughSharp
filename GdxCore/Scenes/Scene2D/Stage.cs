@@ -73,8 +73,8 @@ public class Stage : InputAdapter
          new ScalingViewport
              (
               Scaling.Stretch,
-              Gdx.Graphics.GetWidth(),
-              Gdx.Graphics.GetHeight(),
+              Gdx.Graphics.Width,
+              Gdx.Graphics.Height,
               new OrthographicCamera()
              ),
          new SpriteBatch()
@@ -109,7 +109,7 @@ public class Stage : InputAdapter
         _root = new Group();
         _root.SetStage( this );
 
-        viewport.Update( Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight(), true );
+        viewport.Update( Gdx.Graphics.Width, Gdx.Graphics.Height, true );
     }
 
     /// <summary>
@@ -1039,7 +1039,7 @@ public class Stage : InputAdapter
     public Vector2 StageToScreenCoordinates( Vector2 stageCoords )
     {
         Viewport.Project( stageCoords );
-        stageCoords.Y = Gdx.Graphics.GetHeight() - stageCoords.Y;
+        stageCoords.Y = Gdx.Graphics.Height - stageCoords.Y;
 
         return stageCoords;
     }
@@ -1228,7 +1228,7 @@ public class Stage : InputAdapter
         var y0 = Viewport.ScreenY;
         var y1 = y0 + Viewport.ScreenHeight;
             
-        screenY = Gdx.Graphics.GetHeight() - 1 - screenY;
+        screenY = Gdx.Graphics.Height - 1 - screenY;
 
         return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
     }

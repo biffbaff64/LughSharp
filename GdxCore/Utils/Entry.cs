@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils;
 
-internal class Entry<TKe, TVe>
+class Entry<TKe, TVe>
 {
     public TKe? key;
     public TVe? value;

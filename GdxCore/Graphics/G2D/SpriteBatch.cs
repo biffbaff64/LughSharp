@@ -111,7 +111,7 @@ public class SpriteBatch : IBatch
                  )
             );
 
-        _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight() );
+        _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
         Vertices = new float[ size * Sprite.SpriteSize ];
 

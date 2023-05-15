@@ -83,4 +83,11 @@ public abstract class FloatBuffer : Buffer, IComparable< FloatBuffer >
     /// <returns>A value that indicates the relative order of the objects being compared. The return value has these meanings:
     /// <list type="table"><listheader><term> Value</term><description> Meaning</description></listheader><item><term> Less than zero</term><description> This instance precedes <paramref name="other" /> in the sort order.</description></item><item><term> Zero</term><description> This instance occurs in the same position in the sort order as <paramref name="other" />.</description></item><item><term> Greater than zero</term><description> This instance follows <paramref name="other" /> in the sort order.</description></item></list></returns>
     public int CompareTo( FloatBuffer? other ) => throw new NotImplementedException();
+
+    public abstract void Compact();
+
+    public void Put( float[] vertices, int offset, int length )
+    {
+        throw new NotImplementedException();
+    }
 }
