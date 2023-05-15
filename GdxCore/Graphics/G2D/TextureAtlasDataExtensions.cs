@@ -2,8 +2,42 @@
 
 namespace LibGDXSharp.G2D;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public partial class TextureAtlasData
+public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region >
+{
+    public ComparatorAnonymousInnerClass( TextureAtlasData textureAtlasData )
+    {
+    }
+
+    /// <summary>
+    /// Compares two objects and returns a value indicating whether one is
+    /// less than, equal to, or greater than the other.
+    /// </summary>
+    /// <param name="region1">The first object to compare.</param>
+    /// <param name="region2">The second object to compare.</param>
+    /// <returns>A signed integer that indicates the relative values of <paramref name="x" /> and <paramref name="y" />, as shown in the following table.
+    /// <list type="table"><listheader><term> Value</term><description> Meaning</description></listheader><item><term> Less than zero</term><description><paramref name="x" /> is less than <paramref name="y" />.</description></item><item><term> Zero</term><description><paramref name="x" /> equals <paramref name="y" />.</description></item><item><term> Greater than zero</term><description><paramref name="x" /> is greater than <paramref name="y" />.</description></item></list></returns>
+    public int Compare( TextureAtlasData.Region? region1, TextureAtlasData.Region? region2 )
+    {
+        if ( ( region1 == null ) || ( region2 == null ) )
+        {
+            throw new GdxRuntimeException( "Cannot compare null region" );
+        }
+        
+        var i1 = region1.Index;
+        var i2 = region2.Index;
+
+        if ( i1 == -1 ) i1 = int.MaxValue;
+
+        if ( i2 == -1 ) i2 = int.MaxValue;
+
+        return i1 - i2;
+    }
+}
+
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+public partial record TextureAtlasData
 {
     public sealed class PageFieldParseClass : IField< Page >
     {
@@ -51,7 +85,7 @@ public partial class TextureAtlasData
             page.Pma = entry[ 1 ].Equals( "true" );
         }
     }
-    
+
     public class RegionFieldXYClass : IField< TextureAtlasData.Region >
     {
         public void Parse( ref Region region, params string[] entry )
@@ -65,8 +99,8 @@ public partial class TextureAtlasData
     {
         public void Parse( ref Region region, params string[] entry )
         {
-            region.Width  = int.Parse(entry[1]);
-            region.Height = int.Parse(entry[2]);
+            region.Width  = int.Parse( entry[ 1 ] );
+            region.Height = int.Parse( entry[ 2 ] );
         }
     }
 
@@ -74,10 +108,10 @@ public partial class TextureAtlasData
     {
         public void Parse( ref Region region, params string[] entry )
         {
-            region.Left   = int.Parse(entry[1]);
-            region.Top    = int.Parse(entry[2]);
-            region.Width  = int.Parse(entry[3]);
-            region.Height = int.Parse(entry[4]);
+            region.Left   = int.Parse( entry[ 1 ] );
+            region.Top    = int.Parse( entry[ 2 ] );
+            region.Width  = int.Parse( entry[ 3 ] );
+            region.Height = int.Parse( entry[ 4 ] );
         }
     }
 
@@ -85,8 +119,8 @@ public partial class TextureAtlasData
     {
         public void Parse( ref Region region, params string[] entry )
         {
-            region.OffsetX = int.Parse(entry[1]);
-            region.OffsetY = int.Parse(entry[2]);
+            region.OffsetX = int.Parse( entry[ 1 ] );
+            region.OffsetY = int.Parse( entry[ 2 ] );
         }
     }
 
@@ -94,8 +128,8 @@ public partial class TextureAtlasData
     {
         public void Parse( ref Region region, params string[] entry )
         {
-            region.OriginalWidth  = int.Parse(entry[1]);
-            region.OriginalHeight = int.Parse(entry[2]);
+            region.OriginalWidth  = int.Parse( entry[ 1 ] );
+            region.OriginalHeight = int.Parse( entry[ 2 ] );
         }
     }
 
@@ -103,10 +137,10 @@ public partial class TextureAtlasData
     {
         public void Parse( ref Region region, params string[] entry )
         {
-            region.OffsetX        = int.Parse(entry[1]);
-            region.OffsetY        = int.Parse(entry[2]);
-            region.OriginalWidth  = int.Parse(entry[3]);
-            region.OriginalHeight = int.Parse(entry[4]);
+            region.OffsetX        = int.Parse( entry[ 1 ] );
+            region.OffsetY        = int.Parse( entry[ 2 ] );
+            region.OriginalWidth  = int.Parse( entry[ 3 ] );
+            region.OriginalHeight = int.Parse( entry[ 4 ] );
         }
     }
 
@@ -114,11 +148,17 @@ public partial class TextureAtlasData
     {
         public void Parse( ref Region region, params string[] entry )
         {
-            string value = entry[1];
-            if (value.Equals("true"))
+            var value = entry[ 1 ];
+
+            if ( value.Equals( "true" ) )
+            {
                 region.Degrees = 90;
-            else if (!value.Equals("false")) //
-                region.Degrees = int.Parse(value);
+            }
+            else if ( !value.Equals( "false" ) )
+            {
+                region.Degrees = int.Parse( value );
+            }
+
             region.Rotate = region.Degrees == 90;
         }
     }
@@ -127,8 +167,9 @@ public partial class TextureAtlasData
     {
         public void Parse( ref Region region, params string[] entry )
         {
-            region.Index = int.Parse(entry[1]);
-            if (region.Index != -1) HasIndexes[0] = true;
+            region.Index = int.Parse( entry[ 1 ] );
+
+            if ( region.Index != -1 ) HasIndexes[ 0 ] = true;
         }
     }
 }

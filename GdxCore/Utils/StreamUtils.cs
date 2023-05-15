@@ -3,7 +3,7 @@
 public class StreamUtils
 {
 
-    public static void CloseQuietly( BufferedReader reader )
+    public static void CloseQuietly( StreamReader reader )
     {
         throw new NotImplementedException();
     }

@@ -4,10 +4,15 @@ namespace LibGDXSharp.G2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public partial class TextureAtlasData
+public partial record TextureAtlasData
 {
     public List< Page >   Pages   { get; set; } = new();
     public List< Region > Regions { get; set; } = new();
+    public string[]       Entry   { get; set; } = new string[ 5 ];
+
+    internal readonly static bool[] HasIndexes = { false };
+
+    #region Constructors
 
     public TextureAtlasData()
     {
@@ -24,11 +29,19 @@ public partial class TextureAtlasData
         Load( packFile, imagesDir, flip );
     }
 
-    public void Load( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
-    {
-        var entry = new string[ 5 ];
-        bool[] hasIndexes = { false };
+    #endregion
 
+    #region InternalInterfaces
+
+    protected interface IField<T>
+    {
+        void Parse( ref T obj, params string[] entry );
+    }
+
+    #endregion
+
+    private void Load( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
+    {
         //@formatter:off
         Dictionary< string, IField< Page > > pageFields = new(15)
         {
@@ -52,7 +65,7 @@ public partial class TextureAtlasData
         };
         //@formatter:on
 
-        var reader = new StreamReader( new StreamReader( packFile.Read() ), 1024 );
+        var reader = new StreamReader( packFile.Name, false );
 
         try
         {
@@ -72,7 +85,7 @@ public partial class TextureAtlasData
                     break;
                 }
 
-                if ( ReadEntry( entry, line ) == 0 )
+                if ( ReadEntry( line ) == 0 )
                 {
                     break; // Silently ignore all header fields.
                 }
@@ -82,8 +95,8 @@ public partial class TextureAtlasData
 
             // Page and region entries.
             Page?           page   = null;
-            List< object >? names  = null;
-            List< object >? values = null;
+            List< string >? names  = null;
+            List< int[] >?  values = null;
 
             while ( true )
             {
@@ -101,19 +114,17 @@ public partial class TextureAtlasData
                 {
                     page = new Page
                     {
-                        textureFile = imagesDir.Child( line )
+                        textureFile = imagesDir //imagesDir.Child( line )
                     };
 
                     while ( true )
                     {
-                        if ( ReadEntry( entry, line = reader.ReadLine() ) == 0 )
+                        if ( ReadEntry( line = reader.ReadLine() ) == 0 )
                         {
                             break;
                         }
 
-                        IField? field = pageFields?[ entry[ 0 ] ];
-
-                        field?.Parse( ref page ); // Silently ignore unknown page fields.
+                        pageFields?[ Entry[ 0 ] ].Parse( ref page );
                     }
 
                     Pages.Add( page );
@@ -133,35 +144,34 @@ public partial class TextureAtlasData
 
                     while ( true )
                     {
-                        int count = ReadEntry( entry, line = reader.ReadLine() );
+                        var count = ReadEntry( line = reader.ReadLine() );
 
                         if ( count == 0 )
                         {
                             break;
                         }
 
-                        IField field = regionFields.get( entry[ 0 ] );
-
-                        if ( field != null )
+                        if ( regionFields?[ Entry[ 0 ] ] != null )
                         {
-                            field.parse( region );
+                            regionFields[ Entry[ 0 ] ].Parse( ref region );
                         }
                         else
                         {
                             if ( names == null )
                             {
-                                names  = new Array( 8 );
-                                values = new Array( 8 );
+                                names  = new List< string >( 8 );
+                                values = new List< int[] >( 8 );
                             }
 
-                            names.add( entry[ 0 ] );
+                            names.Add( Entry[ 0 ] );
+
                             var entryValues = new int[ count ];
 
                             for ( var i = 0; i < count; i++ )
                             {
                                 try
                                 {
-                                    entryValues[ i ] = int.Parse( entry[ i + 1 ] );
+                                    entryValues[ i ] = int.Parse( Entry[ i + 1 ] );
                                 }
                                 catch ( System.FormatException )
                                 {
@@ -169,25 +179,26 @@ public partial class TextureAtlasData
                                 }
                             }
 
-                            values.add( entryValues );
+                            values?.Add( entryValues );
                         }
                     }
 
-                    if ( region.originalWidth == 0 && region.originalHeight == 0 )
+                    if ( region is { OriginalWidth: 0, OriginalHeight: 0 } )
                     {
-                        region.originalWidth  = region.width;
-                        region.originalHeight = region.height;
+                        region.OriginalWidth  = region.Width;
+                        region.OriginalHeight = region.Height;
                     }
 
-                    if ( names != null && names.size > 0 )
+                    // ( if names != null and names.Count > 0 )
+                    if ( names is { Count: > 0 } )
                     {
-                        region.names  = names.toArray( typeof(string) );
-                        region.values = values.toArray( typeof(int[]) );
-                        names.clear();
-                        values.clear();
+                        region.Names  = names.ToArray();
+                        region.Values = values?.ToArray();
+                        names.Clear();
+                        values?.Clear();
                     }
 
-                    regions.add( region );
+                    Regions.Add( region );
                 }
             }
         }
@@ -197,10 +208,10 @@ public partial class TextureAtlasData
         }
         finally
         {
-            StreamUtils.closeQuietly( reader );
+            StreamUtils.CloseQuietly( reader );
         }
 
-        if ( hasIndexes[ 0 ] )
+        if ( HasIndexes[ 0 ] )
         {
             Regions.Sort( new ComparatorAnonymousInnerClass( this ) );
         }
@@ -208,10 +219,9 @@ public partial class TextureAtlasData
 
     /// <summary>
     /// </summary>
-    /// <param name="entry"></param>
     /// <param name="line"></param>
     /// <returns></returns>
-    private int ReadEntry( string[] entry, string? line )
+    private int ReadEntry( string? line )
     {
         if ( line == null ) return 0;
 
@@ -223,7 +233,7 @@ public partial class TextureAtlasData
 
         if ( colon == -1 ) return 0;
 
-        entry[ 0 ] = line.Substring( 0, colon ).Trim();
+        Entry[ 0 ] = line.Substring( 0, colon ).Trim();
 
         for ( int i = 1, lastMatch = colon + 1;; i++ )
         {
@@ -231,12 +241,12 @@ public partial class TextureAtlasData
 
             if ( comma == -1 )
             {
-                entry[ i ] = line.Substring( lastMatch ).Trim();
+                Entry[ i ] = line.Substring( lastMatch ).Trim();
 
                 return i;
             }
 
-            entry[ i ] = line.Substring( lastMatch, comma ).Trim();
+            Entry[ i ] = line.Substring( lastMatch, comma ).Trim();
 
             lastMatch = comma + 1;
 
@@ -248,11 +258,9 @@ public partial class TextureAtlasData
     //      Companions.
     // ######################################################################
 
-    protected interface IField<T>
-    {
-        void Parse( ref T obj, params string[] entry );
-    }
+    #region Companions
 
+    [SuppressMessage( "ReSharper", "UnusedAutoPropertyAccessor.Global" )]
     public record Page
     {
         /// <summary>
@@ -313,4 +321,7 @@ public partial class TextureAtlasData
             return null;
         }
     }
+
+    #endregion
+
 }

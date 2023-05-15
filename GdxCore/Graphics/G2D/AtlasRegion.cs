@@ -80,7 +80,7 @@ public sealed class AtlasRegion : TextureRegion
     public int[]?[]? values;
 
     public AtlasRegion( Texture? texture, int x, int y, int width, int height )
-        : base( texture, x, y, width, height )
+        : base( texture!, x, y, width, height )
     {
         OriginalWidth  = width;
         OriginalHeight = height;

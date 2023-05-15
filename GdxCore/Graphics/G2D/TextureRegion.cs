@@ -193,7 +193,7 @@ public class TextureRegion
     public float U
     {
         get => _u;
-        set
+        protected set
         {
             _u = value;
 
