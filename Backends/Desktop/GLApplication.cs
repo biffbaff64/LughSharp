@@ -1,11 +1,15 @@
-﻿using LibGDXSharp.Backends.Desktop;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Backends.Desktop;
 using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
 using LibGDXSharp.Core;
 using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class GLApplication : GLApplicationBase
 {
     public GLApplicationConfiguration?        Config             { get; set; }
@@ -18,14 +22,14 @@ public class GLApplication : GLApplicationBase
 
     public static GLVersion? GLVersion { get; set; }
 
-    private static   GlfwCallbacks.ErrorCallback? _errorCallback   = null;
+    private static   GlfwCallbacks.ErrorCallback? errorCallback    = null;
     private static   Callback?                    _glDebugCallback = null;
     private volatile GLWindow?                    _currentWindow   = null;
     private          Sync?                        _sync;
 
     public static void InitialiseGL()
     {
-        if ( _errorCallback == null )
+        if ( errorCallback == null )
         {
             GLNativesLoader.Load();
 
@@ -201,14 +205,18 @@ public class GLApplication : GLApplicationBase
         else
         {
             // creation of additional windows is deferred to avoid GL context trouble
-            postRunnable( new Runnable()
-            {
- 
-                public void run ()
+            postRunnable
+                ( new Runnable()
                 {
-                createWindow( window, config, sharedContext );
-                windows.add( window );
-            }
+ 
+
+
+                    public void run ()
+                    {
+                    createWindow( window, config, sharedContext );
+                    windows.add( window );
+                }
+
             }
             );
         }
@@ -236,7 +244,7 @@ public class GLApplication : GLApplicationBase
         return 0;
     }
 
-    public override ApplicationType Type { get; set; }
+    public override IApplication.ApplicationType Type { get; set; }
 
     public override void Exit()
     {
@@ -265,16 +273,12 @@ public class GLApplication : GLApplicationBase
     {
         Glfw.GetApi().GetVersion( out var major, out var minor, out var revision );
 
-        var versionString  = $"{major}.{minor}.{revision}";
-        var vendorString   = ""; //GL11.glGetString(GL11.GL_VENDOR);
-        var rendererString = ""; //GL11.glGetString(GL11.GL_RENDERER);
-
         GLVersion = new GLVersion
             (
-             ApplicationType.Desktop,
-             versionString,
-             vendorString,
-             rendererString
+            IApplication.ApplicationType.Desktop,
+            $"{major}.{minor}.{revision}",
+            Gdx.GL20.GLGetString( IGL20.GL_Vendor ),
+            Gdx.GL20.GLGetString( IGL20.GL_Renderer )
             );
     }
 }

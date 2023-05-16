@@ -1,28 +1,29 @@
-﻿namespace LibGDXSharp.Core;
+﻿using System.Reflection;
 
-public class Version
+namespace LibGDXSharp.Core;
+
+public class GDXVersion
 {
+    private readonly static Version version = new();
+    
     // the current version of LibGDXSharp as a string in the major.minor.revision format
     public const string VersionString = "0.0.1";
 
-    // the current major version of LibGDXSharp
-    public static int Major { get; private set; }
+    protected static int MajorVersion    { get; set; }
+    protected static int MinorVersion    { get; set; }
+    protected static int RevisionVersion { get; set; }
 
-    // the current minor version of LibGDXSharp
-    public static int Minor { get; private set; }
-
-    // the current revision version of LibGDXSharp
-    public static int Revision { get; private set; }
-
-    static Version()
+    static GDXVersion()
     {
         try
         {
-            var v = VersionString.Split( "\\." );
-                
-            Major    = v.Length < 1 ? 0 : int.Parse( v[ 0 ] );
-            Minor    = v.Length < 2 ? 0 : int.Parse( v[ 1 ] );
-            Revision = v.Length < 3 ? 0 : int.Parse( v[ 2 ] );
+//            var v = VersionString.Split( "\\." );
+
+            var v = version.ToString().Split( "\\." );
+            
+            MajorVersion    = v.Length < 1 ? 0 : int.Parse( v[ 0 ] );
+            MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1 ] );
+            RevisionVersion = v.Length < 3 ? 0 : int.Parse( v[ 2 ] );
         }
         catch ( Exception e )
         {
@@ -52,17 +53,17 @@ public class Version
     /// <param name="revision">The Revision version component.</param>
     public static bool IsHigherEqual( int major, int minor, int revision )
     {
-        if ( Major != major )
+        if ( MajorVersion != major )
         {
-            return Major > major;
+            return MajorVersion > major;
         }
 
-        if ( Minor != minor )
+        if ( MinorVersion != minor )
         {
-            return Minor > minor;
+            return MinorVersion > minor;
         }
 
-        return Revision >= revision;
+        return RevisionVersion >= revision;
     }
 
     /// <summary>
@@ -87,16 +88,16 @@ public class Version
     /// <param name="revision">The Revision version component.</param>
     public static bool IsLowerEqual( int major, int minor, int revision )
     {
-        if ( Major != major )
+        if ( MajorVersion != major )
         {
-            return Major < major;
+            return MajorVersion < major;
         }
 
-        if ( Minor != minor )
+        if ( MinorVersion != minor )
         {
-            return Minor < minor;
+            return MinorVersion < minor;
         }
 
-        return Revision <= revision;
+        return RevisionVersion <= revision;
     }
 }

@@ -7,6 +7,8 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Title>LibGDXSharp</Title>
+        <AssemblyVersion></AssemblyVersion>
+        <NeutralLanguage></NeutralLanguage>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -32,6 +34,8 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>LocalResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Remove="GDXExtensions\**" />
+      <EmbeddedResource Remove="GDXBackends\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,6 +44,13 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>LocalResources.resx</DependentUpon>
       </Compile>
+      <Compile Remove="GDXExtensions\**" />
+      <Compile Remove="GDXBackends\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="GDXExtensions\**" />
+      <None Remove="GDXBackends\**" />
     </ItemGroup>
 
 </Project>

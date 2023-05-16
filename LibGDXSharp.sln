@@ -2,7 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibGDXSharp", "LibGDXSharp.csproj", "{5223F22D-3069-41E7-BA6C-AD111FCD20D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGame", "TestGame\TestGame.csproj", "{575FC1E1-A760-4E44-88D9-2BA63FED4315}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDXExtensions", "GDXExtensions\GDXExtensions.csproj", "{ACC75061-11FB-4951-8DB3-0EA14FA5752B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDXBackends", "GDXBackends\GDXBackends.csproj", "{FA2B95A3-51C2-40AD-ABF6-CFE51CDDA5B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +16,13 @@ Global
 		{5223F22D-3069-41E7-BA6C-AD111FCD20D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5223F22D-3069-41E7-BA6C-AD111FCD20D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5223F22D-3069-41E7-BA6C-AD111FCD20D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{575FC1E1-A760-4E44-88D9-2BA63FED4315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{575FC1E1-A760-4E44-88D9-2BA63FED4315}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{575FC1E1-A760-4E44-88D9-2BA63FED4315}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{575FC1E1-A760-4E44-88D9-2BA63FED4315}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACC75061-11FB-4951-8DB3-0EA14FA5752B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC75061-11FB-4951-8DB3-0EA14FA5752B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC75061-11FB-4951-8DB3-0EA14FA5752B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC75061-11FB-4951-8DB3-0EA14FA5752B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA2B95A3-51C2-40AD-ABF6-CFE51CDDA5B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2B95A3-51C2-40AD-ABF6-CFE51CDDA5B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2B95A3-51C2-40AD-ABF6-CFE51CDDA5B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2B95A3-51C2-40AD-ABF6-CFE51CDDA5B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

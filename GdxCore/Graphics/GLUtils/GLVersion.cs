@@ -1,12 +1,13 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
-using LibGDXSharp.Core;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
 /// </summary>
-public class GLVersion
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
 {
     private const string Tag = "GLVersion";
 
@@ -18,9 +19,6 @@ public class GLVersion
         WebGL,
     }
 
-    public int     MajorVersion   { get; set; }
-    public int     MinorVersion   { get; set; }
-    public int     ReleaseVersion { get; set; }
     public string? VendorString   { get; set; }
     public string? RendererString { get; set; }
     public GLType  Gltype         { get; set; }
@@ -36,22 +34,13 @@ public class GLVersion
                       string vendorString,
                       string rendererString )
     {
-        if ( appType == IApplication.ApplicationType.Android )
-        {
-            this.Gltype = GLType.GLES;
-        }
-        else if ( appType == IApplication.ApplicationType.Desktop )
-        {
-            this.Gltype = GLType.OpenGL;
-        }
-        else if ( appType == IApplication.ApplicationType.WebGL )
-        {
-            this.Gltype = GLType.WebGL;
-        }
-        else
-        {
-            this.Gltype = GLType.None;
-        }
+        this.Gltype = appType switch
+                      {
+                          IApplication.ApplicationType.Android => GLType.GLES,
+                          IApplication.ApplicationType.Desktop => GLType.OpenGL,
+                          IApplication.ApplicationType.WebGL   => GLType.WebGL,
+                          _                                    => GLType.None
+                      };
 
         if ( Gltype == GLType.GLES )
         {
@@ -70,11 +59,11 @@ public class GLVersion
         }
         else
         {
-            MajorVersion   = -1;
-            MinorVersion   = -1;
-            ReleaseVersion = -1;
-            VendorString   = "";
-            RendererString = "";
+            MajorVersion    = -1;
+            MinorVersion    = -1;
+            RevisionVersion = -1;
+            VendorString    = "";
+            RendererString  = "";
         }
 
         this.VendorString   = vendorString;
@@ -87,9 +76,14 @@ public class GLVersion
     /// <param name="versionString"></param>
     private void ExtractVersion( string patternString, string versionString )
     {
-        var rx      = new Regex( patternString );
-        var matches = rx.Matches( versionString );
-            
+        
+        
+        
+        
+        var rx = new Regex( patternString );
+
+        MatchCollection matches = rx.Matches( versionString );
+
 //            Pattern pattern = Pattern.compile( patternString );
 //            Matcher matcher = pattern.matcher( versionString );
 
@@ -97,8 +91,8 @@ public class GLVersion
 
         if ( matches.Count > 0 )
         {
-            string   result      = matcher.group( 1 );
-            string[] resultSplit = result.Split( "\\." );
+            string result      = matcher.group( 1 );
+            var    resultSplit = result.Split( "\\." );
 
             MajorVersion   = ParseInt( resultSplit[ 0 ], 2 );
             MinorVersion   = resultSplit.Length < 2 ? 0 : ParseInt( resultSplit[ 1 ], 0 );
@@ -126,7 +120,7 @@ public class GLVersion
         }
         catch ( FormatException )
         {
-            Gdx.App.Error( "LibGDXSharp GL", "Error parsing number: " + v + ", assuming: " + defaultValue );
+            Gdx.App.Error( "LibGDXSharp GL", $"Error parsing number: {v}, assuming: {defaultValue}" );
 
             return defaultValue;
         }
@@ -140,8 +134,8 @@ public class GLVersion
     /// <returns> true if the current version is higher or equal to the test version </returns>
     public bool IsVersionEqualToOrHigher( int testMajorVersion, int testMinorVersion )
     {
-        return MajorVersion > testMajorVersion
-               || ( MajorVersion == testMajorVersion && MinorVersion >= testMinorVersion );
+        return ( MajorVersion > testMajorVersion )
+               || ( ( MajorVersion == testMajorVersion ) && ( MinorVersion >= testMinorVersion ) );
     }
 
     /// <summary>

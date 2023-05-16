@@ -10,6 +10,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- SORT OUT VERSIONING!!!
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - IP   = Conversion In Progress.
 - DONE = Class finished but may not be fully 'CSharp-ified'
@@ -31,6 +32,7 @@ CORE
     - DONE - AbstractInput                  Convert
     - DONE - ApplicationAdapter             Convert
     - DONE - Game                           Convert
+    - IP   - GDXVersion                     Convert
     - DONE - IApplication                   Convert
     - DONE - IApplicationListener           Convert
     - DONE - IApplicationLogger             Convert
@@ -46,7 +48,6 @@ CORE
     - DONE - IPreferences                   Convert
     - DONE - IScreen                        Convert
     - DONE - ScreenAdapter                  Convert
-    - DONE - Version                        Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -136,7 +137,7 @@ GRAPHICS
     - DONE - GLTexture                          Convert
     - DONE - GraphicsType                       Convert
     - DONE - ICubemapData                       Convert
-    - IP   - ICursor                            Convert
+    - DONE - ICursor                            Convert
     - DONE - IDownloadPixmapResponseListener    Convert
     - DONE - IGL20                              Convert
     - DONE - IGL30                              Convert
@@ -182,7 +183,7 @@ GRAPHICS/G2D
     -      - PolygonSprite                  Convert
     -      - PolygonSpriteBatch             Convert
     -      - RepeatablePolygonSprite        Convert
-    -      - Sprite                         Convert
+    - DONE - Sprite                         Convert
     - DONE - SpriteBatch                    Convert
     - DONE - SpriteCache                    Convert
     - DONE - TextureAtlas                   Convert
@@ -539,7 +540,7 @@ UTILS
     - DONE - Bits                           Convert
     - IP   - CharHelper
     -      - ComparableTimSort              Convert
-    -      - DataInput                      Check
+    - DONE - DataInput                      Check
     -      - DataOutput                     Check
     - DONE - DataUtils                      Added Class
     - DONE - FloatConsts                    Done, but is it needed?
@@ -587,9 +588,9 @@ UTILS/ASYNC
 
 UTILS/ATOMIC
 ------------
-    - **** - AtomicInteger                  Needed??
-    - **** - AtomicQueue                    Needed??
-    - **** - AtomicReferenceArray           Needed??
+    - **** - AtomicInteger                  No
+    - **** - AtomicQueue                    No
+    - **** - AtomicReferenceArray           No
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -749,6 +750,9 @@ UTILS/REFLECT
 
 UTILS/REGEX
 -----------
+
+    - RE-EVALUATE WHETHER THIS IS NEEDED...
+
     - DONE - ASCII                          Convert
     - DONE - IMatchResult                   Convert
     - IP   - Matcher                        Convert
