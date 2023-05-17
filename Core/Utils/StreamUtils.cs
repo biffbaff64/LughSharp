@@ -2,9 +2,11 @@
 
 public class StreamUtils
 {
+    public static void CloseQuietly( TextReader reader )
+    {
+    }
 
     public static void CloseQuietly( StreamReader reader )
     {
-        throw new NotImplementedException();
     }
 }

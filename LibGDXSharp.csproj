@@ -25,7 +25,7 @@
 
     <ItemGroup>
       <Folder Include="Backends\Android\" />
-      <Folder Include="GdxCore\Utils\Json\" />
+      <Folder Include="Core\Utils\Json\" />
       <Folder Include="Resources\" />
     </ItemGroup>
 

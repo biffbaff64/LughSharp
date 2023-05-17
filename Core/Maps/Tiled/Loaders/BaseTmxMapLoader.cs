@@ -1,17 +1,19 @@
 ﻿using System.Runtime.Serialization;
+using System.Xml;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maps.Objects;
 using LibGDXSharp.Maps.Tiled.Objects;
 using LibGDXSharp.Maps.Tiled.Tiles;
 using LibGDXSharp.Maths;
-using LibGDXSharp.Utils.Xml;
+
+using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
 
 namespace LibGDXSharp.Maps.Tiled;
 
 public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.Parameters
 {
-    public class Parameters : AssetLoaderParameters< TiledMap >
+    public class Parameters : AssetLoaderParameters
     {
         // generate mipmaps?
         internal bool GenerateMipMaps { get; set; } = false;
@@ -37,10 +39,11 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
     protected const uint Flag_Flip_Diagonally   = 0x20000000;
     protected const uint Mask_Clear             = 0xE0000000;
 
-    protected readonly XmlReader  xml;
-    protected          XmlElement root;
-    protected          bool       convertObjectToTileSpace;
-    protected          bool       flipY = true;
+    protected readonly XmlReader?  xml;
+    protected          XmlElement? root;
+
+    protected bool convertObjectToTileSpace;
+    protected bool flipY = true;
 
     protected int mapTileWidth;
     protected int mapTileHeight;
@@ -53,7 +56,7 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
     {
     }
 
-    public override List< AssetDescriptor< TP > >? GetDependencies( string fileName, FileHandle tmxFile, TP? parameter )
+    public List< AssetDescriptor >? GetDependencies( string fileName, FileInfo tmxFile, TP? parameter )
     {
         this.root = xml.Parse( tmxFile );
 
@@ -69,7 +72,8 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
         return GetDependencyAssetDescriptors( tmxFile, textureParameter );
     }
 
-    protected virtual List< AssetDescriptor< TP > >? GetDependencyAssetDescriptors( FileHandle tmxFile, TextureLoader.TextureParameter textureParameter )
+    protected List< AssetDescriptor >? GetDependencyAssetDescriptors( FileHandle tmxFile,
+                                                                      TextureLoader.TextureParameter textureParameter )
     {
         return default;
     }
@@ -96,11 +100,16 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
             this.flipY                    = true;
         }
 
-        var mapOrientation     = root.GetAttribute( "orientation", null );
-        var mapWidth           = root.GetIntAttribute( "width", 0 );
-        var mapHeight          = root.GetIntAttribute( "height", 0 );
-        var tileWidth          = root.GetIntAttribute( "tilewidth", 0 );
-        var tileHeight         = root.GetIntAttribute( "tileheight", 0 );
+        if ( root == null )
+            throw new GdxRuntimeException( "Root cannot be null!" );
+
+        var mapOrientation = root.GetAttribute( "orientation", null );
+
+        var mapWidth   = root.GetIntAttribute( "width", 0 );
+        var mapHeight  = root.GetIntAttribute( "height", 0 );
+        var tileWidth  = root.GetIntAttribute( "tilewidth", 0 );
+        var tileHeight = root.GetIntAttribute( "tileheight", 0 );
+
         var hexSideLength      = root.GetIntAttribute( "hexsidelength", 0 );
         var staggerAxis        = root.GetAttribute( "staggeraxis", null );
         var staggerIndex       = root.GetAttribute( "staggerindex", null );
@@ -175,7 +184,11 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
         return Map;
     }
 
-    protected void LoadLayer( TiledMap map, MapLayers parentLayers, XmlReader.Element element, FileHandle tmxFile, ImageResolver imageResolver )
+    protected void LoadLayer( TiledMap map,
+                              MapLayers parentLayers,
+                              XmlReader.Element element,
+                              FileHandle tmxFile,
+                              ImageResolver imageResolver )
     {
         string name = element.GetName();
 
@@ -396,7 +409,9 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
             float scaleY = convertObjectToTileSpace ? 1.0f / mapTileHeight : 1.0f;
 
             float x = element.getFloatAttribute( "x", 0 ) * scaleX;
-            float y = ( flipY ? ( heightInPixels - element.getFloatAttribute( "y", 0 ) ) : element.getFloatAttribute( "y", 0 ) ) * scaleY;
+
+            float y = ( flipY ? ( heightInPixels - element.getFloatAttribute( "y", 0 ) ) : element.getFloatAttribute( "y", 0 ) )
+                      * scaleY;
 
             float width  = element.getFloatAttribute( "width", 0 ) * scaleX;
             float height = element.getFloatAttribute( "height", 0 ) * scaleY;
@@ -453,9 +468,12 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
                     bool flipHorizontally = ( ( id & Flag_Flip_Horizontally ) != 0 );
                     bool flipVertically   = ( ( id & Flag_Flip_Vertically ) != 0 );
 
-                    TiledMapTile          tile                  = map.getTileSets().getTile( id & ~Mask_Clear );
-                    TiledMapTileMapObject tiledMapTileMapObject = new TiledMapTileMapObject( tile, flipHorizontally, flipVertically );
-                    TextureRegion         textureRegion         = tiledMapTileMapObject.getTextureRegion();
+                    TiledMapTile tile = map.getTileSets().getTile( id & ~Mask_Clear );
+
+                    TiledMapTileMapObject tiledMapTileMapObject = new TiledMapTileMapObject
+                        ( tile, flipHorizontally, flipVertically );
+
+                    TextureRegion textureRegion = tiledMapTileMapObject.getTextureRegion();
                     tiledMapTileMapObject.getProperties().put( "gid", id );
                     tiledMapTileMapObject.setX( x );
                     tiledMapTileMapObject.setY( flipY ? y : y - height );
@@ -569,29 +587,29 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
         {
             throw new GdxRuntimeException
                 (
-                 "Wrong type given for property "
-                 + name
-                 + ", given : "
-                 + type
-                 + ", supported : string, bool, int, float, color"
+                "Wrong type given for property "
+                + name
+                + ", given : "
+                + type
+                + ", supported : string, bool, int, float, color"
                 );
         }
     }
 
-    protected Cell CreateTileLayerCell( bool flipHorizontally, bool flipVertically, bool flipDiagonally )
+    protected TiledMapTileLayer.Cell CreateTileLayerCell( bool flipHorizontally, bool flipVertically, bool flipDiagonally )
     {
-        Cell cell = new Cell();
+        var cell = new TiledMapTileLayer.Cell();
 
         if ( flipDiagonally )
         {
             if ( flipHorizontally && flipVertically )
             {
                 cell.setFlipHorizontally( true );
-                cell.setRotation( Cell.ROTATE_270 );
+                cell.setRotation( TiledMapTileLayer.Cell.ROTATE_270 );
             }
             else if ( flipHorizontally )
             {
-                cell.setRotation( Cell.ROTATE_270 );
+                cell.setRotation( TiledMapTileLayer.Cell.ROTATE_270 );
             }
             else if ( flipVertically )
             {
@@ -600,7 +618,7 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
             else
             {
                 cell.setFlipVertically( true );
-                cell.setRotation( Cell.ROTATE_270 );
+                cell.setRotation( TiledMapTileLayer.Cell.ROTATE_270 );
             }
         }
         else
@@ -612,10 +630,10 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
         return cell;
     }
 
-    static public int[] GetTileIds( Utils.Xml.XmlReader.Element element, int width, int height )
+    public int[] GetTileIds( Utils.Xml.XmlReader.Element element, int width, int height )
     {
-        Utils.Xml.XmlReader.Element data     = element.getChildByName( "data" );
-        string                      encoding = data.getAttribute( "encoding", null );
+        Utils.Xml.XmlReader.Element data     = element.GetChildByName( "data" );
+        string                      encoding = data.GetAttribute( "encoding", null );
 
         if ( encoding == null )
         {
@@ -623,31 +641,35 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
             throw new GdxRuntimeException( "Unsupported encoding (XML) for TMX Layer Data" );
         }
 
-        int[] ids = new int[ width * height ];
+        var ids = new int[ width * height ];
 
-        if ( encoding.equals( "csv" ) )
+        if ( encoding.Equals( "csv" ) )
         {
-            string[] array = data.getText().split( "," );
+            var array = data.Text?.Split( "," );
 
             for ( int i = 0; i < array.length; i++ )
+            {
                 ids[ i ] = ( int )Long.parseLong( array[ i ].trim() );
+            }
         }
         else
         {
             if ( true )
                 if ( encoding.equals( "base64" ) )
                 {
-                    InputStream is = null;
+                    InputStream is  = null;
 
                     try
                     {
-                        string compression = data.getAttribute( "compression", null );
-                        byte[] bytes       = Base64Coder.decode( data.getText() );
+                        var compression = data.GetAttribute( "compression", null );
+                        var bytes       = System.Convert.FromBase64String( data.ToString() );
 
                         if ( compression == null )
                             is = new ByteArrayInputStream( bytes );
                         else if ( compression.equals( "gzip" ) )
-                            is = new BufferedInputStream( new GZIPInputStream( new ByteArrayInputStream( bytes ), bytes.length ) );
+                            is = new BufferedInputStream
+                            ( new GZIPInputStream( new ByteArrayInputStream( bytes ), bytes.length ) );
+
                         else if ( compression.equals( "zlib" ) )
                             is = new BufferedInputStream( new InflaterInputStream( new ByteArrayInputStream( bytes ) ) );
                         else
@@ -809,24 +831,24 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
 
             AddStaticTiles
                 (
-                 tmxFile,
-                 imageResolver,
-                 tileSet,
-                 element,
-                 tileElements,
-                 name,
-                 firstgid,
-                 tilewidth,
-                 tileheight,
-                 spacing,
-                 margin,
-                 source,
-                 offsetX,
-                 offsetY,
-                 imageSource,
-                 imageWidth,
-                 imageHeight,
-                 image
+                tmxFile,
+                imageResolver,
+                tileSet,
+                element,
+                tileElements,
+                name,
+                firstgid,
+                tilewidth,
+                tileheight,
+                spacing,
+                margin,
+                source,
+                offsetX,
+                offsetY,
+                imageSource,
+                imageWidth,
+                imageHeight,
+                image
                 );
 
             List< AnimatedTiledMapTile > animatedTiles = new List< AnimatedTiledMapTile >();
@@ -931,8 +953,12 @@ public class BaseTmxMapLoader<TP> : AsynchronousAssetLoader< TiledMap, TP > wher
 
             foreach ( var frameElement in animationElement.GetChildrenByName( "frame" ) )
             {
-                staticTiles.Add( ( StaticTiledMapTile )tileSet
-                                     .GetTile( firstgid + frameElement.GetIntAttribute( "tileid" ) ) );
+                staticTiles.Add
+                    (
+                    ( StaticTiledMapTile )tileSet
+                        .GetTile( firstgid + frameElement.GetIntAttribute( "tileid" ) )
+                    );
+
                 intervals.Add( frameElement.GetIntAttribute( "duration" ) );
             }
 

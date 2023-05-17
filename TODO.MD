@@ -535,7 +535,7 @@ UTILS
     Misc
     ----
     - DONE - Align                          Convert
-    -      - Base64Coder                    Use System.Convert classes??
+    - **** - Base64Coder                    Use System.Convert classes
     -      - BinaryHeap
     - DONE - Bits                           Convert
     - IP   - CharHelper
@@ -546,6 +546,7 @@ UTILS
     - DONE - FloatConsts                    Done, but is it needed?
     -      - GdxNativesLoader
     -      - I18NBundle                     Check
+    - DONE - ICloseable                     Convert
     - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backend.                 
     - DONE - IRunnable                      Done, but is it needed?
     -      - LittleEndianInputStream        Check
