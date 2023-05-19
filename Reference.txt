@@ -7,8 +7,8 @@ String - Class
 
 virtual method - can be redefined in child class
 
-new - HIDES base method
-override - does what its says...
+new - HIDES an accessible base class method
+override - Extends a base class virtual method.
 
 ref (method parameters) - pass by reference. Variable passed must be initialised first. (check other uses of ref)
 out (method parameters) - Like ref but variable does not need to be initialised.

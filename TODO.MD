@@ -411,9 +411,9 @@ NETWORK
 
 SCENES.SCENE2D
 --------------
-    - IP - Action                         Convert
+    - DONE - Action                         Convert
     - IP   - Actor                          Convert
-    - IP - Event                          Convert
+    - IP   - Event                          Convert
     - IP   - Group                          Convert
     - DONE - IEventListener                 Convert
     - DONE - InputEvent                     Convert
@@ -536,10 +536,10 @@ UTILS
     ----
     - DONE - Align                          Convert
     - **** - Base64Coder                    Use System.Convert classes
-    -      - BinaryHeap
+    - DONE - BinaryHeap
     - DONE - Bits                           Convert
     - IP   - CharHelper
-    -      - ComparableTimSort              Convert
+    - IP   - ComparableTimSort              Convert
     - DONE - DataInput                      Check
     -      - DataOutput                     Check
     - DONE - DataUtils                      Added Class

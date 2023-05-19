@@ -1,12 +1,12 @@
-﻿using LibGDXSharp.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.Utils;
-using LibGDXSharp.Utils.Collections;
-using LibGDXSharp.Utils.Reflect;
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Actor
 {
     public Stage?    Stage      { get; set; }
@@ -15,14 +15,14 @@ public class Actor
     public object?   UserObject { get; set; }
     public Touchable Touchable  { get; set; } = Touchable.Enabled;
     public bool      Visible    { get; set; } = true;
-    public Color     Color      { get; set; } = new Color( 1, 1, 1, 1 );
+    public Color     Color      { get; set; } = new( 1, 1, 1, 1 );
     public float     OriginX    { get; set; }
     public float     OriginY    { get; set; }
 
     public DelayedRemovalArray< IEventListener > Listeners        { get; private set; }
     public DelayedRemovalArray< IEventListener > CaptureListeners { get; private set; }
 
-    private readonly Array< Action > _actions = new Array< Action >();
+    private readonly List< Action > _actions = new();
 
     private bool  _debug;
     private float _scaleX = 1;
@@ -57,7 +57,7 @@ public class Actor
     /// <exception cref="SystemException"></exception>
     public void Act( float delta )
     {
-        if ( _actions.Size == 0 ) return;
+        if ( _actions.Count == 0 ) return;
 
         if ( ( Stage != null ) && Stage.GetActionsRequestRendering() )
         {

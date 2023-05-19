@@ -1,5 +1,10 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D;
+﻿using System.Diagnostics.CodeAnalysis;
 
+using LibGDXSharp.Utils.Pooling;
+
+namespace LibGDXSharp.Scenes.Scene2D;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class Action : IPoolable
 {
     /// <summary>
@@ -38,62 +43,60 @@ public abstract class Action : IPoolable
     }
 
     /// <summary>
-    /// Updates the action based on time. Typically this is
-    /// called each frame by <see cref="Actor"/>.
+    /// Updates the action based on time.
+    /// Typically this is called each frame by <see cref="Actor"/>.
     /// </summary>
     /// <param name="delta">Time in seconds since the last frame.</param>
     /// <returns>
-    /// true if the action is done. This method may continue
-    /// to be called after the action is done.
+    /// true if the action is done. This method may continue to be called after
+    /// the action is done.
     /// </returns>
     public abstract bool Act( float delta );
 
     /// <summary>
     /// Sets the state of the action so it can be run again.
     /// </summary>
-    public virtual void Restart()
+    protected virtual void Restart()
     {
     }
 
     /// <summary>
-    /// Sets the actor this action is attached to. This also sets the
-    /// target actor if it is null. This method is called automatically
-    /// when an action is added to an actor. This method is also called
-    /// with null when an action is removed from an actor.
-    /// When set to null, if the action has a pool then the action is
-    /// returned to the pool (which calls reset()) and the pool is set
-    /// to null. If the action does not have a pool, reset() is not called.
-    /// This method is not typically a good place for an action subclass
-    /// to query the actor's state because the action may not be executed
-    /// for some time, eg it may be delayed. The actor's state is best
-    /// queried in the first call to act(float).
-    /// For a TemporalAction, use TemporalAction#begin().
+    /// The <see cref="Actor"/> this Action is attached to.
     /// </summary>
-    /// <param name="actor"></param>
-    public void SetActor( Actor? actor )
+    public Actor? Actor
     {
-        this._actor = actor;
+        // Returns null if the action is not attached to an actor.
+        get => _actor;
 
-        Target ??= actor;
-
-        if ( actor == null )
+        // Sets the actor this action is attached to. This also sets the
+        // target actor if it is null. This method is called automatically
+        // when an action is added to an actor. This method is also called
+        // with null when an action is removed from an actor.
+        // When set to null, if the action has a pool then the action is
+        // returned to the pool (which calls reset()) and the pool is set
+        // to null. If the action does not have a pool, reset() is not called.
+        // This method is not typically a good place for an action subclass
+        // to query the actor's state because the action may not be executed
+        // for some time, eg it may be delayed. The actor's state is best
+        // queried in the first call to act(float).
+        // For a TemporalAction, use TemporalAction#begin().
+        set
         {
-            if ( Pool != null )
+            this._actor = value;
+
+            Target ??= value;
+
+            if ( value == null )
             {
-                Pool.Free( this );
-                Pool = null;
+                if ( Pool != null )
+                {
+                    Pool.Free( this );
+                    Pool = null;
+                }
             }
         }
     }
-
-    /// <summary>
-    /// Returns null if the action is not attached to an actor.
-    /// </summary>
-    public Actor? GetActor()
-    {
-        return _actor;
-    }
-
+    
     /// <summary>
     /// </summary>
     /// <returns></returns>

@@ -1,8 +1,17 @@
 ﻿using System.Text;
 
-using LibGDXSharp.Utils.Regex;
-
 namespace LibGDXSharp.Utils;
+
+/// <summary>
+/// Node record holding a value and its index.
+/// To change the contents of <see cref="Value"/> use <see cref="BinaryHeap{T}.Add(ref T, float)"/>
+/// if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(ref T, float)"/>.
+/// </summary>
+public record BinaryHeapNode
+{
+    internal float Value { get; set; }
+    internal int   Index { get; set; }
+}
 
 /// <summary>
 /// A binary heap that stores nodes which each have a float value and are
@@ -15,8 +24,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 {
     public int Size { get; set; }
 
-    private BinaryHeapNode[] _nodes;
-    private bool             _isMaxHeap;
+    private          BinaryHeapNode[] _nodes;
+    private readonly bool             _isMaxHeap;
 
     public BinaryHeap( int capacity = 16, bool isMaxHeap = false )
     {
@@ -36,14 +45,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         {
             var newNodes = new BinaryHeapNode[ Size << 1 ];
 
-            Array.Copy
-                (
-                _nodes,
-                0,
-                newNodes,
-                0,
-                Size
-                );
+            Array.Copy( _nodes, 0, newNodes, 0, Size );
 
             _nodes = newNodes;
         }
@@ -67,7 +69,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     {
         node.Value = value;
 
-        return Add( node );
+        return Add( ref node );
     }
 
     /// <summary>
@@ -191,7 +193,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     public void SetValue( ref T node, float value )
     {
         var oldValue = node.Value;
-        
+
         node.Value = value;
 
         if ( ( value < oldValue ) ^ _isMaxHeap )
@@ -217,7 +219,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             if ( ( _nodes[ index ].Value < parent.Value ) ^ _isMaxHeap )
             {
                 _nodes[ ix ] = parent;
-                parent.Index    = ix;
+                parent.Index = ix;
                 ix           = parentIndex;
             }
             else
@@ -226,113 +228,125 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             }
         }
 
-        _nodes[ ix ]           = _nodes[ index ];
+        _nodes[ ix ]          = _nodes[ index ];
         _nodes[ index ].Index = ix;
     }
 
     private void Down( int index )
     {
-        BinaryHeapNode[] nodes = this.nodes;
-        int              size  = this.size;
+        BinaryHeapNode node = this._nodes[ index ];
 
-        BinaryHeapNode node  = nodes[ index ];
-        float          value = node.value;
+        var size  = this.Size;
+        var value = node.Value;
 
         while ( true )
         {
-            int leftIndex = 1 + ( index << 1 );
+            var leftIndex  = 1 + ( index << 1 );
+            var rightIndex = leftIndex + 1;
 
             if ( leftIndex >= size ) break;
-            int rightIndex = leftIndex + 1;
 
             // Always has a left child.
-            BinaryHeapNode leftNode  = nodes[ leftIndex ];
-            float          leftValue = leftNode.value;
+            BinaryHeapNode leftNode  = this._nodes[ leftIndex ];
+            var            leftValue = leftNode.Value;
 
             // May have a right child.
-            BinaryHeapNode rightNode;
-            float          rightValue;
+            BinaryHeapNode? rightNode;
+            float           rightValue;
 
             if ( rightIndex >= size )
             {
                 rightNode  = null;
-                rightValue = isMaxHeap ? -Float.MAX_VALUE : Float.MAX_VALUE;
+                rightValue = _isMaxHeap ? -float.MaxValue : float.MaxValue;
             }
             else
             {
-                rightNode  = nodes[ rightIndex ];
-                rightValue = rightNode.value;
+                rightNode  = this._nodes[ rightIndex ];
+                rightValue = rightNode.Value;
             }
 
             // The smallest of the three values is the parent.
-            if ( leftValue < rightValue ^ isMaxHeap )
+            if ( ( leftValue < rightValue ) ^ _isMaxHeap )
             {
-                if ( leftValue == value || ( leftValue > value ^ isMaxHeap ) ) break;
-                nodes[ index ] = leftNode;
-                leftNode.index = index;
-                index          = leftIndex;
+                if ( leftValue.Equals( value ) || ( ( leftValue > value ) ^ _isMaxHeap ) )
+                {
+                    break;
+                }
+
+                this._nodes[ index ] = leftNode;
+                leftNode.Index       = index;
+                index                = leftIndex;
             }
             else
             {
-                if ( rightValue == value || ( rightValue > value ^ isMaxHeap ) ) break;
-                nodes[ index ] = rightNode;
-                if ( rightNode != null ) rightNode.index = index;
+                if ( rightValue.Equals( value ) || ( ( rightValue > value ) ^ _isMaxHeap ) )
+                {
+                    break;
+                }
+
+                this._nodes[ index ] = rightNode!;
+
+                if ( rightNode != null ) rightNode.Index = index;
+
                 index = rightIndex;
             }
         }
 
-        nodes[ index ] = node;
-        node.index     = index;
+        node.Index      = index;
+        _nodes[ index ] = node;
     }
 
-    public bool Equals( Object obj )
+    public new bool Equals( object obj )
     {
-        if ( !( obj instanceof binaryHeap)) return false;
-        BinaryHeap             other = ( BinaryHeap )obj;
+        if (  obj is not BinaryHeap<T> other ) return false;
 
-        if ( other.size != size ) return false;
-        BinaryHeapNode[] nodes1 = this.nodes, nodes2 = other.nodes;
+        if ( other.Size != Size ) return false;
+        
+        BinaryHeapNode[] nodes1 = this._nodes;
+        BinaryHeapNode[] nodes2 = other._nodes;
 
-        for ( int i = 0, n = size; i < n; i++ )
-            if ( nodes1[ i ].value != nodes2[ i ].value )
+        for ( int i = 0, n = Size; i < n; i++ )
+        {
+            if ( !nodes1[ i ].Value.Equals( nodes2[ i ].Value ) ) 
+            {
                 return false;
+            }
+        }
 
         return true;
     }
 
     public int HashCode()
     {
-        int              h     = 1;
-        BinaryHeapNode[] nodes = this.nodes;
+        var              h     = 1;
+        BinaryHeapNode[] nodes = this._nodes;
 
-        for ( int i = 0, n = size; i < n; i++ )
-            h = h * 31 + Float.floatToIntBits( nodes[ i ].value );
+        for ( int i = 0, n = Size; i < n; i++ )
+        {
+            h = ( h * 31 ) + NumberUtils.FloatToIntBits( nodes[ i ].Value );
+        }
 
         return h;
     }
 
-    public string ToString()
+    public new string ToString()
     {
-        if ( size == 0 ) return "[]";
-        BinaryHeapNode[] nodes  = this.nodes;
-        StringBuilder    buffer = new StringBuilder( 32 );
-        buffer.append( '[' );
-        buffer.append( nodes[ 0 ].value );
+        if ( Size == 0 ) return "[]";
+        
+        BinaryHeapNode[] nodes  = this._nodes;
+        var              buffer = new StringBuilder( 32 );
 
-        for ( int i = 1; i < size; i++ )
+        buffer.Append( '[' );
+        buffer.Append( nodes[ 0 ].Value );
+
+        for ( var i = 1; i < Size; i++ )
         {
-            buffer.append( ", " );
-            buffer.append( nodes[ i ].value );
+            buffer.Append( ", " );
+            buffer.Append( nodes[ i ].Value );
         }
 
-        buffer.append( ']' );
+        buffer.Append( ']' );
 
-        return buffer.toString();
+        return buffer.ToString();
     }
-}
-
-public record BinaryHeapNode
-{
-    internal float Value { get; set; }
-    internal int   Index { get; set; }
 }

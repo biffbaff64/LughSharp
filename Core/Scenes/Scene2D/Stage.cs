@@ -30,6 +30,7 @@ namespace LibGDXSharp.Scenes.Scene2D;
 /// callbacks and handlers.
 /// </summary>
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Stage : InputAdapter
 {
     // True if any actor has ever had debug enabled.
@@ -41,11 +42,10 @@ public class Stage : InputAdapter
     private readonly int[]    _pointerScreenX    = new int[ 20 ];
     private readonly int[]    _pointerScreenY    = new int[ 20 ];
 
-    public readonly SnapshotArray< TouchFocus > touchFocuses
-        = new SnapshotArray< TouchFocus >( true, 4, typeof(TouchFocus) );
+    public readonly SnapshotArray< TouchFocus > touchFocuses = new(true, 4, typeof(TouchFocus));
 
-    private bool  _ownsBatch;
-    private Group _root;
+    private readonly bool  _ownsBatch;
+    private          Group _root;
 
     private int _mouseScreenX;
     private int _mouseScreenY;
@@ -65,20 +65,21 @@ public class Stage : InputAdapter
 
     /// <summary>
     /// Creates a stage with a <see cref="ScalingViewport"/> set to
-    /// <see cref="Scaling.Stretch"/>. The stage will use its own <see cref="Batch"/>
+    /// <see cref="Scaling.Stretch"/>. The stage will use its own <see cref="IBatch"/>
     /// which will be disposed when the stage is disposed. 
     /// </summary>
-    public Stage() : this
-        (
-         new ScalingViewport
-             (
-              Scaling.Stretch,
-              Gdx.Graphics.Width,
-              Gdx.Graphics.Height,
-              new OrthographicCamera()
-             ),
-         new SpriteBatch()
-        )
+    public Stage()
+        : this
+            (
+            new ScalingViewport
+                (
+                Scaling.Stretch,
+                Gdx.Graphics.Width,
+                Gdx.Graphics.Height,
+                new OrthographicCamera()
+                ),
+            new SpriteBatch()
+            )
     {
         _ownsBatch = true;
     }
@@ -270,10 +271,10 @@ public class Stage : InputAdapter
             // Update over actor for the pointer.
             _pointerOverActors[ pointer ] = FireEnterAndExit
                 (
-                 overLast,
-                 _pointerScreenX[ pointer ],
-                 _pointerScreenY[ pointer ],
-                 pointer
+                overLast,
+                _pointerScreenX[ pointer ],
+                _pointerScreenY[ pointer ],
+                pointer
                 );
         }
 
@@ -646,7 +647,11 @@ public class Stage : InputAdapter
         {
             TouchFocus focus = touchFocuses.get( i );
 
-            if ( focus.TouchFocus1.listener == listener && focus.TouchFocus1.listenerActor == listenerActor && focus.TouchFocus1.target == target && focus.TouchFocus1.pointer == pointer && focus.TouchFocus1.button == button )
+            if ( focus.TouchFocus1.listener == listener
+                 && focus.TouchFocus1.listenerActor == listenerActor
+                 && focus.TouchFocus1.target == target
+                 && focus.TouchFocus1.pointer == pointer
+                 && focus.TouchFocus1.button == button )
             {
                 touchFocuses.removeIndex( i );
                 Pools.free( focus );
@@ -1227,7 +1232,7 @@ public class Stage : InputAdapter
         var x1 = x0 + Viewport.ScreenWidth;
         var y0 = Viewport.ScreenY;
         var y1 = y0 + Viewport.ScreenHeight;
-            
+
         screenY = Gdx.Graphics.Height - 1 - screenY;
 
         return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
