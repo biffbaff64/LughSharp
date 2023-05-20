@@ -1,4 +1,6 @@
-﻿using LibGDXSharp.GdxCore.Utils.Pooling;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.GdxCore.Utils.Pooling;
 using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Utils.Pooling;
@@ -7,9 +9,10 @@ namespace LibGDXSharp.Utils.Pooling;
 /// Stores a map of <see cref="Pool{T}"/>s (usually <see cref="ReflectionPool{T}"/>s)
 /// by type for convenient static access.
 /// </summary>
-public class Pools<T> where T : Type
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class Pools<T>
 {
-    private readonly static Dictionary< Type, Pool<T>? > typePools = new();
+    private readonly static Dictionary< Type, Pool< T >? > typePools = new();
 
     private Pools()
     {
@@ -20,14 +23,14 @@ public class Pools<T> where T : Type
     /// to map. Note the max size is ignored if this is not the first time this
     /// pool has been requested. 
     /// </summary>
-    public static Pool<T> Get( int max = 100 )
+    public static Pool< T > Get( int max = 100 )
     {
         Pool< T >? pool = typePools[ typeof(T) ];
 
         if ( pool == null )
         {
             pool = new ReflectionPool< T >( 4, max );
-                
+
             typePools.Put( typeof(T), pool );
         }
 
@@ -38,7 +41,7 @@ public class Pools<T> where T : Type
     /// Sets an existing pool for the specified type, stored in a Class
     /// to <see cref="Pool{T}"/> map.
     /// </summary>
-    public static void Set( Type type, Pool<T> pool )
+    public static void Set( Type type, Pool< T > pool )
     {
         typePools[ type ] = pool;
     }
@@ -53,11 +56,7 @@ public class Pools<T> where T : Type
     {
         if ( obj == null ) throw new ArgumentException( "object cannot be null." );
 
-        Pool< T >? pool = typePools.Get( obj );
-
-        // Ignore freeing an object that was never retained.
-
-        pool?.Free( obj );
+        typePools[ typeof(T) ]?.Free( obj );
     }
 
     /// <summary>
@@ -69,14 +68,12 @@ public class Pools<T> where T : Type
     /// If true, objects don't need to be from the same pool but the
     /// pool must be looked up for each object.
     /// </param>
-    public static void FreeAll( List<T?> objects, bool samePool = false )
+    public static void FreeAll( List< T? > objects, bool samePool = false )
     {
         if ( objects == null )
         {
             throw new ArgumentException( "objects cannot be null." );
         }
-
-        Pool<T>? pool = null;
 
         for ( int i = 0, n = objects.Count; i < n; i++ )
         {
@@ -84,19 +81,13 @@ public class Pools<T> where T : Type
 
             if ( obj == null ) continue;
 
-            if ( pool == null )
-            {
-                pool = typePools[ obj ];
+            if ( typePools[ typeof(T) ] == null ) continue;
 
-                // Ignore freeing an object that was never retained.
-                if ( pool == null ) continue;
-            }
-
-            pool.Free( obj );
+            typePools[ typeof(T) ]?.Free( obj );
 
             if ( !samePool )
             {
-                pool = null;
+                typePools[ typeof(T) ] = null;
             }
         }
     }

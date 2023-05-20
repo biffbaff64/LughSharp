@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace LibGDXSharp.Utils.Collections.Extensions;
@@ -22,6 +23,7 @@ namespace LibGDXSharp.Utils.Collections.Extensions;
 /// probing continues to work even when all hashCodes collide, just more slowly.
 /// </p>
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ObjectMap<TK, TV> : IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV > >
 {
     private TK?[] _keyTable;
@@ -151,7 +153,7 @@ public class ObjectMap<TK, TV> : IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV 
 
         if ( _keyTable == null ) throw new NullReferenceException( "_keyTable is null" );
 
-        for ( var i = Place( key );; i = ( i + 1 ) & _mask )
+        for ( var i = Place( key ); /*..*/; i = ( i + 1 ) & _mask )
         {
             TK? other = _keyTable[ i ];
 
@@ -212,7 +214,7 @@ public class ObjectMap<TK, TV> : IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV 
     /// <summary>
     /// </summary>
     /// <param name="newSize"></param>
-    void Resize( int newSize )
+    public void Resize( int newSize )
     {
         var oldCapacity = _keyTable.Length;
         _threshold = ( int )( newSize * _loadFactor );
@@ -220,8 +222,8 @@ public class ObjectMap<TK, TV> : IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV 
         _mask  = newSize - 1;
         _shift = int.LeadingZeroCount( _mask );
 
-        var oldKeyTable   = _keyTable;
-        var oldValueTable = _valueTable;
+        TK?[] oldKeyTable   = _keyTable;
+        TV?[] oldValueTable = _valueTable;
 
         _keyTable   = new TK[ newSize ];
         _valueTable = new TV[ newSize ];
@@ -388,7 +390,7 @@ public class ObjectMap<TK, TV> : IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV 
         {
             for ( var i = _valueTable.Length - 1; i >= 0; i-- )
             {
-                if ( _keyTable[ i ] != null && _valueTable[ i ] == null )
+                if ( ( _keyTable[ i ] != null ) && ( _valueTable[ i ] == null ) )
                 {
                     return true;
                 }
@@ -428,7 +430,7 @@ public class ObjectMap<TK, TV> : IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV 
         {
             for ( var i = _valueTable.Length - 1; i >= 0; i-- )
             {
-                if ( _keyTable[ i ] != null && _valueTable[ i ] == null )
+                if ( ( _keyTable[ i ] != null ) && ( _valueTable[ i ] == null ) )
                 {
                     return _keyTable[ i ];
                 }

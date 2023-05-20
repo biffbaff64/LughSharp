@@ -9,15 +9,6 @@ namespace LibGDXSharp.Scenes.Scene2D;
 public class InputEvent : Event
 {
     /// <summary>
-    /// </summary>
-    public new void Reset()
-    {
-        base.Reset();
-        RelatedActor = null;
-        Button       = -1;
-    }
-
-    /// <summary>
     /// The stage x coordinate where the event occurred. Valid for: TouchDown,
     /// TouchDragged, TouchUp, MouseMoved, Enter, and Exit. 
     /// </summary>
@@ -34,7 +25,6 @@ public class InputEvent : Event
     /// </summary>
     public EventType? Type { get; set; }
 
-
     /// <summary>
     /// The pointer index for the event. The first touch is index 0, second touch is index 1, etc.
     /// Always -1 on desktop.
@@ -42,25 +32,21 @@ public class InputEvent : Event
     /// </summary>
     public int Pointer { get; set; }
 
-
     /// <summary>
     /// The index for the mouse button pressed. Always 0 on Android.
     /// Valid for: TouchDown and TouchUp.
     /// </summary>
     public int Button { get; set; }
 
-
     /// <summary>
     /// The key code of the key that was pressed. Valid for: keyDown and keyUp.
     /// </summary>
     public int KeyCode { get; set; }
 
-
     /// <summary>
     /// The character for the key that was type. Valid for: keyTyped.
     /// </summary>
     public char Character { get; set; }
-
 
     /// <summary>
     /// The amount the mouse was scrolled horizontally. Valid for: Scrolled.
@@ -80,14 +66,23 @@ public class InputEvent : Event
     public Actor? RelatedActor { get; set; }
 
     /// <summary>
+    /// </summary>
+    public new void Reset()
+    {
+        base.Reset();
+        RelatedActor = null;
+        Button       = -1;
+    }
+
+    /// <summary>
     /// Sets actorCoords to this event's coordinates relative to the specified actor.
     /// </summary>
     /// <param name="actor"></param>
     /// <param name="actorCoords"> Output for resulting coordinates.</param>
-    public Vector2 ToCoordinates( Actor actor, Vector2 actorCoords )
+    public Vector2 ToCoordinates( Actor? actor, Vector2 actorCoords )
     {
         actorCoords.Set( StageX, StageY );
-        actor.StageToLocalCoordinates( actorCoords );
+        actor?.StageToLocalCoordinates( actorCoords );
 
         return actorCoords;
     }

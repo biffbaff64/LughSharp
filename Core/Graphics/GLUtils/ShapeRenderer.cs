@@ -1,7 +1,10 @@
-﻿using LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ShapeRenderer : IDisposable
 {
     public enum ShapeType
@@ -31,19 +34,17 @@ public class ShapeRenderer : IDisposable
     {
     }
 
-    public void Dispose()
+    public void Flush()
     {
-        throw new NotImplementedException();
     }
 
     public void SetAutoShapeType( bool b )
     {
-        throw new NotImplementedException();
     }
 
     public bool IsDrawing()
     {
-        throw new NotImplementedException();
+        return false;
     }
 
     public Matrix4 GetTransformMatrix()
@@ -51,7 +52,15 @@ public class ShapeRenderer : IDisposable
         throw new NotImplementedException();
     }
 
-    public void SetProjectionMatrix( Matrix4 cameraCombined )
+    public void SetProjectionMatrix( Matrix4? cameraCombined )
+    {
+    }
+
+    public void Dispose()
+    {
+    }
+
+    public void SetTransformMatrix( Matrix4 transform )
     {
         throw new NotImplementedException();
     }

@@ -6,9 +6,10 @@ using LibGDXSharp.Maths;
 namespace LibGDXSharp.Utils.Collections.Extensions;
 
 [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class GdxArray<T>
 {
-    public T?[] Items   { get; private set; }
+    public T[]  Items   { get; private set; }
     public int  Size    { get; private set; }
     public bool Ordered { get; private set; }
 
@@ -44,8 +45,7 @@ public class GdxArray<T>
         Size    = array.Size;
         Items   = new T[ Size ];
 
-        Array.Copy( array.Items, 0, 
-                    Items, 0, Size );
+        Array.Copy( array.Items, 0, Items, 0, Size );
     }
 
     /// <summary>
@@ -109,7 +109,7 @@ public class GdxArray<T>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public void AddAll( GdxArray< T > array, int start, int count )
     {
-        if ( start + count > array.Size )
+        if ( ( start + count ) > array.Size )
         {
             throw new ArgumentOutOfRangeException
                 ( "start + count must be <= size - " + start + " + " + count + " <= " + array.Size );
@@ -132,14 +132,7 @@ public class GdxArray<T>
             Items = Resize( Math.Max( 8, ( int )( sizeNeeded * 1.75f ) ) );
         }
 
-        Array.Copy
-            (
-             array,
-             start,
-             Items,
-             Size,
-             count
-            );
+        Array.Copy( array, start, Items, Size, count );
 
         Size += count;
     }
@@ -149,7 +142,7 @@ public class GdxArray<T>
     /// <param name="index"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public T? Get( int index )
+    public T Get( int index )
     {
         if ( index >= Size )
         {
@@ -349,27 +342,20 @@ public class GdxArray<T>
     /// <param name="index"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public T? RemoveIndex( int index )
+    public T RemoveIndex( int index )
     {
         if ( index >= Size )
         {
             throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
         }
 
-        T? value = Items[ index ];
+        T value = Items[ index ];
 
         Size--;
 
         if ( Ordered )
         {
-            Array.Copy
-                (
-                 Items,
-                 index + 1,
-                 Items,
-                 index,
-                 Size - index
-                );
+            Array.Copy( Items, index + 1, Items, index, Size - index );
         }
         else
         {
@@ -398,18 +384,11 @@ public class GdxArray<T>
             throw new ArgumentOutOfRangeException( "start can't be > end - " + start + " > " + end );
         }
 
-        var count = end - start + 1;
+        var count = ( end - start ) + 1;
 
         if ( Ordered )
         {
-            Array.Copy
-                (
-                 Items,
-                 start + count,
-                 Items,
-                 start,
-                 Size - ( start + count )
-                );
+            Array.Copy( Items, start + count, Items, start, Size - ( start + count ) );
         }
         else
         {
@@ -427,16 +406,15 @@ public class GdxArray<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    /// <param name="identity"></param>
     /// <returns></returns>
-    public bool RemoveAll( GdxArray< T > array, bool identity )
+    public bool RemoveAll( GdxArray< T > array )
     {
         var size      = this.Size;
         var startSize = size;
 
         for ( int i = 0, n = array.Size; i < n; i++ )
         {
-            T? item = array.Get( i );
+            T item = array.Get( i );
 
             for ( var ii = 0; ii < size; ii++ )
             {
@@ -457,7 +435,7 @@ public class GdxArray<T>
     /// Removes and returns the last item.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-    public T? Pop()
+    public T Pop()
     {
         if ( Size == 0 )
         {
@@ -466,7 +444,7 @@ public class GdxArray<T>
 
         --Size;
 
-        T? item = Items[ Size ];
+        T item = Items[ Size ];
 
         Items[ Size ] = default!;
 
@@ -477,7 +455,7 @@ public class GdxArray<T>
     /// Returns the last item in the array.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-    public T? Peek()
+    public T Peek()
     {
         if ( Size == 0 )
         {
@@ -491,7 +469,7 @@ public class GdxArray<T>
     /// Returns the first item in the array.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-    public T? First()
+    public T First()
     {
         if ( Size == 0 ) throw new NullReferenceException( "Array is empty." );
 
@@ -502,11 +480,8 @@ public class GdxArray<T>
     /// </summary>
     public void Clear()
     {
-        for ( int i = 0, n = Size; i < n; i++ )
-        {
-            Items[ i ] = default( T );
-        }
-
+        Array.Clear( Items );
+        
         Size = 0;
     }
 
@@ -561,7 +536,7 @@ public class GdxArray<T>
     /// </summary>
     /// <param name="newSize"></param>
     /// <returns></returns>
-    protected T?[] Resize( int newSize )
+    protected T[] Resize( int newSize )
     {
         var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
 
@@ -582,7 +557,7 @@ public class GdxArray<T>
     /// <summary>
     /// </summary>
     /// <param name="comparator"></param>
-    public void Sort( IComparer< T > comparator )
+    public void Sort( IComparer< object > comparator )
     {
         SortUtils.Instance.Sort( Items, comparator, 0, Size );
     }
@@ -658,11 +633,11 @@ public class GdxArray<T>
 
         if ( _predicateIEnumerable == null )
         {
-            _predicateIEnumerable = new PredicateIterable< T >( Items!, predicate );
+            _predicateIEnumerable = new PredicateIterable< T >( Items, predicate );
         }
         else
         {
-            _predicateIEnumerable.Set( Items!, predicate );
+            _predicateIEnumerable.Set( Items, predicate );
         }
 
         return _predicateIEnumerable;
@@ -717,8 +692,7 @@ public class GdxArray<T>
     {
         var result = ( T[] )Array.CreateInstance( type, Size );
 
-        Array.Copy( Items, 0, 
-                    result, 0, Size );
+        Array.Copy( Items, 0, result, 0, Size );
 
         return result;
     }
@@ -737,7 +711,7 @@ public class GdxArray<T>
         {
             h *= 31;
 
-            T? item = Items[ i ];
+            T item = Items[ i ];
 
             if ( item != null )
             {
@@ -768,10 +742,10 @@ public class GdxArray<T>
 
         for ( var i = 0; i < n; i++ )
         {
-            T? o1 = this.Items[ i ];
-            T? o2 = array.Items[ i ];
+            T o1 = this.Items[ i ];
+            T o2 = array.Items[ i ];
 
-            if ( !( o1?.Equals( o2 ) ?? o2 == null ) ) return false;
+            if ( !( o1?.Equals( o2 ) ?? ( o2 == null ) ) ) return false;
         }
 
         return true;

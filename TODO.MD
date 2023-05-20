@@ -413,13 +413,14 @@ SCENES.SCENE2D
 --------------
     - DONE - Action                         Convert
     - IP   - Actor                          Convert
-    - IP   - Event                          Convert
-    - IP   - Group                          Convert
+    - DONE - Event                          Convert
+    - DONE - Group                          Convert
     - DONE - IEventListener                 Convert
     - DONE - InputEvent                     Convert
-    -      - InputListener                  Convert
+    - DONE - InputListener                  Convert
     - IP   - Stage                          Convert
-    -      - Touchable                      Convert
+    - DONE - Touchable                      Convert
+    - DONE - TouchFocus                     Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -636,6 +637,16 @@ UTILS/COLLECTIONS
 
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - SnapshotArray                  Convert / extend List<T>
+
+    Extensions
+    ----------
+    - IP   - DictionaryExtensions
+    - DONE - GdxArray
+    - IP   - ListExtensions
+    -      - ListQueue
+    -      - ListStack
+    -      - ObjectMap
+    -      - ObjectSet
 
     Maps
     ----

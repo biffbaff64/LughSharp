@@ -87,8 +87,7 @@ public sealed class SortUtils
     /// <param name="fromIndex"></param>
     /// <param name="toIndex"></param>
     /// <typeparam name="T"></typeparam>
-    /// <typeparam name="T1"></typeparam>
-    public void Sort<T, T1>( IEnumerable< T > a, IComparer< object > c, int fromIndex, int toIndex )
+    public void Sort<T>( IEnumerable< T > a, IComparer< object > c, int fromIndex, int toIndex )
     {
         _timSort ??= new TimSort< object >();
 

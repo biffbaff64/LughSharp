@@ -20,40 +20,43 @@ namespace LibGDXSharp.Utils.Collections;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class SnapshotArray<T> : List< T >
+public sealed class SnapshotArray<T> : GdxArray< T >
 {
     private T[]? _snapshot;
     private T[]? _recycled;
-    private int  _snapshots;
+    private int  _snapshotCount;
 
-    public SnapshotArray( int capacity = 0 ) : base( capacity )
+    public SnapshotArray( int capacity = 0 ) : base( capacity: capacity )
     {
     }
 
-    public SnapshotArray( List< T > array ) : base( array )
+    public SnapshotArray( GdxArray< T > array ) : base( array )
     {
     }
 
-    public SnapshotArray( T[] array ) : base( array )
+    public SnapshotArray( bool ordered, int capacity )
+        : base( ordered, capacity )
+    {
+    }
+
+    public SnapshotArray( bool ordered, T[] array, int startIndex, int count )
+        : base( ordered, array, startIndex, count )
     {
     }
 
     /// <summary>
+    /// Takes a snapshot of the current array state and then
+    /// returns the array. 
     /// </summary>
     /// <returns></returns>
     /// <exception cref="NullReferenceException"></exception>
     public T?[] Begin()
     {
-        if ( _snapshot == null )
-        {
-            throw new NullReferenceException( "Snapshot array should not be NULL in Begin()" );
-        }
-
         Modified();
 
-        CopyTo( _snapshot );
+        _snapshot = ToArray();
 
-        _snapshots++;
+        _snapshotCount++;
 
         return ToArray();
     }
@@ -62,9 +65,9 @@ public sealed class SnapshotArray<T> : List< T >
     /// </summary>
     public void End()
     {
-        _snapshots = System.Math.Max( 0, _snapshots - 1 );
+        _snapshotCount = Math.Max( 0, _snapshotCount - 1 );
 
-        if ( _snapshot != base.ToArray() && _snapshots == 0 )
+        if ( ( _snapshot != base.ToArray() ) && ( _snapshotCount == 0 ) )
         {
             // The backing array was copied, keep around the old array.
             _recycled = _snapshot;
@@ -83,25 +86,26 @@ public sealed class SnapshotArray<T> : List< T >
 
     /// <summary>
     /// </summary>
-    private void Modified()
+    public void Modified()
     {
         if ( _snapshot != base.ToArray() ) return;
 
-        // Snapshot is in use, copy backing array to recycled array or create new backing array.
-        if ( _recycled?.Length >= Count )
+        // Snapshot is in use, copy backing array to recycled
+        // array or create new backing array.
+        if ( _recycled?.Length >= Size )
         {
             // Copy the contents of items[] to recycled
-            for ( var i = 0; i < Count; i++ )
+            for ( var i = 0; i < Size; i++ )
             {
-                _recycled[ i ] = base[ i ];
+                _recycled[ i ] = Items[ i ];
             }
-                
+
             // 'recycled' now references nothing 
             _recycled = default!;
         }
         else
         {
-            this.Resize( base.Count );
+            this.Resize( base.Size );
         }
     }
 
@@ -110,10 +114,11 @@ public sealed class SnapshotArray<T> : List< T >
     /// </summary>
     /// <param name="index"></param>
     /// <param name="value"></param>
-    public void Set( int index, T value )
+    public new void Set( int index, T value )
     {
         Modified();
-        this[ index ] = value;
+
+        base.Set( index, value );
     }
 
     /// <summary>
@@ -127,15 +132,11 @@ public sealed class SnapshotArray<T> : List< T >
         base.Insert( index, value );
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="collection"></param>
-    public new void InsertRange( int index, IEnumerable< T > collection )
+    public new void Swap( int first, int second )
     {
         Modified();
-        base.InsertRange( index, collection );
+
+        ( Items[ first ], Items[ second ] ) = ( Items[ second ], Items[ first ] );
     }
 
     /// <summary>
@@ -143,11 +144,11 @@ public sealed class SnapshotArray<T> : List< T >
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public new bool Remove( T value )
+    public bool Remove( T value )
     {
         Modified();
 
-        return base.Remove( value );
+        return base.RemoveValue( value );
     }
 
     /// <summary>
@@ -155,7 +156,7 @@ public sealed class SnapshotArray<T> : List< T >
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    public new T RemoveAt( int index )
+    public T RemoveAt( int index )
     {
         Modified();
 
@@ -177,14 +178,12 @@ public sealed class SnapshotArray<T> : List< T >
     /// Removes all the elements that match the conditions defined by the
     /// specified predicate.
     /// </summary>
-    /// <param name="match">
-    /// The Predicate delegate that defines the conditions of the elements to remove.
-    /// </param>
-    /// <returns>The number of elements removed from the array</returns>
-    public new int RemoveAll( Predicate< T > match )
+    /// <param name="array"></param>
+    /// <returns></returns>
+    public bool RemoveAll<TT>( TT array ) where TT : GdxArray<T>
     {
         Modified();
 
-        return base.RemoveAll( match );
+        return base.RemoveAll( array );
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
@@ -9,23 +10,23 @@ namespace LibGDXSharp.Scenes.Scene2D;
 
 /// <summary>
 /// 2D scene graph node that may contain other actors.
-/// <p>
+/// <para>
 /// Actors have a z-order equal to the order they were inserted into the group.
-/// Actors inserted later will be drawn on top of actors added earlier.
-/// Touch events that hit more than one actor are distributed to topmost actors
-/// first.
-/// </p>
+/// Actors inserted later will be drawn on top of actors added earlier. Touch
+/// events that hit more than one actor are distributed to topmost actors first.
+/// </para>
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Group : Actor, ICullable
 {
-    public SnapshotArray< Actor > Children { get; set; } = new SnapshotArray< Actor >( true, 4 );
+    public SnapshotArray< Actor > Children    { get; set; } = new(4);
+    public RectangleShape?        CullingArea { get; set; }
 
-    private readonly Affine2         _worldTransform    = new Affine2();
-    private readonly Matrix4x4       _computedTransform = new Matrix4x4();
-    private readonly Matrix4x4       _oldTransform      = new Matrix4x4();
-    private          bool            _transform         = true;
-    private          RectangleShape? _cullingArea;
-
+    private readonly Affine2 _worldTransform    = new();
+    private readonly Matrix4 _computedTransform = new();
+    private readonly Matrix4 _oldTransform      = new();
+    private readonly Vector2 _tmp               = new();
+    
     /// <summary>
     /// </summary>
     /// <param name="delta"></param>
@@ -33,11 +34,11 @@ public class Group : Actor, ICullable
     {
         base.Act( delta );
 
-        var actors = Children.Begin();
+        Actor?[] actors = Children.Begin();
 
-        for ( int i = 0, n = Children.Size; i < n; i++ )
+        for ( int i = 0, n = Children.Count; i < n; i++ )
         {
-            actors[ i ].Act( delta );
+            actors[ i ]?.Act( delta );
         }
 
         Children.End();
@@ -45,24 +46,24 @@ public class Group : Actor, ICullable
 
     /// <summary>
     /// Draws the group and its children.
-    /// <p>
+    /// <para>
     /// The default implementation calls <see cref="ApplyTransform(IBatch, Matrix4)"/> if needed,
     /// then <see cref="DrawChildren(IBatch, float)"/>, then <see cref="ResetTransform(IBatch)"/>
     /// if needed.
-    /// </p>
+    /// </para>
     /// </summary>
     /// <param name="batch"></param>
     /// <param name="parentAlpha"></param>
     public new void Draw( IBatch batch, float parentAlpha )
     {
-        if ( _transform )
+        if ( Transform )
         {
             ApplyTransform( batch, ComputeTransform() );
         }
 
         DrawChildren( batch, parentAlpha );
 
-        if ( _transform )
+        if ( Transform )
         {
             ResetTransform( batch );
         }
@@ -70,51 +71,48 @@ public class Group : Actor, ICullable
 
     /// <summary>
     /// Draws all children.
-    /// <p>
+    /// <para>
     /// <see cref="ApplyTransform(IBatch, Matrix4)"/> should be called before and
-    /// <see cref="ResetTransform(IBatch)"/> after this method if <see cref="SetTransform(bool)"/>
-    /// transform is true.
-    /// </p>
-    /// <p>
-    /// If <see cref="SetTransform(bool)"/> transform is false these methods don't need
-    /// to be called, children positions are temporarily offset by the group position when
-    /// drawn. This method avoids drawing children completely outside the
-    /// <see cref="SetCullingArea(RectangleShape)"/> culling area, if set.
-    /// </p>
+    /// <see cref="ResetTransform(IBatch)"/> after this method if <see cref="Transform"/>
+    /// is true.
+    /// </para>
+    /// <para>
+    /// If <see cref="Transform"/> is false these methods don't need to be called,
+    /// children positions are temporarily offset by the group position when drawn.
+    /// This method avoids drawing children completely outside the
+    /// <see cref="CullingArea"/> culling area, if set.
+    /// </para>
     /// </summary>
     protected void DrawChildren( IBatch batch, float parentAlpha )
     {
         parentAlpha *= this.Color.A;
 
-        var children = this.Children;
-        var actors   = children.Begin();
+        Actor?[] actors = Children.Begin();
 
-        if ( this._cullingArea != null )
+        if ( this.CullingArea != null )
         {
             // Draw children only if inside culling area.
-            var cullLeft   = this._cullingArea.X;
-            var cullRight  = cullLeft + this._cullingArea.Width;
-            var cullBottom = this._cullingArea.Y;
-            var cullTop    = cullBottom + this._cullingArea.Height;
+            var cullLeft   = this.CullingArea.X;
+            var cullRight  = cullLeft + this.CullingArea.Width;
+            var cullBottom = this.CullingArea.Y;
+            var cullTop    = cullBottom + this.CullingArea.Height;
 
-            if ( _transform )
+            if ( Transform )
             {
-                for ( int i = 0, n = children.Size; i < n; i++ )
+                for ( int i = 0, n = Children.Count; i < n; i++ )
                 {
-                    Actor child = actors[ i ];
+                    Actor? child = actors[ i ];
 
-                    if ( !child.IsVisible() )
-                    {
-                        continue;
-                    }
+                    if ( child == null ) continue;
+                    if ( !child.Visible ) continue;
 
                     var cx = child.X;
                     var cy = child.Y;
 
-                    if ( cx <= cullRight
-                         && cy <= cullTop
-                         && cx + child.Width >= cullLeft
-                         && cy + child.Height >= cullBottom )
+                    if ( ( cx <= cullRight )
+                         && ( cy <= cullTop )
+                         && ( ( cx + child.Width ) >= cullLeft )
+                         && ( ( cy + child.Height ) >= cullBottom ) )
                     {
                         child.Draw( batch, parentAlpha );
                     }
@@ -129,22 +127,20 @@ public class Group : Actor, ICullable
                 X = 0;
                 Y = 0;
 
-                for ( int i = 0, n = children.Size; i < n; i++ )
+                for ( int i = 0, n = Children.Count; i < n; i++ )
                 {
-                    Actor child = actors[ i ];
+                    Actor? child = actors[ i ];
 
-                    if ( !child.IsVisible() )
-                    {
-                        continue;
-                    }
+                    if ( child == null ) continue;
+                    if ( !child.Visible ) continue;
 
-                    float cx = child.X;
-                    float cy = child.Y;
+                    var cx = child.X;
+                    var cy = child.Y;
 
-                    if ( cx <= cullRight
-                         && cy <= cullTop
-                         && cx + child.Width >= cullLeft
-                         && cy + child.Height >= cullBottom )
+                    if ( ( cx <= cullRight )
+                         && ( cy <= cullTop )
+                         && ( ( cx + child.Width ) >= cullLeft )
+                         && ( ( cy + child.Height ) >= cullBottom ) )
                     {
                         child.X = cx + offsetX;
                         child.Y = cy + offsetY;
@@ -161,16 +157,14 @@ public class Group : Actor, ICullable
         else
         {
             // No culling, draw all children.
-            if ( _transform )
+            if ( Transform )
             {
-                for ( int i = 0, n = children.Size; i < n; i++ )
+                for ( int i = 0, n = Children.Count; i < n; i++ )
                 {
-                    Actor child = actors[ i ];
+                    Actor? child = actors[ i ];
 
-                    if ( !child.IsVisible() )
-                    {
-                        continue;
-                    }
+                    if ( child == null ) continue;
+                    if ( !child.Visible ) continue;
 
                     child.Draw( batch, parentAlpha );
                 }
@@ -184,14 +178,12 @@ public class Group : Actor, ICullable
                 X = 0;
                 Y = 0;
 
-                for ( int i = 0, n = children.Size; i < n; i++ )
+                for ( int i = 0, n = Children.Count; i < n; i++ )
                 {
-                    Actor child = actors[ i ];
+                    Actor? child = actors[ i ];
 
-                    if ( !child.IsVisible() )
-                    {
-                        continue;
-                    }
+                    if ( child == null ) continue;
+                    if ( !child.Visible ) continue;
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -208,57 +200,55 @@ public class Group : Actor, ICullable
             }
         }
 
-        children.End();
+        Children.End();
     }
 
     /// <summary>
-    /// Draws this actor's debug lines if <see cref="DebugFlag"/> is true and,
-    /// regardless of <see cref="DebugFlag"/>, calls
+    /// Draws this actor's debug lines if <see cref="Actor.DebugFlag"/> is
+    /// true and, regardless of <see cref="Actor.DebugFlag"/>, calls
     /// <see cref="Actor.DrawDebug(ShapeRenderer)"/> on each child. 
     /// </summary>
     public new void DrawDebug( ShapeRenderer shapes )
     {
         DrawDebugBounds( shapes );
 
-        if ( _transform )
+        if ( Transform )
         {
             ApplyTransform( shapes, ComputeTransform() );
         }
 
         DrawDebugChildren( shapes );
 
-        if ( _transform )
+        if ( Transform )
         {
             ResetTransform( shapes );
         }
     }
 
     /// <summary>
-    /// Draws all children. <seealso cref="ApplyTransform(IBatch, Matrix4X4)"/> should be
-    /// called before and <seealso cref="resetTransform(IBatch)"/> after this method if
-    /// <seealso cref="SetTransform(bool)"/> transform is true.
-    /// <p>
-    /// If <seealso cref="SetTransform"/> transform is false these methods don't
-    /// need to be called, children positions are temporarily offset by the group position
-    /// when drawn. This method avoids drawing children completely outside the
-    /// <seealso cref="SetCullingArea(Rectangle)"/> culling area, if set. 
-    /// </p>
+    /// Draws all children. <see cref="ApplyTransform(IBatch, Matrix4)"/> should be
+    /// called before and <see cref="ResetTransform(IBatch)"/> after this method if
+    /// <see cref="Transform"/> is true.
+    /// <para>
+    /// If <see cref="Transform"/> is false these methods don't need to be called,
+    /// children positions are temporarily offset by the group position when drawn.
+    /// This method avoids drawing children completely outside the
+    /// <see cref="CullingArea"/> culling area, if set. 
+    /// </para>
     /// </summary>
     protected void DrawDebugChildren( ShapeRenderer shapes )
     {
-        Actor[] actors = Children.Begin();
+        Actor?[] actors = Children.Begin();
 
         // No culling, draw all children.
-        if ( _transform )
+        if ( Transform )
         {
-            for ( int i = 0, n = Children.Size; i < n; i++ )
+            for ( int i = 0, n = Children.Count; i < n; i++ )
             {
-                Actor child = actors[ i ];
+                Actor? child = actors[ i ];
 
-                if ( !child.IsVisible() )
-                {
-                    continue;
-                }
+                if ( child == null ) continue;
+                if ( !child.Visible ) continue;
 
                 if ( !child.DebugFlag && !( child is Group ) )
                 {
@@ -279,16 +269,14 @@ public class Group : Actor, ICullable
             X = 0;
             Y = 0;
 
-            for ( int i = 0, n = Children.Size; i < n; i++ )
+            for ( int i = 0, n = Children.Count; i < n; i++ )
             {
-                Actor child = actors[ i ];
+                Actor? child = actors[ i ];
 
-                if ( !child.IsVisible() )
-                {
-                    continue;
-                }
+                if ( child == null ) continue;
+                if ( !child.Visible ) continue;
 
-                if ( !child.DebugFlag && !( child is Group ) )
+                if ( !child.DebugFlag && ( child is not Group ) )
                 {
                     continue;
                 }
@@ -311,47 +299,48 @@ public class Group : Actor, ICullable
     }
 
     /// <summary>
-    /// Returns the transform for this group's coordinate system. </summary>
-    protected Matrix4x4 ComputeTransform()
+    /// Returns the transform for this group's coordinate system.
+    /// </summary>
+    protected Matrix4 ComputeTransform()
     {
-        _worldTransform.SetToTrnRotScl( X + OriginX, Y + OriginY, Rotation, scaleX, scaleY );
+        _worldTransform.SetToTrnRotScl( X + OriginX, Y + OriginY, Rotation, ScaleX, ScaleY );
 
-        if ( originX != 0 || originY != 0 )
+        if ( ( OriginX != 0 ) || ( OriginY != 0 ) )
         {
-            worldTransform.translate( -originX, -originY );
+            _worldTransform.Translate( -OriginX, -OriginY );
         }
 
         // Find the first parent that transforms.
-        Group parentGroup = parent;
+        Group? parentGroup = Parent;
 
         while ( parentGroup != null )
         {
-            if ( parentGroup.transform )
+            if ( parentGroup.Transform )
             {
                 break;
             }
 
-            parentGroup = parentGroup.parent;
+            parentGroup = parentGroup.Parent;
         }
 
         if ( parentGroup != null )
         {
-            worldTransform.preMul( parentGroup.worldTransform );
+            _worldTransform.PreMul( parentGroup._worldTransform );
         }
 
-        _computedTransform.Set( worldTransform );
+        _computedTransform.Set( _worldTransform );
 
         return _computedTransform;
     }
 
     /// <summary>
     /// Set the batch's transformation matrix, often with the result of
-    /// <seealso cref="ComputeTransform()"/>. Note this causes the batch to
+    /// <see cref="ComputeTransform()"/>. Note this causes the batch to
     /// be flushed.
-    /// <seealso cref="ResetTransform(IBatch)"/> will restore the transform
+    /// <see cref="ResetTransform(IBatch)"/> will restore the transform
     /// to what it was before this call. 
     /// </summary>
-    protected void ApplyTransform( IBatch batch, Matrix4x4 transform )
+    protected void ApplyTransform( IBatch batch, Matrix4 transform )
     {
         _oldTransform.Set( batch.GetTransformMatrix() );
 
@@ -359,8 +348,9 @@ public class Group : Actor, ICullable
     }
 
     /// <summary>
-    /// Restores the batch transform to what it was before <seealso cref="applyTransform(Batch, Matrix4)"/>. Note this causes the batch to
-    /// be flushed. 
+    /// Restores the batch transform to what it was before
+    /// <see cref="ApplyTransform(IBatch, Matrix4)"/>.
+    /// Note this causes the batch to be flushed. 
     /// </summary>
     protected void ResetTransform( IBatch batch )
     {
@@ -369,14 +359,14 @@ public class Group : Actor, ICullable
 
     /// <summary>
     /// Set the shape renderer transformation matrix, often with the result of
-    /// <seealso cref="ComputeTransform()"/>.
-    /// <p>
+    /// <see cref="ComputeTransform()"/>.
+    /// <para>
     /// Note this causes the shape renderer to be flushed.
-    /// <seealso cref="ResetTransform(ShapeRenderer)"/> will restore the transform
+    /// <see cref="ResetTransform(ShapeRenderer)"/> will restore the transform
     /// to what it was before this call. 
-    /// </p>
+    /// </para>
     /// </summary>
-    protected void ApplyTransform( ShapeRenderer shapes, Matrix4x4 transform )
+    protected void ApplyTransform( ShapeRenderer shapes, Matrix4 transform )
     {
         _oldTransform.Set( shapes.GetTransformMatrix() );
 
@@ -385,208 +375,243 @@ public class Group : Actor, ICullable
     }
 
     /// <summary>
-    /// Restores the shape renderer transform to what it was before <seealso cref="applyTransform(Batch, Matrix4)"/>. Note this causes the
-    /// shape renderer to be flushed. 
+    /// Restores the shape renderer transform to what it was before
+    /// <see cref="ApplyTransform(IBatch, Matrix4)"/>.
+    /// Note this causes the shape renderer to be flushed. 
     /// </summary>
     protected void ResetTransform( ShapeRenderer shapes )
     {
         shapes.SetTransformMatrix( _oldTransform );
     }
 
-    /** Children completely outside of this rectangle will not be drawn. This is only valid for use with unrotated and unscaled
-	 * actors.
-	 * @param cullingArea May be null. */
-    public void SetCullingArea( @Null rectangle cullingArea )
+    public new Actor? Hit( float x, float y, bool touchable )
     {
-        this.cullingArea = cullingArea;
-    }
+        if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
+        if ( !Visible ) return null;
 
-    /** @return May be null.
-	 * @see #setCullingArea(Rectangle) */
-    public @Null Rectangle getCullingArea()
-    {
-        return cullingArea;
-    }
-
-    public @Null Actor hit( float x, float y, bool touchable )
-    {
-        if ( touchable && GetTouchable() == Touchable.disabled ) return null;
-        if ( !IsVisible() ) return null;
-        Vector2 point         = tmp;
-        Actor[] childrenArray = children.items;
-
-        for ( int i = children.size - 1; i >= 0; i-- )
+        for ( var i = Children.Count - 1; i >= 0; i-- )
         {
-            Actor child = childrenArray[ i ];
-            child.parentToLocalCoordinates( point.set( x, y ) );
-            Actor hit = child.hit( point.x, point.y, touchable );
+            Actor child = Children[ i ];
+
+            child.ParentToLocalCoordinates( _tmp.Set( x, y ) );
+
+            Actor? hit = child.Hit( _tmp.X, _tmp.Y, touchable );
 
             if ( hit != null ) return hit;
         }
 
-        return super.hit( x, y, touchable );
+        return base.Hit( x, y, touchable );
     }
 
-    /** Called when actors are added to or removed from the group. */
+    /// <summary>
+    /// Called when actors are added to or removed from the group.
+    /// </summary>
     protected void ChildrenChanged()
     {
     }
 
-    /** Adds an actor as a child of this group, removing it from its previous parent. If the actor is already a child of this
-	 * group, no changes are made. */
+    /// <summary>
+    /// Adds an actor as a child of this group, removing it from its previous
+    /// parent. If the actor is already a child of this group, no changes are made.
+    /// </summary>
     public void AddActor( Actor actor )
     {
-        if ( actor.parent != null )
+        if ( actor.Parent != null )
         {
-            if ( actor.parent == this ) return;
-            actor.parent.removeActor( actor, false );
+            if ( actor.Parent == this ) return;
+            actor.Parent.RemoveActor( actor, false );
         }
 
-        children.add( actor );
-        actor.setParent( this );
-        actor.setStage( getStage() );
+        Children.Add( actor );
+
+        actor.Parent = this;
+        actor.Stage  = Stage;
+
         ChildrenChanged();
     }
 
-    /** Adds an actor as a child of this group at a specific index, removing it from its previous parent. If the actor is already a
-	 * child of this group, no changes are made.
-	 * @param index May be greater than the number of children. */
+    /// <summary>
+    /// Adds an actor as a child of this group at a specific index, removing
+    /// it from its previous parent. If the actor is already a child of this
+    /// group, no changes are made.
+    /// </summary>
+    /// <param name="index"> May be greater than the number of children. </param>
+    /// <param name="actor"></param>
     public void AddActorAt( int index, Actor actor )
     {
-        if ( actor.parent != null )
+        if ( actor.Parent != null )
         {
-            if ( actor.parent == this ) return;
-            actor.parent.removeActor( actor, false );
+            if ( actor.Parent == this ) return;
+
+            actor.Parent.RemoveActor( actor, false );
         }
 
-        if ( index >= children.size )
-            children.add( actor );
+        if ( index >= Children.Count )
+        {
+            Children.Add( actor );
+        }
         else
-            children.insert( index, actor );
+        {
+            Children.Insert( index, actor );
+        }
 
-        actor.setParent( this );
-        actor.setStage( getStage() );
+        actor.Parent = this;
+        actor.Stage  = Stage;
+
         ChildrenChanged();
     }
 
-    /** Adds an actor as a child of this group immediately before another child actor, removing it from its previous parent. If the
-	 * actor is already a child of this group, no changes are made. */
+    /// <summary>
+    /// Adds an actor as a child of this group immediately before another child
+    /// actor, removing it from its previous parent. If the actor is already a
+    /// child of this group, no changes are made.
+    /// </summary>
     public void AddActorBefore( Actor actorBefore, Actor actor )
     {
-        if ( actor.parent != null )
+        if ( actor.Parent != null )
         {
-            if ( actor.parent == this ) return;
-            actor.parent.removeActor( actor, false );
+            if ( actor.Parent == this ) return;
+
+            actor.Parent.RemoveActor( actor, false );
         }
 
-        int index = children.indexOf( actorBefore, true );
-        children.insert( index, actor );
-        actor.setParent( this );
-        actor.setStage( getStage() );
+        var index = Children.IndexOf( actorBefore );
+
+        Children.Insert( index, actor );
+
+        actor.Parent = this;
+        actor.Stage  = Stage;
+
         ChildrenChanged();
     }
 
-    /** Adds an actor as a child of this group immediately after another child actor, removing it from its previous parent. If the
-	 * actor is already a child of this group, no changes are made. If <code>actorAfter</code> is not in this group, the actor is
-	 * added as the last child. */
+    /// <summary>
+    /// Adds an actor as a child of this group immediately after another child actor,
+    /// removing it from its previous parent. If the actor is already a child of this
+    /// group, no changes are made. If <tt>actorAfter</tt> is not in this group, the
+    /// actor is added as the last child.
+    /// </summary>
     public void AddActorAfter( Actor actorAfter, Actor actor )
     {
-        if ( actor.parent != null )
+        if ( actor.Parent != null )
         {
-            if ( actor.parent == this ) return;
-            actor.parent.removeActor( actor, false );
+            if ( actor.Parent == this ) return;
+
+            actor.Parent.RemoveActor( actor, false );
         }
 
-        int index = children.indexOf( actorAfter, true );
+        var index = Children.IndexOf( actorAfter );
 
-        if ( index == children.size || index == -1 )
-            children.add( actor );
+        if ( ( index == Children.Count ) || ( index == -1 ) )
+        {
+            Children.Add( actor );
+        }
         else
-            children.insert( index + 1, actor );
+        {
+            Children.Insert( index + 1, actor );
+        }
 
-        actor.setParent( this );
-        actor.setStage( getStage() );
+        actor.Parent = this;
+        actor.Stage  = Stage;
+
         ChildrenChanged();
     }
 
-    /** Removes an actor from this group and unfocuses it. Calls {@link #removeActor(Actor, bool)} with true. */
-    public bool RemoveActor( Actor actor )
+    /// <summary>
+    /// Removes an actor from this group.
+    /// <param name="actor"></param>
+    /// <param name="unfocus">Unfocuses the actor if true.</param>
+    /// </summary>
+    public bool RemoveActor( Actor actor, bool unfocus = true )
     {
-        return RemoveActor( actor, true );
-    }
-
-    /** Removes an actor from this group. Calls {@link #removeActorAt(int, bool)} with the actor's child index. */
-    public bool RemoveActor( Actor actor, bool unfocus )
-    {
-        int index = children.indexOf( actor, true );
+        var index = Children.IndexOf( actor );
 
         if ( index == -1 ) return false;
+
         RemoveActorAt( index, unfocus );
 
         return true;
     }
 
-    /** Removes an actor from this group. If the actor will not be used again and has actions, they should be
-	 * {@link Actor#clearActions() cleared} so the actions will be returned to their
-	 * {@link Action#setPool(com.badlogic.gdx.utils.Pool) pool}, if any. This is not done automatically.
-	 * @param unfocus If true, {@link Stage#unfocus(Actor)} is called.
-	 * @return the actor removed from this group. */
+    /// <summary>
+    /// Removes an actor from this group. If the actor will not be used again and
+    /// has actions, they should be <see cref="Actor.ClearActions()"/>  cleared so
+    /// the actions will be returned to their <see cref="Action.Pool"/>, if
+    /// any. This is not done automatically.
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="unfocus">
+    /// If true, <seealso cref="Stage.Unfocus(Actor)"/> is called.
+    /// </param>
+    /// <returns> The actor removed from this group. </returns>
     public Actor RemoveActorAt( int index, bool unfocus )
     {
-        Actor actor = children.removeIndex( index );
+        Actor actor = Children.RemoveAt( index );
 
         if ( unfocus )
         {
-            Stage stage = getStage();
-            if ( stage != null ) stage.unfocus( actor );
+            Stage?.Unfocus( actor );
         }
 
-        actor.setParent( null );
-        actor.setStage( null );
+        actor.Parent = null;
+        actor.Stage  = null;
+
         ChildrenChanged();
 
         return actor;
     }
 
-    /** Removes all actors from this group. */
+    /// <summary>
+    /// Removes all actors from this group.
+    /// </summary>
     public void ClearChildren()
     {
-        Actor[] actors = children.begin();
+        Actor?[] actors = Children.Begin();
 
-        for ( int i = 0, n = children.size; i < n; i++ )
+        for ( int i = 0, n = Children.Count; i < n; i++ )
         {
-            Actor child = actors[ i ];
-            child.setStage( null );
-            child.setParent( null );
+            actors[ i ]!.Stage  = null;
+            actors[ i ]!.Parent = null;
         }
 
-        children.end();
-        children.clear();
+        Children.End();
+        Children.Clear();
+
         ChildrenChanged();
     }
 
-    /** Removes all children, actions, and listeners from this group. */
-    public void Clear()
+    /// <summary>
+    /// Removes all children, actions, and listeners from this group.
+    /// </summary>
+    public new void Clear()
     {
-        super.clear();
+        base.Clear();
         ClearChildren();
     }
 
-    /** Returns the first actor found with the specified name. Note this recursively compares the name of every actor in the
-	 * group. */
-    public @Null< T Extends Actor> T FindActor( string name )
+    /// <summary>
+    /// Returns the first actor found with the specified name. Note this recursively
+    /// compares the name of every actor in the group.
+    /// </summary>
+    public T? FindActor<T>( string name ) where T : Actor
     {
-        Array< Actor > children = this.children;
+        List< Actor > children = this.Children;
 
-        for ( int i = 0, n = children.size; i < n; i++ )
-            if ( name.equals( children.get( i ).getName() ) )
-                return ( T )children.get( i );
-
-        for ( int i = 0, n = children.size; i < n; i++ )
+        for ( int i = 0, n = children.Count; i < n; i++ )
         {
-            Actor                 child = children.get( i );
-            if ( child instanceof group) {
-                Actor actor = ( ( Group )child ).FindActor( name );
+            if ( name.Equals( children[ i ].Name ) )
+            {
+                return ( T )children[ i ];
+            }
+        }
+
+        for ( int i = 0, n = children.Count; i < n; i++ )
+        {
+            Actor child = children[ i ];
+            
+            if ( child is Group group)
+            {
+                Actor? actor = group.FindActor<T>( name );
 
                 if ( actor != null ) return ( T )actor;
             }
@@ -595,102 +620,113 @@ public class Group : Actor, ICullable
         return null;
     }
 
-    protected void SetStage( Stage stage )
+    public void SetStage( Stage stage )
     {
-        super.setStage( stage );
-        Actor[] childrenArray = children.items;
-
-        for ( int i = 0, n = children.size; i < n; i++ )
-            childrenArray[ i ].setStage( stage ); // StackOverflowError here means the group is its own ascendant.
+        base.Stage = stage;
+        
+        for ( int i = 0, n = Children.Count; i < n; i++ )
+        {
+            Children[ i ].Stage = stage; // StackOverflowError here means the group is its own ascendant.
+        }
     }
 
-    /** Swaps two actors by index. Returns false if the swap did not occur because the indexes were out of bounds. */
+    /// <summary>
+    /// Swaps two actors by index. Returns false if the swap did not
+    /// occur because the indexes were out of bounds.
+    /// </summary>
     public bool SwapActor( int first, int second )
     {
-        int maxIndex = children.size;
+        var maxIndex = Children.Count;
 
-        if ( first < 0 || first >= maxIndex ) return false;
-        if ( second < 0 || second >= maxIndex ) return false;
-        children.swap( first, second );
+        if ( ( first < 0 ) || ( first >= maxIndex ) ) return false;
+        if ( ( second < 0 ) || ( second >= maxIndex ) ) return false;
+
+        Children.Swap( first, second );
 
         return true;
     }
 
-    /** Swaps two actors. Returns false if the swap did not occur because the actors are not children of this group. */
+    /// <summary>
+    /// Swaps two actors. Returns false if the swap did not occur
+    /// because the actors are not children of this group.
+    /// </summary>
     public bool SwapActor( Actor first, Actor second )
     {
-        int firstIndex  = children.indexOf( first, true );
-        int secondIndex = children.indexOf( second, true );
+        var firstIndex  = Children.IndexOf( first );
+        var secondIndex = Children.IndexOf( second );
 
-        if ( firstIndex == -1 || secondIndex == -1 ) return false;
-        children.swap( firstIndex, secondIndex );
+        if ( ( firstIndex == -1 ) || ( secondIndex == -1 ) ) return false;
+        
+        Children.Swap( firstIndex, secondIndex );
 
         return true;
     }
 
-    /** Returns the child at the specified index. */
+    /// <summary>
+    /// Returns the child at the specified index.
+    /// </summary>
     public Actor GetChild( int index )
     {
-        return children.get( index );
-    }
-
-    /** Returns an ordered list of child actors in this group. */
-    public SnapshotArray< Actor > GetChildren()
-    {
-        return children;
+        return Children[ index ];
     }
 
     public bool HasChildren()
     {
-        return children.size > 0;
+        return Children.Count > 0;
     }
 
-    /** When true (the default), the Batch is transformed so children are drawn in their parent's coordinate system. This has a
-	 * performance impact because {@link Batch#flush()} must be done before and after the transform. If the actors in a group are
-	 * not rotated or scaled, then the transform for the group can be set to false. In this case, each child's position will be
-	 * offset by the group's position for drawing, causing the children to appear in the correct location even though the Batch has
-	 * not been transformed. */
-    public void SetTransform( bool transform )
-    {
-        this.transform = transform;
-    }
+    /// <summary>
+    /// When true (the default), the Batch is transformed so children are drawn
+    /// in their parent's coordinate system. This has a performance impact because
+    /// <see cref="IBatch.Flush()"/> must be done before and after the transform.
+    /// If the actors in a group are not rotated or scaled, then the transform for
+    /// the group can be set to false. In this case, each child's position will be
+    /// offset by the group's position for drawing, causing the children to appear
+    /// in the correct location even though the Batch has not been transformed.
+    /// </summary>
+    public bool Transform { get; set; } = true;
 
-    public bool IsTransform()
-    {
-        return transform;
-    }
-
-    /** Converts coordinates for this group to those of a descendant actor. The descendant does not need to be a direct child.
-	 * @throws IllegalArgumentException if the specified actor is not a descendant of this group. */
+    /// <summary>
+    /// Converts coordinates for this group to those of a descendant actor.
+    /// The descendant does not need to be a direct child.
+    /// </summary>
+    /// <exception cref="ArgumentException">
+    /// if the specified actor is not a descendant of this group.
+    /// </exception>
     public Vector2 LocalToDescendantCoordinates( Actor descendant, Vector2 localCoords )
     {
-        Group parent = descendant.parent;
+        Group? parent = descendant.Parent;
 
-        if ( parent == null ) throw new IllegalArgumentException( "Child is not a descendant: " + descendant );
+        if ( parent == null ) throw new ArgumentException( "Child is not a descendant: " + descendant );
+
         // First convert to the actor's parent coordinates.
         if ( parent != this ) LocalToDescendantCoordinates( parent, localCoords );
+        
         // Then from each parent down to the descendant.
-        descendant.parentToLocalCoordinates( localCoords );
+        descendant.ParentToLocalCoordinates( localCoords );
 
         return localCoords;
     }
 
-    /** If true, {@link #drawDebug(ShapeRenderer)} will be called for this group and, optionally, all children recursively. */
+    /// <summary>
+    /// If true, <see cref="DrawDebug(ShapeRenderer)"/> will be called for this
+    /// group and, optionally, all children recursively.
+    /// </summary>
     public void SetDebug( bool enabled, bool recursively )
     {
-        SetDebug( enabled );
+        DebugFlag = enabled;
 
         if ( recursively )
         {
-            foreach( Actor child in Children)
+            foreach ( Actor child in Children )
             {
-                if ( child is Group group)
+                if ( child is Group group )
                 {
                     group.SetDebug( enabled, recursively );
                 }
                 else
                 {
-                    child.SetDebug( enabled );
+                    child.DebugFlag = enabled;
                 }
             }
         }
@@ -709,13 +745,11 @@ public class Group : Actor, ICullable
     /// <summary>
     /// Returns a description of the actor hierarchy, recursively.
     /// </summary>
-    public string Tostring()
+    public new string ToString()
     {
         var buffer = new StringBuilder( 128 );
-            
+
         ToString( buffer, 1 );
-            
-        buffer.SetLength( buffer.Length() - 1 );
 
         return buffer.ToString();
     }
@@ -729,9 +763,9 @@ public class Group : Actor, ICullable
         buffer.Append( base.ToString() ?? string.Empty );
         buffer.Append( '\n' );
 
-        var actors = Children.Begin();
+        Actor?[] actors = Children.Begin();
 
-        for ( int i = 0, n = Children.Size; i < n; i++ )
+        for ( int i = 0, n = Children.Count; i < n; i++ )
         {
             for ( var ii = 0; ii < indent; ii++ )
             {
@@ -740,7 +774,7 @@ public class Group : Actor, ICullable
 
             if ( actors[ i ] is Group group )
             {
-                group.Tostring( buffer, indent + 1 );
+                group.ToString( buffer, indent + 1 );
             }
             else
             {

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-using LibGDXSharp.Core;
+using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
@@ -30,7 +30,7 @@ namespace LibGDXSharp.Scenes.Scene2D;
 public class Event : IPoolable
 {
     // The Stage for the Actor the event was fired on.
-    public Stage? Stage { get; set; }
+    public Stage? Stage { get; set; } = null!;
 
     // The Actor this event originated from.
     public Actor? TargetActor { get; set; }

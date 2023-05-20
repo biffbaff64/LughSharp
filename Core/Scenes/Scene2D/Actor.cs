@@ -15,19 +15,19 @@ public class Actor
     public object?   UserObject { get; set; }
     public Touchable Touchable  { get; set; } = Touchable.Enabled;
     public bool      Visible    { get; set; } = true;
-    public Color     Color      { get; set; } = new( 1, 1, 1, 1 );
+    public Color     Color      { get; set; } = new(1, 1, 1, 1);
     public float     OriginX    { get; set; }
     public float     OriginY    { get; set; }
+    public float     ScaleX     { get; set; } = 1;
+    public float     ScaleY     { get; set; } = 1;
+    public float     Rotation   { get; set; }
 
     public DelayedRemovalArray< IEventListener > Listeners        { get; private set; }
     public DelayedRemovalArray< IEventListener > CaptureListeners { get; private set; }
 
     private readonly List< Action > _actions = new();
 
-    private bool  _debug;
-    private float _scaleX = 1;
-    private float _scaleY = 1;
-    private float _rotation;
+    private bool _debug;
 
     protected Actor()
     {
@@ -91,8 +91,8 @@ public class Actor
             {
                 throw new SystemException
                     (
-                     string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
-                     ex
+                    string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
+                    ex
                     );
             }
         }
@@ -219,8 +219,8 @@ public class Actor
             {
                 throw new SystemException
                     (
-                     string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
-                     ex
+                    string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
+                    ex
                     );
             }
         }
@@ -1073,9 +1073,9 @@ public class Actor
     /// </summary>
     public Vector2 ParentToLocalCoordinates( Vector2 parentCoords )
     {
-        var rotation = this._rotation;
-        var scaleX   = this._scaleX;
-        var scaleY   = this._scaleY;
+        var rotation = this.Rotation;
+        var scaleX   = this.ScaleX;
+        var scaleY   = this.ScaleY;
         var childX   = _x;
         var childY   = _y;
 
@@ -1139,9 +1139,9 @@ public class Actor
     /// </system>
     public Vector2 LocalToParentCoordinates( Vector2 localCoords )
     {
-        var rotation = -this._rotation;
-        var scaleX   = this._scaleX;
-        var scaleY   = this._scaleY;
+        var rotation = -this.Rotation;
+        var scaleX   = this.ScaleX;
+        var scaleY   = this.ScaleY;
         var x        = this._x;
         var y        = this._y;
 
@@ -1237,7 +1237,7 @@ public class Actor
             shapes.SetColor( Stage.GetDebugColor() );
         }
 
-        shapes.Rect( _x, _y, OriginX, OriginY, _width, _height, _scaleX, _scaleY, _rotation );
+        shapes.Rect( _x, _y, OriginX, OriginY, _width, _height, ScaleX, ScaleY, Rotation );
     }
 
     /// <summary>
