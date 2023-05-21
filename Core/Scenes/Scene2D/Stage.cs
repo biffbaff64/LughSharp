@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Tracing;
 using System.Reflection.Metadata;
 
 using LibGDXSharp.G2D;
@@ -7,6 +6,7 @@ using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Pooling;
 using LibGDXSharp.Utils.Viewport;
 
@@ -44,7 +44,7 @@ public class Stage : InputAdapter
     public readonly SnapshotArray< TouchFocus > touchFocuses = new(true, 4);
 
     private readonly bool  _ownsBatch;
-    private          Group _root;
+    private readonly Group _root = null!;
 
     private int _mouseScreenX;
     private int _mouseScreenY;
@@ -68,17 +68,10 @@ public class Stage : InputAdapter
     /// which will be disposed when the stage is disposed. 
     /// </summary>
     public Stage()
-        : this
-            (
-             new ScalingViewport
-                 (
-                  Scaling.Stretch,
-                  Gdx.Graphics.Width,
-                  Gdx.Graphics.Height,
-                  new OrthographicCamera()
-                 ),
-             new SpriteBatch()
-            )
+        : this( new ScalingViewport( Scaling.Stretch, Gdx.Graphics.Width,
+                                     Gdx.Graphics.Height, new OrthographicCamera() ),
+                new SpriteBatch()
+              )
     {
         _ownsBatch = true;
     }
@@ -106,8 +99,8 @@ public class Stage : InputAdapter
         this.Viewport = viewport ?? throw new ArgumentException( "viewport cannot be null." );
         this.Batch    = batch ?? throw new ArgumentException( "batch cannot be null." );
 
-        _root = new Group();
-        _root.SetStage( this );
+        Root = new Group();
+        Root.SetStage( this );
 
         viewport.Update( Gdx.Graphics.Width, Gdx.Graphics.Height, true );
     }
@@ -116,21 +109,21 @@ public class Stage : InputAdapter
     /// </summary>
     public void Draw()
     {
-        if ( Viewport.Camera == null )
+        if ( Camera == null )
         {
             Gdx.App.Log( "Stage", "Draw: NULL Camera!" );
 
             return;
         }
 
-        Viewport.Camera.Update();
+        Camera.Update();
 
-        if ( !_root.Visible ) return;
+        if ( !Root.Visible ) return;
 
-        Batch.SetProjectionMatrix( Viewport.Camera.Combined );
+        Batch.SetProjectionMatrix( Camera.Combined );
 
         Batch.Begin();
-        _root.Draw( Batch, 1 );
+        Root.Draw( Batch, 1 );
         Batch.End();
 
         if ( debug ) DrawDebug();
@@ -182,21 +175,21 @@ public class Stage : InputAdapter
                 group.DebugAll();
             }
 
-            DisableDebug( _root, actor );
+            DisableDebug( Root, actor );
         }
         else
         {
             if ( _debugAll )
             {
-                _root.DebugAll();
+                Root.DebugAll();
             }
         }
 
         Gdx.GL.GLEnable( IGL20.GL_Blend );
 
-        _debugShapes.SetProjectionMatrix( Viewport.Camera?.Combined );
+        _debugShapes.SetProjectionMatrix( Camera?.Combined );
         _debugShapes.Begin();
-        _root.DrawDebug( _debugShapes );
+        Root.DrawDebug( _debugShapes );
         _debugShapes.End();
 
         Gdx.GL.GLDisable( IGL20.GL_Blend );
@@ -297,7 +290,7 @@ public class Stage : InputAdapter
             _mouseOverActor = FireEnterAndExit( _mouseOverActor, _mouseScreenX, _mouseScreenY, -1 );
         }
 
-        _root.Act( delta );
+        Root.Act( delta );
     }
 
     /// <summary>
@@ -379,9 +372,9 @@ public class Stage : InputAdapter
 
         if ( target == null )
         {
-            if ( _root.Touchable == Touchable.Enabled )
+            if ( Root.Touchable == Touchable.Enabled )
             {
-                _root.Fire( inputEvent );
+                Root.Fire( inputEvent );
             }
         }
         else
@@ -518,8 +511,9 @@ public class Stage : InputAdapter
     }
 
     /// <summary>
-    /// Applies a mouse moved event to the stage and returns true if an actor in the scene <see cref="Event.handle() handled"/> the
-    /// event. This event only occurs on the desktop. 
+    /// Applies a mouse moved event to the stage and returns true if an actor
+    /// in the scene <see cref="Event.Handle()"/> the event. This event only
+    /// occurs on the desktop. 
     /// </summary>
     public new bool MouseMoved( int screenX, int screenY )
     {
@@ -534,200 +528,222 @@ public class Stage : InputAdapter
         ScreenToStageCoordinates( _tempCoords.Set( screenX, screenY ) );
 
         InputEvent inputEvent = Pools< InputEvent >.Obtain();
-        inputEvent.setStage( this );
-        inputEvent.setType( Type.mouseMoved );
-        inputEvent.setStageX( tempCoords.x );
-        inputEvent.setStageY( tempCoords.y );
+        inputEvent.Stage  = this;
+        inputEvent.Type   = InputEvent.EventType.MouseMoved;
+        inputEvent.StageX = _tempCoords.X;
+        inputEvent.StageY = _tempCoords.Y;
 
-        Actor target = hit( tempCoords.x, tempCoords.y, true );
+        Actor? target;
 
-        if ( target == null )
+        if ( ( target = Hit( _tempCoords.X, _tempCoords.Y, true ) ) == null )
         {
-            target = root;
+            target = Root;
         }
 
-        target.fire( @event );
-        bool handled = @event.isHandled();
-        Pools.free( @event );
+        target.Fire( inputEvent );
+        var handled = inputEvent.IsHandled;
+
+        Pools< InputEvent >.Free( inputEvent );
 
         return handled;
     }
 
     /// <summary>
-    /// Applies a mouse scroll event to the stage and returns true if an actor in the scene <see cref="Event.handle() handled"/> the
-    /// event. This event only occurs on the desktop. 
+    /// Applies a mouse scroll event to the stage and returns true if an actor
+    /// in the scene <see cref="Event.Handle()"/> the event. This event only
+    /// occurs on the desktop. 
     /// </summary>
-    public bool Scrolled( float amountX, float amountY )
+    public new bool Scrolled( float amountX, float amountY )
     {
-        Actor target = scrollFocus == null ? root : scrollFocus;
+        Actor target = ScrollFocus ?? Root;
 
-        screenToStageCoordinates( tempCoords.set( mouseScreenX, mouseScreenY ) );
+        ScreenToStageCoordinates( _tempCoords.Set( _mouseScreenX, _mouseScreenY ) );
 
-        InputEvent @event = Pools.obtain( typeof(InputEvent) );
-        @event.setStage( this );
-        @event.setType( InputEvent.Type.scrolled );
-        @event.setScrollAmountX( amountX );
-        @event.setScrollAmountY( amountY );
-        @event.setStageX( tempCoords.x );
-        @event.setStageY( tempCoords.y );
-        target.fire( @event );
-        bool handled = @event.isHandled();
-        Pools.free( @event );
+        InputEvent inputEvent = Pools< InputEvent >.Obtain();
+
+        inputEvent.Stage         = this;
+        inputEvent.Type          = InputEvent.EventType.Scrolled;
+        inputEvent.ScrollAmountX = amountX;
+        inputEvent.ScrollAmountY = amountY;
+        inputEvent.StageX        = _tempCoords.X;
+        inputEvent.StageY        = _tempCoords.Y;
+
+        target.Fire( inputEvent );
+        var handled = inputEvent.IsHandled;
+        Pools< InputEvent >.Free( inputEvent );
 
         return handled;
     }
 
     /// <summary>
-    /// Applies a key down event to the actor that has <see cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns
-    /// true if the event was <see cref="Event.handle() handled"/>. 
+    /// Applies a key down event to the actor that has
+    /// <see cref="Stage.KeyboardFocus"/>, if any, and returns
+    /// true if the event was handled in <see cref="Event.Handle()"/>. 
     /// </summary>
-    public bool KeyDown( int keyCode )
+    public new bool KeyDown( int keyCode )
     {
-        Actor      target = _keyboardFocus == null ? root : _keyboardFocus;
-        InputEvent @event = Pools.obtain( typeof(InputEvent) );
-        @event.setStage( this );
-        @event.setType( InputEvent.Type.keyDown );
-        @event.setKeyCode( keyCode );
-        target.fire( @event );
-        bool handled = @event.isHandled();
-        Pools.free( @event );
+        Actor      target     = _keyboardFocus ?? Root;
+        InputEvent inputEvent = Pools< InputEvent >.Obtain();
+
+        inputEvent.Stage   = this;
+        inputEvent.Type    = InputEvent.EventType.KeyDown;
+        inputEvent.KeyCode = keyCode;
+
+        target.Fire( inputEvent );
+        var handled = inputEvent.IsHandled;
+        Pools< InputEvent >.Free( inputEvent );
 
         return handled;
     }
 
     /// <summary>
-    /// Applies a key up event to the actor that has <see cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns true
-    /// if the event was <see cref="Event.handle() handled"/>. 
+    /// Applies a key up event to the actor that has <see cref="Stage.KeyboardFocus"/>,
+    /// if any, and returns true if the event was <see cref="Event.Handle()"/>. 
     /// </summary>
-    public bool KeyUp( int keyCode )
+    public new bool KeyUp( int keyCode )
     {
-        Actor      target = _keyboardFocus == null ? root : _keyboardFocus;
-        InputEvent @event = Pools.obtain( typeof(InputEvent) );
-        @event.setStage( this );
-        @event.setType( InputEvent.Type.keyUp );
-        @event.setKeyCode( keyCode );
-        target.fire( @event );
-        bool handled = @event.isHandled();
-        Pools.free( @event );
+        Actor      target     = _keyboardFocus ?? Root;
+        InputEvent inputEvent = Pools< InputEvent >.Obtain();
+
+        inputEvent.Stage   = this;
+        inputEvent.Type    = InputEvent.EventType.KeyUp;
+        inputEvent.KeyCode = keyCode;
+
+        target.Fire( inputEvent );
+        var handled = inputEvent.IsHandled;
+        Pools< InputEvent >.Free( inputEvent );
 
         return handled;
     }
 
     /// <summary>
-    /// Applies a key typed event to the actor that has <see cref="Stage.setKeyboardFocus(Actor) keyboard focus"/>, if any, and returns
-    /// true if the event was <see cref="Event.handle() handled"/>. 
+    /// Applies a key typed event to the actor that has <see cref="Stage.KeyboardFocus"/>,
+    /// if any, and returns true if the event was <see cref="Event.Handle()"/>. 
     /// </summary>
-    public bool KeyTyped( char character )
+    public new bool KeyTyped( char character )
     {
-        Actor      target = _keyboardFocus == null ? root : _keyboardFocus;
-        InputEvent @event = Pools.obtain( typeof(InputEvent) );
-        @event.setStage( this );
-        @event.setType( InputEvent.Type.keyTyped );
-        @event.setCharacter( character );
-        target.fire( @event );
-        bool handled = @event.isHandled();
-        Pools.free( @event );
+        Actor      target     = _keyboardFocus ?? Root;
+        InputEvent inputEvent = Pools< InputEvent >.Obtain();
+
+        inputEvent.Stage     = this;
+        inputEvent.Type      = InputEvent.EventType.KeyTyped;
+        inputEvent.Character = character;
+
+        target.Fire( inputEvent );
+        var handled = inputEvent.IsHandled;
+        Pools< InputEvent >.Free( inputEvent );
 
         return handled;
     }
 
     /// <summary>
-    /// Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button. Touch focus
-    /// is added automatically when true is returned from {@link InputListener#touchDown(InputEvent, float, float, int, int)
-    /// touchDown}. The specified actors will be used as the <see cref="Event.getListenerActor() listener actor"/> and
-    /// <see cref="Event.getTarget() target"/> for the touchDragged and touchUp events. 
+    /// Adds the listener to be notified for all touchDragged and touchUp events for
+    /// the specified pointer and button. Touch focus is added automatically when true
+    /// is returned from <see cref="InputListener.TouchDown(InputEvent, float, float, int, int)"/>
+    /// The specified actors will be used as the <see cref="Event.ListenerActor"/> and
+    /// <see cref="Event.TargetActor"/> for the touchDragged and touchUp events. 
     /// </summary>
-    public void AddTouchFocus( IEventListener listener, Actor? listenerActor, Actor? target, int pointer, int button )
+    public void AddTouchFocus( IEventListener listener,
+                               Actor? listenerActor,
+                               Actor? target,
+                               int pointer,
+                               int button )
     {
-        TouchFocus? focus = Pools.Obtain( typeof(TouchFocus) );
+        TouchFocus focus = Pools< TouchFocus >.Obtain();
 
-        focus.TouchFocus1.listenerActor = listenerActor;
-        focus.TouchFocus1.target        = target;
-        focus.TouchFocus1.listener      = listener;
-        focus.TouchFocus1.pointer       = pointer;
-        focus.TouchFocus1.button        = button;
+        focus.listenerActor = listenerActor;
+        focus.target        = target;
+        focus.listener      = listener;
+        focus.pointer       = pointer;
+        focus.button        = button;
 
-        touchFocuses.add( focus );
+        touchFocuses.Add( focus );
     }
 
     /// <summary>
-    /// Removes touch focus for the specified listener, pointer, and button. Note the listener will not receive a touchUp event
-    /// when this method is used. 
+    /// Removes touch focus for the specified listener, pointer, and button.
+    /// Note the listener will not receive a touchUp event when this method
+    /// is used. 
     /// </summary>
-    public void RemoveTouchFocus( EventListener listener, Actor listenerActor, Actor target, int pointer, int button )
+    public void RemoveTouchFocus( IEventListener listener,
+                                  Actor listenerActor,
+                                  Actor target,
+                                  int pointer,
+                                  int button )
     {
-        SnapshotArray< TouchFocus > touchFocuses = this.touchFocuses;
-
-        for ( int i = touchFocuses.size - 1; i >= 0; i-- )
+        for ( var i = this.touchFocuses.Size - 1; i >= 0; i-- )
         {
-            TouchFocus focus = touchFocuses.get( i );
+            TouchFocus focus = this.touchFocuses.Get( i );
 
-            if ( focus.TouchFocus1.listener == listener
-                 && focus.TouchFocus1.listenerActor == listenerActor
-                 && focus.TouchFocus1.target == target
-                 && focus.TouchFocus1.pointer == pointer
-                 && focus.TouchFocus1.button == button )
+            if ( ( focus.listener == listener )
+                 && ( focus.listenerActor == listenerActor )
+                 && ( focus.target == target )
+                 && ( focus.pointer == pointer )
+                 && ( focus.button == button ) )
             {
-                touchFocuses.removeIndex( i );
-                Pools.free( focus );
+                this.touchFocuses.RemoveIndex( i );
+                Pools< TouchFocus >.Free( focus );
             }
         }
     }
 
     /// <summary>
-    /// Cancels touch focus for all listeners with the specified listener actor. </summary>
-    /// <see cref=".cancelTouchFocus() "/>
+    /// Cancels touch focus for all listeners with the specified listener actor.
+    /// </summary>
+    /// <see cref="CancelTouchFocus() "/>
     public void CancelTouchFocus( Actor listenerActor )
     {
-        // Cancel all current touch focuses for the specified listener, allowing for concurrent modification, and never cancel the
-        // same focus twice.
-        InputEvent                  @event       = null;
-        SnapshotArray< TouchFocus > touchFocuses = this.touchFocuses;
-        TouchFocus[]                items        = touchFocuses.begin();
+        // Cancel all current touch focuses for the specified listener, allowing
+        // for concurrent modification, and never cancel the same focus twice.
+        InputEvent?   inputEvent = null;
+        TouchFocus?[] items      = this.touchFocuses.Begin();
 
-        for ( int i = 0, n = touchFocuses.size; i < n; i++ )
+        for ( int i = 0, n = this.touchFocuses.Size; i < n; i++ )
         {
-            TouchFocus focus = items[ i ];
+            TouchFocus? focus = items[ i ];
 
-            if ( focus.TouchFocus1.listenerActor != listenerActor )
+            if ( focus?.listenerActor != listenerActor )
             {
                 continue;
             }
 
-            if ( !touchFocuses.removeValue( focus, true ) )
+            if ( !this.touchFocuses.RemoveValue( focus ) )
             {
                 continue; // Touch focus already gone.
             }
 
-            if ( @event == null )
+            if ( inputEvent == null )
             {
-                @event = Pools.obtain( typeof(InputEvent) );
-                @event.setStage( this );
-                @event.setType( InputEvent.Type.touchUp );
-                @event.setStageX( int.MinValue );
-                @event.setStageY( int.MinValue );
+                inputEvent        = Pools< InputEvent >.Obtain();
+                inputEvent.Stage  = this;
+                inputEvent.Type   = InputEvent.EventType.TouchUp;
+                inputEvent.StageX = int.MinValue;
+                inputEvent.StageY = int.MinValue;
             }
 
-            @event.setTarget( focus.TouchFocus1.target );
-            @event.setListenerActor( focus.TouchFocus1.listenerActor );
-            @event.setPointer( focus.TouchFocus1.pointer );
-            @event.setButton( focus.TouchFocus1.button );
-            focus.TouchFocus1.listener.handle( @event );
-            // Cannot return TouchFocus to pool, as it may still be in use (eg if cancelTouchFocus is called from touchDragged).
+            inputEvent.TargetActor   = focus.target;
+            inputEvent.ListenerActor = focus.listenerActor;
+            inputEvent.Pointer       = focus.pointer;
+            inputEvent.Button        = focus.button;
+
+            focus.listener?.Handle( inputEvent );
+            // Cannot return TouchFocus to pool, as it may still be in use
+            // (eg if cancelTouchFocus is called from touchDragged).
         }
 
-        touchFocuses.end();
+        this.touchFocuses.End();
 
-        if ( @event != null )
+        if ( inputEvent != null )
         {
-            Pools.free( @event );
+            Pools< InputEvent >.Free( inputEvent );
         }
     }
 
     /// <summary>
-    /// Removes all touch focus listeners, sending a touchUp event to each listener. Listeners typically expect to receive a
-    /// touchUp event when they have touch focus. The location of the touchUp is <see cref="Integer.MIN_VALUE"/>. Listeners can use
-    /// <see cref="InputEvent.isTouchFocusCancel()"/> to ignore this event if needed. 
+    /// Removes all touch focus listeners, sending a touchUp event to each listener.
+    /// Listeners typically expect to receive a touchUp event when they have touch
+    /// focus. The location of the touchUp is <see cref="int.MinValue"/>. Listeners can use
+    /// <see cref="InputEvent.TouchFocusCancel()"/> to ignore this event if needed. 
     /// </summary>
     public void CancelTouchFocus()
     {
@@ -735,288 +751,146 @@ public class Stage : InputAdapter
     }
 
     /// <summary>
-    /// Cancels touch focus for all listeners except the specified listener. </summary>
-    /// <see cref=".cancelTouchFocus() "/>
-//JAVA TO C# CONVERTER TASK: Most Java annotations will not have direct .NET equivalent attributes:
-//ORIGINAL LINE: public void cancelTouchFocusExcept(@Null EventListener exceptListener, @Null Actor exceptActor)
-    public void CancelTouchFocusExcept( EventListener exceptListener, Actor exceptActor )
+    /// Cancels touch focus for all listeners except the specified listener.
+    /// </summary>
+    /// <see cref="CancelTouchFocus() "/>
+    public void CancelTouchFocusExcept( IEventListener? exceptListener, Actor? exceptActor )
     {
-        InputEvent @event = Pools.obtain( typeof(InputEvent) );
-        @event.setStage( this );
-        @event.setType( InputEvent.Type.touchUp );
-        @event.setStageX( int.MinValue );
-        @event.setStageY( int.MinValue );
+        InputEvent inputEvent = Pools< InputEvent >.Obtain();
 
-        // Cancel all current touch focuses except for the specified listener, allowing for concurrent modification, and never
-        // cancel the same focus twice.
-        SnapshotArray< TouchFocus > touchFocuses = this.touchFocuses;
-        TouchFocus[]                items        = touchFocuses.begin();
+        inputEvent.Stage  = this;
+        inputEvent.Type   = InputEvent.EventType.TouchUp;
+        inputEvent.StageX = int.MinValue;
+        inputEvent.StageY = int.MinValue;
 
-        for ( int i = 0, n = touchFocuses.size; i < n; i++ )
+        // Cancel all current touch focuses except for the specified listener,
+        // allowing for concurrent modification, and never cancel the same focus twice.
+        TouchFocus?[] items = this.touchFocuses.Begin();
+
+        for ( int i = 0, n = touchFocuses.Size; i < n; i++ )
         {
-            TouchFocus focus = items[ i ];
+            TouchFocus? focus = items[ i ];
 
-            if ( focus.TouchFocus1.listener == exceptListener && focus.TouchFocus1.listenerActor == exceptActor )
+            if ( ( focus?.listener == exceptListener )
+                 && ( focus?.listenerActor == exceptActor ) )
             {
                 continue;
             }
 
-            if ( !touchFocuses.removeValue( focus, true ) )
+            if ( focus != null )
             {
-                continue; // Touch focus already gone.
+                if ( !touchFocuses.RemoveValue( focus ) )
+                {
+                    continue; // Touch focus already gone.
+                }
             }
 
-            @event.setTarget( focus.TouchFocus1.target );
-            @event.setListenerActor( focus.TouchFocus1.listenerActor );
-            @event.setPointer( focus.TouchFocus1.pointer );
-            @event.setButton( focus.TouchFocus1.button );
-            focus.TouchFocus1.listener.handle( @event );
-            // Cannot return TouchFocus to pool, as it may still be in use (eg if cancelTouchFocus is called from touchDragged).
+            inputEvent.TargetActor   = focus?.target;
+            inputEvent.ListenerActor = focus?.listenerActor;
+            inputEvent.Pointer       = focus!.pointer;
+            inputEvent.Button        = focus.button;
+
+            focus.listener?.Handle( inputEvent );
+            // Cannot return TouchFocus to pool, as it may still be in use
+            // (eg if cancelTouchFocus is called from touchDragged).
         }
 
-        touchFocuses.end();
+        touchFocuses.End();
 
-        Pools.free( @event );
+        Pools< InputEvent >.Free( inputEvent );
     }
 
     /// <summary>
-    /// Adds an actor to the root of the stage. </summary>
+    /// Adds an actor to the root of the stage.
+    /// </summary>
     /// <see cref="Group.AddActor "/>
     public void AddActor( Actor actor )
     {
-        root.AddActor( actor );
+        Root.AddActor( actor );
     }
 
     /// <summary>
-    /// Adds an action to the root of the stage. </summary>
-    /// <see cref="Group.addAction(Action) "/>
+    /// Adds an action to the root of the stage.
+    /// </summary>
+    /// <see cref="Group.AddAction(Action) "/>
     public void AddAction( Action action )
     {
-        root.AddAction( action );
+        Root.AddAction( action );
     }
 
     /// <summary>
-    /// Returns the root's child actors. </summary>
-    /// <see cref="Group.GetChildren "/>
-    public Array< Actor > Actors
+    /// Adds a listener to the root.
+    /// </summary>
+    /// <see cref="Actor.AddListener(IEventListener) "/>
+    public bool AddListener( IEventListener listener )
     {
-        get { return root.children; }
+        return Root.AddListener( listener );
     }
 
     /// <summary>
-    /// Adds a listener to the root. </summary>
-    /// <see cref="Actor.addListener(EventListener) "/>
-    public bool AddListener( EventListener listener )
+    /// Removes a listener from the root.
+    /// </summary>
+    /// <see cref="Actor.RemoveListener(IEventListener) "/>
+    public bool RemoveListener( IEventListener listener )
     {
-        return root.AddListener( listener );
+        return Root.RemoveListener( listener );
     }
 
     /// <summary>
-    /// Removes a listener from the root. </summary>
-    /// <see cref="Actor.removeListener(EventListener) "/>
-    public bool RemoveListener( EventListener listener )
+    /// Adds a capture listener to the root.
+    /// </summary>
+    /// <see cref="Actor.AddCaptureListener(IEventListener) "/>
+    public bool AddCaptureListener( IEventListener listener )
     {
-        return root.RemoveListener( listener );
+        return Root.AddCaptureListener( listener );
     }
 
     /// <summary>
-    /// Adds a capture listener to the root. </summary>
-    /// <see cref="Actor.addCaptureListener(EventListener) "/>
-    public bool AddCaptureListener( EventListener listener )
+    /// Removes a listener from the root.
+    /// </summary>
+    /// <see cref="Actor.RemoveCaptureListener(IEventListener) "/>
+    public bool RemoveCaptureListener( IEventListener listener )
     {
-        return root.AddCaptureListener( listener );
+        return Root.RemoveCaptureListener( listener );
     }
 
     /// <summary>
-    /// Removes a listener from the root. </summary>
-    /// <see cref="Actor.removeCaptureListener(EventListener) "/>
-    public bool RemoveCaptureListener( EventListener listener )
-    {
-        return root.RemoveCaptureListener( listener );
-    }
-
-    /// <summary>
-    /// Removes the root's children, actions, and listeners. </summary>
+    /// Removes the root's children, actions, and listeners.
+    /// </summary>
     public void Clear()
     {
-        unfocusAll();
-        root.Clear();
+        UnfocusAll();
+        Root.Clear();
     }
 
     /// <summary>
-    /// Removes the touch, keyboard, and scroll focused actors. </summary>
+    /// Removes the touch, keyboard, and scroll focused actors.
+    /// </summary>
     public void UnfocusAll()
     {
-        _scrollFocus = null;
-        setKeyboardFocus( null );
-        cancelTouchFocus();
+        ScrollFocus = null;
+        KeyboardFocus = null;
+        CancelTouchFocus();
     }
 
     /// <summary>
-    /// Removes the touch, keyboard, and scroll focus for the specified actor and any descendants. </summary>
+    /// Removes the touch, keyboard, and scroll focus for the specified
+    /// actor and any descendants.
+    /// </summary>
     public void Unfocus( Actor actor )
     {
-        cancelTouchFocus( actor );
+        CancelTouchFocus( actor );
 
-        if ( scrollFocus != null && scrollFocus.isDescendantOf( actor ) )
+        if ( ( ScrollFocus != null ) && ScrollFocus.IsDescendantOf( actor ) )
         {
-            _scrollFocus = null;
+            ScrollFocus = null;
         }
 
-        if ( _keyboardFocus != null && _keyboardFocus.isDescendantOf( actor ) )
+        if ( ( _keyboardFocus != null ) && _keyboardFocus.IsDescendantOf( actor ) )
         {
-            setKeyboardFocus( null );
-        }
-    }
-
-    /// <summary>
-    /// Sets the actor that will receive key events. </summary>
-    /// <param name="actor"> May be null. </param>
-    /// <returns> true if the unfocus and focus events were not cancelled by a <see cref="FocusListener"/>.  </returns>
-//JAVA TO C# CONVERTER TASK: Most Java annotations will not have direct .NET equivalent attributes:
-//ORIGINAL LINE: public bool setKeyboardFocus(@Null Actor actor)
-    public bool setKeyboardFocus( Actor actor )
-    {
-        if ( _keyboardFocus == actor )
-        {
-            return true;
-        }
-
-        FocusListener.FocusEvent @event = Pools.obtain( typeof(FocusListener.FocusEvent) );
-        @event.setStage( this );
-        @event.setType( FocusListener.FocusEvent.Type.keyboard );
-        Actor oldKeyboardFocus = _keyboardFocus;
-
-        if ( oldKeyboardFocus != null )
-        {
-            @event.setFocused( false );
-            @event.setRelatedActor( actor );
-            oldKeyboardFocus.fire( @event );
-        }
-
-        bool success = !@event.isCancelled();
-
-        if ( success )
-        {
-            _keyboardFocus = actor;
-
-            if ( actor != null )
-            {
-                @event.setFocused( true );
-                @event.setRelatedActor( oldKeyboardFocus );
-                actor.fire( @event );
-                success = !@event.isCancelled();
-
-                if ( !success )
-                {
-                    _keyboardFocus = oldKeyboardFocus;
-                }
-            }
-        }
-
-        Pools.free( @event );
-
-        return success;
-    }
-
-    /// <summary>
-    /// Gets the actor that will receive key events.
-    /// </summary>
-    /// <returns> May be null.</returns>
-    public Actor GetKeyboardFocus()
-    {
-        return _keyboardFocus;
-    }
-
-    /// <summary>
-    /// Sets the actor that will receive scroll events.
-    /// </summary>
-    /// <param name="actor"> May be null. </param>
-    /// <returns>
-    /// true if the unfocus and focus events were not cancelled
-    /// by a <see cref="FocusListener"/>.
-    /// </returns>
-    public bool SetScrollFocus( Actor actor )
-    {
-        if ( _scrollFocus == actor ) return true;
-
-        FocusListener.FocusEvent event = Pools.Obtain<>( typeof(FocusListener.FocusEvent) );
-            event.setStage( this );
-            event.setType( FocusListener.FocusEvent.Type.scroll );
-
-        Actor oldScrollFocus = scrollFocus;
-
-        if ( oldScrollFocus != null )
-        {
-            @event.setFocused( false );
-            @event.setRelatedActor( actor );
-            oldScrollFocus.fire( @event );
-        }
-
-        bool success = !event.isCancelled();
-
-        if ( success )
-        {
-            scrollFocus = actor;
-
-            if ( actor != null )
-            {
-                event.setFocused( true );
-                    event.setRelatedActor( oldScrollFocus );
-                actor.fire(  event );
-
-                success = !event.isCancelled();
-
-                if ( !success )
-                {
-                    _scrollFocus = oldScrollFocus;
-                }
-            }
-        }
-
-        Pools.Free(  event );
-
-        return success;
-    }
-
-    /// <summary>
-    /// Gets the actor that will receive scroll events.
-    /// </summary>
-    /// <returns> May be null.</returns>
-    public Actor? ScrollFocus => _scrollFocus;
-
-    /// <summary>
-    /// The viewport's world width.
-    /// </summary>
-    public float Width => Viewport.WorldWidth;
-
-    /// <summary>
-    /// The viewport's world height.
-    /// </summary>
-    public float WorldHeight => Viewport.WorldHeight;
-
-    /// <summary>
-    /// The viewport's camera.
-    /// </summary>
-    public Camera Camera => Viewport.Camera;
-
-    /// <summary>
-    /// Returns the root group which holds all actors in the stage.
-    /// </summary>
-    public Group Root
-    {
-        get => _root;
-        set
-        {
-            value.Parent?.RemoveActor( value, false );
-
-            this._root = value;
-
-            value.Parent = null;
-            value.Stage  = this;
+            KeyboardFocus = null;
         }
     }
-
 
     /// <summary>
     /// Returns the <see cref="Actor"/> at the specified location in stage coordinates.
@@ -1027,14 +901,14 @@ public class Stage : InputAdapter
     /// <param name="stageX"></param>
     /// <param name="stageY"></param>
     /// <param name="touchable">
-    /// If true, the hit detection will respect the <see cref="Actor.SetTouchable"/>.
+    /// If true, the hit detection will respect the <see cref="Actor.Touchable"/>.
     /// </param>
     /// <returns> May be null if no actor was hit.  </returns>
     public Actor? Hit( float stageX, float stageY, bool touchable )
     {
-        _root.ParentToLocalCoordinates( _tempCoords.Set( stageX, stageY ) );
+        Root.ParentToLocalCoordinates( _tempCoords.Set( stageX, stageY ) );
 
-        return ( ( Actor )_root ).Hit( _tempCoords.X, _tempCoords.Y, touchable );
+        return ( ( Actor )Root ).Hit( _tempCoords.X, _tempCoords.Y, touchable );
     }
 
     /// <summary>
@@ -1085,7 +959,7 @@ public class Stage : InputAdapter
     {
         Matrix4 transformMatrix;
 
-        if ( _debugShapes != null && _debugShapes.IsDrawing() )
+        if ( ( _debugShapes != null ) && _debugShapes.IsDrawing() )
         {
             transformMatrix = _debugShapes.GetTransformMatrix();
         }
@@ -1096,6 +970,154 @@ public class Stage : InputAdapter
 
         Viewport.CalculateScissors( transformMatrix, localRect, scissorRect );
     }
+
+    /// <summary>
+    /// Sets the actor that will receive key events.
+    /// </summary>
+    /// <param name="value"> May be null. </param>
+    /// <returns>
+    /// true if the unfocus and focus events were not cancelled by a <see cref="FocusListener"/>.
+    /// </returns>
+    public Actor? KeyboardFocus
+    {
+        get => _keyboardFocus;
+        set
+        {
+            if ( _keyboardFocus == value )
+            {
+                return;
+            }
+
+            FocusListener.FocusEvent focusEvent = Pools< FocusListener.FocusEvent >.Obtain();
+            focusEvent.Stage = this;
+            focusEvent.Type  = FocusListener.FocusEvent.FeType.Keyboard;
+
+            Actor? oldKeyboardFocus = _keyboardFocus;
+
+            if ( oldKeyboardFocus != null )
+            {
+                focusEvent.Focused      = false;
+                focusEvent.RelatedActor = value;
+
+                oldKeyboardFocus.Fire( focusEvent );
+            }
+
+            var success = !focusEvent.IsCancelled;
+
+            if ( success )
+            {
+                _keyboardFocus = value;
+
+                if ( value != null )
+                {
+                    focusEvent.Focused      = true;
+                    focusEvent.RelatedActor = oldKeyboardFocus;
+
+                    value.Fire( focusEvent );
+                    success = !focusEvent.IsCancelled;
+
+                    if ( !success )
+                    {
+                        _keyboardFocus = oldKeyboardFocus;
+                    }
+                }
+            }
+
+            Pools< FocusListener.FocusEvent >.Free( focusEvent );
+        }
+    }
+
+    /// <summary>
+    /// Sets the actor that will receive scroll events.
+    /// </summary>
+    /// <param name="value"> May be null. </param>
+    /// <returns>
+    /// true if the unfocus and focus events were not cancelled
+    /// by a <see cref="FocusListener"/>.
+    /// </returns>
+    public Actor? ScrollFocus
+    {
+        get => _scrollFocus;
+        set
+        {
+            if ( _scrollFocus == value ) return;
+
+            FocusListener.FocusEvent focusEvent = Pools<FocusListener.FocusEvent>.Obtain();
+
+            focusEvent.Stage = this;
+            focusEvent.Type  = FocusListener.FocusEvent.FeType.Scroll;
+
+            Actor? oldScrollFocus = ScrollFocus;
+
+            if ( oldScrollFocus != null )
+            {
+                focusEvent.Focused      = false;
+                focusEvent.RelatedActor = value;
+                oldScrollFocus.Fire( focusEvent );
+            }
+
+            var success = !focusEvent.IsCancelled;
+
+            if ( success )
+            {
+                _scrollFocus = value;
+
+                if ( value != null )
+                {
+                    focusEvent.Focused      = true;
+                    focusEvent.RelatedActor = oldScrollFocus;
+                    value.Fire(  focusEvent );
+
+                    success = !focusEvent.IsCancelled;
+
+                    if ( !success )
+                    {
+                        _scrollFocus = oldScrollFocus;
+                    }
+                }
+            }
+
+            Pools<FocusListener.FocusEvent>.Free( focusEvent );
+        }
+    }
+
+    /// <summary>
+    /// The viewport's world width.
+    /// </summary>
+    public float WorldWidth => Viewport.WorldWidth;
+
+    /// <summary>
+    /// The viewport's world height.
+    /// </summary>
+    public float WorldHeight => Viewport.WorldHeight;
+
+    /// <summary>
+    /// The viewport's camera.
+    /// </summary>
+    public Camera? Camera => Viewport.Camera;
+
+    /// <summary>
+    /// Returns the root group which holds all actors in the stage.
+    /// </summary>
+    public Group Root
+    {
+        get => _root;
+        init
+        {
+            value.Parent?.RemoveActor( value, false );
+
+            this._root = value;
+
+            value.Parent = null;
+            value.Stage  = this;
+        }
+    }
+    
+    /// <summary>
+    /// Returns the root's child actors.
+    /// </summary>
+    /// <see cref="Group.Children "/>
+    public GdxArray< Actor > Actors => Root.Children;
 
     /// <summary>
     /// If true, any actions executed during a call to <see cref="Act()"/>)
@@ -1113,7 +1135,7 @@ public class Stage : InputAdapter
 
     /// <summary>
     /// If true, debug lines are shown for actors even when
-    /// <see cref="Actor.IsVisible"/> is false.
+    /// <see cref="Actor.Visible"/> is false.
     /// </summary>
     public bool DebugInvisibleActors { get; set; }
 
@@ -1135,7 +1157,7 @@ public class Stage : InputAdapter
             }
             else
             {
-                _root.SetDebug( false, true );
+                Root.SetDebug( false, true );
             }
         }
     }
@@ -1159,7 +1181,7 @@ public class Stage : InputAdapter
             }
             else
             {
-                _root.SetDebug( false, true );
+                Root.SetDebug( false, true );
             }
         }
     }
@@ -1182,7 +1204,7 @@ public class Stage : InputAdapter
             }
             else
             {
-                _root.SetDebug( false, true );
+                Root.SetDebug( false, true );
             }
         }
     }
@@ -1210,7 +1232,7 @@ public class Stage : InputAdapter
         }
         else
         {
-            _root.SetDebug( false, true );
+            Root.SetDebug( false, true );
         }
     }
 
@@ -1250,6 +1272,6 @@ public class Stage : InputAdapter
 
         screenY = Gdx.Graphics.Height - 1 - screenY;
 
-        return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
+        return ( screenX >= x0 ) && ( screenX < x1 ) && ( screenY >= y0 ) && ( screenY < y1 );
     }
 }

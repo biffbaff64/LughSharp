@@ -81,7 +81,7 @@ public class Event : IPoolable
 
     /// <summary>
     /// Marks this event has being stopped. This halts event propagation. Any other
-    /// listeners on the {@link #getListenerActor() listener actor} are notified, but
+    /// listeners on the <see cref="ListenerActor"/> are notified, but
     /// after that no other listeners are notified.
     /// </summary>
     public void Stop()

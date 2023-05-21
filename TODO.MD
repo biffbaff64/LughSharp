@@ -412,13 +412,13 @@ NETWORK
 SCENES.SCENE2D
 --------------
     - DONE - Action                         Convert
-    - IP   - Actor                          Convert
+    - DONE - Actor                          Convert
     - DONE - Event                          Convert
     - DONE - Group                          Convert
     - DONE - IEventListener                 Convert
     - DONE - InputEvent                     Convert
     - DONE - InputListener                  Convert
-    - IP   - Stage                          Convert
+    - DONE - Stage                          Convert
     - DONE - Touchable                      Convert
     - DONE - TouchFocus                     Convert
 
