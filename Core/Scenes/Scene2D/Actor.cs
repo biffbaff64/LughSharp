@@ -20,10 +20,10 @@ public class Actor
     protected float     OriginX    { get; set; }
     protected float     OriginY    { get; set; }
 
-    protected Color? Color
+    protected Color Color
     {
         get => _color;
-        set => _color.Set( value! );
+        set => _color.Set( value );
     }
 
     public DelayedRemovalArray< IEventListener > Listeners        { get; private set; }
@@ -390,7 +390,7 @@ public class Actor
     /// <param name="actor"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public bool IsDescendantOf( Actor actor )
+    public bool IsDescendantOf( Actor? actor )
     {
         if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
 
@@ -1282,7 +1282,7 @@ public class Actor
 
         if ( Stage != null )
         {
-            shapes.SetColor( Stage.DebugColor );
+            shapes.Color = Stage.DebugColor;
         }
 
         shapes.Rect( _x, _y, OriginX, OriginY, _width, _height, ScaleX, ScaleY, Rotation );

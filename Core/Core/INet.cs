@@ -1,4 +1,5 @@
 ﻿using LibGDXSharp.Network;
+using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Core;
 
@@ -35,7 +36,7 @@ public interface INet
     /// <summary>
     /// 
     /// </summary>
-    public class HttpRequest : IPoolable
+    public sealed class HttpRequest : IPoolable
     {
         private          string?                       _httpMethod;
         private          string?                       _url;
@@ -95,7 +96,7 @@ public interface INet
 
         public void SetFollowRedirects( bool followRedirects )
         {
-            if ( followRedirects || Gdx.App.AppType != IApplication.ApplicationType.WebGL )
+            if ( followRedirects || ( Gdx.App.AppType != IApplication.ApplicationType.WebGL ) )
             {
                 this._followRedirects = followRedirects;
             }

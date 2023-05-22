@@ -1,6 +1,20 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Utils;
+﻿using LibGDXSharp.G2D;
 
-public interface ITransformDrawable
+namespace LibGDXSharp.Scenes.Scene2D.Utils;
+
+/// <summary>
+/// A drawable that supports scale and rotation.
+/// </summary>
+public interface ITransformDrawable : IDrawable
 {
-        
+    void Draw( IBatch batch,
+               float x,
+               float y,
+               float originX,
+               float originY,
+               float width,
+               float height,
+               float scaleX,
+               float scaleY,
+               float rotation );
 }

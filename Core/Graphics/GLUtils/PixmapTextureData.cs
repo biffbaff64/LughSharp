@@ -18,10 +18,10 @@ public sealed class PixmapTextureData : ITextureData
                               bool managed = false )
     {
         this.Pixmap        = pixmap;
-        this.Format        = format ?? pixmap.GetFormat;
         this.UseMipMaps    = useMipMaps;
         this.DisposePixmap = disposePixmap;
         this.Managed       = managed;
+        this.Format        = format ?? pixmap.GetFormat();
     }
 
     public Pixmap ConsumePixmap() => Pixmap;

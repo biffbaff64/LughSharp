@@ -36,7 +36,7 @@ public class Group : Actor, ICullable
 
         Actor?[] actors = Children.Begin();
 
-        for ( int i = 0, n = Children.Count; i < n; i++ )
+        for ( int i = 0, n = Children.Size; i < n; i++ )
         {
             actors[ i ]?.Act( delta );
         }
@@ -99,7 +99,7 @@ public class Group : Actor, ICullable
 
             if ( Transform )
             {
-                for ( int i = 0, n = Children.Count; i < n; i++ )
+                for ( int i = 0, n = Children.Size; i < n; i++ )
                 {
                     Actor? child = actors[ i ];
 
@@ -127,7 +127,7 @@ public class Group : Actor, ICullable
                 X = 0;
                 Y = 0;
 
-                for ( int i = 0, n = Children.Count; i < n; i++ )
+                for ( int i = 0, n = Children.Size; i < n; i++ )
                 {
                     Actor? child = actors[ i ];
 
@@ -159,7 +159,7 @@ public class Group : Actor, ICullable
             // No culling, draw all children.
             if ( Transform )
             {
-                for ( int i = 0, n = Children.Count; i < n; i++ )
+                for ( int i = 0, n = Children.Size; i < n; i++ )
                 {
                     Actor? child = actors[ i ];
 
@@ -178,7 +178,7 @@ public class Group : Actor, ICullable
                 X = 0;
                 Y = 0;
 
-                for ( int i = 0, n = Children.Count; i < n; i++ )
+                for ( int i = 0, n = Children.Size; i < n; i++ )
                 {
                     Actor? child = actors[ i ];
 
@@ -243,7 +243,7 @@ public class Group : Actor, ICullable
         // No culling, draw all children.
         if ( Transform )
         {
-            for ( int i = 0, n = Children.Count; i < n; i++ )
+            for ( int i = 0, n = Children.Size; i < n; i++ )
             {
                 Actor? child = actors[ i ];
 
@@ -269,7 +269,7 @@ public class Group : Actor, ICullable
             X = 0;
             Y = 0;
 
-            for ( int i = 0, n = Children.Count; i < n; i++ )
+            for ( int i = 0, n = Children.Size; i < n; i++ )
             {
                 Actor? child = actors[ i ];
 
@@ -389,9 +389,9 @@ public class Group : Actor, ICullable
         if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
         if ( !Visible ) return null;
 
-        for ( var i = Children.Count - 1; i >= 0; i-- )
+        for ( var i = Children.Size - 1; i >= 0; i-- )
         {
-            Actor child = Children[ i ];
+            Actor child = Children.Get( i );
 
             child.ParentToLocalCoordinates( _tmp.Set( x, y ) );
 
@@ -446,7 +446,7 @@ public class Group : Actor, ICullable
             actor.Parent.RemoveActor( actor, false );
         }
 
-        if ( index >= Children.Count )
+        if ( index >= Children.Size )
         {
             Children.Add( actor );
         }
@@ -502,7 +502,7 @@ public class Group : Actor, ICullable
 
         var index = Children.IndexOf( actorAfter );
 
-        if ( ( index == Children.Count ) || ( index == -1 ) )
+        if ( ( index == Children.Size ) || ( index == -1 ) )
         {
             Children.Add( actor );
         }
@@ -568,7 +568,7 @@ public class Group : Actor, ICullable
     {
         Actor?[] actors = Children.Begin();
 
-        for ( int i = 0, n = Children.Count; i < n; i++ )
+        for ( int i = 0, n = Children.Size; i < n; i++ )
         {
             actors[ i ]!.Stage  = null;
             actors[ i ]!.Parent = null;
@@ -595,19 +595,17 @@ public class Group : Actor, ICullable
     /// </summary>
     public T? FindActor<T>( string name ) where T : Actor
     {
-        List< Actor > children = this.Children;
-
-        for ( int i = 0, n = children.Count; i < n; i++ )
+        for ( int i = 0, n = Children.Size; i < n; i++ )
         {
-            if ( name.Equals( children[ i ].Name ) )
+            if ( name.Equals( Children.Get( i ).Name ) )
             {
-                return ( T )children[ i ];
+                return ( T )Children.Get( i );
             }
         }
 
-        for ( int i = 0, n = children.Count; i < n; i++ )
+        for ( int i = 0, n = Children.Size; i < n; i++ )
         {
-            Actor child = children[ i ];
+            Actor child = Children.Get( i );
             
             if ( child is Group group)
             {
@@ -624,9 +622,9 @@ public class Group : Actor, ICullable
     {
         base.Stage = stage;
         
-        for ( int i = 0, n = Children.Count; i < n; i++ )
+        for ( int i = 0, n = Children.Size; i < n; i++ )
         {
-            Children[ i ].Stage = stage; // StackOverflowError here means the group is its own ascendant.
+            Children.Get( i ).Stage = stage; // StackOverflowError here means the group is its own ascendant.
         }
     }
 
@@ -636,7 +634,7 @@ public class Group : Actor, ICullable
     /// </summary>
     public bool SwapActor( int first, int second )
     {
-        var maxIndex = Children.Count;
+        var maxIndex = Children.Size;
 
         if ( ( first < 0 ) || ( first >= maxIndex ) ) return false;
         if ( ( second < 0 ) || ( second >= maxIndex ) ) return false;
@@ -667,12 +665,12 @@ public class Group : Actor, ICullable
     /// </summary>
     public Actor GetChild( int index )
     {
-        return Children[ index ];
+        return Children.Get( index );
     }
 
     public bool HasChildren()
     {
-        return Children.Count > 0;
+        return Children.Size > 0;
     }
 
     /// <summary>
@@ -765,7 +763,7 @@ public class Group : Actor, ICullable
 
         Actor?[] actors = Children.Begin();
 
-        for ( int i = 0, n = Children.Count; i < n; i++ )
+        for ( int i = 0, n = Children.Size; i < n; i++ )
         {
             for ( var ii = 0; ii < indent; ii++ )
             {

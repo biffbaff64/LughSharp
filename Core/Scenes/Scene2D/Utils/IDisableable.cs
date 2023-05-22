@@ -2,5 +2,5 @@
 
 public interface IDisableable
 {
-        
+    public bool IsDisabled { get; set; }
 }

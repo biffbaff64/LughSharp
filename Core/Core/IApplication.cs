@@ -98,7 +98,7 @@ public interface IApplication
     public void AddLifecycleListener( ILifecycleListener listener );
     public void RemoveLifecycleListener( ILifecycleListener listener );
 
-    public IClipBoard GetClipBoard();
+    public IClipboard GetClipBoard();
 
     public void PostRunnable( IRunnable runnable );
 }
