@@ -1,6 +1,366 @@
-﻿namespace LibGDXSharp.Graphics.GLUtils;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public class ImmediateModeRenderer20
+using LibGDXSharp.Maths;
+
+namespace LibGDXSharp.Graphics.GLUtils;
+
+/// <summary>
+/// Immediate mode rendering class for GLES 2.0. The renderer will allow you to
+/// specify vertices on the fly and provides a default shader for (unlit) rendering.
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class ImmediateModeRenderer20 : IImmediateModeRenderer
 {
+    public int MaxVertices { get; set; }
+    public int NumVertices { get; set; }
+
+    private readonly int _numTexCoords;
+    private readonly int _vertexSize;
+    private readonly int _normalOffset;
+    private readonly int _colorOffset;
+    private readonly int _texCoordOffset;
+
+    private bool _ownsShader;
+    private int  _primitiveType;
+    private int  _vertexIdx;
+    private int  _numSetTexCoords;
+
+    private readonly Mesh     _mesh;
+    private readonly Matrix4  _projModelView = new();
+    private readonly float[]  _vertices;
+    private readonly string[] _shaderUniformNames;
+
+    private ShaderProgram? _shader;
+
+    public ImmediateModeRenderer20( bool hasNormals, bool hasColors, int numTexCoords )
+        : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) )
+    {
+        _ownsShader = true;
+    }
+
+    public ImmediateModeRenderer20( int maxVertices, bool hasNormals, bool hasColors, int numTexCoords )
+        : this
+            (
+             maxVertices,
+             hasNormals,
+             hasColors,
+             numTexCoords,
+             CreateDefaultShader( hasNormals, hasColors, numTexCoords )
+            )
+    {
+        _ownsShader = true;
+    }
+
+    public ImmediateModeRenderer20( int maxVertices,
+                                    bool hasNormals,
+                                    bool hasColors,
+                                    int numTexCoords,
+                                    ShaderProgram shader )
+    {
+        this.MaxVertices   = maxVertices;
+        this._numTexCoords = numTexCoords;
+        this._shader       = shader;
+
+        VertexAttribute[] attribs = BuildVertexAttributes( hasNormals, hasColors, numTexCoords );
+        _mesh = new Mesh( false, maxVertices, 0, attribs );
+
+        _vertices   = new float[ maxVertices * ( _mesh.GetVertexAttributes().VertexSize / 4 ) ];
+        _vertexSize = _mesh.GetVertexAttributes().VertexSize / 4;
+
+        VertexAttribute? attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.Normal );
         
+        _normalOffset = attribute != null ? attribute.Offset / 4 : 0;
+
+        attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.ColorPacked );
+        
+        _colorOffset = attribute != null ? attribute.Offset / 4 : 0;
+
+        attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.TextureCoordinates );
+
+        _texCoordOffset = attribute != null ? attribute.Offset / 4 : 0;
+
+        _shaderUniformNames = new string[ numTexCoords ];
+
+        for ( var i = 0; i < numTexCoords; i++ )
+        {
+            _shaderUniformNames[ i ] = "u_sampler" + i;
+        }
+    }
+
+    private VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
+    {
+        var attribs = new List< VertexAttribute >
+        {
+            new VertexAttribute
+                (
+                 VertexAttributes.Usage.Position,
+                 3,
+                 ShaderProgram.PositionAttribute
+                )
+        };
+
+        if ( hasNormals )
+        {
+            attribs.Add
+                (
+                 new VertexAttribute
+                     (
+                      VertexAttributes.Usage.Normal,
+                      3,
+                      ShaderProgram.NormalAttribute
+                     )
+                );
+        }
+
+        if ( hasColor )
+        {
+            attribs.Add
+                (
+                 new VertexAttribute
+                     (
+                      VertexAttributes.Usage.ColorPacked,
+                      4,
+                      ShaderProgram.ColorAttribute
+                     )
+                );
+        }
+
+        for ( var i = 0; i < numTexCoords; i++ )
+        {
+            attribs.Add
+                (
+                 new VertexAttribute
+                     (
+                      VertexAttributes.Usage.TextureCoordinates,
+                      2,
+                      ShaderProgram.TexcoordAttribute + i
+                     )
+                );
+        }
+
+        var array = new VertexAttribute[ attribs.Count ];
+
+        for ( var i = 0; i < attribs.Count; i++ )
+        {
+            array[ i ] = attribs[ i ];
+        }
+
+        return array;
+    }
+
+    public ShaderProgram? Shader
+    {
+        get => _shader;
+        set
+        {
+            if ( _ownsShader )
+            {
+                this._shader?.Dispose();
+            }
+
+            this._shader = value;
+            _ownsShader  = false;
+        }
+    }
+
+
+    public void Begin( Matrix4 projModelView, int primitiveType )
+    {
+        this._projModelView.Set( projModelView );
+        this._primitiveType = primitiveType;
+    }
+
+    public void SetColor( Color color )
+    {
+        _vertices[ _vertexIdx + _colorOffset ] = color.ToFloatBits();
+    }
+
+    public void SetColor( float r, float g, float b, float a )
+    {
+        _vertices[ _vertexIdx + _colorOffset ] = Color.ToFloatBits( r, g, b, a );
+    }
+
+    public void SetColor( float colorBits )
+    {
+        _vertices[ _vertexIdx + _colorOffset ] = colorBits;
+    }
+
+    public void TexCoord( float u, float v )
+    {
+        int idx = _vertexIdx + _texCoordOffset;
+
+        _vertices[ idx + _numSetTexCoords ]     =  u;
+        _vertices[ idx + _numSetTexCoords + 1 ] =  v;
+        _numSetTexCoords                        += 2;
+    }
+
+    public void Normal( float x, float y, float z )
+    {
+        int idx = _vertexIdx + _normalOffset;
+
+        _vertices[ idx ]     = x;
+        _vertices[ idx + 1 ] = y;
+        _vertices[ idx + 2 ] = z;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    public void Vertex( float x, float y, float z )
+    {
+        _vertices[ _vertexIdx ]     = x;
+        _vertices[ _vertexIdx + 1 ] = y;
+        _vertices[ _vertexIdx + 2 ] = z;
+
+        _numSetTexCoords =  0;
+        _vertexIdx       += _vertexSize;
+        NumVertices++;
+    }
+
+    /// <summary>
+    /// </summary>
+    public void Flush()
+    {
+        if ( NumVertices == 0 ) return;
+
+        _shader?.Bind();
+        _shader?.SetUniformMatrix( "u_projModelView", _projModelView );
+
+        for ( var i = 0; i < _numTexCoords; i++ )
+        {
+            _shader?.SetUniformi( _shaderUniformNames[ i ], i );
+        }
+
+        _mesh.SetVertices( _vertices, 0, _vertexIdx );
+        _mesh.Render( _shader, _primitiveType );
+
+        _numSetTexCoords = 0;
+        _vertexIdx       = 0;
+        NumVertices      = 0;
+    }
+
+    public void End()
+    {
+        Flush();
+    }
+
+    public void Dispose()
+    {
+        if ( _ownsShader && ( _shader != null ) )
+        {
+            _shader.Dispose();
+        }
+
+        _mesh.Dispose();
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="hasNormals"></param>
+    /// <param name="hasColors"></param>
+    /// <param name="numTexCoords"></param>
+    /// <returns></returns>
+    private static string CreateVertexShader( bool hasNormals, bool hasColors, int numTexCoords )
+    {
+        var shader = "attribute vec4 "
+                     + ShaderProgram.PositionAttribute
+                     + ";\n"
+                     + ( hasNormals ? "attribute vec3 " + ShaderProgram.NormalAttribute + ";\n" : "" )
+                     + ( hasColors ? "attribute vec4 " + ShaderProgram.ColorAttribute + ";\n" : "" );
+
+        for ( var i = 0; i < numTexCoords; i++ )
+        {
+            shader += "attribute vec2 " + ShaderProgram.TexcoordAttribute + i + ";\n";
+        }
+
+        shader += "uniform mat4 u_projModelView;\n" //
+                  + ( hasColors ? "varying vec4 v_col;\n" : "" );
+
+        for ( var i = 0; i < numTexCoords; i++ )
+        {
+            shader += "varying vec2 v_tex" + i + ";\n";
+        }
+
+        shader += "void main() {\n"
+                  + "   gl_Position = u_projModelView * "
+                  + ShaderProgram.PositionAttribute
+                  + ";\n";
+
+        if ( hasColors )
+        {
+            shader += "   v_col = "
+                      + ShaderProgram.ColorAttribute
+                      + ";\n" //
+                      + "   v_col.a *= 255.0 / 254.0;\n";
+        }
+
+        for ( var i = 0; i < numTexCoords; i++ )
+        {
+            shader += "   v_tex" + i + " = " + ShaderProgram.TexcoordAttribute + i + ";\n";
+        }
+
+        shader += "   gl_PointSize = 1.0;\n" + "}\n";
+
+        return shader;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="hasColors"></param>
+    /// <param name="numTexCoords"></param>
+    /// <returns></returns>
+    private static string CreateFragmentShader( bool hasColors, int numTexCoords )
+    {
+        var shader = "#ifdef GL_ES\n" + "precision mediump float;\n" + "#endif\n";
+
+        if ( hasColors ) shader += "varying vec4 v_col;\n";
+
+        for ( var i = 0; i < numTexCoords; i++ )
+        {
+            shader += "varying vec2 v_tex" + i + ";\n";
+            shader += "uniform sampler2D u_sampler" + i + ";\n";
+        }
+
+        shader += "void main() {\n"
+                  + "   gl_FragColor = "
+                  + ( hasColors ? "v_col" : "vec4(1, 1, 1, 1)" );
+
+        if ( numTexCoords > 0 ) shader += " * ";
+
+        for ( var i = 0; i < numTexCoords; i++ )
+        {
+            if ( i == ( numTexCoords - 1 ) )
+            {
+                shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ")";
+            }
+            else
+            {
+                shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ") *";
+            }
+        }
+
+        shader += ";\n}";
+
+        return shader;
+    }
+
+    /// <summary>
+    /// Returns a new instance of the default shader used by SpriteBatch
+    /// for GL2 when no shader is specified.
+    /// </summary>
+    public static ShaderProgram CreateDefaultShader( bool hasNormals, bool hasColors, int numTexCoords )
+    {
+        var vertexShader   = CreateVertexShader( hasNormals, hasColors, numTexCoords );
+        var fragmentShader = CreateFragmentShader( hasColors, numTexCoords );
+        var program        = new ShaderProgram( vertexShader, fragmentShader );
+
+        if ( !program.IsCompiled )
+        {
+            throw new GdxRuntimeException( "Error compiling shader: " + program.Log );
+        }
+
+        return program;
+    }
 }

@@ -40,7 +40,7 @@ public interface IFiles
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileInfo? Absolute( string path );
+    FileInfo Absolute( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Local"/> file handle.

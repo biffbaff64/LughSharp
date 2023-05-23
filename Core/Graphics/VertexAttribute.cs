@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Graphics;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Graphics;
 
 /// <summary>
 /// A single vertex attribute defined by its <see cref="usage"/>, its number
@@ -9,7 +11,8 @@
 /// is used by a <see cref="Mesh"/> when drawing with a <see cref="ShaderProgram"/>.
 /// The alias can be changed at any time.
 /// </summary>
-public class VertexAttribute
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class VertexAttribute
 {
     /// <summary>
     /// The attribute <see cref="usage"/>, used for identification.
@@ -36,12 +39,12 @@ public class VertexAttribute
     /// <summary>
     /// the offset of this attribute in bytes, don't change this!
     /// </summary>
-    public int offset;
+    public int Offset { get; set; }
 
     /// <summary>
     /// The alias for the attribute used in a <see cref="ShaderProgram"/>
     /// </summary>
-    public string alias;
+    public readonly string alias;
 
     /// <summary>
     /// optional unit/index specifier, used for texture coordinates and bone weights.
@@ -124,11 +127,11 @@ public class VertexAttribute
 
     /// <returns>
     /// A copy of this VertexAttribute with the same parameters.
-    /// The <see cref="offset"/> is not copied and must be recalculated,
+    /// The <see cref="Offset"/> is not copied and must be recalculated,
     /// as is typically done by the <see cref="VertexAttributes"/> that
     /// owns the VertexAttribute.
     /// </returns>
-    public virtual VertexAttribute Copy()
+    public VertexAttribute Copy()
     {
         return new VertexAttribute( usage, numComponents, type, normalized, alias, unit );
     }

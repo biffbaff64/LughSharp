@@ -42,7 +42,7 @@ CORE
     - DONE - IInput                         Convert
     - DONE - IInputProcessor                Convert
     - DONE - ILifecycleListener             Convert
-    - DONE - INet                           Convert
+    - IP   - INet                           Convert
     - DONE - InputAdapter                   Convert
     - DONE - InputEventQueue                Convert
     - DONE - IPreferences                   Convert
@@ -143,7 +143,7 @@ GRAPHICS
     - DONE - IGL30                              Convert
     - DONE - ITextureArrayData                  Convert
     - DONE - ITextureData                       Convert
-    -      - Mesh                               Convert
+    - IP   - Mesh                               Convert
     - DONE - Monitor                            Convert
     - DONE - OrthographicCamera                 Convert
     - DONE - PerspectiveCamera                  Convert
@@ -215,28 +215,28 @@ GRAPHICS/GLUTILS
     -      - GLFrameBuffer
     -      - GLOnlyTextureData
     - IP   - GLVersion
-    - IP   - HdpiMode
+    - DONE - HdpiMode
     - IP   - HdpiUtils
-    -      - ImmediateModeRenderer
-    -      - ImmediateModeRenderer20
+    - DONE - IImmediateModeRenderer
+    -      - IIndexData
+    -      - IInstanceData
+    - DONE - ImmediateModeRenderer20
     -      - IndexArray
     -      - IndexBufferObject
     -      - IndexBufferObjectSubData
-    -      - IndexData
     -      - InstanceBufferObject
     -      - InstanceBufferObjectSubData
-    -      - InstanceData
+    -      - IVertexData
     - IP   - KTXTTextureData
     -      - MipMapGenerator
     -      - MipMapTextureData
     - DONE - PixmapTextureData
     - DONE - ShaderProgram
-    - IP   - ShapeRenderer
+    - DONE - ShapeRenderer
     -      - VertexArray
     -      - VertexBufferObject
     -      - VertexBufferObjectSubData
     -      - VertexBufferObjectWithVAO
-    -      - VertexData
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

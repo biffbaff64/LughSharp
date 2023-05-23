@@ -21,7 +21,6 @@ public interface INet
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public interface IHttpMethods
     {
@@ -33,9 +32,20 @@ public interface INet
         public const string Delete = "DELETE";
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    public interface IHttpResponseListener
+    {
+        void HandleHttpResponse( IHttpResponse httpResponse );
+
+        void Failed( Exception t );
+
+        void Cancelled();
+    }
+
+    public enum Protocol
+    {
+        Tcp
+    }
+
     public sealed class HttpRequest : IPoolable
     {
         private          string?                       _httpMethod;
@@ -177,26 +187,9 @@ public interface INet
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IHttpResponseListener
-    {
-        void HandleHttpResponse( IHttpResponse httpResponse );
-
-        void Failed( Exception t );
-
-        void Cancelled();
-    }
-
     public void SendHttpRequest( HttpRequest httpRequest, IHttpResponseListener httpResponseListener );
 
     public void CancelHttpRequest( HttpRequest httpRequest );
-
-    public enum Protocol
-    {
-        Tcp
-    }
 
     public IServerSocket NewServerSocket( Protocol protocol, string hostname, int port, ServerSocketHints hints );
 

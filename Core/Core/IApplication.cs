@@ -1,7 +1,5 @@
 ﻿namespace LibGDXSharp.Core;
 
-// TODO: #1 Update this as LibGDXSharp is desktop only.
-// TODO: #2 The Java LibGDX implements this as an interface. LibGDXSharp converts this to an abstract class. 
 /// <summary>
 /// An Application is the main entry point of your project. It sets up a window and
 /// rendering surface and manages the different aspects of your application, namely
@@ -70,16 +68,9 @@ public interface IApplication
     /// LogInfo will let all non-debug messages through.
     /// LogDebug will let all messages through.
     /// </summary>
-    public int LogLevel { get;            set; }
-    public ApplicationType AppType { get; set; }
+    public int LogLevel { get; set; }
 
-    public IApplicationListener? GetApplicationListener();
-    public IApplicationLogger?   GetApplicationLogger();
-    public IGraphics?            GetGraphics();
-    public IAudio?               GetAudio();
-    public IInput?               GetInput();
-    public IFiles?               GetFiles();
-    public INet?                 GetNet();
+    public ApplicationType AppType { get; set; }
 
     public void Log( string tag, string message );
     public void Log( string tag, string message, Exception exception );
@@ -92,7 +83,7 @@ public interface IApplication
 
     public int GetVersion();
 
-    public IPreferences? GetPreferences( string name );
+    public IPreferences GetPreferences( string name );
 
     public void Exit();
     public void AddLifecycleListener( ILifecycleListener listener );

@@ -1,10 +1,11 @@
-﻿using LibGDXSharp.Core;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace LibGDXSharp.Assets.Loaders.Resolvers;
 
-public class AbsoluteFileHandleResolver : IFileHandleResolver
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class AbsoluteFileHandleResolver : IFileHandleResolver
 {
-    public FileInfo? Resolve( string fileName )
+    public FileInfo Resolve( string fileName )
     {
         return Gdx.Files.Absolute( fileName );
     }

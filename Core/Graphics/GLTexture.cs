@@ -2,8 +2,6 @@
 
 using LibGDXSharp.Maths;
 
-using Buffer = Silk.NET.OpenGLES.Buffer;
-
 namespace LibGDXSharp.Graphics;
 
 /// <summary>

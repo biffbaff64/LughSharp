@@ -15,15 +15,13 @@ public interface IAudio
 	/// <exception cref="GdxRuntimeException">Thrown if the device could not be created.</exception>
 	IAudioDevice NewAudioDevice( int samplingRate, bool isMono );
 
-	///
+	/// <summary>
 	/// Creates a new <see cref="IAudioRecorder"/>. The AudioRecorder has to be disposed after it is no longer used.
-	/// 
-	/// @param samplingRate the sampling rate in Hertz
-	/// @param isMono whether the recorder records in mono or stereo
-	/// @return the AudioRecorder
-	/// 
-	/// @throws GdxRuntimeException in case the recorder could not be created
-	///
+	/// </summary>
+	/// <param name="samplingRate"> the sampling rate in Hertz </param>
+	/// <param name="isMono"> whether the recorder records in mono or stereo </param>
+	/// <returns> the AudioRecorder </returns>
+	/// <exception cref="GdxRuntimeException"> in case the recorder could not be created</exception>
 	IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono );
 
 	/// <summary>

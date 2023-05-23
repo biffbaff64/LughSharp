@@ -408,31 +408,29 @@ public interface IInput
 
             return str;
         }
-    }
 
-    private static List< string >? _keyNames;
+        private readonly static List< string > keyNames = new();
 
-    public static int ValueOf( string keyname )
-    {
-        if ( _keyNames == null )
+        static Keys()
         {
-            _keyNames = new List< string >();
-
             InitialiseKeyNames();
         }
 
-        return _keyNames.IndexOf( keyname );
-    }
-
-    private static void InitialiseKeyNames()
-    {
-        for ( var i = 0; i <= Keys.MaxKeycode; i++ )
+        public static int ValueOf( string keyname )
         {
-            var name = Keys.ToString( i );
+            return keyNames.IndexOf( keyname );
+        }
 
-            if ( ( name != null ) && ( _keyNames != null ) )
+        private static void InitialiseKeyNames()
+        {
+            for ( var i = 0; i <= Keys.MaxKeycode; i++ )
             {
-                _keyNames[ i ] = name;
+                var name = Keys.ToString( i );
+
+                if ( ( name != null ) && ( keyNames != null ) )
+                {
+                    keyNames[ i ] = name;
+                }
             }
         }
     }

@@ -12,13 +12,17 @@ public static class Gdx
     public static bool DevMode { get; set; } = false;
     public static bool GodMode { get; set; } = false;
 
-    [AllowNull] public static IApplication App      { get; set; }
-    [AllowNull] public static IGraphics    Graphics { get; set; }
-    [AllowNull] public static IAudio       Audio    { get; set; }
-    [AllowNull] public static IInput       Input    { get; set; }
-    [AllowNull] public static IFiles       Files    { get; set; }
-    [AllowNull] public static INet         Net      { get; set; }
-    [AllowNull] public static IGL20        GL       { get; set; }
-    [AllowNull] public static IGL20        GL20     { get; set; }
-    [AllowNull] public static IGL30        GL30     { get; set; }
+    public static IApplication App      { get; set; }
+    public static IGraphics    Graphics { get; set; }
+    public static IAudio       Audio    { get; set; }
+    public static IInput       Input    { get; set; }
+    public static IFiles       Files    { get; set; }
+    public static INet         Net      { get; set; }
+    public static IGL20        GL       { get; set; }
+    public static IGL20        GL20     { get; set; }
+    public static IGL30        GL30     { get; set; }
+}
+
+public abstract class AppBase : IApplication
+{
 }

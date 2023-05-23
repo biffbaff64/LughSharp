@@ -70,7 +70,7 @@ public class VertexAttributes
             return defaultIfNotFound;
         }
 
-        return vertexAttribute.offset / 4;
+        return vertexAttribute.Offset / 4;
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public class VertexAttributes
     /// <param name="usage"> The usage of the VertexAttribute to find.  </param>
     public VertexAttribute? FindByUsage( int usage )
     {
-        var len = Size();
+        var len = Size;
 
         for ( var i = 0; i < len; i++ )
         {
@@ -105,7 +105,7 @@ public class VertexAttributes
 
         foreach ( VertexAttribute attribute in _attributes )
         {
-            attribute.offset =  count;
+            attribute.Offset =  count;
             count            += attribute.GetSizeInBytes();
         }
 
@@ -113,7 +113,7 @@ public class VertexAttributes
     }
 
     /// <returns> the number of attributes </returns>
-    public int Size() => _attributes.Length;
+    public int Size => _attributes.Length;
 
     /// <param name="index"> the index </param>
     /// <returns> the VertexAttribute at the given index  </returns>
@@ -136,7 +136,7 @@ public class VertexAttributes
             builder.Append( ", " );
             builder.Append( t.numComponents );
             builder.Append( ", " );
-            builder.Append( t.offset );
+            builder.Append( t.Offset );
             builder.Append( ')' );
             builder.Append( '\n' );
         }

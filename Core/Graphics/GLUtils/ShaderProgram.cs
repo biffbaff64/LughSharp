@@ -32,7 +32,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class ShaderProgram
+public sealed class ShaderProgram
 {
     /// <summary>
     /// default name for position attributes.
@@ -223,7 +223,7 @@ public class ShaderProgram
         Gdx.GL20.GLCompileShader( shader );
         Gdx.GL20.GLGetShaderiv( shader, IGL20.GL_Compile_Status, intbuf );
 
-        int compiled = intbuf.Get( 0 );
+        var compiled = intbuf.Get( 0 );
 
         if ( compiled == 0 )
         {
@@ -268,7 +268,8 @@ public class ShaderProgram
         IntBuffer intbuf = tmp.AsIntBuffer();
 
         Gdx.GL20.GLGetProgramiv( program, IGL20.GL_Link_Status, intbuf );
-        int linked = intbuf.Get( 0 );
+        
+        var linked = intbuf.Get( 0 );
 
         if ( linked == 0 )
         {

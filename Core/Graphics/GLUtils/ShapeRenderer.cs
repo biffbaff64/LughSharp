@@ -7,23 +7,25 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class ShapeRenderer : IDisposable
 {
-    public enum ShapeType
+    public enum ShapeTypes
     {
         Point  = IGL20.GL_Points,
         Line   = IGL20.GL_Lines,
         Filled = IGL20.GL_Triangles
     }
 
-    private IImmediateModeRenderer renderer;
-    private bool                   matrixDirty      = false;
-    private Matrix4                projectionMatrix = new Matrix4();
-    private Matrix4                transformMatrix  = new Matrix4();
-    private Matrix4                combinedMatrix   = new Matrix4();
-    private Vector2                tmp              = new Vector2();
-    private Color                  color            = new Color( 1, 1, 1, 1 );
-    private ShapeType?             shapeType;
-    private bool                   autoShapeType;
-    private float                  defaultRectLineWidth = 0.75f;
+    public IImmediateModeRenderer Renderer  { get; set; }
+    public ShapeTypes?            ShapeType { get; set; }
+
+    private readonly Matrix4 _combinedMatrix       = new();
+    private readonly Color   _color                = new( 1, 1, 1, 1 );
+    private readonly float   _defaultRectLineWidth = 0.75f;
+    private readonly Vector2 _tmp                  = new();
+
+    private bool    _matrixDirty      = false;
+    private Matrix4 _projectionMatrix = new();
+    private Matrix4 _transformMatrix  = new();
+    private bool    _autoShapeType;
 
     public ShapeRenderer()
         : this( 5000 )
@@ -32,18 +34,18 @@ public sealed class ShapeRenderer : IDisposable
 
     public ShapeRenderer( int maxVertices, ShaderProgram? defaultShader = null )
     {
-        renderer = defaultShader == null
+        Renderer = defaultShader == null
             ? new ImmediateModeRenderer20( maxVertices, false, true, 0 )
             : new ImmediateModeRenderer20( maxVertices, false, true, 0, defaultShader );
 
-        projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
-        matrixDirty = true;
+        _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        _matrixDirty = true;
     }
 
     public Color Color
     {
-        get => color;
-        set => color.Set( value );
+        get => _color;
+        set => _color.Set( value );
     }
 
     /// <summary>
@@ -51,31 +53,31 @@ public sealed class ShapeRenderer : IDisposable
     /// </summary>
     public void SetColor( float r, float g, float b, float a )
     {
-        this.color.Set( r, g, b, a );
+        this._color.Set( r, g, b, a );
     }
 
     public void UpdateMatrices()
     {
-        matrixDirty = true;
+        _matrixDirty = true;
     }
 
     public Matrix4 ProjectionMatrix
     {
-        get => projectionMatrix;
+        get => _projectionMatrix;
         set
         {
-            projectionMatrix = value;
-            matrixDirty      = true;
+            _projectionMatrix = value;
+            _matrixDirty      = true;
         }
     }
 
     public Matrix4 TransformMatrix
     {
-        get => transformMatrix;
+        get => _transformMatrix;
         set
         {
-            transformMatrix = value;
-            matrixDirty     = true;
+            _transformMatrix = value;
+            _matrixDirty     = true;
         }
     }
 
@@ -85,7 +87,7 @@ public sealed class ShapeRenderer : IDisposable
     public void Identity()
     {
         TransformMatrix.Idt();
-        matrixDirty = true;
+        _matrixDirty = true;
     }
 
     /// <summary>
@@ -94,7 +96,7 @@ public sealed class ShapeRenderer : IDisposable
     public void Translate( float x, float y, float z )
     {
         TransformMatrix.Translate( x, y, z );
-        matrixDirty = true;
+        _matrixDirty = true;
     }
 
     /// <summary>
@@ -103,7 +105,7 @@ public sealed class ShapeRenderer : IDisposable
     public void Rotate( float axisX, float axisY, float axisZ, float degrees )
     {
         TransformMatrix.Rotate( axisX, axisY, axisZ, degrees );
-        matrixDirty = true;
+        _matrixDirty = true;
     }
 
     /// <summary>
@@ -112,7 +114,7 @@ public sealed class ShapeRenderer : IDisposable
     public void Scale( float scaleX, float scaleY, float scaleZ )
     {
         TransformMatrix.Scale( scaleX, scaleY, scaleZ );
-        matrixDirty = true;
+        _matrixDirty = true;
     }
 
     /// <summary>
@@ -123,21 +125,21 @@ public sealed class ShapeRenderer : IDisposable
     /// </summary>
     public void SetAutoShapeType( bool type )
     {
-        this.autoShapeType = type;
+        this._autoShapeType = type;
     }
 
     /// <summary>
     /// Begins a new batch without specifying a shape type.
     /// </summary>
-    /// <exception cref="IllegalStateException"> if <see cref="autoShapeType"/> is false.</exception>
+    /// <exception cref="IllegalStateException"> if <see cref="_autoShapeType"/> is false.</exception>
     public void Begin()
     {
-        if ( !autoShapeType )
+        if ( !_autoShapeType )
         {
             throw new System.InvalidOperationException( "autoShapeType must be true to use this method." );
         }
 
-        Begin( ShapeType.Line );
+        Begin( ShapeTypes.Line );
     }
 
     /// <summary>
@@ -145,39 +147,50 @@ public sealed class ShapeRenderer : IDisposable
     /// to use the type specified. The call to this method must be paired with a
     /// call to <see cref="End()"/>.
     /// </summary>
-    /// <seealso cref="SetAutoShapeType(bool) "/>
-    public void Begin( ShapeType type )
+    /// <see cref="SetAutoShapeType(bool) "/>
+    public void Begin( ShapeTypes? type )
     {
-        if ( shapeType != null )
+        if ( this.ShapeType != null )
         {
             throw new System.InvalidOperationException( "Call end() before beginning a new shape batch." );
         }
 
-        shapeType = type;
-
-        if ( matrixDirty )
+        if ( type == null )
         {
-            combinedMatrix.Set( projectionMatrix );
-            Matrix4.Mul( combinedMatrix.val, transformMatrix.val );
-            matrixDirty = false;
+            throw new GdxRuntimeException( "Cannot BEGIN with NULL shape!" );
         }
 
-        renderer.Begin( combinedMatrix, shapeType );
+        ShapeType = type;
+
+        if ( _matrixDirty )
+        {
+            _combinedMatrix.Set( _projectionMatrix );
+            Matrix4.Mul( _combinedMatrix.val, _transformMatrix.val );
+            _matrixDirty = false;
+        }
+
+        Renderer.Begin( _combinedMatrix, ( int )ShapeType );
     }
 
-    public void Set( ShapeType type )
+    /// <summary>
+    /// Finishes the batch of shapes and ensures they get rendered.
+    /// </summary>
+    public void End()
     {
-        if ( shapeType == type )
-        {
-            return;
-        }
+        Renderer.End();
+        this.ShapeType = null;
+    }
 
-        if ( shapeType == null )
+    public void Set( ShapeTypes type )
+    {
+        if ( this.ShapeType == type ) return;
+
+        if ( this.ShapeType == null )
         {
             throw new System.InvalidOperationException( "begin must be called first." );
         }
 
-        if ( !autoShapeType )
+        if ( !_autoShapeType )
         {
             throw new System.InvalidOperationException( "autoShapeType must be enabled." );
         }
@@ -188,63 +201,63 @@ public sealed class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a point using <see cref="ShapeType.Point"/>, <see cref="ShapeType.Line"/>
-    /// or <see cref="ShapeType.Filled"/>.
+    /// Draws a point using <see cref="ShapeTypes.Point"/>, <see cref="ShapeTypes.Line"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Point( float x, float y, float z )
     {
-        if ( shapeType == ShapeType.Line )
+        if ( this.ShapeType == ShapeTypes.Line )
         {
-            var size = defaultRectLineWidth * 0.5f;
+            var size = _defaultRectLineWidth * 0.5f;
 
             Line( x - size, y - size, z, x + size, y + size, z );
 
             return;
         }
-        else if ( shapeType == ShapeType.Filled )
+        else if ( this.ShapeType == ShapeTypes.Filled )
         {
-            var size = defaultRectLineWidth * 0.5f;
+            var size = _defaultRectLineWidth * 0.5f;
 
             Box
                 (
                  x - size,
                  y - size,
                  z - size,
-                 defaultRectLineWidth,
-                 defaultRectLineWidth,
-                 defaultRectLineWidth
+                 _defaultRectLineWidth,
+                 _defaultRectLineWidth,
+                 _defaultRectLineWidth
                 );
 
             return;
         }
 
-        Check( ShapeType.Point, null, 1 );
+        Check( ShapeTypes.Point, null, 1 );
 
-        renderer.Color = color;
-        renderer.Vertex( x, y, z );
+        Renderer.SetColor( _color );
+        Renderer.Vertex( x, y, z );
     }
 
     /// <summary>
-    /// Draws a line using <seealso cref="ShapeType.Line"/> or <seealso cref="ShapeType.Filled"/>.
+    /// Draws a line using <see cref="ShapeTypes.Line"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Line( float x, float y, float z, float x2, float y2, float z2 )
     {
-        Line( x, y, z, x2, y2, z2, color, color );
+        Line( x, y, z, x2, y2, z2, _color, _color );
     }
 
     public void Line( Vector3 v0, Vector3 v1 )
     {
-        Line( v0.X, v0.Y, v0.Z, v1.X, v1.Y, v1.Z, color, color );
+        Line( v0.X, v0.Y, v0.Z, v1.X, v1.Y, v1.Z, _color, _color );
     }
 
     public void Line( float x, float y, float x2, float y2 )
     {
-        Line( x, y, 0.0f, x2, y2, 0.0f, color, color );
+        Line( x, y, 0.0f, x2, y2, 0.0f, _color, _color );
     }
 
     public void Line( Vector2 v0, Vector2 v1 )
     {
-        Line( v0.X, v0.Y, 0.0f, v1.X, v1.Y, 0.0f, color, color );
+        Line( v0.X, v0.Y, 0.0f, v1.X, v1.Y, 0.0f, _color, _color );
     }
 
     public void Line( float x, float y, float x2, float y2, Color c1, Color c2 )
@@ -253,27 +266,29 @@ public sealed class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a line using <see cref="ShapeType.Line"/> or <see cref="ShapeType.Filled"/>.
+    /// Draws a line using <see cref="ShapeTypes.Line"/> or <see cref="ShapeTypes.Filled"/>.
     /// The line is drawn with two colors interpolated between the start and end points.
     /// </summary>
     public void Line( float x, float y, float z, float x2, float y2, float z2, Color c1, Color c2 )
     {
-        if ( shapeType == ShapeType.Filled )
+        if ( this.ShapeType == ShapeTypes.Filled )
         {
-            RectLine( x, y, x2, y2, defaultRectLineWidth, c1, c2 );
+            RectLine( x, y, x2, y2, _defaultRectLineWidth, c1, c2 );
 
             return;
         }
 
-        Check( ShapeType.Line, null, 2 );
+        Check( ShapeTypes.Line, null, 2 );
 
-        renderer.SetColor( c1.R, c1.G, c1.B, c1.A );
-        renderer.Vertex( x, y, z );
-        renderer.SetColor( c2.R, c2.G, c2.B, c2.A );
-        renderer.Vertex( x2, y2, z2 );
+        Renderer.SetColor( c1.R, c1.G, c1.B, c1.A );
+        Renderer.Vertex( x, y, z );
+        Renderer.SetColor( c2.R, c2.G, c2.B, c2.A );
+        Renderer.Vertex( x2, y2, z2 );
     }
 
-    /** Draws a curve using {@link ShapeType#Line}. */
+    /// <summary>
+    /// Draws a curve using <see cref="ShapeTypes.Line"/>
+    /// </summary>
     public void Curve( float x1,
                        float y1,
                        float cx1,
@@ -284,9 +299,9 @@ public sealed class ShapeRenderer : IDisposable
                        float y2,
                        int segments )
     {
-        Check( ShapeType.Line, null, ( segments * 2 ) + 2 );
+        Check( ShapeTypes.Line, null, ( segments * 2 ) + 2 );
 
-        var colorBits = color.ToFloatBits();
+        var colorBits = _color.ToFloatBits();
 
         // Algorithm from: http://www.antigrain.com/research/bezier_interpolation/index.html#PAGE_BEZIER_INTERPOLATION
         var subdivStep  = 1f / segments;
@@ -318,8 +333,8 @@ public sealed class ShapeRenderer : IDisposable
 
         while ( segments-- > 0 )
         {
-            renderer.Color = colorBits;
-            renderer.Vertex( fx, fy, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( fx, fy, 0 );
 
             fx   += dfx;
             fy   += dfy;
@@ -328,93 +343,1209 @@ public sealed class ShapeRenderer : IDisposable
             ddfx += dddfx;
             ddfy += dddfy;
 
-            renderer.Color = colorBits;
-            renderer.Vertex( fx, fy, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( fx, fy, 0 );
         }
 
-        renderer.Color = colorBits;
-        renderer.Vertex( fx, fy, 0 );
-        renderer.Color = colorBits;
-        renderer.Vertex( x2, y2, 0 );
+        Renderer.SetColor( colorBits );
+        Renderer.Vertex( fx, fy, 0 );
+        Renderer.SetColor( colorBits );
+        Renderer.Vertex( x2, y2, 0 );
     }
 
     /// <summary>
-    /// Draws a triangle in x/y plane using <seealso cref="ShapeType.Line"/>
-    /// or <seealso cref="ShapeType.Filled"/>.
+    /// Draws a triangle in x/y plane using <see cref="ShapeTypes.Line"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Triangle( float x1, float y1, float x2, float y2, float x3, float y3 )
     {
-        Check( ShapeType.Line, ShapeType.Filled, 6 );
+        Check( ShapeTypes.Line, ShapeTypes.Filled, 6 );
 
-        var colorBits = color.ToFloatBits();
+        var colorBits = _color.ToFloatBits();
 
-        if ( shapeType == ShapeType.Line )
+        if ( this.ShapeType == ShapeTypes.Line )
         {
-            renderer.Color = colorBits;
-            renderer.Vertex( x1, y1, 0 );
-            renderer.Color = colorBits;
-            renderer.Vertex( x2, y2, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2, y2, 0 );
 
-            renderer.Color = colorBits;
-            renderer.Vertex( x2, y2, 0 );
-            renderer.Color = colorBits;
-            renderer.Vertex( x3, y3, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2, y2, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x3, y3, 0 );
 
-            renderer.Color = colorBits;
-            renderer.Vertex( x3, y3, 0 );
-            renderer.Color = colorBits;
-            renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x3, y3, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1, y1, 0 );
         }
         else
         {
-            renderer.Color = colorBits;
-            renderer.Vertex( x1, y1, 0 );
-            renderer.Color = colorBits;
-            renderer.Vertex( x2, y2, 0 );
-            renderer.Color = colorBits;
-            renderer.Vertex( x3, y3, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2, y2, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x3, y3, 0 );
         }
     }
 
     /// <summary>
-    /// Draws a triangle in x/y plane with colored corners using <seealso cref="ShapeType.Line"/> or <seealso cref="ShapeType.Filled"/>. </summary>
-    public virtual void Triangle( float x1,
-                                  float y1,
-                                  float x2,
-                                  float y2,
-                                  float x3,
-                                  float y3,
-                                  Color col1,
-                                  Color col2,
-                                  Color col3 )
+    /// Draws a triangle in x/y plane with colored corners using <see cref="ShapeTypes.Line"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
+    /// </summary>
+    public void Triangle( float x1,
+                          float y1,
+                          float x2,
+                          float y2,
+                          float x3,
+                          float y3,
+                          Color col1,
+                          Color col2,
+                          Color col3 )
     {
-        check( ShapeType.Line, ShapeType.Filled, 6 );
+        Check( ShapeTypes.Line, ShapeTypes.Filled, 6 );
 
-        if ( shapeType == ShapeType.Line )
+        if ( this.ShapeType == ShapeTypes.Line )
         {
-            renderer.color( col1.r, col1.g, col1.b, col1.a );
-            renderer.vertex( x1, y1, 0 );
-            renderer.color( col2.r, col2.g, col2.b, col2.a );
-            renderer.vertex( x2, y2, 0 );
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x2, y2, 0 );
 
-            renderer.color( col2.r, col2.g, col2.b, col2.a );
-            renderer.vertex( x2, y2, 0 );
-            renderer.color( col3.r, col3.g, col3.b, col3.a );
-            renderer.vertex( x3, y3, 0 );
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x2, y2, 0 );
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x3, y3, 0 );
 
-            renderer.color( col3.r, col3.g, col3.b, col3.a );
-            renderer.vertex( x3, y3, 0 );
-            renderer.color( col1.r, col1.g, col1.b, col1.a );
-            renderer.vertex( x1, y1, 0 );
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x3, y3, 0 );
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x1, y1, 0 );
         }
         else
         {
-            renderer.color( col1.r, col1.g, col1.b, col1.a );
-            renderer.vertex( x1, y1, 0 );
-            renderer.color( col2.r, col2.g, col2.b, col2.a );
-            renderer.vertex( x2, y2, 0 );
-            renderer.color( col3.r, col3.g, col3.b, col3.a );
-            renderer.vertex( x3, y3, 0 );
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x2, y2, 0 );
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x3, y3, 0 );
         }
+    }
+
+    /// <summary>
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Line"/> or
+    /// <see cref="ShapeTypes.Filled"/>.
+    /// </summary>
+    public void Rect( float x, float y, float width, float height )
+    {
+        Check( ShapeTypes.Line, ShapeTypes.Filled, 8 );
+        var colorBits = _color.ToFloatBits();
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, 0 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, 0 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, 0 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, 0 );
+        }
+        else
+        {
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, 0 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, 0 );
+        }
+    }
+
+    /// <summary>
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Line"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left corner.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="col1"> The color at (x, y). </param>
+    /// <param name="col2"> The color at (x + width, y). </param>
+    /// <param name="col3"> The color at (x + width, y + height). </param>
+    /// <param name="col4"> The color at (x, y + height).  </param>
+    public void Rect( float x,
+                      float y,
+                      float width,
+                      float height,
+                      Color col1,
+                      Color col2,
+                      Color col3,
+                      Color col4 )
+    {
+        Check( ShapeTypes.Line, ShapeTypes.Filled, 8 );
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x, y, 0 );
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x + width, y, 0 );
+
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x + width, y, 0 );
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x + width, y + height, 0 );
+
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x + width, y + height, 0 );
+            Renderer.SetColor( col4.R, col4.G, col4.B, col4.A );
+            Renderer.Vertex( x, y + height, 0 );
+
+            Renderer.SetColor( col4.R, col4.G, col4.B, col4.A );
+            Renderer.Vertex( x, y + height, 0 );
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x, y, 0 );
+        }
+        else
+        {
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x, y, 0 );
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x + width, y, 0 );
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x + width, y + height, 0 );
+
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x + width, y + height, 0 );
+            Renderer.SetColor( col4.R, col4.G, col4.B, col4.A );
+            Renderer.Vertex( x, y + height, 0 );
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x, y, 0 );
+        }
+    }
+
+    /// <summary>
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Line"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left corner.
+    /// The originX and originY specify the point about which to rotate the rectangle. 
+    /// </summary>
+    public void Rect( float x,
+                      float y,
+                      float originX,
+                      float originY,
+                      float width,
+                      float height,
+                      float scaleX,
+                      float scaleY,
+                      float degrees )
+    {
+        Rect( x, y, originX, originY, width, height, scaleX, scaleY, degrees, _color, _color, _color, _color );
+    }
+
+    /// <summary>
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Line"/>
+    /// or <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left
+    /// corner. The originX and originY specify the point about which to rotate
+    /// the rectangle.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="originX"></param>
+    /// <param name="originY"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="scaleX"></param>
+    /// <param name="scaleY"></param>
+    /// <param name="degrees"></param>
+    /// <param name="col1"> The color at (x, y) </param>
+    /// <param name="col2"> The color at (x + width, y) </param>
+    /// <param name="col3"> The color at (x + width, y + height) </param>
+    /// <param name="col4"> The color at (x, y + height)  </param>
+    public void Rect( float x,
+                      float y,
+                      float originX,
+                      float originY,
+                      float width,
+                      float height,
+                      float scaleX,
+                      float scaleY,
+                      float degrees,
+                      Color col1,
+                      Color col2,
+                      Color col3,
+                      Color col4 )
+    {
+        Check( ShapeTypes.Line, ShapeTypes.Filled, 8 );
+
+        var cos = MathUtils.CosDeg( degrees );
+        var sin = MathUtils.SinDeg( degrees );
+
+        var fx  = -originX;
+        var fy  = -originY;
+        var fx2 = width - originX;
+        var fy2 = height - originY;
+
+        if ( !scaleX.Equals( 1 ) || !scaleY.Equals( 1 ) )
+        {
+            fx  *= scaleX;
+            fy  *= scaleY;
+            fx2 *= scaleX;
+            fy2 *= scaleY;
+        }
+
+        var worldOriginX = x + originX;
+        var worldOriginY = y + originY;
+
+        var x1 = ( ( cos * fx ) - ( sin * fy ) ) + worldOriginX;
+        var y1 = ( sin * fx ) + ( cos * fy ) + worldOriginY;
+
+        var x2 = ( ( cos * fx2 ) - ( sin * fy ) ) + worldOriginX;
+        var y2 = ( sin * fx2 ) + ( cos * fy ) + worldOriginY;
+
+        var x3 = ( ( cos * fx2 ) - ( sin * fy2 ) ) + worldOriginX;
+        var y3 = ( sin * fx2 ) + ( cos * fy2 ) + worldOriginY;
+
+        var x4 = x1 + ( x3 - x2 );
+        var y4 = y3 - ( y2 - y1 );
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x2, y2, 0 );
+
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x2, y2, 0 );
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x3, y3, 0 );
+
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x3, y3, 0 );
+            Renderer.SetColor( col4.R, col4.G, col4.B, col4.A );
+            Renderer.Vertex( x4, y4, 0 );
+
+            Renderer.SetColor( col4.R, col4.G, col4.B, col4.A );
+            Renderer.Vertex( x4, y4, 0 );
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x1, y1, 0 );
+        }
+        else
+        {
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( col2.R, col2.G, col2.B, col2.A );
+            Renderer.Vertex( x2, y2, 0 );
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x3, y3, 0 );
+
+            Renderer.SetColor( col3.R, col3.G, col3.B, col3.A );
+            Renderer.Vertex( x3, y3, 0 );
+            Renderer.SetColor( col4.R, col4.G, col4.B, col4.A );
+            Renderer.Vertex( x4, y4, 0 );
+            Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
+            Renderer.Vertex( x1, y1, 0 );
+        }
+
+    }
+
+    /// <summary>
+    /// Draws a line using a rotated rectangle, where with one edge is centered at x1, y1 and the opposite edge centered at x2, y2. </summary>
+    public void RectLine( float x1, float y1, float x2, float y2, float width )
+    {
+        Check( ShapeTypes.Line, ShapeTypes.Filled, 8 );
+
+        var     colorBits = _color.ToFloatBits();
+        Vector2 t         = _tmp.Set( y2 - y1, x1 - x2 ).Nor();
+
+        width *= 0.5f;
+
+        var tx = t.X * width;
+        var ty = t.Y * width;
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1 + tx, y1 + ty, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1 - tx, y1 - ty, 0 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2 + tx, y2 + ty, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2 - tx, y2 - ty, 0 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2 + tx, y2 + ty, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1 + tx, y1 + ty, 0 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2 - tx, y2 - ty, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1 - tx, y1 - ty, 0 );
+        }
+        else
+        {
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1 + tx, y1 + ty, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1 - tx, y1 - ty, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2 + tx, y2 + ty, 0 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2 - tx, y2 - ty, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2 + tx, y2 + ty, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1 - tx, y1 - ty, 0 );
+        }
+    }
+
+    /// <summary>
+    /// Draws a line using a rotated rectangle, where with one edge is centered
+    /// at x1, y1 and the opposite edge centered at x2, y2.
+    /// </summary>
+    public void RectLine( float x1, float y1, float x2, float y2, float width, Color c1, Color c2 )
+    {
+        Check( ShapeTypes.Line, ShapeTypes.Filled, 8 );
+
+        var col1Bits = c1.ToFloatBits();
+        var col2Bits = c2.ToFloatBits();
+
+        Vector2 t = _tmp.Set( y2 - y1, x1 - x2 ).Nor();
+
+        width *= 0.5f;
+
+        var tx = t.X * width;
+        var ty = t.Y * width;
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            Renderer.SetColor( col1Bits );
+            Renderer.Vertex( x1 + tx, y1 + ty, 0 );
+            Renderer.SetColor( col1Bits );
+            Renderer.Vertex( x1 - tx, y1 - ty, 0 );
+
+            Renderer.SetColor( col2Bits );
+            Renderer.Vertex( x2 + tx, y2 + ty, 0 );
+            Renderer.SetColor( col2Bits );
+            Renderer.Vertex( x2 - tx, y2 - ty, 0 );
+
+            Renderer.SetColor( col2Bits );
+            Renderer.Vertex( x2 + tx, y2 + ty, 0 );
+            Renderer.SetColor( col1Bits );
+            Renderer.Vertex( x1 + tx, y1 + ty, 0 );
+
+            Renderer.SetColor( col2Bits );
+            Renderer.Vertex( x2 - tx, y2 - ty, 0 );
+            Renderer.SetColor( col1Bits );
+            Renderer.Vertex( x1 - tx, y1 - ty, 0 );
+        }
+        else
+        {
+            Renderer.SetColor( col1Bits );
+            Renderer.Vertex( x1 + tx, y1 + ty, 0 );
+            Renderer.SetColor( col1Bits );
+            Renderer.Vertex( x1 - tx, y1 - ty, 0 );
+            Renderer.SetColor( col2Bits );
+            Renderer.Vertex( x2 + tx, y2 + ty, 0 );
+
+            Renderer.SetColor( col2Bits );
+            Renderer.Vertex( x2 - tx, y2 - ty, 0 );
+            Renderer.SetColor( col2Bits );
+            Renderer.Vertex( x2 + tx, y2 + ty, 0 );
+            Renderer.SetColor( col1Bits );
+            Renderer.Vertex( x1 - tx, y1 - ty, 0 );
+        }
+    }
+
+    public void RectLine( Vector2 p1, Vector2 p2, float width )
+    {
+        RectLine( p1.X, p1.Y, p2.X, p2.Y, width );
+    }
+
+    /// <summary>
+    /// Draws a cube using <see cref="ShapeTypes.Line"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x, y and z specify
+    /// the bottom, left, front corner of the rectangle. 
+    /// </summary>
+    public void Box( float x, float y, float z, float width, float height, float depth )
+    {
+        depth = -depth;
+        var colorBits = _color.ToFloatBits();
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            Check( ShapeTypes.Line, ShapeTypes.Filled, 24 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z + depth );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z + depth );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z + depth );
+        }
+        else
+        {
+            Check( ShapeTypes.Line, ShapeTypes.Filled, 36 );
+
+            // Front
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z );
+
+            // Back
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z + depth );
+
+            // Left
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z + depth );
+
+            // Right
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z );
+
+            // Top
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y + height, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y + height, z + depth );
+
+            // Bottom
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + depth );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + width, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z );
+        }
+    }
+
+    /// <summary>
+    /// Draws two crossed lines using <seealso cref="ShapeTypes.Line"/>
+    /// or <seealso cref="ShapeTypes.Filled"/>.
+    /// </summary>
+    public void XShape( float x, float y, float size )
+    {
+        Line( x - size, y - size, x + size, y + size );
+        Line( x - size, y + size, x + size, y - size );
+    }
+
+    public void XShape( Vector2 p, float size )
+    {
+        XShape( p.X, p.Y, size );
+    }
+
+    /// <summary>
+    /// Calls <see cref="Arc(float, float, float, float, float, int)"/> by
+    /// estimating the number of segments needed for a smooth arc.
+    /// </summary>
+    public void Arc( float x, float y, float radius, float start, float degrees )
+    {
+        Arc
+            (
+             x,
+             y,
+             radius,
+             start,
+             degrees,
+             Math.Max( 1, ( int )( 6 * ( float )Math.Cbrt( radius ) * ( degrees / 360.0f ) ) )
+            );
+    }
+
+    /// <summary>
+    /// Draws an arc using <see cref="ShapeTypes.Line"/> or <see cref="ShapeTypes.Filled"/>.
+    /// </summary>
+    public void Arc( float x, float y, float radius, float start, float degrees, int segments )
+    {
+        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+
+        var colorBits = _color.ToFloatBits();
+        var theta     = ( 2 * MathUtils.PI * ( degrees / 360.0f ) ) / segments;
+
+        var cos = MathUtils.Cos( theta );
+        var sin = MathUtils.Sin( theta );
+
+        var cx = radius * MathUtils.Cos( start * MathUtils.DegreesToRadians );
+        var cy = radius * MathUtils.Sin( start * MathUtils.DegreesToRadians );
+
+        float temp;
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            Check( ShapeTypes.Line, ShapeTypes.Filled, ( segments * 2 ) + 2 );
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + cx, y + cy, 0 );
+
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, 0 );
+
+                temp = cx;
+                cx   = ( cos * cx ) - ( sin * cy );
+                cy   = ( sin * temp ) + ( cos * cy );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, 0 );
+            }
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + cx, y + cy, 0 );
+        }
+        else
+        {
+            Check( ShapeTypes.Line, ShapeTypes.Filled, ( segments * 3 ) + 3 );
+
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x, y, 0 );
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, 0 );
+
+                temp = cx;
+                cx   = ( cos * cx ) - ( sin * cy );
+                cy   = ( sin * temp ) + ( cos * cy );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, 0 );
+            }
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + cx, y + cy, 0 );
+        }
+
+        cx = 0;
+        cy = 0;
+
+        Renderer.SetColor( colorBits );
+        Renderer.Vertex( x + cx, y + cy, 0 );
+    }
+
+    /// <summary>
+    /// Calls <see cref="Circle(float, float, float, int)"/> by estimating the
+    /// number of segments needed for a smooth circle.
+    /// </summary>
+    public void Circle( float x, float y, float radius )
+    {
+        Circle( x, y, radius, Math.Max( 1, ( int )( 6 * ( float )Math.Cbrt( radius ) ) ) );
+    }
+
+    /// <summary>
+    /// Draws a circle using <see cref="ShapeTypes.Line"/> or
+    /// <see cref="ShapeTypes.Filled"/>.
+    /// </summary>
+    public void Circle( float x, float y, float radius, int segments )
+    {
+        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+
+        var colorBits = _color.ToFloatBits();
+        var angle     = ( 2 * MathUtils.PI ) / segments;
+
+        var   cos = MathUtils.Cos( angle );
+        var   sin = MathUtils.Sin( angle );
+        var   cx  = radius;
+        float cy  = 0;
+
+        float temp;
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            Check( ShapeTypes.Line, ShapeTypes.Filled, ( segments * 2 ) + 2 );
+
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, 0 );
+
+                temp = cx;
+
+                cx = ( cos * cx ) - ( sin * cy );
+                cy = ( sin * temp ) + ( cos * cy );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, 0 );
+            }
+
+            // Ensure the last segment is identical to the first.
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + cx, y + cy, 0 );
+        }
+        else
+        {
+            Check( ShapeTypes.Line, ShapeTypes.Filled, ( segments * 3 ) + 3 );
+            segments--;
+
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x, y, 0 );
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, 0 );
+
+                temp = cx;
+                cx   = ( cos * cx ) - ( sin * cy );
+                cy   = ( sin * temp ) + ( cos * cy );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, 0 );
+            }
+
+            // Ensure the last segment is identical to the first.
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + cx, y + cy, 0 );
+        }
+
+        cx = radius;
+        cy = 0;
+
+        Renderer.SetColor( colorBits );
+        Renderer.Vertex( x + cx, y + cy, 0 );
+    }
+
+    /// <summary>
+    /// Calls <see cref="Ellipse(float, float, float, float, int)"/> by estimating
+    /// the number of segments needed for a smooth ellipse.
+    /// </summary>
+    public void Ellipse( float x, float y, float width, float height )
+    {
+        Ellipse
+            (
+             x,
+             y,
+             width,
+             height,
+             Math.Max( 1, ( int )( 12 * ( float )Math.Cbrt( Math.Max( width * 0.5f, height * 0.5f ) ) ) )
+            );
+    }
+
+    /// <summary>
+    /// Draws an ellipse using <see cref="ShapeTypes.Line"/> or <see cref="ShapeTypes.Filled"/>.
+    /// </summary>
+    public void Ellipse( float x, float y, float width, float height, int segments )
+    {
+        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+
+        Check( ShapeTypes.Line, ShapeTypes.Filled, segments * 3 );
+
+        var colorBits = _color.ToFloatBits();
+        var angle     = ( 2 * MathUtils.PI ) / segments;
+
+        float cx = x + ( width / 2 ), cy = y + ( height / 2 );
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+
+                Renderer.Vertex
+                    (
+                     cx + ( width * 0.5f * MathUtils.Cos( i * angle ) ),
+                     cy + ( height * 0.5f * MathUtils.Sin( i * angle ) ),
+                     0
+                    );
+
+                Renderer.SetColor( colorBits );
+
+                Renderer.Vertex
+                    (
+                     cx + ( width * 0.5f * MathUtils.Cos( ( i + 1 ) * angle ) ),
+                     cy + ( height * 0.5f * MathUtils.Sin( ( i + 1 ) * angle ) ),
+                     0
+                    );
+            }
+        }
+        else
+        {
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+
+                Renderer.Vertex
+                    (
+                     cx + ( width * 0.5f * MathUtils.Cos( i * angle ) ),
+                     cy + ( height * 0.5f * MathUtils.Sin( i * angle ) ),
+                     0
+                    );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( cx, cy, 0 );
+
+                Renderer.SetColor( colorBits );
+
+                Renderer.Vertex
+                    (
+                     cx + ( width * 0.5f * MathUtils.Cos( ( i + 1 ) * angle ) ),
+                     cy + ( height * 0.5f * MathUtils.Sin( ( i + 1 ) * angle ) ),
+                     0
+                    );
+            }
+        }
+    }
+
+    /// <summary>
+    /// Calls <see cref="Ellipse(float, float, float, float, float, int)"/> by
+    /// estimating the number of segments needed for a smooth ellipse.
+    /// </summary>
+    public void Ellipse( float x, float y, float width, float height, float rotation )
+    {
+        Ellipse
+            (
+             x,
+             y,
+             width,
+             height,
+             rotation,
+             Math.Max( 1, ( int )( 12 * ( float )Math.Cbrt( Math.Max( width * 0.5f, height * 0.5f ) ) ) )
+            );
+    }
+
+    /** Draws an ellipse using {@link ShapeType#Line} or {@link ShapeType#Filled}. */
+    public void Ellipse( float x, float y, float width, float height, float rotation, int segments )
+    {
+        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+
+        Check( ShapeTypes.Line, ShapeTypes.Filled, segments * 3 );
+
+        var colorBits = _color.ToFloatBits();
+        var angle     = ( 2 * MathUtils.PI ) / segments;
+
+        rotation = ( MathUtils.PI * rotation ) / 180f;
+
+        var sin = MathUtils.Sin( rotation );
+        var cos = MathUtils.Cos( rotation );
+
+        float cx = x + ( width / 2 ), cy = y + ( height / 2 );
+        var   x1 = width * 0.5f;
+        float y1 = 0;
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( ( cx + ( cos * x1 ) ) - ( sin * y1 ), cy + ( sin * x1 ) + ( cos * y1 ), 0 );
+
+                x1 = ( width * 0.5f * MathUtils.Cos( ( i + 1 ) * angle ) );
+                y1 = ( height * 0.5f * MathUtils.Sin( ( i + 1 ) * angle ) );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( ( cx + ( cos * x1 ) ) - ( sin * y1 ), cy + ( sin * x1 ) + ( cos * y1 ), 0 );
+            }
+        }
+        else
+        {
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( ( cx + ( cos * x1 ) ) - ( sin * y1 ), cy + ( sin * x1 ) + ( cos * y1 ), 0 );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( cx, cy, 0 );
+
+                x1 = ( width * 0.5f * MathUtils.Cos( ( i + 1 ) * angle ) );
+                y1 = ( height * 0.5f * MathUtils.Sin( ( i + 1 ) * angle ) );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( ( cx + ( cos * x1 ) ) - ( sin * y1 ), cy + ( sin * x1 ) + ( cos * y1 ), 0 );
+            }
+        }
+    }
+
+    /// <summary>
+    /// Calls <see cref="Cone(float, float, float, float, float, int)"/> by estimating
+    /// the number of segments needed for a smooth circular base.
+    /// </summary>
+    public void Cone( float x, float y, float z, float radius, float height )
+    {
+        Cone( x, y, z, radius, height, Math.Max( 1, ( int )( 4 * ( float )Math.Sqrt( radius ) ) ) );
+    }
+
+    /// <summary>
+    /// Draws a cone using <see cref="ShapeTypes.Line"/> or <see cref="ShapeTypes.Filled"/>.
+    /// </summary>
+    public void Cone( float x, float y, float z, float radius, float height, int segments )
+    {
+        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+
+        Check( ShapeTypes.Line, ShapeTypes.Filled, ( segments * 4 ) + 2 );
+
+        var colorBits = _color.ToFloatBits();
+        var angle     = ( 2 * MathUtils.PI ) / segments;
+
+        var   cos = MathUtils.Cos( angle );
+        var   sin = MathUtils.Sin( angle );
+        float cx  = radius, cy = 0;
+
+        float temp;
+        float temp2;
+
+        if ( this.ShapeType == ShapeTypes.Line )
+        {
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, z );
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x, y, z + height );
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, z );
+
+                temp = cx;
+                cx   = ( cos * cx ) - ( sin * cy );
+                cy   = ( sin * temp ) + ( cos * cy );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, z );
+            }
+
+            // Ensure the last segment is identical to the first.
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + cx, y + cy, z );
+        }
+        else
+        {
+            segments--;
+
+            for ( var i = 0; i < segments; i++ )
+            {
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x, y, z );
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, z );
+
+                temp  = cx;
+                temp2 = cy;
+
+                cx = ( cos * cx ) - ( sin * cy );
+                cy = ( sin * temp ) + ( cos * cy );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, z );
+
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + temp, y + temp2, z );
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x + cx, y + cy, z );
+                Renderer.SetColor( colorBits );
+                Renderer.Vertex( x, y, z + height );
+            }
+
+            // Ensure the last segment is identical to the first.
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + cx, y + cy, z );
+        }
+
+        temp  = cx;
+        temp2 = cy;
+
+        cx = radius;
+        cy = 0;
+
+        Renderer.SetColor( colorBits );
+        Renderer.Vertex( x + cx, y + cy, z );
+
+        if ( this.ShapeType != ShapeTypes.Line )
+        {
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + temp, y + temp2, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x + cx, y + cy, z );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x, y, z + height );
+        }
+    }
+
+    /// <summary>
+    /// Draws a polygon in the x/y plane using <see cref="ShapeTypes.Line"/>.
+    /// The vertices must contain at least 3 points (6 floats x,y).
+    /// </summary>
+    public void Polygon( float[] vertices, int offset, int count )
+    {
+        if ( count < 6 ) throw new ArgumentException( "Polygons must contain at least 3 points." );
+        if ( ( count % 2 ) != 0 ) throw new ArgumentException( "Polygons must have an even number of vertices." );
+
+        Check( ShapeTypes.Line, null, count );
+
+        var colorBits = _color.ToFloatBits();
+        var firstX    = vertices[ 0 ];
+        var firstY    = vertices[ 1 ];
+
+        for ( int i = offset, n = offset + count; i < n; i += 2 )
+        {
+            var x1 = vertices[ i ];
+            var y1 = vertices[ i + 1 ];
+
+            float x2;
+            float y2;
+
+            if ( ( i + 2 ) >= count )
+            {
+                x2 = firstX;
+                y2 = firstY;
+            }
+            else
+            {
+                x2 = vertices[ i + 2 ];
+                y2 = vertices[ i + 3 ];
+            }
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2, y2, 0 );
+        }
+    }
+
+    public void Polygon( float[] vertices )
+    {
+        Polygon( vertices, 0, vertices.Length );
+    }
+
+    /// <summary>
+    /// Draws a polyline in the x/y plane using <see cref="ShapeTypes.Line"/>.
+    /// The vertices must contain at least 2 points (4 floats x,y).
+    /// </summary>
+    public void Polyline( float[] vertices, int offset, int count )
+    {
+        if ( count < 4 ) throw new ArgumentException( "Polylines must contain at least 2 points." );
+        if ( ( count % 2 ) != 0 ) throw new ArgumentException( "Polylines must have an even number of vertices." );
+
+        Check( ShapeTypes.Line, null, count );
+
+        var colorBits = _color.ToFloatBits();
+
+        for ( int i = offset, n = ( offset + count ) - 2; i < n; i += 2 )
+        {
+            var x1 = vertices[ i ];
+            var y1 = vertices[ i + 1 ];
+            var x2 = vertices[ i + 2 ];
+            var y2 = vertices[ i + 3 ];
+
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x1, y1, 0 );
+            Renderer.SetColor( colorBits );
+            Renderer.Vertex( x2, y2, 0 );
+        }
+    }
+
+    public void Polyline( float[] vertices )
+    {
+        Polyline( vertices, 0, vertices.Length );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="preferred"></param>
+    /// <param name="other"></param>
+    /// <param name="newVertices"></param>
+    /// <exception cref="IllegalStateException"></exception>
+    private void Check( ShapeTypes preferred, ShapeTypes? other, int newVertices )
+    {
+        if ( this.ShapeType == null ) throw new IllegalStateException( "begin must be called first." );
+
+        if ( ( this.ShapeType != preferred ) && ( this.ShapeType != other ) )
+        {
+            // Shape type is not valid.
+            if ( !_autoShapeType )
+            {
+                if ( other == null )
+                {
+                    throw new IllegalStateException( "Must call begin(ShapeType." + preferred + ")." );
+                }
+                else
+                {
+                    throw new IllegalStateException
+                        ( "Must call begin(ShapeType." + preferred + ") or begin(ShapeType." + other + ")." );
+                }
+            }
+
+            End();
+            Begin( preferred );
+        }
+        else if ( _matrixDirty )
+        {
+            // Matrix has been changed.
+            End();
+            Begin( this.ShapeType );
+        }
+        else if ( ( Renderer.MaxVertices - Renderer.NumVertices ) < newVertices )
+        {
+            // Not enough space.
+            End();
+            Begin( this.ShapeType );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    public void Flush()
+    {
+        if ( this.ShapeType == null ) return;
+
+        End();
+        Begin( this.ShapeType );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <returns> true if currently between begin and end.</returns>
+    public bool IsDrawing()
+    {
+        return this.ShapeType != null;
+    }
+
+    public void Dispose()
+    {
+        Renderer.Dispose();
     }
 }
