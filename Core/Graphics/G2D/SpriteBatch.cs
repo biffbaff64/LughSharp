@@ -1143,8 +1143,8 @@ public class SpriteBatch : IBatch
         LastTexture?.Bind();
 
         _mesh.SetVertices( Vertices, 0, idx );
-        _mesh.GetIndicesBuffer().Position = 0;
-        _mesh.GetIndicesBuffer().Limit    = count;
+        _mesh.IndicesBuffer.Position = 0;
+        _mesh.IndicesBuffer.Limit    = count;
 
         if ( BlendingDisabled )
         {

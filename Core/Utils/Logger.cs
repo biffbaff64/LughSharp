@@ -1,4 +1,4 @@
-﻿using LibGDXSharp.Core;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace LibGDXSharp.Utils;
 
@@ -8,7 +8,8 @@ namespace LibGDXSharp.Utils;
 /// The log level set with <see cref="IApplication.LogLevel"/> overrides
 /// the log level set here.
 /// </summary>
-public class Logger
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class Logger
 {
     public const int LogNone  = 0;
     public const int LogError = 1;

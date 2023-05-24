@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Utils;
 
-public class DataOutput : DataOutputStream
+public class DataOutput : BinaryWriter
 {
         
 }

@@ -1,8 +1,5 @@
-﻿using LibGDXSharp.Backends.Desktop;
-using LibGDXSharp.Maths;
+﻿using LibGDXSharp.Maths;
 using LibGDXSharp.Utils.Collections.Extensions;
-
-using Buffer = Silk.NET.OpenGLES.Buffer;
 
 namespace LibGDXSharp.G2D;
 
@@ -13,7 +10,7 @@ namespace LibGDXSharp.G2D;
 /// This information is stored in video memory and does not have to be sent to the
 /// GPU each time it is drawn.
 /// <para>
-/// To cache Sprites or Textures, first call <see cref="BeginCache"/>, then call
+/// To cache Sprites or Textures, first call <see cref="BeginCache()"/>, then call
 /// the appropriate add method to define the images. To complete the cache,
 /// call <see cref="EndCache"/> and store the returned cache ID.
 /// </para>
@@ -57,21 +54,25 @@ public class SpriteCache
 
     private readonly Mesh          _mesh;
     private          bool          _drawing;
-    private          List< Cache > _caches = new();
+    private readonly List< Cache > _caches = new();
 
     private readonly Matrix4        _combinedMatrix = new Matrix4();
     private readonly ShaderProgram? _shader;
 
-    private          Cache           _currentCache;
+    private          Cache?          _currentCache;
     private readonly List< Texture > _textures = new(8);
     private readonly List< int >     _counts   = new(8);
 
     private float _colorPacked = Color.WhiteFloatBits;
 
-    /** Number of render calls since the last {@link #begin()}. **/
+    /// <summary>
+    /// Number of render calls since the last <see cref="Begin"/>.
+    /// </summary>
     public int renderCalls = 0;
 
-    /** Number of rendering calls, ever. Will not be reset unless set manually. **/
+    /// <summary>
+    /// Number of rendering calls, ever. Will not be reset unless set manually.
+    /// </summary>
     public int totalRenderCalls = 0;
 
     /// <summary>
@@ -134,9 +135,10 @@ public class SpriteCache
                   2,
                   ShaderProgram.TexcoordAttribute + "0"
                  )
-            );
-
-        _mesh.SetAutoBind( false );
+            )
+            {
+                AutoBind = false
+            };
 
         if ( useIndices )
         {
@@ -204,11 +206,9 @@ public class SpriteCache
         if ( _currentCache != null )
             throw new IllegalStateException( "endCache must be called before begin." );
 
-        var verticesPerImage = _mesh.GetNumIndices() > 0 ? 4 : 6;
-
-        _currentCache = new Cache( _caches.Count, _mesh.GetVerticesBuffer().Limit );
+        _currentCache = new Cache( _caches.Count, _mesh.VerticesBuffer.Limit );
         _caches.Add( _currentCache );
-        _mesh.GetVerticesBuffer().Compact();
+        _mesh.VerticesBuffer.Compact();
     }
 
     /// <summary>
@@ -229,14 +229,14 @@ public class SpriteCache
         if ( cacheID == ( _caches.Count - 1 ) )
         {
             Cache oldCache = _caches.RemoveIndex( cacheID );
-            _mesh.GetVerticesBuffer().Limit = oldCache.offset;
+            _mesh.VerticesBuffer.Limit = oldCache.offset;
             BeginCache();
 
             return;
         }
 
-        _currentCache                      = _caches[ cacheID ];
-        _mesh.GetVerticesBuffer().Position = _currentCache.offset;
+        _currentCache                 = _caches[ cacheID ];
+        _mesh.VerticesBuffer.Position = _currentCache.offset;
     }
 
     /// <summary>
@@ -249,7 +249,7 @@ public class SpriteCache
             throw new IllegalStateException( "beginCache must be called before endCache." );
 
         Cache cache      = _currentCache;
-        var   cacheCount = _mesh.GetVerticesBuffer().Position - cache.offset;
+        var   cacheCount = _mesh.VerticesBuffer.Position - cache.offset;
 
         if ( cache.textures == null )
         {
@@ -264,7 +264,7 @@ public class SpriteCache
                 cache.counts[ i ] = _counts[ i ];
             }
 
-            _mesh.GetVerticesBuffer().Flip();
+            _mesh.VerticesBuffer.Flip();
         }
         else
         {
@@ -304,7 +304,7 @@ public class SpriteCache
                 }
             }
 
-            FloatBuffer vertices = _mesh.GetVerticesBuffer();
+            FloatBuffer vertices = _mesh.VerticesBuffer;
             vertices.Position = 0;
             Cache lastCache = _caches[ _caches.Count - 1 ];
             vertices.Limit = ( lastCache.offset + lastCache.maxCount );
@@ -323,7 +323,7 @@ public class SpriteCache
     public void Clear()
     {
         _caches.Clear();
-        _mesh.GetVerticesBuffer().Clear().Flip();
+        _mesh.VerticesBuffer.Clear().Flip();
     }
 
     /// <summary>
@@ -337,7 +337,7 @@ public class SpriteCache
         if ( _currentCache == null )
             throw new IllegalStateException( "beginCache must be called before add." );
 
-        var verticesPerImage = _mesh.GetNumIndices() > 0 ? 4 : 6;
+        var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
         var count            = ( length / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
         var lastIndex        = _textures.Count - 1;
 
@@ -351,7 +351,7 @@ public class SpriteCache
             _counts[ lastIndex ] += count;
         }
 
-        _mesh.GetVerticesBuffer().Put( vertices, offset, length );
+        _mesh.VerticesBuffer.Put( vertices, offset, length );
     }
 
     /// <summary>
@@ -380,7 +380,7 @@ public class SpriteCache
         tempVertices[ 13 ] = 1;
         tempVertices[ 14 ] = 0;
 
-        if ( _mesh.GetNumIndices() > 0 )
+        if ( _mesh.NumIndices > 0 )
         {
             tempVertices[ 15 ] = fx2;
             tempVertices[ 16 ] = y;
@@ -449,7 +449,7 @@ public class SpriteCache
         tempVertices[ 13 ] = u2;
         tempVertices[ 14 ] = v2;
 
-        if ( _mesh.GetNumIndices() > 0 )
+        if ( _mesh.NumIndices > 0 )
         {
             tempVertices[ 15 ] = fx2;
             tempVertices[ 16 ] = y;
@@ -516,7 +516,7 @@ public class SpriteCache
         tempVertices[ 13 ] = u2;
         tempVertices[ 14 ] = v2;
 
-        if ( _mesh.GetNumIndices() > 0 )
+        if ( _mesh.NumIndices > 0 )
         {
             tempVertices[ 15 ] = fx2;
             tempVertices[ 16 ] = y;
@@ -604,7 +604,7 @@ public class SpriteCache
         tempVertices[ 13 ] = u2;
         tempVertices[ 14 ] = v2;
 
-        if ( _mesh.GetNumIndices() > 0 )
+        if ( _mesh.NumIndices > 0 )
         {
             tempVertices[ 15 ] = fx2;
             tempVertices[ 16 ] = y;
@@ -768,7 +768,7 @@ public class SpriteCache
         tempVertices[ 13 ] = u2;
         tempVertices[ 14 ] = v2;
 
-        if ( _mesh.GetNumIndices() > 0 )
+        if ( _mesh.NumIndices > 0 )
         {
             tempVertices[ 15 ] = x4;
             tempVertices[ 16 ] = y4;
@@ -840,7 +840,7 @@ public class SpriteCache
         tempVertices[ 13 ] = u2;
         tempVertices[ 14 ] = v2;
 
-        if ( _mesh.GetNumIndices() > 0 )
+        if ( _mesh.NumIndices > 0 )
         {
             tempVertices[ 15 ] = fx2;
             tempVertices[ 16 ] = y;
@@ -990,7 +990,7 @@ public class SpriteCache
         tempVertices[ 13 ] = u2;
         tempVertices[ 14 ] = v2;
 
-        if ( _mesh.GetNumIndices() > 0 )
+        if ( _mesh.NumIndices > 0 )
         {
             tempVertices[ 15 ] = x4;
             tempVertices[ 16 ] = y4;
@@ -1028,7 +1028,7 @@ public class SpriteCache
     /// </summary>
     public void Add( Sprite sprite )
     {
-        if ( _mesh.GetNumIndices() > 0 )
+        if ( _mesh.NumIndices > 0 )
         {
             Add( sprite.Texture, sprite.Vertices, 0, Sprite.SpriteSize );
 
@@ -1083,15 +1083,18 @@ public class SpriteCache
             CustomShader.SetUniformMatrix( "u_trans", TransformMatrix );
             CustomShader.SetUniformMatrix( "u_projTrans", _combinedMatrix );
             CustomShader.SetUniformi( "u_texture", 0 );
-            
+
             _mesh.Bind( CustomShader );
         }
         else
         {
-            _shader?.Bind();
-            _shader?.SetUniformMatrix( "u_projectionViewMatrix", _combinedMatrix );
-            _shader?.SetUniformi( "u_texture", 0 );
-            _mesh.Bind( _shader );
+            if ( _shader != null )
+            {
+                _shader.Bind();
+                _shader.SetUniformMatrix( "u_projectionViewMatrix", _combinedMatrix );
+                _shader.SetUniformi( "u_texture", 0 );
+                _mesh.Bind( _shader );
+            }
         }
 
         _drawing = true;
@@ -1110,7 +1113,6 @@ public class SpriteCache
         Gdx.GL20.GLDepthMask( true );
 
         _mesh.Unbind( CustomShader ?? _shader );
-
     }
 
     /// <summary>
@@ -1123,7 +1125,7 @@ public class SpriteCache
 
         Cache cache = _caches[ cacheID ];
 
-        var verticesPerImage = _mesh.GetNumIndices() > 0 ? 4 : 6;
+        var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
         var offset           = ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
         var counts           = cache.counts;
         var textureCount     = cache.textureCount;
@@ -1158,7 +1160,7 @@ public class SpriteCache
 
         Cache cache = _caches[ cacheID ];
 
-        var verticesPerImage = _mesh.GetNumIndices() > 0 ? 4 : 6;
+        var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
 
         offset =  ( ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6 ) + ( offset * 6 );
         length *= 6;

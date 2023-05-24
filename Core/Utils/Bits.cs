@@ -314,7 +314,7 @@ public class Bits
     /// <param name="other"> a bit set  </param>
     public void AndNot( Bits other )
     {
-        for ( int i = 0, j = _bits.Length, k = other._bits.Length; i < j && i < k; i++ )
+        for ( int i = 0, j = _bits.Length, k = other._bits.Length; ( i < j ) && ( i < k ); i++ )
         {
             _bits[ i ] &= ~other._bits[ i ];
         }
@@ -442,7 +442,7 @@ public class Bits
         const int prime = 73;
             
         var hash = prime + Gdx.App.GetVersion().GetHashCode();
-        hash = prime * hash + Gdx.App.GetHashCode();
+        hash = ( prime * hash ) + Gdx.App.GetHashCode();
 
         return hash!;
     }

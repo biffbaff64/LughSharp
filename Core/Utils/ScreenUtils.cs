@@ -70,7 +70,7 @@ public class ScreenUtils
         get
         {
             if ( Gdx.Graphics == null ) throw new NullReferenceException();
-                
+
             var w = Gdx.Graphics.GetBackBufferWidth();
             var h = Gdx.Graphics.GetBackBufferHeight();
 
@@ -101,13 +101,12 @@ public class ScreenUtils
     /// <param name="h"> the height of the framebuffer contents to capture  </param>
     public static TextureRegion GetFrameBufferTexture( int x, int y, int w, int h )
     {
-        var potW = MathUtils.NextPowerOfTwo( w );
-        var potH = MathUtils.NextPowerOfTwo( h );
+        var potW      = MathUtils.NextPowerOfTwo( w );
+        var potH      = MathUtils.NextPowerOfTwo( h );
+        var pixmap    = Pixmap.CreateFromFrameBuffer( x, y, w, h );
+        var potPixmap = new Pixmap( potW, potH, Pixmap.Format.RGBA8888 );
 
-        Pixmap pixmap    = Pixmap.CreateFromFrameBuffer( x, y, w, h );
-        var    potPixmap = new Pixmap( potW, potH, Pixmap.Format.RGBA8888 );
-
-        potPixmap.SetBlending( Pixmap.Blending.None );
+        potPixmap.Blend = Pixmap.Blending.None;
         potPixmap.DrawPixmap( pixmap, 0, 0 );
 
         var texture       = new Texture( potPixmap );
@@ -136,7 +135,7 @@ public class ScreenUtils
     public static byte[] GetFrameBufferPixels( bool flipY )
     {
         if ( Gdx.Graphics == null ) throw new NullReferenceException();
-            
+
         var w = Gdx.Graphics.GetBackBufferWidth();
         var h = Gdx.Graphics.GetBackBufferHeight();
 
@@ -165,9 +164,9 @@ public class ScreenUtils
         var numBytes = w * h * 4;
 
         Gdx.GL.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
-            
+
         ByteBuffer pixels = Utils.BufferUtils.NewByteBuffer( numBytes );
-            
+
         Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
 
         var lines = new byte[ numBytes ];

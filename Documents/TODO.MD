@@ -31,8 +31,9 @@ CORE
     - DONE - AbstractGraphics               Convert
     - DONE - AbstractInput                  Convert
     - DONE - ApplicationAdapter             Convert
+    - DONE - ApplicationBase                New
     - DONE - Game                           Convert
-    - IP   - GDXVersion                     Convert
+    -      - GDXVersion                     Replace with C# Versioning?
     - DONE - IApplication                   Convert
     - DONE - IApplicationListener           Convert
     - DONE - IApplicationLogger             Convert
@@ -42,7 +43,7 @@ CORE
     - DONE - IInput                         Convert
     - DONE - IInputProcessor                Convert
     - DONE - ILifecycleListener             Convert
-    - IP   - INet                           Convert
+    - DONE - INet                           Convert
     - DONE - InputAdapter                   Convert
     - DONE - InputEventQueue                Convert
     - DONE - IPreferences                   Convert
@@ -112,12 +113,13 @@ AUDIO
 FILES
 -----
     -      - BufferedReader
+    - IP   - DataOutputStream
     - IP   - File
     - IP   - FileHandle
     - IP   - FileHandleStream
     -      - InputStreamReader
 
-    Use StreamReader / StreamWriter etc instead.
+    Use StreamReader / StreamWriter, BinaryReader / BinaryWriter etc instead.
 
     Note:   I am considering adapting the java File/FileHandle classes but
             this may be a lot of unnecessary work.
@@ -163,7 +165,7 @@ GRAPHICS/G2D
 ------------
     - DONE - Animation                      Convert
     - DONE - AtlasRegion                    Convert
-    - IP   - AtlasSprite                    Convert
+    - DONE - AtlasSprite                    Convert
     - IP   - BitmapFont                     Convert
     -      - BitmapFontCache                Convert
     -      - CpuSpriteBatch                 Convert
@@ -171,7 +173,7 @@ GRAPHICS/G2D
     - DONE - Gdx2DPixmap                    Convert
     -      - GlyphLayout                    Convert
     - DONE - IBatch                         Convert
-    -      - IPolygonBatch                  Convert
+    - DONE - IPolygonBatch                  Convert
     - DONE - NinePatch                      Convert
     -      - ParticleEffect                 Convert
     -      - ParticleEffectPool             Convert
@@ -218,15 +220,15 @@ GRAPHICS/GLUTILS
     - DONE - HdpiMode
     - IP   - HdpiUtils
     - DONE - IImmediateModeRenderer
-    -      - IIndexData
-    -      - IInstanceData
+    - DONE - IIndexData
+    - DONE - IInstanceData
     - DONE - ImmediateModeRenderer20
     -      - IndexArray
     -      - IndexBufferObject
     -      - IndexBufferObjectSubData
     -      - InstanceBufferObject
     -      - InstanceBufferObjectSubData
-    -      - IVertexData
+    - DONE - IVertexData
     - IP   - KTXTTextureData
     -      - MipMapGenerator
     -      - MipMapTextureData
@@ -539,8 +541,8 @@ UTILS
     - **** - Base64Coder                    Use System.Convert classes
     - DONE - BinaryHeap
     - DONE - Bits                           Convert
-    - IP   - CharHelper
-    - IP   - ComparableTimSort              Convert
+    - DONE - CharHelper                     Might be added to.
+    - **** - ComparableTimSort              Not Needed
     - DONE - DataInput                      Check
     -      - DataOutput                     Check
     - DONE - DataUtils                      Added Class
@@ -561,7 +563,7 @@ UTILS
     -      - Queue
     -      - QuickSelect
     - DONE - Scaling
-    - DONE - ScreenUtils                    Convert
+    - IP   - ScreenUtils                    Needs ByteBuffer.Read implementing
     - IP   - Select                         Renamed Selector
     -      - SharedLibraryLoader            Check
     - DONE - SortUtils
@@ -602,6 +604,8 @@ UTILS/BUFFERS
 
     Task:   Find a way of doing in C# what these were doing in Java LibGDX.
             Otherwise these will need converting.
+
+            MemoryStream ??
 
     -      - Buffer
     -      - BufferUtils

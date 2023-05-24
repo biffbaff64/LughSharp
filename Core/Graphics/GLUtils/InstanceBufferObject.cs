@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics.GLUtils;
 
-public class InstanceBufferObject
+public class InstanceBufferObject : IInstanceData
 {
         
 }

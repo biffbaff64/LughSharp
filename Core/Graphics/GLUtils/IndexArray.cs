@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics.GLUtils;
 
-public class IndexArray
+public class IndexArray : IIndexData
 {
         
 }

@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics.GLUtils;
 
-public class VertexArray
+public class VertexArray : IVertexData
 {
         
 }

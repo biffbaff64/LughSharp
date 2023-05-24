@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics.GLUtils;
 
-public class VertexBufferObjectWithVAO
+public class VertexBufferObjectWithVAO : IVertexData
 {
         
 }

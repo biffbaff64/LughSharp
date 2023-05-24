@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics.GLUtils;
 
-public class IndexBufferObjectSubData
+public class IndexBufferObjectSubData : IIndexData
 {
         
 }

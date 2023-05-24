@@ -136,14 +136,14 @@ public sealed class AtlasRegion : TextureRegion
     /// if it is true then it returns the packedHeight, otherwise it returns
     /// the packedWidth. 
     /// </summary>
-    private float RotatedPackedWidth => Rotate ? PackedHeight : PackedWidth;
+    public float RotatedPackedWidth => Rotate ? PackedHeight : PackedWidth;
 
     /// <summary>
     /// Returns the packed height considering the <seealso cref="Rotate"/> value,
     /// if it is true then it returns the packedWidth, otherwise it returns the
     /// packedHeight. 
     /// </summary>
-    private float RotatedPackedHeight => Rotate ? PackedWidth : PackedHeight;
+    public float RotatedPackedHeight => Rotate ? PackedWidth : PackedHeight;
 
     public int[]? FindValue( string name )
     {

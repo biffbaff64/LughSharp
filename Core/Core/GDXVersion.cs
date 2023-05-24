@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace LibGDXSharp.Core;
+﻿namespace LibGDXSharp.Core;
 
 public class GDXVersion
 {
@@ -17,8 +15,6 @@ public class GDXVersion
     {
         try
         {
-//            var v = VersionString.Split( "\\." );
-
             var v = version.ToString().Split( "\\." );
             
             MajorVersion    = v.Length < 1 ? 0 : int.Parse( v[ 0 ] );

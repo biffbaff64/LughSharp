@@ -22,7 +22,8 @@ public class TextureAtlas
     /// Loads the specified pack file, using the parent directory of the
     /// pack file to find the page images.
     /// </summary>
-    public TextureAtlas( FileInfo packFile ) : this( packFile, packFile.Directory )
+    public TextureAtlas( FileInfo packFile )
+        : this( packFile, packFile.Directory )
     {
     }
 

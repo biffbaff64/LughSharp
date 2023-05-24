@@ -48,17 +48,16 @@ public interface INet
 
     public sealed class HttpRequest : IPoolable
     {
-        private          string?                       _httpMethod;
-        private          string?                       _url;
+        public string?       Url                { get; set; }
+        public string?       HttpMethod         { get; set; }
+        public int           TimeOut            { get; set; } = 0;
+        public bool          IncludeCredentials { get; set; } = false;
+        public StreamReader? ContentStream      { get; private set; }
+        public long          ContentLength      { get; private set; }
+        public string?       Content            { get; set; }
+
         private readonly Dictionary< string, string >? _headers;
-        private          int                           _timeOut = 0;
-
-        private string?       _content;
-        private StreamReader? _contentStream;
-        private long          _contentLength;
-
-        private bool _followRedirects    = true;
-        private bool _includeCredentials = false;
+        private bool _followRedirects = true;
 
         public HttpRequest()
         {
@@ -67,12 +66,12 @@ public interface INet
 
         public HttpRequest( string httpMethod ) : this()
         {
-            this._httpMethod = httpMethod;
+            this.HttpMethod = httpMethod;
         }
 
-        public void SetUrl( string url )
+        public Dictionary< string, string >? GetHeaders()
         {
-            this._url = url;
+            return _headers;
         }
 
         /// <summary>
@@ -88,100 +87,39 @@ public interface INet
             }
         }
 
-        public void SetContent( string content )
+        public bool FollowRedirects
         {
-            this._content = content;
+            get => _followRedirects;
+            set
+            {
+                if ( value || ( Gdx.App.AppType != IApplication.ApplicationType.WebGL ) )
+                {
+                    this._followRedirects = value;
+                }
+                else
+                {
+                    throw new ArgumentException
+                        ( "Following redirects can't be disabled using the GWT/WebGL backend!" );
+                }
+            }
         }
 
         public void SetContent( StreamReader contentStream, long contentLength )
         {
-            this._contentStream = contentStream;
-            this._contentLength = contentLength;
-        }
-
-        public void SetTimeOut( int timeOut )
-        {
-            this._timeOut = timeOut;
-        }
-
-        public void SetFollowRedirects( bool followRedirects )
-        {
-            if ( followRedirects || ( Gdx.App.AppType != IApplication.ApplicationType.WebGL ) )
-            {
-                this._followRedirects = followRedirects;
-            }
-            else
-            {
-                throw new ArgumentException
-                    ( "Following redirects can't be disabled using the GWT/WebGL backend!" );
-            }
-        }
-
-        public void SetIncludeCredentials( bool includeCredentials )
-        {
-            this._includeCredentials = includeCredentials;
-        }
-
-        public void SetMethod( string httpMethod )
-        {
-            this._httpMethod = httpMethod;
-        }
-
-        public int GetTimeOut()
-        {
-            return _timeOut;
-        }
-
-        public string? GetMethod()
-        {
-            return _httpMethod;
-        }
-
-        public string? GetUrl()
-        {
-            return _url;
-        }
-
-        public string? GetContent()
-        {
-            return _content;
-        }
-
-        public StreamReader? GetContentStream()
-        {
-            return _contentStream;
-        }
-
-        public long GetContentLength()
-        {
-            return _contentLength;
-        }
-
-        public Dictionary< string, string >? GetHeaders()
-        {
-            return _headers;
-        }
-
-        public bool GetFollowRedirects()
-        {
-            return _followRedirects;
-        }
-
-        public bool GetIncludeCredentials()
-        {
-            return _includeCredentials;
+            this.ContentStream = contentStream;
+            this.ContentLength = contentLength;
         }
 
         public void Reset()
         {
-            _httpMethod = null;
-            _url        = null;
+            HttpMethod = null;
+            Url        = null;
             _headers?.Clear();
-            _timeOut = 0;
+            TimeOut = 0;
 
-            _content       = null;
-            _contentStream = null;
-            _contentLength = 0;
+            Content       = null;
+            ContentStream = null;
+            ContentLength = 0;
 
             _followRedirects = true;
         }

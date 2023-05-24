@@ -1,6 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.Mime;
+using System.Text;
 
+using LibGDXSharp.Backends.Desktop;
 using LibGDXSharp.GdxCore.Utils.Buffers;
+using LibGDXSharp.Maths;
+using LibGDXSharp.Maths.Collision;
+
+using Buffer = Silk.NET.OpenGLES.Buffer;
 
 namespace LibGDXSharp.Graphics;
 
@@ -16,15 +23,15 @@ public class Mesh
         VertexBufferObjectWithVAO
     }
 
-    internal readonly static IDictionary< IApplication, List< Mesh > > Meshes =
-        new Dictionary< IApplication, List< Mesh > >();
+    public bool IsInstanced { get; set; } = false;
 
-    IVertexData   _vertices;
-    IIndexData    _indices;
-    IInstanceData _instances;
-    bool          _autoBind = true;
-    bool          _isVertexArray;
-    bool          _isInstanced = false;
+    internal readonly static Dictionary< IApplication, List< Mesh >? > Meshes = new();
+
+    IVertexData    _vertices;
+    IIndexData     _indices;
+    IInstanceData? _instances;
+    bool           _autoBind = true;
+    bool           _isVertexArray;
 
     private readonly ShortBuffer _shortBuffer = BufferUtils.NewShortBuffer( 100 );
 
@@ -177,7 +184,7 @@ public class Mesh
 
     private IVertexData MakeVertexBuffer( bool isStatic, int maxVertices, VertexAttributes vertexAttributes )
     {
-        if ( Gdx.GL30 != null )
+        if ( Gdx.GL30 != null! )
         {
             return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
         }
@@ -187,58 +194,654 @@ public class Mesh
         }
     }
 
-    public void SetIndices( short[] indices )
+    public Mesh EnableInstancedRendering( bool isStatic, int maxInstances, params VertexAttribute[] attributes )
     {
+        if ( !IsInstanced )
+        {
+            IsInstanced = true;
+            _instances  = new InstanceBufferObject( isStatic, maxInstances, attributes );
+        }
+        else
+        {
+            throw new GdxRuntimeException
+                (
+                 "Trying to enable InstancedRendering on same Mesh instance twice."
+                 + " Use disableInstancedRendering to clean up old InstanceData first"
+                );
+        }
+
+        return this;
     }
 
-    public void Render( ShaderProgram? customShader, int glTriangles, int i, int count )
+    public Mesh DisableInstancedRendering()
     {
+        if ( IsInstanced )
+        {
+            IsInstanced = false;
+            _instances?.Dispose();
+            _instances = null;
+        }
+
+        return this;
     }
 
-    public void Render( ShaderProgram? customShader, int glTriangles )
+    /// <summary>
+    /// Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
+    /// </summary>
+    /// <param name="instanceData"> the instance data. </param>
+    /// <param name="offset"> the offset into the vertices array </param>
+    /// <param name="count"> the number of floats to use </param>
+    /// <returns> the mesh for invocation chaining.  </returns>
+    public Mesh SetInstanceData( float[] instanceData, int offset, int count )
     {
+        if ( _instances != null )
+        {
+            this._instances.SetInstanceData( instanceData, offset, count );
+        }
+        else
+        {
+            throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
+        }
+
+        return this;
     }
 
-    public void SetVertices( float[] vertices, int i, int idx )
+    /// <summary>
+    /// Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
+    /// </summary>
+    /// <param name="instanceData"> the instance data. </param>
+    /// <returns> the mesh for invocation chaining.  </returns>
+    public Mesh setInstanceData( float[] instanceData )
     {
+        if ( _instances != null )
+        {
+            this._instances.SetInstanceData( instanceData, 0, instanceData.Length );
+        }
+        else
+        {
+            throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
+        }
+
+        return this;
     }
 
-    public void SetAutoBind( bool bind )
+    /// <summary>
+    /// Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
+    /// </summary>
+    /// <param name="instanceData"> the instance data. </param>
+    /// <param name="count"> the number of floats to use </param>
+    /// <returns> the mesh for invocation chaining.  </returns>
+    public Mesh SetInstanceData( FloatBuffer instanceData, int count )
     {
+        if ( _instances != null )
+        {
+            this._instances.SetInstanceData( instanceData, count );
+        }
+        else
+        {
+            throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
+        }
+
+        return this;
     }
 
-    public void Bind( ShaderProgram? shader )
+    /// <summary>
+    /// Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
+    /// </summary>
+    /// <param name="instanceData"> the instance data. </param>
+    /// <returns> the mesh for invocation chaining.  </returns>
+    public Mesh SetInstanceData( FloatBuffer instanceData )
     {
+        if ( _instances != null )
+        {
+            this._instances.SetInstanceData( instanceData, instanceData.limit() );
+        }
+        else
+        {
+            throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
+        }
+
+        return this;
     }
 
-    public void Unbind( ShaderProgram? shader )
+    /// <summary>
+    /// Update (a portion of) the instance data. Does not resize the backing buffer. </summary>
+    /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
+    /// <param name="source"> the instance data to update the mesh part with  </param>
+    public Mesh UpdateInstanceData( int targetOffset, float[] source )
     {
+        return UpdateInstanceData( targetOffset, source, 0, source.Length );
     }
 
-    public ShortBuffer GetIndicesBuffer()
+    /// <summary>
+    /// Update (a portion of) the instance data. Does not resize the backing buffer. </summary>
+    /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
+    /// <param name="source"> the instance data to update the mesh part with </param>
+    /// <param name="sourceOffset"> the offset in number of floats within the source array </param>
+    /// <param name="count"> the number of floats to update  </param>
+    public Mesh UpdateInstanceData( int targetOffset, float[] source, int sourceOffset, int count )
     {
-        return _shortBuffer;
+        this._instances.UpdateInstanceData( targetOffset, source, sourceOffset, count );
+
+        return this;
     }
 
-    public FloatBuffer GetVerticesBuffer()
+    /// <summary>
+    /// Update (a portion of) the instance data. Does not resize the backing buffer. </summary>
+    /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
+    /// <param name="source"> the instance data to update the mesh part with  </param>
+    public Mesh UpdateInstanceData( int targetOffset, FloatBuffer source )
     {
-        return null!;
+        return updateInstanceData( targetOffset, source, 0, source.limit() );
     }
 
-    public int GetNumIndices()
+    /// <summary>
+    /// Update (a portion of) the instance data. Does not resize the backing buffer. </summary>
+    /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
+    /// <param name="source"> the instance data to update the mesh part with </param>
+    /// <param name="sourceOffset"> the offset in number of floats within the source array </param>
+    /// <param name="count"> the number of floats to update  </param>
+    public Mesh UpdateInstanceData( int targetOffset, FloatBuffer source, int sourceOffset, int count )
     {
-        return 0;
+        this._instances.UpdateInstanceData( targetOffset, source, sourceOffset, count );
+
+        return this;
     }
 
-    public VertexAttributes GetVertexAttributes()
+    /// <summary>
+    /// Sets the vertices of this Mesh. The attributes are assumed to be given in float format.
+    /// </summary>
+    /// <param name="vertices"> the vertices. </param>
+    /// <returns> the mesh for invocation chaining.  </returns>
+    public Mesh SetVertices( float[] vertices )
     {
-        return _vertices.Attributes;
+        this._vertices.SetVertices( vertices, 0, _vertices.Length );
+
+        return this;
     }
 
+    /// <summary>
+    /// Sets the vertices of this Mesh. The attributes are assumed to be given in float format.
+    /// </summary>
+    /// <param name="vertices"> the vertices. </param>
+    /// <param name="offset"> the offset into the vertices array </param>
+    /// <param name="count"> the number of floats to use </param>
+    /// <returns> the mesh for invocation chaining.  </returns>
+    public Mesh SetVertices( float[] vertices, int offset, int count )
+    {
+        this._vertices.SetVertices( vertices, offset, count );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Update (a portion of) the vertices. Does not resize the backing buffer.
+    /// </summary>
+    /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
+    /// <param name="source"> the vertex data to update the mesh part with  </param>
+    public Mesh UpdateVertices( int targetOffset, float[] source )
+    {
+        return UpdateVertices( targetOffset, source, 0, source.Length );
+    }
+
+    /// <summary>
+    /// Update (a portion of) the vertices. Does not resize the backing buffer.
+    /// </summary>
+    /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
+    /// <param name="source"> the vertex data to update the mesh part with </param>
+    /// <param name="sourceOffset"> the offset in number of floats within the source array </param>
+    /// <param name="count"> the number of floats to update  </param>
+    public Mesh UpdateVertices( int targetOffset, float[] source, int sourceOffset, int count )
+    {
+        this._vertices.UpdateVertices( targetOffset, source, sourceOffset, count );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Copies the vertices from the Mesh to the float array. The float array
+    /// must be large enough to hold all the Mesh's vertices.
+    /// </summary>
+    /// <param name="vertices"> the array to copy the vertices to  </param>
+    public float[] GetVertices( float[] vertices )
+    {
+        return GetVertices( 0, -1, vertices );
+    }
+
+    /// <summary>
+    /// Copies the the remaining vertices from the Mesh to the float array. The float array must be large enough to hold the
+    /// remaining vertices. </summary>
+    /// <param name="srcOffset"> the offset (in number of floats) of the vertices in the mesh to copy </param>
+    /// <param name="vertices"> the array to copy the vertices to  </param>
+    public float[] GetVertices( int srcOffset, float[] vertices )
+    {
+        return GetVertices( srcOffset, -1, vertices );
+    }
+
+    /// <summary>
+    /// Copies the specified vertices from the Mesh to the float array. The float
+    /// array must be large enough to hold destOffset + count vertices.
+    /// </summary>
+    /// <param name="srcOffset"> the offset (in number of floats) of the vertices in the mesh to copy </param>
+    /// <param name="count"> the amount of floats to copy </param>
+    /// <param name="vertices"> the array to copy the vertices to </param>
+    /// <param name="destOffset"> the offset (in floats) in the vertices array to start copying  </param>
+    public float[] GetVertices( int srcOffset, int count, float[] vertices, int destOffset = 0 )
+    {
+        // TODO: Perhaps this method should be vertexSize aware??
+        var max = ( NumVertices * VertexSize ) / 4;
+
+        if ( count == -1 )
+        {
+            count = max - srcOffset;
+
+            if ( count > ( _vertices.Length - destOffset ) )
+            {
+                count = _vertices.Length - destOffset;
+            }
+        }
+
+        if ( ( srcOffset < 0 )
+             || ( count <= 0 )
+             || ( ( srcOffset + count ) > max )
+             || ( destOffset < 0 )
+             || ( destOffset >= _vertices.Length ) )
+        {
+            throw new System.IndexOutOfRangeException();
+        }
+
+        if ( ( _vertices.Length - destOffset ) < count )
+        {
+            throw new System.ArgumentException
+                ( "not enough room in vertices array, has " + _vertices.Length + " floats, needs " + count );
+        }
+
+        int pos = getVerticesBuffer().position();
+        ( ( Buffer )getVerticesBuffer() ).position( srcOffset );
+        getVerticesBuffer().get( vertices, destOffset, count );
+        ( ( Buffer )getVerticesBuffer() ).position( pos );
+
+        return vertices;
+    }
+
+    /// <summary>
+    /// Sets the indices of this Mesh
+    /// </summary>
+    /// <param name="indices"> the indices </param>
+    /// <returns> the mesh for invocation chaining.  </returns>
+    public Mesh SetIndices( short[] indices )
+    {
+        this._indices.SetIndices( indices, 0, _indices.Length );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the indices of this Mesh.
+    /// </summary>
+    /// <param name="indices"> the indices </param>
+    /// <param name="offset"> the offset into the indices array </param>
+    /// <param name="count"> the number of indices to copy </param>
+    /// <returns> the mesh for invocation chaining.  </returns>
+    public Mesh SetIndices( short[] indices, int offset, int count )
+    {
+        this._indices.SetIndices( indices, offset, count );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Copies the indices from the Mesh to the short array. The short array must be large enough to hold all the Mesh's _indices. </summary>
+    /// <param name="indices"> the array to copy the indices to  </param>
+    public void GetIndices( short[] indices )
+    {
+        GetIndices( indices, 0 );
+    }
+
+    /// <summary>
+    /// Copies the indices from the Mesh to the short array. The short array must be large enough to hold destOffset + all the
+    /// Mesh's _indices. </summary>
+    /// <param name="indices"> the array to copy the indices to </param>
+    /// <param name="destOffset"> the offset in the indices array to start copying  </param>
+    public void GetIndices( short[] indices, int destOffset )
+    {
+        GetIndices( 0, indices, destOffset );
+    }
+
+    /// <summary>
+    /// Copies the remaining indices from the Mesh to the short array. The short array must be large enough to hold destOffset + all
+    /// the remaining _indices. </summary>
+    /// <param name="srcOffset"> the zero-based offset of the first index to fetch </param>
+    /// <param name="indices"> the array to copy the indices to </param>
+    /// <param name="destOffset"> the offset in the indices array to start copying  </param>
+    public void GetIndices( int srcOffset, short[] indices, int destOffset )
+    {
+        GetIndices( srcOffset, -1, indices, destOffset );
+    }
+
+    /// <summary>
+    /// Copies the indices from the Mesh to the short array. The short array must be large enough to hold destOffset + count
+    /// _indices. </summary>
+    /// <param name="srcOffset"> the zero-based offset of the first index to fetch </param>
+    /// <param name="count"> the total amount of indices to copy </param>
+    /// <param name="indices"> the array to copy the indices to </param>
+    /// <param name="destOffset"> the offset in the indices array to start copying  </param>
+    public void GetIndices( int srcOffset, int count, short[] indices, int destOffset )
+    {
+        var max = NumIndices;
+
+        if ( count < 0 )
+        {
+            count = max - srcOffset;
+        }
+
+        if ( ( srcOffset < 0 ) || ( srcOffset >= max ) || ( ( srcOffset + count ) > max ) )
+        {
+            throw new System.ArgumentException
+                ( "Invalid range specified, offset: " + srcOffset + ", count: " + count + ", max: " + max );
+        }
+
+        if ( ( _indices.Length - destOffset ) < count )
+        {
+            throw new System.ArgumentException
+                ( "not enough room in indices array, has " + _indices.Length + " shorts, needs " + count );
+        }
+
+        int pos = getIndicesBuffer().position();
+        ( ( Buffer )getIndicesBuffer() ).position( srcOffset );
+        getIndicesBuffer().get( indices, destOffset, count );
+        ( ( Buffer )getIndicesBuffer() ).position( pos );
+    }
+
+    /// <returns> the number of defined indices </returns>
+    public int NumIndices
+    {
+        get { return _indices.NumIndices; }
+    }
+
+    /// <returns> the number of defined vertices </returns>
+    public int NumVertices
+    {
+        get { return _vertices.NumVertices; }
+    }
+
+    /// <returns> the maximum number of vertices this mesh can hold </returns>
+    public int MaxVertices
+    {
+        get { return _vertices.getNumMaxVertices(); }
+    }
+
+    /// <returns> the maximum number of indices this mesh can hold </returns>
+    public int MaxIndices
+    {
+        get { return _indices.getNumMaxIndices(); }
+    }
+
+    /// <returns> the size of a single vertex in bytes </returns>
+    public int VertexSize
+    {
+        get { return _vertices.getAttributes().vertexSize; }
+    }
+
+    /// <summary>
+    /// Sets whether to bind the underlying <see cref="VertexArray"/> or <see cref="VertexBufferObject"/> automatically on a call to one of the
+    /// render methods. Usually you want to use autobind. Manual binding is an expert functionality. There is a driver bug on the
+    /// MSM720xa chips that will fuck up memory if you manipulate the vertices and indices of a Mesh multiple times while it is
+    /// bound. Keep this in mind.
+    /// </summary>
+    /// <param name="value"> whether to autobind meshes.  </param>
+    public bool AutoBind
+    {
+        get => _autoBind;
+        set => _autoBind = value;
+    }
+
+    /// <summary>
+    /// Binds the underlying <see cref="VertexBufferObject"/> and
+    /// <see cref="IndexBufferObject"/> if indices where given.
+    /// Use this with OpenGL ES 2.0 and when auto-bind is disabled.
+    /// </summary>
+    /// <param name="shader"> the shader (does not bind the shader)  </param>
+    public void Bind( in ShaderProgram shader )
+    {
+        Bind( shader, null );
+    }
+
+    /// <summary>
+    /// Binds the underlying <see cref="VertexBufferObject"/> and
+    /// <see cref="IndexBufferObject"/> if indices where given.
+    /// Use this with OpenGL ES 2.0 and when auto-bind is disabled.
+    /// </summary>
+    /// <param name="shader"> the shader (does not bind the shader) </param>
+    /// <param name="locations"> array containing the attribute locations.  </param>
+    public void Bind( in ShaderProgram shader, in int[]? locations )
+    {
+        _vertices.Bind( shader, locations );
+
+        if ( ( _instances != null ) && ( _instances.getNumInstances() > 0 ) )
+        {
+            _instances.Bind( shader, locations );
+        }
+
+        if ( _indices.getNumIndices() > 0 )
+        {
+            _indices.bind();
+        }
+    }
+
+    /// <summary>
+    /// Unbinds the underlying <see cref="VertexBufferObject"/> and <see cref="IndexBufferObject"/> is indices were given. Use this with OpenGL
+    /// ES 1.x and when auto-bind is disabled.
+    /// </summary>
+    /// <param name="shader"> the shader (does not unbind the shader)  </param>
+    public void Unbind( in ShaderProgram? shader )
+    {
+        Unbind( shader, null );
+    }
+
+    /// <summary>
+    /// Unbinds the underlying <see cref="VertexBufferObject"/> and <see cref="IndexBufferObject"/> is indices were given. Use this with OpenGL
+    /// ES 1.x and when auto-bind is disabled.
+    /// </summary>
+    /// <param name="shader"> the shader (does not unbind the shader) </param>
+    /// <param name="locations"> array containing the attribute locations.  </param>
+    public void Unbind( in ShaderProgram? shader, in int[]? locations )
+    {
+        _vertices.Unbind( shader, locations );
+
+        if ( ( _instances != null ) && ( _instances.getNumInstances() > 0 ) )
+        {
+            _instances.Unbind( shader, locations );
+        }
+
+        if ( _indices.getNumIndices() > 0 )
+        {
+            _indices.unbind();
+        }
+    }
+
+    /// <summary>
+    /// <para>
+    /// Renders the mesh using the given primitive type. If indices are set for this mesh then getNumIndices() / #vertices per
+    /// primitive primitives are rendered. If no indices are set then NumVertices / #vertices per primitive are rendered.
+    /// </para>
+    /// 
+    /// <para>
+    /// This method will automatically bind each vertex attribute as specified at construction time via <see cref="VertexAttributes"/> to
+    /// the respective shader attributes. The binding is based on the alias defined for each VertexAttribute.
+    /// </para>
+    /// 
+    /// <para>
+    /// This method must only be called after the <see cref="ShaderProgram.bind()"/> method has been called!
+    /// </para>
+    /// 
+    /// <para>
+    /// This method is intended for use with OpenGL ES 2.0 and will throw an IllegalStateException when OpenGL ES 1.x is used.
+    /// </para>
+    /// </summary>
+    /// <param name="primitiveType"> the primitive type  </param>
+    public void Render( ShaderProgram shader, int primitiveType )
+    {
+        Render
+            (
+             shader,
+             primitiveType,
+             0,
+             _indices.getNumMaxIndices() > 0
+                 ? getNumIndices()
+                 : NumVertices,
+             autoBind
+            );
+    }
+
+    /// <summary>
+    /// <para>
+    /// Renders the mesh using the given primitive type. offset specifies the offset into either the vertex buffer or the index
+    /// buffer depending on whether indices are defined. count specifies the number of vertices or indices to use thus count /
+    /// #vertices per primitive primitives are rendered.
+    /// </para>
+    /// 
+    /// <para>
+    /// This method will automatically bind each vertex attribute as specified at construction time via <see cref="VertexAttributes"/> to
+    /// the respective shader attributes. The binding is based on the alias defined for each VertexAttribute.
+    /// </para>
+    /// 
+    /// <para>
+    /// This method must only be called after the <see cref="ShaderProgram.bind()"/> method has been called!
+    /// </para>
+    /// 
+    /// <para>
+    /// This method is intended for use with OpenGL ES 2.0 and will throw an IllegalStateException when OpenGL ES 1.x is used.
+    /// </para>
+    /// </summary>
+    /// <param name="shader"> the shader to be used </param>
+    /// <param name="primitiveType"> the primitive type </param>
+    /// <param name="offset"> the offset into the vertex or index buffer </param>
+    /// <param name="count"> number of vertices or indices to use  </param>
+    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count )
+    {
+        Render( shader, primitiveType, offset, count, AutoBind );
+    }
+
+    /// <summary>
+    /// <para>
+    /// Renders the mesh using the given primitive type. offset specifies the offset into either the vertex buffer or the index
+    /// buffer depending on whether indices are defined. count specifies the number of vertices or indices to use thus count /
+    /// #vertices per primitive primitives are rendered.
+    /// </para>
+    /// 
+    /// <para>
+    /// This method will automatically bind each vertex attribute as specified at construction time via <see cref="VertexAttributes"/> to
+    /// the respective shader attributes. The binding is based on the alias defined for each VertexAttribute.
+    /// </para>
+    /// 
+    /// <para>
+    /// This method must only be called after the <see cref="ShaderProgram.bind()"/> method has been called!
+    /// </para>
+    /// 
+    /// <para>
+    /// This method is intended for use with OpenGL ES 2.0 and will throw an IllegalStateException when OpenGL ES 1.x is used.
+    /// </para>
+    /// </summary>
+    /// <param name="shader"> the shader to be used </param>
+    /// <param name="primitiveType"> the primitive type </param>
+    /// <param name="offset"> the offset into the vertex or index buffer </param>
+    /// <param name="count"> number of vertices or indices to use </param>
+    /// <param name="autoBind"> overrides the autoBind member of this Mesh  </param>
+    public void Render( ShaderProgram shader, int primitiveType, int offset, int count, bool autoBind )
+    {
+        if ( count == 0 )
+        {
+            return;
+        }
+
+        if ( autoBind )
+        {
+            Bind( shader );
+        }
+
+        if ( _isVertexArray )
+        {
+            if ( _indices.NumIndices > 0 )
+            {
+                ShortBuffer buffer      = _indices.getBuffer();
+                int         oldPosition = buffer.position();
+                int         oldLimit    = buffer.limit();
+                ( ( Buffer )buffer ).position( offset );
+                ( ( Buffer )buffer ).limit( offset + count );
+                Gdx.gl20.glDrawElements( primitiveType, count, GL20.GL_UNSIGNED_SHORT, buffer );
+                ( ( Buffer )buffer ).position( oldPosition );
+                ( ( Buffer )buffer ).limit( oldLimit );
+            }
+            else
+            {
+                Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
+            }
+        }
+        else
+        {
+            var numInstances = 0;
+
+            if ( IsInstanced )
+            {
+                numInstances = _instances!.NumInstances;
+            }
+
+            if ( _indices.NumIndices > 0 )
+            {
+                if ( ( count + offset ) > _indices.NumMaxIndices )
+                {
+                    throw new GdxRuntimeException
+                        (
+                         "Mesh attempting to access memory outside of the index buffer (count: "
+                         + count
+                         + ", offset: "
+                         + offset
+                         + ", max: "
+                         + _indices.NumMaxIndices
+                         + ")"
+                        );
+                }
+
+                if ( IsInstanced && ( numInstances > 0 ) )
+                {
+                    Gdx.GL30.GLDrawElementsInstanced
+                        ( primitiveType, count, IGL20.GL_Unsigned_Short, offset * 2, numInstances );
+                }
+                else
+                {
+                    Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_Unsigned_Short, offset * 2 );
+                }
+            }
+            else
+            {
+                if ( IsInstanced && ( numInstances > 0 ) )
+                {
+                    Gdx.GL30.GLDrawArraysInstanced( primitiveType, offset, count, numInstances );
+                }
+                else
+                {
+                    Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
+                }
+            }
+        }
+
+        if ( autoBind )
+        {
+            Unbind( shader );
+        }
+    }
+
+    /// <summary>
+    /// Returns the first <see cref="VertexAttribute"/> having the given <see cref="VertexAttributes.Usage"/>.
+    /// </summary>
+    /// <param name="usage"> the Usage. </param>
+    /// <returns> the VertexAttribute or null if no attribute with that usage was found.  </returns>
     public VertexAttribute? GetVertexAttribute( int usage )
     {
-        VertexAttributes attributes = _vertices.getAttributes();
-        var              len        = attributes.Size;
+        VertexAttributes attributes = _vertices.GetAttributes();
+
+        var len = attributes.Size;
 
         for ( var i = 0; i < len; i++ )
         {
@@ -251,7 +854,901 @@ public class Mesh
         return null;
     }
 
+    /// <returns> the vertex attributes of this Mesh </returns>
+    public VertexAttributes VertexAttributes => _vertices.GetAttributes();
+
+    /// <returns> the backing FloatBuffer holding the vertices. Does not have to be a direct buffer on Android! </returns>
+    public FloatBuffer VerticesBuffer => _vertices.GetBuffer();
+
+    /// <summary>
+    /// Calculates the <see cref="BoundingBox"/> of the vertices contained in this mesh. In case no vertices are defined yet a
+    /// <see cref="GdxRuntimeException"/> is thrown. This method creates a new BoundingBox instance.
+    /// </summary>
+    /// <returns> the bounding box.  </returns>
+    public BoundingBox CalculateBoundingBox()
+    {
+        var bbox = new BoundingBox();
+        CalculateBoundingBox( bbox );
+
+        return bbox;
+    }
+
+    /// <summary>
+    /// Calculates the <see cref="BoundingBox"/> of the vertices contained in this mesh.
+    /// In case no vertices are defined yet a <see cref="GdxRuntimeException"/> is thrown.
+    /// </summary>
+    /// <param name="bbox"> the bounding box to store the result in.  </param>
+    public void CalculateBoundingBox( BoundingBox bbox )
+    {
+        int numVertices = NumVertices;
+
+        if ( numVertices == 0 )
+        {
+            throw new GdxRuntimeException( "No vertices defined" );
+        }
+
+        FloatBuffer verts = _vertices.GetBuffer();
+        bbox.Inf();
+        VertexAttribute? posAttrib = GetVertexAttribute( VertexAttributes.Usage.Position );
+
+        var offset     = posAttrib!.Offset / 4;
+        var vertexSize = _vertices.GetAttributes().VertexSize / 4;
+        var idx        = offset;
+
+        switch ( posAttrib?.numComponents )
+        {
+            case 1:
+                for ( var i = 0; i < numVertices; i++ )
+                {
+                    bbox.Ext( verts.Get( idx ), 0, 0 );
+                    idx += vertexSize;
+                }
+
+                break;
+
+            case 2:
+                for ( var i = 0; i < numVertices; i++ )
+                {
+                    bbox.Ext( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
+                    idx += vertexSize;
+                }
+
+                break;
+
+            case 3:
+                for ( var i = 0; i < numVertices; i++ )
+                {
+                    bbox.Ext( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
+                    idx += vertexSize;
+                }
+
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Calculate the <see cref="BoundingBox"/> of the specified part. </summary>
+    /// <param name="box"> the bounding box to store the result in. </param>
+    /// <param name="offset"> the start index of the part. </param>
+    /// <param name="count"> the amount of indices the part contains. </param>
+    /// <returns> the value specified by out.  </returns>
+    public BoundingBox CalculateBoundingBox( in BoundingBox box, int offset, int count )
+    {
+        return ExtendBoundingBox( box.Inf(), offset, count );
+    }
+
+    /// <summary>
+    /// Calculate the <see cref="BoundingBox"/> of the specified part. </summary>
+    /// <param name="box"> the bounding box to store the result in. </param>
+    /// <param name="offset"> the start index of the part. </param>
+    /// <param name="count"> the amount of indices the part contains. </param>
+    /// <param name="transform"></param>
+    /// <returns> the value specified by out.  </returns>
+    public BoundingBox CalculateBoundingBox( in BoundingBox box, int offset, int count, in Matrix4 transform )
+    {
+        return ExtendBoundingBox( box.Inf(), offset, count, transform );
+    }
+
+    /// <summary>
+    /// Extends the specified <see cref="BoundingBox"/> with the specified part. </summary>
+    /// <param name="box"> the bounding box to store the result in. </param>
+    /// <param name="offset"> the start index of the part. </param>
+    /// <param name="count"> the amount of indices the part contains. </param>
+    /// <returns> the value specified by out.  </returns>
+    public BoundingBox ExtendBoundingBox( in BoundingBox box, int offset, int count )
+    {
+        return ExtendBoundingBox( box, offset, count, null );
+    }
+
+    private readonly Vector3 _tmpV = new Vector3();
+
+    /// <summary>
+    /// Extends the specified <see cref="BoundingBox"/> with the specified part. </summary>
+    /// <param name="box"> the bounding box to store the result in. </param>
+    /// <param name="offset"> the start of the part. </param>
+    /// <param name="count"> the size of the part. </param>
+    /// <param name="transform"></param>
+    /// <returns> the value specified by out.  </returns>
+    public BoundingBox ExtendBoundingBox( in BoundingBox box, int offset, int count, in Matrix4 transform )
+    {
+        int numIndices  = NumIndices;
+        int numVertices = NumVertices;
+        var max         = numIndices == 0 ? numVertices : numIndices;
+
+        if ( ( offset < 0 ) || ( count < 1 ) || ( ( offset + count ) > max ) )
+        {
+            throw new GdxRuntimeException
+                ( "Invalid part specified ( offset=" + offset + ", count=" + count + ", max=" + max + " )" );
+        }
+
+        FloatBuffer      verts      = _vertices.GetBuffer();
+        ShortBuffer      index      = _indices.Buffer;
+        VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.Position );
+        var              posoff     = posAttrib?.Offset / 4;
+        var              vertexSize = _vertices.GetAttributes().VertexSize / 4;
+        var              end        = offset + count;
+
+        switch ( posAttrib?.numComponents )
+        {
+            case 1:
+                if ( numIndices > 0 )
+                {
+                    for ( var i = offset; i < end; i++ )
+                    {
+                        var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
+                        _tmpV.Set( verts.Get( idx ), 0, 0 );
+
+                        if ( transform != null )
+                        {
+                            _tmpV.Mul( transform );
+                        }
+
+                        box.Ext( _tmpV );
+                    }
+                }
+                else
+                {
+                    for ( var i = offset; i < end; i++ )
+                    {
+                        var idx = ( i * vertexSize ) + posoff;
+                        _tmpV.Set( verts.Get( idx ), 0, 0 );
+
+                        if ( transform != null )
+                        {
+                            _tmpV.Mul( transform );
+                        }
+
+                        box.Ext( _tmpV );
+                    }
+                }
+
+                break;
+
+            case 2:
+                if ( numIndices > 0 )
+                {
+                    for ( var i = offset; i < end; i++ )
+                    {
+                        var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
+                        _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
+
+                        if ( transform != null )
+                        {
+                            _tmpV.Mul( transform );
+                        }
+
+                        box.Ext( _tmpV );
+                    }
+                }
+                else
+                {
+                    for ( var i = offset; i < end; i++ )
+                    {
+                        var idx = ( i * vertexSize ) + posoff;
+                        _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
+
+                        if ( transform != null )
+                        {
+                            _tmpV.Mul( transform );
+                        }
+
+                        box.Ext( _tmpV );
+                    }
+                }
+
+                break;
+
+            case 3:
+                if ( numIndices > 0 )
+                {
+                    for ( var i = offset; i < end; i++ )
+                    {
+                        var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
+                        _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
+
+                        if ( transform != null )
+                        {
+                            _tmpV.Mul( transform );
+                        }
+
+                        box.Ext( _tmpV );
+                    }
+                }
+                else
+                {
+                    for ( var i = offset; i < end; i++ )
+                    {
+                        var idx = ( i * vertexSize ) + posoff;
+                        _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
+
+                        if ( transform != null )
+                        {
+                            _tmpV.Mul( transform );
+                        }
+
+                        box.Ext( _tmpV );
+                    }
+                }
+
+                break;
+        }
+
+        return box;
+    }
+
+    /// <summary>
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part. </summary>
+    /// <param name="centerX"> The X coordinate of the center of the bounding sphere </param>
+    /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
+    /// <param name="centerZ"> The Z coordinate of the center of the bounding sphere </param>
+    /// <param name="offset"> the start index of the part. </param>
+    /// <param name="count"> the amount of indices the part contains. </param>
+    /// <param name="transform"></param>
+    /// <returns> the squared radius of the bounding sphere.  </returns>
+    public float CalculateRadiusSquared( in float centerX,
+                                         in float centerY,
+                                         in float centerZ,
+                                         int offset,
+                                         int count,
+                                         in Matrix4 transform )
+    {
+        int numIndices = NumIndices;
+
+        if ( ( offset < 0 ) || ( count < 1 ) || ( ( offset + count ) > numIndices ) )
+        {
+            throw new GdxRuntimeException( "Not enough indices" );
+        }
+
+        FloatBuffer      verts      = _vertices.GetBuffer();
+        ShortBuffer      index      = _indices.Buffer;
+        VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.Position );
+        var              posoff     = posAttrib?.Offset / 4;
+        var              vertexSize = _vertices.GetAttributes().VertexSize / 4;
+        var              end        = offset + count;
+
+        float result = 0;
+
+        switch ( posAttrib?.numComponents )
+        {
+            case 1:
+                for ( var i = offset; i < end; i++ )
+                {
+                    var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
+                    _tmpV.Set( verts.Get( idx ), 0, 0 );
+
+                    if ( transform != null )
+                    {
+                        _tmpV.Mul( transform );
+                    }
+
+                    float r = _tmpV.Sub( centerX, centerY, centerZ ).Len2();
+
+                    if ( r > result )
+                    {
+                        result = r;
+                    }
+                }
+
+                break;
+
+            case 2:
+                for ( var i = offset; i < end; i++ )
+                {
+                    var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
+                    _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
+
+                    if ( transform != null )
+                    {
+                        _tmpV.Mul( transform );
+                    }
+
+                    float r = _tmpV.Sub( centerX, centerY, centerZ ).Len2();
+
+                    if ( r > result )
+                    {
+                        result = r;
+                    }
+                }
+
+                break;
+
+            case 3:
+                for ( var i = offset; i < end; i++ )
+                {
+                    var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
+                    _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
+
+                    if ( transform != null )
+                    {
+                        _tmpV.Mul( transform );
+                    }
+
+                    float r = _tmpV.Sub( centerX, centerY, centerZ ).Len2();
+
+                    if ( r > result )
+                    {
+                        result = r;
+                    }
+                }
+
+                break;
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Calculates the radius of the bounding sphere around the specified center for the specified part.
+    /// </summary>
+    /// <param name="centerX"> The X coordinate of the center of the bounding sphere </param>
+    /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
+    /// <param name="centerZ"> The Z coordinate of the center of the bounding sphere </param>
+    /// <param name="offset"> the start index of the part. </param>
+    /// <param name="count"> the amount of indices the part contains. </param>
+    /// <param name="transform"></param>
+    /// <returns> the radius of the bounding sphere.  </returns>
+    public float CalculateRadius( in float centerX,
+                                  in float centerY,
+                                  in float centerZ,
+                                  int offset,
+                                  int count,
+                                  in Matrix4 transform )
+    {
+        return ( float )Math.Sqrt( CalculateRadiusSquared( centerX, centerY, centerZ, offset, count, transform ) );
+    }
+
+    /// <summary>
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part.
+    /// </summary>
+    /// <param name="center"> The center of the bounding sphere </param>
+    /// <param name="offset"> the start index of the part. </param>
+    /// <param name="count"> the amount of indices the part contains. </param>
+    /// <param name="transform"></param>
+    /// <returns> the squared radius of the bounding sphere.  </returns>
+    public float CalculateRadius( in Vector3 center, int offset, int count, in Matrix4 transform )
+    {
+        return CalculateRadius( center.x, center.y, center.z, offset, count, transform );
+    }
+
+    /// <summary>
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part. </summary>
+    /// <param name="centerX"> The X coordinate of the center of the bounding sphere </param>
+    /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
+    /// <param name="centerZ"> The Z coordinate of the center of the bounding sphere </param>
+    /// <param name="offset"> the start index of the part. </param>
+    /// <param name="count"> the amount of indices the part contains. </param>
+    /// <returns> the squared radius of the bounding sphere.  </returns>
+    public float CalculateRadius( in float centerX, in float centerY, in float centerZ, int offset, int count )
+    {
+        return CalculateRadius( centerX, centerY, centerZ, offset, count, null );
+    }
+
+    /// <summary>
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part. </summary>
+    /// <param name="center"> The center of the bounding sphere </param>
+    /// <param name="offset"> the start index of the part. </param>
+    /// <param name="count"> the amount of indices the part contains. </param>
+    /// <returns> the squared radius of the bounding sphere.  </returns>
+    public float CalculateRadius( in Vector3 center, int offset, int count )
+    {
+        return CalculateRadius( center.x, center.y, center.z, offset, count, null );
+    }
+
+    /// <summary>
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part. </summary>
+    /// <param name="centerX"> The X coordinate of the center of the bounding sphere </param>
+    /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
+    /// <param name="centerZ"> The Z coordinate of the center of the bounding sphere </param>
+    /// <returns> the squared radius of the bounding sphere.  </returns>
+    public float CalculateRadius( in float centerX, in float centerY, in float centerZ )
+    {
+        return CalculateRadius( centerX, centerY, centerZ, 0, NumIndices, null );
+    }
+
+    /// <summary>
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part. </summary>
+    /// <param name="center"> The center of the bounding sphere </param>
+    /// <returns> the squared radius of the bounding sphere.  </returns>
+    public float CalculateRadius( in Vector3 center )
+    {
+        return CalculateRadius( center.x, center.y, center.z, 0, NumIndices, null );
+    }
+
+    /// <returns>
+    /// the backing shortbuffer holding the _indices.
+    /// Does not have to be a direct buffer on Android!
+    /// </returns>
+    public ShortBuffer IndicesBuffer => _indices.Buffer;
+
+    private static void AddManagedMesh( IApplication app, Mesh mesh )
+    {
+        List< Mesh >? managedResources = Meshes[ app ];
+
+        managedResources ??= new List< Mesh >();
+        managedResources.Add( mesh );
+
+        Meshes[ app ] = managedResources;
+    }
+
+    /// <summary>
+    /// Invalidates all meshes so the next time they are rendered new VBO handles are generated. </summary>
+    /// <param name="app">  </param>
+    public static void InvalidateAllMeshes( IApplication app )
+    {
+        for ( var i = 0; i < Meshes.Count; i++ )
+        {
+            Meshes[ app ]?[ i ]._vertices.Invalidate();
+            Meshes[ app ]?[ i ]._indices.Invalidate();
+        }
+    }
+
+    /// <summary>
+    /// Will clear the managed mesh cache. I wouldn't use this if i was you :)
+    /// </summary>
+    public static void ClearAllMeshes( IApplication app )
+    {
+        Meshes.Remove( app );
+    }
+
+    public static string ManagedStatus
+    {
+        get
+        {
+            var builder = new StringBuilder();
+            builder.Append( "Managed meshes/app: { " );
+
+            foreach ( IApplication app in Meshes.Keys )
+            {
+                builder.Append( Meshes[ app ]?.Count );
+                builder.Append( ' ' );
+            }
+
+            builder.Append( '}' );
+
+            return builder.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Method to scale the positions in the mesh. Normals will be kept as is.
+    /// This is a potentially slow operation, use with care.
+    /// It will also create a temporary float[] which will be garbage collected.
+    /// </summary>
+    /// <param name="scaleX"> scale on x </param>
+    /// <param name="scaleY"> scale on y </param>
+    /// <param name="scaleZ"> scale on z  </param>
+    public void Scale( float scaleX, float scaleY, float scaleZ )
+    {
+        VertexAttribute? posAttr       = GetVertexAttribute( VertexAttributes.Usage.Position );
+        var              offset        = posAttr!.Offset / 4;
+        var              numComponents = posAttr.numComponents;
+        int              numVertices   = NumVertices;
+        var              vertexSize    = VertexSize / 4;
+        var              vertices      = new float[ numVertices * vertexSize ];
+
+        GetVertices( vertices );
+
+        var idx = offset;
+
+        switch ( numComponents )
+        {
+            case 1:
+                for ( var i = 0; i < numVertices; i++ )
+                {
+                    vertices[ idx ] *= scaleX;
+                    idx             += vertexSize;
+                }
+
+                break;
+
+            case 2:
+                for ( var i = 0; i < numVertices; i++ )
+                {
+                    vertices[ idx ]     *= scaleX;
+                    vertices[ idx + 1 ] *= scaleY;
+                    idx                 += vertexSize;
+                }
+
+                break;
+
+            case 3:
+                for ( var i = 0; i < numVertices; i++ )
+                {
+                    vertices[ idx ]     *= scaleX;
+                    vertices[ idx + 1 ] *= scaleY;
+                    vertices[ idx + 2 ] *= scaleZ;
+                    idx                 += vertexSize;
+                }
+
+                break;
+        }
+
+        SetVertices( vertices );
+    }
+
+    /// <summary>
+    /// Method to transform the positions in the mesh. Normals will be kept as is.
+    /// This is a potentially slow operation, use with care. It will also create a
+    /// temporary float[] which will be garbage collected.
+    /// </summary>
+    /// <param name="matrix"> the transformation matrix  </param>
+    public void Transform( in Matrix4 matrix )
+    {
+        Transform( matrix, 0, NumVertices );
+    }
+
+    // TODO: Protected for now, because transforming a portion works but still copies all vertices
+    protected void Transform( in Matrix4 matrix, in int start, in int count )
+    {
+        VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.Position );
+
+        var posOffset     = posAttr!.Offset / 4;
+        var stride        = VertexSize / 4;
+        var numComponents = posAttr!.numComponents;
+        var numVertices   = NumVertices;
+        var vertices      = new float[ count * stride ];
+
+        GetVertices( start * stride, count * stride, vertices );
+        // GetVertices(0, vertices.length, vertices);
+        Transform( matrix, vertices, stride, posOffset, numComponents, 0, count );
+        // SetVertices(vertices, 0, vertices.length);
+        UpdateVertices( start * stride, vertices );
+    }
+
+    /// <summary>
+    /// Method to transform the positions in the float array. Normals will be
+    /// kept as is. This is a potentially slow operation, use with care.
+    /// </summary>
+    /// <param name="matrix"> the transformation matrix </param>
+    /// <param name="vertices"> the float array </param>
+    /// <param name="vertexSize"> the number of floats in each vertex </param>
+    /// <param name="offset"> the offset within a vertex to the position </param>
+    /// <param name="dimensions"> the size of the position </param>
+    /// <param name="start"> the vertex to start with </param>
+    /// <param name="count"> the amount of vertices to transform  </param>
+    public static void Transform( in Matrix4 matrix,
+                                  in float[] vertices,
+                                  int vertexSize,
+                                  int offset,
+                                  int dimensions,
+                                  int start,
+                                  int count )
+    {
+        if ( ( offset < 0 ) || ( dimensions < 1 ) || ( ( offset + dimensions ) > vertexSize ) )
+        {
+            throw new System.IndexOutOfRangeException();
+        }
+
+        if ( ( start < 0 ) || ( count < 1 ) || ( ( ( start + count ) * vertexSize ) > vertices.Length ) )
+        {
+            throw new System.IndexOutOfRangeException
+                (
+                 "start = "
+                 + start
+                 + ", count = "
+                 + count
+                 + ", vertexSize = "
+                 + vertexSize
+                 + ", length = "
+                 + vertices.Length
+                );
+        }
+
+        var tmp = new Vector3();
+        var idx = offset + ( start * vertexSize );
+
+        switch ( dimensions )
+        {
+            case 1:
+                for ( var i = 0; i < count; i++ )
+                {
+                    tmp.Set( vertices[ idx ], 0, 0 ).Mul( matrix );
+                    vertices[ idx ] =  tmp.X;
+                    idx             += vertexSize;
+                }
+
+                break;
+
+            case 2:
+                for ( var i = 0; i < count; i++ )
+                {
+                    tmp.Set( vertices[ idx ], vertices[ idx + 1 ], 0 ).Mul( matrix );
+                    vertices[ idx ]     =  tmp.X;
+                    vertices[ idx + 1 ] =  tmp.Y;
+                    idx                 += vertexSize;
+                }
+
+                break;
+
+            case 3:
+                for ( var i = 0; i < count; i++ )
+                {
+                    tmp.Set( vertices[ idx ], vertices[ idx + 1 ], vertices[ idx + 2 ] ).Mul( matrix );
+                    vertices[ idx ]     =  tmp.X;
+                    vertices[ idx + 1 ] =  tmp.Y;
+                    vertices[ idx + 2 ] =  tmp.Z;
+                    idx                 += vertexSize;
+                }
+
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Method to transform the texture coordinates in the mesh. This is a potentially
+    /// slow operation, use with care. It will also create a temporary float[] which
+    /// will be garbage collected.
+    /// </summary>
+    /// <param name="matrix"> the transformation matrix  </param>
+    public void TransformUV( in Matrix3 matrix )
+    {
+        TransformUV( matrix, 0, NumVertices );
+    }
+
+    // TODO: Protected for now, because transforming a portion works but still copies all vertices
+    protected void TransformUV( in Matrix3 matrix, in int start, in int count )
+    {
+        VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.TextureCoordinates );
+
+        var offset      = posAttr!.Offset / 4;
+        var vertexSize  = VertexSize / 4;
+        var numVertices = NumVertices;
+        var vertices    = new float[ numVertices * vertexSize ];
+
+        // TODO: GetVertices(vertices, start * vertexSize, count * vertexSize);
+
+        GetVertices( 0, vertices.Length, vertices );
+        TransformUV( matrix, vertices, vertexSize, offset, start, count );
+        SetVertices( vertices, 0, vertices.Length );
+
+        // TODO: SetVertices(start * vertexSize, vertices, 0, _vertices.length);
+    }
+
+    /// <summary>
+    /// Method to transform the texture coordinates (UV) in the float array. This
+    /// is a potentially slow operation, use with care.
+    /// </summary>
+    /// <param name="matrix"> the transformation matrix </param>
+    /// <param name="vertices"> the float array </param>
+    /// <param name="vertexSize"> the number of floats in each vertex </param>
+    /// <param name="offset"> the offset within a vertex to the texture location </param>
+    /// <param name="start"> the vertex to start with </param>
+    /// <param name="count"> the amount of vertices to transform  </param>
+    public static void TransformUV( in Matrix3 matrix,
+                                    in float[] vertices,
+                                    int vertexSize,
+                                    int offset,
+                                    int start,
+                                    int count )
+    {
+        if ( ( start < 0 ) || ( count < 1 ) || ( ( ( start + count ) * vertexSize ) > vertices.Length ) )
+        {
+            throw new System.IndexOutOfRangeException
+                (
+                 "start = "
+                 + start
+                 + ", count = "
+                 + count
+                 + ", vertexSize = "
+                 + vertexSize
+                 + ", length = "
+                 + vertices.Length
+                );
+        }
+
+        var tmp = new Vector2();
+        var idx = offset + ( start * vertexSize );
+
+        for ( var i = 0; i < count; i++ )
+        {
+            tmp.Set( vertices[ idx ], vertices[ idx + 1 ] ).Mul( matrix );
+            vertices[ idx ]     =  tmp.X;
+            vertices[ idx + 1 ] =  tmp.Y;
+            idx                 += vertexSize;
+        }
+    }
+
+    /// <summary>
+    /// Copies this mesh.
+    /// </summary>
+    /// <param name="isStatic">
+    /// whether the new mesh is static or not. Allows for internal optimizations.
+    /// </param>
+    /// <returns> the copy of this mesh  </returns>
+    public Mesh Copy( bool isStatic )
+    {
+        return Copy( isStatic, false, null );
+    }
+
+    /// <summary>
+    /// Copies this mesh optionally removing duplicate vertices and/or reducing
+    /// the amount of attributes.
+    /// </summary>
+    /// <param name="isStatic">
+    /// whether the new mesh is static or not. Allows for internal optimizations.
+    /// </param>
+    /// <param name="removeDuplicates">
+    /// whether to remove duplicate vertices if possible. Only the vertices
+    /// specified by usage are checked.
+    /// </param>
+    /// <param name="usage"> which attributes (if available) to copy </param>
+    /// <returns> the copy of this mesh  </returns>
+    public Mesh Copy( bool isStatic, bool removeDuplicates, in int[]? usage )
+    {
+        // TODO move this to a copy constructor?
+        // TODO duplicate the buffers without double copying the data if possible.
+        var vertexSize  = VertexSize / 4;
+        var numVertices = NumVertices;
+        var vertices    = new float[ numVertices * vertexSize ];
+
+        GetVertices( 0, vertices.Length, vertices );
+
+        short[]?           checks        = null;
+        VertexAttribute[]? attrs         = null;
+        var                newVertexSize = 0;
+
+        if ( usage != null )
+        {
+            var size    = 0;
+            var asCount = 0;
+
+            foreach ( var t in usage )
+            {
+                if ( GetVertexAttribute( t ) != null )
+                {
+                    size += GetVertexAttribute( t )!.numComponents;
+                    asCount++;
+                }
+            }
+
+            if ( size > 0 )
+            {
+                attrs  = new VertexAttribute[ asCount ];
+                checks = new short[ size ];
+
+                var idx = -1;
+                var ai  = -1;
+
+                foreach ( var t in usage )
+                {
+                    VertexAttribute? a = GetVertexAttribute( t );
+
+                    if ( a == null )
+                    {
+                        continue;
+                    }
+
+                    for ( var j = 0; j < a.numComponents; j++ )
+                    {
+                        checks[ ++idx ] = ( short )( a.Offset + j );
+                    }
+
+                    attrs[ ++ai ] =  a.Copy();
+                    newVertexSize += a.numComponents;
+                }
+            }
+        }
+
+        if ( checks == null )
+        {
+            checks = new short[ vertexSize ];
+
+            for ( short i = 0; i < vertexSize; i++ )
+            {
+                checks[ i ] = i;
+            }
+
+            newVertexSize = vertexSize;
+        }
+
+        var      numIndices = NumIndices;
+        short[]? indices    = null;
+
+        if ( numIndices > 0 )
+        {
+            indices = new short[ numIndices ];
+            GetIndices( indices );
+
+            if ( removeDuplicates || ( newVertexSize != vertexSize ) )
+            {
+                var tmp  = new float[ vertices.Length ];
+                var size = 0;
+
+                for ( var i = 0; i < numIndices; i++ )
+                {
+                    var   idx1     = indices[ i ] * vertexSize;
+                    short newIndex = -1;
+
+                    if ( removeDuplicates )
+                    {
+                        for ( short j = 0; ( j < size ) && ( newIndex < 0 ); j++ )
+                        {
+                            var idx2  = j * newVertexSize;
+                            var found = true;
+
+                            for ( var k = 0; ( k < checks.Length ) && found; k++ )
+                            {
+                                if ( !tmp[ idx2 + k ].Equals( vertices[ idx1 + checks[ k ] ] ) )
+                                {
+                                    found = false;
+                                }
+                            }
+
+                            if ( found )
+                            {
+                                newIndex = j;
+                            }
+                        }
+                    }
+
+                    if ( newIndex > 0 )
+                    {
+                        indices[ i ] = newIndex;
+                    }
+                    else
+                    {
+                        var idx = size * newVertexSize;
+
+                        for ( var j = 0; j < checks.Length; j++ )
+                        {
+                            tmp[ idx + j ] = vertices[ idx1 + checks[ j ] ];
+                        }
+
+                        indices[ i ] = ( short )size;
+                        size++;
+                    }
+                }
+
+                vertices    = tmp;
+                numVertices = size;
+            }
+        }
+
+        Mesh result = attrs == null
+            ? new Mesh( isStatic, numVertices, indices?.Length ?? 0, VertexAttributes )
+            : new Mesh( isStatic, numVertices, indices?.Length ?? 0, attrs );
+
+        result.SetVertices( vertices, 0, numVertices * newVertexSize );
+
+        if ( indices != null )
+        {
+            result.SetIndices( indices );
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Frees all resources associated with this Mesh </summary>
     public void Dispose()
     {
+        if ( Meshes[ Gdx.App ] != null )
+        {
+            Meshes[ Gdx.App ]?.Remove( this );
+        }
+
+        _vertices.Dispose();
+        _instances?.Dispose();
+        _indices.Dispose();
     }
 }
