@@ -10,7 +10,7 @@ public class DirectByteBuffer : LibGDXSharp.Utils.Buffer
     /// Tells whether or not this buffer is read-only.
     /// </summary>
     /// <returns>  <tt>true</tt> if this buffer is read-only </returns>
-    public override bool ReadOnly { get; }
+    public override bool IsReadOnly { get; }
 
     /// <summary>
     /// Tells whether or not this buffer is backed by an accessible

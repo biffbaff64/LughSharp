@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace LibGDXSharp.Maths;
 
@@ -9,6 +10,7 @@ namespace LibGDXSharp.Maths;
 /// Operations on affine matrices are faster because the last row can always be
 /// assumed (0, 0, 1).
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Affine2 : ISerializable
 {
     private const long SerialVersionUid = 1524569123485049187L;

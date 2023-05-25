@@ -368,9 +368,9 @@ public class Group : Actor, ICullable
     /// </summary>
     protected void ApplyTransform( ShapeRenderer shapes, Matrix4 transform )
     {
-        _oldTransform.Set( shapes.GetTransformMatrix() );
+        _oldTransform.Set( shapes.TransformMatrix );
 
-        shapes.SetTransformMatrix( transform );
+        shapes.TransformMatrix = transform;
         shapes.Flush();
     }
 
@@ -381,7 +381,7 @@ public class Group : Actor, ICullable
     /// </summary>
     protected void ResetTransform( ShapeRenderer shapes )
     {
-        shapes.SetTransformMatrix( _oldTransform );
+        shapes.TransformMatrix = _oldTransform;
     }
 
     public new Actor? Hit( float x, float y, bool touchable )

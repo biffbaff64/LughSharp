@@ -89,7 +89,7 @@ public interface IInstanceData : IDisposable
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations. </param>
-    void Bind( ShaderProgram shader, int[] locations );
+    void Bind( ShaderProgram shader, int[]? locations );
 
     /// <summary>
     /// Unbinds this InstanceData.

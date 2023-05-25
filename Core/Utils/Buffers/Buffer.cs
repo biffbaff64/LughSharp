@@ -363,7 +363,7 @@ public abstract class Buffer
     /// Tells whether or not this buffer is read-only.
     /// </summary>
     /// <returns>  <tt>true</tt> if this buffer is read-only </returns>
-    public abstract bool ReadOnly { get; }
+    public abstract bool IsReadOnly { get; set; }
 
     /// <summary>
     /// Tells whether or not this buffer is backed by an accessible

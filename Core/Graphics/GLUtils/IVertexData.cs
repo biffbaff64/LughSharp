@@ -3,10 +3,10 @@
 public interface IVertexData : IDisposable
 {
     /// <returns> the number of vertices this VertexData stores </returns>
-    public int GetNumVertices();
+    public int NumVertices { get; set; }
 
     /// <returns> the number of vertices this VertedData can store </returns>
-    public int GetNumMaxVertices();
+    public int NumMaxVertices { get; set; }
 
     /// <returns> the <see cref="VertexAttributes"/> as specified during construction. </returns>
     public VertexAttributes GetAttributes();
@@ -53,7 +53,7 @@ public interface IVertexData : IDisposable
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Bind( ShaderProgram shader, int[] locations );
+    public void Bind( ShaderProgram shader, int[]? locations );
 
     /// <summary>
     /// Unbinds this VertexData.
@@ -65,7 +65,7 @@ public interface IVertexData : IDisposable
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Unbind( ShaderProgram shader, int[] locations );
+    public void Unbind( ShaderProgram? shader, int[]? locations );
 
     /// <summary>
     /// Invalidates the VertexData if applicable. Use this in case of a context loss. </summary>

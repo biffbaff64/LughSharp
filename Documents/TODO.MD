@@ -145,7 +145,7 @@ GRAPHICS
     - DONE - IGL30                              Convert
     - DONE - ITextureArrayData                  Convert
     - DONE - ITextureData                       Convert
-    - IP   - Mesh                               Convert
+    - DONE - Mesh                               Convert
     - DONE - Monitor                            Convert
     - DONE - OrthographicCamera                 Convert
     - DONE - PerspectiveCamera                  Convert
@@ -168,7 +168,7 @@ GRAPHICS/G2D
     - DONE - AtlasSprite                    Convert
     - IP   - BitmapFont                     Convert
     -      - BitmapFontCache                Convert
-    -      - CpuSpriteBatch                 Convert
+    - DONE - CpuSpriteBatch                 Convert
     -      - DistanceFieldFont              Convert
     - DONE - Gdx2DPixmap                    Convert
     -      - GlyphLayout                    Convert
