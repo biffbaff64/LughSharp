@@ -113,16 +113,22 @@ AUDIO
 FILES
 -----
     -      - BufferedReader
-    - IP   - DataOutputStream
+    -      - ByteArrayOutputStream
+    -      - DataInputStream                BinaryReader
+    -      - DataOutputStream               BinaryWriter
+    -      - Deflater
+    - IP   - DeflaterOutputStream
     - IP   - File
     - IP   - FileHandle
     - IP   - FileHandleStream
-    -      - InputStreamReader
+    - DONE - FilterOutputStream
+    -      - InflaterInputStream
+    -      - InputStream                    StreamReader
+    -      - InputStreamReader              StreamReader
+    -      - OutputStream                   StreamWriter
+    -      - Reader
 
     Use StreamReader / StreamWriter, BinaryReader / BinaryWriter etc instead.
-
-    Note:   I am considering adapting the java File/FileHandle classes but
-            this may be a lot of unnecessary work.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -166,7 +172,7 @@ GRAPHICS/G2D
     - DONE - Animation                      Convert
     - DONE - AtlasRegion                    Convert
     - DONE - AtlasSprite                    Convert
-    - IP   - BitmapFont                     Convert
+    - DONE - BitmapFont                     Convert
     -      - BitmapFontCache                Convert
     - DONE - CpuSpriteBatch                 Convert
     -      - DistanceFieldFont              Convert
@@ -686,6 +692,8 @@ UTILS/COLLECTIONS
 UTILS/COMPRESSION
 -----------------
     - **** - CRC                            No
+    -      - CRC32
+    -      - IChecksum
     - **** - ICodeProgress                  No
     - **** - LzmaAdapted                    No
 

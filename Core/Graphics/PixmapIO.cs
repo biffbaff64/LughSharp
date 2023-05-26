@@ -92,12 +92,12 @@ public class PixmapIO
             try
             {
                 // long start = System.nanoTime();
-                DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream( file.write( false ) );
+                DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream( file.Write( false ) );
 
                 output = new DataOutputStream( deflaterOutputStream );
-                output.writeInt( pixmap.Width );
-                output.writeInt( pixmap.Height );
-                output.writeInt( PixmapFormat.ToGdx2DPixmapFormat( pixmap.GetFormat() ) );
+                output.WriteInt( pixmap.Width );
+                output.WriteInt( pixmap.Height );
+                output.WriteInt( PixmapFormat.ToGdx2DPixmapFormat( pixmap.GetFormat() ) );
 
                 ByteBuffer pixelBuf = pixmap.Pixels;
                 pixelBuf.Position = 0;
@@ -111,7 +111,7 @@ public class PixmapIO
                     for ( var i = 0; i < iterations; i++ )
                     {
                         pixelBuf.Get( writeBuffer );
-                        output.write( writeBuffer );
+                        output.Write( writeBuffer );
                     }
 
                     pixelBuf.Get( writeBuffer, 0, remainingBytes );
@@ -133,17 +133,17 @@ public class PixmapIO
 
         public static Pixmap Read( FileInfo file )
         {
-            DataInputStream input = null;
+            DataInputStream? input = null;
 
             try
             {
                 // long start = System.nanoTime();
                 input = new DataInputStream( new InflaterInputStream( new BufferedInputStream( file.Read() ) ) );
 
-                int width  = input.readInt();
-                int height = input.readInt();
+                int width  = input.ReadInt();
+                int height = input.ReadInt();
 
-                Pixmap.Format format = PixmapFormat.FromGdx2DPixmapFormat( input.readInt() );
+                Pixmap.Format format = PixmapFormat.FromGdx2DPixmapFormat( input.ReadInt() );
 
                 var pixmap = new Pixmap( width, height, format );
 
@@ -155,7 +155,7 @@ public class PixmapIO
                 {
                     var readBytes = 0;
 
-                    while ( ( readBytes = input.read( readBuffer ) ) > 0 )
+                    while ( ( readBytes = input.Read( readBuffer ) ) > 0 )
                     {
                         pixelBuf.Put( readBuffer, 0, readBytes );
                     }
@@ -204,8 +204,7 @@ public class PixmapIO
         private bool          _flipY = true;
         private int           _lastLineLen;
 
-        public PNG()
-            : this( 128 * 128 )
+        public PNG() : this( 128 * 128 )
         {
         }
 
@@ -398,14 +397,14 @@ public class PixmapIO
                 this._crc    = crc;
             }
 
-            public void EndChunk( DataOutputStream target )
+            public void EndChunk( BinaryWriter target )
             {
                 Flush();
 
-                target.WriteInt( _buffer.size() - 4 );
+                target.Write( _buffer.size() - 4 );
                 _buffer.WriteTo( target );
 
-                target.WriteInt( ( int )_crc.getValue() );
+                target.Write( ( int )_crc.getValue() );
                 _buffer.Reset();
 
                 _crc.Reset();

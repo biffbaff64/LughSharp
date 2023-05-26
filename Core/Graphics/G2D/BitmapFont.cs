@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Regex;
 
+using File = System.IO.File;
+
 namespace LibGDXSharp.G2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -201,7 +203,7 @@ public sealed partial class BitmapFont
 
     public void Load( BitmapFontData data )
     {
-        foreach ( var page in data.Glyphs )
+        foreach ( Glyph?[]? page in data.Glyphs )
         {
             if ( page == null ) continue;
 
@@ -555,7 +557,7 @@ public sealed partial class BitmapFont
 
     private static int IndexOf( string text, char ch, int start )
     {
-        int n = text.Length;
+        var n = text.Length;
 
         for ( ; start < n; start++ )
         {
@@ -571,13 +573,13 @@ public sealed partial class BitmapFont
     /// <summary>
     /// Backing data for a <see cref="BitmapFont"/>.
     /// </summary>
-    public sealed partial class BitmapFontData
+    public sealed class BitmapFontData
     {
         // The name of the font, or null.
         public string? Name { get; private set; }
 
         // An array of the image paths, for multiple texture pages.
-        public string[]? ImagePaths { get; set; }
+        public string[]? ImagePaths { get; private set; }
 
         public FileInfo FontFile  { get; set; }
         public bool     Flipped   { get; set; }
@@ -589,7 +591,7 @@ public sealed partial class BitmapFont
         /// <summary>
         /// The distance from one line of text to the next.
         /// </summary>
-        public float LineHeight { get; set; }
+        public float LineHeight { get; private set; }
 
         /// <summary>
         /// The distance from the top of most uppercase characters to the
@@ -597,18 +599,18 @@ public sealed partial class BitmapFont
         /// first line, the cap height can be used to get the location of
         /// the baseline. 
         /// </summary>
-        public float CapHeight { get; set; } = 1;
+        public float CapHeight { get; private set; } = 1;
 
         /// <summary>
         /// The distance from the cap height to the top of the tallest glyph.
         /// </summary>
-        public float Ascent { get; set; }
+        public float Ascent { get; private set; }
 
         /// <summary>
         /// The distance from the bottom of the glyph that extends the lowest
         /// to the baseline. This number is negative.
         /// </summary>
-        public float Descent { get; set; }
+        public float Descent { get; private set; }
 
         /// <summary>
         /// The distance to move down when \n is encountered.
@@ -621,8 +623,8 @@ public sealed partial class BitmapFont
         /// </summary>
         public float BlankLineScale { get; set; } = 1;
 
-        public float ScaleX        { get; set; } = 1;
-        public float ScaleY        { get; set; } = 1;
+        public float ScaleX        { get; private set; } = 1;
+        public float ScaleY        { get; private set; } = 1;
         public bool  MarkupEnabled { get; set; }
 
         /// <summary>
@@ -654,6 +656,7 @@ public sealed partial class BitmapFont
         /// Additional characters besides whitespace where text is wrapped.
         /// Eg, a hypen (-).
         /// </summary>
+        // ReSharper disable once UnassignedField.Global
         public char[]? breakChars;
 
         public readonly char[] xChars =
@@ -707,8 +710,6 @@ public sealed partial class BitmapFont
 
             var reader = new StreamReader( file.FullName );
 
-//                BufferedReader reader = new BufferedReader( new InputStreamReader( file.Read() ), 512 );
-
             try
             {
                 var line = reader.ReadLine(); // info
@@ -717,9 +718,7 @@ public sealed partial class BitmapFont
 
                 line = line.Substring( line.IndexOf( "padding=", StringComparison.Ordinal ) + 8 );
 
-                var padding
-                    = line.Substring( 0, line.IndexOf( ' ' ) )
-                        .Split( ",", 4 );
+                var padding = line.Substring( 0, line.IndexOf( ' ' ) ).Split( ",", 4 );
 
                 if ( padding.Length != 4 ) throw new GdxRuntimeException( "Invalid padding." );
 
@@ -759,6 +758,7 @@ public sealed partial class BitmapFont
                     catch ( NumberFormatException ignored )
                     {
                         // Use one page.
+                        Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
                     }
                 }
 
@@ -771,21 +771,25 @@ public sealed partial class BitmapFont
                     line = reader.ReadLine();
 
                     if ( line == null )
+                    {
                         throw new GdxRuntimeException( "Missing additional page definitions." );
+                    }
 
                     // Expect ID to mean "index".
-                    Matcher matcher = Pattern.Compile( ".*id=(\\d+)" ).matcher( line );
+                    Matcher matcher = Pattern.Compile( ".*id=(\\d+)" ).Matcher( line );
 
                     if ( matcher.Find() )
                     {
-                        string id = matcher.Group( 1 );
+                        var id = matcher.Group( 1 )!;
 
                         try
                         {
                             var pageID = int.Parse( id );
 
                             if ( pageID != p )
+                            {
                                 throw new GdxRuntimeException( "Page IDs must be indices starting at 0: " + id );
+                            }
                         }
                         catch ( NumberFormatException ex )
                         {
@@ -793,12 +797,11 @@ public sealed partial class BitmapFont
                         }
                     }
 
-                    matcher = Pattern.Compile( ".*file=\"?([^\"]+)\"?" ).matcher( line );
+                    matcher = Pattern.Compile( ".*file=\"?([^\"]+)\"?" ).Matcher( line );
 
                     if ( !matcher.Find() ) throw new GdxRuntimeException( "Missing: file" );
-                    string fileName = matcher.Group( 1 );
 
-                    ImagePaths[ p ] = file.Parent().child( fileName ).path().replaceAll( "\\\\", "/" );
+                    ImagePaths[ p ] = matcher.Group( 1 )!.Replace( "\\\\", "/" );
                 }
 
                 Descent = 0;
@@ -872,6 +875,7 @@ public sealed partial class BitmapFont
                         }
                         catch ( NumberFormatException ignored )
                         {
+                            Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
                         }
                     }
 
@@ -965,12 +969,7 @@ public sealed partial class BitmapFont
                 {
                     spaceGlyph = new Glyph { id = ' ' };
 
-                    Glyph? xadvanceGlyph = GetGlyph( 'l' );
-
-                    if ( xadvanceGlyph == null )
-                    {
-                        xadvanceGlyph = GetFirstGlyph();
-                    }
+                    Glyph xadvanceGlyph = GetGlyph( 'l' ) ?? GetFirstGlyph();
 
                     spaceGlyph.xadvance = xadvanceGlyph.xadvance;
 
@@ -1009,7 +1008,7 @@ public sealed partial class BitmapFont
 
                 if ( capGlyph == null )
                 {
-                    foreach ( var page in Glyphs )
+                    foreach ( Glyph?[]? page in Glyphs )
                     {
                         if ( page == null ) continue;
 
@@ -1059,7 +1058,7 @@ public sealed partial class BitmapFont
             }
             finally
             {
-                StreamUtils.CloseQuietly( reader );
+                reader.Close();
             }
         }
 
@@ -1081,13 +1080,13 @@ public sealed partial class BitmapFont
             var offsetX = 0;
             var offsetY = 0;
 
-            if ( region is TextureAtlas.AtlasRegion )
+            if ( region is AtlasRegion atlasRegion )
             {
                 // Compensate for whitespace stripped from left and top edges.
-                var atlasRegion = ( TextureAtlas.AtlasRegion )region;
-
                 offsetX = ( int )atlasRegion.OffsetX;
-                offsetY = ( int )( atlasRegion.OriginalHeight - atlasRegion.PackedHeight - atlasRegion.OffsetY );
+                offsetY = ( int )( atlasRegion.OriginalHeight
+                                   - atlasRegion.PackedHeight
+                                   - atlasRegion.OffsetY );
             }
 
             var x  = glyph.srcX;
@@ -1178,7 +1177,7 @@ public sealed partial class BitmapFont
         /// <param name="glyph"></param>
         public void SetGlyph( int ch, Glyph glyph )
         {
-            var page = Glyphs[ ch / Page_Size ];
+            Glyph?[]? page = Glyphs[ ch / Page_Size ];
 
             if ( page == null )
             {
@@ -1196,7 +1195,7 @@ public sealed partial class BitmapFont
         /// <exception cref="GdxRuntimeException"></exception>
         public Glyph GetFirstGlyph()
         {
-            foreach ( var page in Glyphs )
+            foreach ( Glyph?[]? page in Glyphs )
             {
                 if ( page != null )
                 {
@@ -1254,8 +1253,8 @@ public sealed partial class BitmapFont
             var markupEnabled = MarkupEnabled;
             var scaleX        = ScaleX;
 
-            var glyphs    = run.Glyphs;
-            var xAdvances = run.XAdvances;
+            List< Glyph > glyphs    = run.Glyphs;
+            List< float > xAdvances = run.XAdvances;
 
             // Guess at number of glyphs needed.
             glyphs.EnsureCapacity( max );
@@ -1382,11 +1381,9 @@ public sealed partial class BitmapFont
         /// <exception cref="ArgumentException">if scaleX or scaleY is zero.</exception>
         public void SetScale( float scalex, float scaley )
         {
-            if ( scalex == 0 )
-                throw new ArgumentException( "scaleX cannot be 0." );
+            if ( scalex == 0 ) throw new ArgumentException( "scaleX cannot be 0." );
 
-            if ( scaley == 0 )
-                throw new ArgumentException( "scaleY cannot be 0." );
+            if ( scaley == 0 ) throw new ArgumentException( "scaleY cannot be 0." );
 
             var x = scalex / ScaleX;
             var y = scaley / ScaleY;

@@ -4,13 +4,12 @@ using System.Text;
 namespace LibGDXSharp.Files;
 
 /// <summary>
-/// Represents a file or directory on the filesystem, classpath, app storage
-/// or assets directory. FileHandles are created via a Files instance.
-/// Because some of the file types are backed by composite files and may be
-/// compressed (for example, if they are found via the classpath), the methods
-/// for extracting a path() or file() may not be appropriate for all types. Use
-/// the Reader or Stream methods here to hide these dependencies from your
-/// platform independent code.
+/// Represents a file or directory on the filesystem, classpath, app storage or assets
+/// directory. FileHandles are created via a Files instance. Because some of the file
+/// types are backed by composite files and may be compressed (for example, if they are
+/// found via the classpath), the methods for extracting a path() or file() may not be
+/// appropriate for all types. Use the Reader or Stream methods here to hide these
+/// dependencies from your platform independent code.
 /// </summary>
 // -------------------------------------------------------------------
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]

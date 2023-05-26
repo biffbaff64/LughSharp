@@ -148,7 +148,7 @@ public class TextureAtlas
     /// string comparison to find the region, so the result should be cached
     /// rather than calling this method multiple times. 
     /// </summary>
-    public AtlasRegion? FindRegion( string name )
+    public AtlasRegion? FindRegion( string? name )
     {
         for ( int i = 0, n = Regions.Count; i < n; i++ )
         {

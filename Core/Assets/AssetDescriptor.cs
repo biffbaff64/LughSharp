@@ -10,7 +10,7 @@ namespace LibGDXSharp.Assets;
 public sealed class AssetDescriptor
 {
     public Type                   Type       { get; init; }
-    public string                 FilePath   { get; init; }
+    public string?                FilePath   { get; init; }
     public IAssetLoaderParameters Parameters { get; init; }
     public FileInfo?              File       { get; set; }
 
@@ -29,7 +29,7 @@ public sealed class AssetDescriptor
     /// <param name="parameters"></param>
     public AssetDescriptor( string? filepath, Type assetType, IAssetLoaderParameters parameters )
     {
-        FilePath   = filepath.Replace( '\\', '/' );
+        FilePath   = filepath?.Replace( '\\', '/' );
         Type       = assetType;
         Parameters = parameters;
         File       = null!;

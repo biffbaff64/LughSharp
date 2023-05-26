@@ -5,7 +5,8 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 
 namespace LibGDXSharp.Assets.Loaders;
 
-internal class BitmapFontParameter : AssetLoaderParameters
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class BitmapFontParameter : AssetLoaderParameters
 {
     /// <summary>
     /// Flips the font vertically if <tt>true</tt>.
@@ -55,7 +56,9 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <summary>
     /// </summary>
     /// <param name="resolver"></param>
-    public BitmapFontLoader( IFileHandleResolver resolver ) : base( resolver ) { }
+    public BitmapFontLoader( IFileHandleResolver resolver ) : base( resolver )
+    {
+    }
 
     /// <summary>
     /// Returns the assets this asset requires to be loaded first.
@@ -87,19 +90,22 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 
         if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
         {
-            deps.Add( new AssetDescriptor
-                          ( 
-                           ( ( BitmapFontParameter )parameter ).AtlasName, 
-                           typeof(TextureAtlas), 
-                           ( ( BitmapFontParameter )parameter )
-                          )
-                    );
+            deps.Add
+                (
+                 new AssetDescriptor
+                     (
+                      ( ( BitmapFontParameter )parameter ).AtlasName,
+                      typeof(TextureAtlas),
+                      ( ( BitmapFontParameter )parameter )
+                     )
+                );
         }
         else
         {
-            for ( var i = 0; i < _data.GetImagePaths().Length; i++ )
+            for ( var i = 0; i < _data.ImagePaths?.Length; i++ )
             {
-                var      path     = _data.GetImagePath( i );
+                var path = _data.ImagePaths[ i ];
+
                 FileInfo resolved = Resolve( path );
 
                 var textureParams = new TextureLoader.TextureParameter();
@@ -128,7 +134,9 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter ) { }
+                                    IAssetLoaderParameters parameter )
+    {
+    }
 
     /// <summary>
     /// </summary>
@@ -143,12 +151,14 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
                                          FileInfo? file,
                                          IAssetLoaderParameters parameter )
     {
+        if ( file == null ) throw new GdxRuntimeException( "LoadSync: 'file' cannot be null!" );
+        
         if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
         {
             var atlas = manager?.Get< TextureAtlas >( ( ( BitmapFontParameter )parameter ).AtlasName! );
-            var name  = _data?.ImagePaths[ 0 ];
-                
-//                string name   = file.Sibling( _data?.imagePaths?[ 0 ] ).Name.toString();
+
+            var name = Path.GetFileNameWithoutExtension( _data?.ImagePaths?[ 0 ] );
+
             TextureRegion? region = atlas?.FindRegion( name );
 
             if ( region == null )
@@ -164,12 +174,12 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
         }
         else
         {
-            var n    = _data?.GetImagePaths().Length;
+            var n    = ( int )_data?.ImagePaths?.Length!;
             var regs = new List< TextureRegion >( capacity: n );
 
             for ( var i = 0; i < n; i++ )
             {
-                regs.Add( new TextureRegion( manager.Get( _data.GetImagePath( i ), typeof(Texture) ) ) );
+                regs.Add( new TextureRegion( manager?.Get<Texture>( _data.ImagePaths[ i ], typeof(Texture) )! ) );
             }
 
             return new BitmapFont( _data, regs, true );
@@ -180,5 +190,7 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// Performs application-defined tasks associated with freeing,
     /// releasing, or resetting unmanaged resources.
     /// </summary>
-    public void Dispose() { }
+    public void Dispose()
+    {
+    }
 }
