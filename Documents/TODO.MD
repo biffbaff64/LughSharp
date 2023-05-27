@@ -33,7 +33,7 @@ CORE
     - DONE - ApplicationAdapter             Convert
     - DONE - ApplicationBase                New
     - DONE - Game                           Convert
-    -      - GDXVersion                     Replace with C# Versioning?
+    - IP   - GDXVersion                     Replace with C# Versioning?
     - DONE - IApplication                   Convert
     - DONE - IApplicationListener           Convert
     - DONE - IApplicationLogger             Convert
@@ -69,18 +69,18 @@ ASSETS/LOADERS
 --------------
     - DONE - AssetLoader                    Convert
     - DONE - AsynchronousAssetLoader        Convert
-    - IP   - BitmapFontLoader               Convert
+    - DONE - BitmapFontLoader               Convert
     -      - CubemapLoader                  Convert
     -      - I18NBundleLoader               Convert
     -      - ModelLoader                    Convert
-    - IP   - MusicLoader                    Convert
+    - DONE - MusicLoader                    Convert
     -      - ParticleEffectLoader           Convert
-    - IP   - PixmapLoader                   Convert
+    - DONE - PixmapLoader                   Convert
     -      - ShaderProgramLoader            Convert
-    - IP   - SkinLoader                     Convert
-    - IP   - SoundLoader                    Convert
+    - DONE - SkinLoader                     Convert
+    - DONE - SoundLoader                    Convert
     - DONE - SynchronousAssetLoader         Convert
-    - IP   - TextureAtlasLoader             Convert
+    - DONE - TextureAtlasLoader             Convert
     - DONE - TextureLoader                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,11 +91,13 @@ ASSETS/LOADERS/RESOLVERS
     - DONE - AbsoluteFileHandleResolver
     - DONE - IFileHandleResolver
     - DONE - InternalFileHandleResolver
+    // -----------------------------------------------
     - **** - ClasspathFileHandleResolver    Not Needed
     - **** - ExternalFileHandleResolver     Not Needed
     - **** - LocalFileHandleResolver        Not Needed
     - **** - PrefixFileHandleResolver       Not Needed
     - **** - ResolutionFileResolver         Not Needed
+    // -----------------------------------------------
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -173,7 +175,7 @@ GRAPHICS/G2D
     - DONE - AtlasRegion                    Convert
     - DONE - AtlasSprite                    Convert
     - DONE - BitmapFont                     Convert
-    -      - BitmapFontCache                Convert
+    - IP   - BitmapFontCache                Convert
     - DONE - CpuSpriteBatch                 Convert
     -      - DistanceFieldFont              Convert
     - DONE - Gdx2DPixmap                    Convert
@@ -776,6 +778,7 @@ UTILS/REGEX
 -----------
 
     - RE-EVALUATE WHETHER THIS IS NEEDED...
+    - REALLY OUGHT TO BE USING C# REGEX!
 
     - DONE - ASCII                          Convert
     - DONE - IMatchResult                   Convert

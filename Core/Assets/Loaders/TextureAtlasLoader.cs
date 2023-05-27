@@ -1,4 +1,6 @@
-﻿using LibGDXSharp.G2D;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Assets.Loaders;
 
@@ -9,7 +11,8 @@ namespace LibGDXSharp.Assets.Loaders;
 /// allows to specify whether the atlas regions should be flipped on the
 /// y-axis or not.
 /// </summary>
-public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureAtlasParameter >
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >
 {
     private TextureAtlasData? _data;
 
@@ -30,10 +33,21 @@ public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureA
                                        FileInfo? file,
                                        TextureAtlasParameter parameter )
     {
-        foreach ( TextureAtlasData.Page page in _data.GetPages() )
+        if ( _data == null )
         {
-            Texture texture = assetManager.Get( page.textureFile.Path().ReplaceAll( "\\\\", "/" ), typeof(Texture) );
-            page.texture = texture;
+            throw new GdxRuntimeException( "TextureAtlasData object is NULL!" );
+        }
+        
+        foreach ( TextureAtlasData.Page page in _data.Pages )
+        {
+            if ( page.textureFile != null )
+            {
+                var name = page.textureFile.FullName.Replace( "\\\\", "/" );
+
+                var texture = assetManager.Get< Texture >( name, typeof(Texture) );
+
+                page.texture = texture;
+            }
         }
 
         var atlas = new TextureAtlas( _data );
@@ -42,24 +56,24 @@ public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureA
         return atlas;
     }
 
-    public List< AssetDescriptor > GetDependencies( string fileName,
-                                                    FileInfo atlasFile,
-                                                    TextureAtlasParameter? parameter )
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                    FileInfo? atlasFile,
+                                                    IAssetLoaderParameters? parameter )
     {
+        if ( atlasFile == null )
+        {
+            throw new GdxRuntimeException( "Atlas File cannot be null!" );
+        }
+        
         DirectoryInfo? imgDir = atlasFile.Directory;
 
-        if ( parameter != null )
-        {
-            _data = new TextureAtlasData( atlasFile, imgDir, parameter.flip );
-        }
-        else
-        {
-            _data = new TextureAtlasData( atlasFile, imgDir, false );
-        }
+        _data = parameter != null
+            ? new TextureAtlasData( atlasFile, imgDir, ( (TextureAtlasParameter)parameter ).FlipVertically )
+            : new TextureAtlasData( atlasFile, imgDir, false );
 
         var dependencies = new List< AssetDescriptor >();
 
-        foreach ( TextureAtlasData.Page page in _data.GetPages() )
+        foreach ( TextureAtlasData.Page page in _data.Pages )
         {
             var tparams = new TextureLoader.TextureParameter
             {
@@ -69,7 +83,10 @@ public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureA
                 MagFilter  = page.MagFilter
             };
 
-            dependencies.Add( new AssetDescriptor( page.textureFile, typeof(Texture), tparams ) );
+            if ( page.textureFile != null )
+            {
+                dependencies.Add( new AssetDescriptor( page.textureFile, typeof(Texture), tparams ) );
+            }
         }
 
         return dependencies;
@@ -82,19 +99,19 @@ public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureA
     public void Dispose()
     {
     }
-}
 
-public class TextureAtlasParameter : AssetLoaderParameters
-{
-    // whether to flip the texture atlas vertically.
-    public bool flip = false;
-
-    public TextureAtlasParameter()
+    public class TextureAtlasParameter : AssetLoaderParameters
     {
-    }
+        public bool FlipVertically { get; private set; }
 
-    public TextureAtlasParameter( bool flip )
-    {
-        this.flip = flip;
+        public TextureAtlasParameter()
+        {
+            this.FlipVertically = false;
+        }
+
+        public TextureAtlasParameter( bool flip )
+        {
+            this.FlipVertically = flip;
+        }
     }
 }

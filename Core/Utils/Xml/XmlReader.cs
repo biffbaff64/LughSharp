@@ -394,7 +394,9 @@ public sealed class XmlReader
 
                                                 Text( new string( data, s, p - s - 2 ) );
                                             }
-                                            else if ( ( c == '!' ) && ( data[ s + 1 ] == '-' ) && ( data[ s + 2 ] == '-' ) )
+                                            else if ( ( c == '!' )
+                                                      && ( data[ s + 1 ] == '-' )
+                                                      && ( data[ s + 2 ] == '-' ) )
                                             {
                                                 p = s + 3;
 
@@ -523,7 +525,10 @@ public sealed class XmlReader
                                             {
                                                 if ( data[ current++ ] != ';' ) continue;
                                                 textBuffer.append( data, s, entityStart - s - 1 );
-                                                string name  = new string( data, entityStart, current - entityStart - 1 );
+
+                                                string name = new string
+                                                    ( data, entityStart, current - entityStart - 1 );
+
                                                 string value = entity( name );
                                                 textBuffer.append( value != null ? value : name );
                                                 s           = current;
@@ -586,7 +591,7 @@ public sealed class XmlReader
 
             throw new SerializationException
                 (
-                "Error parsing XML on line " + lineNumber + " near: " + new string( data, p, Math.min( 32, pe - p ) )
+                 "Error parsing XML on line " + lineNumber + " near: " + new string( data, p, Math.min( 32, pe - p ) )
                 );
         }
         else if ( elements.size != 0 )
@@ -647,10 +652,10 @@ public sealed class XmlReader
 
     public class Element
     {
-        public string                       Name       { get; private set; }
+        public string                        Name       { get; private set; }
         public Dictionary< string, string >? Attributes { get; set; }
-        public Element                      Parent     { get; set; }
-        public string                       Text       { get; set; }
+        public Element                       Parent     { get; set; }
+        public string                        Text       { get; set; }
 
         private List< Element >? _children;
 

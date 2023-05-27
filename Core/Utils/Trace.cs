@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Utils
+﻿namespace LibGDXSharp.Utils;
+
+public abstract class Trace
 {
-    public abstract class Trace
-    {
         
-    }
 }

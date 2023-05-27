@@ -208,7 +208,7 @@ public partial record TextureAtlasData
         }
         finally
         {
-            StreamUtils.CloseQuietly( reader );
+            reader.Close();
         }
 
         if ( HasIndexes[ 0 ] )
@@ -323,5 +323,4 @@ public partial record TextureAtlasData
     }
 
     #endregion
-
 }

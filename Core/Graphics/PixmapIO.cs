@@ -257,7 +257,7 @@ public class PixmapIO
         /// <summary>
         /// Writes the pixmap to the stream without closing the stream.
         /// </summary>
-        public void Write( OutputStream output, Pixmap pixmap )
+        public void Write( StreamWriter output, Pixmap pixmap )
         {
             var deflaterOutput = new DeflaterOutputStream( _buffer, _deflater );
             var dataOutput     = new DataOutputStream( output );

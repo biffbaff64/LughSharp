@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Files
+﻿namespace LibGDXSharp.Files;
+
+public class BufferedInputStream
 {
-    public class BufferedInputStream
-    {
         
-    }
 }

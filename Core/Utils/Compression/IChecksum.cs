@@ -1,7 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Compression
+﻿namespace LibGDXSharp.Utils.Compression;
+
+public interface IChecksum
 {
-    public interface IChecksum
-    {
         
-    }
 }

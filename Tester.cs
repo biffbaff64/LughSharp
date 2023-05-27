@@ -1,12 +1,11 @@
 ﻿using LibGDXSharp.Scenes.Scene2D;
 
-namespace LibGDXSharp
+namespace LibGDXSharp;
+
+public class ActorTest : Actor
 {
-    public class ActorTest : Actor
-    {
-    }
+}
     
-    public class Tester
-    {
-    }
+public class Tester
+{
 }

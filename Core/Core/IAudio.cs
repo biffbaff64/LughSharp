@@ -35,7 +35,7 @@ public interface IAudio
 	/// </summary>
 	/// <returns>The new sound.</returns>
 	/// <exception cref="GdxRuntimeException">in case the sound could not be loaded.</exception>
-	ISound NewSound( FileHandle fileHandle );
+	ISound NewSound( FileInfo? fileHandle );
 
 	/// <summary>
 	/// Creates a new <see cref="IMusic"/> instance which is used to play back a music stream from a file. Currently supported formats are
@@ -46,5 +46,5 @@ public interface IAudio
 	/// <param name="file">The filehandle.</param>
 	/// <return>the new Music or null if the Music could not be loaded.</return>
 	/// <exception cref="GdxRuntimeException">in case the music could not be loaded.</exception>
-	IMusic NewMusic( FileHandle file );
+	IMusic NewMusic( FileInfo? file );
 }

@@ -7,10 +7,6 @@ namespace LibGDXSharp.Utils.Regex;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Pattern : IPattern
 {
-    public class Node
-    {
-    }
-
     public const int Unix_Lines              = 0x01;
     public const int Case_Insensitive        = 0x02;
     public const int Comments                = 0x04;
@@ -458,4 +454,54 @@ public class Pattern : IPattern
     {
         return pattern ?? "";
     }
+
+    #region CompanionClasses
+
+    /// <summary>
+    /// Base class for all node classes. Subclasses should override the match()
+    /// method as appropriate. This class is an accepting node, so its match()
+    /// always returns true.
+    /// </summary>
+    internal class Node : object
+    {
+        internal readonly Node? next;
+
+        internal Node()
+        {
+            next = Pattern.accept;
+        }
+
+        /// <summary>
+        /// This method implements the classic accept node.
+        /// </summary>
+        internal virtual bool Match( Matcher matcher, int i, string seq )
+        {
+            matcher.last        = i;
+            matcher.groups[ 0 ] = matcher.first;
+            matcher.groups[ 1 ] = matcher.last;
+
+            return true;
+        }
+
+        /// <summary>
+        /// This method is good for all zero length assertions.
+        /// </summary>
+        internal virtual bool Study( TreeInfo info )
+        {
+            if ( next != null )
+            {
+                return next.Study( info );
+            }
+            else
+            {
+                return info.deterministic;
+            }
+        }
+    }
+
+    public class TreeInfo
+    {
+    }
+    
+    #endregion
 }

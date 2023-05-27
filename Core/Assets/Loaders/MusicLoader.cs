@@ -1,18 +1,22 @@
-﻿namespace LibGDXSharp.Assets.Loaders;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public class MusicLoader
-    : AsynchronousAssetLoader< Texture, TextureLoader.TextureParameter >, IDisposable
+using LibGDXSharp.Audio;
+
+namespace LibGDXSharp.Assets.Loaders;
+
+/// <summary>
+/// <see cref="AssetLoader"/> for <see cref="IMusic"/> instances.
+/// The Music instance is loaded synchronously.
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.MusicParameter >, IDisposable
 {
-    public MusicLoader( IFileHandleResolver resolver ) : base( resolver )
-    {
-    }
+    public IMusic LoadedMusic { get; set; }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
+    public MusicLoader( IFileHandleResolver resolver )
+        : base( resolver )
     {
+        LoadedMusic = null!;
     }
 
     /// <summary>
@@ -22,9 +26,11 @@ public class MusicLoader
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
-    public override List< AssetDescriptor > GetDependencies( string? fileName, FileHandle? file, IAssetLoaderParameters parameter )
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
+                                                             IAssetLoaderParameters parameter )
     {
-        throw new NotImplementedException();
+        return null!;
     }
 
     /// <summary>
@@ -35,9 +41,11 @@ public class MusicLoader
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void LoadAsync( AssetManager? manager, string? fileName, FileHandle? file, TextureLoader.TextureParameter? parameter )
+    public override void LoadAsync( AssetManager? manager, string? fileName,
+                                    FileInfo? file,
+                                    IAssetLoaderParameters parameter )
     {
-        throw new NotImplementedException();
+        LoadedMusic = Gdx.Audio.NewMusic( file );
     }
 
     /// <summary>
@@ -48,8 +56,26 @@ public class MusicLoader
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     /// <returns></returns>
-    public override Texture LoadSync( AssetManager? manager, string? fileName, FileHandle? file, TextureLoader.TextureParameter? parameter )
+    public override IMusic LoadSync( AssetManager? manager, string? fileName,
+                                      FileInfo? file,
+                                      IAssetLoaderParameters parameter )
     {
-        throw new NotImplementedException();
+        IMusic music = LoadedMusic;
+        
+        LoadedMusic = null!;
+
+        return music;
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+    }
+
+    public class MusicParameter : AssetLoaderParameters
+    {
     }
 }
