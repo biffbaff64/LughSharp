@@ -308,9 +308,9 @@ public class Texture : GLTexture
             this._refCount = refCount;
         }
 
-        public void FinishedLoading( AssetManager assetManager, string fileName, Type type )
+        public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type )
         {
-            assetManager.SetReferenceCount( fileName, _refCount );
+            assetManager.SetReferenceCount( fileName!, _refCount );
         }
     }
 

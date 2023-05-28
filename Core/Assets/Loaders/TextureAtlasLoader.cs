@@ -44,7 +44,7 @@ public sealed class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, T
             {
                 var name = page.textureFile.FullName.Replace( "\\\\", "/" );
 
-                var texture = assetManager.Get< Texture >( name, typeof(Texture) );
+                var texture = assetManager.Get< Texture >( name );
 
                 page.texture = texture;
             }

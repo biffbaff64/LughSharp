@@ -33,7 +33,7 @@ CORE
     - DONE - ApplicationAdapter             Convert
     - DONE - ApplicationBase                New
     - DONE - Game                           Convert
-    - IP   - GDXVersion                     Replace with C# Versioning?
+    - IP   - GDXVersion                     Convert / Replace with C# Versioning?
     - DONE - IApplication                   Convert
     - DONE - IApplicationListener           Convert
     - DONE - IApplicationLogger             Convert
@@ -220,9 +220,9 @@ GRAPHICS/GLUTILS
     - IP   - FileTextureData
     -      - FloatFrameBuffer
     -      - FloatTextureData
-    -      - FrameBuffer
+    - IP   - FrameBuffer
     -      - FrameBufferCubemap
-    -      - GLFrameBuffer
+    - IP   - GLFrameBuffer
     -      - GLOnlyTextureData
     - IP   - GLVersion
     - DONE - HdpiMode
@@ -231,7 +231,7 @@ GRAPHICS/GLUTILS
     - DONE - IIndexData
     - DONE - IInstanceData
     - DONE - ImmediateModeRenderer20
-    -      - IndexArray
+    - DONE - IndexArray
     -      - IndexBufferObject
     -      - IndexBufferObjectSubData
     -      - InstanceBufferObject

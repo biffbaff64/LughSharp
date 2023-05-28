@@ -81,7 +81,7 @@ public sealed class SkinLoader : AsynchronousAssetLoader
             throw new GdxRuntimeException( "manager cannot be NULL!" );
         }
         
-        var  atlas = manager.Get< TextureAtlas >( textureAtlasPath!, typeof(TextureAtlas) );
+        var  atlas = manager.Get< TextureAtlas >( textureAtlasPath! );
         Skin skin  = NewSkin( atlas );
 
         if ( resources != null )

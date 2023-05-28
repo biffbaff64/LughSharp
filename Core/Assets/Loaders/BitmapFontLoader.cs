@@ -172,18 +172,16 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 
             return new BitmapFont( file, region );
         }
-        else
+
+        var n    = ( int )_data?.ImagePaths?.Length!;
+        var regs = new List< TextureRegion >( capacity: n );
+
+        for ( var i = 0; i < n; i++ )
         {
-            var n    = ( int )_data?.ImagePaths?.Length!;
-            var regs = new List< TextureRegion >( capacity: n );
-
-            for ( var i = 0; i < n; i++ )
-            {
-                regs.Add( new TextureRegion( manager?.Get<Texture>( _data.ImagePaths[ i ], typeof(Texture) )! ) );
-            }
-
-            return new BitmapFont( _data, regs, true );
+            regs.Add( new TextureRegion( manager?.Get<Texture>( _data.ImagePaths[ i ] )! ) );
         }
+
+        return new BitmapFont( _data, regs, true );
     }
 
     /// <summary>

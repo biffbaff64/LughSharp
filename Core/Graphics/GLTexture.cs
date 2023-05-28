@@ -13,9 +13,9 @@ namespace LibGDXSharp.Graphics;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class GLTexture
 {
-    protected int   GLHandle               { get; set; }
-    protected int   GLTarget               { get; set; }
-    protected float AnisotropicFilterLevel { get; private set; } = 1.0f;
+    public int   GLHandle               { get; set; }
+    public int   GLTarget               { get; set; }
+    public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
     private static float _maxAnisotropicFilterLevel = 0;
 

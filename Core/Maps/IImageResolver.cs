@@ -44,7 +44,7 @@ public interface IImageResolver
 
         public TextureRegion GetImage( string name )
         {
-            return new TextureRegion( _assetManager.Get<Texture>( name, typeof(Texture)));
+            return new TextureRegion( _assetManager.Get< Texture >( name ) );
         }
     }
 

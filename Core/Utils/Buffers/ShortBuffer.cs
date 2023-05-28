@@ -12,4 +12,14 @@ public abstract class ShortBuffer : LibGDXSharp.Utils.Buffer
     {
         throw new NotImplementedException();
     }
+
+    public void Put( ShortBuffer indices )
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Put( short[] indices, int offset, int count )
+    {
+        throw new NotImplementedException();
+    }
 }

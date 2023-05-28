@@ -147,4 +147,19 @@ public class BufferUtils
             throw new GdxRuntimeException( "Can't copy to a " + dst.GetType().FullName + " instance" );
         }
     }
+
+    public static void Copy( short[] indices, int offset, ByteBuffer numElements, int count )
+    {
+        throw new NotImplementedException();
+    }
+
+    public static ByteBuffer NewUnsafeByteBuffer( int maxIndices )
+    {
+        throw new NotImplementedException();
+    }
+
+    public static void DisposeUnsafeByteBuffer( ByteBuffer byteBuffer )
+    {
+        throw new NotImplementedException();
+    }
 }
