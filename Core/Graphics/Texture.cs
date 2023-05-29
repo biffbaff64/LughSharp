@@ -125,7 +125,7 @@ public class Texture : GLTexture
 
         this.TextureData = data;
 
-        if ( !data.IsPrepared() ) data.Prepare();
+        if ( !data.IsPrepared ) data.Prepare();
 
         Bind();
 

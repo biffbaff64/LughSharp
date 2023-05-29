@@ -50,6 +50,7 @@ public interface IApplication
     /// </summary>
     public enum ApplicationType
     {
+        IOS,
         Android,
         Desktop,
         HeadlessDesktop,

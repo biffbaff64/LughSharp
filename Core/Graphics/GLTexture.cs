@@ -290,7 +290,7 @@ public abstract class GLTexture
             return;
         }
 
-        if ( !data.IsPrepared() ) data.Prepare();
+        if ( !data.IsPrepared ) data.Prepare();
 
         ITextureData.TextureDataType type = data.GetType();
 
@@ -345,6 +345,12 @@ public abstract class GLTexture
         if ( disposePixmap ) pixmap.Dispose();
     }
 
+    /// <summary>
+    /// Convenience method for when 'GLHandle' isn't descriptive enough.
+    /// </summary>
+    // TODO: Check usages of GLHandle to see if if can be renamed to TextureObjectHandle without causing any issues.
+    public int GetTextureObjectHandle() => GLHandle;
+    
     public void Dispose()
     {
         Delete();

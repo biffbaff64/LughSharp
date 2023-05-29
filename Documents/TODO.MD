@@ -166,6 +166,9 @@ GRAPHICS
     - DONE - VertexAttribute                    Convert
     - DONE - VertexAttributes                   Convert
 
+    Note:   Some methods in ITextureData may become eligible to be replaced
+            by Properties as development progresses.
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

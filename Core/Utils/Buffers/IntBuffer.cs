@@ -41,6 +41,10 @@ public abstract class IntBuffer : Buffer, IComparable< IntBuffer >
         return 0;
     }
 
+    public void Put( int i )
+    {
+    }
+    
     public void Put( int i, int i1 )
     {
     }

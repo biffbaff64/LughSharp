@@ -30,7 +30,7 @@ public interface ITextureData
     public TextureDataType GetType();
 
     /// <returns> whether the TextureData is prepared or not.</returns>
-    public bool IsPrepared();
+    public bool IsPrepared { get; set; }
 
     /// <summary>
     /// Prepares the TextureData for a call to <see cref="ConsumePixmap()"/> or
