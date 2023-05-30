@@ -66,13 +66,13 @@ public class FileTextureArrayData : ITextureArrayData
 
             if ( width == -1 )
             {
-                width  = data.GetWidth();
-                height = data.GetHeight();
+                width  = data.Width;
+                height = data.Height;
 
                 continue;
             }
 
-            if ( ( width != data.GetWidth() ) || ( height != data.GetHeight() ) )
+            if ( ( width != data.Width ) || ( height != data.Height ) )
             {
                 throw new GdxRuntimeException
                     (

@@ -1,4 +1,6 @@
-﻿using LibGDXSharp.G2D;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.G2D;
 using LibGDXSharp.Maps.Objects;
 using LibGDXSharp.Maps.Tiled.Tiles;
 
@@ -10,12 +12,13 @@ namespace LibGDXSharp.Maps.Tiled.Objects;
 /// For compatibility reasons, this extends <see cref="TextureMapObject"/>.
 /// Use <see cref="ITiledMapTile.TextureRegion"/> instead of <see cref="TextureRegion"/>.
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class TiledMapTileMapObject : TextureMapObject
 {
-    public ITiledMapTile Tile { get; set; }
-
-    private bool _flipHorizontally;
-    private bool _flipVertically;
+    public ITiledMapTile Tile             { get; set; }
+    public bool          FlipHorizontally { get; set; }
+    public bool          FlipVertically   { get; set; }
 
     /// <summary>
     /// </summary>
@@ -24,8 +27,8 @@ public class TiledMapTileMapObject : TextureMapObject
     /// <param name="flipVertically"></param>
     public TiledMapTileMapObject( ITiledMapTile tile, bool flipHorizontally, bool flipVertically )
     {
-        this._flipHorizontally = flipHorizontally;
-        this._flipVertically   = flipVertically;
+        this.FlipHorizontally = flipHorizontally;
+        this.FlipVertically   = flipVertically;
         this.Tile              = tile;
 
         TextureRegion region = new TextureRegion( tile.TextureRegion );
@@ -33,37 +36,5 @@ public class TiledMapTileMapObject : TextureMapObject
         region.Flip( flipHorizontally, flipVertically );
 
         TextureRegion = region;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public bool isFlipHorizontally()
-    {
-        return _flipHorizontally;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="flipHorizontally"></param>
-    public void setFlipHorizontally( bool flipHorizontally )
-    {
-        this._flipHorizontally = flipHorizontally;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public bool isFlipVertically()
-    {
-        return _flipVertically;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="flipVertically"></param>
-    public void setFlipVertically( bool flipVertically )
-    {
-        this._flipVertically = flipVertically;
     }
 }

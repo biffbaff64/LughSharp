@@ -19,6 +19,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- Constantly look for opportunities to improve this code.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ROOT
@@ -91,13 +92,13 @@ ASSETS/LOADERS/RESOLVERS
     - DONE - AbsoluteFileHandleResolver
     - DONE - IFileHandleResolver
     - DONE - InternalFileHandleResolver
-    // -----------------------------------------------
-    - **** - ClasspathFileHandleResolver    Not Needed
-    - **** - ExternalFileHandleResolver     Not Needed
-    - **** - LocalFileHandleResolver        Not Needed
-    - **** - PrefixFileHandleResolver       Not Needed
-    - **** - ResolutionFileResolver         Not Needed
-    // -----------------------------------------------
+    // -------------------------------------
+    -      - ClasspathFileHandleResolver   
+    -      - ExternalFileHandleResolver    
+    -      - LocalFileHandleResolver       
+    -      - PrefixFileHandleResolver      
+    -      - ResolutionFileResolver        
+    // -------------------------------------
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -166,9 +167,6 @@ GRAPHICS
     - DONE - VertexAttribute                    Convert
     - DONE - VertexAttributes                   Convert
 
-    Note:   Some methods in ITextureData may become eligible to be replaced
-            by Properties as development progresses.
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -222,11 +220,17 @@ GRAPHICS/GLUTILS
     - IP   - FileTextureArrayData
     - IP   - FileTextureData
     -      - FloatFrameBuffer
+    - DONE - FloatFrameBufferBuilder                Move from GLFrameBuffer
     -      - FloatTextureData
-    - IP   - FrameBuffer
+    - DONE - FrameBuffer
+    - DONE - FrameBufferBuilder                     Move from GLFrameBuffer
     -      - FrameBufferCubemap
-    - IP   - GLFrameBuffer
-    -      - GLOnlyTextureData
+    - DONE - FrameBufferCubemapBuilder              Move from GLFrameBuffer
+    - DONE - FrameBufferRenderBufferAttachmentSpec  Move from GLFrameBuffer
+    - DONE - FrameBufferTextureAttachmentSpec       Move from GLFrameBuffer
+    - DONE - GLFrameBuffer
+    - DONE - GLFrameBufferBuilder                   Move from GLFrameBuffer
+    - DONE - GLOnlyTextureData
     - IP   - GLVersion
     - DONE - HdpiMode
     - IP   - HdpiUtils
@@ -256,11 +260,11 @@ GRAPHICS/GLUTILS
 
 GRAPHICS/PROFILING
 ------------------
-    -      - GL20Interceptor
-    -      - GL30Interceptor
+    - IP   - GL20Interceptor
+    - IP   - GL30Interceptor
     -      - GLErrorListener
     -      - GLInterceptor
-    -      - GLProfiler
+    - IP   - GLProfiler
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -269,7 +273,7 @@ INPUT
 -----
     -      - GestureDetector
     -      - RemoteInput
-    -      - RemoteSender
+    - DONE - RemoteSender       Needs rework for compatibility with system.io.sockets.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -325,20 +329,20 @@ MAPS/TILED/LOADERS
 
 MAPS/TILED/OBJECTS
 ------------------
-    - IP   - TiledMapTileMapObject                  Convert
+    - DONE - TiledMapTileMapObject                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MAPS/TILED/RENDERERS
 --------------------
-    - IP   - BatchTiledMapRenderer                  Convert
-    -      - HexagonalTiledMapRenderer              Convert
+    - DONE - BatchTiledMapRenderer                  Convert
+    - DONE - HexagonalTiledMapRenderer              Convert
     -      - IsometricStaggeredTiledMapRenderer     Convert
     -      - IsometricTiledMapRenderer              Convert
     - DONE - ITiledMapRenderer                      Convert
     -      - OrthoCachedTiledMapRenderer            Convert
-    - IP   - OrthogonalTiledMapRenderer             Convert
+    - DONE - OrthogonalTiledMapRenderer             Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -183,8 +183,8 @@ public class Texture : GLTexture
             );
     }
 
-    public override int Width  => TextureData?.GetWidth() ?? 0;
-    public override int Height => TextureData?.GetHeight() ?? 0;
+    public override int Width  => TextureData?.Width ?? 0;
+    public override int Height => TextureData?.Height ?? 0;
     public override int Depth  => 0;
 
     public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;

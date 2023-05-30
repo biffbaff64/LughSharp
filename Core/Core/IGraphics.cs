@@ -13,31 +13,31 @@ public interface IGraphics
     /// to use OpenGL ES 3.0!
     /// </summary>
     /// <returns>TRUE if available.</returns>
-    bool IsGl30Available();
+    bool IsGL30Available();
 
     /// <summary>
     /// Returns the <see cref="IGL20"/> instance.
     /// </summary>
     /// <remarks>MAY be replaced by a property.</remarks>
-    IGL20 GetGl20();
+    IGL20 GetGL20();
 
     /// <summary>
     /// Returns the <see cref="IGL30"/> instance or null if unsupported.
     /// </summary>
     /// <remarks>MAY be replaced by a property.</remarks>
-    IGL30 GetGl30();
+    IGL30 GetGL30();
 
     /// <summary>
     /// Sets the IGL20 instance.
     /// </summary>
     /// <remarks>MAY be replaced by a property.</remarks>
-    void SetGl20( IGL20 gl20 );
+    void SetGL20( IGL20 gl20 );
 
     /// <summary>
     /// Sets the IGL30 instance.
     /// </summary>
     /// <remarks>MAY be replaced by a property.</remarks>
-    void SetGl30( IGL30 gl30 );
+    void SetGL30( IGL30 gl30 );
 
     int Width { get; }
 

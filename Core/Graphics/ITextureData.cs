@@ -68,10 +68,10 @@ public interface ITextureData
     public void ConsumeCustomData(int target);
 
     /// <returns> the width of the pixel data </returns>
-    public int GetWidth();
+    public int Width { get; set; }
 
     /// <returns> the height of the pixel data </returns>
-    public int GetHeight();
+    public int Height { get; set; }
 
     /// <returns> the <see cref="Pixmap.Format"/> of the pixel data </returns>
     public Pixmap.Format GetFormat();

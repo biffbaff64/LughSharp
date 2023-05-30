@@ -71,15 +71,15 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract void SetSystemCursor( ICursor.SystemCursor systemCursor );
 
-    public abstract bool IsGl30Available();
+    public abstract bool IsGL30Available();
 
-    public abstract IGL20 GetGl20();
+    public abstract IGL20 GetGL20();
 
-    public abstract IGL30 GetGl30();
+    public abstract IGL30 GetGL30();
 
-    public abstract void SetGl20( IGL20 gl20 );
+    public abstract void SetGL20( IGL20 gl20 );
 
-    public abstract void SetGl30( IGL30 gl30 );
+    public abstract void SetGL30( IGL30 gl30 );
 
     public abstract int Width { get; }
 

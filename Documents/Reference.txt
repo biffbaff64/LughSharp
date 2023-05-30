@@ -14,6 +14,26 @@ ref (method parameters) - pass by reference. Variable passed must be initialised
 out (method parameters) - Like ref but variable does not need to be initialised.
 in  (method parameters) - pass by reference but disable modification
 
+Record vs Struct vs Class
+-------------------------
+
+Does your data type respect all of these rules:
+
+It logically represents a single value, similar to primitive types (int, double, etc.).
+It has an instance size under 16 bytes.
+It is immutable.
+It will not have to be boxed frequently.
+
+Yes? It should be a struct.
+No? It should be some reference type.
+
+Does your data type encapsulate some sort of a complex value?
+Is the value immutable?
+Do you use it in unidirectional (one way) flow?
+
+Yes? Go with record.
+No? Go with class.
+
 Reference Types
 ---------------
     - Classes
@@ -31,3 +51,4 @@ Swap via deconstruction
         instead of:-    var temp = first;
                         first = second;
                         second = temp;
+                        

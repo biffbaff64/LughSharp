@@ -21,12 +21,16 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class FrameBuffer : GLFrameBuffer< Texture >
 {
+    internal FrameBuffer()
+    {
+    }
+
     /// <summary>
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder">
     ///  </param>
-    protected FrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< Texture > > bufferBuilder )
+    public FrameBuffer( FrameBufferBuilder bufferBuilder )
         : base( bufferBuilder )
     {
     }
@@ -46,18 +50,12 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     /// <exception cref="GdxRuntimeException"> in case the FrameBuffer could not be created  </exception>
     public FrameBuffer( Pixmap.Format format, int width, int height, bool hasDepth, bool hasStencil = false )
     {
-        var frameBufferBuilder = new FrameBufferBuilder(width, height);
+        FrameBufferBuilder frameBufferBuilder = new FrameBufferBuilder( width, height );
+
         frameBufferBuilder.AddBasicColorTextureAttachment( format );
 
-        if ( hasDepth )
-        {
-            frameBufferBuilder.AddBasicDepthRenderBuffer();
-        }
-
-        if ( hasStencil )
-        {
-            frameBufferBuilder.AddBasicStencilRenderBuffer();
-        }
+        if ( hasDepth ) frameBufferBuilder.AddBasicDepthRenderBuffer();
+        if ( hasStencil ) frameBufferBuilder.AddBasicStencilRenderBuffer();
 
         this.BufferBuilder = frameBufferBuilder;
 
@@ -104,8 +102,8 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     /// <summary>
     /// See <see cref="GLFrameBuffer{T}.Unbind()"/>
     /// </summary>
-    public static new void Unbind()
+    public new void Unbind()
     {
-        GLFrameBuffer<Texture>.Unbind();
+        base.Unbind();
     }
 }

@@ -26,11 +26,23 @@ public sealed class PixmapTextureData : ITextureData
 
     public Pixmap ConsumePixmap() => Pixmap;
 
-    public int GetWidth() => Pixmap.Width;
+    public int Width
+    {
+        get => Pixmap.Width;
+        set { }
+    }
 
-    public int GetHeight() => Pixmap.Height;
+    public int Height
+    {
+        get => Pixmap.Height;
+        set { }
+    }
 
-    public bool IsPrepared() => true;
+    public bool IsPrepared
+    {
+        get => true;
+        set { }
+    }
 
     public new ITextureData.TextureDataType GetType()
     {

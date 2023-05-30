@@ -1,6 +1,9 @@
-﻿namespace LibGDXSharp.Graphics.Profiling;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public class GL30Interceptor
+namespace LibGDXSharp.Graphics.Profiling;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class GL30Interceptor : GLInterceptor, IGL30
 {
         
 }

@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Graphics.GLUtils;
 
-public class FrameBufferCubemap
+public class FrameBufferCubemap : GLFrameBuffer<Cubemap>
 {
     public FrameBufferCubemap( object frameBufferCubemapBuilder )
     {

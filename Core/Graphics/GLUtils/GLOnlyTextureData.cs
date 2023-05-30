@@ -53,38 +53,15 @@ public sealed class GLOnlyTextureData : ITextureData
         Gdx.GL.GLTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
     }
 
-    public Pixmap ConsumePixmap()
-    {
+    public Pixmap ConsumePixmap() =>
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
-    }
 
-    public bool DisposePixmap()
-    {
+    public bool DisposePixmap() =>
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
-    }
 
-    public int GetWidth()
-    {
-        return Width;
-    }
+    public Pixmap.Format GetFormat() => Pixmap.Format.RGBA8888;
 
-    public int GetHeight()
-    {
-        return Height;
-    }
+    public bool UseMipMaps() => false;
 
-    public Pixmap.Format GetFormat()
-    {
-        return Pixmap.Format.RGBA8888;
-    }
-
-    public bool UseMipMaps()
-    {
-        return false;
-    }
-
-    public bool IsManaged()
-    {
-        return false;
-    }
+    public bool IsManaged() => false;
 }
