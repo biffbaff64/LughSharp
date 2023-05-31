@@ -12,11 +12,10 @@ namespace LibGDXSharp.Graphics.Profiling;
 /// <seealso cref="GL30Interceptor"/>
 public class GLProfiler
 {
-    public IGLErrorListener Listener { get; set; }
-    public bool             Enabled  { get; set; } = false;
-
-    private IGraphics     _graphics;
-    private GLInterceptor _glInterceptor;
+    public IGLErrorListener Listener    { get; set; }
+    public bool             Enabled     { get; set; } = false;
+    public IGraphics        Graphics    { get; set; }
+    public GLInterceptor    Interceptor { get; set; }
 
     /// <summary>
     /// Create a new instance of GLProfiler to monitor a <see cref="IGraphics"/>
@@ -25,18 +24,18 @@ public class GLProfiler
     /// <param name="graphics"> instance to monitor with this instance.</param>
     public GLProfiler( IGraphics graphics )
     {
-        this._graphics = graphics;
+        this.Graphics = graphics;
 
         if ( graphics.IsGL30Available() )
         {
-            _glInterceptor = new GL30Interceptor( this, graphics.GetGL30() );
+            Interceptor = new GL30Interceptor( this, graphics.GetGL30() );
         }
         else
         {
-            _glInterceptor = new GL20Interceptor( this, graphics.GetGL20() );
+            Interceptor = new GL20Interceptor( this, graphics.GetGL20() );
         }
 
-        Listener = IGLErrorListener.LOGGING_LISTENER;
+        Listener = IGLErrorListener.LoggingListener;
     }
 
     /// <summary>
@@ -45,20 +44,15 @@ public class GLProfiler
     /// </summary>
     public void Enable()
     {
-        if ( Enabled )
-        {
-            return;
-        }
+        if ( Enabled ) return;
 
-        GL30 gl30 = _graphics.getGL30();
-
-        if ( gl30 != null )
+        if ( Graphics.IsGL30Available() )
         {
-            _graphics.setGL30( ( GL30 )_glInterceptor );
+            Graphics.SetGL30( ( IGL30 )Interceptor );
         }
         else
         {
-            _graphics.setGL20( _glInterceptor );
+            Graphics.SetGL20( Interceptor );
         }
 
         Enabled = true;
@@ -73,15 +67,15 @@ public class GLProfiler
             return;
         }
 
-        GL30 gl30 = _graphics.getGL30();
+        GL30 gl30 = Graphics.getGL30();
 
         if ( gl30 != null )
         {
-            _graphics.setGL30( ( ( GL30Interceptor )_graphics.getGL30() ).gl30 );
+            Graphics.setGL30( ( ( GL30Interceptor )Graphics.getGL30() ).gl30 );
         }
         else
         {
-            _graphics.setGL20( ( ( GL20Interceptor )_graphics.getGL20() ).gl20 );
+            Graphics.setGL20( ( ( GL20Interceptor )Graphics.getGL20() ).gl20 );
         }
 
         Enabled = false;
@@ -90,32 +84,32 @@ public class GLProfiler
     /// <summary>
     /// Returns the total gl calls made since the last reset
     /// </summary>
-    public int Calls => _glInterceptor.GetCalls();
+    public int Calls => Interceptor.GetCalls();
 
     /// <summary>
     /// Returns the total amount of texture bindings made since the last reset
     /// </summary>
-    public int TextureBindings => _glInterceptor.GetTextureBindings();
+    public int TextureBindings => Interceptor.GetTextureBindings();
 
     /// <summary>
     /// Returns the total amount of draw calls made since the last reset
     /// </summary>
-    public int DrawCalls => _glInterceptor.GetDrawCalls();
+    public int DrawCalls => Interceptor.GetDrawCalls();
 
     /// 
     /// <returns> the total amount of shader switches made since the last reset </returns>
-    public int ShaderSwitches => _glInterceptor.ShaderSwitches;
+    public int ShaderSwitches => Interceptor.ShaderSwitches;
 
     /// <summary>
     /// Returns <see cref="FloatCounter"/> containing information about rendered
     /// vertices since the last reset.
     /// </summary>
-    public FloatCounter VertexCount => _glInterceptor.VertexCount;
+    public FloatCounter VertexCount => Interceptor.VertexCount;
 
     /// <summary>
     /// Will reset the statistical information which has been collected so far.
     /// This should be called after every frame.
     /// Error listener is kept as it is. 
     /// </summary>
-    public void Reset() => _glInterceptor.Reset();
+    public void Reset() => Interceptor.Reset();
 }

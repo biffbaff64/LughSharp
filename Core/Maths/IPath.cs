@@ -1,5 +1,8 @@
-﻿namespace LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace LibGDXSharp.Maths;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public interface IPath<T>
 {
     T DerivativeAt( in T outParam, in float t );

@@ -73,7 +73,7 @@ public class GridPoint2
         var xd = other.X - X;
         var yd = other.Y - Y;
 
-        return xd * xd + yd * yd;
+        return ( xd * xd ) + ( yd * yd );
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public class GridPoint2
         var xd = x - this.X;
         var yd = y - this.Y;
 
-        return xd * xd + yd * yd;
+        return ( xd * xd ) + ( yd * yd );
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public class GridPoint2
         var xd = other.X - X;
         var yd = other.Y - Y;
 
-        return ( float )Math.Sqrt( xd * xd + yd * yd );
+        return ( float )Math.Sqrt( ( xd * xd ) + ( yd * yd ) );
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public class GridPoint2
         var xd = x - this.X;
         var yd = y - this.Y;
 
-        return ( float )Math.Sqrt( xd * xd + yd * yd );
+        return ( float )Math.Sqrt( ( xd * xd ) + ( yd * yd ) );
     }
 
     /// <summary>
@@ -180,11 +180,11 @@ public class GridPoint2
     {
         if ( this == o ) return true;
             
-        if ( o == null || o.GetType() != this.GetType() ) return false;
+        if ( ( o == null ) || ( o.GetType() != this.GetType() ) ) return false;
             
         var g = ( GridPoint2 )o;
 
-        return this.X == g.X && this.Y == g.Y;
+        return ( this.X == g.X ) && ( this.Y == g.Y );
     }
 
     public int HashCode()
@@ -192,13 +192,10 @@ public class GridPoint2
         var prime = 53;
 
         var result = prime + this.X;
-        result = prime * result + this.Y;
+        result = ( prime * result ) + this.Y;
 
         return result;
     }
 
-    public new string ToString()
-    {
-        return "({X},{Y})";
-    }
+    public new string ToString() => $"({X},{Y})";
 }

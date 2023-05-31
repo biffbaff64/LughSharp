@@ -1,5 +1,8 @@
-﻿namespace LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace LibGDXSharp.Maths;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class MathUtils
 {
     public const float NanoToSec            = 1 / 1000000000f;
@@ -37,7 +40,7 @@ public class MathUtils
     /// </summary>
     public static float Cos( float radians )
     {
-        return SinClass.Table[ ( int )( ( radians + PI / 2 ) * RadToIndex ) & Sin_Mask ];
+        return SinClass.Table[ ( int )( ( radians + ( PI / 2 ) ) * RadToIndex ) & Sin_Mask ];
     }
 
     /// <summary>
@@ -65,29 +68,31 @@ public class MathUtils
     {
         if ( x == 0f )
         {
-            if ( y > 0f ) return PI / 2;
-            if ( y == 0f ) return 0f;
-
-            return -PI / 2;
+            return y switch
+                   {
+                       > 0f => PI / 2,
+                       0f   => 0f,
+                       _    => -PI / 2
+                   };
         }
 
         float atan, z = y / x;
 
         if ( Math.Abs( z ) < 1f )
         {
-            atan = z / ( 1f + 0.28f * z * z );
+            atan = z / ( 1f + ( 0.28f * z * z ) );
 
             if ( x < 0f ) return atan + ( y < 0f ? -PI : PI );
 
             return atan;
         }
 
-        atan = PI / 2 - z / ( z * z + 0.28f );
+        atan = ( PI / 2 ) - ( z / ( ( z * z ) + 0.28f ) );
 
         return y < 0f ? atan - PI : atan;
     }
 
-    private readonly static Random random = new Random();
+    private readonly static Random random = new();
 
     /// <summary>
     /// Returns a random number between 0 (inclusive) and the specified value (inclusive).
@@ -102,7 +107,7 @@ public class MathUtils
     /// </summary>
     public static int Random( int start, int end )
     {
-        return start + random.Next( end - start + 1 );
+        return start + random.Next( ( end - start ) + 1 );
     }
 
     /// <summary>
@@ -126,7 +131,7 @@ public class MathUtils
     /// </summary>
     public static bool Randombool()
     {
-        return Convert.Tobool( random.Next( 1 ) );
+        return Convert.ToBoolean( random.Next( 1 ) );
     }
 
     /// <summary>
@@ -158,7 +163,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float start, float end )
     {
-        return start + ( float )random.NextDouble() * ( end - start );
+        return start + ( ( float )random.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
@@ -212,7 +217,7 @@ public class MathUtils
         var u = ( float )random.NextDouble();
         var d = max - min;
 
-        if ( u <= ( mode - min ) / d )
+        if ( u <= ( ( mode - min ) / d ) )
         {
             return min + ( float )Math.Sqrt( u * d * ( mode - min ) );
         }
@@ -243,7 +248,7 @@ public class MathUtils
     /// <returns></returns>
     public static bool IsPowerOfTwo( int value )
     {
-        return value != 0 && ( value & ( value - 1 ) ) == 0;
+        return ( value != 0 ) && ( ( value & ( value - 1 ) ) == 0 );
     }
 
     /// <summary>
@@ -311,7 +316,7 @@ public class MathUtils
     /// </summary>
     public static float Lerp( float fromValue, float toValue, float progress )
     {
-        return fromValue + ( toValue - fromValue ) * progress;
+        return fromValue + ( ( toValue - fromValue ) * progress );
     }
 
     /// <summary>
@@ -324,9 +329,9 @@ public class MathUtils
     /// <returns> the interpolated angle in the range [0, PI2[  </returns>
     public static float LerpAngle( float fromRadians, float toRadians, float progress )
     {
-        var delta = ( ( toRadians - fromRadians + PI2 + PI ) % PI2 ) - PI;
+        var delta = ( ( ( toRadians - fromRadians ) + PI2 + PI ) % PI2 ) - PI;
 
-        return ( fromRadians + delta * progress + PI2 ) % PI2;
+        return ( fromRadians + ( delta * progress ) + PI2 ) % PI2;
     }
 
     /// <summary>
@@ -340,9 +345,9 @@ public class MathUtils
     /// <returns> the interpolated angle in the range [0, 360[  </returns>
     public static float LerpAngleDeg( float fromDegrees, float toDegrees, float progress )
     {
-        var delta = ( ( toDegrees - fromDegrees + 360 + 180 ) % 360 ) - 180;
+        var delta = ( ( ( toDegrees - fromDegrees ) + 360 + 180 ) % 360 ) - 180;
 
-        return ( fromDegrees + delta * progress + 360 ) % 360;
+        return ( fromDegrees + ( delta * progress ) + 360 ) % 360;
     }
 
     private const int    Big_Enough_Int   = 16 * 1024;
@@ -482,7 +487,7 @@ public class MathUtils
         {
             for ( var i = 0; i < Sin_Count; i++ )
             {
-                Table[ i ] = ( float )Math.Sin( ( i + 0.5f ) / Sin_Count * RadFull );
+                Table[ i ] = ( float )Math.Sin( ( ( i + 0.5f ) / Sin_Count ) * RadFull );
             }
 
             for ( var i = 0; i < 360; i += 90 )
