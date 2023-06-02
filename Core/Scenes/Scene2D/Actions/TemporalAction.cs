@@ -1,7 +1,10 @@
-﻿using LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class TemporalAction : Action
 {
     public bool           Reverse       { get; set; }

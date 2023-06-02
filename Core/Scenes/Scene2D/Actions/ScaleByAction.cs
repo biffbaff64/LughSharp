@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-public class ScaleByAction
+public class ScaleByAction : RelativeTemporalAction
 {
         
 }

@@ -35,7 +35,7 @@ public abstract class Action : IPoolable
     /// </summary>
     public void Reset()
     {
-        _actor = null;
+        Actor  = null;
         Target = null;
         Pool   = null;
 
@@ -56,7 +56,7 @@ public abstract class Action : IPoolable
     /// <summary>
     /// Sets the state of the action so it can be run again.
     /// </summary>
-    public virtual void Restart()
+    public void Restart()
     {
     }
 
@@ -96,7 +96,7 @@ public abstract class Action : IPoolable
             }
         }
     }
-    
+
     /// <summary>
     /// </summary>
     /// <returns></returns>
@@ -108,7 +108,7 @@ public abstract class Action : IPoolable
         if ( dotIndex != -1 )
         {
             // Note: equivalent to name.SubString(startIndex: dotIndex+1)
-            name = name[ (dotIndex + 1).. ];
+            name = name[ ( dotIndex + 1 ).. ];
         }
 
         if ( name.EndsWith( "Action" ) )

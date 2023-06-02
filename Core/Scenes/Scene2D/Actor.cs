@@ -20,17 +20,17 @@ public class Actor
     protected float     OriginX    { get; set; }
     protected float     OriginY    { get; set; }
 
-    protected Color Color
+    public Color? Color
     {
         get => _color;
-        set => _color.Set( value );
+        set => _color.Set( value! );
     }
 
     public DelayedRemovalArray< IEventListener > Listeners        { get; private set; }
     public DelayedRemovalArray< IEventListener > CaptureListeners { get; private set; }
+    public List< Action >                        Actions          { get; set; } = new();
 
-    private readonly List< Action > _actions = new();
-    private readonly Color          _color   = new( 1, 1, 1, 1 );
+    private readonly Color _color = new(1, 1, 1, 1);
 
     private bool  _debug;
     private float _rotation;
@@ -65,7 +65,7 @@ public class Actor
     /// <exception cref="SystemException"></exception>
     public void Act( float delta )
     {
-        if ( _actions.Count == 0 ) return;
+        if ( Actions.Count == 0 ) return;
 
         if ( Stage is { ActionsRequestRendering: true } )
         {
@@ -74,17 +74,17 @@ public class Actor
 
         try
         {
-            for ( var i = 0; i < _actions.Count; i++ )
+            for ( var i = 0; i < Actions.Count; i++ )
             {
-                if ( _actions[ i ].Act( delta ) && ( i < _actions.Count ) )
+                if ( Actions[ i ].Act( delta ) && ( i < Actions.Count ) )
                 {
-                    var current     = _actions[ i ];
-                    var actionIndex = current == _actions[ i ] ? i : _actions.IndexOf( _actions[ i ] );
+                    var current     = Actions[ i ];
+                    var actionIndex = current == Actions[ i ] ? i : Actions.IndexOf( Actions[ i ] );
 
                     if ( actionIndex != -1 )
                     {
-                        _actions.RemoveIndex( actionIndex );
-                        _actions[ i ].Actor = null;
+                        Actions.RemoveIndex( actionIndex );
+                        Actions[ i ].Actor = null;
 
                         i--;
                     }
@@ -99,8 +99,8 @@ public class Actor
             {
                 throw new SystemException
                     (
-                     string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
-                     ex
+                    string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
+                    ex
                     );
             }
         }
@@ -225,8 +225,8 @@ public class Actor
             {
                 throw new SystemException
                     (
-                     string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
-                     ex
+                    string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
+                    ex
                     );
             }
         }
@@ -327,7 +327,7 @@ public class Actor
         {
             action.Actor = this;
 
-            _actions.Add( action );
+            Actions.Add( action );
 
             if ( Stage is { ActionsRequestRendering: true } )
             {
@@ -341,7 +341,7 @@ public class Actor
     /// <param name="action"></param>
     public void RemoveAction( Action? action )
     {
-        if ( ( action != null ) && _actions.Remove( action ) )
+        if ( ( action != null ) && Actions.Remove( action ) )
         {
             action.Actor = null;
         }
@@ -352,7 +352,7 @@ public class Actor
     /// </summary>
     public bool HasActions()
     {
-        return _actions.Count > 0;
+        return Actions.Count > 0;
     }
 
     /// <summary>
@@ -360,12 +360,12 @@ public class Actor
     /// </summary>
     public void ClearActions()
     {
-        for ( var i = _actions.Count - 1; i >= 0; i-- )
+        for ( var i = Actions.Count - 1; i >= 0; i-- )
         {
-            _actions[ i ].Actor = null;
+            Actions[ i ].Actor = null;
         }
 
-        _actions.Clear();
+        Actions.Clear();
     }
 
     /// <summary>

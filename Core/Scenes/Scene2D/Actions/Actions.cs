@@ -67,7 +67,7 @@ public class Actions
         var action = Action< MoveToAction >();
 
         action.SetPosition( x, y );
-        action.Duration = duration;
+        action.Duration      = duration;
         action.Interpolation = interpolation;
 
         return action;
@@ -80,7 +80,7 @@ public class Actions
         MoveToAction action = Action< MoveToAction >();
 
         action.SetPosition( x, y, alignment );
-        action.Duration = duration;
+        action.Duration      = duration;
         action.Interpolation = interpolation;
 
         return action;
@@ -126,7 +126,7 @@ public class Actions
                                        Interpolation? interpolation = null )
     {
         SizeByAction action = Action< SizeByAction >();
-        
+
         action.setAmount( amountX, amountY );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -137,7 +137,7 @@ public class Actions
     /** Scales the actor instantly. */
     public static ScaleToAction ScaleTo( float x, float y, float duration = 0, Interpolation? interpolation = null )
     {
-        ScaleToAction action = action( ScaleToAction.class);
+        ScaleToAction action = Action< ScaleToAction >();
 
         action.setScale( x, y );
         action.setDuration( duration );
@@ -149,7 +149,7 @@ public class Actions
     /** Scales the actor instantly. */
     public static ScaleByAction ScaleBy( float amountX, float amountY, float duration = 0, Interpolation? interpolation = null )
     {
-        ScaleByAction action = action( ScaleByAction.class);
+        ScaleByAction action = Action< ScaleByAction >();
 
         action.setAmount( amountX, amountY );
         action.setDuration( duration );
@@ -161,7 +161,7 @@ public class Actions
     /** Rotates the actor instantly. */
     public static RotateToAction RotateTo( float rotation, float duration = 0, Interpolation? interpolation = null )
     {
-        RotateToAction action = action( RotateToAction.class);
+        RotateToAction action = Action< RotateToAction >();
 
         action.setRotation( rotation );
         action.setDuration( duration );
@@ -173,7 +173,7 @@ public class Actions
     /** Rotates the actor instantly. */
     public static RotateByAction RotateBy( float rotationAmount, float duration = 0, Interpolation? interpolation = null )
     {
-        RotateByAction action = action( RotateByAction.class);
+        RotateByAction action = Action< RotateByAction >();
 
         action.setAmount( rotationAmount );
         action.setDuration( duration );
@@ -186,7 +186,7 @@ public class Actions
     /// Transitions from the color at the time this action starts to the specified color.
     public static ColorAction Color( Color color, float duration = 0, Interpolation? interpolation = null )
     {
-        ColorAction action = action( ColorAction.class);
+        ColorAction action = Action< ColorAction >();
 
         action.setEndColor( color );
         action.setDuration( duration );
@@ -199,7 +199,7 @@ public class Actions
     /** Transitions from the alpha at the time this action starts to the specified alpha. */
     public static AlphaAction Alpha( float a, float duration = 0, Interpolation? interpolation = null )
     {
-        AlphaAction action = action( AlphaAction.class);
+        AlphaAction action = Action< AlphaAction >();
 
         action.setAlpha( a );
         action.setDuration( duration );
@@ -217,8 +217,8 @@ public class Actions
     /** Transitions from the alpha at the time this action starts to an alpha of 0. */
     public static AlphaAction FadeOut( float duration, Interpolation? interpolation )
     {
-        AlphaAction action = action( AlphaAction.class);
-        
+        AlphaAction action = Action< AlphaAction >();
+
         action.setAlpha( 0 );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -235,8 +235,8 @@ public class Actions
     /** Transitions from the alpha at the time this action starts to an alpha of 1. */
     public static AlphaAction FadeIn( float duration, Interpolation? interpolation )
     {
-        AlphaAction action = action( AlphaAction.class);
-        
+        AlphaAction action = Action< AlphaAction >();
+
         action.setAlpha( 1 );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -250,7 +250,7 @@ public class Actions
 
     public static VisibleAction Visible( bool visible )
     {
-        VisibleAction action = action( VisibleAction.class);
+        VisibleAction action = Action< VisibleAction >();
         action.setVisible( visible );
 
         return action;
@@ -258,7 +258,7 @@ public class Actions
 
     public static TouchableAction Touchable( Touchable touchable )
     {
-        TouchableAction action = action( TouchableAction.class);
+        TouchableAction action = Action< TouchableAction >();
         action.setTouchable( touchable );
 
         return action;
@@ -266,12 +266,12 @@ public class Actions
 
     public static RemoveActorAction RemoveActor()
     {
-        return Action( RemoveActorAction.class);
+        return Action< RemoveActorAction >();
     }
 
     public static RemoveActorAction RemoveActor( Actor removeActor )
     {
-        RemoveActorAction action = action( RemoveActorAction.class);
+        RemoveActorAction action = Action< RemoveActorAction >();
         action.setTarget( removeActor );
 
         return action;
@@ -289,7 +289,7 @@ public class Actions
     public static DelayAction Delay( float duration, Action delayedAction )
     {
         DelayAction action = Action< DelayAction >();
-        
+
         action.setDuration( duration );
         action.setAction( delayedAction );
 
@@ -351,7 +351,7 @@ public class Actions
     public static SequenceAction Sequence( Action action1, Action action2, Action action3, Action action4, Action action5 )
     {
         SequenceAction action = Action< SequenceAction >();
-        
+
         action.addAction( action1 );
         action.addAction( action2 );
         action.addAction( action3 );
@@ -419,7 +419,7 @@ public class Actions
     public static ParallelAction Parallel( Action action1, Action action2, Action action3, Action action4, Action action5 )
     {
         ParallelAction action = Action< ParallelAction >();
-        
+
         action.addAction( action1 );
         action.addAction( action2 );
         action.addAction( action3 );
@@ -441,12 +441,12 @@ public class Actions
 
     public static ParallelAction Parallel()
     {
-        return Action<ParallelAction>();
+        return Action< ParallelAction >();
     }
 
     public static RepeatAction Repeat( int count, Action repeatedAction )
     {
-        RepeatAction action = action( RepeatAction.class);
+        RepeatAction action = Action< RepeatAction >();
         action.setCount( count );
         action.setAction( repeatedAction );
 
@@ -455,7 +455,7 @@ public class Actions
 
     public static RepeatAction Forever( Action repeatedAction )
     {
-        RepeatAction action = Action<RepeatAction>();
+        RepeatAction action = Action< RepeatAction >();
 
         action.setCount( RepeatAction.Forever );
         action.setAction( repeatedAction );
@@ -473,7 +473,7 @@ public class Actions
 
     public static LayoutAction Layout( bool enabled )
     {
-        LayoutAction action = Action<LayoutAction>();
+        LayoutAction action = Action< LayoutAction >();
         action.setLayoutEnabled( enabled );
 
         return action;
@@ -481,7 +481,7 @@ public class Actions
 
     public static AfterAction After( Action action )
     {
-        AfterAction afterAction = Action<AfterAction>();
+        AfterAction afterAction = Action< AfterAction >();
         afterAction.setAction( action );
 
         return afterAction;
@@ -489,7 +489,7 @@ public class Actions
 
     public static AddListenerAction AddListener( EventListener listener, bool capture )
     {
-        AddListenerAction addAction = Action<AddListenerAction>();
+        AddListenerAction addAction = Action< AddListenerAction >();
 
         addAction.setListener( listener );
         addAction.setCapture( capture );
@@ -499,7 +499,7 @@ public class Actions
 
     public static AddListenerAction AddListener( IEventListener listener, bool capture, Actor targetActor )
     {
-        AddListenerAction addAction = Action<AddListenerAction>();
+        AddListenerAction addAction = Action< AddListenerAction >();
 
         addAction.setTarget( targetActor );
         addAction.setListener( listener );
@@ -510,7 +510,7 @@ public class Actions
 
     public static RemoveListenerAction RemoveListener( IEventListener listener, bool capture )
     {
-        RemoveListenerAction addAction = Action<RemoveListenerAction>();
+        RemoveListenerAction addAction = Action< RemoveListenerAction >();
 
         addAction.setListener( listener );
         addAction.setCapture( capture );
@@ -520,7 +520,7 @@ public class Actions
 
     public static RemoveListenerAction RemoveListener( IEventListener listener, bool capture, Actor targetActor )
     {
-        RemoveListenerAction addAction = Action<RemoveListenerAction>();
+        RemoveListenerAction addAction = Action< RemoveListenerAction >();
 
         addAction.setTarget( targetActor );
         addAction.setListener( listener );

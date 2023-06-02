@@ -1,6 +1,6 @@
 ﻿namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-public class DelayAction
+public class DelayAction : DelegateAction
 {
         
 }
