@@ -1,4 +1,6 @@
-﻿namespace LibGDXSharp.Utils.Viewport;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Utils.Viewport;
 
 /// <summary>
 /// A viewport that scales the world using <see cref="Scaling"/>.
@@ -19,6 +21,7 @@
 /// (the world may not fill the screen or some of the world may be off screen).
 /// </para>
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ScalingViewport : Viewport
 {
     public Scaling Scaling { get; set; }
@@ -47,6 +50,7 @@ public class ScalingViewport : Viewport
     }
 
     /// <summary>
+    /// Configures this viewports screen bounds and applies it to the camera
     /// </summary>
     /// <param name="screenWidth"></param>
     /// <param name="screenHeight"></param>

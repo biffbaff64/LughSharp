@@ -688,7 +688,7 @@ public abstract class LongBuffer : LibGDXSharp.Utils.Buffer, IComparable< LongBu
 
         for ( int i = limit() - 1; i >= p; i-- )
         {
-            h = 31 * h + ( int )get( i );
+            h = ( 31 * h ) + ( int )get( i );
         }
 
         return h;

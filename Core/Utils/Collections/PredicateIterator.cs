@@ -81,7 +81,7 @@ public class PredicateIterator<T> : IEnumerator< T >
 
     public T? Next()
     {
-        if ( NextItem == null && !HasNext() )
+        if ( ( NextItem == null ) && !HasNext() )
         {
             return default( T );
         }

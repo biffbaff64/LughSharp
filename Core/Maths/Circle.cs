@@ -1,8 +1,11 @@
-﻿namespace LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Maths;
 
 /// <summary>
 /// </summary>
-// ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Circle : IShape2D
 {
     public float X      { get; set; }
@@ -70,7 +73,7 @@ public class Circle : IShape2D
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
     /// <param name="radius"> Circle radius  </param>
-    public virtual void Set( float x, float y, float radius )
+    public void Set( float x, float y, float radius )
     {
         this.X      = x;
         this.Y      = y;
@@ -82,7 +85,7 @@ public class Circle : IShape2D
     /// </summary>
     /// <param name="position"> Position <see cref="Vector2"/> for this circle. </param>
     /// <param name="radius"> Circle radius  </param>
-    public virtual void Set( Vector2 position, float radius )
+    public void Set( Vector2 position, float radius )
     {
         this.X      = position.X;
         this.Y      = position.Y;
@@ -93,7 +96,7 @@ public class Circle : IShape2D
     /// Sets a new location and radius for this circle, based upon another circle.
     /// </summary>
     /// <param name="circle"> The circle to copy the position and radius of.  </param>
-    public virtual void Set( Circle circle )
+    public void Set( Circle circle )
     {
         this.X      = circle.X;
         this.Y      = circle.Y;
@@ -105,7 +108,7 @@ public class Circle : IShape2D
     /// </summary>
     /// <param name="center"> The new center of the circle </param>
     /// <param name="edge"> Any point on the edge of the given circle  </param>
-    public virtual void Set( Vector2 center, Vector2 edge )
+    public void Set( Vector2 center, Vector2 edge )
     {
         this.X      = center.X;
         this.Y      = center.Y;
@@ -116,7 +119,7 @@ public class Circle : IShape2D
     /// Sets the x and y-coordinates of circle center from vector
     /// </summary>
     /// <param name="position"> The position vector  </param>
-    public virtual void SetPosition( Vector2 position )
+    public void SetPosition( Vector2 position )
     {
         this.X = position.X;
         this.Y = position.Y;
@@ -127,7 +130,7 @@ public class Circle : IShape2D
     /// </summary>
     /// <param name="x"> The x-coordinate </param>
     /// <param name="y"> The y-coordinate  </param>
-    public virtual void SetPosition( float x, float y )
+    public void SetPosition( float x, float y )
     {
         this.X = x;
         this.Y = y;
@@ -140,12 +143,12 @@ public class Circle : IShape2D
     /// <param name="y"> Y coordinate
     /// </param>
     /// <returns> true if this circle contains the given point.  </returns>
-    public virtual bool Contains( float x, float y )
+    public bool Contains( float x, float y )
     {
         x = this.X - x;
         y = this.Y - y;
 
-        return x * x + y * y <= Radius * Radius;
+        return ( ( x * x ) + ( y * y ) ) <= ( Radius * Radius );
     }
 
     /// <summary>
@@ -154,19 +157,19 @@ public class Circle : IShape2D
     /// <param name="point"> The <see cref="Vector2"/> that contains the point coordinates.
     /// </param>
     /// <returns> true if this circle contains this point; false otherwise.  </returns>
-    public virtual bool Contains( Vector2 point )
+    public bool Contains( Vector2 point )
     {
         var dx = X - point.X;
         var dy = Y - point.Y;
 
-        return dx * dx + dy * dy <= Radius * Radius;
+        return ( ( dx * dx ) + ( dy * dy ) ) <= ( Radius * Radius );
     }
 
     /// <summary>
     /// </summary>
     /// <param name="c"> the other <see cref="Circle"/> </param>
     /// <returns> whether this circle contains the other circle.  </returns>
-    public virtual bool Contains( Circle c )
+    public bool Contains( Circle c )
     {
         var radiusDiff = Radius - c.Radius;
 
@@ -177,24 +180,24 @@ public class Circle : IShape2D
 
         var dx        = X - c.X;
         var dy        = Y - c.Y;
-        var dst       = dx * dx + dy * dy;
+        var dst       = ( dx * dx ) + ( dy * dy );
         var radiusSum = Radius + c.Radius;
 
-        return ( !( radiusDiff * radiusDiff < dst ) && ( dst < radiusSum * radiusSum ) );
+        return ( !( ( radiusDiff * radiusDiff ) < dst ) && ( dst < ( radiusSum * radiusSum ) ) );
     }
 
     /// <summary>
     /// </summary>
     /// <param name="c"> the other <see cref="Circle"/> </param>
     /// <returns> whether this circle overlaps the other circle.  </returns>
-    public virtual bool Overlaps( Circle c )
+    public bool Overlaps( Circle c )
     {
         var dx        = X - c.X;
         var dy        = Y - c.Y;
-        var distance  = dx * dx + dy * dy;
+        var distance  = ( dx * dx ) + ( dy * dy );
         var radiusSum = Radius + c.Radius;
 
-        return distance < radiusSum * radiusSum;
+        return distance < ( radiusSum * radiusSum );
     }
 
     /// <summary>
@@ -212,7 +215,7 @@ public class Circle : IShape2D
     /// The circumference of this circle:-
     /// (as 2 * <see cref="MathUtils.PI2"/>) * <code>radius</code>
     /// </returns>
-    public virtual float Circumference()
+    public float Circumference()
     {
         return this.Radius * MathUtils.PI2;
     }
@@ -222,7 +225,7 @@ public class Circle : IShape2D
     /// <returns>
     /// The area of this circle (as <see cref="MathUtils.PI"/> * radius * radius).
     /// </returns>
-    public virtual float Area()
+    public float Area()
     {
         return this.Radius * this.Radius * MathUtils.PI;
     }
@@ -234,7 +237,7 @@ public class Circle : IShape2D
     public override bool Equals( object? o )
     {
         if ( o == this ) return true;
-        if ( o == null || o.GetType() != this.GetType() ) return false;
+        if ( ( o == null ) || ( o.GetType() != this.GetType() ) ) return false;
 
         var c = ( Circle )o;
 
@@ -253,8 +256,8 @@ public class Circle : IShape2D
         var result = 1;
 
         result = prime + NumberUtils.FloatToRawIntBits( Radius );
-        result = prime * result + NumberUtils.FloatToRawIntBits( X );
-        result = prime * result + NumberUtils.FloatToRawIntBits( Y );
+        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( X );
+        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Y );
 
         return result;
     }

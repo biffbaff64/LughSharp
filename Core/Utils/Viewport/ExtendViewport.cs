@@ -2,10 +2,14 @@
 
 public class ExtendViewport : Viewport
 {
+    #region Properties
+    
     public float MinWorldWidth  { get; set; }
     public float MinWorldHeight { get; set; }
     public float MaxWorldWidth  { get; set; }
     public float MaxWorldHeight { get; set; }
+
+    #endregion
 
     /// <summary>
     /// Creates a new viewport using a new <seealso cref="OrthographicCamera"/> with no maximum world size.
@@ -54,7 +58,7 @@ public class ExtendViewport : Viewport
         this.Camera = camera;
     }
 
-    public virtual new void Update( int screenWidth, int screenHeight, bool centerCamera )
+    public new void Update( int screenWidth, int screenHeight, bool centerCamera )
     {
         // Fit min size to the screen.
         var     worldWidth  = MinWorldWidth;

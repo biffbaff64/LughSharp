@@ -56,7 +56,7 @@ public abstract class Action : IPoolable
     /// <summary>
     /// Sets the state of the action so it can be run again.
     /// </summary>
-    protected virtual void Restart()
+    public virtual void Restart()
     {
     }
 

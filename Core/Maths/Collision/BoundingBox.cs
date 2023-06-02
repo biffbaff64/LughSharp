@@ -280,7 +280,7 @@ public class BoundingBox
     /// This means that <see cref="max"/> is greater than or equal to <see cref="min"/>.
     /// </summary>
     /// <returns> True in case the bounding box is valid, false otherwise  </returns>
-    public bool Valid => min.X <= max.X && min.Y <= max.Y && min.Z <= max.Z;
+    public bool Valid => ( min.X <= max.X ) && ( min.Y <= max.Y ) && ( min.Z <= max.Z );
 
     /// <summary>
     /// Extends this bounding box by the given bounding box.
@@ -372,12 +372,12 @@ public class BoundingBox
     public bool Contains( BoundingBox b )
     {
         return !Valid
-               || ( min.X <= b.min.X
-                    && min.Y <= b.min.Y
-                    && min.Z <= b.min.Z
-                    && max.X >= b.max.X
-                    && max.Y >= b.max.Y
-                    && max.Z >= b.max.Z );
+               || ( ( min.X <= b.min.X )
+                    && ( min.Y <= b.min.Y )
+                    && ( min.Z <= b.min.Z )
+                    && ( max.X >= b.max.X )
+                    && ( max.Y >= b.max.Y )
+                    && ( max.Z >= b.max.Z ) );
     }
 
     /// <summary>
@@ -401,7 +401,7 @@ public class BoundingBox
         var lz   = Math.Abs( this._cnt.Z - b._cnt.Z );
         var sumz = ( this._dim.Z / 2.0f ) + ( b._dim.Z / 2.0f );
 
-        return ( lx <= sumx && ly <= sumy && lz <= sumz );
+        return ( ( lx <= sumx ) && ( ly <= sumy ) && ( lz <= sumz ) );
     }
 
     /// <summary>
@@ -410,12 +410,12 @@ public class BoundingBox
     /// <returns> Whether the vector is contained or not.  </returns>
     public bool Contains( Vector3 v )
     {
-        return min.X <= v.X
-               && max.X >= v.X
-               && min.Y <= v.Y
-               && max.Y >= v.Y
-               && min.Z <= v.Z
-               && max.Z >= v.Z;
+        return ( min.X <= v.X )
+               && ( max.X >= v.X )
+               && ( min.Y <= v.Y )
+               && ( max.Y >= v.Y )
+               && ( min.Z <= v.Z )
+               && ( max.Z >= v.Z );
     }
 
     /// <summary>

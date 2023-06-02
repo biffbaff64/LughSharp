@@ -72,7 +72,7 @@ public class FloatCounter
             this.Value = Latest;
         }
 
-        if ( Mean == null || Mean.HasEnoughData() )
+        if ( ( Mean == null ) || Mean.HasEnoughData() )
         {
             if ( this.Value < Min )
             {

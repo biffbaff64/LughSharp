@@ -688,7 +688,7 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
         {
 
 
-            h = 31 * h + ( int )get( i );
+            h = ( 31 * h ) + ( int )get( i );
         }
 
         return h;

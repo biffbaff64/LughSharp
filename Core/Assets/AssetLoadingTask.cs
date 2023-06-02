@@ -239,7 +239,7 @@ public sealed class AssetLoadingTask
                 }
             }
         }
-        else if ( _loadFuture == null && !_asyncDone )
+        else if ( ( _loadFuture == null ) && !_asyncDone )
         {
             _loadFuture = _executor.Submit( this );
         }
@@ -253,7 +253,7 @@ public sealed class AssetLoadingTask
                  AssetDesc.Parameters
                 );
         }
-        else if ( _loadFuture != null && _loadFuture.IsDone() )
+        else if ( ( _loadFuture != null ) && _loadFuture.IsDone() )
         {
             try
             {
@@ -287,7 +287,7 @@ public sealed class AssetLoadingTask
 
             for ( var j = array.Count - 1; j > i; --j )
             {
-                if ( type == array[ j ].Type && fn.Equals( array[ j ].FilePath ) )
+                if ( ( type == array[ j ].Type ) && fn.Equals( array[ j ].FilePath ) )
                 {
                     array.RemoveAt( j );
                 }

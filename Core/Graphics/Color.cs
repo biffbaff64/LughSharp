@@ -335,7 +335,7 @@ public sealed class Color
     {
         if ( this == o ) return true;
 
-        if ( o == null || GetType() != o.GetType() ) return false;
+        if ( ( o == null ) || ( GetType() != o.GetType() ) ) return false;
 
         Color color = ( Color )o;
 
@@ -441,12 +441,12 @@ public sealed class Color
     /// <returns>The modified Color for chaining.</returns>
     public Color FromHsv( float h, float s, float v )
     {
-        var x = ( h / 60f + 6 ) % 6;
+        var x = ( ( h / 60f ) + 6 ) % 6;
         var i = ( int )x;
         var f = x - i;
         var p = v * ( 1 - s );
-        var q = v * ( 1 - s * f );
-        var t = v * ( 1 - s * ( 1 - f ) );
+        var q = v * ( 1 - ( s * f ) );
+        var t = v * ( 1 - ( s * ( 1 - f ) ) );
 
         switch ( i )
         {
@@ -520,20 +520,20 @@ public sealed class Color
         }
         else if ( Math.Abs( max - R ) < 0.00001f )
         {
-            hsv[ 0 ] = ( 60 * ( G - B ) / range + 360 ) % 360;
+            hsv[ 0 ] = ( ( ( 60 * ( G - B ) ) / range ) + 360 ) % 360;
         }
         else if ( Math.Abs( max - G ) < 0.00001f )
         {
-            hsv[ 0 ] = 60 * ( B - R ) / range + 120;
+            hsv[ 0 ] = ( ( 60 * ( B - R ) ) / range ) + 120;
         }
         else
         {
-            hsv[ 0 ] = 60 * ( R - G ) / range + 240;
+            hsv[ 0 ] = ( ( 60 * ( R - G ) ) / range ) + 240;
         }
 
         if ( max > 0 )
         {
-            hsv[ 1 ] = 1 - min / max;
+            hsv[ 1 ] = 1 - ( min / max );
         }
         else
         {
@@ -717,9 +717,9 @@ public sealed class Color
     {
         var result = ( R != 0F ? NumberUtils.FloatToIntBits( R ) : 0 );
 
-        result = 31 * result + ( G != 0F ? NumberUtils.FloatToIntBits( G ) : 0 );
-        result = 31 * result + ( B != 0F ? NumberUtils.FloatToIntBits( B ) : 0 );
-        result = 31 * result + ( A != 0F ? NumberUtils.FloatToIntBits( A ) : 0 );
+        result = ( 31 * result ) + ( G != 0F ? NumberUtils.FloatToIntBits( G ) : 0 );
+        result = ( 31 * result ) + ( B != 0F ? NumberUtils.FloatToIntBits( B ) : 0 );
+        result = ( 31 * result ) + ( A != 0F ? NumberUtils.FloatToIntBits( A ) : 0 );
 
         return result;
     }

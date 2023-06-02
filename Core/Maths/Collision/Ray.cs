@@ -122,7 +122,7 @@ public class Ray
     {
         if ( o == this ) return true;
 
-        if ( o == null || o.GetType() != this.GetType() ) return false;
+        if ( ( o == null ) || ( o.GetType() != this.GetType() ) ) return false;
 
         var r = ( Ray )o;
 
@@ -137,7 +137,7 @@ public class Ray
         const int prime = 73;
 
         var result = prime + this.direction.GetHashCode();
-        result = prime * result + this.origin.GetHashCode();
+        result = ( prime * result ) + this.origin.GetHashCode();
 
         return result;
     }

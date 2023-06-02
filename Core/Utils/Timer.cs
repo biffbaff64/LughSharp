@@ -36,7 +36,7 @@ public class Timer
     {
         lock ( threadLock )
         {
-            if ( _thread == null || _thread.files != Gdx.Files )
+            if ( ( _thread == null ) || ( _thread.files != Gdx.Files ) )
             {
                 _thread?.Dispose();
 
@@ -400,7 +400,7 @@ public class Timer
         {
             lock ( threadLock )
             {
-                if ( _thread != this || files != Gdx.Files ) goto exitlabel;
+                if ( ( _thread != this ) || ( files != Gdx.Files ) ) goto exitlabel;
 
                 long waitMillis = 5000;
 
@@ -421,7 +421,7 @@ public class Timer
                     }
                 }
 
-                if ( _thread != this || files != Gdx.Files ) goto exitlabel;
+                if ( ( _thread != this ) || ( files != Gdx.Files ) ) goto exitlabel;
 
                 try
                 {

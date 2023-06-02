@@ -51,7 +51,7 @@ public class Segment
     public override bool Equals( object? o )
     {
         if ( o == this ) return true;
-        if ( o == null || o.GetType() != this.GetType() ) return false;
+        if ( ( o == null ) || ( o.GetType() != this.GetType() ) ) return false;
 
         var s = ( Segment )o;
 
@@ -66,7 +66,7 @@ public class Segment
         const int prime = 71;
 
         var result = prime + this.vectorA.GetHashCode();
-        result = prime * result + this.vectorB.GetHashCode();
+        result = ( prime * result ) + this.vectorB.GetHashCode();
 
         return result;
     }

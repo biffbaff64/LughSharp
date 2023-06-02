@@ -321,15 +321,18 @@ public class Actor
     /// <summary>
     /// </summary>
     /// <param name="action"></param>
-    public void AddAction( Action action )
+    public void AddAction( Action? action )
     {
-        action.Actor = this;
-
-        _actions.Add( action );
-
-        if ( Stage is { ActionsRequestRendering: true } )
+        if ( action != null )
         {
-            Gdx.Graphics.RequestRendering();
+            action.Actor = this;
+
+            _actions.Add( action );
+
+            if ( Stage is { ActionsRequestRendering: true } )
+            {
+                Gdx.Graphics.RequestRendering();
+            }
         }
     }
 
@@ -1278,7 +1281,7 @@ public class Actor
     {
         if ( !DebugFlag ) return;
 
-        shapes.Set( ShapeRenderer.ShapeType.Line );
+        shapes.Set( ShapeRenderer.ShapeTypes.Line );
 
         if ( Stage != null )
         {

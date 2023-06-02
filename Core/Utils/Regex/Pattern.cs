@@ -127,7 +127,7 @@ public class Pattern : IPattern
 
         if ( limit == 0 )
         {
-            while ( resultSize > 0 && matchList[ resultSize - 1 ].Equals( "" ) )
+            while ( ( resultSize > 0 ) && matchList[ resultSize - 1 ].Equals( "" ) )
             {
                 resultSize--;
             }

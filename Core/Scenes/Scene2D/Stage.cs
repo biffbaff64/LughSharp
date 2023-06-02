@@ -70,8 +70,7 @@ public class Stage : InputAdapter
     public Stage()
         : this( new ScalingViewport( Scaling.Stretch, Gdx.Graphics.Width,
                                      Gdx.Graphics.Height, new OrthographicCamera() ),
-                new SpriteBatch()
-              )
+                new SpriteBatch() )
     {
         _ownsBatch = true;
     }
@@ -109,13 +108,7 @@ public class Stage : InputAdapter
     /// </summary>
     public void Draw()
     {
-        if ( Camera == null )
-        {
-            Gdx.App.Log( "Stage", "Draw: NULL Camera!" );
-
-            return;
-        }
-
+        Camera = Viewport.Camera;
         Camera.Update();
 
         if ( !Root.Visible ) return;
@@ -187,7 +180,7 @@ public class Stage : InputAdapter
 
         Gdx.GL.GLEnable( IGL20.GL_Blend );
 
-        _debugShapes.SetProjectionMatrix( Camera?.Combined );
+        _debugShapes.ProjectionMatrix = Camera.Combined;
         _debugShapes.Begin();
         Root.DrawDebug( _debugShapes );
         _debugShapes.End();
@@ -247,11 +240,11 @@ public class Stage : InputAdapter
 
                     ScreenToStageCoordinates
                         (
-                         _tempCoords.Set
-                             (
-                              _pointerScreenX[ pointer ],
-                              _pointerScreenY[ pointer ]
-                             )
+                        _tempCoords.Set
+                            (
+                            _pointerScreenX[ pointer ],
+                            _pointerScreenY[ pointer ]
+                            )
                         );
 
                     // Exit over last.
@@ -275,10 +268,10 @@ public class Stage : InputAdapter
             // Update over actor for the pointer.
             _pointerOverActors[ pointer ] = FireEnterAndExit
                 (
-                 overLast,
-                 _pointerScreenX[ pointer ],
-                 _pointerScreenY[ pointer ],
-                 pointer
+                overLast,
+                _pointerScreenX[ pointer ],
+                _pointerScreenY[ pointer ],
+                pointer
                 );
         }
 
@@ -868,7 +861,7 @@ public class Stage : InputAdapter
     /// </summary>
     public void UnfocusAll()
     {
-        ScrollFocus = null;
+        ScrollFocus   = null;
         KeyboardFocus = null;
         CancelTouchFocus();
     }
@@ -961,7 +954,7 @@ public class Stage : InputAdapter
 
         if ( ( _debugShapes != null ) && _debugShapes.IsDrawing() )
         {
-            transformMatrix = _debugShapes.GetTransformMatrix();
+            transformMatrix = _debugShapes.TransformMatrix;
         }
         else
         {
@@ -1042,7 +1035,7 @@ public class Stage : InputAdapter
         {
             if ( _scrollFocus == value ) return;
 
-            FocusListener.FocusEvent focusEvent = Pools<FocusListener.FocusEvent>.Obtain();
+            FocusListener.FocusEvent focusEvent = Pools< FocusListener.FocusEvent >.Obtain();
 
             focusEvent.Stage = this;
             focusEvent.Type  = FocusListener.FocusEvent.FeType.Scroll;
@@ -1066,7 +1059,7 @@ public class Stage : InputAdapter
                 {
                     focusEvent.Focused      = true;
                     focusEvent.RelatedActor = oldScrollFocus;
-                    value.Fire(  focusEvent );
+                    value.Fire( focusEvent );
 
                     success = !focusEvent.IsCancelled;
 
@@ -1077,7 +1070,7 @@ public class Stage : InputAdapter
                 }
             }
 
-            Pools<FocusListener.FocusEvent>.Free( focusEvent );
+            Pools< FocusListener.FocusEvent >.Free( focusEvent );
         }
     }
 
@@ -1094,7 +1087,7 @@ public class Stage : InputAdapter
     /// <summary>
     /// The viewport's camera.
     /// </summary>
-    public Camera? Camera => Viewport.Camera;
+    public Camera Camera { get; set; }
 
     /// <summary>
     /// Returns the root group which holds all actors in the stage.
@@ -1112,7 +1105,7 @@ public class Stage : InputAdapter
             value.Stage  = this;
         }
     }
-    
+
     /// <summary>
     /// Returns the root's child actors.
     /// </summary>

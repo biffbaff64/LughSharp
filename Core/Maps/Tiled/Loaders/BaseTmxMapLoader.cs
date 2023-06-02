@@ -264,7 +264,7 @@ public abstract class BaseTmxMapLoader<TP>
             {
                 for ( int x = 0; x < width; x++ )
                 {
-                    int  id               = ids[ y * width + x ];
+                    int  id               = ids[ ( y * width ) + x ];
                     bool flipHorizontally = ( ( id & Flag_Flip_Horizontally ) != 0 );
                     bool flipVertically   = ( ( id & Flag_Flip_Vertically ) != 0 );
                     bool flipDiagonally   = ( ( id & Flag_Flip_Diagonally ) != 0 );
@@ -432,7 +432,7 @@ public abstract class BaseTmxMapLoader<TP>
                     {
                         string[] point = points[ i ].split( "," );
                         vertices[ i * 2 ]     = Float.parseFloat( point[ 0 ] ) * scaleX;
-                        vertices[ i * 2 + 1 ] = Float.parseFloat( point[ 1 ] ) * scaleY * ( flipY ? -1 : 1 );
+                        vertices[ ( i * 2 ) + 1 ] = Float.parseFloat( point[ 1 ] ) * scaleY * ( flipY ? -1 : 1 );
                     }
 
                     Polygon polygon = new Polygon( vertices );
@@ -448,7 +448,7 @@ public abstract class BaseTmxMapLoader<TP>
                     {
                         string[] point = points[ i ].split( "," );
                         vertices[ i * 2 ]     = Float.parseFloat( point[ 0 ] ) * scaleX;
-                        vertices[ i * 2 + 1 ] = Float.parseFloat( point[ 1 ] ) * scaleY * ( flipY ? -1 : 1 );
+                        vertices[ ( i * 2 ) + 1 ] = Float.parseFloat( point[ 1 ] ) * scaleY * ( flipY ? -1 : 1 );
                     }
 
                     Polyline polyline = new Polyline( vertices );
@@ -699,10 +699,10 @@ public abstract class BaseTmxMapLoader<TP>
                                 if ( read != temp.length )
                                     throw new GdxRuntimeException( "Error Reading TMX Layer Data: Premature end of tile data" );
 
-                                ids[ y * width + x ] = UnsignedByteToInt( temp[ 0 ] )
-                                                       | UnsignedByteToInt( temp[ 1 ] ) << 8
-                                                       | UnsignedByteToInt( temp[ 2 ] ) << 16
-                                                       | UnsignedByteToInt( temp[ 3 ] ) << 24;
+                                ids[ ( y * width ) + x ] = UnsignedByteToInt( temp[ 0 ] )
+                                                           | ( UnsignedByteToInt( temp[ 1 ] ) << 8 )
+                                                           | ( UnsignedByteToInt( temp[ 2 ] ) << 16 )
+                                                           | ( UnsignedByteToInt( temp[ 3 ] ) << 24 );
                             }
                         }
                     }

@@ -108,7 +108,7 @@ public class InputListener : IEventListener
     /// the event is handled by <see cref="Event.Handle()"/>.
     /// </summary>
     /// <see cref="InputEvent "/>
-    protected virtual bool TouchDown( InputEvent inputEvent, float x, float y, int pointer, int button )
+    protected bool TouchDown( InputEvent inputEvent, float x, float y, int pointer, int button )
     {
         return false;
     }
@@ -119,7 +119,7 @@ public class InputListener : IEventListener
     /// The touchUp event is always handled by <see cref="Event.Handle()"/>.
     /// </summary>
     /// <see cref="InputEvent "/>
-    protected virtual void TouchUp( InputEvent inputEvent, float x, float y, int pointer, int button )
+    protected void TouchUp( InputEvent inputEvent, float x, float y, int pointer, int button )
     {
     }
 
@@ -129,7 +129,7 @@ public class InputListener : IEventListener
     /// The touchDragged event is always handled by <see cref="Event.Handle()"/>.
     /// </summary>
     /// <see cref="InputEvent "/>
-    protected virtual void TouchDragged( InputEvent inputEvent, float x, float y, int pointer )
+    protected void TouchDragged( InputEvent inputEvent, float x, float y, int pointer )
     {
     }
 
@@ -139,7 +139,7 @@ public class InputListener : IEventListener
     /// by <see cref="Event.Handle()"/>.
     /// </summary>
     /// <see cref="InputEvent "/>
-    protected virtual bool MouseMoved( InputEvent inputEvent, float x, float y )
+    protected bool MouseMoved( InputEvent inputEvent, float x, float y )
     {
         return false;
     }
@@ -155,7 +155,7 @@ public class InputListener : IEventListener
     /// <param name="pointer"></param>
     /// <param name="fromActor"> May be null. </param>
     /// <see cref="InputEvent "/>
-    protected virtual void Enter( InputEvent inputEvent, float x, float y, int pointer, Actor? fromActor )
+    protected void Enter( InputEvent inputEvent, float x, float y, int pointer, Actor? fromActor )
     {
     }
 
@@ -169,7 +169,7 @@ public class InputListener : IEventListener
     /// <param name="pointer"></param>
     /// <param name="toActor"> May be null. </param>
     /// <see cref="InputEvent "/>
-    protected virtual void Exit( InputEvent inputEvent, float x, float y, int pointer, Actor? toActor )
+    protected void Exit( InputEvent inputEvent, float x, float y, int pointer, Actor? toActor )
     {
     }
 
@@ -177,7 +177,7 @@ public class InputListener : IEventListener
     /// Called when the mouse wheel has been scrolled. When true is returned,
     /// the event is handled in <see cref="Event.Handle()"/>.
     /// </summary>
-    protected virtual bool Scrolled( InputEvent inputEvent, float x, float y, float amountX, float amountY )
+    protected bool Scrolled( InputEvent inputEvent, float x, float y, float amountX, float amountY )
     {
         return false;
     }
@@ -186,7 +186,7 @@ public class InputListener : IEventListener
     /// Called when a key goes down. When true is returned, the event is
     /// handled by <see cref="Event.Handle()"/>.
     /// </summary>
-    protected virtual bool KeyDown( InputEvent inputEvent, int keycode )
+    protected bool KeyDown( InputEvent inputEvent, int keycode )
     {
         return false;
     }
@@ -195,7 +195,7 @@ public class InputListener : IEventListener
     /// Called when a key goes up. When true is returned, the event is
     /// handled by <see cref="Event.Handle()"/>.
     /// </summary>
-    protected virtual bool KeyUp( InputEvent inputEvent, int keycode )
+    protected bool KeyUp( InputEvent inputEvent, int keycode )
     {
         return false;
     }
@@ -208,7 +208,7 @@ public class InputListener : IEventListener
     /// <param name="character">
     /// May be 0 for key typed events that don't map to a character (ctrl, shift, etc).
     /// </param>
-    protected virtual bool KeyTyped( InputEvent inputEvent, char character )
+    protected bool KeyTyped( InputEvent inputEvent, char character )
     {
         return false;
     }

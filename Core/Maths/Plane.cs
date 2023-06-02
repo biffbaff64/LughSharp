@@ -197,7 +197,7 @@ public class Plane
     public void Set( float pointX, float pointY, float pointZ, float norX, float norY, float norZ )
     {
         this._normal.Set( norX, norY, norZ );
-        _dto = -( pointX * norX + pointY * norY + pointZ * norZ );
+        _dto = -( ( pointX * norX ) + ( pointY * norY ) + ( pointZ * norZ ) );
     }
 
     /// <summary>

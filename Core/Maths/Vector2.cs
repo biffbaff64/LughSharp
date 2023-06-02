@@ -43,22 +43,22 @@ public class Vector2 : IVector< Vector2 >
 
     public static float Len( float x, float y )
     {
-        return ( float )Math.Sqrt( x * x + y * y );
+        return ( float )Math.Sqrt( ( x * x ) + ( y * y ) );
     }
 
     public float Len()
     {
-        return ( float )Math.Sqrt( X * X + Y * Y );
+        return ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) );
     }
 
     public static float Len2( float x, float y )
     {
-        return x * x + y * y;
+        return ( x * x ) + ( y * y );
     }
 
     public float Len2()
     {
-        return X * X + Y * Y;
+        return ( X * X ) + ( Y * Y );
     }
 
     public Vector2 Set( Vector2 v )
@@ -146,17 +146,17 @@ public class Vector2 : IVector< Vector2 >
 
     public static float Dot( float x1, float y1, float x2, float y2 )
     {
-        return x1 * x2 + y1 * y2;
+        return ( x1 * x2 ) + ( y1 * y2 );
     }
 
     public float Dot( Vector2 v )
     {
-        return X * v.X + Y * v.Y;
+        return ( X * v.X ) + ( Y * v.Y );
     }
 
     public float Dot( float ox, float oy )
     {
-        return X * ox + Y * oy;
+        return ( X * ox ) + ( Y * oy );
     }
 
     public Vector2 Scl( float scalar )
@@ -204,7 +204,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = x2 - x1;
         var yD = y2 - y1;
 
-        return ( float )Math.Sqrt( xD * xD + yD * yD );
+        return ( float )Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
     }
 
     public float Dst( Vector2 v )
@@ -212,7 +212,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = v.X - X;
         var yD = v.Y - Y;
 
-        return ( float )Math.Sqrt( xD * xD + yD * yD );
+        return ( float )Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
     }
 
     public float Dst( float x, float y )
@@ -220,7 +220,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = x - this.X;
         var yD = y - this.Y;
 
-        return ( float )Math.Sqrt( xD * xD + yD * yD );
+        return ( float )Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
     }
 
     public static float Dst2( float x1, float y1, float x2, float y2 )
@@ -228,7 +228,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = x2 - x1;
         var yD = y2 - y1;
 
-        return xD * xD + yD * yD;
+        return ( xD * xD ) + ( yD * yD );
     }
 
     public float Dst2( Vector2 v )
@@ -236,7 +236,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = v.X - X;
         var yD = v.Y - Y;
 
-        return xD * xD + yD * yD;
+        return ( xD * xD ) + ( yD * yD );
     }
 
     public float Dst2( float x, float y )
@@ -244,7 +244,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = x - this.X;
         var yD = y - this.Y;
 
-        return xD * xD + yD * yD;
+        return ( xD * xD ) + ( yD * yD );
     }
 
     public Vector2 Limit( float limit )
@@ -288,7 +288,7 @@ public class Vector2 : IVector< Vector2 >
     {
         var oldLen2 = Len2();
 
-        return ( oldLen2 == 0 || MathUtils.IsEqual( oldLen2, len2 ) ) ? this : Scl( ( float )Math.Sqrt( len2 / oldLen2 ) );
+        return ( ( oldLen2 == 0 ) || MathUtils.IsEqual( oldLen2, len2 ) ) ? this : Scl( ( float )Math.Sqrt( len2 / oldLen2 ) );
     }
 
     public string Tostring()
@@ -301,7 +301,7 @@ public class Vector2 : IVector< Vector2 >
         var s = v.IndexOf( ',', 1 );
 
         // Note - v[ ^1 ] is equivalent to v[ v.Length-1 ].
-        if ( s != -1 && v[0] == '(' && v[ ^1 ] == ')' )
+        if ( ( s != -1 ) && ( v[0] == '(' ) && ( v[ ^1 ] == ')' ) )
         {
             try
             {
@@ -321,8 +321,8 @@ public class Vector2 : IVector< Vector2 >
 
     public Vector2 Mul( Matrix3 mat )
     {
-        var x = this.X * mat.val[ 0 ] + this.Y * mat.val[ 3 ] + mat.val[ 6 ];
-        var y = this.X * mat.val[ 1 ] + this.Y * mat.val[ 4 ] + mat.val[ 7 ];
+        var x = ( this.X * mat.val[ 0 ] ) + ( this.Y * mat.val[ 3 ] ) + mat.val[ 6 ];
+        var y = ( this.X * mat.val[ 1 ] ) + ( this.Y * mat.val[ 4 ] ) + mat.val[ 7 ];
             
         this.X = x;
         this.Y = y;
@@ -332,12 +332,12 @@ public class Vector2 : IVector< Vector2 >
 
     public float Crs( Vector2 v )
     {
-        return this.X * v.Y - this.Y * v.X;
+        return ( this.X * v.Y ) - ( this.Y * v.X );
     }
 
     public float Crs( float x, float y )
     {
-        return this.X * y - this.Y * x;
+        return ( this.X * y ) - ( this.Y * x );
     }
 
     public float Angle()
@@ -420,8 +420,8 @@ public class Vector2 : IVector< Vector2 >
         var cos = ( float )Math.Cos( radians );
         var sin = ( float )Math.Sin( radians );
 
-        var newX = this.X * cos - this.Y * sin;
-        var newY = this.X * sin + this.Y * cos;
+        var newX = ( this.X * cos ) - ( this.Y * sin );
+        var newY = ( this.X * sin ) + ( this.Y * cos );
 
         this.X = newX;
         this.Y = newY;
@@ -483,7 +483,7 @@ public class Vector2 : IVector< Vector2 >
         var prime = 31;
 
         var result = prime + NumberUtils.FloatToIntBits( X );
-        result = prime * result + NumberUtils.FloatToIntBits( Y );
+        result = ( prime * result ) + NumberUtils.FloatToIntBits( Y );
 
         return result;
     }
@@ -536,7 +536,7 @@ public class Vector2 : IVector< Vector2 >
 
     public bool IsZero()
     {
-        return X == 0 && Y == 0;
+        return ( X == 0 ) && ( Y == 0 );
     }
 
     public bool IsZero( float margin )
@@ -546,32 +546,32 @@ public class Vector2 : IVector< Vector2 >
 
     public bool IsOnLine( Vector2 other )
     {
-        return MathUtils.IsZero( X * other.Y - Y * other.X );
+        return MathUtils.IsZero( ( X * other.Y ) - ( Y * other.X ) );
     }
 
     public bool IsOnLine( Vector2 other, float epsilon )
     {
-        return MathUtils.IsZero( X * other.Y - Y * other.X, epsilon );
+        return MathUtils.IsZero( ( X * other.Y ) - ( Y * other.X ), epsilon );
     }
 
     public bool IsCollinear( Vector2 other, float epsilon )
     {
-        return IsOnLine( other, epsilon ) && Dot( other ) > 0f;
+        return IsOnLine( other, epsilon ) && ( Dot( other ) > 0f );
     }
 
     public bool IsCollinear( Vector2 other )
     {
-        return IsOnLine( other ) && Dot( other ) > 0f;
+        return IsOnLine( other ) && ( Dot( other ) > 0f );
     }
 
     public bool IsCollinearOpposite( Vector2 other, float epsilon )
     {
-        return IsOnLine( other, epsilon ) && Dot( other ) < 0f;
+        return IsOnLine( other, epsilon ) && ( Dot( other ) < 0f );
     }
 
     public bool IsCollinearOpposite( Vector2 other )
     {
-        return IsOnLine( other ) && Dot( other ) < 0f;
+        return IsOnLine( other ) && ( Dot( other ) < 0f );
     }
 
     public bool IsPerpendicular( Vector2 vector )

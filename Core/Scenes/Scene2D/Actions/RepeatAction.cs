@@ -2,5 +2,5 @@
 
 public class RepeatAction
 {
-        
+    public const int Forever = -1;
 }

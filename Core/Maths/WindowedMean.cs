@@ -67,7 +67,7 @@ public class WindowedMean
 
         _values[ _lastValue++ ] = value;
 
-        if ( _lastValue > _values.Length - 1 )
+        if ( _lastValue > ( _values.Length - 1 ) )
         {
             _lastValue = 0;
         }

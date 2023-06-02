@@ -9,7 +9,7 @@ public class NumberUtils
         // Check for NaN based on values of bit fields, maximum
         // exponent and nonzero significand.
         if ( ( ( result & FloatConsts.Exp_Bit_Mask ) == FloatConsts.Exp_Bit_Mask )
-             && ( result & FloatConsts.Signif_Bit_Mask ) != 0 )
+             && ( ( result & FloatConsts.Signif_Bit_Mask ) != 0 ) )
         {
             result = 0x7fc00000;
         }

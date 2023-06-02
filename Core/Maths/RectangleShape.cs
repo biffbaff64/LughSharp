@@ -142,7 +142,7 @@ public sealed class RectangleShape : IShape2D
     /// <returns> whether the point is contained in the rectangle</returns>
     public bool Contains( float x, float y )
     {
-        return this.X <= x && this.X + this.Width >= x && this.Y <= y && this.Y + this.Height >= y;
+        return ( this.X <= x ) && ( ( this.X + this.Width ) >= x ) && ( this.Y <= y ) && ( ( this.Y + this.Height ) >= y );
     }
 
     /// <summary>
@@ -160,10 +160,10 @@ public sealed class RectangleShape : IShape2D
     /// <returns> whether the circle is contained in the rectangle  </returns>
     public bool Contains( Circle circle )
     {
-        return ( circle.X - circle.Radius >= X )
-               && ( circle.X + circle.Radius <= X + Width )
-               && ( circle.Y - circle.Radius >= Y )
-               && ( circle.Y + circle.Radius <= Y + Height );
+        return ( ( circle.X - circle.Radius ) >= X )
+               && ( ( circle.X + circle.Radius ) <= ( X + Width ) )
+               && ( ( circle.Y - circle.Radius ) >= Y )
+               && ( ( circle.Y + circle.Radius ) <= ( Y + Height ) );
     }
 
     /// <summary>
@@ -178,8 +178,8 @@ public sealed class RectangleShape : IShape2D
         var ymin = rectangle.Y;
         var ymax = ymin + rectangle.Height;
 
-        return ( ( xmin > X && xmin < X + Width ) && ( xmax > X && xmax < X + Width ) )
-               && ( ( ymin > Y && ymin < Y + Height ) && ( ymax > Y && ymax < Y + Height ) );
+        return ( ( ( xmin > X ) && ( xmin < ( X + Width ) ) ) && ( ( xmax > X ) && ( xmax < ( X + Width ) ) ) )
+               && ( ( ( ymin > Y ) && ( ymin < ( Y + Height ) ) ) && ( ( ymax > Y ) && ( ymax < ( Y + Height ) ) ) );
     }
 
     /// <summary>
@@ -189,7 +189,7 @@ public sealed class RectangleShape : IShape2D
     /// <returns> whether this rectangle overlaps the other rectangle.  </returns>
     public bool Overlaps( RectangleShape r )
     {
-        return X < r.X + r.Width && X + Width > r.X && Y < r.Y + r.Height && Y + Height > r.Y;
+        return ( X < ( r.X + r.Width ) ) && ( ( X + Width ) > r.X ) && ( Y < ( r.Y + r.Height ) ) && ( ( Y + Height ) > r.Y );
     }
 
     /// <summary>
@@ -313,8 +313,8 @@ public sealed class RectangleShape : IShape2D
     /// <returns> the given vector with results stored inside  </returns>
     public Vector2 GetCenter( Vector2 vector )
     {
-        vector.X = X + Width / 2;
-        vector.Y = Y + Height / 2;
+        vector.X = X + ( Width / 2 );
+        vector.Y = Y + ( Height / 2 );
 
         return vector;
     }
@@ -327,7 +327,7 @@ public sealed class RectangleShape : IShape2D
     /// <returns> this for chaining  </returns>
     public RectangleShape SetCenter( float x, float y )
     {
-        SetPosition( x - Width / 2, y - Height / 2 );
+        SetPosition( x - ( Width / 2 ), y - ( Height / 2 ) );
 
         return this;
     }
@@ -339,7 +339,7 @@ public sealed class RectangleShape : IShape2D
     /// <returns> this for chaining  </returns>
     public RectangleShape SetCenter( Vector2 position )
     {
-        SetPosition( position.X - Width / 2, position.Y - Height / 2 );
+        SetPosition( position.X - ( Width / 2 ), position.Y - ( Height / 2 ) );
 
         return this;
     }
@@ -367,7 +367,7 @@ public sealed class RectangleShape : IShape2D
             SetSize( rect.Width, rect.Width / ratio );
         }
 
-        SetPosition( ( rect.X + rect.Width / 2 ) - Width / 2, ( rect.Y + rect.Height / 2 ) - Height / 2 );
+        SetPosition( ( rect.X + ( rect.Width / 2 ) ) - ( Width / 2 ), ( rect.Y + ( rect.Height / 2 ) ) - ( Height / 2 ) );
 
         return this;
     }
@@ -395,7 +395,7 @@ public sealed class RectangleShape : IShape2D
             SetSize( rect.Width, rect.Width / ratio );
         }
 
-        SetPosition( ( rect.X + rect.Width / 2 ) - Width / 2, ( rect.Y + rect.Height / 2 ) - Height / 2 );
+        SetPosition( ( rect.X + ( rect.Width / 2 ) ) - ( Width / 2 ), ( rect.Y + ( rect.Height / 2 ) ) - ( Height / 2 ) );
 
         return this;
     }
@@ -424,7 +424,7 @@ public sealed class RectangleShape : IShape2D
 
         // Note: v[ ^1 ] is equivalent to v[ v.Length - 1 ]
 
-        if ( s0 != -1 && s1 != -1 && s2 != -1 && v[ 0 ] == '[' && v[ ^1 ] == ']' )
+        if ( ( s0 != -1 ) && ( s1 != -1 ) && ( s2 != -1 ) && ( v[ 0 ] == '[' ) && ( v[ ^1 ] == ']' ) )
         {
             try
             {
@@ -462,9 +462,9 @@ public sealed class RectangleShape : IShape2D
         const int prime = 31;
 
         var result = prime + NumberUtils.FloatToRawIntBits( Height );
-        result = prime * result + NumberUtils.FloatToRawIntBits( Width );
-        result = prime * result + NumberUtils.FloatToRawIntBits( X );
-        result = prime * result + NumberUtils.FloatToRawIntBits( Y );
+        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Width );
+        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( X );
+        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Y );
 
         return result;
     }

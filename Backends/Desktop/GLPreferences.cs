@@ -169,7 +169,7 @@ public class GLPreferences : IPreferences
 
     public bool Contains( string key )
     {
-        return _properties != null && ( _properties.ContainsKey( key ) );
+        return ( _properties != null ) && ( _properties.ContainsKey( key ) );
     }
 
     public void Clear()

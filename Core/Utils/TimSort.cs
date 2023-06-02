@@ -219,7 +219,7 @@ public sealed class TimSort<T>
         // Allocate temp storage (which may be increased later if necessary)
         var len = a.Length;
             
-        _tmp = new T[ len < 2 * InitialTmpStorageLength ? len >>> 1 : InitialTmpStorageLength ];
+        _tmp = new T[ len < ( 2 * InitialTmpStorageLength ) ? len >>> 1 : InitialTmpStorageLength ];
 
         // Allocate runs-to-be-merged stack (which cannot be expanded). The stack length
         // requirements are described in listsort.txt. The C version always uses the same
@@ -324,7 +324,7 @@ public sealed class TimSort<T>
     /// <param name="c"> comparator to used for the sort</param>
     private static void BinarySort( T[] a, int lo, int hi, int start, IComparer< T > c )
     {
-        if ( AllowAsserts ) Debug.Assert( lo <= start && start <= hi );
+        if ( AllowAsserts ) Debug.Assert( ( lo <= start ) && ( start <= hi ) );
 
         if ( start == lo ) start++;
 
@@ -423,7 +423,7 @@ public sealed class TimSort<T>
         if ( c.Compare( a[ runHi++ ], a[ lo ] ) < 0 )
         {
             // Descending
-            while ( runHi < hi && c.Compare( a[ runHi ], a[ runHi - 1 ] ) < 0 )
+            while ( ( runHi < hi ) && ( c.Compare( a[ runHi ], a[ runHi - 1 ] ) < 0 ) )
             {
                 runHi++;
             }
@@ -433,7 +433,7 @@ public sealed class TimSort<T>
         else
         {
             // Ascending
-            while ( runHi < hi && c.Compare( a[ runHi ], a[ runHi - 1 ] ) >= 0 )
+            while ( ( runHi < hi ) && ( c.Compare( a[ runHi ], a[ runHi - 1 ] ) >= 0 ) )
             {
                 runHi++;
             }
@@ -525,8 +525,8 @@ public sealed class TimSort<T>
         {
             var n = _stackSize - 2;
 
-            if ( ( n >= 1 && _runLen[ n - 1 ] <= _runLen[ n ] + _runLen[ n + 1 ] )
-                 || ( n >= 2 && _runLen[ n - 2 ] <= _runLen[ n ] + _runLen[ n - 1 ] ) )
+            if ( ( ( n >= 1 ) && ( _runLen[ n - 1 ] <= ( _runLen[ n ] + _runLen[ n + 1 ] ) ) )
+                 || ( ( n >= 2 ) && ( _runLen[ n - 2 ] <= ( _runLen[ n ] + _runLen[ n - 1 ] ) ) ) )
             {
                 if ( _runLen[ n - 1 ] < _runLen[ n + 1 ] ) n--;
             }
@@ -549,7 +549,7 @@ public sealed class TimSort<T>
         {
             var n = _stackSize - 2;
 
-            if ( n > 0 && _runLen[ n - 1 ] < _runLen[ n + 1 ] )
+            if ( ( n > 0 ) && ( _runLen[ n - 1 ] < _runLen[ n + 1 ] ) )
             {
                 n--;
             }
@@ -568,14 +568,14 @@ public sealed class TimSort<T>
     {
         if ( AllowAsserts ) Debug.Assert( _stackSize >= 2 );
         if ( AllowAsserts ) Debug.Assert( i >= 0 );
-        if ( AllowAsserts ) Debug.Assert( i == ( _stackSize - 2 ) || i == ( _stackSize - 3 ) );
+        if ( AllowAsserts ) Debug.Assert( ( i == ( _stackSize - 2 ) ) || ( i == ( _stackSize - 3 ) ) );
 
         var base1 = _runBase[ i ];
         var len1  = _runLen[ i ];
         var base2 = _runBase[ i + 1 ];
         var len2  = _runLen[ i + 1 ];
 
-        if ( AllowAsserts ) Debug.Assert( len1 > 0 && len2 > 0 );
+        if ( AllowAsserts ) Debug.Assert( ( len1 > 0 ) && ( len2 > 0 ) );
         if ( AllowAsserts ) Debug.Assert( ( base1 + len1 ) == base2 );
 
         // Record the length of the combined runs; if i is the 3rd-last run now, also
@@ -604,7 +604,7 @@ public sealed class TimSort<T>
 
         // Find where the last element of run1 goes in run2. Subsequent elements in run2
         // can be ignored (because they're already in place).
-        len2 = GallopLeft( _a[ base1 + len1 - 1 ], _a, base2, len2, len2 - 1, _c );
+        len2 = GallopLeft( _a[ ( base1 + len1 ) - 1 ], _a, base2, len2, len2 - 1, _c );
 
         if ( AllowAsserts ) Debug.Assert( len2 >= 0 );
 
@@ -645,7 +645,7 @@ public sealed class TimSort<T>
     /// </returns>
     private static int GallopLeft( T? key, IReadOnlyList< T > a, int baseIndex, int len, int hint, IComparer< T >? c )
     {
-        if ( AllowAsserts ) Debug.Assert( len > 0 && hint >= 0 && hint < len );
+        if ( AllowAsserts ) Debug.Assert( ( len > 0 ) && ( hint >= 0 ) && ( hint < len ) );
 
         var lastOfs = 0;
         var ofs     = 1;
@@ -655,7 +655,7 @@ public sealed class TimSort<T>
             // Gallop right until a[base+hint+lastOfs] < key <= a[base+hint+ofs]
             var maxOfs = len - hint;
 
-            while ( ofs < maxOfs && c.Compare( key, a[ baseIndex + hint + ofs ] ) > 0 )
+            while ( ( ofs < maxOfs ) && ( c.Compare( key, a[ baseIndex + hint + ofs ] ) > 0 ) )
             {
                 lastOfs = ofs;
                 ofs     = ( ofs << 1 ) + 1;
@@ -678,7 +678,7 @@ public sealed class TimSort<T>
             // Gallop left until a[base+hint-ofs] < key <= a[base+hint-lastOfs]
             var maxOfs = hint + 1;
 
-            while ( ofs < maxOfs && c?.Compare( key, a[ baseIndex + hint - ofs ] ) <= 0 )
+            while ( ( ofs < maxOfs ) && ( c?.Compare( key, a[ ( baseIndex + hint ) - ofs ] ) <= 0 ) )
             {
                 lastOfs = ofs;
                 ofs     = ( ofs << 1 ) + 1;
@@ -698,7 +698,7 @@ public sealed class TimSort<T>
             ofs     = hint - tmp;
         }
 
-        if ( AllowAsserts ) Debug.Assert( -1 <= lastOfs && lastOfs < ofs && ofs <= len );
+        if ( AllowAsserts ) Debug.Assert( ( -1 <= lastOfs ) && ( lastOfs < ofs ) && ( ofs <= len ) );
 
         // Now a[base+lastOfs] < key <= a[base+ofs], so key belongs somewhere to the right
         // of lastOfs but no farther right than ofs.
@@ -742,7 +742,7 @@ public sealed class TimSort<T>
     /// </returns>
     private static int GallopRight( T? key, IReadOnlyList< T >? a, int baseIndex, int len, int hint, IComparer< T >? c )
     {
-        if ( AllowAsserts ) Debug.Assert( len > 0 && hint >= 0 && hint < len );
+        if ( AllowAsserts ) Debug.Assert( ( len > 0 ) && ( hint >= 0 ) && ( hint < len ) );
 
         var ofs     = 1;
         var lastOfs = 0;
@@ -752,7 +752,7 @@ public sealed class TimSort<T>
             // Gallop left until a[b+hint - ofs] <= key < a[b+hint - lastOfs]
             var maxOfs = hint + 1;
 
-            while ( ofs < maxOfs && c.Compare( key, a![ baseIndex + hint - ofs ] ) < 0 )
+            while ( ( ofs < maxOfs ) && ( c.Compare( key, a![ ( baseIndex + hint ) - ofs ] ) < 0 ) )
             {
                 lastOfs = ofs;
                 ofs     = ( ofs << 1 ) + 1;
@@ -776,7 +776,7 @@ public sealed class TimSort<T>
             // Gallop right until a[b+hint + lastOfs] <= key < a[b+hint + ofs]
             var maxOfs = len - hint;
 
-            while ( ofs < maxOfs && c?.Compare( key, a![ baseIndex + hint + ofs ] ) >= 0 )
+            while ( ( ofs < maxOfs ) && ( c?.Compare( key, a![ baseIndex + hint + ofs ] ) >= 0 ) )
             {
                 lastOfs = ofs;
                 ofs     = ( ofs << 1 ) + 1;
@@ -794,7 +794,7 @@ public sealed class TimSort<T>
             ofs     += hint;
         }
 
-        if ( AllowAsserts ) Debug.Assert( -1 <= lastOfs && lastOfs < ofs && ofs <= len );
+        if ( AllowAsserts ) Debug.Assert( ( -1 <= lastOfs ) && ( lastOfs < ofs ) && ( ofs <= len ) );
 
         // Now a[b + lastOfs] <= key < a[b + ofs], so key belongs somewhere to the right
         // of lastOfs but no farther right than ofs.
@@ -839,7 +839,7 @@ public sealed class TimSort<T>
     /// <param name="len2"> length of second run to be merged (must be > 0)  </param>
     private void MergeLo( int base1, int len1, int base2, int len2 )
     {
-        if ( AllowAsserts ) Debug.Assert( len1 > 0 && len2 > 0 && ( base1 + len1 ) == base2 );
+        if ( AllowAsserts ) Debug.Assert( ( len1 > 0 ) && ( len2 > 0 ) && ( ( base1 + len1 ) == base2 ) );
 
         // Copy first run into temp array
         var a   = this._a; // For performance
@@ -883,7 +883,7 @@ public sealed class TimSort<T>
             // Do the straightforward thing until (if ever) one run starts winning consistently.
             do
             {
-                if ( AllowAsserts ) Debug.Assert( len1 > 1 && len2 > 0 );
+                if ( AllowAsserts ) Debug.Assert( ( len1 > 1 ) && ( len2 > 0 ) );
 
                 if ( c?.Compare( a[ cursor2 ], tmp[ cursor1 ] ) < 0 )
                 {
@@ -909,7 +909,7 @@ public sealed class TimSort<T>
             // appears to be winning consistently anymore.
             do
             {
-                if ( AllowAsserts ) Debug.Assert( len1 > 1 && len2 > 0 );
+                if ( AllowAsserts ) Debug.Assert( ( len1 > 1 ) && ( len2 > 0 ) );
 
                 count1 = GallopRight( a[ cursor2 ], tmp, cursor1, len1, 0, c );
 
@@ -947,7 +947,7 @@ public sealed class TimSort<T>
 
                 minGallop--;
             }
-            while ( count1 >= MinGallop || count2 >= MinGallop );
+            while ( ( count1 >= MinGallop ) || ( count2 >= MinGallop ) );
 
             if ( minGallop < 0 ) minGallop = 0;
 
@@ -990,7 +990,7 @@ public sealed class TimSort<T>
     /// <param name="len2"> length of second run to be merged (must be > 0)  </param>
     private void MergeHi( int base1, int len1, int base2, int len2 )
     {
-        if ( AllowAsserts ) Debug.Assert( len1 > 0 && len2 > 0 && ( base1 + len1 ) == base2 );
+        if ( AllowAsserts ) Debug.Assert( ( len1 > 0 ) && ( len2 > 0 ) && ( ( base1 + len1 ) == base2 ) );
 
         // Copy second run into temp array
         var a   = this._a; // For performance
@@ -1000,9 +1000,9 @@ public sealed class TimSort<T>
             
         Array.Copy( a, base2, tmp, 0, len2 );
 
-        var cursor1 = base1 + len1 - 1; // Indexes into a
+        var cursor1 = ( base1 + len1 ) - 1; // Indexes into a
         var cursor2 = len2 - 1;         // Indexes into tmp array
-        var dest    = base2 + len2 - 1; // Indexes into a
+        var dest    = ( base2 + len2 ) - 1; // Indexes into a
 
         // Move last element of first run and deal with degenerate cases
         a[ dest-- ] = a[ cursor1-- ];
@@ -1039,7 +1039,7 @@ public sealed class TimSort<T>
              */
             do
             {
-                if ( AllowAsserts ) Debug.Assert( len1 > 0 && len2 > 1 );
+                if ( AllowAsserts ) Debug.Assert( ( len1 > 0 ) && ( len2 > 1 ) );
 
                 if ( c?.Compare( tmp[ cursor2 ], a[ cursor1 ] ) < 0 )
                 {
@@ -1067,7 +1067,7 @@ public sealed class TimSort<T>
             // to be winning consistently anymore.
             do
             {
-                if ( AllowAsserts ) Debug.Assert( len1 > 0 && len2 > 1 );
+                if ( AllowAsserts ) Debug.Assert( ( len1 > 0 ) && ( len2 > 1 ) );
 
                 count1 = len1 - GallopRight( tmp[ cursor2 ], a, base1, len1, len1 - 1, c );
 
@@ -1105,7 +1105,7 @@ public sealed class TimSort<T>
 
                 minGallop--;
             }
-            while ( count1 >= MinGallop || count2 >= MinGallop );
+            while ( ( count1 >= MinGallop ) || ( count2 >= MinGallop ) );
 
             if ( minGallop < 0 ) minGallop = 0;
 

@@ -135,7 +135,7 @@ public class RandomXS128 : Random
             var bits  = NextLong() >>> 1;
             var value = bits % n;
 
-            if ( bits - value + ( n - 1 ) >= 0 )
+            if ( ( ( bits - value ) + ( n - 1 ) ) >= 0 )
             {
                 return value;
             }

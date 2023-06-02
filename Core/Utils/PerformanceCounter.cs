@@ -99,7 +99,7 @@ public class PerformanceCounter
 
         var currentLoad = delta == 0f ? 0f : Current / delta;
 
-        Load.Put( ( delta > 1f ) ? currentLoad : delta * currentLoad + ( 1f - delta ) * Load.Latest );
+        Load.Put( ( delta > 1f ) ? currentLoad : ( delta * currentLoad ) + ( ( 1f - delta ) * Load.Latest ) );
 
         Current = 0f;
         Valid   = false;

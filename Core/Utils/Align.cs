@@ -21,8 +21,8 @@ public static class Align
     public static bool IsRight( int align )            => ( align & Right ) != 0;
     public static bool IsTop( int align )              => ( align & Top ) != 0;
     public static bool IsBottom( int align )           => ( align & Bottom ) != 0;
-    public static bool IsCenterHorizontal( int align ) => ( ( align & Left ) == 0 && ( align & Right ) == 0 );
-    public static bool IsCenterVertical( int align )   => ( ( align & Top ) == 0 && ( align & Bottom ) == 0 );
+    public static bool IsCenterHorizontal( int align ) => ( ( ( align & Left ) == 0 ) && ( ( align & Right ) == 0 ) );
+    public static bool IsCenterVertical( int align )   => ( ( ( align & Top ) == 0 ) && ( ( align & Bottom ) == 0 ) );
 
     /// <summary>
     /// </summary>

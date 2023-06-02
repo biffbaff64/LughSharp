@@ -107,7 +107,7 @@ public sealed class Vector3 : IVector< Vector3 >
         var v = MathUtils.Random();
 
         var theta = MathUtils.PI2 * u;                 // azimuthal angle
-        var phi   = ( float )Math.Acos( 2f * v - 1f ); // polar angle
+        var phi   = ( float )Math.Acos( ( 2f * v ) - 1f ); // polar angle
 
         return this.SetFromSpherical( theta, phi );
     }
@@ -195,22 +195,22 @@ public sealed class Vector3 : IVector< Vector3 >
 
     public static float Len( float x, float y, float z )
     {
-        return ( float )Math.Sqrt( x * x + y * y + z * z );
+        return ( float )Math.Sqrt( ( x * x ) + ( y * y ) + ( z * z ) );
     }
 
     public float Len()
     {
-        return ( float )Math.Sqrt( X * X + Y * Y + Z * Z );
+        return ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) );
     }
 
     public static float Len2( float x, float y, float z )
     {
-        return x * x + y * y + z * z;
+        return ( x * x ) + ( y * y ) + ( z * z );
     }
 
     public float Len2()
     {
-        return X * X + Y * Y + Z * Z;
+        return ( X * X ) + ( Y * Y ) + ( Z * Z );
     }
 
     public bool Idt( Vector3 vector )
@@ -226,7 +226,7 @@ public sealed class Vector3 : IVector< Vector3 >
         var b = y2 - y1;
         var c = z2 - z1;
 
-        return ( float )Math.Sqrt( a * a + b * b + c * c );
+        return ( float )Math.Sqrt( ( a * a ) + ( b * b ) + ( c * c ) );
     }
 
     public float Dst( Vector3 vector )
@@ -235,7 +235,7 @@ public sealed class Vector3 : IVector< Vector3 >
         var b = vector.Y - Y;
         var c = vector.Z - Z;
 
-        return ( float )Math.Sqrt( a * a + b * b + c * c );
+        return ( float )Math.Sqrt( ( a * a ) + ( b * b ) + ( c * c ) );
     }
 
     public float Dst( float x, float y, float z )
@@ -244,7 +244,7 @@ public sealed class Vector3 : IVector< Vector3 >
         var b = y - this.Y;
         var c = z - this.Z;
 
-        return ( float )Math.Sqrt( a * a + b * b + c * c );
+        return ( float )Math.Sqrt( ( a * a ) + ( b * b ) + ( c * c ) );
     }
 
     public static float Dst2( float x1, float y1, float z1, float x2, float y2, float z2 )
@@ -253,7 +253,7 @@ public sealed class Vector3 : IVector< Vector3 >
         var b = y2 - y1;
         var c = z2 - z1;
 
-        return a * a + b * b + c * c;
+        return ( a * a ) + ( b * b ) + ( c * c );
     }
 
     public float Dst2( Vector3 point )
@@ -262,7 +262,7 @@ public sealed class Vector3 : IVector< Vector3 >
         var b = point.Y - Y;
         var c = point.Z - Z;
 
-        return a * a + b * b + c * c;
+        return ( a * a ) + ( b * b ) + ( c * c );
     }
 
     public float Dst2( float x, float y, float z )
@@ -271,53 +271,53 @@ public sealed class Vector3 : IVector< Vector3 >
         var b = y - this.Y;
         var c = z - this.Z;
 
-        return a * a + b * b + c * c;
+        return ( a * a ) + ( b * b ) + ( c * c );
     }
 
     public Vector3 Nor()
     {
         var len2 = this.Len2();
 
-        if ( len2 == 0f || MathUtils.IsEqual( len2, 1f ) ) return this;
+        if ( ( len2 == 0f ) || MathUtils.IsEqual( len2, 1f ) ) return this;
 
         return this.Scl( 1f / ( float )Math.Sqrt( len2 ) );
     }
 
     public static float Dot( float x1, float y1, float z1, float x2, float y2, float z2 )
     {
-        return x1 * x2 + y1 * y2 + z1 * z2;
+        return ( x1 * x2 ) + ( y1 * y2 ) + ( z1 * z2 );
     }
 
     public float Dot( Vector3 vector )
     {
-        return X * vector.X + Y * vector.Y + Z * vector.Z;
+        return ( X * vector.X ) + ( Y * vector.Y ) + ( Z * vector.Z );
     }
 
     public float Dot( float x, float y, float z )
     {
-        return this.X * x + this.Y * y + this.Z * z;
+        return ( this.X * x ) + ( this.Y * y ) + ( this.Z * z );
     }
 
     public Vector3 Crs( Vector3 vector )
     {
-        return this.Set( Y * vector.Z - Z * vector.Y, Z * vector.X - X * vector.Z, X * vector.Y - Y * vector.X );
+        return this.Set( ( Y * vector.Z ) - ( Z * vector.Y ), ( Z * vector.X ) - ( X * vector.Z ), ( X * vector.Y ) - ( Y * vector.X ) );
     }
 
     public Vector3 Crs( float x, float y, float z )
     {
-        return this.Set( this.Y * z - this.Z * y, this.Z * x - this.X * z, this.X * y - this.Y * x );
+        return this.Set( ( this.Y * z ) - ( this.Z * y ), ( this.Z * x ) - ( this.X * z ), ( this.X * y ) - ( this.Y * x ) );
     }
 
     public Vector3 Mul4X3( float[] matrix )
     {
         return Set
             (
-             X * matrix[ 0 ] + Y * matrix[ 3 ] + Z * matrix[ 6 ] + matrix[ 9 ],
-             X * matrix[ 1 ]
-             + Y * matrix[ 4 ]
-             + Z * matrix[ 7 ]
+             ( X * matrix[ 0 ] ) + ( Y * matrix[ 3 ] ) + ( Z * matrix[ 6 ] ) + matrix[ 9 ],
+             ( X * matrix[ 1 ] )
+             + ( Y * matrix[ 4 ] )
+             + ( Z * matrix[ 7 ] )
              + matrix[ 10 ],
-             X * matrix[ 2 ] + Y * matrix[ 5 ] + Z * matrix[ 8 ] + matrix[ 11 ]
+             ( X * matrix[ 2 ] ) + ( Y * matrix[ 5 ] ) + ( Z * matrix[ 8 ] ) + matrix[ 11 ]
             );
     }
 
@@ -327,16 +327,16 @@ public sealed class Vector3 : IVector< Vector3 >
 
         return this.Set
             (
-             X * lMat[ Matrix4.M00 ] + Y * lMat[ Matrix4.M01 ] + Z * lMat[ Matrix4.M02 ] + lMat[ Matrix4.M03 ],
-             X
-             * lMat[ Matrix4.M10 ]
-             + Y * lMat[ Matrix4.M11 ]
-             + Z * lMat[ Matrix4.M12 ]
+             ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M01 ] ) + ( Z * lMat[ Matrix4.M02 ] ) + lMat[ Matrix4.M03 ],
+             ( X
+               * lMat[ Matrix4.M10 ] )
+             + ( Y * lMat[ Matrix4.M11 ] )
+             + ( Z * lMat[ Matrix4.M12 ] )
              + lMat[ Matrix4.M13 ],
-             X * lMat[ Matrix4.M20 ]
-             + Y
-             * lMat[ Matrix4.M21 ]
-             + Z * lMat[ Matrix4.M22 ]
+             ( X * lMat[ Matrix4.M20 ] )
+             + ( Y
+                 * lMat[ Matrix4.M21 ] )
+             + ( Z * lMat[ Matrix4.M22 ] )
              + lMat[ Matrix4.M23 ]
             );
     }
@@ -347,16 +347,16 @@ public sealed class Vector3 : IVector< Vector3 >
 
         return this.Set
             (
-             X * lMat[ Matrix4.M00 ] + Y * lMat[ Matrix4.M10 ] + Z * lMat[ Matrix4.M20 ] + lMat[ Matrix4.M30 ],
-             X
-             * lMat[ Matrix4.M01 ]
-             + Y * lMat[ Matrix4.M11 ]
-             + Z * lMat[ Matrix4.M21 ]
+             ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M10 ] ) + ( Z * lMat[ Matrix4.M20 ] ) + lMat[ Matrix4.M30 ],
+             ( X
+               * lMat[ Matrix4.M01 ] )
+             + ( Y * lMat[ Matrix4.M11 ] )
+             + ( Z * lMat[ Matrix4.M21 ] )
              + lMat[ Matrix4.M31 ],
-             X * lMat[ Matrix4.M02 ]
-             + Y
-             * lMat[ Matrix4.M12 ]
-             + Z * lMat[ Matrix4.M22 ]
+             ( X * lMat[ Matrix4.M02 ] )
+             + ( Y
+                 * lMat[ Matrix4.M12 ] )
+             + ( Z * lMat[ Matrix4.M22 ] )
              + lMat[ Matrix4.M32 ]
             );
     }
@@ -367,12 +367,12 @@ public sealed class Vector3 : IVector< Vector3 >
 
         return Set
             (
-             X * lMat[ Matrix3.M00 ] + Y * lMat[ Matrix3.M01 ] + Z * lMat[ Matrix3.M02 ],
-             X * lMat[ Matrix3.M10 ]
-             + Y
-             * lMat[ Matrix3.M11 ]
-             + Z * lMat[ Matrix3.M12 ],
-             X * lMat[ Matrix3.M20 ] + Y * lMat[ Matrix3.M21 ] + Z * lMat[ Matrix3.M22 ]
+             ( X * lMat[ Matrix3.M00 ] ) + ( Y * lMat[ Matrix3.M01 ] ) + ( Z * lMat[ Matrix3.M02 ] ),
+             ( X * lMat[ Matrix3.M10 ] )
+             + ( Y
+                 * lMat[ Matrix3.M11 ] )
+             + ( Z * lMat[ Matrix3.M12 ] ),
+             ( X * lMat[ Matrix3.M20 ] ) + ( Y * lMat[ Matrix3.M21 ] ) + ( Z * lMat[ Matrix3.M22 ] )
             );
     }
 
@@ -382,12 +382,12 @@ public sealed class Vector3 : IVector< Vector3 >
 
         return Set
             (
-             X * lMat[ Matrix3.M00 ] + Y * lMat[ Matrix3.M10 ] + Z * lMat[ Matrix3.M20 ],
-             X * lMat[ Matrix3.M01 ]
-             + Y
-             * lMat[ Matrix3.M11 ]
-             + Z * lMat[ Matrix3.M21 ],
-             X * lMat[ Matrix3.M02 ] + Y * lMat[ Matrix3.M12 ] + Z * lMat[ Matrix3.M22 ]
+             ( X * lMat[ Matrix3.M00 ] ) + ( Y * lMat[ Matrix3.M10 ] ) + ( Z * lMat[ Matrix3.M20 ] ),
+             ( X * lMat[ Matrix3.M01 ] )
+             + ( Y
+                 * lMat[ Matrix3.M11 ] )
+             + ( Z * lMat[ Matrix3.M21 ] ),
+             ( X * lMat[ Matrix3.M02 ] ) + ( Y * lMat[ Matrix3.M12 ] ) + ( Z * lMat[ Matrix3.M22 ] )
             );
     }
 
@@ -399,18 +399,18 @@ public sealed class Vector3 : IVector< Vector3 >
     public Vector3 Prj( Matrix4 matrix )
     {
         var lMat = matrix.val;
-        var lW   = 1f / ( X * lMat[ Matrix4.M30 ] + Y * lMat[ Matrix4.M31 ] + Z * lMat[ Matrix4.M32 ] + lMat[ Matrix4.M33 ] );
+        var lW   = 1f / ( ( X * lMat[ Matrix4.M30 ] ) + ( Y * lMat[ Matrix4.M31 ] ) + ( Z * lMat[ Matrix4.M32 ] ) + lMat[ Matrix4.M33 ] );
 
         return this.Set
             (
-             ( X * lMat[ Matrix4.M00 ] + Y * lMat[ Matrix4.M01 ] + Z * lMat[ Matrix4.M02 ] + lMat[ Matrix4.M03 ] ) * lW,
-             ( X
-               * lMat[ Matrix4.M10 ]
-               + Y * lMat[ Matrix4.M11 ]
-               + Z * lMat[ Matrix4.M12 ]
+             ( ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M01 ] ) + ( Z * lMat[ Matrix4.M02 ] ) + lMat[ Matrix4.M03 ] ) * lW,
+             ( ( X
+                 * lMat[ Matrix4.M10 ] )
+               + ( Y * lMat[ Matrix4.M11 ] )
+               + ( Z * lMat[ Matrix4.M12 ] )
                + lMat[ Matrix4.M13 ] )
              * lW,
-             ( X * lMat[ Matrix4.M20 ] + Y * lMat[ Matrix4.M21 ] + Z * lMat[ Matrix4.M22 ] + lMat[ Matrix4.M23 ] ) * lW
+             ( ( X * lMat[ Matrix4.M20 ] ) + ( Y * lMat[ Matrix4.M21 ] ) + ( Z * lMat[ Matrix4.M22 ] ) + lMat[ Matrix4.M23 ] ) * lW
             );
     }
 
@@ -420,12 +420,12 @@ public sealed class Vector3 : IVector< Vector3 >
 
         return this.Set
             (
-             X * lMat[ Matrix4.M00 ] + Y * lMat[ Matrix4.M01 ] + Z * lMat[ Matrix4.M02 ],
-             X * lMat[ Matrix4.M10 ]
-             + Y
-             * lMat[ Matrix4.M11 ]
-             + Z * lMat[ Matrix4.M12 ],
-             X * lMat[ Matrix4.M20 ] + Y * lMat[ Matrix4.M21 ] + Z * lMat[ Matrix4.M22 ]
+             ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M01 ] ) + ( Z * lMat[ Matrix4.M02 ] ),
+             ( X * lMat[ Matrix4.M10 ] )
+             + ( Y
+                 * lMat[ Matrix4.M11 ] )
+             + ( Z * lMat[ Matrix4.M12 ] ),
+             ( X * lMat[ Matrix4.M20 ] ) + ( Y * lMat[ Matrix4.M21 ] ) + ( Z * lMat[ Matrix4.M22 ] )
             );
     }
 
@@ -435,12 +435,12 @@ public sealed class Vector3 : IVector< Vector3 >
 
         return this.Set
             (
-             X * lMat[ Matrix4.M00 ] + Y * lMat[ Matrix4.M10 ] + Z * lMat[ Matrix4.M20 ],
-             X * lMat[ Matrix4.M01 ]
-             + Y
-             * lMat[ Matrix4.M11 ]
-             + Z * lMat[ Matrix4.M21 ],
-             X * lMat[ Matrix4.M02 ] + Y * lMat[ Matrix4.M12 ] + Z * lMat[ Matrix4.M22 ]
+             ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M10 ] ) + ( Z * lMat[ Matrix4.M20 ] ),
+             ( X * lMat[ Matrix4.M01 ] )
+             + ( Y
+                 * lMat[ Matrix4.M11 ] )
+             + ( Z * lMat[ Matrix4.M21 ] ),
+             ( X * lMat[ Matrix4.M02 ] ) + ( Y * lMat[ Matrix4.M12 ] ) + ( Z * lMat[ Matrix4.M22 ] )
             );
     }
 
@@ -454,12 +454,12 @@ public sealed class Vector3 : IVector< Vector3 >
 
         return this.Set
             (
-             X * lMat[ Matrix4.M00 ] + Y * lMat[ Matrix4.M10 ] + Z * lMat[ Matrix4.M20 ],
-             X * lMat[ Matrix4.M01 ]
-             + Y
-             * lMat[ Matrix4.M11 ]
-             + Z * lMat[ Matrix4.M21 ],
-             X * lMat[ Matrix4.M02 ] + Y * lMat[ Matrix4.M12 ] + Z * lMat[ Matrix4.M22 ]
+             ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M10 ] ) + ( Z * lMat[ Matrix4.M20 ] ),
+             ( X * lMat[ Matrix4.M01 ] )
+             + ( Y
+                 * lMat[ Matrix4.M11 ] )
+             + ( Z * lMat[ Matrix4.M21 ] ),
+             ( X * lMat[ Matrix4.M02 ] ) + ( Y * lMat[ Matrix4.M12 ] ) + ( Z * lMat[ Matrix4.M22 ] )
             );
     }
 
@@ -499,7 +499,7 @@ public sealed class Vector3 : IVector< Vector3 >
 
     public bool IsZero()
     {
-        return X == 0 && Y == 0 && Z == 0;
+        return ( X == 0 ) && ( Y == 0 ) && ( Z == 0 );
     }
 
     public bool IsZero( float margin )
@@ -509,12 +509,12 @@ public sealed class Vector3 : IVector< Vector3 >
 
     public bool IsOnLine( Vector3 other, float epsilon )
     {
-        return Len2( Y * other.Z - Z * other.Y, Z * other.X - X * other.Z, X * other.Y - Y * other.X ) <= epsilon;
+        return Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) ) <= epsilon;
     }
 
     public bool IsOnLine( Vector3 other )
     {
-        return Len2( Y * other.Z - Z * other.Y, Z * other.X - X * other.Z, X * other.Y - Y * other.X ) <= MathUtils.Float_Rounding_Error;
+        return Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) ) <= MathUtils.Float_Rounding_Error;
     }
 
     public bool IsCollinear( Vector3 other, float epsilon )
@@ -576,7 +576,7 @@ public sealed class Vector3 : IVector< Vector3 >
         var dot = Dot( target );
 
         // If the inputs are too close for comfort, simply linearly interpolate.
-        if ( dot > 0.9995 || dot < -0.9995 ) return Lerp( target, alpha );
+        if ( ( dot > 0.9995 ) || ( dot < -0.9995 ) ) return Lerp( target, alpha );
 
         // theta0 = angle between input vectors
         var theta0 = ( float )Math.Acos( dot );
@@ -585,10 +585,10 @@ public sealed class Vector3 : IVector< Vector3 >
         var theta = theta0 * alpha;
 
         var st = ( float )Math.Sin( theta );
-        var tx = target.X - X * dot;
-        var ty = target.Y - Y * dot;
-        var tz = target.Z - Z * dot;
-        var l2 = tx * tx + ty * ty + tz * tz;
+        var tx = target.X - ( X * dot );
+        var ty = target.Y - ( Y * dot );
+        var tz = target.Z - ( Z * dot );
+        var l2 = ( tx * tx ) + ( ty * ty ) + ( tz * tz );
         var dl = st * ( ( l2 < 0.0001f ) ? 1f : 1f / ( float )Math.Sqrt( l2 ) );
 
         return Scl( ( float )Math.Cos( theta ) ).Add( tx * dl, ty * dl, tz * dl ).Nor();
@@ -620,7 +620,7 @@ public sealed class Vector3 : IVector< Vector3 >
     {
         var oldLen2 = Len2();
 
-        return ( oldLen2 == 0 || MathUtils.IsEqual( oldLen2, len2 ) ) ? this : Scl( ( float )Math.Sqrt( len2 / oldLen2 ) );
+        return ( ( oldLen2 == 0 ) || MathUtils.IsEqual( oldLen2, len2 ) ) ? this : Scl( ( float )Math.Sqrt( len2 / oldLen2 ) );
     }
 
     /// <summary>
@@ -651,8 +651,8 @@ public sealed class Vector3 : IVector< Vector3 >
         const int prime = 31;
 
         var result = prime + NumberUtils.FloatToIntBits( X );
-        result = prime * result + NumberUtils.FloatToIntBits( Y );
-        result = prime * result + NumberUtils.FloatToIntBits( Z );
+        result = ( prime * result ) + NumberUtils.FloatToIntBits( Y );
+        result = ( prime * result ) + NumberUtils.FloatToIntBits( Z );
 
         return result;
     }
@@ -728,7 +728,7 @@ public sealed class Vector3 : IVector< Vector3 >
         var s0 = v.IndexOf( ',', 1 );
         var s1 = v.IndexOf( ',', s0 + 1 );
 
-        if ( s0 != -1 && s1 != -1 && v[ 0 ] == '(' && v[ ^1 ] == ')' )
+        if ( ( s0 != -1 ) && ( s1 != -1 ) && ( v[ 0 ] == '(' ) && ( v[ ^1 ] == ')' ) )
         {
             try
             {
