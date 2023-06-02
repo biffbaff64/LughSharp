@@ -19,101 +19,82 @@ public class Actions
 
         T action = pool.Obtain();
 
-        action.Pool = pool;
+        action.Pool = pool as Pool< object >;
 
         return action;
     }
 
     public static AddAction AddAction( Action action )
     {
-        AddAction addAction = action( typeof( AddAction ));
-        addAction.setAction( action );
+        var addAction = Action< AddAction >();
+        addAction.Action = action;
 
         return addAction;
     }
 
     public static AddAction AddAction( Action action, Actor targetActor )
     {
-        AddAction addAction = action( AddAction.class);
-        addAction.setTarget( targetActor );
-        addAction.setAction( action );
+        var addAction = Action< AddAction >();
+        addAction.Target = targetActor;
+        addAction.Action = action;
 
         return addAction;
     }
 
-    public static RemoveAction removeAction( Action action )
+    public static RemoveAction RemoveAction( Action action )
     {
-        RemoveAction removeAction = action( RemoveAction.class);
-        removeAction.setAction( action );
+        var removeAction = Action< RemoveAction >();
+        removeAction.Action = action;
 
         return removeAction;
     }
 
-    public static RemoveAction removeAction( Action action, Actor targetActor )
+    public static RemoveAction RemoveAction( Action action, Actor targetActor )
     {
-        RemoveAction removeAction = action( RemoveAction.class);
-        removeAction.setTarget( targetActor );
-        removeAction.setAction( action );
+        var removeAction = Action< RemoveAction >();
+        removeAction.Target = targetActor;
+        removeAction.Action = action;
 
         return removeAction;
     }
 
-    /** Moves the actor instantly. */
-    public static MoveToAction moveTo( float x, float y )
+    /// <summary>
+    /// Moves the actor instantly.
+    /// </summary>
+    public static MoveToAction MoveTo( float x, float y, float duration = 0,
+                                       Interpolation? interpolation = null )
     {
-        return moveTo( x, y, 0, null );
-    }
+        var action = Action< MoveToAction >();
 
-    public static MoveToAction moveTo( float x, float y, float duration )
-    {
-        return moveTo( x, y, duration, null );
-    }
-
-    public static MoveToAction moveTo( float x, float y, float duration, Interpolation? interpolation )
-    {
-        MoveToAction action = action( MoveToAction.class);
-        action.setPosition( x, y );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.SetPosition( x, y );
+        action.Duration = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
 
-    public static MoveToAction moveToAligned( float x, float y, int alignment )
+    public static MoveToAction MoveToAligned( float x, float y, int alignment,
+                                              float duration = 0,
+                                              Interpolation? interpolation = null )
     {
-        return moveToAligned( x, y, alignment, 0, null );
-    }
+        MoveToAction action = Action< MoveToAction >();
 
-    public static MoveToAction moveToAligned( float x, float y, int alignment, float duration )
-    {
-        return moveToAligned( x, y, alignment, duration, null );
-    }
-
-    public static MoveToAction moveToAligned( float x, float y, int alignment, float duration,
-                                              Interpolation? interpolation )
-    {
-        MoveToAction action = action( MoveToAction.class);
-        action.setPosition( x, y, alignment );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.SetPosition( x, y, alignment );
+        action.Duration = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
 
-    /** Moves the actor instantly. */
-    public static MoveByAction moveBy( float amountX, float amountY )
+    /// <summary>
+    /// Moves the actor instantly.
+    /// </summary>
+    public static MoveByAction MoveBy( float amountX, float amountY,
+                                       float duration = 0,
+                                       Interpolation? interpolation = null )
     {
-        return moveBy( amountX, amountY, 0, null );
-    }
+        MoveByAction action = Action< MoveByAction >();
 
-    public static MoveByAction moveBy( float amountX, float amountY, float duration )
-    {
-        return moveBy( amountX, amountY, duration, null );
-    }
-
-    public static MoveByAction moveBy( float amountX, float amountY, float duration, Interpolation? interpolation )
-    {
-        MoveByAction action = action( MoveByAction.class);
         action.setAmount( amountX, amountY );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -121,20 +102,15 @@ public class Actions
         return action;
     }
 
-    /** Sizes the actor instantly. */
-    public static SizeToAction sizeTo( float x, float y )
+    /// <summary>
+    /// Sizes the actor instantly.
+    /// </summary>
+    public static SizeToAction SizeTo( float x, float y,
+                                       float duration = 0,
+                                       Interpolation? interpolation = null )
     {
-        return sizeTo( x, y, 0, null );
-    }
+        SizeToAction action = Action< SizeToAction >();
 
-    public static SizeToAction sizeTo( float x, float y, float duration )
-    {
-        return sizeTo( x, y, duration, null );
-    }
-
-    public static SizeToAction sizeTo( float x, float y, float duration, Interpolation? interpolation )
-    {
-        SizeToAction action = action( SizeToAction.class);
         action.setSize( x, y );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -142,20 +118,15 @@ public class Actions
         return action;
     }
 
-    /** Sizes the actor instantly. */
-    public static SizeByAction sizeBy( float amountX, float amountY )
+    /// <summary>
+    /// Sizes the actor instantly.
+    /// </summary>
+    public static SizeByAction SizeBy( float amountX, float amountY,
+                                       float duration = 0,
+                                       Interpolation? interpolation = null )
     {
-        return sizeBy( amountX, amountY, 0, null );
-    }
-
-    public static SizeByAction sizeBy( float amountX, float amountY, float duration )
-    {
-        return sizeBy( amountX, amountY, duration, null );
-    }
-
-    public static SizeByAction sizeBy( float amountX, float amountY, float duration, Interpolation? interpolation )
-    {
-        SizeByAction action = action( SizeByAction.class);
+        SizeByAction action = Action< SizeByAction >();
+        
         action.setAmount( amountX, amountY );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -164,19 +135,10 @@ public class Actions
     }
 
     /** Scales the actor instantly. */
-    public static ScaleToAction scaleTo( float x, float y )
-    {
-        return scaleTo( x, y, 0, null );
-    }
-
-    public static ScaleToAction scaleTo( float x, float y, float duration )
-    {
-        return scaleTo( x, y, duration, null );
-    }
-
-    public static ScaleToAction scaleTo( float x, float y, float duration, Interpolation? interpolation )
+    public static ScaleToAction ScaleTo( float x, float y, float duration = 0, Interpolation? interpolation = null )
     {
         ScaleToAction action = action( ScaleToAction.class);
+
         action.setScale( x, y );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -185,19 +147,10 @@ public class Actions
     }
 
     /** Scales the actor instantly. */
-    public static ScaleByAction scaleBy( float amountX, float amountY )
-    {
-        return scaleBy( amountX, amountY, 0, null );
-    }
-
-    public static ScaleByAction scaleBy( float amountX, float amountY, float duration )
-    {
-        return scaleBy( amountX, amountY, duration, null );
-    }
-
-    public static ScaleByAction scaleBy( float amountX, float amountY, float duration, Interpolation? interpolation )
+    public static ScaleByAction ScaleBy( float amountX, float amountY, float duration = 0, Interpolation? interpolation = null )
     {
         ScaleByAction action = action( ScaleByAction.class);
+
         action.setAmount( amountX, amountY );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -206,19 +159,10 @@ public class Actions
     }
 
     /** Rotates the actor instantly. */
-    public static RotateToAction rotateTo( float rotation )
-    {
-        return rotateTo( rotation, 0, null );
-    }
-
-    public static RotateToAction rotateTo( float rotation, float duration )
-    {
-        return rotateTo( rotation, duration, null );
-    }
-
-    public static RotateToAction rotateTo( float rotation, float duration, Interpolation? interpolation )
+    public static RotateToAction RotateTo( float rotation, float duration = 0, Interpolation? interpolation = null )
     {
         RotateToAction action = action( RotateToAction.class);
+
         action.setRotation( rotation );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -227,19 +171,10 @@ public class Actions
     }
 
     /** Rotates the actor instantly. */
-    public static RotateByAction rotateBy( float rotationAmount )
-    {
-        return rotateBy( rotationAmount, 0, null );
-    }
-
-    public static RotateByAction rotateBy( float rotationAmount, float duration )
-    {
-        return rotateBy( rotationAmount, duration, null );
-    }
-
-    public static RotateByAction rotateBy( float rotationAmount, float duration, Interpolation? interpolation )
+    public static RotateByAction RotateBy( float rotationAmount, float duration = 0, Interpolation? interpolation = null )
     {
         RotateByAction action = action( RotateByAction.class);
+
         action.setAmount( rotationAmount );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -247,22 +182,12 @@ public class Actions
         return action;
     }
 
-    /** Sets the actor's color instantly. */
-    public static ColorAction color( Color color )
-    {
-        return color( color, 0, null );
-    }
-
-    /** Transitions from the color at the time this action starts to the specified color. */
-    public static ColorAction color( Color color, float duration )
-    {
-        return color( color, duration, null );
-    }
-
-    /** Transitions from the color at the time this action starts to the specified color. */
-    public static ColorAction color( Color color, float duration, Interpolation? interpolation )
+    /// Sets the actor's color instantly.
+    /// Transitions from the color at the time this action starts to the specified color.
+    public static ColorAction Color( Color color, float duration = 0, Interpolation? interpolation = null )
     {
         ColorAction action = action( ColorAction.class);
+
         action.setEndColor( color );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -271,21 +196,11 @@ public class Actions
     }
 
     /** Sets the actor's alpha instantly. */
-    public static AlphaAction alpha( float a )
-    {
-        return alpha( a, 0, null );
-    }
-
     /** Transitions from the alpha at the time this action starts to the specified alpha. */
-    public static AlphaAction alpha( float a, float duration )
-    {
-        return alpha( a, duration, null );
-    }
-
-    /** Transitions from the alpha at the time this action starts to the specified alpha. */
-    public static AlphaAction alpha( float a, float duration, Interpolation? interpolation )
+    public static AlphaAction Alpha( float a, float duration = 0, Interpolation? interpolation = null )
     {
         AlphaAction action = action( AlphaAction.class);
+
         action.setAlpha( a );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -294,15 +209,16 @@ public class Actions
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 0. */
-    public static AlphaAction fadeOut( float duration )
+    public static AlphaAction FadeOut( float duration )
     {
-        return alpha( 0, duration, null );
+        return Alpha( 0, duration, null );
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 0. */
-    public static AlphaAction fadeOut( float duration, Interpolation? interpolation )
+    public static AlphaAction FadeOut( float duration, Interpolation? interpolation )
     {
         AlphaAction action = action( AlphaAction.class);
+        
         action.setAlpha( 0 );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -311,15 +227,16 @@ public class Actions
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 1. */
-    public static AlphaAction fadeIn( float duration )
+    public static AlphaAction FadeIn( float duration )
     {
-        return alpha( 1, duration, null );
+        return Alpha( 1, duration, null );
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 1. */
-    public static AlphaAction fadeIn( float duration, Interpolation? interpolation )
+    public static AlphaAction FadeIn( float duration, Interpolation? interpolation )
     {
         AlphaAction action = action( AlphaAction.class);
+        
         action.setAlpha( 1 );
         action.setDuration( duration );
         action.setInterpolation( interpolation );
@@ -327,17 +244,11 @@ public class Actions
         return action;
     }
 
-    public static VisibleAction show()
-    {
-        return visible( true );
-    }
+    public static VisibleAction Show() => Visible( true );
 
-    public static VisibleAction hide()
-    {
-        return visible( false );
-    }
+    public static VisibleAction Hide() => Visible( false );
 
-    public static VisibleAction visible( bool visible )
+    public static VisibleAction Visible( bool visible )
     {
         VisibleAction action = action( VisibleAction.class);
         action.setVisible( visible );
@@ -345,7 +256,7 @@ public class Actions
         return action;
     }
 
-    public static TouchableAction touchable( Touchable touchable )
+    public static TouchableAction Touchable( Touchable touchable )
     {
         TouchableAction action = action( TouchableAction.class);
         action.setTouchable( touchable );
@@ -353,12 +264,12 @@ public class Actions
         return action;
     }
 
-    public static RemoveActorAction removeActor()
+    public static RemoveActorAction RemoveActor()
     {
         return Action( RemoveActorAction.class);
     }
 
-    public static RemoveActorAction removeActor( Actor removeActor )
+    public static RemoveActorAction RemoveActor( Actor removeActor )
     {
         RemoveActorAction action = action( RemoveActorAction.class);
         action.setTarget( removeActor );
@@ -366,52 +277,58 @@ public class Actions
         return action;
     }
 
-    public static DelayAction delay( float duration )
+    public static DelayAction Delay( float duration )
     {
-        DelayAction action = action( DelayAction.class);
+        DelayAction action = Action< DelayAction >();
+
         action.setDuration( duration );
 
         return action;
     }
 
-    public static DelayAction delay( float duration, Action delayedAction )
+    public static DelayAction Delay( float duration, Action delayedAction )
     {
-        DelayAction action = action( DelayAction.class);
+        DelayAction action = Action< DelayAction >();
+        
         action.setDuration( duration );
         action.setAction( delayedAction );
 
         return action;
     }
 
-    public static TimeScaleAction timeScale( float scale, Action scaledAction )
+    public static TimeScaleAction TimeScale( float scale, Action scaledAction )
     {
-        TimeScaleAction action = action( TimeScaleAction.class);
+        TimeScaleAction action = Action< TimeScaleAction >();
+
         action.setScale( scale );
         action.setAction( scaledAction );
 
         return action;
     }
 
-    public static SequenceAction sequence( Action action1 )
+    public static SequenceAction Sequence( Action action1 )
     {
-        SequenceAction action = action( SequenceAction.class);
+        SequenceAction action = Action< SequenceAction >();
+
         action.addAction( action1 );
 
         return action;
     }
 
-    public static SequenceAction sequence( Action action1, Action action2 )
+    public static SequenceAction Sequence( Action action1, Action action2 )
     {
-        SequenceAction action = action( SequenceAction.class);
+        SequenceAction action = Action< SequenceAction >();
+
         action.addAction( action1 );
         action.addAction( action2 );
 
         return action;
     }
 
-    public static SequenceAction sequence( Action action1, Action action2, Action action3 )
+    public static SequenceAction Sequence( Action action1, Action action2, Action action3 )
     {
-        SequenceAction action = action( SequenceAction.class);
+        SequenceAction action = Action< SequenceAction >();
+
         action.addAction( action1 );
         action.addAction( action2 );
         action.addAction( action3 );
@@ -419,9 +336,10 @@ public class Actions
         return action;
     }
 
-    public static SequenceAction sequence( Action action1, Action action2, Action action3, Action action4 )
+    public static SequenceAction Sequence( Action action1, Action action2, Action action3, Action action4 )
     {
-        SequenceAction action = action( SequenceAction.class);
+        SequenceAction action = Action< SequenceAction >();
+
         action.addAction( action1 );
         action.addAction( action2 );
         action.addAction( action3 );
@@ -430,9 +348,10 @@ public class Actions
         return action;
     }
 
-    public static SequenceAction sequence( Action action1, Action action2, Action action3, Action action4, Action action5 )
+    public static SequenceAction Sequence( Action action1, Action action2, Action action3, Action action4, Action action5 )
     {
-        SequenceAction action = action( SequenceAction.class);
+        SequenceAction action = Action< SequenceAction >();
+        
         action.addAction( action1 );
         action.addAction( action2 );
         action.addAction( action3 );
@@ -444,7 +363,7 @@ public class Actions
 
     public static SequenceAction Sequence( params Action[] actions )
     {
-        SequenceAction action = action( typeof(SequenceAction) );
+        SequenceAction action = Action< SequenceAction >();
 
         for ( int i = 0, n = actions.Length; i < n; i++ )
         {
@@ -454,31 +373,31 @@ public class Actions
         return action;
     }
 
-    public static SequenceAction sequence()
+    public static SequenceAction Sequence()
     {
-        return Action( SequenceAction.class);
+        SequenceAction action = Action< SequenceAction >();
     }
 
-    public static ParallelAction parallel( Action action1 )
+    public static ParallelAction Parallel( Action action1 )
     {
-        ParallelAction action = action( ParallelAction.class);
+        ParallelAction action = Action< ParallelAction >();
         action.addAction( action1 );
 
         return action;
     }
 
-    public static ParallelAction parallel( Action action1, Action action2 )
+    public static ParallelAction Parallel( Action action1, Action action2 )
     {
-        ParallelAction action = action( ParallelAction.class);
+        ParallelAction action = Action< ParallelAction >();
         action.addAction( action1 );
         action.addAction( action2 );
 
         return action;
     }
 
-    public static ParallelAction parallel( Action action1, Action action2, Action action3 )
+    public static ParallelAction Parallel( Action action1, Action action2, Action action3 )
     {
-        ParallelAction action = action( ParallelAction.class);
+        ParallelAction action = Action< ParallelAction >();
         action.addAction( action1 );
         action.addAction( action2 );
         action.addAction( action3 );
@@ -486,9 +405,9 @@ public class Actions
         return action;
     }
 
-    public static ParallelAction parallel( Action action1, Action action2, Action action3, Action action4 )
+    public static ParallelAction Parallel( Action action1, Action action2, Action action3, Action action4 )
     {
-        ParallelAction action = action( ParallelAction.class);
+        ParallelAction action = Action< ParallelAction >();
         action.addAction( action1 );
         action.addAction( action2 );
         action.addAction( action3 );
@@ -497,9 +416,10 @@ public class Actions
         return action;
     }
 
-    public static ParallelAction parallel( Action action1, Action action2, Action action3, Action action4, Action action5 )
+    public static ParallelAction Parallel( Action action1, Action action2, Action action3, Action action4, Action action5 )
     {
-        ParallelAction action = action( ParallelAction.class);
+        ParallelAction action = Action< ParallelAction >();
+        
         action.addAction( action1 );
         action.addAction( action2 );
         action.addAction( action3 );
@@ -509,9 +429,9 @@ public class Actions
         return action;
     }
 
-    public static ParallelAction parallel( params Action[] actions )
+    public static ParallelAction Parallel( params Action[] actions )
     {
-        ParallelAction action = action( ParallelAction.class);
+        ParallelAction action = Action< ParallelAction >();
 
         for ( int i = 0, n = actions.length; i < n; i++ )
             action.addAction( actions[ i ] );
@@ -519,12 +439,12 @@ public class Actions
         return action;
     }
 
-    public static ParallelAction parallel()
+    public static ParallelAction Parallel()
     {
-        return Action( ParallelAction.class);
+        return Action<ParallelAction>();
     }
 
-    public static RepeatAction repeat( int count, Action repeatedAction )
+    public static RepeatAction Repeat( int count, Action repeatedAction )
     {
         RepeatAction action = action( RepeatAction.class);
         action.setCount( count );
@@ -533,9 +453,9 @@ public class Actions
         return action;
     }
 
-    public static RepeatAction forever( Action repeatedAction )
+    public static RepeatAction Forever( Action repeatedAction )
     {
-        RepeatAction action = Action( typeof(RepeatAction) );
+        RepeatAction action = Action<RepeatAction>();
 
         action.setCount( RepeatAction.Forever );
         action.setAction( repeatedAction );
@@ -543,33 +463,33 @@ public class Actions
         return action;
     }
 
-    public static RunnableAction run( IRunnable runnable )
+    public static RunnableAction Run( IRunnable runnable )
     {
-        RunnableAction action = action( RunnableAction.class);
+        RunnableAction action = Action< RunnableAction >();
         action.setRunnable( runnable );
 
         return action;
     }
 
-    public static LayoutAction layout( bool enabled )
+    public static LayoutAction Layout( bool enabled )
     {
-        LayoutAction action = action( LayoutAction.class);
+        LayoutAction action = Action<LayoutAction>();
         action.setLayoutEnabled( enabled );
 
         return action;
     }
 
-    public static AfterAction after( Action action )
+    public static AfterAction After( Action action )
     {
-        AfterAction afterAction = action( typeof(AfterAction) );
+        AfterAction afterAction = Action<AfterAction>();
         afterAction.setAction( action );
 
         return afterAction;
     }
 
-    public static AddListenerAction addListener( EventListener listener, bool capture )
+    public static AddListenerAction AddListener( EventListener listener, bool capture )
     {
-        AddListenerAction addAction = Action( typeof(AddListenerAction) );
+        AddListenerAction addAction = Action<AddListenerAction>();
 
         addAction.setListener( listener );
         addAction.setCapture( capture );
@@ -577,9 +497,9 @@ public class Actions
         return addAction;
     }
 
-    public static AddListenerAction addListener( IEventListener listener, bool capture, Actor targetActor )
+    public static AddListenerAction AddListener( IEventListener listener, bool capture, Actor targetActor )
     {
-        AddListenerAction addAction = Action( typeof(AddListenerAction) );
+        AddListenerAction addAction = Action<AddListenerAction>();
 
         addAction.setTarget( targetActor );
         addAction.setListener( listener );
@@ -588,9 +508,9 @@ public class Actions
         return addAction;
     }
 
-    public static RemoveListenerAction removeListener( IEventListener listener, bool capture )
+    public static RemoveListenerAction RemoveListener( IEventListener listener, bool capture )
     {
-        RemoveListenerAction addAction = Action( typeof(RemoveListenerAction) );
+        RemoveListenerAction addAction = Action<RemoveListenerAction>();
 
         addAction.setListener( listener );
         addAction.setCapture( capture );
@@ -600,7 +520,7 @@ public class Actions
 
     public static RemoveListenerAction RemoveListener( IEventListener listener, bool capture, Actor targetActor )
     {
-        RemoveListenerAction addAction = Action( typeof(RemoveListenerAction) );
+        RemoveListenerAction addAction = Action<RemoveListenerAction>();
 
         addAction.setTarget( targetActor );
         addAction.setListener( listener );

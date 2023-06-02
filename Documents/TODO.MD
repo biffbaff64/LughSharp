@@ -458,7 +458,7 @@ SCENES.SCENE2D/ACTIONS
     -      - IntAction                      Convert
     -      - LayoutAction                   Convert
     -      - MoveByAction                   Convert
-    -      - MoveToAction                   Convert
+    - DONE - MoveToAction                   Convert
     -      - ParallelAction                 Convert
     -      - RelativeTemporalAction         Convert
     -      - RemoveAction                   Convert
@@ -473,7 +473,7 @@ SCENES.SCENE2D/ACTIONS
     -      - SequenceAction                 Convert
     -      - SizeByAction                   Convert
     -      - SizeToAction                   Convert
-    -      - TemporalAction                 Convert
+    - DONE - TemporalAction                 Convert
     -      - TimeScaleAction                Convert
     -      - TouchableAction                Convert
     -      - VisibleAction                  Convert
