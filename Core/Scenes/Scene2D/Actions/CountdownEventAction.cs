@@ -1,5 +1,8 @@
 ﻿namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+/// <summary>
+/// An EventAction that is complete once it receives X number of events.
+/// </summary>
 public class CountdownEventAction<T> : EventAction<T> where T : Event
 {
     private readonly int _count;
@@ -11,9 +14,10 @@ public class CountdownEventAction<T> : EventAction<T> where T : Event
         this._count = count;
     }
 
-    public bool Handle(T ev)
+    public override bool HandleDelegate( Event ev )
     {
         _current++;
+        
         return _current >= _count;
     }
 }

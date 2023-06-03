@@ -23,7 +23,7 @@ public abstract class ChangeListener : IEventListener
     /// Fired when something in an actor has changed. This is a generic event, exactly
     /// what changed in an actor will vary.
     /// </summary>
-    protected class ChangeEvent : Event
+    public class ChangeEvent : Event
     {
     }
 }

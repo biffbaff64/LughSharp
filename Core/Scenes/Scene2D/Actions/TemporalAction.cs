@@ -73,14 +73,14 @@ public abstract class TemporalAction : Action
     /// Called the first time <see cref="Act(float)"/> is called. This is a good place
     /// to query the <see cref="Actor"/>'s starting state.
     /// </summary>
-    protected void Begin()
+    protected static void Begin()
     {
     }
 
     /// <summary>
     /// Called the last time <see cref="Act(float)"/> is called.
     /// </summary>
-    protected void End()
+    protected static void End()
     {
     }
 
