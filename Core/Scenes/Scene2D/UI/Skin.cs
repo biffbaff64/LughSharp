@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Runtime.Serialization;
+
+using System.Text.Json;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils.Collections.Extensions;
-using LibGDXSharp.Utils.Json;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -176,7 +176,7 @@ public sealed class Skin : IDisposable
         if ( typeResources == null )
         {
             typeResources = new ObjectMap
-                ( type == typeof(TextureRegion) || type == typeof(Drawable) || type == typeof(Sprite) ? 256 : 64 );
+                ( ( type == typeof(TextureRegion) ) || ( type == typeof(Drawable) ) || ( type == typeof(Sprite) ) ? 256 : 64 );
 
             resources.put( type, typeResources );
         }
@@ -363,7 +363,7 @@ public sealed class Skin : IDisposable
     /// </summary>
     public NinePatch GetPatch( string name )
     {
-        var patch = Optional<NinePatch>( name );
+        var patch = Optional< NinePatch >( name );
 
         if ( patch != null )
         {
@@ -419,7 +419,7 @@ public sealed class Skin : IDisposable
     /// </summary>
     public Sprite GetSprite( string name )
     {
-        var sprite = Optional<Sprite>( name );
+        var sprite = Optional< Sprite >( name );
 
         if ( sprite != null )
         {
@@ -463,29 +463,29 @@ public sealed class Skin : IDisposable
     /// </summary>
     public IDrawable GetDrawable( string name )
     {
-        var drawable = Optional<IDrawable>( name );
+        var drawable = Optional< IDrawable >( name );
 
         if ( drawable != null )
         {
             return drawable;
         }
 
-        // Use texture or texture region. If it has splits, use ninepatch. If it has rotation or whitespace stripping, use sprite.
+        // Use texture or texture region. If it has splits, use ninepatch.
+        // If it has rotation or whitespace stripping, use sprite.
         try
         {
-            TextureRegion textureRegion = getRegion( name );
+            TextureRegion textureRegion = GetRegion( name );
 
-            if ( textureRegion is AtlasRegion )
+            if ( textureRegion is AtlasRegion region )
             {
-                AtlasRegion region = ( AtlasRegion )textureRegion;
 
-                if ( region.findValue( "split" ) != null )
+                if ( region.FindValue( "split" ) != null )
                 {
                     drawable = new NinePatchDrawable( GetPatch( name ) );
                 }
-                else if ( region.rotate
-                          || region.packedWidth != region.originalWidth
-                          || region.packedHeight != region.originalHeight )
+                else if ( region.Rotate
+                          || ( region.PackedWidth != region.OriginalWidth )
+                          || ( region.PackedHeight != region.OriginalHeight ) )
                 {
                     drawable = new SpriteDrawable( GetSprite( name ) );
                 }
@@ -727,7 +727,7 @@ public sealed class Skin : IDisposable
 
         try
         {
-            method.invoke( actor, style );
+            method.Invoke( actor, style );
         }
         catch ( Exception )
         {
@@ -807,7 +807,9 @@ public sealed class Skin : IDisposable
         public T readValue<T>( Type type, Type elementType, JsonValue jsonData )
         {
             // If the JSON is a string but the type is not, look up the actual value by name.
-            if ( jsonData != null && jsonData.isString() && !ClassReflection.isAssignableFrom( typeof(CharSequence), type ) )
+            if ( ( jsonData != null )
+                 && jsonData.isString()
+                 && !ClassReflection.isAssignableFrom( typeof(CharSequence), type ) )
             {
                 return get( jsonData.asString(), type );
             }
@@ -893,32 +895,32 @@ public sealed class Skin : IDisposable
             return _skin;
         }
 
-        private void readNamedObjects( Json json, Type type, JsonValue valueMap )
+        private void ReadNamedObjects( Json json, Type type, JsonValue valueMap )
         {
-            Type addType = type == typeof(TintedDrawable) ? typeof(Drawable) : type;
+            Type addType = type == typeof(TintedDrawable) ? typeof(IDrawable) : type;
 
-            for ( JsonValue valueEntry = valueMap.child; valueEntry != null; valueEntry = valueEntry.next )
+            for ( JsonValue valueEntry = valueMap.Child; valueEntry != null; valueEntry = valueEntry.next )
             {
-                object @object = json.readValue( type, valueEntry );
+                object obj = json.ReadValue( type, valueEntry );
 
-                if ( @object == null )
+                if ( obj == null )
                 {
                     continue;
                 }
 
                 try
                 {
-                    add( valueEntry.name, @object, addType );
+                    Add( valueEntry.Name, obj, addType );
 
-                    if ( addType != typeof(Drawable) && ClassReflection.isAssignableFrom( typeof(Drawable), addType ) )
+                    if ( ( addType != typeof(IDrawable) ) && addType.IsAssignableFrom( typeof(IDrawable) ) )
                     {
-                        add( valueEntry.name, @object, typeof(Drawable) );
+                        Add( valueEntry.Name, obj, typeof(IDrawable) );
                     }
                 }
                 catch ( Exception ex )
                 {
                     throw new SerializationException
-                        ( "Error reading " + ClassReflection.getSimpleName( type ) + ": " + valueEntry.name, ex );
+                        ( "Error reading " + type.Name + ": " + valueEntry.Name, ex );
                 }
             }
         }

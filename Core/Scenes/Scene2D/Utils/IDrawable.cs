@@ -11,7 +11,7 @@ public interface IDrawable
 {
     /// <summary>
     /// Draws this drawable at the specified bounds. The drawable should be tinted
-    /// with <seealso cref="IBatch.GetColor"/>, possibly by mixing its own color. 
+    /// with <see cref="IBatch.GetColor"/>, possibly by mixing its own color. 
     /// </summary>
     void Draw( IBatch batch, float x, float y, float width, float height );
 

@@ -367,7 +367,7 @@ MATH
     - DONE - CumulativeDistribution
     -      - DelaunayTriangulator
     -      - EarClippingTriangulator
-    -      - Ellipse
+    - DONE - Ellipse
     - DONE - FloatCounter
     - DONE - Frustrum
     - DONE - GeometryUtils
@@ -524,7 +524,7 @@ SCENES.SCENE2D/UTILS
 --------------------
     -      - ActorGestureListener           Convert
     -      - ArraySelection                 Convert
-    -      - BaseDrawable                   Convert
+    - DONE - BaseDrawable                   Convert
     - DONE - ChangeListener                 Convert
     - DONE - ClickListener                  Convert
     -      - DragAndDrop                    Convert
@@ -536,7 +536,7 @@ SCENES.SCENE2D/UTILS
     - DONE - IDrawable                      Convert
     - DONE - ILayout                        Convert
     - DONE - ITransformDrawable             Convert
-    -      - NinePatchDrawable              Convert
+    - DONE - NinePatchDrawable              Convert
     -      - ScissorStack                   Convert
     -      - Selection                      Convert
     -      - SpriteDrawable                 Convert
@@ -553,11 +553,15 @@ UTILS
     Misc
     ----
     - DONE - Align                          Convert
+    // ----------------------------------------------------------------------------------
     - **** - Base64Coder                    Use System.Convert classes
+    // ----------------------------------------------------------------------------------
     - DONE - BinaryHeap
     - DONE - Bits                           Convert
     - DONE - CharHelper                     Might be added to.
+    // ----------------------------------------------------------------------------------
     - **** - ComparableTimSort              Not Needed
+    // ----------------------------------------------------------------------------------
     - DONE - DataInput                      Check
     -      - DataOutput                     Check
     - DONE - DataUtils                      Added Class
@@ -585,9 +589,12 @@ UTILS
     -      - SortedIntList
     -      - StreamUtils
     - DONE - StringTokenizer
+    // ----------------------------------------------------------------------------------
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter                  Remove, look into C# localisation
+    // ----------------------------------------------------------------------------------
     - DONE - Timer                          Use System.Timer instead??
+    // ----------------------------------------------------------------------------------
     - DONE - TimeUtils
     - DONE - TimSort
     -      - Trace                          Addition
@@ -744,13 +751,16 @@ UTILS/EXCEPTIONS
 
 UTILS/JSON
 ----------
-    -      - IBaseJsonReader                Convert
-    -      - Json                           Convert
-    -      - JsonReader                     Convert
-    -      - JsonValue                      Convert
-    -      - JsonWriter                     Convert
-    -      - UBJsonReader                   Convert
-    -      - UBJsonWriter                   Convert
+    - **** - IBaseJsonReader                No
+    - **** - Json                           No
+    - **** - JsonReader                     No
+    - **** - JsonValue                      No
+    - **** - JsonWriter                     No
+    - **** - UBJsonReader                   No
+    - **** - UBJsonWriter                   No
+
+    using an existing Json library would be better, but this could be
+    converted at a later date.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

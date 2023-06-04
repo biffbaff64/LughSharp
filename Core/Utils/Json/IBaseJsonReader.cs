@@ -2,5 +2,7 @@
 
 public interface IBaseJsonReader
 {
-        
+    JsonValue Parse( InputStream input );
+
+    JsonValue Parse( FileInfo file );
 }

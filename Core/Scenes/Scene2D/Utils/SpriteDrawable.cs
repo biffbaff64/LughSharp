@@ -1,6 +1,11 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Utils;
+﻿using LibGDXSharp.G2D;
 
-public class SpriteDrawable
+namespace LibGDXSharp.Scenes.Scene2D.Utils;
+
+public class SpriteDrawable : BaseDrawable
 {
-        
+    public SpriteDrawable( Sprite sprite )
+    {
+    }
+
 }
