@@ -1621,12 +1621,16 @@ public class Matrix4
 		vec[ 2 ] = z;
 	}
 
-	/** Multiplies the vector with the given matrix, performing a division by w. The matrix array is assumed to hold a 4x4 column
-	 * major matrix as you can get from {@link Matrix4#val}. The vector array is assumed to hold a 3-component vector, with x being
-	 * the first element, y being the second and z being the last component. The result is stored in the vector array. This is the
-	 * same as {@link Vector3#prj(Matrix4)}.
-	 * @param mat the matrix
-	 * @param vec the vector. */
+    /// <summary>
+    /// Multiplies the vector with the given matrix, performing a division by w. The
+    /// matrix array is assumed to hold a 4x4 column major matrix as you can get from
+    /// <see cref="Matrix4.val"/>. The vector array is assumed to hold a 3-component
+    /// vector, with x being the first element, y being the second and z being the last
+    /// component. The result is stored in the vector array. This is the same as
+    /// <see cref="Vector3.Prj(Matrix4)"/>.
+    /// </summary>
+    /// <param name="mat"> the matrix </param>
+    /// <param name="vec"> the vector.  </param>
 	public static void Prj( float[] mat, float[] vec )
 	{
 		var invW = 1.0f / ( ( vec[ 0 ] * mat[ M30 ] ) + ( vec[ 1 ] * mat[ M31 ] ) + ( vec[ 2 ] * mat[ M32 ] ) + mat[ M33 ] );
@@ -1639,12 +1643,16 @@ public class Matrix4
 		vec[ 2 ] = z;
 	}
 
-	/** Multiplies the vector with the top most 3x3 sub-matrix of the given matrix. The matrix array is assumed to hold a 4x4 column
-	 * major matrix as you can get from {@link Matrix4#val}. The vector array is assumed to hold a 3-component vector, with x being
-	 * the first element, y being the second and z being the last component. The result is stored in the vector array. This is the
-	 * same as {@link Vector3#rot(Matrix4)}.
-	 * @param mat the matrix
-	 * @param vec the vector. */
+    /// <summary>
+    /// Multiplies the vector with the top most 3x3 sub-matrix of the given matrix.
+    /// The matrix array is assumed to hold a 4x4 column major matrix as you can get
+    /// from <see cref="Matrix4.val"/>. The vector array is assumed to hold a
+    /// 3-component vector, with x being the first element, y being the second and z
+    /// being the last component. The result is stored in the vector array. This is the
+    /// same as <see cref="Vector3.Rot(Matrix4)"/>.
+    /// </summary>
+    /// <param name="mat"> the matrix </param>
+    /// <param name="vec"> the vector.  </param>
 	public static void Rot( float[] mat, float[] vec )
 	{
 		var x = ( vec[ 0 ] * mat[ M00 ] ) + ( vec[ 1 ] * mat[ M01 ] ) + ( vec[ 2 ] * mat[ M02 ] );
@@ -1655,10 +1663,12 @@ public class Matrix4
 		vec[ 2 ] = z;
 	}
 
-	/** Computes the inverse of the given matrix. The matrix array is assumed to hold a 4x4 column major matrix as you can get from
-	 * {@link Matrix4#val}.
-	 * @param values the matrix values.
-	 * @return false in case the inverse could not be calculated, true otherwise. */
+    /// <summary>
+    /// Computes the inverse of the given matrix. The matrix array is assumed to
+    /// hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val"/>.
+    /// </summary>
+    /// <param name="values"> the matrix values. </param>
+    /// <returns> false in case the inverse could not be calculated, true otherwise.  </returns>
 	public static bool Inv( float[] values )
 	{
 		var lDet = Det( values );
@@ -1798,10 +1808,12 @@ public class Matrix4
 		return true;
 	}
 
-	/** Computes the determinante of the given matrix. The matrix array is assumed to hold a 4x4 column major matrix as you can get
-	 * from {@link Matrix4#val}.
-	 * @param values the matrix values.
-	 * @return the determinante. */
+    /// <summary>
+    /// Computes the determinante of the given matrix. The matrix array is assumed
+    /// to hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val"/>.
+    /// </summary>
+    /// <param name="values"> the matrix values. </param>
+    /// <returns> the determinante.  </returns>
 	public static float Det( float[] values )
 	{
 		return ( ( ( ( ( ( ( ( ( ( ( ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
@@ -1849,21 +1861,25 @@ public class Matrix4
 
 	}
 
-	/** Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES'
-	 * glTranslate/glRotate/glScale
-	 * @param translation
-	 * @return This matrix for the purpose of chaining methods together. */
+    /// <summary>
+    /// Postmultiplies this matrix by a translation matrix.
+    /// Postmultiplication is also used by OpenGL ES' glTranslate/glRotate/glScale
+    /// </summary>
+    /// <param name="translation"> </param>
+    /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 Translate( Vector3 translation )
 	{
 		return Translate( translation.X, translation.Y, translation.Z );
 	}
 
-	/** Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 * @param x Translation in the x-axis.
-	 * @param y Translation in the y-axis.
-	 * @param z Translation in the z-axis.
-	 * @return This matrix for the purpose of chaining methods together. */
+    /// <summary>
+    /// Postmultiplies this matrix by a translation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// </summary>
+    /// <param name="x"> Translation in the x-axis. </param>
+    /// <param name="y"> Translation in the y-axis. </param>
+    /// <param name="z"> Translation in the z-axis. </param>
+    /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 Translate( float x, float y, float z )
 	{
 		val[ M03 ] += ( val[ M00 ] * x ) + ( val[ M01 ] * y ) + ( val[ M02 ] * z );
@@ -1874,11 +1890,13 @@ public class Matrix4
 		return this;
 	}
 
-	/** Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 * @param axis The vector axis to rotate around.
-	 * @param degrees The angle in degrees.
-	 * @return This matrix for the purpose of chaining methods together. */
+    /// <summary>
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// </summary>
+    /// <param name="axis"> The vector axis to rotate around. </param>
+    /// <param name="degrees"> The angle in degrees. </param>
+    /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 Rotate( Vector3 axis, float degrees )
 	{
 		if ( degrees == 0 ) return this;
@@ -1888,11 +1906,13 @@ public class Matrix4
 		return Rotate( Quat );
 	}
 
-	/** Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 * @param axis The vector axis to rotate around.
-	 * @param radians The angle in radians.
-	 * @return This matrix for the purpose of chaining methods together. */
+    /// <summary>
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// </summary>
+    /// <param name="axis"> The vector axis to rotate around. </param>
+    /// <param name="radians"> The angle in radians. </param>
+    /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 RotateRad( Vector3 axis, float radians )
 	{
 		if ( radians == 0 ) return this;
@@ -1902,13 +1922,15 @@ public class Matrix4
 		return Rotate( Quat );
 	}
 
-	/** Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale
-	 * @param axisX The x-axis component of the vector to rotate around.
-	 * @param axisY The y-axis component of the vector to rotate around.
-	 * @param axisZ The z-axis component of the vector to rotate around.
-	 * @param degrees The angle in degrees
-	 * @return This matrix for the purpose of chaining methods together. */
+    /// <summary>
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
+    /// </summary>
+    /// <param name="axisX"> The x-axis component of the vector to rotate around. </param>
+    /// <param name="axisY"> The y-axis component of the vector to rotate around. </param>
+    /// <param name="axisZ"> The z-axis component of the vector to rotate around. </param>
+    /// <param name="degrees"> The angle in degrees </param>
+    /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 Rotate( float axisX, float axisY, float axisZ, float degrees )
 	{
 		if ( degrees == 0 ) return this;
@@ -1918,13 +1940,15 @@ public class Matrix4
 		return Rotate( Quat );
 	}
 
-	/** Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale
-	 * @param axisX The x-axis component of the vector to rotate around.
-	 * @param axisY The y-axis component of the vector to rotate around.
-	 * @param axisZ The z-axis component of the vector to rotate around.
-	 * @param radians The angle in radians
-	 * @return This matrix for the purpose of chaining methods together. */
+    /// <summary>
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
+    /// </summary>
+    /// <param name="axisX"> The x-axis component of the vector to rotate around. </param>
+    /// <param name="axisY"> The y-axis component of the vector to rotate around. </param>
+    /// <param name="axisZ"> The z-axis component of the vector to rotate around. </param>
+    /// <param name="radians"> The angle in radians </param>
+    /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 RotateRad( float axisX, float axisY, float axisZ, float radians )
 	{
 		if ( radians == 0 ) return this;
@@ -1933,10 +1957,12 @@ public class Matrix4
 		return Rotate( Quat );
 	}
 
-	/** Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 * @param rotation
-	 * @return This matrix for the purpose of chaining methods together. */
+    /// <summary>
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// </summary>
+    /// <param name="rotation"> </param>
+    /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 Rotate( Quaternion rotation )
 	{
 		float x  = rotation.X, y = rotation.Y, z = rotation.Z, w = rotation.W;
@@ -1987,19 +2013,23 @@ public class Matrix4
 		return this;
 	}
 
-	/** Postmultiplies this matrix by the rotation between two vectors.
-	 * @param v1 The base vector
-	 * @param v2 The target vector
-	 * @return This matrix for the purpose of chaining methods together */
+    /// <summary>
+    /// Postmultiplies this matrix by the rotation between two vectors.
+    /// </summary>
+    /// <param name="v1"> The base vector </param>
+    /// <param name="v2"> The target vector </param>
+    /// <returns> This matrix for the purpose of chaining methods together  </returns>
 	public Matrix4 Rotate( Vector3 v1, Vector3 v2 )
 	{
 		return Rotate( Quat.SetFromCross( v1, v2 ) );
 	}
 
-	/** Post-multiplies this matrix by a rotation toward a direction.
-	 * @param direction direction to rotate toward
-	 * @param up up vector
-	 * @return This matrix for chaining */
+    /// <summary>
+    /// Post-multiplies this matrix by a rotation toward a direction.
+    /// </summary>
+    /// <param name="direction"> direction to rotate toward </param>
+    /// <param name="up"> up vector </param>
+    /// <returns> This matrix for chaining  </returns>
 	public Matrix4 RotateTowardDirection( Vector3 direction, Vector3 up )
 	{
 		LVez.Set( direction ).Nor();
@@ -2035,10 +2065,12 @@ public class Matrix4
 		return this;
 	}
 
-	/** Post-multiplies this matrix by a rotation toward a target.
-	 * @param target the target to rotate to
-	 * @param up the up vector
-	 * @return This matrix for chaining */
+    /// <summary>
+    /// Post-multiplies this matrix by a rotation toward a target.
+    /// </summary>
+    /// <param name="target"> the target to rotate to </param>
+    /// <param name="up"> the up vector </param>
+    /// <returns> This matrix for chaining  </returns>
 	public Matrix4 RotateTowardTarget( Vector3 target, Vector3 up )
 	{
 		TmpVec.Set( target.X - val[ M03 ], target.Y - val[ M13 ], target.Z - val[ M23 ] );
@@ -2046,12 +2078,14 @@ public class Matrix4
 		return RotateTowardDirection( TmpVec, up );
 	}
 
-	/** Postmultiplies this matrix with a scale matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 * @param scaleX The scale in the x-axis.
-	 * @param scaleY The scale in the y-axis.
-	 * @param scaleZ The scale in the z-axis.
-	 * @return This matrix for the purpose of chaining methods together. */
+    /// <summary>
+    /// Postmultiplies this matrix with a scale matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// </summary>
+    /// <param name="scaleX"> The scale in the x-axis. </param>
+    /// <param name="scaleY"> The scale in the y-axis. </param>
+    /// <param name="scaleZ"> The scale in the z-axis. </param>
+    /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 Scale( float scaleX, float scaleY, float scaleZ )
 	{
 		val[ M00 ] *= scaleX;
@@ -2070,8 +2104,11 @@ public class Matrix4
 		return this;
 	}
 
-	/** Copies the 4x3 upper-left sub-matrix into float array. The destination array is supposed to be a column major matrix.
-	 * @param dst the destination matrix */
+    /// <summary>
+	/// Copies the 4x3 upper-left sub-matrix into float array. The destination
+	/// array is supposed to be a column major matrix.
+    /// </summary>
+    /// <param name="dst"> the destination matrix </param>
 	public void Extract4X3Matrix( float[] dst )
 	{
 		dst[ 0 ]  = val[ M00 ];

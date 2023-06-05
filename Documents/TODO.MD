@@ -34,7 +34,7 @@ CORE
     - DONE - ApplicationAdapter             Convert
     - DONE - ApplicationBase                New
     - DONE - Game                           Convert
-    - IP   - GDXVersion                     Convert / Replace with C# Versioning?
+    - DONE - GDXVersion                     Convert / Replace with C# Versioning?
     - DONE - IApplication                   Convert
     - DONE - IApplicationListener           Convert
     - DONE - IApplicationLogger             Convert
@@ -363,7 +363,7 @@ MATH
     - DONE - BSpline
     -      - CatmullRomSpline
     - DONE - Circle
-    -      - ConvexHull
+    - IP   - ConvexHull
     - DONE - CumulativeDistribution
     -      - DelaunayTriangulator
     -      - EarClippingTriangulator
@@ -380,7 +380,7 @@ MATH
     - DONE - IVector
     - DONE - MathUtils
     -      - Matrix3                Convert
-    -      - Matrix4                Convert
+    - IP   - Matrix4                Convert
     - DONE - Number
     - DONE - Plane
     -      - Polygon
@@ -796,6 +796,7 @@ UTILS/REGEX
 
     - RE-EVALUATE WHETHER THIS IS NEEDED...
     - REALLY OUGHT TO BE USING C# REGEX!
+    - (Although I would like to convert it eventually...)
 
     - DONE - ASCII                          Convert
     - DONE - IMatchResult                   Convert

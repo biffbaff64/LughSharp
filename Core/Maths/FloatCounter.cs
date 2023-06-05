@@ -3,7 +3,7 @@
 namespace LibGDXSharp.Maths;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class FloatCounter
+public sealed class FloatCounter
 {
     /// <summary>
     /// The amount of values added

@@ -1,5 +1,8 @@
-﻿namespace LibGDXSharp.Maths;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace LibGDXSharp.Maths;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Matrix3
 {
     public const int M00 = 0;

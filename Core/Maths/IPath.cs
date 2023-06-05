@@ -9,7 +9,7 @@ public interface IPath<T>
 
     /// <summary>
     /// </summary>
-    /// <returns>The value of the path at t where 0<=t<=1</returns>
+    /// <returns>The value of the path at t where <tt>0 &lt;= t &lt;= 1.</tt></returns>
     T ValueAt( in T value, in float t );
 
     /// <summary>

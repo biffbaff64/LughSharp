@@ -103,6 +103,17 @@ public static class ListExtensions
     }
 
     /// <summary>
+    /// Returns the last item in a list.
+    /// </summary>
+    /// <param name="ts"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T Peek<T>( this IList< T > ts )
+    {
+        return ts[ ^1 ];
+    }
+    
+    /// <summary>
     /// Removes and returns the item at the specified index.
     /// </summary>
     /// <param name="ts"></param>
