@@ -1,6 +1,6 @@
-﻿namespace LibGDXSharp.GdxCore.Utils.Buffers;
+﻿namespace LibGDXSharp.Files;
 
-public abstract class ShortBuffer : LibGDXSharp.Utils.Buffer
+public abstract class ShortBuffer : LibGDXSharp.Files.Buffer
 {
 
     public int Get( short[] indices, int destOffset, int count )

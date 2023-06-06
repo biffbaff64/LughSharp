@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.GdxCore.Utils.Buffers;
+namespace LibGDXSharp.Files;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class HeapLongBuffer
+public class BufferedInputStream
 {
+        
 }

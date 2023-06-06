@@ -22,38 +22,6 @@ public sealed class SortUtils
     }
 
     private TimSort<object>?   _timSort;
-    private ComparableTimSort? _comparableTimSort;
-
-    /// <summary>
-    /// </summary>
-    /// <param name="a"></param>
-    /// <typeparam name="T"></typeparam>
-    public void Sort<T>( List< T > a ) where T : IComparable
-    {
-        _comparableTimSort ??= new ComparableTimSort();
-            
-        _comparableTimSort.DoSort( a.Cast<object>().ToArray(), 0, a.Count );
-    }
-
-    /// <summary>
-    /// The specified objects must implement <see cref="System.IComparable"/>.
-    /// </summary>
-    public void Sort( object[] a )
-    {
-        _comparableTimSort ??= new ComparableTimSort();
-
-        _comparableTimSort.DoSort( a, 0, a.Length );
-    }
-
-    /// <summary>
-    /// The specified objects must implement <see cref="System.IComparable"/>.
-    /// </summary>
-    public void Sort( object[]? a, int fromIndex, int toIndex )
-    {
-        _comparableTimSort ??= new ComparableTimSort();
-
-        _comparableTimSort.DoSort( a, fromIndex, toIndex );
-    }
 
     /// <summary>
     /// </summary>

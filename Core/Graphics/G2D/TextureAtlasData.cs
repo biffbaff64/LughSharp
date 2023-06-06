@@ -43,24 +43,24 @@ public partial record TextureAtlasData
     private void Load( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
     {
         //@formatter:off
-        Dictionary< string, IField< Page > > pageFields = new(15)
+        Dictionary< string, IField< Page > > pageFields = new( 15 )
         {
+            { "pma",        new PageFieldPmaClass()    },
             { "size",       new PageFieldParseClass()  },
             { "format",     new PageFieldFormatClass() },
             { "filter",     new PageFieldFilterClass() },
             { "repeat",     new PageFieldRepeatClass() },
-            { "pma",        new PageFieldPmaClass()    }
         };
 
-        Dictionary< string, IField< Region > > regionFields = new(127)
+        Dictionary< string, IField< Region > > regionFields = new( 127 )
         {
+            { "rotate",     new RegionFieldRotateClass()  },
             { "xy",         new RegionFieldXYClass()      },
             { "size",       new RegionFieldSizeClass()    },
             { "bounds",     new RegionFieldBoundsClass()  },
-            { "offset",     new RegionFieldOffsetClass()  },
             { "orig",       new RegionFieldOrigClass()    },
+            { "offset",     new RegionFieldOffsetClass()  },
             { "offsets",    new RegionFieldOffsetsClass() },
-            { "rotate",     new RegionFieldRotateClass()  },
             { "index",      new RegionFieldIndexClass()   },
         };
         //@formatter:on
@@ -114,7 +114,7 @@ public partial record TextureAtlasData
                 {
                     page = new Page
                     {
-                        textureFile = imagesDir //imagesDir.Child( line )
+                        textureFile = imagesDir.Child( line )
                     };
 
                     while ( true )

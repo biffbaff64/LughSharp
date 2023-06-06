@@ -3,7 +3,7 @@ using System.Text;
 
 using LibGDXSharp.GdxCore.Utils.Buffers;
 
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Files;
 
 [SuppressMessage( "ReSharper", "UnassignedGetOnlyAutoProperty" )]
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -12,8 +12,15 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
     private readonly byte[] _hb;
     private readonly int    _offset;
 
+    // Valid only for heap buffers.
     public bool isReadOnly;
 
+    protected ByteBuffer()
+    {
+        _hb = null!;
+        isReadOnly = false;S
+    }
+    
     /// <summary>
     /// Creates a new buffer with the given mark, position, limit, capacity,
     /// backing array, and array offset
@@ -696,60 +703,40 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
 
     /// <summary>
     /// Tells whether or not this buffer is equal to another object.
-    /// 
-    /// <para> Two byte buffers are equal if, and only if,
-    /// 
-    /// <ol>
-    /// 
+    /// <para>
+    /// Two byte buffers are equal if, and only if,
     /// </para>
-    ///   <li><para> They have the same element type,  </para></li>
-    /// 
-    ///   <li><para> They have the same number of remaining elements, and
-    ///   </para></li>
-    /// 
-    ///   <li><para> The two sequences of remaining elements, considered
-    ///   independently of their starting positions, are pointwise equal.
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
-    ///   </para></li>
-    /// 
-    /// </ol>
-    /// 
-    /// <para> A byte buffer is not equal to any other type of object.  </para>
+    ///   <para> 1. They have the same element type.</para>
+    ///   <para> 2. They have the same number of remaining elements.</para>
+    ///   <para> 3. The two sequences of remaining elements, considered
+    ///             independently of their starting positions, are pointwise equal.
+    ///   </para>
+    /// <para> A byte buffer is not equal to any other type of object.</para>
     /// </summary>
-    /// <param name="ob">  The object to which this buffer is to be compared
-    /// </param>
-    /// <returns>  <tt>true</tt> if, and only if, this buffer is equal to the
-    ///           given object </returns>
-    public override bool Equals( object ob )
+    /// <param name="ob"> The object to which this buffer is to be compared.</param>
+    /// <returns>
+    /// <tt>true</tt> if, and only if, this buffer is equal to the given object.
+    /// </returns>
+    public override bool Equals( object? ob )
     {
         if ( this == ob )
         {
             return true;
         }
 
-        if ( !( ob is ByteBuffer ) )
+        if ( !( ob is ByteBuffer that ) )
         {
             return false;
         }
 
-        ByteBuffer that = ( ByteBuffer )ob;
-
-        if ( this.remaining() != that.remaining() )
+        if ( this.Remaining() != that.Remaining() )
         {
             return false;
         }
 
-        int p = this.position();
-
-        for ( int i = this.limit() - 1, j = that.limit() - 1; i >= p; i--, j-- )
+        for ( int i = this.Limit - 1, j = that.Limit - 1; i >= this.Position; i--, j-- )
         {
-            if ( !Equals( this.get( i ), that.get( j ) ) )
+            if ( !Equals( this.Get( i ), that.Get( j ) ) )
             {
                 return false;
             }
@@ -760,44 +747,32 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
 
     private static bool Equals( byte x, byte y )
     {
-
-
         return x == y;
-
     }
 
     /// <summary>
     /// Compares this buffer to another.
-    /// 
     /// <para> Two byte buffers are compared by comparing their sequences of
     /// remaining elements lexicographically, without regard to the starting
     /// position of each sequence within its corresponding buffer.
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
-    /// Pairs of {@code byte} elements are compared as if by invoking
-    /// <see cref="Byte.compare(byte,byte)"/>.
-    /// 
-    /// 
+    /// Pairs of byte elements are compared as if by invoking
+    /// <see cref="Byte.CompareTo(byte)"/>.
     /// </para>
-    /// <para> A byte buffer is not comparable to any other type of object.
-    /// 
-    /// </para>
+    /// <para> A byte buffer is not comparable to any other type of object. </para>
     /// </summary>
-    /// <returns>  A negative integer, zero, or a positive integer as this buffer
-    ///          is less than, equal to, or greater than the given buffer </returns>
-    public virtual int CompareTo( ByteBuffer that )
+    /// <returns>
+    /// A negative integer, zero, or a positive integer as this buffer
+    /// is less than, equal to, or greater than the given buffer
+    /// </returns>
+    public virtual int CompareTo( ByteBuffer? that )
     {
-        int n = this.position() + Math.Min( this.remaining(), that.remaining() );
+        ArgumentNullException.ThrowIfNull( that );
+        
+        int n = this.Position + Math.Min( this.Remaining(), that.Remaining() );
 
-        for ( int i = this.position(), j = that.position(); i < n; i++, j++ )
+        for ( int i = this.Position, j = that.Position; i < n; i++, j++ )
         {
-            int cmp = Compare( this.get( i ), that.get( j ) );
+            int cmp = Compare( this.Get( i ), that.Get( j ) );
 
             if ( cmp != 0 )
             {
@@ -805,15 +780,12 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
             }
         }
 
-        return this.remaining() - that.remaining();
+        return this.Remaining() - that.Remaining();
     }
 
-    private static int Compare( byte x, byte y )
+    private static int Compare( byte byte1, byte byte2 )
     {
-
-
-        return Byte.Compare( x, y );
-
+        return byte1.CompareTo( byte2 );
     }
 
     // -- Other char stuff --
@@ -821,20 +793,20 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
     // -- Other byte stuff: Access to binary data --
 
     internal bool bigEndian       = true;
-    internal bool nativeByteOrder = ( Bits.byteOrder() == ByteOrder.BIG_ENDIAN );
+    internal bool nativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
 
     /// <summary>
     /// Retrieves this buffer's byte order.
-    /// 
-    /// <para> The byte order is used when reading or writing multibyte values, and
-    /// when creating buffers that are views of this byte buffer.  The order of
-    /// a newly-created byte buffer is always {@link ByteOrder#BIG_ENDIAN
-    /// BIG_ENDIAN}.  </para>
+    /// <para>
+    /// The byte order is used when reading or writing multibyte values, and
+    /// when creating buffers that are views of this byte buffer. The order of
+    /// a newly-created byte buffer is always <see cref="ByteOrder.BigEndian"/>
+    /// </para>
     /// </summary>
     /// <returns>  This buffer's byte order </returns>
     public ByteOrder Order()
     {
-        return bigEndian ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
+        return bigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
     }
 
     /// <summary>
@@ -849,7 +821,7 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
     public ByteBuffer Order( ByteOrder bo )
     {
         bigEndian       = ( bo == ByteOrder.BigEndian );
-        nativeByteOrder = ( bigEndian == ( Bits.ByteOrder() == ByteOrder.BigEndian ) );
+        nativeByteOrder = ( bigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian ) );
 
         return this;
     }
@@ -1249,81 +1221,66 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
     public abstract float Float { get; }
 
     /// <summary>
-    /// Relative <i>put</i> method for writing a float
-    /// value  <i>(optional operation)</i>.
-    /// 
-    /// <para> Writes four bytes containing the given float value, in the
+    /// Relative <i>put</i> method for writing a float value  <i>(optional operation)</i>.
+    /// <para>
+    /// Writes four bytes containing the given float value, in the
     /// current byte order, into this buffer at the current position, and then
-    /// increments the position by four.  </para>
+    /// increments the position by four.
+    /// </para>
     /// </summary>
-    /// <param name="value">
-    ///         The float value to be written
-    /// </param>
-    /// <returns>  This buffer
-    /// </returns>
+    /// <param name="value"> The float value to be written </param>
+    /// <returns>  This buffer </returns>
     /// <exception cref="BufferOverflowException">
-    ///          If there are fewer than four bytes
-    ///          remaining in this buffer
+    /// If there are fewer than four bytes remaining in this buffer
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is read-only </exception>
+    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract ByteBuffer PutFloat( float value );
 
     /// <summary>
     /// Absolute <i>get</i> method for reading a float value.
-    /// 
-    /// <para> Reads four bytes at the given index, composing them into a
-    /// float value according to the current byte order.  </para>
+    /// <para>
+    /// Reads four bytes at the given index, composing them into a
+    /// float value according to the current byte order.
+    /// </para>
     /// </summary>
-    /// <param name="index">
-    ///         The index from which the bytes will be read
-    /// </param>
-    /// <returns>  The float value at the given index
-    /// </returns>
+    /// <param name="index"> The index from which the bytes will be read </param>
+    /// <returns>  The float value at the given index </returns>
     /// <exception cref="IndexOutOfRangeException">
-    ///          If <tt>index</tt> is negative
-    ///          or not smaller than the buffer's limit,
-    ///          minus three </exception>
+    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus 3
+    /// </exception>
     public abstract float GetFloat( int index );
 
     /// <summary>
-    /// Absolute <i>put</i> method for writing a float
-    /// value  <i>(optional operation)</i>.
-    /// 
-    /// <para> Writes four bytes containing the given float value, in the
-    /// current byte order, into this buffer at the given index.  </para>
+    /// Absolute <i>put</i> method for writing a float value <i>(optional operation)</i>.
+    /// <para>
+    /// Writes four bytes containing the given float value, in the
+    /// current byte order, into this buffer at the given index.
+    /// </para>
     /// </summary>
-    /// <param name="index">
-    ///         The index at which the bytes will be written
-    /// </param>
-    /// <param name="value">
-    ///         The float value to be written
-    /// </param>
-    /// <returns>  This buffer
-    /// </returns>
+    /// <param name="index"> The index at which the bytes will be written </param>
+    /// <param name="value"> The float value to be written </param>
+    /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    ///          If <tt>index</tt> is negative
-    ///          or not smaller than the buffer's limit,
-    ///          minus three
+    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus 3
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is read-only </exception>
+    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract ByteBuffer PutFloat( int index, float value );
 
     /// <summary>
     /// Creates a view of this byte buffer as a float buffer.
-    /// 
-    /// <para> The content of the new buffer will start at this buffer's current
+    /// <para>
+    /// The content of the new buffer will start at this buffer's current
     /// position.  Changes to this buffer's content will be visible in the new
     /// buffer, and vice versa; the two buffers' position, limit, and mark
     /// values will be independent.
-    /// 
     /// </para>
-    /// <para> The new buffer's position will be zero, its capacity and its limit
+    /// <para>
+    /// The new buffer's position will be zero, its capacity and its limit
     /// will be the number of bytes remaining in this buffer divided by
     /// four, and its mark will be undefined.  The new buffer will be direct
     /// if, and only if, this buffer is direct, and it will be read-only if, and
-    /// only if, this buffer is read-only.  </para>
+    /// only if, this buffer is read-only.
+    /// </para>
     /// </summary>
     /// <returns>  A new float buffer </returns>
     public abstract FloatBuffer AsFloatBuffer();
@@ -1336,32 +1293,26 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
     /// composing them into a double value according to the current byte order,
     /// and then increments the position by eight.  </para>
     /// </summary>
-    /// <returns>  The double value at the buffer's current position
-    /// </returns>
+    /// <returns>  The double value at the buffer's current position </returns>
     /// <exception cref="BufferUnderflowException">
-    ///          If there are fewer than eight bytes
-    ///          remaining in this buffer </exception>
+    /// If there are fewer than eight bytes remaining in this buffer
+    /// </exception>
     public abstract double Double { get; }
 
     /// <summary>
-    /// Relative <i>put</i> method for writing a double
-    /// value  <i>(optional operation)</i>.
-    /// 
-    /// <para> Writes eight bytes containing the given double value, in the
-    /// current byte order, into this buffer at the current position, and then
-    /// increments the position by eight.  </para>
+    /// Relative <i>put</i> method for writing a double value <i>(optional operation)</i>.
+    /// <para>
+    /// Writes eight bytes containing the given double value, in the current
+    /// byte order, into this buffer at the current position, and then increments
+    /// the position by eight.
+    /// </para>
     /// </summary>
-    /// <param name="value">
-    ///         The double value to be written
-    /// </param>
-    /// <returns>  This buffer
-    /// </returns>
+    /// <param name="value"> The double value to be written </param>
+    /// <returns>  This buffer </returns>
     /// <exception cref="BufferOverflowException">
-    ///          If there are fewer than eight bytes
-    ///          remaining in this buffer
+    /// If there are fewer than eight bytes remaining in this buffer
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is read-only </exception>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only </exception>
     public abstract ByteBuffer PutDouble( double value );
 
     /// <summary>

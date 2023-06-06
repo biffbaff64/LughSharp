@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Files;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class FloatBuffer : Buffer, IComparable< FloatBuffer >

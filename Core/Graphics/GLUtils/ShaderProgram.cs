@@ -102,11 +102,13 @@ public sealed class ShaderProgram
     /// <summary>whether this program compiled successfully</summary>
     public bool IsCompiled { get; set; }
 
-    /// <summary>uniform lookup</summary>
+    /// <summary>
+    /// uniform lookup
+    /// </summary>
     private readonly Dictionary< string, int > _uniforms = new();
     private readonly Dictionary< string, int > _uniformTypes = new();
     private readonly Dictionary< string, int > _uniformSizes = new();
-    private string[] _uniformNames = null!;
+    private          string[]                  _uniformNames = null!;
 
     /// <summary>
     /// attribute lookup
@@ -114,7 +116,7 @@ public sealed class ShaderProgram
     private readonly Dictionary< string, int > _attributes = new();
     private readonly Dictionary< string, int > _attributeTypes = new();
     private readonly Dictionary< string, int > _attributeSizes = new();
-    private string[] _attributeNames = null!;
+    private          string[]                  _attributeNames = null!;
 
     private int _programHandle;
     private int _vertexShaderHandle;
@@ -174,7 +176,7 @@ public sealed class ShaderProgram
     /// </summary>
     /// <param name="vertexShader"></param>
     /// <param name="fragmentShader"></param>
-    public ShaderProgram( FileHandle vertexShader, FileHandle fragmentShader )
+    public ShaderProgram( FileInfo vertexShader, FileInfo fragmentShader )
         : this( vertexShader.ReadString(), fragmentShader.ReadString() )
     {
     }
@@ -268,7 +270,7 @@ public sealed class ShaderProgram
         IntBuffer intbuf = tmp.AsIntBuffer();
 
         Gdx.GL20.GLGetProgramiv( program, IGL20.GL_Link_Status, intbuf );
-        
+
         var linked = intbuf.Get( 0 );
 
         if ( linked == 0 )
@@ -736,7 +738,7 @@ public sealed class ShaderProgram
     public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, Utils.Buffer buffer )
     {
         CheckManaged();
-        
+
         int location = FetchAttributeLocation( name );
 
         if ( location == -1 )
@@ -774,7 +776,7 @@ public sealed class ShaderProgram
     public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, int offset )
     {
         CheckManaged();
-        
+
         int location = FetchAttributeLocation( name );
 
         if ( location == -1 )
@@ -829,7 +831,7 @@ public sealed class ShaderProgram
     public void DisableVertexAttribute( string name )
     {
         CheckManaged();
-            
+
         int location = FetchAttributeLocation( name );
 
         if ( location == -1 )

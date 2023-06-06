@@ -4,7 +4,7 @@
 /// A bitset, without size limitation, allows comparison via
 /// bitwise operators to other bitfields.
 /// </summary>
-public class Bits
+public partial class Bits
 {
     private long[] _bits = { 0 };
 

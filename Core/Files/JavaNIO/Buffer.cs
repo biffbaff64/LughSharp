@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Files;
 
 /// <summary>
 /// <p>

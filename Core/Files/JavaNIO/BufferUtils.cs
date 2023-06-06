@@ -1,9 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-using LibGDXSharp.GdxCore.Utils.Buffers;
-
-#pragma warning disable CS0184
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Files;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class BufferUtils

@@ -165,7 +165,7 @@ public class ScreenUtils
 
         Gdx.GL.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
 
-        ByteBuffer pixels = Utils.BufferUtils.NewByteBuffer( numBytes );
+        ByteBuffer pixels = Files.BufferUtils.NewByteBuffer( numBytes );
 
         Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
 

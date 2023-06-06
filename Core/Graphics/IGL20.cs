@@ -339,7 +339,7 @@ public interface IGL20
                                         int height,
                                         int border,
                                         int imageSize,
-                                        Utils.Buffer data );
+                                        Files.Buffer data );
 
     public void GLCompressedTexSubImage2D( int target,
                                            int level,
@@ -349,7 +349,7 @@ public interface IGL20
                                            int height,
                                            int format,
                                            int imageSize,
-                                           Utils.Buffer data );
+                                           Files.Buffer data );
 
     public void GLCopyTexImage2D( int target,
                                   int level,
@@ -385,7 +385,7 @@ public interface IGL20
 
     public void GLDrawArrays( int mode, int first, int count );
 
-    public void GLDrawElements( int mode, int count, int type, Utils.Buffer indices );
+    public void GLDrawElements( int mode, int count, int type, Files.Buffer indices );
 
     public void GLEnable( int cap );
 
@@ -403,7 +403,7 @@ public interface IGL20
 
     public void GLGetIntegerv( int pname, IntBuffer parameters );
 
-    public String GLGetString( int name );
+    public string GLGetString( int name );
 
     public void GLHint( int target, int mode );
 
@@ -413,11 +413,11 @@ public interface IGL20
 
     public void GLPolygonOffset( float factor, float units );
 
-    public void GLReadPixels( int x, int y, int width, int height, int format, int type, Utils.Buffer pixels );
+    public void GLReadPixels( int x, int y, int width, int height, int format, int type, Files.Buffer pixels );
 
     public void GLScissor( int x, int y, int width, int height );
 
-    public void GLStencilFunc( int func, int reference, int mask);
+    public void GLStencilFunc( int func, int reference, int mask );
 
     public void GLStencilMask( int mask );
 
@@ -431,7 +431,7 @@ public interface IGL20
                               int border,
                               int format,
                               int type,
-                              Utils.Buffer pixels );
+                              Files.Buffer pixels );
 
     public void GLTexParameterf( int target, int pname, float param );
 
@@ -443,7 +443,7 @@ public interface IGL20
                                  int height,
                                  int format,
                                  int type,
-                                 Utils.Buffer pixels );
+                                 Files.Buffer pixels );
 
     public void GLViewport( int x, int y, int width, int height );
 
@@ -465,9 +465,9 @@ public interface IGL20
 
     public void GLBlendFuncSeparate( int srcRgb, int dstRgb, int srcAlpha, int dstAlpha );
 
-    public void GLBufferData( int target, int size, Utils.Buffer data, int usage );
+    public void GLBufferData( int target, int size, Files.Buffer data, int usage );
 
-    public void GLBufferSubData( int target, int offset, int size, Utils.Buffer data );
+    public void GLBufferSubData( int target, int offset, int size, Files.Buffer data );
 
     public int GLCheckFramebufferStatus( int target );
 
@@ -525,11 +525,11 @@ public interface IGL20
     // deviates
     public string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type );
 
-    public void GLGetAttachedShaders( int program, int maxcount, Utils.Buffer count, IntBuffer shaders );
+    public void GLGetAttachedShaders( int program, int maxcount, Files.Buffer count, IntBuffer shaders );
 
-    public int GLGetAttribLocation( int program, String name );
+    public int GLGetAttribLocation( int program, string name );
 
-    public void GLGetboolv( int pname, Utils.Buffer parameters );
+    public void GLGetboolv( int pname, Files.Buffer parameters );
 
     public void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters );
 
@@ -539,15 +539,13 @@ public interface IGL20
 
     public void GLGetProgramiv( int program, int pname, IntBuffer parameters );
 
-    // deviates
     public string GLGetProgramInfoLog( int program );
 
     public void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters );
 
     public void GLGetShaderiv( int shader, int pname, IntBuffer parameters );
 
-    // deviates
-    public String GLGetShaderInfoLog( int shader );
+    public string GLGetShaderInfoLog( int shader );
 
     public void GLGetShaderPrecisionFormat( int shadertype, int precisiontype, IntBuffer range, IntBuffer precision );
 
@@ -559,13 +557,13 @@ public interface IGL20
 
     public void GLGetUniformiv( int program, int location, IntBuffer parameters );
 
-    public int GLGetUniformLocation( int program, String name );
+    public int GLGetUniformLocation( int program, string name );
 
     public void GLGetVertexAttribfv( int index, int pname, FloatBuffer parameters );
 
     public void GLGetVertexAttribiv( int index, int pname, IntBuffer parameters );
 
-    public void GLGetVertexAttribPointerv( int index, int pname, Utils.Buffer pointer );
+    public void GLGetVertexAttribPointerv( int index, int pname, Files.Buffer pointer );
 
     public bool GLIsBuffer( int buffer );
 
@@ -589,12 +587,11 @@ public interface IGL20
 
     public void GLSampleCoverage( float value, bool invert );
 
-    public void GLShaderBinary( int n, IntBuffer shaders, int binaryformat, Utils.Buffer binary, int length );
+    public void GLShaderBinary( int n, IntBuffer shaders, int binaryformat, Files.Buffer binary, int length );
 
-    // Deviates
     public void GLShaderSource( int shader, string str );
 
-    public void GLStencilFuncSeparate( int face, int func, int reference, int mask);
+    public void GLStencilFuncSeparate( int face, int func, int reference, int mask );
 
     public void GLStencilMaskSeparate( int face, int mask );
 
@@ -610,19 +607,19 @@ public interface IGL20
 
     public void GLUniform1Fv( int location, int count, FloatBuffer v );
 
-    public void GLUniform1Fv( int location, int count, float[] v, int offset);
+    public void GLUniform1Fv( int location, int count, float[] v, int offset );
 
     public void GLUniform1I( int location, int x );
 
     public void GLUniform1Iv( int location, int count, IntBuffer v );
 
-    public void GLUniform1Iv( int location, int count, int[] v, int offset);
+    public void GLUniform1Iv( int location, int count, int[] v, int offset );
 
     public void GLUniform2F( int location, float x, float y );
 
     public void GLUniform2Fv( int location, int count, FloatBuffer v );
 
-    public void GLUniform2Fv( int location, int count, float[] v, int offset);
+    public void GLUniform2Fv( int location, int count, float[] v, int offset );
 
     public void GLUniform2I( int location, int x, int y );
 
@@ -640,31 +637,31 @@ public interface IGL20
 
     public void GLUniform3Iv( int location, int count, IntBuffer v );
 
-    public void GLUniform3Iv( int location, int count, int[] v, int offset);
+    public void GLUniform3Iv( int location, int count, int[] v, int offset );
 
     public void GLUniform4F( int location, float x, float y, float z, float w );
 
     public void GLUniform4Fv( int location, int count, FloatBuffer v );
 
-    public void GLUniform4Fv( int location, int count, float[] v, int offset);
+    public void GLUniform4Fv( int location, int count, float[] v, int offset );
 
     public void GLUniform4I( int location, int x, int y, int z, int w );
 
     public void GLUniform4Iv( int location, int count, IntBuffer v );
 
-    public void GLUniform4Iv( int location, int count, int[] v, int offset);
+    public void GLUniform4Iv( int location, int count, int[] v, int offset );
 
     public void GLUniformMatrix2Fv( int location, int count, bool transpose, FloatBuffer value );
 
-    public void GLUniformMatrix2Fv( int location, int count, bool transpose, float[] value, int offset);
+    public void GLUniformMatrix2Fv( int location, int count, bool transpose, float[] value, int offset );
 
     public void GLUniformMatrix3Fv( int location, int count, bool transpose, FloatBuffer value );
 
-    public void GLUniformMatrix3Fv( int location, int count, bool transpose, float[] value, int offset);
+    public void GLUniformMatrix3Fv( int location, int count, bool transpose, float[] value, int offset );
 
     public void GLUniformMatrix4Fv( int location, int count, bool transpose, FloatBuffer value );
 
-    public void GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset);
+    public void GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset );
 
     public void GLUseProgram( int program );
 
@@ -689,8 +686,7 @@ public interface IGL20
     /// In OpenGl core profiles (3.1+), passing a pointer to client memory is not valid.
     /// In 3.0 and later, use the other version of this function instead, pass a zero-based
     /// offset which references the buffer currently bound to GL_ARRAY_BUFFER.
-
-    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Utils.Buffer ptr );
+    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Files.Buffer ptr );
 
     public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, int ptr );
 }

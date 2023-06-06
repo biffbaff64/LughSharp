@@ -1,8 +1,4 @@
-﻿using LibGDXSharp.GdxCore.Utils.Buffers;
-
-namespace LibGDXSharp.Graphics;
-
-using LibGDXSharp.Utils;
+﻿namespace LibGDXSharp.Graphics;
 
 public interface IGL30 : IGL20
 {
@@ -324,18 +320,18 @@ public interface IGL30 : IGL20
     
 	public void GLReadBuffer( int mode );
 
-	public void GLDrawRangeElements( int mode, int start, int end, int count, int type, Buffer indices );
+	public void GLDrawRangeElements( int mode, int start, int end, int count, int type, Files.Buffer indices );
 
 	public void GLDrawRangeElements( int mode, int start, int end, int count, int type, int offset );
 
 	public void GLTexImage3D( int target, int level, int internalformat, int width, int height,
-	                          int depth, int border, int format, int type, Buffer pixels );
+	                          int depth, int border, int format, int type, Files.Buffer pixels );
 	
 	public void GLTexImage3D( int target, int level, int internalformat, int width, int height,
 	                          int depth, int border, int format, int type, int offset );
 
 	public void GLTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset, int width,
-	                             int height, int depth, int format, int type, Buffer pixels );
+	                             int height, int depth, int format, int type, Files.Buffer pixels );
 
 	public void GLTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset, int width,
 	                             int height, int depth, int format, int type, int offset );
@@ -363,7 +359,7 @@ public interface IGL30 : IGL20
 
 	public bool GLUnmapBuffer( int target );
 
-	public Buffer GLGetBufferPointerv( int target, int pname );
+	public Files.Buffer GLGetBufferPointerv( int target, int pname );
 
 	public void GLDrawBuffers( int n, IntBuffer bufs );
 
@@ -388,7 +384,7 @@ public interface IGL30 : IGL20
 
 	public void GLFramebufferTextureLayer( int target, int attachment, int texture, int level, int layer );
 
-	public Buffer GLMapBufferRange( int target, int offset, int length, int access );
+	public Files.Buffer GLMapBufferRange( int target, int offset, int length, int access );
 
 	public void GLFlushMappedBufferRange( int target, int offset, int length );
 
@@ -458,7 +454,7 @@ public interface IGL30 : IGL20
 	                                       int pname, IntBuffer parameters );
 
 	public void GLGetActiveUniformBlockName( int program, int uniformBlockIndex,
-	                                         Buffer length, Buffer uniformBlockName );
+	                                         Files.Buffer length, Files.Buffer uniformBlockName );
 
 	public string GLGetActiveUniformBlockName( int program, int uniformBlockIndex );
 
@@ -528,7 +524,7 @@ public interface IGL30 : IGL20
 	/// zero-based offset which references the buffer currently bound to GL_Array_Buffer.
 	/// </summary>
 	public new void GLVertexAttribPointer( int indx, int size, int type,
-	                                       bool normalized, int stride, Buffer ptr );
+	                                       bool normalized, int stride, Files.Buffer ptr );
 
     //@formatter:on
 }

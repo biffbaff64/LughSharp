@@ -1,4 +1,4 @@
-﻿namespace LibGDXSharp.Utils;
+﻿namespace LibGDXSharp.Files;
 
 public abstract class DoubleBuffer : Buffer
 {

@@ -1,30 +1,30 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.GdxCore.Utils.Buffers;
+namespace LibGDXSharp.Files;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class DirectByteBuffer : LibGDXSharp.Utils.Buffer
+public class DirectByteBuffer : MappedByteBuffer
 {
     /// <summary>
     /// Tells whether or not this buffer is read-only.
     /// </summary>
     /// <returns>  <tt>true</tt> if this buffer is read-only </returns>
-    public override bool IsReadOnly { get; }
+    public override bool IsReadOnly { get; set; }
 
     /// <summary>
     /// Tells whether or not this buffer is backed by an accessible
     /// array.
     /// 
     /// <para>
-    /// If this method returns <tt>true</tt> then the <see cref="LibGDXSharp.Utils.Buffer.Array"/>
-    /// and <see cref="LibGDXSharp.Utils.Buffer.ArrayOffset"/> methods may safely be invoked.
+    /// If this method returns <tt>true</tt> then the <see cref="LibGDXSharp.Files.Buffer.Array"/>
+    /// and <see cref="LibGDXSharp.Files.Buffer.ArrayOffset"/> methods may safely be invoked.
     /// </para>
     /// </summary>
     /// <returns>
     /// <tt>true</tt> if this buffer is backed by an array and is not read-only.
     /// </returns>
-    public override bool HasArray() => throw new NotImplementedException();
+    public new bool HasArray() => throw new NotImplementedException();
 
     /// <summary>
     /// Returns the array that backs this buffer.
@@ -35,7 +35,7 @@ public class DirectByteBuffer : LibGDXSharp.Utils.Buffer
     /// </para>
     /// 
     /// <para>
-    /// Invoke the <see cref="LibGDXSharp.Utils.Buffer.HasArray"/> method before invoking this
+    /// Invoke the <see cref="LibGDXSharp.Files.Buffer.HasArray"/> method before invoking this
     /// method in order to ensure that this buffer has an accessible backing
     /// array.  </para>
     /// </summary>
@@ -47,7 +47,7 @@ public class DirectByteBuffer : LibGDXSharp.Utils.Buffer
     /// <exception cref="NotSupportedException">
     /// If this buffer is not backed by an accessible array
     /// </exception>
-    public override object Array() => throw new NotImplementedException();
+    public new object Array() => throw new NotImplementedException();
 
     /// <summary>
     /// Returns the offset within this buffer's backing array of the first
@@ -58,7 +58,7 @@ public class DirectByteBuffer : LibGDXSharp.Utils.Buffer
     /// corresponds to array index <i>p</i> + <tt>arrayOffset()</tt>.
     /// </para>
     /// <para>
-    /// Invoke the <see cref="LibGDXSharp.Utils.Buffer.HasArray"/> method before invoking this method
+    /// Invoke the <see cref="LibGDXSharp.Files.Buffer.HasArray"/> method before invoking this method
     /// in order to ensure that this buffer has an accessible backing array.
     /// </para>
     /// </summary>
@@ -71,7 +71,7 @@ public class DirectByteBuffer : LibGDXSharp.Utils.Buffer
     /// <exception cref="NotSupportedException">
     /// If this buffer is not backed by an accessible array
     /// </exception>
-    public override int ArrayOffset() => throw new NotImplementedException();
+    public new int ArrayOffset() => throw new NotImplementedException();
 
     /// <summary>
     /// Tells whether or not this buffer is <tt><i>direct</i></tt>

@@ -12,6 +12,8 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - SORT OUT VERSIONING!!!
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- ADD A LICENCE - MIT / APACHE ???
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - IP   = Conversion In Progress.
 - DONE = Class finished but may not be fully 'CSharp-ified'
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,7 +79,7 @@ ASSETS/LOADERS
     - DONE - MusicLoader                    Convert
     -      - ParticleEffectLoader           Convert
     - DONE - PixmapLoader                   Convert
-    -      - ShaderProgramLoader            Convert
+    - IP   - ShaderProgramLoader            Convert
     - DONE - SkinLoader                     Convert
     - DONE - SoundLoader                    Convert
     - DONE - SynchronousAssetLoader         Convert
@@ -115,23 +117,39 @@ AUDIO
 
 FILES
 -----
-    -      - BufferedReader
-    -      - ByteArrayOutputStream
-    -      - DataInputStream                BinaryReader
-    -      - DataOutputStream               BinaryWriter
-    -      - Deflater
-    - IP   - DeflaterOutputStream
-    - IP   - File
-    - IP   - FileHandle
-    - IP   - FileHandleStream
-    - DONE - FilterOutputStream
-    -      - InflaterInputStream
-    -      - InputStream                    StreamReader
-    -      - InputStreamReader              StreamReader
-    -      - OutputStream                   StreamWriter
-    -      - Reader
+    - java.io.BufferedReader                -> 
+    - java.io.BufferedInputStream           -> 
+    - java.io.ByteArrayOutputStream         -> 
+    - java.io.DataInputStream               -> BinaryReader
+    - java.io.DataOutputStream              -> BinaryWriter
+    - java.io.File                          -> 
+    - java.io.FileHandle                    -> 
+    - java.io.FileHandleStream              -> 
+    - java.io.FilterOutputStream            -> 
+    - java.io.InputStream                   -> StreamReader
+    - java.io.InputStreamReader             -> StreamReader
+    - java.io.IOException                   -> 
+    - java.io.OutputStream                  -> StreamWriter
+    - java.io.Reader                        -> 
 
-    Use StreamReader / StreamWriter, BinaryReader / BinaryWriter etc instead.
+    - Would MemoryStream cover all these?
+    - java.nio.Buffer                       ->  
+    - java.nio.BufferUtils                  ->  
+    - java.nio.ByteBuffer                   ->  
+    - java.nio.ByteBuffer                   -> 
+    - java.nio.DataBuffer                   -> 
+    - java.nio.DirectByteBuffer             -> 
+    - java.nio.DoubleBuffer                 -> 
+    - java.nio.FloatBuffer                  -> 
+    - java.nio.HeapLongBuffer               -> 
+    - java.nio.IntBuffer                    -> 
+    - java.nio.LongBuffer                   -> 
+
+    - java.util.zip.CRC32                   -> 
+    - java.util.zip.CheckedOutputStream     -> 
+    - java.util.zip.Deflater                -> 
+    - java.util.zip.DeflaterOutputStream    -> 
+    - java.util.zip.InflaterInputStream     -> 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -214,7 +232,7 @@ GRAPHICS/G3D
 
 GRAPHICS/GLUTILS
 ----------------
-    -      - ETC1
+    - IP   - ETC1
     - IP   - ETC1TextureData
     -      - FacedCubemapData
     - IP   - FileTextureArrayData
@@ -248,7 +266,7 @@ GRAPHICS/GLUTILS
     -      - MipMapGenerator
     -      - MipMapTextureData
     - DONE - PixmapTextureData
-    - DONE - ShaderProgram
+    - IP   - ShaderProgram
     - DONE - ShapeRenderer
     -      - VertexArray
     -      - VertexBufferObject
@@ -383,7 +401,7 @@ MATH
     - IP   - Matrix4                Convert
     - DONE - Number
     - DONE - Plane
-    -      - Polygon
+    - DONE - Polygon
     -      - Polyline
     -      - Quaternion
     - DONE - RandomXS128
@@ -457,7 +475,7 @@ SCENES.SCENE2D/ACTIONS
     - DONE - FloatAction                    Convert
     - DONE - IntAction                      Convert
     - DONE - LayoutAction                   Convert
-    - IP   - MoveByAction                   Convert
+    - DONE - MoveByAction                   Convert
     - DONE - MoveToAction                   Convert
     - IP   - ParallelAction                 Convert
     - IP   - RelativeTemporalAction         Convert
@@ -629,16 +647,6 @@ UTILS/BUFFERS
 
             MemoryStream ??
 
-    -      - Buffer
-    -      - BufferUtils
-    -      - ByteBuffer
-    -      - DataBuffer
-    -      - DirectByteBuffer
-    -      - DoubleBuffer
-    -      - FloatBuffer
-    -      - HeapLongBuffer
-    -      - IntBuffer                      
-    -      - LongBuffer
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

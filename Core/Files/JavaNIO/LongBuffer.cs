@@ -1,4 +1,4 @@
-﻿namespace LibGDXSharp.GdxCore.Utils.Buffers;
+﻿namespace LibGDXSharp.Files;
 
 /**
  * A long buffer.
@@ -60,7 +60,7 @@
  * @author JSR-51 Expert Group
  * @since 1.4
  */
-public abstract class LongBuffer : LibGDXSharp.Utils.Buffer, IComparable< LongBuffer >
+public abstract class LongBuffer : LibGDXSharp.Files.Buffer, IComparable< LongBuffer >
 {
     // These fields are declared here rather than in Heap-X-Buffer in order to
     // reduce the number of virtual method invocations needed to access these

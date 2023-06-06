@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-
-using LibGDXSharp.DevFillers;
+using System.IO.Compression;
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics;
@@ -87,12 +86,11 @@ public class PixmapIO
 
         public static void Write( FileInfo file, Pixmap pixmap )
         {
-            DataOutputStream output = null;
+            DataOutputStream? output = null;
 
             try
             {
-                // long start = System.nanoTime();
-                DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream( file.Write( false ) );
+                var deflaterOutputStream = new DeflaterOutputStream( file.Write( false ) );
 
                 output = new DataOutputStream( deflaterOutputStream );
                 output.WriteInt( pixmap.Width );
