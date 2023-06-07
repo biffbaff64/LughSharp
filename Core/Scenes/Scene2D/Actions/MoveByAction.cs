@@ -5,7 +5,7 @@ public class MoveByAction : RelativeTemporalAction
     public float AmountX { get; set; }
     public float AmountY { get; set; }
 
-    protected void UpdateRelative( float percentDelta )
+    protected override void UpdateRelative( float percentDelta )
     {
         Target?.MoveBy( AmountX * percentDelta, AmountY * percentDelta );
     }

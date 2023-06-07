@@ -94,13 +94,13 @@ ASSETS/LOADERS/RESOLVERS
     - DONE - AbsoluteFileHandleResolver
     - DONE - IFileHandleResolver
     - DONE - InternalFileHandleResolver
-    // -------------------------------------
+    -------------------------------------
     -      - ClasspathFileHandleResolver   
     -      - ExternalFileHandleResolver    
     -      - LocalFileHandleResolver       
     -      - PrefixFileHandleResolver      
     -      - ResolutionFileResolver        
-    // -------------------------------------
+    -------------------------------------
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -145,6 +145,8 @@ FILES
     - java.nio.IntBuffer                    -> 
     - java.nio.LongBuffer                   -> 
 
+    ------------------------------------------
+    - Look into existing C# ZIP libraries
     - java.util.zip.CRC32                   -> 
     - java.util.zip.CheckedOutputStream     -> 
     - java.util.zip.Deflater                -> 
@@ -462,7 +464,7 @@ SCENES.SCENE2D
 
 SCENES.SCENE2D/ACTIONS
 ----------------------
-    - IP   - Actions                        Convert
+    - DONE - Actions                        Convert
     - DONE - AddAction                      Convert
     - DONE - AddListenerAction              Convert
     - DONE - AfterAction                    Convert
@@ -477,20 +479,20 @@ SCENES.SCENE2D/ACTIONS
     - DONE - LayoutAction                   Convert
     - DONE - MoveByAction                   Convert
     - DONE - MoveToAction                   Convert
-    - IP   - ParallelAction                 Convert
-    - IP   - RelativeTemporalAction         Convert
-    - IP   - RemoveAction                   Convert
-    - IP   - RemoveActorAction              Convert
-    - IP   - RemoveListenerAction           Convert
-    - IP   - RepeatAction                   Convert
-    - IP   - RotateByAction                 Convert
-    - IP   - RotateToAction                 Convert
-    - IP   - RunnableAction                 Convert
-    - IP   - ScaleByAction                  Convert
-    - IP   - ScaleToAction                  Convert
-    - IP   - SequenceAction                 Convert
-    - IP   - SizeByAction                   Convert
-    - IP   - SizeToAction                   Convert
+    - DONE - ParallelAction                 Convert
+    - DONE - RelativeTemporalAction         Convert
+    - DONE - RemoveAction                   Convert
+    - DONE - RemoveActorAction              Convert
+    - DONE - RemoveListenerAction           Convert
+    - DONE - RepeatAction                   Convert
+    - DONE - RotateByAction                 Convert
+    - DONE - RotateToAction                 Convert
+    - DONE - RunnableAction                 Convert
+    - DONE - ScaleByAction                  Convert
+    - DONE - ScaleToAction                  Convert
+    - DONE - SequenceAction                 Convert
+    - DONE - SizeByAction                   Convert
+    - DONE - SizeToAction                   Convert
     - DONE - TemporalAction                 Convert
     - DONE - TimeScaleAction                Convert
     - DONE - TouchableAction                Convert
@@ -529,7 +531,7 @@ SCENES.SCENE2D/UI
     -      - TooltipManager                 Convert
     -      - Touchpad                       Convert
     -      - Tree                           Convert
-    -      - Value                          Convert
+    - IP   - Value                          Convert
     -      - VerticalGroup                  Convert
     -      - Widget                         Convert
     - IP   - WidgetGroup                    Convert
@@ -571,15 +573,15 @@ UTILS
     Misc
     ----
     - DONE - Align                          Convert
-    // ----------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------
     - **** - Base64Coder                    Use System.Convert classes
-    // ----------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------
     - DONE - BinaryHeap
     - DONE - Bits                           Convert
     - DONE - CharHelper                     Might be added to.
-    // ----------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------
     - **** - ComparableTimSort              Not Needed
-    // ----------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------
     - DONE - DataInput                      Check
     -      - DataOutput                     Check
     - DONE - DataUtils                      Added Class
@@ -607,12 +609,12 @@ UTILS
     -      - SortedIntList
     -      - StreamUtils
     - DONE - StringTokenizer
-    // ----------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter                  Remove, look into C# localisation
-    // ----------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------
     - DONE - Timer                          Use System.Timer instead??
-    // ----------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------
     - DONE - TimeUtils
     - DONE - TimSort
     -      - Trace                          Addition
@@ -635,18 +637,6 @@ UTILS/ATOMIC
     - **** - AtomicInteger                  No
     - **** - AtomicQueue                    No
     - **** - AtomicReferenceArray           No
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/BUFFERS
--------------
-
-    Task:   Find a way of doing in C# what these were doing in Java LibGDX.
-            Otherwise these will need converting.
-
-            MemoryStream ??
-
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -715,30 +705,29 @@ UTILS/COLLECTIONS
                                             
 UTILS/COMPRESSION
 -----------------
-    - **** - CRC                            No
-    -      - CRC32
-    -      - IChecksum
-    - **** - ICodeProgress                  No
-    - **** - LzmaAdapted                    No
+    - **** - CRC
+    - **** - IChecksum
+    - **** - ICodeProgress
+    - **** - LzmaAdapted
 
     UTILS/COMPRESSION/LZ
     --------------------
-            - **** - BinTree                No
-            - **** - InWindow               No
-            - **** - OutWindow              No
+            - **** - BinTree
+            - **** - InWindow
+            - **** - OutWindow
     
     UTILS/COMPRESSION/LZMA
     ----------------------
-            - **** - Base                   No
-            - **** - Decoder                No
-            - **** - Encoder                No
+            - **** - Base
+            - **** - Decoder
+            - **** - Encoder
     
     UTILS/COMPRESSION/RANGECODER
     ----------------------------
-            - **** - BitTreeDecoder         No
-            - **** - BitTreeEncoder         No
-            - **** - Decoder                No
-            - **** - Encoder                No
+            - **** - BitTreeDecoder
+            - **** - BitTreeEncoder
+            - **** - Decoder
+            - **** - Encoder
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -759,13 +748,13 @@ UTILS/EXCEPTIONS
 
 UTILS/JSON
 ----------
-    - **** - IBaseJsonReader                No
-    - **** - Json                           No
-    - **** - JsonReader                     No
-    - **** - JsonValue                      No
-    - **** - JsonWriter                     No
-    - **** - UBJsonReader                   No
-    - **** - UBJsonWriter                   No
+    - **** - IBaseJsonReader
+    - **** - Json
+    - **** - JsonReader
+    - **** - JsonValue
+    - **** - JsonWriter
+    - **** - UBJsonReader
+    - **** - UBJsonWriter
 
     using an existing Json library would be better, but this could be
     converted at a later date.
@@ -831,15 +820,20 @@ UTILS/VIEWPORT
 
 UTILS/XML
 ---------
-    - IP   - XmlReader                      Convert
-    -      - XmlWriter                      Convert
+    - Use System.Xml?
+
+    - **** - XmlReader
+    - **** - XmlWriter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 EXTENSIONS / BOX2D
 ------------------
-    - IP   - Body
+
+    - Use Box2DSharp?
+
+    -      - Body
     -      - BodyDef
     -      - Box2D
     -      - Box2DDebugRenderer
@@ -906,7 +900,7 @@ EXTENSIONS / BOX2D / JOINTS
 
 EXTENSIONS/ TOOLS
 -----------------
-    - IP   - FileProcessor
+    -      - FileProcessor
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

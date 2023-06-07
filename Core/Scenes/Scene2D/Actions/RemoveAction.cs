@@ -1,5 +1,8 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Actions;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace LibGDXSharp.Scenes.Scene2D.Actions;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class RemoveAction : Action
 {
     public Action? Action { get; set; }
@@ -13,5 +16,16 @@ public class RemoveAction : Action
     /// true if the action is done. This method may continue to be called after
     /// the action is done.
     /// </returns>
-    public override bool Act( float delta ) => false;
+    public override bool Act( float delta )
+    {
+        Target?.RemoveAction( Action );
+
+        return true;
+    }
+
+    public new void Reset()
+    {
+        base.Reset();
+        Action = null;
+    }
 }

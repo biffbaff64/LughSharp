@@ -24,6 +24,7 @@
       <PackageReference Include="Silk.NET.Input.Glfw" Version="2.16.0" />
       <PackageReference Include="Silk.NET.OpenGLES" Version="2.16.0" />
       <PackageReference Include="Silk.NET.Windowing.Glfw" Version="2.16.0" />
+      <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>

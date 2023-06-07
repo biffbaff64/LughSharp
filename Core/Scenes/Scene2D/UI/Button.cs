@@ -280,9 +280,9 @@ public class Button : Table, IDisableable
 
         if ( offset )
         {
-            for ( int i = 0; i < children.size; i++ )
+            for ( int i = 0; i < children.Size; i++ )
             {
-                children.Get( i ).moveBy( -offsetX, -offsetY );
+                children.Get( i ).MoveBy( -offsetX, -offsetY );
             }
         }
 

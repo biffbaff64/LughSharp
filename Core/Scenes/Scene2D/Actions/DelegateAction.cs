@@ -1,8 +1,12 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Actions;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace LibGDXSharp.Scenes.Scene2D.Actions;
+
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
 public abstract class DelegateAction : Action
 {
-    protected Action? Action { get; set; }
+    public Action? Action { get; set; }
 
     protected abstract bool Delegate( float delta );
 

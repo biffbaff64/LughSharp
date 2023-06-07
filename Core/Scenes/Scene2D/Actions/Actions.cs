@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Tracing;
-
-using LibGDXSharp.Maths;
+﻿using LibGDXSharp.Maths;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
@@ -61,7 +59,9 @@ public class Actions
     /// <summary>
     /// Moves the actor instantly.
     /// </summary>
-    public static MoveToAction MoveTo( float x, float y, float duration = 0,
+    public static MoveToAction MoveTo( float x,
+                                       float y,
+                                       float duration = 0,
                                        Interpolation? interpolation = null )
     {
         var action = Action< MoveToAction >();
@@ -73,11 +73,13 @@ public class Actions
         return action;
     }
 
-    public static MoveToAction MoveToAligned( float x, float y, int alignment,
+    public static MoveToAction MoveToAligned( float x,
+                                              float y,
+                                              int alignment,
                                               float duration = 0,
                                               Interpolation? interpolation = null )
     {
-        MoveToAction action = Action< MoveToAction >();
+        var action = Action< MoveToAction >();
 
         action.SetPosition( x, y, alignment );
         action.Duration      = duration;
@@ -89,15 +91,16 @@ public class Actions
     /// <summary>
     /// Moves the actor instantly.
     /// </summary>
-    public static MoveByAction MoveBy( float amountX, float amountY,
+    public static MoveByAction MoveBy( float amountX,
+                                       float amountY,
                                        float duration = 0,
                                        Interpolation? interpolation = null )
     {
-        MoveByAction action = Action< MoveByAction >();
+        var action = Action< MoveByAction >();
 
-        action.setAmount( amountX, amountY );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.SetAmount( amountX, amountY );
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -105,15 +108,16 @@ public class Actions
     /// <summary>
     /// Sizes the actor instantly.
     /// </summary>
-    public static SizeToAction SizeTo( float x, float y,
+    public static SizeToAction SizeTo( float x,
+                                       float y,
                                        float duration = 0,
                                        Interpolation? interpolation = null )
     {
-        SizeToAction action = Action< SizeToAction >();
+        var action = Action< SizeToAction >();
 
-        action.setSize( x, y );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.SetSize( x, y );
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -121,15 +125,16 @@ public class Actions
     /// <summary>
     /// Sizes the actor instantly.
     /// </summary>
-    public static SizeByAction SizeBy( float amountX, float amountY,
+    public static SizeByAction SizeBy( float amountX,
+                                       float amountY,
                                        float duration = 0,
                                        Interpolation? interpolation = null )
     {
-        SizeByAction action = Action< SizeByAction >();
+        var action = Action< SizeByAction >();
 
-        action.setAmount( amountX, amountY );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.SetAmount( amountX, amountY );
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -137,23 +142,26 @@ public class Actions
     /** Scales the actor instantly. */
     public static ScaleToAction ScaleTo( float x, float y, float duration = 0, Interpolation? interpolation = null )
     {
-        ScaleToAction action = Action< ScaleToAction >();
+        var action = Action< ScaleToAction >();
 
-        action.setScale( x, y );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.SetScale( x, y );
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
 
     /** Scales the actor instantly. */
-    public static ScaleByAction ScaleBy( float amountX, float amountY, float duration = 0, Interpolation? interpolation = null )
+    public static ScaleByAction ScaleBy( float amountX,
+                                         float amountY,
+                                         float duration = 0,
+                                         Interpolation? interpolation = null )
     {
-        ScaleByAction action = Action< ScaleByAction >();
+        var action = Action< ScaleByAction >();
 
-        action.setAmount( amountX, amountY );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.SetAmount( amountX, amountY );
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -161,23 +169,25 @@ public class Actions
     /** Rotates the actor instantly. */
     public static RotateToAction RotateTo( float rotation, float duration = 0, Interpolation? interpolation = null )
     {
-        RotateToAction action = Action< RotateToAction >();
+        var action = Action< RotateToAction >();
 
-        action.setRotation( rotation );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.Rotation      = rotation;
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
 
     /** Rotates the actor instantly. */
-    public static RotateByAction RotateBy( float rotationAmount, float duration = 0, Interpolation? interpolation = null )
+    public static RotateByAction RotateBy( float rotationAmount,
+                                           float duration = 0,
+                                           Interpolation? interpolation = null )
     {
-        RotateByAction action = Action< RotateByAction >();
+        var action = Action< RotateByAction >();
 
-        action.setAmount( rotationAmount );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.Amount        = rotationAmount;
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -186,11 +196,11 @@ public class Actions
     /// Transitions from the color at the time this action starts to the specified color.
     public static ColorAction Color( Color color, float duration = 0, Interpolation? interpolation = null )
     {
-        ColorAction action = Action< ColorAction >();
+        var action = Action< ColorAction >();
 
-        action.setEndColor( color );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.EndColor      = color;
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -199,11 +209,11 @@ public class Actions
     /** Transitions from the alpha at the time this action starts to the specified alpha. */
     public static AlphaAction Alpha( float a, float duration = 0, Interpolation? interpolation = null )
     {
-        AlphaAction action = Action< AlphaAction >();
+        var action = Action< AlphaAction >();
 
-        action.setAlpha( a );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.Alpha         = a;
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -211,17 +221,17 @@ public class Actions
     /** Transitions from the alpha at the time this action starts to an alpha of 0. */
     public static AlphaAction FadeOut( float duration )
     {
-        return Alpha( 0, duration, null );
+        return Alpha( 0, duration );
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 0. */
     public static AlphaAction FadeOut( float duration, Interpolation? interpolation )
     {
-        AlphaAction action = Action< AlphaAction >();
+        var action = Action< AlphaAction >();
 
-        action.setAlpha( 0 );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.Alpha         = 0;
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -229,17 +239,17 @@ public class Actions
     /** Transitions from the alpha at the time this action starts to an alpha of 1. */
     public static AlphaAction FadeIn( float duration )
     {
-        return Alpha( 1, duration, null );
+        return Alpha( 1, duration );
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 1. */
     public static AlphaAction FadeIn( float duration, Interpolation? interpolation )
     {
-        AlphaAction action = Action< AlphaAction >();
+        var action = Action< AlphaAction >();
 
-        action.setAlpha( 1 );
-        action.setDuration( duration );
-        action.setInterpolation( interpolation );
+        action.Alpha         = 1;
+        action.Duration      = duration;
+        action.Interpolation = interpolation;
 
         return action;
     }
@@ -250,16 +260,18 @@ public class Actions
 
     public static VisibleAction Visible( bool visible )
     {
-        VisibleAction action = Action< VisibleAction >();
-        action.setVisible( visible );
+        var action = Action< VisibleAction >();
+
+        action.Visible = visible;
 
         return action;
     }
 
     public static TouchableAction Touchable( Touchable touchable )
     {
-        TouchableAction action = Action< TouchableAction >();
-        action.setTouchable( touchable );
+        var action = Action< TouchableAction >();
+
+        action.Touchable = touchable;
 
         return action;
     }
@@ -271,103 +283,108 @@ public class Actions
 
     public static RemoveActorAction RemoveActor( Actor removeActor )
     {
-        RemoveActorAction action = Action< RemoveActorAction >();
-        action.setTarget( removeActor );
+        var action = Action< RemoveActorAction >();
+
+        action.Target = removeActor;
 
         return action;
     }
 
     public static DelayAction Delay( float duration )
     {
-        DelayAction action = Action< DelayAction >();
+        var action = Action< DelayAction >();
 
-        action.setDuration( duration );
+        action.Duration = duration;
 
         return action;
     }
 
     public static DelayAction Delay( float duration, Action delayedAction )
     {
-        DelayAction action = Action< DelayAction >();
+        var action = Action< DelayAction >();
 
-        action.setDuration( duration );
-        action.setAction( delayedAction );
+        action.Duration = duration;
+        action.Action   = delayedAction;
 
         return action;
     }
 
     public static TimeScaleAction TimeScale( float scale, Action scaledAction )
     {
-        TimeScaleAction action = Action< TimeScaleAction >();
+        var action = Action< TimeScaleAction >();
 
-        action.setScale( scale );
-        action.setAction( scaledAction );
+        action.Scale  = scale;
+        action.Action = scaledAction;
 
         return action;
     }
 
     public static SequenceAction Sequence( Action action1 )
     {
-        SequenceAction action = Action< SequenceAction >();
+        var action = Action< SequenceAction >();
 
-        action.addAction( action1 );
+        action.AddAction( action1 );
 
         return action;
     }
 
     public static SequenceAction Sequence( Action action1, Action action2 )
     {
-        SequenceAction action = Action< SequenceAction >();
+        var action = Action< SequenceAction >();
 
-        action.addAction( action1 );
-        action.addAction( action2 );
+        action.AddAction( action1 );
+        action.AddAction( action2 );
 
         return action;
     }
 
     public static SequenceAction Sequence( Action action1, Action action2, Action action3 )
     {
-        SequenceAction action = Action< SequenceAction >();
+        var action = Action< SequenceAction >();
 
-        action.addAction( action1 );
-        action.addAction( action2 );
-        action.addAction( action3 );
+        action.AddAction( action1 );
+        action.AddAction( action2 );
+        action.AddAction( action3 );
 
         return action;
     }
 
     public static SequenceAction Sequence( Action action1, Action action2, Action action3, Action action4 )
     {
-        SequenceAction action = Action< SequenceAction >();
+        var action = Action< SequenceAction >();
 
-        action.addAction( action1 );
-        action.addAction( action2 );
-        action.addAction( action3 );
-        action.addAction( action4 );
+        action.AddAction( action1 );
+        action.AddAction( action2 );
+        action.AddAction( action3 );
+        action.AddAction( action4 );
 
         return action;
     }
 
-    public static SequenceAction Sequence( Action action1, Action action2, Action action3, Action action4, Action action5 )
+    public static SequenceAction Sequence( Action action1,
+                                           Action action2,
+                                           Action action3,
+                                           Action action4,
+                                           Action action5 )
     {
-        SequenceAction action = Action< SequenceAction >();
+        var action = Action< SequenceAction >();
 
-        action.addAction( action1 );
-        action.addAction( action2 );
-        action.addAction( action3 );
-        action.addAction( action4 );
-        action.addAction( action5 );
+        action.AddAction( action1 );
+        action.AddAction( action2 );
+        action.AddAction( action3 );
+        action.AddAction( action4 );
+        action.AddAction( action5 );
 
         return action;
     }
 
     public static SequenceAction Sequence( params Action[] actions )
     {
-        SequenceAction action = Action< SequenceAction >();
+        var action = Action< SequenceAction >();
 
         for ( int i = 0, n = actions.Length; i < n; i++ )
         {
-            action.addAction( actions[ i ] );
+            action.AddAction( actions[ i ] );
         }
 
         return action;
@@ -375,66 +392,72 @@ public class Actions
 
     public static SequenceAction Sequence()
     {
-        SequenceAction action = Action< SequenceAction >();
+        return Action< SequenceAction >();
     }
 
     public static ParallelAction Parallel( Action action1 )
     {
-        ParallelAction action = Action< ParallelAction >();
-        action.addAction( action1 );
+        var action = Action< ParallelAction >();
+        action.AddAction( action1 );
 
         return action;
     }
 
     public static ParallelAction Parallel( Action action1, Action action2 )
     {
-        ParallelAction action = Action< ParallelAction >();
-        action.addAction( action1 );
-        action.addAction( action2 );
+        var action = Action< ParallelAction >();
+        action.AddAction( action1 );
+        action.AddAction( action2 );
 
         return action;
     }
 
     public static ParallelAction Parallel( Action action1, Action action2, Action action3 )
     {
-        ParallelAction action = Action< ParallelAction >();
-        action.addAction( action1 );
-        action.addAction( action2 );
-        action.addAction( action3 );
+        var action = Action< ParallelAction >();
+        action.AddAction( action1 );
+        action.AddAction( action2 );
+        action.AddAction( action3 );
 
         return action;
     }
 
     public static ParallelAction Parallel( Action action1, Action action2, Action action3, Action action4 )
     {
-        ParallelAction action = Action< ParallelAction >();
-        action.addAction( action1 );
-        action.addAction( action2 );
-        action.addAction( action3 );
-        action.addAction( action4 );
+        var action = Action< ParallelAction >();
+        action.AddAction( action1 );
+        action.AddAction( action2 );
+        action.AddAction( action3 );
+        action.AddAction( action4 );
 
         return action;
     }
 
-    public static ParallelAction Parallel( Action action1, Action action2, Action action3, Action action4, Action action5 )
+    public static ParallelAction Parallel( Action action1,
+                                           Action action2,
+                                           Action action3,
+                                           Action action4,
+                                           Action action5 )
     {
-        ParallelAction action = Action< ParallelAction >();
+        var action = Action< ParallelAction >();
 
-        action.addAction( action1 );
-        action.addAction( action2 );
-        action.addAction( action3 );
-        action.addAction( action4 );
-        action.addAction( action5 );
+        action.AddAction( action1 );
+        action.AddAction( action2 );
+        action.AddAction( action3 );
+        action.AddAction( action4 );
+        action.AddAction( action5 );
 
         return action;
     }
 
     public static ParallelAction Parallel( params Action[] actions )
     {
-        ParallelAction action = Action< ParallelAction >();
+        var action = Action< ParallelAction >();
 
-        for ( int i = 0, n = actions.length; i < n; i++ )
-            action.addAction( actions[ i ] );
+        for ( int i = 0, n = actions.Length; i < n; i++ )
+        {
+            action.AddAction( actions[ i ] );
+        }
 
         return action;
     }
@@ -446,85 +469,87 @@ public class Actions
 
     public static RepeatAction Repeat( int count, Action repeatedAction )
     {
-        RepeatAction action = Action< RepeatAction >();
-        action.setCount( count );
-        action.setAction( repeatedAction );
+        var action = Action< RepeatAction >();
+        action.RepeatCount = count;
+        action.Action      = repeatedAction;
 
         return action;
     }
 
     public static RepeatAction Forever( Action repeatedAction )
     {
-        RepeatAction action = Action< RepeatAction >();
+        var action = Action< RepeatAction >();
 
-        action.setCount( RepeatAction.Forever );
-        action.setAction( repeatedAction );
+        action.RepeatCount = RepeatAction.Forever;
+        action.Action      = repeatedAction;
 
         return action;
     }
 
-    public static RunnableAction Run( IRunnable runnable )
+    public static RunnableAction Run( ThreadStart runnable )
     {
-        RunnableAction action = Action< RunnableAction >();
-        action.setRunnable( runnable );
+        var action = Action< RunnableAction >();
+        action.Runnable = runnable;
 
         return action;
     }
 
     public static LayoutAction Layout( bool enabled )
     {
-        LayoutAction action = Action< LayoutAction >();
-        action.setLayoutEnabled( enabled );
+        var action = Action< LayoutAction >();
+
+        action.Enabled = enabled;
 
         return action;
     }
 
     public static AfterAction After( Action action )
     {
-        AfterAction afterAction = Action< AfterAction >();
-        afterAction.setAction( action );
+        var afterAction = Action< AfterAction >();
+
+        afterAction.Action = action;
 
         return afterAction;
     }
 
-    public static AddListenerAction AddListener( EventListener listener, bool capture )
+    public static AddListenerAction AddListener( IEventListener listener, bool capture )
     {
-        AddListenerAction addAction = Action< AddListenerAction >();
+        var addAction = Action< AddListenerAction >();
 
-        addAction.setListener( listener );
-        addAction.setCapture( capture );
+        addAction.Listener = listener;
+        addAction.Capture  = capture;
 
         return addAction;
     }
 
     public static AddListenerAction AddListener( IEventListener listener, bool capture, Actor targetActor )
     {
-        AddListenerAction addAction = Action< AddListenerAction >();
+        var addAction = Action< AddListenerAction >();
 
-        addAction.setTarget( targetActor );
-        addAction.setListener( listener );
-        addAction.setCapture( capture );
+        addAction.Target   = targetActor;
+        addAction.Listener = listener;
+        addAction.Capture  = capture;
 
         return addAction;
     }
 
     public static RemoveListenerAction RemoveListener( IEventListener listener, bool capture )
     {
-        RemoveListenerAction addAction = Action< RemoveListenerAction >();
+        var addAction = Action< RemoveListenerAction >();
 
-        addAction.setListener( listener );
-        addAction.setCapture( capture );
+        addAction.Listener = listener;
+        addAction.Capture  = capture;
 
         return addAction;
     }
 
     public static RemoveListenerAction RemoveListener( IEventListener listener, bool capture, Actor targetActor )
     {
-        RemoveListenerAction addAction = Action< RemoveListenerAction >();
+        var addAction = Action< RemoveListenerAction >();
 
-        addAction.setTarget( targetActor );
-        addAction.setListener( listener );
-        addAction.setCapture( capture );
+        addAction.Target   = targetActor;
+        addAction.Listener = listener;
+        addAction.Capture  = capture;
 
         return addAction;
     }

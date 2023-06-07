@@ -877,7 +877,7 @@ public class Actor
         }
     }
 
-    protected float ScaleX
+    public float ScaleX
     {
         get => _scaleX;
         set
@@ -890,7 +890,7 @@ public class Actor
         }
     }
 
-    protected float ScaleY
+    public float ScaleY
     {
         get => _scaleY;
         set
@@ -955,7 +955,7 @@ public class Actor
         }
     }
 
-    protected float Rotation
+    public float Rotation
     {
         get => _rotation;
         set

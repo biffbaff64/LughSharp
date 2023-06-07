@@ -1,8 +1,11 @@
-﻿namespace LibGDXSharp.Scenes.Scene2D.Actions;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
 /// Adds an action to an actor.
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class AddAction : Action
 {
     public Action? Action { get; set; }

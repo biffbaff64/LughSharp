@@ -210,7 +210,7 @@ public sealed class XmlReader
         }
     }
 
-    public Element Parse( FileInfo file )
+    public static Element Parse( FileInfo file )
     {
         try
         {
