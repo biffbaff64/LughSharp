@@ -531,10 +531,11 @@ SCENES.SCENE2D/UI
     -      - TooltipManager                 Convert
     -      - Touchpad                       Convert
     -      - Tree                           Convert
-    - IP   - Value                          Convert
+    - DONE - Value                          Convert
+    - DONE - ValueExtensions                New Class
     -      - VerticalGroup                  Convert
     -      - Widget                         Convert
-    - IP   - WidgetGroup                    Convert
+    - DONE - WidgetGroup                    Convert
     -      - Window                         Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

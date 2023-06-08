@@ -14,7 +14,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// values.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public abstract class Value
+public abstract partial class Value
 {
     public abstract float Get( Actor? context = null );
 
@@ -64,142 +64,31 @@ public abstract class Value
         }
     }
 
+    // ------------------------------------------------------------------------
+
     public static Value MinWidth   { get; set; } = new ValueMinWidthInnerClass();
     public static Value MinHeight  { get; set; } = new ValueMinHeightInnerClass();
+    public static Value MaxWidth   { get; set; } = new ValueMaxWidthInnerClass();
+    public static Value MaxHeight  { get; set; } = new ValueMaxHeightInnerClass();
     public static Value PrefWidth  { get; set; } = new ValuePrefWidthInnerClass();
     public static Value PrefHeight { get; set; } = new ValuePrefHeightInnerClass();
 
-    private sealed class ValueMinWidthInnerClass : Value
-    {
-        public override float Get( Actor? context = null )
-        {
-            if ( context is ILayout layout ) return layout.MinWidth;
+    // ------------------------------------------------------------------------
+    
+    public static Value PercentWidth( float percent ) => new ValuePercentWidth( percent );
+    public static Value PercentHeight( float percent ) => new ValuePercentHeight( percent );
 
-            return context?.Width ?? 0;
-        }
+    public static Value PercentWidth( float percent, Actor? actor )
+    {
+        ArgumentNullException.ThrowIfNull( actor );
+        
+        return new ValuePercentWidth( percent, actor );
     }
 
-    private sealed class ValueMinHeightInnerClass : Value
+    public static Value PercentHeight( float percent, Actor? actor )
     {
-        public override float Get( Actor? context = null )
-        {
-            if ( context is ILayout layout ) return layout.MinHeight;
-
-            return context?.Height ?? 0;
-        }
+        ArgumentNullException.ThrowIfNull( actor );
+        
+        return new ValuePercentHeight( percent, actor );
     }
-
-
-    // ########################################################################
-
-
-    static public Value prefWidth = new Value()
-    {
- 
-
-        public float get (@Null Actor context)
-        {
-        if (context instanceof Layout) return ((Layout)context).getPrefWidth();
-        return context == null ? 0 : context.getWidth();
-    }
-
-};
-
-static public Value prefHeight = new Value()
-{
- 
-
-    public float get (@Null Actor context)
-    {
-    if (context instanceof Layout) return ((Layout)context).getPrefHeight();
-    return context == null ? 0 : context.getHeight();
-}
-
-};
-
-public static Value maxWidth = new Value()
-{
- 
-
-    public float get (@Null Actor context)
-    {
-    if (context instanceof Layout) return ((Layout)context).getMaxWidth();
-    return context == null ? 0 : context.getWidth();
-}
-};
-
-public static Value MaxHeight = new Value()
-{
- 
-
-    public float get (@Null Actor context)
-    {
-    if (context instanceof Layout)
-    {
-    return ((Layout)context).getMaxHeight();
-}
-
-return context == null ? 0 : context.getHeight();
-}
-};
-
-public static Value PercentWidth( float percent )
-{
-    return new Value()
-    {
- 
-
-        public float get (@Null Actor actor)
-        {
-        return actor.getWidth() * percent;
-    }
-
-    };
-}
-
-public static Value PercentHeight( float percent )
-{
-    return new Value()
-    {
- 
-
-        public float get (@Null Actor actor)
-        {
-        return actor.getHeight() * percent;
-    }
-
-    };
-}
-
-public static Value PercentWidth( float percent, Actor actor )
-{
-    if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
-
-    return new Value()
-    {
- 
-
-        public float? Get( Actor context )
-        {
-        return actor.getWidth() * percent;
-    }
-
-    };
-}
-
-public static Value PercentHeight( float percent, Actor actor )
-{
-    if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
-
-    return new Value()
-    {
- 
-
-        public float get (@Null Actor context)
-        {
-        return actor.getHeight() * percent;
-    }
-
-    };
-}
 }

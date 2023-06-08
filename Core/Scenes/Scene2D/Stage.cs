@@ -901,7 +901,7 @@ public class Stage : InputAdapter
     {
         Root.ParentToLocalCoordinates( _tempCoords.Set( stageX, stageY ) );
 
-        return ( ( Actor )Root ).Hit( _tempCoords.X, _tempCoords.Y, touchable );
+        return Root.Hit( _tempCoords.X, _tempCoords.Y, touchable );
     }
 
     /// <summary>
@@ -1087,7 +1087,7 @@ public class Stage : InputAdapter
     /// <summary>
     /// The viewport's camera.
     /// </summary>
-    public Camera Camera { get; set; }
+    public Camera Camera { get; set; } = null!;
 
     /// <summary>
     /// Returns the root group which holds all actors in the stage.

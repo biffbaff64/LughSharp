@@ -1,4 +1,11 @@
-﻿using LibGDXSharp.Scenes.Scene2D.UI;
+﻿using System.Diagnostics;
+
+using LibGDXSharp.G2D;
+using LibGDXSharp.Maths;
+using LibGDXSharp.Scenes.Scene2D.UI;
+using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils.Collections.Extensions;
+using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -13,270 +20,311 @@ public class Table : WidgetGroup
         Actor
     }
 
-    static public Color debugTableColor = new Color( 0, 0, 1, 1 );
-    static public Color debugCellColor  = new Color( 1, 0, 0, 1 );
-    static public Color debugActorColor = new Color( 0, 1, 0, 1 );
+    // ------------------------------------------------------------------------
 
-    static final Pool<Cell> cellPool = new Pool< Cell >() {
-        protected Cell newObject()
-        {
-            return new Cell();
-        }
+    internal class DebugRect : RectangleShape
+    {
+        internal Pool< DebugRect > Pool  { get; set; } = Pools< DebugRect >.Get();
+        internal Color             Color { get; set; } = null!;
+    }
+
+    // ------------------------------------------------------------------------
+
+    public readonly static Color DebugTableColor = new(0, 0, 1, 1);
+    public readonly static Color DebugCellColor  = new(1, 0, 0, 1);
+    public readonly static Color DebugActorColor = new(0, 1, 0, 1);
+
+    // ------------------------------------------------------------------------
+
+    public Pool< Cell > CellPool { get; } = new()
+    {
+        NewObject = NewCellObject
     };
-    static private float[] columnWeightedWidth, rowWeightedHeight;
 
-    private int     columns, rows;
-    private boolean implicitEndRow;
+    private static Cell NewCellObject() => new();
 
-    private final Array<Cell> cells = new Array( 4 );
-    private final Cell cellDefaults;
-    private final Array<Cell> columnDefaults = new Array( 2 );
-    private Cell  rowDefaults;
+    // ------------------------------------------------------------------------
 
-    private boolean sizeInvalid = true;
-    private float[] columnMinWidth,  rowMinHeight;
-    private float[] columnPrefWidth, rowPrefHeight;
-    private float   tableMinWidth,   tableMinHeight;
-    private float   tablePrefWidth,  tablePrefHeight;
-    private float[] columnWidth,     rowHeight;
-    private float[] expandWidth,     expandHeight;
+    private static float[]? _columnWeightedWidth;
+    private static float[]? _rowWeightedHeight;
 
-    Value padTop = backgroundTop, padLeft = backgroundLeft, padBottom = backgroundBottom, padRight = backgroundRight;
-    int   align  = Align.center;
+    private readonly List< Cell > _cells = new(4);
+    private readonly Cell         _cellDefaults;
+    private readonly List< Cell > _columnDefaults = new(2);
 
-    Debug              debug = Debug.none;
-    Array< DebugRect > debugRects;
+    private Cell    _rowDefaults;
+    private int     _columns;
+    private int     _rows;
+    private bool    _implicitEndRow;
+    private bool    _sizeInvalid = true;
+    private float[] _columnMinWidth;
+    private float[] _rowMinHeight;
+    private float[] _columnPrefWidth;
+    private float[] _rowPrefHeight;
+    private float[] _columnWidth;
+    private float[] _rowHeight;
+    private float[] _expandWidth;
+    private float[] _expandHeight;
+    private float   _tableMinWidth;
+    private float   _tableMinHeight;
+    private float   _tablePrefWidth;
+    private float   _tablePrefHeight;
 
-    @Null           Drawable background;
-    private boolean clip;
-    private @Null   Skin skin;
-    boolean         round = true;
+    private readonly Value _padTop    = backgroundTop;
+    private readonly Value _padLeft   = backgroundLeft;
+    private readonly Value _padBottom = backgroundBottom;
+    private readonly Value _padRight  = backgroundRight;
 
-    public Table()
+    private int               _align = Align.Center;
+    private DebugType         _debug = DebugType.None;
+    private List< DebugRect > _debugRects;
+
+    private IDrawable? _background;
+    private bool       _clip;
+    private Skin?      _skin;
+    private bool       _round = true;
+
+    public Table() : this( null )
     {
-        this( null );
     }
 
-    /** Creates a table with a skin, which is required to use {@link #add(CharSequence)} or {@link #add(CharSequence, String)}. */
-    public Table( @Null Skin skin )
+    /// <summary>
+    /// Creates a table with a skin, which is required to use <see cref="AssetDescriptor"/>
+    /// </summary>
+    public Table( Skin? skin )
     {
-        this.skin = skin;
+        this._skin = skin;
 
-        cellDefaults = obtainCell();
+        _cellDefaults = ObtainCell();
 
-        setTransform( false );
-        setTouchable( Touchable.childrenOnly );
+        Transform = false;
+        Touchable = Touchable.ChildrenOnly;
     }
 
-    private Cell obtainCell()
+    private Cell ObtainCell()
     {
-        Cell cell = cellPool.obtain();
-        cell.setTable( this );
+        Cell cell = CellPool.Obtain();
+        cell.SetTable( this );
 
         return cell;
     }
 
-    public void draw( Batch batch, float parentAlpha )
+    protected new void Draw( IBatch batch, float parentAlpha )
     {
-        validate();
+        Validate();
 
-        if ( isTransform() )
+        if ( Transform )
         {
-            applyTransform( batch, computeTransform() );
-            drawBackground( batch, parentAlpha, 0, 0 );
+            ApplyTransform( batch, ComputeTransform() );
+            DrawBackground( batch, parentAlpha, 0, 0 );
 
-            if ( clip )
+            if ( _clip )
             {
-                batch.flush();
-                float padLeft = this.padLeft.get( this ), padBottom = this.padBottom.get( this );
+                batch.Flush();
 
-                if ( clipBegin
+                var padLeft   = this._padLeft.Get( this );
+                var padBottom = this._padBottom.Get( this );
+
+                if ( ClipBegin
                         (
                          padLeft,
                          padBottom,
-                         getWidth() - padLeft - padRight.get( this ),
-                         getHeight() - padBottom - padTop.get( this )
-                        ) )
+                         Width - padLeft - _padRight.Get( this ),
+                         Height - padBottom - _padTop.Get( this )
+                        )
+                   )
                 {
-                    drawChildren( batch, parentAlpha );
-                    batch.flush();
-                    clipEnd();
+                    DrawChildren( batch, parentAlpha );
+                    batch.Flush();
+                    ClipEnd();
                 }
             }
             else
-                drawChildren( batch, parentAlpha );
+            {
+                DrawChildren( batch, parentAlpha );
+            }
 
-            resetTransform( batch );
+            ResetTransform( batch );
         }
         else
         {
-            drawBackground( batch, parentAlpha, getX(), getY() );
-            super.draw( batch, parentAlpha );
+            DrawBackground( batch, parentAlpha, GetX(), GetY() );
+            base.Draw( batch, parentAlpha );
         }
     }
 
-    /** Called to draw the background, before clipping is applied (if enabled). Default implementation draws the background
-	 * drawable. */
-    protected void drawBackground( Batch batch, float parentAlpha, float x, float y )
+    /// <summary>
+    /// Called to draw the background, before clipping is applied (if enabled).
+    /// Default implementation draws the background drawable.
+    /// </summary>
+    protected void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
     {
-        if ( background == null ) return;
-        Color color = getColor();
-        batch.setColor( color.r, color.g, color.b, color.a * parentAlpha );
-        background.draw( batch, x, y, getWidth(), getHeight() );
+        if ( _background == null ) return;
+
+        Debug.Assert( Color != null, nameof( Color ) + " != null" );
+
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+
+        _background.Draw( batch, x, y, Width, Height );
     }
 
-    /** Sets the background drawable from the skin and adjusts the table's padding to match the background. This may only be called
-	 * if a skin has been set with {@link Table#Table(Skin)} or {@link #setSkin(Skin)}.
-	 * @see #setBackground(Drawable) */
-    public void setBackground( String drawableName )
+    /// <summary>
+    /// Sets the background drawable from the skin and adjusts the table's padding
+    /// to match the background. This may only be called if a skin has been set
+    /// with <see cref="Table(Skin)"/> or <see cref="SetSkin(Skin)"/>.
+    /// </summary>
+    protected void SetBackground( string drawableName )
     {
-        if ( skin == null ) throw new IllegalStateException( "Table must have a skin set to use this method." );
-        setBackground( skin.getDrawable( drawableName ) );
+        if ( _skin == null )
+        {
+            throw new IllegalStateException( "Table must have a skin set to use this method." );
+        }
+
+        SetBackground( _skin.GetDrawable( drawableName ) );
     }
 
-    /** @param background May be null to clear the background. */
-    public void setBackground( @Null Drawable background )
+    /// <summary>
+    /// <param name="background"> May be null to clear the background. </param>
+    /// </summary>
+    protected void SetBackground( IDrawable? background )
     {
-        if ( this.background == background ) return;
+        if ( this._background == background ) return;
 
         float padTopOld    = getPadTop(),
               padLeftOld   = getPadLeft(),
               padBottomOld = getPadBottom(),
               padRightOld  = getPadRight();
 
-        this.background = background; // The default pad values use the background's padding.
+        this._background = background; // The default pad values use the background's padding.
 
         float padTopNew    = getPadTop(),
               padLeftNew   = getPadLeft(),
               padBottomNew = getPadBottom(),
               padRightNew  = getPadRight();
 
-        if ( padTopOld + padBottomOld != padTopNew + padBottomNew
-             || padLeftOld + padRightOld != padLeftNew + padRightNew )
-            invalidateHierarchy();
-        else if ( padTopOld != padTopNew
-                  || padLeftOld != padLeftNew
-                  || padBottomOld != padBottomNew
-                  || padRightOld != padRightNew )
-            invalidate();
-    }
-
-    /** @see #setBackground(Drawable) */
-    public Table background( @Null Drawable background )
-    {
-        setBackground( background );
-
-        return this;
-    }
-
-    /** @see #setBackground(String) */
-    public Table background( String drawableName )
-    {
-        setBackground( drawableName );
-
-        return this;
-    }
-
-    public @Null Drawable getBackground()
-    {
-        return background;
-    }
-
-    public @Null Actor hit( float x, float y, boolean touchable )
-    {
-        if ( clip )
+        if ( ( !( padTopOld + padBottomOld ).Equals( padTopNew + padBottomNew ) )
+             || ( !( padLeftOld + padRightOld ).Equals( padLeftNew + padRightNew ) ) )
         {
-            if ( touchable && getTouchable() == Touchable.disabled ) return null;
-            if ( x < 0 || x >= getWidth() || y < 0 || y >= getHeight() ) return null;
+            InvalidateHierarchy();
+        }
+        else if ( !padTopOld.Equals( padTopNew )
+                  || !padLeftOld.Equals( padLeftNew )
+                  || !padBottomOld.Equals( padBottomNew )
+                  || !padRightOld.Equals( padRightNew ) )
+        {
+            Invalidate();
+        }
+    }
+
+    public Table Background( IDrawable? background )
+    {
+        SetBackground( background );
+
+        return this;
+    }
+
+    public Table Background( string drawableName )
+    {
+        SetBackground( drawableName );
+
+        return this;
+    }
+
+    public IDrawable? GetBackground()
+    {
+        return _background;
+    }
+
+    public new Actor? Hit( float x, float y, bool touchable )
+    {
+        if ( _clip )
+        {
+            if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
+            if ( ( x < 0 ) || ( x >= Width ) || ( y < 0 ) || ( y >= Height ) ) return null;
         }
 
-        return super.hit( x, y, touchable );
+        return base.Hit( x, y, touchable );
     }
 
-    /** Sets {@link #setClip(boolean)} to true. */
-    public Table clip()
+    public Table Clip( bool enabled = true )
     {
-        setClip( true );
+        SetClip( enabled );
 
         return this;
     }
 
-    public Table clip( boolean enabled )
+    /// <summary>
+    /// Causes the contents to be clipped if they exceed the table's bounds.
+    /// Enabling clipping sets <see cref="Group.Transform"/> to true.
+    /// </summary>
+    public void SetClip( bool enabled )
     {
-        setClip( enabled );
-
-        return this;
+        _clip = enabled;
+        Transform = enabled;
+        Invalidate();
     }
 
-    /** Causes the contents to be clipped if they exceed the table's bounds. Enabling clipping sets {@link #setTransform(boolean)}
-	 * to true. */
-    public void setClip( boolean enabled )
+    public bool GetClip()
     {
-        clip = enabled;
-        setTransform( enabled );
-        invalidate();
+        return _clip;
     }
 
-    public boolean getClip()
+    public new void Invalidate()
     {
-        return clip;
+        _sizeInvalid = true;
+        base.Invalidate();
     }
 
-    public void invalidate()
+    /// <summary>
+    /// Adds a new cell to the table with the specified actor.
+    /// </summary>
+    public Cell Add<T>( T? actor ) where T : Actor
     {
-        sizeInvalid = true;
-        super.invalidate();
-    }
-
-    /** Adds a new cell to the table with the specified actor. */
-    public <T extends Actor> Cell< T > add( @Null T actor )
-    {
-        Cell< T > cell = obtainCell();
-        cell.actor = actor;
+        Cell cell = ObtainCell();
+        cell.Actor = actor;
 
         // The row was ended for layout, not by the user, so revert it.
-        if ( implicitEndRow )
+        if ( _implicitEndRow )
         {
-            implicitEndRow = false;
-            rows--;
-            cells.peek().endRow = false;
+            _implicitEndRow = false;
+            _rows--;
+            _cells.Peek().EndRow = false;
         }
 
-        int cellCount = cells.size;
+        var cellCount = _cells.Count;
 
         if ( cellCount > 0 )
         {
             // Set cell column and row.
-            Cell lastCell = cells.peek();
+            Cell lastCell = _cells.Peek();
 
-            if ( !lastCell.endRow )
+            if ( !lastCell.EndRow )
             {
-                cell.column = lastCell.column + lastCell.colspan;
-                cell.row    = lastCell.row;
+                cell.Column = lastCell.Column + lastCell.Colspan;
+                cell.Row    = lastCell.Row;
             }
             else
             {
-                cell.column = 0;
-                cell.row    = lastCell.row + 1;
+                cell.Column = 0;
+                cell.Row    = lastCell.Row + 1;
             }
 
             // Set the index of the cell above.
-            if ( cell.row > 0 )
+            if ( cell.Row > 0 )
             {
-                Object[] cells = this.cells.items;
                 outer:
 
-                for ( int i = cellCount - 1; i >= 0; i-- )
+                for ( var i = cellCount - 1; i >= 0; i-- )
                 {
-                    Cell other = ( Cell )cells[ i ];
+                    Cell other = _cells[ i ];
 
-                    for ( int column = other.column, nn = column + other.colspan; column < nn; column++ )
+                    for ( int column = other.Column, nn = column + other.Colspan; column < nn; column++ )
                     {
-                        if ( column == cell.column )
+                        if ( column == cell.Column )
                         {
-                            cell.cellAboveIndex = i;
+                            cell.CellAboveIndex = i;
 
-                            break outer;
+                            goto outer;
                         }
                     }
                 }
@@ -284,25 +332,29 @@ public class Table : WidgetGroup
         }
         else
         {
-            cell.column = 0;
-            cell.row    = 0;
+            cell.Column = 0;
+            cell.Row    = 0;
         }
 
-        cells.add( cell );
+        _cells.Add( cell );
 
-        cell.set( cellDefaults );
-        if ( cell.column < columnDefaults.size ) cell.merge( columnDefaults.get( cell.column ) );
-        cell.merge( rowDefaults );
+        cell.Set( _cellDefaults );
 
-        if ( actor != null ) addActor( actor );
+        if ( cell.Column < _columnDefaults.Count ) cell.Merge( _columnDefaults[ cell.Column ] );
+
+        cell.Merge( _rowDefaults );
+
+        if ( actor != null ) AddActor( actor );
 
         return cell;
     }
 
-    public Table add( Actor...actors )
+    public Table Add( params Actor[] actors )
     {
-        for ( int i = 0, n = actors.length; i < n; i++ )
-            add( actors[ i ] );
+        for ( int i = 0, n = actors.Length; i < n; i++ )
+        {
+            Add( actors[ i ] );
+        }
 
         return this;
     }
@@ -361,12 +413,12 @@ public class Table : WidgetGroup
         return add( stack );
     }
 
-    public boolean removeActor( Actor actor )
+    public bool removeActor( Actor actor )
     {
         return removeActor( actor, true );
     }
 
-    public boolean removeActor( Actor actor, boolean unfocus )
+    public bool removeActor( Actor actor, bool unfocus )
     {
         if ( !super.removeActor( actor, unfocus ) ) return false;
         Cell cell                      = getCell( actor );
@@ -375,7 +427,7 @@ public class Table : WidgetGroup
         return true;
     }
 
-    public Actor removeActorAt( int index, boolean unfocus )
+    public Actor removeActorAt( int index, bool unfocus )
     {
         Actor actor                    = super.removeActorAt( index, unfocus );
         Cell  cell                     = getCell( actor );
@@ -484,12 +536,16 @@ public class Table : WidgetGroup
             if ( column >= columnDefaults.size )
             {
                 for ( int i = columnDefaults.size; i < column; i++ )
+                {
                     columnDefaults.add( null );
+                }
 
                 columnDefaults.add( cell );
             }
             else
+            {
                 columnDefaults.set( column, cell );
+            }
         }
 
         return cell;
@@ -733,7 +789,7 @@ public class Table : WidgetGroup
         return this;
     }
 
-    public void setDebug( boolean enabled )
+    public void setDebug( bool enabled )
     {
         debug( enabled ? Debug.all : Debug.none );
     }
@@ -901,7 +957,7 @@ public class Table : WidgetGroup
     }
 
     /** If true (the default), positions and sizes of child actors are rounded and ceiled to the nearest integer value. */
-    public void setRound( boolean round )
+    public void setRound( bool round )
     {
         this.round = round;
     }
@@ -1526,14 +1582,14 @@ public class Table : WidgetGroup
     private void clearDebugRects()
     {
         if ( debugRects == null ) debugRects = new Array();
-        DebugRect.pool.freeAll( debugRects );
+        DebugRect.Pool.freeAll( debugRects );
         debugRects.clear();
     }
 
     private void addDebugRect( float x, float y, float w, float h, Color color )
     {
-        DebugRect rect = DebugRect.pool.obtain();
-        rect.color = color;
+        DebugRect rect = DebugRect.Pool.obtain();
+        rect.Color = color;
         rect.set( x, y, w, h );
         debugRects.add( rect );
     }
@@ -1580,9 +1636,9 @@ public class Table : WidgetGroup
     {
     }
 
-    private void drawDebugRects( ShapeRenderer shapes )
+    private void DrawDebugRects( ShapeRenderer shapes )
     {
-        if ( debugRects == null || !getDebug() ) return;
+        if ( _debugRects == null || !GetDebug() ) return;
         shapes.set( ShapeType.Line );
         if ( getStage() != null ) shapes.setColor( getStage().getDebugColor() );
         float x = 0, y = 0;
@@ -1593,78 +1649,20 @@ public class Table : WidgetGroup
             y = getY();
         }
 
-        for ( int i = 0, n = debugRects.size; i < n; i++ )
+        for ( int i = 0, n = _debugRects.Count; i < n; i++ )
         {
-            DebugRect debugRect = debugRects.get( i );
-            shapes.setColor( debugRect.color );
-            shapes.rect( x + debugRect.x, y + debugRect.y, debugRect.width, debugRect.height );
+            DebugRect debugRect = _debugRects[ i ];
+
+            shapes.Color = debugRect.Color;
+            shapes.Rect( x + debugRect.X, y + debugRect.Y, debugRect.Width, debugRect.Height );
         }
     }
 
-    /** @return The skin that was passed to this table in its constructor, or null if none was given. */
-    public @Null Skin getSkin()
+    /// <returns>
+    /// The skin that was passed to this table in its constructor, or null if none was given.
+    /// </returns>
+    public Skin? GetSkin()
     {
-        return skin;
+        return _skin;
     }
-
-    /** @author Nathan Sweet */
-    static public class DebugRect
-
-    extends Rectangle
-    {
-        static Pool<DebugRect> pool = Pools. get(DebugRect.class);
-        Color color;
-    }
-
-    /** @author Nathan Sweet */
-    static public enum Debug
-    {
-        none, all, table, cell, actor
-    }
-
-    /** Value that is the top padding of the table's background.
-	 * @author Nathan Sweet */
-    static public Value backgroundTop = new Value()
-    {
- 
-        public float get (@Null Actor context) {
-        Drawable background = ((Table)context).background;
-        return background == null ? 0 : background.getTopHeight();
-    }
-};
-
-/** Value that is the left padding of the table's background.
- * @author Nathan Sweet */
-static public Value backgroundLeft = new Value()
-{
- 
-    public float get (@Null Actor context) {
-    Drawable background = ((Table)context).background;
-    return background == null ? 0 : background.getLeftWidth();
-}
-
-};
-
-/** Value that is the bottom padding of the table's background.
- * @author Nathan Sweet */
-static public Value backgroundBottom = new Value()
-{
- 
-    public float get (@Null Actor context) {
-    Drawable background = ((Table)context).background;
-    return background == null ? 0 : background.getBottomHeight();
-}
-};
-
-    /// Value that is the right padding of the table's background.
-    public static Value BackgroundRight()
-    {
-        var value = new Value();
-        
-        public float get (@Null Actor context)
-        {
-            Drawable background = ((Table)context).background;
-            return background == null ? 0 : background.getRightWidth();
-        }
-    };
 }

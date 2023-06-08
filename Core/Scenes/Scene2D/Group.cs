@@ -85,7 +85,7 @@ public class Group : Actor, ICullable
     /// </summary>
     protected void DrawChildren( IBatch batch, float parentAlpha )
     {
-        parentAlpha *= this.Color.A;
+        parentAlpha *= this.Color!.A;
 
         Actor?[] actors = Children.Begin();
 
@@ -384,7 +384,7 @@ public class Group : Actor, ICullable
         shapes.TransformMatrix = _oldTransform;
     }
 
-    public new Actor? Hit( float x, float y, bool touchable )
+    protected new Actor? Hit( float x, float y, bool touchable )
     {
         if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
         if ( !Visible ) return null;
@@ -682,7 +682,7 @@ public class Group : Actor, ICullable
     /// offset by the group's position for drawing, causing the children to appear
     /// in the correct location even though the Batch has not been transformed.
     /// </summary>
-    public bool Transform { get; set; } = true;
+    protected bool Transform { get; set; } = true;
 
     /// <summary>
     /// Converts coordinates for this group to those of a descendant actor.
