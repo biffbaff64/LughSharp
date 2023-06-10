@@ -1,10 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-using LibGDXSharp.Scenes.Scene2D;
-using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Scenes.Scene2D.Utils;
-
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
@@ -23,7 +19,7 @@ public abstract partial class Value
     /// <summary>
     /// A fixed value that is not computed each time it is used.
     /// </summary>
-    public sealed class Fixed
+    public sealed class Fixed : Value
     {
         private readonly static Fixed?[] cache = new Fixed[ 111 ];
 
@@ -34,7 +30,7 @@ public abstract partial class Value
             this.Value = value;
         }
 
-        public float Get( Actor? context )
+        public override float Get( Actor? context = null)
         {
             return Value;
         }
@@ -44,7 +40,7 @@ public abstract partial class Value
             return Value.ToString( CultureInfo.InvariantCulture );
         }
 
-        public Fixed ValueOf( float value )
+        public static Fixed ValueOf( float value )
         {
             if ( value == 0 ) return Zero;
 
