@@ -4,7 +4,8 @@ using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-public class Cell<T> : IPoolable where T : Actor
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class Cell : IPoolable
 {
     private const float Zerof   = 0f;
     private const float Onef    = 1f;
@@ -16,8 +17,8 @@ public class Cell<T> : IPoolable where T : Actor
     private const int   Lefti   = LibGDXSharp.Utils.Align.Left;
     private const int   Righti  = LibGDXSharp.Utils.Align.Right;
 
-    private IFiles?    _files;
-    private Cell< T >? _defaults;
+    private IFiles? _files;
+    private Cell?   _defaults;
 
     public Value? MinWidth    { get; set; }
     public Value? MinHeight   { get; set; }
@@ -48,21 +49,24 @@ public class Cell<T> : IPoolable where T : Actor
     public float  ActorWidth  { get; set; }
     public float  ActorHeight { get; set; }
 
-    public Table Table             { get; set; }
-    public bool  EndRow            { get; set; }
-    public int   Column            { get; set; }
-    public int   Row               { get; set; }
-    public int   CellAboveIndex    { get; set; }
-    public float ComputedPadTop    { get; set; }
-    public float ComputedPadLeft   { get; set; }
-    public float ComputedPadBottom { get; set; }
-    public float ComputedPadRight  { get; set; }
+    public Table? Table             { get; set; }
+    public bool   EndRow            { get; set; }
+    public int    Column            { get; set; }
+    public int    Row               { get; set; }
+    public int    CellAboveIndex    { get; set; }
+    public float  ComputedPadTop    { get; set; }
+    public float  ComputedPadLeft   { get; set; }
+    public float  ComputedPadBottom { get; set; }
+    public float  ComputedPadRight  { get; set; }
 
+    /// <summary>
+    /// Default constructor. 
+    /// </summary>
     public Cell()
     {
         CellAboveIndex = -1;
 
-        Cell< T >? defaults = GetCellDefaults();
+        Cell? defaults = GetCellDefaults();
 
         if ( defaults != null ) Set( defaults );
     }
@@ -72,18 +76,18 @@ public class Cell<T> : IPoolable where T : Actor
     /// If null, removes any current actor.
     /// </summary>
     /// <returns>This Cell for chaining.</returns>
-    public Cell< T > SetActor( T? newActor )
+    public Cell SetActor<T>( T? newActor ) where T : Actor
     {
         if ( this.Actor != newActor )
         {
             if ( Actor?.Parent == this.Table )
             {
-                Actor.Remove();
+                Actor?.Remove();
             }
 
             Actor = newActor;
 
-            if ( Actor != null ) this.Table.AddActor( Actor );
+            if ( Actor != null ) this.Table?.AddActor( Actor );
         }
 
         return this;
@@ -93,9 +97,9 @@ public class Cell<T> : IPoolable where T : Actor
     /// Removes the current actor for the cell, if any.
     /// </summary>
     /// <returns>This Cell for chaining.</returns>
-    public Cell< T > ClearActor()
+    public Cell ClearActor()
     {
-        SetActor( null );
+        SetActor<Actor>( null );
 
         return this;
     }
@@ -108,7 +112,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// </summary>
     /// <param name="size">The <see cref="Value"/> to use.</param>
     /// <exception cref="ArgumentNullException">If parameter <tt>size</tt> is null.</exception>
-    public Cell< T > Size( Value size )
+    public Cell Size( Value size )
     {
         ArgumentNullException.ThrowIfNull( size );
 
@@ -126,7 +130,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
     /// and MaxHeight to the specified values.
     /// </summary>
-    public Cell< T > Size( Value width, Value height )
+    public Cell Size( Value width, Value height )
     {
         ArgumentNullException.ThrowIfNull( width );
         ArgumentNullException.ThrowIfNull( height );
@@ -145,7 +149,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
     /// and MaxHeight to the specified value.
     /// </summary>
-    public Cell< T > Size( float size )
+    public Cell Size( float size )
     {
         Size( Value.Fixed.ValueOf( size ) );
 
@@ -156,15 +160,19 @@ public class Cell<T> : IPoolable where T : Actor
     /// Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
     /// and MaxHeight to the specified values.
     /// </summary>
-    public Cell< T > Size( float width, float height )
+    public Cell Size( float width, float height )
     {
         Size( Value.Fixed.ValueOf( width ), Value.Fixed.ValueOf( height ) );
 
         return this;
     }
 
-    /** Sets the minWidth, prefWidth, and maxWidth to the specified value. */
-    public Cell< T > Width( Value width )
+    /// <summary>
+    /// Sets the minWidth, prefWidth, and maxWidth to the specified value.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <returns></returns>
+    public Cell Width( Value width )
     {
         ArgumentNullException.ThrowIfNull( width );
 
@@ -175,16 +183,24 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    /** Sets the minWidth, prefWidth, and maxWidth to the specified value. */
-    public Cell< T > Width( float width )
+    /// <summary>
+    /// Sets the minWidth, prefWidth, and maxWidth to the specified value.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <returns></returns>
+    public Cell Width( float width )
     {
         Width( Value.Fixed.ValueOf( width ) );
 
         return this;
     }
 
-    /** Sets the minHeight, prefHeight, and maxHeight to the specified value. */
-    public Cell< T > Height( Value height )
+    /// <summary>
+    /// Sets the minHeight, prefHeight, and maxHeight to the specified value.
+    /// </summary>
+    /// <param name="height"></param>
+    /// <returns></returns>
+    public Cell Height( Value height )
     {
         ArgumentNullException.ThrowIfNull( height );
 
@@ -198,7 +214,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <summary>
     /// Sets the minHeight, prefHeight, and maxHeight to the specified value.
     /// </summary>
-    public Cell< T > Height( float height )
+    public Cell Height( float height )
     {
         Height( Value.Fixed.ValueOf( height ) );
 
@@ -208,7 +224,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <summary>
     /// Sets the minWidth and minHeight to the specified value.
     /// </summary>
-    public Cell< T > MinSize( Value size )
+    public Cell MinSize( Value size )
     {
         ArgumentNullException.ThrowIfNull( size );
 
@@ -221,7 +237,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <summary>
     /// Sets the minWidth and minHeight to the specified value.
     /// </summary>
-    public Cell< T > MinSize( float size )
+    public Cell MinSize( float size )
     {
         MinSize( Value.Fixed.ValueOf( size ) );
 
@@ -231,7 +247,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <summary>
     /// Sets the minWidth and minHeight to the specified values.
     /// </summary>
-    public Cell< T > MinSize( Value width, Value height )
+    public Cell MinSize( Value width, Value height )
     {
         ArgumentNullException.ThrowIfNull( width );
         ArgumentNullException.ThrowIfNull( height );
@@ -245,7 +261,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <summary>
     /// Sets the minWidth and minHeight to the specified values.
     /// </summary>
-    public Cell< T > MinSize( float width, float height )
+    public Cell MinSize( float width, float height )
     {
         MinSize( Value.Fixed.ValueOf( width ), Value.Fixed.ValueOf( height ) );
 
@@ -260,10 +276,10 @@ public class Cell<T> : IPoolable where T : Actor
     /// The new value for MinWidth, passed as a <see cref="Value"/>
     /// </param>
     /// <returns>This Cell for chaining.</returns>
-    public Cell< T > SetMinWidth( Value minWidth )
+    public Cell SetMinWidth( Value minWidth )
     {
         ArgumentNullException.ThrowIfNull( minWidth );
-        
+
         this.MinWidth = minWidth;
 
         return this;
@@ -277,10 +293,10 @@ public class Cell<T> : IPoolable where T : Actor
     /// The new value for MinHeight, passed as a <see cref="Value"/>
     /// </param>
     /// <returns>This Cell for chaining.</returns>
-    public Cell< T > SetMinHeight( Value minHeight )
+    public Cell SetMinHeight( Value minHeight )
     {
         ArgumentNullException.ThrowIfNull( minHeight );
-        
+
         this.MinHeight = minHeight;
 
         return this;
@@ -294,7 +310,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// The new value for MinWidth, passed as a float.
     /// </param>
     /// <returns>This Cell for chaining.</returns>
-    public Cell< T > SetMinWidth( float minWidth )
+    public Cell SetMinWidth( float minWidth )
     {
         this.MinWidth = Value.Fixed.ValueOf( minWidth );
 
@@ -309,7 +325,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// The new value for MinHeight, passed as a float
     /// </param>
     /// <returns>This Cell for chaining.</returns>
-    public Cell< T > SetMinHeight( float minHeight )
+    public Cell SetMinHeight( float minHeight )
     {
         this.MinHeight = Value.Fixed.ValueOf( minHeight );
 
@@ -319,7 +335,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <summary>
     /// Sets the prefWidth and prefHeight to the specified value.
     /// </summary>
-    public Cell< T > SetPrefSize( Value size )
+    public Cell SetPrefSize( Value size )
     {
         ArgumentNullException.ThrowIfNull( size );
 
@@ -332,7 +348,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <summary>
     /// Sets the prefWidth and prefHeight to the specified value.
     /// </summary>
-    public Cell< T > SetPrefSize( Value width, Value height )
+    public Cell SetPrefSize( Value width, Value height )
     {
         ArgumentNullException.ThrowIfNull( width );
         ArgumentNullException.ThrowIfNull( height );
@@ -343,192 +359,259 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetPrefWidth( Value prefWidth )
+    public Cell SetPrefWidth( Value prefWidth )
     {
         ArgumentNullException.ThrowIfNull( prefWidth );
-        
+
         this.PrefWidth = prefWidth;
 
         return this;
     }
 
-    public Cell< T > prefHeight( Value prefHeight )
+    public Cell SetPrefHeight( Value prefHeight )
     {
-        if ( prefHeight == null ) throw new ArgumentException( "prefHeight cannot be null." );
-        this.prefHeight = prefHeight;
+        ArgumentNullException.ThrowIfNull( prefHeight );
+
+        this.PrefHeight = prefHeight;
 
         return this;
     }
 
-    /** Sets the prefWidth and prefHeight to the specified value. */
-    public Cell< T > prefSize( float width, float height )
+    /// <summary>
+    /// Sets the prefWidth and prefHeight to the specified value.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <returns></returns>
+    public Cell SetPrefSize( float width, float height )
     {
-        prefSize( Value.Fixed.valueOf( width ), Value.Fixed.valueOf( height ) );
+        SetPrefSize( Value.Fixed.ValueOf( width ), Value.Fixed.ValueOf( height ) );
 
         return this;
     }
 
-    /** Sets the prefWidth and prefHeight to the specified values. */
-    public Cell< T > prefSize( float size )
+    /// <summary>
+    /// Sets the prefWidth and prefHeight to the specified values. 
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    public Cell SetPrefSize( float size )
     {
-        prefSize( Value.Fixed.valueOf( size ) );
+        SetPrefSize( Value.Fixed.ValueOf( size ) );
 
         return this;
     }
 
-    public Cell< T > prefWidth( float prefWidth )
+    public Cell SetPrefWidth( float prefWidth )
     {
-        this.prefWidth = Value.Fixed.valueOf( prefWidth );
+        this.PrefWidth = Value.Fixed.ValueOf( prefWidth );
 
         return this;
     }
 
-    public Cell< T > prefHeight( float prefHeight )
+    public Cell SetPrefHeight( float prefHeight )
     {
-        this.prefHeight = Value.Fixed.valueOf( prefHeight );
+        this.PrefHeight = Value.Fixed.ValueOf( prefHeight );
 
         return this;
     }
 
-    /** Sets the maxWidth and maxHeight to the specified value. If the max size is 0, no maximum size is used. */
-    public Cell< T > maxSize( Value size )
+    /// <summary>
+    /// Sets the maxWidth and maxHeight to the specified value.
+    /// If the max size is 0, no maximum size is used.
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public Cell SetMaxSize( Value size )
     {
-        if ( size == null ) throw new ArgumentException( "size cannot be null." );
-        maxWidth  = size;
-        maxHeight = size;
+        ArgumentNullException.ThrowIfNull( size );
+
+        MaxWidth  = size;
+        MaxHeight = size;
 
         return this;
     }
 
-    /** Sets the maxWidth and maxHeight to the specified values. If the max size is 0, no maximum size is used. */
-    public Cell< T > maxSize( Value width, Value height )
+    /// <summary>
+    /// Sets the maxWidth and maxHeight to the specified values.
+    /// If the max size is 0, no maximum size is used.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public Cell SetMaxSize( Value width, Value height )
     {
-        if ( width == null ) throw new ArgumentException( "width cannot be null." );
-        if ( height == null ) throw new ArgumentException( "height cannot be null." );
-        maxWidth  = width;
-        maxHeight = height;
+        ArgumentNullException.ThrowIfNull( width );
+        ArgumentNullException.ThrowIfNull( height );
+
+        MaxWidth  = width;
+        MaxHeight = height;
 
         return this;
     }
 
-    /** If the maxWidth is 0, no maximum width is used. */
-    public Cell< T > maxWidth( Value maxWidth )
+    /// <summary>
+    /// If the maxWidth is 0, no maximum width is used. */
+    /// </summary>
+    /// <param name="maxWidth"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public Cell SetMaxWidth( Value maxWidth )
     {
-        if ( maxWidth == null ) throw new ArgumentException( "maxWidth cannot be null." );
-        this.maxWidth = maxWidth;
+        ArgumentNullException.ThrowIfNull( maxWidth );
+
+        MaxWidth = maxWidth;
 
         return this;
     }
 
-    /** If the maxHeight is 0, no maximum height is used. */
-    public Cell< T > maxHeight( Value maxHeight )
+    /// <summary>
+    /// If the maxHeight is 0, no maximum height is used.
+    /// </summary>
+    /// <param name="maxHeight"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public Cell SetMaxHeight( Value maxHeight )
     {
-        if ( maxHeight == null ) throw new ArgumentException( "maxHeight cannot be null." );
-        this.maxHeight = maxHeight;
+        ArgumentNullException.ThrowIfNull( maxHeight );
+
+        this.MaxHeight = maxHeight;
 
         return this;
     }
 
-    /** Sets the maxWidth and maxHeight to the specified value. If the max size is 0, no maximum size is used. */
-    public Cell< T > maxSize( float size )
+    /// <summary>
+    /// Sets the maxWidth and maxHeight to the specified value.
+    /// If the max size is 0, no maximum size is used.
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    public Cell SetMaxSize( float size )
     {
-        maxSize( Value.Fixed.valueOf( size ) );
+        SetMaxSize( Value.Fixed.ValueOf( size ) );
 
         return this;
     }
 
-    /** Sets the maxWidth and maxHeight to the specified values. If the max size is 0, no maximum size is used. */
-    public Cell< T > maxSize( float width, float height )
+    /// <summary>
+    /// Sets the maxWidth and maxHeight to the specified values.
+    /// If the max size is 0, no maximum size is used.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <returns></returns>
+    public Cell SetMaxSize( float width, float height )
     {
-        maxSize( Value.Fixed.valueOf( width ), Value.Fixed.valueOf( height ) );
+        SetMaxSize( Value.Fixed.ValueOf( width ), Value.Fixed.ValueOf( height ) );
 
         return this;
     }
 
-    /** If the maxWidth is 0, no maximum width is used. */
-    public Cell< T > maxWidth( float maxWidth )
+    /// <summary>
+    /// If the maxWidth is 0, no maximum width is used.
+    /// </summary>
+    /// <param name="maxWidth"></param>
+    /// <returns></returns>
+    public Cell SetMaxWidth( float maxWidth )
     {
-        this.maxWidth = Value.Fixed.valueOf( maxWidth );
+        this.MaxWidth = Value.Fixed.ValueOf( maxWidth );
 
         return this;
     }
 
-    /** If the maxHeight is 0, no maximum height is used. */
-    public Cell< T > maxHeight( float maxHeight )
+    /// <summary>
+    /// If the maxHeight is 0, no maximum height is used.
+    /// </summary>
+    /// <param name="maxHeight"></param>
+    /// <returns></returns>
+    public Cell SetMaxHeight( float maxHeight )
     {
-        this.maxHeight = Value.Fixed.valueOf( maxHeight );
+        this.MaxHeight = Value.Fixed.ValueOf( maxHeight );
 
         return this;
     }
 
-    /** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. */
-    public Cell< T > space( Value space )
+    /// <summary>
+    /// Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value.
+    /// </summary>
+    /// <param name="space"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public Cell Space( Value space )
     {
-        if ( space == null ) throw new ArgumentException( "space cannot be null." );
-        spaceTop    = space;
-        spaceLeft   = space;
-        spaceBottom = space;
-        spaceRight  = space;
+        ArgumentNullException.ThrowIfNull( space );
+
+        this.SpaceTop    = space;
+        this.SpaceLeft   = space;
+        this.SpaceBottom = space;
+        this.SpaceRight  = space;
 
         return this;
     }
 
-    public Cell< T > space( Value top, Value left, Value bottom, Value right )
+    public Cell Space( Value top, Value left, Value bottom, Value right )
     {
-        if ( top == null ) throw new ArgumentException( "top cannot be null." );
-        if ( left == null ) throw new ArgumentException( "left cannot be null." );
-        if ( bottom == null ) throw new ArgumentException( "bottom cannot be null." );
-        if ( right == null ) throw new ArgumentException( "right cannot be null." );
-        spaceTop    = top;
-        spaceLeft   = left;
-        spaceBottom = bottom;
-        spaceRight  = right;
+        ArgumentNullException.ThrowIfNull( top );
+        ArgumentNullException.ThrowIfNull( left );
+        ArgumentNullException.ThrowIfNull( bottom );
+        ArgumentNullException.ThrowIfNull( right );
+
+        this.SpaceTop    = top;
+        this.SpaceLeft   = left;
+        this.SpaceBottom = bottom;
+        this.SpaceRight  = right;
 
         return this;
     }
 
-    public Cell< T > spaceTop( Value spaceTop )
+    public Cell SetSpaceTop( Value spaceTop )
     {
-        if ( spaceTop == null ) throw new ArgumentException( "spaceTop cannot be null." );
-        this.spaceTop = spaceTop;
+        ArgumentNullException.ThrowIfNull( spaceTop );
+
+        this.SpaceTop = spaceTop;
 
         return this;
     }
 
-    public Cell< T > spaceLeft( Value spaceLeft )
+    public Cell SetSpaceLeft( Value spaceLeft )
     {
-        if ( spaceLeft == null ) throw new ArgumentException( "spaceLeft cannot be null." );
-        this.spaceLeft = spaceLeft;
+        ArgumentNullException.ThrowIfNull( spaceLeft );
+
+        this.SpaceLeft = spaceLeft;
 
         return this;
     }
 
-    public Cell< T > spaceBottom( Value spaceBottom )
+    public Cell SetSpaceBottom( Value spaceBottom )
     {
-        if ( spaceBottom == null ) throw new ArgumentException( "spaceBottom cannot be null." );
-        this.spaceBottom = spaceBottom;
+        ArgumentNullException.ThrowIfNull( spaceBottom );
+
+        this.SpaceBottom = spaceBottom;
 
         return this;
     }
 
-    public Cell< T > spaceRight( Value spaceRight )
+    public Cell SetSpaceRight( Value spaceRight )
     {
-        if ( spaceRight == null ) throw new ArgumentException( "spaceRight cannot be null." );
-        this.spaceRight = spaceRight;
+        ArgumentNullException.ThrowIfNull( spaceRight );
+
+        this.SpaceRight = spaceRight;
 
         return this;
     }
 
-    /** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. The space cannot be < 0. */
-    public Cell< T > Space( float space )
+    public Cell Space( float space )
     {
         if ( space < 0 ) throw new ArgumentException( "space cannot be < 0: " + space );
+
         Space( Value.Fixed.ValueOf( space ) );
 
         return this;
     }
 
-    public Cell< T > Space( float top, float left, float bottom, float right )
+    public Cell Space( float top, float left, float bottom, float right )
     {
         if ( top < 0 ) throw new ArgumentException( "top cannot be < 0: " + top );
         if ( left < 0 ) throw new ArgumentException( "left cannot be < 0: " + left );
@@ -546,7 +629,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetSpaceTop( float spaceTop )
+    public Cell SetSpaceTop( float spaceTop )
     {
         if ( spaceTop < 0 ) throw new ArgumentException( "spaceTop cannot be < 0: " + spaceTop );
 
@@ -555,7 +638,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetSpaceLeft( float spaceLeft )
+    public Cell SetSpaceLeft( float spaceLeft )
     {
         if ( spaceLeft < 0 ) throw new ArgumentException( "spaceLeft cannot be < 0: " + spaceLeft );
 
@@ -564,7 +647,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetSpaceBottom( float spaceBottom )
+    public Cell SetSpaceBottom( float spaceBottom )
     {
         if ( spaceBottom < 0 ) throw new ArgumentException( "spaceBottom cannot be < 0: " + spaceBottom );
 
@@ -573,7 +656,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetSpaceRight( float spaceRight )
+    public Cell SetSpaceRight( float spaceRight )
     {
         if ( spaceRight < 0 ) throw new ArgumentException( "spaceRight cannot be < 0: " + spaceRight );
 
@@ -585,7 +668,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <summary>
     /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
     /// </summary>
-    public Cell< T > Pad( Value pad )
+    public Cell Pad( Value pad )
     {
         ArgumentNullException.ThrowIfNull( pad );
 
@@ -597,7 +680,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > Pad( Value top, Value left, Value bottom, Value right )
+    public Cell Pad( Value top, Value left, Value bottom, Value right )
     {
         ArgumentNullException.ThrowIfNull( top );
         ArgumentNullException.ThrowIfNull( left );
@@ -612,7 +695,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetPadTop( Value padTop )
+    public Cell SetPadTop( Value padTop )
     {
         ArgumentNullException.ThrowIfNull( padTop );
 
@@ -621,70 +704,73 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetPadBottom( Value padBottom )
+    public Cell SetPadBottom( Value padBottom )
     {
         ArgumentNullException.ThrowIfNull( padBottom );
-        
+
         this.PadBottom = padBottom;
 
         return this;
     }
 
-    public Cell< T > SetPadRight( Value padRight )
+    public Cell SetPadRight( Value padRight )
     {
         ArgumentNullException.ThrowIfNull( padRight );
-        
+
         this.PadRight = padRight;
 
         return this;
     }
 
-    public Cell< T > Pad( float pad )
+    public Cell Pad( float pad )
     {
         Pad( Value.Fixed.ValueOf( pad ) );
 
         return this;
     }
 
-    public Cell< T > Pad( float top, float left, float bottom, float right )
+    public Cell Pad( float top, float left, float bottom, float right )
     {
-        Pad( Value.Fixed.ValueOf( top ),
+        Pad
+            (
+             Value.Fixed.ValueOf( top ),
              Value.Fixed.ValueOf( left ),
              Value.Fixed.ValueOf( bottom ),
-             Value.Fixed.ValueOf( right ) );
+             Value.Fixed.ValueOf( right )
+            );
 
         return this;
     }
 
-    public Cell< T > SetPadTop( float padTop )
+    public Cell SetPadTop( float padTop )
     {
         this.PadTop = Value.Fixed.ValueOf( padTop );
 
         return this;
     }
 
-    public Cell< T > SetPadLeft( float padLeft )
+    public Cell SetPadLeft( float padLeft )
     {
         this.PadLeft = Value.Fixed.ValueOf( padLeft );
 
         return this;
     }
 
-    public Cell< T > SetPadBottom( float padBottom )
+    public Cell SetPadBottom( float padBottom )
     {
         this.PadBottom = Value.Fixed.ValueOf( padBottom );
 
         return this;
     }
 
-    public Cell< T > SetPadRight( float padRight )
+    public Cell SetPadRight( float padRight )
     {
         this.PadRight = Value.Fixed.ValueOf( padRight );
 
         return this;
     }
 
-    public Cell< T > FillOneF()
+    public Cell FillOneF()
     {
         FillX = Onef;
         FillY = Onef;
@@ -692,21 +778,21 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > FillXOneF()
+    public Cell FillXOneF()
     {
         FillX = Onef;
 
         return this;
     }
 
-    public Cell< T > FillYOneF()
+    public Cell FillYOneF()
     {
         FillY = Onef;
 
         return this;
     }
 
-    public Cell< T > Fill( float x, float y )
+    public Cell Fill( float x, float y )
     {
         FillX = x;
         FillY = y;
@@ -714,7 +800,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > Fill( bool x, bool y )
+    public Cell Fill( bool x, bool y )
     {
         FillX = x ? Onef : Zerof;
         FillY = y ? Onef : Zerof;
@@ -722,7 +808,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > Fill( bool fill )
+    public Cell Fill( bool fill )
     {
         FillX = fill ? Onef : Zerof;
         FillY = fill ? Onef : Zerof;
@@ -735,7 +821,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// <see cref="Align.Top"/>, <see cref="Align.Bottom"/>, <see cref="Align.Left"/>,
     /// <see cref="Align.Right"/>, or any combination of those. 
     /// </summary>
-    public Cell< T > SetAlignment( int align )
+    public Cell SetAlignment( int align )
     {
         this.Alignment = align;
 
@@ -746,7 +832,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// Sets the alignment of the actor within the cell to <see cref="Align.Center"/>.
     /// This clears any other alignment.
     /// </summary>
-    public Cell< T > Center()
+    public Cell Center()
     {
         Alignment = Centeri;
 
@@ -757,7 +843,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// Adds <see cref="Align.Top"/> and clears <see cref="Align.Bottom"/> for
     /// the alignment of the actor within the cell.
     /// </summary>
-    public Cell< T > Top()
+    public Cell Top()
     {
         if ( Alignment == null )
         {
@@ -775,7 +861,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// Adds <see cref="Align.Left"/> and clears <see cref="Align.Right"/> for
     /// the alignment of the actor within the cell.
     /// </summary>
-    public Cell< T > Left()
+    public Cell Left()
     {
         if ( Alignment == null )
         {
@@ -793,7 +879,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// Adds <see cref="Align.Bottom"/> and clears <see cref="Align.Top"/> for
     /// the alignment of the actor within the cell.
     /// </summary>
-    public Cell< T > Bottom()
+    public Cell Bottom()
     {
         if ( Alignment == null )
         {
@@ -811,7 +897,7 @@ public class Cell<T> : IPoolable where T : Actor
     /// Adds <see cref="Align.Right"/> and clears <see cref="Align.Left"/> for
     /// the alignment of the actor within the cell.
     /// </summary>
-    public Cell< T > Right()
+    public Cell Right()
     {
         if ( Alignment == null )
         {
@@ -825,7 +911,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > Grow()
+    public Cell Grow()
     {
         ExpandX = Onei;
         ExpandY = Onei;
@@ -835,7 +921,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > GrowX()
+    public Cell GrowX()
     {
         ExpandX = Onei;
         FillX   = Onef;
@@ -843,7 +929,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > GrowY()
+    public Cell GrowY()
     {
         ExpandY = Onei;
         FillY   = Onef;
@@ -851,7 +937,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > Expand()
+    public Cell Expand()
     {
         ExpandX = Onei;
         ExpandY = Onei;
@@ -859,21 +945,21 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetExpandX()
+    public Cell SetExpandX()
     {
         ExpandX = Onei;
 
         return this;
     }
 
-    public Cell< T > SetExpandY()
+    public Cell SetExpandY()
     {
         ExpandY = Onei;
 
         return this;
     }
 
-    public Cell< T > Expand( int x, int y )
+    public Cell Expand( int x, int y )
     {
         ExpandX = x;
         ExpandY = y;
@@ -881,7 +967,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > Expand( bool x, bool y )
+    public Cell Expand( bool x, bool y )
     {
         ExpandX = x ? Onei : Zeroi;
         ExpandY = y ? Onei : Zeroi;
@@ -889,14 +975,14 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > SetColspan( int colspan )
+    public Cell SetColspan( int colspan )
     {
         this.Colspan = colspan;
 
         return this;
     }
 
-    public Cell< T > UniformToTrue()
+    public Cell UniformToTrue()
     {
         UniformX = true;
         UniformY = true;
@@ -904,21 +990,21 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > UniformXToTrue()
+    public Cell UniformXToTrue()
     {
         UniformX = true;
 
         return this;
     }
 
-    public Cell< T > UniformYToTrue()
+    public Cell UniformYToTrue()
     {
         UniformY = true;
 
         return this;
     }
 
-    public Cell< T > Uniform( bool uniform )
+    public Cell Uniform( bool uniform )
     {
         UniformX = uniform;
         UniformY = uniform;
@@ -926,7 +1012,7 @@ public class Cell<T> : IPoolable where T : Actor
         return this;
     }
 
-    public Cell< T > Uniform( bool x, bool y )
+    public Cell Uniform( bool x, bool y )
     {
         UniformX = x;
         UniformY = y;
@@ -958,7 +1044,7 @@ public class Cell<T> : IPoolable where T : Actor
     public float GetPadRight()    => PadRight!.Get( Actor );
     public float GetPadX()        => PadLeft!.Get( Actor ) + PadRight!.Get( Actor );
     public float GetPadY()        => PadTop!.Get( Actor ) + PadBottom!.Get( Actor );
-    public void  AddRow()         => Table.AddRow();
+    public void  AddRow()         => Table!.AddRow();
 
     /// <summary>
     /// Sets all constraint fields to null. */
@@ -989,7 +1075,7 @@ public class Cell<T> : IPoolable where T : Actor
         UniformY    = null;
     }
 
-    private void Set( Cell< T >? cell )
+    public void Set( Cell? cell )
     {
         if ( cell == null ) return;
 
@@ -1017,7 +1103,7 @@ public class Cell<T> : IPoolable where T : Actor
         this.UniformY    = cell.UniformY;
     }
 
-    private void Merge( Cell< T >? cell )
+    public void Merge( Cell? cell )
     {
         if ( cell == null ) return;
 
@@ -1056,13 +1142,13 @@ public class Cell<T> : IPoolable where T : Actor
     /// Returns the defaults to use for all cells. This can be used to avoid
     /// needing to set the same defaults for every table (eg, for spacing).
     /// </summary>
-    public Cell< T >? GetCellDefaults()
+    public Cell? GetCellDefaults()
     {
         if ( ( _files == null ) || ( _files != Gdx.Files ) )
         {
             _files = Gdx.Files;
 
-            _defaults = new Cell< T >
+            _defaults = new Cell
             {
                 MinWidth    = UI.Value.MinWidth,
                 MinHeight   = UI.Value.MinHeight,

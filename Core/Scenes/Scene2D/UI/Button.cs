@@ -40,7 +40,7 @@ public class Button : Table, IDisableable
     {
         initialize();
         setStyle( skin.get( ButtonStyle.class));
-        setSize( getPrefWidth(), getPrefHeight() );
+        setSize( GetPrefWidth(), GetPrefHeight() );
 }
 
 public Button( Skin skin, String styleName )
@@ -48,13 +48,13 @@ public Button( Skin skin, String styleName )
 {
     initialize();
     setStyle( skin.get( styleName, ButtonStyle.class));
-        setSize( getPrefWidth(), getPrefHeight() );
+        setSize( GetPrefWidth(), GetPrefHeight() );
     }
 
     public Button( Actor child, Skin skin, String styleName )
 {
     this( child, skin.get( styleName, ButtonStyle.class));
-setSkin( skin );
+SetSkin( skin );
     }
 
     public Button( Actor child, ButtonStyle style )
@@ -62,14 +62,14 @@ setSkin( skin );
     initialize();
     add( child );
     setStyle( style );
-    setSize( getPrefWidth(), getPrefHeight() );
+    setSize( GetPrefWidth(), GetPrefHeight() );
 }
 
 public Button( ButtonStyle style )
 {
     initialize();
     setStyle( style );
-    setSize( getPrefWidth(), getPrefHeight() );
+    setSize( GetPrefWidth(), GetPrefHeight() );
 }
 
 /** Creates a button without setting the style or size. At least a style must be set before using this button. */

@@ -6,6 +6,7 @@ namespace LibGDXSharp.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public static class Align
 {
+    public const int None   = 0;
     public const int Center = 1 << 0;
     public const int Top    = 1 << 1;
     public const int Bottom = 1 << 2;
