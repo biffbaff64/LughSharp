@@ -12,10 +12,10 @@ public sealed class Cell : IPoolable
     private const int   Zeroi   = 0;
     private const int   Onei    = 1;
     private const int   Centeri = Onei;
-    private const int   Topi    = LibGDXSharp.Utils.Align.Top;
-    private const int   Bottomi = LibGDXSharp.Utils.Align.Bottom;
-    private const int   Lefti   = LibGDXSharp.Utils.Align.Left;
-    private const int   Righti  = LibGDXSharp.Utils.Align.Right;
+    private const int   Topi    = Align.Top;
+    private const int   Bottomi = Align.Bottom;
+    private const int   Lefti   = Align.Left;
+    private const int   Righti  = Align.Right;
 
     private IFiles? _files;
     private Cell?   _defaults;
@@ -36,12 +36,13 @@ public sealed class Cell : IPoolable
     public Value? PadRight    { get; set; }
     public float? FillX       { get; set; }
     public float? FillY       { get; set; }
-    public int?   Alignment   { get; set; }
-    public int?   ExpandX     { get; set; }
-    public int?   ExpandY     { get; set; }
-    public int?   Colspan     { get; set; }
-    public bool?  UniformX    { get; set; }
-    public bool?  UniformY    { get; set; }
+
+    public int  Alignment { get; set; } = Align.None;
+    public int  ExpandX   { get; set; }
+    public int  ExpandY   { get; set; }
+    public int  Colspan   { get; set; }
+    public bool UniformX  { get; set; }
+    public bool UniformY  { get; set; }
 
     public Actor? Actor       { get; set; }
     public float  ActorX      { get; set; }
@@ -99,7 +100,7 @@ public sealed class Cell : IPoolable
     /// <returns>This Cell for chaining.</returns>
     public Cell ClearActor()
     {
-        SetActor<Actor>( null );
+        SetActor< Actor >( null );
 
         return this;
     }
@@ -845,7 +846,7 @@ public sealed class Cell : IPoolable
     /// </summary>
     public Cell Top()
     {
-        if ( Alignment == null )
+        if ( Alignment == Align.None )
         {
             Alignment = Topi;
         }
@@ -863,7 +864,7 @@ public sealed class Cell : IPoolable
     /// </summary>
     public Cell Left()
     {
-        if ( Alignment == null )
+        if ( Alignment == Align.None )
         {
             Alignment = Lefti;
         }
@@ -881,7 +882,7 @@ public sealed class Cell : IPoolable
     /// </summary>
     public Cell Bottom()
     {
-        if ( Alignment == null )
+        if ( Alignment == Align.None )
         {
             Alignment = Bottomi;
         }
@@ -899,7 +900,7 @@ public sealed class Cell : IPoolable
     /// </summary>
     public Cell Right()
     {
-        if ( Alignment == null )
+        if ( Alignment == Align.None )
         {
             Alignment = Righti;
         }
@@ -1067,12 +1068,12 @@ public sealed class Cell : IPoolable
         PadRight    = null;
         FillX       = null;
         FillY       = null;
-        Alignment   = null;
-        ExpandX     = null;
-        ExpandY     = null;
-        Colspan     = null;
-        UniformX    = null;
-        UniformY    = null;
+        Alignment   = Align.None;
+        ExpandX     = default;
+        ExpandY     = default;
+        Colspan     = default;
+        UniformX    = default;
+        UniformY    = default;
     }
 
     public void Set( Cell? cell )
@@ -1124,12 +1125,12 @@ public sealed class Cell : IPoolable
         if ( cell.PadRight != null )        PadRight    = cell.PadRight;
         if ( cell.FillX != null )           FillX       = cell.FillX;
         if ( cell.FillY != null )           FillY       = cell.FillY;
-        if ( cell.Alignment != null )       Alignment   = cell.Alignment;
-        if ( cell.ExpandX != null )         ExpandX     = cell.ExpandX;
-        if ( cell.ExpandY != null )         ExpandY     = cell.ExpandY;
-        if ( cell.Colspan != null )         Colspan     = cell.Colspan;
-        if ( cell.UniformX != null )        UniformX    = cell.UniformX;
-        if ( cell.UniformY != null )        UniformY    = cell.UniformY;
+        if ( cell.Alignment != default )    Alignment   = cell.Alignment;
+        if ( cell.ExpandX != default )      ExpandX     = cell.ExpandX;
+        if ( cell.ExpandY != default )      ExpandY     = cell.ExpandY;
+        if ( cell.Colspan != default )      Colspan     = cell.Colspan;
+        if ( cell.UniformX != default )     UniformX    = cell.UniformX;
+        if ( cell.UniformY != default )     UniformY    = cell.UniformY;
         //@formatter:on
     }
 

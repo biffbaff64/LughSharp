@@ -51,4 +51,9 @@ public class BitmapFontCache
     {
         throw new NotImplementedException();
     }
+
+    public BitmapFont GetFont()
+    {
+        return null;
+    }
 }

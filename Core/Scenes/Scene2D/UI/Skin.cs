@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
-
 using System.Text.Json;
 
 using LibGDXSharp.G2D;
@@ -29,17 +28,21 @@ public sealed class Skin : IDisposable
 {
     private readonly static Type[] defaultTagClasses =
     {
-        typeof(BitmapFont), typeof(Color), typeof(TintedDrawable), typeof(NinePatchDrawable), typeof(SpriteDrawable),
-        typeof(TextureRegionDrawable), typeof(TiledDrawable), typeof(Button.ButtonStyle), typeof(CheckBox.CheckBoxStyle),
-        typeof(ImageButton.ImageButtonStyle), typeof(ImageTextButton.ImageTextButtonStyle), typeof(Label.LabelStyle),
-        typeof(List.ListStyle), typeof(ProgressBar.ProgressBarStyle), typeof(ScrollPane.ScrollPaneStyle),
-        typeof(SelectBox.SelectBoxStyle), typeof(Slider.SliderStyle), typeof(SplitPane.SplitPaneStyle),
-        typeof(TextButton.TextButtonStyle), typeof(TextField.TextFieldStyle), typeof(TextTooltip.TextTooltipStyle),
-        typeof(Touchpad.TouchpadStyle), typeof(Tree.TreeStyle), typeof(Window.WindowStyle)
+        typeof( BitmapFont ),
+        typeof( Color ), typeof( TintedDrawable ), typeof( NinePatchDrawable ), typeof( SpriteDrawable ),
+        typeof( TextureRegionDrawable ), typeof( TiledDrawable ), typeof( Button.ButtonStyle ),
+        typeof( CheckBox.CheckBoxStyle ),
+        typeof( ImageButton.ImageButtonStyle ), typeof( ImageTextButton.ImageTextButtonStyle ),
+        typeof( Label.LabelStyle ),
+        typeof( List.ListStyle ), typeof( ProgressBar.ProgressBarStyle ), typeof( ScrollPane.ScrollPaneStyle ),
+        typeof( SelectBox.SelectBoxStyle ), typeof( Slider.SliderStyle ), typeof( SplitPane.SplitPaneStyle ),
+        typeof( TextButton.TextButtonStyle ), typeof( TextField.TextFieldStyle ),
+        typeof( TextTooltip.TextTooltipStyle ),
+        typeof( Touchpad.TouchpadStyle ), typeof( Tree.TreeStyle ), typeof( Window.WindowStyle )
     };
 
-    public        Dictionary< Type, Dictionary< string, object > > Resources     { get; set; } = null!;
-    public static Dictionary< string, Type >                       JsonClassTags { get; set; } = new(defaultTagClasses.Length);
+    public        Dictionary< Type, Dictionary< string, object > > Resources { get; set; }
+    public static Dictionary< string, Type > JsonClassTags { get; set; } = new( defaultTagClasses.Length );
 
     /// <summary>
     /// Returns the <see cref="TextureAtlas"/> passed to this skin constructor, or null.
@@ -126,7 +129,7 @@ public sealed class Skin : IDisposable
     {
         try
         {
-            GetJsonLoader( skinFile ).fromJson( typeof(Skin), skinFile );
+            GetJsonLoader( skinFile ).fromJson( typeof( Skin ), skinFile );
         }
         catch ( SerializationException ex )
         {
@@ -135,22 +138,21 @@ public sealed class Skin : IDisposable
     }
 
     /// <summary>
-    /// Adds all named texture regions from the atlas. The atlas will not be automatically disposed when the skin is disposed. </summary>
+    /// Adds all named texture regions from the atlas. The atlas will not be
+    /// automatically disposed when the skin is disposed.
+    /// </summary>
     public void AddRegions( TextureAtlas atlas )
     {
-        List< AtlasRegion > regions = atlas.GetRegions();
-
-        for ( int i = 0, n = regions.size; i < n; i++ )
+        for ( int i = 0, n = atlas.Regions.Count; i < n; i++ )
         {
-            AtlasRegion region = regions.Get( i );
-            string      name   = region.name;
+            var name = atlas.Regions[ i ]?.Name;
 
-            if ( region.index != -1 )
+            if ( atlas.Regions[ i ]?.Index != -1 )
             {
-                name += "_" + region.index;
+                name += "_" + atlas.Regions[ i ]?.Index;
             }
 
-            Add( name, region, typeof(TextureRegion) );
+            Add( name, atlas.Regions[ i ], typeof( TextureRegion ) );
         }
     }
 
@@ -159,7 +161,7 @@ public sealed class Skin : IDisposable
         Add( name, resource, resource.GetType() );
     }
 
-    public void Add( string name, object resource, Type type )
+    public void Add( string? name, object? resource, Type type )
     {
         if ( string.ReferenceEquals( name, null ) )
         {
@@ -176,7 +178,11 @@ public sealed class Skin : IDisposable
         if ( typeResources == null )
         {
             typeResources = new ObjectMap
-                ( ( type == typeof(TextureRegion) ) || ( type == typeof(Drawable) ) || ( type == typeof(Sprite) ) ? 256 : 64 );
+                (
+                 ( type == typeof( TextureRegion ) ) || ( type == typeof( Drawable ) ) || ( type == typeof( Sprite ) )
+                     ? 256
+                     : 64
+                );
 
             resources.put( type, typeResources );
         }
@@ -198,47 +204,39 @@ public sealed class Skin : IDisposable
     /// Returns a resource named "default" for the specified type.
     /// </summary>
     /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
-    public T Get<T>( Type type )
+    public T Get<T>()
     {
-        return Get< T >( "default", type );
+        return ( T )Get<T>( "default" );
     }
 
     /// <summary>
     /// Returns a named resource of the specified type.
     /// </summary>
     /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
-    public object Get( string name, Type type )
+    public object Get<T>( string name )
     {
-        if ( string.ReferenceEquals( name, null ) )
-        {
-            throw new System.ArgumentException( "name cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( name );
 
-        if ( type == null )
-        {
-            throw new System.ArgumentException( "type cannot be null." );
-        }
+        if ( typeof( T ) == typeof( IDrawable ) ) return GetDrawable( name );
 
-        if ( type == typeof(IDrawable) ) return GetDrawable( name );
+        if ( typeof( T ) == typeof( TextureRegion ) ) return GetRegion( name );
 
-        if ( type == typeof(TextureRegion) ) return GetRegion( name );
+        if ( typeof( T ) == typeof( NinePatch ) ) return GetPatch( name );
 
-        if ( type == typeof(NinePatch) ) return GetPatch( name );
+        if ( typeof( T ) == typeof( Sprite ) ) return GetSprite( name );
 
-        if ( type == typeof(Sprite) ) return GetSprite( name );
-
-        Dictionary< string, object > typeResources = Resources.Get( type );
+        Dictionary< string, object > typeResources = Resources.Get( typeof( T ) );
 
         if ( typeResources == null )
         {
-            throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
+            throw new GdxRuntimeException( $"No {typeof( T ).FullName} registered with name: {name}" );
         }
 
         var resource = typeResources.Get( name );
 
         if ( resource == null )
         {
-            throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
+            throw new GdxRuntimeException( $"No {typeof( T ).FullName} registered with name: {name}" );
         }
 
         return resource;
@@ -248,19 +246,16 @@ public sealed class Skin : IDisposable
     /// Returns a named resource of the specified type.
     /// </summary>
     /// <returns> null if not found. </returns>
-    public T? Optional<T>( string name )
+    public T Optional<T>( string name )
     {
-        if ( string.ReferenceEquals( name, null ) )
-        {
-            throw new System.ArgumentException( "name cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( name );
 
-        if ( typeof(T) == null )
+        if ( typeof( T ) == null )
         {
             throw new System.ArgumentException( "type cannot be null." );
         }
 
-        return ( T )Resources.Get( typeof(T) ).Get( name );
+        return ( T )Resources.Get( typeof( T ) ).Get( name );
     }
 
     public bool Has( string name, Type type ) => Resources.Get( type ).ContainsKey( name );
@@ -271,9 +266,9 @@ public sealed class Skin : IDisposable
     /// </summary>
     public Dictionary< string, object > GetAll( Type type ) => Resources.Get( type );
 
-    public Color GetColor( string name ) => ( Color )Get( name, typeof(Color) );
+    public Color GetColor( string name ) => ( Color )Get( name, typeof( Color ) );
 
-    public BitmapFont GetFont( string name ) => ( BitmapFont )Get( name, typeof(BitmapFont) );
+    public BitmapFont GetFont( string name ) => ( BitmapFont )Get( name, typeof( BitmapFont ) );
 
     /// <summary>
     /// Returns a registered texture region. If no region is found but a
@@ -298,7 +293,7 @@ public sealed class Skin : IDisposable
 
         region = new TextureRegion( texture );
 
-        Add( name, region, typeof(TextureRegion) );
+        Add( name, region, typeof( TextureRegion ) );
 
         return region;
     }
@@ -351,7 +346,7 @@ public sealed class Skin : IDisposable
             tiled.Scale = this.Scale;
         }
 
-        Add( name, tiled, typeof(TiledDrawable) );
+        Add( name, tiled, typeof( TiledDrawable ) );
 
         return tiled;
     }
@@ -401,7 +396,7 @@ public sealed class Skin : IDisposable
                 patch.Scale( Scale, Scale );
             }
 
-            Add( name, patch, typeof(NinePatch) );
+            Add( name, patch, typeof( NinePatch ) );
 
             return patch;
         }
@@ -447,7 +442,7 @@ public sealed class Skin : IDisposable
                 sprite.SetSize( sprite.Width * Scale, sprite.Height * Scale );
             }
 
-            Add( name, sprite, typeof(Sprite) );
+            Add( name, sprite, typeof( Sprite ) );
 
             return sprite;
         }
@@ -508,7 +503,7 @@ public sealed class Skin : IDisposable
         // Check for explicit registration of ninepatch, sprite, or tiled drawable.
         if ( drawable == null )
         {
-            NinePatch patch = optional( name, typeof(NinePatch) );
+            NinePatch patch = optional( name, typeof( NinePatch ) );
 
             if ( patch != null )
             {
@@ -516,7 +511,7 @@ public sealed class Skin : IDisposable
             }
             else
             {
-                Sprite sprite = optional( name, typeof(Sprite) );
+                Sprite sprite = optional( name, typeof( Sprite ) );
 
                 if ( sprite != null )
                 {
@@ -535,7 +530,7 @@ public sealed class Skin : IDisposable
             ( ( BaseDrawable )drawable ).setName( name );
         }
 
-        add( name, drawable, typeof(Drawable) );
+        add( name, drawable, typeof( Drawable ) );
 
         return drawable;
     }
@@ -758,7 +753,7 @@ public sealed class Skin : IDisposable
         }
     }
 
-    protected Json GetJsonLoader( in FileHandle skinFile )
+    protected Json GetJsonLoader( in FileInfo skinFile )
     {
         Skin skin = this;
 
@@ -766,13 +761,13 @@ public sealed class Skin : IDisposable
         json.setTypeName( null );
         json.setUsePrototypes( false );
 
-        json.setSerializer( typeof(Skin), new ReadOnlySerializerAnonymousInnerClass( this, skin ) );
+        json.setSerializer( typeof( Skin ), new ReadOnlySerializerAnonymousInnerClass( this, skin ) );
 
-        Json.setSerializer( typeof(BitmapFont), new ReadOnlySerializerAnonymousInnerClass() );
+        Json.setSerializer( typeof( BitmapFont ), new ReadOnlySerializerAnonymousInnerClass() );
 
-        Json.setSerializer( typeof(Color), new ReadOnlySerializerAnonymousInnerClass2( this ) );
+        Json.setSerializer( typeof( Color ), new ReadOnlySerializerAnonymousInnerClass2( this ) );
 
-        Json.setSerializer( typeof(TintedDrawable), new ReadOnlySerializerAnonymousInnerClass3( this ) );
+        Json.setSerializer( typeof( TintedDrawable ), new ReadOnlySerializerAnonymousInnerClass3( this ) );
 
         foreach ( ObjectMap.Entry< string, Type > entry in JsonClassTags )
         {
@@ -809,7 +804,7 @@ public sealed class Skin : IDisposable
             // If the JSON is a string but the type is not, look up the actual value by name.
             if ( ( jsonData != null )
                  && jsonData.isString()
-                 && !ClassReflection.isAssignableFrom( typeof(CharSequence), type ) )
+                 && !ClassReflection.isAssignableFrom( typeof( CharSequence ), type ) )
             {
                 return get( jsonData.asString(), type );
             }
@@ -826,7 +821,7 @@ public sealed class Skin : IDisposable
         {
             if ( jsonMap.has( _parentFieldName ) )
             {
-                string parentName = ReadValue( _parentFieldName, typeof(string), jsonMap );
+                string parentName = ReadValue( _parentFieldName, typeof( string ), jsonMap );
                 Type   parentType = @object.GetType();
 
                 while ( true )
@@ -842,7 +837,7 @@ public sealed class Skin : IDisposable
                         // Parent resource doesn't exist.
                         parentType = parentType.BaseType; // Try resource for super class.
 
-                        if ( parentType == typeof(object) )
+                        if ( parentType == typeof( object ) )
                         {
                             SerializationException se = new SerializationException
                                 ( "Unable to find parent resource with name: " + parentName );
@@ -897,7 +892,7 @@ public sealed class Skin : IDisposable
 
         private void ReadNamedObjects( Json json, Type type, JsonValue valueMap )
         {
-            Type addType = type == typeof(TintedDrawable) ? typeof(IDrawable) : type;
+            Type addType = type == typeof( TintedDrawable ) ? typeof( IDrawable ) : type;
 
             for ( JsonValue valueEntry = valueMap.Child; valueEntry != null; valueEntry = valueEntry.next )
             {
@@ -912,9 +907,9 @@ public sealed class Skin : IDisposable
                 {
                     Add( valueEntry.Name, obj, addType );
 
-                    if ( ( addType != typeof(IDrawable) ) && addType.IsAssignableFrom( typeof(IDrawable) ) )
+                    if ( ( addType != typeof( IDrawable ) ) && addType.IsAssignableFrom( typeof( IDrawable ) ) )
                     {
-                        Add( valueEntry.Name, obj, typeof(IDrawable) );
+                        Add( valueEntry.Name, obj, typeof( IDrawable ) );
                     }
                 }
                 catch ( Exception ex )

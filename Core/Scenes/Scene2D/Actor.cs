@@ -751,35 +751,35 @@ public class Actor
     /// <summary>
     /// Called when the actor's position has been changed.
     /// </summary>
-    protected virtual void PositionChanged()
+    protected void PositionChanged()
     {
     }
 
     /// <summary>
     /// Called when the actor's size has been changed.
     /// </summary>
-    protected virtual void SizeChanged()
+    protected void SizeChanged()
     {
     }
 
     /// <summary>
     /// Called when the actor's scale has been changed.
     /// </summary>
-    protected virtual void ScaleChanged()
+    protected void ScaleChanged()
     {
     }
 
     /// <summary>
     /// Called when the actor's rotation has been changed.
     /// </summary>
-    protected virtual void RotationChanged()
+    protected void RotationChanged()
     {
     }
 
     /// <summary>
     /// Sets the width and height.
     /// </summary>
-    public virtual void SetSize( float width, float height )
+    public void SetSize( float width, float height )
     {
         if ( MathUtils.IsNotEqual( this._width, width )
              || MathUtils.IsNotEqual( this._height, height ) )
@@ -793,7 +793,7 @@ public class Actor
     /// <summary>
     /// Adds the specified size to the current size.
     /// </summary>
-    public virtual void SizeBy( float size )
+    public void SizeBy( float size )
     {
         if ( size != 0 )
         {
@@ -806,7 +806,7 @@ public class Actor
     /// <summary>
     /// Adds the specified size to the current size.
     /// </summary>
-    public virtual void SizeBy( float width, float height )
+    public void SizeBy( float width, float height )
     {
         if ( ( width != 0 ) || ( height != 0 ) )
         {
