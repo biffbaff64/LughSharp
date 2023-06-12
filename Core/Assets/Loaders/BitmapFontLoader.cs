@@ -1,4 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
@@ -95,7 +111,7 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
                  new AssetDescriptor
                      (
                       ( ( BitmapFontParameter )parameter ).AtlasName,
-                      typeof(TextureAtlas),
+                      typeof( TextureAtlas ),
                       ( ( BitmapFontParameter )parameter )
                      )
                 );
@@ -117,7 +133,7 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
                     textureParams.MagFilter  = ( ( BitmapFontParameter )parameter ).MagFilter;
                 }
 
-                var descriptor = new AssetDescriptor( resolved, typeof(Texture), textureParams );
+                var descriptor = new AssetDescriptor( resolved, typeof( Texture ), textureParams );
                 deps.Add( descriptor );
             }
         }
@@ -152,7 +168,7 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
                                          IAssetLoaderParameters parameter )
     {
         if ( file == null ) throw new GdxRuntimeException( "LoadSync: 'file' cannot be null!" );
-        
+
         if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
         {
             var atlas = manager?.Get< TextureAtlas >( ( ( BitmapFontParameter )parameter ).AtlasName! );
@@ -178,7 +194,7 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 
         for ( var i = 0; i < n; i++ )
         {
-            regs.Add( new TextureRegion( manager?.Get<Texture>( _data.ImagePaths[ i ] )! ) );
+            regs.Add( new TextureRegion( manager?.Get< Texture >( _data.ImagePaths[ i ] )! ) );
         }
 
         return new BitmapFont( _data, regs, true );

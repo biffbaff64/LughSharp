@@ -2,6 +2,7 @@
 LIBGDX CSharp CONVERSION - ROUND 1
 ----------------------------------
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - STEP 1: Complete all conversions so that the code will build.
 - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
 -         Some classes can become structs / records instead.
@@ -9,19 +10,32 @@ LIBGDX CSharp CONVERSION - ROUND 1
 -         switch expressions instead of switch statements where appropriate.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - SORT OUT VERSIONING!!!
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - ADD A LICENCE - MIT / APACHE ???
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- IP   = Conversion In Progress.
+
+- IP = Conversion In Progress.
 - DONE = Class finished but may not be fully 'CSharp-ified'
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - PRIORITY is 2D classes first
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - Constantly look for opportunities to improve this code.
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ROOT
@@ -31,6 +45,7 @@ ROOT
 
 CORE
 ----
+
     - DONE - AbstractGraphics               Convert
     - DONE - AbstractInput                  Convert
     - DONE - ApplicationAdapter             Convert
@@ -58,6 +73,7 @@ CORE
 
 ASSETS
 ------
+
     - DONE - AssetDescriptor                Convert
     - DONE - AssetLoaderParameters          Convert
     - DONE - AssetLoadingTask               Convert
@@ -70,6 +86,7 @@ ASSETS
 
 ASSETS/LOADERS
 --------------
+
     - DONE - AssetLoader                    Convert
     - DONE - AsynchronousAssetLoader        Convert
     - DONE - BitmapFontLoader               Convert
@@ -91,6 +108,7 @@ ASSETS/LOADERS
 
 ASSETS/LOADERS/RESOLVERS
 ------------------------
+
     - DONE - AbsoluteFileHandleResolver
     - DONE - IFileHandleResolver
     - DONE - InternalFileHandleResolver
@@ -107,6 +125,7 @@ ASSETS/LOADERS/RESOLVERS
 
 AUDIO
 -----
+
     - DONE - IAudioDevice                   Convert
     - DONE - IAudioRecorder                 Convert
     - DONE - IMusic                         Convert
@@ -117,6 +136,7 @@ AUDIO
 
 FILES
 -----
+
     - java.io.BufferedReader                -> 
     - java.io.BufferedInputStream           -> 
     - java.io.ByteArrayOutputStream         -> 
@@ -158,6 +178,7 @@ FILES
 
 GRAPHICS
 --------
+
     - DONE - BufferFormat                       Convert - record class
     - DONE - Camera                             Convert
     - DONE - Color                              Convert
@@ -192,6 +213,7 @@ GRAPHICS
 
 GRAPHICS/G2D
 ------------
+
     - DONE - Animation                      Convert
     - DONE - AtlasRegion                    Convert
     - DONE - AtlasSprite                    Convert
@@ -200,7 +222,7 @@ GRAPHICS/G2D
     - DONE - CpuSpriteBatch                 Convert
     -      - DistanceFieldFont              Convert
     - DONE - Gdx2DPixmap                    Convert
-    -      - GlyphLayout                    Convert
+    - DONE - GlyphLayout                    Convert
     - DONE - IBatch                         Convert
     - DONE - IPolygonBatch                  Convert
     - DONE - NinePatch                      Convert
@@ -227,6 +249,7 @@ GRAPHICS/G2D
 
 GRAPHICS/G3D
 ------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -234,6 +257,7 @@ GRAPHICS/G3D
 
 GRAPHICS/GLUTILS
 ----------------
+
     - IP   - ETC1
     - IP   - ETC1TextureData
     -      - FacedCubemapData
@@ -280,6 +304,7 @@ GRAPHICS/GLUTILS
 
 GRAPHICS/PROFILING
 ------------------
+
     - IP   - GL20Interceptor
     - IP   - GL30Interceptor
     - DONE - GLInterceptor
@@ -291,6 +316,7 @@ GRAPHICS/PROFILING
 
 INPUT
 -----
+
     -      - GestureDetector
     -      - RemoteInput
     - DONE - RemoteSender       Needs rework for compatibility with system.io.sockets.
@@ -300,6 +326,7 @@ INPUT
 
 MAPS
 ----
+
     - DONE - IImageResolver                         Convert
     - DONE - IMapRenderer                           Convert
     - DONE - Map                                    Convert
@@ -315,6 +342,7 @@ MAPS
 
 MAPS/OBJECTS
 ------------
+
     - DONE - CircleMapObject                        Convert
     - DONE - EllipseMapObject                       Convert
     - DONE - PolygonMapObject                       Convert
@@ -327,6 +355,7 @@ MAPS/OBJECTS
 
 MAPS/TILED
 ----------
+
     - DONE - ITiledMapTile                          Convert
     - DONE - TiledMap                               Convert
     - DONE - TiledMapImageLayer                     Convert
@@ -339,6 +368,7 @@ MAPS/TILED
 
 MAPS/TILED/LOADERS
 ------------------
+
     - IP   - AtlasTmxMapLoader                      Convert
     - IP   - BaseTmxMapLoader                       Convert
     -      - TideMapLoader                          Q: Should I support Tide?
@@ -349,6 +379,7 @@ MAPS/TILED/LOADERS
 
 MAPS/TILED/OBJECTS
 ------------------
+
     - DONE - TiledMapTileMapObject                  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -356,6 +387,7 @@ MAPS/TILED/OBJECTS
 
 MAPS/TILED/RENDERERS
 --------------------
+
     - DONE - BatchTiledMapRenderer                  Convert
     - DONE - HexagonalTiledMapRenderer              Convert
     -      - IsometricStaggeredTiledMapRenderer     Convert
@@ -369,6 +401,7 @@ MAPS/TILED/RENDERERS
 
 MAPS/TILED/TILES
 ----------------
+
     - DONE - AnimatedTileMapTile                    Convert
     - DONE - StaticTiledMapTile                     Convert
 
@@ -377,6 +410,7 @@ MAPS/TILED/TILES
 
 MATH
 ----
+
     - DONE - Affine2
     - DONE - Bezier
     - DONE - Bresenham2
@@ -417,6 +451,7 @@ MATH
 
 MATH/COLLISION
 --------------
+
     - DONE - BoundingBox            Convert     Struct? / Record?
     - DONE - Ray                    Convert
     - DONE - Segment                Convert
@@ -448,6 +483,7 @@ NETWORK
 
 SCENES.SCENE2D
 --------------
+
     - DONE - Action                         Convert
     - DONE - Actor                          Convert
     - DONE - Event                          Convert
@@ -464,6 +500,7 @@ SCENES.SCENE2D
 
 SCENES.SCENE2D/ACTIONS
 ----------------------
+
     - DONE - Actions                        Convert
     - DONE - AddAction                      Convert
     - DONE - AddListenerAction              Convert
@@ -503,6 +540,7 @@ SCENES.SCENE2D/ACTIONS
 
 SCENES.SCENE2D/UI
 -----------------
+
     - IP   - Button                         Convert
     -      - ButtonGroup                    Convert
     - DONE - Cell                           Convert
@@ -543,6 +581,7 @@ SCENES.SCENE2D/UI
 
 SCENES.SCENE2D/UTILS
 --------------------
+
     -      - ActorGestureListener           Convert
     -      - ArraySelection                 Convert
     - DONE - BaseDrawable                   Convert
@@ -625,6 +664,7 @@ UTILS
 
 UTILS/ASYNC
 -----------
+
     - **** - AsyncExecutor                  Needed??
     - **** - AsyncResult                    Needed??
     - **** - IAsyncTask                     Needed??
@@ -635,6 +675,7 @@ UTILS/ASYNC
 
 UTILS/ATOMIC
 ------------
+
     - **** - AtomicInteger                  No
     - **** - AtomicQueue                    No
     - **** - AtomicReferenceArray           No
@@ -703,9 +744,10 @@ UTILS/COLLECTIONS
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                                            
+
 UTILS/COMPRESSION
 -----------------
+
     - **** - CRC
     - **** - IChecksum
     - **** - ICodeProgress
@@ -735,6 +777,7 @@ UTILS/COMPRESSION
 
 UTILS/EXCEPTIONS
 ----------------
+
     - DONE - AssetNotLoadedException        Convert
     - DONE - BufferOverflowException        Convert
     - DONE - BufferUnderflowException       Convert
@@ -749,6 +792,7 @@ UTILS/EXCEPTIONS
 
 UTILS/JSON
 ----------
+
     - **** - IBaseJsonReader
     - **** - Json
     - **** - JsonReader
@@ -765,6 +809,7 @@ UTILS/JSON
 
 UTILS/POOLING
 -------------
+
     - DONE - FlushablePool                  Convert
     - DONE - IPoolable                      Convert
     - DONE - Pool                           Convert
@@ -777,6 +822,7 @@ UTILS/POOLING
 
 UTILS/REFLECT
 -------------
+
     - **** - Annotation                     No
     - **** - ArrayReflection                No
     - **** - ClassReflection                No
@@ -808,6 +854,7 @@ UTILS/REGEX
 
 UTILS/VIEWPORT
 --------------
+
     - DONE - ExtendedViewport               Convert
     - DONE - FillViewport                   Convert
     - DONE - FitViewport                    Convert
@@ -821,6 +868,7 @@ UTILS/VIEWPORT
 
 UTILS/XML
 ---------
+
     - Use System.Xml?
 
     - **** - XmlReader
@@ -866,6 +914,7 @@ EXTENSIONS / BOX2D
 
 EXTENSIONS / BOX2D / GRAPHICS
 -----------------------------
+
     -      - ParticleEmitterBox2D
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -873,6 +922,7 @@ EXTENSIONS / BOX2D / GRAPHICS
 
 EXTENSIONS / BOX2D / JOINTS
 ---------------------------
+
     -      - DistanceJoint
     -      - DistanceJointDef
     -      - FictionJoint
@@ -901,6 +951,7 @@ EXTENSIONS / BOX2D / JOINTS
 
 EXTENSIONS/ TOOLS
 -----------------
+
     -      - FileProcessor
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -908,6 +959,7 @@ EXTENSIONS/ TOOLS
 
 EXTENSIONS / TOOLS / TILEDMAPPACKER
 -----------------------------------
+
     -      - TiledMapPacker
     -      - TiledMapPackerTest
     -      - TiledMapPackerTestRender
@@ -918,6 +970,7 @@ EXTENSIONS / TOOLS / TILEDMAPPACKER
 
 EXTENSIONS / TOOLS / TOOLS / BMFONT
 -----------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -925,6 +978,7 @@ EXTENSIONS / TOOLS / TOOLS / BMFONT
 
 EXTENSIONS / TOOLS / TOOLS / DISTANCEFIELD
 ------------------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -932,6 +986,7 @@ EXTENSIONS / TOOLS / TOOLS / DISTANCEFIELD
 
 EXTENSIONS / TOOLS / TOOLS / ETC1
 ---------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -939,6 +994,7 @@ EXTENSIONS / TOOLS / TOOLS / ETC1
 
 EXTENSIONS / TOOLS / TOOLS / FLAME
 ----------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -946,6 +1002,7 @@ EXTENSIONS / TOOLS / TOOLS / FLAME
 
 EXTENSIONS / TOOLS / TOOLS / HEADERS
 ------------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -953,6 +1010,7 @@ EXTENSIONS / TOOLS / TOOLS / HEADERS
 
 EXTENSIONS / TOOLS / TOOLS / HIERO
 ----------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -960,6 +1018,7 @@ EXTENSIONS / TOOLS / TOOLS / HIERO
 
 EXTENSIONS / TOOLS / TOOLS / IMAGEPACKER
 ----------------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -967,6 +1026,7 @@ EXTENSIONS / TOOLS / TOOLS / IMAGEPACKER
 
 EXTENSIONS / TOOLS / TOOLS / KTX
 --------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -974,6 +1034,7 @@ EXTENSIONS / TOOLS / TOOLS / KTX
 
 EXTENSIONS / TOOLS / TOOLS / PARTICLEEDITOR
 -------------------------------------------
+
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -981,6 +1042,7 @@ EXTENSIONS / TOOLS / TOOLS / PARTICLEEDITOR
 
 EXTENSIONS / TOOLS / TOOLS / TEXTUREPACKER
 ------------------------------------------
+
     -      - ColorBleedEffect
     -      - GridPacker
     -      - ImageProcessor

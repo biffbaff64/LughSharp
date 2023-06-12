@@ -1,4 +1,22 @@
-﻿using LibGDXSharp.G2D;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.G2D;
 using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Graphics;
@@ -8,9 +26,10 @@ namespace LibGDXSharp.Graphics;
 /// For example, the markup language defined by the <see cref="BitmapFontCache"/> class
 /// uses this class to retrieve colors and the user can define his own colors.
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Colors
 {
-    private readonly static Dictionary< string, Color > map = new Dictionary< string, Color >();
+    public static Dictionary< string, Color? > Map { get; set; } = new();
 
     static Colors()
     {
@@ -19,14 +38,6 @@ public class Colors
 
     private Colors()
     {
-    }
-
-    /// <summary>
-    /// Returns the Color map.
-    /// </summary>
-    public static Dictionary< string, Color > GetColors()
-    {
-        return map;
     }
 
     /// <summary>
@@ -39,9 +50,9 @@ public class Colors
     /// The Color to which the specified <code>name</code> is mapped,
     /// or <code>null</code> if no mapping was found.
     /// </returns>
-    public static Color Get( string name )
+    public static Color? Get( string name )
     {
-        return map[ name ];
+        return Map[ name ];
     }
 
     /// <summary>
@@ -57,7 +68,7 @@ public class Colors
     /// </returns>
     public static Color Put( string name, Color color )
     {
-        return map[ name ] = color;
+        return Map[ name ] = color;
     }
 
     /// <summary>
@@ -65,47 +76,47 @@ public class Colors
     /// </summary>
     public static void Reset()
     {
-        map.Clear();
-        map.Put( "CLEAR", Color.Clear );
-        map.Put( "BLACK", Color.Black );
+        Map.Clear();
+        Map.Put( "CLEAR", Color.Clear );
+        Map.Put( "BLACK", Color.Black );
 
-        map.Put( "WHITE", Color.White );
-        map.Put( "LIGHT_GRAY", Color.LightGray );
-        map.Put( "GRAY", Color.Gray );
-        map.Put( "DARK_GRAY", Color.DarkGray );
+        Map.Put( "WHITE", Color.White );
+        Map.Put( "LIGHT_GRAY", Color.LightGray );
+        Map.Put( "GRAY", Color.Gray );
+        Map.Put( "DARK_GRAY", Color.DarkGray );
 
-        map.Put( "BLUE", Color.Blue );
-        map.Put( "NAVY", Color.Navy );
-        map.Put( "ROYAL", Color.Royal );
-        map.Put( "SLATE", Color.Slate );
-        map.Put( "SKY", Color.Sky );
-        map.Put( "CYAN", Color.Cyan );
-        map.Put( "TEAL", Color.Teal );
+        Map.Put( "BLUE", Color.Blue );
+        Map.Put( "NAVY", Color.Navy );
+        Map.Put( "ROYAL", Color.Royal );
+        Map.Put( "SLATE", Color.Slate );
+        Map.Put( "SKY", Color.Sky );
+        Map.Put( "CYAN", Color.Cyan );
+        Map.Put( "TEAL", Color.Teal );
 
-        map.Put( "GREEN", Color.Green );
-        map.Put( "CHARTREUSE", Color.Chartreuse );
-        map.Put( "LIME", Color.Lime );
-        map.Put( "FOREST", Color.Forest );
-        map.Put( "OLIVE", Color.Olive );
+        Map.Put( "GREEN", Color.Green );
+        Map.Put( "CHARTREUSE", Color.Chartreuse );
+        Map.Put( "LIME", Color.Lime );
+        Map.Put( "FOREST", Color.Forest );
+        Map.Put( "OLIVE", Color.Olive );
 
-        map.Put( "YELLOW", Color.Yellow );
-        map.Put( "GOLD", Color.Gold );
-        map.Put( "GOLDENROD", Color.Goldenrod );
-        map.Put( "ORANGE", Color.Orange );
+        Map.Put( "YELLOW", Color.Yellow );
+        Map.Put( "GOLD", Color.Gold );
+        Map.Put( "GOLDENROD", Color.Goldenrod );
+        Map.Put( "ORANGE", Color.Orange );
 
-        map.Put( "BROWN", Color.Brown );
-        map.Put( "TAN", Color.Tan );
-        map.Put( "FIREBRICK", Color.Firebrick );
+        Map.Put( "BROWN", Color.Brown );
+        Map.Put( "TAN", Color.Tan );
+        Map.Put( "FIREBRICK", Color.Firebrick );
 
-        map.Put( "RED", Color.Red );
-        map.Put( "SCARLET", Color.Scarlet );
-        map.Put( "CORAL", Color.Coral );
-        map.Put( "SALMON", Color.Salmon );
-        map.Put( "PINK", Color.Pink );
-        map.Put( "MAGENTA", Color.Magenta );
+        Map.Put( "RED", Color.Red );
+        Map.Put( "SCARLET", Color.Scarlet );
+        Map.Put( "CORAL", Color.Coral );
+        Map.Put( "SALMON", Color.Salmon );
+        Map.Put( "PINK", Color.Pink );
+        Map.Put( "MAGENTA", Color.Magenta );
 
-        map.Put( "PURPLE", Color.Purple );
-        map.Put( "VIOLET", Color.Violet );
-        map.Put( "MAROON", Color.Maroon );
+        Map.Put( "PURPLE", Color.Purple );
+        Map.Put( "VIOLET", Color.Violet );
+        Map.Put( "MAROON", Color.Maroon );
     }
 }

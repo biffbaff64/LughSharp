@@ -1,4 +1,20 @@
-﻿namespace LibGDXSharp.Files;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+namespace LibGDXSharp.Files;
 
 /**
  * A long buffer.
@@ -69,8 +85,8 @@ public abstract class LongBuffer : LibGDXSharp.Files.Buffer, IComparable< LongBu
     // Field '_hb' is non-null only for heap buffers.
     // Field '_isReadOnly' is valid only for heap buffers.
     private readonly long[]? _hb;
-    private readonly int    _offset;
-    private          bool   _isReadOnly;
+    private readonly int     _offset;
+    private          bool    _isReadOnly;
 
     /// <summary>
     /// Creates a new buffer with the given mark, position, limit, capacity,

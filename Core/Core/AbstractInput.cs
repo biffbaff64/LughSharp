@@ -1,4 +1,20 @@
-﻿namespace LibGDXSharp.Core;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+namespace LibGDXSharp.Core;
 
 public abstract class AbstractInput : IInput
 {
@@ -7,7 +23,7 @@ public abstract class AbstractInput : IInput
     protected int    PressedKeyCount { get; set; }
     protected bool   KeyJustPressed  { get; set; }
 
-    private readonly List<int> _keysToCatch;
+    private readonly List< int > _keysToCatch;
 
     /// <summary>
     /// 
@@ -17,7 +33,7 @@ public abstract class AbstractInput : IInput
         PressedKeys     = new bool[ IInput.Keys.MaxKeycode + 1 ];
         JustPressedKeys = new bool[ IInput.Keys.MaxKeycode + 1 ];
 
-        _keysToCatch = new List<int>();
+        _keysToCatch = new List< int >();
     }
 
     /// <summary>
@@ -173,7 +189,11 @@ public abstract class AbstractInput : IInput
 
     public abstract void GetTextInput( IInput.ITextInputListener listener, string title, string text, string hint );
 
-    public abstract void GetTextInput( IInput.ITextInputListener listener, string title, string text, string hint, IInput.OnscreenKeyboardType type );
+    public abstract void GetTextInput( IInput.ITextInputListener listener,
+                                       string title,
+                                       string text,
+                                       string hint,
+                                       IInput.OnscreenKeyboardType type );
 
     public abstract void SetOnscreenKeyboardVisible( bool visible );
 

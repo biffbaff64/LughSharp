@@ -1,4 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.G2D;
 
@@ -12,7 +28,8 @@ namespace LibGDXSharp.Assets.Loaders;
 /// y-axis or not.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >
+public sealed class
+    TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >
 {
     private TextureAtlasData? _data;
 
@@ -37,7 +54,7 @@ public sealed class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, T
         {
             throw new GdxRuntimeException( "TextureAtlasData object is NULL!" );
         }
-        
+
         foreach ( TextureAtlasData.Page page in _data.Pages )
         {
             if ( page.textureFile != null )
@@ -57,18 +74,18 @@ public sealed class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, T
     }
 
     public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                    FileInfo? atlasFile,
-                                                    IAssetLoaderParameters? parameter )
+                                                             FileInfo? atlasFile,
+                                                             IAssetLoaderParameters? parameter )
     {
         if ( atlasFile == null )
         {
             throw new GdxRuntimeException( "Atlas File cannot be null!" );
         }
-        
+
         DirectoryInfo? imgDir = atlasFile.Directory;
 
         _data = parameter != null
-            ? new TextureAtlasData( atlasFile, imgDir, ( (TextureAtlasParameter)parameter ).FlipVertically )
+            ? new TextureAtlasData( atlasFile, imgDir, ( ( TextureAtlasParameter )parameter ).FlipVertically )
             : new TextureAtlasData( atlasFile, imgDir, false );
 
         var dependencies = new List< AssetDescriptor >();
@@ -85,7 +102,7 @@ public sealed class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, T
 
             if ( page.textureFile != null )
             {
-                dependencies.Add( new AssetDescriptor( page.textureFile, typeof(Texture), tparams ) );
+                dependencies.Add( new AssetDescriptor( page.textureFile, typeof( Texture ), tparams ) );
             }
         }
 

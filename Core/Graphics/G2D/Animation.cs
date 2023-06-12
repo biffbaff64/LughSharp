@@ -1,4 +1,20 @@
-﻿using LibGDXSharp.Maths;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.G2D;
 
@@ -22,7 +38,7 @@ public class Animation<T>
     /// See <see cref="SetKeyFrames(T[])"/>.
     /// </summary>
     private T[] _keyFrames = null!;
-    
+
     private float _frameDuration;
     private float _animationDuration;
     private int   _lastFrameNumber;
@@ -37,10 +53,10 @@ public class Animation<T>
     /// If this Array is type-aware, <see cref="GetKeyFrames()"/> can return the
     /// correct type of array. Otherwise, it returns an object[].
     /// </param>
-    public Animation( float frameDuration, List<T> keyFrames)
+    public Animation( float frameDuration, List< T > keyFrames )
     {
         this._frameDuration = frameDuration;
-        
+
         SetKeyFrames( keyFrames.ToArray() );
     }
 
@@ -54,7 +70,7 @@ public class Animation<T>
     /// Otherwise, it returns an object[].
     /// </param>
     /// <param name="playMode"></param>
-    public Animation( float frameDuration, List<T> keyFrames, AnimMode playMode)
+    public Animation( float frameDuration, List< T > keyFrames, AnimMode playMode )
         : this( frameDuration, keyFrames )
     {
         PlayMode = playMode;
@@ -161,7 +177,7 @@ public class Animation<T>
 
             case AnimMode.Loop_Reversed:
                 frameNumber %= _keyFrames.Length;
-                frameNumber = _keyFrames.Length - frameNumber - 1;
+                frameNumber =  _keyFrames.Length - frameNumber - 1;
 
                 break;
         }

@@ -1,4 +1,20 @@
-﻿namespace LibGDXSharp.Audio;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+namespace LibGDXSharp.Audio;
 
 /// <summary>
 /// Encapsulates an audio device in mono or stereo mode. Use the
@@ -23,7 +39,7 @@ public interface IAudioDevice
     /// <param name="samples">The samples.</param>
     /// <param name="offset">The offset into the samples array.</param>
     /// <param name="numSamples">The number of samples to write to the device.</param>
-    void WriteSamples(int[] samples, int offset, int numSamples);
+    void WriteSamples( int[] samples, int offset, int numSamples );
 
     /// <summary>
     /// Writes the array of float PCM samples to the audio device and
@@ -32,7 +48,7 @@ public interface IAudioDevice
     /// <param name="samples">The samples.</param>
     /// <param name="offset">The offset into the samples array.</param>
     /// <param name="numSamples">The number of samples to write to the device.</param>
-    void WriteSample(float[] samples, int offset, int numSamples);
+    void WriteSample( float[] samples, int offset, int numSamples );
 
     /// <summary>
     /// </summary>
@@ -42,7 +58,7 @@ public interface IAudioDevice
     /// <summary>
     /// Sets the volume in the range [0,1].
     /// </summary>
-    void SetVolume(float volume);
+    void SetVolume( float volume );
 
     /// <summary>
     /// Frees all resources associated with this AudioDevice.

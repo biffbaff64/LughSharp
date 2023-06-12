@@ -1,4 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 using LibGDXSharp.G2D;
@@ -176,7 +192,7 @@ public class Label : Widget
 
         if ( Wrap && ( _ellipsis == null ) )
         {
-            float width = Width;
+            var width = Width;
 
             if ( _style.Background != null )
             {
@@ -185,11 +201,11 @@ public class Label : Widget
                         - _style.Background.RightWidth;
             }
 
-            _prefSizeLayout.SetText( FontCache.GetFont(), Text, Color.White, width, Align.Left, true );
+            _prefSizeLayout.SetText( FontCache.GetFont(), Text.ToString(), Color.White, width, Align.Left, true );
         }
         else
         {
-            _prefSizeLayout.SetText( FontCache.GetFont(), Text );
+            _prefSizeLayout.SetText( FontCache.GetFont(), Text.ToString() );
         }
 
         _prefSize.Set( _prefSizeLayout.Width, _prefSizeLayout.Height );
@@ -199,16 +215,16 @@ public class Label : Widget
     {
         BitmapFont font = FontCache.GetFont();
 
-        float oldScaleX = font.GetScaleX();
-        float oldScaleY = font.GetScaleY();
+        var oldScaleX = font.GetScaleX();
+        var oldScaleY = font.GetScaleY();
 
         if ( _fontScaleChanged ) font.GetData().SetScale( _fontScaleX, _fontScaleY );
 
-        bool wrap = this.Wrap && ( _ellipsis == null );
+        var wrap = this.Wrap && ( _ellipsis == null );
 
         if ( wrap )
         {
-            float prefHeight = getPrefHeight();
+            var prefHeight = getPrefHeight();
 
             if ( !prefHeight.Equals( _lastPrefHeight ) )
             {
@@ -217,8 +233,8 @@ public class Label : Widget
             }
         }
 
-        float      width      = Width;
-        float      height     = Height;
+        var        width      = Width;
+        var        height     = Height;
         IDrawable? background = _style.Background;
         float      x          = 0;
         float      y          = 0;
@@ -236,8 +252,9 @@ public class Label : Widget
 
         if ( wrap || ( Text.ToString().IndexOf( "\n", StringComparison.Ordinal ) != -1 ) )
         {
-            // If the text can span multiple lines, determine the text's actual size so it can be aligned within the label.
-            layout.SetText( font, text, 0, text.length, Color.WHITE, width, lineAlign, wrap, ellipsis );
+            // If the text can span multiple lines, determine the text's actual
+            // size so it can be aligned within the label.
+            layout.SetText( font, Text.ToString(), 0, Text.Length, Color.White, width, LineAlign, wrap, _ellipsis );
 
             textWidth  = layout.Width;
             textHeight = layout.Height;
@@ -260,45 +277,50 @@ public class Label : Widget
             textHeight = font.GetData().CapHeight;
         }
 
-        if ( ( labelAlign & Align.top ) != 0 )
+        if ( ( LabelAlign & Align.Top ) != 0 )
         {
-            y += cache.getFont().isFlipped() ? 0 : height - textHeight;
-            y += style.font.getDescent();
+            y += FontCache.GetFont().IsFlipped() ? 0 : height - textHeight;
+            y += Style.Font.GetDescent();
         }
-        else if ( ( labelAlign & Align.bottom ) != 0 )
+        else if ( ( LabelAlign & Align.Bottom ) != 0 )
         {
-            y += cache.getFont().isFlipped() ? height - textHeight : 0;
-            y -= style.font.getDescent();
+            y += FontCache.GetFont().IsFlipped() ? height - textHeight : 0;
+            y -= Style.Font.GetDescent();
         }
         else
         {
             y += ( height - textHeight ) / 2;
         }
 
-        if ( !cache.getFont().isFlipped() ) y += textHeight;
-
-        layout.setText( font, text, 0, text.length, Color.WHITE, textWidth, lineAlign, wrap, ellipsis );
-        cache.setText( layout, x, y );
-
-        if ( fontScaleChanged ) font.getData().setScale( oldScaleX, oldScaleY );
-    }
-
-    public void draw( Batch batch, float parentAlpha )
-    {
-        validate();
-        Color color = tempColor.set( getColor() );
-        color.a *= parentAlpha;
-
-        if ( style.background != null )
+        if ( !FontCache.GetFont().IsFlipped() )
         {
-            batch.setColor( color.r, color.g, color.b, color.a );
-            style.background.draw( batch, getX(), getY(), getWidth(), getHeight() );
+            y += textHeight;
         }
 
-        if ( style.fontColor != null ) color.mul( style.fontColor );
-        cache.tint( color );
-        cache.setPosition( getX(), getY() );
-        cache.draw( batch );
+        layout.SetText( font, Text.ToString(), 0, Text.Length, Color.White, textWidth, LineAlign, wrap, _ellipsis );
+        FontCache.SetText( layout, x, y );
+
+        if ( _fontScaleChanged ) font.GetData().SetScale( oldScaleX, oldScaleY );
+    }
+
+    public new void Draw( IBatch batch, float parentAlpha )
+    {
+        Validate();
+        
+        Color color = _tempColor.Set( Color! );
+        color.A *= parentAlpha;
+
+        if ( Style.Background != null )
+        {
+            batch.SetColor( color.R, color.G, color.B, color.A );
+            Style.Background.Draw( batch, X, Y, Width, Height );
+        }
+
+        if ( Style.FontColor != null ) color.Mul( Style.FontColor );
+        
+        FontCache.Tint( color );
+        FontCache.SetPosition( X, Y );
+        FontCache.Draw( batch );
     }
 
     public float getPrefWidth()
@@ -320,7 +342,7 @@ public class Label : Widget
         if ( prefSizeInvalid ) ScaleAndComputePrefSize();
         float descentScaleCorrection = 1;
         if ( fontScaleChanged ) descentScaleCorrection = fontScaleY / style.font.getScaleY();
-        float    height = prefSize.y - style.font.getDescent() * descentScaleCorrection * 2;
+        var      height = prefSize.y - style.font.getDescent() * descentScaleCorrection * 2;
         Drawable background = style.background;
 
         if ( background != null )
@@ -339,42 +361,48 @@ public class Label : Widget
     /// If false, the text will only wrap where it contains newlines (\n). The preferred
     /// size of the label will be the text bounds.
     /// <para>
-	/// If true, the text will word wrap using the width of the label. The preferred width
-	/// of the label will be 0, it is expected that something external will set the width
-	/// of the label. Wrapping will not occur when ellipsis is enabled.
+    /// If true, the text will word wrap using the width of the label. The preferred width
+    /// of the label will be 0, it is expected that something external will set the width
+    /// of the label. Wrapping will not occur when ellipsis is enabled.
     /// </para>
     /// <para>
-	/// Default is false.
+    /// Default is false.
     /// </para>
-	/// <para>
-	/// When wrap is enabled, the label's preferred height depends on the width of the
-	/// label. In some cases the parent of the label will need to layout twice: once to
-	/// set the width of the label and a second time to adjust to the label's new preferred
-	/// height.
-	/// </para>
-	/// </summary>
+    /// <para>
+    /// When wrap is enabled, the label's preferred height depends on the width of the
+    /// label. In some cases the parent of the label will need to layout twice: once to
+    /// set the width of the label and a second time to adjust to the label's new preferred
+    /// height.
+    /// </para>
+    /// </summary>
     public bool Wrap
     {
         get => _wrap;
         set
         {
             _wrap = value;
-            
+
             InvalidateHierarchy();
         }
     }
 
-    /** @param alignment Aligns all the text within the label (default left center) and each line of text horizontally (default
-	 *           left).
-	 * @see Align */
+    /// <summary>
+    /// </summary>
+    /// <param name="alignment">
+    /// Aligns all the text within the label (default left center) and each line
+    /// of text horizontally (default is left).
+    /// </param>
+    /// <see cref="Align"/>
     public void SetAlignment( int alignment )
     {
         SetAlignment( alignment, alignment );
     }
 
-    /** @param labelAlign Aligns all the text within the label (default left center).
-	 * @param lineAlign Aligns each line of text horizontally (default left).
-	 * @see Align */
+    /// <summary>
+    /// <param name="labelAlign"> Aligns all the text within the label (default left center). </param>
+    /// <param name="lineAlign"> Aligns each line of text horizontally (default left). </param>
+    /// See also <see cref="Align "/>
+    /// </summary>
     public void SetAlignment( int labelAlign, int lineAlign )
     {
         this.LabelAlign = labelAlign;
@@ -422,15 +450,21 @@ public class Label : Widget
         set => SetFontScale( FontScaleX, value );
     }
 
-    /** When non-null the text will be truncated "..." if it does not fit within the width of the label. Wrapping will not occur
-	 * when ellipsis is enabled. Default is false. */
+    /// <summary>
+    /// When non-null the text will be truncated "..." if it does not fit within
+    /// the width of the label. Wrapping will not occur when ellipsis is enabled.
+    /// Default is false.
+    /// </summary>
     public void SetEllipsis( string? ellipsis )
     {
         this._ellipsis = ellipsis;
     }
 
-    /** When true the text will be truncated "..." if it does not fit within the width of the label. Wrapping will not occur when
-	 * ellipsis is true. Default is false. */
+    /// <summary>
+    /// When true the text will be truncated "..." if it does not fit within the
+    /// width of the label. Wrapping will not occur when ellipsis is true. Default
+    /// is false.
+    /// </summary>
     public void SetEllipsis( bool ellipsis )
     {
         this._ellipsis = ellipsis ? "..." : null;
@@ -438,12 +472,12 @@ public class Label : Widget
 
     public new string ToString()
     {
-        string? name = Name;
+        var name = Name;
 
         if ( name != null ) return name;
 
-        string className = GetType().Name;
-        int    dotIndex  = className.LastIndexOf( '.' );
+        var className = GetType().Name;
+        var dotIndex  = className.LastIndexOf( '.' );
 
         if ( dotIndex != -1 ) className = className.Substring( dotIndex + 1 );
 

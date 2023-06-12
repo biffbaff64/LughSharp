@@ -1,4 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 using LibGDXSharp.Utils.Collections.Extensions;
@@ -1084,6 +1100,7 @@ public sealed partial class BitmapFont
             {
                 // Compensate for whitespace stripped from left and top edges.
                 offsetX = ( int )atlasRegion.OffsetX;
+
                 offsetY = ( int )( atlasRegion.OriginalHeight
                                    - atlasRegion.PackedHeight
                                    - atlasRegion.OffsetY );
@@ -1244,7 +1261,7 @@ public sealed partial class BitmapFont
         /// The glyph immediately before this run, or null if this is run is the
         /// first on a line of text.
         /// </param>
-        public void GetGlyphs( GlyphLayout.GlyphRun run, string str, int start, int end, Glyph lastGlyph )
+        public void GetGlyphs( GlyphLayout.GlyphRun run, string str, int start, int end, Glyph? lastGlyph )
         {
             var max = end - start;
 
@@ -1354,7 +1371,7 @@ public sealed partial class BitmapFont
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        public static bool IsWhitespace( char c )
+        public bool IsWhitespace( char c )
         {
             switch ( c )
             {

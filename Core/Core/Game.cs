@@ -1,4 +1,20 @@
-﻿namespace LibGDXSharp.Core;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+namespace LibGDXSharp.Core;
 
 /// <summary>
 /// An ApplicationListener that delegates to a Screen. This allows an application
@@ -9,7 +25,7 @@
 public abstract class Game : IApplicationListener
 {
     private IScreen? _screen;
-        
+
     /// <summary>
     /// Sets the current screen. Screen.hide() is called on any old screen,
     /// and Screen.show() is called on the new screen, if any.
@@ -22,8 +38,8 @@ public abstract class Game : IApplicationListener
             _screen?.Hide();
 
             _screen = value;
-                
-            if (_screen != null)
+
+            if ( _screen != null )
             {
                 _screen.Show();
 

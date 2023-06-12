@@ -1,4 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ///////////////////////////////////////////////////////////////////////////////
+
+using System.Diagnostics.CodeAnalysis;
 
 namespace LibGDXSharp.Assets.Loaders;
 
@@ -20,7 +36,8 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class ShaderProgramLoader : AsynchronousAssetLoader< ShaderProgram, ShaderProgramLoader.ShaderProgramParameter >
+public sealed class
+    ShaderProgramLoader : AsynchronousAssetLoader< ShaderProgram, ShaderProgramLoader.ShaderProgramParameter >
 {
     private readonly string _vertexFileSuffix   = ".vert";
     private readonly string _fragmentFileSuffix = ".frag";
@@ -37,37 +54,39 @@ public sealed class ShaderProgramLoader : AsynchronousAssetLoader< ShaderProgram
     }
 
     public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                     FileInfo? file,
-                                                     IAssetLoaderParameters parameter )
+                                                             FileInfo? file,
+                                                             IAssetLoaderParameters parameter )
     {
         return null!;
     }
 
-    public override void LoadAsync( AssetManager? manager, string? fileName,
-                                    FileInfo? file, IAssetLoaderParameters parameter )
+    public override void LoadAsync( AssetManager? manager,
+                                    string? fileName,
+                                    FileInfo? file,
+                                    IAssetLoaderParameters parameter )
     {
     }
 
     public override ShaderProgram LoadSync( AssetManager? manager,
-                                   string? fileName,
-                                   FileInfo? file,
-                                   IAssetLoaderParameters? parameter )
+                                            string? fileName,
+                                            FileInfo? file,
+                                            IAssetLoaderParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( fileName );
-        
+
         string? vertFileName = null;
         string? fragFileName = null;
 
         if ( parameter != null )
         {
-            if ( !string.ReferenceEquals( ((ShaderProgramParameter)parameter).VertexFile, null ) )
+            if ( !string.ReferenceEquals( ( ( ShaderProgramParameter )parameter ).VertexFile, null ) )
             {
-                vertFileName = ((ShaderProgramParameter)parameter).VertexFile;
+                vertFileName = ( ( ShaderProgramParameter )parameter ).VertexFile;
             }
 
-            if ( !string.ReferenceEquals( ((ShaderProgramParameter)parameter).FragmentFile, null ) )
+            if ( !string.ReferenceEquals( ( ( ShaderProgramParameter )parameter ).FragmentFile, null ) )
             {
-                fragFileName = ((ShaderProgramParameter)parameter).FragmentFile;
+                fragFileName = ( ( ShaderProgramParameter )parameter ).FragmentFile;
             }
         }
 
@@ -91,20 +110,21 @@ public sealed class ShaderProgramLoader : AsynchronousAssetLoader< ShaderProgram
 
         if ( parameter != null )
         {
-            if ( !string.ReferenceEquals( ((ShaderProgramParameter)parameter).PrependVertexCode, null ) )
+            if ( !string.ReferenceEquals( ( ( ShaderProgramParameter )parameter ).PrependVertexCode, null ) )
             {
-                vertexCode = ((ShaderProgramParameter)parameter).PrependVertexCode + vertexCode;
+                vertexCode = ( ( ShaderProgramParameter )parameter ).PrependVertexCode + vertexCode;
             }
 
-            if ( !string.ReferenceEquals( ((ShaderProgramParameter)parameter).PrependFragmentCode, null ) )
+            if ( !string.ReferenceEquals( ( ( ShaderProgramParameter )parameter ).PrependFragmentCode, null ) )
             {
-                fragmentCode = ((ShaderProgramParameter)parameter).PrependFragmentCode + fragmentCode;
+                fragmentCode = ( ( ShaderProgramParameter )parameter ).PrependFragmentCode + fragmentCode;
             }
         }
 
         var shaderProgram = new ShaderProgram( vertexCode, fragmentCode );
 
-        if ( ( ( parameter == null ) || ((ShaderProgramParameter)parameter).LogOnCompileFailure ) && !shaderProgram.IsCompiled )
+        if ( ( ( parameter == null ) || ( ( ShaderProgramParameter )parameter ).LogOnCompileFailure )
+             && !shaderProgram.IsCompiled )
         {
             manager?.Log.Error( "ShaderProgram " + fileName + " failed to compile:\n" + shaderProgram.Log );
         }
@@ -119,22 +139,26 @@ public sealed class ShaderProgramLoader : AsynchronousAssetLoader< ShaderProgram
         /// by the file name used to submit this asset to AssetManager. 
         /// </summary>
         public string? VertexFile { get; set; }
+
         /// <summary>
         /// File name to be used for the fragment program instead of the default
         /// determined by the file name used to submit this asset to AssetManager. 
         /// </summary>
         public string? FragmentFile { get; set; }
+
         /// <summary>
         /// Whether to log (at the error level) the shader's log if it fails to
         /// compile. Default true.
         /// </summary>
         public bool LogOnCompileFailure { get; set; } = true;
+
         /// <summary>
         /// Code that is always added to the vertex shader code. This is added as-is,
         /// and you should include a newline (`\n`) if needed.
         /// <see cref="ShaderProgram.PrependVertexCode"/> is placed before this code. 
         /// </summary>
         public string? PrependVertexCode { get; set; }
+
         /// <summary>
         /// Code that is always added to the fragment shader code. This is added as-is,
         /// and you should include a newline (`\n`) if needed.
