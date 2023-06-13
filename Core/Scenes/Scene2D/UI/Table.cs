@@ -14,18 +14,19 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
+
+using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Scenes.Scene2D.Utils;
-using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Table : WidgetGroup
 {
     public enum DebugType
@@ -47,9 +48,9 @@ public class Table : WidgetGroup
 
     // ------------------------------------------------------------------------
 
-    public readonly static Color DebugTableColor = new(0, 0, 1, 1);
-    public readonly static Color DebugCellColor  = new(1, 0, 0, 1);
-    public readonly static Color DebugActorColor = new(0, 1, 0, 1);
+    public readonly static Color DebugTableColor = new( 0, 0, 1, 1 );
+    public readonly static Color DebugCellColor  = new( 1, 0, 0, 1 );
+    public readonly static Color DebugActorColor = new( 0, 1, 0, 1 );
 
     // ------------------------------------------------------------------------
 
@@ -65,21 +66,21 @@ public class Table : WidgetGroup
     private static float[]? _columnWeightedWidth;
     private static float[]? _rowWeightedHeight;
 
-    private readonly List< Cell > _cells = new(4);
+    private readonly List< Cell > _cells = new( 4 );
     private readonly Cell         _cellDefaults;
-    private readonly List< Cell > _columnDefaults = new(2);
+    private readonly List< Cell > _columnDefaults = new( 2 );
 
     private Cell?   _rowDefaults;
-    private bool    _implicitEndRow  = false;
-    private bool    _sizeInvalid     = true;
-    private float[] _columnMinWidth  = null!;
-    private float[] _rowMinHeight    = null!;
-    private float[] _columnPrefWidth = null!;
-    private float[] _rowPrefHeight   = null!;
-    private float[] _columnWidth     = null!;
-    private float[] _rowHeight       = null!;
-    private float[] _expandWidth     = null!;
-    private float[] _expandHeight    = null!;
+    private bool    _implicitEndRow = false;
+    private bool    _sizeInvalid    = true;
+    private float[] _columnMinWidth;
+    private float[] _rowMinHeight;
+    private float[] _columnPrefWidth;
+    private float[] _rowPrefHeight;
+    private float[] _columnWidth;
+    private float[] _rowHeight;
+    private float[] _expandWidth;
+    private float[] _expandHeight;
     private float   _tableMinWidth;
     private float   _tableMinHeight;
     private float   _tablePrefWidth;
@@ -95,7 +96,6 @@ public class Table : WidgetGroup
 
     private IDrawable? _background;
     private bool       _clip;
-    private bool       _round = true;
 
     protected Table() : this( null )
     {
@@ -140,10 +140,10 @@ public class Table : WidgetGroup
 
                 if ( ClipBegin
                         (
-                         padLeft,
-                         padBottom,
-                         Width - padLeft - _padRight.Get( this ),
-                         Height - padBottom - _padTop.Get( this )
+                        padLeft,
+                        padBottom,
+                        Width - padLeft - _padRight.Get( this ),
+                        Height - padBottom - _padTop.Get( this )
                         )
                    )
                 {
@@ -279,6 +279,14 @@ public class Table : WidgetGroup
     }
 
     /// <summary>
+    /// Adds a cell without an actor.
+    /// </summary>
+    public Cell AddWithoutActor()
+    {
+        return Add<Actor>( null! );
+    }
+
+    /// <summary>
     /// Adds a new cell to the table with the specified actor.
     /// </summary>
     public Cell Add<T>( T? actor ) where T : Actor
@@ -384,7 +392,7 @@ public class Table : WidgetGroup
     {
         if ( Skin == null ) throw new IllegalStateException( "Table must have a skin set to use this method." );
 
-        return Add( new Label( text, Skin.Get( labelStyleName, typeof(Label.LabelStyle) ) ) );
+        return Add( new Label( text, Skin.Get<Label.LabelStyle>( labelStyleName ) );
     }
 
     /// <summary>
@@ -410,14 +418,6 @@ public class Table : WidgetGroup
     }
 
     /// <summary>
-    /// Adds a cell without an actor.
-    /// </summary>
-    public Cell AddWithoutActor()
-    {
-        return Add( ( Actor )null );
-    }
-
-    /// <summary>
     /// Adds a new cell to the table with the specified actors in a <see cref="Stack"/>.
     /// </summary>
     /// <param name="actors"> May be null or empty to add a stack without any actors. </param>
@@ -436,18 +436,11 @@ public class Table : WidgetGroup
         return Add( stack );
     }
 
-    public bool RemoveActor( Actor actor )
-    {
-        return RemoveActor( actor, true );
-    }
-
-    public bool RemoveActor( Actor actor, bool unfocus )
+    public new bool RemoveActor( Actor actor, bool unfocus = true )
     {
         if ( !base.RemoveActor( actor, unfocus ) ) return false;
 
-        Cell cell = GetCell( actor );
-
-        if ( cell != null ) cell.Actor = null;
+        if ( GetCell( actor ) != null ) GetCell( actor )!.Actor = null;
 
         return true;
     }
@@ -456,7 +449,7 @@ public class Table : WidgetGroup
     {
         Actor actor = base.RemoveActorAt( index, unfocus );
 
-        GetCell( actor ).Actor = null;
+        GetCell( actor )!.Actor = null;
 
         return actor;
     }
@@ -488,107 +481,134 @@ public class Table : WidgetGroup
         base.ClearChildren();
     }
 
-    /** Removes all actors and cells from the table (same as {@link #clearChildren()}) and additionally resets all table properties
-	 * and cell, column, and row defaults. */
+    /// <summary>
+    /// Removes all actors and cells from the table (same as <see cref="ClearChildren"/>)
+    /// and additionally resets all table properties and cell, column, and row defaults.
+    /// </summary>
     public void Reset()
     {
         ClearChildren();
-        padTop    = backgroundTop;
-        padLeft   = backgroundLeft;
-        padBottom = backgroundBottom;
-        padRight  = backgroundRight;
-        Align     = LibGDXSharp.Utils.Align.center;
-        Debug( DebugType.none );
-        cellDefaults.reset();
 
-        for ( int i = 0, n = ColumnDefaults.size; i < n; i++ )
+        _padTop    = backgroundTop;
+        _padLeft   = backgroundLeft;
+        _padBottom = backgroundBottom;
+        _padRight  = backgroundRight;
+
+        _alignment = LibGDXSharp.Utils.Align.Center;
+
+        Debug( DebugType.None );
+
+        _cellDefaults.Reset();
+
+        for ( int i = 0, n = _columnDefaults.Count; i < n; i++ )
         {
-            Cell columnCell = ColumnDefaults.get( i );
-            if ( columnCell != null ) cellPool.free( columnCell );
+            if ( _columnDefaults?[ i ] != null ) CellPool.Free( _columnDefaults[ i ] );
         }
 
-        ColumnDefaults.clear();
+        _columnDefaults?.Clear();
     }
 
-    /** Indicates that subsequent cells should be added to a new row and returns the cell values that will be used as the defaults
-	 * for all cells in the new row. */
-    public Cell AddRow()
+    /// <summary>
+    /// Indicates that subsequent cells should be added to a new row and returns the
+    /// cell values that will be used as the defaults for all cells in the new row.
+    /// </summary>
+    public Cell? AddRow()
     {
-        if ( cells.size > 0 )
+        if ( _cells.Count > 0 )
         {
-            if ( !implicitEndRow )
+            if ( !_implicitEndRow )
             {
-                if ( cells.peek().endRow ) return rowDefaults; // Row was already ended.
+                if ( _cells.Peek().EndRow )
+                {
+                    // Row was already ended.
+                    return _rowDefaults;
+                }
+                
                 EndRow();
             }
 
-            invalidate();
+            Invalidate();
         }
 
-        implicitEndRow = false;
-        if ( rowDefaults != null ) cellPool.free( rowDefaults );
-        rowDefaults = obtainCell();
-        rowDefaults.clear();
+        _implicitEndRow = false;
+ 
+        if ( _rowDefaults != null ) CellPool.Free( _rowDefaults );
+        
+        _rowDefaults = ObtainCell();
+        _rowDefaults.Clear();
 
-        return rowDefaults;
+        return _rowDefaults;
     }
 
     private void EndRow()
     {
-        object[] cells      = this.cells.items;
+        Cell[] cells      = this._cells.ToArray();
         var      rowColumns = 0;
 
-        for ( var i = this.cells.size - 1; i >= 0; i-- )
+        for ( var i = this._cells.Count - 1; i >= 0; i-- )
         {
-            var cell = ( Cell )cells[ i ];
+            Cell cell = cells[ i ];
 
-            if ( cell.endRow ) break;
-            rowColumns += cell.colspan;
+            if ( cell.EndRow ) break;
+
+            rowColumns += cell.Colspan;
         }
 
         Columns = Math.Max( Columns, rowColumns );
-        rows++;
-        this.cells.peek().endRow = true;
+        
+        Rows++;
+        
+        this._cells.Peek().EndRow = true;
     }
 
-    /** Gets the cell values that will be used as the defaults for all cells in the specified column. Columns are indexed starting
-	 * at 0. */
+    /// <summary>
+    /// Gets the cell values that will be used as the defaults for all cells in the
+    /// specified column. Columns are indexed starting at 0.
+    /// </summary>
+    /// <param name="column"></param>
     public Cell ColumnDefaults( int column )
     {
-        Cell cell = ColumnDefaults.size > column ? ColumnDefaults.get( column ) : null;
+        Cell? cell = _columnDefaults.Count > column ? _columnDefaults[ column ] : null;
 
         if ( cell == null )
         {
-            cell = obtainCell();
-            cell.clear();
+            cell = ObtainCell();
+            cell.Clear();
 
-            if ( column >= ColumnDefaults.size )
+            if ( column >= _columnDefaults.Count )
             {
-                for ( int i = ColumnDefaults.size; i < column; i++ )
+                for ( int i = _columnDefaults.Count; i < column; i++ )
                 {
-                    ColumnDefaults.add( null );
+                    _columnDefaults.Add( null! );
                 }
 
-                ColumnDefaults.add( cell );
+                _columnDefaults.Add( cell );
             }
             else
             {
-                ColumnDefaults.set( column, cell );
+                _columnDefaults[ column ] = cell;
             }
         }
 
         return cell;
     }
 
-    /** Returns the cell for the specified actor in this table, or null. */
-    public @Null< T Extends Actor> Cell< T > GetCell( T actor )
+    /// <summary>
+    /// Returns the cell for the specified actor in this table, or null.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="actor"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public Cell? GetCell<T>( T actor ) where T : Actor
     {
-        if ( actor == null ) throw new IllegalArgumentException( "actor cannot be null." );
-        object[] cells = this.cells.items;
+        if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
+        
+        Cell[] cells = this._cells.ToArray();
 
-        for ( int i = 0, n = this.cells.size; i < n; i++ )
+        for ( int i = 0, n = this._cells.Count; i < n; i++ )
         {
-            var c = ( Cell )cells[ i ];
+            Cell c = cells[ i ];
 
             if ( c.Actor == actor ) return c;
         }
@@ -596,28 +616,36 @@ public class Table : WidgetGroup
         return null;
     }
 
-    /** Returns the cells for this table. */
+    /// <summary>
+    /// Returns the cells for this table.
+    /// </summary>
+    /// <returns></returns>
     public List< Cell > GetCells()
     {
-        return cells;
+        return _cells;
     }
 
     public float GetPrefWidth()
     {
-        if ( sizeInvalid ) ComputeSize();
-        float width = tablePrefWidth;
+        if ( _sizeInvalid ) ComputeSize();
+        
+        var width = _tablePrefWidth;
 
-        if ( background != null ) return Math.Max( width, background.getMinWidth() );
+        if ( _background != null ) return Math.Max( width, _background.MinWidth );
 
         return width;
     }
 
     public float GetPrefHeight()
     {
-        if ( sizeInvalid ) ComputeSize();
-        float height = tablePrefHeight;
+        if ( _sizeInvalid ) ComputeSize();
+        
+        float height = _tablePrefHeight;
 
-        if ( background != null ) return Math.Max( height, background.getMinHeight() );
+        if ( _background != null )
+        {
+            return Math.Max( height, _background.MinHeight );
+        }
 
         return height;
     }
@@ -636,13 +664,21 @@ public class Table : WidgetGroup
         return _tableMinHeight;
     }
 
-    /** The cell values that will be used as the defaults for all cells. */
+    /// <summary>
+    /// The cell values that will be used as the defaults for all cells.
+    /// </summary>
+    /// <returns></returns>
     public Cell Defaults()
     {
         return _cellDefaults;
     }
 
-    /** Sets the padTop, padLeft, padBottom, and padRight around the table to the specified value. */
+    /// <summary>
+    /// Sets the padTop, padLeft, padBottom, and padRight around the
+    /// table to the specified value. 
+    /// </summary>
+    /// <param name="pad"></param>
+    /// <returns></returns>
     public Table Pad( Value pad )
     {
         ArgumentNullException.ThrowIfNull( pad );
@@ -658,116 +694,161 @@ public class Table : WidgetGroup
 
     public Table Pad( Value top, Value left, Value bottom, Value right )
     {
-        if ( top == null ) throw new IllegalArgumentException( "top cannot be null." );
-        if ( left == null ) throw new IllegalArgumentException( "left cannot be null." );
-        if ( bottom == null ) throw new IllegalArgumentException( "bottom cannot be null." );
-        if ( right == null ) throw new IllegalArgumentException( "right cannot be null." );
-        padTop      = top;
-        padLeft     = left;
-        padBottom   = bottom;
-        padRight    = right;
-        sizeInvalid = true;
+        _padTop      = top ?? throw new ArgumentException( "top cannot be null." );
+        _padLeft     = left ?? throw new ArgumentException( "left cannot be null." );
+        _padBottom   = bottom ?? throw new ArgumentException( "bottom cannot be null." );
+        _padRight    = right ?? throw new ArgumentException( "right cannot be null." );
+        _sizeInvalid = true;
 
         return this;
     }
 
-    /** Padding at the top edge of the table. */
+    /// <summary>
+    /// Padding at the top edge of the table. */
+    /// </summary>
+    /// <param name="padTop"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public Table PadTop( Value padTop )
     {
-        if ( padTop == null ) throw new IllegalArgumentException( "padTop cannot be null." );
-        this.padTop = padTop;
-        sizeInvalid = true;
+        this._padTop = padTop ?? throw new ArgumentException( "padTop cannot be null." );
+
+        _sizeInvalid = true;
 
         return this;
     }
 
-    /** Padding at the left edge of the table. */
+    /// <summary>
+    /// Padding at the left edge of the table. */
+    /// </summary>
+    /// <param name="padLeft"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public Table PadLeft( Value padLeft )
     {
-        if ( padLeft == null ) throw new IllegalArgumentException( "padLeft cannot be null." );
-        this.padLeft = padLeft;
-        sizeInvalid  = true;
+        this._padLeft = padLeft ?? throw new ArgumentException( "padLeft cannot be null." );
+
+        _sizeInvalid = true;
 
         return this;
     }
 
-    /** Padding at the bottom edge of the table. */
+    /// <summary>
+    /// Padding at the bottom edge of the table. */
+    /// </summary>
+    /// <param name="padBottom"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public Table PadBottom( Value padBottom )
     {
-        if ( padBottom == null ) throw new IllegalArgumentException( "padBottom cannot be null." );
-        this.padBottom = padBottom;
-        sizeInvalid    = true;
+        this._padBottom = padBottom ?? throw new ArgumentException( "padBottom cannot be null." );
+
+        _sizeInvalid = true;
 
         return this;
     }
 
-    /** Padding at the right edge of the table. */
+    /// <summary>
+    /// Padding at the right edge of the table. */
+    /// </summary>
+    /// <param name="padRight"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public Table PadRight( Value padRight )
     {
-        if ( padRight == null ) throw new IllegalArgumentException( "padRight cannot be null." );
-        this.padRight = padRight;
-        sizeInvalid   = true;
+        this._padRight = padRight ?? throw new ArgumentException( "padRight cannot be null." );
+
+        _sizeInvalid   = true;
 
         return this;
     }
 
-    /** Sets the padTop, padLeft, padBottom, and padRight around the table to the specified value. */
+    /// <summary>
+    /// Sets the padTop, padLeft, padBottom, and padRight around the table to the specified value.
+    /// </summary>
+    /// <param name="pad"></param>
+    /// <returns></returns>
     public Table Pad( float pad )
     {
-        pad( Value.Fixed.valueOf( pad ) );
+        Pad( Value.Fixed.ValueOf( pad ) );
 
         return this;
     }
 
     public Table Pad( float top, float left, float bottom, float right )
     {
-        padTop      = Value.Fixed.valueOf( top );
-        padLeft     = Value.Fixed.valueOf( left );
-        padBottom   = Value.Fixed.valueOf( bottom );
-        padRight    = Value.Fixed.valueOf( right );
-        sizeInvalid = true;
+        _padTop      = Value.Fixed.ValueOf( top );
+        _padLeft     = Value.Fixed.ValueOf( left );
+        _padBottom   = Value.Fixed.ValueOf( bottom );
+        _padRight    = Value.Fixed.ValueOf( right );
+        _sizeInvalid = true;
 
         return this;
     }
 
-    /** Padding at the top edge of the table. */
+    /// <summary>
+    /// Padding at the top edge of the table. */
+    /// </summary>
+    /// <param name="padTop"></param>
+    /// <returns></returns>
     public Table PadTop( float padTop )
     {
-        this.padTop = Value.Fixed.valueOf( padTop );
-        sizeInvalid = true;
+        this._padTop = Value.Fixed.ValueOf( padTop );
+        
+        _sizeInvalid = true;
 
         return this;
     }
 
-    /** Padding at the left edge of the table. */
+    /// <summary>
+    /// Padding at the left edge of the table. */
+    /// </summary>
+    /// <param name="padLeft"></param>
+    /// <returns></returns>
     public Table PadLeft( float padLeft )
     {
-        this.padLeft = Value.Fixed.valueOf( padLeft );
-        sizeInvalid  = true;
+        this._padLeft = Value.Fixed.ValueOf( padLeft );
+        
+        _sizeInvalid  = true;
 
         return this;
     }
 
-    /** Padding at the bottom edge of the table. */
+    /// <summary>
+    /// Padding at the bottom edge of the table. */
+    /// </summary>
+    /// <param name="padBottom"></param>
+    /// <returns></returns>
     public Table PadBottom( float padBottom )
     {
-        this.padBottom = Value.Fixed.valueOf( padBottom );
-        sizeInvalid    = true;
+        this._padBottom = Value.Fixed.ValueOf( padBottom );
+        
+        _sizeInvalid    = true;
 
         return this;
     }
 
-    /** Padding at the right edge of the table. */
+    /// <summary>
+    /// Padding at the right edge of the table. */
+    /// </summary>
+    /// <param name="padRight"></param>
+    /// <returns></returns>
     public Table PadRight( float padRight )
     {
-        this.padRight = Value.Fixed.valueOf( padRight );
-        sizeInvalid   = true;
+        this._padRight = Value.Fixed.ValueOf( padRight );
+        
+        _sizeInvalid   = true;
 
         return this;
     }
 
-    /** Alignment of the logical table within the table actor. Set to {@link Align#center}, {@link Align#top}, {@link Align#bottom}
-	 * , {@link Align#left}, {@link Align#right}, or any combination of those. */
+    /// <summary>
+    /// Alignment of the logical table within the table actor.
+    /// Set to <see cref="Align.Center"/>, <see cref="Align.Top"/>, <see cref="Align.Bottom"/>,
+    /// <see cref="Align.Left"/>, <see cref="Align.Right"/>, or any combination of those.
+    /// </summary>
+    /// <param name="align"></param>
+    /// <returns></returns>
     public Table Align( int align )
     {
         this._alignment = align;
@@ -775,7 +856,11 @@ public class Table : WidgetGroup
         return this;
     }
 
-    /** Sets the alignment of the logical table within the table actor to {@link Align#center}. This clears any other alignment. */
+    /// <summary>
+    /// Sets the alignment of the logical table within the table actor to
+    /// <see cref="Align.Center"/>. This clears any other alignment.
+    /// </summary>
+    /// <returns></returns>
     public Table Center()
     {
         _alignment = LibGDXSharp.Utils.Align.Center;
@@ -783,8 +868,12 @@ public class Table : WidgetGroup
         return this;
     }
 
-    /** Adds {@link Align#top} and clears {@link Align#bottom} for the alignment of the logical table within the table actor. */
-    public Table Top()
+    /// <summary>
+    /// Adds <see cref="Align.Top"/> and clears <see cref="Align.Bottom"/> for
+    /// the alignment of the logical table within the table actor.
+    /// </summary>
+    /// <returns></returns>
+    public new Table Top()
     {
         _alignment |= LibGDXSharp.Utils.Align.Top;
         _alignment &= ~LibGDXSharp.Utils.Align.Bottom;
@@ -792,7 +881,11 @@ public class Table : WidgetGroup
         return this;
     }
 
-    /** Adds {@link Align#left} and clears {@link Align#right} for the alignment of the logical table within the table actor. */
+    /// <summary>
+    /// Adds <see cref="Align.Left"/> and clears <see cref="Align.Right"/> for
+    /// the alignment of the logical table within the table actor.
+    /// </summary>
+    /// <returns></returns>
     public Table Left()
     {
         _alignment |= LibGDXSharp.Utils.Align.Left;
@@ -801,7 +894,10 @@ public class Table : WidgetGroup
         return this;
     }
 
-    /** Adds {@link Align#bottom} and clears {@link Align#top} for the alignment of the logical table within the table actor. */
+    /// <summary>
+    /// Adds <see cref="Align.Bottom"/> and clears <see cref="Align.Top"/> for the
+    /// alignment of the logical table within the table actor. 
+    /// </summary>
     public Table Bottom()
     {
         _alignment |= LibGDXSharp.Utils.Align.Bottom;
@@ -810,8 +906,11 @@ public class Table : WidgetGroup
         return this;
     }
 
-    /** Adds {@link Align#right} and clears {@link Align#left} for the alignment of the logical table within the table actor. */
-    public Table Right()
+    /// <summary>
+    /// Adds <see cref="Align.Right"/> and clears <see cref="Align.Left"/> for
+    /// the alignment of the logical table within the table actor.
+    /// </summary>
+    public new Table Right()
     {
         _alignment |= LibGDXSharp.Utils.Align.Right;
         _alignment &= ~LibGDXSharp.Utils.Align.Left;
@@ -859,22 +958,24 @@ public class Table : WidgetGroup
         return _padRight.Get( this );
     }
 
-    /** Returns {@link #getPadLeft()} plus {@link #getPadRight()}. */
-    public float GetPadX()
-    {
-        return _padLeft.Get( this ) + _padRight.Get( this );
-    }
+    /// <summary>
+    /// Returns <see cref="_padLeft"/> plus <see cref="_padRight"/>.
+    /// </summary>
+    /// <returns></returns>
+    public float GetPadX() => _padLeft.Get( this ) + _padRight.Get( this );
 
-    /** Returns {@link #getPadTop()} plus {@link #getPadBottom()}. */
-    public float GetPadY()
-    {
-        return _padTop.Get( this ) + _padBottom.Get( this );
-    }
+    /// <summary>
+    /// Returns <see cref="_padTop"/> plus <see cref="_padBottom"/>.
+    /// </summary>
+    /// <returns></returns>
+    public float GetPadY() => _padTop.Get( this ) + _padBottom.Get( this );
 
     public int GetAlign() => _alignment;
 
-    /** Returns the row index for the y coordinate, or -1 if not over a row.
-	 * @param y The y coordinate, where 0 is the top of the table. */
+    /// <summary>
+    /// Returns the row index for the y coordinate, or -1 if not over a row.
+    /// </summary>
+    /// <param name="y"> The y coordinate, where 0 is the top of the table. </param>
     public int GetRow( float y )
     {
         var n = this._cells.Count;
@@ -883,11 +984,11 @@ public class Table : WidgetGroup
 
         y += GetPadTop();
 
-        object[] cells = this._cells.ToArray();
+        Cell[] cells = this._cells.ToArray();
 
         for ( int i = 0, row = 0; i < n; )
         {
-            var c = ( Cell )cells[ i++ ];
+            Cell c = cells[ i++ ];
 
             if ( ( c.ActorY + c.ComputedPadTop ) < y ) return row;
             if ( c.EndRow ) row++;
@@ -896,15 +997,14 @@ public class Table : WidgetGroup
         return -1;
     }
 
-    /** Returns the height of the specified row, or 0 if the table layout has not been validated. */
-    public float GetRowHeight( int rowIndex )
-    {
-        if ( _rowHeight == null ) return 0;
+    /// <summary>
+    /// Returns the height of the specified row, or 0 if the table layout has not been validated.
+    /// </summary>
+    public float GetRowHeight( int rowIndex ) => _rowHeight[ rowIndex ];
 
-        return _rowHeight[ rowIndex ];
-    }
-
-    /** Returns the min height of the specified row. */
+    /// <summary>
+    /// Returns the min height of the specified row.
+    /// </summary>
     public float GetRowMinHeight( int rowIndex )
     {
         if ( _sizeInvalid ) ComputeSize();
@@ -912,7 +1012,9 @@ public class Table : WidgetGroup
         return _rowMinHeight[ rowIndex ];
     }
 
-    /** Returns the pref height of the specified row. */
+    /// <summary>
+    /// Returns the pref height of the specified row.
+    /// </summary>
     public float GetRowPrefHeight( int rowIndex )
     {
         if ( _sizeInvalid ) ComputeSize();
@@ -926,8 +1028,6 @@ public class Table : WidgetGroup
     /// </summary>
     public float GetColumnWidth( int columnIndex )
     {
-        if ( _columnWidth == null ) return 0;
-
         return _columnWidth[ columnIndex ];
     }
 
@@ -967,11 +1067,11 @@ public class Table : WidgetGroup
     {
         _sizeInvalid = false;
 
-        object[] cells     = this._cells.ToArray();
-        var      cellCount = this._cells.Count;
+        Cell[] cells     = this._cells.ToArray();
+        var    cellCount = this._cells.Count;
 
         // Implicitly end the row for layout purposes.
-        if ( ( cellCount > 0 ) && !( ( Cell )cells[ cellCount - 1 ] ).EndRow )
+        if ( ( cellCount > 0 ) && !cells[ cellCount - 1 ].EndRow )
         {
             EndRow();
 
@@ -984,82 +1084,85 @@ public class Table : WidgetGroup
         var rowMinHeight    = this._rowMinHeight = EnsureSize( this._rowMinHeight, rows );
         var columnPrefWidth = this._columnPrefWidth = EnsureSize( this._columnPrefWidth, columns );
         var rowPrefHeight   = this._rowPrefHeight = EnsureSize( this._rowPrefHeight, rows );
-        var columnWidth     = this._columnWidth = EnsureSize( this._columnWidth, columns );
-        var rowHeight       = this._rowHeight = EnsureSize( this._rowHeight, rows );
         var expandWidth     = this._expandWidth = EnsureSize( this._expandWidth, columns );
         var expandHeight    = this._expandHeight = EnsureSize( this._expandHeight, rows );
 
-        float spaceRightLast = 0;
+        float? spaceRightLast = 0;
 
         for ( var i = 0; i < cellCount; i++ )
         {
-            var   c       = ( Cell )cells[ i ];
-            int   column  = c.column;
-            var   row     = c.Row;
-            var   colspan = c.Colspan;
-            Actor a       = c.Actor;
+            Cell c = cells[ i ];
 
             // Collect rows that expand and colspan=1 columns that expand.
-            if ( ( c.expandY != 0 ) && ( expandHeight[ row ] == 0 ) ) expandHeight[ row ] = c.expandY;
+            if ( ( c.ExpandY != 0 ) && ( expandHeight[ c.Row ] == 0 ) ) expandHeight[ c.Row ] = c.ExpandY;
 
-            if ( ( colspan == 1 ) && ( c.expandX != 0 ) && ( expandWidth[ column ] == 0 ) )
-                expandWidth[ column ] = c.expandX;
+            if ( ( c.Colspan == 1 ) && ( c.ExpandX != 0 ) && ( expandWidth[ c.Column ] == 0 ) )
+            {
+                expandWidth[ c.Column ] = c.ExpandX;
+            }
 
             // Compute combined padding/spacing for cells.
             // Spacing between actors isn't additive, the larger is used. Also, no spacing around edges.
-            c.computedPadLeft = c.padLeft.get
-                                    ( a )
-                                + ( column == 0 ? 0 : Math.Max( 0, c.spaceLeft.get( a ) - spaceRightLast ) );
+            c.ComputedPadLeft = ( float )( c.PadLeft?.Get( c.Actor )
+                                           + ( c.Column == 0 ? 0 : Math.Max( 0f, ( float )( c.SpaceLeft?.Get( c.Actor ) - spaceRightLast )! ) ) )!;
 
-            c.ComputedPadTop = c.PadTop?.Get( a );
+            c.ComputedPadTop = c.PadTop!.Get( c.Actor );
 
             if ( c.CellAboveIndex != -1 )
             {
-                var above = ( Cell )cells[ c.CellAboveIndex ];
-                c.ComputedPadTop += Math.Max( 0, (float)( c.SpaceTop?.Get( a ) - above.SpaceBottom?.Get( a ) )! );
+                Cell above = cells[ c.CellAboveIndex ];
+
+                c.ComputedPadTop += Math.Max
+                    ( 0, ( float )( c.SpaceTop?.Get( c.Actor ) - above.SpaceBottom?.Get( c.Actor ) )! );
             }
 
-            var spaceRight = c.SpaceRight?.Get( a );
-            
-            c.ComputedPadRight  = c.PadRight?.Get( a ) + ( ( column + colspan ) == columns ? 0f : spaceRight );
-            c.ComputedPadBottom = c.PadBottom?.Get( a ) + ( row == ( rows - 1 ) ? 0 : c.SpaceBottom.Get( a ) );
+            var spaceRight = c.SpaceRight?.Get( c.Actor );
+
+            c.ComputedPadRight = ( float )( c.PadRight?.Get( c.Actor )
+                                            + ( ( c.Column + c.Colspan ) == columns ? 0f : spaceRight ) )!;
+
+            c.ComputedPadBottom = ( float )( c.PadBottom?.Get( c.Actor )
+                                             + ( c.Row == ( rows - 1 ) ? 0 : c.SpaceBottom?.Get( c.Actor ) ) )!;
 
             spaceRightLast = spaceRight ?? 0f;
 
             // Determine minimum and preferred cell sizes.
-            var prefWidth  = c.PrefWidth?.Get( a );
-            var prefHeight = c.PrefHeight?.Get( a );
-            var minWidth   = c.MinWidth?.Get( a );
-            var minHeight  = c.MinHeight?.Get( a );
-            var maxWidth   = c.MaxWidth?.Get( a );
-            var maxHeight  = c.MaxHeight?.Get( a );
+            var prefWidth  = c.PrefWidth?.Get( c.Actor );
+            var prefHeight = c.PrefHeight?.Get( c.Actor );
+            var minWidth   = c.MinWidth?.Get( c.Actor );
+            var minHeight  = c.MinHeight?.Get( c.Actor );
+            var maxWidth   = c.MaxWidth?.Get( c.Actor );
+            var maxHeight  = c.MaxHeight?.Get( c.Actor );
 
-            if ( prefWidth < minWidth ) prefWidth                             = minWidth;
-            if ( prefHeight < minHeight ) prefHeight                          = minHeight;
+            if ( prefWidth < minWidth ) prefWidth    = minWidth;
+            if ( prefHeight < minHeight ) prefHeight = minHeight;
+
             if ( ( maxWidth > 0 ) && ( prefWidth > maxWidth ) ) prefWidth     = maxWidth;
             if ( ( maxHeight > 0 ) && ( prefHeight > maxHeight ) ) prefHeight = maxHeight;
 
-            if ( _round )
+            if ( Round )
             {
-                minWidth   = ( float )Math.Ceiling( (float)minWidth! );
-                minHeight  = ( float )Math.Ceiling( (float)minHeight! );
-                prefWidth  = ( float )Math.Ceiling( (float)prefWidth! );
-                prefHeight = ( float )Math.Ceiling( (float)prefHeight! );
+                minWidth   = ( float )Math.Ceiling( ( float )minWidth! );
+                minHeight  = ( float )Math.Ceiling( ( float )minHeight! );
+                prefWidth  = ( float )Math.Ceiling( ( float )prefWidth! );
+                prefHeight = ( float )Math.Ceiling( ( float )prefHeight! );
             }
 
-            if ( colspan == 1 )
+            if ( c.Colspan == 1 )
             {
                 // Spanned column min and pref width is added later.
                 var hpadding = c.ComputedPadLeft + c.ComputedPadRight;
-                
-                columnPrefWidth[ column ] = Math.Max( columnPrefWidth[ column ], (float)( prefWidth + hpadding )! );
-                columnMinWidth[ column ]  = Math.Max( columnMinWidth[ column ], (float)( minWidth + hpadding )! );
+
+                columnPrefWidth[ c.Column ] = Math.Max
+                    ( columnPrefWidth[ c.Column ], ( float )( prefWidth + hpadding )! );
+
+                columnMinWidth[ c.Column ] = Math.Max( columnMinWidth[ c.Column ], ( float )( minWidth + hpadding )! );
             }
 
             var vpadding = c.ComputedPadTop + c.ComputedPadBottom;
 
-            rowPrefHeight[ row ] = Math.Max( rowPrefHeight[ row ], (float)( prefHeight + vpadding )! );
-            rowMinHeight[ row ]  = Math.Max( rowMinHeight[ row ], (float)( minHeight + vpadding )! );
+            rowPrefHeight[ c.Row ] = Math.Max( rowPrefHeight[ c.Row ], ( float )( prefHeight + vpadding )! );
+            rowMinHeight[ c.Row ]  = Math.Max( rowMinHeight[ c.Row ], ( float )( minHeight + vpadding )! );
         }
 
         float uniformMinWidth  = 0, uniformMinHeight  = 0;
@@ -1067,8 +1170,8 @@ public class Table : WidgetGroup
 
         for ( var i = 0; i < cellCount; i++ )
         {
-            var c      = ( Cell )cells[ i ];
-            var column = c.Column;
+            Cell c      = cells[ i ];
+            var  column = c.Column;
 
             // Colspan with expand will expand all spanned columns
             // if none of the spanned columns have expand.
@@ -1098,7 +1201,7 @@ public class Table : WidgetGroup
                 uniformPrefWidth = Math.Max( uniformPrefWidth, columnPrefWidth[ column ] - hpadding );
             }
 
-            if ( c.UniformY == true )
+            if ( c.UniformY )
             {
                 var vpadding = c.ComputedPadTop + c.ComputedPadBottom;
 
@@ -1112,7 +1215,7 @@ public class Table : WidgetGroup
         {
             for ( var i = 0; i < cellCount; i++ )
             {
-                var c = ( Cell )cells[ i ];
+                Cell c = cells[ i ];
 
                 if ( ( uniformPrefWidth > 0 ) && c is { UniformX: true, Colspan: 1 } )
                 {
@@ -1122,7 +1225,7 @@ public class Table : WidgetGroup
                     columnPrefWidth[ c.Column ] = uniformPrefWidth + computedPadding;
                 }
 
-                if ( ( uniformPrefHeight > 0 ) && ( c.UniformY == true ) )
+                if ( ( uniformPrefHeight > 0 ) && c.UniformY )
                 {
                     var computedPadding = ( c.ComputedPadTop + c.ComputedPadBottom );
 
@@ -1135,8 +1238,8 @@ public class Table : WidgetGroup
         // Distribute any additional min and pref width added by colspanned cells to the columns spanned.
         for ( var i = 0; i < cellCount; i++ )
         {
-            var c       = ( Cell )cells[ i ];
-            var colspan = c.Colspan;
+            Cell c       = cells[ i ];
+            var  colspan = c.Colspan;
 
             if ( colspan == 1 ) continue;
 
@@ -1149,7 +1252,7 @@ public class Table : WidgetGroup
 
             if ( ( maxWidth > 0 ) && ( prefWidth > maxWidth ) ) prefWidth = maxWidth;
 
-            if ( _round )
+            if ( Round )
             {
                 minWidth  = ( float )Math.Ceiling( ( float )minWidth! );
                 prefWidth = ( float )Math.Ceiling( ( float )prefWidth! );
@@ -1397,8 +1500,8 @@ public class Table : WidgetGroup
         // Distribute any additional width added by colspanned cells to the columns spanned.
         for ( var i = 0; i < cellCount; i++ )
         {
-            var c       = cells[ i ];
-            var colspan = c.Colspan;
+            Cell c       = cells[ i ];
+            var  colspan = c.Colspan;
 
             if ( colspan == 1 ) continue;
 
@@ -1482,7 +1585,7 @@ public class Table : WidgetGroup
 
             if ( fillX > 0 )
             {
-                c.ActorWidth = Math.Max( ( float )( spannedCellWidth * fillX ), c.MinWidth!.Get( c.Actor ) );
+                c.ActorWidth = Math.Max( ( spannedCellWidth * fillX ), c.MinWidth!.Get( c.Actor ) );
 
                 var maxWidth = c.MaxWidth?.Get( c.Actor );
 
@@ -1496,8 +1599,8 @@ public class Table : WidgetGroup
             {
                 c.ActorHeight = Math.Max
                     (
-                     ( float )( ( rowHeight[ c.Row ] * fillY ) - c.ComputedPadTop - c.ComputedPadBottom ),
-                     c.MinHeight!.Get( c.Actor )
+                    ( ( rowHeight[ c.Row ] * fillY ) - c.ComputedPadTop - c.ComputedPadBottom ),
+                    c.MinHeight!.Get( c.Actor )
                     );
 
                 var maxHeight = c.MaxHeight?.Get( c.Actor );
@@ -1538,7 +1641,7 @@ public class Table : WidgetGroup
 
             c.ActorY = layoutHeight - currentY - c.ActorY - c.ActorHeight;
 
-            if ( _round )
+            if ( Round )
             {
                 c.ActorWidth  = ( float )Math.Ceiling( c.ActorWidth );
                 c.ActorHeight = ( float )Math.Ceiling( c.ActorHeight );
@@ -1670,6 +1773,25 @@ public class Table : WidgetGroup
         return this;
     }
 
+    private void ClearDebugRects()
+    {
+        _debugRects ??= new List< DebugRect >();
+
+        DebugRect.Pool.FreeAll( _debugRects );
+
+        _debugRects.Clear();
+    }
+
+    private void AddDebugRect( float x, float y, float w, float h, Color color )
+    {
+        DebugRect rect = DebugRect.Pool.Obtain();
+
+        rect.Color = color;
+        rect.Set( x, y, w, h );
+
+        _debugRects?.Add( rect );
+    }
+
     private void AddDebugRects( float currentX, float currentY, float width, float height )
     {
         ClearDebugRects();
@@ -1707,11 +1829,11 @@ public class Table : WidgetGroup
             {
                 AddDebugRect
                     (
-                     currentX,
-                     currentY + c.ComputedPadTop,
-                     spannedCellWidth,
-                     _rowHeight[ c.Row ] - c.ComputedPadTop - c.ComputedPadBottom,
-                     DebugCellColor
+                    currentX,
+                    ( currentY + c.ComputedPadTop ),
+                    spannedCellWidth,
+                    _rowHeight[ c.Row ] - c.ComputedPadTop - c.ComputedPadBottom,
+                    DebugCellColor
                     );
             }
 
@@ -1725,25 +1847,6 @@ public class Table : WidgetGroup
                 currentX += ( spannedCellWidth + c.ComputedPadRight );
             }
         }
-    }
-
-    private void ClearDebugRects()
-    {
-        _debugRects ??= new List< DebugRect >();
-
-        DebugRect.Pool.FreeAll( _debugRects );
-
-        _debugRects.Clear();
-    }
-
-    private void AddDebugRect( float x, float y, float w, float h, Color color )
-    {
-        DebugRect rect = DebugRect.Pool.Obtain();
-
-        rect.Color = color;
-        rect.Set( x, y, w, h );
-
-        _debugRects?.Add( rect );
     }
 
     public new void DrawDebug( ShapeRenderer shapes )
@@ -1852,7 +1955,7 @@ public class Table : WidgetGroup
     /// If true (the default), positions and sizes of child actors are
     /// rounded and ceiled to the nearest integer value.
     /// </summary>
-    public bool Round { get; set; }
+    public bool Round { get; set; } = true;
 
     public int Rows { get; private set; }
 

@@ -14,9 +14,34 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-public class Stack
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class Stack : WidgetGroup
 {
-        
+    private float _prefWidth;
+    private float _prefHeight;
+    private float _minWidth;
+    private float _minHeight;
+    private float _maxWidth;
+    private float _maxHeight;
+    private bool  _sizeInvalid = true;
+
+    public Stack()
+    {
+        Transform = false;
+        Width     = 150;
+        Height    = 150;
+        Touchable = Touchable.ChildrenOnly;
+    }
+
+    public Stack( params Actor[] actors ) : this()
+    {
+        foreach ( Actor actor in actors )
+        {
+            AddActor( actor );
+        }
+    }
 }

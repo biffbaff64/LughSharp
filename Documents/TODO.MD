@@ -551,16 +551,16 @@ SCENES.SCENE2D/UI
     -      - Image                          Convert
     -      - ImageButton                    Convert
     -      - ImageTextButton                Convert
-    -      - Label                          Convert
+    - DONE - Label                          Convert
     -      - List                           Convert
     -      - ParticleEffectActor            Convert
     -      - ProgressBar                    Convert
     -      - ScrollPane                     Convert
     -      - SelectBox                      Convert
-    -      - Skin                           Convert
+    - IP   - Skin                           Convert
     -      - Slider                         Convert
     -      - SplitPane                      Convert
-    -      - Stack                          Convert
+    - IP   - Stack                          Convert
     - IP   - Table                          Convert
     -      - TextArea                       Convert
     -      - TextButton                     Convert

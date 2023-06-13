@@ -80,4 +80,16 @@ public class BitmapFontCache
     {
         return null;
     }
+
+    public void SetPosition( float x, float y )
+    {
+    }
+
+    public void Tint( Color tint )
+    {
+    }
+
+    public void SetText( GlyphLayout layout, float f, float f1 )
+    {
+    }
 }

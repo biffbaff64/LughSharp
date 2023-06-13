@@ -50,8 +50,6 @@ public sealed class Cell : IPoolable
     public Value? PadLeft     { get; set; }
     public Value? PadBottom   { get; set; }
     public Value? PadRight    { get; set; }
-    public float? FillX       { get; set; }
-    public float? FillY       { get; set; }
 
     public int  Alignment { get; set; } = Align.None;
     public int  ExpandX   { get; set; }
@@ -65,6 +63,8 @@ public sealed class Cell : IPoolable
     public float  ActorY      { get; set; }
     public float  ActorWidth  { get; set; }
     public float  ActorHeight { get; set; }
+    public float  FillX       { get; set; }
+    public float  FillY       { get; set; }
 
     public Table? Table             { get; set; }
     public bool   EndRow            { get; set; }
@@ -1082,8 +1082,8 @@ public sealed class Cell : IPoolable
         PadLeft     = null;
         PadBottom   = null;
         PadRight    = null;
-        FillX       = null;
-        FillY       = null;
+        FillX       = 0f;
+        FillY       = 0f;
         Alignment   = Align.None;
         ExpandX     = default;
         ExpandY     = default;
@@ -1139,14 +1139,15 @@ public sealed class Cell : IPoolable
         if ( cell.PadLeft != null )         PadLeft     = cell.PadLeft;
         if ( cell.PadBottom != null )       PadBottom   = cell.PadBottom;
         if ( cell.PadRight != null )        PadRight    = cell.PadRight;
-        if ( cell.FillX != null )           FillX       = cell.FillX;
-        if ( cell.FillY != null )           FillY       = cell.FillY;
         if ( cell.Alignment != default )    Alignment   = cell.Alignment;
         if ( cell.ExpandX != default )      ExpandX     = cell.ExpandX;
         if ( cell.ExpandY != default )      ExpandY     = cell.ExpandY;
         if ( cell.Colspan != default )      Colspan     = cell.Colspan;
         if ( cell.UniformX != default )     UniformX    = cell.UniformX;
         if ( cell.UniformY != default )     UniformY    = cell.UniformY;
+
+        FillX = cell.FillX;
+        FillY = cell.FillY;
         //@formatter:on
     }
 
