@@ -441,10 +441,9 @@ public class Matrix4
 
     /// <summary>
     /// Premultiplies this matrix with the given matrix, storing the result in this matrix. For example:
-    /// 
-    /// <pre>
-    /// A.mulLeft(B) results in A := BA.
-    /// </pre>
+    /// <para>
+    /// <tt>A.mulLeft(B) results in A := BA.</tt>
+    /// </para>
     /// </summary>
     /// <param name="matrix"> The other matrix to multiply by. </param>
     /// <returns> This matrix for the purpose of chaining operations together.  </returns>
@@ -513,7 +512,7 @@ public class Matrix4
     /// <summary>
     /// Inverts the matrix. Stores the result in this matrix. </summary>
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
-    /// <exception cref="RuntimeException"> if the matrix is singular (not invertible)  </exception>
+    /// <exception cref="GdxRuntimeException"> if the matrix is singular (not invertible)  </exception>
 	public Matrix4 Inv()
 	{
 		var lDet = ( ( ( ( ( ( ( ( ( ( ( ( val[ M30 ] * val[ M21 ] * val[ M12 ] * val[ M03 ] )
@@ -755,9 +754,10 @@ public class Matrix4
 	}
 
     /// <summary>
-    /// Sets the matrix to a projection matrix with a near- and far plane, a field of view in degrees and an aspect ratio. Note that
-    /// the field of view specified is the angle in degrees for the height, the field of view for the width will be calculated
-    /// according to the aspect ratio. </summary>
+    /// Sets the matrix to a projection matrix with a near- and far plane, a field
+    /// of view in degrees and an aspect ratio. Note that the field of view specified
+    /// is the angle in degrees for the height, the field of view for the width will
+    /// be calculated according to the aspect ratio. </summary>
     /// <param name="near"> The near plane </param>
     /// <param name="far"> The far plane </param>
     /// <param name="fovy"> The field of view of the height in degrees </param>
@@ -792,9 +792,11 @@ public class Matrix4
 	}
 
     /// <summary>
-    /// Sets the matrix to a projection matrix with a near/far plane, and left, bottom, right and top specifying the points on the
-    /// near plane that are mapped to the lower left and upper right corners of the viewport. This allows to create projection
-    /// matrix with off-center vanishing point. </summary>
+    /// Sets the matrix to a projection matrix with a near/far plane, and left, bottom,
+    /// right and top specifying the points on the near plane that are mapped to the lower
+    /// left and upper right corners of the viewport. This allows to create projection
+    /// matrix with off-center vanishing point.
+    /// </summary>
     /// <param name="left"> </param>
     /// <param name="right"> </param>
     /// <param name="bottom"> </param>
@@ -1124,7 +1126,8 @@ public class Matrix4
 	}
 
     /// <summary>
-    /// Sets this matrix to a rotation matrix from the given euler angles. </summary>
+    /// Sets this matrix to a rotation matrix from the given euler angles.
+    /// </summary>
     /// <param name="yaw"> the yaw in radians </param>
     /// <param name="pitch"> the pitch in radians </param>
     /// <param name="roll"> the roll in radians </param>
@@ -1137,7 +1140,8 @@ public class Matrix4
 	}
 
     /// <summary>
-    /// Sets this matrix to a scaling matrix </summary>
+    /// Sets this matrix to a scaling matrix
+    /// </summary>
     /// <param name="vector"> The scaling vector </param>
     /// <returns> This matrix for chaining.  </returns>
 	public Matrix4 SetToScaling( Vector3 vector )
@@ -1170,8 +1174,9 @@ public class Matrix4
 
 
     /// <summary>
-    /// Sets the matrix to a look at matrix with a direction and an up vector. Multiply with a translation matrix to get a camera
-    /// model view matrix. </summary>
+    /// Sets the matrix to a look at matrix with a direction and an up vector. Multiply
+    /// with a translation matrix to get a camera model view matrix.
+    /// </summary>
     /// <param name="direction"> The direction vector </param>
     /// <param name="up"> The up vector </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -1198,7 +1203,8 @@ public class Matrix4
 
 
     /// <summary>
-    /// Sets this matrix to a look at matrix with the given position, target and up vector. </summary>
+    /// Sets this matrix to a look at matrix with the given position, target and up vector.
+    /// </summary>
     /// <param name="position"> the position </param>
     /// <param name="target"> the target </param>
     /// <param name="up"> the up vector </param>
@@ -1224,14 +1230,17 @@ public class Matrix4
 	}
 
     /// <summary>
-    /// Linearly interpolates between this matrix and the given matrix mixing by alpha </summary>
+    /// Linearly interpolates between this matrix and the given matrix mixing by alpha
+    /// </summary>
     /// <param name="matrix"> the matrix </param>
     /// <param name="alpha"> the alpha value in the range [0,1] </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
 	public Matrix4 Lerp( Matrix4 matrix, float alpha )
 	{
 		for ( var i = 0; i < 16; i++ )
+		{
 			val[ i ] = ( val[ i ] * ( 1 - alpha ) ) + ( matrix.val[ i ] * alpha );
+		}
 
 		return this;
 	}
@@ -1261,8 +1270,10 @@ public class Matrix4
 	}
 
     /// <summary>
-    /// Averages the given transforms and stores the result in this matrix. Translations and scales are lerped while rotations are
-    /// slerped. Does not destroy the data contained in t. </summary>
+    /// Averages the given transforms and stores the result in this matrix. Translations
+    /// and scales are lerped while rotations are slerped. Does not destroy the data
+    /// contained in t.
+    /// </summary>
     /// <param name="t"> List of transforms </param>
     /// <returns> This matrix for chaining  </returns>
 	public Matrix4 Avg( Matrix4[] t )
@@ -1290,9 +1301,11 @@ public class Matrix4
 	}
 
     /// <summary>
-    /// Averages the given transforms with the given weights and stores the result in this matrix. Translations and scales are
-    /// lerped while rotations are slerped. Does not destroy the data contained in t or w; Sum of w_i must be equal to 1, or
-    /// unexpected results will occur. </summary>
+    /// Averages the given transforms with the given weights and stores the result
+    /// in this matrix. Translations and scales are lerped while rotations are slerped.
+    /// Does not destroy the data contained in t or w; Sum of w_i must be equal to 1, or
+    /// unexpected results will occur.
+    /// </summary>
     /// <param name="t"> List of transforms </param>
     /// <param name="w"> List of weights </param>
     /// <returns> This matrix for chaining  </returns>
@@ -1465,9 +1478,9 @@ public class Matrix4
     /// <summary>
     /// Gets the rotation of this matrix.
     /// </summary>
-    /// <param name="rotation"> The <seealso cref="Quaternion"/> to receive the rotation </param>
+    /// <param name="rotation"> The <see cref="Quaternion"/> to receive the rotation </param>
     /// <param name="normalizeAxes"> True to normalize the axes, necessary when the matrix might also include scaling. </param>
-    /// <returns> The provided <seealso cref="Quaternion"/> for chaining.  </returns>
+    /// <returns> The provided <see cref="Quaternion"/> for chaining.  </returns>
     public Quaternion GetRotation(Quaternion rotation, bool normalizeAxes)
     {
         return rotation.SetFromMatrix(normalizeAxes, this);
@@ -1476,8 +1489,8 @@ public class Matrix4
     /// <summary>
     /// Gets the rotation of this matrix.
     /// </summary>
-    /// <param name="rotation"> The <seealso cref="Quaternion"/> to receive the rotation </param>
-    /// <returns> The provided <seealso cref="Quaternion"/> for chaining.  </returns>
+    /// <param name="rotation"> The <see cref="Quaternion"/> to receive the rotation </param>
+    /// <returns> The provided <see cref="Quaternion"/> for chaining.  </returns>
     public Quaternion GetRotation(Quaternion rotation)
     {
         return rotation.SetFromMatrix(this);
@@ -1567,11 +1580,15 @@ public class Matrix4
 	}
 
     /// <summary>
-    /// Multiplies the vectors with the given matrix. The matrix array is assumed to hold a 4x4 column major matrix as you can get
-    /// from <seealso cref="Matrix4.val"/>. The vectors array is assumed to hold 3-component vectors. Offset specifies the offset into the
-    /// array where the x-component of the first vector is located. The numVecs parameter specifies the number of vectors stored in
-    /// the vectors array. The stride parameter specifies the number of floats between subsequent vectors and must be >= 3. This is
-    /// the same as <seealso cref="Vector3.mul(Matrix4)"/> applied to multiple vectors. </summary>
+    /// Multiplies the vectors with the given matrix. The matrix array is assumed to
+    /// hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val"/>.
+    /// The vectors array is assumed to hold 3-component vectors. Offset specifies
+    /// the offset into the array where the x-component of the first vector is located.
+    /// The numVecs parameter specifies the number of vectors stored in the vectors
+    /// array. The stride parameter specifies the number of floats between subsequent
+    /// vectors and must be >= 3. This is the same as <see cref="Vector3.Mul(Matrix4)"/>
+    /// applied to multiple vectors.
+    /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
     /// <param name="offset"> the offset into the vectors array </param>
@@ -1591,11 +1608,16 @@ public class Matrix4
 	*/
 
     /// <summary>
-    /// Multiplies the vectors with the given matrix, , performing a division by w. The matrix array is assumed to hold a 4x4 column
-    /// major matrix as you can get from <seealso cref="Matrix4.val"/>. The vectors array is assumed to hold 3-component vectors. Offset
-    /// specifies the offset into the array where the x-component of the first vector is located. The numVecs parameter specifies
-    /// the number of vectors stored in the vectors array. The stride parameter specifies the number of floats between subsequent
-    /// vectors and must be >= 3. This is the same as <seealso cref="Vector3.prj(Matrix4)"/> applied to multiple vectors. </summary>
+    /// Multiplies the vectors with the given matrix, performing a division by w.
+    /// The matrix array is assumed to hold a 4x4 column major matrix as you can
+    /// get from <see cref="Matrix4.val"/>. The vectors array is assumed to hold
+    /// 3-component vectors. Offset specifies the offset into the array where the
+    /// x-component of the first vector is located. The numVecs parameter specifies
+    /// the number of vectors stored in the vectors array. The stride parameter
+    /// specifies the number of floats between subsequent vectors and must be >= 3.
+    /// This is the same as <see cref="Vector3.prj(Matrix4)"/> applied to multiple
+    /// vectors.
+    /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
     /// <param name="offset"> the offset into the vectors array </param>
@@ -1614,11 +1636,15 @@ public class Matrix4
 	*/
 
     /// <summary>
-    /// Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix. The matrix array is assumed to hold a 4x4
-    /// column major matrix as you can get from <seealso cref="Matrix4.val"/>. The vectors array is assumed to hold 3-component vectors.
-    /// Offset specifies the offset into the array where the x-component of the first vector is located. The numVecs parameter
-    /// specifies the number of vectors stored in the vectors array. The stride parameter specifies the number of floats between
-    /// subsequent vectors and must be >= 3. This is the same as <seealso cref="Vector3.rot(Matrix4)"/> applied to multiple vectors. </summary>
+    /// Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix.
+    /// The matrix array is assumed to hold a 4x4 column major matrix as you can get
+    /// from <see cref="Matrix4.val"/>. The vectors array is assumed to hold
+    /// 3-component vectors. Offset specifies the offset into the array where the
+    /// x-component of the first vector is located. The numVecs parameter specifies
+    /// the number of vectors stored in the vectors array. The stride parameter
+    /// specifies the number of floats between subsequent vectors and must be >= 3.
+    /// This is the same as <see cref="Vector3.Rot(Matrix4)"/> applied to multiple vectors.
+    /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
     /// <param name="offset"> the offset into the vectors array </param>
@@ -1639,8 +1665,10 @@ public class Matrix4
 	// @on
 
     /// <summary>
-    /// Multiplies the matrix mata with matrix matb, storing the result in mata. The arrays are assumed to hold 4x4 column major
-    /// matrices as you can get from <seealso cref="Matrix4.val"/>. This is the same as <seealso cref="Matrix4.mul(Matrix4)"/>.
+    /// Multiplies the matrix mata with matrix matb, storing the result in mata.
+    /// The arrays are assumed to hold 4x4 column major matrices as you can get
+    /// from <see cref="Matrix4.val"/>.
+    /// This is the same as <see cref="Matrix4.Mul(Matrix4)"/>.
     /// </summary>
     /// <param name="mata"> the first matrix. </param>
     /// <param name="matb"> the second matrix.  </param>
@@ -1683,9 +1711,9 @@ public class Matrix4
 
     /// <summary>
     /// Multiplies the vector with the given matrix. The matrix array is assumed to hold a 4x4 column major matrix as you can get
-    /// from <seealso cref="Matrix4.val"/>. The vector array is assumed to hold a 3-component vector, with x being the first element, y being
+    /// from <see cref="Matrix4.val"/>. The vector array is assumed to hold a 3-component vector, with x being the first element, y being
     /// the second and z being the last component. The result is stored in the vector array. This is the same as
-    /// <seealso cref="Vector3.mul(Matrix4)"/>. </summary>
+    /// <see cref="Vector3.mul(Matrix4)"/>. </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vec"> the vector.  </param>
 	public static void MulVec( float[] mat, float[] vec )

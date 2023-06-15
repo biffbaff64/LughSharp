@@ -39,6 +39,18 @@ public sealed class SortUtils
 
     private TimSort<object>?   _timSort;
 
+//    public void Sort<T>( List<T> a )
+//    {
+//    }
+
+//    public void Sort<T>( object[] a )
+//    {
+//    }
+
+//    public void Sort<T>( object[] a, int fromIndex, int toIndex )
+//    {
+//    }
+    
     /// <summary>
     /// </summary>
     /// <param name="a"></param>
@@ -56,8 +68,7 @@ public sealed class SortUtils
     /// <param name="a"></param>
     /// <param name="c"></param>
     /// <typeparam name="T"></typeparam>
-    /// <typeparam name="T1"></typeparam>
-    public void Sort<T, T1>( T[] a, IComparer< object > c )
+    public void Sort<T>( T[] a, IComparer< object > c )
     {
         _timSort ??= new TimSort< object >();
 
@@ -71,7 +82,7 @@ public sealed class SortUtils
     /// <param name="fromIndex"></param>
     /// <param name="toIndex"></param>
     /// <typeparam name="T"></typeparam>
-    public void Sort<T>( IEnumerable< T > a, IComparer< object > c, int fromIndex, int toIndex )
+    public void Sort<T>( T[] a, IComparer< object > c, int fromIndex, int toIndex )
     {
         _timSort ??= new TimSort< object >();
 

@@ -14,6 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -567,7 +568,7 @@ public class GdxArray<T>
     /// </summary>
     public void Sort()
     {
-        SortUtils.Instance.Sort( Items as object[], 0, Size );
+        SortUtils.Instance.Sort< T >( Items, c, 0, Size );
     }
 
     /// <summary>

@@ -14,9 +14,126 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Utils;
 
-public class QuickSelect
+/// <summary>
+/// Implementation of Tony Hoare's quickselect algorithm. Running time is generally O(n),
+/// but worst case is O(n^2) Pivot choice is median of three method, providing better
+/// performance than a random pivot for partially sorted data.
+/// http://en.wikipedia.org/wiki/Quickselect
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class QuickSelect<T>
 {
+    private T[]            _array   = null!;
+    private IComparer< T > _comp    = null!;
+
+    public int Select( T[] items, IComparer< T > comp, int n, int size )
+    {
+        this._array = items;
+        this._comp  = comp;
+
+        return RecursiveSelect( 0, size - 1, n );
+    }
+
+    private int Partition( int left, int right, int pivot )
+    {
+        T pivotValue = _array[ pivot ];
+
+        Swap( right, pivot );
+
+        var storage = left;
+
+        for ( var i = left; i < right; i++ )
+        {
+            if ( _comp.Compare( _array[ i ], pivotValue ) < 0 )
+            {
+                Swap( storage, i );
+                storage++;
+            }
+        }
+
+        Swap( right, storage );
+
+        return storage;
+    }
+
+    private int RecursiveSelect( int left, int right, int k )
+    {
+        if ( left == right )
+        {
+            return left;
+        }
+
+        var pivotIndex    = MedianOfThreePivot( left, right );
+        var pivotNewIndex = Partition( left, right, pivotIndex );
+        var pivotDist     = ( pivotNewIndex - left ) + 1;
         
+        int result;
+
+        if ( pivotDist == k )
+        {
+            result = pivotNewIndex;
+        }
+        else if ( k < pivotDist )
+        {
+            result = RecursiveSelect( left, pivotNewIndex - 1, k );
+        }
+        else
+        {
+            result = RecursiveSelect( pivotNewIndex + 1, right, k - pivotDist );
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Median of Three has the potential to outperform a random pivot, especially
+    /// for partially sorted arrays
+    /// </summary>
+    private int MedianOfThreePivot( int leftIdx, int rightIdx )
+    {
+        T   left   = _array[ leftIdx ];
+        var midIdx = ( leftIdx + rightIdx ) / 2;
+        T   mid    = _array[ midIdx ];
+        T   right  = _array[ rightIdx ];
+
+        // spaghetti median of three algorithm
+        // does at most 3 comparisons
+        if ( _comp.Compare( left, mid ) > 0 )
+        {
+            if ( _comp.Compare( mid, right ) > 0 )
+            {
+                return midIdx;
+            }
+            else if ( _comp.Compare( left, right ) > 0 )
+            {
+                return rightIdx;
+            }
+            else
+            {
+                return leftIdx;
+            }
+        }
+
+        if ( _comp.Compare( left, right ) > 0 )
+        {
+            return leftIdx;
+        }
+        else if ( _comp.Compare( mid, right ) > 0 )
+        {
+            return rightIdx;
+        }
+        else
+        {
+            return midIdx;
+        }
+    }
+
+    private void Swap( int left, int right )
+    {
+        ( _array[ left ], _array[ right ] ) = ( _array[ right ], _array[ left ] );
+    }
 }

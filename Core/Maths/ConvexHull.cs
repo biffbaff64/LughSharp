@@ -86,7 +86,7 @@ public class ConvexHull
 
             while ( ( hull.Count >= 4 ) && ( Ccw( x, y ) <= 0 ) )
             {
-                hull.Count -= 2;
+                hull.RemoveRange( hull.Count - 2, 2 );
             }
 
             hull.Add( x );
@@ -101,7 +101,7 @@ public class ConvexHull
 
             while ( ( hull.Count >= t ) && ( Ccw( x, y ) <= 0 ) )
             {
-                hull.Count -= 2;
+                hull.RemoveRange( hull.Count - 2, 2 );
             }
 
             hull.Add( x );
@@ -161,8 +161,8 @@ public class ConvexHull
 
             while ( ( hull.Count >= 4 ) && ( Ccw( x, y ) <= 0 ) )
             {
-                hull.Count -= 2;
-                indices.Count--;
+                hull.RemoveRange( hull.Count - 2, 2 );
+                indices.RemoveAt( indices.Count - 1 );
             }
 
             hull.Add( x );
@@ -178,8 +178,8 @@ public class ConvexHull
 
             while ( ( hull.Count >= t ) && ( Ccw( x, y ) <= 0 ) )
             {
-                hull.Count -= 2;
-                indices.Count--;
+                hull.RemoveRange( hull.Count - 2, 2 );
+                indices.RemoveAt( indices.Count - 1 );
             }
 
             hull.Add( x );

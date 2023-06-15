@@ -146,6 +146,7 @@ FILES
     - java.io.FileHandle                    -> 
     - java.io.FileHandleStream              -> 
     - java.io.FilterOutputStream            -> 
+    - java.io.DataOuput                     -> (Interface)
     - java.io.InputStream                   -> StreamReader
     - java.io.InputStreamReader             -> StreamReader
     - java.io.IOException                   -> 
@@ -417,7 +418,7 @@ MATH
     - DONE - BSpline
     -      - CatmullRomSpline
     - DONE - Circle
-    - IP   - ConvexHull
+    - DONE - ConvexHull
     - DONE - CumulativeDistribution
     -      - DelaunayTriangulator
     -      - EarClippingTriangulator
@@ -428,7 +429,7 @@ MATH
     - DONE - GridPoint2
     - DONE - GridPoint3
     -      - Interpolation
-    -      - Intersector
+    - DONE - Intersector
     - DONE - IPath
     - DONE - IShape2D
     - DONE - IVector
@@ -554,7 +555,7 @@ SCENES.SCENE2D/UI
     - DONE - Label                          Convert
     -      - List                           Convert
     -      - ParticleEffectActor            Convert
-    -      - ProgressBar                    Convert
+    - IP   - ProgressBar                    Convert
     -      - ScrollPane                     Convert
     -      - SelectBox                      Convert
     - IP   - Skin                           Convert
@@ -629,7 +630,7 @@ UTILS
     -      - GdxNativesLoader
     -      - I18NBundle                     Check
     - DONE - ICloseable                     Convert
-    - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backend.                 
+    - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backends.                 
     - DONE - IRunnable                      Done, but is it needed?
     -      - LittleEndianInputStream        Check
     - DONE - Logger                         Convert
@@ -637,16 +638,16 @@ UTILS
     -      - PauseableThread
     - DONE - PerformanceCounter             Check
     - DONE - PerformanceCounters            Check
-    -      - PropertiesUtils                Convert, but check first
+    -      - PropertiesUtils                Convert, but check if necessary first
     -      - QuadTreeFloat
     -      - Queue
-    -      - QuickSelect
+    - DONE - QuickSelect
     - DONE - Scaling
-    - IP   - ScreenUtils                    Needs ByteBuffer.Read implementing
-    - IP   - Select                         Renamed Selector
+    - DONE - ScreenUtils                    Needs ByteBuffer.Read implementing
+    - DONE - Select                         Renamed Selector
     -      - SharedLibraryLoader            Check
     - DONE - SortUtils
-    -      - SortedIntList
+    - **** - SortedIntList                  Use SortedList<int>
     -      - StreamUtils
     - DONE - StringTokenizer
     ----------------------------------------------------------------------------------
@@ -669,16 +670,6 @@ UTILS/ASYNC
     - **** - AsyncResult                    Needed??
     - **** - IAsyncTask                     Needed??
     - **** - ThreadUtils                    Needed??
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/ATOMIC
-------------
-
-    - **** - AtomicInteger                  No
-    - **** - AtomicQueue                    No
-    - **** - AtomicReferenceArray           No
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -716,24 +707,24 @@ UTILS/COLLECTIONS
 
     Maps
     ----
-    - **** - ArrayMap                       Replace with Dictionary<K, V>
-    - **** - IntFloatMap                    Replace with Dictionary< int, float >
-    - **** - IntIntMap                      Replace with Dictionary< int, int >
-    - **** - IntMap                         Replace with Dictionary< int, V >
-    - **** - LongMap                        Replace with Dictionary< long, V >
-    - **** - ObjectFloatMap                 Replace with Dictionary< object, float >
-    - **** - ObjectIntMap                   Replace with Dictionary< object, int >
-    - **** - ObjectLongMap                  Replace with Dictionary< object, long >
-    - **** - ObjectMap                      Replace with Dictionary< object, object >
+    - **** - ArrayMap                       Use Dictionary<K, V>
+    - **** - IntFloatMap                    Use Dictionary< int, float >
+    - **** - IntIntMap                      Use Dictionary< int, int >
+    - **** - IntMap                         Use Dictionary< int, V >
+    - **** - LongMap                        Use Dictionary< long, V >
+    - **** - ObjectFloatMap                 Use Dictionary< object, float >
+    - **** - ObjectIntMap                   Use Dictionary< object, int >
+    - **** - ObjectLongMap                  Use Dictionary< object, long >
+    - **** - ObjectMap                      Use Dictionary< object, object >
+    - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
 
     - IP   - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
-    - IP   - OrderedMap<K, V>               Convert / extend Dictionary< object, object >
 
     Sets
     ----
-    - **** - IntSet                         Replace with List<int>
-    - **** - ObjectSet<T>                   Replace with List<T>
-    - IP   - OrderedSet<T>                  Convert / extend List<T>
+    - **** - IntSet                         Use List<int>
+    - **** - ObjectSet<T>                   Use List<T>
+    - **** - OrderedSet<T>                  Use SortedSet<T> ?
                                             
     Misc                                    
     ----                                    
@@ -771,6 +762,16 @@ UTILS/COMPRESSION
             - **** - BitTreeEncoder
             - **** - Decoder
             - **** - Encoder
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UTILS/CONCURRENT
+----------------
+
+    - **** - AtomicInteger                  No
+    - **** - AtomicQueue                    No
+    - **** - AtomicReferenceArray           No
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,4 +1,4 @@
-﻿// ///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 // Copyright [2023] [Richard Ikin]
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,29 +12,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// ///////////////////////////////////////////////////////////////////////////////
-
-using System.Diagnostics.CodeAnalysis;
+///////////////////////////////////////////////////////////////////////////////
 
 namespace LibGDXSharp.Files;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class DataOutputStream : IDataOutput
+public interface IDataOutput
 {
-    public DataOutputStream( object getOutputStream )
-    {
-        throw new NotImplementedException();
-    }
-
     /// <summary>
     /// Writes to the output stream the eight low-order bits of the argument <tt>b</tt>.
     /// The 24 high-order bits of <tt>b</tt> are ignored.
     /// </summary>
     /// <param name="b"> the byte to be written. </param>
     /// <exception cref="IOException"> if an I/O error occurs. </exception>
-    public void Write( int b )
-    {
-    }
+    void Write( int b );
 
     /// <summary>
     /// Writes to the output stream all the bytes in array <tt>b</tt>.
@@ -45,9 +35,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="b"> the data. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void Write( sbyte[] b )
-    {
-    }
+    void Write( sbyte[] b );
 
     /// <summary>
     /// Writes <tt>len</tt> bytes from array <tt>b</tt>, in order, to the output stream.
@@ -62,14 +50,18 @@ public class DataOutputStream : IDataOutput
     /// <param name="off"> the start offset in the data. </param>
     /// <param name="len"> the number of bytes to write. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void Write( sbyte[] b, int off, int len )
-    {
-    }
+    void Write( sbyte[] b, int off, int len );
 
-    public void WriteBoolean( bool isPeripheralAvailable )
-    {
-        throw new NotImplementedException();
-    }
+    /// <summary>
+    /// Writes a <tt>boolean</tt> value to this output stream. If the argument <tt>v</tt>
+    /// is <tt>true</tt>, the value <tt>(byte)1</tt> is written; if <tt>v</tt> is <tt>false</tt>,
+    /// the  value <tt>(byte)0</tt> is written. The byte written by this method may be read
+    /// by the <tt>ReadBoolean</tt> method of interface <tt>IDataInput</tt>, which will then
+    /// return a <tt>bool</tt> equal to <tt>v</tt>.
+    /// </summary>
+    /// <param name="v"> the boolean to be written. </param>
+    /// <exception cref="IOException">  if an I/O error occurs. </exception>
+    void WriteBoolean( bool v );
 
     /// <summary>
     /// Writes to the output stream the eight low- order bits of the argument <tt>v</tt>.
@@ -80,9 +72,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="v"> the byte value to be written. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void WriteByte( int v )
-    {
-    }
+    void WriteByte( int v );
 
     /// <summary>
     /// Writes two bytes to the output stream to represent the value of the argument.
@@ -97,9 +87,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="v"> the <tt>short</tt> value to be written. </param>
     /// <exception cref="IOException"> if an I/O error occurs. </exception>
-    public void WriteShort( int v )
-    {
-    }
+    void WriteShort( int v );
 
     /// <summary>
     /// Writes a <tt>char</tt> value, which is comprised of two bytes, to the
@@ -114,14 +102,23 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="v"> the <tt>char</tt> value to be written. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void WriteChar( int v )
-    {
-    }
+    void WriteChar( int v );
 
-    public void WriteInt( int accel )
-    {
-        throw new NotImplementedException();
-    }
+    /// <summary>
+    /// Writes an <tt>int</tt> value, which is comprised of four bytes, to the output stream.
+    /// The byte values to be written, in the  order shown, are:
+    /// <para><tt>(byte)(0xff & (v >> 24))</tt></para>
+    /// <para><tt>(byte)(0xff & (v >> 16))</tt></para>
+    /// <para><tt>(byte)(0xff & (v >>  8))</tt></para>
+    /// <para><tt>(byte)(0xff & v)</tt></para>
+    /// <para>
+    /// The bytes written by this method may be read by the <tt>ReadInt</tt> method of interface
+    /// <tt>IDataInput</tt> , which will then return an <tt>int</tt> equal to <tt>v</tt>.
+    /// </para>
+    /// </summary>
+    /// <param name="v">   the <tt>int</tt> value to be written. </param>
+    /// <exception cref="IOException">  if an I/O error occurs. </exception>
+    void WriteInt( int v );
 
     /// <summary>
     /// Writes a <tt>long</tt> value, which is comprised of eight bytes, to the output stream.
@@ -142,9 +139,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="v"> the <tt>long</tt> value to be written. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void WriteLong( long v )
-    {
-    }
+    void WriteLong( long v );
 
     /// <summary>
     /// Writes a <tt>float</tt> value, which is comprised of four bytes, to the output stream.
@@ -156,9 +151,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="v"> the <tt>float</tt> value to be written. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void WriteFloat( float v )
-    {
-    }
+    void WriteFloat( float v );
 
     /// <summary>
     /// Writes a <tt>double</tt> value, which is comprised of eight bytes, to the output stream.
@@ -170,9 +163,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="v"> the <tt>double</tt> value to be written. </param>
     /// <exception cref="IOException"> if an I/O error occurs. </exception>
-    public void WriteDouble( double v )
-    {
-    }
+    void WriteDouble( double v );
 
     /// <summary>
     /// Writes a string to the output stream. For every character in the string
@@ -189,9 +180,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="s"> the string of bytes to be written. </param>
     /// <exception cref="IOException"> if an I/O error occurs. </exception>
-    public void WriteBytes( string s )
-    {
-    }
+    void WriteBytes( string s );
 
     /// <summary>
     /// Writes every character in the string <tt>s</tt>, to the output stream, in order,
@@ -203,9 +192,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="s"> the string value to be written. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void WriteChars( string s )
-    {
-    }
+    void WriteChars( string s );
 
     /// <summary>
     /// Writes two bytes of length information to the output stream, followed by the
@@ -248,17 +235,5 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="s"> the string value to be written. </param>
     /// <exception cref="IOException"> if an I/O error occurs. </exception>
-    public void WriteUTF( string s )
-    {
-    }
-
-    public void WriteFloat( object getAccelerometerX )
-    {
-        throw new NotImplementedException();
-    }
-
-    public void WriteChar( char character )
-    {
-        throw new NotImplementedException();
-    }
+    void WriteUTF( string s );
 }

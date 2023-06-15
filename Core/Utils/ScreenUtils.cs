@@ -202,7 +202,7 @@ public class ScreenUtils
         {
             pixels.Clear();
 
-            pixels.Read( lines );
+            pixels.Get( lines );
         }
 
         return lines;

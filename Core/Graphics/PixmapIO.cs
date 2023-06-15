@@ -16,6 +16,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
+
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics;
@@ -144,7 +145,7 @@ public class PixmapIO
                 StreamUtils.CloseQuietly( output );
             }
         }
-
+        
         public static Pixmap Read( FileInfo file )
         {
             DataInputStream? input = null;

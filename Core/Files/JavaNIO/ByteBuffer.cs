@@ -17,8 +17,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-using LibGDXSharp.GdxCore.Utils.Buffers;
-
 namespace LibGDXSharp.Files;
 
 [SuppressMessage( "ReSharper", "UnassignedGetOnlyAutoProperty" )]
@@ -35,7 +33,6 @@ public abstract class ByteBuffer : Buffer, IComparable< ByteBuffer >
     {
         _hb        = null!;
         isReadOnly = false;
-        S
     }
 
     /// <summary>

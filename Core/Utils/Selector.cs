@@ -33,23 +33,92 @@ namespace LibGDXSharp.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class Selector<T>
 {
-    private readonly static Selector< T > instance = new Selector< T >();
-    private                 QuickSelect?  _quickSelect;
+    private readonly static Selector< T > instance = new();
+
+    private QuickSelect<T>? _quickSelect;
 
     public static Selector< T > Instance() => instance;
 
-    public T Select( T?[] items, IComparer< T > comp, int kthLowest, int size )
+    public T Select( T[] items, IComparer< T > comp, int kthLowest, int size )
     {
-        throw new NotImplementedException();
+        var idx = SelectIndex( items, comp, kthLowest, size );
+
+        return items[ idx ];
     }
 
-    public T Selecting( T?[] items, IComparer< T > comparator, int kthLowest, int size )
+    public int SelectIndex( T[] items, IComparer< T > comp, int kthLowest, int size )
     {
-        throw new NotImplementedException();
+        if ( size < 1 )
+        {
+            throw new GdxRuntimeException( "cannot select from empty array (size < 1)" );
+        }
+        
+        if ( kthLowest > size )
+        {
+            throw new GdxRuntimeException( "Kth rank is larger than size. k: " + kthLowest + ", size: " + size );
+        }
+
+        int idx;
+
+        // naive partial selection sort almost certain to outperform quickselect where n is min or max
+        if ( kthLowest == 1 )
+        {
+            // find min
+            idx = FastMin( items, comp, size );
+        }
+        else if ( kthLowest == size )
+        {
+            // find max
+            idx = FastMax( items, comp, size );
+        }
+        else
+        {
+            // quickselect a better choice for cases of k between min and max
+            _quickSelect ??= new QuickSelect< T >();
+
+            idx = _quickSelect.Select( items, comp, kthLowest, size );
+        }
+
+        return idx;
     }
 
-    public int SelectIndex( T?[] items, IComparer< T > comparator, int kthLowest, int size )
+    /// <summary>
+    /// Faster than quickselect for n = min
+    /// </summary>
+    private int FastMin( T[] items, IComparer< T > comp, int size )
     {
-        throw new NotImplementedException();
+        var lowestIdx = 0;
+
+        for ( var i = 1; i < size; i++ )
+        {
+            var comparison = comp.Compare( items[ i ], items[ lowestIdx ] );
+
+            if ( comparison < 0 )
+            {
+                lowestIdx = i;
+            }
+        }
+
+        return lowestIdx;
+    }
+
+    /// <summary>
+    /// Faster than quickselect for n = max
+    /// </summary>
+    private int FastMax( T[] items, IComparer< T > comp, int size )
+    {
+        var highestIdx = 0;
+
+        for ( var i = 1; i < size; i++ )
+        {
+            var comparison = comp.Compare( items[ i ], items[ highestIdx ] );
+
+            if ( comparison > 0 )
+            {
+                highestIdx = i;
+            }
+        }
+
+        return highestIdx;
     }
 }

@@ -73,7 +73,7 @@ public class Stage : InputAdapter
     private bool             _debugAll;
     private bool             _debugUnderMouse;
     private bool             _debugParentUnderMouse;
-    private Table.DebugType? _debugTableUnderMouse = Table.DebugType.None;
+    private Table.DebugType  _debugTableUnderMouse = Table.DebugType.None;
 
     public Viewport Viewport { get; set; }
     public IBatch   Batch    { get; }
@@ -176,7 +176,7 @@ public class Stage : InputAdapter
 
                 if ( actor == null ) return;
 
-                ( ( Table )actor ).DebugLines( _debugTableUnderMouse );
+                ( ( Table )actor ).Debug( _debugTableUnderMouse );
             }
 
             if ( _debugAll && actor is Group group )
@@ -1224,9 +1224,9 @@ public class Stage : InputAdapter
     /// Can be combined with <see cref="DebugAll"/>.
     /// </summary>
     /// <param name="debugTableUnderMouse">May be null for <see cref="Table.DebugType.None"/>.</param>
-    public void SetDebugTableUnderMouse( Table.DebugType? debugTableUnderMouse )
+    public void SetDebugTableUnderMouse( Table.DebugType debugTableUnderMouse )
     {
-        if ( debugTableUnderMouse == null )
+        if ( Enum.IsDefined( typeof( Table.DebugType ), debugTableUnderMouse ) )
         {
             _debugTableUnderMouse = Table.DebugType.None;
         }

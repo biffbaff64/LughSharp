@@ -14,11 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 using LibGDXSharp.Audio;
 
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
-public class MockAudio : IAudio
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class MockAudio : IAudio
 {
     /// <summary>
     /// Creates a new <see cref="IAudioDevice"/> either in mono or stereo mode.
@@ -31,7 +34,7 @@ public class MockAudio : IAudio
     /// <exception cref="GdxRuntimeException">Thrown if the device could not be created.</exception>
     public IAudioDevice NewAudioDevice( int samplingRate, bool isMono )
     {
-        return null;
+        return null!;
     }
 
     ///
@@ -45,7 +48,7 @@ public class MockAudio : IAudio
     ///
     public IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -59,9 +62,9 @@ public class MockAudio : IAudio
     /// </summary>
     /// <returns>The new sound.</returns>
     /// <exception cref="GdxRuntimeException">in case the sound could not be loaded.</exception>
-    public ISound NewSound( FileHandle fileHandle )
+    public ISound NewSound( FileInfo? fileHandle )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -73,8 +76,8 @@ public class MockAudio : IAudio
     /// <param name="file">The filehandle.</param>
     /// <return>the new Music or null if the Music could not be loaded.</return>
     /// <exception cref="GdxRuntimeException">in case the music could not be loaded.</exception>
-    public IMusic NewMusic( FileHandle file )
+    public IMusic NewMusic( FileInfo? file )
     {
-        return null;
+        return null!;
     }
 }
