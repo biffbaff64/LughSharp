@@ -16,7 +16,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
-using System.Text.Json;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
@@ -866,7 +865,7 @@ public sealed class Skin : IDisposable
                 }
             }
 
-            base.readFields( @object, jsonMap );
+            base.ReadFields( @object, jsonMap );
         }
     }
 
@@ -882,7 +881,7 @@ public sealed class Skin : IDisposable
             this._skin          = skin;
         }
 
-        public Skin read( Json json, JsonValue typeToValueMap, Type ignored )
+        public Skin Read( Json json, JsonValue typeToValueMap, Type ignored )
         {
             for ( JsonValue valueMap = typeToValueMap.child; valueMap != null; valueMap = valueMap.next )
             {

@@ -82,30 +82,24 @@ public interface ILayout
     /// parent is the stage, the actor will be sized to the stage. This method is for convenience
     /// only when the widget's parent does not set the size of its children (such as the stage). 
     /// </summary>
-    bool FillParent { set; }
+    bool FillParent { get; set; }
 
     /// <summary>
     /// Enables or disables the layout for this actor and all child actors, recursively.
     /// When false, <see cref="Validate()"/> will not cause a layout to occur. This can be useful
     /// when an actor will be manipulated externally, such as with actions. Default is true. 
     /// </summary>
-    void SetLayoutEnabled( bool enabled );
+    bool LayoutEnabled { get; set; }
 
-    float MinWidth { get; set; }
+    float MinWidth();
 
-    float MinHeight { get; set; }
+    float MinHeight();
 
-    float PrefWidth { get; set; }
+    float PrefWidth();
 
-    float PrefHeight { get; set; }
+    float PrefHeight();
 
-    /// <summary>
-    /// Zero indicates no max width.
-    /// </summary>
-    float MaxWidth { get; set; }
+    float MaxWidth();
 
-    /// <summary>
-    /// Zero indicates no max height.
-    /// </summary>
-    float MaxHeight { get; set; }
+    float MaxHeight();
 }

@@ -19,7 +19,6 @@ using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
-using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Pooling;
@@ -66,9 +65,11 @@ public class Table : WidgetGroup
     private static float[]? _columnWeightedWidth;
     private static float[]? _rowWeightedHeight;
 
-    private readonly List< Cell > _cells = new( 4 );
-    private readonly Cell         _cellDefaults;
+    private readonly List< Cell > _cells          = new( 4 );
     private readonly List< Cell > _columnDefaults = new( 2 );
+    private readonly Cell         _cellDefaults;
+    private readonly float[]      _columnWidth;
+    private readonly float[]      _rowHeight;
 
     private Cell?   _rowDefaults;
     private bool    _implicitEndRow = false;
@@ -77,8 +78,6 @@ public class Table : WidgetGroup
     private float[] _rowMinHeight;
     private float[] _columnPrefWidth;
     private float[] _rowPrefHeight;
-    private float[] _columnWidth;
-    private float[] _rowHeight;
     private float[] _expandWidth;
     private float[] _expandHeight;
     private float   _tableMinWidth;
@@ -86,10 +85,10 @@ public class Table : WidgetGroup
     private float   _tablePrefWidth;
     private float   _tablePrefHeight;
 
-    private Value _padTop    = backgroundTop;
-    private Value _padLeft   = backgroundLeft;
-    private Value _padBottom = backgroundBottom;
-    private Value _padRight  = backgroundRight;
+    private Value _padTop    = BackgroundTop;
+    private Value _padLeft   = BackgroundLeft;
+    private Value _padBottom = BackgroundBottom;
+    private Value _padRight  = BackgroundRight;
 
     private int                _alignment = LibGDXSharp.Utils.Align.Center;
     private List< DebugRect >? _debugRects;
@@ -106,6 +105,17 @@ public class Table : WidgetGroup
     /// </summary>
     protected Table( Skin? skin )
     {
+        // ----------------------------
+        _columnWidth     = default!;
+        _columnMinWidth  = default!;
+        _columnPrefWidth = default!;
+        _rowHeight       = default!;
+        _rowMinHeight    = default!;
+        _rowPrefHeight   = default!;
+        _expandWidth     = default!;
+        _expandHeight    = default!;
+        // ----------------------------
+
         this.Skin = skin;
 
         _cellDefaults = ObtainCell();
@@ -283,7 +293,7 @@ public class Table : WidgetGroup
     /// </summary>
     public Cell AddWithoutActor()
     {
-        return Add<Actor>( null! );
+        return Add< Actor >( null! );
     }
 
     /// <summary>
@@ -376,6 +386,8 @@ public class Table : WidgetGroup
     /// </summary>
     public Cell Add( string? text )
     {
+        ArgumentNullException.ThrowIfNull( text );
+
         if ( Skin == null )
         {
             throw new IllegalStateException( "Table must have a skin set to use this method." );
@@ -392,14 +404,14 @@ public class Table : WidgetGroup
     {
         if ( Skin == null ) throw new IllegalStateException( "Table must have a skin set to use this method." );
 
-        return Add( new Label( text, Skin.Get<Label.LabelStyle>( labelStyleName ) );
+        return Add( new Label( text, ( Skin )Skin.Get< Label.LabelStyle >( labelStyleName ) ) );
     }
 
     /// <summary>
     /// Adds a new cell with a label. This may only be called if a skin
     /// has been set with <see cref="Table"/> or <see cref="Skin"/>.
     /// </summary>
-    public Cell Add( string? text, string fontName, Color? color )
+    public Cell Add( string? text, string fontName, Color color )
     {
         if ( Skin == null ) throw new IllegalStateException( "Table must have a skin set to use this method." );
 
@@ -489,10 +501,10 @@ public class Table : WidgetGroup
     {
         ClearChildren();
 
-        _padTop    = backgroundTop;
-        _padLeft   = backgroundLeft;
-        _padBottom = backgroundBottom;
-        _padRight  = backgroundRight;
+        _padTop    = BackgroundTop;
+        _padLeft   = BackgroundLeft;
+        _padBottom = BackgroundBottom;
+        _padRight  = BackgroundRight;
 
         _alignment = LibGDXSharp.Utils.Align.Center;
 
@@ -523,7 +535,7 @@ public class Table : WidgetGroup
                     // Row was already ended.
                     return _rowDefaults;
                 }
-                
+
                 EndRow();
             }
 
@@ -531,9 +543,9 @@ public class Table : WidgetGroup
         }
 
         _implicitEndRow = false;
- 
+
         if ( _rowDefaults != null ) CellPool.Free( _rowDefaults );
-        
+
         _rowDefaults = ObtainCell();
         _rowDefaults.Clear();
 
@@ -543,7 +555,7 @@ public class Table : WidgetGroup
     private void EndRow()
     {
         Cell[] cells      = this._cells.ToArray();
-        var      rowColumns = 0;
+        var    rowColumns = 0;
 
         for ( var i = this._cells.Count - 1; i >= 0; i-- )
         {
@@ -555,9 +567,9 @@ public class Table : WidgetGroup
         }
 
         Columns = Math.Max( Columns, rowColumns );
-        
+
         Rows++;
-        
+
         this._cells.Peek().EndRow = true;
     }
 
@@ -577,7 +589,7 @@ public class Table : WidgetGroup
 
             if ( column >= _columnDefaults.Count )
             {
-                for ( int i = _columnDefaults.Count; i < column; i++ )
+                for ( var i = _columnDefaults.Count; i < column; i++ )
                 {
                     _columnDefaults.Add( null! );
                 }
@@ -603,7 +615,7 @@ public class Table : WidgetGroup
     public Cell? GetCell<T>( T actor ) where T : Actor
     {
         if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
-        
+
         Cell[] cells = this._cells.ToArray();
 
         for ( int i = 0, n = this._cells.Count; i < n; i++ )
@@ -625,29 +637,22 @@ public class Table : WidgetGroup
         return _cells;
     }
 
-    public float GetPrefWidth()
+    protected float GetPrefWidth()
     {
         if ( _sizeInvalid ) ComputeSize();
-        
+
         var width = _tablePrefWidth;
 
-        if ( _background != null ) return Math.Max( width, _background.MinWidth );
-
-        return width;
+        return _background != null ? Math.Max( width, _background.MinWidth ) : width;
     }
 
-    public float GetPrefHeight()
+    protected float GetPrefHeight()
     {
         if ( _sizeInvalid ) ComputeSize();
-        
-        float height = _tablePrefHeight;
 
-        if ( _background != null )
-        {
-            return Math.Max( height, _background.MinHeight );
-        }
+        var height = _tablePrefHeight;
 
-        return height;
+        return _background != null ? Math.Max( height, _background.MinHeight ) : height;
     }
 
     public float GetMinWidth()
@@ -758,7 +763,7 @@ public class Table : WidgetGroup
     {
         this._padRight = padRight ?? throw new ArgumentException( "padRight cannot be null." );
 
-        _sizeInvalid   = true;
+        _sizeInvalid = true;
 
         return this;
     }
@@ -794,7 +799,7 @@ public class Table : WidgetGroup
     public Table PadTop( float padTop )
     {
         this._padTop = Value.Fixed.ValueOf( padTop );
-        
+
         _sizeInvalid = true;
 
         return this;
@@ -808,8 +813,8 @@ public class Table : WidgetGroup
     public Table PadLeft( float padLeft )
     {
         this._padLeft = Value.Fixed.ValueOf( padLeft );
-        
-        _sizeInvalid  = true;
+
+        _sizeInvalid = true;
 
         return this;
     }
@@ -822,8 +827,8 @@ public class Table : WidgetGroup
     public Table PadBottom( float padBottom )
     {
         this._padBottom = Value.Fixed.ValueOf( padBottom );
-        
-        _sizeInvalid    = true;
+
+        _sizeInvalid = true;
 
         return this;
     }
@@ -836,8 +841,8 @@ public class Table : WidgetGroup
     public Table PadRight( float padRight )
     {
         this._padRight = Value.Fixed.ValueOf( padRight );
-        
-        _sizeInvalid   = true;
+
+        _sizeInvalid = true;
 
         return this;
     }
@@ -1962,5 +1967,61 @@ public class Table : WidgetGroup
     public int Columns { get; set; }
 
     #endregion Properties
+
+    #region backgrounds
+
+    /// <summary>
+    /// Value that is the top padding of the table's background.
+    /// </summary>
+    public readonly static Value BackgroundTop = new BackgroundTopDelegate();
+
+    /// <summary>
+    /// Value that is the bottom padding of the table's background.
+    /// </summary>
+    public readonly static Value BackgroundBottom = new BackgroundBottomDelegate();
+
+    /// <summary>
+    /// Value that is the left padding of the table's background.
+    /// </summary>
+    public readonly static Value BackgroundLeft = new BackgroundLeftDelegate();
+
+    /// <summary>
+    /// Value that is the right padding of the table's background.
+    /// </summary>
+    public readonly static Value BackgroundRight = new BackgroundRightDelegate();
+
+    private sealed class BackgroundTopDelegate : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            return ( ( Table? )context )?.GetBackground()?.TopHeight ?? 0;
+        }
+    }
+
+    private sealed class BackgroundBottomDelegate : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            return ( ( Table? )context )?.GetBackground()?.BottomHeight ?? 0;
+        }
+    }
+
+    private sealed class BackgroundLeftDelegate : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            return ( ( Table? )context )?.GetBackground()?.LeftWidth ?? 0;
+        }
+    }
+
+    private sealed class BackgroundRightDelegate : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            return ( ( Table? )context )?.GetBackground()?.RightWidth ?? 0;
+        }
+    }
+
+    #endregion
 
 }

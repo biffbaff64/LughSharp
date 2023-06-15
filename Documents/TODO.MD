@@ -541,8 +541,8 @@ SCENES.SCENE2D/ACTIONS
 SCENES.SCENE2D/UI
 -----------------
 
-    - IP   - Button                         Convert
-    -      - ButtonGroup                    Convert
+    - DONE - Button                         Convert
+    - DONE - ButtonGroup                    Convert
     - DONE - Cell                           Convert
     -      - CheckBox                       Convert
     -      - Container                      Convert
@@ -560,8 +560,8 @@ SCENES.SCENE2D/UI
     - IP   - Skin                           Convert
     -      - Slider                         Convert
     -      - SplitPane                      Convert
-    - IP   - Stack                          Convert
-    - IP   - Table                          Convert
+    - DONE - Stack                          Convert
+    - DONE - Table                          Convert
     -      - TextArea                       Convert
     -      - TextButton                     Convert
     -      - TextField                      Convert
@@ -572,7 +572,7 @@ SCENES.SCENE2D/UI
     - DONE - Value                          Convert
     - DONE - ValueExtensions                New Class
     -      - VerticalGroup                  Convert
-    -      - Widget                         Convert
+    - DONE - Widget                         Convert
     - DONE - WidgetGroup                    Convert
     -      - Window                         Convert
 

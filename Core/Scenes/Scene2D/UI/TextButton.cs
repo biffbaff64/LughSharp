@@ -14,9 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-public class TextButton
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class TextButton : Button
 {
-        
+    public Label? Label { get; set; }
+
+    public string? GetText() => Label?.Text.ToString();
 }

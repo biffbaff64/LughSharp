@@ -18,7 +18,6 @@ using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
-using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
@@ -43,361 +42,383 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// button contents.
 /// </para>
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Button : Table, IDisableable
 {
+
+    #region private_data
+
     private ButtonStyle? _style;
-    private bool isChecked;
-    private bool isDisabled;
-    private ButtonGroup buttonGroup;
-    private ClickListener clickListener;
-    private bool programmaticChangeEvents = true;
+    private bool         _programmaticChangeEvents = true;
+
+    #endregion private_data
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region constructors
 
     public Button( Skin skin ) : base( skin )
     {
-        initialize();
-        setStyle( skin.get( ButtonStyle.class));
-        setSize( GetPrefWidth(), GetPrefHeight() );
-}
-
-public Button( Skin skin, String styleName )
-    : base( skin )
-{
-    initialize();
-    setStyle( skin.get( styleName, ButtonStyle.class));
-        setSize( GetPrefWidth(), GetPrefHeight() );
+        Initialize();
+        Style = skin.Get< ButtonStyle >();
+        SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    public Button( Actor child, Skin skin, String styleName )
-{
-    this( child, skin.get( styleName, ButtonStyle.class));
-SetSkin( skin );
+    public Button( Skin skin, string styleName )
+        : base( skin )
+    {
+        Initialize();
+        Style = ( ButtonStyle )skin.Get< ButtonStyle >( styleName );
+        SetSize( GetPrefWidth(), GetPrefHeight() );
+    }
+
+    public Button( Actor child, Skin skin, string styleName )
+        : this( child, ( Skin )skin.Get< ButtonStyle >( styleName ) )
+    {
+        base.Skin = skin;
     }
 
     public Button( Actor child, ButtonStyle style )
-{
-    initialize();
-    add( child );
-    setStyle( style );
-    setSize( GetPrefWidth(), GetPrefHeight() );
-}
+    {
+        Initialize();
+        Add( child );
+        Style = style;
+        SetSize( GetPrefWidth(), GetPrefHeight() );
+    }
 
-public Button( ButtonStyle style )
-{
-    initialize();
-    setStyle( style );
-    setSize( GetPrefWidth(), GetPrefHeight() );
-}
+    public Button( ButtonStyle style )
+    {
+        Initialize();
+        Style = style;
+        SetSize( GetPrefWidth(), GetPrefHeight() );
+    }
 
-/** Creates a button without setting the style or size. At least a style must be set before using this button. */
-public Button()
-{
-    initialize();
-}
+    /// <summary>
+    /// Creates a button without setting the style or size.
+    /// At least a style must be set before using this button.
+    /// </summary>
+    public Button()
+    {
+        Initialize();
+    }
 
-private void initialize()
-{
-    setTouchable( Touchable.enabled );
+    public Button( IDrawable? up )
+        : this( new ButtonStyle( up, null, null ) )
+    {
+    }
 
-    addListener
-        ( clickListener = new ClickListener()
+    public Button( IDrawable? up, IDrawable? down )
+        : this( new ButtonStyle( up, down, null ) )
+    {
+    }
+
+    public Button( IDrawable? upImage, IDrawable? downImage, IDrawable? checkedImage )
+        : this( new ButtonStyle( upImage, downImage, checkedImage ) )
+    {
+    }
+
+    public Button( Actor child, Skin skin )
+        : this( child, skin.Get< ButtonStyle >() )
+    {
+    }
+
+    #endregion constructors
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    private void Initialize()
+    {
+        Touchable = Touchable.Enabled;
+
+        this.ClickListener = new ButtonClickListener( this );
+        
+        AddListener( this.ClickListener! );
+    }
+
+    public void SetChecked( bool isChecked )
+    {
+        SetChecked( isChecked, _programmaticChangeEvents );
+    }
+
+    public void SetChecked( bool isChecked, bool fireEvent )
+    {
+        if ( this.IsChecked == isChecked ) return;
+
+        if ( ( ButtonGroup != null ) && !ButtonGroup.CanCheck( this, isChecked ) ) return;
+
+        this.IsChecked = isChecked;
+
+        if ( fireEvent )
         {
+            ChangeListener.ChangeEvent changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
 
+            if ( Fire( changeEvent ) ) this.IsChecked = !isChecked;
 
-
-
-                public void clicked( InputEvent event, float x, float y )
-    {
-        if ( isDisabled() ) return;
-        setChecked( !isChecked, true );
-    }
-
-});
-    }
-
-    public Button( @Null Drawable up )
-{
-    this( new ButtonStyle( up, null, null ) );
-}
-
-public Button( @Null Drawable up, @Null Drawable down)
-{
-    this( new ButtonStyle( up, down, null ) );
-}
-
-public Button( @Null Drawable up, @Null Drawable down, @Null Drawable checked)
-{
-    this( new ButtonStyle( up, down, checked ) );
-}
-
-public Button( Actor child, Skin skin )
-        : this( child, skin.Get( ButtonStyle.class))
-    {
-}
-
-public void setChecked( bool isChecked )
-{
-    setChecked( isChecked, programmaticChangeEvents );
-}
-
-void setChecked( bool isChecked, bool fireEvent )
-{
-    if ( this.isChecked == isChecked ) return;
-    if ( buttonGroup != null && !buttonGroup.canCheck( this, isChecked ) ) return;
-    this.isChecked = isChecked;
-
-    if ( fireEvent )
-    {
-        ChangeListener.ChangeEvent changeEvent = Pools<>.obtain( ChangeListener.ChangeEvent.class);
-if ( fire( changeEvent ) ) this.isChecked = !isChecked;
-Pools.free( changeEvent );
+            Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
         }
     }
 
-    /** Toggles the checked state. This method changes the checked state, which fires a {@link ChangeEvent} (if programmatic change
-	 * events are enabled), so can be used to simulate a button click. */
-    public void toggle()
-{
-    setChecked( !isChecked );
-}
-
-public bool isChecked()
-{
-    return isChecked;
-}
-
-public bool isPressed()
-{
-    return clickListener.isVisualPressed();
-}
-
-public bool isOver()
-{
-    return clickListener.isOver();
-}
-
-public ClickListener getClickListener()
-{
-    return clickListener;
-}
-
-public bool isDisabled()
-{
-    return isDisabled;
-}
-
-/** When true, the button will not toggle {@link #isChecked()} when clicked and will not fire a {@link ChangeEvent}. */
-public void setDisabled( bool isDisabled )
-{
-    this.isDisabled = isDisabled;
-}
-
-/** If false, {@link #setChecked(bool)} and {@link #toggle()} will not fire {@link ChangeEvent}. The event will only be
- * fired only when the user clicks the button */
-public void setProgrammaticChangeEvents( bool programmaticChangeEvents )
-{
-    this.programmaticChangeEvents = programmaticChangeEvents;
-}
-
-public void setStyle( ButtonStyle style )
-{
-    if ( style == null ) throw new IllegalArgumentException( "style cannot be null." );
-    this._style = style;
-
-    setBackground( getBackgroundDrawable() );
-}
-
-/** Returns the button's style. Modifying the returned style may not have an effect until {@link #setStyle(ButtonStyle)} is
- * called. */
-public ButtonStyle getStyle()
-{
-    return _style;
-}
-
-/** @return May be null. */
-public @Null ButtonGroup getButtonGroup()
+    /// <summary>
+    /// If false, <see cref="SetChecked(bool)"/> and <see cref="Toggle()"/> will not
+    /// fire <see cref="ChangeListener.ChangeEvent()"/>.
+    /// The event will only be fired when the user clicks the button
+    /// </summary>
+    public void SetProgrammaticChangeEvents( bool programmaticChangeEvents )
     {
-    return buttonGroup;
-}
-
-/** Returns appropriate background drawable from the style based on the current button state. */
-protected IDrawable? GetBackgroundDrawable()
-{
-    if ( isDisabled() && ( _style.Disabled != null ) ) return _style.Disabled;
-
-    if ( IsPressed() )
-    {
-        if ( isChecked() && _style.CheckedDown != null ) return _style.CheckedDown;
-        if ( _style.Down != null ) return _style.Down;
+        this._programmaticChangeEvents = programmaticChangeEvents;
     }
 
-    if ( isOver() )
+    /// <summary>
+    /// Returns the button's style. Modifying the returned style may not have an
+    /// effect until <see cref="Style"/> set() is called.
+    /// </summary>
+    public ButtonStyle? Style
     {
-        if ( isChecked() )
+        get => _style;
+        // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+        set
         {
-            if ( _style.CheckedOver != null ) return _style.CheckedOver;
-        }
-        else
-        {
-            if ( _style.Over != null ) return _style.Over;
+            this._style = value ?? throw new ArgumentException( "style cannot be null." );
+
+            SetBackground( GetBackgroundDrawable() );
         }
     }
 
-    bool focused = hasKeyboardFocus();
-
-    if ( isChecked() )
+    /// <summary>
+    /// Returns appropriate background drawable from the style based on the current button state.
+    /// </summary>
+    public IDrawable? GetBackgroundDrawable()
     {
-        if ( focused && _style.CheckedFocused != null ) return _style.CheckedFocused;
-        if ( _style.checked != null) return _style.checked
+        if ( IsDisabled && ( Style?.Disabled != null ) ) return Style.Disabled;
 
-            ;
+        if ( IsPressed() )
+        {
+            if ( IsChecked && ( Style?.CheckedDown != null ) ) return Style.CheckedDown;
 
-if ( isOver() && _style.Over != null ) return _style.Over;
-}
+            if ( Style?.Down != null ) return Style.Down;
+        }
 
-if ( focused && _style.Focused != null ) return _style.Focused;
+        if ( IsOver() )
+        {
+            if ( IsChecked )
+            {
+                if ( Style?.CheckedOver != null ) return Style.CheckedOver;
+            }
+            else
+            {
+                if ( Style?.Over != null ) return Style.Over;
+            }
+        }
 
-return _style.Up;
+        var focused = HasKeyboardFocus();
+
+        if ( IsChecked )
+        {
+            if ( focused && ( Style?.CheckedFocused != null ) ) return Style.CheckedFocused;
+
+            if ( Style?.Checked != null ) return Style.Checked;
+
+            if ( IsOver() && ( Style?.Over != null ) ) return Style.Over;
+        }
+
+        if ( focused && ( Style?.Focused != null ) ) return Style.Focused;
+
+        return Style?.Up;
     }
 
     public new void Draw( IBatch batch, float parentAlpha )
-{
-    Validate();
-
-    SetBackground( getBackgroundDrawable() );
-
-    float offsetX = 0, offsetY = 0;
-
-    if ( isPressed() && !isDisabled() )
     {
-        offsetX = _style.PressedOffsetX;
-        offsetY = _style.PressedOffsetY;
-    }
-    else if ( isChecked() && !isDisabled() )
-    {
-        offsetX = _style.CheckedOffsetX;
-        offsetY = _style.CheckedOffsetY;
-    }
-    else
-    {
-        offsetX = _style.UnpressedOffsetX;
-        offsetY = _style.UnpressedOffsetY;
-    }
+        Validate();
 
-    var offset = ( offsetX != 0 ) || ( offsetY != 0 );
+        SetBackground( GetBackgroundDrawable() );
 
-    SnapshotArray<Actor> children = Children;
+        float? offsetX;
+        float? offsetY;
 
-    if ( offset )
-    {
-        foreach ( Actor actor in children )
+        if ( IsPressed() && !IsDisabled )
         {
-            actor.MoveBy( offsetX, offsetY );
+            offsetX = Style?.PressedOffsetX;
+            offsetY = Style?.PressedOffsetY;
+        }
+        else if ( IsChecked && !IsDisabled )
+        {
+            offsetX = Style?.CheckedOffsetX;
+            offsetY = Style?.CheckedOffsetY;
+        }
+        else
+        {
+            offsetX = Style?.UnpressedOffsetX;
+            offsetY = Style?.UnpressedOffsetY;
+        }
+
+        var offset = ( offsetX != 0 ) || ( offsetY != 0 );
+
+        if ( offset )
+        {
+            foreach ( Actor actor in Children )
+            {
+                actor.MoveBy( ( float )offsetX!, ( float )offsetY! );
+            }
+        }
+
+        base.Draw( batch, parentAlpha );
+
+        if ( offset )
+        {
+            for ( int i = 0; i < Children.Size; i++ )
+            {
+                Children.Get( i ).MoveBy( ( float )-offsetX!, ( float )-offsetY! );
+            }
+        }
+
+        if ( Stage is { ActionsRequestRendering: true }
+             && ( IsPressed() != ClickListener?.Pressed ) )
+        {
+            Gdx.Graphics.RequestRendering();
         }
     }
 
-    base.Draw( batch, parentAlpha );
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    if ( offset )
+    #region properties
+
+    public new float PrefWidth
     {
-        for ( int i = 0; i < children.Size; i++ )
+        get
         {
-            children.Get( i ).MoveBy( -offsetX, -offsetY );
+            var width = GetPrefWidth();
+
+            if ( Style?.Up != null ) width      = Math.Max( width, Style.Up.MinWidth );
+            if ( Style?.Down != null ) width    = Math.Max( width, Style.Down.MinWidth );
+            if ( Style?.Checked != null ) width = Math.Max( width, Style.Checked.MinWidth );
+
+            return width;
         }
     }
 
-    if ( ( Stage != null )
-         && Stage.ActionsRequestRendering
-         && ( isPressed() != clickListener.Pressed ) )
+    public new float PrefHeight
     {
-        Gdx.Graphics.RequestRendering();
-    }
-}
+        get
+        {
+            var height = base.GetPrefHeight();
 
-public float PrefWidth
-{
-    get
-    {
-        float width = GetPrefWidth();
+            if ( Style?.Up != null ) height      = Math.Max( height, Style.Up.MinHeight );
+            if ( Style?.Down != null ) height    = Math.Max( height, Style.Down.MinHeight );
+            if ( Style?.Checked != null ) height = Math.Max( height, Style.Checked!.MinHeight );
 
-        if ( _style.Up != null ) width = Math.Max( width, _style.Up.MinWidth );
-        if ( _style.Down != null ) width = Math.Max( width, _style.Down.MinWidth );
-        if ( _style.Checked != null ) width = Math.Max( width, _style.Checked.MinWidth );
-
-        return width;
-    }
-}
-
-public float PrefHeight
-{
-    get
-    {
-        float height = base.GetPrefHeight();
-
-        if ( _style.Up != null ) height = Math.Max( height, _style.Up.MinHeight );
-        if ( _style.Down != null ) height = Math.Max( height, _style.Down.MinHeight );
-        if ( _style.Checked != null ) height = Math.Max( height, _style.Checked!.MinHeight );
-
-        return height;
-    }
-}
-
-public float MinWidth => PrefWidth;
-public float MinHeight => PrefHeight;
-
-/// <summary>
-/// The style for a button, see <see cref="Button"/>.
-/// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class ButtonStyle
-{
-    public IDrawable? Up { get; set; }
-    public IDrawable? Down { get; set; }
-    public IDrawable? Over { get; set; }
-    public IDrawable? Focused { get; set; }
-    public IDrawable? Disabled { get; set; }
-    public IDrawable? Checked { get; set; }
-    public IDrawable? CheckedOver { get; set; }
-    public IDrawable? CheckedDown { get; set; }
-    public IDrawable? CheckedFocused { get; set; }
-    public float PressedOffsetX { get; set; }
-    public float PressedOffsetY { get; set; }
-    public float UnpressedOffsetX { get; set; }
-    public float UnpressedOffsetY { get; set; }
-    public float CheckedOffsetX { get; set; }
-    public float CheckedOffsetY { get; set; }
-
-    public ButtonStyle()
-    {
+            return height;
+        }
     }
 
-    public ButtonStyle( IDrawable? up, IDrawable? down, IDrawable? ischecked )
-    {
-        this.Up = up;
-        this.Down = down;
+    public ButtonClickListener? ClickListener { get; set; }
+    public bool                 IsChecked     { get; private set; }
+    public bool                 IsDisabled    { get; set; }
+    public ButtonGroup?         ButtonGroup   { get; set; }
 
-        this.Checked = ischecked;
+    #endregion properties
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public     void  Toggle()    => SetChecked( !IsChecked );
+    public     bool  IsPressed() => ClickListener!.VisualPressed;
+    public     bool  IsOver()    => ClickListener!.Over;
+    public new float MinWidth    => PrefWidth;
+    public new float MinHeight   => PrefHeight;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public sealed class ButtonClickListener : ClickListener
+    {
+        private readonly Button _button;
+
+        public ButtonClickListener( Button button )
+        {
+            this._button = button;
+        }
+        
+        public new void Clicked( InputEvent inputEvent, float x, float y )
+        {
+            if ( _button.IsDisabled ) return;
+
+            _button.SetChecked( !_button.IsChecked, true );
+        }
     }
 
-    public ButtonStyle( ButtonStyle style )
+    /// <summary>
+    /// The style for a button, see <see cref="Button"/>.
+    /// </summary>
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class ButtonStyle
     {
-        Up = style.Up;
-        Down = style.Down;
-        Over = style.Over;
-        Focused = style.Focused;
-        Disabled = style.Disabled;
+        public IDrawable? Up               { get; set; }
+        public IDrawable? Down             { get; set; }
+        public IDrawable? Over             { get; set; }
+        public IDrawable? Focused          { get; set; }
+        public IDrawable? Disabled         { get; set; }
+        public IDrawable? Checked          { get; set; }
+        public IDrawable? CheckedOver      { get; set; }
+        public IDrawable? CheckedDown      { get; set; }
+        public IDrawable? CheckedFocused   { get; set; }
+        public float      PressedOffsetX   { get; set; }
+        public float      PressedOffsetY   { get; set; }
+        public float      UnpressedOffsetX { get; set; }
+        public float      UnpressedOffsetY { get; set; }
+        public float      CheckedOffsetX   { get; set; }
+        public float      CheckedOffsetY   { get; set; }
 
-        Checked = style.Checked;
+        public ButtonStyle()
+        {
+        }
 
-        CheckedOver = style.CheckedOver;
-        CheckedDown = style.CheckedDown;
-        CheckedFocused = style.CheckedFocused;
+        public ButtonStyle( IDrawable? up, IDrawable? down, IDrawable? ischecked )
+        {
+            this.Up   = up;
+            this.Down = down;
 
-        PressedOffsetX = style.PressedOffsetX;
-        PressedOffsetY = style.PressedOffsetY;
-        UnpressedOffsetX = style.UnpressedOffsetX;
-        UnpressedOffsetY = style.UnpressedOffsetY;
-        CheckedOffsetX = style.CheckedOffsetX;
-        CheckedOffsetY = style.CheckedOffsetY;
+            this.Checked = ischecked;
+        }
+
+        public ButtonStyle( ButtonStyle style )
+        {
+            Up       = style.Up;
+            Down     = style.Down;
+            Over     = style.Over;
+            Focused  = style.Focused;
+            Disabled = style.Disabled;
+
+            Checked = style.Checked;
+
+            CheckedOver    = style.CheckedOver;
+            CheckedDown    = style.CheckedDown;
+            CheckedFocused = style.CheckedFocused;
+
+            PressedOffsetX   = style.PressedOffsetX;
+            PressedOffsetY   = style.PressedOffsetY;
+            UnpressedOffsetX = style.UnpressedOffsetX;
+            UnpressedOffsetY = style.UnpressedOffsetY;
+            CheckedOffsetX   = style.CheckedOffsetX;
+            CheckedOffsetY   = style.CheckedOffsetY;
+        }
     }
-}
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+//    ( clickListener = new ClickListener()
+//            {
+
+
+//                public void clicked( InputEvent event, float x, float y )
+//                {
+//                if ( isDisabled() ) return;
+//                setChecked( !isChecked, true );
+//            }
+
+//        });
+//    }
 }

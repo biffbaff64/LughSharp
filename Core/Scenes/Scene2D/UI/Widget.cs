@@ -34,6 +34,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Widget : Actor, ILayout
 {
+    private bool _layoutEnabled = true;
 
     /// <summary>
     /// Computes and caches any information needed for drawing and, if this actor
@@ -55,6 +56,7 @@ public class Widget : Actor, ILayout
     /// </summary>
     public void Invalidate()
     {
+        NeedsLayout = true;
     }
 
     /// <summary>
@@ -65,6 +67,11 @@ public class Widget : Actor, ILayout
     /// </summary>
     public void InvalidateHierarchy()
     {
+        if ( !LayoutEnabled ) return;
+
+        Invalidate();
+
+        if ( Parent is ILayout layout ) layout.InvalidateHierarchy();
     }
 
     /// <summary>
@@ -78,6 +85,42 @@ public class Widget : Actor, ILayout
     /// </summary>
     public void Validate()
     {
+        if ( !LayoutEnabled ) return;
+
+        Group? parent = Parent;
+
+        if ( FillParent && ( parent != null ) )
+        {
+            float parentWidth, parentHeight;
+
+            if ( ( Stage != null ) && ( parent == Stage.Root ) )
+            {
+                parentWidth  = Stage.WorldWidth;
+                parentHeight = Stage.WorldHeight;
+            }
+            else
+            {
+                parentWidth  = parent.Width;
+                parentHeight = parent.Height;
+            }
+
+            SetSize( parentWidth, parentHeight );
+        }
+
+        if ( !NeedsLayout ) return;
+
+        NeedsLayout = false;
+
+        Layout();
+    }
+
+    /// <summary>
+    /// If this method is overridden, the super method or <see cref="Validate"/>
+    /// should be called to ensure the widget is laid out.
+    /// </summary>
+    public new void Draw( IBatch batch, float parentAlpha )
+    {
+        Validate();
     }
 
     /// <summary>
@@ -93,6 +136,13 @@ public class Widget : Actor, ILayout
     /// </summary>
     public void Pack()
     {
+        SetSize( PrefWidth(), PrefHeight() );
+        Validate();
+    }
+
+    protected new void SizeChanged()
+    {
+        Invalidate();
     }
 
     /// <summary>
@@ -107,22 +157,28 @@ public class Widget : Actor, ILayout
     /// When false, <see cref="ILayout.Validate"/> will not cause a layout to occur. This can be useful
     /// when an actor will be manipulated externally, such as with actions. Default is true. 
     /// </summary>
-    public void SetLayoutEnabled( bool enabled )
+    public bool LayoutEnabled
     {
+        get => _layoutEnabled;
+        set
+        {
+            _layoutEnabled = value;
+
+            if ( _layoutEnabled )
+            {
+                InvalidateHierarchy();
+            }
+        }
     }
 
-    public float MinWidth { get; set; }
-    public float MinHeight { get; set; }
-    public float PrefWidth { get; set; }
-    public float PrefHeight { get; set; }
-
     /// <summary>
-    /// Zero indicates no max width.
     /// </summary>
-    public float MaxWidth { get; set; }
+    public bool NeedsLayout { get; set; } = true;
 
-    /// <summary>
-    /// Zero indicates no max height.
-    /// </summary>
-    public float MaxHeight { get; set; }
+    public float MinWidth()   => PrefWidth();
+    public float MinHeight()  => PrefHeight();
+    public float PrefWidth()  => 0;
+    public float PrefHeight() => 0;
+    public float MaxWidth()   => 0;
+    public float MaxHeight()  => 0;
 }
