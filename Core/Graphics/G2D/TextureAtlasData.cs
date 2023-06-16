@@ -22,6 +22,11 @@ namespace LibGDXSharp.G2D;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public partial record TextureAtlasData
 {
+    protected interface IField<T>
+    {
+        void Parse( ref T obj, params string[] entry );
+    }
+
     public List< Page >   Pages   { get; set; } = new();
     public List< Region > Regions { get; set; } = new();
     public string[]       Entry   { get; set; } = new string[ 5 ];
@@ -43,15 +48,6 @@ public partial record TextureAtlasData
     public TextureAtlasData( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
     {
         Load( packFile, imagesDir, flip );
-    }
-
-    #endregion
-
-    #region InternalInterfaces
-
-    protected interface IField<T>
-    {
-        void Parse( ref T obj, params string[] entry );
     }
 
     #endregion
@@ -103,7 +99,8 @@ public partial record TextureAtlasData
 
                 if ( ReadEntry( line ) == 0 )
                 {
-                    break; // Silently ignore all header fields.
+                    // Silently ignore all header fields.
+                    break;
                 }
 
                 line = reader.ReadLine();

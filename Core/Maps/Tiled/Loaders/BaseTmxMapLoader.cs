@@ -468,7 +468,7 @@ public abstract class BaseTmxMapLoader<TP>
                     }
 
                     Polyline polyline = new Polyline( vertices );
-                    polyline.setPosition( x, y );
+                    polyline.SetPosition( x, y );
                     mapObject = new PolylineMapObject( polyline );
                 }
                 else if ( ( child = element.getChildByName( "ellipse" ) ) != null )
