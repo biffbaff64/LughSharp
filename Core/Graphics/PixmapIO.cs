@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Diagnostics.CodeAnalysis;
-using System.IO.Compression;
 
 using LibGDXSharp.Utils.Collections;
 
@@ -94,7 +93,7 @@ public class PixmapIO
         }
     }
 
-    private class CIM
+    private static class CIM
     {
         private const int BufferSize = 32000;
 

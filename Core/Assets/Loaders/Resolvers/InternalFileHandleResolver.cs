@@ -14,8 +14,11 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Assets.Loaders.Resolvers;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class InternalFileHandleResolver : IFileHandleResolver
 {
     public FileInfo Resolve( string fileName )

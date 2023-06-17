@@ -80,7 +80,7 @@ public sealed class AssetLoadingTask
             if ( dependencies != null )
             {
                 RemoveDuplicates( dependencies );
-                _manager.InjectDependencies( AssetDesc.FilePath, dependencies );
+                _manager.InjectDependencies( AssetDesc.FilePath!, dependencies );
             }
             else
             {

@@ -27,6 +27,8 @@ public static class ListExtensions
             
         Array.Copy( ts.ToArray(), newItems, newSize  );
 
+        // TODO
+        
 //            if ( newSize < ts. )
             
 //            if ( newSize < ts.Capacity )
@@ -49,12 +51,7 @@ public static class ListExtensions
     /// <returns></returns>
     public static List< T > With<T>( T t )
     {
-        var list = new List< T >
-        {
-            t
-        };
-
-        return list;
+        return new List< T > { t };
     }
 
     public static void AddAll<T>( this List< T > ts, T[] array, int start, int count )

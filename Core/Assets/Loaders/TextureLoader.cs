@@ -78,7 +78,7 @@ public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
             _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
         }
 
-        if ( ( _loaderInfo.Data != null ) && !_loaderInfo.Data.IsPrepared )
+        if ( _loaderInfo.Data is { IsPrepared: false } )
         {
             _loaderInfo.Data.Prepare();
         }
@@ -137,6 +137,7 @@ public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
 
     /// <summary>
     /// </summary>
+    [SuppressMessage( "ReSharper", "PropertyCanBeMadeInitOnly.Global" )]
     public sealed class TextureParameter : AssetLoaderParameters
     {
         /// <summary>

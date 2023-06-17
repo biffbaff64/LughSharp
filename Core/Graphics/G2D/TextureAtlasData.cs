@@ -16,6 +16,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+using File = System.IO.File;
+
 namespace LibGDXSharp.G2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -127,7 +129,7 @@ public partial record TextureAtlasData
                 {
                     page = new Page
                     {
-                        textureFile = imagesDir.Child( line )
+                        textureFile = imagesDir..Child( line )
                     };
 
                     while ( true )
