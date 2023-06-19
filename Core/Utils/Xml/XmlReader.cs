@@ -42,8 +42,8 @@ public sealed class XmlReader
     private const int Xml_En_ElementBody = 15;
     private const int Xml_En_Main        = 1;
 
-    private readonly List< Element > _elements   = new(8);
-    private readonly StringBuilder   _textBuffer = new(64);
+    private readonly List< Element > _elements   = new( 8 );
+    private readonly StringBuilder   _textBuffer = new( 64 );
 
     private Element? _root;
     private Element? _current;
@@ -230,7 +230,7 @@ public sealed class XmlReader
     {
         try
         {
-            return Parse( file.Reader( "UTF-8" ) );
+            return Parse( file.OpenRead() );
         }
         catch ( Exception ex )
         {
@@ -666,12 +666,12 @@ public sealed class XmlReader
     //
     // --------------------------------------------------------------------
 
-    public class Element
+    public sealed class Element
     {
-        public string                        Name       { get; private set; }
-        public Dictionary< string, string >? Attributes { get; set; }
-        public Element                       Parent     { get; set; }
-        public string                        Text       { get; set; }
+        public string                         Name       { get; private set; }
+        public ObjectMap< string, string? >? Attributes { get; set; }
+        public Element                        Parent     { get; set; }
+        public string                         Text       { get; set; }
 
         private List< Element >? _children;
 
@@ -679,6 +679,7 @@ public sealed class XmlReader
         {
             this.Name   = name;
             this.Parent = parent;
+            this.Text   = string.Empty;
         }
 
         /// <summary>
@@ -688,6 +689,8 @@ public sealed class XmlReader
         /// <exception cref="GdxRuntimeException"></exception>
         public string GetAttribute( string name )
         {
+            ArgumentNullException.ThrowIfNull( name );
+
             if ( Attributes == null )
             {
                 throw new GdxRuntimeException( $"Element {this.Name} doesn't have attribute: {name}" );
@@ -733,10 +736,7 @@ public sealed class XmlReader
         /// <param name="value"></param>
         public void SetAttribute( string name, string value )
         {
-            if ( Attributes == null )
-            {
-                Attributes = new Dictionary< string, string >( 8 );
-            }
+            Attributes ??= new Dictionary< string, string? >( 8 );
 
             Attributes[ name ] = value;
         }
@@ -759,20 +759,11 @@ public sealed class XmlReader
             _children.Add( element );
         }
 
-        public void RemoveChild( int index )
-        {
-            _children?.RemoveAt( index );
-        }
+        public void RemoveChild( int index ) => _children?.RemoveAt( index );
 
-        public void RemoveChild( Element child )
-        {
-            _children?.Remove( child );
-        }
+        public void RemoveChild( Element child ) => _children?.Remove( child );
 
-        public void Remove()
-        {
-            Parent?.RemoveChild( this );
-        }
+        public void Remove() => Parent.RemoveChild( this );
 
         /// <summary>
         /// </summary>
@@ -819,7 +810,7 @@ public sealed class XmlReader
                 {
                     foreach ( Element child in _children )
                     {
-                        buffer.Append( child.toString( childIndent ) );
+                        buffer.Append( child.ToString( childIndent ) );
                         buffer.Append( '\n' );
                     }
                 }

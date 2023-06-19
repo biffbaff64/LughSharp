@@ -119,12 +119,12 @@ namespace LibGDXSharp.Files;
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class File
+public class File : IComparable
 {
-    /// <summary>
-    /// The FileSystem object representing the platform's local file system.
-    /// </summary>
-    private readonly static FileSystemInfo? fs;
+//    /// <summary>
+//    /// The FileSystem object representing the platform's local file system.
+//    /// </summary>
+//    private readonly static FileSystem fs;
 
     /// <summary>
     /// This abstract pathname's normalized pathname string. A normalized
@@ -176,10 +176,10 @@ public class File
     /// <summary>
     /// The system-dependent default name-separator character.  This field is
     /// initialized to contain the first character of the value of the system
-    /// property <tt>file.separator</tt>.  On UNIX systems the value of this
+    /// property <tt>file.separator</tt>. On UNIX systems the value of this
     /// field is <tt>'/'</tt>; on Microsoft Windows systems it is <tt>'\\'</tt>.
     /// </summary>
-    public readonly static char SeparatorChar = fs.GetSeparator();
+    public readonly static char SeparatorChar = Path.DirectorySeparatorChar;
 
     /// <summary>
     /// The system-dependent default name-separator character, represented as a
@@ -196,7 +196,7 @@ public class File
     /// On UNIX systems, this character is <tt>':'</tt>; on Microsoft Windows systems it
     /// is <tt>';'</tt>.
     /// </summary>
-    public readonly static char PathSeparatorChar = fs.getPathSeparator();
+    public readonly static char PathSeparatorChar = Path.PathSeparator;
 
     /// <summary>
     /// The system-dependent path-separator character, represented as a string
@@ -213,4 +213,83 @@ public class File
         this._path        = pathname;
         this.PrefixLength = prefixLength;
     }
-}
+
+    /// <summary>
+    /// Compares the current instance with another object of the same type and
+    /// returns an integer that indicates whether the current instance precedes,
+    /// follows, or occurs in the same position in the sort order as the other
+    /// object.
+    /// </summary>
+    /// <param name="obj">An object to compare with this instance.</param>
+    /// <exception cref="T:System.ArgumentException">
+    /// <paramref name="obj" /> is not the same type as this instance.</exception>
+    /// <returns>
+    /// A value that indicates the relative order of the objects being compared.
+    /// The return value has these meanings:
+    /// <list type="table"><listheader><term> Value</term>
+    /// <description> Meaning</description></listheader>
+    /// <item><term> Less than zero</term>
+    /// <description>
+    /// This instance precedes <paramref name="obj" /> in the sort order.
+    /// </description></item><item><term> Zero</term>
+    /// <description>
+    /// This instance occurs in the same position in the sort order as
+    /// <paramref name="obj" />.</description></item><item><term>
+    /// Greater than zero</term><description> This instance follows <paramref name="obj" />
+    /// in the sort order.</description></item></list>
+    /// </returns>
+    public int CompareTo( object? obj ) => 0
+
+    private class TempDirectory
+    {
+        private TempDirectory()
+        {
+        }
+
+        // temporary directory location
+        private File tmpdir = new File( AccessController.doPrivileged(new GetPropertyAction( "java.io.tmpdir" )));
+
+        private File Location()
+        {
+            return tmpdir;
+        }
+
+        // file name generation
+        private SecureRandom _random = new();
+        
+        public File GenerateFile( string prefix, string suffix, File dir )
+        {
+            long n = random.nextLong();
+
+            if (n == Long.MIN_VALUE)
+            {
+                n = 0; // corner case
+            }
+            else
+            {
+                n = Math.abs( n );
+            }
+
+            // Use only the file name from the supplied prefix
+            prefix = (new File( prefix )).getName();
+
+            var name = prefix + Int64.ToString( n ) + suffix;
+            var f = new File( dir, name );
+        
+            if (!name.equals(f.getName()) || f.isInvalid())
+            {
+                if ( System.getSecurityManager() != null )
+                {
+                    throw new IOException( "Unable to create temporary file" );
+                }
+                else
+                {
+                    throw new IOException( "Unable to create temporary file, " + f );
+                }
+            }
+
+            return f;
+
+            }
+        }
+    }

@@ -241,7 +241,7 @@ GRAPHICS/G2D
     - DONE - SpriteBatch                    Convert
     - DONE - SpriteCache                    Convert
     - DONE - TextureAtlas                   Convert
-    - IP   - TextureAtlasData               Convert
+    - DONE - TextureAtlasData               Convert
     - DONE - TextureAtlasDataExtensions     Convert
     - DONE - TextureRegion                  Convert
 
@@ -870,10 +870,8 @@ UTILS/VIEWPORT
 UTILS/XML
 ---------
 
-    - Use System.Xml?
-
-    - **** - XmlReader
-    - **** - XmlWriter
+    -      - XmlReader
+    -      - XmlWriter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

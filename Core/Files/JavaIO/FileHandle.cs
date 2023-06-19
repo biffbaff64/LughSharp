@@ -685,16 +685,18 @@ public class FileHandle
         return new FileHandle( new FileStream( name, FileMode.Open ), Type );
     }
 
-    /** Returns a handle to the sibling with the specified name.
-	 * @throws GdxRuntimeException if this file is the root. */
+    /// <summary>
+    /// Returns a handle to the sibling with the specified name.
+    /// </summary>
+    /// <exception cref="GdxRuntimeException">If this file is the root.</exception>
     public FileHandle Sibling( string name )
     {
-        if ( file.getPath().length() == 0 )
+        if ( System.IO.Path.GetFullPath( name ).Length == 0)
         {
             throw new GdxRuntimeException( "Cannot get the sibling of the root." );
         }
 
-        return new FileHandle( new File( file.getParent(), name ), type );
+        return new FileHandle( new FileStream( name, FileMode.Open ), Type );
     }
 
     public FileHandle Parent()
@@ -704,12 +706,16 @@ public class FileHandle
         if ( parent == null )
         {
             if ( type == FileType.Absolute )
+            {
                 parent = new File( "/" );
+            }
             else
-                parent = new File( "" );
+            {
+                parent = new FileStream( "" );
+            }
         }
 
-        return new FileHandle( parent, type );
+        return new FileHandle( parent, Type );
     }
 
     /** @throws GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file. */
