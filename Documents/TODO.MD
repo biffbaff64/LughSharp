@@ -184,7 +184,7 @@ GRAPHICS
     - DONE - Camera                             Convert
     - DONE - Color                              Convert
     - DONE - Colors                             Convert
-    -      - Cubemap                            Convert
+    - DONE - Cubemap                            Convert
     - DONE - DisplayMode                        Convert
     - DONE - FPSLogger                          Convert
     - DONE - GLTexture                          Convert
@@ -702,7 +702,7 @@ UTILS/COLLECTIONS
     - IP   - ListExtensions
     -      - ListQueue
     -      - ListStack
-    -      - ObjectMap
+    - DONE - ObjectMap
     -      - ObjectSet
 
     Maps

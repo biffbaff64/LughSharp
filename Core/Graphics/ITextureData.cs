@@ -108,7 +108,7 @@ public interface ITextureData
         /// <param name="file"></param>
         /// <param name="useMipMaps"></param>
         /// <returns></returns>
-        public static ITextureData? LoadFromFile( FileInfo file, bool useMipMaps )
+        public static ITextureData? LoadFromFile( FileInfo? file, bool useMipMaps )
         {
             return LoadFromFile( file, null, useMipMaps );
         }

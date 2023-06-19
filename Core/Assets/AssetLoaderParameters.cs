@@ -33,3 +33,18 @@ public class AssetLoaderParameters : IAssetLoaderParameters
 {
     public IAssetLoaderParameters.ILoadedCallback? LoadedCallback { get; set; }
 }
+
+public sealed class DefaultLoadedCallbackInnerClass : IAssetLoaderParameters.ILoadedCallback
+{
+    private readonly int _refCount;
+
+    public DefaultLoadedCallbackInnerClass( int refCount )
+    {
+        this._refCount = refCount;
+    }
+
+    public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type )
+    {
+        assetManager.SetReferenceCount( fileName!, _refCount );
+    }
+}

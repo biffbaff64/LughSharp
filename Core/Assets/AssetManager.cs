@@ -83,7 +83,7 @@ public sealed class AssetManager
 //                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
 //                SetLoader( typeof(I18NBundle),      new I18NBundleLoader( resolver ) );
 //                SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
-//                SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
+                SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
             //@formatter:on
         }
 

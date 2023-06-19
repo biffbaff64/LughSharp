@@ -14,7 +14,6 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -34,7 +33,6 @@ namespace LibGDXSharp.Core.Utils.Collections.Extensions;
 /// greater than 0.91 greatly increase the chances to resize to the next higher POT size.
 /// Unordered sets and maps are not designed to provide especially fast iteration.
 /// </para>
-/// <para>Iteration is faster with OrderedSet and OrderedMap.</para>
 /// <para>
 /// This implementation uses linear probing with the backward shift algorithm for removal.
 /// Hashcodes are rehashed using Fibonacci hashing, instead of the more common power-of-two
@@ -43,7 +41,7 @@ namespace LibGDXSharp.Core.Utils.Collections.Extensions;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class ObjectMap<TK, TV> //: IEnumerable< ObjectMap< TK, TV >.Entry< TK, TV > >
+public class ObjectMap<TK, TV>
 {
     protected TK?[] keyTable;
     protected TV?[] valueTable;
@@ -728,9 +726,9 @@ public class ObjectMap<TK, TV> //: IEnumerable< ObjectMap< TK, TV >.Entry< TK, T
     /// </summary>
     /// <typeparam name="TKe"></typeparam>
     /// <typeparam name="TVe"></typeparam>
-    public class Entry<TKe, TVe>
+    public sealed class Entry<TKe, TVe>
     {
-        public TKe  key;
+        public TKe? key;
         public TVe? value;
 
         public override string ToString()
@@ -749,7 +747,7 @@ public class ObjectMap<TK, TV> //: IEnumerable< ObjectMap< TK, TV >.Entry< TK, T
     /// <typeparam name="TKm"></typeparam>
     /// <typeparam name="TVm"></typeparam>
     /// <typeparam name="TI"></typeparam>
-    public abstract class MapIterator<TKm, TVm, TI> //: IEnumerable< TI >, IEnumerator< TI >
+    public abstract class MapIterator<TKm, TVm, TI>
     {
         public    bool Valid   { get; set; } = true;
         protected bool HasNext { get; set; }
@@ -866,12 +864,12 @@ public class ObjectMap<TK, TV> //: IEnumerable< ObjectMap< TK, TV >.Entry< TK, T
     /// <summary>
     /// </summary>
     /// <typeparam name="TVv"></typeparam>
-    public sealed class Values<TVv> : MapIterator< object, TVv, TVv >
+    public sealed class Values<TVv> : MapIterator< TK, TVv, TVv >
     {
         /// <summary>
         /// </summary>
         /// <param name="map"></param>
-        public Values( ObjectMap< object, TVv > map )
+        public Values( ObjectMap< TK, TVv > map )
             : base( map )
         {
         }
@@ -920,9 +918,9 @@ public class ObjectMap<TK, TV> //: IEnumerable< ObjectMap< TK, TV >.Entry< TK, T
     /// <summary>
     /// </summary>
     /// <typeparam name="TKk"></typeparam>
-    public sealed class Keys<TKk> : MapIterator< TKk, object, TKk >
+    public sealed class Keys<TKk> : MapIterator< TKk, TV, TKk >
     {
-        public Keys( ObjectMap< TKk, object > map )
+        public Keys( ObjectMap< TKk, TV > map )
             : base( map )
         {
         }

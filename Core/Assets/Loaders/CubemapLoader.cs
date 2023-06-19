@@ -14,10 +14,17 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Assets.Loaders;
 
-public class CubemapLoader
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
+    public CubemapLoader( IFileHandleResolver resolver )
+        : base( resolver )
+    {
+    }
 
     /// <summary>
     /// Performs application-defined tasks associated with freeing,
@@ -25,5 +32,22 @@ public class CubemapLoader
     /// </summary>
     public void Dispose()
     {
+    }
+
+    public class CubemapParameter : AssetLoaderParameters
+    {
+        // the format of the final Texture. Uses the source images format if null
+        public Pixmap.Format? format = null;
+
+        // The texture to put the TextureData in, optional.
+        public Cubemap? cubemap = null;
+
+        // CubemapData for textures created on the fly, optional.
+        // When set, all format and genMipMaps are ignored
+        public ICubemapData? cubemapData = null;
+        public TextureFilter minFilter   = TextureFilter.Nearest;
+        public TextureFilter magFilter   = TextureFilter.Nearest;
+        public TextureWrap   wrapU       = TextureWrap.ClampToEdge;
+        public TextureWrap   wrapV       = TextureWrap.ClampToEdge;
     }
 }
