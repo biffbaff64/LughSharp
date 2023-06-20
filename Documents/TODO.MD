@@ -154,6 +154,7 @@ FILES
     - java.io.Reader                        -> 
 
     - Would MemoryStream cover all these?
+
     - java.nio.Buffer                       ->  
     - java.nio.BufferUtils                  ->  
     - java.nio.ByteBuffer                   ->  
@@ -167,7 +168,9 @@ FILES
     - java.nio.LongBuffer                   -> 
 
     ------------------------------------------
+
     - Look into existing C# ZIP libraries
+
     - java.util.zip.CRC32                   -> 
     - java.util.zip.CheckedOutputStream     -> 
     - java.util.zip.Deflater                -> 
@@ -261,7 +264,7 @@ GRAPHICS/GLUTILS
 
     - IP   - ETC1
     - IP   - ETC1TextureData
-    -      - FacedCubemapData
+    - DONE - FacedCubemapData
     - IP   - FileTextureArrayData
     - IP   - FileTextureData
     -      - FloatFrameBuffer
@@ -428,7 +431,7 @@ MATH
     - DONE - GeometryUtils
     - DONE - GridPoint2
     - DONE - GridPoint3
-    -      - Interpolation
+    - IP   - Interpolation
     - DONE - Intersector
     - DONE - IPath
     - DONE - IShape2D

@@ -45,7 +45,7 @@ public sealed class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.S
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             IAssetLoaderParameters parameter )
+                                                             AssetLoaderParameters parameter )
     {
         return null!;
     }
@@ -61,7 +61,7 @@ public sealed class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.S
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter )
+                                    AssetLoaderParameters parameter )
     {
         LoadedSound = Gdx.Audio.NewSound( file );
     }
@@ -77,7 +77,7 @@ public sealed class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.S
     public override ISound LoadSync( AssetManager? manager,
                                      string? fileName,
                                      FileInfo? file,
-                                     IAssetLoaderParameters parameter )
+                                     AssetLoaderParameters parameter )
     {
         ISound sound = LoadedSound;
 

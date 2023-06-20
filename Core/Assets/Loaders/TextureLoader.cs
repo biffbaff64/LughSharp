@@ -52,7 +52,7 @@ public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter )
+                                    AssetLoaderParameters parameter )
     {
         _loaderInfo.Filename = fileName;
 
@@ -94,7 +94,7 @@ public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
     public override Texture LoadSync( AssetManager? manager,
                                       string? fileName,
                                       FileInfo? file,
-                                      IAssetLoaderParameters parameter )
+                                      AssetLoaderParameters parameter )
     {
         Texture? texture = _loaderInfo.Texture;
 
@@ -130,7 +130,7 @@ public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
     /// <returns></returns>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             IAssetLoaderParameters parameter )
+                                                             AssetLoaderParameters parameter )
     {
         return null!;
     }

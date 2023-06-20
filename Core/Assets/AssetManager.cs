@@ -473,7 +473,7 @@ public sealed class AssetManager
     /// </param>
     /// <param name="type">the type of the asset.</param>
     /// <param name="parameter"></param>
-    public void Load( string? fileName, Type? type, IAssetLoaderParameters parameter )
+    public void Load( string? fileName, Type? type, AssetLoaderParameters parameter )
     {
         AssetLoader? loader = GetLoader( type, fileName );
 

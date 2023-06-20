@@ -37,7 +37,7 @@ public sealed class SkinLoader : AsynchronousAssetLoader
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             IAssetLoaderParameters? parameter )
+                                                             AssetLoaderParameters? parameter )
     {
         List< AssetDescriptor > deps = new();
 
@@ -66,14 +66,14 @@ public sealed class SkinLoader : AsynchronousAssetLoader
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter )
+                                    AssetLoaderParameters parameter )
     {
     }
 
     public override object LoadSync( AssetManager? manager,
                                      string? fileName,
                                      FileInfo? file,
-                                     IAssetLoaderParameters? parameter )
+                                     AssetLoaderParameters? parameter )
     {
         var textureAtlasPath = Path.ChangeExtension( file?.FullName, ".atlas" );
 

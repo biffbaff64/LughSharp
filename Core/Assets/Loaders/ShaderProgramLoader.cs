@@ -55,7 +55,7 @@ public sealed class
 
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             IAssetLoaderParameters parameter )
+                                                             AssetLoaderParameters parameter )
     {
         return null!;
     }
@@ -63,14 +63,14 @@ public sealed class
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter )
+                                    AssetLoaderParameters parameter )
     {
     }
 
     public override ShaderProgram LoadSync( AssetManager? manager,
                                             string? fileName,
                                             FileInfo? file,
-                                            IAssetLoaderParameters? parameter )
+                                            AssetLoaderParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( fileName );
 

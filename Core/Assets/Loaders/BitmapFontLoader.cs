@@ -85,7 +85,7 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             IAssetLoaderParameters parameter )
+                                                             AssetLoaderParameters parameter )
     {
         if ( file == null ) throw new NullReferenceException();
 
@@ -150,7 +150,7 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter )
+                                    AssetLoaderParameters parameter )
     {
     }
 
@@ -165,7 +165,7 @@ public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     public override BitmapFont LoadSync( AssetManager? manager,
                                          string? fileName,
                                          FileInfo? file,
-                                         IAssetLoaderParameters parameter )
+                                         AssetLoaderParameters parameter )
     {
         if ( file == null ) throw new GdxRuntimeException( "LoadSync: 'file' cannot be null!" );
 

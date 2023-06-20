@@ -23,7 +23,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// <summary>
 /// AssetLoader to load TextureAtlas instances.
 /// Passing a <see cref="TextureAtlasParameter"/> to
-/// <see cref="AssetManager.Load(String, Type, IAssetLoaderParameters)"/>
+/// <see cref="AssetManager.Load(String, Type, AssetLoaderParameters)"/>
 /// allows to specify whether the atlas regions should be flipped on the
 /// y-axis or not.
 /// </summary>
@@ -75,7 +75,7 @@ public sealed class
 
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? atlasFile,
-                                                             IAssetLoaderParameters? parameter )
+                                                             AssetLoaderParameters? parameter )
     {
         if ( atlasFile == null )
         {

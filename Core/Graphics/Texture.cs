@@ -315,7 +315,7 @@ public class Texture : GLTexture
         }
     }
 
-    private sealed class LoadedCallbackInnerClass : IAssetLoaderParameters.ILoadedCallback
+    private sealed class LoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
     {
         private readonly int _refCount;
 

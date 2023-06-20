@@ -173,7 +173,7 @@ public sealed class AssetLoadingTask
     /// </summary>
     private void HandleSyncLoader()
     {
-        var syncLoader = ( SynchronousAssetLoader< Type, IAssetLoaderParameters >? )_loader;
+        var syncLoader = ( SynchronousAssetLoader< Type, AssetLoaderParameters >? )_loader;
 
         if ( syncLoader == null ) return;
 

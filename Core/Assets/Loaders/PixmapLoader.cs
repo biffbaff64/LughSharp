@@ -37,7 +37,7 @@ public sealed class PixmapLoader : AsynchronousAssetLoader
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             IAssetLoaderParameters parameter )
+                                                             AssetLoaderParameters parameter )
     {
         return null!;
     }
@@ -45,7 +45,7 @@ public sealed class PixmapLoader : AsynchronousAssetLoader
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter )
+                                    AssetLoaderParameters parameter )
     {
         Debug.Assert( file != null, nameof( file ) + " != null" );
 
@@ -55,7 +55,7 @@ public sealed class PixmapLoader : AsynchronousAssetLoader
     public override Pixmap LoadSync( AssetManager? manager,
                                      string? fileName,
                                      FileInfo? file,
-                                     IAssetLoaderParameters parameter )
+                                     AssetLoaderParameters parameter )
     {
         Pixmap? pixmap = _pixmap;
 

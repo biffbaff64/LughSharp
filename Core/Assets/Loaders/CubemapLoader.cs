@@ -19,11 +19,121 @@ using System.Diagnostics.CodeAnalysis;
 namespace LibGDXSharp.Assets.Loaders;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
+public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
+    public struct CubemapLoaderInfo
+    {
+        public string?       filename;
+        public ICubemapData? data;
+        public Cubemap?      cubemap;
+    };
+
+    private CubemapLoaderInfo _loaderInfo = new();
+
     public CubemapLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
+    }
+
+    /// <summary>
+    /// Returns the assets this asset requires to be loaded first.
+    /// This method may be called on a thread other than the GL thread.
+    /// </summary>
+    /// <param name="fileName">name of the asset to load</param>
+    /// <param name="file">the resolved file to load</param>
+    /// <param name="parameter">parameters for loading the asset</param>
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
+                                                             AssetLoaderParameters parameter )
+    {
+        return default!;
+    }
+
+    /// <summary>
+    /// Loads the non-OpenGL part of the asset and injects any dependencies of
+    /// the asset into the AssetManager.
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="fileName"></param>
+    /// <param name="file"></param>
+    /// <param name="parameter"></param>
+    public override void LoadAsync( AssetManager? manager,
+                                    string? fileName,
+                                    FileInfo? file,
+                                    AssetLoaderParameters? parameter )
+    {
+        _loaderInfo.filename = fileName!;
+
+        if ( ( ( CubemapParameter? )parameter )?.cubemapData == null )
+        {
+            var genMipMaps = false;
+
+            _loaderInfo.cubemap = null;
+
+            if ( parameter != null )
+            {
+                _loaderInfo.cubemap = ( ( CubemapParameter? )parameter )?.cubemap;
+            }
+
+            if ( fileName != null )
+            {
+                if ( fileName.Contains( ".ktx" ) || fileName.Contains( ".zktx" ) )
+                {
+                    _loaderInfo.data = new KTXTextureData( file, genMipMaps );
+                }
+            }
+        }
+        else
+        {
+            _loaderInfo.data    = ( ( CubemapParameter? )parameter )?.cubemapData;
+            _loaderInfo.cubemap = ( ( CubemapParameter? )parameter )?.cubemap;
+        }
+
+        if ( !_loaderInfo.data!.Prepared ) _loaderInfo.data.Prepare();
+    }
+
+    /// <summary>
+    /// Loads the OpenGL part of the asset.
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="fileName"></param>
+    /// <param name="file"></param>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
+    public override Cubemap LoadSync( AssetManager? manager,
+                                      string? fileName,
+                                      FileInfo? file,
+                                      AssetLoaderParameters parameter )
+    {
+        if ( _loaderInfo == null ) return null;
+
+        Cubemap cubemap = _loaderInfo.cubemap;
+
+        if ( cubemap != null )
+        {
+            cubemap.load( _loaderInfo.data );
+        }
+        else
+        {
+            cubemap = new Cubemap( _loaderInfo.data );
+        }
+
+        if ( parameter != null )
+        {
+            cubemap.SetFilter
+                (
+                 ( ( CubemapParameter? )parameter )?.minFilter,
+                 ( ( CubemapParameter? )parameter )?.magFilter
+                );
+
+            cubemap.SetWrap
+                (
+                 ( ( CubemapParameter? )parameter )?.wrapU,
+                 ( ( CubemapParameter? )parameter )?.wrapV
+                );
+        }
+
+        return cubemap;
     }
 
     /// <summary>

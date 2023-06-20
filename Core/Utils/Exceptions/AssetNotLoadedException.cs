@@ -20,9 +20,9 @@ public class AssetNotLoadedException : Exception
 {
     public Type                   Type   { get; private set; }
     public string                 Path   { get; private set; }
-    public IAssetLoaderParameters Params { get; private set; }
+    public AssetLoaderParameters Params { get; private set; }
 
-    public AssetNotLoadedException( Type type, string path, IAssetLoaderParameters param  )
+    public AssetNotLoadedException( Type type, string path, AssetLoaderParameters param  )
         : base( $"Asset not loaded: '{path}' ({type})" )
     {
         this.Type   = type;

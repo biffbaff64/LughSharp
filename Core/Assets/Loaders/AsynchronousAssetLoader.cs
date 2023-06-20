@@ -32,14 +32,14 @@ public abstract class AsynchronousAssetLoader : AssetLoader
     public abstract void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter );
+                                    AssetLoaderParameters parameter );
 
     public abstract object LoadSync( AssetManager? manager,
                                      string? fileName,
                                      FileInfo? file,
-                                     IAssetLoaderParameters parameter );
+                                     AssetLoaderParameters parameter );
 
-    public void UnloadAsync( AssetManager? manager, string? fileName, FileInfo? file, IAssetLoaderParameters parameter )
+    public void UnloadAsync( AssetManager? manager, string? fileName, FileInfo? file, AssetLoaderParameters parameter )
     {
     }
 }
@@ -74,7 +74,7 @@ public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader where TP : As
     public abstract void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter );
+                                    AssetLoaderParameters parameter );
 
     /// <summary>
     /// Loads the OpenGL part of the asset.
@@ -87,7 +87,7 @@ public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader where TP : As
     public abstract T LoadSync( AssetManager? manager,
                                 string? fileName,
                                 FileInfo? file,
-                                IAssetLoaderParameters parameter );
+                                AssetLoaderParameters parameter );
 
     /// <summary>
     /// Called if this task is unloaded before loadSync is called. This method may
@@ -104,7 +104,7 @@ public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader where TP : As
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public void UnloadAsync( AssetManager? manager, string? fileName, FileInfo? file, IAssetLoaderParameters parameter )
+    public void UnloadAsync( AssetManager? manager, string? fileName, FileInfo? file, AssetLoaderParameters parameter )
     {
     }
 }

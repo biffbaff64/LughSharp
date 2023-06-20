@@ -25,10 +25,10 @@ namespace LibGDXSharp.Assets;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class AssetDescriptor
 {
-    public Type                   Type       { get; init; }
-    public string?                FilePath   { get; init; }
-    public IAssetLoaderParameters Parameters { get; init; }
-    public FileInfo?              File       { get; set; }
+    public Type                  Type       { get; init; }
+    public string?               FilePath   { get; init; }
+    public AssetLoaderParameters Parameters { get; init; }
+    public FileInfo?             File       { get; set; }
 
     public AssetDescriptor()
     {
@@ -43,7 +43,7 @@ public sealed class AssetDescriptor
     /// <param name="filepath"></param>
     /// <param name="assetType"></param>
     /// <param name="parameters"></param>
-    public AssetDescriptor( string? filepath, Type assetType, IAssetLoaderParameters parameters )
+    public AssetDescriptor( string? filepath, Type assetType, AssetLoaderParameters parameters )
     {
         FilePath   = filepath?.Replace( '\\', '/' );
         Type       = assetType;
@@ -56,7 +56,7 @@ public sealed class AssetDescriptor
     /// <param name="file"></param>
     /// <param name="assetType"></param>
     /// <param name="parameters"></param>
-    public AssetDescriptor( FileInfo file, Type assetType, IAssetLoaderParameters parameters )
+    public AssetDescriptor( FileInfo file, Type assetType, AssetLoaderParameters parameters )
     {
         FilePath   = file.FullName.Replace( '\\', '/' );
         File       = file;

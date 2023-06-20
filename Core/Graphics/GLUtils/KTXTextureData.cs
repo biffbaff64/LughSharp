@@ -14,11 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
-public class KTXTextureData : ITextureData
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class KTXTextureData : ITextureData, ICubemapData
 {
-    public KTXTextureData( FileInfo file, bool useMipMaps )
+    public KTXTextureData( FileInfo? file, bool useMipMaps )
     {
         throw new NotImplementedException();
     }

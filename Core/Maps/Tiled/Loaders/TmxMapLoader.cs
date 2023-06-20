@@ -93,7 +93,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     }
 
     protected List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile,
-                                                                     IAssetLoaderParameters textureParameter )
+                                                                     AssetLoaderParameters textureParameter )
     {
         var descriptors = new List< AssetDescriptor >();
 

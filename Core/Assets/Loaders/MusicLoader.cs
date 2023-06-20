@@ -44,7 +44,7 @@ public sealed class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.M
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             IAssetLoaderParameters parameter )
+                                                             AssetLoaderParameters parameter )
     {
         return null!;
     }
@@ -60,7 +60,7 @@ public sealed class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.M
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    IAssetLoaderParameters parameter )
+                                    AssetLoaderParameters parameter )
     {
         LoadedMusic = Gdx.Audio.NewMusic( file );
     }
@@ -76,7 +76,7 @@ public sealed class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.M
     public override IMusic LoadSync( AssetManager? manager,
                                      string? fileName,
                                      FileInfo? file,
-                                     IAssetLoaderParameters parameter )
+                                     AssetLoaderParameters parameter )
     {
         IMusic music = LoadedMusic;
 
