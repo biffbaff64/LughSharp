@@ -622,10 +622,10 @@ UTILS
     ----------------------------------------------------------------------------------
     - DONE - BinaryHeap
     - DONE - Bits                           Convert
+    ----------------------------------------------------------------------------------
     - DONE - CharHelper                     Might be added to.
     ----------------------------------------------------------------------------------
-    - **** - ComparableTimSort              Not Needed
-    ----------------------------------------------------------------------------------
+    - DONE - ComparableTimSort              Convert
     - DONE - DataInput                      Check
     -      - DataOutput                     Check
     - DONE - DataUtils                      Added Class
@@ -850,6 +850,8 @@ UTILS/REGEX
     - DONE - IMatchResult                   Convert
     - IP   - Matcher                        Convert
     - IP   - Pattern                        Convert
+    - IP   - PatternCompanions              Convert
+    - DONE - PatternHelper                  Convert
     - DONE - PatternSyntaxException         Convert
     - DONE - UnicodeProp                    Convert
 

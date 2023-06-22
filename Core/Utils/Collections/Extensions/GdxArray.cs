@@ -568,7 +568,7 @@ public class GdxArray<T>
     /// </summary>
     public void Sort()
     {
-        SortUtils.Instance.Sort< T >( Items, 0, Size );
+        SortUtils.Instance.Sort( ( Items as object[] )!, 0, Size );
     }
 
     /// <summary>

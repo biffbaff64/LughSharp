@@ -846,7 +846,7 @@ public sealed class Matcher : IMatchResult
 
         _acceptMode = anchor;
 
-        bool result = parentPattern.matchRoot.match( this, from, _text );
+        bool result = parentPattern.matchRoot.Match( this, from, _text );
 
         if ( !result )
         {

@@ -28,32 +28,35 @@ namespace LibGDXSharp.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class SortUtils
 {
-    private readonly static SortUtils instance = new SortUtils();
+    private readonly static SortUtils instance = new();
 
     // ReSharper disable once ConvertToAutoProperty
     public static SortUtils Instance
     {
-        [DebuggerStepThrough]
-        get => instance;
+        [DebuggerStepThrough] get => instance;
     }
 
-    private TimSort<object>?   _timSort;
-    private ComparableTimSort? _comparableTimSort;
+    private TimSort< object >? _timSort;
+    private ComparableTimSort< object >? _comparableTimSort;
 
-    public void Sort<T>( List<T> a )
+    public void Sort<T>( List< T > a ) where T : IComparable< T >
     {
+        _comparableTimSort ??= new ComparableTimSort< object >();
+        _comparableTimSort.DoSort( a.ToArray() as object[], 0, a.Count );
     }
 
-    public void Sort<T>( object[] a )
+    public void Sort( object[] a )
     {
+        _comparableTimSort ??= new ComparableTimSort< object >();
+        _comparableTimSort.DoSort(a, 0, a.Length);
     }
 
-    public void Sort<T>( object[] a, int fromIndex, int toIndex )
+    public void Sort( object[] a, int fromIndex, int toIndex )
     {
-        _comparableTimSort ??= new ComparableTimSort();
-        _comparableTimSort.DoSort(a, fromIndex, toIndex);
+        _comparableTimSort ??= new ComparableTimSort< object >();
+        _comparableTimSort.DoSort( a, fromIndex, toIndex );
     }
-    
+
     /// <summary>
     /// </summary>
     /// <param name="a"></param>
@@ -63,7 +66,7 @@ public sealed class SortUtils
     {
         _timSort ??= new TimSort< object >();
 
-        _timSort.DoSort( a.Cast<object>().ToArray(), c, 0, a.Count );
+        _timSort.DoSort( a.Cast< object >().ToArray(), c, 0, a.Count );
     }
 
     /// <summary>
@@ -75,7 +78,7 @@ public sealed class SortUtils
     {
         _timSort ??= new TimSort< object >();
 
-        _timSort.DoSort( a.Cast<object>().ToArray(), c, 0, a.Length );
+        _timSort.DoSort( a.Cast< object >().ToArray(), c, 0, a.Length );
     }
 
     /// <summary>
@@ -89,6 +92,6 @@ public sealed class SortUtils
     {
         _timSort ??= new TimSort< object >();
 
-        _timSort.DoSort( a.Cast<object>().ToArray(), c, fromIndex, toIndex );
+        _timSort.DoSort( a.Cast< object >().ToArray(), c, fromIndex, toIndex );
     }
 }
