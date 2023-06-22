@@ -49,10 +49,7 @@ public sealed class GLOnlyTextureData : ITextureData
         this.Type           = type;
     }
 
-    public new ITextureData.TextureDataType GetType()
-    {
-        return ITextureData.TextureDataType.Custom;
-    }
+    public ITextureData.TextureType TextureDataType => ITextureData.TextureDataType.Custom;
 
     public void Prepare()
     {

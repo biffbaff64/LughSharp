@@ -121,7 +121,7 @@ public sealed class FacedCubemapData : ICubemapData
 
         for ( var i = 0; i < _data.Length; i++ )
         {
-            if ( _data[ i ]!.GetType() == ITextureData.TextureDataType.Custom )
+            if ( _data[ i ]!.TextureDataType == ITextureData.TextureDataType.Custom )
             {
                 _data[ i ]!.ConsumeCustomData( IGL20.GL_Texture_Cube_Map_Positive_X + i );
             }

@@ -6,7 +6,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - STEP 1: Complete all conversions so that the code will build.
 - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
 -         Some classes can become structs / records instead.
--         Some Get / Set method declarations in interfaces could become Properties.
+-         Some/Most Get / Set method declarations in interfaces could become Properties.
 -         switch expressions instead of switch statements where appropriate.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
@@ -51,7 +51,7 @@ CORE
     - DONE - ApplicationAdapter             Convert
     - DONE - ApplicationBase                New
     - DONE - Game                           Convert
-    - DONE - GDXVersion                     Convert / Replace with C# Versioning?
+    - DONE - GDXVersion                     Convert
     - DONE - IApplication                   Convert
     - DONE - IApplicationListener           Convert
     - DONE - IApplicationLogger             Convert
@@ -90,7 +90,7 @@ ASSETS/LOADERS
     - DONE - AssetLoader                    Convert
     - DONE - AsynchronousAssetLoader        Convert
     - DONE - BitmapFontLoader               Convert
-    -      - CubemapLoader                  Convert
+    - DONE - CubemapLoader                  Convert
     -      - I18NBundleLoader               Convert
     -      - ModelLoader                    Convert
     - DONE - MusicLoader                    Convert
@@ -669,10 +669,10 @@ UTILS
 UTILS/ASYNC
 -----------
 
-    - **** - AsyncExecutor                  Needed??
-    - **** - AsyncResult                    Needed??
-    - **** - IAsyncTask                     Needed??
-    - **** - ThreadUtils                    Needed??
+    - **** - AsyncExecutor
+    - **** - AsyncResult|
+    - **** - IAsyncTask
+    - **** - ThreadUtils
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -696,8 +696,8 @@ UTILS/COLLECTIONS
     - **** - ShortArray                     List< short >
 
     - DONE - DelayedRemovalArray            Convert / Extend List<>
-    - DONE - SnapshotArray                  Convert / extend List<T>
-
+`    - DONE - SnapshotArray                  Convert / extend List<T>
+`
     Extensions
     ----------
     - IP   - DictionaryExtensions
@@ -718,10 +718,10 @@ UTILS/COLLECTIONS
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
     - **** - ObjectIntMap                   Use Dictionary< object, int >
     - **** - ObjectLongMap                  Use Dictionary< object, long >
-    - **** - ObjectMap                      Use Dictionary< object, object >
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
 
-    - IP   - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
+    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
 
     Sets
     ----

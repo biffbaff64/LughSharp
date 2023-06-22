@@ -24,14 +24,21 @@ public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoa
     public struct CubemapLoaderInfo
     {
         public string?       filename;
-        public ICubemapData? data;
         public Cubemap?      cubemap;
+        public ICubemapData? cubemapData;
     };
 
-    private CubemapLoaderInfo _loaderInfo = new();
+    private CubemapLoaderInfo _loaderInfo = new()
+    {
+        filename    = "",
+        cubemap     = null!,
+        cubemapData = null!
+    };
 
-    public CubemapLoader( IFileHandleResolver resolver )
-        : base( resolver )
+    /// <summary>
+    /// Creates a new CubmapLoader using the supplied resolver.
+    /// </summary>
+    public CubemapLoader( IFileHandleResolver resolver ) : base( resolver )
     {
     }
 
@@ -53,10 +60,10 @@ public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoa
     /// Loads the non-OpenGL part of the asset and injects any dependencies of
     /// the asset into the AssetManager.
     /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
+    /// <param name="manager">The AssetManager to use.</param>
+    /// <param name="fileName">The name of the asset to load.</param>
+    /// <param name="file">The assets FileInfo object.</param>
+    /// <param name="parameter">The AssetLoader parameters object.</param>
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
@@ -79,57 +86,55 @@ public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoa
             {
                 if ( fileName.Contains( ".ktx" ) || fileName.Contains( ".zktx" ) )
                 {
-                    _loaderInfo.data = new KTXTextureData( file, genMipMaps );
+                    _loaderInfo.cubemapData = new KTXTextureData( file, genMipMaps );
                 }
             }
         }
         else
         {
-            _loaderInfo.data    = ( ( CubemapParameter? )parameter )?.cubemapData;
-            _loaderInfo.cubemap = ( ( CubemapParameter? )parameter )?.cubemap;
+            _loaderInfo.cubemapData = ( ( CubemapParameter? )parameter )?.cubemapData;
+            _loaderInfo.cubemap     = ( ( CubemapParameter? )parameter )?.cubemap;
         }
 
-        if ( !_loaderInfo.data!.Prepared ) _loaderInfo.data.Prepare();
+        if ( !_loaderInfo.cubemapData!.Prepared ) _loaderInfo.cubemapData.Prepare();
     }
 
     /// <summary>
     /// Loads the OpenGL part of the asset.
     /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
+    /// <param name="manager">The AssetManager to use.</param>
+    /// <param name="fileName">The name of the asset to load.</param>
+    /// <param name="file">The assets FileInfo object.</param>
+    /// <param name="parameter">The AssetLoader parameters object.</param>
     /// <returns></returns>
     public override Cubemap LoadSync( AssetManager? manager,
                                       string? fileName,
                                       FileInfo? file,
-                                      AssetLoaderParameters parameter )
+                                      AssetLoaderParameters? parameter )
     {
-        if ( _loaderInfo == null ) return null;
-
-        Cubemap cubemap = _loaderInfo.cubemap;
+        Cubemap? cubemap = _loaderInfo.cubemap;
 
         if ( cubemap != null )
         {
-            cubemap.load( _loaderInfo.data );
+            cubemap.Load( _loaderInfo.cubemapData! );
         }
         else
         {
-            cubemap = new Cubemap( _loaderInfo.data );
+            cubemap = new Cubemap( _loaderInfo.cubemapData );
         }
 
         if ( parameter != null )
         {
             cubemap.SetFilter
                 (
-                 ( ( CubemapParameter? )parameter )?.minFilter,
-                 ( ( CubemapParameter? )parameter )?.magFilter
+                 ( ( CubemapParameter? )parameter )!.minFilter,
+                 ( ( CubemapParameter? )parameter )!.magFilter
                 );
 
             cubemap.SetWrap
                 (
-                 ( ( CubemapParameter? )parameter )?.wrapU,
-                 ( ( CubemapParameter? )parameter )?.wrapV
+                 ( ( CubemapParameter? )parameter )!.wrapU,
+                 ( ( CubemapParameter? )parameter )!.wrapV
                 );
         }
 
@@ -144,7 +149,7 @@ public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoa
     {
     }
 
-    public class CubemapParameter : AssetLoaderParameters
+    public sealed class CubemapParameter : AssetLoaderParameters
     {
         // the format of the final Texture. Uses the source images format if null
         public Pixmap.Format? format = null;
@@ -154,7 +159,7 @@ public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoa
 
         // CubemapData for textures created on the fly, optional.
         // When set, all format and genMipMaps are ignored
-        public ICubemapData? cubemapData = null;
+        public ICubemapData?  cubemapData = null;
         public TextureFilter minFilter   = TextureFilter.Nearest;
         public TextureFilter magFilter   = TextureFilter.Nearest;
         public TextureWrap   wrapU       = TextureWrap.ClampToEdge;

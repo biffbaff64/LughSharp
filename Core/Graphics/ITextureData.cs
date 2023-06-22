@@ -36,14 +36,15 @@ namespace LibGDXSharp.Graphics;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public interface ITextureData
 {
-    public enum TextureDataType
+    public enum TextureType
     {
         Pixmap,
         Custom
     }
 
-    /// <returns> the <see cref="TextureDataType"/> </returns>
-    public TextureDataType GetType();
+    /// <value> the <see cref="TextureDataType"/>
+    /// </value>
+    public TextureType TextureDataType { get; }
 
     /// <returns> whether the TextureData is prepared or not.</returns>
     public bool IsPrepared { get; set; }

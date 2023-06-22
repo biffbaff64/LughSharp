@@ -308,9 +308,9 @@ public abstract class GLTexture
 
         if ( !data.IsPrepared ) data.Prepare();
 
-        ITextureData.TextureDataType type = data.GetType();
+        ITextureData.TextureType type = data.TextureDataType;
 
-        if ( type == ITextureData.TextureDataType.Custom )
+        if ( type == ITextureData.TextureType.Custom )
         {
             data.ConsumeCustomData( target );
 

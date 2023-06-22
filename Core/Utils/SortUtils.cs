@@ -38,18 +38,21 @@ public sealed class SortUtils
     }
 
     private TimSort<object>?   _timSort;
+    private ComparableTimSort? _comparableTimSort;
 
-//    public void Sort<T>( List<T> a )
-//    {
-//    }
+    public void Sort<T>( List<T> a )
+    {
+    }
 
-//    public void Sort<T>( object[] a )
-//    {
-//    }
+    public void Sort<T>( object[] a )
+    {
+    }
 
-//    public void Sort<T>( object[] a, int fromIndex, int toIndex )
-//    {
-//    }
+    public void Sort<T>( object[] a, int fromIndex, int toIndex )
+    {
+        _comparableTimSort ??= new ComparableTimSort();
+        _comparableTimSort.DoSort(a, fromIndex, toIndex);
+    }
     
     /// <summary>
     /// </summary>

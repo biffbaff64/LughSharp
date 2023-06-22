@@ -25,162 +25,22 @@ namespace LibGDXSharp.Graphics;
 /// Wraps a standard OpenGL ES Cubemap. Must be disposed when it is no longer used.
 /// </summary>
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Cubemap : GLTexture
 {
     private readonly static Dictionary< IApplication, List< Cubemap >? > managedCubemaps = new();
 
     public static AssetManager? AssetManager { get; set; }
 
-    /// <summary>
-    /// Enum to identify each side of a Cubemap </summary>
-    public sealed class CubemapSide
-    {
-        /// <summary>
-        /// The positive X and first side of the cubemap
-        /// </summary>
-        public readonly static CubemapSide PositiveX = new
-            ( "PositiveX", InnerEnum.PositiveX, 0, IGL20.GL_Texture_Cube_Map_Positive_X, 0, -1, 0, 1, 0, 0 );
-        /// <summary>
-        /// The negative X and second side of the cubemap
-        /// </summary>
-        public readonly static CubemapSide NegativeX = new
-            ( "NegativeX", InnerEnum.NegativeX, 1, IGL20.GL_Texture_Cube_Map_Negative_X, 0, -1, 0, -1, 0, 0 );
-        /// <summary>
-        /// The positive Y and third side of the cubemap
-        /// </summary>
-        public readonly static CubemapSide PositiveY = new
-            ( "PositiveY", InnerEnum.PositiveY, 2, IGL20.GL_Texture_Cube_Map_Positive_Y, 0, 0, 1, 0, 1, 0 );
-        /// <summary>
-        /// The negative Y and fourth side of the cubemap
-        /// </summary>
-        public readonly static CubemapSide NegativeY = new
-            ( "NegativeY", InnerEnum.NegativeY, 3, IGL20.GL_Texture_Cube_Map_Negative_Y, 0, 0, -1, 0, -1, 0 );
-        /// <summary>
-        /// The positive Z and fifth side of the cubemap
-        /// </summary>
-        public readonly static CubemapSide PositiveZ = new
-            ( "PositiveZ", InnerEnum.PositiveZ, 4, IGL20.GL_Texture_Cube_Map_Positive_Z, 0, -1, 0, 0, 0, 1 );
-        /// <summary>
-        /// The negative Z and sixth side of the cubemap
-        /// </summary>
-        public readonly static CubemapSide NegativeZ = new
-            ( "NegativeZ", InnerEnum.NegativeZ, 5, IGL20.GL_Texture_Cube_Map_Negative_Z, 0, -1, 0, 0, 0, -1 );
-
-        private readonly static List< CubemapSide > valueList = new();
-
-        static CubemapSide()
-        {
-            valueList.Add( PositiveX );
-            valueList.Add( NegativeX );
-            valueList.Add( PositiveY );
-            valueList.Add( NegativeY );
-            valueList.Add( PositiveZ );
-            valueList.Add( NegativeZ );
-        }
-
-        public enum InnerEnum
-        {
-            PositiveX,
-            NegativeX,
-            PositiveY,
-            NegativeY,
-            PositiveZ,
-            NegativeZ
-        }
-
-        public InnerEnum InnerEnumValue { get; private set; }
-        public int       OrdinalValue   { get; private set; }
-
-        private readonly string _nameValue;
-        private static   int    _nextOrdinal = 0;
-
-        /// <summary>
-        /// The zero based index of the side in the cubemap </summary>
-        public int Index { get; set; }
-
-        /// <summary>
-        /// The OpenGL target (used for glTexImage2D) of the side. </summary>
-        public int GLEnum { get; set; }
-
-        /// <summary>
-        /// The up vector to target the side. </summary>
-        public Vector3 Up { get; set; }
-
-        /// <summary>
-        /// The direction vector to target the side. </summary>
-        public Vector3 Direction { get; set; }
-
-        public CubemapSide( string name,
-                            InnerEnum innerEnum,
-                            int index,
-                            int glEnum,
-                            float upX,
-                            float upY,
-                            float upZ,
-                            float directionX,
-                            float directionY,
-                            float directionZ )
-        {
-            this.Index     = index;
-            this.GLEnum    = glEnum;
-            this.Up        = new Vector3( upX, upY, upZ );
-            this.Direction = new Vector3( directionX, directionY, directionZ );
-
-            _nameValue     = name;
-            OrdinalValue   = _nextOrdinal++;
-            InnerEnumValue = innerEnum;
-        }
-
-        /// <summary>
-        /// Sets the supplied <see cref="Vector3"/> to the contents of <see cref="Up"/>
-        /// and returns it to the caller. 
-        /// </summary>
-        public Vector3 GetUp( ref Vector3 vec3 )
-        {
-            return vec3.Set( Up );
-        }
-
-        /// <summary>
-        /// Sets the supplied <see cref="Vector3"/> to the contents of <see cref="Direction"/>
-        /// and returns it to the caller. 
-        /// </summary>
-        public Vector3 GetDirection( Vector3 vec3 )
-        {
-            return vec3.Set( Direction );
-        }
-
-        public static CubemapSide[] Values()
-        {
-            return valueList.ToArray();
-        }
-
-        public override string ToString()
-        {
-            return _nameValue;
-        }
-
-        public static CubemapSide ValueOf( string name )
-        {
-            foreach ( CubemapSide enumInstance in valueList )
-            {
-                if ( enumInstance._nameValue == name )
-                {
-                    return enumInstance;
-                }
-            }
-
-            throw new System.ArgumentException( name );
-        }
-    }
-
     public ICubemapData Data { get; set; }
 
     /// <summary>
     /// Construct a Cubemap based on the given CubemapData.
     /// </summary>
-    public Cubemap( ICubemapData data )
-        : base( IGL20.GL_Texture_Cube_Map )
+    public Cubemap( ICubemapData? data ) : base( IGL20.GL_Texture_Cube_Map )
     {
+        ArgumentNullException.ThrowIfNull( data );
+        
         this.Data = data;
         Load( data );
 
@@ -430,4 +290,148 @@ public class Cubemap : GLTexture
     /// return the number of managed cubemaps currently loaded
     /// </summary>
     public static int NumManagedCubemaps => managedCubemaps[ Gdx.App ]?.Count ?? 0;
+
+    /// <summary>
+    /// Enum to identify each side of a Cubemap </summary>
+    public sealed class CubemapSide
+    {
+        /// <summary>
+        /// The positive X and first side of the cubemap
+        /// </summary>
+        public readonly static CubemapSide PositiveX = new
+            ( "PositiveX", InnerEnum.PositiveX, 0, IGL20.GL_Texture_Cube_Map_Positive_X, 0, -1, 0, 1, 0, 0 );
+        /// <summary>
+        /// The negative X and second side of the cubemap
+        /// </summary>
+        public readonly static CubemapSide NegativeX = new
+            ( "NegativeX", InnerEnum.NegativeX, 1, IGL20.GL_Texture_Cube_Map_Negative_X, 0, -1, 0, -1, 0, 0 );
+        /// <summary>
+        /// The positive Y and third side of the cubemap
+        /// </summary>
+        public readonly static CubemapSide PositiveY = new
+            ( "PositiveY", InnerEnum.PositiveY, 2, IGL20.GL_Texture_Cube_Map_Positive_Y, 0, 0, 1, 0, 1, 0 );
+        /// <summary>
+        /// The negative Y and fourth side of the cubemap
+        /// </summary>
+        public readonly static CubemapSide NegativeY = new
+            ( "NegativeY", InnerEnum.NegativeY, 3, IGL20.GL_Texture_Cube_Map_Negative_Y, 0, 0, -1, 0, -1, 0 );
+        /// <summary>
+        /// The positive Z and fifth side of the cubemap
+        /// </summary>
+        public readonly static CubemapSide PositiveZ = new
+            ( "PositiveZ", InnerEnum.PositiveZ, 4, IGL20.GL_Texture_Cube_Map_Positive_Z, 0, -1, 0, 0, 0, 1 );
+        /// <summary>
+        /// The negative Z and sixth side of the cubemap
+        /// </summary>
+        public readonly static CubemapSide NegativeZ = new
+            ( "NegativeZ", InnerEnum.NegativeZ, 5, IGL20.GL_Texture_Cube_Map_Negative_Z, 0, -1, 0, 0, 0, -1 );
+
+        private readonly static List< CubemapSide > valueList = new();
+
+        static CubemapSide()
+        {
+            valueList.Add( PositiveX );
+            valueList.Add( NegativeX );
+            valueList.Add( PositiveY );
+            valueList.Add( NegativeY );
+            valueList.Add( PositiveZ );
+            valueList.Add( NegativeZ );
+        }
+
+        public enum InnerEnum
+        {
+            PositiveX,
+            NegativeX,
+            PositiveY,
+            NegativeY,
+            PositiveZ,
+            NegativeZ
+        }
+
+        public InnerEnum InnerEnumValue { get; private set; }
+        public int       OrdinalValue   { get; private set; }
+
+        private readonly string _nameValue;
+        private static   int    _nextOrdinal = 0;
+
+        /// <summary>
+        /// The zero based index of the side in the cubemap </summary>
+        public int Index { get; set; }
+
+        /// <summary>
+        /// The OpenGL target (used for glTexImage2D) of the side. </summary>
+        public int GLEnum { get; set; }
+
+        /// <summary>
+        /// The up vector to target the side.
+        /// </summary>
+        public Vector3 Up { get; set; }
+
+        /// <summary>
+        /// The direction vector to target the side.
+        /// </summary>
+        public Vector3 Direction { get; set; }
+
+        public CubemapSide( string name,
+                            InnerEnum innerEnum,
+                            int index,
+                            int glEnum,
+                            float upX,
+                            float upY,
+                            float upZ,
+                            float directionX,
+                            float directionY,
+                            float directionZ )
+        {
+            this.Index     = index;
+            this.GLEnum    = glEnum;
+            this.Up        = new Vector3( upX, upY, upZ );
+            this.Direction = new Vector3( directionX, directionY, directionZ );
+
+            _nameValue     = name;
+            OrdinalValue   = _nextOrdinal++;
+            InnerEnumValue = innerEnum;
+        }
+
+        /// <summary>
+        /// Sets the supplied <see cref="Vector3"/> to the contents of <see cref="Up"/>
+        /// and returns it to the caller. 
+        /// </summary>
+        public Vector3 GetUp( ref Vector3 vec3 )
+        {
+            return vec3.Set( Up );
+        }
+
+        /// <summary>
+        /// Sets the supplied <see cref="Vector3"/> to the contents of <see cref="Direction"/>
+        /// and returns it to the caller. 
+        /// </summary>
+        public Vector3 GetDirection( Vector3 vec3 )
+        {
+            return vec3.Set( Direction );
+        }
+
+        public static CubemapSide[] Values()
+        {
+            return valueList.ToArray();
+        }
+
+        public override string ToString()
+        {
+            return _nameValue;
+        }
+
+        public static CubemapSide ValueOf( string name )
+        {
+            foreach ( CubemapSide enumInstance in valueList )
+            {
+                if ( enumInstance._nameValue == name )
+                {
+                    return enumInstance;
+                }
+            }
+
+            throw new System.ArgumentException( name );
+        }
+    }
 }

@@ -78,12 +78,12 @@ public sealed class AssetManager
                 SetLoader( typeof(Skin),            new SkinLoader( resolver ) );
                 SetLoader( typeof(IMusic),          new MusicLoader( resolver ) );
                 SetLoader( typeof(ISound),          new SoundLoader( resolver ) );
+                SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
 
 //                SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
 //                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
 //                SetLoader( typeof(I18NBundle),      new I18NBundleLoader( resolver ) );
 //                SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
-                SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
             //@formatter:on
         }
 
@@ -283,9 +283,7 @@ public sealed class AssetManager
 
         for ( var i = 0; i < _loadQueue.Count; i++ )
         {
-            var filePath = _loadQueue[ i ].FilePath;
-
-            if ( ( filePath != null ) && filePath.Equals( fileName ) )
+            if ( ( _loadQueue[ i ].FilePath != null ) && _loadQueue[ i ].FilePath!.Equals( fileName ) )
             {
                 foundIndex = i;
 
@@ -306,7 +304,7 @@ public sealed class AssetManager
             // if the queued asset was already loaded, let the callback know it is available.
             if ( ( type != null ) && desc.Parameters is { LoadedCallback: not null } )
             {
-                desc.Parameters.LoadedCallback?.FinishedLoading( this, desc.FilePath, desc.Type );
+                desc.Parameters.LoadedCallback?.FinishedLoading( this, desc.FilePath!, desc.Type );
             }
 
             return;
@@ -685,8 +683,10 @@ public sealed class AssetManager
         }
     }
 
-    public void InjectDependencies( string parentAssetFilename, IList< AssetDescriptor > dependendAssetDescs )
+    public void InjectDependencies( string? parentAssetFilename, IList< AssetDescriptor > dependendAssetDescs )
     {
+        ArgumentNullException.ThrowIfNull( parentAssetFilename );
+        
         foreach ( AssetDescriptor desc in dependendAssetDescs )
         {
             Debug.Assert( desc.FilePath != null, "desc.FilePath != null" );

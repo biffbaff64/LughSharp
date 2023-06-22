@@ -162,7 +162,7 @@ public sealed class AssetLoadingTask
         {
             if ( loader != null )
             {
-                assetDesc.File = loader.Resolve( assetDesc.FilePath );
+                assetDesc.File = loader.Resolve( assetDesc.FilePath! );
             }
         }
 

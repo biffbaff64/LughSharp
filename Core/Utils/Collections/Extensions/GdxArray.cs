@@ -568,7 +568,7 @@ public class GdxArray<T>
     /// </summary>
     public void Sort()
     {
-        SortUtils.Instance.Sort< T >( Items, c, 0, Size );
+        SortUtils.Instance.Sort< T >( Items, 0, Size );
     }
 
     /// <summary>
@@ -592,7 +592,7 @@ public class GdxArray<T>
             throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
         }
 
-        return Selector< T >.Instance().Selecting( Items, comparator, kthLowest, Size );
+        return Selector< T >.Instance().Select( Items, comparator, kthLowest, Size );
     }
 
     /// <summary>

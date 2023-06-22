@@ -53,7 +53,7 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// Used by <see cref="Place"/> to bit shift the upper bits of a <b>long</b>
-    /// into a usable range (&gt;= 0 and &lt;= <see cref="_mask"/>).
+    /// into a usable range (&gt;= 0 and &lt;= <see cref="Mask"/>).
     /// <para>
     /// The shift can be negative, which is convenient to match the number of bits in
     /// mask: if mask is a 7-bit number, a shift of -7 shifts the upper 7 bits into the
@@ -61,19 +61,19 @@ public class ObjectMap<TK, TV>
     /// with an int will still move the upper bits of an int to the lower bits.
     /// </para>
     /// <para>
-    /// <see cref="_mask"/> can also be used to mask the low bits of a number, which may
+    /// <see cref="Mask"/> can also be used to mask the low bits of a number, which may
     /// be faster for some hashcodes if <see cref="Place"/> is overridden.
     /// </para>
     /// </summary>
-    private int _shift;
+    protected int Shift { get; set; }
 
     /// <summary>
     /// A bitmask used to confine hashcodes to the size of the table. Must be all
     /// 1 bits in its low positions, ie a power of two minus 1.
-    /// If <see cref="Place"/> is overriden, this can be used instead of <see cref="_shift"/>
+    /// If <see cref="Place"/> is overriden, this can be used instead of <see cref="Shift"/>
     /// to isolate usable bits of a hash.
     /// </summary>
-    private int _mask;
+    protected int Mask { get; set; }
 
     [NonSerialized] private Entries< TK, TV >? _entries1;
     [NonSerialized] private Entries< TK, TV >? _entries2;
@@ -98,8 +98,8 @@ public class ObjectMap<TK, TV>
         var tableSize = ArrayUtils.TableSize( initialCapacity, loadFactor );
 
         _threshold = ( int )( tableSize * loadFactor );
-        _mask      = tableSize - 1;
-        _shift     = int.LeadingZeroCount( _mask );
+        Mask      = tableSize - 1;
+        Shift     = int.LeadingZeroCount( Mask );
         keyTable   = new TK[ tableSize ];
         valueTable = new TV[ tableSize ];
     }
@@ -127,8 +127,8 @@ public class ObjectMap<TK, TV>
             );
 
         _threshold = ( int )( tableSize * _loadFactor );
-        _mask      = tableSize - 1;
-        _shift     = int.LeadingZeroCount( _mask );
+        Mask      = tableSize - 1;
+        Shift     = int.LeadingZeroCount( Mask );
 
         keyTable   = new TK[ tableSize ];
         valueTable = new TV[ tableSize ];
@@ -146,7 +146,7 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// Returns an index greater than or equal to 0 and less than or equal
-    /// to <see cref="_mask"/> for the specified <tt>item</tt>.
+    /// to <see cref="Mask"/> for the specified <tt>item</tt>.
     /// </summary>
     /// <param name="item"></param>
     public int Place( TK item )
@@ -156,7 +156,7 @@ public class ObjectMap<TK, TV>
             throw new ArgumentException( "item cannot be null!" );
         }
 
-        return ( int )( ( ( ulong )item.GetHashCode() * 0x9E3779B97F4A7C15L ) >>> _shift );
+        return ( int )( ( ( ulong )item.GetHashCode() * 0x9E3779B97F4A7C15L ) >>> Shift );
     }
 
     /// <summary>
@@ -170,7 +170,7 @@ public class ObjectMap<TK, TV>
 
         if ( keyTable == null ) throw new NullReferenceException( "_keyTable is null" );
 
-        for ( var i = Place( key ); /*..*/; i = ( i + 1 ) & _mask )
+        for ( var i = Place( key ); /*..*/; i = ( i + 1 ) & Mask )
         {
             TK? other = keyTable[ i ];
 
@@ -523,8 +523,8 @@ public class ObjectMap<TK, TV>
         var oldCapacity = keyTable.Length;
 
         _threshold = ( int )( newSize * _loadFactor );
-        _mask      = newSize - 1;
-        _shift     = int.LeadingZeroCount( _mask );
+        Mask      = newSize - 1;
+        Shift     = int.LeadingZeroCount( Mask );
 
         TK?[] oldKeyTable   = keyTable;
         TV?[] oldValueTable = valueTable;
@@ -557,7 +557,7 @@ public class ObjectMap<TK, TV>
     /// <param name="value"></param>
     private void PutResize( TK key, TV? value )
     {
-        for ( var i = Place( key );; i = ( i + 1 ) & _mask )
+        for ( var i = Place( key );; i = ( i + 1 ) & Mask )
         {
             if ( keyTable[ i ] == null )
             {
@@ -584,13 +584,13 @@ public class ObjectMap<TK, TV>
 
         TV? oldValue = valueTable[ i ];
 
-        var next = ( i + 1 ) & _mask;
+        var next = ( i + 1 ) & Mask;
 
         while ( keyTable[ next ] is { } lkey )
         {
             var placement = Place( lkey );
 
-            if ( ( ( next - placement ) & _mask ) > ( ( i - placement ) & _mask ) )
+            if ( ( ( next - placement ) & Mask ) > ( ( i - placement ) & Mask ) )
             {
                 keyTable[ i ]   = key;
                 valueTable[ i ] = valueTable[ next ];
@@ -598,7 +598,7 @@ public class ObjectMap<TK, TV>
                 i = next;
             }
 
-            next = ( next + 1 ) & _mask;
+            next = ( next + 1 ) & Mask;
         }
 
         keyTable[ i ]   = default( TK );
@@ -793,7 +793,7 @@ public class ObjectMap<TK, TV>
 
             if ( i < 0 ) throw new IllegalStateException( "Next() must be called before Remove()." );
 
-            var mask = map._mask;
+            var mask = map.Mask;
             var next = ( i + 1 ) & mask;
 
             while ( map.keyTable[ next ] is { } key )
