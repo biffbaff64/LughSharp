@@ -133,7 +133,7 @@ public class Button : Table, IDisableable
         Touchable = Touchable.Enabled;
 
         this.ClickListener = new ButtonClickListener( this );
-        
+
         AddListener( this.ClickListener! );
     }
 
@@ -313,10 +313,10 @@ public class Button : Table, IDisableable
         }
     }
 
-    public ButtonClickListener? ClickListener { get; set; }
-    public bool                 IsChecked     { get; private set; }
-    public bool                 IsDisabled    { get; set; }
-    public ButtonGroup?         ButtonGroup   { get; set; }
+    public ButtonClickListener?  ClickListener { get; set; }
+    public bool                  IsChecked     { get; private set; }
+    public bool                  IsDisabled    { get; set; }
+    public ButtonGroup< Button > ButtonGroup   { get; set; }
 
     #endregion properties
 
@@ -340,7 +340,7 @@ public class Button : Table, IDisableable
         {
             this._button = button;
         }
-        
+
         public new void Clicked( InputEvent inputEvent, float x, float y )
         {
             if ( _button.IsDisabled ) return;
@@ -353,7 +353,7 @@ public class Button : Table, IDisableable
     /// The style for a button, see <see cref="Button"/>.
     /// </summary>
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public sealed class ButtonStyle
+    public class ButtonStyle
     {
         public IDrawable? Up               { get; set; }
         public IDrawable? Down             { get; set; }

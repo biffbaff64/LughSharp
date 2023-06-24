@@ -41,23 +41,26 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class Skin : IDisposable
 {
+    //@formatter:off
     private readonly static Type[] defaultTagClasses =
     {
-        typeof( BitmapFont ),
-        typeof( Color ), typeof( TintedDrawable ), typeof( NinePatchDrawable ), typeof( SpriteDrawable ),
-        typeof( TextureRegionDrawable ), typeof( TiledDrawable ), typeof( Button.ButtonStyle ),
-        typeof( CheckBox.CheckBoxStyle ),
-        typeof( ImageButton.ImageButtonStyle ), typeof( ImageTextButton.ImageTextButtonStyle ),
-        typeof( Label.LabelStyle ),
-        typeof( List.ListStyle ), typeof( ProgressBar.ProgressBarStyle ), typeof( ScrollPane.ScrollPaneStyle ),
-        typeof( SelectBox.SelectBoxStyle ), typeof( Slider.SliderStyle ), typeof( SplitPane.SplitPaneStyle ),
-        typeof( TextButton.TextButtonStyle ), typeof( TextField.TextFieldStyle ),
-        typeof( TextTooltip.TextTooltipStyle ),
-        typeof( Touchpad.TouchpadStyle ), typeof( Tree.TreeStyle ), typeof( Window.WindowStyle )
+        typeof( BitmapFont ),                           typeof( Color ),
+        typeof( TintedDrawable ),                       typeof( NinePatchDrawable ),
+        typeof( SpriteDrawable ),                       typeof( TextureRegionDrawable ),
+        typeof( TiledDrawable ),                        typeof( Button.ButtonStyle ),
+        typeof( CheckBox.CheckBoxStyle ),               typeof( ImageButton.ImageButtonStyle ),
+        typeof( ImageTextButton.ImageTextButtonStyle ), typeof( Label.LabelStyle ),
+        typeof( List.ListStyle ),                       typeof( ProgressBar.ProgressBarStyle ),
+        typeof( ScrollPane.ScrollPaneStyle ),           typeof( SelectBox.SelectBoxStyle ),
+        typeof( Slider.SliderStyle ),                   typeof( SplitPane.SplitPaneStyle ),
+        typeof( TextButton.TextButtonStyle ),           typeof( TextField.TextFieldStyle ),
+        typeof( TextTooltip.TextTooltipStyle ),         typeof( Touchpad.TouchpadStyle ),
+        typeof( Tree.TreeStyle ),                       typeof( Window.WindowStyle )
     };
+    //@formatter:on
 
-    public        Dictionary< Type, Dictionary< string, object > > Resources { get; set; }
-    public static Dictionary< string, Type > JsonClassTags { get; set; } = new( defaultTagClasses.Length );
+    public        Dictionary< Type, Dictionary< string, object >? > Resources     { get; set; }
+    public static Dictionary< string, Type >                        JsonClassTags { get; set; }
 
     /// <summary>
     /// Returns the <see cref="TextureAtlas"/> passed to this skin constructor, or null.
@@ -79,6 +82,8 @@ public sealed class Skin : IDisposable
 
     static Skin()
     {
+        JsonClassTags = new Dictionary< string, Type >( defaultTagClasses.Length );
+
         foreach ( Type c in defaultTagClasses )
         {
             JsonClassTags.Add( c.Name, c );
@@ -188,21 +193,23 @@ public sealed class Skin : IDisposable
             throw new System.ArgumentException( "resource cannot be null." );
         }
 
-        ObjectMap< string, object > typeResources = resources.Get( type );
+        Dictionary< string, object >? typeResources = Resources.Get( type );
 
         if ( typeResources == null )
         {
-            typeResources = new ObjectMap
+            typeResources = new Dictionary< string, object >
                 (
-                 ( type == typeof( TextureRegion ) ) || ( type == typeof( Drawable ) ) || ( type == typeof( Sprite ) )
+                 ( type == typeof( TextureRegion ) )
+                 || ( type == typeof( IDrawable ) )
+                 || ( type == typeof( Sprite ) )
                      ? 256
                      : 64
                 );
 
-            resources.put( type, typeResources );
+            Resources.Put( type, typeResources );
         }
 
-        typeResources.put( name, resource );
+        typeResources.Put( name, resource );
     }
 
     public void Remove( string name, Type type )
@@ -212,7 +219,7 @@ public sealed class Skin : IDisposable
             throw new System.ArgumentException( "name cannot be null." );
         }
 
-        Resources.Get( type ).Remove( name );
+        Resources.Get( type )?.Remove( name );
     }
 
     /// <summary>
@@ -221,7 +228,7 @@ public sealed class Skin : IDisposable
     /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
     public T Get<T>()
     {
-        return ( T )Get<T>( "default" );
+        return ( T )Get< T >( "default" );
     }
 
     /// <summary>
@@ -240,7 +247,7 @@ public sealed class Skin : IDisposable
 
         if ( typeof( T ) == typeof( Sprite ) ) return GetSprite( name );
 
-        Dictionary< string, object > typeResources = Resources.Get( typeof( T ) );
+        Dictionary< string, object >? typeResources = Resources.Get( typeof( T ) );
 
         if ( typeResources == null )
         {
@@ -273,17 +280,17 @@ public sealed class Skin : IDisposable
         return ( T )Resources.Get( typeof( T ) ).Get( name );
     }
 
-    public bool Has( string name, Type type ) => Resources.Get( type ).ContainsKey( name );
+    public bool Has( string name, Type type ) => Resources.Get( type )!.ContainsKey( name );
 
     /// <summary>
     /// Returns the name to resource mapping for the specified type, or
     /// null if no resources of that type exist.
     /// </summary>
-    public Dictionary< string, object > GetAll( Type type ) => Resources.Get( type );
+    public Dictionary< string, object >? GetAll( Type type ) => Resources.Get( type );
 
-    public Color GetColor( string name ) => ( Color )Get( name, typeof( Color ) );
+    public Color GetColor( string name ) => ( Color )Get< Color >( name );
 
-    public BitmapFont GetFont( string name ) => ( BitmapFont )Get( name, typeof( BitmapFont ) );
+    public BitmapFont GetFont( string name ) => ( BitmapFont )Get< BitmapFont >( name );
 
     /// <summary>
     /// Returns a registered texture region. If no region is found but a
@@ -292,12 +299,9 @@ public sealed class Skin : IDisposable
     /// </summary>
     public TextureRegion GetRegion( string name )
     {
-        var region = Optional< TextureRegion >( name );
+        var region = Optional< TextureRegion? >( name );
 
-        if ( region != null )
-        {
-            return region;
-        }
+        if ( region != null ) return region;
 
         var texture = Optional< Texture >( name );
 
@@ -319,7 +323,7 @@ public sealed class Skin : IDisposable
         var i = 0;
 
         List< TextureRegion >? regions = null;
-        var                    region  = Optional< TextureRegion >( regionName + "_" + ( i++ ) );
+        var                    region  = Optional< TextureRegion? >( regionName + "_" + ( i++ ) );
 
         if ( region != null )
         {
@@ -328,7 +332,7 @@ public sealed class Skin : IDisposable
             while ( region != null )
             {
                 regions.Add( region );
-                region = Optional< TextureRegion >( regionName + "_" + ( i++ ) );
+                region = Optional< TextureRegion? >( regionName + "_" + ( i++ ) );
             }
         }
 
@@ -342,7 +346,7 @@ public sealed class Skin : IDisposable
     /// </summary>
     public TiledDrawable GetTiledDrawable( string name )
     {
-        var tiled = Optional< TiledDrawable >( name );
+        var tiled = Optional< TiledDrawable? >( name );
 
         if ( tiled != null )
         {
@@ -373,7 +377,7 @@ public sealed class Skin : IDisposable
     /// </summary>
     public NinePatch GetPatch( string name )
     {
-        var patch = Optional< NinePatch >( name );
+        var patch = Optional< NinePatch? >( name );
 
         if ( patch != null )
         {

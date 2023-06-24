@@ -175,10 +175,10 @@ public class Widget : Actor, ILayout
     /// </summary>
     public bool NeedsLayout { get; set; } = true;
 
-    public float MinWidth()   => PrefWidth();
-    public float MinHeight()  => PrefHeight();
+    public float GetMinWidth()   => PrefWidth();
+    public float GetMinHeight()  => PrefHeight();
     public float PrefWidth()  => 0;
     public float PrefHeight() => 0;
-    public float MaxWidth()   => 0;
-    public float MaxHeight()  => 0;
+    public float GetMaxWidth()   => 0;
+    public float GetMaxHeight()  => 0;
 }

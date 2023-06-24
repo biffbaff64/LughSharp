@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// Manages a group of buttons to enforce a minimum and maximum number of checked
@@ -23,6 +25,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// The <see cref="CanCheck(T, bool)"/> method can be overridden to control
 /// if a button check or uncheck is allowed.
 /// </para>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ButtonGroup<T> where T : Button
 {
     private readonly List< T > _buttons        = new();
@@ -49,15 +52,17 @@ public class ButtonGroup<T> where T : Button
 
     public void Add( T button )
     {
-        if ( button == null ) throw new ArgumentException( "button cannot be null." );
-
-        button.ButtonGroup = null;
+        ArgumentNullException.ThrowIfNull( button );
+        
+        button.ButtonGroup = null!;
 
         var shouldCheck = ( button.IsChecked || ( _buttons.Count < _minCheckCount ) );
 
         button.SetChecked( false );
-        button.ButtonGroup = this;
+        button.ButtonGroup = ( this as ButtonGroup< Button > )!;
+
         _buttons.Add( button );
+
         button.SetChecked( shouldCheck );
     }
 
@@ -75,7 +80,7 @@ public class ButtonGroup<T> where T : Button
     {
         if ( button == null ) throw new ArgumentException( "button cannot be null." );
 
-        button.ButtonGroup = null;
+        button.ButtonGroup = null!;
         
         _buttons.Remove( button );
         _checkedButtons.Remove( button );
@@ -123,7 +128,7 @@ public class ButtonGroup<T> where T : Button
     /// changing button checked states should not be done from within this method.
     /// </summary>
 	/// <returns> True if the new state should be allowed. </returns>
-    protected bool CanCheck( T button, bool newState )
+    public bool CanCheck( T button, bool newState )
     {
         if ( button.IsChecked == newState ) return false;
 

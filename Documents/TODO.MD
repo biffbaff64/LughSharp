@@ -548,7 +548,7 @@ SCENES.SCENE2D/UI
     - DONE - Button                         Convert
     - DONE - ButtonGroup                    Convert
     - DONE - Cell                           Convert
-    -      - CheckBox                       Convert
+    - IP   - CheckBox                       Convert
     -      - Container                      Convert
     -      - Dialog                         Convert
     -      - HorizontalGroup                Convert
@@ -661,7 +661,7 @@ UTILS
     ----------------------------------------------------------------------------------
     - DONE - TimeUtils
     - DONE - TimSort
-    -      - Trace                          Addition
+    - DONE - Trace                          Addition
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

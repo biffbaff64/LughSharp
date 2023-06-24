@@ -637,7 +637,7 @@ public class Table : WidgetGroup
         return _cells;
     }
 
-    protected float GetPrefWidth()
+    protected new float GetPrefWidth()
     {
         if ( _sizeInvalid ) ComputeSize();
 
@@ -646,7 +646,7 @@ public class Table : WidgetGroup
         return _background != null ? Math.Max( width, _background.MinWidth ) : width;
     }
 
-    protected float GetPrefHeight()
+    protected new float GetPrefHeight()
     {
         if ( _sizeInvalid ) ComputeSize();
 
@@ -655,14 +655,14 @@ public class Table : WidgetGroup
         return _background != null ? Math.Max( height, _background.MinHeight ) : height;
     }
 
-    public float GetMinWidth()
+    public new float GetMinWidth()
     {
         if ( _sizeInvalid ) ComputeSize();
 
         return _tableMinWidth;
     }
 
-    public float GetMinHeight()
+    public new float GetMinHeight()
     {
         if ( _sizeInvalid ) ComputeSize();
 
@@ -854,7 +854,7 @@ public class Table : WidgetGroup
     /// </summary>
     /// <param name="align"></param>
     /// <returns></returns>
-    public Table Align( int align )
+    public Table SetAlignment( int align )
     {
         this._alignment = align;
 

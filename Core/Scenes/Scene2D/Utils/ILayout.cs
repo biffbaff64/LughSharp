@@ -70,7 +70,7 @@ public interface ILayout
     /// Generally this method should not be called in an actor's constructor because it calls
     /// <see cref="Layout()"/>, which means a subclass would have Layout() called before the
     /// subclass' constructor. Instead, in constructors simply set the actor's size
-    /// to <see cref="PrefWidth"/> and <see cref="PrefHeight"/>. This allows the actor to have
+    /// to <see cref="GetPrefWidth"/> and <see cref="GetPrefHeight"/>. This allows the actor to have
     /// a size at construction time for more convenient use with groups that do not layout their
     /// children. 
     /// </para>
@@ -91,15 +91,15 @@ public interface ILayout
     /// </summary>
     bool LayoutEnabled { get; set; }
 
-    float MinWidth();
+    float GetMinWidth();
 
-    float MinHeight();
+    float GetMinHeight();
 
-    float PrefWidth();
+    float GetPrefWidth();
 
-    float PrefHeight();
+    float GetPrefHeight();
 
-    float MaxWidth();
+    float GetMaxWidth();
 
-    float MaxHeight();
+    float GetMaxHeight();
 }

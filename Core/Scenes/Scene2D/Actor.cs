@@ -25,7 +25,7 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Scenes.Scene2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class Actor
+public class Actor : IActor
 {
     public    Stage?    Stage      { get; set; }
     public    Group?    Parent     { get; set; }

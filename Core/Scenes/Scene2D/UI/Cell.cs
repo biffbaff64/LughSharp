@@ -787,7 +787,11 @@ public sealed class Cell : IPoolable
         return this;
     }
 
-    public Cell FillOneF()
+    /// <summary>
+    /// Sets <see cref="FillX"/> and <see cref="FillY"/> to <see cref="Onef"/>
+    /// </summary>
+    /// <returns>This Cell for chaining</returns>
+    public Cell SetFill()
     {
         FillX = Onef;
         FillY = Onef;
@@ -795,21 +799,31 @@ public sealed class Cell : IPoolable
         return this;
     }
 
-    public Cell FillXOneF()
+    /// <summary>
+    /// Sets <see cref="FillX"/> to <see cref="Onef"/>.
+    /// Leaves <see cref="FillY"/> unchanged.
+    /// </summary>
+    /// <returns>This Cell for chaining</returns>
+    public Cell SetFillX()
     {
         FillX = Onef;
 
         return this;
     }
 
-    public Cell FillYOneF()
+    /// <summary>
+    /// Sets <see cref="FillY"/> to <see cref="Onef"/>.
+    /// Leaves <see cref="FillX"/> unchanged.
+    /// </summary>
+    /// <returns>This Cell for chaining</returns>
+    public Cell SetFillY()
     {
         FillY = Onef;
 
         return this;
     }
 
-    public Cell Fill( float x, float y )
+    public Cell SetFill( float x, float y )
     {
         FillX = x;
         FillY = y;
@@ -817,7 +831,7 @@ public sealed class Cell : IPoolable
         return this;
     }
 
-    public Cell Fill( bool x, bool y )
+    public Cell SetFill( bool x, bool y )
     {
         FillX = x ? Onef : Zerof;
         FillY = y ? Onef : Zerof;
@@ -825,7 +839,7 @@ public sealed class Cell : IPoolable
         return this;
     }
 
-    public Cell Fill( bool fill )
+    public Cell SetFill( bool fill )
     {
         FillX = fill ? Onef : Zerof;
         FillY = fill ? Onef : Zerof;

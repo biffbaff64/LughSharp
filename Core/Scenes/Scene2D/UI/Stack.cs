@@ -75,11 +75,11 @@ public sealed class Stack : WidgetGroup
             {
                 _prefWidth      = Math.Max( _prefWidth,  layout.PrefWidth );
                 _prefHeight     = Math.Max( _prefHeight, layout.PrefHeight );
-                _minWidth       = Math.Max( _minWidth,   layout.MinWidth );
-                _minHeight      = Math.Max( _minHeight,  layout.MinHeight );
+                _minWidth       = Math.Max( _minWidth,   layout.GetMinWidth );
+                _minHeight      = Math.Max( _minHeight,  layout.GetMinHeight );
                 
-                childMaxWidth  = layout.MaxWidth;
-                childMaxHeight = layout.MaxHeight;
+                childMaxWidth  = layout.GetMaxWidth;
+                childMaxHeight = layout.GetMaxHeight;
             }
             else
             {

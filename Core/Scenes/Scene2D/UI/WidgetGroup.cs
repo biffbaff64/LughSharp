@@ -90,7 +90,7 @@ public class WidgetGroup : Group, ILayout
 
             if ( actor is ILayout layout )
             {
-                layout.SetLayoutEnabled( enabled );
+                layout.LayoutEnabled = enabled;
             }
             else if ( actor is Group group )
             {
@@ -209,4 +209,17 @@ public class WidgetGroup : Group, ILayout
         Validate();
         base.Draw( batch, parentAlpha );
     }
+
+    public bool LayoutEnabled
+    {
+        get => _layoutEnabled;
+        set => _layoutEnabled = value;
+    }
+
+    public float GetMinWidth()   => MinWidth;
+    public float GetMinHeight()  => MinHeight;
+    public float GetPrefWidth()  => PrefWidth;
+    public float GetPrefHeight() => PrefHeight;
+    public float GetMaxWidth()   => MaxWidth;
+    public float GetMaxHeight()  => MaxHeight;
 }

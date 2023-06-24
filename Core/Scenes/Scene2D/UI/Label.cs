@@ -99,7 +99,7 @@ public class Label : Widget
 
         if ( text is { Length: > 0 } )
         {
-            SetSize( PrefWidth, PrefHeight );
+            SetSize( GetPrefWidth(), GetPrefHeight() );
         }
     }
 
