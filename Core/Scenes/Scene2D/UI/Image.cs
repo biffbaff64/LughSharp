@@ -14,9 +14,20 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
+using LibGDXSharp.Scenes.Scene2D.Utils;
+
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-public class Image
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class Image : Widget
 {
-        
+    public Image( IDrawable? drawable, Scaling scaling )
+    {
+    }
+
+    public void SetDrawable( IDrawable? drawable )
+    {
+    }
 }

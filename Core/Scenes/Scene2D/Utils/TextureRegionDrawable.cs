@@ -14,9 +14,22 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.G2D;
+
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 public class TextureRegionDrawable : BaseDrawable
 {
-        
+    public TextureRegionDrawable( TextureRegion textureRegion )
+    {
+    }
+
+    public TextureRegionDrawable( TextureRegionDrawable regionDrawable )
+    {
+    }
+
+    public IDrawable Tint( Color tint )
+    {
+        return null;
+    }
 }

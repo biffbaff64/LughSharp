@@ -14,14 +14,17 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-public class CheckBox : TextButton
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class CheckBox : TextButton
 {
-    private CheckBoxStyle _style;
+    private CheckBoxStyle? _style;
 
     public CheckBox( string text, Skin skin )
         : this( text, skin.Get< CheckBoxStyle >() )
@@ -29,7 +32,7 @@ public class CheckBox : TextButton
     }
 
     public CheckBox( string text, Skin skin, string styleName )
-        : this( text, skin.Get< CheckBoxStyle >( styleName ) )
+        : this( text, ( CheckBoxStyle )skin.Get< CheckBoxStyle >( styleName ) )
     {
     }
 
@@ -37,30 +40,31 @@ public class CheckBox : TextButton
     {
         ClearChildren();
 
-        Label label = GetLabel();
+        Label? label = Label;
 
         this.Image = new Image( style.CheckboxOff, Scaling.None );
 
-        ImageCell = Add( Image );
+        ImageCell = Add( this.Image );
 
         Add( label );
 
-        label.SetAlignment( LibGDXSharp.Utils.Align.Left );
+        label?.SetAlignment( LibGDXSharp.Utils.Align.Left );
 
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    public virtual ButtonStyle Style
+    public new ButtonStyle? Style
     {
+        get => _style;
         set
         {
-            if ( !( value is CheckBoxStyle ) )
+            if ( value is not CheckBoxStyle style )
             {
                 throw new System.ArgumentException( "style must be a CheckBoxStyle." );
             }
 
-            this._style = ( CheckBoxStyle )value;
-            base.Style  = value;
+            this._style = style;
+            base.Style  = style;
         }
     }
 
@@ -70,37 +74,37 @@ public class CheckBox : TextButton
 
         if ( IsDisabled )
         {
-            if ( IsChecked && ( _style.CheckboxOnDisabled != null ) )
+            if ( IsChecked && ( _style?.CheckboxOnDisabled != null ) )
             {
                 checkbox = _style.CheckboxOnDisabled;
             }
             else
             {
-                checkbox = _style.CheckboxOffDisabled;
+                checkbox = _style?.CheckboxOffDisabled;
             }
         }
 
         if ( checkbox == null )
         {
-            bool over = IsOver() && !IsDisabled;
+            var over = IsOver() && !IsDisabled;
 
-            if ( IsChecked && ( _style.CheckboxOn != null ) )
+            if ( IsChecked && ( _style?.CheckboxOn != null ) )
             {
                 checkbox = ( over && ( _style.CheckboxOnOver != null ) )
                     ? _style.CheckboxOnOver
                     : _style.CheckboxOn;
             }
-            else if ( over && ( _style.CheckboxOver != null ) )
+            else if ( over && ( _style?.CheckboxOver != null ) )
             {
                 checkbox = _style.CheckboxOver;
             }
             else
             {
-                checkbox = _style.CheckboxOff;
+                checkbox = _style?.CheckboxOff;
             }
         }
 
-        Image.SetDrawable( checkbox );
+        Image?.SetDrawable( checkbox );
 
         base.Draw( batch, parentAlpha );
     }
@@ -108,31 +112,23 @@ public class CheckBox : TextButton
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    /// <summary>
-    /// Returns the checkbox's style. Modifying the returned style may not
-    /// have an effect until <see cref="Style"/> is set. 
-    /// </summary>
-    public virtual CheckBoxStyle GetStyle() => _style;
-
-    public virtual Image Image { get; set; }
-
-    public virtual Cell ImageCell { get; }
+    public Image? Image     { get; set; }
+    public Cell   ImageCell { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
     /// The style for a select box, see <seealso cref="CheckBox"/>.
-    /// @author Nathan Sweet 
     /// </summary>
-    public class CheckBoxStyle : TextButtonStyle
+    public sealed class CheckBoxStyle : TextButtonStyle
     {
-        public IDrawable CheckboxOn          { get; set; }
-        public IDrawable CheckboxOff         { get; set; }
-        public IDrawable CheckboxOnOver      { get; set; }
-        public IDrawable CheckboxOver        { get; set; }
-        public IDrawable CheckboxOnDisabled  { get; set; }
-        public IDrawable CheckboxOffDisabled { get; set; }
+        public IDrawable? CheckboxOn          { get; set; }
+        public IDrawable? CheckboxOff         { get; set; }
+        public IDrawable? CheckboxOnOver      { get; set; }
+        public IDrawable? CheckboxOver        { get; set; }
+        public IDrawable? CheckboxOnDisabled  { get; set; }
+        public IDrawable? CheckboxOffDisabled { get; set; }
 
         public CheckBoxStyle()
         {

@@ -28,4 +28,8 @@ public sealed class TiledDrawable : BaseDrawable
     public TiledDrawable( TextureRegion getRegion )
     {
     }
+
+    public TiledDrawable( TiledDrawable tiledDrawable )
+    {
+    }
 }

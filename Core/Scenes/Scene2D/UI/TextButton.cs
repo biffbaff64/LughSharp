@@ -34,7 +34,7 @@ public class TextButton : Button
     }
 
     public TextButton( string? text, Skin skin, string styleName )
-        : this( text, skin.Get< TextButton.TextButtonStyle >( styleName ) )
+        : this( text, ( TextButtonStyle )skin.Get< TextButton.TextButtonStyle >( styleName ) )
     {
         Skin = skin;
     }
@@ -57,7 +57,7 @@ public class TextButton : Button
     protected Color? GetFontColor()
     {
         System.Diagnostics.Debug.Assert( Style != null, "Style != null" );
-            
+
         if ( IsDisabled && ( Style.DisabledFontColor != null ) ) return Style.DisabledFontColor;
 
         if ( IsPressed() )

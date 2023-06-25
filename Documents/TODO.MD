@@ -548,7 +548,7 @@ SCENES.SCENE2D/UI
     - DONE - Button                         Convert
     - DONE - ButtonGroup                    Convert
     - DONE - Cell                           Convert
-    - IP   - CheckBox                       Convert
+    - DONE - CheckBox                       Convert
     -      - Container                      Convert
     -      - Dialog                         Convert
     -      - HorizontalGroup                Convert

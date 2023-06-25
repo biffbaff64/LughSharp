@@ -26,12 +26,12 @@ public abstract class Interpolation
 {
     // ------------------------------------------------------------------------
 
-//    public abstract float Apply( float a );
+    public abstract float Apply( float a );
 
-//    public float Apply( float start, float end, float a )
-//    {
-//        return start + ( ( end - start ) * Apply( a ) );
-//    }
+    public float Apply( float start, float end, float a )
+    {
+        return start + ( ( end - start ) * Apply( a ) );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -230,7 +230,7 @@ public abstract class Interpolation
             this.power = power;
         }
 
-        public float Apply( float a )
+        public override float Apply( float a )
         {
             if ( a <= 0.5f ) return ( float )Math.Pow( a * 2, power ) / 2;
 
@@ -383,7 +383,7 @@ public abstract class Interpolation
         {
         }
 
-        public override float Apply( float a )
+        public new float Apply( float a )
         {
             if ( a >= 0.99 ) return 1;
 

@@ -24,4 +24,12 @@ public class SpriteDrawable : BaseDrawable
     {
     }
 
+    public SpriteDrawable( SpriteDrawable spriteDrawable )
+    {
+    }
+
+    public IDrawable Tint( Color tint )
+    {
+        return null;
+    }
 }

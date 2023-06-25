@@ -66,7 +66,7 @@ public class ColorBleedEffect
             int r          = 0, g = 0, b = 0;
             int count      = 0;
 
-            for ( int i = 0, n = offsets.length; i < n; i += 2 )
+            for ( int i = 0, n = offsets.Length; i < n; i += 2 )
             {
                 int column = x + offsets[ i ];
                 int row    = y + offsets[ i + 1 ];
@@ -198,14 +198,14 @@ public class ColorBleedEffect
                 return _pending[ _index++ ];
             }
 
-            void MarkAsInProgress()
+            public void MarkAsInProgress()
             {
                 _index--;
                 _changing[ _changingSize ] = RemoveIndex( _index );
                 _changingSize++;
             }
 
-            private void Reset()
+            public void Reset()
             {
                 _index = 0;
 
