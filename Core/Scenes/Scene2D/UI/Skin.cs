@@ -62,12 +62,12 @@ public sealed class Skin : IDisposable
         typeof( TiledDrawable ),                        typeof( Button.ButtonStyle ),
         typeof( TextButton.TextButtonStyle ),           typeof( CheckBox.CheckBoxStyle ),
         typeof( Label.LabelStyle ),                     typeof( ProgressBar.ProgressBarStyle ),
-        typeof( TextField.TextFieldStyle ),             typeof( ImageButton.ImageButtonStyle ),
-        typeof( ImageTextButton.ImageTextButtonStyle ), typeof( List.ListStyle ),                       
-        typeof( ScrollPane.ScrollPaneStyle ),           typeof( SelectBox.SelectBoxStyle ),
-        typeof( Slider.SliderStyle ),                   typeof( SplitPane.SplitPaneStyle ),
-        typeof( TextTooltip.TextTooltipStyle ),         typeof( Touchpad.TouchpadStyle ),
-        typeof( Tree.TreeStyle ),                       typeof( Window.WindowStyle )
+//        typeof( TextField.TextFieldStyle ),             typeof( ImageButton.ImageButtonStyle ),
+//        typeof( ImageTextButton.ImageTextButtonStyle ), typeof( List.ListStyle ),                       
+//        typeof( ScrollPane.ScrollPaneStyle ),           typeof( SelectBox.SelectBoxStyle ),
+//        typeof( Slider.SliderStyle ),                   typeof( SplitPane.SplitPaneStyle ),
+//        typeof( TextTooltip.TextTooltipStyle ),         typeof( Touchpad.TouchpadStyle ),
+//        typeof( Tree.TreeStyle ),                       typeof( Window.WindowStyle )
     };
     //@formatter:on
 
@@ -162,7 +162,8 @@ public sealed class Skin : IDisposable
     {
         try
         {
-            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
+            //TODO:
+//            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
         }
         catch ( SerializationException ex )
         {
@@ -250,28 +251,37 @@ public sealed class Skin : IDisposable
     /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
     public object Get<T>( string name )
     {
+        return Get( name, typeof( T ) );
+    }
+    
+    /// <summary>
+    /// Returns a named resource of the specified type.
+    /// </summary>
+    /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
+    public object Get( string name, Type type )
+    {
         ArgumentNullException.ThrowIfNull( name );
 
-        if ( typeof( T ) == typeof( IDrawable ) ) return GetDrawable( name );
+        if ( type == typeof( IDrawable ) ) return GetDrawable( name );
 
-        if ( typeof( T ) == typeof( TextureRegion ) ) return GetRegion( name );
+        if ( type == typeof( TextureRegion ) ) return GetRegion( name );
 
-        if ( typeof( T ) == typeof( NinePatch ) ) return GetPatch( name );
+        if ( type == typeof( NinePatch ) ) return GetPatch( name );
 
-        if ( typeof( T ) == typeof( Sprite ) ) return GetSprite( name );
+        if ( type == typeof( Sprite ) ) return GetSprite( name );
 
-        Dictionary< string, object >? typeResources = Resources[ typeof( T ) ];
+        Dictionary< string, object >? typeResources = Resources[ type ];
 
         if ( typeResources == null )
         {
-            throw new GdxRuntimeException( $"No {typeof( T ).FullName} registered with name: {name}" );
+            throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
         }
 
         var resource = typeResources[ name ];
 
         if ( resource == null )
         {
-            throw new GdxRuntimeException( $"No {typeof( T ).FullName} registered with name: {name}" );
+            throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
         }
         
         return resource;
@@ -649,30 +659,28 @@ public sealed class Skin : IDisposable
     {
         IDrawable newDrawable;
 
-        if ( drawable is TextureRegionDrawable )
+        if ( drawable is TextureRegionDrawable regionDrawable )
         {
-            newDrawable = ( ( TextureRegionDrawable )drawable ).Tint( tint );
+            newDrawable = regionDrawable.Tint( tint );
         }
-        else if ( drawable is NinePatchDrawable )
+        else if ( drawable is NinePatchDrawable patchDrawable )
         {
-            newDrawable = ( ( NinePatchDrawable )drawable ).Tint( tint );
+            newDrawable = patchDrawable.Tint( tint );
         }
-        else if ( drawable is SpriteDrawable )
+        else if ( drawable is SpriteDrawable spriteDrawable )
         {
-            newDrawable = ( ( SpriteDrawable )drawable ).Tint( tint );
+            newDrawable = spriteDrawable.Tint( tint );
         }
         else
         {
-            throw new GdxRuntimeException( "Unable to copy, unknown drawable type: " + drawable.GetType() );
+            throw new GdxRuntimeException( $"Unable to copy, unknown drawable type: {drawable.GetType()}" );
         }
 
-        if ( newDrawable is BaseDrawable )
+        if ( newDrawable is BaseDrawable named )
         {
-            var named = ( BaseDrawable )newDrawable;
-
-            if ( drawable is BaseDrawable )
+            if ( drawable is BaseDrawable baseDrawable )
             {
-                named.Name = ( ( ( BaseDrawable )drawable ).Name + " (" + tint + ")" );
+                named.Name = ( baseDrawable.Name + " (" + tint + ")" );
             }
             else
             {
@@ -717,16 +725,13 @@ public sealed class Skin : IDisposable
         // Get current style.
         System.Reflection.MethodInfo? method = actor.GetType().GetMethod( "GetStyle" );
 
-        if ( method == null )
-        {
-            return;
-        }
+        if ( method == null ) return;
 
         object style;
 
         try
         {
-            style = method.Invoke( actor );
+            style = method.Invoke( actor, null )!;
         }
         catch ( Exception )
         {
@@ -736,25 +741,21 @@ public sealed class Skin : IDisposable
         // Determine new style.
         var name = Find( style );
 
-        if ( string.ReferenceEquals( name, null ) )
-        {
-            return;
-        }
+        if ( string.ReferenceEquals( name, null ) ) return;
 
         name  = name.Replace( "-disabled", "" ) + ( enabled ? "" : "-disabled" );
-        style = Get<>( name, style.GetType() );
+        
+        style = Get( name, style.GetType() );
 
         // Set new style.
-        method = FindMethod( actor.GetType(), "setStyle" );
-
-        if ( method == null )
+        if ( ( method = FindMethod( actor.GetType(), "SetStyle" ) ) == null )
         {
             return;
         }
 
         try
         {
-            method.Invoke( actor, style );
+            method.Invoke( actor, ( object?[]? )style );
         }
         catch ( Exception )
         {

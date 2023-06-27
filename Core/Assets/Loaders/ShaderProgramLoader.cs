@@ -16,6 +16,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+using File = System.IO.File;
+
 namespace LibGDXSharp.Assets.Loaders;
 
 /// <summary>
@@ -36,8 +38,8 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class
-    ShaderProgramLoader : AsynchronousAssetLoader< ShaderProgram, ShaderProgramLoader.ShaderProgramParameter >
+public sealed class ShaderProgramLoader
+    : AsynchronousAssetLoader< ShaderProgram, ShaderProgramLoader.ShaderProgramParameter >
 {
     private readonly string _vertexFileSuffix   = ".vert";
     private readonly string _fragmentFileSuffix = ".frag";
@@ -93,20 +95,28 @@ public sealed class
         if ( string.ReferenceEquals( vertFileName, null )
              && fileName.EndsWith( _fragmentFileSuffix, StringComparison.Ordinal ) )
         {
-            vertFileName = fileName.Substring( 0, fileName.Length - _fragmentFileSuffix.Length ) + _vertexFileSuffix;
+//            vertFileName = fileName.Substring( 0, fileName.Length - _fragmentFileSuffix.Length ) + _vertexFileSuffix;
+            vertFileName = fileName[ ..^_fragmentFileSuffix.Length ] + _vertexFileSuffix;
         }
 
         if ( string.ReferenceEquals( fragFileName, null )
              && fileName.EndsWith( _vertexFileSuffix, StringComparison.Ordinal ) )
         {
-            fragFileName = fileName.Substring( 0, fileName.Length - _vertexFileSuffix.Length ) + _fragmentFileSuffix;
+//            fragFileName = fileName.Substring( 0, fileName.Length - _vertexFileSuffix.Length ) + _fragmentFileSuffix;
+            fragFileName = fileName[ ..^_vertexFileSuffix.Length ] + _fragmentFileSuffix;
         }
 
         FileInfo? vertexFile   = string.ReferenceEquals( vertFileName, null ) ? file : Resolve( vertFileName );
         FileInfo? fragmentFile = string.ReferenceEquals( fragFileName, null ) ? file : Resolve( fragFileName );
 
-        var vertexCode   = vertexFile!.ReadString();
-        var fragmentCode = vertexFile!.Equals( fragmentFile ) ? vertexCode : fragmentFile.ReadString();
+//        var vertexCode   = vertexFile!.ReadString();
+//        var fragmentCode = vertexFile!.Equals( fragmentFile ) ? vertexCode : fragmentFile.ReadString();
+
+        var vertexCode = File.ReadAllText( Path.GetFullPath( vertexFile!.Name ) );
+
+        var fragmentCode = vertexFile.Equals( fragmentFile )
+            ? vertexCode
+            : File.ReadAllText( Path.GetFullPath( fragmentFile!.Name ) );
 
         if ( parameter != null )
         {

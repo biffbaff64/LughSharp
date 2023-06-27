@@ -128,10 +128,7 @@ public sealed class Matcher : IMatchResult
         Reset();
     }
 
-    public Pattern Pattern()
-    {
-        return parentPattern;
-    }
+    public Pattern Pattern() => parentPattern;
 
     /// <summary>
     /// Returns the match state of this matcher as a MatchResult.
@@ -164,6 +161,7 @@ public sealed class Matcher : IMatchResult
 
         // Reallocate state storage
         var parentGroupCount = Math.Max( newPattern.CapturingGroupCount, 10 );
+
         groups = new int[ parentGroupCount * 2 ];
         locals = new int[ newPattern.LocalCount ];
 
@@ -243,10 +241,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     public int Start()
     {
-        if ( first < 0 )
-        {
-            throw new IllegalStateException( "No match available" );
-        }
+        if ( first < 0 ) throw new IllegalStateException( "No match available" );
 
         return first;
     }
@@ -278,10 +273,7 @@ public sealed class Matcher : IMatchResult
     /// </exception>
     public int Start( int group )
     {
-        if ( first < 0 )
-        {
-            throw new IllegalStateException( "No match available" );
-        }
+        if ( first < 0 ) throw new IllegalStateException( "No match available" );
 
         if ( ( group < 0 ) || ( group > GroupCount() ) )
         {
@@ -318,10 +310,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     public int End()
     {
-        if ( first < 0 )
-        {
-            throw new IllegalStateException( "No match available" );
-        }
+        if ( first < 0 ) throw new IllegalStateException( "No match available" );
 
         return last;
     }
@@ -345,10 +334,7 @@ public sealed class Matcher : IMatchResult
     /// </exception>
     public int End( int group )
     {
-        if ( first < 0 )
-        {
-            throw new IllegalStateException( "No match available" );
-        }
+        if ( first < 0 ) throw new IllegalStateException( "No match available" );
 
         if ( ( group < 0 ) || ( group > GroupCount() ) )
         {
@@ -380,7 +366,7 @@ public sealed class Matcher : IMatchResult
         return groups[ ( GetMatchedGroupIndex( name ) * 2 ) + 1 ];
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public string? Group() => Group( 0 );
 
     /// <inheritdoc/>
@@ -422,19 +408,13 @@ public sealed class Matcher : IMatchResult
     /// 
     /// </summary>
     /// <returns></returns>
-    public int GroupCount()
-    {
-        return parentPattern.CapturingGroupCount - 1;
-    }
+    public int GroupCount() => parentPattern.CapturingGroupCount - 1;
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    public bool Matches()
-    {
-        return Match( _regionStart, EndAnchor );
-    }
+    public bool Matches() => Match( _regionStart, EndAnchor );
 
     /// <summary>
     /// 
@@ -487,10 +467,7 @@ public sealed class Matcher : IMatchResult
     /// 
     /// </summary>
     /// <returns></returns>
-    public bool LookingAt()
-    {
-        return Match( _regionStart, NoAnchor );
-    }
+    public bool LookingAt() => Match( _regionStart, NoAnchor );
 
     public static string QuoteReplacement( string s )
     {
@@ -517,10 +494,7 @@ public sealed class Matcher : IMatchResult
     public Matcher AppendReplacement( StringBuilder sb, string replacement )
     {
         // If no match, return error
-        if ( first < 0 )
-        {
-            throw new IllegalStateException( "No match available" );
-        }
+        if ( first < 0 ) throw new IllegalStateException( "No match available" );
 
         // Process substitution string to replace group references with groups
         var cursor = 0;
@@ -596,11 +570,7 @@ public sealed class Matcher : IMatchResult
 
                     if ( ASCII.IsDigit( gname[ 0 ] ) )
                     {
-                        throw new ArgumentException
-                            (
-                             $"capturing group name {gname} "
-                             + $"starts with digit character"
-                            );
+                        throw new ArgumentException( $"capturing group name {gname} starts with digit character" );
                     }
 
                     if ( !parentPattern.NamedGroups().ContainsKey( gname ) )
@@ -628,18 +598,11 @@ public sealed class Matcher : IMatchResult
 
                     while ( !done )
                     {
-                        if ( cursor >= replacement.Length )
-                        {
-                            break;
-                        }
+                        if ( cursor >= replacement.Length ) break;
 
                         var nextDigit = replacement[ cursor ] - '0';
 
-                        if ( nextDigit is < 0 or > 9 )
-                        {
-                            // not a number
-                            break;
-                        }
+                        if ( nextDigit is < 0 or > 9 ) break;
 
                         var newRefNum = ( refNum * 10 ) + nextDigit;
 
@@ -730,8 +693,7 @@ public sealed class Matcher : IMatchResult
     /// <exception cref="NullReferenceException"></exception>
     public string ReplaceFirst( string replacement )
     {
-        if ( replacement == null )
-            throw new NullReferenceException( "replacement" );
+        if ( replacement == null ) throw new NullReferenceException( "replacement" );
 
         Reset();
 
@@ -754,14 +716,11 @@ public sealed class Matcher : IMatchResult
     /// <exception cref="IndexOutOfRangeException"></exception>
     public Matcher Region( int start, int end )
     {
-        if ( ( start < 0 ) || ( start > _text.Length ) )
-            throw new IndexOutOfRangeException( "start" );
+        if ( ( start < 0 ) || ( start > _text.Length ) ) throw new IndexOutOfRangeException( "start" );
 
-        if ( ( end < 0 ) || ( end > _text.Length ) )
-            throw new IndexOutOfRangeException( "end" );
+        if ( ( end < 0 ) || ( end > _text.Length ) ) throw new IndexOutOfRangeException( "end" );
 
-        if ( start > end )
-            throw new IndexOutOfRangeException( "start > end" );
+        if ( start > end ) throw new IndexOutOfRangeException( "start > end" );
 
         Reset();
 
@@ -809,13 +768,18 @@ public sealed class Matcher : IMatchResult
         this._oldLast   = _oldLast < 0 ? from : _oldLast;
 
         for ( var i = 0; i < groups.Length; i++ )
+        {
             groups[ i ] = -1;
+        }
 
         _acceptMode = NoAnchor;
-        bool result = parentPattern.Root.match( this, from, _text );
+
+        bool result = parentPattern.root.Match( this, from, _text );
 
         if ( !result )
+        {
             this.first = -1;
+        }
 
         this._oldLast = this.last;
 
@@ -865,10 +829,7 @@ public sealed class Matcher : IMatchResult
     {
         if ( name == null ) throw new GdxRuntimeException( "Group Name must not be null!" );
 
-        if ( first < 0 )
-        {
-            throw new IllegalStateException( "No match found" );
-        }
+        if ( first < 0 ) throw new IllegalStateException( "No match found" );
 
         if ( !parentPattern.NamedGroups().ContainsKey( name ) )
         {

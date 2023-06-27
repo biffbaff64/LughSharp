@@ -221,6 +221,14 @@ public abstract class Interpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    public class Linear : Interpolation
+    {
+        public override float Apply( float a ) => a;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     public class Pow : Interpolation
     {
         protected readonly int power;

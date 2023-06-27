@@ -129,14 +129,14 @@ public class Widget : Actor, ILayout
     /// Generally this method should not be called in an actor's constructor because it calls
     /// <see cref="ILayout.Layout"/>, which means a subclass would have Layout() called before the
     /// subclass' constructor. Instead, in constructors simply set the actor's size
-    /// to <see cref="ILayout.PrefWidth"/> and <see cref="ILayout.PrefHeight"/>. This allows the actor to have
-    /// a size at construction time for more convenient use with groups that do not layout their
-    /// children. 
+    /// to <see cref="ILayout.GetPrefWidth"/> and <see cref="ILayout.GetPrefHeight"/>. This allows
+    /// the actor to have a size at construction time for more convenient use with groups that do
+    /// not layout their children. 
     /// </para>
     /// </summary>
     public void Pack()
     {
-        SetSize( PrefWidth(), PrefHeight() );
+        SetSize( GetPrefWidth(), GetPrefHeight() );
         Validate();
     }
 
@@ -145,12 +145,19 @@ public class Widget : Actor, ILayout
         Invalidate();
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// If true, this actor will be sized to the parent in <see cref="ILayout.Validate"/>. If the
     /// parent is the stage, the actor will be sized to the stage. This method is for convenience
     /// only when the widget's parent does not set the size of its children (such as the stage). 
     /// </summary>
     public bool FillParent { get; set; }
+    
+    /// <summary>
+    /// </summary>
+    public bool NeedsLayout { get; set; } = true;
 
     /// <summary>
     /// Enables or disables the layout for this actor and all child actors, recursively.
@@ -170,15 +177,14 @@ public class Widget : Actor, ILayout
             }
         }
     }
-
-    /// <summary>
-    /// </summary>
-    public bool NeedsLayout { get; set; } = true;
-
-    public float GetMinWidth()   => PrefWidth();
-    public float GetMinHeight()  => PrefHeight();
-    public float PrefWidth()  => 0;
-    public float PrefHeight() => 0;
+    
+    public float GetMinWidth()   => GetPrefWidth();
+    public float GetMinHeight()  => GetPrefHeight();
+    public float GetPrefWidth()  => 0;
+    public float GetPrefHeight() => 0;
     public float GetMaxWidth()   => 0;
     public float GetMaxHeight()  => 0;
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }

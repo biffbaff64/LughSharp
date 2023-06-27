@@ -27,7 +27,7 @@ public abstract partial class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout ) return layout.GetMinWidth;
+            if ( context is ILayout layout ) return layout.GetMinWidth();
 
             return context?.Width ?? 0;
         }
@@ -40,7 +40,7 @@ public abstract partial class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout ) return layout.GetMinHeight;
+            if ( context is ILayout layout ) return layout.GetMinHeight();
 
             return context?.Height ?? 0;
         }
@@ -53,7 +53,7 @@ public abstract partial class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout ) return layout.PrefWidth;
+            if ( context is ILayout layout ) return layout.GetPrefWidth();
 
             return context?.Width ?? 0;
         }
@@ -66,7 +66,7 @@ public abstract partial class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout ) return layout.PrefHeight;
+            if ( context is ILayout layout ) return layout.GetPrefHeight();
 
             return context?.Height ?? 0;
         }
@@ -79,7 +79,7 @@ public abstract partial class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout ) return layout.GetMaxWidth;
+            if ( context is ILayout layout ) return layout.GetMaxWidth();
 
             return context?.Width ?? 0;
         }
@@ -92,7 +92,7 @@ public abstract partial class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout ) return layout.GetMaxHeight;
+            if ( context is ILayout layout ) return layout.GetMaxHeight();
 
             return context?.Height ?? 0;
         }

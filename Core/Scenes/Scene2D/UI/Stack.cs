@@ -73,27 +73,34 @@ public sealed class Stack : WidgetGroup
 
             if ( child is ILayout layout )
             {
-                _prefWidth      = Math.Max( _prefWidth,  layout.PrefWidth );
-                _prefHeight     = Math.Max( _prefHeight, layout.PrefHeight );
-                _minWidth       = Math.Max( _minWidth,   layout.GetMinWidth );
-                _minHeight      = Math.Max( _minHeight,  layout.GetMinHeight );
-                
-                childMaxWidth  = layout.GetMaxWidth;
-                childMaxHeight = layout.GetMaxHeight;
+                _prefWidth  = Math.Max( _prefWidth, layout.GetPrefWidth() );
+                _prefHeight = Math.Max( _prefHeight, layout.GetPrefHeight() );
+                _minWidth   = Math.Max( _minWidth, layout.GetMinWidth() );
+                _minHeight  = Math.Max( _minHeight, layout.GetMinHeight() );
+
+                childMaxWidth  = layout.GetMaxWidth();
+                childMaxHeight = layout.GetMaxHeight();
             }
             else
             {
-                _prefWidth      = Math.Max( _prefWidth, child.Width );
-                _prefHeight     = Math.Max( _prefHeight, child.Height );
-                _minWidth       = Math.Max( _minWidth, child.Width );
-                _minHeight      = Math.Max( _minHeight, child.Height );
+                _prefWidth  = Math.Max( _prefWidth, child.Width );
+                _prefHeight = Math.Max( _prefHeight, child.Height );
+                _minWidth   = Math.Max( _minWidth, child.Width );
+                _minHeight  = Math.Max( _minHeight, child.Height );
 
                 childMaxWidth  = 0;
                 childMaxHeight = 0;
             }
 
-            if ( childMaxWidth > 0 ) _maxWidth   = _maxWidth == 0 ? childMaxWidth : Math.Min( _maxWidth, childMaxWidth );
-            if ( childMaxHeight > 0 ) _maxHeight = _maxHeight == 0 ? childMaxHeight : Math.Min( _maxHeight, childMaxHeight );
+            if ( childMaxWidth > 0 )
+            {
+                _maxWidth = _maxWidth == 0 ? childMaxWidth : Math.Min( _maxWidth, childMaxWidth );
+            }
+
+            if ( childMaxHeight > 0 )
+            {
+                _maxHeight = _maxHeight == 0 ? childMaxHeight : Math.Min( _maxHeight, childMaxHeight );
+            }
         }
     }
 
@@ -115,47 +122,47 @@ public sealed class Stack : WidgetGroup
         {
             Actor child = children.Get( i );
             child.SetBounds( 0, 0, width, height );
-            
-            if ( child is ILayout layout) layout.Validate();
+
+            if ( child is ILayout layout ) layout.Validate();
         }
     }
 
-    public float GetPrefWidth()
+    public new float GetPrefWidth()
     {
         if ( _sizeInvalid ) ComputeSize();
 
         return _prefWidth;
     }
 
-    public float GetPrefHeight()
+    public new float GetPrefHeight()
     {
         if ( _sizeInvalid ) ComputeSize();
 
         return _prefHeight;
     }
 
-    public float GetMinWidth()
+    public new float GetMinWidth()
     {
         if ( _sizeInvalid ) ComputeSize();
 
         return _minWidth;
     }
 
-    public float GetMinHeight()
+    public new float GetMinHeight()
     {
         if ( _sizeInvalid ) ComputeSize();
 
         return _minHeight;
     }
 
-    public float GetMaxWidth()
+    public new float GetMaxWidth()
     {
         if ( _sizeInvalid ) ComputeSize();
 
         return _maxWidth;
     }
 
-    public float GetMaxHeight()
+    public new float GetMaxHeight()
     {
         if ( _sizeInvalid ) ComputeSize();
 

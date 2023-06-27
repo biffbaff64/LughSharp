@@ -96,7 +96,7 @@ ASSETS/LOADERS
     - DONE - MusicLoader                    Convert
     -      - ParticleEffectLoader           Convert
     - DONE - PixmapLoader                   Convert
-    - IP   - ShaderProgramLoader            Convert
+    - DONE - ShaderProgramLoader            Convert
     - DONE - SkinLoader                     Convert
     - DONE - SoundLoader                    Convert
     - DONE - SynchronousAssetLoader         Convert
@@ -149,12 +149,11 @@ FILES
     - java.io.DataOuput                     -> (Interface)
     - java.io.InputStream                   -> StreamReader
     - java.io.InputStreamReader             -> StreamReader
-    - java.io.IOException                   -> 
+    - java.io.IOException                   -> System.IO.IOException
     - java.io.OutputStream                  -> StreamWriter
     - java.io.Reader                        -> 
 
     - Would MemoryStream cover all these?
-
     - java.nio.Buffer                       ->  
     - java.nio.BufferUtils                  ->  
     - java.nio.ByteBuffer                   ->  
@@ -558,7 +557,7 @@ SCENES.SCENE2D/UI
     - DONE - Label                          Convert
     -      - List                           Convert
     -      - ParticleEffectActor            Convert
-    - IP   - ProgressBar                    Convert
+    - DONE - ProgressBar                    Convert
     -      - ScrollPane                     Convert
     -      - SelectBox                      Convert
     - IP   - Skin                           Convert
@@ -623,7 +622,8 @@ UTILS
     - DONE - BinaryHeap
     - DONE - Bits                           Convert
     ----------------------------------------------------------------------------------
-    - DONE - CharHelper                     Might be added to.
+    - IP   - CharHelper                     Might be added to.
+    - IP   - CharacterData                  
     ----------------------------------------------------------------------------------
     - DONE - ComparableTimSort              Convert
     - DONE - DataInput                      Check
@@ -845,6 +845,7 @@ UTILS/REGEX
     - RE-EVALUATE WHETHER THIS IS NEEDED...
     - REALLY OUGHT TO BE USING C# REGEX!
     - (Although I would like to convert it eventually...)
+    - Remove any build errors and archive for now.
 
     - DONE - ASCII                          Convert
     - DONE - IMatchResult                   Convert
