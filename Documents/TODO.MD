@@ -31,10 +31,8 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 - Constantly look for opportunities to improve this code.
+- There seems to be naming for width/height etc properties and methods. Make it more uniform
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -560,7 +558,7 @@ SCENES.SCENE2D/UI
     - DONE - ProgressBar                    Convert
     -      - ScrollPane                     Convert
     -      - SelectBox                      Convert
-    - IP   - Skin                           Convert
+    - DONE - Skin                           Convert
     -      - Slider                         Convert
     -      - SplitPane                      Convert
     - DONE - Stack                          Convert
@@ -577,7 +575,7 @@ SCENES.SCENE2D/UI
     -      - VerticalGroup                  Convert
     - DONE - Widget                         Convert
     - DONE - WidgetGroup                    Convert
-    -      - Window                         Convert
+    - DONE - Window                         Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -605,7 +603,7 @@ SCENES.SCENE2D/UTILS
     -      - SpriteDrawable                 Convert
     -      - TextureRegionDrawable          Convert
     -      - TiledDrawable                  Convert
-    -      - UIUtils                        Convert
+    - DONE - UIUtils                        Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -696,8 +694,8 @@ UTILS/COLLECTIONS
     - **** - ShortArray                     List< short >
 
     - DONE - DelayedRemovalArray            Convert / Extend List<>
-`    - DONE - SnapshotArray                  Convert / extend List<T>
-`
+    - DONE - SnapshotArray                  Convert / extend List<T>
+
     Extensions
     ----------
     - IP   - DictionaryExtensions

@@ -28,7 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Backends\Android\" />
         <Folder Include="Core\Utils\Json\" />
         <Folder Include="Resources\" />
     </ItemGroup>

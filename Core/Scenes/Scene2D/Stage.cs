@@ -127,7 +127,7 @@ public class Stage : InputAdapter
         Camera = Viewport.Camera;
         Camera.Update();
 
-        if ( !Root.Visible ) return;
+        if ( !Root.IsVisible ) return;
 
         Batch.SetProjectionMatrix( Camera.Combined );
 
@@ -1144,7 +1144,7 @@ public class Stage : InputAdapter
 
     /// <summary>
     /// If true, debug lines are shown for actors even when
-    /// <see cref="Actor.Visible"/> is false.
+    /// <see cref="Actor.IsVisible"/> is false.
     /// </summary>
     public bool DebugInvisibleActors { get; set; }
 

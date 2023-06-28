@@ -32,7 +32,7 @@ public class Actor : IActor
     public    string?   Name       { get; set; }
     public    object?   UserObject { get; set; }
     public    Touchable Touchable  { get; set; } = Touchable.Enabled;
-    public    bool      Visible    { get; set; } = true;
+    public    bool      IsVisible  { get; set; } = true;
     protected float     OriginX    { get; set; }
     protected float     OriginY    { get; set; }
 
@@ -46,7 +46,7 @@ public class Actor : IActor
     public DelayedRemovalArray< IEventListener > CaptureListeners { get; private set; }
     public List< Action >                        Actions          { get; set; } = new();
 
-    private readonly Color _color = new(1, 1, 1, 1);
+    private readonly Color _color = new( 1, 1, 1, 1 );
 
     private bool  _debug;
     private float _rotation;
@@ -115,8 +115,8 @@ public class Actor : IActor
             {
                 throw new SystemException
                     (
-                    string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
-                    ex
+                     string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
+                     ex
                     );
             }
         }
@@ -241,8 +241,8 @@ public class Actor : IActor
             {
                 throw new SystemException
                     (
-                    string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
-                    ex
+                     string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
+                     ex
                     );
             }
         }
@@ -268,7 +268,7 @@ public class Actor : IActor
     {
         if ( touchable && ( this.Touchable != Touchable.Enabled ) ) return null;
 
-        if ( !Visible ) return null;
+        if ( !IsVisible ) return null;
 
         return ( ( x >= 0 ) && ( x < _width ) && ( y >= 0 ) && ( y < _height ) ) ? this : null;
     }
@@ -494,7 +494,7 @@ public class Actor : IActor
 
         do
         {
-            if ( !actor.Visible ) return false;
+            if ( !actor.IsVisible ) return false;
             actor = actor.Parent;
         }
         while ( actor != null );
@@ -761,8 +761,8 @@ public class Actor : IActor
         }
     }
 
-    public float Top   => _y + _height;
-    public float Right => _x + _width;
+    public float TopEdge   => _y + _height;
+    public float RightEdge => _x + _width;
 
     /// <summary>
     /// Called when the actor's position has been changed.

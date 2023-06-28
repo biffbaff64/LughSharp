@@ -120,7 +120,7 @@ public class Group : Actor, ICullable
                     Actor? child = actors[ i ];
 
                     if ( child == null ) continue;
-                    if ( !child.Visible ) continue;
+                    if ( !child.IsVisible ) continue;
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -148,7 +148,7 @@ public class Group : Actor, ICullable
                     Actor? child = actors[ i ];
 
                     if ( child == null ) continue;
-                    if ( !child.Visible ) continue;
+                    if ( !child.IsVisible ) continue;
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -180,7 +180,7 @@ public class Group : Actor, ICullable
                     Actor? child = actors[ i ];
 
                     if ( child == null ) continue;
-                    if ( !child.Visible ) continue;
+                    if ( !child.IsVisible ) continue;
 
                     child.Draw( batch, parentAlpha );
                 }
@@ -199,7 +199,7 @@ public class Group : Actor, ICullable
                     Actor? child = actors[ i ];
 
                     if ( child == null ) continue;
-                    if ( !child.Visible ) continue;
+                    if ( !child.IsVisible ) continue;
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -264,7 +264,7 @@ public class Group : Actor, ICullable
                 Actor? child = actors[ i ];
 
                 if ( child == null ) continue;
-                if ( !child.Visible ) continue;
+                if ( !child.IsVisible ) continue;
 
                 if ( !child.DebugFlag && !( child is Group ) )
                 {
@@ -290,7 +290,7 @@ public class Group : Actor, ICullable
                 Actor? child = actors[ i ];
 
                 if ( child == null ) continue;
-                if ( !child.Visible ) continue;
+                if ( !child.IsVisible ) continue;
 
                 if ( !child.DebugFlag && ( child is not Group ) )
                 {
@@ -403,7 +403,7 @@ public class Group : Actor, ICullable
     protected new Actor? Hit( float x, float y, bool touchable )
     {
         if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
-        if ( !Visible ) return null;
+        if ( !IsVisible ) return null;
 
         for ( var i = Children.Size - 1; i >= 0; i-- )
         {

@@ -96,7 +96,7 @@ public class Table : WidgetGroup
     private IDrawable? _background;
     private bool       _clip;
 
-    protected Table() : this( null )
+    public Table() : this( null )
     {
     }
 
@@ -878,7 +878,7 @@ public class Table : WidgetGroup
     /// the alignment of the logical table within the table actor.
     /// </summary>
     /// <returns></returns>
-    public new Table Top()
+    public new Table AddTopAlignment()
     {
         _alignment |= LibGDXSharp.Utils.Align.Top;
         _alignment &= ~LibGDXSharp.Utils.Align.Bottom;
@@ -891,7 +891,7 @@ public class Table : WidgetGroup
     /// the alignment of the logical table within the table actor.
     /// </summary>
     /// <returns></returns>
-    public Table Left()
+    public Table AddLeftAlignment()
     {
         _alignment |= LibGDXSharp.Utils.Align.Left;
         _alignment &= ~LibGDXSharp.Utils.Align.Right;
@@ -903,7 +903,7 @@ public class Table : WidgetGroup
     /// Adds <see cref="Align.Bottom"/> and clears <see cref="Align.Top"/> for the
     /// alignment of the logical table within the table actor. 
     /// </summary>
-    public Table Bottom()
+    public Table AddBottomAlignment()
     {
         _alignment |= LibGDXSharp.Utils.Align.Bottom;
         _alignment &= ~LibGDXSharp.Utils.Align.Top;
@@ -915,7 +915,7 @@ public class Table : WidgetGroup
     /// Adds <see cref="Align.Right"/> and clears <see cref="Align.Left"/> for
     /// the alignment of the logical table within the table actor.
     /// </summary>
-    public new Table Right()
+    public Table AddRightAlignment()
     {
         _alignment |= LibGDXSharp.Utils.Align.Right;
         _alignment &= ~LibGDXSharp.Utils.Align.Left;

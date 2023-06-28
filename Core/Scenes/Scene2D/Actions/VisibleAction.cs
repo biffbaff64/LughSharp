@@ -33,7 +33,7 @@ public class VisibleAction : Action
     {
         if ( Target == null ) return false;
         
-        Target.Visible = Visible;
+        Target.IsVisible = Visible;
 
         return true;
     }
