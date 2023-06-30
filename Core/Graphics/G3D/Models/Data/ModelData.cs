@@ -14,13 +14,9 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Graphics.G3D;
+namespace LibGDXSharp.Graphics.G3D.Models.Data;
 
-public class Model
+public class ModelData
 {
-
-    public object GetManagedDisposables()
-    {
-        return null;
-    }
+        
 }

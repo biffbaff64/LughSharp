@@ -45,14 +45,14 @@ public partial record TextureAtlasData
     /// <param name="packFile"></param>
     /// <param name="imagesDir"></param>
     /// <param name="flip"></param>
-    public TextureAtlasData( FileInfo packFile, FileInfo imagesDir, bool flip )
+    public TextureAtlasData( FileInfo packFile, DirectoryInfo imagesDir, bool flip )
     {
         Load( packFile, imagesDir, flip );
     }
 
     #endregion
 
-    private void Load( FileInfo packFile, FileInfo imagesDir, bool flip )
+    private void Load( FileInfo packFile, DirectoryInfo imagesDir, bool flip )
     {
         //@formatter:off
         Dictionary< string, IField< Page > > pageFields = new( 15 )

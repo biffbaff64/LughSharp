@@ -14,22 +14,111 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
-public class TextureRegionDrawable : BaseDrawable
+/// <summary>
+/// Drawable for a <see cref="TextureRegion"/>.
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 {
-    public TextureRegionDrawable( TextureRegion textureRegion )
+    private readonly TextureRegion? _region;
+
+    /// <summary>
+    /// Creates an uninitialized TextureRegionDrawable. The texture region must be set before use.
+    /// </summary>
+    public TextureRegionDrawable()
     {
     }
 
-    public TextureRegionDrawable( TextureRegionDrawable regionDrawable )
+    public TextureRegionDrawable( Texture texture )
     {
+        Region = new TextureRegion( texture );
     }
 
+    public TextureRegionDrawable( TextureRegion region )
+    {
+        Region = region;
+    }
+
+    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable )
+    {
+        Region = drawable.Region;
+    }
+
+    public new void Draw( IBatch batch, float x, float y, float width, float height )
+    {
+        if ( Region != null )
+        {
+            batch.Draw( Region, x, y, width, height );
+        }
+    }
+
+    public void Draw( IBatch batch,
+                              float x,
+                              float y,
+                              float originX,
+                              float originY,
+                              float width,
+                              float height,
+                              float scaleX,
+                              float scaleY,
+                              float rotation )
+    {
+        if ( Region != null )
+        {
+            batch.Draw( Region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
+        }
+    }
+
+    protected TextureRegion? Region
+    {
+        get => _region;
+        private init
+        {
+            this._region = value;
+
+            if ( _region != null )
+            {
+                MinWidth  = _region.RegionWidth;
+                MinHeight = _region.RegionHeight;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Creates a new drawable that renders the same as this drawable tinted the specified color.
+    /// </summary>
     public IDrawable Tint( Color tint )
     {
-        return null;
+        if ( Region == null ) throw new NullReferenceException();
+        
+        Sprite sprite;
+
+        if ( Region is AtlasRegion region )
+        {
+            sprite = new AtlasSprite( region );
+        }
+        else
+        {
+            sprite = new Sprite( Region! );
+        }
+
+        sprite.SetColor( tint );
+        sprite.SetSize( MinWidth, MinHeight );
+        
+        var drawable = new SpriteDrawable( sprite )
+        {
+            LeftWidth = LeftWidth,
+            RightWidth = RightWidth,
+            TopHeight = TopHeight,
+            BottomHeight = BottomHeight
+        };
+
+        return drawable;
     }
 }

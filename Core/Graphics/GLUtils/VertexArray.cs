@@ -14,8 +14,11 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class VertexArray : IVertexData
 {
     public VertexArray( int maxVertices, VertexAttributes attributes )

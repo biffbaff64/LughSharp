@@ -21,15 +21,13 @@ using LibGDXSharp.G2D;
 namespace LibGDXSharp.Assets.Loaders;
 
 /// <summary>
-/// AssetLoader to load TextureAtlas instances.
-/// Passing a <see cref="TextureAtlasParameter"/> to
-/// <see cref="AssetManager.Load(String, Type, AssetLoaderParameters)"/>
-/// allows to specify whether the atlas regions should be flipped on the
-/// y-axis or not.
+/// AssetLoader to load TextureAtlas instances. Passing a <see cref="TextureAtlasParameter"/> to
+/// <see cref="AssetManager.Load(String, Type, AssetLoaderParameters)"/> allows to specify whether
+/// the atlas regions should be flipped on the y-axis or not.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class
-    TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >
+public sealed class TextureAtlasLoader
+    : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >
 {
     private TextureAtlasData? _data;
 
@@ -50,11 +48,8 @@ public sealed class
                                        FileInfo? file,
                                        TextureAtlasParameter parameter )
     {
-        if ( _data == null )
-        {
-            throw new GdxRuntimeException( "TextureAtlasData object is NULL!" );
-        }
-
+        if ( _data == null ) throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
+        
         foreach ( TextureAtlasData.Page page in _data.Pages )
         {
             if ( page.textureFile != null )
@@ -84,7 +79,7 @@ public sealed class
 
         DirectoryInfo? imgDir = atlasFile.Directory;
 
-        _data = parameter != null
+        _data = ( parameter != null )
             ? new TextureAtlasData( atlasFile, imgDir, ( ( TextureAtlasParameter )parameter ).FlipVertically )
             : new TextureAtlasData( atlasFile, imgDir, false );
 

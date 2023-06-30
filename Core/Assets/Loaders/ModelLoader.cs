@@ -16,19 +16,25 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+using LibGDXSharp.Core.Utils.Collections.Extensions;
 using LibGDXSharp.Graphics.G3D;
+using LibGDXSharp.Graphics.G3D.Models.Data;
+using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Assets.Loaders;
 
-public abstract class ModelLoader : AsynchronousAssetLoader< Model, ModelLoader.ModelParameters >, IDisposable
+public abstract class ModelLoader : AsynchronousAssetLoader< Model, ModelLoader.ModelParameters >
 {
     protected ModelLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
     }
 
-    protected List< Dictionary< string, ModelData > > items             = new();
-    protected ModelParameters                         defaultParameters = new();
+    // Check this declaration.
+    // Original Java was Array< ObjectMap.Entry< string, ModelData > > items...
+    protected readonly List< ObjectMap< string, ModelData >.Entry< string, ModelData > > items = new();
+
+    protected ModelParameters defaultParameters = new();
 
     /// <summary>
     /// Directly load the raw model data on the calling thread.
@@ -40,7 +46,7 @@ public abstract class ModelLoader : AsynchronousAssetLoader< Model, ModelLoader.
     /// </summary>
     public ModelData LoadModelData( in FileInfo fileHandle )
     {
-        return LoadModelData<ModelParameters>( fileHandle, null );
+        return LoadModelData< ModelParameters >( fileHandle, null );
     }
 
     /// <summary>
@@ -49,7 +55,7 @@ public abstract class ModelLoader : AsynchronousAssetLoader< Model, ModelLoader.
     /// </summary>
     public Model LoadModel( in FileInfo fileHandle, TextureProvider textureProvider, TP parameters )
     {
-        ModelData data = LoadModelData( fileHandle, parameters );
+        ModelData? data = LoadModelData( fileHandle, parameters );
 
         return data == null ? null : new Model( data, textureProvider );
     }
@@ -58,7 +64,7 @@ public abstract class ModelLoader : AsynchronousAssetLoader< Model, ModelLoader.
     /// Directly load the model on the calling thread.
     /// The model with not be managed by an <see cref="AssetManager"/>.
     /// </summary>
-    public Model LoadModel( in FileInfo fileHandle, P parameters )
+    public Model LoadModel( in FileInfo fileHandle, TP parameters )
     {
         return LoadModel( fileHandle, new TextureProvider.FileTextureProvider(), parameters );
     }
@@ -121,22 +127,47 @@ public abstract class ModelLoader : AsynchronousAssetLoader< Model, ModelLoader.
                                     FileInfo? file,
                                     AssetLoaderParameters parameter )
     {
-        return null!;
-    }
+        ModelData? data = null;
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
+        lock ( items )
+        {
+            for ( int i = 0; i < items.Count; i++ )
+            {
+                if ( items[ i ].key!.Equals( fileName ) )
+                {
+                    data = items[ i ].value;
+                    items.RemoveAt( i );
+                }
+            }
+        }
+
+        if ( data == null ) return null!;
+
+        Model result = new( data, new TextureProvider.AssetTextureProvider( manager ) );
+
+        // need to remove the textures from the managed disposables,
+        // or ref counting won't work!
+        IEnumerator< IDisposable > disposables = result.GetManagedDisposables().GetEnumerator();
+
+        while ( disposables.MoveNext() )
+        {
+            IDisposable disposable = disposables.Current;
+
+            if ( disposable is Texture )
+            {
+                disposables.Remove();
+            }
+        }
+
+        return result;
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public sealed class ModelParameters : AssetLoaderParameters
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    public class ModelParameters : AssetLoaderParameters
     {
         public TextureLoader.TextureParameter TextureParameter { get; set; }
 

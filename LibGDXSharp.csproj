@@ -28,6 +28,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Core\Graphics\G3D\Attributes\" />
+        <Folder Include="Core\Graphics\G3D\Decals\" />
+        <Folder Include="Core\Graphics\G3D\Environment\" />
+        <Folder Include="Core\Graphics\G3D\Loader\" />
+        <Folder Include="Core\Graphics\G3D\Shaders\" />
+        <Folder Include="Core\Graphics\G3D\Utils\" />
         <Folder Include="Core\Utils\Json\" />
         <Folder Include="Resources\" />
     </ItemGroup>

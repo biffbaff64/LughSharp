@@ -95,8 +95,8 @@ public class Widget : Actor, ILayout
 
             if ( ( Stage != null ) && ( parent == Stage.Root ) )
             {
-                parentWidth  = Stage.WorldWidth;
-                parentHeight = Stage.WorldHeight;
+                parentWidth  = Stage.StageWidth;
+                parentHeight = Stage.StageHeight;
             }
             else
             {
@@ -136,7 +136,7 @@ public class Widget : Actor, ILayout
     /// </summary>
     public void Pack()
     {
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+        SetSize( PrefWidth, PrefHeight );
         Validate();
     }
 
@@ -154,7 +154,7 @@ public class Widget : Actor, ILayout
     /// only when the widget's parent does not set the size of its children (such as the stage). 
     /// </summary>
     public bool FillParent { get; set; }
-    
+
     /// <summary>
     /// </summary>
     public bool NeedsLayout { get; set; } = true;
@@ -177,14 +177,21 @@ public class Widget : Actor, ILayout
             }
         }
     }
-    
-    public float GetMinWidth()   => GetPrefWidth();
-    public float GetMinHeight()  => GetPrefHeight();
-    public float GetPrefWidth()  => 0;
-    public float GetPrefHeight() => 0;
-    public float GetMaxWidth()   => 0;
-    public float GetMaxHeight()  => 0;
-    
+
+    public float MinWidth   { get => PrefWidth; set{} }
+    public float MinHeight  { get => PrefHeight; set{} }
+    public float PrefWidth  { get => 0; set{} }
+    public float PrefHeight { get => 0; set{} }
+    public float MaxWidth   { get => 0; set{} }
+    public float MaxHeight  { get => 0; set{} }
+
+//    public float GetMinWidth()   => GetPrefWidth();
+//    public float GetMinHeight()  => GetPrefHeight();
+//    public float GetPrefWidth()  => 0;
+//    public float GetPrefHeight() => 0;
+//    public float GetMaxWidth()   => 0;
+//    public float GetMaxHeight()  => 0;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 }

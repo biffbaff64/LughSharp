@@ -270,8 +270,8 @@ public sealed partial class Pattern : IPattern
 
         for ( var i = 0; i < _patternLength; )
         {
-            int c = _normalizedPattern.CodePointAt( i );
-
+            int c = CharHelper.CodePointAt( _normalizedPattern, i );
+            
             if ( ( CharHelper.GetCharCat( ( char )c ) == CharHelper.NonSpacingMark )
                  && ( lastCodePoint != -1 ) )
             {
@@ -294,7 +294,7 @@ public sealed partial class Pattern : IPattern
                 var ea = ProduceEquivalentAlternation( sequenceBuffer.ToString() );
 
                 newPattern.Length -= CharHelper.CharCount( lastCodePoint );
-                newPattern.Append( "(?:" ).Append( ea ).Append( ")" );
+                newPattern.Append( "(?:" ).Append( ea ).Append( ')' );
             }
             else if ( ( c == '[' ) && ( lastCodePoint != '\\' ) )
             {
@@ -322,9 +322,10 @@ public sealed partial class Pattern : IPattern
 
         i++;
 
-        if ( i == _normalizedPattern.Length ) throw Error( "Unclosed character class" );
-
-        charClass.Append( "[" );
+        if ( i == _normalizedPattern.Length )
+            throw new PatternSyntaxException( "Unclosed character class", _normalizedPattern, 1 );
+        
+        charClass.Append( '[' );
 
         while ( true )
         {

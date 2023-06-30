@@ -20,20 +20,11 @@ namespace LibGDXSharp.Core;
 
 public abstract class AbstractGraphics : IGraphics
 {
-    public float GetRawDeltaTime()
-    {
-        return GetDeltaTime();
-    }
+    public float GetRawDeltaTime() => GetDeltaTime();
 
-    public float GetDensity()
-    {
-        return GetPpiX() / 160f;
-    }
+    public float GetDensity() => GetPpiX() / 160f;
 
-    public float GetBackBufferScale()
-    {
-        return GetBackBufferWidth() / ( float )Width;
-    }
+    public float GetBackBufferScale() => GetBackBufferWidth() / ( float )Width;
 
     // ========================================================================
     // Abstract methods because C# insists this is done to fulfill the contract

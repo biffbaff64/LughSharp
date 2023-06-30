@@ -39,7 +39,6 @@ public class WidgetGroup : Group, ILayout
 {
     public bool FillParent { get; set; }
 
-    private bool _needsLayout   = true;
     private bool _layoutEnabled = true;
 
     protected WidgetGroup()
@@ -112,8 +111,8 @@ public class WidgetGroup : Group, ILayout
 
             if ( ( stage != null ) && ( parent == stage.Root ) )
             {
-                parentWidth  = stage.WorldWidth;
-                parentHeight = stage.WorldHeight;
+                parentWidth  = stage.StageWidth;
+                parentHeight = stage.StageHeight;
             }
             else
             {
@@ -129,25 +128,25 @@ public class WidgetGroup : Group, ILayout
             }
         }
 
-        if ( !_needsLayout ) return;
+        if ( !NeedsLayout ) return;
 
-        _needsLayout = false;
+        NeedsLayout = false;
 
         Layout();
 
         // Widgets may call invalidateHierarchy during layout (eg, a wrapped label).
         // The root-most widget group retries layout a reasonable number of times.
-        if ( _needsLayout )
+        if ( NeedsLayout )
         {
             if ( parent is WidgetGroup ) return; // The parent widget will layout again.
 
             for ( var i = 0; i < 5; i++ )
             {
-                _needsLayout = false;
+                NeedsLayout = false;
 
                 Layout();
 
-                if ( !_needsLayout ) break;
+                if ( !NeedsLayout ) break;
             }
         }
     }
@@ -155,14 +154,11 @@ public class WidgetGroup : Group, ILayout
     /// <summary>
     /// Returns true if the widget's layout has been invalidated.
     /// </summary>
-    public bool NeedsLayout()
-    {
-        return _needsLayout;
-    }
+    public bool NeedsLayout { get; private set; } = true;
 
     public void Invalidate()
     {
-        _needsLayout = true;
+        NeedsLayout = true;
     }
 
     public void InvalidateHierarchy()

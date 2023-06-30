@@ -14,8 +14,11 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Utils
 {
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
     public abstract class CharacterData
     {
         public abstract int  GetProperties( int ch );
@@ -71,7 +74,7 @@ namespace LibGDXSharp.Utils
         // Should revisit after optimization of table initialization.
         public static CharacterData Of( int ch )
         {
-            if ( ch >>> 8 == 0 )
+            if ( ( ch >>> 8 ) == 0 )
             {
                 // fast-path
                 return CharacterDataLatin1.instance;

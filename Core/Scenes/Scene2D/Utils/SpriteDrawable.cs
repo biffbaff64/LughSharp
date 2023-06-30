@@ -14,22 +14,121 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
-public class SpriteDrawable : BaseDrawable
+/// <summary>
+/// Drawable for a <seealso cref="Sprite"/>.
+/// </summary>
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class SpriteDrawable : BaseDrawable, ITransformDrawable
 {
+    private Sprite? _sprite;
+
+    /// <summary>
+    /// Creates an uninitialized SpriteDrawable. The sprite must be set before use. </summary>
+    public SpriteDrawable()
+    {
+    }
+
     public SpriteDrawable( Sprite sprite )
     {
+        Sprite = sprite;
     }
 
-    public SpriteDrawable( SpriteDrawable spriteDrawable )
+    public SpriteDrawable( SpriteDrawable? drawable ) : base( drawable )
     {
+        Sprite = drawable?.Sprite;
     }
 
-    public IDrawable Tint( Color tint )
+    public new void Draw( IBatch batch, float x, float y, float width, float height )
     {
-        return null;
+        if ( Sprite == null ) return;
+
+        Color spriteColor = Sprite.Color;
+        var   oldColor    = spriteColor.ToFloatBits();
+
+        Sprite.SetColor( spriteColor.Mul( batch.GetColor() ) );
+
+        Sprite.Rotation = 0;
+        Sprite.SetScale( 1, 1 );
+        Sprite.SetBounds( x, y, width, height );
+        Sprite.Draw( batch );
+
+        Sprite.PackedColor = oldColor;
+    }
+
+    public void Draw( IBatch batch,
+                      float x,
+                      float y,
+                      float originX,
+                      float originY,
+                      float width,
+                      float height,
+                      float scaleX,
+                      float scaleY,
+                      float rotation )
+    {
+        if ( Sprite == null ) return;
+
+        Color spriteColor = Sprite.Color;
+        var   oldColor    = spriteColor.ToFloatBits();
+
+        Sprite.SetColor( spriteColor.Mul( batch.GetColor() ) );
+
+        Sprite.SetOrigin( originX, originY );
+        Sprite.Rotation = rotation;
+        Sprite.SetScale( scaleX, scaleY );
+        Sprite.SetBounds( x, y, width, height );
+        Sprite.Draw( batch );
+        Sprite.PackedColor = oldColor;
+    }
+
+    public Sprite? Sprite
+    {
+        get => _sprite;
+        // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+        set
+        {
+            this._sprite = value;
+
+            MinWidth  = value?.Width ?? 0;
+            MinHeight = value?.Height ?? 0;
+        }
+    }
+
+
+    /// <summary>
+    /// Creates a new drawable that renders the same as this drawable tinted the specified color.
+    /// </summary>
+    public SpriteDrawable Tint( Color tint )
+    {
+        Sprite newSprite;
+
+        if ( _sprite is AtlasSprite sprite )
+        {
+            newSprite = new AtlasSprite( sprite );
+        }
+        else
+        {
+            newSprite = new Sprite( _sprite! );
+        }
+
+        newSprite.SetColor( tint );
+        newSprite.SetSize( MinWidth, MinHeight );
+
+        var drawable = new SpriteDrawable( newSprite )
+        {
+            LeftWidth    = LeftWidth,
+            RightWidth   = RightWidth,
+            TopHeight    = TopHeight,
+            BottomHeight = BottomHeight
+        };
+
+        return drawable;
     }
 }

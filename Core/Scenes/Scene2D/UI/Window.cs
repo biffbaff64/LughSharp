@@ -113,8 +113,8 @@ public class Window : Table
 
         if ( this.Stage.Camera is OrthographicCamera orthographicCamera )
         {
-            var parentWidth  = this.Stage.WorldWidth;
-            var parentHeight = this.Stage.WorldHeight;
+            var parentWidth  = this.Stage.StageWidth;
+            var parentHeight = this.Stage.StageHeight;
 
             if ( ( GetX( Align.Right ) - this.Stage.Camera.Position.X )
                  > ( parentWidth / 2 / orthographicCamera.Zoom ) )
@@ -161,8 +161,8 @@ public class Window : Table
         }
         else if ( Parent == this.Stage.Root )
         {
-            var parentWidth  = this.Stage.WorldWidth;
-            var parentHeight = this.Stage.WorldHeight;
+            var parentWidth  = this.Stage.StageWidth;
+            var parentHeight = this.Stage.StageHeight;
 
             if ( X < 0 ) X                   = 0;
             if ( RightEdge > parentWidth ) X = ( parentWidth - Width );
@@ -182,7 +182,7 @@ public class Window : Table
             if ( Style.StageBackground != null )
             {
                 StageToLocalCoordinates( tmpPosition.Set( 0, 0 ) );
-                StageToLocalCoordinates( tmpSize.Set( this.Stage.WorldWidth, this.Stage.WorldHeight ) );
+                StageToLocalCoordinates( tmpSize.Set( this.Stage.StageWidth, this.Stage.StageHeight ) );
 
                 DrawStageBackground
                     (
@@ -403,7 +403,7 @@ public class Window : Table
 
             if ( ( _window.edge & Align.Left ) != 0 )
             {
-                float amountX = x - _startX;
+                var amountX = x - _startX;
 
                 if ( ( width - amountX ) < minWidth )
                 {
@@ -418,7 +418,7 @@ public class Window : Table
 
             if ( ( _window.edge & Align.Bottom ) != 0 )
             {
-                float amountY = y - _startY;
+                var amountY = y - _startY;
 
                 if ( ( height - amountY ) < minHeight )
                 {
@@ -436,16 +436,16 @@ public class Window : Table
 
             if ( ( _window.edge & Align.Right ) != 0 )
             {
-                float amountX = x - _lastX - width;
+                var amountX = x - _lastX - width;
 
                 if ( ( width + amountX ) < minWidth )
                 {
                     amountX = minWidth - width;
                 }
 
-                if ( clampPosition && ( ( windowX + width + amountX ) > stage?.WorldWidth ) )
+                if ( clampPosition && ( ( windowX + width + amountX ) > stage?.StageWidth ) )
                 {
-                    amountX = stage.WorldWidth - windowX - width;
+                    amountX = stage.StageWidth - windowX - width;
                 }
 
                 width += amountX;
@@ -453,16 +453,16 @@ public class Window : Table
 
             if ( ( _window.edge & Align.Top ) != 0 )
             {
-                float amountY                                   = y - _lastY - height;
+                var amountY                                   = y - _lastY - height;
 
                 if ( ( height + amountY ) < minHeight )
                 {
                     amountY = minHeight - height;
                 }
 
-                if ( clampPosition && ( ( windowY + height + amountY ) > stage?.WorldHeight ) )
+                if ( clampPosition && ( ( windowY + height + amountY ) > stage?.StageHeight ) )
                 {
-                    amountY = stage.WorldHeight - windowY - height;
+                    amountY = stage.StageHeight - windowY - height;
                 }
 
                 height += amountY;

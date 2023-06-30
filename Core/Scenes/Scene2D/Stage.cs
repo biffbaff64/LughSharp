@@ -75,9 +75,6 @@ public class Stage : InputAdapter
     private bool             _debugParentUnderMouse;
     private Table.DebugType  _debugTableUnderMouse = Table.DebugType.None;
 
-    public Viewport Viewport { get; set; }
-    public IBatch   Batch    { get; }
-
     /// <summary>
     /// Creates a stage with a <see cref="ScalingViewport"/> set to
     /// <see cref="Scaling.Stretch"/>. The stage will use its own <see cref="IBatch"/>
@@ -1090,15 +1087,18 @@ public class Stage : InputAdapter
         }
     }
 
+    public Viewport Viewport { get; set; }
+    public IBatch   Batch    { get; }
+
     /// <summary>
     /// The viewport's world width.
     /// </summary>
-    public float WorldWidth => Viewport.WorldWidth;
+    public float StageWidth => Viewport.WorldWidth;
 
     /// <summary>
     /// The viewport's world height.
     /// </summary>
-    public float WorldHeight => Viewport.WorldHeight;
+    public float StageHeight => Viewport.WorldHeight;
 
     /// <summary>
     /// The viewport's camera.
@@ -1111,7 +1111,7 @@ public class Stage : InputAdapter
     public Group Root
     {
         get => _root;
-        init
+        private init
         {
             value.Parent?.RemoveActor( value, false );
 
@@ -1126,7 +1126,7 @@ public class Stage : InputAdapter
     /// Returns the root's child actors.
     /// </summary>
     /// <see cref="Group.Children "/>
-    public GdxArray< Actor > Actors => Root.Children;
+    public SnapshotArray< Actor > Actors => Root.Children;
 
     /// <summary>
     /// If true, any actions executed during a call to <see cref="Act()"/>)
@@ -1140,7 +1140,7 @@ public class Stage : InputAdapter
     /// <summary>
     /// The default color that can be used by actors to draw debug lines.
     /// </summary>
-    public Color DebugColor { get; } = new Color( 0, 1, 0, 0.85f );
+    public Color DebugColor { get; } = new( 0, 1, 0, 0.85f );
 
     /// <summary>
     /// If true, debug lines are shown for actors even when
@@ -1170,8 +1170,7 @@ public class Stage : InputAdapter
             }
         }
     }
-
-
+    
     /// <summary>
     /// If true, debug is enabled only for the actor under the mouse.
     /// Can be combined with <see cref="DebugAll"/>.

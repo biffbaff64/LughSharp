@@ -251,6 +251,87 @@ GRAPHICS/G2D
 GRAPHICS/G3D
 ------------
 
+    -      - Attribute
+    -      - Attributes
+    -      - Environment
+    -      - Material
+    -      - Model
+    -      - ModelBatch
+    -      - ModelCache
+    -      - ModelInstance
+    -      - Renderable
+    -      - IRenderableProvider
+    -      - IShader
+
+GRAPHICS/G3D/ATTRIBUTES
+-----------------------
+
+    -      - 
+    -      - 
+    -      - 
+    -      - 
+
+GRAPHICS/G3D/DECALS
+-------------------
+
+    -      - 
+    -      - 
+    -      - 
+    -      - 
+
+GRAPHICS/G3D/ENVIRONMENT
+------------------------
+
+    -      - 
+    -      - 
+    -      - 
+    -      - 
+
+GRAPHICS/G3D/LOADER
+-------------------
+
+    -      - 
+    -      - 
+    -      - 
+    -      - 
+
+GRAPHICS/G3D/MODEL
+------------------
+
+    -      - 
+    -      - 
+    -      - 
+    -      -
+
+GRAPHICS/G3D/MODEL/DATA
+-----------------------
+
+    -      - ModelAnimation
+    -      - ModelData
+    -      - 
+    -      - 
+
+GRAPHICS/G3D/PARTICLES
+----------------------
+
+    -      - 
+    -      - 
+    -      - 
+    -      - 
+
+GRAPHICS/G3D/SHADERS
+--------------------
+
+    -      - BaseShader
+    -      - DefaultShader
+    -      - DepthShader
+
+GRAPHICS/G3D/UTILS
+------------------
+  
+    -      - 
+    -      - 
+    -      - 
     -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -600,9 +681,9 @@ SCENES.SCENE2D/UTILS
     - DONE - NinePatchDrawable              Convert
     -      - ScissorStack                   Convert
     -      - Selection                      Convert
-    -      - SpriteDrawable                 Convert
-    -      - TextureRegionDrawable          Convert
-    -      - TiledDrawable                  Convert
+    - DONE - SpriteDrawable                 Convert
+    - DONE - TextureRegionDrawable          Convert
+    - DONE - TiledDrawable                  Convert
     - DONE - UIUtils                        Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -745,24 +826,27 @@ UTILS/COMPRESSION
     - **** - ICodeProgress
     - **** - LzmaAdapted
 
-    UTILS/COMPRESSION/LZ
-    --------------------
-            - **** - BinTree
-            - **** - InWindow
-            - **** - OutWindow
-    
-    UTILS/COMPRESSION/LZMA
-    ----------------------
-            - **** - Base
-            - **** - Decoder
-            - **** - Encoder
-    
-    UTILS/COMPRESSION/RANGECODER
-    ----------------------------
-            - **** - BitTreeDecoder
-            - **** - BitTreeEncoder
-            - **** - Decoder
-            - **** - Encoder
+UTILS/COMPRESSION/LZ
+--------------------
+
+    - **** - BinTree
+    - **** - InWindow
+    - **** - OutWindow
+
+UTILS/COMPRESSION/LZMA
+----------------------
+
+    - **** - Base
+    - **** - Decoder
+    - **** - Encoder
+
+UTILS/COMPRESSION/RANGECODER
+----------------------------
+
+    - **** - BitTreeDecoder
+    - **** - BitTreeEncoder
+    - **** - Decoder
+    - **** - Encoder
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -770,9 +854,9 @@ UTILS/COMPRESSION
 UTILS/CONCURRENT
 ----------------
 
-    - **** - AtomicInteger                  No
-    - **** - AtomicQueue                    No
-    - **** - AtomicReferenceArray           No
+    - **** - AtomicInteger
+    - **** - AtomicQueue
+    - **** - AtomicReferenceArray
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -825,14 +909,14 @@ UTILS/POOLING
 UTILS/REFLECT
 -------------
 
-    - **** - Annotation                     No
-    - **** - ArrayReflection                No
-    - **** - ClassReflection                No
-    - **** - Constructor                    No
-    - **** - Field                          No
-    - **** - Method                         No
-    - **** - ReflectionException            No
-    - **** - ReflectionPool                 No
+    - **** - Annotation
+    - **** - ArrayReflection
+    - **** - ClassReflection
+    - **** - Constructor
+    - **** - Field
+    - **** - Method
+    - **** - ReflectionException
+    - **** - ReflectionPool
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -845,14 +929,14 @@ UTILS/REGEX
     - (Although I would like to convert it eventually...)
     - Remove any build errors and archive for now.
 
-    - DONE - ASCII                          Convert
-    - DONE - IMatchResult                   Convert
-    - IP   - Matcher                        Convert
-    - IP   - Pattern                        Convert
-    - IP   - PatternCompanions              Convert
-    - DONE - PatternHelper                  Convert
-    - DONE - PatternSyntaxException         Convert
-    - DONE - UnicodeProp                    Convert
+    - **** - ASCII                          Convert
+    - **** - IMatchResult                   Convert
+    - **** - Matcher                        Convert
+    - **** - Pattern                        Convert
+    - **** - PatternCompanions              Convert
+    - **** - PatternHelper                  Convert
+    - **** - PatternSyntaxException         Convert
+    - **** - UnicodeProp                    Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

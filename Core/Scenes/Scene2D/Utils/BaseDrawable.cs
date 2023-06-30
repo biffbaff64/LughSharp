@@ -38,11 +38,14 @@ public class BaseDrawable : IDrawable
     /// <summary>
     /// Creates a new empty drawable with the same sizing information as the specified drawable.
     /// </summary>
-    public BaseDrawable( IDrawable? drawable )
+    protected BaseDrawable( IDrawable? drawable )
     {
         ArgumentNullException.ThrowIfNull( drawable );
 
-        if ( drawable is BaseDrawable baseDrawable ) Name = baseDrawable.Name;
+        if ( drawable is BaseDrawable baseDrawable )
+        {
+            Name = baseDrawable.Name;
+        }
 
         LeftWidth    = drawable.LeftWidth;
         RightWidth   = drawable.RightWidth;
@@ -66,5 +69,11 @@ public class BaseDrawable : IDrawable
         LeftWidth    = leftWidth;
         BottomHeight = bottomHeight;
         RightWidth   = rightWidth;
+    }
+
+    public void SetMinSize( float minWidth, float minHeight )
+    {
+        MinWidth  = minWidth;
+        MinHeight = minHeight;
     }
 }

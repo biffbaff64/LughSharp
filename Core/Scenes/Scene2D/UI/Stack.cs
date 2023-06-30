@@ -73,13 +73,13 @@ public sealed class Stack : WidgetGroup
 
             if ( child is ILayout layout )
             {
-                _prefWidth  = Math.Max( _prefWidth, layout.GetPrefWidth() );
-                _prefHeight = Math.Max( _prefHeight, layout.GetPrefHeight() );
-                _minWidth   = Math.Max( _minWidth, layout.GetMinWidth() );
-                _minHeight  = Math.Max( _minHeight, layout.GetMinHeight() );
+                _prefWidth  = Math.Max( _prefWidth, layout.PrefWidth );
+                _prefHeight = Math.Max( _prefHeight, layout.PrefHeight );
+                _minWidth   = Math.Max( _minWidth, layout.MinWidth );
+                _minHeight  = Math.Max( _minHeight, layout.MinHeight );
 
-                childMaxWidth  = layout.GetMaxWidth();
-                childMaxHeight = layout.GetMaxHeight();
+                childMaxWidth  = layout.MaxWidth;
+                childMaxHeight = layout.MaxHeight;
             }
             else
             {
@@ -127,45 +127,63 @@ public sealed class Stack : WidgetGroup
         }
     }
 
-    public new float GetPrefWidth()
+    public new float PrefWidth
     {
-        if ( _sizeInvalid ) ComputeSize();
+        get
+        {
+            if ( _sizeInvalid ) ComputeSize();
 
-        return _prefWidth;
+            return _prefWidth;
+        }
     }
 
-    public new float GetPrefHeight()
+    public new float PrefHeight
     {
-        if ( _sizeInvalid ) ComputeSize();
+        get
+        {
+            if ( _sizeInvalid ) ComputeSize();
 
-        return _prefHeight;
+            return _prefHeight;
+        }
     }
 
-    public new float GetMinWidth()
+    public new float MinWidth
     {
-        if ( _sizeInvalid ) ComputeSize();
+        get
+        {
+            if ( _sizeInvalid ) ComputeSize();
 
-        return _minWidth;
+            return _minWidth;
+        }
     }
 
-    public new float GetMinHeight()
+    public new float MinHeight
     {
-        if ( _sizeInvalid ) ComputeSize();
+        get
+        {
+            if ( _sizeInvalid ) ComputeSize();
 
-        return _minHeight;
+            return _minHeight;
+        }
     }
 
-    public new float GetMaxWidth()
+    public new float MaxWidth
     {
-        if ( _sizeInvalid ) ComputeSize();
+        get
+        {
+            if ( _sizeInvalid ) ComputeSize();
 
-        return _maxWidth;
+            return _maxWidth;
+        }
     }
 
-    public new float GetMaxHeight()
+    public new float MaxHeight
     {
-        if ( _sizeInvalid ) ComputeSize();
+        get
+        {
+            if ( _sizeInvalid ) ComputeSize();
 
-        return _maxHeight;
+            return _maxHeight;
+        }
     }
 }
