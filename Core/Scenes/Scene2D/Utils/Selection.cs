@@ -14,9 +14,398 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Core.Utils.Collections.Extensions;
+using LibGDXSharp.Utils.Annotations;
+using LibGDXSharp.Utils.Collections.Extensions;
+using LibGDXSharp.Utils.Pooling;
+
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
-public class Selection
+/// <summary>
+/// Manages selected objects. Optionally fires a <see cref="ChangeListener.ChangeEvent"/> on an actor.
+/// Selection changes can be vetoed via <see cref="ChangeListener.ChangeEvent.Cancel()"/>.
+/// </summary>
+/// <seealso cref="OrderedSet{T}"/>
+public class Selection<T> : IDisableable
 {
-        
+    public OrderedSet< T > Selected                 { get; set; } = new();
+    public bool            IsDisabled               { get; set; }
+    public bool            Multiple                 { get; set; }
+    public bool            Required                 { get; set; }
+    public T?              LastSelected             { get; set; }
+    public bool            Toggle                   { get; set; }
+    public bool            ProgrammaticChangeEvents { get; set; } = true;
+
+    private readonly OrderedSet< T > _old = new();
+
+    /// <summary>
+    /// <param name="value">
+    /// An actor to fire a <see cref="ChangeListener.ChangeEvent"/> on when the
+    /// selection changes, or null.
+    /// </param>
+    /// </summary>
+    public Actor? Actor { get; set; }
+
+    /// <summary>
+    /// Selects or deselects the specified item based on how the selection is
+    /// configured, whether ctrl is currently pressed, etc.
+    /// <para>
+    /// This is typically invoked by user interaction. 
+    /// </para>
+    /// </summary>
+    public void Choose( T item )
+    {
+        ArgumentNullException.ThrowIfNull( item );
+
+        if ( IsDisabled ) return;
+
+        Snapshot();
+
+        try
+        {
+            if ( ( Toggle || UIUtils.Ctrl() ) && Selected.Contains( item ) )
+            {
+                if ( Required && ( Selected.Count == 1 ) )
+                {
+                    return;
+                }
+
+                Selected.Remove( item );
+                LastSelected = default;
+            }
+            else
+            {
+                bool modified = false;
+
+                if ( !Multiple || ( !Toggle && !UIUtils.Ctrl() ) )
+                {
+                    if ( ( Selected.Count == 1 ) && Selected.Contains( item ) )
+                    {
+                        return;
+                    }
+
+                    modified = Selected.Count > 0;
+                    Selected.Clear( 8 );
+                }
+
+                if ( !Selected.Add( item ) && !modified )
+                {
+                    return;
+                }
+
+                LastSelected = item;
+            }
+
+            if ( FireChangeEvent() )
+            {
+                Revert();
+            }
+            else
+            {
+                Changed();
+            }
+        }
+        finally
+        {
+            Cleanup();
+        }
+    }
+
+    // TODO: I'm tempted to 'un-obsolete' this as I like the method name.
+    [Obsolete( "Use NotEmpty() instead.", true )]
+    public bool HasItems()
+    {
+        return Selected.Count > 0;
+    }
+
+    public bool NotEmpty()
+    {
+        return Selected.Count > 0;
+    }
+
+    public bool Empty => Selected.Count == 0;
+
+    public int Size() => Selected.Count;
+
+    public OrderedSet< T > Items()
+    {
+        return Selected;
+    }
+
+    /// <summary>
+    /// Returns the first selected item, or null.
+    /// </summary>
+    public T? First()
+    {
+        return Selected.Count == 0 ? default : Selected.First();
+    }
+
+    public void Snapshot()
+    {
+        _old.Clear( Selected.Count );
+        _old.AddAll( Selected );
+    }
+
+    public void Revert()
+    {
+        Selected.Clear( _old.Count );
+        Selected.AddAll( _old );
+    }
+
+    public void Cleanup()
+    {
+        _old.Clear( 32 );
+    }
+
+    /// <summary>
+    /// Sets the selection to only the specified item.
+    /// </summary>
+    public void Set( T item )
+    {
+        ArgumentNullException.ThrowIfNull( item );
+
+        if ( ( Selected.Count == 1 ) && ( Equals( Selected.First(), item ) ) ) return;
+
+        Snapshot();
+        Selected.Clear( 8 );
+        Selected.Add( item );
+
+        if ( ProgrammaticChangeEvents && FireChangeEvent() )
+        {
+            Revert();
+        }
+        else
+        {
+            LastSelected = item;
+            Changed();
+        }
+
+        Cleanup();
+    }
+
+    public void SetAll( List< T > items )
+    {
+        bool added = false;
+
+        Snapshot();
+
+        LastSelected = default;
+
+        Selected.Clear( items.Count );
+
+        for ( int i = 0, n = items.Count; i < n; i++ )
+        {
+            T item = items[ i ];
+
+            if ( item == null ) throw new ArgumentException( "item cannot be null." );
+            if ( Selected.Add( item ) ) added = true;
+        }
+
+        if ( added )
+        {
+            if ( ProgrammaticChangeEvents && FireChangeEvent() )
+            {
+                Revert();
+            }
+            else if ( items.Count > 0 )
+            {
+                LastSelected = items.Peek();
+                Changed();
+            }
+        }
+
+        Cleanup();
+    }
+
+    /// <summary>
+    /// Adds the item to the selection.
+    /// </summary>
+    public void Add( T item )
+    {
+        if ( item == null ) throw new ArgumentException( "item cannot be null." );
+
+        if ( !Selected.Add( item ) ) return;
+
+        if ( ProgrammaticChangeEvents && FireChangeEvent() )
+        {
+            Selected.Remove( item );
+        }
+        else
+        {
+            LastSelected = item;
+            Changed();
+        }
+    }
+
+    /// <summary>
+    /// Adds all items from the supplied list to the selection.
+    /// </summary>
+    public void AddAll( List< T > items )
+    {
+        bool added = false;
+
+        Snapshot();
+
+        for ( int i = 0, n = items.Count; i < n; i++ )
+        {
+            T item = items[ i ];
+
+            if ( item == null ) throw new ArgumentException( "item cannot be null." );
+
+            if ( Selected.Add( item ) ) added = true;
+        }
+
+        if ( added )
+        {
+            if ( ProgrammaticChangeEvents && FireChangeEvent() )
+            {
+                Revert();
+            }
+            else
+            {
+                LastSelected = items.Peek();
+                Changed();
+            }
+        }
+
+        Cleanup();
+    }
+
+    public void Remove( T item )
+    {
+        if ( item == null ) throw new ArgumentException( "item cannot be null." );
+
+        if ( !Selected.Remove( item ) ) return;
+
+        if ( ProgrammaticChangeEvents && FireChangeEvent() )
+        {
+            Selected.Add( item );
+        }
+        else
+        {
+            LastSelected = default;
+            Changed();
+        }
+    }
+
+    public void RemoveAll( List< T > items )
+    {
+        bool removed = false;
+
+        Snapshot();
+
+        for ( int i = 0, n = items.Count; i < n; i++ )
+        {
+            T item = items[ i ];
+
+            if ( item == null ) throw new ArgumentException( "item cannot be null." );
+
+            if ( Selected.Remove( item ) ) removed = true;
+        }
+
+        if ( removed )
+        {
+            if ( ProgrammaticChangeEvents && FireChangeEvent() )
+            {
+                Revert();
+            }
+            else
+            {
+                LastSelected = default;
+                Changed();
+            }
+        }
+
+        Cleanup();
+    }
+
+    public void Clear()
+    {
+        if ( Selected.Count == 0 ) return;
+
+        Snapshot();
+
+        Selected.Clear( 8 );
+
+        if ( ProgrammaticChangeEvents && FireChangeEvent() )
+        {
+            Revert();
+        }
+        else
+        {
+            LastSelected = default;
+            Changed();
+        }
+
+        Cleanup();
+    }
+
+    /** Called after the selection changes. The default implementation does nothing. */
+    protected void Changed()
+    {
+    }
+
+    /** Fires a change event on the selection's actor, if any. Called internally when the selection changes, depending on
+	 * {@link #setProgrammaticChangeEvents(bool)}.
+	 * @return true if the change should be undone. */
+    public bool FireChangeEvent()
+    {
+        if ( Actor == null ) return false;
+
+        ChangeListener.ChangeEvent changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
+
+        try
+        {
+            return Actor.Fire( changeEvent );
+        }
+        finally
+        {
+            Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
+        }
+    }
+
+    /** @param item May be null (returns false). */
+    public bool Contains( T? item )
+    {
+        if ( item == null ) return false;
+
+        return Selected.Contains( item );
+    }
+
+    /** Makes a best effort to return the last item selected, else returns an arbitrary item or null if the selection is empty. */
+    public T? GetLastSelected()
+    {
+        if ( LastSelected != null )
+        {
+            return LastSelected;
+        }
+
+        if ( Selected.Count > 0 )
+        {
+            return Selected.First();
+        }
+
+        return default;
+    }
+
+    public IEnumerator< T > Iterator()
+    {
+        return Selected.GetEnumerator();
+    }
+
+    public List< T > ToArray()
+    {
+        return Selected.ToList();
+    }
+
+    public List< T > ToArray( List< T > array )
+    {
+        List< T > list = Selected.ToList();
+
+        list.AddRange( array );
+
+        return list;
+    }
+
+    public new string? ToString() => Selected.ToString();
 }

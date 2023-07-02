@@ -18,6 +18,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
@@ -30,159 +31,180 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ScissorStack
 {
-    private static          List< Rectangle > _scissors = new();
-    private static          Vector3           _tmp      = new();
-    private readonly static Rectangle         viewport  = new();
+    private readonly static List< RectangleShape > scissors = new();
+    private readonly static Vector3                tmp      = new();
+    private readonly static RectangleShape         viewport = new();
 
-    /** Pushes a new scissor {@link Rectangle} onto the stack, merging it with the current top of the stack. The minimal area of
-	 * overlap between the top of stack rectangle and the provided rectangle is pushed onto the stack. This will invoke
-	 * {@link GL20#glScissor(int, int, int, int)} with the final top of stack rectangle. In case no scissor is yet on the stack
-	 * this will also enable {@link GL20#GL_SCISSOR_TEST} automatically.
-	 * <p>
-	 * Any drawing should be flushed before pushing scissors.
-	 * @return true if the scissors were pushed. false if the scissor area was zero, in this case the scissors were not pushed and
-	 *         no drawing should occur. */
-    public static boolean pushScissors( Rectangle scissor )
+    /// <summary>
+    /// Pushes a new scissor <see cref="Rectangle"/> onto the stack, merging it with
+    /// the current top of the stack. The minimal area of overlap between the top of
+    /// stack rectangle and the provided rectangle is pushed onto the stack. This will
+    /// invoke <see cref="IGL20.GLScissor(int, int, int, int)"/> with the final top of
+    /// stack rectangle. In case no scissor is yet on the stack this will also enable
+    /// <see cref="IGL20.GL_Scissor_Test"/> automatically.
+    /// <para>
+    /// Any drawing should be flushed before pushing scissors.
+    /// </para>
+    /// </summary>
+    /// <returns>
+    /// true if the scissors were pushed. false if the scissor area was zero, in this
+    /// case the scissors were not pushed and no drawing should occur.
+    /// ....</returns>
+    public static bool PushScissors( RectangleShape scissor )
     {
-        fix( scissor );
+        Fix( scissor );
 
-        if ( scissors.size == 0 )
+        if ( scissors.Count == 0 )
         {
-            if ( scissor.width < 1 || scissor.height < 1 ) return false;
-            Gdx.gl.glEnable( GL20.GL_SCISSOR_TEST );
+            if ( ( scissor.Width < 1 ) || ( scissor.Height < 1 ) ) return false;
+            Gdx.GL.GLEnable( IGL20.GL_Scissor_Test );
         }
         else
         {
             // merge scissors
-            Rectangle parent = scissors.get( scissors.size - 1 );
-            float     minX   = Math.max( parent.x, scissor.x );
-            float     maxX   = Math.min( parent.x + parent.width, scissor.x + scissor.width );
+            RectangleShape parent = scissors[ scissors.Count - 1 ];
 
-            if ( maxX - minX < 1 ) return false;
+            var minX = Math.Max( parent.X, scissor.X );
+            var maxX = Math.Min( parent.X + parent.Width, scissor.X + scissor.Width );
 
-            float minY = Math.max( parent.y, scissor.y );
-            float maxY = Math.min( parent.y + parent.height, scissor.y + scissor.height );
+            if ( ( maxX - minX ) < 1 ) return false;
 
-            if ( maxY - minY < 1 ) return false;
+            var minY = Math.Max( parent.Y, scissor.Y );
+            var maxY = Math.Min( parent.Y + parent.Height, scissor.Y + scissor.Height );
 
-            scissor.x      = minX;
-            scissor.y      = minY;
-            scissor.width  = maxX - minX;
-            scissor.height = Math.max( 1, maxY - minY );
+            if ( ( maxY - minY ) < 1 ) return false;
+
+            scissor.X      = minX;
+            scissor.Y      = minY;
+            scissor.Width  = maxX - minX;
+            scissor.Height = Math.Max( 1, maxY - minY );
         }
 
-        scissors.add( scissor );
-        HdpiUtils.glScissor( ( int )scissor.x, ( int )scissor.y, ( int )scissor.width, ( int )scissor.height );
+        scissors.Add( scissor );
+        HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y, ( int )scissor.Width, ( int )scissor.Height );
 
         return true;
     }
 
-    /** Pops the current scissor rectangle from the stack and sets the new scissor area to the new top of stack rectangle. In case
-	 * no more rectangles are on the stack, {@link GL20#GL_SCISSOR_TEST} is disabled.
-	 * <p>
-	 * Any drawing should be flushed before popping scissors. */
-    public static Rectangle popScissors()
+    /// <summary>
+    /// Pops the current scissor rectangle from the stack and sets the new scissor
+    /// area to the new top of stack rectangle. In case no more rectangles are on
+    /// the stack, <see cref="IGL20.GL_Scissor_Test"/> is disabled.
+    /// <para>
+    /// Any drawing should be flushed before popping scissors.
+    /// </para>
+    /// </summary>
+    public static RectangleShape PopScissors()
     {
-        Rectangle old = scissors.pop();
+        RectangleShape old = scissors.Pop();
 
-        if ( scissors.size == 0 )
-            Gdx.gl.glDisable( GL20.GL_SCISSOR_TEST );
+        if ( scissors.Count == 0 )
+        {
+            Gdx.GL.GLDisable( IGL20.GL_Scissor_Test );
+        }
         else
         {
-            Rectangle scissor = scissors.peek();
-            HdpiUtils.glScissor( ( int )scissor.x, ( int )scissor.y, ( int )scissor.width, ( int )scissor.height );
+            RectangleShape scissor = scissors.Peek();
+            HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y, ( int )scissor.Width, ( int )scissor.Height );
         }
 
         return old;
     }
 
-    /** @return null if there are no scissors. */
-    @Null
-
-    public static Rectangle peekScissors()
+    public static RectangleShape? PeekScissors()
     {
-        if ( scissors.size == 0 ) return null;
-
-        return scissors.peek();
+        return scissors.Count == 0 ? null : scissors.Peek();
     }
 
-    private static void fix( Rectangle rect )
+    private static void Fix( RectangleShape rect )
     {
-        rect.x      = Math.round( rect.x );
-        rect.y      = Math.round( rect.y );
-        rect.width  = Math.round( rect.width );
-        rect.height = Math.round( rect.height );
+        rect.X      = (float)Math.Round( rect.X );
+        rect.Y      = (float)Math.Round( rect.Y );
+        rect.Width  = (float)Math.Round( rect.Width );
+        rect.Height = (float)Math.Round( rect.Height );
 
-        if ( rect.width < 0 )
+        if ( rect.Width < 0 )
         {
-            rect.width =  -rect.width;
-            rect.x     -= rect.width;
+            rect.Width =  -rect.Width;
+            rect.X     -= rect.Width;
         }
 
-        if ( rect.height < 0 )
+        if ( rect.Height < 0 )
         {
-            rect.height =  -rect.height;
-            rect.y      -= rect.height;
+            rect.Height =  -rect.Height;
+            rect.Y      -= rect.Height;
         }
     }
 
-    /** Calculates a scissor rectangle using 0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight() as the viewport.
-	 * @see #calculateScissors(Camera, float, float, float, float, Matrix4, Rectangle, Rectangle) */
-    public static void calculateScissors( Camera camera,
+    /// <summary>
+    /// Calculates a scissor rectangle using 0, 0, Gdx.graphics.getWidth(),
+    /// and Gdx.graphics.getHeight() as the viewport.
+    /// </summary>
+    public static void CalculateScissors( Camera camera,
                                           Matrix4 batchTransform,
-                                          Rectangle area,
-                                          Rectangle scissor )
+                                          RectangleShape area,
+                                          RectangleShape scissor )
     {
-        calculateScissors
-            ( camera, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), batchTransform, area, scissor );
+        CalculateScissors( camera, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height, batchTransform, area, scissor );
     }
 
-    /** Calculates a scissor rectangle in OpenGL ES window coordinates from a {@link Camera}, a transformation {@link Matrix4} and
-	 * an axis aligned {@link Rectangle}. The rectangle will get transformed by the camera and transform matrices and is then
-	 * projected to screen coordinates. Note that only axis aligned rectangles will work with this method. If either the Camera or
-	 * the Matrix4 have rotational components, the output of this method will not be suitable for
-	 * {@link GL20#glScissor(int, int, int, int)}.
-	 * @param camera the {@link Camera}
-	 * @param batchTransform the transformation {@link Matrix4}
-	 * @param area the {@link Rectangle} to transform to window coordinates
-	 * @param scissor the Rectangle to store the result in */
-    public static void calculateScissors( Camera camera,
+    /// <summary>
+    /// Calculates a scissor rectangle in OpenGL ES window coordinates from a <see cref="Camera"/>,
+    /// a transformation <see cref="Matrix4"/> and an axis aligned <see cref="RectangleShape"/>.
+    /// The rectangle will get transformed by the camera and transform matrices and is then
+    /// projected to screen coordinates. Note that only axis aligned rectangles will work with
+    /// this method. If either the Camera or the Matrix4 have rotational components, the output
+    /// of this method will not be suitable for <see cref="IGL20.GLScissor(int, int, int, int)"/>.
+    /// </summary>
+    /// <param name="viewportX"></param>
+    /// <param name="viewportY"></param>
+    /// <param name="viewportWidth"></param>
+    /// <param name="viewportHeight"></param>
+    /// <param name="camera"> the <see cref="Camera"/> </param>
+    /// <param name="batchTransform"> the transformation <seealso cref="Matrix4"/> </param>
+    /// <param name="area"> the <see cref="RectangleShape"/> to transform to window coordinates </param>
+    /// <param name="scissor"> the Rectangle to store the result in  </param>
+    public static void CalculateScissors( Camera camera,
                                           float viewportX,
                                           float viewportY,
                                           float viewportWidth,
                                           float viewportHeight,
                                           Matrix4 batchTransform,
-                                          Rectangle area,
-                                          Rectangle scissor )
+                                          RectangleShape area,
+                                          RectangleShape scissor )
     {
-        tmp.set( area.x, area.y, 0 );
-        tmp.mul( batchTransform );
-        camera.project( tmp, viewportX, viewportY, viewportWidth, viewportHeight );
-        scissor.x = tmp.x;
-        scissor.y = tmp.y;
+        tmp.Set( area.X, area.Y, 0 );
+        tmp.Mul( batchTransform );
+        
+        camera.Project( tmp, viewportX, viewportY, viewportWidth, viewportHeight );
+        
+        scissor.X = tmp.X;
+        scissor.Y = tmp.Y;
 
-        tmp.set( area.x + area.width, area.y + area.height, 0 );
-        tmp.mul( batchTransform );
-        camera.project( tmp, viewportX, viewportY, viewportWidth, viewportHeight );
-        scissor.width  = tmp.x - scissor.x;
-        scissor.height = tmp.y - scissor.y;
+        tmp.Set( area.X + area.Width, area.Y + area.Height, 0 );
+        tmp.Mul( batchTransform );
+        
+        camera.Project( tmp, viewportX, viewportY, viewportWidth, viewportHeight );
+        scissor.Width  = tmp.X - scissor.X;
+        scissor.Height = tmp.Y - scissor.Y;
     }
 
-    /** @return the current viewport in OpenGL ES window coordinates based on the currently applied scissor */
-    public static Rectangle getViewport()
+    /// <summary>
+    /// Return the current viewport in OpenGL ES window coordinates based
+    /// on the currently applied scissor.
+    /// </summary>
+    public static RectangleShape GetViewport()
     {
-        if ( scissors.size == 0 )
+        if ( scissors.Count == 0 )
         {
-            viewport.set( 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() );
+            viewport.Set( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
             return viewport;
         }
-        else
-        {
-            Rectangle scissor = scissors.peek();
-            viewport.set( scissor );
 
-            return viewport;
-        }
+        RectangleShape scissor = scissors.Peek();
+        viewport.Set( scissor );
+
+        return viewport;
     }
 }

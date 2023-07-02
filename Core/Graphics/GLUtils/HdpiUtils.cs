@@ -22,4 +22,8 @@ public class HdpiUtils
     {
         throw new NotImplementedException();
     }
+
+    public static void GLScissor( int i, int i1, int width, int height )
+    {
+    }
 }

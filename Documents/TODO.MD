@@ -679,8 +679,8 @@ SCENES.SCENE2D/UTILS
     - DONE - ILayout                        Convert
     - DONE - ITransformDrawable             Convert
     - DONE - NinePatchDrawable              Convert
-    -      - ScissorStack                   Convert
-    -      - Selection                      Convert
+    - DONE - ScissorStack                   Convert
+    - IP   - Selection                      Convert
     - DONE - SpriteDrawable                 Convert
     - DONE - TextureRegionDrawable          Convert
     - DONE - TiledDrawable                  Convert

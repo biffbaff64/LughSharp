@@ -166,7 +166,7 @@ public abstract class Viewport
 
     /// <summary>
     /// </summary>
-    /// <see cref="ScissorStack.CalculateScissors"/>
+    /// <see cref="ScissorStack.CalculateScissors(LibGDXSharp.Graphics.Camera,LibGDXSharp.Maths.Matrix4,System.Drawing.Rectangle,System.Drawing.Rectangle)"/>
     public void CalculateScissors( Matrix4 batchTransform, RectangleShape area, RectangleShape scissor )
     {
         ScissorStack.CalculateScissors
