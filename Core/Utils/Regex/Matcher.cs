@@ -20,6 +20,7 @@ using System.Text;
 namespace LibGDXSharp.Utils.Regex;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[Obsolete]
 public sealed class Matcher : IMatchResult
 {
     // The Pattern object that created this Matcher.
@@ -115,6 +116,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     /// <param name="parent"></param>
     /// <param name="text"></param>
+    [Obsolete]
     public Matcher( Pattern parent, string text )
     {
         parentPattern = parent;
@@ -128,6 +130,7 @@ public sealed class Matcher : IMatchResult
         Reset();
     }
 
+    [Obsolete]
     public Pattern Pattern() => parentPattern;
 
     /// <summary>
@@ -136,6 +139,7 @@ public sealed class Matcher : IMatchResult
     /// upon this matcher.
     /// </summary>
     /// <returns></returns>
+    [Obsolete]
     public IMatchResult ToMatchResult()
     {
         var result = new Matcher( parentPattern, _text )
@@ -155,6 +159,7 @@ public sealed class Matcher : IMatchResult
     /// position in the input is maintained and its last append
     /// position is unaffected.
     /// </summary>
+    [Obsolete]
     public Matcher UsePattern( Pattern? newPattern )
     {
         parentPattern = newPattern ?? throw new ArgumentException( "Pattern cannot be null" );
@@ -192,6 +197,7 @@ public sealed class Matcher : IMatchResult
     /// boundaries are unaffected.
     /// </para>
     /// </summary>
+    [Obsolete]
     public Matcher Reset()
     {
         first    = -1;
@@ -229,6 +235,7 @@ public sealed class Matcher : IMatchResult
     /// boundaries are unaffected.
     /// </para>
     /// </summary>
+    [Obsolete]
     public Matcher Reset( string input )
     {
         _text = input;
@@ -239,6 +246,7 @@ public sealed class Matcher : IMatchResult
     /// <summary>
     /// Returns the start index of the previous match.
     /// </summary>
+    [Obsolete]
     public int Start()
     {
         if ( first < 0 ) throw new IllegalStateException( "No match available" );
@@ -271,6 +279,7 @@ public sealed class Matcher : IMatchResult
     /// If there is no capturing group in the pattern with the
     /// given index.
     /// </exception>
+    [Obsolete]
     public int Start( int group )
     {
         if ( first < 0 ) throw new IllegalStateException( "No match available" );
@@ -300,6 +309,7 @@ public sealed class Matcher : IMatchResult
     /// <exception cref="ArgumentException">
     /// If there is no capturing group in the pattern with the given name
     /// </exception>
+    [Obsolete]
     public int Start( string name )
     {
         return groups[ GetMatchedGroupIndex( name ) * 2 ];
@@ -308,6 +318,7 @@ public sealed class Matcher : IMatchResult
     /// <summary>
     /// Returns the offset after the last character matched.
     /// </summary>
+    [Obsolete]
     public int End()
     {
         if ( first < 0 ) throw new IllegalStateException( "No match available" );
@@ -332,6 +343,7 @@ public sealed class Matcher : IMatchResult
     /// <exception cref="IndexOutOfRangeException">
     /// If there is no capturing group in the pattern with the given index
     /// </exception>
+    [Obsolete]
     public int End( int group )
     {
         if ( first < 0 ) throw new IllegalStateException( "No match available" );
@@ -361,15 +373,18 @@ public sealed class Matcher : IMatchResult
     /// <exception cref="ArgumentException">
     /// If there is no capturing group in the pattern with the given name.
     /// </exception>
+    [Obsolete]
     public int End( string name )
     {
         return groups[ ( GetMatchedGroupIndex( name ) * 2 ) + 1 ];
     }
 
     /// <inheritdoc />
+    [Obsolete]
     public string? Group() => Group( 0 );
 
     /// <inheritdoc/>
+    [Obsolete]
     public string? Group( int group )
     {
         if ( first < 0 ) throw new IllegalStateException( "No match found" );
@@ -392,6 +407,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
+    [Obsolete]
     public string? Group( string name )
     {
         var group = GetMatchedGroupIndex( name );
@@ -408,18 +424,21 @@ public sealed class Matcher : IMatchResult
     /// 
     /// </summary>
     /// <returns></returns>
+    [Obsolete]
     public int GroupCount() => parentPattern.CapturingGroupCount - 1;
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
+    [Obsolete]
     public bool Matches() => Match( _regionStart, EndAnchor );
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
+    [Obsolete]
     public bool Find()
     {
         var nextSearchIndex = last;
@@ -449,6 +468,7 @@ public sealed class Matcher : IMatchResult
     /// <param name="start"></param>
     /// <returns></returns>
     /// <exception cref="IndexOutOfRangeException"></exception>
+    [Obsolete]
     public bool Find( int start )
     {
         var limit = _text.Length;
@@ -467,8 +487,10 @@ public sealed class Matcher : IMatchResult
     /// 
     /// </summary>
     /// <returns></returns>
+    [Obsolete]
     public bool LookingAt() => Match( _regionStart, NoAnchor );
 
+    [Obsolete]
     public static string QuoteReplacement( string s )
     {
         if ( ( !s.Contains( '\\' ) ) && ( !s.Contains( '$' ) ) )
@@ -491,6 +513,7 @@ public sealed class Matcher : IMatchResult
         return sb.ToString();
     }
 
+    [Obsolete]
     public Matcher AppendReplacement( StringBuilder sb, string replacement )
     {
         // If no match, return error
@@ -647,6 +670,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     /// <param name="sb"></param>
     /// <returns></returns>
+    [Obsolete]
     public StringBuilder AppendTail( StringBuilder sb )
     {
         sb.Append( _text, _lastAppendPosition, _text.Length );
@@ -659,6 +683,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     /// <param name="replacement"></param>
     /// <returns></returns>
+    [Obsolete]
     public string ReplaceAll( string replacement )
     {
         Reset();
@@ -691,6 +716,7 @@ public sealed class Matcher : IMatchResult
     /// <param name="replacement"></param>
     /// <returns></returns>
     /// <exception cref="NullReferenceException"></exception>
+    [Obsolete]
     public string ReplaceFirst( string replacement )
     {
         if ( replacement == null ) throw new NullReferenceException( "replacement" );
@@ -714,6 +740,7 @@ public sealed class Matcher : IMatchResult
     /// <param name="end"></param>
     /// <returns></returns>
     /// <exception cref="IndexOutOfRangeException"></exception>
+    [Obsolete]
     public Matcher Region( int start, int end )
     {
         if ( ( start < 0 ) || ( start > _text.Length ) ) throw new IndexOutOfRangeException( "start" );
@@ -735,6 +762,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     /// <param name="b"></param>
     /// <returns></returns>
+    [Obsolete]
     public Matcher UseTransparentBounds( bool b )
     {
         _hasTransparentBounds = b;
@@ -747,6 +775,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     /// <param name="b"></param>
     /// <returns></returns>
+    [Obsolete]
     public Matcher UseAnchoringBounds( bool b )
     {
         _hasAnchoringBounds = b;
@@ -759,6 +788,7 @@ public sealed class Matcher : IMatchResult
     /// </summary>
     /// <param name="from"></param>
     /// <returns></returns>
+    [Obsolete]
     private bool Search( int from )
     {
         this.HitEnd     = false;
@@ -793,6 +823,7 @@ public sealed class Matcher : IMatchResult
     /// state machine will hold the state of the match as it proceeds
     /// in this matcher.
     /// </summary>
+    [Obsolete]
     private bool Match( int from, int anchor )
     {
         this.HitEnd     = false;
@@ -825,6 +856,7 @@ public sealed class Matcher : IMatchResult
     /// <summary>
     /// Returns the group index of the matched capturing group.
     /// </summary>
+    [Obsolete]
     private int GetMatchedGroupIndex( string name )
     {
         if ( name == null ) throw new GdxRuntimeException( "Group Name must not be null!" );
@@ -845,11 +877,13 @@ public sealed class Matcher : IMatchResult
     /// <param name="beginIndex">the beginning index, inclusive</param>
     /// <param name="endIndex">the ending index, exclusive</param>
     /// <returns>A String generated from this Matcher's input</returns>
+    [Obsolete]
     private string GetSubSequence( int beginIndex, int endIndex )
     {
         return _text.Substring( beginIndex, endIndex - beginIndex );
     }
 
+    [Obsolete]
     public new string ToString()
     {
         var sb = new StringBuilder();

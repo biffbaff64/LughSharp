@@ -19,6 +19,7 @@ namespace LibGDXSharp.Utils.Regex;
 /// <summary>
 /// Converted from Java.lang.utils.regex.UnicodeProp.java
 /// </summary>
+[Obsolete]
 public enum UnicodeProp
 {
     Alphabetic,
@@ -42,6 +43,7 @@ public enum UnicodeProp
     Join_Control
 }
 
+[Obsolete]
 public static class UnicodePropExtensions
 {
     private readonly static Dictionary< string, UnicodeProp > posix;
@@ -76,6 +78,7 @@ public static class UnicodePropExtensions
     /// <summary>
     /// Returns the property which matches the supplied string.
     /// </summary>
+    [Obsolete]
     public static UnicodeProp? ForName( string propName )
     {
         return aliases[ propName.ToUpper() ];
@@ -85,6 +88,7 @@ public static class UnicodePropExtensions
     /// </summary>
     /// <param name="propName"></param>
     /// <returns></returns>
+    [Obsolete]
     public static UnicodeProp? ForPosixName( string propName )
     {
         return posix[ propName.ToUpper() ];
@@ -95,6 +99,7 @@ public static class UnicodePropExtensions
     /// <param name="ucp"></param>
     /// <param name="ch"></param>
     /// <returns></returns>
+    [Obsolete]
     public static bool Is( this UnicodeProp ucp, char ch )
     {
         // Note:
@@ -117,7 +122,7 @@ public static class UnicodePropExtensions
 
             // ------------------------------------------------------
             case UnicodeProp.Ideographic:
-                return CharHelper.IsIdeographic( ch );
+//                return CharHelper.IsIdeographic( ch );
 
             // ------------------------------------------------------
             // a....z
@@ -131,7 +136,7 @@ public static class UnicodePropExtensions
 
             // ------------------------------------------------------
             case UnicodeProp.Titlecase:
-                return CharHelper.IsTitleCase( ch );
+//                return CharHelper.IsTitleCase( ch );
 
             // ------------------------------------------------------
             case UnicodeProp.White_Space:
@@ -170,19 +175,19 @@ public static class UnicodePropExtensions
 
             // ------------------------------------------------------
             case UnicodeProp.Blank:
-                return ( ch == char.SpaceSeparator ) || ( ch == 0x09 );
+                return ( ch == CharHelper.SpaceSeparator ) || ( ch == 0x09 );
 
             // ------------------------------------------------------
-            case UnicodeProp.Graph:
-                return ( ( ( ( 1 << CharHelper.SpaceSeparator )
-                             | ( 1 << CharHelper.LineSeparator )
-                             | ( 1 << CharHelper.ParagraphSeparator )
-                             | ( 1 << CharHelper.Control )
-                             | ( 1 << CharHelper.Surrogate )
-                             | ( 1 << CharHelper.Unassigned ) )
-                           >> CharHelper.GetCharCat( ch ) )
-                         & 1 )
-                       == 0;
+//            case UnicodeProp.Graph:
+//                return ( ( ( ( 1 << CharHelper.SpaceSeparator )
+//                             | ( 1 << CharHelper.LineSeparator )
+//                             | ( 1 << CharHelper.ParagraphSeparator )
+//                             | ( 1 << CharHelper.Control )
+//                             | ( 1 << CharHelper.Surrogate )
+//                             | ( 1 << CharHelper.Unassigned ) )
+//                           >> char.GetUnicodeCategory( ch ) )
+//                         & 1 )
+//                       == 0;
 
             // ------------------------------------------------------
             case UnicodeProp.Print:
@@ -191,17 +196,17 @@ public static class UnicodePropExtensions
                        || Is( UnicodeProp.Control, ch );
 
             // ------------------------------------------------------
-            case UnicodeProp.Word:
-                return Is( UnicodeProp.Alphabetic, ch )
-                       || ( ( ( ( ( 1 << CharHelper.NonSpacingMark )
-                                  | ( 1 << CharHelper.EnclosingMark )
-                                  | ( 1 << CharHelper.CombiningSpacingMark )
-                                  | ( 1 << CharHelper.DecimalDigitNumber )
-                                  | ( 1 << CharHelper.ConnectorPunctuation ) )
-                                >> CharHelper.GetCharCat( ch ) )
-                              & 1 )
-                            == 0 )
-                       || Is( UnicodeProp.Join_Control, ch );
+//            case UnicodeProp.Word:
+//                return Is( UnicodeProp.Alphabetic, ch )
+//                       || ( ( ( ( ( 1 << CharHelper.NonSpacingMark )
+//                                  | ( 1 << CharHelper.EnclosingMark )
+//                                  | ( 1 << CharHelper.CombiningSpacingMark )
+//                                  | ( 1 << CharHelper.DecimalDigitNumber )
+//                                  | ( 1 << CharHelper.ConnectorPunctuation ) )
+//                                >> CharHelper.GetCharCat( ch ) )
+//                              & 1 )
+//                            == 0 )
+//                       || Is( UnicodeProp.Join_Control, ch );
 
             // ------------------------------------------------------
             case UnicodeProp.Join_Control:

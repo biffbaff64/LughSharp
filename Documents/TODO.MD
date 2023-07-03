@@ -90,7 +90,7 @@ ASSETS/LOADERS
     - DONE - BitmapFontLoader               Convert
     - DONE - CubemapLoader                  Convert
     -      - I18NBundleLoader               Convert
-    -      - ModelLoader                    Convert
+    - IP   - ModelLoader                    Convert
     - DONE - MusicLoader                    Convert
     -      - ParticleEffectLoader           Convert
     - DONE - PixmapLoader                   Convert
@@ -218,7 +218,7 @@ GRAPHICS/G2D
     - DONE - Animation                      Convert
     - DONE - AtlasRegion                    Convert
     - DONE - AtlasSprite                    Convert
-    - DONE - BitmapFont                     Convert
+    - IP   - BitmapFont                     Convert
     - IP   - BitmapFontCache                Convert
     - DONE - CpuSpriteBatch                 Convert
     -      - DistanceFieldFont              Convert
@@ -350,7 +350,7 @@ GRAPHICS/G3D/UTILS
 ------------------
   
     -      - 
-    -      - 
+    - DONE - ITextureProvider
     -      - 
     -      - 
 
@@ -966,7 +966,9 @@ UTILS/VIEWPORT
 UTILS/XML
 ---------
 
-    -      - XmlReader
+    Use C# XML Libraries, but convert these, eventually, anyway.
+
+    - IP   - XmlReader
     -      - XmlWriter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

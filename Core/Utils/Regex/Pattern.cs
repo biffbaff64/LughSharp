@@ -23,6 +23,7 @@ using LibGDXSharp.Utils.Regex;
 namespace LibGDXSharp.Utils.Regex;
 
 /// <inheritdoc/>
+[Obsolete]
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed partial class Pattern : IPattern
 {
@@ -64,51 +65,56 @@ public sealed partial class Pattern : IPattern
     static Node _accept     = new();
     static Node _lastAccept = new LastNode();
 
+    [Obsolete]
     public Pattern( string regex, int flags )
     {
-        this._pattern = regex;
-        this.Flags    = flags;
+//        this._pattern = regex;
+//        this.Flags    = flags;
 
         // to use Unicode_Case if Unicode_Character_Class present
-        if ( ( flags & Unicode_Character_Class ) != 0 )
-        {
-            this.Flags |= Unicode_Case;
-        }
+//        if ( ( flags & Unicode_Character_Class ) != 0 )
+//        {
+//            this.Flags |= Unicode_Case;
+//        }
 
         // Reset group index count
-        CapturingGroupCount = 1;
-        LocalCount          = 0;
+//        CapturingGroupCount = 1;
+//        LocalCount          = 0;
 
-        if ( _pattern.Length > 0 )
-        {
-            try
-            {
-                Compile();
-            }
-            catch ( StackOverflowException soe )
-            {
-                throw error( "Stack overflow during pattern compilation" );
-            }
-        }
-        else
-        {
-            root      = new Start( _lastAccept );
-            matchRoot = _lastAccept;
-        }
+//        if ( _pattern.Length > 0 )
+//        {
+//            try
+//            {
+//                Compile();
+//            }
+//            catch ( StackOverflowException soe )
+//            {
+//                throw error( "Stack overflow during pattern compilation" );
+//            }
+//        }
+//        else
+//        {
+//            root      = new Start( _lastAccept );
+//            matchRoot = _lastAccept;
+//        }
     }
 
+    [Obsolete]
     public Pattern Compile( string regex )
     {
         return new Pattern( regex, 0 );
     }
 
+    [Obsolete]
     public Pattern Compile( string regex, int flags )
     {
         return new Pattern( regex, flags );
     }
 
+    [Obsolete]
     public string? GetPattern() => _pattern;
 
+    [Obsolete]
     public new string ToString()
     {
         return _pattern ?? "";
@@ -119,6 +125,7 @@ public sealed partial class Pattern : IPattern
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
+    [Obsolete]
     public Matcher Matcher( string input )
     {
         lock ( this )
@@ -134,6 +141,7 @@ public sealed partial class Pattern : IPattern
         return m;
     }
 
+    [Obsolete]
     public bool Matches( string regex, string input )
     {
         Pattern p = Compile( regex );
@@ -142,6 +150,7 @@ public sealed partial class Pattern : IPattern
         return m.Matches();
     }
 
+    [Obsolete]
     public string[] Split( string input, int limit )
     {
         var     index        = 0;
@@ -199,14 +208,17 @@ public sealed partial class Pattern : IPattern
 
         var result = new string[ resultSize ];
 
-        return matchList.subList( 0, resultSize ).toArray( result );
+//        return matchList.subList( 0, resultSize ).toArray( result );
+        return default!;
     }
 
+    [Obsolete]
     public string[] Split( string input )
     {
         return Split( input, 0 );
     }
 
+    [Obsolete]
     public string Quote( string s )
     {
         var slashEIndex = s.IndexOf( "\\E", StringComparison.Ordinal );
@@ -231,89 +243,92 @@ public sealed partial class Pattern : IPattern
         return sb.ToString();
     }
 
+    [Obsolete]
     private void ReadObject( StreamReader s )
     {
         // Read in all fields
-        s.DefaultReadObject();
+//        s.DefaultReadObject();
 
         // Initialize counts
-        CapturingGroupCount = 1;
-        LocalCount          = 0;
+//        CapturingGroupCount = 1;
+//        LocalCount          = 0;
 
         // if length > 0, the Pattern is lazily compiled
-        lock ( this )
-        {
-            _compiled = false;
-        }
+//        lock ( this )
+//        {
+//            _compiled = false;
+//        }
 
-        if ( _pattern?.Length == 0 )
-        {
-            root      = new Start( _lastAccept );
-            matchRoot = _lastAccept;
-            _compiled = true;
-        }
+//        if ( _pattern?.Length == 0 )
+//        {
+//            root      = new Start( _lastAccept );
+//            matchRoot = _lastAccept;
+//            _compiled = true;
+//        }
     }
 
     /// <summary>
     /// 
     /// </summary>
+    [Obsolete]
     private void Normalize()
     {
-        var inCharClass   = false;
-        var lastCodePoint = -1;
-
-        // Convert pattern into normalizedD form
-        _normalizedPattern = Normalizer.normalize( _pattern, Normalizer.Form.NFD );
-        _patternLength     = _normalizedPattern.Length;
-
-        // Modify pattern to match canonical equivalences
-        var newPattern = new StringBuilder( _patternLength );
-
-        for ( var i = 0; i < _patternLength; )
-        {
-            int c = CharHelper.CodePointAt( _normalizedPattern, i );
-            
-            if ((char.GetUnicodeCategory( (char) c ) == UnicodeCategory.NonSpacingMark)
-                 && ( lastCodePoint != -1 ) )
-            {
-                var sequenceBuffer = new StringBuilder();
-
-                sequenceBuffer.AppendCodePoint( lastCodePoint );
-                sequenceBuffer.AppendCodePoint( c );
-
-                while ( char.GetUnicodeCategory( ( char )c ) == UnicodeCategory.NonSpacingMark )
-                {
-                    i += CharHelper.CharCount( c );
-
-                    if ( i >= _patternLength ) break;
-
-                    c = CharHelper.CodePointAt( _normalizedPattern, i );
-
-                    sequenceBuffer.AppendCodePoint( c );
-                }
-
-                var ea = ProduceEquivalentAlternation( sequenceBuffer.ToString() );
-
-                newPattern.Length -= CharHelper.CharCount( lastCodePoint );
-                newPattern.Append( "(?:" ).Append( ea ).Append( ')' );
-            }
-            else if ( ( c == '[' ) && ( lastCodePoint != '\\' ) )
-            {
-                i = NormalizeCharClass( newPattern, i );
-            }
-            else
-            {
-                newPattern.AppendCodePoint( c );
-            }
-
-            lastCodePoint = c;
-
-            i += CharHelper.CharCount( c );
-        }
-
-        _normalizedPattern = newPattern.ToString();
+//        var inCharClass   = false;
+//        var lastCodePoint = -1;
+//
+//        // Convert pattern into normalizedD form
+//        _normalizedPattern = Normalizer.normalize( _pattern, Normalizer.Form.NFD );
+//        _patternLength     = _normalizedPattern.Length;
+//
+//        // Modify pattern to match canonical equivalences
+//        var newPattern = new StringBuilder( _patternLength );
+//
+//        for ( var i = 0; i < _patternLength; )
+//        {
+//            int c = CharHelper.CodePointAt( _normalizedPattern, i );
+//            
+//            if ((char.GetUnicodeCategory( (char) c ) == UnicodeCategory.NonSpacingMark)
+//                 && ( lastCodePoint != -1 ) )
+//            {
+//                var sequenceBuffer = new StringBuilder();
+//
+//                sequenceBuffer.AppendCodePoint( lastCodePoint );
+//                sequenceBuffer.AppendCodePoint( c );
+//
+//                while ( char.GetUnicodeCategory( ( char )c ) == UnicodeCategory.NonSpacingMark )
+//                {
+//                    i += CharHelper.CharCount( c );
+//
+//                    if ( i >= _patternLength ) break;
+//
+//                    c = CharHelper.CodePointAt( _normalizedPattern, i );
+//
+//                    sequenceBuffer.AppendCodePoint( c );
+//                }
+//
+//                var ea = ProduceEquivalentAlternation( sequenceBuffer.ToString() );
+//
+//                newPattern.Length -= CharHelper.CharCount( lastCodePoint );
+//                newPattern.Append( "(?:" ).Append( ea ).Append( ')' );
+//            }
+//            else if ( ( c == '[' ) && ( lastCodePoint != '\\' ) )
+//            {
+//                i = NormalizeCharClass( newPattern, i );
+//            }
+//            else
+//            {
+//                newPattern.AppendCodePoint( c );
+//            }
+//
+//            lastCodePoint = c;
+//
+//            i += CharHelper.CharCount( c );
+//        }
+//
+//        _normalizedPattern = newPattern.ToString();
     }
 
+    [Obsolete]
     private int NormalizeCharClass( StringBuilder newPattern, int i )
     {
         StringBuilder charClass     = new();
@@ -342,11 +357,11 @@ public sealed partial class Pattern : IPattern
             if ( char.GetUnicodeCategory( (char)c ) == UnicodeCategory.NonSpacingMark )
             {
                 var sequenceBuffer = new StringBuilder();
-                sequenceBuffer.AppendCodePoint( lastCodePoint );
+//                sequenceBuffer.AppendCodePoint( lastCodePoint );
 
                 while ( char.GetUnicodeCategory( (char)c ) == UnicodeCategory.NonSpacingMark )
                 {
-                    sequenceBuffer.AppendCodePoint( c );
+//                    sequenceBuffer.AppendCodePoint( c );
                     i += CharHelper.CharCount( c );
 
                     if ( i >= _normalizedPattern.Length ) break;
@@ -365,11 +380,11 @@ public sealed partial class Pattern : IPattern
             }
             else
             {
-                charClass.AppendCodePoint( c );
+//                charClass.AppendCodePoint( c );
                 i++;
             }
 
-            if ( i == _normalizedPattern.Length ) throw Error( "Unclosed character class" );
+//            if ( i == _normalizedPattern.Length ) throw Error( "Unclosed character class" );
 
             lastCodePoint = c;
         }
@@ -388,150 +403,156 @@ public sealed partial class Pattern : IPattern
         return i;
     }
 
+    [Obsolete]
     private string ProduceEquivalentAlternation( string source )
     {
-        int len = CountChars( source, 0, 1 );
+//        int len = CountChars( source, 0, 1 );
 
-        if ( source.Length == len ) return source; // source has one character.
+//        if ( source.Length == len ) return source; // source has one character.
 
-        var baseStr        = source.Substring( 0, len );
-        var combiningMarks = source.Substring( len );
+//        var baseStr        = source.Substring( 0, len );
+//        var combiningMarks = source.Substring( len );
 
-        string[]      perms  = ProducePermutations( combiningMarks );
-        StringBuilder result = new( source );
+//        string[]      perms  = ProducePermutations( combiningMarks );
+//        StringBuilder result = new( source );
 
         // Add combined permutations
-        for ( var x = 0; x < perms.Length; x++ )
-        {
-            var next = baseStr + perms[ x ];
+//        for ( var x = 0; x < perms.Length; x++ )
+//        {
+//            var next = baseStr + perms[ x ];
 
-            if ( x > 0 ) result.Append( "|" + next );
+//            if ( x > 0 ) result.Append( "|" + next );
 
-            next = ComposeOneStep( next );
+//            next = ComposeOneStep( next );
 
-            if ( next != null )
-            {
-                result.Append( "|" + ProduceEquivalentAlternation( next ) );
-            }
-        }
+//            if ( next != null )
+//            {
+//                result.Append( "|" + ProduceEquivalentAlternation( next ) );
+//            }
+//        }
 
-        return result.ToString();
+//        return result.ToString();
+        return "";
     }
 
+    [Obsolete]
     private string[] ProducePermutations( string input )
     {
-        if ( input.Length == CountChars( input, 0, 1 ) )
-        {
-            return new string[] { input };
-        }
+//        if ( input.Length == CountChars( input, 0, 1 ) )
+//        {
+//            return new string[] { input };
+//        }
 
-        if ( input.Length == CountChars( input, 0, 2 ) )
-        {
-            int c0 = CharHelper.CodePointAt( input, 0 );
-            int c1 = CharHelper.CodePointAt( input, CharHelper.CharCount( c0 ) );
+//        if ( input.Length == CountChars( input, 0, 2 ) )
+//        {
+//            int c0 = CharHelper.CodePointAt( input, 0 );
+//            int c1 = CharHelper.CodePointAt( input, CharHelper.CharCount( c0 ) );
 
-            if ( getClass( c1 ) == getClass( c0 ) )
-            {
-                return new string[] { input };
-            }
+//            if ( getClass( c1 ) == getClass( c0 ) )
+//            {
+//                return new string[] { input };
+//            }
 
-            string[] str = new string[ 2 ];
+//            string[] str = new string[ 2 ];
             
-            str[ 0 ] = input;
+//            str[ 0 ] = input;
             
-            StringBuilder sb = new StringBuilder( 2 );
+//            StringBuilder sb = new StringBuilder( 2 );
             
-            sb.appendCodePoint( c1 );
-            sb.appendCodePoint( c0 );
+//            sb.appendCodePoint( c1 );
+//            sb.appendCodePoint( c0 );
             
-            str[ 1 ] = sb.ToString();
+//            str[ 1 ] = sb.ToString();
 
-            return str;
-        }
+//            return str;
+//    }
 
-        int length      = 1;
-        int nCodePoints = countCodePoints( input );
+//        int length      = 1;
+//        int nCodePoints = countCodePoints( input );
 
-        for ( int x = 1; x < nCodePoints; x++ )
-        {
-            length = length * ( x + 1 );
-        }
+//        for ( int x = 1; x < nCodePoints; x++ )
+//        {
+//            length = length * ( x + 1 );
+//        }
 
-        string[] temp = new string[ length ];
+//        string[] temp = new string[ length ];
 
-        int combClass[] = new int[ nCodePoints ];
+//        int combClass[] = new int[ nCodePoints ];
 
-        for ( int x = 0, i = 0; x < nCodePoints; x++ )
-        {
-            int c = CharHelper.CodePointAt( input, i );
-            combClass[ x ] =  getClass( c );
-            i              += CharHelper.charCount( c );
-        }
+//        for ( int x = 0, i = 0; x < nCodePoints; x++ )
+//        {
+//            int c = CharHelper.CodePointAt( input, i );
+//            combClass[ x ] =  getClass( c );
+//            i              += CharHelper.charCount( c );
+//        }
 
         // For each char, take it out and add the permutations
         // of the remaining chars
-        int index = 0;
-        int len;
+//        int index = 0;
+//        int len;
 
         // offset maintains the index in code units.
-        loop:
+//        loop:
 
-        for ( int x = 0, offset = 0; x < nCodePoints; x++, offset += len )
-        {
-            len = CountChars( input, offset, 1 );
-            bool skip = false;
+//        for ( int x = 0, offset = 0; x < nCodePoints; x++, offset += len )
+//        {
+//            len = CountChars( input, offset, 1 );
+//            bool skip = false;
 
-            for ( int y = x - 1; y >= 0; y-- )
-            {
-                if ( combClass[ y ] == combClass[ x ] )
-                {
-                    goto loop;
-                }
-            }
+//            for ( int y = x - 1; y >= 0; y-- )
+//            {
+//                if ( combClass[ y ] == combClass[ x ] )
+//                {
+//                    goto loop;
+//                }
+//            }
 
-            StringBuilder sb         = new StringBuilder( input );
-            string        otherChars = sb.Delete( offset, offset + len ).toString();
-            string[]      subResult  = ProducePermutations( otherChars );
+//            StringBuilder sb         = new StringBuilder( input );
+//            string        otherChars = sb.Delete( offset, offset + len ).toString();
+//            string[]      subResult  = ProducePermutations( otherChars );
 
-            string prefix = input.Substring( offset, offset + len );
+//            string prefix = input.Substring( offset, offset + len );
 
-            foreach ( var t in subResult )
-            {
-                _temp[ index++ ] = prefix + t;
-            }
-        }
+//            foreach ( var t in subResult )
+//            {
+//                _temp[ index++ ] = prefix + t;
+//            }
+//        }
 
-        string[] result = new string[ index ];
+//        string[] result = new string[ index ];
 
-        for ( int x = 0; x < index; x++ )
-        {
-            result[ x ] = _temp[ x ];
-        }
+//        for ( int x = 0; x < index; x++ )
+//        {
+//            result[ x ] = _temp[ x ];
+//        }
 
-        return result;
+//        return result;
+        return default!;
     }
 
+    [Obsolete]
     private string? ComposeOneStep( string input )
     {
-        System.Text.StringBuilder;
-        int    len                = CountChars( input, 0, 2 );
-        string firstTwoCharacters = input.Substring( 0, len );
-        string result             = Normalizer.normalize( firstTwoCharacters, Normalizer.Form.NFC );
+//        int    len                = CountChars( input, 0, 2 );
+//        string firstTwoCharacters = input.Substring( 0, len );
+//        string result             = Normalizer.normalize( firstTwoCharacters, Normalizer.Form.NFC );
 
-        if ( result.Equals( firstTwoCharacters ) )
-        {
-            return null;
-        }
+//        if ( result.Equals( firstTwoCharacters ) )
+//        {
+//            return null;
+//        }
 
-        string remainder = input.Substring( len );
+//        string remainder = input.Substring( len );
 
-        return result + remainder;
+//        return result + remainder;
+        return "";
     }
 
     /// <summary>
     /// Preprocess any \Q...\E sequences in `temp', meta-quoting them.
     /// See the description of `quotemeta' in perlfunc(1).
     /// </summary>
+    [Obsolete]
     private void RemoveQEQuoting()
     {
         int pLen = _patternLength;
@@ -569,86 +590,90 @@ public sealed partial class Pattern : IPattern
         bool inQuote    = true;
         bool beginQuote = true;
 
-        while ( i < pLen )
-        {
-            int c = _temp[ i++ ];
+//        while ( i < pLen )
+//        {
+//            int c = _temp[ i++ ];
 
-            if ( !ASCII.isAscii( c ) || ASCII.isAlpha( c ) )
-            {
-                newtemp[ j++ ] = c;
-            }
-            else if ( ASCII.isDigit( c ) )
-            {
-                if ( beginQuote )
-                {
+//            if ( !ASCII.isAscii( c ) || ASCII.isAlpha( c ) )
+//            {
+//                newtemp[ j++ ] = c;
+//            }
+//            else if ( ASCII.isDigit( c ) )
+//            {
+//                if ( beginQuote )
+//                {
                     /*
                      * A unicode escape \[0xu] could be before this quote,
                      * and we don't want this numeric char to processed as
                      * part of the escape.
                      */
-                    newtemp[ j++ ] = '\\';
-                    newtemp[ j++ ] = 'x';
-                    newtemp[ j++ ] = '3';
-                }
+//                    newtemp[ j++ ] = '\\';
+//                    newtemp[ j++ ] = 'x';
+//                    newtemp[ j++ ] = '3';
+//                }
 
-                newtemp[ j++ ] = c;
-            }
-            else if ( c != '\\' )
-            {
-                if ( inQuote ) newtemp[ j++ ] = '\\';
-                newtemp[ j++ ] = c;
-            }
-            else if ( inQuote )
-            {
-                if ( _temp[ i ] == 'E' )
-                {
-                    i++;
-                    inQuote = false;
-                }
-                else
-                {
-                    newtemp[ j++ ] = '\\';
-                    newtemp[ j++ ] = '\\';
-                }
-            }
-            else
-            {
-                if ( _temp[ i ] == 'Q' )
-                {
-                    i++;
-                    inQuote    = true;
-                    beginQuote = true;
+//                newtemp[ j++ ] = c;
+//            }
+//            else if ( c != '\\' )
+//            {
+//                if ( inQuote ) newtemp[ j++ ] = '\\';
+//                newtemp[ j++ ] = c;
+//            }
+//            else if ( inQuote )
+//            {
+//                if ( _temp[ i ] == 'E' )
+//                {
+//                    i++;
+//                    inQuote = false;
+//                }
+//                else
+//                {
+//                    newtemp[ j++ ] = '\\';
+//                    newtemp[ j++ ] = '\\';
+//                }
+//            }
+//            else
+//            {
+//                if ( _temp[ i ] == 'Q' )
+//                {
+//                    i++;
+//                    inQuote    = true;
+//                    beginQuote = true;
 
-                    continue;
-                }
+//                    continue;
+//                }
 
-                newtemp[ j++ ] = c;
+//                newtemp[ j++ ] = c;
 
-                if ( i != pLen )
-                {
-                    newtemp[ j++ ] = _temp[ i++ ];
-                }
-            }
+//                if ( i != pLen )
+//                {
+//                    newtemp[ j++ ] = _temp[ i++ ];
+//                }
+//            }
 
-            beginQuote = false;
-        }
+//            beginQuote = false;
+//        }
 
-        _patternLength = j;
+//        _patternLength = j;
         
-        Array.Copy( newtemp, _temp, j + 2 ); // double zero termination
+//        Array.Copy( newtemp, _temp, j + 2 ); // double zero termination
     }
 
+    [Obsolete]
     public void Compile()
     {
     }
 
+    [Obsolete]
     public Dictionary< string, int > NamedGroups()
     {
+        return _namedGroups;
     }
 
     /**
      * Used to print out a subtree of the Pattern to help with debugging.
      */
+    [Obsolete]
     private static void PrintObjectTree( Node node )
     {
         while ( node != null )
@@ -657,7 +682,7 @@ public sealed partial class Pattern : IPattern
             {
                 Console.WriteLine(node);
                 
-                printObjectTree( ( ( Prolog )node ).loop );
+//                printObjectTree( ( ( Prolog )node ).loop );
                 
                 Console.WriteLine( "**** end contents prolog loop" );
             }
@@ -666,7 +691,7 @@ public sealed partial class Pattern : IPattern
 
             {
                 Console.WriteLine( node );
-                printObjectTree( ( ( Loop )node ).body );
+//                printObjectTree( ( ( Loop )node ).body );
                 Console.WriteLine( "**** end contents Loop body" );
             }
 
@@ -674,7 +699,7 @@ public sealed partial class Pattern : IPattern
 
             {
                 Console.WriteLine( node );
-                printObjectTree( ( ( Curly )node ).atom );
+//                printObjectTree( ( ( Curly )node ).atom );
                 Console.WriteLine( "**** end contents Curly body" );
             }
 
@@ -682,7 +707,7 @@ public sealed partial class Pattern : IPattern
 
             {
                 Console.WriteLine( node );
-                printObjectTree( ( ( GroupCurly )node ).atom );
+//                printObjectTree( ( ( GroupCurly )node ).atom );
                 Console.WriteLine( "**** end contents GroupCurly body" );
             }
 
@@ -708,11 +733,11 @@ public sealed partial class Pattern : IPattern
                 Console.WriteLine( "->next:" );
             }
 
-            if ( node == Pattern.accept )
-            {
-                Console.WriteLine( "Accept Node" );
-                node = null;
-            }
+//            if ( node == Pattern.accept )
+//            {
+//                Console.WriteLine( "Accept Node" );
+//                node = null;
+//            }
         }
     }
 
@@ -731,15 +756,18 @@ public sealed partial class Pattern : IPattern
      * Internal method used for handling all syntax errors. The pattern is
      * displayed with a pointer to aid in locating the syntax error.
      */
+    [Obsolete]
     private PatternSyntaxException error( string s )
     {
-        return new PatternSyntaxException( s, normalizedPattern, _cursor - 1 );
+//        return new PatternSyntaxException( s, normalizedPattern, _cursor - 1 );
+        return default!;
     }
 
     /**
      * Determines if there is any supplementary character or unpaired
      * surrogate in the specified range.
      */
+    [Obsolete]
     private bool findSupplementary( int start, int end )
     {
         for ( int i = start; i < end; i++ )
@@ -755,9 +783,11 @@ public sealed partial class Pattern : IPattern
      * Determines if the specified code point is a supplementary
      * character or unpaired surrogate.
      */
+    [Obsolete]
     private static bool isSupplementary( int ch )
     {
-        return ( ch >= Character.MIN_SUPPLEMENTARY_CODE_POINT ) || Character.isSurrogate( ( char )ch );
+//        return ( ch >= Character.MIN_SUPPLEMENTARY_CODE_POINT ) || Character.isSurrogate( ( char )ch );
+        return default!;
     }
 
     /*
@@ -770,6 +800,7 @@ public sealed partial class Pattern : IPattern
      * This may be called recursively to parse sub expressions that may
      * contain alternations.
      */
+    [Obsolete]
     private Node expr( Node end )
     {
         Node   prev       = null;
@@ -793,7 +824,7 @@ public sealed partial class Pattern : IPattern
                 if ( branchConn == null )
                 {
                     branchConn      = new BranchConn();
-                    branchConn.next = end;
+//                    branchConn.next = end;
                 }
 
                 if ( node == end )
@@ -806,12 +837,12 @@ public sealed partial class Pattern : IPattern
                 else
                 {
                     // the "tail.next" of each atom goes to branchConn
-                    nodeTail.next = branchConn;
+//                    nodeTail.next = branchConn;
                 }
 
                 if ( prev == branch )
                 {
-                    branch.add( node );
+//                    branch.add( node );
                 }
                 else
                 {
@@ -823,10 +854,10 @@ public sealed partial class Pattern : IPattern
                     {
                         // replace the "end" with "branchConn" at its tail.next
                         // when put the "prev" into the branch as the first atom.
-                        firstTail.next = branchConn;
+//                        firstTail.next = branchConn;
                     }
 
-                    prev = branch = new Branch( prev, node, branchConn );
+//                    prev = branch = new Branch( prev, node, branchConn );
                 }
             }
 
@@ -842,6 +873,7 @@ public sealed partial class Pattern : IPattern
     /**
      * Parsing of sequences between alternations.
      */
+    [Obsolete]
     private Node sequence( Node end )
     {
         Node? head = null;
@@ -870,7 +902,7 @@ public sealed partial class Pattern : IPattern
                     }
                     else
                     {
-                        tail.next = node;
+//                        tail.next = node;
                     }
 
                     // Double return: Tail was returned in root
@@ -884,7 +916,7 @@ public sealed partial class Pattern : IPattern
                     break;
 
                 case '\\':
-                    ch = nextEscaped();
+//                    ch = nextEscaped();
 
                     if ( ( ch == 'p' ) || ( ch == 'P' ) )
                     {
@@ -894,7 +926,7 @@ public sealed partial class Pattern : IPattern
 
                         if ( ch != '{' )
                         {
-                            unread();
+//                            unread();
                         }
                         else
                         {
@@ -905,7 +937,7 @@ public sealed partial class Pattern : IPattern
                     }
                     else
                     {
-                        unread();
+//                        unread();
                         node = atom();
                     }
 
@@ -914,56 +946,56 @@ public sealed partial class Pattern : IPattern
                 case '^':
                     Next();
 
-                    if ( Has( MULTILINE ) )
-                    {
-                        if ( Has( UNIX_LINES ) )
-                        {
-                            node = new UnixCaret();
-                        }
-                        else
-                        {
-                            node = new Caret();
-                        }
-                    }
-                    else
-                    {
-                        node = new Begin();
-                    }
+//                    if ( Has( MULTILINE ) )
+//                    {
+//                        if ( Has( UNIX_LINES ) )
+//                        {
+//                            node = new UnixCaret();
+//                        }
+//                        else
+//                        {
+//                            node = new Caret();
+//                        }
+//                    }
+//                    else
+//                    {
+//                        node = new Begin();
+//                    }
 
                     break;
 
                 case '$':
                     Next();
 
-                    if ( Has( Unix_Lines ) )
-                    {
-                        node = new UnixDollar( Has( Multiline ) );
-                    }
-                    else
-                    {
-                        node = new Dollar( Has( Multiline ) );
-                    }
+//                    if ( Has( Unix_Lines ) )
+//                    {
+//                        node = new UnixDollar( Has( Multiline ) );
+//                    }
+//                    else
+//                    {
+//                        node = new Dollar( Has( Multiline ) );
+//                    }
 
                     break;
 
                 case '.':
                     Next();
 
-                    if ( Has( DOTALL ) )
-                    {
-                        node = new All();
-                    }
-                    else
-                    {
-                        if ( Has( UNIX_LINES ) )
-                        {
-                            node = new UnixDot();
-                        }
-                        else
-                        {
-                            node = new Dot();
-                        }
-                    }
+//                    if ( Has( DOTALL ) )
+//                    {
+//                        node = new All();
+//                    }
+//                    else
+//                    {
+//                        if ( Has( UNIX_LINES ) )
+//                        {
+//                            node = new UnixDot();
+//                        }
+//                        else
+//                        {
+//                            node = new Dot();
+//                        }
+//                    }
 
                     break;
 
@@ -985,11 +1017,9 @@ public sealed partial class Pattern : IPattern
                     throw error( "Dangling meta character '" + ( ( char )ch ) + "'" );
 
                 case 0:
-                    if ( _cursor >= _patternLength )
-                    {
-                        goto LOOP;
-                    }
+                    if ( _cursor >= _patternLength ) goto LOOP;
 
+                    break;
                 // Fall through
                 default:
                     node = atom();
@@ -997,17 +1027,17 @@ public sealed partial class Pattern : IPattern
                     break;
             }
 
-            node = closure( node );
+//            node = closure( node );
 
-            if ( head == null )
-            {
-                head = tail = node;
-            }
-            else
-            {
-                tail.next = node;
-                tail      = node;
-            }
+//            if ( head == null )
+//            {
+//                head = tail = node;
+//            }
+//            else
+//            {
+//                tail.next = node;
+//                tail      = node;
+//            }
         }
 
         if ( head == null )
@@ -1015,7 +1045,7 @@ public sealed partial class Pattern : IPattern
             return end;
         }
 
-        tail.next = end;
+//        tail.next = end;
         root      = tail; //double return
 
         return head;
@@ -1024,6 +1054,7 @@ public sealed partial class Pattern : IPattern
     /**
      * Parse and add a new Single or Slice.
      */
+    [Obsolete]
     private Node atom()
     {
         int  first            = 0;
@@ -1057,56 +1088,56 @@ public sealed partial class Pattern : IPattern
                     break;
 
                 case '\\':
-                    ch = nextEscaped();
+//                    ch = nextEscaped();
 
-                    if ( ( ch == 'p' ) || ( ch == 'P' ) )
-                    {
+//                    if ( ( ch == 'p' ) || ( ch == 'P' ) )
+//                    {
                         // Property
-                        if ( first > 0 )
-                        {
+//                        if ( first > 0 )
+//                        {
                             // Slice is waiting; handle it first
-                            unread();
+//                            unread();
 
-                            break;
-                        }
-                        else
-                        {
+//                            break;
+//                        }
+//                        else
+//                        {
                             // No slice; just return the family node
-                            bool comp      = ( ch == 'P' );
-                            bool oneLetter = true;
-                            ch = Next(); // Consume { if present
+//                            bool comp      = ( ch == 'P' );
+//                            bool oneLetter = true;
+//                            ch = Next(); // Consume { if present
 
-                            if ( ch != '{' )
-                                unread();
-                            else
-                                oneLetter = false;
+//                            if ( ch != '{' )
+//                                unread();
+//                            else
+//                                oneLetter = false;
 
-                            return family( oneLetter, comp );
-                        }
-                    }
+//                            return family( oneLetter, comp );
+//                        }
+//                    }
 
-                    unread();
-                    prev = _cursor;
-                    ch   = escape( false, first == 0, false );
+//                    unread();
+//                    prev = _cursor;
+//                    ch   = escape( false, first == 0, false );
 
-                    if ( ch >= 0 )
-                    {
-                        append( ch, first );
-                        first++;
+//                    if ( ch >= 0 )
+//                    {
+//                        append( ch, first );
+//                        first++;
 
-                        if ( isSupplementary( ch ) )
-                        {
-                            hasSupplementary = true;
-                        }
+//                        if ( isSupplementary( ch ) )
+//                        {
+//                            hasSupplementary = true;
+//                        }
 
-                        ch = Peek();
+//                        ch = Peek();
 
-                        continue;
-                    }
-                    else if ( first == 0 )
-                    {
-                        return root;
-                    }
+//                        continue;
+//                    }
+//                    else if ( first == 0 )
+//                    {
+//                        return root;
+//                    }
 
                     // Unwind meta escape sequence
                     _cursor = prev;
@@ -1118,6 +1149,7 @@ public sealed partial class Pattern : IPattern
                     {
                         break;
                     }
+                    break;
 
                 // Fall through
                 default:
@@ -1138,26 +1170,29 @@ public sealed partial class Pattern : IPattern
             break;
         }
 
-        if ( first == 1 )
-        {
-            return newSingle( buffer[ 0 ] );
-        }
-        else
-        {
-            return newSlice( buffer, first, hasSupplementary );
-        }
+//        if ( first == 1 )
+//        {
+//            return newSingle( buffer[ 0 ] );
+//        }
+//        else
+//        {
+//            return newSlice( buffer, first, hasSupplementary );
+//        }
+
+        return default!;
     }
 
+    [Obsolete]
     private void append( int ch, int len )
     {
-        if ( len >= buffer.length )
-        {
-            int[] tmp = new int[ len + len ];
-            System.arraycopy( buffer, 0, tmp, 0, len );
-            buffer = tmp;
-        }
+//        if ( len >= buffer.length )
+//        {
+//            int[] tmp = new int[ len + len ];
+//            System.arraycopy( buffer, 0, tmp, 0, len );
+//            buffer = tmp;
+//        }
 
-        buffer[ len ] = ch;
+//        buffer[ len ] = ch;
     }
 
     /**
@@ -1166,6 +1201,7 @@ public sealed partial class Pattern : IPattern
      * multi digit numbers are only treated as a backref if at
      * least that many backrefs exist at this point in the regex.
      */
+    [Obsolete]
     private Node backref( int refNum )
     {
         bool done = false;
@@ -1190,15 +1226,15 @@ public sealed partial class Pattern : IPattern
 
                     // Add another number if it doesn't make a group
                     // that doesn't exist
-                    if ( ( capturingGroupCount - 1 ) < newRefNum )
-                    {
-                        done = true;
+//                    if ( ( capturingGroupCount - 1 ) < newRefNum )
+//                    {
+//                        done = true;
 
-                        break;
-                    }
+//                        break;
+//                    }
 
-                    refNum = newRefNum;
-                    read();
+//                    refNum = newRefNum;
+//                    read();
 
                     break;
 
@@ -1209,10 +1245,11 @@ public sealed partial class Pattern : IPattern
             }
         }
 
-        if ( Has( CASE_INSENSITIVE ) )
-            return new CIBackRef( refNum, Has( UNICODE_CASE ) );
-        else
-            return new BackRef( refNum );
+//        if ( Has( CASE_INSENSITIVE ) )
+//            return new CIBackRef( refNum, Has( UNICODE_CASE ) );
+//        else
+//            return new BackRef( refNum );
+        return default!;
     }
 
     /**
@@ -1223,233 +1260,234 @@ public sealed partial class Pattern : IPattern
      * If the returned value is greater than zero, it is the value that
      * matches the escape sequence.
      */
+    [Obsolete]
     private int escape( bool inclass, bool create, bool isrange )
     {
-        int ch = skip();
+//        int ch = skip();
 
-        switch ( ch )
-        {
-            case '0':
-                return o();
+//        switch ( ch )
+//        {
+//            case '0':
+//                return o();
 
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                if ( inclass ) break;
+//            case '1':
+//            case '2':
+//            case '3':
+//            case '4':
+//            case '5':
+//            case '6':
+//            case '7':
+//            case '8':
+//            case '9':
+//                if ( inclass ) break;
 
-                if ( create )
-                {
-                    root = backref( ( ch - '0' ) );
-                }
+//                if ( create )
+//                {
+//                    root = backref( ( ch - '0' ) );
+//                }
 
-                return -1;
+//                return -1;
 
-            case 'A':
-                if ( inclass ) break;
-                if ( create ) root = new Begin();
+//            case 'A':
+//                if ( inclass ) break;
+//                if ( create ) root = new Begin();
 
-                return -1;
+//                return -1;
 
-            case 'B':
-                if ( inclass ) break;
-                if ( create ) root = new Bound( Bound.NONE, Has( UNICODE_CHARACTER_CLASS ) );
+//            case 'B':
+//                if ( inclass ) break;
+//                if ( create ) root = new Bound( Bound.NONE, Has( UNICODE_CHARACTER_CLASS ) );
 
-                return -1;
+//                return -1;
 
-            case 'C':
-                break;
+//            case 'C':
+//                break;
 
-            case 'D':
-                if ( create )
-                    root = Has( UNICODE_CHARACTER_CLASS )
-                        ? new Utype( UnicodeProp.DIGIT ).complement()
-                        : new Ctype( ASCII.DIGIT ).complement();
+//            case 'D':
+//                if ( create )
+//                    root = Has( UNICODE_CHARACTER_CLASS )
+//                        ? new Utype( UnicodeProp.DIGIT ).complement()
+//                        : new Ctype( ASCII.DIGIT ).complement();
 
-                return -1;
+//                return -1;
 
-            case 'E':
-            case 'F':
-                break;
+//            case 'E':
+//            case 'F':
+//                break;
 
-            case 'G':
-                if ( inclass ) break;
-                if ( create ) root = new LastMatch();
+//            case 'G':
+//                if ( inclass ) break;
+//                if ( create ) root = new LastMatch();
 
-                return -1;
+//                return -1;
 
-            case 'H':
-                if ( create ) root = new HorizWS().complement();
+//            case 'H':
+//                if ( create ) root = new HorizWS().complement();
 
-                return -1;
+//                return -1;
 
-            case 'I':
-            case 'J':
-            case 'K':
-            case 'L':
-            case 'M':
-            case 'N':
-            case 'O':
-            case 'P':
-            case 'Q':
-                break;
+//            case 'I':
+//            case 'J':
+//            case 'K':
+//            case 'L':
+//            case 'M':
+//            case 'N':
+//            case 'O':
+//            case 'P':
+//            case 'Q':
+//                break;
 
-            case 'R':
-                if ( inclass ) break;
-                if ( create ) root = new LineEnding();
+//            case 'R':
+//                if ( inclass ) break;
+//                if ( create ) root = new LineEnding();
 
-                return -1;
+//                return -1;
 
-            case 'S':
-                if ( create )
-                    root = Has( UNICODE_CHARACTER_CLASS )
-                        ? new Utype( UnicodeProp.WHITE_SPACE ).complement()
-                        : new Ctype( ASCII.SPACE ).complement();
+//            case 'S':
+//                if ( create )
+//                    root = Has( UNICODE_CHARACTER_CLASS )
+//                        ? new Utype( UnicodeProp.WHITE_SPACE ).complement()
+//                        : new Ctype( ASCII.SPACE ).complement();
 
-                return -1;
+//                return -1;
 
-            case 'T':
-            case 'U':
-                break;
+//            case 'T':
+//            case 'U':
+//                break;
 
-            case 'V':
-                if ( create ) root = new VertWS().complement();
+//            case 'V':
+//                if ( create ) root = new VertWS().complement();
 
-                return -1;
+//                return -1;
 
-            case 'W':
-                if ( create )
-                    root = Has( UNICODE_CHARACTER_CLASS )
-                        ? new Utype( UnicodeProp.WORD ).complement()
-                        : new Ctype( ASCII.WORD ).complement();
+//            case 'W':
+//                if ( create )
+//                    root = Has( UNICODE_CHARACTER_CLASS )
+//                        ? new Utype( UnicodeProp.WORD ).complement()
+//                        : new Ctype( ASCII.WORD ).complement();
 
-                return -1;
+//                return -1;
 
-            case 'X':
-            case 'Y':
-                break;
+//            case 'X':
+//            case 'Y':
+//                break;
 
-            case 'Z':
-                if ( inclass ) break;
+//            case 'Z':
+//                if ( inclass ) break;
 
-                if ( create )
-                {
-                    if ( Has( UNIX_LINES ) )
-                    {
-                        root = new UnixDollar( false );
-                    }
-                    else
-                    {
-                        root = new Dollar( false );
-                    }
-                }
+//                if ( create )
+//                {
+//                    if ( Has( UNIX_LINES ) )
+//                    {
+//                        root = new UnixDollar( false );
+//                    }
+//                    else
+//                    {
+//                        root = new Dollar( false );
+//                    }
+//                }
 
-                return -1;
+//                return -1;
 
-            case 'a':
-                return '\007';
+//            case 'a':
+//                return '\007';
 
-            case 'b':
-                if ( inclass ) break;
-                if ( create ) root = new Bound( Bound.BOTH, Has( UNICODE_CHARACTER_CLASS ) );
+//            case 'b':
+//                if ( inclass ) break;
+//                if ( create ) root = new Bound( Bound.BOTH, Has( UNICODE_CHARACTER_CLASS ) );
 
-                return -1;
+//                return -1;
 
-            case 'c':
-                return c();
+//            case 'c':
+//                return c();
 
-            case 'd':
-                if ( create )
-                {
-                    root = Has( UNICODE_CHARACTER_CLASS )
-                        ? new Utype( UnicodeProp.DIGIT )
-                        : new Ctype( ASCII.DIGIT );
-                }
+//            case 'd':
+//                if ( create )
+//                {
+//                    root = Has( UNICODE_CHARACTER_CLASS )
+//                        ? new Utype( UnicodeProp.DIGIT )
+//                        : new Ctype( ASCII.DIGIT );
+//                }
 
-                return -1;
+//                return -1;
 
-            case 'e':
-                return '\033';
+//            case 'e':
+//                return '\033';
 
-            case 'f':
-                return '\f';
+//            case 'f':
+//                return '\f';
 
-            case 'g':
-                break;
+//            case 'g':
+//                break;
 
-            case 'h':
-                if ( create ) root = new HorizWS();
+//            case 'h':
+//                if ( create ) root = new HorizWS();
 
-                return -1;
+//                return -1;
 
-            case 'i':
-            case 'j':
-                break;
+//            case 'i':
+//            case 'j':
+//                break;
 
-            case 'k':
-                if ( inclass ) break;
+//            case 'k':
+//                if ( inclass ) break;
 
-                if ( read() != '<' )
-                {
-                    throw error( "\\k is not followed by '<' for named capturing group" );
-                }
+//                if ( read() != '<' )
+//                {
+//                    throw error( "\\k is not followed by '<' for named capturing group" );
+//                }
 
-                string name = groupname( read() );
+//                string name = groupname( read() );
 
-                if ( !namedGroups().containsKey( name ) )
-                {
-                    throw error( "(named capturing group <" + name + "> does not exit" );
-                }
+//                if ( !namedGroups().containsKey( name ) )
+//                {
+//                    throw error( "(named capturing group <" + name + "> does not exit" );
+//                }
 
-                if ( create )
-                {
-                    if ( Has( CASE_INSENSITIVE ) )
-                    {
-                        root = new CIBackRef( namedGroups().get( name ), Has( UNICODE_CASE ) );
-                    }
-                    else
-                    {
-                        root = new BackRef( namedGroups().get( name ) );
-                    }
-                }
+//                if ( create )
+//                {
+//                    if ( Has( CASE_INSENSITIVE ) )
+//                    {
+//                        root = new CIBackRef( namedGroups().get( name ), Has( UNICODE_CASE ) );
+//                    }
+//                    else
+//                    {
+//                        root = new BackRef( namedGroups().get( name ) );
+//                    }
+//                }
 
-                return -1;
+//                return -1;
 
-            case 'l':
-            case 'm':
-                break;
+//            case 'l':
+//            case 'm':
+//                break;
 
-            case 'n':
-                return '\n';
+//            case 'n':
+//                return '\n';
 
-            case 'o':
-            case 'p':
-            case 'q':
-                break;
+//            case 'o':
+//            case 'p':
+//            case 'q':
+//                break;
 
-            case 'r':
-                return '\r';
+//            case 'r':
+//                return '\r';
 
-            case 's':
-                if ( create )
-                    root = Has( UNICODE_CHARACTER_CLASS )
-                        ? new Utype( UnicodeProp.WHITE_SPACE )
-                        : new Ctype( ASCII.SPACE );
+//            case 's':
+//                if ( create )
+//                    root = Has( UNICODE_CHARACTER_CLASS )
+//                        ? new Utype( UnicodeProp.WHITE_SPACE )
+//                        : new Ctype( ASCII.SPACE );
 
-                return -1;
+//                return -1;
 
-            case 't':
-                return '\t';
+//            case 't':
+//                return '\t';
 
-            case 'u':
-                return u();
+//            case 'u':
+//                return u();
 
-            case 'v':
+//            case 'v':
                 // '\v' was implemented as VT/0x0B in releases < 1.8 (though
                 // undocumented). In JDK8 '\v' is specified as a predefined
                 // character class for all vertical whitespace characters.
@@ -1458,38 +1496,39 @@ public sealed partial class Pattern : IPattern
                 // the start or end value, such as [\v-...] or [...-\v], in
                 // which a single definite value (0x0B) is expected. For
                 // compatibility concern '\013'/0x0B is returned if isrange.
-                if ( isrange )
-                    return '\013';
+//                if ( isrange )
+//                    return '\013';
 
-                if ( create ) root = new VertWS();
+//                if ( create ) root = new VertWS();
 
-                return -1;
+//                return -1;
 
-            case 'w':
-                if ( create )
-                    root = Has( UNICODE_CHARACTER_CLASS )
-                        ? new Utype( UnicodeProp.WORD )
-                        : new Ctype( ASCII.WORD );
+//            case 'w':
+//                if ( create )
+//                    root = Has( UNICODE_CHARACTER_CLASS )
+//                        ? new Utype( UnicodeProp.WORD )
+//                        : new Ctype( ASCII.WORD );
 
-                return -1;
+//                return -1;
 
-            case 'x':
-                return x();
+//            case 'x':
+//                return x();
 
-            case 'y':
-                break;
+//            case 'y':
+//                break;
 
-            case 'z':
-                if ( inclass ) break;
-                if ( create ) root = new End();
+//            case 'z':
+//                if ( inclass ) break;
+//                if ( create ) root = new End();
 
-                return -1;
+//                return -1;
 
-            default:
-                return ch;
-        }
+//            default:
+//                return ch;
+//        }
 
-        throw error( "Illegal/unsupported escape sequence" );
+//        throw error( "Illegal/unsupported escape sequence" );
+        return -1;
     }
 
     /**
@@ -1499,6 +1538,7 @@ public sealed partial class Pattern : IPattern
      * is true except for the case of [abc&&def] where def is a separate
      * right hand node with "understood" brackets.
      */
+    [Obsolete]
     private CharProperty clazz( bool consume )
     {
         CharProperty prev         = null;
@@ -1536,8 +1576,8 @@ public sealed partial class Pattern : IPattern
 
                     if ( prev == null )
                         prev = node;
-                    else
-                        prev = union( prev, node );
+//                    else
+//                        prev = union( prev, node );
 
                     ch = Peek();
 
@@ -1558,13 +1598,13 @@ public sealed partial class Pattern : IPattern
                             {
                                 if ( rightNode == null )
                                     rightNode = clazz( true );
-                                else
-                                    rightNode = union( rightNode, clazz( true ) );
+//                                else
+//                                    rightNode = union( rightNode, clazz( true ) );
                             }
                             else
                             {
                                 // abc&&def
-                                unread();
+//                                unread();
                                 rightNode = clazz( false );
                             }
 
@@ -1581,15 +1621,15 @@ public sealed partial class Pattern : IPattern
                             else
                                 prev = rightNode;
                         }
-                        else
-                        {
-                            prev = intersection( prev, node );
-                        }
+//                        else
+//                        {
+//                            prev = intersection( prev, node );
+//                        }
                     }
                     else
                     {
                         // treat as a literal &
-                        unread();
+//                        unread();
 
                         break;
                     }
@@ -1633,27 +1673,28 @@ public sealed partial class Pattern : IPattern
                 }
                 else
                 {
-                    if ( prev != node )
-                        prev = union( prev, node );
+//                    if ( prev != node )
+//                        prev = union( prev, node );
                 }
             }
             else
             {
-                if ( prev == null )
-                {
-                    prev = node.complement();
-                }
-                else
-                {
-                    if ( prev != node )
-                        prev = setDifference( prev, node );
-                }
+//                if ( prev == null )
+//                {
+//                    prev = node.complement();
+//                }
+//                else
+//                {
+//                    if ( prev != node )
+//                        prev = setDifference( prev, node );
+//                }
             }
 
             ch = Peek();
         }
     }
 
+    [Obsolete]
     private CharProperty bitsOrSingle( BitClass bits, int ch )
     {
         /* Bits can only handle codepoints in [u+0000-u+00ff] range.
@@ -1675,23 +1716,23 @@ public sealed partial class Pattern : IPattern
         */
         int d;
 
-        if ( ( ch < 256 )
-             && !( Has( CASE_INSENSITIVE )
-                   && Has( UNICODE_CASE )
-                   && ( ( ch == 0xff )
-                        || ( ch == 0xb5 )
-                        || ( ch == 0x49 )
-                        || ( ch == 0x69 )
-                        || //I and i
-                        ( ch == 0x53 )
-                        || ( ch == 0x73 )
-                        || //S and s
-                        ( ch == 0x4b )
-                        || ( ch == 0x6b )
-                        || //K and k
-                        ( ch == 0xc5 )
-                        || ( ch == 0xe5 ) ) ) ) //A+ring
-            return bits.Add( ch, flags() );
+//        if ( ( ch < 256 )
+//             && !( Has( CASE_INSENSITIVE )
+//                   && Has( UNICODE_CASE )
+//                   && ( ( ch == 0xff )
+//                        || ( ch == 0xb5 )
+//                        || ( ch == 0x49 )
+//                        || ( ch == 0x69 )
+//                        || //I and i
+//                        ( ch == 0x53 )
+//                        || ( ch == 0x73 )
+//                        || //S and s
+//                        ( ch == 0x4b )
+//                        || ( ch == 0x6b )
+//                        || //K and k
+//                        ( ch == 0xc5 )
+//                        || ( ch == 0xe5 ) ) ) ) //A+ring
+//            return bits.Add( ch, flags() );
 
         return newSingle( ch );
     }
@@ -1700,91 +1741,95 @@ public sealed partial class Pattern : IPattern
      * Parse a single character or a character range in a character class
      * and return its representative node.
      */
+    [Obsolete]
     private CharProperty range( BitClass bits )
     {
         int ch = Peek();
 
-        if ( ch == '\\' )
-        {
-            ch = nextEscaped();
+//        if ( ch == '\\' )
+//        {
+//            ch = nextEscaped();
 
-            if ( ( ch == 'p' ) || ( ch == 'P' ) )
-            {
+//            if ( ( ch == 'p' ) || ( ch == 'P' ) )
+//            {
                 // A property
-                bool comp      = ( ch == 'P' );
-                bool oneLetter = true;
+//                bool comp      = ( ch == 'P' );
+//                bool oneLetter = true;
                 // Consume { if present
-                ch = Next();
+//                ch = Next();
 
-                if ( ch != '{' )
-                    unread();
-                else
-                    oneLetter = false;
+//                if ( ch != '{' )
+//                    unread();
+//                else
+//                    oneLetter = false;
 
-                return family( oneLetter, comp );
-            }
-            else
-            {
+//                return family( oneLetter, comp );
+//            }
+//            else
+//            {
                 // ordinary escape
-                bool isrange = _temp[ _cursor + 1 ] == '-';
-                unread();
-                ch = escape( true, true, isrange );
+//                bool isrange = _temp[ _cursor + 1 ] == '-';
+//                unread();
+//                ch = escape( true, true, isrange );
 
-                if ( ch == -1 )
-                    return ( CharProperty )root;
-            }
-        }
-        else
-        {
-            Next();
-        }
+//                if ( ch == -1 )
+//                    return ( CharProperty )root;
+//            }
+//        }
+//        else
+//        {
+//            Next();
+//        }
 
-        if ( ch >= 0 )
-        {
-            if ( Peek() == '-' )
-            {
-                int endRange = _temp[ _cursor + 1 ];
+//        if ( ch >= 0 )
+//        {
+//            if ( Peek() == '-' )
+//            {
+//                int endRange = _temp[ _cursor + 1 ];
 
-                if ( endRange == '[' )
-                {
-                    return bitsOrSingle( bits, ch );
-                }
+//                if ( endRange == '[' )
+//                {
+//                    return bitsOrSingle( bits, ch );
+//                }
 
-                if ( endRange != ']' )
-                {
-                    Next();
-                    int m = Peek();
+//                if ( endRange != ']' )
+//                {
+//                    Next();
+//                    int m = Peek();
 
-                    if ( m == '\\' )
-                    {
-                        m = escape( true, false, true );
-                    }
-                    else
-                    {
-                        Next();
-                    }
+//                    if ( m == '\\' )
+//                    {
+//                        m = escape( true, false, true );
+//                    }
+//                    else
+//                    {
+//                        Next();
+//                    }
 
-                    if ( m < ch )
-                    {
-                        throw error( "Illegal character range" );
-                    }
+//                    if ( m < ch )
+//                    {
+//                        throw error( "Illegal character range" );
+//                    }
 
-                    if ( Has( CASE_INSENSITIVE ) )
-                        return caseInsensitiveRangeFor( ch, m );
-                    else
-                        return rangeFor( ch, m );
-                }
-            }
+//                    if ( Has( CASE_INSENSITIVE ) )
+//                        return caseInsensitiveRangeFor( ch, m );
+//                    else
+//                        return rangeFor( ch, m );
+//                }
+//            }
 
-            return bitsOrSingle( bits, ch );
-        }
+//            return bitsOrSingle( bits, ch );
+//        }
 
-        throw error( "Unexpected character '" + ( ( char )ch ) + "'" );
+//        throw error( "Unexpected character '" + ( ( char )ch ) + "'" );
+
+        return default!;
     }
 
     /**
      * Parses a Unicode character family and returns its representative node.
      */
+    [Obsolete]
     private CharProperty family( bool singleLetter,
                                  bool maybeComplement )
     {
@@ -1792,120 +1837,121 @@ public sealed partial class Pattern : IPattern
         string       name;
         CharProperty node = null;
 
-        if ( singleLetter )
-        {
-            int c = _temp[ _cursor ];
+//        if ( singleLetter )
+//        {
+//            int c = _temp[ _cursor ];
 
-            if ( !Character.isSupplementaryCodePoint( c ) )
-            {
-                name = string.valueOf( ( char )c );
-            }
-            else
-            {
-                name = new string( temp, _cursor, 1 );
-            }
+//            if ( !Character.isSupplementaryCodePoint( c ) )
+//            {
+//                name = string.valueOf( ( char )c );
+//            }
+//            else
+//            {
+//                name = new string( temp, _cursor, 1 );
+//            }
 
-            read();
-        }
-        else
-        {
-            int i = _cursor;
-            mark( '}' );
+//            read();
+//        }
+//        else
+//        {
+//            int i = _cursor;
+//            mark( '}' );
 
-            while ( read() != '}' )
-            {
-            }
+//            while ( read() != '}' )
+//            {
+//            }
 
-            mark( '\000' );
-            int j = _cursor;
+//            mark( '\000' );
+//            int j = _cursor;
 
-            if ( j > _patternLength )
-                throw error( "Unclosed character family" );
+//            if ( j > _patternLength )
+//                throw error( "Unclosed character family" );
 
-            if ( ( i + 1 ) >= j )
-                throw error( "Empty character family" );
+//            if ( ( i + 1 ) >= j )
+//                throw error( "Empty character family" );
 
-            name = new string( temp, i, j - i - 1 );
-        }
+//            name = new string( temp, i, j - i - 1 );
+//        }
 
-        int i = name.indexOf( '=' );
+//        int i = name.indexOf( '=' );
 
-        if ( i != -1 )
-        {
+//        if ( i != -1 )
+//        {
             // property construct \p{name=value}
-            string value = name.substring( i + 1 );
-            name = name.substring( 0, i ).toLowerCase( Locale.ENGLISH );
+//            string value = name.substring( i + 1 );
+//            name = name.substring( 0, i ).toLowerCase( Locale.ENGLISH );
 
-            if ( "sc".equals( name ) || "script".equals( name ) )
-            {
-                node = unicodeScriptPropertyFor( value );
-            }
-            else if ( "blk".equals( name ) || "block".equals( name ) )
-            {
-                node = unicodeBlockPropertyFor( value );
-            }
-            else if ( "gc".equals( name ) || "general_category".equals( name ) )
-            {
-                node = charPropertyNodeFor( value );
-            }
-            else
-            {
-                throw error
-                    (
-                     "Unknown Unicode property {name=<"
-                     + name
-                     + ">, "
-                     + "value=<"
-                     + value
-                     + ">}"
-                    );
-            }
-        }
-        else
-        {
-            if ( name.startsWith( "In" ) )
-            {
+//            if ( "sc".equals( name ) || "script".equals( name ) )
+//            {
+//                node = unicodeScriptPropertyFor( value );
+//            }
+//            else if ( "blk".equals( name ) || "block".equals( name ) )
+//            {
+//                node = unicodeBlockPropertyFor( value );
+//            }
+//            else if ( "gc".equals( name ) || "general_category".equals( name ) )
+//            {
+//                node = charPropertyNodeFor( value );
+//            }
+//            else
+//            {
+//                throw error
+//                    (
+//                     "Unknown Unicode property {name=<"
+//                     + name
+//                     + ">, "
+//                     + "value=<"
+//                     + value
+//                     + ">}"
+//                    );
+//            }
+//        }
+//        else
+//        {
+//            if ( name.startsWith( "In" ) )
+//            {
                 // \p{inBlockName}
-                node = unicodeBlockPropertyFor( name.substring( 2 ) );
-            }
-            else if ( name.startsWith( "Is" ) )
-            {
+//                node = unicodeBlockPropertyFor( name.substring( 2 ) );
+//            }
+//            else if ( name.startsWith( "Is" ) )
+//            {
                 // \p{isGeneralCategory} and \p{isScriptName}
-                name = name.substring( 2 );
-                UnicodeProp uprop = UnicodeProp.forName( name );
+//                name = name.substring( 2 );
+//                UnicodeProp uprop = UnicodeProp.forName( name );
 
-                if ( uprop != null )
-                    node = new Utype( uprop );
+//                if ( uprop != null )
+//                    node = new Utype( uprop );
 
-                if ( node == null )
-                    node = CharPropertyNames.charPropertyFor( name );
+//                if ( node == null )
+//                    node = CharPropertyNames.charPropertyFor( name );
 
-                if ( node == null )
-                    node = unicodeScriptPropertyFor( name );
-            }
-            else
-            {
-                if ( Has( UNICODE_CHARACTER_CLASS ) )
-                {
-                    UnicodeProp uprop = UnicodeProp.forPOSIXName( name );
+//                if ( node == null )
+//                    node = unicodeScriptPropertyFor( name );
+//            }
+//            else
+//            {
+//                if ( Has( UNICODE_CHARACTER_CLASS ) )
+//                {
+//                    UnicodeProp uprop = UnicodeProp.forPOSIXName( name );
 
-                    if ( uprop != null )
-                        node = new Utype( uprop );
-                }
+//                    if ( uprop != null )
+//                        node = new Utype( uprop );
+//                }
 
-                if ( node == null )
-                    node = charPropertyNodeFor( name );
-            }
-        }
+//                if ( node == null )
+//                    node = charPropertyNodeFor( name );
+//            }
+//        }
 
-        if ( maybeComplement )
-        {
-            if ( node is Category || node is Block)
-            hasSupplementary = true;
-            node             = node.complement();
-        }
+//        if ( maybeComplement )
+//        {
+//            if ( node is Category || node is Block)
+//            hasSupplementary = true;
+//            node             = node.complement();
+//        }
 
-        return node;
+//        return node;
+        return default!;
     }
 
 
@@ -1913,75 +1959,82 @@ public sealed partial class Pattern : IPattern
      * Returns a CharProperty matching all characters belong to
      * a UnicodeScript.
      */
+    [Obsolete]
     private CharProperty unicodeScriptPropertyFor( string name )
     {
-        Character.UnicodeScript script;
+//        Character.UnicodeScript script;
 
-        try
-        {
-            script = Character.UnicodeScript.forName( name );
-        }
-        catch ( IllegalArgumentException iae )
-        {
-            throw error( "Unknown character script name {" + name + "}" );
-        }
+//        try
+//        {
+//            script = Character.UnicodeScript.forName( name );
+//        }
+//        catch ( IllegalArgumentException iae )
+//        {
+//            throw error( "Unknown character script name {" + name + "}" );
+//        }
 
-        return new Script( script );
+//        return new Script( script );
+        return default!;
     }
 
     /**
      * Returns a CharProperty matching all characters in a UnicodeBlock.
      */
+    [Obsolete]
     private CharProperty unicodeBlockPropertyFor( string name )
     {
-        Character.UnicodeBlock block;
+//        Character.UnicodeBlock block;
 
-        try
-        {
-            block = Character.UnicodeBlock.forName( name );
-        }
-        catch ( IllegalArgumentException iae )
-        {
-            throw error( "Unknown character block name {" + name + "}" );
-        }
+//        try
+//        {
+//            block = Character.UnicodeBlock.forName( name );
+//        }
+//        catch ( IllegalArgumentException iae )
+//        {
+//            throw error( "Unknown character block name {" + name + "}" );
+//        }
 
-        return new Block( block );
+//        return new Block( block );
+        return default!;
     }
 
     /**
      * Returns a CharProperty matching all characters in a named property.
      */
+    [Obsolete]
     private CharProperty charPropertyNodeFor( string name )
     {
-        CharProperty p = CharPropertyNames.charPropertyFor( name );
+//        CharProperty p = CharPropertyNames.charPropertyFor( name );
 
-        if ( p == null )
-            throw error( "Unknown character property name {" + name + "}" );
+//        if ( p == null )
+//            throw error( "Unknown character property name {" + name + "}" );
 
-        return p;
+//        return p;
+        return default!;
     }
 
     /**
      * Parses and returns the name of a "named capturing group", the trailing
      * ">" is consumed after parsing.
      */
+    [Obsolete]
     private string groupname( int ch )
     {
         StringBuilder sb = new StringBuilder();
-        sb.append( Character.toChars( ch ) );
+//        sb.append( Character.toChars( ch ) );
 
-        while ( ASCII.isLower( ch = read() ) || ASCII.isUpper( ch ) || ASCII.isDigit( ch ) )
-        {
-            sb.append( Character.toChars( ch ) );
-        }
+//        while ( ASCII.isLower( ch = read() ) || ASCII.isUpper( ch ) || ASCII.isDigit( ch ) )
+//        {
+//            sb.append( Character.toChars( ch ) );
+//        }
 
-        if ( sb.length() == 0 )
-            throw error( "named capturing group has 0 length name" );
+//        if ( sb.length() == 0 )
+//            throw error( "named capturing group has 0 length name" );
 
-        if ( ch != '>' )
-            throw error( "named capturing group is missing trailing '>'" );
+//        if ( ch != '>' )
+//            throw error( "named capturing group is missing trailing '>'" );
 
-        return sb.toString();
+        return sb.ToString();
     }
 
     /**
@@ -1989,8 +2042,10 @@ public sealed partial class Pattern : IPattern
      * the group. Sometimes a double return system is used where the tail is
      * returned in root.
      */
+    [Obsolete]
     private Node group0()
     {
+/*
         bool capturingGroup = false;
         Node head           = null;
         Node tail           = null;
@@ -2255,6 +2310,7 @@ public sealed partial class Pattern : IPattern
                 return prolog; // Dual return
             }
         }
+*/
 
         throw error( "Internal logic error" );
     }
@@ -2264,142 +2320,146 @@ public sealed partial class Pattern : IPattern
      * created with anonymous true then it is a pure group and should not
      * affect group counting.
      */
+    [Obsolete]
     private Node createGroup( bool anonymous )
     {
-        int localIndex = localCount++;
-        int groupIndex = 0;
+//        int localIndex = localCount++;
+//        int groupIndex = 0;
 
-        if ( !anonymous )
-            groupIndex = capturingGroupCount++;
+//        if ( !anonymous )
+//            groupIndex = capturingGroupCount++;
 
-        GroupHead head = new GroupHead( localIndex );
-        root = new GroupTail( localIndex, groupIndex );
+//        GroupHead head = new GroupHead( localIndex );
+//        root = new GroupTail( localIndex, groupIndex );
 
-        if ( !anonymous && ( groupIndex < 10 ) )
-            groupNodes[ groupIndex ] = head;
+//        if ( !anonymous && ( groupIndex < 10 ) )
+//            groupNodes[ groupIndex ] = head;
 
-        return head;
+//        return head;
+        return default!;
     }
 
     /**
      * Parses inlined match flags and set them appropriately.
      */
+    [Obsolete]
     private void addFlag()
     {
-        int ch = Peek();
+//        int ch = Peek();
 
-        for ( ;; )
-        {
-            switch ( ch )
-            {
-                case 'i':
-                    flags |= CASE_INSENSITIVE;
+//        for ( ;; )
+//        {
+//            switch ( ch )
+//            {
+//                case 'i':
+//                    flags |= CASE_INSENSITIVE;
 
-                    break;
+//                    break;
 
-                case 'm':
-                    flags |= MULTILINE;
+//                case 'm':
+//                    flags |= MULTILINE;
 
-                    break;
+//                    break;
 
-                case 's':
-                    flags |= DOTALL;
+//                case 's':
+//                    flags |= DOTALL;
 
-                    break;
+//                    break;
 
-                case 'd':
-                    flags |= UNIX_LINES;
+//                case 'd':
+//                    flags |= UNIX_LINES;
 
-                    break;
+//                    break;
 
-                case 'u':
-                    flags |= UNICODE_CASE;
+//                case 'u':
+//                    flags |= UNICODE_CASE;
 
-                    break;
+//                    break;
 
-                case 'c':
-                    flags |= CANON_EQ;
+//                case 'c':
+//                    flags |= CANON_EQ;
 
-                    break;
+//                    break;
 
-                case 'x':
-                    flags |= COMMENTS;
+//                case 'x':
+//                    flags |= COMMENTS;
 
-                    break;
+//                    break;
 
-                case 'U':
-                    flags |= ( UNICODE_CHARACTER_CLASS | UNICODE_CASE );
+//                case 'U':
+//                    flags |= ( UNICODE_CHARACTER_CLASS | UNICODE_CASE );
 
-                    break;
+//                    break;
 
-                case '-': // subFlag then fall through
-                    ch = Next();
-                    subFlag();
+//                case '-': // subFlag then fall through
+//                    ch = Next();
+//                    subFlag();
 
-                default:
-                    return;
-            }
+//                default:
+//                    return;
+//            }
 
-            ch = Next();
-        }
+//            ch = Next();
+//        }
     }
 
     /**
      * Parses the second part of inlined match flags and turns off
      * flags appropriately.
      */
+    [Obsolete]
     private void subFlag()
     {
-        int ch = Peek();
+//        int ch = Peek();
 
-        for ( ;; )
-        {
-            switch ( ch )
-            {
-                case 'i':
-                    flags &= ~CASE_INSENSITIVE;
+//        for ( ;; )
+//        {
+//            switch ( ch )
+//            {
+//                case 'i':
+//                    flags &= ~CASE_INSENSITIVE;
 
-                    break;
+//                    break;
 
-                case 'm':
-                    flags &= ~MULTILINE;
+//                case 'm':
+//                    flags &= ~MULTILINE;
 
-                    break;
+//                    break;
 
-                case 's':
-                    flags &= ~DOTALL;
+//                case 's':
+//                    flags &= ~DOTALL;
 
-                    break;
+//                    break;
 
-                case 'd':
-                    flags &= ~UNIX_LINES;
+//                case 'd':
+//                    flags &= ~UNIX_LINES;
 
-                    break;
+//                    break;
 
-                case 'u':
-                    flags &= ~UNICODE_CASE;
+//                case 'u':
+//                    flags &= ~UNICODE_CASE;
 
-                    break;
+//                    break;
 
-                case 'c':
-                    flags &= ~CANON_EQ;
+//                case 'c':
+//                    flags &= ~CANON_EQ;
 
-                    break;
+//                    break;
 
-                case 'x':
-                    flags &= ~COMMENTS;
+//                case 'x':
+//                    flags &= ~COMMENTS;
 
-                    break;
+//                    break;
 
-                case 'U':
-                    flags &= ~( UNICODE_CHARACTER_CLASS | UNICODE_CASE );
+//                case 'U':
+//                    flags &= ~( UNICODE_CHARACTER_CLASS | UNICODE_CASE );
 
-                default:
-                    return;
-            }
+//                default:
+//                    return;
+//            }
 
-            ch = Next();
-        }
+//            ch = Next();
+//        }
     }
 
     /**
@@ -2407,145 +2467,148 @@ public sealed partial class Pattern : IPattern
      * then new nodes must be appended to handle the repetition.
      * Prev could be a single or a group, so it could be a chain of nodes.
      */
+    [Obsolete]
     private Node closure( Node prev )
     {
-        Node atom;
-        int  ch = Peek();
+//        Node atom;
+//        int  ch = Peek();
 
-        switch ( ch )
-        {
-            case '?':
-                ch = Next();
+//        switch ( ch )
+//        {
+//            case '?':
+//                ch = Next();
 
-                if ( ch == '?' )
-                {
-                    Next();
+//                if ( ch == '?' )
+//                {
+//                    Next();
 
-                    return new Ques( prev, LAZY );
-                }
-                else if ( ch == '+' )
-                {
-                    Next();
+//                    return new Ques( prev, LAZY );
+//                }
+//                else if ( ch == '+' )
+//                {
+//                    Next();
 
-                    return new Ques( prev, POSSESSIVE );
-                }
+//                    return new Ques( prev, POSSESSIVE );
+//                }
 
-                return new Ques( prev, GREEDY );
+//                return new Ques( prev, GREEDY );
 
-            case '*':
-                ch = Next();
+//            case '*':
+//                ch = Next();
 
-                if ( ch == '?' )
-                {
-                    Next();
+//                if ( ch == '?' )
+//                {
+//                    Next();
 
-                    return new Curly( prev, 0, MAX_REPS, LAZY );
-                }
-                else if ( ch == '+' )
-                {
-                    Next();
+//                    return new Curly( prev, 0, MAX_REPS, LAZY );
+//                }
+//                else if ( ch == '+' )
+//                {
+//                    Next();
 
-                    return new Curly( prev, 0, MAX_REPS, POSSESSIVE );
-                }
+//                    return new Curly( prev, 0, MAX_REPS, POSSESSIVE );
+//                }
 
-                return new Curly( prev, 0, MAX_REPS, GREEDY );
+//                return new Curly( prev, 0, MAX_REPS, GREEDY );
 
-            case '+':
-                ch = Next();
+//            case '+':
+//                ch = Next();
 
-                if ( ch == '?' )
-                {
-                    Next();
+//                if ( ch == '?' )
+//                {
+//                    Next();
 
-                    return new Curly( prev, 1, MAX_REPS, LAZY );
-                }
-                else if ( ch == '+' )
-                {
-                    Next();
+//                    return new Curly( prev, 1, MAX_REPS, LAZY );
+//                }
+//                else if ( ch == '+' )
+//                {
+//                    Next();
 
-                    return new Curly( prev, 1, MAX_REPS, POSSESSIVE );
-                }
+//                    return new Curly( prev, 1, MAX_REPS, POSSESSIVE );
+//                }
 
-                return new Curly( prev, 1, MAX_REPS, GREEDY );
+//                return new Curly( prev, 1, MAX_REPS, GREEDY );
 
-            case '{':
-                ch = _temp[ _cursor + 1 ];
+//            case '{':
+//                ch = _temp[ _cursor + 1 ];
 
-                if ( ASCII.isDigit( ch ) )
-                {
-                    skip();
-                    int cmin = 0;
+//                if ( ASCII.isDigit( ch ) )
+//                {
+//                    skip();
+//                    int cmin = 0;
 
-                    do
-                    {
-                        cmin = ( cmin * 10 ) + ( ch - '0' );
-                    }
-                    while ( ASCII.isDigit( ch = read() ) );
+//                    do
+//                    {
+//                        cmin = ( cmin * 10 ) + ( ch - '0' );
+//                    }
+//                    while ( ASCII.isDigit( ch = read() ) );
 
-                    int cmax = cmin;
+//                    int cmax = cmin;
 
-                    if ( ch == ',' )
-                    {
-                        ch   = read();
-                        cmax = MAX_REPS;
+//                    if ( ch == ',' )
+//                    {
+//                        ch   = read();
+//                        cmax = MAX_REPS;
 
-                        if ( ch != '}' )
-                        {
-                            cmax = 0;
+//                        if ( ch != '}' )
+//                        {
+//                            cmax = 0;
 
-                            while ( ASCII.isDigit( ch ) )
-                            {
-                                cmax = ( cmax * 10 ) + ( ch - '0' );
-                                ch   = read();
-                            }
-                        }
-                    }
+//                            while ( ASCII.isDigit( ch ) )
+//                            {
+//                                cmax = ( cmax * 10 ) + ( ch - '0' );
+//                                ch   = read();
+//                            }
+//                        }
+//                    }
 
-                    if ( ch != '}' )
-                        throw error( "Unclosed counted closure" );
+//                    if ( ch != '}' )
+//                        throw error( "Unclosed counted closure" );
 
-                    if ( ( ( cmin ) | ( cmax ) | ( cmax - cmin ) ) < 0 )
-                        throw error( "Illegal repetition range" );
+//                    if ( ( ( cmin ) | ( cmax ) | ( cmax - cmin ) ) < 0 )
+//                        throw error( "Illegal repetition range" );
 
-                    Curly curly;
-                    ch = Peek();
+//                    Curly curly;
+//                    ch = Peek();
 
-                    if ( ch == '?' )
-                    {
-                        Next();
-                        curly = new Curly( prev, cmin, cmax, LAZY );
-                    }
-                    else if ( ch == '+' )
-                    {
-                        Next();
-                        curly = new Curly( prev, cmin, cmax, POSSESSIVE );
-                    }
-                    else
-                    {
-                        curly = new Curly( prev, cmin, cmax, GREEDY );
-                    }
+//                    if ( ch == '?' )
+//                    {
+//                        Next();
+//                        curly = new Curly( prev, cmin, cmax, LAZY );
+//                    }
+//                    else if ( ch == '+' )
+//                    {
+//                        Next();
+//                        curly = new Curly( prev, cmin, cmax, POSSESSIVE );
+//                    }
+//                    else
+//                    {
+//                        curly = new Curly( prev, cmin, cmax, GREEDY );
+//                    }
 
-                    return curly;
-                }
-                else
-                {
-                    throw error( "Illegal repetition" );
-                }
+//                    return curly;
+//                }
+//                else
+//                {
+//                    throw error( "Illegal repetition" );
+//                }
 
-            default:
-                return prev;
-        }
+//            default:
+//                return prev;
+//        }
+        return default!;
     }
 
     /**
      *  Utility method for parsing control escape sequences.
      */
+    [Obsolete]
     private int c()
     {
-        if ( _cursor < _patternLength )
-        {
-            return read() ^ 64;
-        }
+//        if ( _cursor < _patternLength )
+//        {
+//            return read() ^ 64;
+//        }
 
         throw error( "Illegal control escape sequence" );
     }
@@ -2553,32 +2616,33 @@ public sealed partial class Pattern : IPattern
     /**
      *  Utility method for parsing octal escape sequences.
      */
+    [Obsolete]
     private int o()
     {
-        int n = read();
+//        int n = read();
 
-        if ( ( ( n - '0' ) | ( '7' - n ) ) >= 0 )
-        {
-            int m = read();
+//        if ( ( ( n - '0' ) | ( '7' - n ) ) >= 0 )
+//        {
+//            int m = read();
 
-            if ( ( ( m - '0' ) | ( '7' - m ) ) >= 0 )
-            {
-                int o = read();
+//            if ( ( ( m - '0' ) | ( '7' - m ) ) >= 0 )
+//            {
+//                int o = read();
 
-                if ( ( ( ( o - '0' ) | ( '7' - o ) ) >= 0 ) && ( ( ( n - '0' ) | ( '3' - n ) ) >= 0 ) )
-                {
-                    return ( ( n - '0' ) * 64 ) + ( ( m - '0' ) * 8 ) + ( o - '0' );
-                }
+//                if ( ( ( ( o - '0' ) | ( '7' - o ) ) >= 0 ) && ( ( ( n - '0' ) | ( '3' - n ) ) >= 0 ) )
+//                {
+//                    return ( ( n - '0' ) * 64 ) + ( ( m - '0' ) * 8 ) + ( o - '0' );
+//                }
 
-                unread();
+//                unread();
 
-                return ( ( n - '0' ) * 8 ) + ( m - '0' );
-            }
+//                return ( ( n - '0' ) * 8 ) + ( m - '0' );
+//            }
 
-            unread();
+//            unread();
 
-            return ( n - '0' );
-        }
+//            return ( n - '0' );
+//        }
 
         throw error( "Illegal octal escape sequence" );
     }
@@ -2586,36 +2650,37 @@ public sealed partial class Pattern : IPattern
     /**
      *  Utility method for parsing hexadecimal escape sequences.
      */
+    [Obsolete]
     private int x()
     {
-        int n = read();
+//        int n = read();
 
-        if ( ASCII.IsHexDigit( n ) )
-        {
-            int m = read();
+//        if ( ASCII.IsHexDigit( n ) )
+//        {
+//            int m = read();
 
-            if ( ASCII.IsHexDigit( m ) )
-            {
-                return ( ASCII.ToDigit( n ) * 16 ) + ASCII.ToDigit( m );
-            }
-        }
-        else if ( ( n == '{' ) && ASCII.IsHexDigit( Peek() ) )
-        {
-            int ch = 0;
+//            if ( ASCII.IsHexDigit( m ) )
+//            {
+//                return ( ASCII.ToDigit( n ) * 16 ) + ASCII.ToDigit( m );
+//            }
+//        }
+//        else if ( ( n == '{' ) && ASCII.IsHexDigit( Peek() ) )
+//        {
+//            int ch = 0;
 
-            while ( ASCII.IsHexDigit( n = read() ) )
-            {
-                ch = ( ch << 4 ) + ASCII.ToDigit( n );
+//            while ( ASCII.IsHexDigit( n = read() ) )
+//            {
+//                ch = ( ch << 4 ) + ASCII.ToDigit( n );
 
-                if ( ch > Character.MAX_CODE_POINT )
-                    throw error( "Hexadecimal codepoint is too big" );
-            }
+//                if ( ch > Character.MAX_CODE_POINT )
+//                    throw error( "Hexadecimal codepoint is too big" );
+//            }
 
-            if ( n != '}' )
-                throw error( "Unclosed hexadecimal escape sequence" );
+//            if ( n != '}' )
+//                throw error( "Unclosed hexadecimal escape sequence" );
 
-            return ch;
-        }
+//            return ch;
+//    }
 
         throw error( "Illegal hexadecimal escape sequence" );
     }
@@ -2623,53 +2688,57 @@ public sealed partial class Pattern : IPattern
     /**
      *  Utility method for parsing unicode escape sequences.
      */
+    [Obsolete]
     private int Cursor()
     {
         return _cursor;
     }
 
+    [Obsolete]
     private void setcursor( int pos )
     {
         _cursor = pos;
     }
 
+    [Obsolete]
     private int uxxxx()
     {
         int n = 0;
 
-        for ( int i = 0; i < 4; i++ )
-        {
-            int ch = read();
+//        for ( int i = 0; i < 4; i++ )
+//        {
+//            int ch = read();
 
-            if ( !ASCII.IsHexDigit( ch ) )
-            {
-                throw error( "Illegal Unicode escape sequence" );
-            }
+//            if ( !ASCII.IsHexDigit( ch ) )
+//            {
+//                throw error( "Illegal Unicode escape sequence" );
+//            }
 
-            n = ( n * 16 ) + ASCII.ToDigit( ch );
-        }
+//            n = ( n * 16 ) + ASCII.ToDigit( ch );
+//        }
 
         return n;
     }
 
+    [Obsolete]
     private int u()
     {
         int n = uxxxx();
 
-        if ( CharHelper.isHighSurrogate( ( char )n ) )
-        {
-            int cur = Cursor();
+//        if ( CharHelper.isHighSurrogate( ( char )n ) )
+//        {
+//            int cur = Cursor();
 
-            if ( ( read() == '\\' ) && ( read() == 'u' ) )
-            {
-                int n2 = uxxxx();
+//            if ( ( read() == '\\' ) && ( read() == 'u' ) )
+//            {
+//                int n2 = uxxxx();
 
-                if ( Character.isLowSurrogate( ( char )n2 ) )
-                    return Character.toCodePoint( ( char )n, ( char )n2 );
-            }
+//                if ( Character.isLowSurrogate( ( char )n2 ) )
+//                    return Character.toCodePoint( ( char )n, ( char )n2 );
+//            }
 
-            setcursor( cur );
-        }
+//            setcursor( cur );
+//        }
 
         return n;
     }
@@ -2678,79 +2747,82 @@ public sealed partial class Pattern : IPattern
     // Utility methods for code point support
     //
 
+    [Obsolete]
     private static int countChars( string seq,
                                    int index,
                                    int lengthInCodePoints )
     {
         // optimization
-        if ( ( lengthInCodePoints == 1 ) && !Character.isHighSurrogate( seq.charAt( index ) ) )
-        {
-            assert( ( index >= 0 ) && ( index < seq.length() ) );
+//        if ( ( lengthInCodePoints == 1 ) && !Character.isHighSurrogate( seq.charAt( index ) ) )
+//        {
+//            assert( ( index >= 0 ) && ( index < seq.length() ) );
 
-            return 1;
-        }
+//            return 1;
+//        }
 
-        int length = seq.length();
-        int x      = index;
+//        int length = seq.length();
+//        int x      = index;
 
-        if ( lengthInCodePoints >= 0 )
-        {
-            assert( ( index >= 0 ) && ( index < length ) );
+//        if ( lengthInCodePoints >= 0 )
+//        {
+//            assert( ( index >= 0 ) && ( index < length ) );
 
-            for ( int i = 0; ( x < length ) && ( i < lengthInCodePoints ); i++ )
-            {
-                if ( Character.isHighSurrogate( seq.charAt( x++ ) ) )
-                {
-                    if ( ( x < length ) && Character.isLowSurrogate( seq.charAt( x ) ) )
-                    {
-                        x++;
-                    }
-                }
-            }
+//            for ( int i = 0; ( x < length ) && ( i < lengthInCodePoints ); i++ )
+//            {
+//                if ( Character.isHighSurrogate( seq.charAt( x++ ) ) )
+//                {
+//                    if ( ( x < length ) && Character.isLowSurrogate( seq.charAt( x ) ) )
+//                    {
+//                        x++;
+//                    }
+//                }
+//            }
 
-            return x - index;
-        }
+//            return x - index;
+//        }
 
-        assert( ( index >= 0 ) && ( index <= length ) );
+//        assert( ( index >= 0 ) && ( index <= length ) );
 
-        if ( index == 0 )
-        {
-            return 0;
-        }
+//        if ( index == 0 )
+//        {
+//            return 0;
+//        }
 
-        int len = -lengthInCodePoints;
+//        int len = -lengthInCodePoints;
 
-        for ( int i = 0; ( x > 0 ) && ( i < len ); i++ )
-        {
-            if ( Character.isLowSurrogate( seq.charAt( --x ) ) )
-            {
-                if ( ( x > 0 ) && Character.isHighSurrogate( seq.charAt( x - 1 ) ) )
-                {
-                    x--;
-                }
-            }
-        }
+//        for ( int i = 0; ( x > 0 ) && ( i < len ); i++ )
+//        {
+//            if ( Character.isLowSurrogate( seq.charAt( --x ) ) )
+//            {
+//                if ( ( x > 0 ) && Character.isHighSurrogate( seq.charAt( x - 1 ) ) )
+//                {
+//                    x--;
+//                }
+//            }
+//        }
 
-        return index - x;
+//        return index - x;
+        return -1;
     }
 
+    [Obsolete]
     private static int countCodePoints( string seq )
     {
-        int length = seq.length();
+//        int length = seq.length();
         int n      = 0;
 
-        for ( int i = 0; i < length; )
-        {
-            n++;
+//        for ( int i = 0; i < length; )
+//        {
+//            n++;
 
-            if ( Character.isHighSurrogate( seq.charAt( i++ ) ) )
-            {
-                if ( ( i < length ) && Character.isLowSurrogate( seq.charAt( i ) ) )
-                {
-                    i++;
-                }
-            }
-        }
+//            if ( Character.isHighSurrogate( seq.charAt( i++ ) ) )
+//            {
+//                if ( ( i < length ) && Character.isLowSurrogate( seq.charAt( i ) ) )
+//                {
+//                    i++;
+//                }
+//            }
+//        }
 
         return n;
     }
@@ -2758,73 +2830,78 @@ public sealed partial class Pattern : IPattern
     /**
  *  Returns a suitably optimized, single character matcher.
  */
+    [Obsolete]
     private Pattern.CharProperty newSingle( int ch )
     {
         if ( Has( Case_Insensitive ) )
         {
             int lower, upper;
 
-            if ( Has( Unicode_Case ) )
-            {
-                upper = Character.toUpperCase( ch );
-                lower = Character.toLowerCase( upper );
+//            if ( Has( Unicode_Case ) )
+//            {
+//                upper = Character.toUpperCase( ch );
+//                lower = Character.toLowerCase( upper );
 
-                if ( upper != lower )
-                    return new Pattern.SingleU( lower );
-            }
-            else if ( ASCII.IsAscii( ch ) )
-            {
-                lower = ASCII.ToLower( ch );
-                upper = ASCII.ToUpper( ch );
+//                if ( upper != lower )
+//                    return new Pattern.SingleU( lower );
+//            }
+//            else if ( ASCII.IsAscii( ch ) )
+//            {
+//                lower = ASCII.ToLower( ch );
+//                upper = ASCII.ToUpper( ch );
 
-                if ( lower != upper )
-                    return new Pattern.SingleI( lower, upper );
-            }
+//                if ( lower != upper )
+//                    return new Pattern.SingleI( lower, upper );
+//            }
         }
 
-        if ( isSupplementary( ch ) )
-        {
-            return new Pattern.SingleS( ch ); // Match a given Unicode character
-        }
+//        if ( isSupplementary( ch ) )
+//        {
+//            return new Pattern.SingleS( ch ); // Match a given Unicode character
+//        }
 
-        return new Single( ch ); // Match a given BMP character
+//        return new Single( ch ); // Match a given BMP character
+        return default!;
     }
 
     /**
  *  Utility method for creating a string slice matcher.
  */
+    [Obsolete]
     private Pattern.Node newSlice( int[] buf, int count, bool hasSupplementary )
     {
-        int[] tmp = new int[ count ];
+//        int[] tmp = new int[ count ];
 
-        if ( Has( Case_Insensitive ) )
-        {
-            if ( Has( Unicode_Case ) )
-            {
-                for ( int i = 0; i < count; i++ )
-                {
-                    tmp[ i ] = Character.toLowerCase( Character.toUpperCase( buf[ i ] ) );
-                }
+//        if ( Has( Case_Insensitive ) )
+//        {
+//            if ( Has( Unicode_Case ) )
+//            {
+//                for ( int i = 0; i < count; i++ )
+//                {
+//                    tmp[ i ] = Character.toLowerCase( Character.toUpperCase( buf[ i ] ) );
+//                }
 
-                return hasSupplementary ? new SliceUS( tmp ) : new SliceU( tmp );
-            }
+//                return hasSupplementary ? new SliceUS( tmp ) : new SliceU( tmp );
+//            }
 
-            for ( int i = 0; i < count; i++ )
-            {
-                tmp[ i ] = ASCII.ToLower( buf[ i ] );
-            }
+//            for ( int i = 0; i < count; i++ )
+//            {
+//                tmp[ i ] = ASCII.ToLower( buf[ i ] );
+//            }
 
-            return hasSupplementary ? new SliceIS( tmp ) : new SliceI( tmp );
-        }
+//            return hasSupplementary ? new SliceIS( tmp ) : new SliceI( tmp );
+//        }
 
-        for ( int i = 0; i < count; i++ )
-        {
-            tmp[ i ] = buf[ i ];
-        }
+//        for ( int i = 0; i < count; i++ )
+//        {
+//            tmp[ i ] = buf[ i ];
+//        }
 
-        return hasSupplementary ? new SliceS( tmp ) : new Slice( tmp );
+//        return hasSupplementary ? new SliceS( tmp ) : new Slice( tmp );
+        return default!;
     }
 
+    [Obsolete]
     private static bool InRange( int lower, int ch, int upper )
     {
         return ( lower <= ch ) && ( ch <= upper );

@@ -21,6 +21,7 @@ public partial class Pattern
     /// <summary>
     /// Indicates whether a particular flag is set or not.
     /// </summary>
+    [Obsolete]
     private bool Has( int f )
     {
         return ( Flags & f ) != 0;
@@ -29,6 +30,7 @@ public partial class Pattern
     /// <summary>
     /// Match next character, signal error if failed.
     /// </summary>
+    [Obsolete]
     private void Accept( int ch, string s )
     {
         var testChar = _temp[ _cursor++ ];
@@ -47,6 +49,7 @@ public partial class Pattern
     /// <summary>
     /// Mark the end of pattern with a specific character.
     /// </summary>
+    [Obsolete]
     private void Mark( int c )
     {
         _temp[ _patternLength ] = c;
@@ -55,6 +58,7 @@ public partial class Pattern
     /// <summary>
     /// Peek the next character, and do not advance the _cursor.
     /// </summary>
+    [Obsolete]
     private int Peek()
     {
         var ch = _temp[ _cursor ];
@@ -70,6 +74,7 @@ public partial class Pattern
     /// <summary>
     /// Read the next character, and advance the _cursor by one.
     /// </summary>
+    [Obsolete]
     private int Read()
     {
         var ch = _temp[ _cursor++ ];
@@ -86,6 +91,7 @@ public partial class Pattern
     /// Read the next character, and advance the _cursor by one,
     /// ignoring the <see cref="Comments"/> setting
     /// </summary>
+    [Obsolete]
     private int ReadEscaped()
     {
         var ch = _temp[ _cursor++ ];
@@ -96,6 +102,7 @@ public partial class Pattern
     /// <summary>
     /// Advance the _cursor by one, and peek the next character.
     /// </summary>
+    [Obsolete]
     private int Next()
     {
         var ch = _temp[ ++_cursor ];
@@ -112,6 +119,7 @@ public partial class Pattern
     /// Advance the _cursor by one, and peek the next character,
     /// ignoring the <see cref="Comments"/> setting
     /// </summary>
+    [Obsolete]
     private int NextEscaped()
     {
         var ch = _temp[ ++_cursor ];
@@ -122,6 +130,7 @@ public partial class Pattern
     /// <summary>
     /// If in xmode peek past whitespace and comments.
     /// </summary>
+    [Obsolete]
     private int PeekPastWhitespace( int ch )
     {
         while ( ASCII.IsSpace( ch ) || ( ch == '#' ) )
@@ -143,6 +152,7 @@ public partial class Pattern
     /// <summary>
     /// If in xmode parse past whitespace and comments.
     /// </summary>
+    [Obsolete]
     private int ParsePastWhitespace( int ch )
     {
         while ( ASCII.IsSpace( ch ) || ( ch == '#' ) )
@@ -164,6 +174,7 @@ public partial class Pattern
     /// <summary>
     /// xmode parse past comment to end of line.
     /// </summary>
+    [Obsolete]
     private int ParsePastLine()
     {
         var ch = _temp[ _cursor++ ];
@@ -185,6 +196,7 @@ public partial class Pattern
     /// <summary>
     /// xmode peek past comment to end of line.
     /// </summary>
+    [Obsolete]
     private int PeekPastLine()
     {
         var ch = _temp[ ++_cursor ];
@@ -206,6 +218,7 @@ public partial class Pattern
     /// <summary>
     /// Determines if character is a line separator in the current mode
     /// </summary>
+    [Obsolete]
     private bool IsLineSeparator( int ch )
     {
         if ( Has( Unix_Lines ) )
@@ -219,6 +232,7 @@ public partial class Pattern
     /// <summary>
     /// Read the character after the next one, and advance the _cursor by two.
     /// </summary>
+    [Obsolete]
     private int Skip()
     {
         var i  = _cursor;
@@ -232,6 +246,7 @@ public partial class Pattern
     /// <summary>
     /// Unread one next character, and retreat _cursor by one.
     /// </summary>
+    [Obsolete]
     private void Unread()
     {
         _cursor--;

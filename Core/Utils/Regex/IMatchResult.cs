@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Regex;
 
+[Obsolete]
 public interface IMatchResult
 {
     /// <summary>
@@ -25,6 +26,7 @@ public interface IMatchResult
     /// <exception cref="IllegalStateException">
     /// If no match has yet been attempted, or if the previous match operation failed
     /// </exception>
+    [Obsolete]
     public int Start();
 
     /// <summary>
@@ -53,6 +55,7 @@ public interface IMatchResult
     /// <exception cref="IndexOutOfRangeException">
     /// If there is no capturing group in the pattern with the given index.
     /// </exception>
+    [Obsolete]
     public int Start( int group );
 
     /// <summary>
@@ -63,6 +66,7 @@ public interface IMatchResult
     ///          If no match has yet been attempted,
     ///          or if the previous match operation failed
     /// </exception>
+    [Obsolete]
     public int End();
 
     /// <summary>
@@ -93,6 +97,7 @@ public interface IMatchResult
     /// @throws  IndexOutOfBoundsException
     ///          If there is no capturing group in the pattern
     ///          with the given index
+    [Obsolete]
     public int End( int group );
 
     /// <summary>
@@ -119,6 +124,7 @@ public interface IMatchResult
     /// <exception cref="IllegalStateException">
     /// If no match has yet been attempted, or if the previous match operation failed.
     /// </exception>
+    [Obsolete]
     public string? Group();
 
     /// <summary>
@@ -167,6 +173,7 @@ public interface IMatchResult
     /// <exception cref="IndexOutOfRangeException">
     /// If there is no capturing group in the pattern with the given index.
     /// </exception>
+    [Obsolete]
     public string? Group( int group );
 
     /// <summary>
@@ -182,5 +189,6 @@ public interface IMatchResult
     /// </para>
     /// </summary>
     /// <returns> The number of capturing groups in this matcher's pattern </returns>
+    [Obsolete]
     public int GroupCount();
 }

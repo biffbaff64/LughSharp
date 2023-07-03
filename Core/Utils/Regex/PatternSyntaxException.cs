@@ -18,12 +18,14 @@ using System.Text;
 
 namespace LibGDXSharp.Utils.Regex;
 
+[Obsolete]
 public class PatternSyntaxException : ArgumentException
 {
     public string  Desc    { get; set; }
     public string? Pattern { get; set; }
     public int     Index   { get; set; }
 
+    [Obsolete]
     public PatternSyntaxException( String desc, String regex, int index )
     {
         this.Desc    = desc;
@@ -31,6 +33,7 @@ public class PatternSyntaxException : ArgumentException
         this.Index   = index;
     }
 
+    [Obsolete]
     public string GetMessage()
     {
         StringBuilder sb = new();

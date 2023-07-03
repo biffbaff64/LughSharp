@@ -20,8 +20,6 @@ using System.Text.RegularExpressions;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Regex;
 
-using File = System.IO.File;
-
 namespace LibGDXSharp.G2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -792,16 +790,18 @@ public sealed partial class BitmapFont
                     }
 
                     // Expect ID to mean "index".
-                    Matcher matcher = Pattern.Compile( ".*id=(\\d+)" ).Matcher( line );
+                    var rx = new Regex( ".*id=(\\d+)" );
 
-                    if ( matcher.Find() )
+                    MatchCollection matches = rx.Matches( line );
+
+                    if ( matches.Count > 0 )
                     {
-                        var id = matcher.Group( 1 )!;
+                        Match id = matches[ 0 ];
 
                         try
                         {
-                            var pageID = int.Parse( id );
-
+                            var pageID = int.Parse( id.Value );
+                            
                             if ( pageID != p )
                             {
                                 throw new GdxRuntimeException( "Page IDs must be indices starting at 0: " + id );
@@ -813,11 +813,20 @@ public sealed partial class BitmapFont
                         }
                     }
 
-                    matcher = Pattern.Compile( ".*file=\"?([^\"]+)\"?" ).Matcher( line );
+                    rx = new Regex( ".*file=\"?([^\"]+)\"?" );
 
-                    if ( !matcher.Find() ) throw new GdxRuntimeException( "Missing: file" );
+                    matches = rx.Matches( line );
 
-                    ImagePaths[ p ] = matcher.Group( 1 )!.Replace( "\\\\", "/" );
+                    if ( matches.Count <= 0 )
+                    {
+                        throw new GdxRuntimeException( "Missing: file" );
+                    }
+
+//                    matcher = Pattern.Compile( ".*file=\"?([^\"]+)\"?" ).Matcher( line );
+
+//                    if ( !matcher.Find() ) throw new GdxRuntimeException( "Missing: file" );
+
+//                    ImagePaths[ p ] = matcher.Group( 1 )!.Replace( "\\\\", "/" );
                 }
 
                 Descent = 0;

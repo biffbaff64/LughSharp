@@ -14,8 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Utils.Regex;
 
+[Obsolete]
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ASCII
 {
     public const int Upper = 0x00000100;
@@ -180,96 +184,115 @@ public class ASCII
         Cntrl,                 /* 7F (DEL) */
     };
 
+    [Obsolete]
     public static int GetCType( int ch )
     {
         return ( ( ch & 0xFFFFFF80 ) == 0 ? CType[ ch ] : 0 );
     }
 
+    [Obsolete]
     public static bool IsType( int ch, int type )
     {
         return ( GetCType( ch ) & type ) != 0;
     }
 
+    [Obsolete]
     public static bool IsAscii( int ch )
     {
         return ( ( ch & 0xFFFFFF80 ) == 0 );
     }
 
+    [Obsolete]
     public static bool IsAlpha( int ch )
     {
         return IsType( ch, Alpha );
     }
 
+    [Obsolete]
     public static bool IsDigit( int ch )
     {
         return ( ( ch - '0' ) | ( '9' - ch ) ) >= 0;
     }
 
+    [Obsolete]
     public static bool IsAlnum( int ch )
     {
         return IsType( ch, Alnum );
     }
 
+    [Obsolete]
     public static bool IsGraph( int ch )
     {
         return IsType( ch, Graph );
     }
 
+    [Obsolete]
     public static bool IsPrint( int ch )
     {
         return ( ( ch - 0x20 ) | ( 0x7E - ch ) ) >= 0;
     }
 
+    [Obsolete]
     public static bool IsPunct( int ch )
     {
         return IsType( ch, Punct );
     }
 
+    [Obsolete]
     public static bool IsSpace( int ch )
     {
         return IsType( ch, Space );
     }
 
+    [Obsolete]
     public static bool IsHexDigit( int ch )
     {
         return IsType( ch, Hex );
     }
 
+    [Obsolete]
     public static bool IsOctDigit( int ch )
     {
         return ( ( ch - '0' ) | ( '7' - ch ) ) >= 0;
     }
 
+    [Obsolete]
     public static bool IsCntrl( int ch )
     {
         return IsType( ch, Cntrl );
     }
 
+    [Obsolete]
     public static bool IsLower( int ch )
     {
         return ( ( ch - 'a' ) | ( 'z' - ch ) ) >= 0;
     }
 
+    [Obsolete]
     public static bool IsUpper( int ch )
     {
         return ( ( ch - 'A' ) | ( 'Z' - ch ) ) >= 0;
     }
 
+    [Obsolete]
     public static bool IsWord( int ch )
     {
         return IsType( ch, Word );
     }
 
+    [Obsolete]
     public static int ToDigit( int ch )
     {
         return ( CType[ ch & 0x7F ] & 0x3F );
     }
 
+    [Obsolete]
     public static int ToLower( int ch )
     {
         return IsUpper( ch ) ? ( ch + 0x20 ) : ch;
     }
 
+    [Obsolete]
     public static int ToUpper( int ch )
     {
         return IsLower( ch ) ? ( ch - 0x20 ) : ch;

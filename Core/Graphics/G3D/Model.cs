@@ -14,10 +14,16 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Graphics.G3D.Models.Data;
+using LibGDXSharp.Graphics.G3D.Utils;
+
 namespace LibGDXSharp.Graphics.G3D;
 
 public class Model
 {
+    public Model( ModelData data, ITextureProvider textureProvider )
+    {
+    }
 
     public object GetManagedDisposables()
     {

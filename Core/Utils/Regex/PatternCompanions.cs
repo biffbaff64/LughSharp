@@ -33,10 +33,12 @@ public sealed partial class Pattern
     /// method as appropriate. This class is an accepting node, so its match()
     /// always returns true.
     /// </summary>
+    [Obsolete]
     public class Node : object
     {
         public readonly Node? next;
 
+        [Obsolete]
         public Node()
         {
 //            next = Pattern.Accept;
@@ -45,6 +47,7 @@ public sealed partial class Pattern
         /// <summary>
         /// This method implements the classic accept node.
         /// </summary>
+        [Obsolete]
         public bool Match( Matcher matcher, int i, string seq )
         {
             matcher.last        = i;
@@ -57,6 +60,7 @@ public sealed partial class Pattern
         /// <summary>
         /// This method is good for all zero length assertions.
         /// </summary>
+        [Obsolete]
         public bool Study( TreeInfo info )
         {
             if ( next != null )
@@ -71,6 +75,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class LastNode : Node
     {
     }
@@ -82,6 +87,7 @@ public sealed partial class Pattern
     /// Used to accumulate information about a subtree of the object graph
     /// so that optimizations can be applied to the subtree.
     /// </summary>
+    [Obsolete]
     public class TreeInfo
     {
         public int  MinLength     { get; set; }
@@ -89,11 +95,13 @@ public sealed partial class Pattern
         public bool MaxValid      { get; set; }
         public bool Deterministic { get; set; }
 
+        [Obsolete]
         public TreeInfo()
         {
             Reset();
         }
 
+        [Obsolete]
         public void Reset()
         {
             MinLength     = 0;
@@ -111,20 +119,24 @@ public sealed partial class Pattern
     /// never matches values above Latin-1, and a complemented BitClass always
     /// matches values above Latin-1.
     /// </summary>
+    [Obsolete]
     public class BitClass : BmpCharProperty
     {
         private bool[] _bits;
 
+        [Obsolete]
         public BitClass()
         {
             _bits = new bool[ 256 ];
         }
 
+        [Obsolete]
         public BitClass( bool[] bits )
         {
             this._bits = bits;
         }
 
+        [Obsolete]
         public BitClass Add( int c, int flags )
         {
             Debug.Assert( c is >= 0 and <= 255 );
@@ -148,6 +160,7 @@ public sealed partial class Pattern
             return this;
         }
 
+        [Obsolete]
         public bool IsSatisfiedBy( int ch )
         {
             return ( ch < 256 ) && _bits[ ch ];
@@ -157,6 +170,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Start : Node
     {
     }
@@ -164,6 +178,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class StartS : Start
     {
     }
@@ -171,6 +186,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Begin : Node
     {
     }
@@ -178,6 +194,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class End : Node
     {
     }
@@ -185,6 +202,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Caret : Node
     {
     }
@@ -192,6 +210,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class UnixCaret : Node
     {
     }
@@ -199,6 +218,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class LastMatch : Node
     {
     }
@@ -206,6 +226,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Dollar : Node
     {
     }
@@ -213,6 +234,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class UnixDollar : Node
     {
     }
@@ -220,6 +242,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class LineEnding : Node
     {
     }
@@ -227,6 +250,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class CharProperty : Node
     {
     }
@@ -234,6 +258,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class BmpCharProperty : CharProperty
     {
     }
@@ -241,6 +266,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SingleS : CharProperty
     {
     }
@@ -248,6 +274,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Single : BmpCharProperty
     {
     }
@@ -255,6 +282,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SingleI : BmpCharProperty
     {
     }
@@ -262,6 +290,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SingleU : CharProperty
     {
     }
@@ -269,6 +298,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Block : CharProperty
     {
     }
@@ -276,6 +306,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Script : CharProperty
     {
     }
@@ -283,6 +314,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Category : CharProperty
     {
     }
@@ -290,6 +322,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class UType : CharProperty
     {
     }
@@ -297,6 +330,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class CType : BmpCharProperty
     {
     }
@@ -304,6 +338,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class VertWS : BmpCharProperty
     {
     }
@@ -311,6 +346,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class HorizWS : BmpCharProperty
     {
     }
@@ -318,6 +354,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SliceNode : Node
     {
     }
@@ -325,6 +362,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Slice : SliceNode
     {
     }
@@ -332,6 +370,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SliceI : SliceNode
     {
     }
@@ -339,6 +378,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SliceU : SliceNode
     {
     }
@@ -346,6 +386,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SliceS : SliceNode
     {
     }
@@ -353,6 +394,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SliceIS : SliceNode
     {
     }
@@ -360,6 +402,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class SliceUS : SliceIS
     {
     }
@@ -367,6 +410,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class All : CharProperty
     {
     }
@@ -374,6 +418,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Dot : CharProperty
     {
     }
@@ -381,6 +426,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class UnixDot : CharProperty
     {
     }
@@ -388,6 +434,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Ques : Node
     {
     }
@@ -395,6 +442,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Curly : Node
     {
     }
@@ -402,6 +450,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class GroupCurly : Node
     {
     }
@@ -409,6 +458,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class BranchConn : Node
     {
     }
@@ -416,6 +466,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Branch : Node
     {
     }
@@ -430,15 +481,18 @@ public sealed partial class Pattern
     /// negative value in them to indicate that we do not want to unset the group
     /// if the reference doesn't match.
     /// </summary>
+    [Obsolete]
     public class GroupHead : Node
     {
         private int _localIndex;
 
+        [Obsolete]
         public GroupHead( int localCount )
         {
             _localIndex = localCount;
         }
 
+        [Obsolete]
         public new bool Match( Matcher matcher, int i, string seq )
         {
             int save = matcher.locals[ _localIndex ];
@@ -452,6 +506,7 @@ public sealed partial class Pattern
             return ret;
         }
 
+        [Obsolete]
         public bool MatchRef( Matcher matcher, int i, string seq )
         {
             int save = matcher.locals[ _localIndex ];
@@ -469,6 +524,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class GroupRef : Node
     {
     }
@@ -476,6 +532,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class GroupTail : Node
     {
     }
@@ -483,6 +540,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Prolog : Node
     {
     }
@@ -490,6 +548,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Loop : Node
     {
     }
@@ -497,6 +556,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class LazyLoop : Node
     {
     }
@@ -504,6 +564,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class BackRef : Node
     {
     }
@@ -511,6 +572,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class CIBackRef : Node
     {
     }
@@ -518,6 +580,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class First : Node
     {
     }
@@ -525,6 +588,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Conditional : Node
     {
     }
@@ -532,6 +596,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Pos : Node
     {
     }
@@ -539,6 +604,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Neg : Node
     {
     }
@@ -546,6 +612,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Behind : Node
     {
     }
@@ -553,6 +620,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class BehindS : Behind
     {
     }
@@ -560,6 +628,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class NotBehind : Node
     {
     }
@@ -567,6 +636,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class NotBehindS : NotBehind
     {
     }
@@ -574,6 +644,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class Bound : Node
     {
     }
@@ -581,6 +652,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class BnM : Node
     {
     }
@@ -588,6 +660,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class BnMS : BnM
     {
     }
@@ -595,6 +668,7 @@ public sealed partial class Pattern
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public class CharPropertyNames
     {
     }
