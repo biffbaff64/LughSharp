@@ -80,6 +80,7 @@ public sealed class AssetManager
                 SetLoader( typeof(ISound),          new SoundLoader( resolver ) );
                 SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
 
+                //TODO:
 //                SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
 //                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
 //                SetLoader( typeof(I18NBundle),      new I18NBundleLoader( resolver ) );

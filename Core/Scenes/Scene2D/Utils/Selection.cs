@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Core.Utils.Collections.Extensions;
-using LibGDXSharp.Utils.Annotations;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Pooling;
 
@@ -25,18 +24,18 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// Manages selected objects. Optionally fires a <see cref="ChangeListener.ChangeEvent"/> on an actor.
 /// Selection changes can be vetoed via <see cref="ChangeListener.ChangeEvent.Cancel()"/>.
 /// </summary>
-/// <seealso cref="OrderedSet{T}"/>
+/// <seealso cref="SortedSet{T}"/>
 public class Selection<T> : IDisableable
 {
-    public OrderedSet< T > Selected                 { get; set; } = new();
-    public bool            IsDisabled               { get; set; }
-    public bool            Multiple                 { get; set; }
-    public bool            Required                 { get; set; }
-    public T?              LastSelected             { get; set; }
-    public bool            Toggle                   { get; set; }
-    public bool            ProgrammaticChangeEvents { get; set; } = true;
+    public SortedSet< T > Selected                 { get; set; } = new();
+    public bool           IsDisabled               { get; set; }
+    public bool           Multiple                 { get; set; }
+    public bool           Required                 { get; set; }
+    public T?             LastSelected             { get; set; }
+    public bool           Toggle                   { get; set; }
+    public bool           ProgrammaticChangeEvents { get; set; } = true;
 
-    private readonly OrderedSet< T > _old = new();
+    private readonly SortedSet< T > _old = new();
 
     /// <summary>
     /// <param name="value">
@@ -111,23 +110,31 @@ public class Selection<T> : IDisableable
         }
     }
 
-    // TODO: I'm tempted to 'un-obsolete' this as I like the method name.
+    /// <summary>
+    /// Java LibGDX has this deprecated method. I have left it here for
+    /// those coming from java LibGDX who may wonder what happened to it. 
+    /// I am, however, tempted to 'un-obsolete' this as I like the clarity
+    /// of the method name.
+    /// </summary>
     [Obsolete( "Use NotEmpty() instead.", true )]
     public bool HasItems()
     {
         return Selected.Count > 0;
     }
 
+    /// <summary>
+    /// Returns TRUE if this set has items in it.
+    /// </summary>
     public bool NotEmpty()
     {
-        return Selected.Count > 0;
+        return !Empty;
     }
 
     public bool Empty => Selected.Count == 0;
 
     public int Size() => Selected.Count;
 
-    public OrderedSet< T > Items()
+    public SortedSet< T > Items()
     {
         return Selected;
     }

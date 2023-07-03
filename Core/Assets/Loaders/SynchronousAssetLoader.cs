@@ -26,5 +26,5 @@ public abstract class SynchronousAssetLoader<T, TP> : AssetLoader
         IsSynchronous = true;
     }
 
-    public abstract T? Load( AssetManager assetManager, string fileName, FileInfo? file, TP parameter );
+    public abstract T? Load( AssetManager assetManager, string? fileName, FileInfo? file, TP parameter );
 }

@@ -254,62 +254,82 @@ GRAPHICS/G3D
     -      - Attribute
     -      - Attributes
     -      - Environment
+    -      - IRenderableProvider
+    -      - IShader
     -      - Material
     -      - Model
     -      - ModelBatch
     -      - ModelCache
     -      - ModelInstance
     -      - Renderable
-    -      - IRenderableProvider
-    -      - IShader
 
 GRAPHICS/G3D/ATTRIBUTES
 -----------------------
 
-    -      - 
-    -      - 
-    -      - 
-    -      - 
+    -      - BlendingAttribute
+    -      - ColorAttribute
+    -      - CubemapAttribute
+    -      - DepthTestAttribute
+    -      - DirectionalLightAttribute
+    -      - FloatAttribute
+    -      - IntAttribute
+    -      - PointLightsAttribute
+    -      - SpotLightsAttribute
+    -      - TextureAttribute
 
 GRAPHICS/G3D/DECALS
 -------------------
 
-    -      - 
-    -      - 
-    -      - 
-    -      - 
+    -      - CameraGroupStrategy
+    -      - Decal
+    -      - DecalBatch
+    -      - DecalMaterial
+    -      - IGroupPlug
+    -      - IGroupStrategy
+    -      - PluggableGroupStrategy
+    -      - SimpleOrthoGroupStrategy
 
 GRAPHICS/G3D/ENVIRONMENT
 ------------------------
 
-    -      - 
-    -      - 
-    -      - 
-    -      - 
+    -      - AmbientCubemap
+    -      - BaseLight
+    -      - DirectionalLight
+    -      - DirectionalShadowLight
+    -      - IShadowMap
+    -      - PointLight
+    -      - SphericalHarmonics
+    -      - SpotLight
 
 GRAPHICS/G3D/LOADER
 -------------------
 
-    -      - 
-    -      - 
-    -      - 
-    -      - 
+    -      - G3dModelLoader
+    -      - ObjLoader
 
 GRAPHICS/G3D/MODEL
 ------------------
 
-    -      - 
-    -      - 
-    -      - 
-    -      -
+    -      - Animation
+    -      - MeshPart
+    -      - Node
+    -      - NodeAnimation
+    -      - NodeKeyframe
+    -      - NodePart
 
 GRAPHICS/G3D/MODEL/DATA
 -----------------------
 
     -      - ModelAnimation
     -      - ModelData
-    -      - 
-    -      - 
+    -      - ModelMaterial
+    -      - ModelMesh
+    -      - ModelMeshPart
+    -      - ModelNode
+    -      - ModelNodeAnimation
+    -      - ModelNodeKeyframe
+    -      - ModelNodePart
+    -      - ModelTexture
 
 GRAPHICS/G3D/PARTICLES
 ----------------------
@@ -692,8 +712,6 @@ SCENES.SCENE2D/UTILS
 UTILS
 -----
 
-    Misc
-    ----
     - DONE - Align                          Convert
     ----------------------------------------------------------------------------------
     - **** - Base64Coder                    Use System.Convert classes
@@ -702,7 +720,6 @@ UTILS
     - DONE - Bits                           Convert
     ----------------------------------------------------------------------------------
     - IP   - CharHelper                     Might be added to.
-    - IP   - CharacterData                  
     ----------------------------------------------------------------------------------
     - DONE - ComparableTimSort              Convert
     - DONE - DataInput                      Check
@@ -761,59 +778,53 @@ UTILS/COLLECTIONS
 
     Note: C# has IEnumerable and IEnumerator interfaces...
 
-    Arrays
-    ------
+    - DONE - Array<T>                       Converted, but use List<>
+    -      - ArrayUtils
+    - **** - CollectionsData
+    - DONE - DelayedRemovalArray            Convert / Extend List<>
+    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    - **** - IPredicate
+    -      - ListQueue
+    -      - ListStack
+    - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
+    -      - ObjectSet
+    - **** - ObjectSet<T>                   Use List<T>
+    - **** - OrderedSet<T>                  Use SortedSet<T> ?
+    - **** - PredicateIterable
+    - **** - PredicateIterator
+    - DONE - SnapshotArray                  Convert / extend List<T>
+
+
     - **** - Array                          List<>
+    - **** - ArrayMap                       Use Dictionary<K, V>
     - **** - ArrayIterable                  Use IEnumerable?
     - **** - ArrayIterator                  Use IEnumerator?
     - **** - BoolArray                      List< bool >
     - **** - ByteArray                      List< byte >
     - **** - CharArray                      List< char >
-    - **** - IntArray                       List< int >
     - **** - FloatArray                     List< float >
-    - **** - LongArray                      List< long >
-    - **** - ShortArray                     List< short >
-
-    - DONE - DelayedRemovalArray            Convert / Extend List<>
-    - DONE - SnapshotArray                  Convert / extend List<T>
-
-    Extensions
-    ----------
-    - IP   - DictionaryExtensions
-    - DONE - GdxArray
-    - IP   - ListExtensions
-    -      - ListQueue
-    -      - ListStack
-    - DONE - ObjectMap
-    -      - ObjectSet
-
-    Maps
-    ----
-    - **** - ArrayMap                       Use Dictionary<K, V>
+    - **** - IntArray                       List< int >
     - **** - IntFloatMap                    Use Dictionary< int, float >
     - **** - IntIntMap                      Use Dictionary< int, int >
     - **** - IntMap                         Use Dictionary< int, V >
+    - **** - IntSet                         Use List<int>
+    - **** - LongArray                      List< long >
     - **** - LongMap                        Use Dictionary< long, V >
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
     - **** - ObjectIntMap                   Use Dictionary< object, int >
     - **** - ObjectLongMap                  Use Dictionary< object, long >
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
+    - **** - ShortArray                     List< short >
 
-    - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
-    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Sets
-    ----
-    - **** - IntSet                         Use List<int>
-    - **** - ObjectSet<T>                   Use List<T>
-    - **** - OrderedSet<T>                  Use SortedSet<T> ?
-                                            
-    Misc                                    
-    ----                                    
-    - **** - Collections                    Needed??
-    - **** - IPredicate                     Needed??
-    - **** - PredicateIterable              Needed??
-    - **** - PredicateIterator              Needed??
+UTILS/COLLECTIONS/EXTENSIONS
+----------------------------
+
+    - IP   - DictionaryExtensions
+    - IP   - ListExtensions
+    - IP   - SortedSetExtensions
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -924,19 +935,16 @@ UTILS/REFLECT
 UTILS/REGEX
 -----------
 
-    - RE-EVALUATE WHETHER THIS IS NEEDED...
-    - REALLY OUGHT TO BE USING C# REGEX!
-    - (Although I would like to convert it eventually...)
-    - Remove any build errors and archive for now.
+    USE C# REGEX LIBS, THEY'RE MUCH EASIER!!
 
-    - **** - ASCII                          Convert
-    - **** - IMatchResult                   Convert
-    - **** - Matcher                        Convert
-    - **** - Pattern                        Convert
-    - **** - PatternCompanions              Convert
-    - **** - PatternHelper                  Convert
-    - **** - PatternSyntaxException         Convert
-    - **** - UnicodeProp                    Convert
+    - **** - ASCII
+    - **** - IMatchResult
+    - **** - Matcher
+    - **** - Pattern
+    - **** - PatternCompanions
+    - **** - PatternHelper
+    - **** - PatternSyntaxException
+    - **** - UnicodeProp
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

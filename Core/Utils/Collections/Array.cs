@@ -14,17 +14,17 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils.Annotations;
 
-namespace LibGDXSharp.Utils.Collections.Extensions;
+namespace LibGDXSharp.Utils.Collections;
 
 [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class GdxArray<T>
+public class Array<T>
 {
     public T[]  Items   { get; private set; }
     public int  Size    { get; private set; }
@@ -44,7 +44,8 @@ public class GdxArray<T>
     /// The initial capacity.
     /// Any elements added beyond this will cause the backing array to be grown.
     /// </param>
-    public GdxArray( bool ordered = true, int capacity = 16 )
+    [Incomplete("DO NOT USE", true)]
+    public Array( bool ordered = true, int capacity = 16 )
     {
         Ordered = ordered;
         Items   = new T[ capacity ];
@@ -53,7 +54,8 @@ public class GdxArray<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public GdxArray( GdxArray< T > array )
+    [Incomplete("DO NOT USE", true)]
+    public Array( Array< T > array )
     {
         if ( array == null ) throw new GdxRuntimeException( "array cannot be null!" );
         if ( array.Items == null ) throw new GdxRuntimeException( "array cannot be null!" );
@@ -68,17 +70,22 @@ public class GdxArray<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public GdxArray( T[] array ) : this( true, array, 0, array.Length )
+    [Incomplete("DO NOT USE", true)]
+    public Array( T[] array ) : this( true, array, 0, array.Length )
     {
     }
 
     /// <summary>
     /// </summary>
-    /// <param name="ordered"></param>
+    /// <param name="ordered">
+    /// If false, methods that remove elements may change the order of other
+    /// elements in the array, which avoids a memory copy.
+    /// </param>
     /// <param name="array"></param>
     /// <param name="start"></param>
     /// <param name="count"></param>
-    public GdxArray( bool ordered, T[] array, int start, int count )
+    [Incomplete("DO NOT USE - Not ready", true)]
+    public Array( bool ordered, T[] array, int start, int count )
     {
         Ordered = ordered;
         Size    = count;
@@ -103,14 +110,16 @@ public class GdxArray<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public void AddAll( GdxArray< T > array )
+    public void AddAll( Array< T > array )
     {
         AddAll( array, 0, array.Size );
     }
 
     /// <summary>
+    /// Copy items from the supplied array to this array,
+    /// starting from position 0.
     /// </summary>
-    /// <param name="array"></param>
+    /// <param name="array">The array of items to add.</param>
     public void AddAll( params T[] array )
     {
         AddAll( array, 0, array.Length );
@@ -124,7 +133,7 @@ public class GdxArray<T>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public void AddAll( GdxArray< T > array, int start, int count )
+    public void AddAll( Array< T > array, int start, int count )
     {
         if ( ( start + count ) > array.Size )
         {
@@ -136,10 +145,12 @@ public class GdxArray<T>
     }
 
     /// <summary>
+    /// Copy 'count' items from the supplied array to this array,
+    /// starting from position 'start'.
     /// </summary>
-    /// <param name="array"></param>
-    /// <param name="start"></param>
-    /// <param name="count"></param>
+    /// <param name="array">The array of items to add.</param>
+    /// <param name="start">The start index.</param>
+    /// <param name="count">The number of items to copy.</param>
     public void AddAll( T?[] array, int start, int count )
     {
         var sizeNeeded = Size + count;
@@ -424,7 +435,7 @@ public class GdxArray<T>
     /// </summary>
     /// <param name="array"></param>
     /// <returns></returns>
-    public bool RemoveAll( GdxArray< T > array )
+    public bool RemoveAll( Array< T > array )
     {
         var size      = this.Size;
         var startSize = size;
@@ -749,7 +760,7 @@ public class GdxArray<T>
 
         if ( !Ordered ) return false;
 
-        var array = ( GdxArray< T > )obj;
+        var array = ( Array< T > )obj;
 
         if ( !array.Ordered ) return false;
 

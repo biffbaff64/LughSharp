@@ -51,11 +51,11 @@ public sealed class AssetLoadingTask
                              AssetLoader loader,
                              AsyncExecutor threadPool )
     {
-        this._manager   = manager;
-        this.AssetDesc  = assetDesc;
-        this._loader    = loader;
-        this._executor  = threadPool;
-        this._startTime = manager.Log.Level == Logger.LogDebug ? TimeUtils.NanoTime() : 0;
+        _manager   = manager;
+        AssetDesc  = assetDesc;
+        _loader    = loader;
+        _executor  = threadPool;
+        _startTime = manager.Log.Level == Logger.LogDebug ? TimeUtils.NanoTime() : 0;
     }
 
     /// <summary>
@@ -306,7 +306,7 @@ public sealed class AssetLoadingTask
 
             for ( var j = array.Count - 1; j > i; --j )
             {
-                if ( ( type == array[ j ].Type ) && fn.Equals( array[ j ].FilePath ) )
+                if ( ( type == array[ j ].Type ) && fn!.Equals( array[ j ].FilePath ) )
                 {
                     array.RemoveAt( j );
                 }

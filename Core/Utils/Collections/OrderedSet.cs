@@ -16,16 +16,17 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace LibGDXSharp.Core.Utils.Collections.Extensions;
+namespace LibGDXSharp.Core.Utils.Collections;
 
 /// <summary>
 /// A <see cref="ObjectSet"/> that also stores keys in an <see cref="List"/> using the
 /// insertion order. Null keys are not allowed. No allocation is done except when growing
 /// the table size.
 /// <para>
-/// <see cref="iterator() Iteration"/> is ordered and faster than an unordered set. Keys can also be accessed and the order changed
-/// using <see cref="orderedItems()"/>. There is some additional overhead for put and remove. When used for faster iteration versus
-/// ObjectSet and the order does not actually matter, copying during remove can be greatly reduced by setting <see cref="Array.ordered"/>
+/// Iteration is ordered and faster than an unordered set. Keys can also be accessed and
+/// the order changed using <see cref="OrderedItems()"/>. There is some additional overhead
+/// for put and remove. When used for faster iteration versus ObjectSet and the order does
+/// not actually matter, copying during remove can be greatly reduced by setting <see cref="Array.ordered"/>
 /// to false for <see cref="OrderedSet.orderedItems()"/>.
 /// </para>
 /// <para>
@@ -35,25 +36,19 @@ namespace LibGDXSharp.Core.Utils.Collections.Extensions;
 /// size.
 /// </para>
 /// <para>
-/// Unordered sets and maps are not designed to provide especially fast iteration. Iteration is faster with OrderedSet and
-/// OrderedMap.
+/// Unordered sets and maps are not designed to provide especially fast iteration.
+/// Iteration is faster with OrderedSet and OrderedMap.
 /// </para>
 /// <para>
-/// This implementation uses linear probing with the backward shift algorithm for removal. Hashcodes are rehashed using Fibonacci
-/// hashing, instead of the more common power-of-two mask, to better distribute poor hashCodes (see <a href=
-/// "https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">Malte
-/// Skarupke's blog post</a>). Linear probing continues to work even when all hashCodes collide, just more slowly.
+/// This implementation uses linear probing with the backward shift algorithm for removal.
+/// Hashcodes are rehashed using Fibonacci hashing, instead of the more common power-of-two
+/// mask, to better distribute poor hashCodes
+/// (see <a href="https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">
+/// Malte Skarupke's blog post</a>). Linear probing continues to work even when all hashCodes collide, just more slowly.
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class OrderedSet<T> : SortedSet<T>
+public sealed class OrderedSet<T>
 {
-//    public void Clear( int maximumCapacity )
-//    {
-//    }
-
-//    public void AddAll( OrderedSet<T> array )
-//    {
-//    }
 }
 

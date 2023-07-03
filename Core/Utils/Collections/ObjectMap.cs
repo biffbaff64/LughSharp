@@ -20,7 +20,7 @@ using System.Text;
 
 using LibGDXSharp.Utils.Collections;
 
-namespace LibGDXSharp.Core.Utils.Collections.Extensions;
+namespace LibGDXSharp.Core.Utils.Collections;
 
 /// <summary>
 /// <para>An unordered map where the keys and values are objects.</para>

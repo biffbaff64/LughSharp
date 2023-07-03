@@ -107,8 +107,9 @@ public static class UnicodePropExtensions
             // ------------------------------------------------------
             // Letter, Digit, TitleCase, Lowercase, Uppercase
             case UnicodeProp.Alphabetic:
-                return CharHelper.IsAlphabetic( ch );
-
+//                return char.IsAlphabetic( ch );
+                return char.IsDigit( ch ) || char.IsLetter( ch );
+            
             // ------------------------------------------------------
             // A....Z, a....z
             case UnicodeProp.Letter:
@@ -169,7 +170,7 @@ public static class UnicodePropExtensions
 
             // ------------------------------------------------------
             case UnicodeProp.Blank:
-                return ( ch == CharHelper.SpaceSeparator ) || ( ch == 0x09 );
+                return ( ch == char.SpaceSeparator ) || ( ch == 0x09 );
 
             // ------------------------------------------------------
             case UnicodeProp.Graph:

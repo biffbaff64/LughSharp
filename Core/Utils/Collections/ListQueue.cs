@@ -14,12 +14,29 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
+namespace LibGDXSharp.Utils.Collections;
 
-namespace LibGDXSharp.DevFillers;
-
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class DefaultFileSystem
+/// <summary>
+/// List-based implementation of a Queue.
+/// </summary>
+public class ListQueue<T> : List<T>
 {
-    public static FileSystem? FileSystem { get; set; }
+    public T Peek()
+    {
+        return this[0];
+    }
+
+    public void Enqueue( T element )
+    {
+        Add( element );
+    }
+
+    public T Dequeue()
+    {
+        T result = Peek();
+            
+        Remove( result );
+            
+        return result;
+    }
 }

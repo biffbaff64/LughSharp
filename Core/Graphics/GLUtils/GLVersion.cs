@@ -17,7 +17,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
-
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
@@ -92,35 +91,25 @@ public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
     /// <param name="versionString"></param>
     private void ExtractVersion( string patternString, string versionString )
     {
-        
-        
-        
-        
         var rx = new Regex( patternString );
 
         MatchCollection matches = rx.Matches( versionString );
 
-//            Pattern pattern = Pattern.compile( patternString );
-//            Matcher matcher = pattern.matcher( versionString );
-
-//            bool found = matcher.find();
-
         if ( matches.Count > 0 )
         {
-            string result      = matcher.group( 1 );
-            var    resultSplit = result.Split( "\\." );
-
-            MajorVersion   = ParseInt( resultSplit[ 0 ], 2 );
-            MinorVersion   = resultSplit.Length < 2 ? 0 : ParseInt( resultSplit[ 1 ], 0 );
-            ReleaseVersion = resultSplit.Length < 3 ? 0 : ParseInt( resultSplit[ 2 ], 0 );
+            var resultSplit = rx.Split( "\\." );
+            
+            MajorVersion    = ParseInt( resultSplit[ 0 ], 2 );
+            MinorVersion    = resultSplit.Length < 2 ? 0 : ParseInt( resultSplit[ 1 ], 0 );
+            RevisionVersion = resultSplit.Length < 3 ? 0 : ParseInt( resultSplit[ 2 ], 0 );
         }
         else
         {
             Gdx.App.Log( Tag, "Invalid version string: " + versionString );
 
-            MajorVersion   = 2;
-            MinorVersion   = 0;
-            ReleaseVersion = 0;
+            MajorVersion    = 2;
+            MinorVersion    = 0;
+            RevisionVersion = 0;
         }
     }
 
@@ -159,20 +148,9 @@ public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
     /// <returns> a string with the current GL connection data </returns>
     public string DebugVersionString()
     {
-        return "Type: "
-               + Gltype
-               + "\n"
-               + "Version: "
-               + MajorVersion
-               + ":"
-               + MinorVersion
-               + ":"
-               + ReleaseVersion
-               + "\n"
-               + "Vendor: "
-               + VendorString
-               + "\n"
-               + "Renderer: "
-               + RendererString;
+        return $"Type: {Gltype}\n"
+               + $"Version: {MajorVersion}:{MinorVersion}:{RevisionVersion}\n"
+               + $"Vendor: {VendorString}\n"
+               + $"Renderer: {RendererString}";
     }
 }

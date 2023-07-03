@@ -16,8 +16,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-using LibGDXSharp.Utils.Collections.Extensions;
-
 namespace LibGDXSharp.Utils.Collections;
 
 /// <summary>
@@ -36,7 +34,7 @@ namespace LibGDXSharp.Utils.Collections;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class SnapshotArray<T> : GdxArray< T >
+public sealed class SnapshotArray<T> : Array< T >
 {
     private T[]? _snapshot;
     private T[]? _recycled;
@@ -46,7 +44,7 @@ public sealed class SnapshotArray<T> : GdxArray< T >
     {
     }
 
-    public SnapshotArray( GdxArray< T > array ) : base( array )
+    public SnapshotArray( Array< T > array ) : base( array )
     {
     }
 
@@ -196,7 +194,7 @@ public sealed class SnapshotArray<T> : GdxArray< T >
     /// </summary>
     /// <param name="array"></param>
     /// <returns></returns>
-    public bool RemoveAll<TT>( TT array ) where TT : GdxArray<T>
+    public bool RemoveAll<TT>( TT array ) where TT : Array<T>
     {
         Modified();
 

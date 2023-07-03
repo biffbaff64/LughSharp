@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Assets;
 
 internal interface IRefCountedContainer
@@ -29,7 +31,8 @@ internal interface IRefCountedContainer
 /// using the object, and decrement it after you're done using it.
 /// AssetManager handles this automatically.
 /// </summary>
-internal sealed class RefCountedContainer : IRefCountedContainer
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public sealed class RefCountedContainer : IRefCountedContainer
 {
     public int RefCount { get; set; } = 1;
 

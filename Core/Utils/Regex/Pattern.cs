@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 using LibGDXSharp.Utils.Regex;
@@ -272,7 +273,7 @@ public sealed partial class Pattern : IPattern
         {
             int c = CharHelper.CodePointAt( _normalizedPattern, i );
             
-            if ( ( CharHelper.GetCharCat( ( char )c ) == CharHelper.NonSpacingMark )
+            if ((char.GetUnicodeCategory( (char) c ) == UnicodeCategory.NonSpacingMark)
                  && ( lastCodePoint != -1 ) )
             {
                 var sequenceBuffer = new StringBuilder();
@@ -280,7 +281,7 @@ public sealed partial class Pattern : IPattern
                 sequenceBuffer.AppendCodePoint( lastCodePoint );
                 sequenceBuffer.AppendCodePoint( c );
 
-                while ( CharHelper.GetCharCat( ( char )c ) == CharHelper.NonSpacingMark )
+                while ( char.GetUnicodeCategory( ( char )c ) == UnicodeCategory.NonSpacingMark )
                 {
                     i += CharHelper.CharCount( c );
 
@@ -337,12 +338,13 @@ public sealed partial class Pattern : IPattern
 
                 break;
             }
-            else if ( CharHelper.GetCharCat( c ) == CharHelper.NonSpacingMark )
+
+            if ( char.GetUnicodeCategory( (char)c ) == UnicodeCategory.NonSpacingMark )
             {
                 var sequenceBuffer = new StringBuilder();
                 sequenceBuffer.AppendCodePoint( lastCodePoint );
 
-                while ( CharHelper.GetCharCat( c ) == CharHelper.NonSpacingMark )
+                while ( char.GetUnicodeCategory( (char)c ) == UnicodeCategory.NonSpacingMark )
                 {
                     sequenceBuffer.AppendCodePoint( c );
                     i += CharHelper.CharCount( c );

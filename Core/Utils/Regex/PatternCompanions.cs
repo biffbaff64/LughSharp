@@ -39,7 +39,7 @@ public sealed partial class Pattern
 
         public Node()
         {
-            next = Pattern.Accept;
+//            next = Pattern.Accept;
         }
 
         /// <summary>
@@ -63,10 +63,8 @@ public sealed partial class Pattern
             {
                 return next.Study( info );
             }
-            else
-            {
-                return info.deterministic;
-            }
+
+            return info.Deterministic;
         }
     }
 
@@ -140,8 +138,8 @@ public sealed partial class Pattern
                 }
                 else if ( ( flags & Unicode_Case ) != 0 )
                 {
-                    _bits[ Character.toLowerCase( c ) ] = true;
-                    _bits[ Character.toUpperCase( c ) ] = true;
+                    _bits[ char.ToLower( (char)c ) ] = true;
+                    _bits[ char.ToUpper( (char)c ) ] = true;
                 }
             }
 

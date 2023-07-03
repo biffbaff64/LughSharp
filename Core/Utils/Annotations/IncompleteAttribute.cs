@@ -14,6 +14,8 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Utils.Annotations;
 
 // This attribute is attached to members that are still in development and must be used with care.
@@ -30,6 +32,7 @@ namespace LibGDXSharp.Utils.Annotations;
                 | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event
                 | AttributeTargets.Delegate,
                 Inherited = false)]
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class IncompleteAttribute : Attribute
 {
     public IncompleteAttribute()

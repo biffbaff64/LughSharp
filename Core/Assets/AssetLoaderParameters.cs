@@ -14,26 +14,13 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace LibGDXSharp.Assets;
 
-//public interface AssetLoaderParameters
-//{
-//    /// <summary>
-//    /// Callback interface that will be invoked when the <see cref="AssetManager"/> loaded an asset.
-//    /// </summary>
-//    public interface ILoadedCallback
-//    {
-//        public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type );
-//    }
-
-//    public ILoadedCallback? LoadedCallback { get; set; }
-//}
-
-//public class AssetLoaderParameters : AssetLoaderParameters
-//{
-//    public AssetLoaderParameters.ILoadedCallback? LoadedCallback { get; set; }
-//}
-
+/// <summary>
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class AssetLoaderParameters
 {
     /// <summary>
@@ -47,6 +34,9 @@ public class AssetLoaderParameters
     public ILoadedCallback? LoadedCallback { get; set; }
 }
 
+/// <summary>
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class DefaultLoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
 {
     private readonly int _refCount;
