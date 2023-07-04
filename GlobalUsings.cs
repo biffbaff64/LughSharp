@@ -15,6 +15,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 global using System;
+global using System.Diagnostics.CodeAnalysis;
+global using System.Globalization;
 
 global using Silk.NET.GLFW;
 global using Silk.NET.Windowing;

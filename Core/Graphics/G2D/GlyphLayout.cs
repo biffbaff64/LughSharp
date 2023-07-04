@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Pooling;
 

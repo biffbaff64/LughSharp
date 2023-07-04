@@ -15,8 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Diagnostics.CodeAnalysis;
-
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.Utils;

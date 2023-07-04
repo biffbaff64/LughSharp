@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Files;
 
-public class OutputStream : IDisposable
+public class OutputStream : IDisposable, ICloseable
 {
 
     public void Dispose()
@@ -32,5 +32,9 @@ public class OutputStream : IDisposable
     public void Write( int b )
     {
         throw new NotImplementedException();
+    }
+
+    public void Close()
+    {
     }
 }

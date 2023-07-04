@@ -14,10 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-using LibGDXSharp.GdxCore.Utils.Buffers;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
 
@@ -643,7 +641,7 @@ public class Mesh
     /// is indices were given. Use this with OpenGL ES 1.x and when auto-bind is disabled.
     /// </summary>
     /// <param name="shader"> the shader (does not unbind the shader)  </param>
-    public void Unbind( in ShaderProgram shader )
+    public void Unbind( in ShaderProgram? shader )
     {
         Unbind( shader, null! );
     }
@@ -654,8 +652,10 @@ public class Mesh
     /// </summary>
     /// <param name="shader"> the shader (does not unbind the shader) </param>
     /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Unbind( in ShaderProgram shader, in int[] locations )
+    public void Unbind( in ShaderProgram? shader, in int[] locations )
     {
+        if ( shader == null ) return;
+        
         _vertices.Unbind( shader, locations );
 
         if ( _instances is { NumInstances: > 0 } )
@@ -730,7 +730,7 @@ public class Mesh
     /// <param name="primitiveType"> the primitive type </param>
     /// <param name="offset"> the offset into the vertex or index buffer </param>
     /// <param name="count"> number of vertices or indices to use  </param>
-    public void Render( ShaderProgram shader, int primitiveType, int offset, int count )
+    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count )
     {
         Render( shader, primitiveType, offset, count, AutoBind );
     }
@@ -761,8 +761,10 @@ public class Mesh
     /// <param name="offset"> the offset into the vertex or index buffer </param>
     /// <param name="count"> number of vertices or indices to use </param>
     /// <param name="autoBind"> overrides the autoBind member of this Mesh  </param>
-    public void Render( ShaderProgram shader, int primitiveType, int offset, int count, bool autoBind )
+    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count, bool autoBind )
     {
+        ArgumentNullException.ThrowIfNull( shader );
+        
         if ( count == 0 ) return;
 
         if ( autoBind ) Bind( shader );

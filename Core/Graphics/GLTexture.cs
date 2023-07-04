@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Graphics;
@@ -27,7 +25,7 @@ namespace LibGDXSharp.Graphics;
 /// and upload image data.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public abstract class GLTexture
+public abstract class GLTexture : IDisposable
 {
     public int   GLHandle               { get; set; }
     public int   GLTarget               { get; set; }

@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 using Buffer = LibGDXSharp.Utils.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;

@@ -16,14 +16,99 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
-public class I18NBundleLoader
+/// <summary>
+/// <see cref="AssetLoader"/> for <see cref="I18NBundle"/> instances.
+/// The I18NBundle is loaded asynchronously.
+/// <para>
+/// Note that you can't load two bundles with the same base name and different
+/// locale or encoding using the same <see cref="AssetManager"/>.
+/// </para>
+/// <para>
+/// For example, if you try to load the 2 bundles below:-
+/// </para>
+/// 
+/// <code>
+/// manager.load(&quot;i18n/message&quot;, I18NBundle.class, new I18NBundleParameter(Locale.ITALIAN));
+/// manager.load(&quot;i18n/message&quot;, I18NBundle.class, new I18NBundleParameter(Locale.ENGLISH));
+/// </code>
+/// 
+/// <para>
+/// the English bundle won't be loaded because the asset manager thinks they are
+/// the same bundle since they have the same name.
+/// </para>
+/// <para>
+/// If you want to load the English bundle to replace the Italian bundle you have to unload the Italian bundle first.
+/// If you want to load the English bundle without replacing the Italian bundle you should use a second asset manager.
+/// </para>
+/// </summary>
+public class I18NBundleLoader : AsynchronousAssetLoader< I18NBundle, I18NBundleLoader.I18NBundleParameter >
 {
+    private I18NBundle? _bundle;
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
+    public I18NBundleLoader( IFileHandleResolver resolver ) : base( resolver )
     {
+    }
+
+    public override void LoadAsync( AssetManager? manager, string? fileName, FileInfo? file, AssetLoaderParameters? parameter )
+    {
+        this._bundle = null;
+
+        CultureInfo? locale;
+        string?      encoding;
+
+        if ( parameter == null )
+        {
+            locale   = CultureInfo.DefaultThreadCurrentCulture;
+            encoding = null;
+        }
+        else
+        {
+            locale   = ( ( I18NBundleParameter )parameter ).Locale ?? CultureInfo.DefaultThreadCurrentCulture;
+            encoding = ( ( I18NBundleParameter )parameter ).Encoding;
+        }
+
+        if ( encoding == null )
+        {
+            this._bundle = I18NBundle.CreateBundle( file, locale );
+        }
+        else
+        {
+            this._bundle = I18NBundle.CreateBundle( file, locale, encoding );
+        }
+    }
+
+    public override I18NBundle LoadSync( AssetManager? manager,
+                                         string? fileName,
+                                         FileInfo? file,
+                                         AssetLoaderParameters parameter )
+    {
+        I18NBundle? bundle = this._bundle;
+        this._bundle = null;
+
+        return bundle!;
+    }
+
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
+                                                             AssetLoaderParameters parameter )
+    {
+        return null!;
+    }
+
+    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    public sealed class I18NBundleParameter : AssetLoaderParameters
+    {
+        public CultureInfo? Locale   { get; private set; }
+        public string?      Encoding { get; private set; }
+
+        public I18NBundleParameter() : this( null )
+        {
+        }
+
+        public I18NBundleParameter( CultureInfo? locale, string? encoding = null )
+        {
+            this.Locale   = locale;
+            this.Encoding = encoding;
+        }
     }
 }

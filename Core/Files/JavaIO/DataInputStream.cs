@@ -16,7 +16,10 @@
 
 namespace LibGDXSharp.Files;
 
-public class DataInputStream
+public class DataInputStream : ICloseable
 {
 
+    public void Close()
+    {
+    }
 }

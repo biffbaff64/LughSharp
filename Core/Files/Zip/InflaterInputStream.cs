@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files;
+namespace LibGDXSharp.Files.Zip;
 
 public class InflaterInputStream
 {

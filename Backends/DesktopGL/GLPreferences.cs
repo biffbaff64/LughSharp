@@ -16,8 +16,6 @@
 
 using System.Xml.Linq;
 
-using LibGDXSharp.Core;
-
 namespace LibGDXSharp.Backends.Desktop;
 
 public class GLPreferences : IPreferences

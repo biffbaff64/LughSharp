@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 

@@ -14,8 +14,6 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 using LibGDXSharp.Graphics.G3D.Models.Data;
 
 namespace LibGDXSharp.Graphics.G3D.Utils;
@@ -66,15 +64,17 @@ public interface ITextureProvider
 
     public class AssetTextureProvider : ITextureProvider
     {
-        public AssetManager AssetManager { get; set; }
+        public AssetManager? AssetManager { get; set; }
 
-        public AssetTextureProvider( AssetManager assetManager )
+        public AssetTextureProvider( AssetManager? assetManager )
         {
             this.AssetManager = assetManager;
         }
 
         public Texture Load( string fileName )
         {
+            if ( AssetManager == null ) throw new NullReferenceException();
+            
             return AssetManager.Get< Texture >( fileName );
         }
     }

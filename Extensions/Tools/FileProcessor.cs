@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.Extensions.Tools;
 using LibGDXSharp.Utils.Regex;

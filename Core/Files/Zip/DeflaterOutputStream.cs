@@ -14,9 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.DevFillers;
-
-namespace LibGDXSharp.Files;
+namespace LibGDXSharp.Files.Zip;
 
 public class DeflaterOutputStream : FilterOutputStream
 {

@@ -16,8 +16,6 @@
 
 using System.Diagnostics;
 
-using LibGDXSharp.DevFillers;
-
 namespace LibGDXSharp.Input;
 
 /// <summary>

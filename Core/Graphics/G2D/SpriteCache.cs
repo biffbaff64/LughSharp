@@ -76,8 +76,8 @@ public class SpriteCache
     private readonly ShaderProgram? _shader;
 
     private          Cache?          _currentCache;
-    private readonly List< Texture > _textures = new(8);
-    private readonly List< int >     _counts   = new(8);
+    private readonly List< Texture > _textures = new( 8 );
+    private readonly List< int >     _counts   = new( 8 );
 
     private float _colorPacked = Color.WhiteFloatBits;
 
@@ -130,27 +130,27 @@ public class SpriteCache
 
         _mesh = new Mesh
             (
-             true,
-             size * ( useIndices ? 4 : 6 ),
-             useIndices ? size * 6 : 0,
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.Position,
-                  2,
-                  ShaderProgram.PositionAttribute
-                 ),
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.ColorPacked,
-                  4,
-                  ShaderProgram.ColorAttribute
-                 ),
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.TextureCoordinates,
-                  2,
-                  ShaderProgram.TexcoordAttribute + "0"
-                 )
+            true,
+            size * ( useIndices ? 4 : 6 ),
+            useIndices ? size * 6 : 0,
+            new VertexAttribute
+                (
+                VertexAttributes.Usage.Position,
+                2,
+                ShaderProgram.PositionAttribute
+                ),
+            new VertexAttribute
+                (
+                VertexAttributes.Usage.ColorPacked,
+                4,
+                ShaderProgram.ColorAttribute
+                ),
+            new VertexAttribute
+                (
+                VertexAttributes.Usage.TextureCoordinates,
+                2,
+                ShaderProgram.TexcoordAttribute + "0"
+                )
             )
             {
                 AutoBind = false
@@ -289,9 +289,9 @@ public class SpriteCache
             {
                 throw new GdxRuntimeException
                     (
-                     $"If a cache is not the last created, it cannot be redefined"
-                     + $"with more entries than when it was first created: "
-                     + $"{cacheCount} ({cache.maxCount} max)"
+                    $"If a cache is not the last created, it cannot be redefined"
+                    + $"with more entries than when it was first created: "
+                    + $"{cacheCount} ({cache.maxCount} max)"
                     );
             }
 
@@ -1013,6 +1013,7 @@ public class SpriteCache
             tempVertices[ 17 ] = PackedColor;
             tempVertices[ 18 ] = u2;
             tempVertices[ 19 ] = v;
+            
             Add( region.Texture, tempVertices, 0, 20 );
         }
         else
@@ -1055,20 +1056,20 @@ public class SpriteCache
 
         Array.Copy
             (
-             sprite.Vertices,
-             2 * Sprite.VertexSize,
-             tempVertices,
-             3 * Sprite.VertexSize,
-             Sprite.VertexSize
+            sprite.Vertices,
+            2 * Sprite.VertexSize,
+            tempVertices,
+            3 * Sprite.VertexSize,
+            Sprite.VertexSize
             ); // temp3=sprite2
 
         Array.Copy
             (
-             sprite.Vertices,
-             3 * Sprite.VertexSize,
-             tempVertices,
-             4 * Sprite.VertexSize,
-             Sprite.VertexSize
+            sprite.Vertices,
+            3 * Sprite.VertexSize,
+            tempVertices,
+            4 * Sprite.VertexSize,
+            Sprite.VertexSize
             ); // temp4=sprite3
 
         Array.Copy( sprite.Vertices, 0, tempVertices, 5 * Sprite.VertexSize, Sprite.VertexSize ); // temp5=sprite0
@@ -1081,11 +1082,9 @@ public class SpriteCache
     /// </summary>
     public void Begin()
     {
-        if ( _drawing )
-            throw new IllegalStateException( "end must be called before begin." );
+        if ( _drawing ) throw new IllegalStateException( "end must be called before begin." );
 
-        if ( _currentCache != null )
-            throw new IllegalStateException( "endCache must be called before begin" );
+        if ( _currentCache != null ) throw new IllegalStateException( "endCache must be called before begin" );
 
         renderCalls = 0;
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
@@ -1122,7 +1121,9 @@ public class SpriteCache
     public void End()
     {
         if ( !_drawing )
+        {
             throw new IllegalStateException( "begin must be called before end." );
+        }
 
         _drawing = false;
 
@@ -1137,7 +1138,9 @@ public class SpriteCache
     public void Draw( int cacheID )
     {
         if ( !_drawing )
+        {
             throw new IllegalStateException( "SpriteCache.begin must be called before draw." );
+        }
 
         Cache cache = _caches[ cacheID ];
 
@@ -1172,7 +1175,9 @@ public class SpriteCache
     public void Draw( int cacheID, int offset, int length )
     {
         if ( !_drawing )
+        {
             throw new IllegalStateException( "SpriteCache.begin must be called before draw." );
+        }
 
         Cache cache = _caches[ cacheID ];
 
@@ -1180,6 +1185,7 @@ public class SpriteCache
 
         offset =  ( ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6 ) + ( offset * 6 );
         length *= 6;
+        
         Texture[]? textures = cache.textures;
 
         var counts       = cache.counts;
@@ -1210,9 +1216,24 @@ public class SpriteCache
     }
 
     public Matrix4 ProjectionMatrix { get; init; } = new();
+    public Matrix4 TransformMatrix  { get; init; } = new();
 
-    public Matrix4 TransformMatrix { get; init; } = new();
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
+    public bool IsDrawing => _drawing;
+
+    /// <summary>
+    /// Releases all resources held by this SpriteCache.
+    /// </summary>
+    public void Dispose()
+    {
+        _mesh.Dispose();
+        _shader?.Dispose();
+    }
+
+    #region shaders
+    
     private static ShaderProgram CreateDefaultShader()
     {
         var vertexShader =
@@ -1258,7 +1279,9 @@ public class SpriteCache
         var shader = new ShaderProgram( vertexShader, fragmentShader );
 
         if ( !shader.IsCompiled )
+        {
             throw new ArgumentException( "Error compiling shader: " + shader.Log );
+        }
 
         return shader;
     }
@@ -1275,19 +1298,10 @@ public class SpriteCache
     /// </summary>
     public ShaderProgram? CustomShader { get; set; }
 
-    public bool IsDrawing()
-    {
-        return _drawing;
-    }
-
-    /// <summary>
-    /// Releases all resources held by this SpriteCache.
-    /// </summary>
-    public void Dispose()
-    {
-        _mesh.Dispose();
-        _shader?.Dispose();
-    }
+    #endregion shaders
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     private sealed class Cache
     {

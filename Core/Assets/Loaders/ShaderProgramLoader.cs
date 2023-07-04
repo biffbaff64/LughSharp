@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 using File = System.IO.File;
 
 namespace LibGDXSharp.Assets.Loaders;

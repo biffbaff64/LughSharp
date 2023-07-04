@@ -16,7 +16,11 @@
 
 namespace LibGDXSharp.Utils;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class I18NBundle
 {
-        
+    public static I18NBundle? CreateBundle( FileInfo? file, CultureInfo? locale, string encoding = "" )
+    {
+        return null;
+    }
 }

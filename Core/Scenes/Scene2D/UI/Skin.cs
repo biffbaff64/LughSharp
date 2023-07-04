@@ -14,10 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
-using LibGDXSharp.Core.Utils.Collections.Extensions;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils.Collections.Extensions;

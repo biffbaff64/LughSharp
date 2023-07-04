@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 using StringBuilder = System.Text.StringBuilder;
 
 namespace LibGDXSharp.Assets;

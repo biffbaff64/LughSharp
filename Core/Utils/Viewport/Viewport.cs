@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;

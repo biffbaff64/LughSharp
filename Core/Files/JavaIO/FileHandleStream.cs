@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core;
-
 namespace LibGDXSharp.Files;
 
 /// <summary>

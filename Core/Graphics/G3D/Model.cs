@@ -19,14 +19,17 @@ using LibGDXSharp.Graphics.G3D.Utils;
 
 namespace LibGDXSharp.Graphics.G3D;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Model
 {
+    private List< IDisposable > _disposables = new();
+    
     public Model( ModelData data, ITextureProvider textureProvider )
     {
     }
 
-    public object GetManagedDisposables()
+    public IEnumerable<IDisposable> GetManagedDisposables()
     {
-        return null;
+        return _disposables;
     }
 }

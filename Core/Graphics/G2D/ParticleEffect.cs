@@ -16,7 +16,15 @@
 
 namespace LibGDXSharp.G2D;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ParticleEffect
 {
-        
+
+    public void Load( FileInfo? file, TextureAtlas? atlas, string? paramAtlasPrefix )
+    {
+    }
+
+    public void Load( FileInfo? file, FileInfo? paramImagesDir = null )
+    {
+    }
 }

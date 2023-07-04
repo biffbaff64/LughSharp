@@ -14,8 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
+using LibGDXSharp.Files.Zip;
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics;
@@ -242,7 +241,7 @@ public class PixmapIO
         /// </summary>
         public void SetCompression( int level )
         {
-            _deflater.SetLevel( level );
+            _deflater.CompressionLevel = level;
         }
 
         public void Write( FileInfo file, Pixmap pixmap )

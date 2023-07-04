@@ -14,7 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Metadata;
 
 using LibGDXSharp.G2D;
@@ -22,7 +21,6 @@ using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils.Collections;
-using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Pooling;
 using LibGDXSharp.Utils.Viewport;
 

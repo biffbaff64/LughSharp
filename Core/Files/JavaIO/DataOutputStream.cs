@@ -14,12 +14,10 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace LibGDXSharp.Files;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class DataOutputStream : IDataOutput
+public class DataOutputStream : IDataOutput, ICloseable
 {
     public DataOutputStream( object getOutputStream )
     {
@@ -45,7 +43,7 @@ public class DataOutputStream : IDataOutput
     /// </summary>
     /// <param name="b"> the data. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void Write( sbyte[] b )
+    public void Write( byte[] b )
     {
     }
 
@@ -62,7 +60,7 @@ public class DataOutputStream : IDataOutput
     /// <param name="off"> the start offset in the data. </param>
     /// <param name="len"> the number of bytes to write. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    public void Write( sbyte[] b, int off, int len )
+    public void Write( byte[] b, int off, int len )
     {
     }
 
@@ -260,5 +258,9 @@ public class DataOutputStream : IDataOutput
     public void WriteChar( char character )
     {
         throw new NotImplementedException();
+    }
+
+    public void Close()
+    {
     }
 }

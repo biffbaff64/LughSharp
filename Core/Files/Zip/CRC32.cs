@@ -15,11 +15,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 using LibGDXSharp.Utils.Compression;
 
-namespace LibGDXSharp.Files;
+namespace LibGDXSharp.Files.Zip;
 
 /// <summary>
 /// A class that can be used to compute the <tt>CRC-32</tt> of a data stream.

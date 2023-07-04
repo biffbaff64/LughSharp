@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace LibGDXSharp.Graphics;
 
 using System.Collections.Generic;

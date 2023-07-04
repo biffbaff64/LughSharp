@@ -14,13 +14,47 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
-namespace LibGDXSharp.Files;
+namespace LibGDXSharp.Files.Zip;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Deflater
 {
     public const int Default_Compression = 0;
+
+    private readonly ZStreamRef _zsRef;
+
+    private int    _compressionLevel = 0;
+    private byte[] _buf              = new byte[ 0 ];
+    private int    _off;
+    private int    _len;
+    private int    _level;
+    private int    _strategy;
+    private bool   _setParams;
+    private bool   _finish;
+    private bool   _finished;
+    private long   _bytesRead;
+    private long   _bytesWritten;
+
+    public int CompressionLevel
+    {
+        private get => _compressionLevel;
+        set
+        {
+            if ( ( ( _compressionLevel < 0 ) || ( _compressionLevel > 9 ) )
+                 && ( _compressionLevel != Default_Compression ) )
+            {
+                throw new ArgumentException( "invalid compression level" );
+            }
+
+            lock ( _zsRef )
+            {
+                if ( this._compressionLevel != value )
+                {
+                    this._compressionLevel = value;
+                    _setParams             = true;
+                }
+            }
+        }
+    }
 }

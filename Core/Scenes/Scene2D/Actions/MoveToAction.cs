@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>

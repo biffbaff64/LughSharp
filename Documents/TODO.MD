@@ -89,10 +89,10 @@ ASSETS/LOADERS
     - DONE - AsynchronousAssetLoader        Convert
     - DONE - BitmapFontLoader               Convert
     - DONE - CubemapLoader                  Convert
-    -      - I18NBundleLoader               Convert
-    - IP   - ModelLoader                    Convert
+    - DONE - I18NBundleLoader               Convert
+    - DONE - ModelLoader                    Convert
     - DONE - MusicLoader                    Convert
-    -      - ParticleEffectLoader           Convert
+    - DONE - ParticleEffectLoader           Convert
     - DONE - PixmapLoader                   Convert
     - DONE - ShaderProgramLoader            Convert
     - DONE - SkinLoader                     Convert
@@ -227,7 +227,7 @@ GRAPHICS/G2D
     - DONE - IBatch                         Convert
     - DONE - IPolygonBatch                  Convert
     - DONE - NinePatch                      Convert
-    -      - ParticleEffect                 Convert
+    - IP   - ParticleEffect                 Convert
     -      - ParticleEffectPool             Convert
     -      - ParticleEmitter                Convert
     -      - PixmapPacker                   Convert
@@ -322,14 +322,14 @@ GRAPHICS/G3D/MODEL/DATA
 
     -      - ModelAnimation
     -      - ModelData
-    -      - ModelMaterial
+    - DONE - ModelMaterial
     -      - ModelMesh
     -      - ModelMeshPart
     -      - ModelNode
     -      - ModelNodeAnimation
     -      - ModelNodeKeyframe
     -      - ModelNodePart
-    -      - ModelTexture
+    - DONE - ModelTexture
 
 GRAPHICS/G3D/PARTICLES
 ----------------------

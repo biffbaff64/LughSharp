@@ -14,11 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 using LibGDXSharp.Utils.Collections.Extensions;
-using LibGDXSharp.Utils.Regex;
 
 namespace LibGDXSharp.G2D;
 

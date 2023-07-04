@@ -14,12 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
-using LibGDXSharp.GdxCore.Utils.Buffers;
-
-using Buffer = Silk.NET.OpenGLES.Buffer;
-
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]

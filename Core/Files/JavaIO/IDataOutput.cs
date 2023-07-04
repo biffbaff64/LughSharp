@@ -35,7 +35,7 @@ public interface IDataOutput
     /// </summary>
     /// <param name="b"> the data. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    void Write( sbyte[] b );
+    void Write( byte[] b );
 
     /// <summary>
     /// Writes <tt>len</tt> bytes from array <tt>b</tt>, in order, to the output stream.
@@ -50,7 +50,7 @@ public interface IDataOutput
     /// <param name="off"> the start offset in the data. </param>
     /// <param name="len"> the number of bytes to write. </param>
     /// <exception cref="IOException">  if an I/O error occurs. </exception>
-    void Write( sbyte[] b, int off, int len );
+    void Write( byte[] b, int off, int len );
 
     /// <summary>
     /// Writes a <tt>boolean</tt> value to this output stream. If the argument <tt>v</tt>

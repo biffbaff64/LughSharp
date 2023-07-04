@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Numerics;
-
 namespace LibGDXSharp.Maths.Collision;
 
 /// <summary>

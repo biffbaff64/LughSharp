@@ -16,7 +16,31 @@
 
 namespace LibGDXSharp.Graphics.G3D.Models.Data;
 
+/// <summary>
+/// Returned by a <seealso cref="ModelLoader"/>, contains meshes, materials, nodes and animations. OpenGL resources like textures or vertex
+/// buffer objects are not stored. Instead, a ModelData instance needs to be converted to a Model first.
+/// @author badlogic 
+/// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ModelData
 {
-        
+    public string?                ID         { get; set; }
+    public short[]                Version    { get; set; } = new short[ 2 ];
+    public List< ModelMesh >      Meshes     { get; set; } = new List< ModelMesh >();
+    public List< ModelMaterial >? Materials  { get; set; } = new List< ModelMaterial >();
+    public List< ModelNode >      Nodes      { get; set; } = new List< ModelNode >();
+    public List< ModelAnimation > Animations { get; set; } = new List< ModelAnimation >();
+
+    public virtual void AddMesh( ModelMesh mesh )
+    {
+        foreach ( ModelMesh? other in Meshes )
+        {
+            if ( other.ID.Equals( mesh.ID ) )
+            {
+                throw new GdxRuntimeException( "Mesh with id '" + other.ID + "' already in model" );
+            }
+        }
+
+        Meshes.Add( mesh );
+    }
 }

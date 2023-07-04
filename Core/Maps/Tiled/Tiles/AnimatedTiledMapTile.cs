@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics.CodeAnalysis;
-
 using LibGDXSharp.G2D;
 
 using Blendmode = LibGDXSharp.Maps.Tiled.ITiledMapTile.Blendmode;
