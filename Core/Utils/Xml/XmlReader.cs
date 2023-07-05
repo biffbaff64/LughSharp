@@ -873,7 +873,7 @@ public sealed class XmlReader
 
             foreach ( Element element in _children )
             {
-                if ( ( element.Name != null ) && element.Name.Equals( name ) ) return element;
+                if ( element.Name.Equals( name ) ) return element;
             }
 
             return null;
@@ -1211,5 +1211,38 @@ public sealed class XmlReader
 
             return string.ReferenceEquals( value, null ) ? defaultValue : bool.Parse( value );
         }
+    }
+}
+
+[Obsolete]
+public class InputStreamReader : Reader
+{
+    [Obsolete]
+    public InputStreamReader( InputStream input, string utf )
+    {
+    }
+}
+
+[Obsolete]
+public class InputStream : ICloseable
+{
+    [Obsolete]
+    public void Close()
+    {
+    }
+}
+
+[Obsolete]
+public class Reader : ICloseable
+{
+    [Obsolete]
+    public int Read( char[] data, int offset, int dataLength )
+    {
+        return 0;
+    }
+
+    [Obsolete]
+    public void Close()
+    {
     }
 }

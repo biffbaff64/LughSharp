@@ -25,6 +25,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Tiled;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class BaseTmxMapLoader<TP>
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.Parameters
 {
@@ -54,8 +55,8 @@ public abstract class BaseTmxMapLoader<TP>
     protected const uint Flag_Flip_Diagonally   = 0x20000000;
     protected const uint Mask_Clear             = 0xE0000000;
 
-    protected XmlReader  xml;
-    protected XmlElement root;
+    protected readonly XmlDocument? xml = new();
+    protected XmlElement?  root;
 
     protected bool convertObjectToTileSpace;
     protected bool flipY = true;
@@ -70,7 +71,6 @@ public abstract class BaseTmxMapLoader<TP>
     protected BaseTmxMapLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
-        xml = XmlReader.Create(  );
     }
 
     public List< AssetDescriptor >? GetDependencies( string fileName, FileInfo tmxFile, TP? parameter )
@@ -117,24 +117,23 @@ public abstract class BaseTmxMapLoader<TP>
             this.flipY                    = true;
         }
 
-        if ( root == null )
-            throw new GdxRuntimeException( "Root cannot be null!" );
+        if ( root == null ) throw new GdxRuntimeException( "Root cannot be null!" );
 
         var mapOrientation = root.GetAttribute( "orientation", null );
 
-        var mapWidth   = root.GetIntAttribute( "width", 0 );
-        var mapHeight  = root.GetIntAttribute( "height", 0 );
-        var tileWidth  = root.GetIntAttribute( "tilewidth", 0 );
-        var tileHeight = root.GetIntAttribute( "tileheight", 0 );
+        var mapWidth   = root.GetAttribute( "width", 0 );
+        var mapHeight  = root.GetAttribute( "height", 0 );
+        var tileWidth  = root.GetAttribute( "tilewidth", 0 );
+        var tileHeight = root.GetAttribute( "tileheight", 0 );
 
-        var hexSideLength      = root.GetIntAttribute( "hexsidelength", 0 );
+        var hexSideLength      = root.GetAttribute( "hexsidelength", 0 );
         var staggerAxis        = root.GetAttribute( "staggeraxis", null );
         var staggerIndex       = root.GetAttribute( "staggerindex", null );
         var mapBackgroundColor = root.GetAttribute( "backgroundcolor", null );
 
         MapProperties mapProperties = Map.Properties;
 
-        if ( mapOrientation != null )
+        if ( mapOrientation != string.Empty )
         {
             mapProperties.Put( "orientation", mapOrientation );
         }
@@ -145,17 +144,17 @@ public abstract class BaseTmxMapLoader<TP>
         mapProperties.Put( "tileheight", tileHeight );
         mapProperties.Put( "hexsidelength", hexSideLength );
 
-        if ( staggerAxis != null )
+        if ( staggerAxis != string.Empty )
         {
             mapProperties.Put( "staggeraxis", staggerAxis );
         }
 
-        if ( staggerIndex != null )
+        if ( staggerIndex != string.Empty )
         {
             mapProperties.Put( "staggerindex", staggerIndex );
         }
 
-        if ( mapBackgroundColor != null )
+        if ( mapBackgroundColor != string.Empty )
         {
             mapProperties.Put( "backgroundcolor", mapBackgroundColor );
         }
@@ -165,7 +164,7 @@ public abstract class BaseTmxMapLoader<TP>
         this.mapWidthInPixels  = mapWidth * tileWidth;
         this.mapHeightInPixels = mapHeight * tileHeight;
 
-        if ( mapOrientation != null )
+        if ( mapOrientation != string.Empty )
         {
             if ( "staggered".Equals( mapOrientation ) )
             {
@@ -400,8 +399,8 @@ public abstract class BaseTmxMapLoader<TP>
 
         var opacity = float.Parse
             (
-             element.GetAttribute( "opacity", "1.0" )
-             ?? throw new NullReferenceException()
+            element.GetAttribute( "opacity", "1.0" )
+            ?? throw new NullReferenceException()
             );
 
         var visible = element.GetIntAttribute( "visible", 1 ) == 1;
@@ -616,11 +615,11 @@ public abstract class BaseTmxMapLoader<TP>
         {
             throw new GdxRuntimeException
                 (
-                 "Wrong type given for property "
-                 + name
-                 + ", given : "
-                 + type
-                 + ", supported : string, bool, int, float, color"
+                "Wrong type given for property "
+                + name
+                + ", given : "
+                + type
+                + ", supported : string, bool, int, float, color"
                 );
         }
     }
@@ -867,24 +866,24 @@ public abstract class BaseTmxMapLoader<TP>
 
             AddStaticTiles
                 (
-                 tmxFile,
-                 imageResolver,
-                 tileSet,
-                 element,
-                 tileElements,
-                 name,
-                 firstgid,
-                 tilewidth,
-                 tileheight,
-                 spacing,
-                 margin,
-                 source,
-                 offsetX,
-                 offsetY,
-                 imageSource,
-                 imageWidth,
-                 imageHeight,
-                 image
+                tmxFile,
+                imageResolver,
+                tileSet,
+                element,
+                tileElements,
+                name,
+                firstgid,
+                tilewidth,
+                tileheight,
+                spacing,
+                margin,
+                source,
+                offsetX,
+                offsetY,
+                imageSource,
+                imageWidth,
+                imageHeight,
+                image
                 );
 
             List< AnimatedTiledMapTile > animatedTiles = new List< AnimatedTiledMapTile >();
@@ -991,11 +990,11 @@ public abstract class BaseTmxMapLoader<TP>
             {
                 staticTiles.Add
                     (
-                     ( StaticTiledMapTile )tileSet.GetTile
-                         ( firstgid + frameElement.GetAttribute( "tileid" ) )!
+                    ( StaticTiledMapTile )tileSet.GetTile
+                        ( firstgid + int.Parse( frameElement.GetAttribute( "tileid" ) ) )!
                     );
 
-                intervals.Add( frameElement.GetIntAttribute( "duration" ) );
+                intervals.Add( int.Parse( frameElement.GetAttribute( "duration" ) ) );
             }
 
             var animatedTile = new AnimatedTiledMapTile( intervals, staticTiles )

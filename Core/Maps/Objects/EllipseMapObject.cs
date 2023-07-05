@@ -18,6 +18,8 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Objects;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class EllipseMapObject : MapObject
 {
     public Ellipse Ellipse { get; set; }
@@ -26,9 +28,8 @@ public class EllipseMapObject : MapObject
     /// Creates an <see cref="Ellipse"/> object whose lower left corner
     /// is at(0, 0) with width=1 and height=1
     /// </symmary>
-    public EllipseMapObject()
+    public EllipseMapObject() : this( 0.0f, 0.0f, 1.0f, 1.0f )
     {
-        this( 0.0f, 0.0f, 1.0f, 1.0f );
     }
 
     /// <summary>

@@ -17,11 +17,11 @@
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Extends <see cref="DataOutputStream"/> with additional convenience methods.
+/// Extends <see cref="BinaryWriter"/> with additional convenience methods.
 /// </summary>
-public class DataOutput : DataOutputStream
+public class DataOutput : BinaryWriter
 {
-    public DataOutput( OutputStream @out ) : base( @out )
+    public DataOutput( StreamWriter output )
     {
     }
 

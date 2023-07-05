@@ -14,8 +14,27 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Maths;
+
 namespace LibGDXSharp.Utils.Collections;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ObjectSet<T>
 {
+    public static int TableSize( int capacity, float loadFactor )
+    {
+        if ( capacity < 0 )
+        {
+            throw new ArgumentException( "capacity must be >= 0: " + capacity );
+        }
+        
+        var tableSize = MathUtils.NextPowerOfTwo( Math.Max( 2, ( int )Math.Ceiling( capacity / loadFactor ) ) );
+
+        if ( tableSize > ( 1 << 30 ) )
+        {
+            throw new ArgumentException( "The required capacity is too large: " + capacity );
+        }
+
+        return tableSize;
+    }
 }

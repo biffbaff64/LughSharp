@@ -19,6 +19,8 @@ using System.Text;
 
 using LibGDXSharp.Utils.Collections;
 
+using static LibGDXSharp.Utils.Collections.ObjectSet<object>;
+
 namespace LibGDXSharp.Core.Utils.Collections;
 
 /// <summary>
@@ -48,7 +50,7 @@ public class ObjectMap<TK, TV>
     private readonly float _loadFactor;
     private          int   _threshold;
 
-    private readonly object _dummy = new object();
+    private readonly object _dummy = new();
 
     /// <summary>
     /// Used by <see cref="Place"/> to bit shift the upper bits of a <b>long</b>
@@ -94,7 +96,7 @@ public class ObjectMap<TK, TV>
 
         this._loadFactor = loadFactor;
 
-        var tableSize = ArrayUtils.TableSize( initialCapacity, loadFactor );
+        var tableSize = TableSize( initialCapacity, loadFactor );
 
         _threshold = ( int )( tableSize * loadFactor );
         Mask      = tableSize - 1;
@@ -108,7 +110,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <param name="map">The ObjectMap to copy.</param>
     /// <exception cref="ArgumentException"></exception>
-    public ObjectMap( ObjectMap< TK, TV > map )
+    protected ObjectMap( ObjectMap< TK, TV > map )
     {
         if ( map == null ) throw new ArgumentException( "supplied map is null!" );
 
@@ -119,7 +121,7 @@ public class ObjectMap<TK, TV>
 
         this._loadFactor = map._loadFactor;
 
-        var tableSize = ArrayUtils.TableSize
+        var tableSize = TableSize
             (
              ( int )( map.keyTable.Length * map._loadFactor ),
              _loadFactor
@@ -274,7 +276,7 @@ public class ObjectMap<TK, TV>
             throw new ArgumentException( "maximumCapacity must be >= 0: " + maximumCapacity );
         }
 
-        var tableSize = ArrayUtils.TableSize( maximumCapacity, _loadFactor );
+        var tableSize = TableSize( maximumCapacity, _loadFactor );
 
         if ( keyTable.Length > tableSize )
         {
@@ -287,7 +289,7 @@ public class ObjectMap<TK, TV>
     /// <param name="maximumCapacity"></param>
     public void Clear( int maximumCapacity )
     {
-        var tableSize = ArrayUtils.TableSize( maximumCapacity, _loadFactor );
+        var tableSize = TableSize( maximumCapacity, _loadFactor );
 
         if ( keyTable.Length <= tableSize )
         {
@@ -388,7 +390,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     public void EnsureCapacity( int additionalCapacity )
     {
-        var tableSize = ArrayUtils.TableSize( Size + additionalCapacity, _loadFactor );
+        var tableSize = TableSize( Size + additionalCapacity, _loadFactor );
 
         if ( keyTable.Length < tableSize )
         {

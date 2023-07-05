@@ -334,10 +334,78 @@ GRAPHICS/G3D/MODEL/DATA
 GRAPHICS/G3D/PARTICLES
 ----------------------
 
-    -      - 
-    -      - 
-    -      - 
-    -      - 
+    -      - ParticleArray
+    -      - ParticleChannels
+    -      - ParticleController
+    -      - ParticleControllerComponent
+    -      - ParticleEffect
+    -      - ParticleEffectLoader
+    -      - ParticleShader
+    -      - ParticleSorter
+    -      - ParticleSystem
+    -      - ResourceData
+
+GRAPHICS/G3D/PARTICLES/BATCHES
+------------------------------
+
+    -      - BillboardParticleBatch
+    -      - BufferedParticleBatch
+    -      - IParticleBatch
+    -      - ModelInstanceParticleBatch
+    -      - PointSpriteParticleBatch
+
+GRAPHICS/G3D/PARTICLES/EMITTERS
+-------------------------------
+
+    -      - Emitter
+    -      - RegularEmitter
+
+GRAPHICS/G3D/PARTICLES/INFLUENCERS
+----------------------------------
+
+    -      - ColorInfluencer
+    -      - DynamicsInfluencer
+    -      - DynamicsModifier
+    -      - Influencer
+    -      - ModelInfluencer
+    -      - ParticleControllerFinalizerInfluencer
+    -      - ParticleControllerInfluencer
+    -      - RegionInfluencer
+    -      - ScaleInfluencer
+    -      - SimpleInfluencer
+    -      - SpawnInfluencer
+
+GRAPHICS/G3D/PARTICLES/RENDERERS
+--------------------------------
+
+    -      - BillboardControllerRenderData
+    -      - BillboardRenderer
+    -      - ModelInstanceControllerRenderData
+    -      - ModelInstanceRenderer
+    -      - ParticleControllerControllerRenderer
+    -      - ParticleControllerRenderData
+    -      - ParticleControllerRenderer
+    -      - PointSpriteControllerRenderData
+    -      - PointSpriteRenderer
+
+GRAPHICS/G3D/PARTICLES/VALUES
+-----------------------------
+
+    -      - CylinderSpawnShapeValue
+    -      - EllipseSpawnShapeValue
+    -      - GradientColorValue
+    -      - LineSpawnShapeValue
+    -      - MeshSpawnShapeValue
+    -      - NumericValue
+    -      - ParticleValue
+    -      - PointSpawnShapeValue
+    -      - PrimitiveSpawnShapeValue
+    -      - RangedNumericValue
+    -      - RectangleSpawnShapeValue
+    -      - ScaledNumericValue
+    -      - SpawnShapeValue
+    -      - UnweightedMeshSpawnShapeValue
+    -      - WeightMeshSpawnShapeValue
 
 GRAPHICS/G3D/SHADERS
 --------------------
@@ -349,10 +417,40 @@ GRAPHICS/G3D/SHADERS
 GRAPHICS/G3D/UTILS
 ------------------
   
-    -      - 
+    -      - AnimationController
+    -      - BaseAnimationController
+    -      - BaseShaderProvider
+    -      - CameraInputController
+    -      - DefaultRenderableSorter
+    -      - DefaultShaderProvider
+    -      - DefaultTexureBinder
+    -      - DepthShaderProvider
+    -      - FirstPersonCameraController
+    -      - IMeshPartBuilder
+    -      - IRenderableSorter
+    -      - IShaderProvider
+    -      - ITextureBinder
     - DONE - ITextureProvider
-    -      - 
-    -      - 
+    -      - MeshBuilder
+    -      - ModelBuilder
+    -      - RenderContext
+    -      - ShapeCache
+    -      - TextureDescriptor
+
+GRAPHICS/G3D/UTILS/SHAPEBUILDERS
+--------------------------------
+
+    -      - ArrowShapeBuilder
+    -      - BaseShapeBuilder
+    -      - BoxShapeBuilder
+    -      - CapsuleShapeBuilder
+    -      - ConeShapeBuilder
+    -      - CylinderShapeBuilder
+    -      - EllipseShapeBuilder
+    -      - FrustrumShapeBuilder
+    -      - PatchShapeBuilder
+    -      - RenderableShapeBuilder
+    -      - SphereShapeBuilder
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -779,8 +877,7 @@ UTILS/COLLECTIONS
     Note: C# has IEnumerable and IEnumerator interfaces...
 
     - DONE - Array<T>                       Converted, but use List<>
-    -      - ArrayUtils
-    - **** - CollectionsData
+    - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - **** - IPredicate
@@ -795,26 +892,26 @@ UTILS/COLLECTIONS
     - DONE - SnapshotArray                  Convert / extend List<T>
 
 
-    - **** - Array                          List<>
+    - **** - Array                          Use List<>
     - **** - ArrayMap                       Use Dictionary<K, V>
     - **** - ArrayIterable                  Use IEnumerable?
     - **** - ArrayIterator                  Use IEnumerator?
-    - **** - BoolArray                      List< bool >
-    - **** - ByteArray                      List< byte >
-    - **** - CharArray                      List< char >
-    - **** - FloatArray                     List< float >
-    - **** - IntArray                       List< int >
+    - **** - BoolArray                      Use List< bool >
+    - **** - ByteArray                      Use List< byte >
+    - **** - CharArray                      Use List< char >
+    - **** - FloatArray                     Use List< float >
+    - **** - IntArray                       Use List< int >
     - **** - IntFloatMap                    Use Dictionary< int, float >
     - **** - IntIntMap                      Use Dictionary< int, int >
     - **** - IntMap                         Use Dictionary< int, V >
     - **** - IntSet                         Use List<int>
-    - **** - LongArray                      List< long >
+    - **** - LongArray                      Use List< long >
     - **** - LongMap                        Use Dictionary< long, V >
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
     - **** - ObjectIntMap                   Use Dictionary< object, int >
     - **** - ObjectLongMap                  Use Dictionary< object, long >
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
-    - **** - ShortArray                     List< short >
+    - **** - ShortArray                     Use List< short >
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -890,6 +987,9 @@ UTILS/EXCEPTIONS
 UTILS/JSON
 ----------
 
+    Use an existing Json library, but this could be
+    converted at a later date.
+
     - **** - IBaseJsonReader
     - **** - Json
     - **** - JsonReader
@@ -897,9 +997,6 @@ UTILS/JSON
     - **** - JsonWriter
     - **** - UBJsonReader
     - **** - UBJsonWriter
-
-    using an existing Json library would be better, but this could be
-    converted at a later date.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
