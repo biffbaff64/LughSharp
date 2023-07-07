@@ -19,8 +19,8 @@ namespace LibGDXSharp.Maps.Tiled;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class TiledMap : Map, IDisposable
 {
-    public TiledMapTileSets Tilesets       { get;         set; }
-    public List< object >?  OwnedResources { private get; set; }
+    public TiledMapTileSets Tilesets       { get; set; }
+    public List< object >?  OwnedResources { get; set; }
 
     public TiledMap()
     {
@@ -36,7 +36,7 @@ public class TiledMap : Map, IDisposable
         {
             if ( OwnedResources != null )
             {
-                foreach( IDisposable disposable in OwnedResources )
+                foreach ( IDisposable disposable in OwnedResources )
                 {
                     disposable.Dispose();
                 }

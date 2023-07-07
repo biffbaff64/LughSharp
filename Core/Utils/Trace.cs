@@ -382,9 +382,9 @@ public static class Trace
 
         _debugFileName = fileName;
 
-        using var fs = File.Create( _debugFilePath + _debugFileName );
+        using FileStream fs = File.Create( _debugFilePath + _debugFileName );
 
-        var dateTime = DateTime.Now;
+        DateTime dateTime = DateTime.Now;
 
         var divider =
             new UTF8Encoding( true )
@@ -407,7 +407,7 @@ public static class Trace
     {
         if ( File.Exists( _debugFilePath + _debugFileName ) )
         {
-            using var fs = File.Open( _debugFilePath + _debugFileName, FileMode.Append );
+            using FileStream fs = File.Open( _debugFilePath + _debugFileName, FileMode.Append );
 
             var debugLine = new UTF8Encoding( true ).GetBytes( text + "\n" );
             fs.Write( debugLine, 0, debugLine.Length );

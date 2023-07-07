@@ -231,7 +231,7 @@ public sealed class XmlReader
     }
 
     [Obsolete]
-    public static Element Parse( FileInfo file )
+    public Element Parse( FileInfo file )
     {
 //        try
 //        {
@@ -867,7 +867,7 @@ public sealed class XmlReader
         /// <param name="name">The name of the child <see cref="Element"/></param>
         /// <returns>The first child having the given name or null, does not recurse.</returns>
         [Obsolete]
-        internal Element? GetChildByName( string name )
+        public Element? GetChildByName( string name )
         {
             if ( _children == null ) return null;
 
