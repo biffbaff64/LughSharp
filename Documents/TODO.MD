@@ -156,6 +156,7 @@ FILES
     - java.nio.BufferUtils                  ->  
     - java.nio.ByteBuffer                   ->  
     - java.nio.ByteBuffer                   -> 
+    - java.nio.CharBuffer                   -> 
     - java.nio.DataBuffer                   -> 
     - java.nio.DirectByteBuffer             -> 
     - java.nio.DoubleBuffer                 -> 
@@ -867,6 +868,18 @@ UTILS/ASYNC
     - **** - AsyncResult|
     - **** - IAsyncTask
     - **** - ThreadUtils
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UTILS/BUFFERS
+-------------
+
+    - DONE - Buffer
+    -      - ByteBuffer
+    -      - CharBuffer
+    -      - 
+    -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

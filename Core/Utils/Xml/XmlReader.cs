@@ -17,24 +17,24 @@
 using System.Runtime.Serialization;
 using System.Text;
 
+using LibGDXSharp.Core.Files;
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Utils.Xml;
 
 /// <summary>
-/// Lightweight XML parser. Supports a subset of XML features: elements, attributes,
-/// text, predefined entities, CDATA, mixed content. Namespaces are parsed as part
-/// of the element or attribute name. Prologs and doctypes are ignored. Only 8-bit
-/// character encodings are supported. Input is assumed to be well formed.
-/// <p>
-/// The default behavior is to parse the XML into a DOM. Extends this class and
-/// override methods to perform event driven parsing. When this is done, the parse
-/// methods will return null.
-/// </p>
+///     Lightweight XML parser. Supports a subset of XML features: elements, attributes,
+///     text, predefined entities, CDATA, mixed content. Namespaces are parsed as part
+///     of the element or attribute name. Prologs and doctypes are ignored. Only 8-bit
+///     character encodings are supported. Input is assumed to be well formed.
+///     <p>
+///         The default behavior is to parse the XML into a DOM. Extends this class and
+///         override methods to perform event driven parsing. When this is done, the parse
+///         methods will return null.
+///     </p>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[Obsolete]
 public sealed class XmlReader
 {
     private const int Xml_Start          = 1;
@@ -43,11 +43,21 @@ public sealed class XmlReader
     private const int Xml_En_ElementBody = 15;
     private const int Xml_En_Main        = 1;
 
+    private readonly static byte[]  xmlActions       = Init_XmlActions_0();
+    private readonly static byte[]  xmlKeyOffsets    = Init_XmlKeyOffsets_0();
+    private readonly static char[]  xmlTransKeys     = Init_XmlTransKeys_0();
+    private readonly static byte[]  xmlSingleLengths = Init_XmlSingleLengths_0();
+    private readonly static byte[]  xmlRangeLengths  = Init_XmlRangeLengths_0();
+    private readonly static short[] xmlIndexOffsets  = Init_XmlIndexOffsets_0();
+    private readonly static byte[]  xmlIndicies      = Init_XmlIndicies_0();
+    private readonly static byte[]  xmlTransTargs    = Init_XmlTransTargs_0();
+    private readonly static byte[]  xmlTransActions  = Init_XmlTransActions_0();
+
     private readonly List< Element > _elements   = new( 8 );
     private readonly StringBuilder   _textBuffer = new( 64 );
+    private          Element?        _current;
 
     private Element? _root;
-    private Element? _current;
 
     private static byte[] Init_XmlActions_0()
     {
@@ -151,21 +161,10 @@ public sealed class XmlReader
         };
     }
 
-    private readonly static byte[]  xmlActions       = Init_XmlActions_0();
-    private readonly static byte[]  xmlKeyOffsets    = Init_XmlKeyOffsets_0();
-    private readonly static char[]  xmlTransKeys     = Init_XmlTransKeys_0();
-    private readonly static byte[]  xmlSingleLengths = Init_XmlSingleLengths_0();
-    private readonly static byte[]  xmlRangeLengths  = Init_XmlRangeLengths_0();
-    private readonly static short[] xmlIndexOffsets  = Init_XmlIndexOffsets_0();
-    private readonly static byte[]  xmlIndicies      = Init_XmlIndicies_0();
-    private readonly static byte[]  xmlTransTargs    = Init_XmlTransTargs_0();
-    private readonly static byte[]  xmlTransActions  = Init_XmlTransActions_0();
-
     // ----------------------------------------------------------
     // 
     // ----------------------------------------------------------
 
-    [Obsolete]
     public Element Parse( string xml )
     {
         var data = xml.ToCharArray();
@@ -173,8 +172,7 @@ public sealed class XmlReader
         return Parse( data, 0, data.Length );
     }
 
-    [Obsolete]
-    public Element Parse( Reader reader )
+    public Element Parse( CloseableStreamReader reader )
     {
         try
         {
@@ -185,7 +183,10 @@ public sealed class XmlReader
             {
                 var length = reader.Read( data, offset, data.Length - offset );
 
-                if ( length == -1 ) break;
+                if ( length == -1 )
+                {
+                    break;
+                }
 
                 if ( length == 0 )
                 {
@@ -213,26 +214,24 @@ public sealed class XmlReader
         }
     }
 
-    [Obsolete]
-    public Element Parse( InputStream input )
-    {
-        try
-        {
-            return Parse( new InputStreamReader( input, "UTF-8" ) );
-        }
-        catch ( IOException ex )
-        {
-            throw new SerializationException( ex.Message );
-        }
-        finally
-        {
-            StreamUtils.CloseQuietly( input );
-        }
-    }
+//    public Element Parse( CloseableStreamReader input )
+//    {
+//        try
+//        {
+//            return Parse( new CloseableStreamReader( input, "UTF-8" ) );
+//        }
+//        catch ( IOException ex )
+//        {
+//            throw new SerializationException( ex.Message );
+//        }
+//        finally
+//        {
+//            StreamUtils.CloseQuietly( input );
+//        }
+//    }
 
-    [Obsolete]
-    public Element Parse( FileInfo file )
-    {
+//    public Element Parse( FileInfo file )
+//    {
 //        try
 //        {
 //            return Parse( file.OpenRead() );
@@ -241,11 +240,8 @@ public sealed class XmlReader
 //        {
 //            throw new SerializationException( "Error parsing file: " + file, ex );
 //        }
+//    }
 
-        throw new NotImplementedException();
-    }
-
-    [Obsolete]
     private Element Parse( char[] data, int offset, int length )
     {
         int cs;
@@ -264,11 +260,11 @@ public sealed class XmlReader
         // line 97 "XmlReader.java"
         {
             int klen;
-            int trans = 0;
+            int trans;
             int acts;
             int nacts;
             int keys;
-            int gotoTarg = 0;
+            var gotoTarg = 0;
 
             _goto:
 
@@ -292,7 +288,7 @@ public sealed class XmlReader
                         }
 
                         break;
-                    
+
                     case 1:
                         _match:
 
@@ -304,13 +300,16 @@ public sealed class XmlReader
 
                             if ( klen > 0 )
                             {
-                                int lower = keys;
+                                var lower = keys;
                                 int mid;
-                                int upper = ( keys + klen ) - 1;
+                                var upper = ( keys + klen ) - 1;
 
                                 while ( true )
                                 {
-                                    if ( upper < lower ) break;
+                                    if ( upper < lower )
+                                    {
+                                        break;
+                                    }
 
                                     mid = lower + ( ( upper - lower ) >> 1 );
 
@@ -324,7 +323,7 @@ public sealed class XmlReader
                                     }
                                     else
                                     {
-                                        trans += ( mid - keys );
+                                        trans += mid - keys;
 
                                         goto _match;
                                     }
@@ -338,13 +337,16 @@ public sealed class XmlReader
 
                             if ( klen > 0 )
                             {
-                                int lower = keys;
+                                var lower = keys;
                                 int mid;
-                                int upper = ( keys + ( klen << 1 ) ) - 2;
+                                var upper = ( keys + ( klen << 1 ) ) - 2;
 
                                 while ( true )
                                 {
-                                    if ( upper < lower ) break;
+                                    if ( upper < lower )
+                                    {
+                                        break;
+                                    }
 
                                     mid = lower + ( ( ( upper - lower ) >> 1 ) & ~1 );
 
@@ -358,7 +360,7 @@ public sealed class XmlReader
                                     }
                                     else
                                     {
-                                        trans += ( ( mid - keys ) >> 1 );
+                                        trans += ( mid - keys ) >> 1;
 
                                         goto _match;
                                     }
@@ -375,7 +377,7 @@ public sealed class XmlReader
                         if ( xmlTransActions[ trans ] != 0 )
                         {
                             acts  = xmlTransActions[ trans ];
-                            nacts = ( int )xmlActions[ acts++ ];
+                            nacts = xmlActions[ acts++ ];
 
                             while ( nacts-- > 0 )
                             {
@@ -392,7 +394,7 @@ public sealed class XmlReader
                                     case 1:
                                         // line 95 "XmlReader.rl"
                                     {
-                                        char c = data[ s ];
+                                        var c = data[ s ];
 
                                         if ( ( c == '?' ) || ( c == '!' ) )
                                         {
@@ -416,7 +418,9 @@ public sealed class XmlReader
                                                 while ( ( data[ p - 2 ] != ']' )
                                                         || ( data[ p - 1 ] != ']' )
                                                         || ( data[ p ] != '>' ) )
+                                                {
                                                     p++;
+                                                }
 
                                                 Text( new string( data, s, p - s - 2 ) );
                                             }
@@ -429,19 +433,28 @@ public sealed class XmlReader
                                                 while ( ( data[ p ] != '-' )
                                                         || ( data[ p + 1 ] != '-' )
                                                         || ( data[ p + 2 ] != '>' ) )
+                                                {
                                                     p++;
+                                                }
 
                                                 p += 2;
                                             }
                                             else
+                                            {
                                                 while ( data[ p ] != '>' )
+                                                {
                                                     p++;
+                                                }
+                                            }
 
                                             {
                                                 cs       = 15;
                                                 gotoTarg = 2;
 
-                                                if ( true ) goto _goto;
+                                                if ( true )
+                                                {
+                                                    goto _goto;
+                                                }
                                             }
                                         }
 
@@ -462,8 +475,9 @@ public sealed class XmlReader
                                             gotoTarg = 2;
 
                                             if ( true )
-                                                goto
-                                                    _goto;
+                                            {
+                                                goto _goto;
+                                            }
                                         }
                                     }
 
@@ -479,8 +493,9 @@ public sealed class XmlReader
                                             gotoTarg = 2;
 
                                             if ( true )
-                                                goto
-                                                    _goto;
+                                            {
+                                                goto _goto;
+                                            }
                                         }
                                     }
 
@@ -495,8 +510,9 @@ public sealed class XmlReader
                                             gotoTarg = 2;
 
                                             if ( true )
-                                                goto
-                                                    _goto;
+                                            {
+                                                goto _goto;
+                                            }
                                         }
                                     }
 
@@ -521,7 +537,7 @@ public sealed class XmlReader
                                     case 7:
                                         // line 143 "XmlReader.rl"
                                     {
-                                        int end = p;
+                                        var end = p;
 
                                         while ( end != s )
                                         {
@@ -539,23 +555,31 @@ public sealed class XmlReader
                                             break;
                                         }
 
-                                        int  current     = s;
-                                        bool entityFound = false;
+                                        var current     = s;
+                                        var entityFound = false;
 
                                         while ( current != end )
                                         {
-                                            if ( data[ current++ ] != '&' ) continue;
-                                            int entityStart = current;
+                                            if ( data[ current++ ] != '&' )
+                                            {
+                                                continue;
+                                            }
+
+                                            var entityStart = current;
 
                                             while ( current != end )
                                             {
-                                                if ( data[ current++ ] != ';' ) continue;
+                                                if ( data[ current++ ] != ';' )
+                                                {
+                                                    continue;
+                                                }
+
                                                 _textBuffer.Append( data, s, entityStart - s - 1 );
 
-                                                string name = new string
+                                                var name = new string
                                                     ( data, entityStart, current - entityStart - 1 );
 
-                                                string value = Entity( name );
+                                                var value = Entity( name );
                                                 _textBuffer.Append( value != null ? value : name );
                                                 s           = current;
                                                 entityFound = true;
@@ -566,7 +590,11 @@ public sealed class XmlReader
 
                                         if ( entityFound )
                                         {
-                                            if ( s < end ) _textBuffer.Append( data, s, end - s );
+                                            if ( s < end )
+                                            {
+                                                _textBuffer.Append( data, s, end - s );
+                                            }
+
                                             Text( _textBuffer.ToString() );
                                             _textBuffer.Length = 0;
                                         }
@@ -600,7 +628,7 @@ public sealed class XmlReader
                         }
 
                         break;
-                    
+
                     case 4:
                     case 5:
                         break;
@@ -614,18 +642,23 @@ public sealed class XmlReader
 
         if ( p < pe )
         {
-            int lineNumber = 1;
+            var lineNumber = 1;
 
-            for ( int i = 0; i < p; i++ )
+            for ( var i = 0; i < p; i++ )
+            {
                 if ( data[ i ] == '\n' )
+                {
                     lineNumber++;
+                }
+            }
 
             throw new SerializationException
                 (
-                 "Error parsing XML on line " + lineNumber + " near: " + new string( data, p, Math.Min( 32, pe - p ) )
+                "Error parsing XML on line " + lineNumber + " near: " + new string( data, p, Math.Min( 32, pe - p ) )
                 );
         }
-        else if ( _elements.Count != 0 )
+
+        if ( _elements.Count != 0 )
         {
             Element element = _elements.Peek();
             _elements.Clear();
@@ -633,13 +666,12 @@ public sealed class XmlReader
             throw new SerializationException( "Error parsing XML, unclosed element: " + element.Name );
         }
 
-        Element? root = this._root;
-        this._root = null;
+        Element? root = _root;
+        _root = null;
 
         return root;
     }
 
-    [Obsolete]
     private void Open( string name )
     {
         var child = new Element( name, _current );
@@ -650,32 +682,47 @@ public sealed class XmlReader
         _current = child;
     }
 
-    [Obsolete]
     private void Attribute( string name, string value )
     {
         _current?.SetAttribute( name, value );
     }
 
-    [Obsolete]
     public string? Entity( string name )
     {
-        if ( name.Equals( "lt" ) ) return "<";
-        if ( name.Equals( "gt" ) ) return ">";
-        if ( name.Equals( "amp" ) ) return "&";
-        if ( name.Equals( "apos" ) ) return "'";
-        if ( name.Equals( "quot" ) ) return "\"";
+        if ( name.Equals( "lt" ) )
+        {
+            return "<";
+        }
+
+        if ( name.Equals( "gt" ) )
+        {
+            return ">";
+        }
+
+        if ( name.Equals( "amp" ) )
+        {
+            return "&";
+        }
+
+        if ( name.Equals( "apos" ) )
+        {
+            return "'";
+        }
+
+        if ( name.Equals( "quot" ) )
+        {
+            return "\"";
+        }
 
         return name.StartsWith( "#x" ) ? char.Parse( name[ 2.. ] ).ToString() : null;
     }
 
-    [Obsolete]
     private void Text( string text )
     {
-        string? existing = _current?.Text;
-        _current!.Text = ( existing != null ? existing + text : text );
+        var existing = _current?.Text;
+        _current!.Text = existing != null ? existing + text : text;
     }
 
-    [Obsolete]
     private void Close()
     {
         _root    = _elements.Pop();
@@ -686,44 +733,45 @@ public sealed class XmlReader
     //
     // --------------------------------------------------------------------
 
-    [Obsolete]
     public sealed class Element
     {
-        public string                         Name       { get; private set; }
-        public ObjectMap< string, string? >? Attributes { get; set; }
-        public Element                        Parent     { get; set; }
-        public string                         Text       { get; set; }
-
         private List< Element >? _children;
 
-        [Obsolete]
         public Element( string name, Element parent )
         {
-            this.Name   = name;
-            this.Parent = parent;
-            this.Text   = string.Empty;
+            Name   = name;
+            Parent = parent;
+            Text   = string.Empty;
         }
+
+        public string                        Name       { get; }
+        public ObjectMap< string, string? >? Attributes { get; set; }
+        public Element                       Parent     { get; set; }
+        public string                        Text       { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public int ChildCount => _children?.Count ?? 0;
 
         /// <summary>
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="GdxRuntimeException"></exception>
-        [Obsolete]
         public string GetAttribute( string name )
         {
             ArgumentNullException.ThrowIfNull( name );
 
             if ( Attributes == null )
             {
-                throw new GdxRuntimeException( $"Element {this.Name} doesn't have attribute: {name}" );
+                throw new GdxRuntimeException( $"Element {Name} doesn't have attribute: {name}" );
             }
 
             var value = Attributes.Get( name );
 
-            if ( string.ReferenceEquals( value, null ) )
+            if ( ReferenceEquals( value, null ) )
             {
-                throw new GdxRuntimeException( $"Element {this.Name} doesn't have attribute: {name}" );
+                throw new GdxRuntimeException( $"Element {Name} doesn't have attribute: {name}" );
             }
 
             return value;
@@ -734,10 +782,12 @@ public sealed class XmlReader
         /// <param name="name"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        [Obsolete]
         public string? GetAttribute( string name, string? defaultValue )
         {
-            if ( Attributes == null ) return defaultValue;
+            if ( Attributes == null )
+            {
+                return defaultValue;
+            }
 
             var value = Attributes.Get( name );
 
@@ -749,17 +799,12 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        [Obsolete]
-        public bool HasAttribute( string name )
-        {
-            return ( Attributes != null ) && Attributes.ContainsKey( name );
-        }
+        public bool HasAttribute( string name ) => ( Attributes != null ) && Attributes.ContainsKey( name );
 
         /// <summary>
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        [Obsolete]
         public void SetAttribute( string name, string value )
         {
             Attributes ??= new ObjectMap< string, string? >( 8 );
@@ -767,20 +812,16 @@ public sealed class XmlReader
             Attributes.Put( name, value );
         }
 
-        /// <summary>
-        /// </summary>
-        [Obsolete]
-        public int ChildCount => _children?.Count ?? 0;
-
-        [Obsolete]
         public Element GetChild( int index )
         {
-            if ( _children == null ) throw new GdxRuntimeException( "Element has no children: " + Name );
+            if ( _children == null )
+            {
+                throw new GdxRuntimeException( "Element has no children: " + Name );
+            }
 
             return _children[ index ];
         }
 
-        [Obsolete]
         public void AddChild( Element element )
         {
             _children ??= new List< Element >( 8 );
@@ -788,20 +829,16 @@ public sealed class XmlReader
             _children.Add( element );
         }
 
-        [Obsolete]
         public void RemoveChild( int index ) => _children?.RemoveAt( index );
 
-        [Obsolete]
         public void RemoveChild( Element child ) => _children?.Remove( child );
 
-        [Obsolete]
         public void Remove() => Parent.RemoveChild( this );
 
         /// <summary>
         /// </summary>
         /// <param name="indent"></param>
         /// <returns></returns>
-        [Obsolete]
         public string ToString( string indent = "" )
         {
             var buffer = new StringBuilder( 128 );
@@ -814,9 +851,9 @@ public sealed class XmlReader
             {
                 ObjectMap< string, string? >.Entries< string, string? > array = Attributes.GetEntries();
 
-                List< string > keys = Attributes.GetKeys().ToArray();
+                List< string >  keys = Attributes.GetKeys().ToArray();
                 List< string? > vals = Attributes.GetValues().ToArray();
-                
+
                 for ( var i = 0; i < Attributes.Size; i++ )
                 {
                     buffer.Append( ' ' );
@@ -864,16 +901,21 @@ public sealed class XmlReader
 
         /// <summary>
         /// </summary>
-        /// <param name="name">The name of the child <see cref="Element"/></param>
+        /// <param name="name">The name of the child <see cref="Element" /></param>
         /// <returns>The first child having the given name or null, does not recurse.</returns>
-        [Obsolete]
         public Element? GetChildByName( string name )
         {
-            if ( _children == null ) return null;
+            if ( _children == null )
+            {
+                return null;
+            }
 
             foreach ( Element element in _children )
             {
-                if ( element.Name.Equals( name ) ) return element;
+                if ( element.Name.Equals( name ) )
+                {
+                    return element;
+                }
             }
 
             return null;
@@ -883,7 +925,6 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        [Obsolete]
         public bool HasChild( string name )
         {
             if ( _children == null )
@@ -896,20 +937,28 @@ public sealed class XmlReader
 
         /// <summary>
         /// </summary>
-        /// <param name="name"> the name of the child <see cref="Element"/></param>
+        /// <param name="name"> the name of the child <see cref="Element" /></param>
         /// <returns> the first child having the given name or null, recurses </returns>
-        [Obsolete]
         public Element? GetChildByNameRecursive( string name )
         {
-            if ( _children == null ) return null;
+            if ( _children == null )
+            {
+                return null;
+            }
 
             foreach ( Element? element in _children )
             {
-                if ( ( element.Name != null ) && element.Name.Equals( name ) ) return element;
+                if ( ( element.Name != null ) && element.Name.Equals( name ) )
+                {
+                    return element;
+                }
 
                 Element? found = element.GetChildByNameRecursive( name );
 
-                if ( found != null ) return found;
+                if ( found != null )
+                {
+                    return found;
+                }
             }
 
             return null;
@@ -919,7 +968,6 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        [Obsolete]
         public bool HasChildRecursive( string name )
         {
             if ( _children == null )
@@ -931,8 +979,7 @@ public sealed class XmlReader
         }
 
         /// <param name="name"> the name of the children </param>
-        /// <returns> the children with the given name or an empty <seealso cref="Array"/>  </returns>
-        [Obsolete]
+        /// <returns> the children with the given name or an empty <seealso cref="Array" />  </returns>
         public List< Element > GetChildrenByName( string name )
         {
             var result = new List< Element >();
@@ -954,8 +1001,7 @@ public sealed class XmlReader
         }
 
         /// <param name="name"> the name of the children </param>
-        /// <returns> the children with the given name or an empty <seealso cref="Array"/>  </returns>
-        [Obsolete]
+        /// <returns> the children with the given name or an empty <seealso cref="Array" />  </returns>
         public List< Element > GetChildrenByNameRecursively( string name )
         {
             var result = new List< Element >();
@@ -969,10 +1015,12 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <param name="result"></param>
-        [Obsolete]
         private void GetChildrenByNameRecursively( string name, List< Element > result )
         {
-            if ( _children == null ) return;
+            if ( _children == null )
+            {
+                return;
+            }
 
             foreach ( Element child in _children )
             {
@@ -989,23 +1037,18 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        [Obsolete]
-        public float GetFloatAttribute( string name )
-        {
-            return float.Parse( GetAttribute( name ) );
-        }
+        public float GetFloatAttribute( string name ) => float.Parse( GetAttribute( name ) );
 
         /// <summary>
         /// </summary>
         /// <param name="name"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        [Obsolete]
         public float GetFloatAttribute( string name, float defaultValue )
         {
             var value = GetAttribute( name, null );
 
-            if ( string.ReferenceEquals( value, null ) )
+            if ( ReferenceEquals( value, null ) )
             {
                 return defaultValue;
             }
@@ -1017,23 +1060,18 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        [Obsolete]
-        public int GetIntAttribute( string name )
-        {
-            return int.Parse( GetAttribute( name ) );
-        }
+        public int GetIntAttribute( string name ) => int.Parse( GetAttribute( name ) );
 
         /// <summary>
         /// </summary>
         /// <param name="name"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        [Obsolete]
         public int GetIntAttribute( string name, int defaultValue )
         {
             var value = GetAttribute( name, null );
 
-            if ( string.ReferenceEquals( value, null ) )
+            if ( ReferenceEquals( value, null ) )
             {
                 return defaultValue;
             }
@@ -1045,23 +1083,18 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        [Obsolete]
-        public bool GetboolAttribute( string name )
-        {
-            return bool.Parse( GetAttribute( name ) );
-        }
+        public bool GetboolAttribute( string name ) => bool.Parse( GetAttribute( name ) );
 
         /// <summary>
         /// </summary>
         /// <param name="name"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        [Obsolete]
         public bool GetboolAttribute( string name, bool defaultValue )
         {
             var value = GetAttribute( name, null );
 
-            if ( string.ReferenceEquals( value, null ) )
+            if ( ReferenceEquals( value, null ) )
             {
                 return defaultValue;
             }
@@ -1070,29 +1103,27 @@ public sealed class XmlReader
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        [Obsolete]
         public string Get( string name )
         {
             var value = Get( name, null );
 
-            if ( string.ReferenceEquals( value, null ) )
+            if ( ReferenceEquals( value, null ) )
             {
-                throw new GdxRuntimeException( $"Element {this.Name} doesn't have attribute or child: {name}" );
+                throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" );
             }
 
             return value;
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        [Obsolete]
         public string? Get( string name, string? defaultValue )
         {
             string? str;
@@ -1101,7 +1132,7 @@ public sealed class XmlReader
             {
                 str = Attributes.Get( name );
 
-                if ( !string.ReferenceEquals( str, null ) )
+                if ( !ReferenceEquals( str, null ) )
                 {
                     return str;
                 }
@@ -1109,7 +1140,10 @@ public sealed class XmlReader
 
             Element? child = GetChildByName( name );
 
-            if ( child == null ) return defaultValue;
+            if ( child == null )
+            {
+                return defaultValue;
+            }
 
             str = child.Text;
 
@@ -1117,132 +1151,93 @@ public sealed class XmlReader
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        [Obsolete]
         public int GetInt( string name )
         {
             var value = Get( name, null );
 
-            if ( string.ReferenceEquals( value, null ) )
+            if ( ReferenceEquals( value, null ) )
             {
                 throw new GdxRuntimeException
-                    ( $"Element {this.Name} doesn't have attribute or child: {name}" );
+                    ( $"Element {Name} doesn't have attribute or child: {name}" );
             }
 
             return int.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        [Obsolete]
         public int GetInt( string name, int defaultValue )
         {
             var value = Get( name, null );
 
-            return string.ReferenceEquals( value, null ) ? defaultValue : int.Parse( value );
+            return ReferenceEquals( value, null ) ? defaultValue : int.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        [Obsolete]
         public float GetFloat( string name )
         {
             var value = Get( name, null );
 
-            if ( string.ReferenceEquals( value, null ) )
+            if ( ReferenceEquals( value, null ) )
             {
                 throw new GdxRuntimeException
-                    ( $"Element {this.Name} doesn't have attribute or child: {name}" );
+                    ( $"Element {Name} doesn't have attribute or child: {name}" );
             }
 
             return float.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        [Obsolete]
         public float GetFloat( string name, float defaultValue )
         {
             var value = Get( name, null );
 
-            return string.ReferenceEquals( value, null ) ? defaultValue : float.Parse( value );
+            return ReferenceEquals( value, null ) ? defaultValue : float.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        [Obsolete]
         public bool Getbool( string name )
         {
             var value = Get( name, null );
 
-            if ( string.ReferenceEquals( value, null ) )
+            if ( ReferenceEquals( value, null ) )
             {
                 throw new GdxRuntimeException
-                    ( $"Element {this.Name} doesn't have attribute or child: {name}" );
+                    ( $"Element {Name} doesn't have attribute or child: {name}" );
             }
 
             return bool.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
-        [Obsolete]
         public bool Getbool( string name, bool defaultValue )
         {
             var value = Get( name, null );
 
-            return string.ReferenceEquals( value, null ) ? defaultValue : bool.Parse( value );
+            return ReferenceEquals( value, null ) ? defaultValue : bool.Parse( value );
         }
-    }
-}
-
-[Obsolete]
-public class InputStreamReader : Reader
-{
-    [Obsolete]
-    public InputStreamReader( InputStream input, string utf )
-    {
-    }
-}
-
-[Obsolete]
-public class InputStream : ICloseable
-{
-    [Obsolete]
-    public void Close()
-    {
-    }
-}
-
-[Obsolete]
-public class Reader : ICloseable
-{
-    [Obsolete]
-    public int Read( char[] data, int offset, int dataLength )
-    {
-        return 0;
-    }
-
-    [Obsolete]
-    public void Close()
-    {
     }
 }
