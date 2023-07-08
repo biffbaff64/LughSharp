@@ -69,6 +69,17 @@ CORE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+CONVERSIONS FOR THE HELL OF IT
+------------------------------
+
+    -      - CharSequence
+    -      - 
+    -      - 
+    -      - 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 ASSETS
 ------
 
@@ -877,7 +888,9 @@ UTILS/BUFFERS
 
     - DONE - Buffer
     -      - ByteBuffer
-    -      - CharBuffer
+    - IP   - CharBuffer
+    -      - HeapCharBuffer
+    -      - StringCharBuffer
     -      - 
     -      - 
 

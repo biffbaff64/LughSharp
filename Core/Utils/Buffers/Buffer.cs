@@ -176,7 +176,6 @@ public abstract class Buffer
     /// </summary>
     protected Buffer( int mark, int pos, int lim, int cap )
     {
-        // package-private
         if ( cap < 0 ) throw new ArgumentException( "Negative capacity: " + cap );
 
         this.Capacity = cap;
@@ -195,17 +194,17 @@ public abstract class Buffer
     /// <summary>
     /// Returns this buffers capacity
     /// </summary>
-    public int Capacity { get; private set; }
+    public int Capacity { get; set; }
 
     /// <summary>
     /// Returns this buffer's limit.
     /// </summary>
-    public int Limit { get; private set; }
+    public int Limit { get; set; }
 
     /// <summary>
     /// Returns this buffers position
     /// </summary>
-    public int Position { get; private set; } = 0;
+    public int Position { get; set; } = 0;
 
     /// <summary>
     /// Sets this buffer's position.  If the mark is defined and larger than the
@@ -275,9 +274,9 @@ public abstract class Buffer
     /// <exception cref="InvalidMarkException">If the mark has not been set</exception>
     public Buffer Reset()
     {
-        var m = _mark;
+        int m;
 
-        if ( m < 0 ) throw new InvalidMarkException();
+        if ( (m = _mark) < 0 ) throw new InvalidMarkException();
 
         Position = m;
 
