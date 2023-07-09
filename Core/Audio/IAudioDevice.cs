@@ -48,7 +48,7 @@ public interface IAudioDevice
     /// <param name="samples">The samples.</param>
     /// <param name="offset">The offset into the samples array.</param>
     /// <param name="numSamples">The number of samples to write to the device.</param>
-    void WriteSample( float[] samples, int offset, int numSamples );
+    void WriteSamples( float[] samples, int offset, int numSamples );
 
     /// <summary>
     /// </summary>

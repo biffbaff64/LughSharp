@@ -17,6 +17,8 @@
 using System.Runtime.Serialization;
 using System.Text;
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Core.Files;
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Utils.Collections.Extensions;
@@ -165,6 +167,7 @@ public sealed class XmlReader
     // 
     // ----------------------------------------------------------
 
+    [UsedImplicitly]
     public Element Parse( string xml )
     {
         var data = xml.ToCharArray();
@@ -172,6 +175,7 @@ public sealed class XmlReader
         return Parse( data, 0, data.Length );
     }
 
+    [UsedImplicitly]
     public Element Parse( CloseableStreamReader reader )
     {
         try
@@ -737,21 +741,21 @@ public sealed class XmlReader
     {
         private List< Element >? _children;
 
-        public Element( string name, Element parent )
+        public string?                       Name       { get; }
+        public ObjectMap< string, string? >? Attributes { get; set; }
+        public Element?                      Parent     { get; set; }
+        public string?                       Text       { get; set; }
+
+        public Element( string name, Element? parent )
         {
             Name   = name;
             Parent = parent;
             Text   = string.Empty;
         }
 
-        public string                        Name       { get; }
-        public ObjectMap< string, string? >? Attributes { get; set; }
-        public Element                       Parent     { get; set; }
-        public string                        Text       { get; set; }
-
         /// <summary>
         /// </summary>
-        public int ChildCount => _children?.Count ?? 0;
+        [UsedImplicitly] public int ChildCount => _children?.Count ?? 0;
 
         /// <summary>
         /// </summary>
@@ -799,6 +803,7 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public bool HasAttribute( string name ) => ( Attributes != null ) && Attributes.ContainsKey( name );
 
         /// <summary>
@@ -812,6 +817,7 @@ public sealed class XmlReader
             Attributes.Put( name, value );
         }
 
+        [UsedImplicitly]
         public Element GetChild( int index )
         {
             if ( _children == null )
@@ -829,16 +835,20 @@ public sealed class XmlReader
             _children.Add( element );
         }
 
+        [UsedImplicitly]
         public void RemoveChild( int index ) => _children?.RemoveAt( index );
 
+        [UsedImplicitly]
         public void RemoveChild( Element child ) => _children?.Remove( child );
 
-        public void Remove() => Parent.RemoveChild( this );
+        [UsedImplicitly]
+        public void Remove() => Parent?.RemoveChild( this );
 
         /// <summary>
         /// </summary>
         /// <param name="indent"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public string ToString( string indent = "" )
         {
             var buffer = new StringBuilder( 128 );
@@ -910,9 +920,10 @@ public sealed class XmlReader
                 return null;
             }
 
-            foreach ( Element element in _children )
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach ( Element? element in _children )
             {
-                if ( element.Name.Equals( name ) )
+                if ( ( element.Name != null ) && ( element.Name.Equals( name ) ) )
                 {
                     return element;
                 }
@@ -925,6 +936,7 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public bool HasChild( string name )
         {
             if ( _children == null )
@@ -968,6 +980,7 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public bool HasChildRecursive( string name )
         {
             if ( _children == null )
@@ -980,28 +993,37 @@ public sealed class XmlReader
 
         /// <param name="name"> the name of the children </param>
         /// <returns> the children with the given name or an empty <seealso cref="Array" />  </returns>
+        [UsedImplicitly]
         public List< Element > GetChildrenByName( string name )
         {
             var result = new List< Element >();
 
-            if ( _children == null )
-            {
-                return result;
-            }
+            if ( _children == null ) return result;
 
-            foreach ( Element child in _children )
-            {
-                if ( ( child.Name != null ) && child.Name.Equals( name ) )
-                {
-                    result.Add( child );
-                }
-            }
+            // ----------------------------------------------------------------
+            
+            // FYI: This Linq...
+            result.AddRange( _children.Where( child => ( child.Name != null ) && child.Name.Equals( name ) ) );
 
+            // ...is the equivalent of this c#
+//            foreach ( Element child in _children )
+//            {
+//                if ( ( child.Name != null ) && child.Name.Equals( name ) )
+//                {
+//                    result.Add( child );
+//                }
+//            }
+
+            // ----------------------------------------------------------------
+            
             return result;
         }
 
+        /// <summary>
+        /// </summary>
         /// <param name="name"> the name of the children </param>
         /// <returns> the children with the given name or an empty <seealso cref="Array" />  </returns>
+        [UsedImplicitly]
         public List< Element > GetChildrenByNameRecursively( string name )
         {
             var result = new List< Element >();
@@ -1037,6 +1059,7 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public float GetFloatAttribute( string name ) => float.Parse( GetAttribute( name ) );
 
         /// <summary>
@@ -1044,6 +1067,7 @@ public sealed class XmlReader
         /// <param name="name"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public float GetFloatAttribute( string name, float defaultValue )
         {
             var value = GetAttribute( name, null );
@@ -1060,6 +1084,7 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public int GetIntAttribute( string name ) => int.Parse( GetAttribute( name ) );
 
         /// <summary>
@@ -1067,6 +1092,7 @@ public sealed class XmlReader
         /// <param name="name"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public int GetIntAttribute( string name, int defaultValue )
         {
             var value = GetAttribute( name, null );
@@ -1083,6 +1109,7 @@ public sealed class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public bool GetboolAttribute( string name ) => bool.Parse( GetAttribute( name ) );
 
         /// <summary>
@@ -1090,6 +1117,7 @@ public sealed class XmlReader
         /// <param name="name"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public bool GetboolAttribute( string name, bool defaultValue )
         {
             var value = GetAttribute( name, null );
@@ -1103,10 +1131,11 @@ public sealed class XmlReader
         }
 
         /// <summary>
-        ///     Returns the attribute value with the specified name, or if no attribute
-        ///     is found, the text of a child with the name.
+        /// Returns the attribute value with the specified name, or if no attribute
+        /// is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
+        [UsedImplicitly]
         public string Get( string name )
         {
             var value = Get( name, null );
@@ -1120,10 +1149,11 @@ public sealed class XmlReader
         }
 
         /// <summary>
-        ///     Returns the attribute value with the specified name, or if no attribute
-        ///     is found, the text of a child with the name.
+        /// Returns the attribute value with the specified name, or if no attribute
+        /// is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
+        [UsedImplicitly]
         public string? Get( string name, string? defaultValue )
         {
             string? str;
@@ -1140,10 +1170,7 @@ public sealed class XmlReader
 
             Element? child = GetChildByName( name );
 
-            if ( child == null )
-            {
-                return defaultValue;
-            }
+            if ( child == null ) return defaultValue;
 
             str = child.Text;
 
@@ -1155,6 +1182,7 @@ public sealed class XmlReader
         ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
+        [UsedImplicitly]
         public int GetInt( string name )
         {
             var value = Get( name, null );
@@ -1173,6 +1201,7 @@ public sealed class XmlReader
         ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
+        [UsedImplicitly]
         public int GetInt( string name, int defaultValue )
         {
             var value = Get( name, null );
@@ -1181,10 +1210,11 @@ public sealed class XmlReader
         }
 
         /// <summary>
-        ///     Returns the attribute value with the specified name, or if no attribute
-        ///     is found, the text of a child with the name.
+        /// Returns the attribute value with the specified name, or if no attribute
+        /// is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
+        [UsedImplicitly]
         public float GetFloat( string name )
         {
             var value = Get( name, null );
@@ -1199,10 +1229,11 @@ public sealed class XmlReader
         }
 
         /// <summary>
-        ///     Returns the attribute value with the specified name, or if no attribute
-        ///     is found, the text of a child with the name.
+        /// Returns the attribute value with the specified name, or if no attribute
+        /// is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
+        [UsedImplicitly]
         public float GetFloat( string name, float defaultValue )
         {
             var value = Get( name, null );
@@ -1211,10 +1242,11 @@ public sealed class XmlReader
         }
 
         /// <summary>
-        ///     Returns the attribute value with the specified name, or if no attribute
-        ///     is found, the text of a child with the name.
+        /// Returns the attribute value with the specified name, or if no attribute
+        /// is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
+        [UsedImplicitly]
         public bool Getbool( string name )
         {
             var value = Get( name, null );
@@ -1229,10 +1261,11 @@ public sealed class XmlReader
         }
 
         /// <summary>
-        ///     Returns the attribute value with the specified name, or if no attribute
-        ///     is found, the text of a child with the name.
+        /// Returns the attribute value with the specified name, or if no attribute
+        /// is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
+        [UsedImplicitly]
         public bool Getbool( string name, bool defaultValue )
         {
             var value = Get( name, null );

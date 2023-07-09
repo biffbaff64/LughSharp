@@ -82,6 +82,25 @@ public static class CharHelper
     }
     
     /// <summary>
+    /// Compares two <tt>char</tt> values numerically.
+    /// The value returned is identical to what would be returned by:
+    /// <pre>
+    ///    CharHelper.ValueOf(x).CompareTo(CharHelper.ValueOf(y))
+    /// </pre>
+    ///
+    /// </summary>
+    /// <param name="x"> the first <tt>char</tt> to compare </param>
+    /// <param name="y"> the second <tt>char</tt> to compare </param>
+    /// <returns>
+    /// the value <tt>0</tt> if <tt>x == y</tt>; a value less than <tt>0</tt> if <tt>x &lt; y</tt>;
+    /// and a value greater than <tt>0</tt> if <tt>x > y</tt>
+    /// </returns>
+    public static int Compare(char x, char y)
+    {
+        return x - y;
+    }
+
+    /// <summary>
     /// The minimum radix available for conversion to and from strings.
     /// The constant value of this field is the smallest value permitted
     /// for the radix argument in radix-conversion methods such as the

@@ -14,8 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
+using LibGDXSharp.Core.Files;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Utils;
 
@@ -31,6 +35,7 @@ public class ScreenUtils
     /// Clears the color buffers with the specified Color.
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
+    [UsedImplicitly]
     public static void Clear( Color color )
     {
         Clear( color.R, color.G, color.B, color.A );
@@ -41,6 +46,7 @@ public class ScreenUtils
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
     /// <param name="clearDepth">Clears the depth buffer if true.</param>
+    [UsedImplicitly]
     public static void Clear( Color color, bool clearDepth )
     {
         Clear( color.R, color.G, color.B, color.A, clearDepth );
@@ -81,6 +87,7 @@ public class ScreenUtils
     /// The returned TextureRegion is flipped along the Y axis by default. 
     /// </p>
     /// </summary>
+    [UsedImplicitly]
     public static TextureRegion FrameBufferTexture
     {
         get
@@ -148,6 +155,7 @@ public class ScreenUtils
     /// Flipping is not a cheap operation, so use this functionality wisely.
     /// </summary>
     /// <param name="flipY"> whether to flip pixels along Y axis</param>
+    [UsedImplicitly]
     public static byte[] GetFrameBufferPixels( bool flipY )
     {
         if ( Gdx.Graphics == null ) throw new NullReferenceException();
@@ -181,7 +189,7 @@ public class ScreenUtils
 
         Gdx.GL.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
 
-        ByteBuffer pixels = Files.BufferUtils.NewByteBuffer( numBytes );
+        ByteBuffer pixels = BufferUtils.NewByteBuffer( numBytes );
 
         Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
 

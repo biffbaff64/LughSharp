@@ -160,13 +160,15 @@ namespace LibGDXSharp.Utils.Buffers;
 /// </summary>
 public abstract class Buffer
 {
-//    /// <summary>
-//    /// The characteristics of Spliterators that traverse and split elements
-//    /// maintained in Buffers.
-//    /// </summary>
-//    internal readonly static int SpliteratorCharacteristics =
-//        Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.ORDERED;
-
+    /// <summary>
+    /// The characteristics of Spliterators that traverse and split elements
+    /// maintained in Buffers.
+    /// </summary>
+    #if USING_SPLITERATOR
+    internal readonly static int SpliteratorCharacteristics =
+        Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.ORDERED;
+    #endif
+    
     // Invariants: mark <= position <= limit <= capacity
     private int _mark = -1;
 

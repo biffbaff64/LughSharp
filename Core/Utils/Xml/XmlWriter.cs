@@ -65,7 +65,7 @@ public class XmlWriter : Writer
         }
     }
 
-    public XmlWriter Element( String name )
+    public XmlWriter Element( string name )
     {
         if ( StartElementContent() ) _writer?.Write( '\n' );
 
