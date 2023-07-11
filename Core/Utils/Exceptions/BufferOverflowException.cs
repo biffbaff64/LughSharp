@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class BufferOverflowException : Exception
 {
     public BufferOverflowException() : base()

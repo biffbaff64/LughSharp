@@ -14,6 +14,10 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils.Buffers;
+
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+
 namespace LibGDXSharp.Graphics;
 
 public interface IGL20
@@ -355,7 +359,7 @@ public interface IGL20
                                         int height,
                                         int border,
                                         int imageSize,
-                                        Files.Buffer data );
+                                        Buffer data );
 
     public void GLCompressedTexSubImage2D( int target,
                                            int level,
@@ -365,7 +369,7 @@ public interface IGL20
                                            int height,
                                            int format,
                                            int imageSize,
-                                           Files.Buffer data );
+                                           Buffer data );
 
     public void GLCopyTexImage2D( int target,
                                   int level,
@@ -401,7 +405,7 @@ public interface IGL20
 
     public void GLDrawArrays( int mode, int first, int count );
 
-    public void GLDrawElements( int mode, int count, int type, Files.Buffer indices );
+    public void GLDrawElements( int mode, int count, int type, Buffer indices );
 
     public void GLEnable( int cap );
 
@@ -429,7 +433,7 @@ public interface IGL20
 
     public void GLPolygonOffset( float factor, float units );
 
-    public void GLReadPixels( int x, int y, int width, int height, int format, int type, Files.Buffer pixels );
+    public void GLReadPixels( int x, int y, int width, int height, int format, int type, Buffer pixels );
 
     public void GLScissor( int x, int y, int width, int height );
 
@@ -447,7 +451,7 @@ public interface IGL20
                               int border,
                               int format,
                               int type,
-                              Files.Buffer pixels );
+                              Buffer pixels );
 
     public void GLTexParameterf( int target, int pname, float param );
 
@@ -459,7 +463,7 @@ public interface IGL20
                                  int height,
                                  int format,
                                  int type,
-                                 Files.Buffer pixels );
+                                 Buffer pixels );
 
     public void GLViewport( int x, int y, int width, int height );
 
@@ -481,9 +485,9 @@ public interface IGL20
 
     public void GLBlendFuncSeparate( int srcRgb, int dstRgb, int srcAlpha, int dstAlpha );
 
-    public void GLBufferData( int target, int size, Files.Buffer data, int usage );
+    public void GLBufferData( int target, int size, Buffer data, int usage );
 
-    public void GLBufferSubData( int target, int offset, int size, Files.Buffer data );
+    public void GLBufferSubData( int target, int offset, int size, Buffer data );
 
     public int GLCheckFramebufferStatus( int target );
 
@@ -541,11 +545,11 @@ public interface IGL20
     // deviates
     public string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type );
 
-    public void GLGetAttachedShaders( int program, int maxcount, Files.Buffer count, IntBuffer shaders );
+    public void GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders );
 
     public int GLGetAttribLocation( int program, string name );
 
-    public void GLGetboolv( int pname, Files.Buffer parameters );
+    public void GLGetboolv( int pname, Buffer parameters );
 
     public void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters );
 
@@ -579,7 +583,7 @@ public interface IGL20
 
     public void GLGetVertexAttribiv( int index, int pname, IntBuffer parameters );
 
-    public void GLGetVertexAttribPointerv( int index, int pname, Files.Buffer pointer );
+    public void GLGetVertexAttribPointerv( int index, int pname, Buffer pointer );
 
     public bool GLIsBuffer( int buffer );
 
@@ -603,7 +607,7 @@ public interface IGL20
 
     public void GLSampleCoverage( float value, bool invert );
 
-    public void GLShaderBinary( int n, IntBuffer shaders, int binaryformat, Files.Buffer binary, int length );
+    public void GLShaderBinary( int n, IntBuffer shaders, int binaryformat, Buffer binary, int length );
 
     public void GLShaderSource( int shader, string str );
 
@@ -702,7 +706,7 @@ public interface IGL20
     /// In OpenGl core profiles (3.1+), passing a pointer to client memory is not valid.
     /// In 3.0 and later, use the other version of this function instead, pass a zero-based
     /// offset which references the buffer currently bound to GL_ARRAY_BUFFER.
-    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Files.Buffer ptr );
+    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Buffer ptr );
 
     public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, int ptr );
 }

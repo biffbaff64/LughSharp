@@ -14,6 +14,8 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 namespace LibGDXSharp.Utils.Buffers;
 
 /// <summary>
@@ -76,8 +78,6 @@ namespace LibGDXSharp.Utils.Buffers;
 /// </summary>
 public abstract class CharBuffer : Buffer
 {
-    protected bool _isReadOnly; // Valid only for heap buffers
-
     private readonly char[]? _hb; // Non-null only for heap buffers
     private readonly int     _offset;
 
@@ -179,13 +179,13 @@ public abstract class CharBuffer : Buffer
     public int Read( CharBuffer target )
     {
         // Determine the number of bytes n that can be transferred
-        int targetRemaining = target.Remaining();
-        int remaining       = Remaining();
+        var targetRemaining = target.Remaining();
+        var remaining       = Remaining();
 
         if ( remaining == 0 ) return -1;
 
-        int n     = Math.Min( remaining, targetRemaining );
-        int limit = Limit;
+        var n     = Math.Min( remaining, targetRemaining );
+        var limit = Limit;
 
         // Set source limit to prevent target overflow
         if ( targetRemaining < remaining ) Limit = Position + n;
@@ -311,9 +311,9 @@ public abstract class CharBuffer : Buffer
 
         if ( length > Remaining() ) throw new BufferUnderflowException();
 
-        int end = offset + length;
+        var end = offset + length;
 
-        for ( int i = offset; i < end; i++ )
+        for ( var i = offset; i < end; i++ )
         {
             dst[ i ] = Get();
         }
@@ -400,13 +400,13 @@ public abstract class CharBuffer : Buffer
     {
         if ( src == this ) throw new ArgumentException();
 
-        if ( IsReadOnly() ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly ) throw new ReadOnlyBufferException();
 
-        int n = src.Remaining();
+        var n = src.Remaining();
 
         if ( n > Remaining() ) throw new BufferOverflowException();
 
-        for ( int i = 0; i < n; i++ )
+        for ( var i = 0; i < n; i++ )
         {
             Put( src.Get() );
         }
@@ -465,9 +465,9 @@ public abstract class CharBuffer : Buffer
 
         if ( length > Remaining() ) throw new BufferOverflowException();
 
-        int end = offset + length;
+        var end = offset + length;
 
-        for ( int i = offset; i < end; i++ )
+        for ( var i = offset; i < end; i++ )
         {
             this.Put( src[ i ] );
         }
@@ -542,11 +542,11 @@ public abstract class CharBuffer : Buffer
     {
         CheckBounds( start, end - start, src.Length );
 
-        if ( IsReadOnly() ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly ) throw new ReadOnlyBufferException();
 
         if ( ( end - start ) > Remaining() ) throw new BufferOverflowException();
 
-        for ( int i = start; i < end; i++ )
+        for ( var i = start; i < end; i++ )
         {
             this.Put( src[ i ] );
         }
@@ -737,6 +737,7 @@ public abstract class CharBuffer : Buffer
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
+    [UsedImplicitly]
     public abstract ByteOrder Order();
     
     #endregion miscellaneous abstract methods
@@ -755,7 +756,7 @@ public abstract class CharBuffer : Buffer
     ///          is backed by an array and is not read-only </returns>
     public override bool HasArray()
     {
-        return ( _hb != null ) && !_isReadOnly;
+        return ( _hb != null ) && !IsReadOnly;
     }
 
     /// <summary>
@@ -781,7 +782,7 @@ public abstract class CharBuffer : Buffer
     {
         if ( _hb == null ) throw new UnsupportedOperationException();
 
-        if ( _isReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly ) throw new ReadOnlyBufferException();
 
         return _hb;
     }
@@ -810,7 +811,7 @@ public abstract class CharBuffer : Buffer
     {
         if ( _hb == null ) throw new UnsupportedOperationException();
 
-        if ( _isReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly ) throw new ReadOnlyBufferException();
 
         return _offset;
     }
@@ -828,12 +829,13 @@ public abstract class CharBuffer : Buffer
     /// is known that their contents will not change.  </para>
     /// </summary>
     /// <returns>  The current hash code of this buffer </returns>
+    [UsedImplicitly]
     public int HashCode()
     {
-        int h = 1;
-        int p = Position;
+        var h = 1;
+        var p = Position;
 
-        for ( int i = Limit - 1; i >= p; i-- )
+        for ( var i = Limit - 1; i >= p; i-- )
         {
             h = ( 31 * h ) + Get( i );
         }
@@ -858,6 +860,7 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <returns>  A negative integer, zero, or a positive integer as this buffer
     ///          is less than, equal to, or greater than the given buffer </returns>
+    [UsedImplicitly]
     public new bool Equals( object ob )
     {
         if ( this == ob ) return true;
@@ -866,7 +869,7 @@ public abstract class CharBuffer : Buffer
 
         if ( this.Remaining() != that.Remaining() ) return false;
 
-        int p = this.Position;
+        var p = this.Position;
 
         for ( int i = this.Limit - 1, j = that.Limit - 1; i >= p; i--, j-- )
         {
@@ -901,23 +904,19 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <returns>  A negative integer, zero, or a positive integer as this buffer
     ///          is less than, equal to, or greater than the given buffer </returns>
+    [UsedImplicitly]
     public int CompareTo( CharBuffer that )
     {
-        int n = this.Position + Math.Min( this.Remaining(), that.Remaining() );
+        var n = this.Position + Math.Min( this.Remaining(), that.Remaining() );
 
         for ( int i = this.Position, j = that.Position; i < n; i++, j++ )
         {
-            int cmp = Compare( this.Get( i ), that.Get( j ) );
+            int cmp = BufferUtils.Compare( this.Get( i ), that.Get( j ) );
 
             if ( cmp != 0 ) return cmp;
         }
 
         return this.Remaining() - that.Remaining();
-    }
-
-    private static int Compare( char x, char y )
-    {
-        return CharHelper.Compare( x, y );
     }
 
     /// <summary>
@@ -1077,7 +1076,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
     public CharBuffer Append( string? csq, int start, int end )
     {
-        string cs = csq ?? "null";
+        var cs = csq ?? "null";
 
         return Put( cs.Substring( start, end ) );
     }

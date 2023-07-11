@@ -45,7 +45,6 @@ namespace LibGDXSharp.Core.Utils.Collections;
 /// Malte Skarupke's blog post</a>). Linear probing continues to work even when all hashCodes collide, just more slowly.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class OrderedSet<T>
 {
 }

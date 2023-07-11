@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class InvalidMarkException : Exception
 {
     public InvalidMarkException( string invalidMark = "" )

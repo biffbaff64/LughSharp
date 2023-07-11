@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils.Collections.Extensions;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public static class DictionaryExtension
 {
     /// <summary>

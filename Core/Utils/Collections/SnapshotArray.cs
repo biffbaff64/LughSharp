@@ -31,7 +31,6 @@ namespace LibGDXSharp.Utils.Collections;
 /// </para>
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class SnapshotArray<T> : Array< T >
 {
     private T[]? _snapshot;

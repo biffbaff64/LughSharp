@@ -14,10 +14,9 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Concurrent;
+namespace LibGDXSharp.Utils.Buffers;
 
-public class AtomicReferenceArray< T >
+public class LongBuffer : Buffer
 {
     
 }
-

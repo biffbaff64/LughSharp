@@ -135,6 +135,12 @@ AUDIO
 FILES
 -----
 
+    - DONE - CloseableStreamReader
+    - DONE - CloseableStreamWriter
+    - DONE - Reader
+    - DONE - Writer
+    -      - 
+
     - java.io.BufferedReader                -> 
     - java.io.BufferedInputStream           -> 
     - java.io.ByteArrayOutputStream         -> 
@@ -876,7 +882,8 @@ UTILS/BUFFERS
 -------------
 
     - DONE - Buffer
-    -      - ByteBuffer
+    -      - BufferUtils
+    - DONE - ByteBuffer
     - IP   - CharBuffer
     -      - HeapCharBuffer
     -      - StringCharBuffer

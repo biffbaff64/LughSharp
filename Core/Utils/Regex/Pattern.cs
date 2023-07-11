@@ -20,7 +20,6 @@ namespace LibGDXSharp.Utils.Regex;
 
 /// <inheritdoc/>
 [Obsolete]
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed partial class Pattern : IPattern
 {
     public const int Unix_Lines              = 0x01;

@@ -18,7 +18,6 @@ using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class DelayedRemovalArray<T> : List< T >
 {
     private int _iterating = 0;

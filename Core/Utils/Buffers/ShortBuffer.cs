@@ -14,10 +14,19 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Concurrent;
+namespace LibGDXSharp.Utils.Buffers;
 
-public class AtomicReferenceArray< T >
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public class ShortBuffer : Buffer
 {
-    
-}
 
+    public int Get( short[] indices, int destOffset, int count )
+    {
+        return 0;
+    }
+
+    public short Get( int indices )
+    {
+        return 0;
+    }
+}

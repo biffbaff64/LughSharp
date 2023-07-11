@@ -21,7 +21,6 @@ namespace LibGDXSharp.Utils;
 /// The close method is invoked to release resources that the object
 /// is holding (such as open files).
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public interface ICloseable
 {
     public void Close();

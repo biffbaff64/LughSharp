@@ -857,8 +857,8 @@ public sealed class TimSort<T>
         if ( AllowAsserts ) Debug.Assert( ( len1 > 0 ) && ( len2 > 0 ) && ( ( base1 + len1 ) == base2 ) );
 
         // Copy first run into temp array
-        var a   = this._a; // For performance
-        var tmp = EnsureCapacity( len1 );
+        T[]? a   = this._a; // For performance
+        T[] tmp = EnsureCapacity( len1 );
 
         if ( a == null ) throw new NullReferenceException();
             
@@ -887,7 +887,7 @@ public sealed class TimSort<T>
             return;
         }
 
-        var c         = this._c;         // Use local variable for performance
+        IComparer< T >? c         = this._c;         // Use local variable for performance
         var minGallop = this._minGallop; // "    " "     " "
 
         while ( true )
@@ -1008,8 +1008,8 @@ public sealed class TimSort<T>
         if ( AllowAsserts ) Debug.Assert( ( len1 > 0 ) && ( len2 > 0 ) && ( ( base1 + len1 ) == base2 ) );
 
         // Copy second run into temp array
-        var a   = this._a; // For performance
-        var tmp = EnsureCapacity( len2 );
+        T[]? a   = this._a; // For performance
+        T[] tmp = EnsureCapacity( len2 );
 
         if ( a == null ) throw new NullReferenceException();
             
@@ -1041,7 +1041,7 @@ public sealed class TimSort<T>
             return;
         }
 
-        var c         = this._c;         // Use local variable for performance
+        IComparer< T >? c         = this._c;         // Use local variable for performance
         var minGallop = this._minGallop; // "    " "     " "
 
         while ( true )

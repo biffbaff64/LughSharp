@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class DataUtils
 {
     /// <summary>

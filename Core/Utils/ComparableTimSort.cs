@@ -29,7 +29,6 @@ namespace LibGDXSharp.Utils;
 /// you are better off deleting ComparableTimSort to eliminate the code duplication.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class ComparableTimSort<T>
 {
     /// <summary>

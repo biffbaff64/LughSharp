@@ -21,7 +21,6 @@ using File = System.IO.File;
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public struct CallerID
 {
     public string fileName;

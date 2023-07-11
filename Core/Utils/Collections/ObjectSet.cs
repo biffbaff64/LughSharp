@@ -18,7 +18,6 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Utils.Collections;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ObjectSet<T>
 {
     public static int TableSize( int capacity, float loadFactor )

@@ -284,8 +284,7 @@ public static class CharHelper
 	/// Error flag. Use int (code point) to avoid confusion with U+FFFF.
 	/// </summary>
 	public const int Error = unchecked((int)0xFFFFFFFF);
-
-
+    
 	/// <summary>
 	/// Undefined bidirectional character type. Undefined {@code char}
 	/// values have undefined directionality in the Unicode specification.

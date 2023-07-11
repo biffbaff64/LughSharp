@@ -18,7 +18,6 @@ using System.Diagnostics;
 
 namespace LibGDXSharp.Utils.Regex;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed partial class Pattern
 {
 

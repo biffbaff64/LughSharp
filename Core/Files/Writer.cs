@@ -14,7 +14,7 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Files;
+namespace LibGDXSharp.Files;
 
 /// <summary>
 /// Abstract class for writing to character streams.  The only methods that a
@@ -22,6 +22,7 @@ namespace LibGDXSharp.Core.Files;
 /// Most subclasses, however, will override some of the methods defined here in
 /// order to provide higher efficiency, additional functionality, or both.
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class Writer : ICloseable
 {
     /// <summary>

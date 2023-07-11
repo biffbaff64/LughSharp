@@ -14,10 +14,33 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Concurrent;
+namespace LibGDXSharp.Utils.Buffers;
 
-public class AtomicReferenceArray< T >
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+public abstract class FloatBuffer : Buffer
 {
-    
-}
+    protected float[]? Hb     { get; set; }
+    protected int      Offset { get; set; }
 
+    protected FloatBuffer(int mark, int pos, int lim, int cap, float[]? hb = null, int offset = 0)
+        : base(mark, pos, lim, cap)
+    {
+        this.Hb     = hb;
+        this.Offset = offset;
+    }
+
+    public float Get( int index )
+    {
+        return 0;
+    }
+
+    public float Get( int? vertices )
+    {
+        return 0;
+    }
+
+    public float Get( float[] vertices, int destOffset, int count )
+    {
+        return 0;
+    }
+}

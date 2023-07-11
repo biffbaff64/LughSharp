@@ -16,7 +16,6 @@
 
 using JetBrains.Annotations;
 
-using LibGDXSharp.Core.Files;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Utils.Buffers;

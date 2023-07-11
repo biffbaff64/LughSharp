@@ -28,7 +28,6 @@ namespace LibGDXSharp.Utils.Viewport;
 /// Extending classes should initialise <see cref="Camera"/> to avoid
 /// causing exceptions.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
 public abstract class Viewport
 {

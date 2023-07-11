@@ -21,7 +21,6 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 /// A pool of objects that can be reused to avoid allocation.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Pool<T>
 {
     // The maximum number of objects that will be pooled.

@@ -18,7 +18,6 @@ using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Utils.Collections;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class CollectionsData
 {
     /// <summary>

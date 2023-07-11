@@ -92,7 +92,6 @@ namespace LibGDXSharp.Utils;
 /// </code>
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class StringTokenizer
 {
     private readonly int     _maxPosition;

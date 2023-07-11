@@ -18,7 +18,9 @@ using LibGDXSharp.Utils.Async;
 
 namespace LibGDXSharp.Assets;
 
+// -------------------------------------------------------------------
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+// -------------------------------------------------------------------
 public sealed class AssetLoadingTask
 {
     private readonly AssetManager _manager;

@@ -23,7 +23,6 @@ namespace LibGDXSharp.Utils.Pooling;
 /// Stores a map of <see cref="Pool{T}"/>s (usually <see cref="ReflectionPool{T}"/>s)
 /// by type for convenient static access.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Pools<T>
 {
     private readonly static Dictionary< Type, Pool< T >? > typePools = new();

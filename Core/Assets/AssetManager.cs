@@ -28,7 +28,9 @@ namespace LibGDXSharp.Assets;
 /// <summary>
 /// Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
 /// </summary>
+// -------------------------------------------------------------------
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+// -------------------------------------------------------------------
 public sealed class AssetManager
 {
     private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets  = new();

@@ -19,7 +19,6 @@ namespace LibGDXSharp.Utils.Regex;
 /// <summary>
 /// 
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [Obsolete]
 public interface IPattern
 {

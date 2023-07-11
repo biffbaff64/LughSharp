@@ -22,7 +22,6 @@ using LibGDXSharp.Utils.Annotations;
 namespace LibGDXSharp.Utils.Collections;
 
 [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Array<T>
 {
     public T[]  Items   { get; private set; }

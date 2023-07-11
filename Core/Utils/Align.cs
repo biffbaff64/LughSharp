@@ -18,7 +18,6 @@ using System.Text;
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public static class Align
 {
     public const int None   = 0;

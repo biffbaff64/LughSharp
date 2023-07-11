@@ -17,7 +17,6 @@
 namespace LibGDXSharp.Utils.Regex;
 
 [Obsolete]
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ASCII
 {
     public const int Upper = 0x00000100;

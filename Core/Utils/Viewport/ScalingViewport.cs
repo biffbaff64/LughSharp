@@ -35,7 +35,6 @@ namespace LibGDXSharp.Utils.Viewport;
 /// (the world may not fill the screen or some of the world may be off screen).
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ScalingViewport : Viewport
 {
     public Scaling Scaling { get; set; }

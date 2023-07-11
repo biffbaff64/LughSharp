@@ -21,7 +21,6 @@ namespace LibGDXSharp.GdxCore.Utils.Pooling;
 /// The type must have a zero argument constructor.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class ReflectionPool<T> : Pool<T>
 {

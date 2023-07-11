@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils.Pooling;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public interface IPoolable
 {
     /// <summary>

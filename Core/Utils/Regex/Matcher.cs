@@ -18,7 +18,6 @@ using System.Text;
 
 namespace LibGDXSharp.Utils.Regex;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [Obsolete]
 public sealed class Matcher : IMatchResult
 {

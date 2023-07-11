@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils.Collections.Extensions;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public static class ListExtensions
 {
     public static T[] Resize<T>( this List< T > ts, int newSize )

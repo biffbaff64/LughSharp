@@ -25,7 +25,7 @@ namespace LibGDXSharp.Utils.Buffers;
 /// </para>
 /// <tt>
 ///   <para>
-///   A buffer's <i>capacity</i> is the number of elements it contains.  The
+///   A buffer's <i>capacity</i> is the number of elements it contains. The
 ///   capacity of a buffer is never negative and never changes.
 ///   </para>
 ///   <para>
@@ -108,45 +108,43 @@ namespace LibGDXSharp.Utils.Buffers;
 /// </para>
 /// <ul>
 ///   <para>
-///   <see cref="Clear"/> makes a buffer ready for a new sequence of
-///   channel-read or relative <i>put</i> operations: It sets the limit to the
-///   capacity and the position to zero.
-///   </para>
-///   <para>
-///   <see cref="Flip"/> makes a buffer ready for a new sequence of
-///   channel-write or relative <i>get</i> operations: It sets the limit to the
-///   current position and then sets the position to zero.
-///   </para>
-///   <para>
-///   <see cref="Rewind"/> makes a buffer ready for re-reading the data that
-///   it already contains: It leaves the limit unchanged and sets the position
+///   <see cref="Clear"/> makes a buffer ready for a new sequence of channel-read or
+///   relative <i>put</i> operations: It sets the limit to the capacity and the position
 ///   to zero.
+///   </para>
+///   <para>
+///   <see cref="Flip"/> makes a buffer ready for a new sequence of channel-write or
+///   relative <i>get</i> operations: It sets the limit to the current position and
+///   then sets the position to zero.
+///   </para>
+///   <para>
+///   <see cref="Rewind"/> makes a buffer ready for re-reading the data that it already
+///   contains: It leaves the limit unchanged and sets the position to zero.
 ///   </para>
 /// </ul>
 /// <para></para>
 /// <b> Read-only buffers </b>
 /// <para>
-/// Every buffer is readable, but not every buffer is writable.  The
-/// mutation methods of each buffer class are specified as <i>optional
-/// operations</i> that will throw a <see cref="ReadOnlyBufferException"/> when
-/// invoked upon a read-only buffer.  A read-only buffer does not allow its
-/// content to be changed, but its mark, position, and limit values are mutable.
-/// Whether or not a buffer is read-only may be determined by invoking its
-/// <see cref="IsReadOnly"/> method.
+/// Every buffer is readable, but not every buffer is writable.  The mutation methods
+/// of each buffer class are specified as <i>optional operations</i> that will throw a
+/// <see cref="ReadOnlyBufferException"/> when invoked upon a read-only buffer. A read-only
+/// buffer does not allow its content to be changed, but its mark, position, and limit
+/// values are mutable. Whether or not a buffer is read-only may be determined by checking
+/// its <see cref="IsReadOnly"/> property.
 /// </para>
 /// <para></para>
 /// <b> Thread safety </b>
 /// <para>
-/// Buffers are not safe for use by multiple concurrent threads.  If a
-/// buffer is to be used by more than one thread then access to the buffer
-/// should be controlled by appropriate synchronization.
+/// Buffers are not safe for use by multiple concurrent threads.  If a buffer is to be
+/// used by more than one thread then access to the buffer should be controlled by
+/// appropriate synchronization.
 /// </para>
 /// <para></para>
 /// <b> Invocation chaining </b>
 /// <para>
-/// Methods in this class that do not otherwise have a value to return are
-/// specified to return the buffer upon which they are invoked.  This allows
-/// method invocations to be chained; for example, the sequence of statements
+/// Methods in this class that do not otherwise have a value to return are specified to
+/// return the buffer upon which they are invoked.  This allows method invocations to be
+/// chained; for example, the sequence of statements
 /// <code>
 /// b.flip();
 /// b.position(23);
@@ -158,6 +156,7 @@ namespace LibGDXSharp.Utils.Buffers;
 /// </code>
 /// </para>
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class Buffer
 {
     /// <summary>
@@ -207,6 +206,11 @@ public abstract class Buffer
     /// Returns this buffers position
     /// </summary>
     public int Position { get; set; } = 0;
+
+    /// <summary>
+    /// Returns <tt>true</tt> if, and only if, this buffer is read-only
+    /// </summary>
+    public bool IsReadOnly { get; set; }
 
     /// <summary>
     /// Sets this buffer's position.  If the mark is defined and larger than the
@@ -392,11 +396,6 @@ public abstract class Buffer
     }
 
     #region abstract methods
-
-    /// <summary>
-    /// Returns <tt>true</tt> if, and only if, this buffer is read-only
-    /// </summary>
-    public abstract bool IsReadOnly();
 
     /// <summary>
     /// Tells whether or not this buffer is backed by an accessible array.

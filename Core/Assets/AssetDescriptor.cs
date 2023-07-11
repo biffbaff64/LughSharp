@@ -18,9 +18,9 @@ using StringBuilder = System.Text.StringBuilder;
 
 namespace LibGDXSharp.Assets;
 
-/// <summary>
-/// </summary>
+// -------------------------------------------------------------------
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+// -------------------------------------------------------------------
 public sealed class AssetDescriptor
 {
     public Type                  Type       { get; init; }

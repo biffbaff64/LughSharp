@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils.Buffers;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 public interface IVertexData : IDisposable

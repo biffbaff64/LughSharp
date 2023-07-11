@@ -16,7 +16,7 @@
 
 using System.Text;
 
-namespace LibGDXSharp.Core.Files;
+namespace LibGDXSharp.Files;
 
 public class CloseableStreamWriter : StreamWriter, ICloseable
 {
