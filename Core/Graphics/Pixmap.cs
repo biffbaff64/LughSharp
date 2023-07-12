@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.G2D;
+using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics;
 
@@ -98,11 +99,11 @@ public class Pixmap : IDisposable
             this._filter = value;
 
             gdx2DPixmap.Scale =
-                (
+            (
                 _filter == Filter.NearestNeighbour
                     ? Gdx2DPixmap.Gdx2D_Scale_Nearest
                     : Gdx2DPixmap.Gdx2D_Scale_Linear
-                );
+            );
         }
     }
 
@@ -206,7 +207,8 @@ public class Pixmap : IDisposable
     /// <param name="g"> The green component. </param>
     /// <param name="b"> The blue component. </param>
     /// <param name="a"> The alpha component.  </param>
-    public void SetColor( float r, float g, float b, float a ) => _color = Color.RGBA8888( r, g, b, a );
+    public void SetColor( float r, float g, float b, float a )
+        => _color = Color.RGBA8888( r, g, b, a );
 
     /// <summary>
     /// Sets the color for drawing operations.
@@ -218,7 +220,8 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Fills the complete bitmap with the currently set color.
     /// </summary>
-    public void FillWithCurrentColor() => gdx2DPixmap.Clear( _color );
+    public void FillWithCurrentColor()
+        => gdx2DPixmap.Clear( _color );
 
     /// <summary>
     /// Draws a line between the given coordinates using the currently set color.
@@ -288,28 +291,11 @@ public class Pixmap : IDisposable
     /// <param name="dsty"> The target y-coordinate (top left corner) </param>
     /// <param name="dstWidth"> The target width </param>
     /// <param name="dstHeight"> the target height  </param>
-    public void DrawPixmap( Pixmap pixmap,
-                            int srcx,
-                            int srcy,
-                            int srcWidth,
-                            int srcHeight,
-                            int dstx,
-                            int dsty,
-                            int dstWidth,
-                            int dstHeight )
+    public void DrawPixmap( Pixmap pixmap, int srcx, int srcy, int srcWidth,
+                            int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight )
     {
-        this.gdx2DPixmap.DrawPixmap
-            (
-             pixmap.gdx2DPixmap,
-             srcx,
-             srcy,
-             srcWidth,
-             srcHeight,
-             dstx,
-             dsty,
-             dstWidth,
-             dstHeight
-            );
+        this.gdx2DPixmap.DrawPixmap( pixmap.gdx2DPixmap, srcx, srcy, srcWidth,
+                                     srcHeight, dstx, dsty, dstWidth, dstHeight );
     }
 
     /// <summary>
@@ -447,6 +433,7 @@ public class Pixmap : IDisposable
         set
         {
             ByteBuffer dst = gdx2DPixmap.pixelPtr;
+            
             BufferUtils.Copy( value, dst, dst.Limit );
         }
     }
@@ -468,20 +455,11 @@ public class Pixmap : IDisposable
     {
         Gdx.GL.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
 
-        Pixmap pixmap = new(width, height, Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new( width, height, Pixmap.Format.RGBA8888 );
 
         ByteBuffer pixels = pixmap.Pixels;
 
-        Gdx.GL.GLReadPixels
-            (
-             x,
-             y,
-             width,
-             height,
-             IGL20.GL_Rgba,
-             IGL20.GL_Unsigned_Byte,
-             pixels
-            );
+        Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
 
         return pixmap;
     }

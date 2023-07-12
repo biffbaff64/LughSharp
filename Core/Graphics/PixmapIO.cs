@@ -14,6 +14,11 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+
+using LibGDXSharp.Utils.Buffers;
+
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
@@ -59,12 +64,12 @@ public class PixmapIO
     /// <param name="pixmap"></param>
     /// <param name="compression">
     /// Sets the deflate compression level.
-    /// Default is <see cref="Deflater.Default_Compression"/>
+    /// Default is <see cref="Deflater.DEFAULT_COMPRESSION"/>
     /// </param>
     /// <param name="flipY">Flips the Pixmap vertically if true</param>
     public static void WritePNG( FileInfo file,
                                  Pixmap pixmap,
-                                 int compression = Deflater.Default_Compression,
+                                 int compression = Deflater.DEFAULT_COMPRESSION,
                                  bool flipY = false )
     {
         try
@@ -98,16 +103,14 @@ public class PixmapIO
 
         public static void Write( FileInfo file, Pixmap pixmap )
         {
-            DataOutputStream? output = null;
-
             try
             {
-                var deflaterOutputStream = new DeflaterOutputStream( file.Write( false ) );
+                var deflaterOutputStream = new DeflaterOutputStream( file.OpenWrite() );
 
-                output = new DataOutputStream( deflaterOutputStream );
-                output.WriteInt( pixmap.Width );
-                output.WriteInt( pixmap.Height );
-                output.WriteInt( PixmapFormat.ToGdx2DPixmapFormat( pixmap.GetFormat() ) );
+                var output = new BinaryWriter( deflaterOutputStream );
+                output.Write( pixmap.Width );
+                output.Write( pixmap.Height );
+                output.Write( PixmapFormat.ToGdx2DPixmapFormat( pixmap.GetFormat() ) );
 
                 ByteBuffer pixelBuf = pixmap.Pixels;
                 pixelBuf.Position = 0;
@@ -135,25 +138,23 @@ public class PixmapIO
             {
                 throw new GdxRuntimeException( "Couldn't write Pixmap to file '" + file + "'", e );
             }
-            finally
-            {
-                StreamUtils.CloseQuietly( output );
-            }
+//            finally
+//            {
+//                StreamUtils.CloseQuietly( output );
+//            }
         }
         
         public static Pixmap Read( FileInfo file )
         {
-            DataInputStream? input = null;
-
             try
             {
                 // long start = System.nanoTime();
-                input = new DataInputStream( new InflaterInputStream( new BufferedInputStream( file.Read() ) ) );
+                var input = new BinaryReader( new InflaterInputStream( file.OpenRead() ) );
 
-                int width  = input.ReadInt();
-                int height = input.ReadInt();
+                int width  = input.Read();
+                int height = input.Read();
 
-                Pixmap.Format format = PixmapFormat.FromGdx2DPixmapFormat( input.ReadInt() );
+                Pixmap.Format format = PixmapFormat.FromGdx2DPixmapFormat( input.Read() );
 
                 var pixmap = new Pixmap( width, height, format );
 
@@ -163,7 +164,7 @@ public class PixmapIO
 
                 lock ( readBuffer )
                 {
-                    var readBytes = 0;
+                    int readBytes;
 
                     while ( ( readBytes = input.Read( readBuffer ) ) > 0 )
                     {
@@ -180,10 +181,10 @@ public class PixmapIO
             {
                 throw new GdxRuntimeException( "Couldn't read Pixmap from file '" + file + "'", e );
             }
-            finally
-            {
-                StreamUtils.CloseQuietly( input );
-            }
+//            finally
+//            {
+//                StreamUtils.CloseQuietly( input );
+//            }
         }
     }
 
@@ -234,25 +235,28 @@ public class PixmapIO
 
         /// <summary>
         /// Sets the deflate compression level.
-        /// Default is <see cref="Deflater.Default_Compression"/>. 
+        /// Default is <see cref="Deflater.DEFAULT_COMPRESSION"/>. 
         /// </summary>
         public void SetCompression( int level )
         {
-            _deflater.CompressionLevel = level;
+            _deflater.SetLevel( level );
         }
 
         public void Write( FileInfo file, Pixmap pixmap )
         {
-            OutputStream output = file.Write( false );
+            var output = new StreamWriter( file.OpenWrite() );
 
             try
             {
                 Write( output, pixmap );
             }
-            finally
+            catch ( IOException )
             {
-                StreamUtils.CloseQuietly( output );
             }
+//            finally
+//            {
+//                StreamUtils.CloseQuietly( output );
+//            }
         }
 
         /// <summary>
@@ -261,7 +265,7 @@ public class PixmapIO
         /// </summary>
         public void Dispose()
         {
-            _deflater.End();
+            _deflater.Finish();
         }
 
         /// <summary>
@@ -270,7 +274,7 @@ public class PixmapIO
         public void Write( StreamWriter output, Pixmap pixmap )
         {
             var deflaterOutput = new DeflaterOutputStream( _buffer, _deflater );
-            var dataOutput     = new DataOutputStream( output );
+            var dataOutput     = new BinaryWriter( output );
 
             dataOutput.write( _signature );
 
@@ -373,8 +377,8 @@ public class PixmapIO
                     lineOut[ x ] = ( byte )( curLine[ x ] - c );
                 }
 
-                deflaterOutput.write( Paeth );
-                deflaterOutput.write( lineOut, 0, lineLen );
+                deflaterOutput.Write( Paeth );
+                deflaterOutput.Write( lineOut, 0, lineLen );
 
                 ( curLine, prevLine ) = ( prevLine, curLine );
             }
@@ -390,7 +394,7 @@ public class PixmapIO
             output.flush();
         }
 
-        public sealed class ChunkBuffer : DataOutputStream
+        public sealed class ChunkBuffer : BinaryWriter
         {
             private ByteArrayOutputStream _buffer;
             private CRC32                 _crc;

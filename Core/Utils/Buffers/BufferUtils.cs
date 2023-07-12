@@ -98,4 +98,98 @@ public class BufferUtils
     {
         return x - y;
     }
+
+    /// <summary>
+    /// Copies the contents of src to dst, starting from the current position of src,
+    /// copying numElements elements (using the data type of src, no matter the datatype
+    /// of dst). The dst <see cref="Buffer.Position"/> is used as the writing offset.
+    /// The position of both Buffers will stay the same. The limit of the src Buffer will
+    /// stay the same. The limit of the dst Buffer will be set to dst.Position + numElements,
+    /// where numElements are translated to the number of elements appropriate for the dst
+    /// Buffer data type. <b>The Buffers must be direct Buffers with native byte order.
+    /// No error checking is performed</b>.
+    /// </summary>
+    /// <param name="src"> the source Buffer. </param>
+    /// <param name="dst"> the destination Buffer. </param>
+    /// <param name="numElements"> the number of elements to copy. </param>
+    public static void Copy( Buffer src, Buffer dst, int numElements )
+    {
+        var numBytes = ElementsToBytes( src, numElements );
+
+        dst.Limit = ( dst.Position + BytesToElements( dst, numBytes ) );
+
+        Copy( src, PositionInBytes( src ), dst, PositionInBytes( dst ), numBytes );
+    }
+
+    private static void Copy( Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes )
+    {
+        //TODO
+        throw new NotImplementedException();
+    }
+
+    private static int PositionInBytes( Buffer dst )
+    {
+        if ( dst is ByteBuffer )
+        {
+            return dst.Position;
+        }
+        else if ( dst is ShortBuffer or CharBuffer )
+        {
+            return dst.Position << 1;
+        }
+        else if ( dst is IntBuffer or FloatBuffer )
+        {
+            return dst.Position << 2;
+        }
+        else if ( dst is LongBuffer or DoubleBuffer )
+        {
+            return dst.Position << 3;
+        }
+
+        throw new GdxRuntimeException( "Can't get position for " + dst.GetType().Name + " instance" );
+    }
+
+    private static int BytesToElements( Buffer dst, int bytes )
+    {
+        if ( dst is ByteBuffer )
+        {
+            return bytes;
+        }
+        else if ( dst is ShortBuffer or CharBuffer )
+        {
+            return bytes >>> 1;
+        }
+        else if ( dst is IntBuffer or FloatBuffer )
+        {
+            return bytes >>> 2;
+        }
+        else if ( dst is LongBuffer or DoubleBuffer )
+        {
+            return bytes >>> 3;
+        }
+
+        throw new GdxRuntimeException( "Can't copy to a " + dst.GetType().Name + " instance" );
+    }
+
+    private static int ElementsToBytes( Buffer dst, int elements )
+    {
+        if ( dst is ByteBuffer )
+        {
+            return elements;
+        }
+        else if ( dst is ShortBuffer or CharBuffer )
+        {
+            return elements << 1;
+        }
+        else if ( dst is IntBuffer or FloatBuffer )
+        {
+            return elements << 2;
+        }
+        else if ( dst is LongBuffer or DoubleBuffer )
+        {
+            return elements << 3;
+        }
+
+        throw new GdxRuntimeException( "Can't copy to a " + dst.GetType().Name + " instance" );
+    }
 }

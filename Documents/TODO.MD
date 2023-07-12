@@ -137,6 +137,10 @@ FILES
 
     - DONE - CloseableStreamReader
     - DONE - CloseableStreamWriter
+    - DONE - DataInputStream
+    - DONE - DataOutputStream
+    - DONE - IDataInput
+    - DONE - IDataOutput
     - DONE - Reader
     - DONE - Writer
     -      - 
