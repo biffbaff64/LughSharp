@@ -78,8 +78,8 @@ public sealed class ImmediateModeRenderer20 : IImmediateModeRenderer
         VertexAttribute[] attribs = BuildVertexAttributes( hasNormals, hasColors, numTexCoords );
         _mesh = new Mesh( false, maxVertices, 0, attribs );
 
-        _vertices   = new float[ maxVertices * ( _mesh.GetVertexAttributes().VertexSize / 4 ) ];
-        _vertexSize = _mesh.GetVertexAttributes().VertexSize / 4;
+        _vertices   = new float[ maxVertices * ( _mesh.VertexAttributes.VertexSize / 4 ) ];
+        _vertexSize = _mesh.VertexAttributes.VertexSize / 4;
 
         VertexAttribute? attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.Normal );
         

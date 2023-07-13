@@ -17,7 +17,10 @@
 using System.Text;
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections.Extensions;
+
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
@@ -192,7 +195,7 @@ public sealed class ShaderProgram
     /// <param name="vertexShader"></param>
     /// <param name="fragmentShader"></param>
     public ShaderProgram( FileInfo vertexShader, FileInfo fragmentShader )
-        : this( vertexShader.ReadString(), fragmentShader.ReadString() )
+        : this( "", "" ) //vertexShader.ReadString(), fragmentShader.ReadString() )
     {
     }
 
@@ -750,7 +753,7 @@ public sealed class ShaderProgram
     /// </param>
     /// <param name="stride">The stride in bytes between successive attributes.</param>
     /// <param name="buffer">The buffer containing the vertex attributes.</param>
-    public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, Utils.Buffer buffer )
+    public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
 
@@ -764,7 +767,7 @@ public sealed class ShaderProgram
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
     }
 
-    public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, Utils.Buffer buffer )
+    public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );

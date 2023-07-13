@@ -137,7 +137,7 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// <summary>
     /// Sets the directory where <see cref="IPreferences"/> will be stored, as well as
     /// the file type to be used to store them. Defaults to "$USER_HOME/.prefs/"
-    /// and <see cref="IFile.FileType"/>.
+    /// and <see cref="FileType"/>.
     ///</summary>
     public void SetPreferencesConfig( string preferencesDirectory, IFile.FileType preferencesFileType )
     {

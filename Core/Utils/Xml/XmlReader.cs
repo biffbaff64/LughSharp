@@ -19,7 +19,6 @@ using System.Text;
 
 using JetBrains.Annotations;
 
-using LibGDXSharp.Core.Files;
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Utils.Collections.Extensions;
 

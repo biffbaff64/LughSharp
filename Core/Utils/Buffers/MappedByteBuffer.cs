@@ -16,28 +16,10 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public abstract class ShortBuffer : Buffer
+public abstract class MappedByteBuffer : ByteBuffer
 {
-    public ShortBuffer() : base( 0, 0, 0, 0 )
-    {
-    }
-    
-    public int Get( short[] indices, int destOffset, int count )
-    {
-        return 0;
-    }
-
-    public short Get( int indices )
-    {
-        return 0;
-    }
-
-    public void Put( short[] indices, int offset, int count )
-    {
-    }
-
-    public void Put( ShortBuffer indices )
+    protected MappedByteBuffer( int mark, int pos, int lim, int cap, FileInfo? fd = null )
+        : base( mark, pos, lim, cap )
     {
     }
 }

@@ -17,6 +17,8 @@
 using System.Runtime.Serialization;
 using System.Xml;
 
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maps.Objects;
 using LibGDXSharp.Maps.Tiled.Objects;

@@ -16,7 +16,18 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
-public class IntBuffer : Buffer
+public abstract class IntBuffer : Buffer
 {
-    
+    public IntBuffer() : base( 0, 0, 0, 0 )
+    {
+    }
+
+    public int Get( int i )
+    {
+        return 0;
+    }
+
+    public void Put( int i, int i1 )
+    {
+    }
 }

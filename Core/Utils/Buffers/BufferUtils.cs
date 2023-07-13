@@ -31,6 +31,17 @@ public class BufferUtils
         return buffer;
     }
 
+    //TODO:
+    public static ByteBuffer NewUnsafeByteBuffer( int numBytes )
+    {
+        throw new NotImplementedException();
+    }
+
+    public static ByteBuffer NewUnsafeByteBuffer( ByteBuffer buf )
+    {
+        throw new NotImplementedException();
+    }
+
     public static CharBuffer NewCharBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
@@ -121,6 +132,10 @@ public class BufferUtils
         Copy( src, PositionInBytes( src ), dst, PositionInBytes( dst ), numBytes );
     }
 
+    public static void Copy( short[] src, int offset, Buffer dst, int numElements )
+    {
+    }
+    
     private static void Copy( Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes )
     {
         //TODO
@@ -191,5 +206,9 @@ public class BufferUtils
         }
 
         throw new GdxRuntimeException( "Can't copy to a " + dst.GetType().Name + " instance" );
+    }
+
+    public static void DisposeUnsafeByteBuffer( Buffer buf )
+    {
     }
 }

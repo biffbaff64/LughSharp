@@ -94,7 +94,7 @@ public class DataOutput : BinaryWriter
 
         if ( charCount == 0 )
         {
-            WriteByte( 1 );
+            Write( (byte)1 );
 
             return;
         }

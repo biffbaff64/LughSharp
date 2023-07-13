@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.G2D;

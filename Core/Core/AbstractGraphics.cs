@@ -82,7 +82,7 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract IGL20 GetGL20();
 
-    public abstract IGL30 GetGL30();
+    public abstract IGL30? GetGL30();
 
     public abstract void SetGL20( IGL20 gl20 );
 

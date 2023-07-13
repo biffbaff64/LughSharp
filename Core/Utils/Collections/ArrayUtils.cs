@@ -14,19 +14,17 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Collections;
+namespace LibGDXSharp.Utils.Collections;
 
-namespace LibGDXSharp.Extensions.Tools;
-
-/// <summary>
-/// Collects files recursively, filtering by file name. Callbacks are provided to
-/// process files and the results are collected, either <see cref="ProcessFile(Entry)"/>
-/// or <see cref="ProcessDir(Entry, ArrayList)"/> can be overridden, or both. The
-/// entries provided to the callbacks have the original file, the output directory,
-/// and the output file. If <see cref="SetFlattenOutput(bool)"/> is false, the output
-/// will match the directory structure of the input.
-/// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class FileProcessor
+public class ArrayUtils
 {
+    public static int TableSize( int keyTableLength, float loadFactor )
+    {
+        return 0;
+    }
+
+    public static void EnsureCapacity( ref byte[] array, int capacity )
+    {
+    }
 }

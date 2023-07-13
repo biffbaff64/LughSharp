@@ -47,7 +47,7 @@ public sealed class GLOnlyTextureData : ITextureData
         this.Type           = type;
     }
 
-    public ITextureData.TextureType TextureDataType => ITextureData.TextureDataType.Custom;
+    public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
     public void Prepare()
     {

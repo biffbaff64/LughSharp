@@ -51,7 +51,7 @@ public class GLProfiler
             Interceptor = new GL20Interceptor( this, graphics.GetGL20() );
         }
 
-        Listener = IGLErrorListener.LoggingListener;
+        Listener = new GLLoggingListener();
     }
 
     /// <summary>
@@ -78,20 +78,17 @@ public class GLProfiler
     /// Disables profiling by resetting the {@code GL20} and {@code GL30} instances with the original ones. </summary>
     public void Disable()
     {
-        if ( !Enabled )
-        {
-            return;
-        }
+        if ( !Enabled ) return;
 
-        GL30 gl30 = Graphics.getGL30();
+        IGL30? gl30 = Graphics.GetGL30();
 
         if ( gl30 != null )
         {
-            Graphics.setGL30( ( ( GL30Interceptor )Graphics.getGL30() ).gl30 );
+            Graphics.SetGL30( ( ( GL30Interceptor )Graphics.GetGL30()! ).GL30 );
         }
         else
         {
-            Graphics.setGL20( ( ( GL20Interceptor )Graphics.getGL20() ).gl20 );
+            Graphics.SetGL20( ( ( GL20Interceptor )Graphics.GetGL20() ).GL20 );
         }
 
         Enabled = false;
@@ -100,17 +97,17 @@ public class GLProfiler
     /// <summary>
     /// Returns the total gl calls made since the last reset
     /// </summary>
-    public int Calls => Interceptor.GetCalls();
+    public int Calls => Interceptor.Calls;
 
     /// <summary>
     /// Returns the total amount of texture bindings made since the last reset
     /// </summary>
-    public int TextureBindings => Interceptor.GetTextureBindings();
+    public int TextureBindings => Interceptor.TextureBindings;
 
     /// <summary>
     /// Returns the total amount of draw calls made since the last reset
     /// </summary>
-    public int DrawCalls => Interceptor.GetDrawCalls();
+    public int DrawCalls => Interceptor.DrawCalls;
 
     /// 
     /// <returns> the total amount of shader switches made since the last reset </returns>

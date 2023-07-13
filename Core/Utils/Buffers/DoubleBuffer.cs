@@ -16,7 +16,10 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
-public class DoubleBuffer : Buffer
+public abstract class DoubleBuffer : Buffer
 {
-    
+    protected DoubleBuffer( int mark, int pos, int lim, int cap, double[]? hb = null, int offset = 0 )
+        : base( mark, pos, lim, cap )
+    {
+    }
 }

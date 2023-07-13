@@ -43,4 +43,12 @@ public abstract class FloatBuffer : Buffer
     {
         return 0;
     }
+
+    public void Compact()
+    {
+    }
+
+    public void Put( float[] vertices, int offset, int length )
+    {
+    }
 }

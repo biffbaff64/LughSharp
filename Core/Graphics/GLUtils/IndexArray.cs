@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils.Buffers;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]

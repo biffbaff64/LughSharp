@@ -14,6 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils.Buffers;
+using LibGDXSharp.Utils.Collections.Extensions;
+
 namespace LibGDXSharp.Backends.Desktop;
 
 public class GLWindow : IDisposable

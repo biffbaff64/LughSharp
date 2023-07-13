@@ -14,7 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files;
 using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Utils.Xml;

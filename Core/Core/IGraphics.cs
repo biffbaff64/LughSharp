@@ -40,7 +40,7 @@ public interface IGraphics
     /// Returns the <see cref="IGL30"/> instance or null if unsupported.
     /// </summary>
     /// <remarks>MAY be replaced by a property.</remarks>
-    IGL30 GetGL30();
+    IGL30? GetGL30();
 
     /// <summary>
     /// Sets the IGL20 instance.
@@ -52,7 +52,7 @@ public interface IGraphics
     /// Sets the IGL30 instance.
     /// </summary>
     /// <remarks>MAY be replaced by a property.</remarks>
-    void SetGL30( IGL30 gl30 );
+    void SetGL30( IGL30? gl30 );
 
     int Width { get; }
 

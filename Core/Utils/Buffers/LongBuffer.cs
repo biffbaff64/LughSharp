@@ -16,7 +16,9 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
-public class LongBuffer : Buffer
+public abstract class LongBuffer : Buffer
 {
-    
+    protected LongBuffer() : base( 0, 0, 0, 0 )
+    {
+    }
 }

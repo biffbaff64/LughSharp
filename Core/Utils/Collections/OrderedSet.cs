@@ -14,10 +14,12 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils.Collections;
+
 namespace LibGDXSharp.Core.Utils.Collections;
 
 /// <summary>
-/// A <see cref="ObjectSet"/> that also stores keys in an <see cref="List"/> using the
+/// A <see cref="ObjectSet{T}"/> that also stores keys in an <see cref="List"/> using the
 /// insertion order. Null keys are not allowed. No allocation is done except when growing
 /// the table size.
 /// <para>

@@ -14,13 +14,17 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Buffer = LibGDXSharp.Utils.Buffer;
+using LibGDXSharp.Utils.Buffers;
+
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class GL20Interceptor : GLInterceptor, IGL20
 {
+    public IGL20 GL20 { get; set; }
+
     public GL20Interceptor( GLProfiler glProfiler, IGL20 gl20 )
         : base( glProfiler )
     {

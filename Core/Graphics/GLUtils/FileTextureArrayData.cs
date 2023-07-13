@@ -116,7 +116,7 @@ public class FileTextureArrayData : ITextureArrayData
     {
         for ( var i = 0; i < _textureDatas.Length; i++ )
         {
-            if ( _textureDatas[ i ]?.TextureDataType == ITextureData.TextureDataType.Custom )
+            if ( _textureDatas[ i ]?.TextureDataType == ITextureData.TextureType.Custom )
             {
                 _textureDatas[ i ]?.ConsumeCustomData( IGL30.GL_Texture_2D_Array );
             }

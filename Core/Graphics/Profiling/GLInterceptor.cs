@@ -15,19 +15,20 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils.Buffers;
 
-using Buffer = LibGDXSharp.Utils.Buffer;
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class GLInterceptor : IGL20
 {
-    protected int          Calls           { get; set; }
-    protected int          TextureBindings { get; set; }
-    protected int          DrawCalls       { get; set; }
-    protected int          ShaderSwitches  { get; set; }
-    protected FloatCounter VertexCount     { get; set; } = new( 0 );
+    public int          Calls           { get; set; }
+    public int          TextureBindings { get; set; }
+    public int          DrawCalls       { get; set; }
+    public int          ShaderSwitches  { get; set; }
+    public FloatCounter VertexCount     { get; set; } = new( 0 );
 
     protected GLProfiler glProfiler;
 

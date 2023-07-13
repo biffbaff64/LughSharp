@@ -29,39 +29,37 @@ public interface IGLErrorListener
     void OnError( int error );
 }
 
-// Basic implementations
-
 /// <summary>
 /// Listener that will log using Gdx.app.error GL error name and GL function.
 /// </summary>
-class LoggingListener : IGLErrorListener
+public class GLLoggingListener : IGLErrorListener
 {
     public void OnError( int error )
     {
         string? place = null;
 
-        try
-        {
-            StackTraceElement[] stack = Thread.CurrentThread.GetStackTrace();
+//        try
+//        {
+//            StackTraceElement[] stack = Thread.CurrentThread.GetStackTrace();
 
-            for ( int i = 0; i < stack.Length; i++ )
-            {
-                if ( "check".Equals( stack[ i ].GetMethodName() ) )
-                {
-                    if ( ( i + 1 ) < stack.Length )
-                    {
-                        StackTraceElement glMethod = stack[ i + 1 ];
+//            for ( int i = 0; i < stack.Length; i++ )
+//            {
+//                if ( "check".Equals( stack[ i ].GetMethodName() ) )
+//                {
+//                    if ( ( i + 1 ) < stack.Length )
+//                    {
+//                        StackTraceElement glMethod = stack[ i + 1 ];
 
-                        place = glMethod.getMethodName();
-                    }
+//                        place = glMethod.getMethodName();
+//                    }
 
-                    break;
-                }
-            }
-        }
-        catch ( Exception ignored )
-        {
-        }
+//                    break;
+//                }
+//            }
+//        }
+//        catch ( Exception ignored )
+//        {
+//        }
 
         if ( place != null )
         {

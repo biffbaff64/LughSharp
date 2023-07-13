@@ -17,6 +17,7 @@
 using LibGDXSharp.Backends.Desktop;
 using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
+using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp;
 

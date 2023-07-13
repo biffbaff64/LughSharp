@@ -16,6 +16,7 @@
 
 using System.Text;
 
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Graphics.GLUtils;
@@ -102,7 +103,7 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
                     ( ByteOrder.NativeOrder ).AsIntBuffer();
 
                 Gdx.GL20.GLGetIntegerv( IGL20.GL_Framebuffer_Binding, intbuf );
-                DefaultFramebufferHandle = intbuf.Get( 0 );
+//                DefaultFramebufferHandle = intbuf.Get( 0 );
             }
             else
             {
@@ -210,7 +211,7 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
 
             for ( var i = 0; i < colorTextureCounter; i++ )
             {
-                buffer.Put( IGL20.GL_Color_Attachment0 + i );
+//                buffer.Put( IGL20.GL_Color_Attachment0 + i );
             }
 
             buffer.Position = 0;

@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils.Buffers;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 public class IndexBufferObjectSubData : IIndexData
@@ -23,4 +25,85 @@ public class IndexBufferObjectSubData : IIndexData
         throw new NotImplementedException();
     }
 
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    public void Dispose()
+    {
+    }
+
+    /// <returns> the number of indices currently stored in this buffer </returns>
+    public int NumIndices { get; set; }
+
+    /// <returns> the maximum number of indices this IndexBufferObject can store. </returns>
+    public int NumMaxIndices { get; set; }
+
+    /// <summary>
+    /// <para>
+    /// Sets the indices of this IndexBufferObject, discarding the old indices.
+    /// The count must equal the number of indices to be copied to this IndexBufferObject.
+    /// </para>
+    /// <para>
+    /// This can be called in between calls to <see cref="Bind()"/> and
+    /// <see cref="Unbind()"/>. The index data will be updated instantly.
+    /// </para>
+    /// </summary>
+    /// <param name="indices"> the index data </param>
+    /// <param name="offset"> the offset to start copying the data from </param>
+    /// <param name="count"> the number of shorts to copy  </param>
+    public void SetIndices( short[] indices, int offset, int count )
+    {
+    }
+
+    /// <summary>
+    /// Copies the specified indices to the indices of this IndexBufferObject,
+    /// discarding the old indices. Copying start at the current
+    /// <see cref="ShortBuffer.Position()"/> of the specified buffer and copied
+    /// the <see cref="ShortBuffer.Remaining()"/> amount of indices. This can be
+    /// called in between calls to <see cref="Bind()"/> and <see cref="Unbind()"/>.
+    /// The index data will be updated instantly.
+    /// </summary>
+    /// <param name="indices"> the index data to copy  </param>
+    public void SetIndices( ShortBuffer indices )
+    {
+    }
+
+    /// <summary>
+    /// Update (a portion of) the indices.
+    /// </summary>
+    /// <param name="targetOffset"> offset in indices buffer </param>
+    /// <param name="indices"> the index data </param>
+    /// <param name="offset"> the offset to start copying the data from </param>
+    /// <param name="count"> the number of shorts to copy  </param>
+    public void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
+    {
+    }
+
+    /// <summary>
+    /// Returns the underlying ShortBuffer. If you modify the buffer contents they
+    /// wil be uploaded on the call to <see cref="Bind()"/>. If you need immediate
+    /// uploading use <see cref="SetIndices(short[], int, int)"/>.
+    /// </summary>
+    /// <returns> the underlying short buffer. </returns>
+    public ShortBuffer Buffer { get; set; }
+
+    /// <summary>
+    /// Binds this IndexBufferObject for rendering with glDrawElements.
+    /// </summary>
+    public void Bind()
+    {
+    }
+
+    /// <summary>
+    /// Unbinds this IndexBufferObject.
+    /// </summary>
+    public void Unbind()
+    {
+    }
+
+    /// <summary>
+    /// Invalidates the IndexBufferObject so a new OpenGL buffer handle is created.
+    /// Use this in case of a context loss.
+    /// </summary>
+    public void Invalidate()
+    {
+    }
 }

@@ -26,7 +26,7 @@ public class KTXTextureData : ITextureData, ICubemapData
 
     /// <value> the <see cref="ITextureData.TextureDataType"/>
     /// </value>
-    public ITextureData.TextureType TextureDataType => ITextureData.TextureDataType.Pixmap;
+    public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;
 
     /// <returns> whether the TextureData is prepared or not.</returns>
     public bool IsPrepared { get; set; }

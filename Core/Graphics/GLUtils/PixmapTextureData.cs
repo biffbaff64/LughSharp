@@ -58,7 +58,7 @@ public sealed class PixmapTextureData : ITextureData
         set { }
     }
 
-    public ITextureData.TextureType TextureDataType => ITextureData.TextureDataType.Pixmap;
+    public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;
 
     /// <returns>
     /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the

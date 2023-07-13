@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
@@ -67,43 +68,43 @@ public class ETC1
             CheckNPOT();
         }
 
-        public ETC1Data( FileHandle pkmFile )
+        public ETC1Data( FileInfo pkmFile )
         {
-            var              buffer = new sbyte[ 1024 * 10 ];
-            DataInputStream? input  = null;
+//            var              buffer = new sbyte[ 1024 * 10 ];
+//            DataInputStream? input  = null;
 
-            try
-            {
-                input = new DataInputStream( new BufferedInputStream( new GZIPInputStream( pkmFile.Read() ) ) );
+//            try
+//            {
+//                input = new DataInputStream( new BufferedInputStream( new GZIPInputStream( pkmFile.Read() ) ) );
 
-                int fileSize = input.ReadInt();
+//                int fileSize = input.ReadInt();
 
-                CompressedData = BufferUtils.NewUnsafeByteBuffer( fileSize );
-                int readBytes;
+//                CompressedData = BufferUtils.NewUnsafeByteBuffer( fileSize );
+//                int readBytes;
 
-                while ( ( readBytes = input.Read( buffer ) ) != -1 )
-                {
-                    CompressedData.Put( buffer, 0, readBytes );
-                }
+//                while ( ( readBytes = input.Read( buffer ) ) != -1 )
+//                {
+//                    CompressedData.Put( buffer, 0, readBytes );
+//                }
 
-                CompressedData.Position = 0;
-                CompressedData.Limit    = CompressedData.Capacity;
-            }
-            catch ( Exception e )
-            {
-                throw new GdxRuntimeException( "Couldn't load pkm file '" + pkmFile + "'", e );
-            }
-            finally
-            {
-                StreamUtils.CloseQuietly( input );
-            }
+//                CompressedData.Position = 0;
+//                CompressedData.Limit    = CompressedData.Capacity;
+//            }
+//            catch ( Exception e )
+//            {
+//                throw new GdxRuntimeException( "Couldn't load pkm file '" + pkmFile + "'", e );
+//            }
+//            finally
+//            {
+//                StreamUtils.CloseQuietly( input );
+//            }
 
-            Width      = GetWidthPKM( CompressedData, 0 );
-            Height     = GetHeightPKM( CompressedData, 0 );
-            DataOffset = PkmHeaderSize;
+//            Width      = GetWidthPKM( CompressedData, 0 );
+//            Height     = GetHeightPKM( CompressedData, 0 );
+//            DataOffset = PkmHeaderSize;
 
-            CompressedData.Position = DataOffset;
-            CheckNPOT();
+//            CompressedData.Position = DataOffset;
+//            CheckNPOT();
         }
 
         private void CheckNPOT()
@@ -124,41 +125,41 @@ public class ETC1
         /// Writes the ETC1Data with a PKM header to the given file.
         /// </summary>
         /// <param name="file"> the file.  </param>
-        public void Write( FileHandle file )
+        public void Write( FileInfo file )
         {
-            DataOutputStream? write        = null;
-            sbyte[]           buffer       = new sbyte[ 10 * 1024 ];
-            int               writtenBytes = 0;
+//            DataOutputStream? write        = null;
+//            sbyte[]           buffer       = new sbyte[ 10 * 1024 ];
+//            int               writtenBytes = 0;
 
-            CompressedData.Position = 0;
-            CompressedData.Limit    = CompressedData.Capacity;
+//            CompressedData.Position = 0;
+//            CompressedData.Limit    = CompressedData.Capacity;
 
-            try
-            {
-                write = new DataOutputStream( new GZIPOutputStream( file.Write( false ) ) );
-                write.WriteInt( CompressedData.Capacity );
+//            try
+//            {
+//                write = new DataOutputStream( new GZIPOutputStream( file.Write( false ) ) );
+//                write.WriteInt( CompressedData.Capacity );
 
-                while ( writtenBytes != CompressedData.Capacity )
-                {
-                    int bytesToWrite = Math.Min( CompressedData.Remaining(), buffer.Length );
+//                while ( writtenBytes != CompressedData.Capacity )
+//                {
+//                    int bytesToWrite = Math.Min( CompressedData.Remaining(), buffer.Length );
 
-                    CompressedData.Get( buffer, 0, bytesToWrite );
+//                    CompressedData.Get( buffer, 0, bytesToWrite );
 
-                    write.Write( buffer, 0, bytesToWrite );
-                    writtenBytes += bytesToWrite;
-                }
-            }
-            catch ( Exception e )
-            {
-                throw new GdxRuntimeException( "Couldn't write PKM file to '" + file + "'", e );
-            }
-            finally
-            {
-                StreamUtils.CloseQuietly( write );
-            }
+//                    write.Write( buffer, 0, bytesToWrite );
+//                    writtenBytes += bytesToWrite;
+//                }
+//            }
+//            catch ( Exception e )
+//            {
+//                throw new GdxRuntimeException( "Couldn't write PKM file to '" + file + "'", e );
+//            }
+//            finally
+//            {
+//                StreamUtils.CloseQuietly( write );
+//            }
 
-            CompressedData.Position = DataOffset;
-            CompressedData.Limit    = CompressedData.Capacity;
+//            CompressedData.Position = DataOffset;
+//            CompressedData.Limit    = CompressedData.Capacity;
         }
 
         /// <summary>

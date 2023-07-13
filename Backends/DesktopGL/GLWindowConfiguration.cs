@@ -37,7 +37,7 @@ public class GLWindowConfiguration
     public IFile.FileType     WindowIconFileType     { get; set; }
     public string[]?          WindowIconPaths        { get; set; }
     public IGLWindowListener? WindowListener         { get; set; }
-    public GLDisplayMode?     FullscreenMode         { get; set; }
+    public GLGraphics.GLDisplayMode?     FullscreenMode         { get; set; }
     public string?            Title                  { get; set; }
 
     internal void SetWindowConfiguration( GLWindowConfiguration config )
@@ -193,7 +193,7 @@ public class GLWindowConfiguration
     /// {@link GLApplicationConfiguration#getDisplayMode()} on this class to enumerate connected monitors
     /// and their fullscreen display modes.
     ///
-    public void SetFullscreenMode( GLDisplayMode mode )
+    public void SetFullscreenMode( GLGraphics.GLDisplayMode mode )
     {
         this.FullscreenMode = mode;
     }
