@@ -22,5 +22,5 @@ public class MapObject
     public float         Opacity    { get; set; }         = 1.0f;
     public bool          Visible    { get; set; }         = true;
     public Color         Color      { get; set; }         = Color.White;
-    public MapProperties Properties { get; private set; } = new MapProperties();
+    public MapProperties Properties { get; private set; } = new();
 }
