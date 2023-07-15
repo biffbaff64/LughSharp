@@ -117,9 +117,6 @@ public sealed class ShaderProgram
     /// </summary>
     private string _log = "";
 
-    /// <summary>whether this program compiled successfully</summary>
-    public bool IsCompiled { get; set; }
-
     /// <summary>
     /// uniform lookup
     /// </summary>
@@ -146,6 +143,50 @@ public sealed class ShaderProgram
 
     public bool invalidated;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    public static string ManagedStatus
+    {
+        get
+        {
+            var builder = new StringBuilder( "Managed shaders/app: { " );
+
+            foreach ( IApplication app in shaders.Keys )
+            {
+                builder.Append( shaders[ app ].Count );
+                builder.Append( ' ' );
+            }
+
+            builder.Append( '}' );
+
+            return builder.ToString();
+        }
+    }
+
+    /// <summary>whether this program compiled successfully</summary>
+    public bool IsCompiled { get; set; }
+
+    /// <returns> the number of managed shader programs currently loaded </returns>
+    public static int NumManagedShaderPrograms => shaders[ Gdx.App ].Count;
+
+    public string[] Attributes => _attributeNames;
+
+    public string[] Uniforms => _uniformNames;
+
+    public string VertexShaderSource => _vertexShaderSource;
+
+    public string FragmentShaderSource => _fragmentShaderSource;
+
+    public int Handle => _programHandle;
+    
+    #endregion properties
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// 
     /// </summary>
@@ -323,12 +364,9 @@ public sealed class ShaderProgram
                 _log = Gdx.GL20.GLGetProgramInfoLog( _programHandle );
 
                 // }
-                return _log;
             }
-            else
-            {
-                return _log;
-            }
+
+            return _log;
         }
     }
 
@@ -928,27 +966,6 @@ public sealed class ShaderProgram
         shaders.Remove( app );
     }
 
-    public static string ManagedStatus
-    {
-        get
-        {
-            var builder = new StringBuilder( "Managed shaders/app: { " );
-
-            foreach ( IApplication app in shaders.Keys )
-            {
-                builder.Append( shaders[ app ].Count );
-                builder.Append( ' ' );
-            }
-
-            builder.Append( '}' );
-
-            return builder.ToString();
-        }
-    }
-
-    /// <returns> the number of managed shader programs currently loaded </returns>
-    public static int NumManagedShaderPrograms => shaders[ Gdx.App ].Count;
-
     /// <summary>
     /// Sets the given attribute
     /// </summary>
@@ -1092,14 +1109,4 @@ public sealed class ShaderProgram
     {
         return _uniformSizes.TryGetValue( name, out var size ) ? size : 0;
     }
-
-    public string[] Attributes => _attributeNames;
-
-    public string[] Uniforms => _uniformNames;
-
-    public string VertexShaderSource => _vertexShaderSource;
-
-    public string FragmentShaderSource => _fragmentShaderSource;
-
-    public int Handle => _programHandle;
 }

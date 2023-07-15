@@ -20,7 +20,7 @@ namespace LibGDXSharp.Utils;
 /// A bitset, without size limitation, allows comparison via
 /// bitwise operators to other bitfields.
 /// </summary>
-public partial class Bits
+public class Bits
 {
     private long[] _bits = { 0 };
 
@@ -426,7 +426,9 @@ public partial class Bits
     /// has all bits set to true that are also set to true in the specified BitSet.
     /// </summary>
     /// <param name="other"> a bit set </param>
-    /// <returns> bool indicating whether this bit set is a super set of the specified set  </returns>
+    /// <returns>
+    /// bool indicating whether this bit set is a super set of the specified set
+    /// </returns>
     public bool ContainsAll( Bits other )
     {
         var bits            = this._bits;
@@ -452,11 +454,11 @@ public partial class Bits
 
         return true;
     }
-        
+
     public override int GetHashCode()
     {
         const int prime = 73;
-            
+
         var hash = prime + Gdx.App.GetVersion().GetHashCode();
         hash = ( prime * hash ) + Gdx.App.GetHashCode();
 
@@ -495,4 +497,30 @@ public partial class Bits
 
         return Length() == other.Length();
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    #region statics
+
+    private static ByteOrder? _byteOrder;
+
+    public static ByteOrder ByteOrder
+    {
+        get
+        {
+            if ( _byteOrder == null )
+            {
+                throw new GdxRuntimeException( "Unknown Byte Order!" );
+            }
+
+            return _byteOrder;
+        }
+        set => _byteOrder = value;
+    }
+
+    #endregion statics
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }

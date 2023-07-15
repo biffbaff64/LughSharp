@@ -259,218 +259,11 @@ GRAPHICS/G2D
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-GRAPHICS/G3D
-------------
-
-    -      - Attribute
-    -      - Attributes
-    -      - Environment
-    -      - IRenderableProvider
-    -      - IShader
-    -      - Material
-    -      - Model
-    -      - ModelBatch
-    -      - ModelCache
-    -      - ModelInstance
-    -      - Renderable
-
-GRAPHICS/G3D/ATTRIBUTES
------------------------
-
-    -      - BlendingAttribute
-    -      - ColorAttribute
-    -      - CubemapAttribute
-    -      - DepthTestAttribute
-    -      - DirectionalLightAttribute
-    -      - FloatAttribute
-    -      - IntAttribute
-    -      - PointLightsAttribute
-    -      - SpotLightsAttribute
-    -      - TextureAttribute
-
-GRAPHICS/G3D/DECALS
--------------------
-
-    -      - CameraGroupStrategy
-    -      - Decal
-    -      - DecalBatch
-    -      - DecalMaterial
-    -      - IGroupPlug
-    -      - IGroupStrategy
-    -      - PluggableGroupStrategy
-    -      - SimpleOrthoGroupStrategy
-
-GRAPHICS/G3D/ENVIRONMENT
-------------------------
-
-    -      - AmbientCubemap
-    -      - BaseLight
-    -      - DirectionalLight
-    -      - DirectionalShadowLight
-    -      - IShadowMap
-    -      - PointLight
-    -      - SphericalHarmonics
-    -      - SpotLight
-
-GRAPHICS/G3D/LOADER
--------------------
-
-    -      - G3dModelLoader
-    -      - ObjLoader
-
-GRAPHICS/G3D/MODEL
-------------------
-
-    -      - Animation
-    -      - MeshPart
-    -      - Node
-    -      - NodeAnimation
-    -      - NodeKeyframe
-    -      - NodePart
-
-GRAPHICS/G3D/MODEL/DATA
------------------------
-
-    -      - ModelAnimation
-    -      - ModelData
-    - DONE - ModelMaterial
-    -      - ModelMesh
-    -      - ModelMeshPart
-    -      - ModelNode
-    -      - ModelNodeAnimation
-    -      - ModelNodeKeyframe
-    -      - ModelNodePart
-    - DONE - ModelTexture
-
-GRAPHICS/G3D/PARTICLES
-----------------------
-
-    -      - ParticleArray
-    -      - ParticleChannels
-    -      - ParticleController
-    -      - ParticleControllerComponent
-    -      - ParticleEffect
-    -      - ParticleEffectLoader
-    -      - ParticleShader
-    -      - ParticleSorter
-    -      - ParticleSystem
-    -      - ResourceData
-
-GRAPHICS/G3D/PARTICLES/BATCHES
-------------------------------
-
-    -      - BillboardParticleBatch
-    -      - BufferedParticleBatch
-    -      - IParticleBatch
-    -      - ModelInstanceParticleBatch
-    -      - PointSpriteParticleBatch
-
-GRAPHICS/G3D/PARTICLES/EMITTERS
--------------------------------
-
-    -      - Emitter
-    -      - RegularEmitter
-
-GRAPHICS/G3D/PARTICLES/INFLUENCERS
-----------------------------------
-
-    -      - ColorInfluencer
-    -      - DynamicsInfluencer
-    -      - DynamicsModifier
-    -      - Influencer
-    -      - ModelInfluencer
-    -      - ParticleControllerFinalizerInfluencer
-    -      - ParticleControllerInfluencer
-    -      - RegionInfluencer
-    -      - ScaleInfluencer
-    -      - SimpleInfluencer
-    -      - SpawnInfluencer
-
-GRAPHICS/G3D/PARTICLES/RENDERERS
---------------------------------
-
-    -      - BillboardControllerRenderData
-    -      - BillboardRenderer
-    -      - ModelInstanceControllerRenderData
-    -      - ModelInstanceRenderer
-    -      - ParticleControllerControllerRenderer
-    -      - ParticleControllerRenderData
-    -      - ParticleControllerRenderer
-    -      - PointSpriteControllerRenderData
-    -      - PointSpriteRenderer
-
-GRAPHICS/G3D/PARTICLES/VALUES
------------------------------
-
-    -      - CylinderSpawnShapeValue
-    -      - EllipseSpawnShapeValue
-    -      - GradientColorValue
-    -      - LineSpawnShapeValue
-    -      - MeshSpawnShapeValue
-    -      - NumericValue
-    -      - ParticleValue
-    -      - PointSpawnShapeValue
-    -      - PrimitiveSpawnShapeValue
-    -      - RangedNumericValue
-    -      - RectangleSpawnShapeValue
-    -      - ScaledNumericValue
-    -      - SpawnShapeValue
-    -      - UnweightedMeshSpawnShapeValue
-    -      - WeightMeshSpawnShapeValue
-
-GRAPHICS/G3D/SHADERS
---------------------
-
-    -      - BaseShader
-    -      - DefaultShader
-    -      - DepthShader
-
-GRAPHICS/G3D/UTILS
-------------------
-  
-    -      - AnimationController
-    -      - BaseAnimationController
-    -      - BaseShaderProvider
-    -      - CameraInputController
-    -      - DefaultRenderableSorter
-    -      - DefaultShaderProvider
-    -      - DefaultTexureBinder
-    -      - DepthShaderProvider
-    -      - FirstPersonCameraController
-    -      - IMeshPartBuilder
-    -      - IRenderableSorter
-    -      - IShaderProvider
-    -      - ITextureBinder
-    - DONE - ITextureProvider
-    -      - MeshBuilder
-    -      - ModelBuilder
-    -      - RenderContext
-    -      - ShapeCache
-    -      - TextureDescriptor
-
-GRAPHICS/G3D/UTILS/SHAPEBUILDERS
---------------------------------
-
-    -      - ArrowShapeBuilder
-    -      - BaseShapeBuilder
-    -      - BoxShapeBuilder
-    -      - CapsuleShapeBuilder
-    -      - ConeShapeBuilder
-    -      - CylinderShapeBuilder
-    -      - EllipseShapeBuilder
-    -      - FrustrumShapeBuilder
-    -      - PatchShapeBuilder
-    -      - RenderableShapeBuilder
-    -      - SphereShapeBuilder
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 GRAPHICS/GLUTILS
 ----------------
 
-    - IP   - ETC1
-    - IP   - ETC1TextureData
+    - IP   - ETC1                                   Find alternative / Has native
+    - IP   - ETC1TextureData                        Find alternative / Has native
     - DONE - FacedCubemapData
     - IP   - FileTextureArrayData
     - IP   - FileTextureData
@@ -486,9 +279,9 @@ GRAPHICS/GLUTILS
     - DONE - GLFrameBuffer
     - DONE - GLFrameBufferBuilder                   Move from GLFrameBuffer
     - DONE - GLOnlyTextureData
-    - IP   - GLVersion
+    - DONE - GLVersion
     - DONE - HdpiMode
-    - IP   - HdpiUtils
+    - DONE - HdpiUtils
     - DONE - IImmediateModeRenderer
     - DONE - IIndexData
     - DONE - IInstanceData
@@ -503,9 +296,9 @@ GRAPHICS/GLUTILS
     -      - MipMapGenerator
     -      - MipMapTextureData
     - DONE - PixmapTextureData
-    - IP   - ShaderProgram
+    - DONE - ShaderProgram
     - DONE - ShapeRenderer
-    -      - VertexArray
+    - DONE - VertexArray
     -      - VertexBufferObject
     -      - VertexBufferObjectSubData
     -      - VertexBufferObjectWithVAO
@@ -644,17 +437,18 @@ MATH
     - DONE - IShape2D
     - DONE - IVector
     - DONE - MathUtils
-    - DONE - Matrix3                Convert
-    - DONE - Matrix4                Convert
+    - DONE - Matrix3                        Convert
+    - DONE - Matrix4                        Convert
     - DONE - Number
+    - DONE - NumberUtils                    Convert
     - DONE - Plane
     - DONE - Polygon
     - DONE - Polyline
     -      - Quaternion
     - DONE - RandomXS128
     - DONE - RectangleShape
-    - DONE - Vector2                Convert, I prefer the way the LibGDX class works.
-    - DONE - Vector3                Convert, I prefer the way the LibGDX class works.
+    - DONE - Vector2                        Convert, I prefer the way the LibGDX class works.
+    - DONE - Vector3                        Convert, I prefer the way the LibGDX class works.
     - DONE - WindowedMean
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -842,7 +636,6 @@ UTILS
     - DONE - IRunnable                      Done, but is it needed?
     -      - LittleEndianInputStream        Check
     - DONE - Logger                         Convert
-    - DONE - NumberUtils                    Convert
     -      - PauseableThread
     - DONE - PerformanceCounter             Check
     - DONE - PerformanceCounters            Check
@@ -874,6 +667,8 @@ UTILS
 UTILS/ASYNC
 -----------
 
+    Convert later, purely for education purposes.
+
     - **** - AsyncExecutor
     - **** - AsyncResult|
     - **** - IAsyncTask
@@ -902,16 +697,15 @@ UTILS/COLLECTIONS
 
     Note: C# has IEnumerable and IEnumerator interfaces...
 
-    - DONE - Array<T>                       Converted, but use List<>
+    - DONE - Array<T>                       Converted, but use List<T> so can be deprecated
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - **** - IPredicate
-    -      - ListQueue
-    -      - ListStack
+    -      - ListQueue                      ?????
+    -      - ListStack                      ?????
     - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
-    -      - ObjectSet
-    - **** - ObjectSet<T>                   Use List<T>
+    - IP   - ObjectSet<T>                   Use List<T>
     - **** - OrderedSet<T>                  Use SortedSet<T> ?
     - **** - PredicateIterable
     - **** - PredicateIterator
@@ -945,6 +739,8 @@ UTILS/COLLECTIONS
 UTILS/COLLECTIONS/EXTENSIONS
 ----------------------------
 
+    Convert later, purely for education purposes.
+
     - IP   - DictionaryExtensions
     - IP   - ListExtensions
     - IP   - SortedSetExtensions
@@ -955,6 +751,8 @@ UTILS/COLLECTIONS/EXTENSIONS
 UTILS/COMPRESSION
 -----------------
 
+    Convert later, purely for education purposes.
+
     - **** - CRC
     - **** - IChecksum
     - **** - ICodeProgress
@@ -963,6 +761,8 @@ UTILS/COMPRESSION
 UTILS/COMPRESSION/LZ
 --------------------
 
+    Convert later, purely for education purposes.
+
     - **** - BinTree
     - **** - InWindow
     - **** - OutWindow
@@ -970,12 +770,16 @@ UTILS/COMPRESSION/LZ
 UTILS/COMPRESSION/LZMA
 ----------------------
 
+    Convert later, purely for education purposes.
+
     - **** - Base
     - **** - Decoder
     - **** - Encoder
 
 UTILS/COMPRESSION/RANGECODER
 ----------------------------
+
+    Convert later, purely for education purposes.
 
     - **** - BitTreeDecoder
     - **** - BitTreeEncoder
@@ -987,6 +791,8 @@ UTILS/COMPRESSION/RANGECODER
 
 UTILS/CONCURRENT
 ----------------
+
+    Convert later, purely for education purposes.
 
     - **** - AtomicInteger
     - **** - AtomicQueue
@@ -1003,9 +809,12 @@ UTILS/EXCEPTIONS
     - DONE - BufferUnderflowException       Convert
     - DONE - GdxRuntimeException            Convert
     - DONE - IllegalStateException          Convert
+    - DONE - InvalidMarkException           Convert
     - DONE - NoSuchElementException         Convert
     - DONE - NumberFormatException          Convert
     - DONE - ReadOnlyBufferException        Convert
+    - DONE - UnsupportedEncodingException   Convert
+    - DONE - UnsupportedOperationException  Convert
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1013,8 +822,7 @@ UTILS/EXCEPTIONS
 UTILS/JSON
 ----------
 
-    Use an existing Json library, but this could be
-    converted at a later date.
+    Use an existing Json library, but this could be converted at a later date.
 
     - **** - IBaseJsonReader
     - **** - Json
@@ -1042,6 +850,8 @@ UTILS/POOLING
 
 UTILS/REFLECT
 -------------
+
+    Convert later, purely for education purposes.
 
     - **** - Annotation
     - **** - ArrayReflection
@@ -1092,183 +902,7 @@ UTILS/XML
     Use C# XML Libraries, but convert these, eventually, anyway.
 
     - IP   - XmlReader
-    -      - XmlWriter
+    - IP   - XmlWriter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / BOX2D
-------------------
-
-    - Use Box2DSharp?
-
-    - **** - Body
-    - **** - BodyDef
-    - **** - Box2D
-    - **** - Box2DDebugRenderer
-    - **** - ChainShape
-    - **** - CircleShape
-    - **** - Contact
-    - **** - ContactFilter
-    - **** - ContactImpulse
-    - **** - IContactListener
-    - **** - IDestructionListener
-    - **** - EdgeShape
-    - **** - Filter
-    - **** - Fixture
-    - **** - FixtureDef
-    - **** - Joint
-    - **** - JointDef
-    - **** - Manifold
-    - **** - MassData
-    - **** - PolygonShape
-    - **** - IQueryCallback
-    - **** - IRayCastCallback
-    - **** - Shape
-    - **** - Transform
-    - **** - World
-    - **** - WorldManifold
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / BOX2D / GRAPHICS
------------------------------
-
-    - **** - ParticleEmitterBox2D
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / BOX2D / JOINTS
----------------------------
-
-    - **** - DistanceJoint
-    - **** - DistanceJointDef
-    - **** - FictionJoint
-    - **** - FrictionJointDef
-    - **** - GearJoint
-    - **** - GearJointDef
-    - **** - MotorJoint
-    - **** - MotorJointDef
-    - **** - MouseJoint
-    - **** - MouseJointDef
-    - **** - PrismaticJoint
-    - **** - PrismaticJointDef
-    - **** - PulleyJoint
-    - **** - PulleyJointDef
-    - **** - RevoluteJoint
-    - **** - RevoluteJointDef
-    - **** - RopeJoint
-    - **** - RopeJointDef
-    - **** - WeldJoint
-    - **** - WeldJointDef
-    - **** - WheelJoint
-    - **** - WheelJointDef
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/ TOOLS
------------------
-
-    -      - FileProcessor
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TILEDMAPPACKER
------------------------------------
-
-    -      - TiledMapPacker
-    -      - TiledMapPackerTest
-    -      - TiledMapPackerTestRender
-    -      - TileSetLayout
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / BMFONT
------------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / DISTANCEFIELD
-------------------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / ETC1
----------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / FLAME
-----------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / HEADERS
-------------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / HIERO
-----------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / IMAGEPACKER
-----------------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / KTX
---------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / PARTICLEEDITOR
--------------------------------------------
-
-    -      - 
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS / TOOLS / TOOLS / TEXTUREPACKER
-------------------------------------------
-
-    -      - ColorBleedEffect
-    -      - GridPacker
-    -      - ImageProcessor
-    -      - MaxRectsPacker
-    -      - TexturePacker
-    -      - TexturePackerFileProcessor
-    -      - TexturePackerTest
-    -      - TexturePackerUpscaleTest
-    -      - TextureUnpacker

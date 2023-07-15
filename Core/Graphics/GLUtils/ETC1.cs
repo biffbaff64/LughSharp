@@ -50,7 +50,7 @@ public class ETC1
         /// <summary>
         /// the optional PKM header and compressed image data.
         /// </summary>
-        public ByteBuffer CompressedData { get; set; }
+        public ByteBuffer? CompressedData { get; set; }
 
         /// <summary>
         /// the offset in bytes to the actual compressed data.
@@ -58,7 +58,7 @@ public class ETC1
         /// </summary>
         public int DataOffset { get; set; }
 
-        public ETC1Data( int width, int height, ByteBuffer compressedData, int dataOffset )
+        public ETC1Data( int width, int height, ByteBuffer? compressedData, int dataOffset )
         {
             this.Width          = width;
             this.Height         = height;

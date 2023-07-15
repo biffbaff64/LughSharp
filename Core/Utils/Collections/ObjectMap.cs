@@ -41,6 +41,7 @@ namespace LibGDXSharp.Core.Utils.Collections;
 /// probing continues to work even when all hashCodes collide, just more slowly.
 /// </para>
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ObjectMap<TK, TV>
 {
     protected TK?[] keyTable;

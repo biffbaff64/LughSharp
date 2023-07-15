@@ -19,26 +19,60 @@ using LibGDXSharp.Utils.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class VertexArray : IVertexData
+public sealed class VertexArray : IVertexData
 {
-    public VertexArray( int maxVertices, VertexAttributes attributes )
+//    private readonly VertexAttributes _attributes;
+//    private readonly FloatBuffer      _buffer;
+    private readonly ByteBuffer _byteBuffer;
+
+    /// <summary>
+    /// Constructs a new interleaved VertexArray
+    /// </summary>
+    /// <param name="numVertices"> the maximum number of vertices </param>
+    /// <param name="attributes"> the <seealso cref="VertexAttribute"/>s  </param>
+    public VertexArray( int numVertices, params VertexAttribute[] attributes )
+        : this( numVertices, new VertexAttributes( attributes ) )
     {
-        throw new NotImplementedException();
     }
 
-    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose()
+    /// <summary>
+    /// Constructs a new interleaved VertexArray
+    /// </summary>
+    /// <param name="numVertices"> the maximum number of vertices </param>
+    /// <param name="attributes"> the <see cref="VertexAttributes"/> </param>
+    public VertexArray( int numVertices, VertexAttributes attributes )
     {
+        this.Attributes  = attributes;
+        this._byteBuffer = BufferUtils.NewUnsafeByteBuffer( this.Attributes.VertexSize * numVertices );
+        this.Buffer      = _byteBuffer.AsFloatBuffer();
+
+        Buffer.Flip();
+        _byteBuffer.Flip();
     }
 
+    /// <summary>
+    /// </summary>
     /// <returns> the number of vertices this VertexData stores </returns>
-    public int NumVertices { get; set; }
+    public int NumVertices => ( this.Buffer.Limit * 4 ) / Attributes.VertexSize;
 
+    /// <summary>
+    /// </summary>
     /// <returns> the number of vertices this VertedData can store </returns>
-    public int NumMaxVertices { get; set; }
+    public int NumMaxVertices => _byteBuffer.Capacity / Attributes.VertexSize;
 
+    /// <summary>
+    /// </summary>
     /// <returns> the <see cref="VertexAttributes"/> as specified during construction. </returns>
-    public VertexAttributes GetAttributes() => null;
+    public VertexAttributes Attributes { get; set; }
+
+    /// <summary>
+    /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
+    /// contents to be uploaded on the next call to bind. If you need immediate
+    /// uploading use <see cref="IVertexData.SetVertices"/>; Any modifications made to the Buffer
+    /// *after* the call to bind will not automatically be uploaded.
+    /// </summary>
+    /// <returns> the underlying FloatBuffer holding the vertex data.</returns>
+    public FloatBuffer Buffer { get; set; }
 
     /// <summary>
     /// Sets the vertices of this VertexData, discarding the old vertex data. The
@@ -55,6 +89,10 @@ public class VertexArray : IVertexData
     /// <param name="count"> the number of floats to copy  </param>
     public void SetVertices( float[] vertices, int offset, int count )
     {
+        BufferUtils.Copy( vertices, _byteBuffer, count, offset );
+
+        Buffer.Position = 0;
+        Buffer.Limit    = count;
     }
 
     /// <summary>
@@ -65,52 +103,134 @@ public class VertexArray : IVertexData
     /// <param name="count"> the number of floats to copy  </param>
     public void UpdateVertices( int targetOffset, float[] vertices, int sourceOffset, int count )
     {
-    }
+        var pos = _byteBuffer.Position;
 
-    /// <summary>
-    /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
-    /// contents to be uploaded on the next call to bind. If you need immediate
-    /// uploading use <see cref="IVertexData.SetVertices"/>; Any modifications made to the Buffer
-    /// *after* the call to bind will not automatically be uploaded.
-    /// </summary>
-    /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer GetBuffer() => null;
+        _byteBuffer.Position = ( targetOffset * 4 );
 
-    /// <summary>
-    /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
-    /// </summary>
-    public void Bind( ShaderProgram shader )
-    {
+        BufferUtils.Copy( vertices, sourceOffset, count, _byteBuffer );
+
+        _byteBuffer.Position = pos;
     }
 
     /// <summary>
     /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
     /// </summary>
     /// <param name="shader"></param>
-    /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Bind( ShaderProgram shader, int[]? locations )
+    /// <param name="locations"> array containing the attribute locations.</param>
+    public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-    }
+        int numAttributes = Attributes.Size;
 
-    /// <summary>
-    /// Unbinds this VertexData.
-    /// </summary>
-    public void Unbind( ShaderProgram shader )
-    {
+        _byteBuffer.Limit = ( Buffer.Limit * 4 );
+
+        if ( locations == null )
+        {
+            for ( int i = 0; i < numAttributes; i++ )
+            {
+                VertexAttribute attribute = Attributes.Get( i );
+                int             location  = shader.GetAttributeLocation( attribute.alias );
+
+                if ( location < 0 ) continue;
+
+                shader.EnableVertexAttribute( location );
+
+                if ( attribute.type == IGL20.GL_Float )
+                {
+                    Buffer.Position = ( attribute.Offset / 4 );
+
+                    shader.SetVertexAttribute
+                        (
+                        location, attribute.numComponents, attribute.type, attribute.normalized,
+                        Attributes.VertexSize, Buffer
+                        );
+                }
+                else
+                {
+                    _byteBuffer.Position = attribute.Offset;
+
+                    shader.SetVertexAttribute
+                        (
+                        location, attribute.numComponents, attribute.type, attribute.normalized,
+                        Attributes.VertexSize, _byteBuffer
+                        );
+                }
+            }
+        }
+        else
+        {
+            for ( int i = 0; i < numAttributes; i++ )
+            {
+                VertexAttribute attribute = Attributes.Get( i );
+                int             location  = locations[ i ];
+
+                if ( location < 0 ) continue;
+
+                shader.EnableVertexAttribute( location );
+
+                if ( attribute.type == IGL20.GL_Float )
+                {
+                    Buffer.Position = ( attribute.Offset / 4 );
+
+                    shader.SetVertexAttribute
+                        (
+                        location, attribute.numComponents, attribute.type, attribute.normalized,
+                        Attributes.VertexSize, Buffer
+                        );
+                }
+                else
+                {
+                    _byteBuffer.Position = attribute.Offset;
+
+                    shader.SetVertexAttribute
+                        (
+                        location, attribute.numComponents, attribute.type, attribute.normalized,
+                        Attributes.VertexSize, _byteBuffer
+                        );
+                }
+            }
+        }
     }
 
     /// <summary>
     /// Unbinds this VertexData.
     /// </summary>
     /// <param name="shader"></param>
-    /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Unbind( ShaderProgram? shader, int[]? locations )
+    /// <param name="locations"> array containing the attribute locations.</param>
+    public void Unbind( ShaderProgram? shader, int[]? locations = null )
     {
+        int numAttributes = Attributes.Size;
+
+        if ( locations == null )
+        {
+            for ( int i = 0; i < numAttributes; i++ )
+            {
+                shader?.DisableVertexAttribute( Attributes.Get( i ).alias );
+            }
+        }
+        else
+        {
+            for ( int i = 0; i < numAttributes; i++ )
+            {
+                int location = locations[ i ];
+                
+                if ( location >= 0 ) shader?.DisableVertexAttribute( location );
+            }
+        }
     }
 
     /// <summary>
-    /// Invalidates the VertexData if applicable. Use this in case of a context loss. </summary>
+    /// Invalidates the VertexData if applicable. Use this in case of a context loss.
+    /// </summary>
     public void Invalidate()
     {
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing,
+    /// or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
     }
 }

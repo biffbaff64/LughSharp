@@ -37,7 +37,7 @@ public class BufferUtils
         throw new NotImplementedException();
     }
 
-    public static ByteBuffer NewUnsafeByteBuffer( ByteBuffer buf )
+    public static ByteBuffer NewUnsafeByteBuffer( ByteBuffer? buf )
     {
         throw new NotImplementedException();
     }
@@ -135,6 +135,10 @@ public class BufferUtils
     public static void Copy( short[] src, int offset, Buffer dst, int numElements )
     {
     }
+
+    public static void Copy( float[] src, Buffer dst, int offset, int numElements )
+    {
+    }
     
     private static void Copy( Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes )
     {
@@ -209,6 +213,10 @@ public class BufferUtils
     }
 
     public static void DisposeUnsafeByteBuffer( Buffer buf )
+    {
+    }
+
+    public static void Copy( float[] vertices, int sourceOffset, int numElements, Buffer byteBuffer )
     {
     }
 }

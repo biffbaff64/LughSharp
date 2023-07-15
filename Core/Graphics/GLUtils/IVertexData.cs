@@ -21,13 +21,22 @@ namespace LibGDXSharp.Graphics.GLUtils;
 public interface IVertexData : IDisposable
 {
     /// <returns> the number of vertices this VertexData stores </returns>
-    public int NumVertices { get; set; }
+    public int NumVertices { get; }
 
     /// <returns> the number of vertices this VertedData can store </returns>
-    public int NumMaxVertices { get; set; }
+    public int NumMaxVertices { get; }
 
     /// <returns> the <see cref="VertexAttributes"/> as specified during construction. </returns>
-    public VertexAttributes GetAttributes();
+    public VertexAttributes Attributes { get; set; }
+
+    /// <summary>
+    /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
+    /// contents to be uploaded on the next call to bind. If you need immediate
+    /// uploading use <see cref="SetVertices"/>; Any modifications made to the Buffer
+    /// *after* the call to bind will not automatically be uploaded.
+    /// </summary>
+    /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
+    public FloatBuffer Buffer { get; set; }
 
     /// <summary>
     /// Sets the vertices of this VertexData, discarding the old vertex data. The
@@ -53,37 +62,18 @@ public interface IVertexData : IDisposable
     public void UpdateVertices( int targetOffset, float[] vertices, int sourceOffset, int count );
 
     /// <summary>
-    /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
-    /// contents to be uploaded on the next call to bind. If you need immediate
-    /// uploading use <see cref="SetVertices"/>; Any modifications made to the Buffer
-    /// *after* the call to bind will not automatically be uploaded.
-    /// </summary>
-    /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer GetBuffer();
-
-    /// <summary>
-    /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
-    /// </summary>
-    public void Bind( ShaderProgram shader );
-
-    /// <summary>
     /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Bind( ShaderProgram shader, int[]? locations );
-
-    /// <summary>
-    /// Unbinds this VertexData.
-    /// </summary>
-    public void Unbind( ShaderProgram shader );
+    public void Bind( ShaderProgram shader, int[]? locations = null );
 
     /// <summary>
     /// Unbinds this VertexData.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Unbind( ShaderProgram? shader, int[]? locations );
+    public void Unbind( ShaderProgram? shader, int[]? locations = null );
 
     /// <summary>
     /// Invalidates the VertexData if applicable. Use this in case of a context loss. </summary>

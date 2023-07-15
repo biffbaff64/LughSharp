@@ -131,7 +131,8 @@ public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
     }
 
     /// <summary>
-    /// Checks to see if the current GL connection version is higher, or equal to the provided test versions.
+    /// Checks to see if the current GL connection version is higher, or
+    /// equal to the provided test versions.
     /// </summary>
     /// <param name="testMajorVersion"> the major version to test against </param>
     /// <param name="testMinorVersion"> the minor version to test against </param>

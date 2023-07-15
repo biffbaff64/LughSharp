@@ -14,8 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Maths;
 
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class NumberUtils
 {
     public static int FloatToIntBits( float value )
