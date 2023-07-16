@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.G2D;
+using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
@@ -26,6 +27,8 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Container<T> : WidgetGroup where T : Actor
 {
+    public bool Rounding { get; set; } = true;
+
     private T?         _actor;
     private Value      _minWidth   = Value.MinWidth;
     private Value      _minHeight  = Value.MinHeight;
@@ -42,7 +45,6 @@ public class Container<T> : WidgetGroup where T : Actor
     private int        _align;
     private IDrawable? _background;
     private bool       _clip;
-    private bool       _round = true;
 
     /// <summary>
     /// Creates a container with no actor.
@@ -55,10 +57,1016 @@ public class Container<T> : WidgetGroup where T : Actor
 
     public Container( T? actor ) : this()
     {
-        setActor( actor );
+        SetActor( actor );
     }
 
-    public void Draw( IBatch batch, float parentAlpha )
+    /// <summary>
+    /// Sets the background drawable and, if adjustPadding is true, sets the container's
+    /// padding to <see cref="IDrawable.BottomHeight"/> , <see cref="IDrawable.TopHeight"/>,
+    /// <see cref="IDrawable.LeftWidth"/>, and <see cref="IDrawable.RightWidth"/>.
+    /// </summary>
+    /// <param name="background"> If null, the background will be cleared and padding removed. </param>
+    /// <param name="adjustPadding"></param>
+    public void SetBackground( IDrawable? background, bool adjustPadding = true )
+    {
+        if ( this._background == background ) return;
+
+        this._background = background;
+
+        if ( adjustPadding )
+        {
+            if ( background == null )
+            {
+                SetPadding( Value.Zero );
+            }
+            else
+            {
+                SetPadding( background.TopHeight, background.LeftWidth, background.BottomHeight, background.RightWidth );
+            }
+
+            Invalidate();
+        }
+    }
+
+    public Container< T > Background( IDrawable background )
+    {
+        SetBackground( background );
+
+        return this;
+    }
+
+    public IDrawable? GetBackground()
+    {
+        return _background;
+    }
+
+    public new void Layout()
+    {
+        if ( _actor == null ) return;
+
+        var   padLeft         = this._padLeft.Get( this );
+        var   padBottom       = this._padBottom.Get( this );
+        var   containerWidth  = Width - padLeft - _padRight.Get( this );
+        var   containerHeight = Height - padBottom - _padTop.Get( this );
+        float minWidth        = this._minWidth.Get( _actor ),  minHeight  = this._minHeight.Get( _actor );
+        float prefWidth       = this._prefWidth.Get( _actor ), prefHeight = this._prefHeight.Get( _actor );
+        float maxWidth        = this._maxWidth.Get( _actor ),  maxHeight  = this._maxHeight.Get( _actor );
+
+        float width;
+
+        if ( _fillX > 0 )
+        {
+            width = containerWidth * _fillX;
+        }
+        else
+        {
+            width = Math.Min( prefWidth, containerWidth );
+        }
+
+        if ( width < minWidth ) width = minWidth;
+
+        if ( ( maxWidth > 0 ) && ( width > maxWidth ) ) width = maxWidth;
+
+        float height;
+
+        if ( _fillY > 0 )
+        {
+            height = containerHeight * _fillY;
+        }
+        else
+        {
+            height = Math.Min( prefHeight, containerHeight );
+        }
+
+        if ( height < minHeight ) height                          = minHeight;
+        if ( ( maxHeight > 0 ) && ( height > maxHeight ) ) height = maxHeight;
+
+        var x = padLeft;
+
+        if ( ( _align & Align.Right ) != 0 )
+        {
+            x += containerWidth - width;
+        }
+        else if ( ( _align & Align.Left ) == 0 ) // center
+        {
+            x += ( containerWidth - width ) / 2;
+        }
+
+        var y = padBottom;
+
+        if ( ( _align & Align.Top ) != 0 )
+        {
+            y += containerHeight - height;
+        }
+        else if ( ( _align & Align.Bottom ) == 0 ) // center
+        {
+            y += ( containerHeight - height ) / 2;
+        }
+
+        if ( Rounding )
+        {
+            x      = ( float )Math.Round( x );
+            y      = ( float )Math.Round( y );
+            width  = ( float )Math.Round( width );
+            height = ( float )Math.Round( height );
+        }
+
+        _actor.SetBounds( x, y, width, height );
+
+        if ( _actor is ILayout layoutActor ) layoutActor.Validate();
+    }
+
+    public void SetCullingArea( RectangleShape cullingArea )
+    {
+        base.CullingArea = cullingArea;
+
+        if ( _fillX is 1f && _fillY is 1f && _actor is ICullable cullableActor )
+        {
+            cullableActor.CullingArea = cullingArea;
+        }
+    }
+
+    public void SetActor( T? actor )
+    {
+        if ( actor == this ) throw new ArgumentException( "actor cannot be the Container." );
+
+        if ( actor == this._actor ) return;
+
+        if ( this._actor != null ) base.RemoveActor( this._actor );
+
+        this._actor = actor;
+
+        if ( actor != null ) base.AddActor( actor );
+    }
+
+    public T? GetActor()
+    {
+        return _actor;
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public bool RemoveActor( Actor actor )
+    {
+        ArgumentNullException.ThrowIfNull( actor );
+
+        if ( actor != this._actor ) return false;
+
+        SetActor( null );
+
+        return true;
+    }
+
+    public new bool RemoveActor( Actor actor, bool unfocus )
+    {
+        ArgumentNullException.ThrowIfNull( actor );
+
+        if ( actor != this._actor ) return false;
+
+        this._actor = null;
+
+        return base.RemoveActor( actor, unfocus );
+    }
+
+    public new Actor RemoveActorAt( int index, bool unfocus )
+    {
+        Actor actor = base.RemoveActorAt( index, unfocus );
+
+        if ( actor == this._actor ) this._actor = null;
+
+        return actor;
+    }
+
+    /// <summary>
+    /// Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
+    /// maxHeight to the specified values.
+    /// </summary>
+    public Container< T > Size( Value size )
+    {
+        ArgumentNullException.ThrowIfNull( size );
+
+        _minWidth   = size;
+        _minHeight  = size;
+        _prefWidth  = size;
+        _prefHeight = size;
+        _maxWidth   = size;
+        _maxHeight  = size;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
+    /// maxHeight to the specified values.
+    /// </summary>
+    public Container< T > Size( Value width, Value height )
+    {
+        ArgumentNullException.ThrowIfNull( width );
+        ArgumentNullException.ThrowIfNull( height );
+
+        _minWidth   = width;
+        _minHeight  = height;
+        _prefWidth  = width;
+        _prefHeight = height;
+        _maxWidth   = width;
+        _maxHeight  = height;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
+    /// maxHeight to the specified values.
+    /// </summary>
+    public Container< T > Size( float size )
+    {
+        Size( Value.Fixed.ValueOf( size ) );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
+    /// maxHeight to the specified values.
+    /// </summary>
+    public Container< T > Size( float width, float height )
+    {
+        Size( Value.Fixed.ValueOf( width ), Value.Fixed.ValueOf( height ) );
+
+        return this;
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region widths
+
+    /// <summary>
+    /// Sets the minWidth, prefWidth, and maxWidth to the specified value.
+    /// </summary>
+    public Container< T > SetWidths( Value width )
+    {
+        ArgumentNullException.ThrowIfNull( width );
+
+        _minWidth  = width;
+        _prefWidth = width;
+        _maxWidth  = width;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the minWidth, prefWidth, and maxWidth to the specified value.
+    /// </summary>
+    public Container< T > SetWidths( float width )
+    {
+        SetWidths( Value.Fixed.ValueOf( width ) );
+
+        return this;
+    }
+
+    public Container< T > SetMinWidth( Value minWidth )
+    {
+        ArgumentNullException.ThrowIfNull( minWidth );
+
+        this._minWidth = minWidth;
+
+        return this;
+    }
+
+    public Container< T > SetMinWidth( float minWidth )
+    {
+        this._minWidth = Value.Fixed.ValueOf( minWidth );
+
+        return this;
+    }
+
+    public new float GetMinWidth()
+    {
+        return _minWidth.Get( _actor ) + _padLeft.Get( this ) + _padRight.Get( this );
+    }
+
+    public Value GetMinWidthValue()
+    {
+        return _minWidth;
+    }
+
+    public new float GetMaxWidth()
+    {
+        var v = _maxWidth.Get( _actor );
+
+        if ( v > 0 ) v += _padLeft.Get( this ) + _padRight.Get( this );
+
+        return v;
+    }
+
+    public Value GetMaxWidthValue()
+    {
+        return _maxWidth;
+    }
+
+    #endregion widths
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region heights
+
+    /// <summary>
+    /// Sets the minHeight, prefHeight, and maxHeight to the specified value.
+    /// </summary>
+    public Container< T > SetHeights( Value height )
+    {
+        ArgumentNullException.ThrowIfNull( height );
+
+        _minHeight  = height;
+        _prefHeight = height;
+        _maxHeight  = height;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the minHeight, prefHeight, and maxHeight to the specified value.
+    /// </summary>
+    public Container< T > SetHeights( float height )
+    {
+        SetHeights( Value.Fixed.ValueOf( height ) );
+
+        return this;
+    }
+
+    public Container< T > SetMinHeight( Value minHeight )
+    {
+        ArgumentNullException.ThrowIfNull( minHeight );
+
+        this._minHeight = minHeight;
+
+        return this;
+    }
+
+    public Container< T > SetMinHeight( float minHeight )
+    {
+        this._minHeight = Value.Fixed.ValueOf( minHeight );
+
+        return this;
+    }
+
+    public new float GetMinHeight()
+    {
+        return _minHeight.Get( _actor ) + _padTop.Get( this ) + _padBottom.Get( this );
+    }
+
+    public Value GetMinHeightValue()
+    {
+        return _minHeight;
+    }
+
+    public new float GetMaxHeight()
+    {
+        var v = _maxHeight.Get( _actor );
+
+        if ( v > 0 )
+        {
+            v += _padTop.Get( this ) + _padBottom.Get( this );
+        }
+
+        return v;
+    }
+
+    public Value GetMaxHeightValue()
+    {
+        return _maxHeight;
+    }
+
+    #endregion heights
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region minimum sizes
+
+    /// <summary>
+    /// Sets the minWidth and minHeight to the specified values.
+    /// </summary>
+    public Container< T > SetMinSize( Value size )
+    {
+        ArgumentNullException.ThrowIfNull( size );
+
+        _minWidth  = size;
+        _minHeight = size;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the minWidth and minHeight to the specified values.
+    /// </summary>
+    public Container< T > SetMinSize( Value width, Value height )
+    {
+        ArgumentNullException.ThrowIfNull( width );
+        ArgumentNullException.ThrowIfNull( height );
+
+        _minWidth  = width;
+        _minHeight = height;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the minWidth and minHeight to the specified value.
+    /// </summary>
+    public Container< T > SetMinSize( float size )
+    {
+        SetMinSize( Value.Fixed.ValueOf( size ) );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the minWidth and minHeight to the specified values.
+    /// </summary>
+    public Container< T > SetMinSize( float width, float height )
+    {
+        SetMinSize( Value.Fixed.ValueOf( width ), Value.Fixed.ValueOf( height ) );
+
+        return this;
+    }
+
+    #endregion minimum sizes
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region maximum sizes
+
+    /// <summary>
+    /// Sets the maxWidth and maxHeight to the specified values.
+    /// </summary>
+    public Container< T > SetMaxSize( Value size )
+    {
+        ArgumentNullException.ThrowIfNull( size );
+
+        _maxWidth  = size;
+        _maxHeight = size;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the maxWidth and maxHeight to the specified values.
+    /// </summary>
+    public Container< T > SetMaxSize( Value width, Value height )
+    {
+        ArgumentNullException.ThrowIfNull( width );
+        ArgumentNullException.ThrowIfNull( height );
+
+        _maxWidth  = width;
+        _maxHeight = height;
+
+        return this;
+    }
+
+    public Container< T > SetMaxWidth( Value maxWidth )
+    {
+        ArgumentNullException.ThrowIfNull( maxWidth );
+
+        this._maxWidth = maxWidth;
+
+        return this;
+    }
+
+    public Container< T > SetMaxHeight( Value maxHeight )
+    {
+        ArgumentNullException.ThrowIfNull( maxHeight );
+
+        this._maxHeight = maxHeight;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the maxWidth and maxHeight to the specified values.
+    /// </summary>
+    public Container< T > SetMaxSize( float size )
+    {
+        SetMaxSize( Value.Fixed.ValueOf( size ) );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the maxWidth and maxHeight to the specified values.
+    /// </summary>
+    public Container< T > SetMaxSize( float width, float height )
+    {
+        SetMaxSize( Value.Fixed.ValueOf( width ), Value.Fixed.ValueOf( height ) );
+
+        return this;
+    }
+
+    public Container< T > SetMaxWidth( float maxWidth )
+    {
+        this._maxWidth = Value.Fixed.ValueOf( maxWidth );
+
+        return this;
+    }
+
+    public Container< T > SetMaxHeight( float maxHeight )
+    {
+        this._maxHeight = Value.Fixed.ValueOf( maxHeight );
+
+        return this;
+    }
+
+    #endregion maximum sizes
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region preferred sizing
+
+    /// <summary>
+    /// Sets the prefWidth and prefHeight to the specified value.
+    /// </summary>
+    public Container< T > SetPrefSize( Value size )
+    {
+        ArgumentNullException.ThrowIfNull( size );
+
+        _prefWidth  = size;
+        _prefHeight = size;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the prefWidth and prefHeight to the specified values.
+    /// </summary>
+    public Container< T > SetPrefSize( Value width, Value height )
+    {
+        ArgumentNullException.ThrowIfNull( width );
+        ArgumentNullException.ThrowIfNull( height );
+
+        _prefWidth  = width;
+        _prefHeight = height;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the prefWidth and prefHeight to the specified value.
+    /// </summary>
+    public Container< T > SetPrefSize( float width, float height )
+    {
+        SetPrefSize( Value.Fixed.ValueOf( width ), Value.Fixed.ValueOf( height ) );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the prefWidth and prefHeight to the specified value.
+    /// </summary>
+    public Container< T > SetPrefSize( float size )
+    {
+        SetPrefSize( Value.Fixed.ValueOf( size ) );
+
+        return this;
+    }
+
+    public Container< T > SetPrefWidth( Value prefWidth )
+    {
+        ArgumentNullException.ThrowIfNull( prefWidth );
+
+        this._prefWidth = prefWidth;
+
+        return this;
+    }
+
+    public Container< T > SetPrefWidth( float prefWidth )
+    {
+        this._prefWidth = Value.Fixed.ValueOf( prefWidth );
+
+        return this;
+    }
+
+    public Container< T > SetPrefHeight( Value prefHeight )
+    {
+        ArgumentNullException.ThrowIfNull( prefHeight );
+
+        this._prefHeight = prefHeight;
+
+        return this;
+    }
+
+    public Container< T > SetPrefHeight( float prefHeight )
+    {
+        this._prefHeight = Value.Fixed.ValueOf( prefHeight );
+
+        return this;
+    }
+
+    public Value GetPrefWidthValue()
+    {
+        return _prefWidth;
+    }
+
+    public new float GetPrefWidth()
+    {
+        var v = _prefWidth.Get( _actor );
+
+        if ( _background != null ) v = Math.Max( v, _background.MinWidth );
+
+        return Math.Max( GetMinWidth(), v + _padLeft.Get( this ) + _padRight.Get( this ) );
+    }
+
+    public Value GetPrefHeightValue()
+    {
+        return _prefHeight;
+    }
+
+    public new float GetPrefHeight()
+    {
+        var v = _prefHeight.Get( _actor );
+
+        if ( _background != null ) v = Math.Max( v, _background.MinHeight );
+
+        return Math.Max( MinHeight, v + _padTop.Get( this ) + _padBottom.Get( this ) );
+    }
+
+    #endregion preferred sizing
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region padding
+
+    /// <summary>
+    /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
+    /// </summary>
+    public Container< T > SetPadding( Value pad )
+    {
+        ArgumentNullException.ThrowIfNull( pad );
+
+        _padTop    = pad;
+        _padLeft   = pad;
+        _padBottom = pad;
+        _padRight  = pad;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
+    /// </summary>
+    public Container< T > SetPadding( Value top, Value left, Value bottom, Value right )
+    {
+        ArgumentNullException.ThrowIfNull( top );
+        ArgumentNullException.ThrowIfNull( left );
+        ArgumentNullException.ThrowIfNull( bottom );
+        ArgumentNullException.ThrowIfNull( right );
+
+        _padTop    = top;
+        _padLeft   = left;
+        _padBottom = bottom;
+        _padRight  = right;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
+    /// </summary>
+    public Container< T > SetPadding( float pad )
+    {
+        Value value = Value.Fixed.ValueOf( pad );
+
+        _padTop    = value;
+        _padLeft   = value;
+        _padBottom = value;
+        _padRight  = value;
+
+        return this;
+    }
+
+    public Container< T > SetPadding( float top, float left, float bottom, float right )
+    {
+        _padTop    = Value.Fixed.ValueOf( top );
+        _padLeft   = Value.Fixed.ValueOf( left );
+        _padBottom = Value.Fixed.ValueOf( bottom );
+        _padRight  = Value.Fixed.ValueOf( right );
+
+        return this;
+    }
+
+    public Container< T > SetPadTop( Value padTop )
+    {
+        ArgumentNullException.ThrowIfNull( padTop );
+
+        this._padTop = padTop;
+
+        return this;
+    }
+
+    public Container< T > SetPadLeft( Value padLeft )
+    {
+        ArgumentNullException.ThrowIfNull( padLeft );
+
+        this._padLeft = padLeft;
+
+        return this;
+    }
+
+    public Container< T > SetPadBottom( Value padBottom )
+    {
+        ArgumentNullException.ThrowIfNull( padBottom );
+
+        this._padBottom = padBottom;
+
+        return this;
+    }
+
+    public Container< T > SetPadRight( Value padRight )
+    {
+        ArgumentNullException.ThrowIfNull( padRight );
+
+        this._padRight = padRight;
+
+        return this;
+    }
+
+    public Container< T > SetPadTop( float padTop )
+    {
+        this._padTop = Value.Fixed.ValueOf( padTop );
+
+        return this;
+    }
+
+    public Container< T > SetPadLeft( float padLeft )
+    {
+        this._padLeft = Value.Fixed.ValueOf( padLeft );
+
+        return this;
+    }
+
+    public Container< T > SetPadBottom( float padBottom )
+    {
+        this._padBottom = Value.Fixed.ValueOf( padBottom );
+
+        return this;
+    }
+
+    public Container< T > SetPadRight( float padRight )
+    {
+        this._padRight = Value.Fixed.ValueOf( padRight );
+
+        return this;
+    }
+
+    public Value GetPadTopValue()
+    {
+        return _padTop;
+    }
+
+    public float GetPadTop()
+    {
+        return _padTop.Get( this );
+    }
+
+    public Value GetPadLeftValue()
+    {
+        return _padLeft;
+    }
+
+    public float GetPadLeft()
+    {
+        return _padLeft.Get( this );
+    }
+
+    public Value GetPadBottomValue()
+    {
+        return _padBottom;
+    }
+
+    public float GetPadBottom()
+    {
+        return _padBottom.Get( this );
+    }
+
+    public Value GetPadRightValue()
+    {
+        return _padRight;
+    }
+
+    public float GetPadRight()
+    {
+        return _padRight.Get( this );
+    }
+
+    public float GetPadX()
+    {
+        return _padLeft.Get( this ) + _padRight.Get( this );
+    }
+
+    public float GetPadY()
+    {
+        return _padTop.Get( this ) + _padBottom.Get( this );
+    }
+
+    #endregion padding
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public Container< T > SetFill( float x = 1f, float y = 1f )
+    {
+        _fillX = x;
+        _fillY = y;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets fillX to 1.
+    /// </summary>
+    public Container< T > SetFillX()
+    {
+        _fillX = 1f;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets fillY to 1.
+    /// </summary>
+    public Container< T > SetFillY()
+    {
+        _fillY = 1f;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets fillX and fillY to 1 if true, 0 if false.
+    /// </summary>
+    public Container< T > FillOnTrue( bool x, bool y )
+    {
+        _fillX = x ? 1f : 0;
+        _fillY = y ? 1f : 0;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets fillX and fillY to 1 if true, 0 if false.
+    /// </summary>
+    public Container< T > FillOnTrue( bool fill )
+    {
+        _fillX = fill ? 1f : 0;
+        _fillY = fill ? 1f : 0;
+
+        return this;
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region alignment
+
+    /// <summary>
+    /// Sets the alignment of the actor within the container.
+    /// Set to <see cref="Align.Center"/>, <see cref="Align.Top"/>,
+    /// <see cref="Align.Bottom"/>, <see cref="Align.Left"/>,
+    /// <see cref="Align.Right"/>, or any combination of those.
+    /// </summary>
+    public Container< T > SetAlignment( int align )
+    {
+        this._align = align;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the alignment of the actor within the container to <see cref="Align.Center"/>.
+    /// This clears any other alignment.
+    /// </summary>
+    public Container< T > AlignCenter()
+    {
+        this._align = Align.Center;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets <see cref="Align.Top"/> and clears <see cref="Align.Bottom"/> for
+    /// the alignment of the actor within the container.
+    /// </summary>
+    public Container< T > AlignTop()
+    {
+        _align |= Align.Top;
+        _align &= ~Align.Bottom;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets <see cref="Align.Left"/> and clears <see cref="Align.Right"/> for
+    /// the alignment of the actor within the container.
+    /// </summary>
+    public Container< T > AlignLeft()
+    {
+        _align |= Align.Left;
+        _align &= ~Align.Right;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets <see cref="Align.Bottom"/> and clears <see cref="Align.Top"/> for
+    /// the alignment of the actor within the container.
+    /// </summary>
+    public Container< T > AlignBottom()
+    {
+        _align |= Align.Bottom;
+        _align &= ~Align.Top;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets <see cref="Align.Right"/> and clears <see cref="Align.Left"/> for the
+    /// alignment of the actor within the container.
+    /// </summary>
+    public Container< T > AlignRight()
+    {
+        _align |= Align.Right;
+        _align &= ~Align.Left;
+
+        return this;
+    }
+
+    public int GetAlignment()
+    {
+        return _align;
+    }
+
+    #endregion alignment
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public float GetFillX()
+    {
+        return _fillX;
+    }
+
+    public float GetFillY()
+    {
+        return _fillY;
+    }
+
+    public Container< T > Clip( bool enabled = true )
+    {
+        SetClip( enabled );
+
+        return this;
+    }
+
+    /// <summary>
+    /// Causes the contents to be clipped if they exceed the container bounds.
+    /// Enabling clipping will set <see cref="Group.Transform"/> to true.
+    /// </summary>
+    public void SetClip( bool enabled )
+    {
+        _clip     = enabled;
+        Transform = enabled;
+
+        Invalidate();
+    }
+
+    public bool GetClip()
+    {
+        return _clip;
+    }
+
+    public new Actor? Hit( float x, float y, bool touchable )
+    {
+        if ( _clip )
+        {
+            if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
+
+            if ( ( x < 0 ) || ( x >= Width ) || ( y < 0 ) || ( y >= Height ) ) return null;
+        }
+
+        return base.Hit( x, y, touchable );
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region drawing
+
+    public new void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 
@@ -71,13 +1079,13 @@ public class Container<T> : WidgetGroup where T : Actor
             {
                 batch.Flush();
 
-                float padLeft = this._padLeft.Get( this );
-                float padBottom = this._padBottom.Get( this );
+                var padLeft   = this._padLeft.Get( this );
+                var padBottom = this._padBottom.Get( this );
 
                 if ( ClipBegin
                         (
-                        padLeft, padBottom, GetWidth() - padLeft - _padRight.Get( this ),
-                        GetHeight() - padBottom - _padTop.Get( this )
+                        padLeft, padBottom, Width - padLeft - _padRight.Get( this ),
+                        Height - padBottom - _padTop.Get( this )
                         ) )
                 {
                     DrawChildren( batch, parentAlpha );
@@ -94,897 +1102,26 @@ public class Container<T> : WidgetGroup where T : Actor
         }
         else
         {
-            drawBackground( batch, parentAlpha, GetX(), GetY() );
+            DrawBackground( batch, parentAlpha, X, Y );
             base.Draw( batch, parentAlpha );
         }
     }
 
-    /** Called to draw the background, before clipping is applied (if enabled).
-     * Default implementation draws the background drawable. */
+    /// <summary>
+    /// Called to draw the background, before clipping is applied (if enabled).
+    /// Default implementation draws the background drawable.
+    /// </summary>
     protected void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
     {
         if ( _background == null ) return;
 
-        Color color = GetColor();
+        Color color = base.Color ?? Color.Black;
 
         batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
-        _background.Draw( batch, x, y, GetWidth(), GetHeight() );
+        _background.Draw( batch, x, y, Width, Height );
     }
 
-    /** Sets the background drawable and adjusts the container's padding to match the background.
-	 * @see #setBackground(Drawable, bool) */
-    public void SetBackground( IDrawable background )
-    {
-        SetBackground( background, true );
-    }
-
-    /** Sets the background drawable and, if adjustPadding is true, sets the container's padding to
-	 * {@link Drawable#getBottomHeight()} , {@link Drawable#getTopHeight()}, {@link Drawable#getLeftWidth()}, and
-	 * {@link Drawable#getRightWidth()}.
-	 * @param background If null, the background will be cleared and padding removed. */
-    public void SetBackground( IDrawable? background, bool adjustPadding )
-    {
-        if ( this._background == background ) return;
-
-        this._background = background;
-
-        if ( adjustPadding )
-        {
-            if ( background == null )
-            {
-                pad( Value.zero );
-            }
-            else
-            {
-                pad( background.getTopHeight(),
-                     background.getLeftWidth(),
-                     background.getBottomHeight(),
-                     background.getRightWidth()
-                    );
-            }
-
-            Invalidate();
-        }
-    }
-
-    public Container< T > Background( IDrawable background )
-    {
-        setBackground( background );
-
-        return this;
-    }
-
-    public IDrawable? GetBackground()
-    {
-        return _background;
-    }
-
-    public new void Layout()
-    {
-        if ( _actor == null ) return;
-
-        float padLeft         = this._padLeft.Get( this );
-        float padBottom       = this._padBottom.Get( this );
-        float containerWidth  = GetWidth() - padLeft - _padRight.Get( this );
-        float containerHeight = GetHeight() - padBottom - _padTop.Get( this );
-        float minWidth        = this._minWidth.Get( _actor ),  minHeight  = this._minHeight.Get( _actor );
-        float prefWidth       = this._prefWidth.Get( _actor ), prefHeight = this._prefHeight.Get( _actor );
-        float maxWidth        = this._maxWidth.Get( _actor ),  maxHeight  = this._maxHeight.Get( _actor );
-
-        float width;
-
-        if ( _fillX > 0 )
-        {
-            width = containerWidth * _fillX;
-        }
-        else
-        {
-            width = Math.Min( prefWidth, containerWidth );
-        }
-
-        if ( width < minWidth ) width                 = minWidth;
-        if ( maxWidth > 0 && width > maxWidth ) width = maxWidth;
-
-        float height;
-
-        if ( fillY > 0 )
-            height = containerHeight * fillY;
-        else
-            height = Math.min( prefHeight, containerHeight );
-
-        if ( height < minHeight ) height                  = minHeight;
-        if ( maxHeight > 0 && height > maxHeight ) height = maxHeight;
-
-        float x = padLeft;
-
-        if ( ( align & Align.right ) != 0 )
-            x += containerWidth - width;
-        else if ( ( align & Align.left ) == 0 ) // center
-            x += ( containerWidth - width ) / 2;
-
-        float y = padBottom;
-
-        if ( ( align & Align.top ) != 0 )
-            y += containerHeight - height;
-        else if ( ( align & Align.bottom ) == 0 ) // center
-            y += ( containerHeight - height ) / 2;
-
-        if ( round )
-        {
-            x      = Math.round( x );
-            y      = Math.round( y );
-            width  = Math.round( width );
-            height = Math.round( height );
-        }
-
-        actor.setBounds( x, y, width, height );
-        if ( actor instanceof Layout) ( ( Layout )actor ).Validate();
-    }
-
-    public void setCullingArea( Rectangle cullingArea )
-    {
-        super.setCullingArea( cullingArea );
-        if ( fillX == 1 && fillY == 1 && actor instanceof Cullable) ( ( Cullable )actor ).setCullingArea( cullingArea );
-    }
-
-    /** @param actor May be null. */
-    public void setActor( @Null T actor )
-    {
-        if ( actor == this ) throw new IllegalArgumentException( "actor cannot be the Container." );
-
-        if ( actor == this.actor ) return;
-        if ( this.actor != null ) super.removeActor( this.actor );
-        this.actor = actor;
-        if ( actor != null ) super.addActor( actor );
-    }
-
-    /** @return May be null. */
-    public @Null T getActor()
-    {
-        return actor;
-    }
-
-    /** @deprecated Container may have only a single child.
-	 * @see #setActor(Actor) */
-    @Deprecated
-
-    public void addActor( Actor actor )
-    {
-        throw new UnsupportedOperationException( "Use Container#setActor." );
-    }
-
-    /** @deprecated Container may have only a single child.
-	 * @see #setActor(Actor) */
-    @Deprecated
-
-    public void addActorAt( int index, Actor actor )
-    {
-        throw new UnsupportedOperationException( "Use Container#setActor." );
-    }
-
-    /** @deprecated Container may have only a single child.
-	 * @see #setActor(Actor) */
-    @Deprecated
-
-    public void addActorBefore( Actor actorBefore, Actor actor )
-    {
-        throw new UnsupportedOperationException( "Use Container#setActor." );
-    }
-
-    /** @deprecated Container may have only a single child.
-	 * @see #setActor(Actor) */
-    @Deprecated
-
-    public void addActorAfter( Actor actorAfter, Actor actor )
-    {
-        throw new UnsupportedOperationException( "Use Container#setActor." );
-    }
-
-    public bool removeActor( Actor actor )
-    {
-        if ( actor == null ) throw new IllegalArgumentException( "actor cannot be null." );
-
-        if ( actor != this.actor ) return false;
-        setActor( null );
-
-        return true;
-    }
-
-    public bool removeActor( Actor actor, bool unfocus )
-    {
-        if ( actor == null ) throw new IllegalArgumentException( "actor cannot be null." );
-
-        if ( actor != this.actor ) return false;
-        this.actor = null;
-
-        return super.removeActor( actor, unfocus );
-    }
-
-    public Actor removeActorAt( int index, bool unfocus )
-    {
-        Actor actor                           = super.removeActorAt( index, unfocus );
-        if ( actor == this.actor ) this.actor = null;
-
-        return actor;
-    }
-
-    /** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified value. */
-    public Container< T > size( Value size )
-    {
-        if ( size == null ) throw new IllegalArgumentException( "size cannot be null." );
-        minWidth   = size;
-        minHeight  = size;
-        prefWidth  = size;
-        prefHeight = size;
-        maxWidth   = size;
-        maxHeight  = size;
-
-        return this;
-    }
-
-    /** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified values. */
-    public Container< T > size( Value width, Value height )
-    {
-        if ( width == null ) throw new IllegalArgumentException( "width cannot be null." );
-        if ( height == null ) throw new IllegalArgumentException( "height cannot be null." );
-        minWidth   = width;
-        minHeight  = height;
-        prefWidth  = width;
-        prefHeight = height;
-        maxWidth   = width;
-        maxHeight  = height;
-
-        return this;
-    }
-
-    /** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified value. */
-    public Container< T > size( float size )
-    {
-        size( Value.Fixed.valueOf( size ) );
-
-        return this;
-    }
-
-    /** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified values. */
-    public Container< T > size( float width, float height )
-    {
-        size( Value.Fixed.valueOf( width ), Value.Fixed.valueOf( height ) );
-
-        return this;
-    }
-
-    /** Sets the minWidth, prefWidth, and maxWidth to the specified value. */
-    public Container< T > width( Value width )
-    {
-        if ( width == null ) throw new IllegalArgumentException( "width cannot be null." );
-        minWidth  = width;
-        prefWidth = width;
-        maxWidth  = width;
-
-        return this;
-    }
-
-    /** Sets the minWidth, prefWidth, and maxWidth to the specified value. */
-    public Container< T > width( float width )
-    {
-        width( Value.Fixed.valueOf( width ) );
-
-        return this;
-    }
-
-    /** Sets the minHeight, prefHeight, and maxHeight to the specified value. */
-    public Container< T > height( Value height )
-    {
-        if ( height == null ) throw new IllegalArgumentException( "height cannot be null." );
-        minHeight  = height;
-        prefHeight = height;
-        maxHeight  = height;
-
-        return this;
-    }
-
-    /** Sets the minHeight, prefHeight, and maxHeight to the specified value. */
-    public Container< T > height( float height )
-    {
-        height( Value.Fixed.valueOf( height ) );
-
-        return this;
-    }
-
-    /** Sets the minWidth and minHeight to the specified value. */
-    public Container< T > minSize( Value size )
-    {
-        if ( size == null ) throw new IllegalArgumentException( "size cannot be null." );
-        minWidth  = size;
-        minHeight = size;
-
-        return this;
-    }
-
-    /** Sets the minWidth and minHeight to the specified values. */
-    public Container< T > minSize( Value width, Value height )
-    {
-        if ( width == null ) throw new IllegalArgumentException( "width cannot be null." );
-        if ( height == null ) throw new IllegalArgumentException( "height cannot be null." );
-        minWidth  = width;
-        minHeight = height;
-
-        return this;
-    }
-
-    public Container< T > minWidth( Value minWidth )
-    {
-        if ( minWidth == null ) throw new IllegalArgumentException( "minWidth cannot be null." );
-        this.minWidth = minWidth;
-
-        return this;
-    }
-
-    public Container< T > minHeight( Value minHeight )
-    {
-        if ( minHeight == null ) throw new IllegalArgumentException( "minHeight cannot be null." );
-        this.minHeight = minHeight;
-
-        return this;
-    }
-
-    /** Sets the minWidth and minHeight to the specified value. */
-    public Container< T > minSize( float size )
-    {
-        minSize( Value.Fixed.valueOf( size ) );
-
-        return this;
-    }
-
-    /** Sets the minWidth and minHeight to the specified values. */
-    public Container< T > minSize( float width, float height )
-    {
-        minSize( Value.Fixed.valueOf( width ), Value.Fixed.valueOf( height ) );
-
-        return this;
-    }
-
-    public Container< T > minWidth( float minWidth )
-    {
-        this.minWidth = Value.Fixed.valueOf( minWidth );
-
-        return this;
-    }
-
-    public Container< T > minHeight( float minHeight )
-    {
-        this.minHeight = Value.Fixed.valueOf( minHeight );
-
-        return this;
-    }
-
-    /** Sets the prefWidth and prefHeight to the specified value. */
-    public Container< T > prefSize( Value size )
-    {
-        if ( size == null ) throw new IllegalArgumentException( "size cannot be null." );
-        prefWidth  = size;
-        prefHeight = size;
-
-        return this;
-    }
-
-    /** Sets the prefWidth and prefHeight to the specified values. */
-    public Container< T > prefSize( Value width, Value height )
-    {
-        if ( width == null ) throw new IllegalArgumentException( "width cannot be null." );
-        if ( height == null ) throw new IllegalArgumentException( "height cannot be null." );
-        prefWidth  = width;
-        prefHeight = height;
-
-        return this;
-    }
-
-    public Container< T > prefWidth( Value prefWidth )
-    {
-        if ( prefWidth == null ) throw new IllegalArgumentException( "prefWidth cannot be null." );
-        this.prefWidth = prefWidth;
-
-        return this;
-    }
-
-    public Container< T > prefHeight( Value prefHeight )
-    {
-        if ( prefHeight == null ) throw new IllegalArgumentException( "prefHeight cannot be null." );
-        this.prefHeight = prefHeight;
-
-        return this;
-    }
-
-    /** Sets the prefWidth and prefHeight to the specified value. */
-    public Container< T > prefSize( float width, float height )
-    {
-        prefSize( Value.Fixed.valueOf( width ), Value.Fixed.valueOf( height ) );
-
-        return this;
-    }
-
-    /** Sets the prefWidth and prefHeight to the specified values. */
-    public Container< T > prefSize( float size )
-    {
-        prefSize( Value.Fixed.valueOf( size ) );
-
-        return this;
-    }
-
-    public Container< T > prefWidth( float prefWidth )
-    {
-        this.prefWidth = Value.Fixed.valueOf( prefWidth );
-
-        return this;
-    }
-
-    public Container< T > prefHeight( float prefHeight )
-    {
-        this.prefHeight = Value.Fixed.valueOf( prefHeight );
-
-        return this;
-    }
-
-    /** Sets the maxWidth and maxHeight to the specified value. */
-    public Container< T > maxSize( Value size )
-    {
-        if ( size == null ) throw new IllegalArgumentException( "size cannot be null." );
-        maxWidth  = size;
-        maxHeight = size;
-
-        return this;
-    }
-
-    /** Sets the maxWidth and maxHeight to the specified values. */
-    public Container< T > maxSize( Value width, Value height )
-    {
-        if ( width == null ) throw new IllegalArgumentException( "width cannot be null." );
-        if ( height == null ) throw new IllegalArgumentException( "height cannot be null." );
-        maxWidth  = width;
-        maxHeight = height;
-
-        return this;
-    }
-
-    public Container< T > maxWidth( Value maxWidth )
-    {
-        if ( maxWidth == null ) throw new IllegalArgumentException( "maxWidth cannot be null." );
-        this.maxWidth = maxWidth;
-
-        return this;
-    }
-
-    public Container< T > maxHeight( Value maxHeight )
-    {
-        if ( maxHeight == null ) throw new IllegalArgumentException( "maxHeight cannot be null." );
-        this.maxHeight = maxHeight;
-
-        return this;
-    }
-
-    /** Sets the maxWidth and maxHeight to the specified value. */
-    public Container< T > maxSize( float size )
-    {
-        maxSize( Value.Fixed.valueOf( size ) );
-
-        return this;
-    }
-
-    /** Sets the maxWidth and maxHeight to the specified values. */
-    public Container< T > maxSize( float width, float height )
-    {
-        maxSize( Value.Fixed.valueOf( width ), Value.Fixed.valueOf( height ) );
-
-        return this;
-    }
-
-    public Container< T > maxWidth( float maxWidth )
-    {
-        this.maxWidth = Value.Fixed.valueOf( maxWidth );
-
-        return this;
-    }
-
-    public Container< T > maxHeight( float maxHeight )
-    {
-        this.maxHeight = Value.Fixed.valueOf( maxHeight );
-
-        return this;
-    }
-
-    /** Sets the padTop, padLeft, padBottom, and padRight to the specified value. */
-    public Container< T > pad( Value pad )
-    {
-        if ( pad == null ) throw new IllegalArgumentException( "pad cannot be null." );
-        padTop    = pad;
-        padLeft   = pad;
-        padBottom = pad;
-        padRight  = pad;
-
-        return this;
-    }
-
-    public Container< T > pad( Value top, Value left, Value bottom, Value right )
-    {
-        if ( top == null ) throw new IllegalArgumentException( "top cannot be null." );
-        if ( left == null ) throw new IllegalArgumentException( "left cannot be null." );
-        if ( bottom == null ) throw new IllegalArgumentException( "bottom cannot be null." );
-        if ( right == null ) throw new IllegalArgumentException( "right cannot be null." );
-        padTop    = top;
-        padLeft   = left;
-        padBottom = bottom;
-        padRight  = right;
-
-        return this;
-    }
-
-    public Container< T > padTop( Value padTop )
-    {
-        if ( padTop == null ) throw new IllegalArgumentException( "padTop cannot be null." );
-        this.padTop = padTop;
-
-        return this;
-    }
-
-    public Container< T > padLeft( Value padLeft )
-    {
-        if ( padLeft == null ) throw new IllegalArgumentException( "padLeft cannot be null." );
-        this.padLeft = padLeft;
-
-        return this;
-    }
-
-    public Container< T > padBottom( Value padBottom )
-    {
-        if ( padBottom == null ) throw new IllegalArgumentException( "padBottom cannot be null." );
-        this.padBottom = padBottom;
-
-        return this;
-    }
-
-    public Container< T > padRight( Value padRight )
-    {
-        if ( padRight == null ) throw new IllegalArgumentException( "padRight cannot be null." );
-        this.padRight = padRight;
-
-        return this;
-    }
-
-    /** Sets the padTop, padLeft, padBottom, and padRight to the specified value. */
-    public Container< T > pad( float pad )
-    {
-        Value value = Value.Fixed.valueOf( pad );
-        padTop    = value;
-        padLeft   = value;
-        padBottom = value;
-        padRight  = value;
-
-        return this;
-    }
-
-    public Container< T > pad( float top, float left, float bottom, float right )
-    {
-        padTop    = Value.Fixed.valueOf( top );
-        padLeft   = Value.Fixed.valueOf( left );
-        padBottom = Value.Fixed.valueOf( bottom );
-        padRight  = Value.Fixed.valueOf( right );
-
-        return this;
-    }
-
-    public Container< T > padTop( float padTop )
-    {
-        this.padTop = Value.Fixed.valueOf( padTop );
-
-        return this;
-    }
-
-    public Container< T > padLeft( float padLeft )
-    {
-        this.padLeft = Value.Fixed.valueOf( padLeft );
-
-        return this;
-    }
-
-    public Container< T > padBottom( float padBottom )
-    {
-        this.padBottom = Value.Fixed.valueOf( padBottom );
-
-        return this;
-    }
-
-    public Container< T > padRight( float padRight )
-    {
-        this.padRight = Value.Fixed.valueOf( padRight );
-
-        return this;
-    }
-
-    /** Sets fillX and fillY to 1. */
-    public Container< T > fill()
-    {
-        fillX = 1f;
-        fillY = 1f;
-
-        return this;
-    }
-
-    /** Sets fillX to 1. */
-    public Container< T > fillX()
-    {
-        fillX = 1f;
-
-        return this;
-    }
-
-    /** Sets fillY to 1. */
-    public Container< T > fillY()
-    {
-        fillY = 1f;
-
-        return this;
-    }
-
-    public Container< T > fill( float x, float y )
-    {
-        fillX = x;
-        fillY = y;
-
-        return this;
-    }
-
-    /** Sets fillX and fillY to 1 if true, 0 if false. */
-    public Container< T > fill( bool x, bool y )
-    {
-        fillX = x ? 1f : 0;
-        fillY = y ? 1f : 0;
-
-        return this;
-    }
-
-    /** Sets fillX and fillY to 1 if true, 0 if false. */
-    public Container< T > fill( bool fill )
-    {
-        fillX = fill ? 1f : 0;
-        fillY = fill ? 1f : 0;
-
-        return this;
-    }
-
-    /** Sets the alignment of the actor within the container. Set to {@link Align#center}, {@link Align#top}, {@link Align#bottom},
-	 * {@link Align#left}, {@link Align#right}, or any combination of those. */
-    public Container< T > align( int align )
-    {
-        this.align = align;
-
-        return this;
-    }
-
-    /** Sets the alignment of the actor within the container to {@link Align#center}. This clears any other alignment. */
-    public Container< T > center()
-    {
-        align = Align.center;
-
-        return this;
-    }
-
-    /** Sets {@link Align#top} and clears {@link Align#bottom} for the alignment of the actor within the container. */
-    public Container< T > top()
-    {
-        align |= Align.top;
-        align &= ~Align.bottom;
-
-        return this;
-    }
-
-    /** Sets {@link Align#left} and clears {@link Align#right} for the alignment of the actor within the container. */
-    public Container< T > left()
-    {
-        align |= Align.left;
-        align &= ~Align.right;
-
-        return this;
-    }
-
-    /** Sets {@link Align#bottom} and clears {@link Align#top} for the alignment of the actor within the container. */
-    public Container< T > bottom()
-    {
-        align |= Align.bottom;
-        align &= ~Align.top;
-
-        return this;
-    }
-
-    /** Sets {@link Align#right} and clears {@link Align#left} for the alignment of the actor within the container. */
-    public Container< T > right()
-    {
-        align |= Align.right;
-        align &= ~Align.left;
-
-        return this;
-    }
-
-    public float getMinWidth()
-    {
-        return minWidth.get( actor ) + padLeft.get( this ) + padRight.get( this );
-    }
-
-    public Value getMinHeightValue()
-    {
-        return minHeight;
-    }
-
-    public float getMinHeight()
-    {
-        return minHeight.get( actor ) + padTop.get( this ) + padBottom.get( this );
-    }
-
-    public Value getPrefWidthValue()
-    {
-        return prefWidth;
-    }
-
-    public float getPrefWidth()
-    {
-        float v                     = prefWidth.get( actor );
-        if ( background != null ) v = Math.max( v, background.getMinWidth() );
-
-        return Math.max( getMinWidth(), v + padLeft.get( this ) + padRight.get( this ) );
-    }
-
-    public Value getPrefHeightValue()
-    {
-        return prefHeight;
-    }
-
-    public float getPrefHeight()
-    {
-        float v                     = prefHeight.get( actor );
-        if ( background != null ) v = Math.max( v, background.getMinHeight() );
-
-        return Math.max( getMinHeight(), v + padTop.get( this ) + padBottom.get( this ) );
-    }
-
-    public Value getMaxWidthValue()
-    {
-        return maxWidth;
-    }
-
-    public float getMaxWidth()
-    {
-        float v        = maxWidth.get( actor );
-        if ( v > 0 ) v += padLeft.get( this ) + padRight.get( this );
-
-        return v;
-    }
-
-    public Value getMaxHeightValue()
-    {
-        return maxHeight;
-    }
-
-    public float getMaxHeight()
-    {
-        float v        = maxHeight.get( actor );
-        if ( v > 0 ) v += padTop.get( this ) + padBottom.get( this );
-
-        return v;
-    }
-
-    public Value getPadTopValue()
-    {
-        return padTop;
-    }
-
-    public float getPadTop()
-    {
-        return padTop.get( this );
-    }
-
-    public Value getPadLeftValue()
-    {
-        return padLeft;
-    }
-
-    public float getPadLeft()
-    {
-        return padLeft.get( this );
-    }
-
-    public Value getPadBottomValue()
-    {
-        return padBottom;
-    }
-
-    public float getPadBottom()
-    {
-        return padBottom.get( this );
-    }
-
-    public Value getPadRightValue()
-    {
-        return padRight;
-    }
-
-    public float getPadRight()
-    {
-        return padRight.get( this );
-    }
-
-    /** Returns {@link #getPadLeft()} plus {@link #getPadRight()}. */
-    public float getPadX()
-    {
-        return padLeft.get( this ) + padRight.get( this );
-    }
-
-    /** Returns {@link #getPadTop()} plus {@link #getPadBottom()}. */
-    public float getPadY()
-    {
-        return padTop.get( this ) + padBottom.get( this );
-    }
-
-    public float getFillX()
-    {
-        return fillX;
-    }
-
-    public float getFillY()
-    {
-        return fillY;
-    }
-
-    public int getAlign()
-    {
-        return align;
-    }
-
-    /** If true (the default), positions and sizes are rounded to integers. */
-    public void setRound( bool round )
-    {
-        this.round = round;
-    }
-
-    /** Sets clip to true. */
-    public Container< T > Clip()
-    {
-        setClip( true );
-
-        return this;
-    }
-
-    public Container< T > Clip( bool enabled )
-    {
-        setClip( enabled );
-
-        return this;
-    }
-
-    /** Causes the contents to be clipped if they exceed the container bounds. Enabling clipping will set
-	 * {@link #setTransform(bool)} to true. */
-    public void setClip( bool enabled )
-    {
-        clip = enabled;
-        setTransform( enabled );
-        invalidate();
-    }
-
-    public bool getClip()
-    {
-        return clip;
-    }
-
-    public @Null Actor hit( float x, float y, bool touchable )
-    {
-        if ( clip )
-        {
-            if ( touchable && getTouchable() == Touchable.disabled ) return null;
-            if ( x < 0 || x >= getWidth() || y < 0 || y >= getHeight() ) return null;
-        }
-
-        return super.hit( x, y, touchable );
-    }
-
-    public void drawDebug( ShapeRenderer shapes )
+    public new void DrawDebug( ShapeRenderer shapes )
     {
         Validate();
 
@@ -992,17 +1129,19 @@ public class Container<T> : WidgetGroup where T : Actor
         {
             ApplyTransform( shapes, ComputeTransform() );
 
-            if ( clip )
+            if ( _clip )
             {
                 shapes.Flush();
-                float padLeft = this.padLeft.get( this ), padBottom = this.padBottom.get( this );
 
-                bool draw = background == null
-                    ? clipBegin( 0, 0, getWidth(), getHeight() )
-                    : clipBegin
+                var padLeft   = this._padLeft.Get( this );
+                var padBottom = this._padBottom.Get( this );
+
+                var draw = ( _background == null )
+                    ? ClipBegin( 0, 0, Width, Height )
+                    : ClipBegin
                         (
-                        padLeft, padBottom, getWidth() - padLeft - padRight.get( this ),
-                        getHeight() - padBottom - padTop.get( this )
+                        padLeft, padBottom, Width - padLeft - _padRight.Get( this ),
+                        Height - padBottom - _padTop.Get( this )
                         );
 
                 if ( draw )
@@ -1023,4 +1162,40 @@ public class Container<T> : WidgetGroup where T : Actor
             base.DrawDebug( shapes );
         }
     }
+
+    #endregion drawing
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region deprecated methods
+
+    [Obsolete]
+    public new void AddActor( Actor actor )
+    {
+        throw new System.NotSupportedException( "Use Container#setActor." );
+    }
+
+    [Obsolete]
+    public new void AddActorAt( int index, Actor actor )
+    {
+        throw new System.NotSupportedException( "Use Container#setActor." );
+    }
+
+    [Obsolete]
+    public new void AddActorBefore( Actor actorBefore, Actor actor )
+    {
+        throw new System.NotSupportedException( "Use Container#setActor." );
+    }
+
+    [Obsolete]
+    public new void AddActorAfter( Actor actorAfter, Actor actor )
+    {
+        throw new System.NotSupportedException( "Use Container#setActor." );
+    }
+
+    #endregion deprecated methods
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }
