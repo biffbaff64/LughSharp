@@ -219,8 +219,8 @@ public class Group : Actor, ICullable
     }
 
     /// <summary>
-    /// Draws this actor's debug lines if <see cref="Actor.DebugFlag"/> is
-    /// true and, regardless of <see cref="Actor.DebugFlag"/>, calls
+    /// Draws this actor's debug lines if <see cref="Actor.DebugActive"/> is
+    /// true and, regardless of <see cref="Actor.DebugActive"/>, calls
     /// <see cref="Actor.DrawDebug(ShapeRenderer)"/> on each child. 
     /// </summary>
     public new void DrawDebug( ShapeRenderer shapes )
@@ -265,7 +265,7 @@ public class Group : Actor, ICullable
                 if ( child == null ) continue;
                 if ( !child.IsVisible ) continue;
 
-                if ( !child.DebugFlag && !( child is Group ) )
+                if ( !child.DebugActive && !( child is Group ) )
                 {
                     continue;
                 }
@@ -291,7 +291,7 @@ public class Group : Actor, ICullable
                 if ( child == null ) continue;
                 if ( !child.IsVisible ) continue;
 
-                if ( !child.DebugFlag && ( child is not Group ) )
+                if ( !child.DebugActive && ( child is not Group ) )
                 {
                     continue;
                 }
@@ -727,7 +727,7 @@ public class Group : Actor, ICullable
     /// </summary>
     public void SetDebug( bool enabled, bool recursively )
     {
-        DebugFlag = enabled;
+        DebugActive = enabled;
 
         if ( recursively )
         {
@@ -739,7 +739,7 @@ public class Group : Actor, ICullable
                 }
                 else
                 {
-                    child.DebugFlag = enabled;
+                    child.DebugActive = enabled;
                 }
             }
         }

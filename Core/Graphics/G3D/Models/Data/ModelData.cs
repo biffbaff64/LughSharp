@@ -26,10 +26,10 @@ public class ModelData
 {
     public string?                ID         { get; set; }
     public short[]                Version    { get; set; } = new short[ 2 ];
-    public List< ModelMesh >      Meshes     { get; set; } = new List< ModelMesh >();
-    public List< ModelMaterial >? Materials  { get; set; } = new List< ModelMaterial >();
-    public List< ModelNode >      Nodes      { get; set; } = new List< ModelNode >();
-    public List< ModelAnimation > Animations { get; set; } = new List< ModelAnimation >();
+    public List< ModelMesh >      Meshes     { get; set; } = new();
+    public List< ModelMaterial >? Materials  { get; set; } = new();
+    public List< ModelNode >      Nodes      { get; set; } = new();
+    public List< ModelAnimation > Animations { get; set; } = new();
 
     public virtual void AddMesh( ModelMesh mesh )
     {

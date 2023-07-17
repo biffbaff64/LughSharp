@@ -20,66 +20,61 @@ namespace LibGDXSharp.Maps;
 
 public sealed class MapLayers : IEnumerable< MapLayer >
 {
-    private readonly List< MapLayer > _layers = new List< MapLayer >();
+    private readonly List< MapLayer > _layers = new();
 
-    public MapLayer Get( int index )
-    {
-        return _layers[ index ];
-    }
+    /// <summary>
+    /// Returns the <see cref="MapLayer"/> at the specified index.
+    /// </summary>
+    public MapLayer Get( int index ) => _layers[ index ];
 
+    /// <summary>
+    /// Returns the first layer having the specified name, if one exists, otherwise null
+    /// </summary>
     public MapLayer? Get( string name )
     {
         if ( name.Equals( string.Empty ) ) return null;
             
         for ( int i = 0, n = _layers.Count; i < n; i++ )
         {
-            MapLayer layer = _layers[ i ];
-
-            if ( name.Equals( layer.Name ) )
+            if ( name.Equals( _layers[ i ].Name ) )
             {
-                return layer;
+                return _layers[ i ];
             }
         }
 
         return null;
     }
 
+    /// <summary>
+    /// Get the index of the layer having the specified name, or -1 if no such layer exists.
+    /// </summary>
     public int GetIndex( string name )
     {
         MapLayer? layer = Get( name );
             
-        return layer != null ? GetIndex( layer ) : throw new NullReferenceException();
+        return layer != null ? GetIndex( layer ) : -1;
     }
 
-    public int GetIndex( MapLayer layer )
-    {
-        return _layers.IndexOf( layer );
-    }
+    /// <summary>
+    /// Get the index of the layer in the collection, or -1 if no such layer exists.
+    /// </summary>
+    public int GetIndex( MapLayer layer ) => _layers.IndexOf( layer );
 
-    public int GetCount()
-    {
-        return _layers.Count;
-    }
-
+    /// <summary>
+    /// Adds a layer to this collection
+    /// </summary>
     public void Add( MapLayer layer )
     {
         this._layers.Add( layer );
     }
 
-    public void Remove( int index )
-    {
-        _layers.RemoveAt( index );
-    }
+    public int GetCount() => _layers.Count;
 
-    public void Remove( MapLayer layer )
-    {
-        _layers.Remove( layer );
-    }
+    public void Remove( int index ) => _layers.RemoveAt( index );
 
-    public int Size()
-    {
-        return _layers.Count;
-    }
+    public void Remove( MapLayer layer ) => _layers.Remove( layer );
+
+    public int Size() => _layers.Count;
 
     /// <summary>
     /// </summary>
@@ -91,9 +86,10 @@ public sealed class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
+    /// Returns a list of layers which match the requested type in <b>T</b>
     /// </summary>
-    /// <param name="fill"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <param name="fill">Ther list in which to store the results</param>
+    /// <typeparam name="T">The requested type.</typeparam>
     /// <returns></returns>
     public List< T > GetByType<T>( List< T > fill ) where T : MapLayer
     {

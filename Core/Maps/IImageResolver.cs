@@ -28,7 +28,7 @@ public interface IImageResolver
     /// Returns the <see cref="TextureRegion"/> for the given name,
     /// or null if texture doesn't exist.
     /// </summary>
-    public TextureRegion GetImage( string name );
+    public TextureRegion? GetImage( string name );
 
     /// <summary>
     /// </summary>
@@ -75,7 +75,7 @@ public interface IImageResolver
             this._atlas = atlas;
         }
 
-        public TextureRegion GetImage( string name )
+        public TextureRegion? GetImage( string name )
         {
             return _atlas.FindRegion( name );
         }

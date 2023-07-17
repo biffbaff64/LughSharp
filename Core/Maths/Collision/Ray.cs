@@ -22,8 +22,8 @@ namespace LibGDXSharp.Maths.Collision;
 [Serializable]
 public class Ray
 {
-    public readonly Vector3 origin    = new Vector3();
-    public readonly Vector3 direction = new Vector3();
+    public readonly Vector3 origin    = new();
+    public readonly Vector3 direction = new();
 
     /// <summary>
     /// Constructor, sets the starting position of the ray and the direction.
@@ -56,7 +56,7 @@ public class Ray
         return result.Set( direction ).Scl( distance ).Add( origin );
     }
 
-    private static Vector3 _tmp = new Vector3();
+    private static Vector3 _tmp = new();
 
     /// <summary>
     /// Multiplies the ray by the given matrix.

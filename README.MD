@@ -1,8 +1,9 @@
-﻿DISCLAIMER:- THE CODE QUALITY IN THIS PROJECT WILL IMPROVE OVER TIME. C# IS NEW TO ME.
+﻿
+C# 2D Game Framework heavily inspired by the Java LibGDX Game Framework.
 
-This project is intended to be a C# conversion of the Java LibGDX Game Framework.
+It is NOT a 100% conversion, some things may be different.
 
-I have created files, many of which are essentially empty classes, for each file found in LibGDX.
+DISCLAIMER:- THE CODE QUALITY IN THIS PROJECT WILL IMPROVE OVER TIME. C# IS NEW TO ME.
 
 The standard of the code here won't be great to start off with, but will hopefully improve as I
 learn more about C#.

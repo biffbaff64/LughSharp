@@ -28,8 +28,8 @@ namespace LibGDXSharp.Maths;
 /// </summary>
 public class Bresenham2
 {
-    private readonly List< GridPoint2 > _points = new List< GridPoint2 >();
-    private readonly Pool< GridPoint2 > _pool = new Pool< GridPoint2 >
+    private readonly List< GridPoint2 > _points = new();
+    private readonly Pool< GridPoint2 > _pool = new()
     {
         NewObject = NewGridPointGenerator
     };

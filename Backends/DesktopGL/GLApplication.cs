@@ -25,12 +25,12 @@ namespace LibGDXSharp;
 public class GLApplication : GLApplicationBase
 {
     public GLApplicationConfiguration?        Config             { get; set; }
-    public List< GLWindow >                   Windows            { get; set; } = new List< GLWindow >();
+    public List< GLWindow >                   Windows            { get; set; } = new();
     public GLClipboard?                       Clipboard          { get; set; }
     public ObjectMap< string, IPreferences >? Preferences        { get; set; }
-    public List< IRunnable >                  Runnables          { get; set; } = new List< IRunnable >();
-    public List< IRunnable >                  ExecutedRunnables  { get; set; } = new List< IRunnable >();
-    public List< ILifecycleListener >         LifecycleListeners { get; set; } = new List< ILifecycleListener >();
+    public List< IRunnable >                  Runnables          { get; set; } = new();
+    public List< IRunnable >                  ExecutedRunnables  { get; set; } = new();
+    public List< ILifecycleListener >         LifecycleListeners { get; set; } = new();
 
     public static GLVersion? GLVersion { get; set; }
 

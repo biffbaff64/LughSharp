@@ -20,8 +20,8 @@ namespace LibGDXSharp.Utils;
 
 public class Timer
 {
-    private readonly static object        threadLock = new object();
-    private readonly        List< Task? > _tasks     = new List< Task? >( 8 );
+    private readonly static object        threadLock = new();
+    private readonly        List< Task? > _tasks     = new( 8 );
     private static          TimerThread?  _thread;
 
     public Timer()
@@ -391,7 +391,7 @@ public class Timer
 
     public sealed class TimerThread : IRunnable, ILifecycleListener
     {
-        internal readonly List< Timer > instances = new List< Timer >( capacity: 1 );
+        internal readonly List< Timer > instances = new( capacity: 1 );
         internal readonly IFiles?       files;
         internal          Timer?        instance;
         internal          long          pauseTimeMillis;

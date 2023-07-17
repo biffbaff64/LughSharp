@@ -23,7 +23,7 @@ public sealed class DelayedRemovalArray<T> : List< T >
     private int _iterating = 0;
     private int _clear     = 0;
 
-    private readonly List< int > _remove = new List< int >();
+    private readonly List< int > _remove = new();
 
     /// <summary>
     /// </summary>

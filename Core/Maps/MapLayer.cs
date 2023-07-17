@@ -18,8 +18,8 @@ namespace LibGDXSharp.Maps;
 
 public class MapLayer
 {
-    public MapObjects    Objects    { get; private set; } = new MapObjects();
-    public MapProperties Properties { get; private set; } = new MapProperties();
+    public MapObjects    Objects    { get; private set; } = new();
+    public MapProperties Properties { get; private set; } = new();
     public string?       Name       { get; set; }
     public float         Opacity    { get; set; }
     public bool          Visible    { get; set; } = true;

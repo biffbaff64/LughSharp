@@ -1902,7 +1902,7 @@ public class Table : WidgetGroup
 
     private void DrawDebugRects( ShapeRenderer shapes )
     {
-        if ( ( _debugRects == null ) || !DebugFlag ) return;
+        if ( ( _debugRects == null ) || !DebugActive ) return;
 
         shapes.Set( ShapeRenderer.ShapeTypes.Line );
 

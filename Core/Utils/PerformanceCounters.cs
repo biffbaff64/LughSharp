@@ -22,7 +22,7 @@ public class PerformanceCounters
 {
     private const float Nano2Seconds = 1f / 1000000000.0f;
 
-    public readonly List< PerformanceCounter > counters = new List< PerformanceCounter >();
+    public readonly List< PerformanceCounter > counters = new();
 
     private long _lastTick = 0L;
 

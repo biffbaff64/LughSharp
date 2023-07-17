@@ -25,14 +25,14 @@ public class Frustrum
 {
     protected readonly static Vector3[] ClipSpacePlanePoints = new Vector3[]
     {
-        new Vector3( -1, -1, -1 ),
-        new Vector3( 1, -1, -1 ),
-        new Vector3( 1, 1, -1 ),
-        new Vector3( -1, 1, -1 ),
-        new Vector3( -1, -1, 1 ),
-        new Vector3( 1, -1, 1 ),
-        new Vector3( 1, 1, 1 ),
-        new Vector3( -1, 1, 1 )
+        new( -1, -1, -1 ),
+        new( 1, -1, -1 ),
+        new( 1, 1, -1 ),
+        new( -1, 1, -1 ),
+        new( -1, -1, 1 ),
+        new( 1, -1, 1 ),
+        new( 1, 1, 1 ),
+        new( -1, 1, 1 )
     };
 
     protected readonly static float[] ClipSpacePlanePointsArray = new float[ 8 * 3 ];
@@ -49,7 +49,7 @@ public class Frustrum
         }
     }
 
-    private readonly static Vector3 tmpV = new Vector3();
+    private readonly static Vector3 tmpV = new();
 
     /// <system>
     /// the six clipping planes, near, far, left, right, top, bottom
@@ -62,8 +62,8 @@ public class Frustrum
     /// </system>
     public readonly Vector3[] planePoints =
     {
-        new Vector3(), new Vector3(), new Vector3(), new Vector3(),
-        new Vector3(), new Vector3(), new Vector3(), new Vector3()
+        new(), new(), new(), new(),
+        new(), new(), new(), new()
     };
 
     protected readonly float[] planePointsArray = new float[ 8 * 3 ];

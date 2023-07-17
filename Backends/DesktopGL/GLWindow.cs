@@ -27,8 +27,8 @@ public class GLWindow : IDisposable
     private          GLApplicationConfiguration _config;
     private          GLGraphics                 _graphics;
     private          IApplicationListener       _listener;
-    private readonly List< IRunnable >          _runnables         = new List< IRunnable >();
-    private readonly List< IRunnable >          _executedRunnables = new List< IRunnable >();
+    private readonly List< IRunnable >          _runnables         = new();
+    private readonly List< IRunnable >          _executedRunnables = new();
     private          IntBuffer                  _tmpBuffer;
     private          IntBuffer                  _tmpBuffer2;
     private          long                       _windowHandle;

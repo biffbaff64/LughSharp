@@ -24,11 +24,11 @@ using System.Collections.Generic;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class TextureWrap
 {
-    public readonly static TextureWrap MirroredRepeat = new TextureWrap( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_Mirrored_Repeat );
-    public readonly static TextureWrap ClampToEdge    = new TextureWrap( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_Clamp_To_Edge );
-    public readonly static TextureWrap Repeat         = new TextureWrap( "Repeat", InnerEnum.Repeat, IGL20.GL_Repeat );
+    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_Mirrored_Repeat );
+    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_Clamp_To_Edge );
+    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_Repeat );
 
-    private readonly static List< TextureWrap > valueList = new List< TextureWrap >();
+    private readonly static List< TextureWrap > valueList = new();
 
     static TextureWrap()
     {

@@ -158,7 +158,7 @@ public class Stage : InputAdapter
 
             if ( _debugTableUnderMouse == Table.DebugType.None )
             {
-                actor.DebugFlag = true;
+                actor.DebugActive = true;
             }
             else
             {
@@ -208,7 +208,7 @@ public class Stage : InputAdapter
     {
         if ( actor == except ) return;
 
-        actor.DebugFlag = false;
+        actor.DebugActive = false;
 
         if ( actor is Group group )
         {

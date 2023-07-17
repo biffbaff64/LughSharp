@@ -36,7 +36,7 @@ namespace LibGDXSharp.Files;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class DataOutputStream : IDataOutput, IDisposable
 {
-    private readonly object _lock = new object();
+    private readonly object _lock = new();
 
     /// <summary>
     /// The number of bytes written out so far.

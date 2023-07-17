@@ -1280,7 +1280,7 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Draws this actor's debug lines if <see cref="DebugFlag"/> is true.
+    /// Draws this actor's debug lines if <see cref="DebugActive"/> is true.
     /// </summary>
     public void DrawDebug( ShapeRenderer shapes )
     {
@@ -1289,11 +1289,11 @@ public class Actor : IActor
 
     /// <summary>
     /// Draws a rectangle for the bounds of this actor
-    /// if <see cref="DebugFlag"/> is true.
+    /// if <see cref="DebugActive"/> is true.
     /// </summary>
     protected void DrawDebugBounds( ShapeRenderer shapes )
     {
-        if ( !DebugFlag ) return;
+        if ( !DebugActive ) return;
 
         shapes.Set( ShapeRenderer.ShapeTypes.Line );
 
@@ -1308,7 +1308,7 @@ public class Actor : IActor
     /// <summary>
     /// If true, <see cref="DrawDebug(ShapeRenderer)"/> will be called for this actor.
     /// </summary>
-    public bool DebugFlag
+    public bool DebugActive
     {
         get => _debug;
         set
@@ -1331,7 +1331,7 @@ public class Actor : IActor
     /// <returns>This Actor for chaining.</returns>
     public Actor EnableDebug()
     {
-        DebugFlag = true;
+        DebugActive = true;
 
         return this;
     }

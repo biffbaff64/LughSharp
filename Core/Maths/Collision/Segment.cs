@@ -22,8 +22,8 @@ namespace LibGDXSharp.Maths.Collision;
 [Serializable]
 public class Segment
 {
-    public readonly Vector3 vectorA = new Vector3(); // the starting position
-    public readonly Vector3 vectorB = new Vector3(); // the ending position
+    public readonly Vector3 vectorA = new(); // the starting position
+    public readonly Vector3 vectorB = new(); // the ending position
 
     /// <summary>
     /// Constructs a new Segment from the two points given.

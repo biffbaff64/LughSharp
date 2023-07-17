@@ -30,8 +30,8 @@ public class InputEventQueue
     private const int Mouse_Moved    = 6;
     private const int Mouse_Scrolled = 7;
 
-    private readonly List< int > _queue           = new List< int >();
-    private readonly List< int > _processingQueue = new List< int >();
+    private readonly List< int > _queue           = new();
+    private readonly List< int > _processingQueue = new();
 
     public long CurrentEventTime { get; set; }
 

@@ -553,7 +553,7 @@ SCENES.SCENE2D/UI
     - DONE - Container                      Convert
     -      - Dialog                         Convert
     -      - HorizontalGroup                Convert
-    -      - Image                          Convert
+    - DONE - Image                          Convert
     -      - ImageButton                    Convert
     -      - ImageTextButton                Convert
     - DONE - Label                          Convert
@@ -576,7 +576,7 @@ SCENES.SCENE2D/UI
     -      - Tree                           Convert
     - DONE - Value                          Convert
     - DONE - ValueExtensions                New Class
-    - IP   - VerticalGroup                  Convert
+    - DONE - VerticalGroup                  Convert
     - DONE - Widget                         Convert
     - DONE - WidgetGroup                    Convert
     - DONE - Window                         Convert

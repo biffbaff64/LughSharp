@@ -45,9 +45,9 @@ public class SpriteBatch : IBatch
     public float invTexHeight = 0;
     public float colorPacked  = Color.WhiteFloatBits;
 
-    private readonly Matrix4 _transformMatrix  = new Matrix4();
-    private readonly Matrix4 _projectionMatrix = new Matrix4();
-    private readonly Matrix4 _combinedMatrix   = new Matrix4();
+    private readonly Matrix4 _transformMatrix  = new();
+    private readonly Matrix4 _projectionMatrix = new();
+    private readonly Matrix4 _combinedMatrix   = new();
 
     private int _blendSrcFunc      = IGL20.GL_Src_Alpha;
     private int _blendDstFunc      = IGL20.GL_One_Minus_Src_Alpha;

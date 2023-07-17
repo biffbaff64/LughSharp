@@ -18,9 +18,9 @@ namespace LibGDXSharp.Maths;
 
 public class Vector2 : IVector< Vector2 >
 {
-    public readonly static Vector2 XDefault = new Vector2( 1, 0 );
-    public readonly static Vector2 YDefault = new Vector2( 0, 1 );
-    public readonly static Vector2 Zero     = new Vector2( 0, 0 );
+    public readonly static Vector2 XDefault = new( 1, 0 );
+    public readonly static Vector2 YDefault = new( 0, 1 );
+    public readonly static Vector2 Zero     = new( 0, 0 );
 
     public float X { get; set; } // the x-component of this vector.
     public float Y { get; set; } // the y-component of this vector.

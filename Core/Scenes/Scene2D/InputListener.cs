@@ -23,7 +23,7 @@ namespace LibGDXSharp.Scenes.Scene2D;
 /// </summary>
 public class InputListener : IEventListener
 {
-    private readonly static Vector2 tmpCoords = new Vector2();
+    private readonly static Vector2 tmpCoords = new();
 
     /// <summary>
     /// Try to handle the given event, if it is an <see cref="InputEvent"/>.

@@ -32,7 +32,7 @@ public class Plane
         Front
     }
 
-    private readonly Vector3 _normal = new Vector3();
+    private readonly Vector3 _normal = new();
     private          float   _dto    = 0;
 
     /// <summary>

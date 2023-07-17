@@ -19,9 +19,10 @@ namespace LibGDXSharp.Maps;
 /// <summary>
 /// Map layer containing a set of MapLayers, objects and properties.
 /// </summary>
+[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public sealed class MapGroupLayer : MapLayer
 {
-    public MapLayers Layers { get; private set; } = new MapLayers();
+    public MapLayers Layers { get; private set; } = new();
 
     public new void InvalidateRenderOffset()
     {

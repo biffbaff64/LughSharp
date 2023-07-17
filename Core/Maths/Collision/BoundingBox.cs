@@ -24,13 +24,13 @@ namespace LibGDXSharp.Maths.Collision;
 [Serializable]
 public class BoundingBox
 {
-    private readonly static Vector3 tmpVector = new Vector3();
+    private readonly static Vector3 tmpVector = new();
 
-    public readonly Vector3 min = new Vector3();
-    public readonly Vector3 max = new Vector3();
+    public readonly Vector3 min = new();
+    public readonly Vector3 max = new();
 
-    private readonly Vector3 _cnt = new Vector3();
-    private readonly Vector3 _dim = new Vector3();
+    private readonly Vector3 _cnt = new();
+    private readonly Vector3 _dim = new();
 
     /// <summary>
     /// Constructs a new bounding box with the minimum and maximum vector set to zeros.

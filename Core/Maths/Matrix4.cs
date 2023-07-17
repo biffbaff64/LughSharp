@@ -107,16 +107,16 @@ public class Matrix4
     /// </summary>
     public const int M33 = 15;
 
-    public readonly static Quaternion Quat       = new Quaternion();
-    public readonly static Quaternion Quat2      = new Quaternion();
-    public readonly static Vector3    LVez       = new Vector3();
-    public readonly static Vector3    LVex       = new Vector3();
-    public readonly static Vector3    LVey       = new Vector3();
-    public readonly static Vector3    TmpVec     = new Vector3();
-    public readonly static Matrix4    TmpMat     = new Matrix4();
-    public readonly static Vector3    Right      = new Vector3();
-    public readonly static Vector3    TmpForward = new Vector3();
-    public readonly static Vector3    TmpUp      = new Vector3();
+    public readonly static Quaternion Quat       = new();
+    public readonly static Quaternion Quat2      = new();
+    public readonly static Vector3    LVez       = new();
+    public readonly static Vector3    LVex       = new();
+    public readonly static Vector3    LVey       = new();
+    public readonly static Vector3    TmpVec     = new();
+    public readonly static Matrix4    TmpMat     = new();
+    public readonly static Vector3    Right      = new();
+    public readonly static Vector3    TmpForward = new();
+    public readonly static Vector3    TmpUp      = new();
 
     public readonly float[] val = new float[ 16 ];
 

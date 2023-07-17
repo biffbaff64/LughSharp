@@ -105,7 +105,7 @@ public sealed class ImmediateModeRenderer20 : IImmediateModeRenderer
     {
         var attribs = new List< VertexAttribute >
         {
-            new VertexAttribute
+            new
                 (
                  VertexAttributes.Usage.Position,
                  3,

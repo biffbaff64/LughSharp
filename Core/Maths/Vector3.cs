@@ -23,11 +23,11 @@ public sealed class Vector3 : IVector< Vector3 >
     public float Y { get; set; }
     public float Z { get; set; }
 
-    public readonly static  Vector3 XDefault = new Vector3( 1, 0, 0 );
-    public readonly static  Vector3 YDefault = new Vector3( 0, 1, 0 );
-    public readonly static  Vector3 ZDefault = new Vector3( 0, 0, 1 );
-    public readonly static  Vector3 Zero     = new Vector3( 0, 0, 0 );
-    private readonly static Matrix4 tmpMat   = new Matrix4();
+    public readonly static  Vector3 XDefault = new( 1, 0, 0 );
+    public readonly static  Vector3 YDefault = new( 0, 1, 0 );
+    public readonly static  Vector3 ZDefault = new( 0, 0, 1 );
+    public readonly static  Vector3 Zero     = new( 0, 0, 0 );
+    private readonly static Matrix4 tmpMat   = new();
 
     /// <summary>
     /// Default constructor.

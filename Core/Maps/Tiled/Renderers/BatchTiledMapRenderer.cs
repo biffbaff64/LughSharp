@@ -26,7 +26,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
 
     public TiledMap       TiledMap    { get; set; }
     public bool           OwnsBatch   { get; set; }
-    public RectangleShape ImageBounds { get; set; } = new RectangleShape();
+    public RectangleShape ImageBounds { get; set; } = new();
 
     protected IBatch         Batch      { get; set; }
     protected RectangleShape ViewBounds { get; set; }

@@ -73,7 +73,7 @@ public class SpriteCache
     private          bool          _drawing;
     private readonly List< Cache > _caches = new();
 
-    private readonly Matrix4        _combinedMatrix = new Matrix4();
+    private readonly Matrix4        _combinedMatrix = new();
     private readonly ShaderProgram? _shader;
 
     private          Cache?          _currentCache;
@@ -196,7 +196,7 @@ public class SpriteCache
         PackedColor = Color.ToFloatBits();
     }
 
-    public Color Color { get; } = new Color( 1, 1, 1, 1 );
+    public Color Color { get; } = new( 1, 1, 1, 1 );
 
     /// <summary>
     /// The color of this sprite cache, expanding the alpha from 0-254 to 0-255.

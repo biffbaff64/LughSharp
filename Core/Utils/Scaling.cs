@@ -18,7 +18,7 @@ namespace LibGDXSharp.Utils;
 
 public abstract class Scaling
 {
-    protected readonly static Vector2 Temp = new Vector2();
+    protected readonly static Vector2 Temp = new();
 
     /// <summary>
     /// Returns the size of the source scaled to the target.

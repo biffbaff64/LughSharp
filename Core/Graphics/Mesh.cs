@@ -257,13 +257,11 @@ public class Mesh
         if ( _instances != null )
         {
             this._instances.SetInstanceData( instanceData, offset, count );
-        }
-        else
-        {
-            throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
+
+            return this;
         }
 
-        return this;
+        throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
     }
 
     /// <summary>
@@ -276,13 +274,11 @@ public class Mesh
         if ( _instances != null )
         {
             this._instances.SetInstanceData( instanceData, 0, instanceData.Length );
-        }
-        else
-        {
-            throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
+
+            return this;
         }
 
-        return this;
+        throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
     }
 
     /// <summary>
@@ -296,13 +292,11 @@ public class Mesh
         if ( _instances != null )
         {
             this._instances.SetInstanceData( instanceData, count );
-        }
-        else
-        {
-            throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
+
+            return this;
         }
 
-        return this;
+        throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
     }
 
     /// <summary>
@@ -315,13 +309,11 @@ public class Mesh
         if ( _instances != null )
         {
             this._instances.SetInstanceData( instanceData, instanceData.Limit );
-        }
-        else
-        {
-            throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
+
+            return this;
         }
 
-        return this;
+        throw new GdxRuntimeException( "An InstanceBufferObject must be set before setting instance data!" );
     }
 
     /// <summary>
@@ -594,7 +586,7 @@ public class Mesh
     public int MaxIndices => _indices.NumMaxIndices;
 
     /// <returns> the size of a single vertex in bytes </returns>
-    public int VertexSize => _vertices.GetAttributes().VertexSize;
+    public int VertexSize => _vertices.Attributes.VertexSize;
 
     /// <summary>
     /// Sets whether to bind the underlying <see cref="VertexArray"/> or
@@ -852,7 +844,7 @@ public class Mesh
     /// <returns> the VertexAttribute or null if no attribute with that usage was found.  </returns>
     public VertexAttribute? GetVertexAttribute( int usage )
     {
-        VertexAttributes attributes = _vertices.GetAttributes();
+        VertexAttributes attributes = _vertices.Attributes;
 
         var len = attributes.Size;
 
@@ -868,13 +860,13 @@ public class Mesh
     }
 
     /// <returns> the vertex attributes of this Mesh </returns>
-    public VertexAttributes VertexAttributes => _vertices.GetAttributes();
+    public VertexAttributes VertexAttributes => _vertices.Attributes;
 
     /// <returns>
     /// the backing FloatBuffer holding the vertices.
     /// Does not have to be a direct buffer on Android!
     /// </returns>
-    public FloatBuffer VerticesBuffer => _vertices.GetBuffer();
+    public FloatBuffer VerticesBuffer => _vertices.Buffer;
 
     /// <summary>
     /// Calculates the <see cref="BoundingBox"/> of the vertices contained in this mesh.
@@ -904,12 +896,12 @@ public class Mesh
             throw new GdxRuntimeException( "No vertices defined" );
         }
 
-        FloatBuffer verts = _vertices.GetBuffer();
+        FloatBuffer verts = _vertices.Buffer;
         bbox.Inf();
         VertexAttribute? posAttrib = GetVertexAttribute( VertexAttributes.Usage.Position );
 
         var offset     = posAttrib!.Offset / 4;
-        var vertexSize = _vertices.GetAttributes().VertexSize / 4;
+        var vertexSize = _vertices.Attributes.VertexSize / 4;
         var idx        = offset;
 
         switch ( posAttrib.numComponents )
@@ -1007,11 +999,11 @@ public class Mesh
                 );
         }
 
-        FloatBuffer      verts      = _vertices.GetBuffer();
+        FloatBuffer      verts      = _vertices.Buffer;
         ShortBuffer      index      = _indices.Buffer;
         VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.Position );
         var              posoff     = posAttrib?.Offset / 4;
-        var              vertexSize = _vertices.GetAttributes().VertexSize / 4;
+        var              vertexSize = _vertices.Attributes.VertexSize / 4;
         var              end        = offset + count;
 
         switch ( posAttrib?.numComponents )
@@ -1147,11 +1139,11 @@ public class Mesh
             throw new GdxRuntimeException( "Not enough indices" );
         }
 
-        FloatBuffer      verts      = _vertices.GetBuffer();
+        FloatBuffer      verts      = _vertices.Buffer;
         ShortBuffer      index      = _indices.Buffer;
         VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.Position );
         var              posoff     = posAttrib?.Offset / 4;
-        var              vertexSize = _vertices.GetAttributes().VertexSize / 4;
+        var              vertexSize = _vertices.Attributes.VertexSize / 4;
         var              end        = offset + count;
 
         float result = 0;
@@ -1534,6 +1526,7 @@ public class Mesh
     }
 
     // TODO: Protected for now, because transforming a portion works but still copies all vertices
+    // NB: Original message from Java LibGDX.
     protected void TransformUV( in Matrix3 matrix, in int start, in int count )
     {
         VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.TextureCoordinates );
@@ -1632,15 +1625,21 @@ public class Mesh
             var size    = 0;
             var asCount = 0;
 
-            foreach ( var t in usage )
-            {
-                if ( GetVertexAttribute( t ) != null )
-                {
-                    size += GetVertexAttribute( t )!.numComponents;
-                    asCount++;
-                }
-            }
+//            foreach ( var t in usage )
+//            {
+//                if ( GetVertexAttribute( t ) != null )
+//                {
+//                    size += GetVertexAttribute( t )!.numComponents;
+//                    asCount++;
+//                }
+//            }
 
+            foreach ( var t in usage.Where( t => GetVertexAttribute( t ) != null ) )
+            {
+                size += GetVertexAttribute( t )!.numComponents;
+                asCount++;
+            }
+            
             if ( size > 0 )
             {
                 attrs  = new VertexAttribute[ asCount ];
@@ -1649,6 +1648,7 @@ public class Mesh
                 var idx = -1;
                 var ai  = -1;
 
+                // ReSharper disable once LoopCanBePartlyConvertedToQuery
                 foreach ( var t in usage )
                 {
                     VertexAttribute? a = GetVertexAttribute( t );
@@ -1759,7 +1759,8 @@ public class Mesh
     }
 
     /// <summary>
-    /// Frees all resources associated with this Mesh </summary>
+    /// Frees all resources associated with this Mesh
+    /// </summary>
     public void Dispose()
     {
         if ( meshes[ Gdx.App ] != null )
