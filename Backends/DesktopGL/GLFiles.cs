@@ -26,7 +26,7 @@ public sealed class GLFiles : IFiles
     /// <exception cref="GdxRuntimeException">
     /// if the type is classpath or internal and the file does not exist.
     /// </exception>
-    /// <see cref="FileType"/>
+    /// <seealso cref="FileType"/>
     /// 
     public FileInfo GetFileHandle( string path, FileType type )
     {

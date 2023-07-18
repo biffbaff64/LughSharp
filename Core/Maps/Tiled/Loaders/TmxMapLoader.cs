@@ -14,16 +14,16 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Xml;
-
 using LibGDXSharp.G2D;
 using LibGDXSharp.Utils.Collections.Extensions;
+using LibGDXSharp.Utils.Xml;
 
 namespace LibGDXSharp.Maps.Tiled;
 
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 {
-    public sealed new class Parameters : BaseTmxMapLoader< TmxMapLoader.Parameters >.Parameters
+    public sealed new class Parameters
+        : BaseTmxMapLoader< TmxMapLoader.Parameters >.Parameters
     {
     }
 
@@ -214,18 +214,18 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     /// <param name="imageWidth"></param>
     /// <param name="imageHeight"></param>
     /// <param name="image"></param>
-    protected void AddStaticTiles( FileInfo tmxFile,
+    protected override void AddStaticTiles( FileInfo tmxFile,
                                    IImageResolver imageResolver,
                                    TiledMapTileSet tileSet,
-                                   XmlElement element,
-                                   List< XmlElement > tileElements,
+                                   XmlReader.Element element,
+                                   List< XmlReader.Element > tileElements,
                                    string? name,
                                    int firstgid,
                                    int tilewidth,
                                    int tileheight,
                                    int spacing,
                                    int margin,
-                                   string source,
+                                   string? source,
                                    int offsetX,
                                    int offsetY,
                                    string imageSource,
@@ -239,8 +239,10 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
         if ( image != null )
         {
             // One image for the whole tileSet
-            TextureRegion texture = imageResolver.GetImage( Path.GetFullPath( image.Name ) );
+            TextureRegion? texture = imageResolver.GetImage( Path.GetFullPath( image.Name ) );
 
+            if ( texture == null ) throw new GdxRuntimeException( $"Tileset image not found: {image.Name}" );
+            
             props.Put( "imagesource", imageSource );
             props.Put( "imagewidth", imageWidth );
             props.Put( "imageheight", imageHeight );
@@ -268,26 +270,19 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
         else
         {
             // Every tile has its own image source
-            foreach ( XmlElement tileElement in tileElements )
+            foreach ( XmlReader.Element tileElement in tileElements )
             {
-                XmlElement? imageElement = tileElement.GetAttribute( "image" );
+                XmlReader.Element? imageElement = tileElement.GetChildByName( "image" );
 
                 if ( imageElement != null )
                 {
                     imageSource = imageElement.GetAttribute( "source" );
 
-                    if ( source != null )
-                    {
-                        image = GetRelativeFileHandle( GetRelativeFileHandle( tmxFile, source ), imageSource );
-                    }
-                    else
-                    {
-                        image = GetRelativeFileHandle( tmxFile, imageSource );
-                    }
+                    image = GetRelativeFileHandle( source != null ? GetRelativeFileHandle( tmxFile, source ) : tmxFile, imageSource );
                 }
 
-                TextureRegion texture = imageResolver.GetImage( Path.GetFullPath( image?.Name! ) );
-                var           tileId  = firstgid + tileElement.GetAttribute( "id" );
+                TextureRegion? texture = imageResolver.GetImage( Path.GetFullPath( image?.Name! ) );
+                var            tileId  = firstgid + tileElement.GetAttribute( "id" );
 
                 AddStaticTiledMapTile( tileSet, texture, int.Parse( tileId ), offsetX, offsetY );
             }

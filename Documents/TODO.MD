@@ -142,6 +142,7 @@ FILES
     - DONE - IDataInput
     - DONE - IDataOutput
     - DONE - Reader
+    - DONE - WindowsFolderUtils
     - DONE - Writer
     -      - 
 
@@ -681,11 +682,19 @@ UTILS/BUFFERS
 -------------
 
     - DONE - Buffer
-    -      - BufferUtils
+    - IP   - BufferUtils
     - DONE - ByteBuffer
     - IP   - CharBuffer
-    -      - HeapCharBuffer
-    -      - StringCharBuffer
+    - IP   - DirectByteBuffer
+    - IP   - DoubleBuffer
+    - IP   - FloatBuffer
+    - IP   - HeapByteBuffer
+    - IP   - HeapCharBuffer
+    - IP   - IntBuffer
+    - IP   - LongBuffer
+    - IP   - MappedByteBuffer
+    - IP   - ShortBuffer
+    - IP   - StringCharBuffer
     -      - 
     -      - 
 
@@ -901,8 +910,8 @@ UTILS/XML
 
     Use C# XML Libraries, but convert these, eventually, anyway.
 
-    - IP   - XmlReader
-    - IP   - XmlWriter
+    - DONE - XmlReader
+    - DONE - XmlWriter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

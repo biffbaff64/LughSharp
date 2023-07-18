@@ -47,7 +47,7 @@ public class XmlWriter : Writer
 
     public int Indentation { get; set; }
 
-    public XmlWriter( Writer writer ) : base()
+    public XmlWriter( Writer writer )
     {
         this._writer = writer;
     }

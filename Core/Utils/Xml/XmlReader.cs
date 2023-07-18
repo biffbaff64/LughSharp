@@ -577,11 +577,11 @@ public sealed class XmlReader
 
                                                 _textBuffer.Append( data, s, entityStart - s - 1 );
 
-                                                var name = new string
-                                                    ( data, entityStart, current - entityStart - 1 );
-
+                                                var name  = new string( data, entityStart, current - entityStart - 1 );
                                                 var value = Entity( name );
-                                                _textBuffer.Append( value != null ? value : name );
+
+                                                _textBuffer.Append( value ?? name );
+
                                                 s           = current;
                                                 entityFound = true;
 
@@ -655,7 +655,7 @@ public sealed class XmlReader
 
             throw new SerializationException
                 (
-                "Error parsing XML on line " + lineNumber + " near: " + new string( data, p, Math.Min( 32, pe - p ) )
+                $"Error parsing XML on line {lineNumber} near: {new string( data, p, Math.Min( 32, pe - p ) )}"
                 );
         }
 
@@ -850,8 +850,6 @@ public sealed class XmlReader
 
             if ( Attributes != null )
             {
-                ObjectMap< string, string? >.Entries< string, string? > array = Attributes.GetEntries();
-
                 List< string >  keys = Attributes.GetKeys().ToArray();
                 List< string? > vals = Attributes.GetValues().ToArray();
 
@@ -989,7 +987,7 @@ public sealed class XmlReader
             if ( _children == null ) return result;
 
             // ----------------------------------------------------------------
-            
+
             // FYI: This Linq...
             result.AddRange( _children.Where( child => ( child.Name != null ) && child.Name.Equals( name ) ) );
 
@@ -1003,7 +1001,7 @@ public sealed class XmlReader
 //            }
 
             // ----------------------------------------------------------------
-            
+
             return result;
         }
 

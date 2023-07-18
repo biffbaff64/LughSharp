@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Runtime.Serialization;
-using System.Xml;
 
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
@@ -24,8 +23,7 @@ using LibGDXSharp.Maps.Objects;
 using LibGDXSharp.Maps.Tiled.Objects;
 using LibGDXSharp.Maps.Tiled.Tiles;
 using LibGDXSharp.Maths;
-
-using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
+using LibGDXSharp.Utils.Xml;
 
 namespace LibGDXSharp.Maps.Tiled;
 
@@ -806,7 +804,7 @@ public abstract class BaseTmxMapLoader<TP>
             }
             else
             {
-                result = result.child( token );
+                result = result.Child( token );
             }
         }
 
@@ -1059,6 +1057,9 @@ public abstract class BaseTmxMapLoader<TP>
                                           float offsetX,
                                           float offsetY )
     {
+        ArgumentNullException.ThrowIfNull( tileSet );
+        ArgumentNullException.ThrowIfNull( textureRegion );
+        
         ITiledMapTile tile = new StaticTiledMapTile( textureRegion );
 
         tile.ID      = tileId;

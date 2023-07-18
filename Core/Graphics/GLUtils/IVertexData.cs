@@ -73,7 +73,7 @@ public interface IVertexData : IDisposable
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Unbind( ShaderProgram? shader, int[]? locations = null );
+    public void Unbind( ShaderProgram shader, int[]? locations = null );
 
     /// <summary>
     /// Invalidates the VertexData if applicable. Use this in case of a context loss. </summary>
