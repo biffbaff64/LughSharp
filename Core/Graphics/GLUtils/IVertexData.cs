@@ -27,7 +27,7 @@ public interface IVertexData : IDisposable
     public int NumMaxVertices { get; }
 
     /// <returns> the <see cref="VertexAttributes"/> as specified during construction. </returns>
-    public VertexAttributes Attributes { get; set; }
+    public VertexAttributes? Attributes { get; set; }
 
     /// <summary>
     /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
@@ -36,7 +36,7 @@ public interface IVertexData : IDisposable
     /// *after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer Buffer { get; set; }
+    public FloatBuffer? Buffer { get; set; }
 
     /// <summary>
     /// Sets the vertices of this VertexData, discarding the old vertex data. The

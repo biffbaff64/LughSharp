@@ -300,7 +300,7 @@ GRAPHICS/GLUTILS
     - DONE - ShaderProgram
     - DONE - ShapeRenderer
     - DONE - VertexArray
-    -      - VertexBufferObject
+    - DONE - VertexBufferObject
     -      - VertexBufferObjectSubData
     -      - VertexBufferObjectWithVAO
 
@@ -445,7 +445,7 @@ MATH
     - DONE - Plane
     - DONE - Polygon
     - DONE - Polyline
-    -      - Quaternion
+    - IP   - Quaternion                     Documentation needs completing
     - DONE - RandomXS128
     - DONE - RectangleShape
     - DONE - Vector2                        Convert, I prefer the way the LibGDX class works.
