@@ -45,8 +45,8 @@ public sealed class ProgressBar : Widget, IDisableable
     private float         _animateFromValue;
     private float         _animateDuration;
     private float         _animateTime;
-    private Interpolation _animateInterpolation = new Interpolation.Linear();
-    private Interpolation _visualInterpolation  = new Interpolation.Linear();
+    private IInterpolation _animateInterpolation = new Interpolation.Linear();
+    private IInterpolation _visualInterpolation = new Interpolation.Linear();
 
     private readonly ProgressBarStyle? _style;
     private readonly float             _stepSize;
@@ -126,10 +126,6 @@ public sealed class ProgressBar : Widget, IDisableable
 
     public new void Draw( IBatch batch, float parentAlpha )
     {
-//        ProgressBarStyle style = this._style;
-
-//        var disabled = this.IsDisabled;
-
         IDrawable? knob        = this.Style.Knob;
         IDrawable? currentKnob = GetKnobDrawable();
         IDrawable? bg          = GetBackgroundDrawable();
@@ -497,7 +493,7 @@ public sealed class ProgressBar : Widget, IDisableable
     /// <summary>
     /// Sets the interpolation to use for <see cref="SetAnimateDuration(float)"/>.
     /// </summary>
-    public void SetAnimateInterpolation( Interpolation? animateInterpolation )
+    public void SetAnimateInterpolation( Interpolation.Linear? animateInterpolation )
     {
         this._animateInterpolation = animateInterpolation
                                      ?? throw new ArgumentException( "animateInterpolation cannot be null." );
@@ -506,7 +502,7 @@ public sealed class ProgressBar : Widget, IDisableable
     /// <summary>
     ///  Sets the interpolation to use for display.
     /// </summary>
-    public void SetVisualInterpolation( Interpolation interpolation )
+    public void SetVisualInterpolation( IInterpolation interpolation )
     {
         this._visualInterpolation = interpolation;
     }

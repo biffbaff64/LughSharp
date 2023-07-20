@@ -64,17 +64,14 @@ public class Selection<T> : IDisableable
         {
             if ( ( Toggle || UIUtils.Ctrl() ) && Selected.Contains( item ) )
             {
-                if ( Required && ( Selected.Count == 1 ) )
-                {
-                    return;
-                }
+                if ( Required && ( Selected.Count == 1 ) ) return;
 
                 Selected.Remove( item );
                 LastSelected = default;
             }
             else
             {
-                bool modified = false;
+                var modified = false;
 
                 if ( !Multiple || ( !Toggle && !UIUtils.Ctrl() ) )
                 {
@@ -192,7 +189,7 @@ public class Selection<T> : IDisableable
 
     public void SetAll( List< T > items )
     {
-        bool added = false;
+        var added = false;
 
         Snapshot();
 
@@ -205,6 +202,7 @@ public class Selection<T> : IDisableable
             T item = items[ i ];
 
             if ( item == null ) throw new ArgumentException( "item cannot be null." );
+            
             if ( Selected.Add( item ) ) added = true;
         }
 
@@ -249,7 +247,7 @@ public class Selection<T> : IDisableable
     /// </summary>
     public void AddAll( List< T > items )
     {
-        bool added = false;
+        var added = false;
 
         Snapshot();
 
@@ -297,7 +295,7 @@ public class Selection<T> : IDisableable
 
     public void RemoveAll( List< T > items )
     {
-        bool removed = false;
+        var removed = false;
 
         Snapshot();
 
@@ -347,14 +345,18 @@ public class Selection<T> : IDisableable
         Cleanup();
     }
 
-    /** Called after the selection changes. The default implementation does nothing. */
+    /// <summary>
+    /// Called after the selection changes. The default implementation does nothing.
+    /// </summary>
     protected void Changed()
     {
     }
 
-    /** Fires a change event on the selection's actor, if any. Called internally when the selection changes, depending on
-	 * {@link #setProgrammaticChangeEvents(bool)}.
-	 * @return true if the change should be undone. */
+    /// <summary>
+    /// Fires a change event on the selection's actor, if any. Called internally when
+    /// the selection changes, depending on <see cref="ProgrammaticChangeEvents"/>.
+    /// </summary>
+	/// <returns> true if the change should be undone. </returns>
     public bool FireChangeEvent()
     {
         if ( Actor == null ) return false;
@@ -371,7 +373,6 @@ public class Selection<T> : IDisableable
         }
     }
 
-    /** @param item May be null (returns false). */
     public bool Contains( T? item )
     {
         if ( item == null ) return false;
@@ -379,31 +380,22 @@ public class Selection<T> : IDisableable
         return Selected.Contains( item );
     }
 
-    /** Makes a best effort to return the last item selected, else returns an arbitrary item or null if the selection is empty. */
+    /// <summary>
+    /// Makes a best effort to return the last item selected, else returns an
+    /// arbitrary item or null if the selection is empty.
+    /// </summary>
     public T? GetLastSelected()
     {
-        if ( LastSelected != null )
-        {
-            return LastSelected;
-        }
+        if ( LastSelected != null ) return LastSelected;
 
-        if ( Selected.Count > 0 )
-        {
-            return Selected.First();
-        }
+        if ( Selected.Count > 0 ) return Selected.First();
 
         return default;
     }
 
-    public IEnumerator< T > Iterator()
-    {
-        return Selected.GetEnumerator();
-    }
+    public IEnumerator< T > Iterator() => Selected.GetEnumerator();
 
-    public List< T > ToArray()
-    {
-        return Selected.ToList();
-    }
+    public List< T > ToArray() => Selected.ToList();
 
     public List< T > ToArray( List< T > array )
     {

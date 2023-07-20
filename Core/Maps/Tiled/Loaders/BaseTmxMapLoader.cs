@@ -710,7 +710,7 @@ public abstract class BaseTmxMapLoader<TP>
             if ( true )
                 if ( encoding.Equals( "base64" ) )
                 {
-                    InputStream inputStream  = null;
+                    StreamReader inputStream;
 
                     try
                     {
@@ -721,12 +721,12 @@ public abstract class BaseTmxMapLoader<TP>
                         {
                             inputStream = new ByteArrayInputStream( bytes );
                         }
-                        else if ( compression.equals( "gzip" ) )
+                        else if ( compression.Equals( "gzip" ) )
                         {
                             inputStream = new BufferedInputStream
                             ( new GZIPInputStream( new ByteArrayInputStream( bytes ), bytes.length ) );
                         }
-                        else if ( compression.equals( "zlib" ) )
+                        else if ( compression.Equals( "zlib" ) )
                         {
                             inputStream = new BufferedInputStream
                             ( new InflaterInputStream( new ByteArrayInputStream( bytes ) ) );
@@ -742,11 +742,11 @@ public abstract class BaseTmxMapLoader<TP>
                         {
                             for ( var x = 0; x < width; x++ )
                             {
-                                int read = inputStream.read( temp );
+                                int read = inputStream.Read( temp );
 
                                 while ( read < temp.Length )
                                 {
-                                    int curr = inputStream.read( temp, read, temp.Length - read );
+                                    int curr = inputStream.Read( temp, read, temp.Length - read );
 
                                     if ( curr == -1 ) break;
                                     read += curr;

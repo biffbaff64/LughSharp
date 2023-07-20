@@ -32,7 +32,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
 - Constantly look for opportunities to improve this code.
-- There seems to be naming for width/height etc properties and methods. Make it more uniform
+- There seems to be different namings for width/height etc properties and methods. Make it more uniform
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -445,7 +445,7 @@ MATH
     - DONE - Plane
     - DONE - Polygon
     - DONE - Polyline
-    - IP   - Quaternion                     Documentation needs completing
+    - DONE - Quaternion                     Documentation needs completing
     - DONE - RandomXS128
     - DONE - RectangleShape
     - DONE - Vector2                        Convert, I prefer the way the LibGDX class works.
@@ -604,7 +604,7 @@ SCENES.SCENE2D/UTILS
     - DONE - ITransformDrawable             Convert
     - DONE - NinePatchDrawable              Convert
     - DONE - ScissorStack                   Convert
-    - IP   - Selection                      Convert
+    - DONE - Selection                      Convert
     - DONE - SpriteDrawable                 Convert
     - DONE - TextureRegionDrawable          Convert
     - DONE - TiledDrawable                  Convert
