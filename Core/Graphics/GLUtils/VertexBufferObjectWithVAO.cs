@@ -18,26 +18,97 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class VertexBufferObjectWithVAO : IVertexData
 {
-    public VertexBufferObjectWithVAO( bool isStatic, int maxVertices, VertexAttributes attributes )
+    private readonly static IntBuffer tmpHandle = BufferUtils.NewIntBuffer( 1 );
+
+    public VertexAttributes? Attributes { get; set; }
+
+    private readonly ByteBuffer  _byteBuffer;
+    private readonly bool        _ownsBuffer;
+    private readonly int         _usage;
+    private readonly List< int > _cachedLocations = new();
+
+    private FloatBuffer _buffer;
+    private int         _bufferHandle;
+    private bool        _isStatic;
+    private bool        _isDirty   = false;
+    private bool        _isBound   = false;
+    private int         _vaoHandle = -1;
+
+    /// <summary>
+    /// Constructs a new interleaved VertexBufferObjectWithVAO.
+    /// </summary>
+    /// <param name="isStatic"> whether the vertex data is static. </param>
+    /// <param name="numVertices"> the maximum number of vertices </param>
+    /// <param name="attributes"> the <see cref="VertexAttribute"/>s. </param>
+    public VertexBufferObjectWithVAO( bool isStatic, int numVertices, params VertexAttribute[] attributes )
+        : this( isStatic, numVertices, new VertexAttributes( attributes ) )
     {
-        throw new NotImplementedException();
     }
 
-    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose()
+    /// <summary>
+    /// Constructs a new interleaved VertexBufferObjectWithVAO.
+    /// </summary>
+    /// <param name="isStatic"> whether the vertex data is static. </param>
+    /// <param name="numVertices"> the maximum number of vertices </param>
+    /// <param name="attributes"> the <see cref="VertexAttributes"/>. </param>
+    public VertexBufferObjectWithVAO( bool isStatic, int numVertices, VertexAttributes attributes )
     {
+        this._isStatic  = isStatic;
+        this.Attributes = attributes;
+
+        _byteBuffer = BufferUtils.NewUnsafeByteBuffer( this.Attributes.VertexSize * numVertices );
+        _buffer     = _byteBuffer.AsFloatBuffer();
+        _ownsBuffer = true;
+
+        _buffer.Flip();
+        _byteBuffer.Flip();
+
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
+        _usage        = isStatic ? IGL20.GL_Static_Draw : IGL20.GL_Dynamic_Draw;
+
+        CreateVAO();
     }
 
+    public VertexBufferObjectWithVAO( bool isStatic, ByteBuffer unmanagedBuffer, VertexAttributes attributes )
+    {
+        this._isStatic  = isStatic;
+        this.Attributes = attributes;
+
+        _byteBuffer = unmanagedBuffer;
+        _ownsBuffer = false;
+        _buffer     = _byteBuffer.AsFloatBuffer();
+
+        _buffer.Flip();
+        _byteBuffer.Flip();
+
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
+        _usage        = isStatic ? IGL20.GL_Static_Draw : IGL20.GL_Dynamic_Draw;
+
+        CreateVAO();
+    }
+
+    private void BufferChanged()
+    {
+        if ( _isBound )
+        {
+            Gdx.GL20.GLBindBuffer( IGL20.GL_Array_Buffer, _bufferHandle );
+            Gdx.GL20.GLBufferData( IGL20.GL_Array_Buffer, _byteBuffer.Limit, _byteBuffer, _usage );
+            _isDirty = false;
+        }
+    }
+
+    /// <summary>
+    /// </summary>
     /// <returns> the number of vertices this VertexData stores </returns>
-    public int NumVertices { get; set; }
+    public int NumVertices => ( _buffer.Limit * 4 ) / Attributes!.VertexSize;
 
+    /// <summary>
+    /// </summary>
     /// <returns> the number of vertices this VertedData can store </returns>
-    public int NumMaxVertices { get; set; }
-
-    /// <returns> the <see cref="VertexAttributes"/> as specified during construction. </returns>
-    public VertexAttributes GetAttributes() => null;
+    public int NumMaxVertices => _byteBuffer.Capacity / Attributes!.VertexSize;
 
     /// <summary>
     /// Sets the vertices of this VertexData, discarding the old vertex data. The
@@ -54,6 +125,14 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="count"> the number of floats to copy  </param>
     public void SetVertices( float[] vertices, int offset, int count )
     {
+        _isDirty = true;
+
+        BufferUtils.Copy( vertices, _byteBuffer, count, offset );
+
+        _buffer.Position = 0;
+        _buffer.Limit    = count;
+
+        BufferChanged();
     }
 
     /// <summary>
@@ -64,6 +143,17 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="count"> the number of floats to copy  </param>
     public void UpdateVertices( int targetOffset, float[] vertices, int sourceOffset, int count )
     {
+        _isDirty = true;
+        var pos = _byteBuffer.Position;
+
+        _byteBuffer.Position = ( targetOffset * 4 );
+
+        BufferUtils.Copy( vertices, sourceOffset, count, _byteBuffer );
+
+        _byteBuffer.Position = pos;
+        _buffer.Position     = 0;
+
+        BufferChanged();
     }
 
     /// <summary>
@@ -73,13 +163,15 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// *after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer GetBuffer() => null;
-
-    /// <summary>
-    /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
-    /// </summary>
-    public void Bind( ShaderProgram shader )
+    public FloatBuffer Buffer
     {
+        get
+        {
+            _isDirty = true;
+
+            return _buffer;
+        }
+        set => _buffer = value;
     }
 
     /// <summary>
@@ -87,15 +179,16 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Bind( ShaderProgram shader, int[]? locations )
+    public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-    }
+        Gdx.GL30.GLBindVertexArray( _vaoHandle );
 
-    /// <summary>
-    /// Unbinds this VertexData.
-    /// </summary>
-    public void Unbind( ShaderProgram shader )
-    {
+        BindAttributes( shader, locations );
+
+        //if our data has changed upload it:
+        BindData( Gdx.GL30 );
+
+        _isBound = true;
     }
 
     /// <summary>
@@ -103,13 +196,169 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
-    public void Unbind( ShaderProgram? shader, int[]? locations )
+    public void Unbind( ShaderProgram? shader, int[]? locations = null )
     {
+        Gdx.GL30.GLBindVertexArray( 0 );
+        _isBound = false;
     }
 
     /// <summary>
-    /// Invalidates the VertexData if applicable. Use this in case of a context loss. </summary>
+    /// Invalidates the VertexData if applicable. Use this in case of a context loss.
+    /// </summary>
     public void Invalidate()
     {
+        _bufferHandle = Gdx.GL30.GLGenBuffer();
+
+        CreateVAO();
+
+        _isDirty = true;
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Gdx.GL30.GLBindBuffer( IGL20.GL_Array_Buffer, 0 );
+        Gdx.GL30.GLDeleteBuffer( _bufferHandle );
+
+        _bufferHandle = 0;
+
+        if ( _ownsBuffer )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        }
+
+        DeleteVAO();
+    }
+
+    private void BindAttributes( ShaderProgram shader, int[]? locations )
+    {
+        var stillValid    = this._cachedLocations.Count != 0;
+        var numAttributes = Attributes!.Size;
+
+        if ( stillValid )
+        {
+            if ( locations == null )
+            {
+                for ( var i = 0; stillValid && ( i < numAttributes ); i++ )
+                {
+                    VertexAttribute attribute = Attributes!.Get( i );
+
+                    var location = shader.GetAttributeLocation( attribute.alias );
+
+                    stillValid = location == this._cachedLocations[ i ];
+                }
+            }
+            else
+            {
+                stillValid = locations.Length == this._cachedLocations.Count;
+
+                for ( var i = 0; stillValid && ( i < numAttributes ); i++ )
+                {
+                    stillValid = locations[ i ] == this._cachedLocations[ i ];
+                }
+            }
+        }
+
+        if ( !stillValid )
+        {
+            Gdx.GL.GLBindBuffer( IGL20.GL_Array_Buffer, _bufferHandle );
+
+            UnbindAttributes( shader );
+
+            this._cachedLocations.Clear();
+
+            for ( var i = 0; i < numAttributes; i++ )
+            {
+                VertexAttribute attribute = Attributes!.Get( i );
+
+                if ( locations == null )
+                {
+                    this._cachedLocations.Add( shader.GetAttributeLocation( attribute.alias ) );
+                }
+                else
+                {
+                    this._cachedLocations.Add( locations[ i ] );
+                }
+
+                var location = this._cachedLocations[ i ];
+
+                if ( location < 0 )
+                {
+                    continue;
+                }
+
+                shader.EnableVertexAttribute( location );
+
+                shader.SetVertexAttribute
+                    (
+                    location, attribute.numComponents,
+                    attribute.type, attribute.normalized,
+                    Attributes!.VertexSize, attribute.Offset
+                    );
+            }
+        }
+    }
+
+    private void UnbindAttributes( ShaderProgram shaderProgram )
+    {
+        if ( _cachedLocations.Count == 0 )
+        {
+            return;
+        }
+
+        var numAttributes = Attributes!.Size;
+
+        for ( var i = 0; i < numAttributes; i++ )
+        {
+            var location = _cachedLocations[ i ];
+
+            if ( location < 0 )
+            {
+                continue;
+            }
+
+            shaderProgram.DisableVertexAttribute( location );
+        }
+    }
+
+    private void BindData( IGL20 gl )
+    {
+        if ( _isDirty )
+        {
+            gl.GLBindBuffer( IGL20.GL_Array_Buffer, _bufferHandle );
+
+            _byteBuffer.Limit = _buffer.Limit * 4;
+
+            gl.GLBufferData( IGL20.GL_Array_Buffer, _byteBuffer.Limit, _byteBuffer, _usage );
+
+            _isDirty = false;
+        }
+    }
+
+    private void CreateVAO()
+    {
+        tmpHandle.Clear();
+
+        Gdx.GL30.GLGenVertexArrays( 1, tmpHandle );
+
+        _vaoHandle = tmpHandle.Get();
+    }
+
+    private void DeleteVAO()
+    {
+        if ( _vaoHandle != -1 )
+        {
+            tmpHandle.Clear();
+            tmpHandle.Put( _vaoHandle );
+
+            tmpHandle.Flip();
+
+            Gdx.GL30.GLDeleteVertexArrays( 1, tmpHandle );
+
+            _vaoHandle = -1;
+        }
     }
 }

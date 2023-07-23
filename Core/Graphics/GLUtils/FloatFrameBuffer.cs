@@ -16,10 +16,73 @@
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-public class FloatFrameBuffer
+/// <summary>
+/// This is a <see cref="FrameBuffer"/> variant backed by a float texture.
+/// </summary>
+public class FloatFrameBuffer : FrameBuffer
 {
-    public FloatFrameBuffer( object floatFrameBufferBuilder )
+    protected FloatFrameBuffer()
     {
-        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
+    /// </summary>
+    /// <param name="bufferBuilder"></param>
+//    LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.Texture>
+//    LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.GLTexture>
+    protected FloatFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
+        : base( bufferBuilder )
+    {
+    }
+
+    /// <summary>
+    /// Creates a new FrameBuffer with a float backing texture, having the given dimensions
+    /// and potentially a depth buffer attached.
+    /// </summary>
+    /// <param name="width"> the width of the framebuffer in pixels </param>
+    /// <param name="height"> the height of the framebuffer in pixels </param>
+    /// <param name="hasDepth"> whether to attach a depth buffer </param>
+    /// <exception cref="GdxRuntimeException"> in case the FrameBuffer could not be created  </exception>
+    public FloatFrameBuffer( int width, int height, bool hasDepth )
+    {
+        var bufferBuilder = new FloatFrameBufferBuilder( width, height );
+
+        bufferBuilder.AddFloatAttachment( IGL30.GL_RGBA32F, IGL20.GL_Rgba, IGL20.GL_Float, false );
+
+        if ( hasDepth )
+        {
+            bufferBuilder.AddBasicDepthRenderBuffer();
+        }
+
+        this.BufferBuilder = bufferBuilder;
+
+        Build();
+    }
+
+    public override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
+    {
+        var data = new FloatTextureData
+            (
+            BufferBuilder.Width, BufferBuilder.Height,
+            attachmentSpec.InternalFormat, attachmentSpec.Format,
+            attachmentSpec.Type, attachmentSpec.IsGpuOnly
+            );
+
+        var result = new Texture( data );
+
+        if ( Gdx.App.AppType == IApplication.ApplicationType.Desktop )
+        {
+            result.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
+        }
+        else
+        {
+            // no filtering for float textures in OpenGL ES
+            result.SetFilter( TextureFilter.Nearest, TextureFilter.Nearest );
+        }
+
+        result.SetWrap( TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
+
+        return result;
     }
 }

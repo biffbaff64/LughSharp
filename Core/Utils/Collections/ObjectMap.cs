@@ -76,6 +76,11 @@ public class ObjectMap<TK, TV>
     /// </summary>
     protected int Mask { get; set; }
 
+    /// <summary>
+    /// Returns the size of this ObjectMap
+    /// </summary>
+    public int Size { get; set; }
+
     [NonSerialized] private Entries< TK, TV >? _entries1;
     [NonSerialized] private Entries< TK, TV >? _entries2;
     [NonSerialized] private Values< TV >?      _values1;
@@ -139,11 +144,6 @@ public class ObjectMap<TK, TV>
 
         this.Size = map.Size;
     }
-
-    /// <summary>
-    /// Returns the size of this ObjectMap
-    /// </summary>
-    public int Size { get; set; }
 
     /// <summary>
     /// Returns an index greater than or equal to 0 and less than or equal

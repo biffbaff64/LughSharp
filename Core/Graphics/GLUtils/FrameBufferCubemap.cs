@@ -27,13 +27,13 @@ public class FrameBufferCubemap : GLFrameBuffer<Cubemap>
     /// Override this method in a derived class to set up the
     /// backing texture as you like.
     /// </summary>
-    protected override Cubemap CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec ) => null;
+    public override Cubemap CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec ) => null;
 
     /// <summary>
     /// Override this method in a derived class to dispose the
     /// backing texture as you like.
     /// </summary>
-    protected override void DisposeColorTexture( Cubemap colorTexture )
+    public override void DisposeColorTexture( Cubemap colorTexture )
     {
     }
 
@@ -41,7 +41,7 @@ public class FrameBufferCubemap : GLFrameBuffer<Cubemap>
     /// Override this method in a derived class to attach the backing
     /// texture to the GL framebuffer object.
     /// </summary>
-    protected override void AttachFrameBufferColorTexture( Cubemap texture )
+    public override void AttachFrameBufferColorTexture( Cubemap texture )
     {
     }
 }

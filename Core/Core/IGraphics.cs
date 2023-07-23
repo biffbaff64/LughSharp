@@ -80,7 +80,7 @@ public interface IGraphics
 
     GraphicsType GetGraphicsType();
 
-    GLVersion GetGlVersion();
+    GLVersion GetGLVersion();
 
     float GetPpiX();
 

@@ -112,7 +112,7 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract GraphicsType GetGraphicsType();
 
-    public abstract GLVersion GetGlVersion();
+    public abstract GLVersion GetGLVersion();
 
     public abstract float GetPpiX();
 

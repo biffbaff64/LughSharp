@@ -27,7 +27,12 @@ public abstract class IntBuffer : Buffer
         return 0;
     }
 
-    public void Put( int i, int i1 )
+    public int Get()
     {
+        return 0;
     }
+
+    public abstract IntBuffer Put( int i, int i1 );
+
+    public abstract IntBuffer Put( int i );
 }

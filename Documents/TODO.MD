@@ -8,6 +8,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 -         Some classes can become structs / records instead.
 -         Some/Most Get / Set method declarations in interfaces could become Properties.
 -         switch expressions instead of switch statements where appropriate.
+  -       Check methods to see if they can be virtual.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
 
@@ -39,32 +40,32 @@ LIBGDX CSharp CONVERSION - ROUND 1
 ROOT
 ----
 
-    - DONE - Gdx                            Convert
+    - DONE - Gdx                            
 
 CORE
 ----
 
-    - DONE - AbstractGraphics               Convert
-    - DONE - AbstractInput                  Convert
-    - DONE - ApplicationAdapter             Convert
+    - DONE - AbstractGraphics               
+    - DONE - AbstractInput                  
+    - DONE - ApplicationAdapter             
     - DONE - ApplicationBase                New
-    - DONE - Game                           Convert
-    - DONE - GDXVersion                     Convert
-    - DONE - IApplication                   Convert
-    - DONE - IApplicationListener           Convert
-    - DONE - IApplicationLogger             Convert
-    - DONE - IAudio                         Convert
-    - DONE - IFile                          Convert
-    - DONE - IGraphics                      Convert
-    - DONE - IInput                         Convert
-    - DONE - IInputProcessor                Convert
-    - DONE - ILifecycleListener             Convert
-    - DONE - INet                           Convert
-    - DONE - InputAdapter                   Convert
-    - DONE - InputEventQueue                Convert
-    - DONE - IPreferences                   Convert
-    - DONE - IScreen                        Convert
-    - DONE - ScreenAdapter                  Convert
+    - DONE - Game                           
+    - DONE - GDXVersion                     
+    - DONE - IApplication                   
+    - DONE - IApplicationListener           
+    - DONE - IApplicationLogger             
+    - DONE - IAudio                         
+    - DONE - IFile                          
+    - DONE - IGraphics                      
+    - DONE - IInput                         
+    - DONE - IInputProcessor                
+    - DONE - ILifecycleListener             
+    - DONE - INet                           
+    - DONE - InputAdapter                   
+    - DONE - InputEventQueue                
+    - DONE - IPreferences                   
+    - DONE - IScreen                        
+    - DONE - ScreenAdapter                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -72,12 +73,12 @@ CORE
 ASSETS
 ------
 
-    - DONE - AssetDescriptor                Convert
-    - DONE - AssetLoaderParameters          Convert
-    - DONE - AssetLoadingTask               Convert
-    - DONE - AssetManager                   Convert
-    - DONE - IAssetErrorListener            Convert
-    - DONE - RefCountedContainer            Convert
+    - DONE - AssetDescriptor                
+    - DONE - AssetLoaderParameters          
+    - DONE - AssetLoadingTask               
+    - DONE - AssetManager                   
+    - DONE - IAssetErrorListener            
+    - DONE - RefCountedContainer            
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,21 +86,21 @@ ASSETS
 ASSETS/LOADERS
 --------------
 
-    - DONE - AssetLoader                    Convert
-    - DONE - AsynchronousAssetLoader        Convert
-    - DONE - BitmapFontLoader               Convert
-    - DONE - CubemapLoader                  Convert
-    - DONE - I18NBundleLoader               Convert
-    - DONE - ModelLoader                    Convert
-    - DONE - MusicLoader                    Convert
-    - DONE - ParticleEffectLoader           Convert
-    - DONE - PixmapLoader                   Convert
-    - DONE - ShaderProgramLoader            Convert
-    - DONE - SkinLoader                     Convert
-    - DONE - SoundLoader                    Convert
-    - DONE - SynchronousAssetLoader         Convert
-    - DONE - TextureAtlasLoader             Convert
-    - DONE - TextureLoader                  Convert
+    - DONE - AssetLoader                    
+    - DONE - AsynchronousAssetLoader        
+    - DONE - BitmapFontLoader               
+    - DONE - CubemapLoader                  
+    - DONE - I18NBundleLoader               
+    - DONE - ModelLoader                    
+    - DONE - MusicLoader                    
+    - DONE - ParticleEffectLoader           
+    - DONE - PixmapLoader                   
+    - DONE - ShaderProgramLoader            
+    - DONE - SkinLoader                     
+    - DONE - SoundLoader                    
+    - DONE - SynchronousAssetLoader         
+    - DONE - TextureAtlasLoader             
+    - DONE - TextureLoader                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -124,10 +125,10 @@ ASSETS/LOADERS/RESOLVERS
 AUDIO
 -----
 
-    - DONE - IAudioDevice                   Convert
-    - DONE - IAudioRecorder                 Convert
-    - DONE - IMusic                         Convert
-    - DONE - ISound                         Convert
+    - DONE - IAudioDevice                   
+    - DONE - IAudioRecorder                 
+    - DONE - IMusic                         
+    - DONE - ISound                         
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,6 +136,7 @@ AUDIO
 FILES
 -----
 
+    - IP   - BufferedReader
     - DONE - CloseableStreamReader
     - DONE - CloseableStreamWriter
     - DONE - DataInputStream
@@ -192,34 +194,34 @@ FILES
 GRAPHICS
 --------
 
-    - DONE - BufferFormat                       Convert - record class
-    - DONE - Camera                             Convert
-    - DONE - Color                              Convert
-    - DONE - Colors                             Convert
-    - DONE - Cubemap                            Convert
-    - DONE - DisplayMode                        Convert
-    - DONE - FPSLogger                          Convert
-    - DONE - GLTexture                          Convert
-    - DONE - GraphicsType                       Convert
-    - DONE - ICubemapData                       Convert
-    - DONE - ICursor                            Convert
-    - DONE - IDownloadPixmapResponseListener    Convert
-    - DONE - IGL20                              Convert
-    - DONE - IGL30                              Convert
-    - DONE - ITextureArrayData                  Convert
-    - DONE - ITextureData                       Convert
-    - DONE - Mesh                               Convert
-    - DONE - Monitor                            Convert
-    - DONE - OrthographicCamera                 Convert
-    - DONE - PerspectiveCamera                  Convert
-    - DONE - Pixmap                             Convert
-    - IP   - PixmapIO                           Convert
-    - DONE - Texture                            Convert
-    - DONE - TextureArray                       Convert
-    - DONE - TextureFilter                      Convert
-    - DONE - TextureWrap                        Convert
-    - DONE - VertexAttribute                    Convert
-    - DONE - VertexAttributes                   Convert
+    - DONE - BufferFormat                       record class
+    - DONE - Camera                             
+    - DONE - Color                              
+    - DONE - Colors                             
+    - DONE - Cubemap                            
+    - DONE - DisplayMode                        
+    - DONE - FPSLogger                          
+    - DONE - GLTexture                          
+    - DONE - GraphicsType                       
+    - DONE - ICubemapData                       
+    - DONE - ICursor                            
+    - DONE - IDownloadPixmapResponseListener    
+    - DONE - IGL20                              
+    - DONE - IGL30                              
+    - DONE - ITextureArrayData                  
+    - DONE - ITextureData                       
+    - DONE - Mesh                               
+    - DONE - Monitor                            
+    - DONE - OrthographicCamera                 
+    - DONE - PerspectiveCamera                  
+    - DONE - Pixmap                             
+    - IP   - PixmapIO                           
+    - DONE - Texture                            
+    - DONE - TextureArray                       
+    - DONE - TextureFilter                      
+    - DONE - TextureWrap                        
+    - DONE - VertexAttribute                    
+    - DONE - VertexAttributes                   
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -227,35 +229,35 @@ GRAPHICS
 GRAPHICS/G2D
 ------------
 
-    - DONE - Animation                      Convert
-    - DONE - AtlasRegion                    Convert
-    - DONE - AtlasSprite                    Convert
-    - IP   - BitmapFont                     Convert
-    - IP   - BitmapFontCache                Convert
-    - DONE - CpuSpriteBatch                 Convert
-    -      - DistanceFieldFont              Convert
-    - DONE - Gdx2DPixmap                    Convert
-    - DONE - GlyphLayout                    Convert
-    - DONE - IBatch                         Convert
-    - DONE - IPolygonBatch                  Convert
-    - DONE - NinePatch                      Convert
-    - IP   - ParticleEffect                 Convert
-    -      - ParticleEffectPool             Convert
-    -      - ParticleEmitter                Convert
-    -      - PixmapPacker                   Convert
-    -      - PixmapPacker10                 Convert
-    -      - PolygonRegion                  Convert
-    -      - PolygonRegionLoader            Convert
-    -      - PolygonSprite                  Convert
-    -      - PolygonSpriteBatch             Convert
-    -      - RepeatablePolygonSprite        Convert
-    - DONE - Sprite                         Convert
-    - DONE - SpriteBatch                    Convert
-    - DONE - SpriteCache                    Convert
-    - DONE - TextureAtlas                   Convert
-    - DONE - TextureAtlasData               Convert
-    - DONE - TextureAtlasDataExtensions     Convert
-    - DONE - TextureRegion                  Convert
+    - DONE - Animation                      
+    - DONE - AtlasRegion                    
+    - DONE - AtlasSprite                    
+    - IP   - BitmapFont                     
+    - IP   - BitmapFontCache                
+    - DONE - CpuSpriteBatch                 
+    -      - DistanceFieldFont              
+    - DONE - Gdx2DPixmap                    
+    - DONE - GlyphLayout                    
+    - DONE - IBatch                         
+    - DONE - IPolygonBatch                  
+    - DONE - NinePatch                      
+    - IP   - ParticleEffect                 
+    -      - ParticleEffectPool             
+    -      - ParticleEmitter                
+    -      - PixmapPacker                   
+    -      - PixmapPacker10                 
+    -      - PolygonRegion                  
+    -      - PolygonRegionLoader            
+    -      - PolygonSprite                  
+    -      - PolygonSpriteBatch             
+    -      - RepeatablePolygonSprite        
+    - DONE - Sprite                         
+    - DONE - SpriteBatch                    
+    - DONE - SpriteCache                    
+    - DONE - TextureAtlas                   
+    - DONE - TextureAtlasData               
+    - DONE - TextureAtlasDataExtensions     
+    - DONE - TextureRegion                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -269,16 +271,16 @@ GRAPHICS/GLUTILS
     - IP   - FileTextureArrayData
     - IP   - FileTextureData
     -      - FloatFrameBuffer
-    - DONE - FloatFrameBufferBuilder                Move from GLFrameBuffer
-    -      - FloatTextureData
+    - DONE - FloatTextureData
     - DONE - FrameBuffer
-    - DONE - FrameBufferBuilder                     Move from GLFrameBuffer
     -      - FrameBufferCubemap
-    - DONE - FrameBufferCubemapBuilder              Move from GLFrameBuffer
-    - DONE - FrameBufferRenderBufferAttachmentSpec  Move from GLFrameBuffer
-    - DONE - FrameBufferTextureAttachmentSpec       Move from GLFrameBuffer
     - DONE - GLFrameBuffer
-    - DONE - GLFrameBufferBuilder                   Move from GLFrameBuffer
+            - DONE - FloatFrameBufferBuilder
+            - DONE - FrameBufferBuilder
+            - DONE - FrameBufferCubemapBuilder
+            - DONE - FrameBufferRenderBufferAttachmentSpec
+            - DONE - FrameBufferTextureAttachmentSpec
+            - DONE - GLFrameBufferBuilder
     - DONE - GLOnlyTextureData
     - DONE - GLVersion
     - DONE - HdpiMode
@@ -299,10 +301,14 @@ GRAPHICS/GLUTILS
     - DONE - PixmapTextureData
     - DONE - ShaderProgram
     - DONE - ShapeRenderer
+
+        The following classes have a lot in common.
+        Perhaps create a base class they all extend from?
+
     - DONE - VertexArray
     - DONE - VertexBufferObject
-    -      - VertexBufferObjectSubData
-    -      - VertexBufferObjectWithVAO
+    - DONE - VertexBufferObjectSubData
+    - DONE - VertexBufferObjectWithVAO
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -332,15 +338,15 @@ INPUT
 MAPS
 ----
 
-    - DONE - IImageResolver                         Convert
-    - DONE - IMapRenderer                           Convert
-    - DONE - Map                                    Convert
-    - DONE - MapGroupLayer                          Convert
-    - DONE - MapLayer                               Convert
-    - DONE - MapLayers                              Convert
-    - DONE - MapObject                              Convert
-    - DONE - MapObjects                             Convert
-    - DONE - MapProperties                          Convert
+    - DONE - IImageResolver                         
+    - DONE - IMapRenderer                           
+    - DONE - Map                                    
+    - DONE - MapGroupLayer                          
+    - DONE - MapLayer                               
+    - DONE - MapLayers                              
+    - DONE - MapObject                              
+    - DONE - MapObjects                             
+    - DONE - MapProperties                          
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -348,12 +354,12 @@ MAPS
 MAPS/OBJECTS
 ------------
 
-    - DONE - CircleMapObject                        Convert
-    - DONE - EllipseMapObject                       Convert
-    - DONE - PolygonMapObject                       Convert
-    - DONE - PolylineMapObject                      Convert
-    - DONE - RectangleMapObject                     Convert
-    - DONE - TextureMapObject                       Convert
+    - DONE - CircleMapObject                        
+    - DONE - EllipseMapObject                       
+    - DONE - PolygonMapObject                       
+    - DONE - PolylineMapObject                      
+    - DONE - RectangleMapObject                     
+    - DONE - TextureMapObject                       
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -361,12 +367,12 @@ MAPS/OBJECTS
 MAPS/TILED
 ----------
 
-    - DONE - ITiledMapTile                          Convert
-    - DONE - TiledMap                               Convert
-    - DONE - TiledMapImageLayer                     Convert
-    - DONE - TiledMapTileLayer                      Convert
-    - DONE - TiledMapTileSet                        Convert
-    - DONE - TiledMapTileSets                       Convert
+    - DONE - ITiledMapTile                          
+    - DONE - TiledMap                               
+    - DONE - TiledMapImageLayer                     
+    - DONE - TiledMapTileLayer                      
+    - DONE - TiledMapTileSet                        
+    - DONE - TiledMapTileSets                       
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -374,10 +380,10 @@ MAPS/TILED
 MAPS/TILED/LOADERS
 ------------------
 
-    - IP   - AtlasTmxMapLoader                      Convert
-    - IP   - BaseTmxMapLoader                       Convert
+    - IP   - AtlasTmxMapLoader                      
+    - IP   - BaseTmxMapLoader                       
     -      - TideMapLoader                          Q: Should I support Tide?
-    - IP   - TmxMapLoader                           Convert
+    - IP   - TmxMapLoader                           
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -385,7 +391,7 @@ MAPS/TILED/LOADERS
 MAPS/TILED/OBJECTS
 ------------------
 
-    - DONE - TiledMapTileMapObject                  Convert
+    - DONE - TiledMapTileMapObject                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -393,13 +399,13 @@ MAPS/TILED/OBJECTS
 MAPS/TILED/RENDERERS
 --------------------
 
-    - DONE - BatchTiledMapRenderer                  Convert
-    - DONE - HexagonalTiledMapRenderer              Convert
-    -      - IsometricStaggeredTiledMapRenderer     Convert
-    - DONE - IsometricTiledMapRenderer              Convert
-    - DONE - ITiledMapRenderer                      Convert
-    -      - OrthoCachedTiledMapRenderer            Convert
-    - DONE - OrthogonalTiledMapRenderer             Convert
+    - DONE - BatchTiledMapRenderer                  
+    - DONE - HexagonalTiledMapRenderer              
+    -      - IsometricStaggeredTiledMapRenderer     
+    - DONE - IsometricTiledMapRenderer              
+    - DONE - ITiledMapRenderer                      
+    -      - OrthoCachedTiledMapRenderer            
+    - DONE - OrthogonalTiledMapRenderer             
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -407,8 +413,8 @@ MAPS/TILED/RENDERERS
 MAPS/TILED/TILES
 ----------------
 
-    - DONE - AnimatedTileMapTile                    Convert
-    - DONE - StaticTiledMapTile                     Convert
+    - DONE - AnimatedTileMapTile                    
+    - DONE - StaticTiledMapTile                     
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -438,10 +444,10 @@ MATH
     - DONE - IShape2D
     - DONE - IVector
     - DONE - MathUtils
-    - DONE - Matrix3                        Convert
-    - DONE - Matrix4                        Convert
+    - DONE - Matrix3                        
+    - DONE - Matrix4                        
     - DONE - Number
-    - DONE - NumberUtils                    Convert
+    - DONE - NumberUtils                    
     - DONE - Plane
     - DONE - Polygon
     - DONE - Polyline
@@ -458,10 +464,10 @@ MATH
 MATH/COLLISION
 --------------
 
-    - DONE - BoundingBox            Convert     Struct? / Record?
-    - DONE - Ray                    Convert
-    - DONE - Segment                Convert
-    - DONE - Sphere                 Convert
+    - DONE - BoundingBox            Struct? / Record?
+    - DONE - Ray                    
+    - DONE - Segment                
+    - DONE - Sphere                 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -490,16 +496,16 @@ NETWORK
 SCENES.SCENE2D
 --------------
 
-    - DONE - Action                         Convert
-    - DONE - Actor                          Convert
-    - DONE - Event                          Convert
-    - DONE - Group                          Convert
-    - DONE - IEventListener                 Convert
-    - DONE - InputEvent                     Convert
-    - DONE - InputListener                  Convert
-    - DONE - Stage                          Convert
-    - DONE - Touchable                      Convert
-    - DONE - TouchFocus                     Convert
+    - DONE - Action                         
+    - DONE - Actor                          
+    - DONE - Event                          
+    - DONE - Group                          
+    - DONE - IEventListener                 
+    - DONE - InputEvent                     
+    - DONE - InputListener                  
+    - DONE - Stage                          
+    - DONE - Touchable                      
+    - DONE - TouchFocus                     
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -507,39 +513,39 @@ SCENES.SCENE2D
 SCENES.SCENE2D/ACTIONS
 ----------------------
 
-    - DONE - Actions                        Convert
-    - DONE - AddAction                      Convert
-    - DONE - AddListenerAction              Convert
-    - DONE - AfterAction                    Convert
-    - DONE - AlphaAction                    Convert
-    - DONE - ColorAction                    Convert
-    - DONE - CountdownEventAction           Convert
-    - DONE - DelayAction                    Convert
-    - DONE - DelegateAction                 Convert
-    - DONE - EventAction                    Convert
-    - DONE - FloatAction                    Convert
-    - DONE - IntAction                      Convert
-    - DONE - LayoutAction                   Convert
-    - DONE - MoveByAction                   Convert
-    - DONE - MoveToAction                   Convert
-    - DONE - ParallelAction                 Convert
-    - DONE - RelativeTemporalAction         Convert
-    - DONE - RemoveAction                   Convert
-    - DONE - RemoveActorAction              Convert
-    - DONE - RemoveListenerAction           Convert
-    - DONE - RepeatAction                   Convert
-    - DONE - RotateByAction                 Convert
-    - DONE - RotateToAction                 Convert
-    - DONE - RunnableAction                 Convert
-    - DONE - ScaleByAction                  Convert
-    - DONE - ScaleToAction                  Convert
-    - DONE - SequenceAction                 Convert
-    - DONE - SizeByAction                   Convert
-    - DONE - SizeToAction                   Convert
-    - DONE - TemporalAction                 Convert
-    - DONE - TimeScaleAction                Convert
-    - DONE - TouchableAction                Convert
-    - DONE - VisibleAction                  Convert
+    - DONE - Actions                        
+    - DONE - AddAction                      
+    - DONE - AddListenerAction              
+    - DONE - AfterAction                    
+    - DONE - AlphaAction                    
+    - DONE - ColorAction                    
+    - DONE - CountdownEventAction           
+    - DONE - DelayAction                    
+    - DONE - DelegateAction                 
+    - DONE - EventAction                    
+    - DONE - FloatAction                    
+    - DONE - IntAction                      
+    - DONE - LayoutAction                   
+    - DONE - MoveByAction                   
+    - DONE - MoveToAction                   
+    - DONE - ParallelAction                 
+    - DONE - RelativeTemporalAction         
+    - DONE - RemoveAction                   
+    - DONE - RemoveActorAction              
+    - DONE - RemoveListenerAction           
+    - DONE - RepeatAction                   
+    - DONE - RotateByAction                 
+    - DONE - RotateToAction                 
+    - DONE - RunnableAction                 
+    - DONE - ScaleByAction                  
+    - DONE - ScaleToAction                  
+    - DONE - SequenceAction                 
+    - DONE - SizeByAction                   
+    - DONE - SizeToAction                   
+    - DONE - TemporalAction                 
+    - DONE - TimeScaleAction                
+    - DONE - TouchableAction                
+    - DONE - VisibleAction                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -547,40 +553,40 @@ SCENES.SCENE2D/ACTIONS
 SCENES.SCENE2D/UI
 -----------------
 
-    - DONE - Button                         Convert
-    - DONE - ButtonGroup                    Convert
-    - DONE - Cell                           Convert
-    - DONE - CheckBox                       Convert
-    - DONE - Container                      Convert
-    -      - Dialog                         Convert
-    -      - HorizontalGroup                Convert
-    - DONE - Image                          Convert
-    -      - ImageButton                    Convert
-    -      - ImageTextButton                Convert
-    - DONE - Label                          Convert
-    -      - List                           Convert
-    -      - ParticleEffectActor            Convert
-    - DONE - ProgressBar                    Convert
-    -      - ScrollPane                     Convert
-    -      - SelectBox                      Convert
-    - DONE - Skin                           Convert
-    -      - Slider                         Convert
-    -      - SplitPane                      Convert
-    - DONE - Stack                          Convert
-    - DONE - Table                          Convert
-    -      - TextArea                       Convert
-    -      - TextButton                     Convert
-    -      - TextField                      Convert
-    -      - TextTooltip                    Convert
-    -      - TooltipManager                 Convert
-    -      - Touchpad                       Convert
-    -      - Tree                           Convert
-    - DONE - Value                          Convert
+    - DONE - Button                         
+    - DONE - ButtonGroup                    
+    - DONE - Cell                           
+    - DONE - CheckBox                       
+    - DONE - Container                      
+    -      - Dialog                         
+    -      - HorizontalGroup                
+    - DONE - Image                          
+    -      - ImageButton                    
+    -      - ImageTextButton                
+    - DONE - Label                          
+    -      - List                           
+    -      - ParticleEffectActor            
+    - DONE - ProgressBar                    
+    -      - ScrollPane                     
+    -      - SelectBox                      
+    - DONE - Skin                           
+    -      - Slider                         
+    -      - SplitPane                      
+    - DONE - Stack                          
+    - DONE - Table                          
+    -      - TextArea                       
+    -      - TextButton                     
+    -      - TextField                      
+    -      - TextTooltip                    
+    -      - TooltipManager                 
+    -      - Touchpad                       
+    -      - Tree                           
+    - DONE - Value                          
     - DONE - ValueExtensions                New Class
-    - DONE - VerticalGroup                  Convert
-    - DONE - Widget                         Convert
-    - DONE - WidgetGroup                    Convert
-    - DONE - Window                         Convert
+    - DONE - VerticalGroup                  
+    - DONE - Widget                         
+    - DONE - WidgetGroup                    
+    - DONE - Window                         
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -588,27 +594,27 @@ SCENES.SCENE2D/UI
 SCENES.SCENE2D/UTILS
 --------------------
 
-    -      - ActorGestureListener           Convert
-    -      - ArraySelection                 Convert
-    - DONE - BaseDrawable                   Convert
-    - DONE - ChangeListener                 Convert
-    - DONE - ClickListener                  Convert
-    -      - DragAndDrop                    Convert
-    -      - DragListener                   Convert
-    -      - DragScrollListener             Convert
-    -      - FocusListener                  Convert
-    - DONE - ICullable                      Convert
-    - DONE - IDisableable                   Convert
-    - DONE - IDrawable                      Convert
-    - DONE - ILayout                        Convert
-    - DONE - ITransformDrawable             Convert
-    - DONE - NinePatchDrawable              Convert
-    - DONE - ScissorStack                   Convert
-    - DONE - Selection                      Convert
-    - DONE - SpriteDrawable                 Convert
-    - DONE - TextureRegionDrawable          Convert
-    - DONE - TiledDrawable                  Convert
-    - DONE - UIUtils                        Convert
+    -      - ActorGestureListener           
+    -      - ArraySelection                 
+    - DONE - BaseDrawable                   
+    - DONE - ChangeListener                 
+    - DONE - ClickListener                  
+    -      - DragAndDrop                    
+    -      - DragListener                   
+    -      - DragScrollListener             
+    -      - FocusListener                  
+    - DONE - ICullable                      
+    - DONE - IDisableable                   
+    - DONE - IDrawable                      
+    - DONE - ILayout                        
+    - DONE - ITransformDrawable             
+    - DONE - NinePatchDrawable              
+    - DONE - ScissorStack                   
+    - DONE - Selection                      
+    - DONE - SpriteDrawable                 
+    - DONE - TextureRegionDrawable          
+    - DONE - TiledDrawable                  
+    - DONE - UIUtils                        
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -616,31 +622,31 @@ SCENES.SCENE2D/UTILS
 UTILS
 -----
 
-    - DONE - Align                          Convert
+    - DONE - Align                          
     ----------------------------------------------------------------------------------
     - **** - Base64Coder                    Use System.Convert classes
     ----------------------------------------------------------------------------------
     - DONE - BinaryHeap
-    - DONE - Bits                           Convert
+    - DONE - Bits                           
     ----------------------------------------------------------------------------------
-    - IP   - CharHelper                     Might be added to.
+    - DONE - CharHelper                     Might be added to.
     ----------------------------------------------------------------------------------
-    - DONE - ComparableTimSort              Convert
+    - DONE - ComparableTimSort              
     - DONE - DataInput                      Check
     -      - DataOutput                     Check
     - DONE - DataUtils                      Added Class
     - DONE - FloatConsts                    Done, but is it needed?
     -      - GdxNativesLoader
     -      - I18NBundle                     Check
-    - DONE - ICloseable                     Convert
+    - DONE - ICloseable                     
     - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backends.                 
     - DONE - IRunnable                      Done, but is it needed?
     -      - LittleEndianInputStream        Check
-    - DONE - Logger                         Convert
+    - DONE - Logger                         
     -      - PauseableThread
     - DONE - PerformanceCounter             Check
     - DONE - PerformanceCounters            Check
-    -      - PropertiesUtils                Convert, but check if necessary first
+    - DONE - PropertiesUtils                Convert, but check if necessary first
     -      - QuadTreeFloat
     -      - Queue
     - DONE - QuickSelect
@@ -668,7 +674,7 @@ UTILS
 UTILS/ASYNC
 -----------
 
-    Convert later, purely for education purposes.
+     later, purely for education purposes.
 
     - **** - AsyncExecutor
     - **** - AsyncResult|
@@ -748,8 +754,6 @@ UTILS/COLLECTIONS
 UTILS/COLLECTIONS/EXTENSIONS
 ----------------------------
 
-    Convert later, purely for education purposes.
-
     - IP   - DictionaryExtensions
     - IP   - ListExtensions
     - IP   - SortedSetExtensions
@@ -813,17 +817,17 @@ UTILS/CONCURRENT
 UTILS/EXCEPTIONS
 ----------------
 
-    - DONE - AssetNotLoadedException        Convert
-    - DONE - BufferOverflowException        Convert
-    - DONE - BufferUnderflowException       Convert
-    - DONE - GdxRuntimeException            Convert
-    - DONE - IllegalStateException          Convert
-    - DONE - InvalidMarkException           Convert
-    - DONE - NoSuchElementException         Convert
-    - DONE - NumberFormatException          Convert
-    - DONE - ReadOnlyBufferException        Convert
-    - DONE - UnsupportedEncodingException   Convert
-    - DONE - UnsupportedOperationException  Convert
+    - DONE - AssetNotLoadedException        
+    - DONE - BufferOverflowException        
+    - DONE - BufferUnderflowException       
+    - DONE - GdxRuntimeException            
+    - DONE - IllegalStateException          
+    - DONE - InvalidMarkException           
+    - DONE - NoSuchElementException         
+    - DONE - NumberFormatException          
+    - DONE - ReadOnlyBufferException        
+    - DONE - UnsupportedEncodingException   
+    - DONE - UnsupportedOperationException  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -847,12 +851,12 @@ UTILS/JSON
 UTILS/POOLING
 -------------
 
-    - DONE - FlushablePool                  Convert
-    - DONE - IPoolable                      Convert
-    - DONE - Pool                           Convert
-    - DONE - PooledLinkedList               Convert
-    - DONE - Pools                          Convert
-    - DONE - ReflectionPool                 Convert
+    - DONE - FlushablePool                  
+    - DONE - IPoolable                      
+    - DONE - Pool                           
+    - DONE - PooledLinkedList               
+    - DONE - Pools                          
+    - DONE - ReflectionPool                 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -894,13 +898,13 @@ UTILS/REGEX
 UTILS/VIEWPORT
 --------------
 
-    - DONE - ExtendedViewport               Convert
-    - DONE - FillViewport                   Convert
-    - DONE - FitViewport                    Convert
-    - DONE - ScalingViewport                Convert
-    - DONE - ScreenViewport                 Convert
-    - DONE - StretchViewport                Convert
-    - DONE - Viewport                       Convert
+    - DONE - ExtendedViewport               
+    - DONE - FillViewport                   
+    - DONE - FitViewport                    
+    - DONE - ScalingViewport                
+    - DONE - ScreenViewport                 
+    - DONE - StretchViewport                
+    - DONE - Viewport                       
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -67,7 +67,7 @@ public abstract class Camera
     /// Recalculates the projection and view matrix of this camera and the Frustum
     /// planes. Use this after you've manipulated any of the attributes of the camera.
     /// </summary>
-    public void Update( bool updateFrustrum = true )
+    public virtual void Update( bool updateFrustrum = true )
     {
     }
 

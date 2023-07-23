@@ -35,7 +35,7 @@ public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
 
     public string? VendorString   { get; set; }
     public string? RendererString { get; set; }
-    public GLType  Gltype         { get; set; }
+    public GLType  GLtype         { get; set; }
 
     /// <summary>
     /// </summary>
@@ -48,7 +48,7 @@ public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
                       string vendorString,
                       string rendererString )
     {
-        this.Gltype = appType switch
+        this.GLtype = appType switch
                       {
                           IApplication.ApplicationType.Android => GLType.GLES,
                           IApplication.ApplicationType.Desktop => GLType.OpenGL,
@@ -56,17 +56,17 @@ public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
                           _                                    => GLType.None
                       };
 
-        if ( Gltype == GLType.GLES )
+        if ( GLtype == GLType.GLES )
         {
             //OpenGL<space>ES<space><version number><space><vendor-specific information>.
             ExtractVersion( "OpenGL ES (\\d(\\.\\d){0,2})", versionString );
         }
-        else if ( Gltype == GLType.WebGL )
+        else if ( GLtype == GLType.WebGL )
         {
             //WebGL<space><version number><space><vendor-specific information>
             ExtractVersion( "WebGL (\\d(\\.\\d){0,2})", versionString );
         }
-        else if ( Gltype == GLType.OpenGL )
+        else if ( GLtype == GLType.OpenGL )
         {
             //<version number><space><vendor-specific information>
             ExtractVersion( "(\\d(\\.\\d){0,2})", versionString );
@@ -148,7 +148,7 @@ public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
     /// <returns> a string with the current GL connection data </returns>
     public string DebugVersionString()
     {
-        return $"Type: {Gltype}\n"
+        return $"Type: {GLtype}\n"
                + $"Version: {MajorVersion}:{MinorVersion}:{RevisionVersion}\n"
                + $"Vendor: {VendorString}\n"
                + $"Renderer: {RendererString}";
