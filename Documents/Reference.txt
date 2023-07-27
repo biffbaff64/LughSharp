@@ -55,3 +55,10 @@ Swap via deconstruction
                         first = second;
                         second = temp;
                         
+                        
+ GLFrameBuffer                      GLFrameBufferBuilder                        IGLTexture
+       |                            |                   |                           |
+ FrameBuffer                FrameBufferBuilder  FloatFrameBufferBuilder         GLTexture
+       |                                                                            |
+ FloatFrameBuffer                                                               Texture
+ 

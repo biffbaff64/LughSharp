@@ -42,7 +42,8 @@ namespace LibGDXSharp.Graphics;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class Texture : GLTexture
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+public class Texture : GLTexture, IGLTexture
 {
 
     #region Properties
@@ -95,13 +96,13 @@ public class Texture : GLTexture
     public Texture( int width, int height, Pixmap.Format format )
         : this
             (
-             new PixmapTextureData
-                 (
-                  new Pixmap( width, height, format ),
-                  null,
-                  false,
-                  true
-                 )
+            new PixmapTextureData
+                (
+                new Pixmap( width, height, format ),
+                null,
+                false,
+                true
+                )
             )
     {
     }
@@ -157,7 +158,7 @@ public class Texture : GLTexture
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Load(ITextureData)"/>.
     /// </summary>
-    protected override void Reload()
+    public override void Reload()
     {
         if ( !IsManaged() )
         {
@@ -175,7 +176,7 @@ public class Texture : GLTexture
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>
     /// <param name="y"> The y coordinate in pixels  </param>
-    public virtual void Draw( Pixmap pixmap, int x, int y )
+    public void Draw( Pixmap pixmap, int x, int y )
     {
         if ( ( TextureData != null ) && TextureData.IsManaged() )
         {
@@ -186,15 +187,15 @@ public class Texture : GLTexture
 
         Gdx.GL.GLTexSubImage2D
             (
-             GLTarget,
-             0,
-             x,
-             y,
-             pixmap.Width,
-             pixmap.Height,
-             pixmap.GLFormat,
-             pixmap.GLType,
-             pixmap.Pixels
+            GLTarget,
+            0,
+            x,
+            y,
+            pixmap.Width,
+            pixmap.Height,
+            pixmap.GLFormat,
+            pixmap.GLType,
+            pixmap.Pixels
             );
     }
 
@@ -305,7 +306,7 @@ public class Texture : GLTexture
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
                     texture.GLHandle = Gdx.GL.GLGenTexture();
-                    AssetManager.Load( fileName, typeof(Texture), parameters );
+                    AssetManager.Load( fileName, typeof( Texture ), parameters );
                 }
             }
 

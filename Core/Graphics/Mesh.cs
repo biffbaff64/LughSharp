@@ -897,7 +897,7 @@ public class Mesh
         }
 
         FloatBuffer verts = _vertices.Buffer;
-        bbox.Inf();
+        bbox.ToInfinity();
         VertexAttribute? posAttrib = GetVertexAttribute( VertexAttributes.Usage.Position );
 
         var offset     = posAttrib!.Offset / 4;
@@ -909,7 +909,7 @@ public class Mesh
             case 1:
                 for ( var i = 0; i < numVertices; i++ )
                 {
-                    bbox.Ext( verts.Get( idx ), 0, 0 );
+                    bbox.Extend( verts.Get( idx ), 0, 0 );
                     idx += vertexSize;
                 }
 
@@ -918,7 +918,7 @@ public class Mesh
             case 2:
                 for ( var i = 0; i < numVertices; i++ )
                 {
-                    bbox.Ext( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
+                    bbox.Extend( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
                     idx += vertexSize;
                 }
 
@@ -927,7 +927,7 @@ public class Mesh
             case 3:
                 for ( var i = 0; i < numVertices; i++ )
                 {
-                    bbox.Ext( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
+                    bbox.Extend( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
                     idx += vertexSize;
                 }
 
@@ -944,7 +944,7 @@ public class Mesh
     /// <returns> the value specified by out.  </returns>
     public BoundingBox CalculateBoundingBox( in BoundingBox box, int offset, int count )
     {
-        return ExtendBoundingBox( box.Inf(), offset, count );
+        return ExtendBoundingBox( box.ToInfinity(), offset, count );
     }
 
     /// <summary>
@@ -957,7 +957,7 @@ public class Mesh
     /// <returns> the value specified by out.  </returns>
     public BoundingBox CalculateBoundingBox( in BoundingBox box, int offset, int count, in Matrix4 transform )
     {
-        return ExtendBoundingBox( box.Inf(), offset, count, transform );
+        return ExtendBoundingBox( box.ToInfinity(), offset, count, transform );
     }
 
     /// <summary>
@@ -1021,7 +1021,7 @@ public class Mesh
                             _tmpV.Mul( transform );
                         }
 
-                        box.Ext( _tmpV );
+                        box.Extend( _tmpV );
                     }
                 }
                 else
@@ -1036,7 +1036,7 @@ public class Mesh
                             _tmpV.Mul( transform );
                         }
 
-                        box.Ext( _tmpV );
+                        box.Extend( _tmpV );
                     }
                 }
 
@@ -1055,7 +1055,7 @@ public class Mesh
                             _tmpV.Mul( transform );
                         }
 
-                        box.Ext( _tmpV );
+                        box.Extend( _tmpV );
                     }
                 }
                 else
@@ -1070,7 +1070,7 @@ public class Mesh
                             _tmpV.Mul( transform );
                         }
 
-                        box.Ext( _tmpV );
+                        box.Extend( _tmpV );
                     }
                 }
 
@@ -1089,7 +1089,7 @@ public class Mesh
                             _tmpV.Mul( transform );
                         }
 
-                        box.Ext( _tmpV );
+                        box.Extend( _tmpV );
                     }
                 }
                 else
@@ -1104,7 +1104,7 @@ public class Mesh
                             _tmpV.Mul( transform );
                         }
 
-                        box.Ext( _tmpV );
+                        box.Extend( _tmpV );
                     }
                 }
 

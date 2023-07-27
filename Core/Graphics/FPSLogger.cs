@@ -41,7 +41,7 @@ public class FPSLogger
 
         if ( ( nanoTime - _startTime ) > 1000000000 ) // 1,000,000,000ns == one second
         {
-            var fps = Gdx.Graphics?.GetFramesPerSecond();
+            var fps = Gdx.Graphics.GetFramesPerSecond();
 
             if ( fps < _bound )
             {

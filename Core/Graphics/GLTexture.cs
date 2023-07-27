@@ -26,7 +26,7 @@ namespace LibGDXSharp.Graphics;
 /// and upload image data.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public abstract class GLTexture : IDisposable
+public abstract class GLTexture : IGLTexture, IDisposable
 {
     public int   GLHandle               { get; set; }
     public int   GLTarget               { get; set; }
@@ -67,7 +67,7 @@ public abstract class GLTexture : IDisposable
 
     /// <summary>
     /// </summary>
-    protected abstract void Reload();
+    public abstract void Reload();
 
     /// <summary>
     /// Binds this texture. The texture will be bound to the currently active
@@ -100,12 +100,12 @@ public abstract class GLTexture : IDisposable
     /// <returns>
     /// The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
     /// </returns>
-    protected TextureWrap UWrap { get; private set; } = TextureWrap.ClampToEdge;
+    public TextureWrap UWrap { get; set; } = TextureWrap.ClampToEdge;
 
     /// <returns>
     /// The <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
     /// </returns>
-    protected TextureWrap VWrap { get; private set; } = TextureWrap.ClampToEdge;
+    public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
 
     /// <summary>
     /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.

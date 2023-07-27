@@ -41,6 +41,7 @@ ROOT
 ----
 
     - DONE - Gdx                            
+    -      - LibraryConstants
 
 CORE
 ----
@@ -270,17 +271,17 @@ GRAPHICS/GLUTILS
     - DONE - FacedCubemapData
     - IP   - FileTextureArrayData
     - IP   - FileTextureData
-    -      - FloatFrameBuffer
+    - IP   - FloatFrameBuffer                       Inheritance order correct
+    - DONE - FloatFrameBufferBuilder                Inheritance order correct
     - DONE - FloatTextureData
-    - DONE - FrameBuffer
+    - DONE - FrameBuffer                            Inheritance order correct
+    - DONE - FrameBufferBuilder                     Inheritance order correct
     -      - FrameBufferCubemap
-    - DONE - GLFrameBuffer
-            - DONE - FloatFrameBufferBuilder
-            - DONE - FrameBufferBuilder
-            - DONE - FrameBufferCubemapBuilder
-            - DONE - FrameBufferRenderBufferAttachmentSpec
-            - DONE - FrameBufferTextureAttachmentSpec
-            - DONE - GLFrameBufferBuilder
+    - DONE - FrameBufferCubemapBuilder
+    - DONE - FrameBufferRenderBufferAttachmentSpec
+    - DONE - FrameBufferTextureAttachmentSpec
+    - DONE - GLFrameBuffer                          Inheritance order correct
+    - DONE - GLFrameBufferBuilder
     - DONE - GLOnlyTextureData
     - DONE - GLVersion
     - DONE - HdpiMode

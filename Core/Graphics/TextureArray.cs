@@ -146,7 +146,7 @@ public class TextureArray : GLTexture
     /// <summary>
     /// </summary>
     /// <exception cref="GdxRuntimeException"></exception>
-    protected override void Reload()
+    public override void Reload()
     {
         if ( !IsManaged() )
         {

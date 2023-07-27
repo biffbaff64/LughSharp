@@ -33,7 +33,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class FrameBuffer : GLFrameBuffer< GLTexture >
+public class FrameBuffer : GLFrameBuffer< Texture >
 {
     protected FrameBuffer()
     {
@@ -44,7 +44,6 @@ public class FrameBuffer : GLFrameBuffer< GLTexture >
     /// </summary>
     /// <param name="bufferBuilder">
     ///  </param>
-    /// protected FrameBuffer (GLFrameBufferBuilder<? extends GLFrameBuffer<Texture>> bufferBuilder) {
     public FrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
         : base( bufferBuilder )
     {
@@ -65,26 +64,19 @@ public class FrameBuffer : GLFrameBuffer< GLTexture >
     /// <exception cref="GdxRuntimeException"> in case the FrameBuffer could not be created  </exception>
     public FrameBuffer( Pixmap.Format format, int width, int height, bool hasDepth, bool hasStencil = false )
     {
-        var frameBufferBuilder = new GLFrameBuffer<Texture>.FrameBufferBuilder( width, height );
+        var frameBufferBuilder = new FrameBufferBuilder( width, height );
 
         frameBufferBuilder.AddBasicColorTextureAttachment( format );
 
         if ( hasDepth ) frameBufferBuilder.AddBasicDepthRenderBuffer();
         if ( hasStencil ) frameBufferBuilder.AddBasicStencilRenderBuffer();
 
-        // Java
-        // protected GLFrameBuffer.GLFrameBufferBuilder<? extends GLFrameBuffer<T>> bufferBuilder
-        // GLFrameBuffer.FrameBufferBuilder frameBufferBuilder
-        
-        // C#
-        // protected GLFrameBuffer<T>GLFrameBufferBuilder<GLFrameBuffer<T>> BufferBuilder
-        //           GLFrameBuffer<Texture>.FrameBufferBuilder? frameBufferBuilder
         this.BufferBuilder = frameBufferBuilder;
 
         Build();
     }
 
-    public override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
+    protected override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
         var data = new GLOnlyTextureData
             (
@@ -104,21 +96,23 @@ public class FrameBuffer : GLFrameBuffer< GLTexture >
         return result;
     }
 
-    public override void DisposeColorTexture( GLTexture colorTexture )
+    /// <summary>
+    /// Override this method in a derived class to dispose the
+    /// backing texture as you like.
+    /// </summary>
+    protected override void DisposeColorTexture( Texture colorTexture )
     {
         colorTexture.Dispose();
     }
 
-    public override void AttachFrameBufferColorTexture( GLTexture texture )
+    /// <summary>
+    /// Override this method in a derived class to attach the backing
+    /// texture to the GL framebuffer object.
+    /// </summary>
+    protected override void AttachFrameBufferColorTexture( Texture texture )
     {
-        Gdx.GL20.GLFramebufferTexture2D
-            (
-             IGL20.GL_Framebuffer,
-             IGL20.GL_Color_Attachment0,
-             IGL20.GL_Texture_2D,
-             texture.GLHandle,
-             0
-            );
+        Gdx.GL20.GLFramebufferTexture2D(IGL20.GL_Framebuffer, IGL20.GL_Color_Attachment0,
+                                         IGL20.GL_Texture_2D, texture.GetTextureObjectHandle(), 0);
     }
 
     /// <summary>

@@ -22,7 +22,7 @@ using LibGDXSharp.Utils.Collections.Extensions;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public abstract class GLFrameBuffer<T> where T : GLTexture
+public abstract class GLFrameBuffer<T> : IGLFrameBufferBase where T : GLTexture
 {
     public const int GL_Depth24_Stencil8_OES = 0x88F0;
 
@@ -45,7 +45,9 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
     public bool HasDepthStencilPackedBuffer    { get; set; }
     public bool HasMultipleTexturesPresent     { get; set; }
 
-    public GLFrameBufferBuilder< GLFrameBuffer< T > > BufferBuilder { get; init; }
+    public string ManagedStatus => GetManagedStatus( new StringBuilder() ).ToString();
+
+    protected IBufferBuilderBase<T> BufferBuilder { get; init; }
 
     protected GLFrameBuffer()
     {
@@ -55,7 +57,7 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
     /// <summary>
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder.
     /// </summary>
-    protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< T > > bufferBuilder )
+    protected GLFrameBuffer( IBufferBuilderBase< T > bufferBuilder )
     {
         this.BufferBuilder = bufferBuilder;
 
@@ -63,30 +65,27 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
     }
 
     /// <summary>
-    /// Convenience method to return the first Texture attachment present in the fbo.
-    /// </summary>
-    public T GetColorBufferTexture()
-    {
-        return TextureAttachments.First();
-    }
-
-    /// <summary>
     /// Override this method in a derived class to set up the
     /// backing texture as you like.
     /// </summary>
-    public abstract T CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec );
+    protected abstract T CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec );
 
     /// <summary>
     /// Override this method in a derived class to dispose the
     /// backing texture as you like.
     /// </summary>
-    public abstract void DisposeColorTexture( T colorTexture );
+    protected abstract void DisposeColorTexture( T colorTexture );
 
     /// <summary>
     /// Override this method in a derived class to attach the backing
     /// texture to the GL framebuffer object.
     /// </summary>
-    public abstract void AttachFrameBufferColorTexture( T texture );
+    protected abstract void AttachFrameBufferColorTexture( T texture );
+
+    /// <summary>
+    /// Convenience method to return the first Texture attachment present in the fbo.
+    /// </summary>
+    public T GetColorBufferTexture() => TextureAttachments.First();
 
     public void Build()
     {
@@ -103,7 +102,7 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
                     ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NativeOrder ).AsIntBuffer();
 
                 Gdx.GL20.GLGetIntegerv( IGL20.GL_Framebuffer_Binding, intbuf );
-//                DefaultFramebufferHandle = intbuf.Get( 0 );
+                DefaultFramebufferHandle = intbuf.Get( 0 );
             }
             else
             {
@@ -334,17 +333,25 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
             Gdx.GL20.GLDeleteFramebuffer( FramebufferHandle );
 
             if ( result == IGL20.GL_Framebuffer_Incomplete_Attachment )
+            {
                 throw new IllegalStateException( "Frame buffer couldn't be constructed: incomplete attachment" );
+            }
 
             if ( result == IGL20.GL_Framebuffer_Incomplete_Dimensions )
+            {
                 throw new IllegalStateException( "Frame buffer couldn't be constructed: incomplete dimensions" );
+            }
 
             if ( result == IGL20.GL_Framebuffer_Incomplete_Missing_Attachment )
+            {
                 throw new IllegalStateException( "Frame buffer couldn't be constructed: missing attachment" );
+            }
 
             if ( result == IGL20.GL_Framebuffer_Unsupported )
+            {
                 throw new IllegalStateException
                     ( "Frame buffer couldn't be constructed: unsupported combination of formats" );
+            }
 
             throw new IllegalStateException( "Frame buffer couldn't be constructed: unknown error " + result );
         }
@@ -439,7 +446,7 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
     /// Unbinds the framebuffer, all drawing will be performed to the
     /// normal framebuffer from here on.
     /// </summary>
-    public void Unbind()
+    protected void Unbind()
     {
         Gdx.GL20.GLBindFramebuffer( IGL20.GL_Framebuffer, DefaultFramebufferHandle );
     }
@@ -508,7 +515,7 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
             return;
         }
 
-        for ( int i = 0; i < Buffers?[ app ]?.Count; i++ )
+        for ( var i = 0; i < Buffers?[ app ]?.Count; i++ )
         {
             Buffers?[ app ]?[ i ].Build();
         }
@@ -532,214 +539,5 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
         builder.Append( '}' );
 
         return builder;
-    }
-
-    public string ManagedStatus => GetManagedStatus( new StringBuilder() ).ToString();
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public sealed class FrameBufferTextureAttachmentSpec
-    {
-        public int InternalFormat { get; }
-        public int Format         { get; }
-        public int Type           { get; }
-
-        public bool IsFloat   { get; init; }
-        public bool IsGpuOnly { get; init; }
-        public bool IsDepth   { get; init; }
-        public bool IsStencil { get; init; }
-
-        public FrameBufferTextureAttachmentSpec( int internalformat, int format, int type )
-        {
-            this.InternalFormat = internalformat;
-            this.Format         = format;
-            this.Type           = type;
-        }
-
-        public bool IsColorTexture => ( !IsDepth && !IsStencil );
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public sealed class FrameBufferRenderBufferAttachmentSpec
-    {
-        public int InternalFormat { get; set; }
-
-        public FrameBufferRenderBufferAttachmentSpec( int internalFormat )
-        {
-            this.InternalFormat = internalFormat;
-        }
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public abstract class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >
-    {
-        public int Width  { get; }
-        public int Height { get; }
-
-        public List< FrameBufferTextureAttachmentSpec > TextureAttachmentSpecs { get; } = new();
-
-        public FrameBufferRenderBufferAttachmentSpec? StencilRenderBufferSpec            { get; private set; }
-        public FrameBufferRenderBufferAttachmentSpec? DepthRenderBufferSpec              { get; private set; }
-        public FrameBufferRenderBufferAttachmentSpec? PackedStencilDepthRenderBufferSpec { get; private set; }
-
-        public bool HasStencilRenderBuffer            { get; private set; }
-        public bool HasDepthRenderBuffer              { get; private set; }
-        public bool HasPackedStencilDepthRenderBuffer { get; private set; }
-
-        public GLFrameBufferBuilder( int width, int height )
-        {
-            this.Width  = width;
-            this.Height = height;
-        }
-
-        public GLFrameBufferBuilder< TU > AddColorTextureAttachment( int internalFormat, int format, int type )
-        {
-            TextureAttachmentSpecs.Add( new FrameBufferTextureAttachmentSpec( internalFormat, format, type ) );
-
-            return this;
-        }
-
-        public GLFrameBufferBuilder< TU > AddBasicColorTextureAttachment( Pixmap.Format format )
-        {
-            var glFormat = PixmapFormat.ToGLFormat( format );
-            var glType   = PixmapFormat.ToGLType( format );
-
-            return AddColorTextureAttachment( glFormat, glFormat, glType );
-        }
-
-        public GLFrameBufferBuilder< TU > AddFloatAttachment( int internalFormat,
-                                                              int format,
-                                                              int type,
-                                                              bool gpuOnly )
-        {
-            var spec = new FrameBufferTextureAttachmentSpec( internalFormat, format, type )
-            {
-                IsFloat   = true,
-                IsGpuOnly = gpuOnly
-            };
-
-            TextureAttachmentSpecs.Add( spec );
-
-            return this;
-        }
-
-        public GLFrameBufferBuilder< TU > AddDepthTextureAttachment( int internalFormat, int type )
-        {
-            var spec = new FrameBufferTextureAttachmentSpec( internalFormat, IGL20.GL_Depth_Component, type )
-            {
-                IsDepth = true
-            };
-
-            TextureAttachmentSpecs.Add( spec );
-
-            return this;
-        }
-
-        public GLFrameBufferBuilder< TU > AddStencilTextureAttachment( int internalFormat, int type )
-        {
-            var spec = new FrameBufferTextureAttachmentSpec
-                ( internalFormat, IGL20.GL_Stencil_Attachment, type )
-                {
-                    IsStencil = true
-                };
-
-            TextureAttachmentSpecs.Add( spec );
-
-            return this;
-        }
-
-        public GLFrameBufferBuilder< TU > AddDepthRenderBuffer( int internalFormat )
-        {
-            DepthRenderBufferSpec = new FrameBufferRenderBufferAttachmentSpec( internalFormat );
-            HasDepthRenderBuffer  = true;
-
-            return this;
-        }
-
-        public GLFrameBufferBuilder< TU > AddStencilRenderBuffer( int internalFormat )
-        {
-            StencilRenderBufferSpec = new FrameBufferRenderBufferAttachmentSpec( internalFormat );
-            HasStencilRenderBuffer  = true;
-
-            return this;
-        }
-
-        public GLFrameBufferBuilder< TU > AddStencilDepthPackedRenderBuffer( int internalFormat )
-        {
-            PackedStencilDepthRenderBufferSpec = new FrameBufferRenderBufferAttachmentSpec( internalFormat );
-            HasPackedStencilDepthRenderBuffer  = true;
-
-            return this;
-        }
-
-        public GLFrameBufferBuilder< TU > AddBasicDepthRenderBuffer()
-        {
-            return AddDepthRenderBuffer( IGL20.GL_Depth_Component16 );
-        }
-
-        public GLFrameBufferBuilder< TU > AddBasicStencilRenderBuffer()
-        {
-            return AddStencilRenderBuffer( IGL20.GL_Stencil_Index8 );
-        }
-
-        public GLFrameBufferBuilder< TU > AddBasicStencilDepthPackedRenderBuffer()
-        {
-            return AddStencilDepthPackedRenderBuffer( IGL30.GL_Depth24_Stencil8 );
-        }
-
-        public abstract TU Build();
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public class FrameBufferBuilder : GLFrameBufferBuilder< FrameBuffer >
-    {
-        public FrameBufferBuilder( int width, int height )
-            : base( width, height )
-        {
-        }
-
-        public override FrameBuffer Build()
-        {
-            return new FrameBuffer( this );
-        }
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public class FloatFrameBufferBuilder : GLFrameBufferBuilder< FrameBuffer >
-    {
-        public FloatFrameBufferBuilder( int width, int height )
-            : base( width, height )
-        {
-        }
-
-        public override FloatFrameBuffer Build()
-        {
-            throw new NotImplementedException();
-        }
-    }
-    
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    
-    public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< FrameBufferCubemap >
-    {
-        public FrameBufferCubemapBuilder( int width, int height )
-            : base( width, height )
-        {
-        }
-
-        public override FrameBufferCubemap Build()
-        {
-            return new FrameBufferCubemap( this );
-        }
     }
 }

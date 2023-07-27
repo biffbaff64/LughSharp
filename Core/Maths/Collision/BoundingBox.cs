@@ -37,7 +37,7 @@ public class BoundingBox
     /// </summary>
     public BoundingBox()
     {
-        Clr();
+        Clear();
     }
 
     /// <summary>
@@ -104,11 +104,11 @@ public class BoundingBox
     /// <returns> This bounding box for chaining.  </returns>
     public BoundingBox Set( Vector3[] points )
     {
-        this.Inf();
+        this.ToInfinity();
 
-        foreach ( var lPoint in points )
+        foreach ( Vector3 lPoint in points )
         {
-            this.Ext( lPoint );
+            this.Extend( lPoint );
         }
 
         return this;
@@ -121,11 +121,11 @@ public class BoundingBox
     /// <returns> This bounding box for chaining.  </returns>
     public BoundingBox Set( IEnumerable< Vector3 > points )
     {
-        this.Inf();
+        this.ToInfinity();
 
         foreach ( var lPoint in points )
         {
-            this.Ext( lPoint );
+            this.Extend( lPoint );
         }
 
         return this;
@@ -257,7 +257,7 @@ public class BoundingBox
     /// Sets the minimum and maximum vector to positive and negative infinity.
     /// </summary>
     /// <returns> This bounding box for chaining.  </returns>
-    public BoundingBox Inf()
+    public BoundingBox ToInfinity()
     {
         min.Set( float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity );
         max.Set( float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity );
@@ -273,7 +273,7 @@ public class BoundingBox
     /// </summary>
     /// <param name="point"> The vector</param>
     /// <returns> This bounding box for chaining.</returns>
-    public BoundingBox Ext( Vector3 point )
+    public BoundingBox Extend( Vector3 point )
     {
         return this.Set
             (
@@ -286,7 +286,7 @@ public class BoundingBox
     /// Sets the minimum and maximum vector to zeros.
     /// </summary>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Clr()
+    public BoundingBox Clear()
     {
         return this.Set( min.Set( 0, 0, 0 ), max.Set( 0, 0, 0 ) );
     }
@@ -303,7 +303,7 @@ public class BoundingBox
     /// </summary>
     /// <param name="aBounds">The bounding box</param>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Ext( BoundingBox aBounds )
+    public BoundingBox Extend( BoundingBox aBounds )
     {
         return this.Set
             (
@@ -318,7 +318,7 @@ public class BoundingBox
     /// <param name="center">Sphere center</param>
     /// <param name="radius">Sphere radius</param>
     /// <returns> This bounding box for chaining.</returns>
-    public BoundingBox Ext( Vector3 center, float radius )
+    public BoundingBox Extend( Vector3 center, float radius )
     {
         return this.Set
             (
@@ -336,16 +336,16 @@ public class BoundingBox
     /// to extend this bounding box.
     /// </param>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Ext( BoundingBox bounds, Matrix4 transform )
+    public BoundingBox Extend( BoundingBox bounds, Matrix4 transform )
     {
-        Ext( tmpVector.Set( bounds.min.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
-        Ext( tmpVector.Set( bounds.min.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
-        Ext( tmpVector.Set( bounds.min.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
-        Ext( tmpVector.Set( bounds.min.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
-        Ext( tmpVector.Set( bounds.max.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
-        Ext( tmpVector.Set( bounds.max.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
-        Ext( tmpVector.Set( bounds.max.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
-        Ext( tmpVector.Set( bounds.max.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( tmpVector.Set( bounds.min.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( tmpVector.Set( bounds.min.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( tmpVector.Set( bounds.min.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( tmpVector.Set( bounds.min.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( tmpVector.Set( bounds.max.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( tmpVector.Set( bounds.max.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( tmpVector.Set( bounds.max.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( tmpVector.Set( bounds.max.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
 
         return this;
     }
@@ -357,7 +357,7 @@ public class BoundingBox
     /// </summary>
     /// <param name="transform">The matrix</param>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Mul( Matrix4 transform )
+    public BoundingBox Multiply( Matrix4 transform )
     {
         float x0 = min.X,
               y0 = min.Y,
@@ -366,16 +366,16 @@ public class BoundingBox
               y1 = max.Y,
               z1 = max.Z;
 
-        Inf();
+        ToInfinity();
 
-        Ext( tmpVector.Set( x0, y0, z0 ).Mul( transform ) );
-        Ext( tmpVector.Set( x0, y0, z1 ).Mul( transform ) );
-        Ext( tmpVector.Set( x0, y1, z0 ).Mul( transform ) );
-        Ext( tmpVector.Set( x0, y1, z1 ).Mul( transform ) );
-        Ext( tmpVector.Set( x1, y0, z0 ).Mul( transform ) );
-        Ext( tmpVector.Set( x1, y0, z1 ).Mul( transform ) );
-        Ext( tmpVector.Set( x1, y1, z0 ).Mul( transform ) );
-        Ext( tmpVector.Set( x1, y1, z1 ).Mul( transform ) );
+        Extend( tmpVector.Set( x0, y0, z0 ).Mul( transform ) );
+        Extend( tmpVector.Set( x0, y0, z1 ).Mul( transform ) );
+        Extend( tmpVector.Set( x0, y1, z0 ).Mul( transform ) );
+        Extend( tmpVector.Set( x0, y1, z1 ).Mul( transform ) );
+        Extend( tmpVector.Set( x1, y0, z0 ).Mul( transform ) );
+        Extend( tmpVector.Set( x1, y0, z1 ).Mul( transform ) );
+        Extend( tmpVector.Set( x1, y1, z0 ).Mul( transform ) );
+        Extend( tmpVector.Set( x1, y1, z1 ).Mul( transform ) );
 
         return this;
     }
@@ -439,7 +439,7 @@ public class BoundingBox
     /// <returns></returns>
     public override string ToString()
     {
-        return "[" + min + "|" + max + "]";
+        return $"[ {min} | {max} ]";
     }
 
     /// <summary>
@@ -449,7 +449,7 @@ public class BoundingBox
     /// <param name="y">The y-coordinate</param>
     /// <param name="z">The z-coordinate</param>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Ext( float x, float y, float z )
+    public BoundingBox Extend( float x, float y, float z )
     {
         return this.Set
             (

@@ -141,7 +141,7 @@ public class Cubemap : GLTexture
 
     public override bool IsManaged() => Data.Managed;
 
-    protected override void Reload()
+    public override void Reload()
     {
         if ( !IsManaged() ) throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
 
@@ -422,6 +422,7 @@ public class Cubemap : GLTexture
 
         public static CubemapSide ValueOf( string name )
         {
+            // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach ( CubemapSide enumInstance in valueList )
             {
                 if ( enumInstance._nameValue == name )

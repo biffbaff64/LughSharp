@@ -39,7 +39,7 @@ public class Ray
     /// <summary>
     /// </summary>
     /// <returns> a copy of this ray. </returns>
-    public virtual Ray Cpy()
+    public virtual Ray Copy()
     {
         return new Ray( this.origin, this.direction );
     }
@@ -64,7 +64,7 @@ public class Ray
     /// </summary>
     /// <param name="matrix"> The matrix </param>
     /// <returns> This ray for chaining.  </returns>
-    public virtual Ray Mul( Matrix4 matrix )
+    public virtual Ray Multiply( Matrix4 matrix )
     {
         _tmp.Set( origin ).Add( direction );
         _tmp.Mul( matrix );

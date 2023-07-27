@@ -19,6 +19,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// <summary>
 /// This is a <see cref="FrameBuffer"/> variant backed by a float texture.
 /// </summary>
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class FloatFrameBuffer : FrameBuffer
 {
     protected FloatFrameBuffer()
@@ -29,9 +30,7 @@ public class FloatFrameBuffer : FrameBuffer
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder"></param>
-//    LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.Texture>
-//    LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.GLTexture>
-    protected FloatFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
+    public FloatFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
         : base( bufferBuilder )
     {
     }
@@ -60,7 +59,7 @@ public class FloatFrameBuffer : FrameBuffer
         Build();
     }
 
-    public override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
+    protected override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
         var data = new FloatTextureData
             (
