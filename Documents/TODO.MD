@@ -8,7 +8,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 -         Some classes can become structs / records instead.
 -         Some/Most Get / Set method declarations in interfaces could become Properties.
 -         switch expressions instead of switch statements where appropriate.
-  -       Check methods to see if they can be virtual.
+-         Check methods to see if they can be virtual.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
 
@@ -28,6 +28,15 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - PRIORITY is 2D classes first
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+The following annotations will be found in many files.
+
+- [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+- [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+
+They will mostly be removed when the project is complete.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Vector2 : IVector< Vector2 >
 {
     public readonly static Vector2 XDefault = new( 1, 0 );
@@ -482,7 +483,7 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public Vector2 Interpolate( Vector2 target, float alpha, Interpolation interpolation )
+    public Vector2 Interpolate( Vector2 target, float alpha, IInterpolation interpolation )
     {
         return Lerp( target, interpolation.Apply( alpha ) );
     }

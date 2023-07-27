@@ -14,5 +14,9 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Graphics.GLUtils;
+namespace LibGDXSharp.Files;
 
+public class FilterInputStream : InputStream
+{
+    
+}

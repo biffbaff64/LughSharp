@@ -16,8 +16,11 @@
 
 namespace LibGDXSharp.Maths;
 
+//TODO: I don't think this class is implemented well. Rework it.
+
 /// <summary>
-/// Takes a linear value in the range of 0-1 and outputs a (usually) non-linear, interpolated value.
+/// Takes a linear value in the range of 0-1 and outputs a (usually)
+/// non-linear, interpolated value.
 /// </summary>
 public interface IInterpolation
 {
@@ -35,24 +38,27 @@ public interface IInterpolation
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class Interpolation
+public abstract class Interpolation : IInterpolation
 {
-    public class Linear : IInterpolation
+    // ReSharper disable once MemberCanBeProtected.Global
+    public abstract float Apply( float a );
+
+    public class Linear : Interpolation
     {
-        public float Apply( float a )
+        public override float Apply( float a )
         {
             return a;
         }
     };
 
-    public class Smooth : IInterpolation
+    public class Smooth : Interpolation
     {
-        public float Apply( float a ) => a * a * ( 3 - ( 2 * a ) );
+        public override float Apply( float a ) => a * a * ( 3 - ( 2 * a ) );
     }
 
-    public class Smooth2 : IInterpolation
+    public class Smooth2 : Interpolation
     {
-        public float Apply( float a )
+        public override float Apply( float a )
         {
             a = a * a * ( 3 - ( 2 * a ) );
 
@@ -60,9 +66,9 @@ public class Interpolation
         }
     }
 
-    public class Smoother : IInterpolation
+    public class Smoother : Interpolation
     {
-        public float Apply( float a )
+        public override float Apply( float a )
         {
             return a * a * a * ( ( a * ( ( a * 6 ) - 15 ) ) + 10 );
         }
@@ -72,9 +78,9 @@ public class Interpolation
     {
     }
 
-    public class Pow2InInverse : IInterpolation
+    public class Pow2InInverse : Interpolation
     {
-        public float Apply( float a )
+        public override float Apply( float a )
         {
             if ( a < MathUtils.Float_Rounding_Error ) return 0;
 
@@ -82,9 +88,9 @@ public class Interpolation
         }
     }
 
-    public class Pow2OutInverse : IInterpolation
+    public class Pow2OutInverse : Interpolation
     {
-        public float Apply( float a )
+        public override float Apply( float a )
         {
             if ( a < MathUtils.Float_Rounding_Error ) return 0;
 
@@ -92,19 +98,19 @@ public class Interpolation
         }
     }
 
-    public class Pow3InInverse : IInterpolation
+    public class Pow3InInverse : Interpolation
     {
-        public float Apply( float a ) => (float)Math.Cbrt( a );
+        public override float Apply( float a ) => (float)Math.Cbrt( a );
     }
 
-    public class Pow3OutInverse : IInterpolation
+    public class Pow3OutInverse : Interpolation
     {
-        public float Apply( float a ) => (float)Math.Cbrt( -( a - 1 ) );
+        public override float Apply( float a ) => (float)Math.Cbrt( -( a - 1 ) );
     }
     
-    public class Sine : IInterpolation
+    public class Sine : Interpolation
     {
-        public float Apply( float a )
+        public override float Apply( float a )
         {
             return ( 1 - MathUtils.Cos( a * MathUtils.PI ) ) / 2;
         }

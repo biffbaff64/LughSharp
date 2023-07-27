@@ -173,7 +173,7 @@ public sealed class XmlReader
         return Parse( data, 0, data.Length );
     }
 
-    public Element Parse( CloseableStreamReader reader )
+    public Element Parse( Reader reader )
     {
         try
         {
@@ -182,7 +182,7 @@ public sealed class XmlReader
 
             while ( true )
             {
-                var length = reader.Read( data, offset, data.Length - offset );
+                var length = reader.Read( data /*, offset, data.Length - offset*/ );
 
                 if ( length == -1 )
                 {
@@ -215,33 +215,33 @@ public sealed class XmlReader
         }
     }
 
-//    public Element Parse( CloseableStreamReader input )
-//    {
-//        try
-//        {
-//            return Parse( new CloseableStreamReader( input, "UTF-8" ) );
-//        }
-//        catch ( IOException ex )
-//        {
-//            throw new SerializationException( ex.Message );
-//        }
-//        finally
-//        {
-//            StreamUtils.CloseQuietly( input );
-//        }
-//    }
+    public Element Parse( StreamReader input )
+    {
+        try
+        {
+            return Parse( new StreamReader( input.BaseStream, System.Text.Encoding.UTF8 ) );
+        }
+        catch ( IOException ex )
+        {
+            throw new SerializationException( ex.Message );
+        }
+        finally
+        {
+            input.Close();
+        }
+    }
 
-//    public Element Parse( FileInfo file )
-//    {
-//        try
-//        {
-//            return Parse( file.OpenRead() );
-//        }
-//        catch ( Exception ex )
-//        {
-//            throw new SerializationException( "Error parsing file: " + file, ex );
-//        }
-//    }
+    public Element Parse( FileInfo file )
+    {
+        try
+        {
+            return Parse( file );
+        }
+        catch ( Exception ex )
+        {
+            throw new SerializationException( "Error parsing file: " + file, ex );
+        }
+    }
 
     private Element Parse( char[] data, int offset, int length )
     {

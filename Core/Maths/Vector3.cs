@@ -580,7 +580,7 @@ public sealed class Vector3 : IVector< Vector3 >
         return this;
     }
 
-    public Vector3 Interpolate( Vector3 target, float alpha, Interpolation interpolator )
+    public Vector3 Interpolate( Vector3 target, float alpha, IInterpolation interpolator )
     {
         return Lerp( target, interpolator.Apply( 0f, 1f, alpha ) );
     }
