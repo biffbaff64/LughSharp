@@ -61,7 +61,7 @@ public class ScissorStack
         else
         {
             // merge scissors
-            RectangleShape parent = scissors[ scissors.Count - 1 ];
+            RectangleShape parent = scissors[ ^1 ];
 
             var minX = Math.Max( parent.X, scissor.X );
             var maxX = Math.Min( parent.X + parent.Width, scissor.X + scissor.Width );

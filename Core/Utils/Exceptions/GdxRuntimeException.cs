@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class GdxRuntimeException : Exception
 {
     public GdxRuntimeException( string message ) : base( message )

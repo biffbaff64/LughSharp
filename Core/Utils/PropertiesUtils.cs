@@ -63,7 +63,7 @@ public class PropertiesUtils
         var keyLength = -1;
         var firstChar = true;
 
-        BufferedReader br = new BufferedReader( reader );
+        var br = new StreamReader( reader );
 
         while ( true )
         {

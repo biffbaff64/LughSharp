@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class BufferUnderflowException : Exception
 {
     public BufferUnderflowException() : base()

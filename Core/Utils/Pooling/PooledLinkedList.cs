@@ -25,9 +25,9 @@ public class PooledLinkedList<T>
 {
     internal sealed record Item<TT>
     {
-        internal TT?         payload;
-        internal Item< TT >? next;
-        internal Item< TT >? prev;
+        internal TT?         Payload { get; set; }
+        internal Item< TT >? Next    { get; set; }
+        internal Item< TT >? Prev    { get; set; }
     }
 
     public int Size { get; set; } = 0;
@@ -58,9 +58,9 @@ public class PooledLinkedList<T>
     {
         Item< T > item = _pool.Obtain();
 
-        item.payload = obj;
-        item.next    = null;
-        item.prev    = null;
+        item.Payload = obj;
+        item.Next    = null;
+        item.Prev    = null;
 
         if ( _head == null )
         {
@@ -72,10 +72,10 @@ public class PooledLinkedList<T>
             return;
         }
 
-        item.prev = _tail;
+        item.Prev = _tail;
 
         _tail      = item;
-        _tail.next = item;
+        _tail.Next = item;
 
         Size++;
     }
@@ -87,13 +87,13 @@ public class PooledLinkedList<T>
     {
         Item< T > item = _pool.Obtain();
 
-        item.payload = obj;
-        item.next    = _head;
-        item.prev    = null;
+        item.Payload = obj;
+        item.Next    = _head;
+        item.Prev    = null;
 
         if ( _head != null )
         {
-            _head.prev = item;
+            _head.Prev = item;
         }
         else
         {
@@ -129,10 +129,10 @@ public class PooledLinkedList<T>
     {
         if ( _iter == null ) return default;
 
-        T? payload = _iter.payload;
+        T? payload = _iter.Payload;
 
         _curr = _iter;
-        _iter = _iter.next;
+        _iter = _iter.Next;
 
         return payload;
     }
@@ -140,15 +140,15 @@ public class PooledLinkedList<T>
     /// <summary>
     /// Gets the previous item in the list
     /// </summary>
-    /// <returns> the previous item in the list or null if there are no more items  </returns>
+    /// <returns> the previous item in the list or null if there are no more items </returns>
     public T? Previous()
     {
         if ( _iter == null ) return default;
 
-        T? payload = _iter.payload;
+        T? payload = _iter.Payload;
 
         _curr = _iter;
-        _iter = _iter.prev;
+        _iter = _iter.Prev;
 
         return payload;
     }
@@ -163,8 +163,8 @@ public class PooledLinkedList<T>
         Size--;
 
         Item< T >? c = _curr;
-        Item< T >? n = _curr.next;
-        Item< T >? p = _curr.prev;
+        Item< T >? n = _curr.Next;
+        Item< T >? p = _curr.Prev;
 
         Debug.Assert( c != null, nameof( c ) + " != null" );
         Debug.Assert( n != null, nameof( n ) + " != null" );
@@ -183,7 +183,7 @@ public class PooledLinkedList<T>
 
         if ( c == _head )
         {
-            n.prev = null;
+            n.Prev = null;
             _head  = n;
 
             return;
@@ -191,14 +191,14 @@ public class PooledLinkedList<T>
 
         if ( c == _tail )
         {
-            p.next = null;
+            p.Next = null;
             _tail  = p;
 
             return;
         }
 
-        p.next = n;
-        n.prev = p;
+        p.Next = n;
+        n.Prev = p;
     }
 
     /// <summary>
@@ -208,11 +208,11 @@ public class PooledLinkedList<T>
     {
         if ( _tail == null ) return default;
 
-        T? payload = _tail.payload;
+        T? payload = _tail.Payload;
 
         Size--;
 
-        Item< T >? p = _tail.prev;
+        Item< T >? p = _tail.Prev;
 
         _pool.Free( _tail );
 
@@ -227,7 +227,7 @@ public class PooledLinkedList<T>
 
             if ( _tail != null )
             {
-                _tail.next = null;
+                _tail.Next = null;
             }
         }
 

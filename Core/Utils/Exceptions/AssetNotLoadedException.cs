@@ -18,11 +18,11 @@ namespace LibGDXSharp.Utils;
 
 public class AssetNotLoadedException : Exception
 {
-    public Type                   Type   { get; private set; }
-    public string                 Path   { get; private set; }
+    public Type                  Type   { get; private set; }
+    public string                Path   { get; private set; }
     public AssetLoaderParameters Params { get; private set; }
 
-    public AssetNotLoadedException( Type type, string path, AssetLoaderParameters param  )
+    public AssetNotLoadedException( Type type, string path, AssetLoaderParameters param )
         : base( $"Asset not loaded: '{path}' ({type})" )
     {
         this.Type   = type;
@@ -31,7 +31,7 @@ public class AssetNotLoadedException : Exception
     }
 
     public AssetNotLoadedException( AssetDescriptor desc )
-        : this( desc.Type, desc.FilePath, desc.Parameters )
+        : this( desc.Type, desc.FilePath!, desc.Parameters )
     {
     }
 }

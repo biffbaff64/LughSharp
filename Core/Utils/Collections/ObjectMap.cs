@@ -17,9 +17,8 @@
 using System.Diagnostics;
 using System.Text;
 
+using LibGDXSharp.Maths;
 using LibGDXSharp.Utils.Collections;
-
-using static LibGDXSharp.Utils.Collections.ObjectSet<object>;
 
 namespace LibGDXSharp.Core.Utils.Collections;
 
@@ -423,6 +422,23 @@ public class ObjectMap<TK, TV>
         }
 
         return h;
+    }
+
+    public int TableSize( int capacity, float loadFactor )
+    {
+        if ( capacity < 0 )
+        {
+            throw new ArgumentException( "capacity must be >= 0: " + capacity );
+        }
+        
+        var tableSize = MathUtils.NextPowerOfTwo( Math.Max( 2, ( int )Math.Ceiling( capacity / loadFactor ) ) );
+
+        if ( tableSize > ( 1 << 30 ) )
+        {
+            throw new ArgumentException( "The required capacity is too large: " + capacity );
+        }
+
+        return tableSize;
     }
 
     /// <summary>

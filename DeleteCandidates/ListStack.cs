@@ -23,7 +23,7 @@ public class ListStack<T> : List< T >
 {
     public T Peek()
     {
-        return this[ Count - 1 ];
+        return this[ ^1 ];
     }
 
     public void Push( T element )

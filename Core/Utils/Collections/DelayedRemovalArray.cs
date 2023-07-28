@@ -272,9 +272,9 @@ public sealed class DelayedRemovalArray<T> : List< T >
     {
         if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
 
-        T t = base[ Count - 1 ];
+        T t = base[ ^1 ];
             
-        base.RemoveAt( Count - 1);
+        base.RemoveAt( Count - 1 );
 
         return t;
     }

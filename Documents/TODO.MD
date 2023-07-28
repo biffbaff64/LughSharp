@@ -159,7 +159,7 @@ FILES
     -      - 
 
     - java.io.BufferedReader                -> 
-    - java.io.BufferedInputStream           -> 
+    - java.io.BufferedInputStream           -> BufferedStream
     - java.io.ByteArrayOutputStream         -> 
     - java.io.DataInputStream               -> BinaryReader
     - java.io.DataOutputStream              -> BinaryWriter
@@ -658,7 +658,7 @@ UTILS
     - DONE - PerformanceCounters            Check
     - DONE - PropertiesUtils                Convert, but check if necessary first
     -      - QuadTreeFloat
-    -      - Queue
+    -      - Queue                          Use system.collection.generics.Queue<T>?
     - DONE - QuickSelect
     - DONE - Scaling
     - DONE - ScreenUtils                    Needs ByteBuffer.Read implementing
@@ -727,10 +727,8 @@ UTILS/COLLECTIONS
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - **** - IPredicate
-    -      - ListQueue                      ?????
-    -      - ListStack                      ?????
     - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
-    - IP   - ObjectSet<T>                   Use List<T>
+    - **** - ObjectSet<T>                   Use List<T>
     - **** - OrderedSet<T>                  Use SortedSet<T> ?
     - **** - PredicateIterable
     - **** - PredicateIterator
@@ -827,17 +825,19 @@ UTILS/CONCURRENT
 UTILS/EXCEPTIONS
 ----------------
 
-    - DONE - AssetNotLoadedException        
-    - DONE - BufferOverflowException        
-    - DONE - BufferUnderflowException       
-    - DONE - GdxRuntimeException            
-    - DONE - IllegalStateException          
-    - DONE - InvalidMarkException           
-    - DONE - NoSuchElementException         
-    - DONE - NumberFormatException          
-    - DONE - ReadOnlyBufferException        
-    - DONE - UnsupportedEncodingException   
-    - DONE - UnsupportedOperationException  
+    All classes need documenting / tidying.
+
+    - IP   - AssetNotLoadedException        
+    - IP   - BufferOverflowException        
+    - IP   - BufferUnderflowException       
+    - IP   - GdxRuntimeException            
+    - IP   - IllegalStateException          
+    - IP   - InvalidMarkException           
+    - IP   - NoSuchElementException         
+    - IP   - NumberFormatException          
+    - IP   - ReadOnlyBufferException        
+    - IP   - UnsupportedEncodingException   
+    - IP   - UnsupportedOperationException  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -866,7 +866,7 @@ UTILS/POOLING
     - DONE - Pool                           
     - DONE - PooledLinkedList               
     - DONE - Pools                          
-    - DONE - ReflectionPool                 
+    - IP   - ReflectionPool                 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

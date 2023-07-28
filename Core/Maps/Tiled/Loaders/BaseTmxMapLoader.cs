@@ -14,6 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.IO.Compression;
 using System.Runtime.Serialization;
 
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
@@ -722,13 +723,13 @@ public abstract class BaseTmxMapLoader<TP>
                         }
                         else if ( compression.Equals( "gzip" ) )
                         {
-                            inputStream = new BufferedInputStream
-                                ( new GZIPInputStream( new MemoryStream( bytes ), bytes.Length ) );
+                            inputStream = new BufferedStream
+                                ( new GZipStream( new MemoryStream( bytes ), CompressionMode.Decompress ) );
                         }
                         else if ( compression.Equals( "zlib" ) )
                         {
-                            inputStream = new BufferedInputStream
-                                ( new InflaterInputStream( new ByteArrayInputStream( bytes ) ) );
+                            inputStream = new BufferedStream
+                                ( new InflaterInputStream( new MemoryStream( bytes ) ) );
                         }
                         else
                         {
@@ -775,14 +776,12 @@ public abstract class BaseTmxMapLoader<TP>
                         {
                             inputStream.Close();
                         }
-
-//                        StreamUtils.CloseQuietly( inputStream );
                     }
                 }
                 else
                 {
-                    // any other value of 'encoding' is one we're not aware of, probably a feature of a future version of Tiled
-                    // or another editor
+                    // any other value of 'encoding' is one we're not aware of, probably
+                    // a feature of a future version of Tiled or another editor
                     throw new GdxRuntimeException( "Unrecognised encoding (" + encoding + ") for TMX Layer Data" );
                 }
         }
@@ -795,8 +794,10 @@ public abstract class BaseTmxMapLoader<TP>
         return b & 0xFF;
     }
 
-    protected static FileInfo GetRelativeFileHandle( FileInfo file, string path )
+    protected static FileInfo GetRelativeFileHandle( FileInfo file, string? path )
     {
+        ArgumentNullException.ThrowIfNull( path );
+        
         var uri1         = new Uri( file.FullName );
         var uri2         = new Uri( path );
         var relativePath = uri1.MakeRelativeUri( uri2 ).ToString();
@@ -1046,7 +1047,7 @@ public abstract class BaseTmxMapLoader<TP>
     /// <param name="offsetX"></param>
     /// <param name="offsetY"></param>
     protected void AddStaticTiledMapTile( TiledMapTileSet tileSet,
-                                          TextureRegion textureRegion,
+                                          TextureRegion? textureRegion,
                                           int tileId,
                                           float offsetX,
                                           float offsetY )
