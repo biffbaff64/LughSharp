@@ -66,9 +66,9 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         public class AssetManagerAtlasResolver : IAtlasResolver
         {
             private readonly AssetManager _assetManager;
-            private readonly String       _atlasName;
+            private readonly string       _atlasName;
 
-            public AssetManagerAtlasResolver( AssetManager assetManager, String atlasName )
+            public AssetManagerAtlasResolver( AssetManager assetManager, string atlasName )
             {
                 this._assetManager = assetManager;
                 this._atlasName    = atlasName;
@@ -130,123 +130,127 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         this.map = loadTiledMap( tmxFile, parameter, atlasResolver );
     }
 
-    @Override
-
-    public TiledMap loadSync( AssetManager manager, String fileName, FileHandle file,
-                              AtlasTmxMapLoader.AtlasTiledMapLoaderParameters parameter )
+    public TiledMap LoadSync( AssetManager manager, string fileName, FileHandle file,
+                              AtlasTmxMapLoader.AtlasTiledMapLoaderParameters? parameter )
     {
         if ( parameter != null )
         {
-            setTextureFilters( parameter.textureMinFilter, parameter.textureMagFilter );
+            SetTextureFilters( parameter.TextureMinFilter, parameter.TextureMagFilter );
         }
 
-        return map;
+        return Map;
     }
 
-    @Override
-
-    protected Array< AssetDescriptor > getDependencyAssetDescriptors( FileHandle tmxFile,
-                                                                      TextureLoader.TextureParameter textureParameter )
+    protected new List< AssetDescriptor > GetDependencyAssetDescriptors(
+        FileInfo tmxFile,
+        TextureLoader.TextureParameter textureParameter )
     {
-        Array< AssetDescriptor > descriptors = new Array< AssetDescriptor >();
+        var descriptors = new List< AssetDescriptor >();
 
         // Atlas dependencies
-        final FileHandle atlasFileHandle = getAtlasFileHandle( tmxFile );
+        FileInfo? atlasFileHandle = GetAtlasFileHandle( tmxFile );
 
         if ( atlasFileHandle != null )
         {
-            descriptors.add( new AssetDescriptor( atlasFileHandle, TextureAtlas.class));
+            descriptors.Add( new AssetDescriptor( atlasFileHandle, typeof( TextureAtlas ), textureParameter ) );
         }
 
         return descriptors;
     }
 
-    @Override
-
-    protected void addStaticTiles( FileHandle tmxFile, ImageResolver imageResolver, TiledMapTileSet tileSet,
+    protected void AddStaticTiles( FileHandle tmxFile, IImageResolver imageResolver,
+                                   TiledMapTileSet tileSet,
                                    XmlReader.Element element,
-                                   Array< XmlReader.Element > tileElements, String name, int firstgid, int tilewidth,
-                                   int tileheight,
+                                   List< XmlReader.Element > tileElements,
+                                   string name,
+                                   int firstgid, int tilewidth, int tileheight,
                                    int spacing, int margin,
-                                   String source, int offsetX, int offsetY, String imageSource, int imageWidth,
-                                   int imageHeight, FileHandle image )
+                                   string source,
+                                   int offsetX, int offsetY,
+                                   string imageSource,
+                                   int imageWidth, int imageHeight,
+                                   FileInfo image )
     {
 
-        TextureAtlas atlas       = atlasResolver.getAtlas();
-        String       regionsName = name;
+        TextureAtlas atlas       = atlasResolver.GetAtlas();
+        var       regionsName = name;
 
-        for ( Texture texture :
-        atlas.getTextures()) {
-            trackedTextures.add( texture );
+        foreach ( Texture texture in atlas.Textures )
+        {
+            trackedTextures.Add( texture );
         }
 
-        MapProperties props = tileSet.getProperties();
-        props.put( "imagesource", imageSource );
-        props.put( "imagewidth", imageWidth );
-        props.put( "imageheight", imageHeight );
-        props.put( "tilewidth", tilewidth );
-        props.put( "tileheight", tileheight );
-        props.put( "margin", margin );
-        props.put( "spacing", spacing );
+        MapProperties props = tileSet.Properties;
+        
+        props.Put( "imagesource", imageSource );
+        props.Put( "imagewidth", imageWidth );
+        props.Put( "imageheight", imageHeight );
+        props.Put( "tilewidth", tilewidth );
+        props.Put( "tileheight", tileheight );
+        props.Put( "margin", margin );
+        props.Put( "spacing", spacing );
 
-        if ( imageSource != null && imageSource.length() > 0 )
+        if ( imageSource is { Length: > 0 } )
         {
-            int lastgid = firstgid + ( ( imageWidth / tilewidth ) * ( imageHeight / tileheight ) ) - 1;
-            for ( AtlasRegion region :
-            atlas.findRegions( regionsName )) {
+            var lastgid = ( firstgid + ( ( imageWidth / tilewidth ) * ( imageHeight / tileheight ) ) ) - 1;
+            
+            foreach ( AtlasRegion? region in atlas.FindRegions( regionsName ) )
+            {
                 // Handle unused tileIds
                 if ( region != null )
                 {
-                    int tileId = firstgid + region.index;
+                    var tileId = firstgid + region.Index;
 
-                    if ( tileId >= firstgid && tileId <= lastgid )
+                    if ( ( tileId >= firstgid ) && ( tileId <= lastgid ) )
                     {
-                        addStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
+                        AddStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
                     }
                 }
             }
         }
 
         // Add tiles with individual image sources
-        for ( XmlReader.Element tileElement :
-        tileElements) {
-            int          tileId = firstgid + tileElement.getIntAttribute( "id", 0 );
-            TiledMapTile tile   = tileSet.getTile( tileId );
+        foreach ( XmlReader.Element tileElement in tileElements)
+        {
+            var tileId = firstgid + tileElement.GetIntAttribute( "id", 0 );
+            ITiledMapTile? tile   = tileSet.GetTile( tileId );
 
             if ( tile == null )
             {
-                XmlReader.Element imageElement = tileElement.getChildByName( "image" );
+                XmlReader.Element? imageElement = tileElement.GetChildByName( "image" );
 
                 if ( imageElement != null )
                 {
-                    String regionName = imageElement.getAttribute( "source" );
-                    regionName = regionName.substring( 0, regionName.lastIndexOf( '.' ) );
-                    AtlasRegion region = atlas.findRegion( regionName );
+                    var regionName = imageElement.GetAttribute( "source" );
+
+                    regionName = regionName.Substring( 0, regionName.LastIndexOf( '.' ) );
+
+                    AtlasRegion? region = atlas.FindRegion( regionName );
 
                     if ( region == null )
-                        throw new GdxRuntimeException( "Tileset atlasRegion not found: " + regionName );
+                        throw new GdxRuntimeException( $"Tileset atlasRegion not found: {regionName}" );
 
-                    addStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
+                    AddStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
                 }
             }
         }
     }
 
-    protected FileHandle getAtlasFileHandle( FileHandle tmxFile )
+    protected FileInfo? GetAtlasFileHandle( FileInfo tmxFile )
     {
-        XmlReader.Element properties = root.getChildByName( "properties" );
+        XmlReader.Element? properties = root.GetChildByName( "properties" );
 
-        String atlasFilePath = null;
+        string? atlasFilePath = null;
 
         if ( properties != null )
         {
-            for ( XmlReader.Element property :
-            properties.getChildrenByName( "property" )) {
-                String name = property.getAttribute( "name" );
+            foreach ( XmlReader.Element property in properties.GetChildrenByName( "property" ) )
+            {
+                var name = property.GetAttribute( "name" );
 
-                if ( name.startsWith( "atlas" ) )
+                if ( name.StartsWith( "atlas" ) )
                 {
-                    atlasFilePath = property.getAttribute( "value" );
+                    atlasFilePath = property.GetAttribute( "value" );
 
                     break;
                 }
@@ -259,14 +263,14 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         }
         else
         {
-            FileInfo fileHandle = GetRelativeFileHandle( tmxFile, atlasFilePath );
+            FileInfo? fileHandle = GetRelativeFileHandle( tmxFile, atlasFilePath );
 
-            if ( !fileHandle.Exists() )
+            if ( ( fileHandle == null ) || fileHandle.Exists )
             {
-                throw new GdxRuntimeException( "The 'atlas' file could not be found: '" + atlasFilePath + "'" );
+                return fileHandle;
             }
 
-            return fileHandle;
+            throw new GdxRuntimeException( $"The 'atlas' file could not be found: '{atlasFilePath}'" );
         }
     }
 

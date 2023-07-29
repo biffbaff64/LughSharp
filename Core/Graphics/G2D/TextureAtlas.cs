@@ -203,9 +203,9 @@ public class TextureAtlas
     /// so the result should be cached rather than calling this method multiple
     /// times. 
     /// </summary>
-    public List< AtlasRegion > FindRegions( string name )
+    public List< AtlasRegion? > FindRegions( string name )
     {
-        var matched = new List< AtlasRegion >();
+        var matched = new List< AtlasRegion? >();
 
         for ( int i = 0, n = Regions.Count; i < n; i++ )
         {

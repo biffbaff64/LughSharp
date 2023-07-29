@@ -355,17 +355,14 @@ public abstract class BaseTmxMapLoader<TP>
 
         if ( element.Name.Equals( "imagelayer" ) )
         {
-            float x = 0;
-            float y = 0;
-
-            x = float.Parse
+            var x = float.Parse
                 (
                 element.HasAttribute( "offsetx" )
                     ? element.GetAttribute( "offsetx", "0" )!
                     : element.GetAttribute( "x", "0" )!
                 );
 
-            y = float.Parse
+            var y = float.Parse
                 (
                 element.HasAttribute( "offsety" )
                     ? element.GetAttribute( "offsety", "0" )!
@@ -794,9 +791,12 @@ public abstract class BaseTmxMapLoader<TP>
         return b & 0xFF;
     }
 
-    protected static FileInfo GetRelativeFileHandle( FileInfo file, string? path )
+    protected static FileInfo? GetRelativeFileHandle( FileInfo? file, string? path )
     {
-        ArgumentNullException.ThrowIfNull( path );
+        if ( file is null || path is null )
+        {
+            return null;
+        }
         
         var uri1         = new Uri( file.FullName );
         var uri2         = new Uri( path );
