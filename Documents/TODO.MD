@@ -390,10 +390,11 @@ MAPS/TILED
 MAPS/TILED/LOADERS
 ------------------
 
-    - IP   - AtlasTmxMapLoader                      
-    - IP   - BaseTmxMapLoader                       
+    - DONE - AtlasTmxMapLoader                      Check for nullability issues 
+    - DONE - BaseTmxMapLoader                       Check for nullability issues
+    - DONE - TmxMapLoader                           Check for nullability issues
+
     -      - TideMapLoader                          Q: Should I support Tide?
-    - IP   - TmxMapLoader                           
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

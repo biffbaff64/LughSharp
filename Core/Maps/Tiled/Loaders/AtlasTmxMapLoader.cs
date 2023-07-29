@@ -15,8 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.G2D;
-using LibGDXSharp.Maps;
-using LibGDXSharp.Maps.Tiled;
 using LibGDXSharp.Utils.Xml;
 
 namespace LibGDXSharp.Maps.Tiled;
@@ -43,27 +41,21 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
         public TextureAtlas GetAtlas();
 
-        public class DirectAtlasResolver : IAtlasResolver
+        public sealed class DirectAtlasResolver : IAtlasResolver
         {
-            private TextureAtlas _atlas;
+            private readonly TextureAtlas _atlas;
 
             public DirectAtlasResolver( TextureAtlas atlas )
             {
                 this._atlas = atlas;
             }
 
-            public TextureAtlas GetAtlas()
-            {
-                return _atlas;
-            }
+            public TextureAtlas GetAtlas() => _atlas;
 
-            public TextureRegion? GetImage( string name )
-            {
-                return _atlas.FindRegion( name );
-            }
+            public TextureRegion? GetImage( string name ) => _atlas.FindRegion( name );
         }
 
-        public class AssetManagerAtlasResolver : IAtlasResolver
+        public sealed class AssetManagerAtlasResolver : IAtlasResolver
         {
             private readonly AssetManager _assetManager;
             private readonly string       _atlasName;
@@ -86,8 +78,8 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         }
     }
 
-    protected List< Texture > trackedTextures = new();
-    protected IAtlasResolver  atlasResolver;
+    protected readonly List< Texture > trackedTextures = new();
+    protected          IAtlasResolver? atlasResolver;
 
     public AtlasTmxMapLoader() : base( new InternalFileHandleResolver() )
     {
@@ -108,34 +100,46 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
 
         this.root = xml.Parse( tmxFile );
 
-        FileInfo atlasFileHandle = GetAtlasFileHandle( tmxFile );
+        FileInfo? atlasFileHandle = GetAtlasFileHandle( tmxFile );
 
-        var atlas = new TextureAtlas( atlasFileHandle );
+        var atlas = new TextureAtlas( atlasFileHandle! );
+
         this.atlasResolver = new IAtlasResolver.DirectAtlasResolver( atlas );
-
         TiledMap map = LoadTiledMap( tmxFile, parameter, atlasResolver );
-        
-        map.SetOwnedResources( new List< TextureAtlas >( new [] { atlas } ) );
+        map.OwnedResources = new List< object >( new[] { atlas } );
+
         SetTextureFilters( parameter.TextureMinFilter, parameter.TextureMagFilter );
 
         return map;
     }
 
-    public void LoadAsync( AssetManager manager, string fileName, FileInfo tmxFile,
-                           AtlasTmxMapLoader.AtlasTiledMapLoaderParameters parameter )
+    public override void LoadAsync( AssetManager? manager, string? fileName,
+                                    FileInfo? tmxFile, AssetLoaderParameters parameter )
     {
-        FileInfo atlasHandle = GetAtlasFileHandle( tmxFile );
-        this.atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle.Path() );
+        ArgumentNullException.ThrowIfNull( manager );
+        ArgumentNullException.ThrowIfNull( tmxFile );
 
-        this.map = loadTiledMap( tmxFile, parameter, atlasResolver );
+        FileInfo? atlasHandle = GetAtlasFileHandle( tmxFile );
+        this.atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle!.Name );
+
+        this.Map = LoadTiledMap
+            (
+            tmxFile,
+            ( AtlasTiledMapLoaderParameters )parameter,
+            atlasResolver
+            );
     }
 
-    public TiledMap LoadSync( AssetManager manager, string fileName, FileHandle file,
-                              AtlasTmxMapLoader.AtlasTiledMapLoaderParameters? parameter )
+    public override TiledMap LoadSync( AssetManager? manager, string? fileName,
+                                       FileInfo? file, AssetLoaderParameters? parameter )
     {
         if ( parameter != null )
         {
-            SetTextureFilters( parameter.TextureMinFilter, parameter.TextureMagFilter );
+            SetTextureFilters
+                (
+                ( ( AtlasTiledMapLoaderParameters )parameter ).TextureMinFilter,
+                ( ( AtlasTiledMapLoaderParameters )parameter ).TextureMagFilter
+                );
         }
 
         return Map;
@@ -158,22 +162,22 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return descriptors;
     }
 
-    protected void AddStaticTiles( FileHandle tmxFile, IImageResolver imageResolver,
-                                   TiledMapTileSet tileSet,
-                                   XmlReader.Element element,
-                                   List< XmlReader.Element > tileElements,
-                                   string name,
-                                   int firstgid, int tilewidth, int tileheight,
-                                   int spacing, int margin,
-                                   string source,
-                                   int offsetX, int offsetY,
-                                   string imageSource,
-                                   int imageWidth, int imageHeight,
-                                   FileInfo image )
+    protected override void AddStaticTiles( FileInfo tmxFile, IImageResolver imageResolver,
+                                            TiledMapTileSet tileSet,
+                                            XmlReader.Element element,
+                                            List< XmlReader.Element > tileElements,
+                                            string? name,
+                                            int firstgid, int tilewidth, int tileheight,
+                                            int spacing, int margin,
+                                            string? source,
+                                            int offsetX, int offsetY,
+                                            string imageSource,
+                                            int imageWidth, int imageHeight,
+                                            FileInfo? image )
     {
 
-        TextureAtlas atlas       = atlasResolver.GetAtlas();
-        var       regionsName = name;
+        TextureAtlas atlas       = atlasResolver!.GetAtlas();
+        var          regionsName = name;
 
         foreach ( Texture texture in atlas.Textures )
         {
@@ -181,7 +185,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         }
 
         MapProperties props = tileSet.Properties;
-        
+
         props.Put( "imagesource", imageSource );
         props.Put( "imagewidth", imageWidth );
         props.Put( "imageheight", imageHeight );
@@ -193,8 +197,8 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         if ( imageSource is { Length: > 0 } )
         {
             var lastgid = ( firstgid + ( ( imageWidth / tilewidth ) * ( imageHeight / tileheight ) ) ) - 1;
-            
-            foreach ( AtlasRegion? region in atlas.FindRegions( regionsName ) )
+
+            foreach ( AtlasRegion? region in atlas.FindRegions( regionsName! ) )
             {
                 // Handle unused tileIds
                 if ( region != null )
@@ -210,9 +214,9 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         }
 
         // Add tiles with individual image sources
-        foreach ( XmlReader.Element tileElement in tileElements)
+        foreach ( XmlReader.Element tileElement in tileElements )
         {
-            var tileId = firstgid + tileElement.GetIntAttribute( "id", 0 );
+            var            tileId = firstgid + tileElement.GetIntAttribute( "id", 0 );
             ITiledMapTile? tile   = tileSet.GetTile( tileId );
 
             if ( tile == null )
@@ -276,11 +280,24 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
 
     protected void SetTextureFilters( TextureFilter min, TextureFilter mag )
     {
-        foreach ( Texture texture in trackedTextures)
+        foreach ( Texture texture in trackedTextures )
         {
             texture.SetFilter( min, mag );
         }
 
         trackedTextures.Clear();
+    }
+
+    /// <summary>
+    /// Returns the assets this asset requires to be loaded first.
+    /// This method may be called on a thread other than the GL thread.
+    /// </summary>
+    /// <param name="fileName">name of the asset to load</param>
+    /// <param name="file">the resolved file to load</param>
+    /// <param name="parameter">parameters for loading the asset</param>
+    public override List< AssetDescriptor > GetDependencies( string? fileName, FileInfo? file,
+                                                             AssetLoaderParameters parameter )
+    {
+        return null!;
     }
 }

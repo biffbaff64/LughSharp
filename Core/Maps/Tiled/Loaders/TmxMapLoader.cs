@@ -135,26 +135,26 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 
             if ( source != null )
             {
-                FileInfo tsxFile = GetRelativeFileHandle( tmxFile, source );
+                FileInfo? tsxFile = GetRelativeFileHandle( tmxFile, source );
 
-                XmlReader.Element  tset         = xml.Parse( tsxFile );
+                XmlReader.Element  tset         = xml.Parse( tsxFile! );
                 XmlReader.Element? imageElement = tset.GetChildByName( "image" );
 
                 if ( imageElement != null )
                 {
                     var      imageSource = imageElement.GetAttribute( "source" );
-                    FileInfo image       = GetRelativeFileHandle( tsxFile, imageSource );
+                    FileInfo? image       = GetRelativeFileHandle( tsxFile, imageSource );
 
-                    fileHandles.Add( image );
+                    fileHandles.Add( image! );
                 }
                 else
                 {
                     foreach ( XmlReader.Element tile in tset.GetChildrenByName( "tile" ) )
                     {
                         var      imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
-                        FileInfo image       = GetRelativeFileHandle( tsxFile, imageSource );
+                        FileInfo? image       = GetRelativeFileHandle( tsxFile, imageSource );
 
-                        fileHandles.Add( image );
+                        fileHandles.Add( image! );
                     }
                 }
             }
@@ -165,16 +165,16 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                 if ( imageElement != null )
                 {
                     var      imageSource = imageElement.GetAttribute( "source" );
-                    FileInfo image       = GetRelativeFileHandle( tmxFile, imageSource );
-                    fileHandles.Add( image );
+                    FileInfo? image       = GetRelativeFileHandle( tmxFile, imageSource );
+                    fileHandles.Add( image! );
                 }
                 else
                 {
                     foreach ( XmlReader.Element tile in tileset.GetChildrenByName( "tile" ) )
                     {
                         var      imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
-                        FileInfo image       = GetRelativeFileHandle( tmxFile, imageSource );
-                        fileHandles.Add( image );
+                        FileInfo? image       = GetRelativeFileHandle( tmxFile, imageSource );
+                        fileHandles.Add( image! );
                     }
                 }
             }
@@ -189,8 +189,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 
             if ( source != null )
             {
-                FileInfo handle = GetRelativeFileHandle( tmxFile, source );
-                fileHandles.Add( handle );
+                FileInfo? handle = GetRelativeFileHandle( tmxFile, source );
+                fileHandles.Add( handle! );
             }
         }
 
