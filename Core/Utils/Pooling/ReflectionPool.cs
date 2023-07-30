@@ -14,6 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Reflection;
+
+using LibGDXSharp.Utils.Reflect;
+
+using BindingFlags = System.Reflection.BindingFlags;
+
 namespace LibGDXSharp.GdxCore.Utils.Pooling;
 
 /// <summary>
@@ -22,15 +28,69 @@ namespace LibGDXSharp.GdxCore.Utils.Pooling;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class ReflectionPool<T> : Pool<T>
+public class ReflectionPool<T> : Pool< T >
 {
+    private readonly System.Reflection.ConstructorInfo? _constructor;
+
+    public ReflectionPool( int initialCapacity )
+        : this( initialCapacity, int.MaxValue )
+    {
+    }
+
     public ReflectionPool( int initialCapacity = 16, int max = int.MaxValue )
         : base( initialCapacity, max )
     {
+        _constructor = FindConstructor( typeof( T ) );
+
+        if ( _constructor == null )
+        {
+            throw new Exception( $"Class cannot be created (missing no-arg constructor): {typeof( T ).FullName}" );
+        }
+    }
+
+    private System.Reflection.ConstructorInfo? FindConstructor( Type type )
+    {
+        try
+        {
+            return type.GetConstructor
+                (
+                BindingFlags.Public | BindingFlags.Instance,
+                null,
+                CallingConventions.Any,
+                null!,
+                null
+                );
+
+//            return ClassReflection.GetDeclaredConstructor( type, ( Type[] )null );
+        }
+        catch ( Exception )
+        {
+            try
+            {
+                System.Reflection.ConstructorInfo constructor
+                    = ClassReflection.GetDeclaredConstructor( type, ( Type[] )null! );
+
+                constructor.SetAccessible( true );
+
+                return constructor;
+            }
+            catch ( ReflectionException )
+            {
+                return null;
+            }
+        }
     }
 
     protected new T NewObject()
     {
-        return Activator.CreateInstance< T >();
+        try
+        {
+            return ( T )_constructor.NewInstance( ( object[] )null );
+        }
+        catch ( Exception ex )
+        {
+            throw new GdxRuntimeException
+                ( $"Unable to create new instance: {_constructor.GetDeclaringClass().getName()}", ex );
+        }
     }
 }

@@ -242,7 +242,7 @@ GRAPHICS/G2D
     - DONE - Animation                      
     - DONE - AtlasRegion                    
     - DONE - AtlasSprite                    
-    - IP   - BitmapFont                     
+    - DONE - BitmapFont                     
     - IP   - BitmapFontCache                
     - DONE - CpuSpriteBatch                 
     -      - DistanceFieldFont              
@@ -340,7 +340,7 @@ INPUT
 
     -      - GestureDetector
     -      - RemoteInput
-    - DONE - RemoteSender       Needs rework for compatibility with system.io.sockets.
+    - IP   - RemoteSender       Needs rework for compatibility with system.io.sockets.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

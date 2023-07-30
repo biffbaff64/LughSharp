@@ -1406,7 +1406,6 @@ public sealed partial class BitmapFont
         public void SetScale( float scalex, float scaley )
         {
             if ( scalex == 0 ) throw new ArgumentException( "scaleX cannot be 0." );
-
             if ( scaley == 0 ) throw new ArgumentException( "scaleY cannot be 0." );
 
             var x = scalex / ScaleX;

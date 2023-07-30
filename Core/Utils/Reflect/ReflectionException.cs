@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Utils.Reflect;
 
-public class ReflectionException
+public class ReflectionException : Exception
 {
         
 }
