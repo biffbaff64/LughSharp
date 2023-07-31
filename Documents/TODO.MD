@@ -243,7 +243,7 @@ GRAPHICS/G2D
     - DONE - AtlasRegion                    
     - DONE - AtlasSprite                    
     - DONE - BitmapFont                     
-    - IP   - BitmapFontCache                
+    - DONE - BitmapFontCache                
     - DONE - CpuSpriteBatch                 
     -      - DistanceFieldFont              
     - DONE - Gdx2DPixmap                    

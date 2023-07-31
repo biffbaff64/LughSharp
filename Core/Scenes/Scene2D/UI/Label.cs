@@ -184,7 +184,7 @@ public class Label : Widget
 
     private void ScaleAndComputePrefSize()
     {
-        BitmapFont font = FontCache.GetFont();
+        BitmapFont font = FontCache.Font;
 
         var oldScaleX = font.GetScaleX();
         var oldScaleY = font.GetScaleY();
@@ -211,11 +211,11 @@ public class Label : Widget
                         - _style.Background.RightWidth;
             }
 
-            prefSizeLayout.SetText( FontCache.GetFont(), Text.ToString(), Color.White, width, Align.Left, true );
+            prefSizeLayout.SetText( FontCache.Font, Text.ToString(), Color.White, width, Align.Left, true );
         }
         else
         {
-            prefSizeLayout.SetText( FontCache.GetFont(), Text.ToString() );
+            prefSizeLayout.SetText( FontCache.Font, Text.ToString() );
         }
 
         _prefSize.Set( prefSizeLayout.Width, prefSizeLayout.Height );
@@ -223,7 +223,7 @@ public class Label : Widget
 
     public new void Layout()
     {
-        BitmapFont font = FontCache.GetFont();
+        BitmapFont font = FontCache.Font;
 
         var oldScaleX = font.GetScaleX();
         var oldScaleY = font.GetScaleY();
@@ -290,12 +290,12 @@ public class Label : Widget
 
         if ( ( LabelAlign & Align.Top ) != 0 )
         {
-            y += FontCache.GetFont().Flipped ? 0 : height - textHeight;
+            y += FontCache.Font.Flipped ? 0 : height - textHeight;
             y += Style.Font.GetDescent();
         }
         else if ( ( LabelAlign & Align.Bottom ) != 0 )
         {
-            y += FontCache.GetFont().Flipped ? height - textHeight : 0;
+            y += FontCache.Font.Flipped ? height - textHeight : 0;
             y -= Style.Font.GetDescent();
         }
         else
@@ -303,7 +303,7 @@ public class Label : Widget
             y += ( height - textHeight ) / 2;
         }
 
-        if ( !FontCache.GetFont().Flipped )
+        if ( !FontCache.Font.Flipped )
         {
             y += textHeight;
         }

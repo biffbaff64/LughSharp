@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class FocusListener
+public class FocusListener : IEventListener
 {
     public sealed class FocusEvent : Event
     {
@@ -36,5 +36,51 @@ public class FocusListener
             Keyboard,
             Scroll
         }
+    }
+
+    /// <summary>
+    /// Try to handle the given event, if it is applicable.
+    /// </summary>
+    /// <returns>
+    /// True if the event should be considered as handled by scene2d.
+    /// </returns>
+    public bool Handle( Event e )
+    {
+        if ( !( e is FocusEvent ) ) return false;
+
+        var focusEvent = ( FocusEvent )e;
+
+        switch ( focusEvent.Type )
+        {
+            case FocusEvent.FeType.Keyboard:
+                KeyboardFocusChanged( focusEvent,  e.TargetActor, focusEvent.Focused );
+
+                break;
+
+            case FocusEvent.FeType.Scroll:
+                ScrollFocusChanged( focusEvent,  e.TargetActor, focusEvent.Focused );
+
+                break;
+        }
+
+        return false;
+    }
+
+    /// <param name="ev"></param>
+    /// <param name="actor">
+    /// The event target, which is the actor that emitted the focus event.
+    /// </param>
+    /// <param name="focused"></param>
+    public void KeyboardFocusChanged( FocusEvent ev, Actor? actor, bool focused)
+    {
+    }
+
+    /// <param name="ev"></param>
+    /// <param name="actor">
+    /// The event target, which is the actor that emitted the focus event.
+    /// </param>
+    /// <param name="focused"></param>
+    public void ScrollFocusChanged( FocusEvent ev, Actor? actor, bool focused)
+    {
     }
 }

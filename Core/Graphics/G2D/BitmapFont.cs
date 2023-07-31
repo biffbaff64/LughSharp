@@ -21,6 +21,8 @@ using LibGDXSharp.Utils.Collections.Extensions;
 namespace LibGDXSharp.G2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "UnusedMember.Local" )]
+[SuppressMessage( "ReSharper", "LoopCanBePartlyConvertedToQuery" )]
 public sealed partial class BitmapFont
 {
     private const string RegexPattern   = ".*id=(\\d+)";
@@ -36,8 +38,8 @@ public sealed partial class BitmapFont
     private readonly List< TextureRegion > _regions;
     private readonly BitmapFontCache       _cache;
 
-    private bool     _integer;
     private FileType _fileType;
+    private bool     _integer;
 
     /// <summary>
     /// Creates a BitmapFont using the default 15pt Arial font included in the library.
@@ -47,9 +49,9 @@ public sealed partial class BitmapFont
     public BitmapFont()
         : this
             (
-             Gdx.Files.Internal( FontName ),
-             Gdx.Files.Internal( FontName ),
-             false
+            Gdx.Files.Internal( FontName ),
+            Gdx.Files.Internal( FontName ),
+            false
             )
     {
         _fileType = FileType.Internal;
@@ -124,9 +126,9 @@ public sealed partial class BitmapFont
     public BitmapFont( FileInfo fontFile, FileInfo imageFile, bool flip, bool integer = true )
         : this
             (
-             new BitmapFontData( fontFile, flip ),
-             new TextureRegion( new Texture( imageFile, false ) ),
-             integer
+            new BitmapFontData( fontFile, flip ),
+            new TextureRegion( new Texture( imageFile, false ) ),
+            integer
             )
     {
         OwnsTexture = true;
@@ -173,10 +175,10 @@ public sealed partial class BitmapFont
     /// </param>
     public BitmapFont( BitmapFontData data, List< TextureRegion >? pageRegions, bool integer )
     {
-        Flipped   = data.Flipped;
-        _data     = data;
-        _integer  = integer;
-        _fileType = FileType.Local;
+        Flipped             = data.Flipped;
+        _data               = data;
+        UseIntegerPositions = integer;
+        _fileType           = FileType.Local;
 
         if ( ( pageRegions == null ) || ( pageRegions.Count == 0 ) )
         {
@@ -213,6 +215,7 @@ public sealed partial class BitmapFont
         Load( data );
     }
 
+    [SuppressMessage( "ReSharper", "LoopCanBePartlyConvertedToQuery" )]
     public void Load( BitmapFontData data )
     {
         foreach ( Glyph?[]? page in data.Glyphs )
@@ -232,8 +235,8 @@ public sealed partial class BitmapFont
         {
             data.MissingGlyph = data.SetGlyphRegion
                 (
-                 data.MissingGlyph,
-                 _regions[ data.MissingGlyph.Page ]
+                data.MissingGlyph,
+                _regions[ data.MissingGlyph.Page ]
                 );
         }
     }
@@ -260,7 +263,7 @@ public sealed partial class BitmapFont
     /// <summary>
     /// Draws text at the specified position.
     /// </summary>
-    public GlyphLayout Draw( IBatch batch, string str, float x, float y, float targetWidth, int halign, bool wrap )
+    public GlyphLayout Draw( IBatch batch, string str, float x, float y, int targetWidth, int halign, bool wrap )
     {
         _cache.Clear();
 
@@ -288,14 +291,14 @@ public sealed partial class BitmapFont
 
         GlyphLayout layout = _cache.AddText
             (
-             str,
-             x,
-             y,
-             start,
-             end,
-             targetWidth,
-             halign,
-             wrap
+            str,
+            x,
+            y,
+            start,
+            end,
+            targetWidth,
+            halign,
+            wrap
             );
 
         _cache.Draw( batch );
@@ -306,31 +309,12 @@ public sealed partial class BitmapFont
     /// <summary>
     /// Draws text at the specified position.
     /// </summary>
-    public GlyphLayout Draw( IBatch batch,
-                             string str,
-                             float x,
-                             float y,
-                             int start,
-                             int end,
-                             float targetWidth,
-                             int halign,
-                             bool wrap,
-                             string truncate )
+    public GlyphLayout Draw( IBatch batch, string str, float x, float y, int start, int end,
+                             float targetWidth, int halign, bool wrap, string truncate )
     {
         _cache.Clear();
 
-        GlyphLayout layout = _cache.AddText
-            (
-             str,
-             x,
-             y,
-             start,
-             end,
-             targetWidth,
-             halign,
-             wrap,
-             truncate
-            );
+        GlyphLayout layout = _cache.AddText( str, x, y, start, end, targetWidth, halign, wrap, truncate );
 
         _cache.Draw( batch );
 
@@ -475,18 +459,15 @@ public sealed partial class BitmapFont
     /// Specifies whether to use integer positions.
     /// Default is to use them so filtering doesn't kick in as badly.
     /// </summary>
-    /// <param name="integer"></param>
-    public void SetUseIntegerPositions( bool integer )
+    public bool UseIntegerPositions
     {
-        _integer = integer;
-
-        _cache.SetUseIntegerPositions( integer );
+        get => _integer;
+        set
+        {
+            _integer                   = value;
+            _cache.UseIntegerPositions = value;
+        }
     }
-
-    /// <summary>
-    /// Checks whether this font uses integer positions for drawing.
-    /// </summary>
-    public bool UsesIntegerPositions() => _integer;
 
     /// <summary>
     /// For expert usage -- returns the BitmapFontCache used by this font, for rendering
@@ -511,7 +492,7 @@ public sealed partial class BitmapFont
     /// </para>
     public BitmapFontCache NewFontCache()
     {
-        return new BitmapFontCache( this, _integer );
+        return new BitmapFontCache( this, UseIntegerPositions );
     }
 
     public new string? ToString()
@@ -799,7 +780,7 @@ public sealed partial class BitmapFont
                         try
                         {
                             var pageID = int.Parse( id.Value );
-                            
+
                             if ( pageID != p )
                             {
                                 throw new GdxRuntimeException( "Page IDs must be indices starting at 0: " + id );
@@ -1301,9 +1282,9 @@ public sealed partial class BitmapFont
 
                 xAdvances.Add
                     (
-                     lastGlyph == null // First glyph on line, adjust the position so it isn't drawn left of 0.
-                         ? glyph.fixedWidth ? 0 : ( -glyph.xoffset * scaleX ) - PadLeft
-                         : ( lastGlyph.xadvance + lastGlyph.GetKerning( ch ) ) * scaleX
+                    lastGlyph == null // First glyph on line, adjust the position so it isn't drawn left of 0.
+                        ? glyph.fixedWidth ? 0 : ( -glyph.xoffset * scaleX ) - PadLeft
+                        : ( lastGlyph.xadvance + lastGlyph.GetKerning( ch ) ) * scaleX
                     );
 
                 lastGlyph = glyph;

@@ -45,6 +45,14 @@ public class Table : WidgetGroup
 
     // ------------------------------------------------------------------------
 
+    public delegate void OnChangeListener();
+
+    public delegate void OnFocusChangeListener();
+
+    public delegate void OnInputListener();
+    
+    // ------------------------------------------------------------------------
+
     public readonly static Color DebugTableColor = new( 0, 0, 1, 1 );
     public readonly static Color DebugCellColor  = new( 1, 0, 0, 1 );
     public readonly static Color DebugActorColor = new( 0, 1, 0, 1 );
@@ -94,6 +102,7 @@ public class Table : WidgetGroup
     private IDrawable? _background;
     private bool       _clip;
 
+    // ReSharper disable once MemberCanBeProtected.Global
     public Table() : this( null )
     {
     }
@@ -101,7 +110,8 @@ public class Table : WidgetGroup
     /// <summary>
     /// Creates a table with a skin, which is required to use <see cref="AssetDescriptor"/>
     /// </summary>
-    protected Table( Skin? skin )
+    // ReSharper disable once MemberCanBeProtected.Global
+    public Table( Skin? skin )
     {
         // ----------------------------
         _columnWidth     = default!;
