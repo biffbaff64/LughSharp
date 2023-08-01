@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+//public static abstract class GLFrameBufferBuilder<U extends GLFrameBuffer<? extends GLTexture>> {
 public abstract class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >
 {
     public int Width  { get; }

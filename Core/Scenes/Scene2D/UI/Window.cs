@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.G2D;
+using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
@@ -284,7 +285,7 @@ public class Window : Table
         }
     }
 
-    internal class WindowCaptureListener : InputListener
+    internal class WindowCaptureListener : InputListener, IEventListener
     {
         private readonly Window _window;
 

@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Scenes.Listeners;
+
 namespace LibGDXSharp.Scenes.Scene2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]

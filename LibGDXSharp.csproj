@@ -36,6 +36,7 @@
         <Folder Include="Core\Graphics\G3D\Shaders\" />
         <Folder Include="Core\Utils\Compression\Gzip\" />
         <Folder Include="Core\Utils\Json\" />
+        <Folder Include="Core\Utils\Observers\" />
         <Folder Include="Resources\" />
     </ItemGroup>
 

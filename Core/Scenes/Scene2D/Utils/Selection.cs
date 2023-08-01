@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Core.Utils.Collections.Extensions;
+using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Pooling;
 

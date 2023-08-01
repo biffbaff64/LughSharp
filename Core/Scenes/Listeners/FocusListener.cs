@@ -14,7 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Scenes.Scene2D;
+
+namespace LibGDXSharp.Scenes.Listeners;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class FocusListener : IEventListener
@@ -46,9 +48,7 @@ public class FocusListener : IEventListener
     /// </returns>
     public bool Handle( Event e )
     {
-        if ( !( e is FocusEvent ) ) return false;
-
-        var focusEvent = ( FocusEvent )e;
+        if ( !( e is FocusEvent focusEvent ) ) return false;
 
         switch ( focusEvent.Type )
         {

@@ -45,14 +45,6 @@ public class Table : WidgetGroup
 
     // ------------------------------------------------------------------------
 
-    public delegate void OnChangeListener();
-
-    public delegate void OnFocusChangeListener();
-
-    public delegate void OnInputListener();
-    
-    // ------------------------------------------------------------------------
-
     public readonly static Color DebugTableColor = new( 0, 0, 1, 1 );
     public readonly static Color DebugCellColor  = new( 1, 0, 0, 1 );
     public readonly static Color DebugActorColor = new( 0, 1, 0, 1 );
@@ -382,7 +374,7 @@ public class Table : WidgetGroup
     {
         for ( int i = 0, n = actors.Length; i < n; i++ )
         {
-            Add( actors[ i ] );
+            Add<Actor>( actors[ i ] );
         }
 
         return this;
@@ -640,10 +632,7 @@ public class Table : WidgetGroup
     /// Returns the cells for this table.
     /// </summary>
     /// <returns></returns>
-    public List< Cell > GetCells()
-    {
-        return _cells;
-    }
+    public List< Cell > GetCells() => _cells;
 
     protected new float GetPrefWidth()
     {
@@ -681,10 +670,7 @@ public class Table : WidgetGroup
     /// The cell values that will be used as the defaults for all cells.
     /// </summary>
     /// <returns></returns>
-    public Cell Defaults()
-    {
-        return _cellDefaults;
-    }
+    public Cell Defaults() => _cellDefaults;
 
     /// <summary>
     /// Sets the padTop, padLeft, padBottom, and padRight around the
@@ -931,45 +917,21 @@ public class Table : WidgetGroup
         return this;
     }
 
-    public Value GetPadTopValue()
-    {
-        return _padTop;
-    }
+    public Value GetPadTopValue() => _padTop;
 
-    public float GetPadTop()
-    {
-        return _padTop.Get( this );
-    }
+    public float GetPadTop() => _padTop.Get( this );
 
-    public Value GetPadLeftValue()
-    {
-        return _padLeft;
-    }
+    public Value GetPadLeftValue() => _padLeft;
 
-    public float GetPadLeft()
-    {
-        return _padLeft.Get( this );
-    }
+    public float GetPadLeft() => _padLeft.Get( this );
 
-    public Value GetPadBottomValue()
-    {
-        return _padBottom;
-    }
+    public Value GetPadBottomValue() => _padBottom;
 
-    public float GetPadBottom()
-    {
-        return _padBottom.Get( this );
-    }
+    public float GetPadBottom() => _padBottom.Get( this );
 
-    public Value GetPadRightValue()
-    {
-        return _padRight;
-    }
+    public Value GetPadRightValue() => _padRight;
 
-    public float GetPadRight()
-    {
-        return _padRight.Get( this );
-    }
+    public float GetPadRight() => _padRight.Get( this );
 
     /// <summary>
     /// Returns <see cref="_padLeft"/> plus <see cref="_padRight"/>.
@@ -1018,6 +980,7 @@ public class Table : WidgetGroup
     /// <summary>
     /// Returns the min height of the specified row.
     /// </summary>
+    /// <param name="rowIndex">The row number</param>
     public float GetRowMinHeight( int rowIndex )
     {
         if ( _sizeInvalid ) ComputeSize();
@@ -1028,6 +991,7 @@ public class Table : WidgetGroup
     /// <summary>
     /// Returns the pref height of the specified row.
     /// </summary>
+    /// <param name="rowIndex">The row number</param>
     public float GetRowPrefHeight( int rowIndex )
     {
         if ( _sizeInvalid ) ComputeSize();
@@ -1039,6 +1003,7 @@ public class Table : WidgetGroup
     /// Returns the width of the specified column, or 0 if the
     /// table layout has not been validated.
     /// </summary>
+    /// <param name="columnIndex">The column number</param>
     public float GetColumnWidth( int columnIndex )
     {
         return _columnWidth[ columnIndex ];
@@ -1047,6 +1012,7 @@ public class Table : WidgetGroup
     /// <summary>
     /// Returns the min height of the specified column.
     /// </summary>
+    /// <param name="columnIndex">The column number</param>
     public float GetColumnMinWidth( int columnIndex )
     {
         if ( _sizeInvalid ) ComputeSize();
@@ -1057,6 +1023,7 @@ public class Table : WidgetGroup
     /// <summary>
     /// Returns the pref height of the specified column.
     /// </summary>
+    /// <param name="columnIndex">The column number</param>
     public float GetColumnPrefWidth( int columnIndex )
     {
         if ( _sizeInvalid ) ComputeSize();
@@ -1166,10 +1133,11 @@ public class Table : WidgetGroup
                 // Spanned column min and pref width is added later.
                 var hpadding = c.ComputedPadLeft + c.ComputedPadRight;
 
-                columnPrefWidth[ c.Column ] = Math.Max
-                    ( columnPrefWidth[ c.Column ], ( float )( prefWidth + hpadding )! );
+                columnPrefWidth[ c.Column ] = Math.Max( columnPrefWidth[ c.Column ],
+                                                        ( float )( prefWidth + hpadding )! );
 
-                columnMinWidth[ c.Column ] = Math.Max( columnMinWidth[ c.Column ], ( float )( minWidth + hpadding )! );
+                columnMinWidth[ c.Column ] = Math.Max( columnMinWidth[ c.Column ],
+                                                       ( float )( minWidth + hpadding )! );
             }
 
             var vpadding = c.ComputedPadTop + c.ComputedPadBottom;
@@ -1555,22 +1523,22 @@ public class Table : WidgetGroup
         // Position table within the container.
         var x = padLeft;
 
-        if ( ( this._alignment & LibGDXSharp.Utils.Align.Right ) != 0 )
+        if ( ( this._alignment & Align.Right ) != 0 )
         {
             x += layoutWidth - tableWidth;
         }
-        else if ( ( this._alignment & LibGDXSharp.Utils.Align.Left ) == 0 ) // Center
+        else if ( ( this._alignment & Align.Left ) == 0 ) // Center
         {
             x += ( layoutWidth - tableWidth ) / 2;
         }
 
         var y = padTop;
 
-        if ( ( this._alignment & LibGDXSharp.Utils.Align.Bottom ) != 0 )
+        if ( ( this._alignment & Align.Bottom ) != 0 )
         {
             y += layoutHeight - tableHeight;
         }
-        else if ( ( this._alignment & LibGDXSharp.Utils.Align.Top ) == 0 ) // Center
+        else if ( ( this._alignment & Align.Top ) == 0 ) // Center
         {
             y += ( layoutHeight - tableHeight ) / 2;
         }
@@ -1626,11 +1594,11 @@ public class Table : WidgetGroup
 
             this._alignment = c.Alignment;
 
-            if ( ( this._alignment & LibGDXSharp.Utils.Align.Left ) != 0 )
+            if ( ( this._alignment & Align.Left ) != 0 )
             {
                 c.ActorX = currentX;
             }
-            else if ( ( this._alignment & LibGDXSharp.Utils.Align.Right ) != 0 )
+            else if ( ( this._alignment & Align.Right ) != 0 )
             {
                 c.ActorX = ( currentX + spannedCellWidth ) - c.ActorWidth;
             }
@@ -1639,11 +1607,11 @@ public class Table : WidgetGroup
                 c.ActorX = currentX + ( ( spannedCellWidth - c.ActorWidth ) / 2 );
             }
 
-            if ( ( this._alignment & LibGDXSharp.Utils.Align.Top ) != 0 )
+            if ( ( this._alignment & Align.Top ) != 0 )
             {
                 c.ActorY = c.ComputedPadTop;
             }
-            else if ( ( this._alignment & LibGDXSharp.Utils.Align.Bottom ) != 0 )
+            else if ( ( this._alignment & Align.Bottom ) != 0 )
             {
                 c.ActorY = rowHeight[ c.Row ] - c.ActorHeight - c.ComputedPadBottom;
             }
@@ -1904,10 +1872,6 @@ public class Table : WidgetGroup
             DrawDebugRects( shapes );
             base.DrawDebug( shapes );
         }
-    }
-
-    protected new void DrawDebugBounds( ShapeRenderer shapes )
-    {
     }
 
     private void DrawDebugRects( ShapeRenderer shapes )

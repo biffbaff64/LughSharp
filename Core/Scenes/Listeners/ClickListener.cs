@@ -14,7 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Scenes.Scene2D;
+
+namespace LibGDXSharp.Scenes.Listeners;
 
 /// <summary>
 /// Detects mouse over, mouse or finger touch presses, and clicks on an actor.

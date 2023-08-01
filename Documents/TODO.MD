@@ -504,16 +504,31 @@ NETWORK
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SCENES.SCENE2D
+SCENES/LISTENERS
+----------------
+
+    The Java Listeners implemented in LibGDX need replacing by C# Observers
+
+    -      - ActorGestureListener           
+    -      - ChangeListener                 
+    -      - ClickListener                  
+    -      - DragListener                   
+    -      - DragScrollListener             
+    -      - FocusListener                  
+    -      - IEventListener                 
+    -      - InputListener                  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SCENES/SCENE2D
 --------------
 
     - DONE - Action                         
     - DONE - Actor                          
     - DONE - Event                          
     - DONE - Group                          
-    - DONE - IEventListener                 
     - DONE - InputEvent                     
-    - DONE - InputListener                  
     - DONE - Stage                          
     - DONE - Touchable                      
     - DONE - TouchFocus                     
@@ -569,7 +584,7 @@ SCENES.SCENE2D/UI
     - DONE - Cell                           
     - DONE - CheckBox                       
     - DONE - Container                      
-    -      - Dialog                         
+    - IP   - Dialog                         
     -      - HorizontalGroup                
     - DONE - Image                          
     -      - ImageButton                    
@@ -605,15 +620,9 @@ SCENES.SCENE2D/UI
 SCENES.SCENE2D/UTILS
 --------------------
 
-    -      - ActorGestureListener           
     -      - ArraySelection                 
     - DONE - BaseDrawable                   
-    - DONE - ChangeListener                 
-    - DONE - ClickListener                  
     -      - DragAndDrop                    
-    -      - DragListener                   
-    -      - DragScrollListener             
-    -      - FocusListener                  
     - DONE - ICullable                      
     - DONE - IDisableable                   
     - DONE - IDrawable                      
@@ -855,6 +864,20 @@ UTILS/JSON
     - **** - JsonWriter
     - **** - UBJsonReader
     - **** - UBJsonWriter
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UTILS/OBSERVERS
+---------------
+
+    -      - ActorGestureObserver
+    -      - ChangeObserver
+    -      - ClickObserver
+    -      - DragObserver
+    -      - DragScrollObserver
+    -      - FocusObserver
+    -      - InputObserver
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

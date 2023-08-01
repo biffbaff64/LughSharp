@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;

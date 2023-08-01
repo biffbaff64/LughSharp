@@ -22,7 +22,7 @@ using LibGDXSharp.Utils.Collections.Extensions;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public abstract class GLFrameBuffer<T> : IGLFrameBufferBase where T : GLTexture
+public abstract class GLFrameBuffer<T> where T : GLTexture
 {
     public const int GL_Depth24_Stencil8_OES = 0x88F0;
 
@@ -47,7 +47,7 @@ public abstract class GLFrameBuffer<T> : IGLFrameBufferBase where T : GLTexture
 
     public string ManagedStatus => GetManagedStatus( new StringBuilder() ).ToString();
 
-    protected IBufferBuilderBase<T> BufferBuilder { get; init; }
+    public GLFrameBufferBuilder<GLFrameBuffer<T>> BufferBuilder { get; init; }
 
     protected GLFrameBuffer()
     {
@@ -57,7 +57,7 @@ public abstract class GLFrameBuffer<T> : IGLFrameBufferBase where T : GLTexture
     /// <summary>
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder.
     /// </summary>
-    protected GLFrameBuffer( IBufferBuilderBase< T > bufferBuilder )
+    protected GLFrameBuffer( GLFrameBufferBuilder<GLFrameBuffer<T>> bufferBuilder )
     {
         this.BufferBuilder = bufferBuilder;
 

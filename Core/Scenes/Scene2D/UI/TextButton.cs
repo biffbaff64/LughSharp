@@ -37,7 +37,7 @@ public class TextButton : Button
         Skin = skin;
     }
 
-    protected TextButton( string? text, TextButton.TextButtonStyle style )
+    public TextButton( string? text, TextButton.TextButtonStyle style )
     {
         this.Style = style;
 
@@ -52,7 +52,7 @@ public class TextButton : Button
     /// <summary>
     /// Returns the appropriate label font color from the style based on the current button state.
     /// </summary>
-    protected Color? GetFontColor()
+    public Color? GetFontColor()
     {
         System.Diagnostics.Debug.Assert( Style != null, "Style != null" );
 
@@ -90,7 +90,7 @@ public class TextButton : Button
         return Style?.FontColor;
     }
 
-    protected new void Draw( IBatch batch, float parentAlpha )
+    public new void Draw( IBatch batch, float parentAlpha )
     {
         if ( Label != null )
         {

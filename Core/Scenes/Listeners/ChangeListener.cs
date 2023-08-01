@@ -14,7 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Scenes.Scene2D;
+
+namespace LibGDXSharp.Scenes.Listeners;
 
 public abstract class ChangeListener : IEventListener
 {

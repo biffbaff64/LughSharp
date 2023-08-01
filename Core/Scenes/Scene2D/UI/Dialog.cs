@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Scenes.Listeners;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -33,23 +34,26 @@ public class Dialog : Window
     private Dictionary< Actor, object >? _values = new();
     private Actor?                       _previousKeyboardFocus;
     private Actor?                       _previousScrollFocus;
-    private OnFocusChangeListener?       _focusListener;
+    private FocusListener?               _focusListener;
 
     public Dialog( string title, Skin skin )
         : base( title, skin.Get< Window.WindowStyle >() )
     {
         //TODO: Why is there base.Skin AND this._skin?
-        base.Skin = skin;
+        base.Skin  = skin;
         this._skin = skin;
 
         Initialise();
     }
 
     public Dialog( string title, Skin skin, string windowStyleName )
-        : base( title, skin.Get< Window.WindowStyle >( windowStyleName ) )
+        : base
+            (
+            title, ( Window.WindowStyle )skin.Get< Window.WindowStyle >( windowStyleName )
+            ) //TODO: <= Don't like this, find a better way
     {
         //TODO: Why is there base.Skin AND this._skin?
-        base.Skin = skin;
+        base.Skin  = skin;
         this._skin = skin;
         Initialise();
     }
@@ -125,14 +129,14 @@ public class Dialog : Window
 
     protected new void SetStage( Stage? stage )
     {
-        if ( stage == null )
-        {
-            AddListener( _focusListener );
-        }
-        else
-        {
-            RemoveListener( _focusListener );
-        }
+//        if ( stage == null )
+//        {
+//            AddListener( _focusListener );
+//        }
+//        else
+//        {
+//            RemoveListener( _focusListener );
+//        }
 
         base.SetStage( stage! );
     }
@@ -150,7 +154,10 @@ public class Dialog : Window
 
     public Table? ButtonTable { get; private set; }
 
-    /** Adds a label to the content table. The dialog must have been constructed with a skin to use this method. */
+    /// <summary>
+    /// Adds a label to the content table. The dialog must have
+    /// been constructed with a skin to use this method. 
+    /// </summary>
     public Dialog Text( string? text )
     {
         if ( _skin == null )
@@ -160,13 +167,17 @@ public class Dialog : Window
         return Text( text, _skin.Get< Label.LabelStyle >() );
     }
 
-    /** Adds a label to the content table. */
+    /// <summary>
+    /// Adds a label to the content table.
+    /// </summary>
     public Dialog Text( string? text, Label.LabelStyle labelStyle )
     {
         return Text( new Label( text, labelStyle ) );
     }
 
-    /** Adds the given Label to the content table */
+    /// <summary>
+    /// Adds the given Label to the content table
+    /// </summary>
     public Dialog Text( Label label )
     {
         ContentTable?.Add( label );
@@ -174,10 +185,11 @@ public class Dialog : Window
         return this;
     }
 
-    /**
-     * Adds a text button to the button table. Null will be passed to {@link #result(Object)} if this button is clicked. The
-     * dialog must have been constructed with a skin to use this method.
-     */
+    /// <summary>
+    /// Adds a text button to the button table. Null will be passed to
+    /// <see cref="Result(object)"/> if this button is clicked. The
+    /// dialog must have been constructed with a skin to use this method.
+    /// </summary>
     public Dialog Button( string text, object? obj = null )
     {
         if ( _skin == null )
@@ -187,10 +199,15 @@ public class Dialog : Window
         return Button( text, obj, _skin.Get< TextButton.TextButtonStyle >() );
     }
 
-    /**
-     * Adds a text button to the button table.
-     * @param object The object that will be passed to {@link #result(Object)} if this button is clicked. May be null.
-     */
+    /// <summary>
+    /// Adds a text button to the button table.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="obj">
+    /// The object that will be passed to <see cref="Result(object)"/>
+    /// if this button is clicked. May be null.
+    /// </param>
+    /// <param name="buttonStyle"></param>
     public Dialog Button( string text, object? obj, TextButton.TextButtonStyle buttonStyle )
     {
         return Button( new TextButton( text, buttonStyle ), obj );
@@ -204,7 +221,7 @@ public class Dialog : Window
     {
         ButtonTable?.Add( button );
 
-        SetObject( button, obj );
+        SetObject( button, obj! );
 
         return this;
     }
@@ -218,7 +235,7 @@ public class Dialog : Window
     public Dialog Show( Stage stage, Action? action )
     {
         ClearActions();
-        RemoveCaptureListener( ignoreTouchDown );
+//        RemoveCaptureListener( ignoreTouchDown );
         _previousKeyboardFocus = null;
 
         Actor? actor = stage.KeyboardFocus;
@@ -256,30 +273,30 @@ public class Dialog : Window
      */
     public Dialog Show( Stage stage )
     {
-        Show( stage, sequence( Actions.alpha( 0 ), Actions.fadeIn( 0.4f, Interpolation.fade ) ) );
+//        Show( stage, sequence( Actions.alpha( 0 ), Actions.fadeIn( 0.4f, Interpolation.fade ) ) );
 
         SetPosition
             (
-            Math.Round( ( stage.getWidth() - getWidth() ) / 2 ),
-            Math.Round( ( stage.GetHeight() - getHeight() ) / 2 )
+            (float)Math.Round( ( stage.StageWidth - Width ) / 2 ),
+            (float)Math.Round( ( stage.StageHeight - Height ) / 2 )
             );
 
         return this;
     }
 
     /**
-         * Removes the dialog from the stage, restoring the previous keyboard and
-         * scroll focus, and adds the specified action to the dialog.
-         * @param action
-         * If null, the dialog is removed immediately. Otherwise, the dialog is removed when the action completes. The
-         * dialog will not respond to touch down events during the action. */
+     * Removes the dialog from the stage, restoring the previous keyboard and
+     * scroll focus, and adds the specified action to the dialog.
+     * @param action
+     * If null, the dialog is removed immediately. Otherwise, the dialog is removed when the action completes. The
+     * dialog will not respond to touch down events during the action. */
     public void Hide( Action? action )
     {
         Stage? stage = base.Stage;
 
         if ( stage != null )
         {
-            RemoveListener( _focusListener );
+//            RemoveListener( _focusListener );
 
             if ( _previousKeyboardFocus is { Stage: null } )
             {
@@ -308,8 +325,8 @@ public class Dialog : Window
 
         if ( action != null )
         {
-            AddCaptureListener( ignoreTouchDown );
-            AddAction( sequence( action, Actions.RemoveListener( ignoreTouchDown, true ), Actions.RemoveActor() ) );
+//            AddCaptureListener( ignoreTouchDown );
+//            AddAction( sequence( action, Actions.RemoveListener( ignoreTouchDown, true ), Actions.RemoveActor() ) );
         }
         else
         {
@@ -323,7 +340,7 @@ public class Dialog : Window
     /// </summary>
     public void Hide()
     {
-        Hide( FadeOut( 0.4f, Interpolation.Fade ) );
+//        Hide( FadeOut( 0.4f, Interpolation.Fade ) );
     }
 
     public void SetObject( Actor actor, object obj )

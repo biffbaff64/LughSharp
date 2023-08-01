@@ -14,7 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Scenes.Scene2D;
+using LibGDXSharp.Scenes.Scene2D;
+
+namespace LibGDXSharp.Scenes.Listeners;
 
 /// <summary>
 /// EventListener for low-level input events. Unpacks <see cref="InputEvent"/>s

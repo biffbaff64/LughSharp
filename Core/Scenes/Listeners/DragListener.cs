@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Scenes.Scene2D.Utils;
+namespace LibGDXSharp.Scenes.Listeners;
 
 public class DragListener
 {

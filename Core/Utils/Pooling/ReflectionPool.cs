@@ -16,8 +16,6 @@
 
 using System.Reflection;
 
-using LibGDXSharp.Utils.Reflect;
-
 using BindingFlags = System.Reflection.BindingFlags;
 
 namespace LibGDXSharp.GdxCore.Utils.Pooling;
@@ -65,32 +63,34 @@ public class ReflectionPool<T> : Pool< T >
         }
         catch ( Exception )
         {
-            try
-            {
-                System.Reflection.ConstructorInfo constructor
-                    = ClassReflection.GetDeclaredConstructor( type, ( Type[] )null! );
+//            try
+//            {
+//                System.Reflection.ConstructorInfo constructor
+//                    = ClassReflection.GetDeclaredConstructor( type, ( Type[] )null! );
 
-                constructor.SetAccessible( true );
+//                constructor.SetAccessible( true );
 
-                return constructor;
-            }
-            catch ( ReflectionException )
-            {
+//                return constructor;
+//            }
+//            catch ( ReflectionException )
+//            {
                 return null;
-            }
+//            }
         }
     }
 
     protected new T NewObject()
     {
-        try
-        {
-            return ( T )_constructor.NewInstance( ( object[] )null );
-        }
-        catch ( Exception ex )
-        {
-            throw new GdxRuntimeException
-                ( $"Unable to create new instance: {_constructor.GetDeclaringClass().getName()}", ex );
-        }
+//        try
+//        {
+//            return ( T )_constructor.NewInstance( ( object[] )null );
+//        }
+//        catch ( Exception ex )
+//        {
+//            throw new GdxRuntimeException
+//                ( $"Unable to create new instance: {_constructor.GetDeclaringClass().getName()}", ex );
+//        }
+
+        throw new NotImplementedException();
     }
 }
