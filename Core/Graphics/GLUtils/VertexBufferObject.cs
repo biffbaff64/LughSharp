@@ -23,13 +23,13 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 public sealed class VertexBufferObject : IVertexData
 {
-    private FloatBuffer? _buffer;
-    private ByteBuffer?  _byteBuffer;
-    private bool         _ownsBuffer;
-    private int          _bufferHandle;
-    private int          _usage;
-    private bool         _isDirty = false;
-    private bool         _isBound = false;
+    private FloatBuffer _buffer;
+    private ByteBuffer? _byteBuffer;
+    private bool        _ownsBuffer;
+    private int         _bufferHandle;
+    private int         _usage;
+    private bool        _isDirty = false;
+    private bool        _isBound = false;
 
     /// <summary>
     /// Constructs a new interleaved VertexBufferObject.
@@ -50,6 +50,9 @@ public sealed class VertexBufferObject : IVertexData
     /// <param name="attributes"> the <seealso cref="VertexAttributes"/>.  </param>
     public VertexBufferObject( bool isStatic, int numVertices, VertexAttributes attributes )
     {
+        _buffer     = default!;
+        Attributes  = default!;
+
         _bufferHandle = Gdx.GL20.GLGenBuffer();
 
         ByteBuffer data = BufferUtils.NewUnsafeByteBuffer( attributes.VertexSize * numVertices );
@@ -62,6 +65,9 @@ public sealed class VertexBufferObject : IVertexData
 
     public VertexBufferObject( int usage, ByteBuffer data, bool ownsBuffer, VertexAttributes attributes )
     {
+        _buffer     = default!;
+        Attributes  = default!;
+
         _bufferHandle = Gdx.GL20.GLGenBuffer();
 
         SetBuffer( data, ownsBuffer, attributes );
@@ -86,7 +92,7 @@ public sealed class VertexBufferObject : IVertexData
     }
 
     /// <returns> the <see cref="VertexAttributes"/> as specified during construction. </returns>
-    public VertexAttributes? Attributes { get; set; }
+    public VertexAttributes Attributes { get; set; }
 
     /// <summary>
     /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
@@ -95,7 +101,7 @@ public sealed class VertexBufferObject : IVertexData
     /// *after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer? Buffer
+    public FloatBuffer Buffer
     {
         get
         {
@@ -139,7 +145,7 @@ public sealed class VertexBufferObject : IVertexData
         _buffer = _byteBuffer.AsFloatBuffer();
 
         _byteBuffer.Limit = lim;
-        _buffer.Limit      = ( lim / 4 );
+        _buffer.Limit     = ( lim / 4 );
     }
 
     /// <summary>
@@ -194,7 +200,7 @@ public sealed class VertexBufferObject : IVertexData
         BufferUtils.Copy( vertices, sourceOffset, count, _byteBuffer );
 
         _byteBuffer.Position = pos;
-        _buffer!.Position      = 0;
+        _buffer.Position    = 0;
 
         BufferChanged();
     }
@@ -220,7 +226,7 @@ public sealed class VertexBufferObject : IVertexData
             _isDirty = false;
         }
 
-        var numAttributes = Attributes!.Size;
+        var numAttributes = Attributes.Size;
 
         for ( var i = 0; i < numAttributes; i++ )
         {
@@ -252,7 +258,7 @@ public sealed class VertexBufferObject : IVertexData
     public void Unbind( ShaderProgram shader, int[]? locations = null )
     {
         IGL20 gl            = Gdx.GL20;
-        var   numAttributes = Attributes!.Size;
+        var   numAttributes = Attributes.Size;
 
         if ( locations == null )
         {

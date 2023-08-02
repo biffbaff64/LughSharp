@@ -18,6 +18,7 @@ using VideoMode = Silk.NET.GLFW.VideoMode;
 
 namespace LibGDXSharp.Backends.Desktop;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class GLApplicationConfiguration : GLWindowConfiguration
 {
     public bool DisableAudio           { get; set; } = false;
@@ -41,10 +42,10 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     public int IdleFPS                        { get; set; } = 60;
     public int ForegroundFPS                  { get; set; } = 0;
 
-    public string         PreferencesDirectory { get; set; } = ".prefs/";
-    public IFile.FileType PreferencesFileType  { get; set; } = IFile.FileType.External;
-    public HdpiMode       HdpiMode             { get; set; } = HdpiMode.Logical;
-    public PrintStream    DebugStream          { get; set; } = System.Err;
+    public string        PreferencesDirectory { get; set; } = ".prefs/";
+    public FileType      PreferencesFileType  { get; set; } = FileType.External;
+    public HdpiMode      HdpiMode             { get; set; } = HdpiMode.Logical;
+    public StreamWriter? DebugStream          { get; set; }
 
     public static GLApplicationConfiguration Copy( GLApplicationConfiguration config )
     {
@@ -139,7 +140,7 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// the file type to be used to store them. Defaults to "$USER_HOME/.prefs/"
     /// and <see cref="FileType"/>.
     ///</summary>
-    public void SetPreferencesConfig( string preferencesDirectory, IFile.FileType preferencesFileType )
+    public void SetPreferencesConfig( string preferencesDirectory, FileType preferencesFileType )
     {
         this.PreferencesDirectory = preferencesDirectory;
         this.PreferencesFileType  = preferencesFileType;
@@ -150,7 +151,7 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// </summary>
     /// <param name="enable"></param>
     /// <param name="debugOutputStream"></param>
-    public void EnableGLDebugOutput( bool enable, PrintStream debugOutputStream )
+    public void EnableGLDebugOutput( bool enable, StreamWriter debugOutputStream )
     {
         Debug       = enable;
         DebugStream = debugOutputStream;
@@ -167,11 +168,12 @@ public class GLApplicationConfiguration : GLWindowConfiguration
 
         return new GLGraphics.GLDisplayMode
             (
-             Glfw.GetApi().GetPrimaryMonitor(),
-             videoMode -> Width,
-             videoMode -> Height,
-             videoMode -> RefreshRate,
-             videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
+//            Glfw.GetApi().GetPrimaryMonitor(),
+            0,
+            videoMode -> Width,
+            videoMode -> Height,
+            videoMode -> RefreshRate,
+            videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
             );
     }
 }

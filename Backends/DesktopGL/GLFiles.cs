@@ -30,7 +30,7 @@ public sealed class GLFiles : IFiles
     /// 
     public FileInfo GetFileHandle( string path, FileType type )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public sealed class GLFiles : IFiles
     /// <returns></returns>
     public FileInfo Classpath( string path )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public sealed class GLFiles : IFiles
     /// <returns></returns>
     public FileInfo Internal( string path )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public sealed class GLFiles : IFiles
     /// <returns></returns>
     public FileInfo External( string path )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -68,9 +68,9 @@ public sealed class GLFiles : IFiles
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public FileInfo? Absolute( string path )
+    public FileInfo Absolute( string path )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public sealed class GLFiles : IFiles
     /// <returns></returns>
     public FileInfo Local( string path )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>

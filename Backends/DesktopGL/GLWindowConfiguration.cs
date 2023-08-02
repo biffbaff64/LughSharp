@@ -18,27 +18,27 @@ namespace LibGDXSharp.Backends.Desktop;
 
 public class GLWindowConfiguration
 {
-    public int                WindowX                { get; set; } = -1;
-    public int                WindowY                { get; set; } = -1;
-    public int                WindowWidth            { get; set; } = 640;
-    public int                WindowHeight           { get; set; } = 480;
-    public int                WindowMinWidth         { get; set; } = -1;
-    public int                WindowMinHeight        { get; set; } = -1;
-    public int                WindowMaxWidth         { get; set; } = -1;
-    public int                WindowMaxHeight        { get; set; } = -1;
-    public bool               WindowResizable        { get; set; } = true;
-    public bool               WindowDecorated        { get; set; } = true;
-    public bool               WindowMaximized        { get; set; } = false;
-    public bool               AutoIconify            { get; set; } = false;
-    public Color              InitialBackgroundColor { get; set; } = Color.Black;
-    public bool               InitialVisible         { get; set; } = true;
-    public bool               VSyncEnabled           { get; set; } = true;
-    public GLMonitor?         MaximizedMonitor       { get; set; }
-    public IFile.FileType     WindowIconFileType     { get; set; }
-    public string[]?          WindowIconPaths        { get; set; }
-    public IGLWindowListener? WindowListener         { get; set; }
-    public GLGraphics.GLDisplayMode?     FullscreenMode         { get; set; }
-    public string?            Title                  { get; set; }
+    public int                       WindowX                { get; set; } = -1;
+    public int                       WindowY                { get; set; } = -1;
+    public int                       WindowWidth            { get; set; } = 640;
+    public int                       WindowHeight           { get; set; } = 480;
+    public int                       WindowMinWidth         { get; set; } = -1;
+    public int                       WindowMinHeight        { get; set; } = -1;
+    public int                       WindowMaxWidth         { get; set; } = -1;
+    public int                       WindowMaxHeight        { get; set; } = -1;
+    public bool                      WindowResizable        { get; set; } = true;
+    public bool                      WindowDecorated        { get; set; } = true;
+    public bool                      WindowMaximized        { get; set; } = false;
+    public bool                      AutoIconify            { get; set; } = false;
+    public Color                     InitialBackgroundColor { get; set; } = Color.Black;
+    public bool                      InitialVisible         { get; set; } = true;
+    public bool                      VSyncEnabled           { get; set; } = true;
+    public GLMonitor?                MaximizedMonitor       { get; set; }
+    public FileType                  WindowIconFileType     { get; set; }
+    public string[]?                 WindowIconPaths        { get; set; }
+    public IGLWindowListener?        WindowListener         { get; set; }
+    public GLGraphics.GLDisplayMode? FullscreenMode         { get; set; }
+    public string?                   Title                  { get; set; }
 
     internal void SetWindowConfiguration( GLWindowConfiguration config )
     {
@@ -164,7 +164,7 @@ public class GLWindowConfiguration
     ///
     public void SetWindowIcon( params string[] filePaths )
     {
-        SetWindowIcon( IFile.FileType.Internal, filePaths );
+        SetWindowIcon( FileType.Internal, filePaths );
     }
 
     ///
@@ -173,7 +173,7 @@ public class GLWindowConfiguration
     /// @param filePaths One or more image paths, relative to the given {@linkplain FileType}. Must be JPEG, PNG, or BMP format. 
     /// The one closest to the system's desired size will be scaled. Good sizes include 16x16, 32x32 and 48x48.
     ///
-    public void SetWindowIcon( IFile.FileType fileType, params string[] filePaths )
+    public void SetWindowIcon( FileType fileType, params string[] filePaths )
     {
         WindowIconFileType = fileType;
         WindowIconPaths    = filePaths;

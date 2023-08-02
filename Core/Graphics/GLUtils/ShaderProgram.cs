@@ -50,7 +50,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class ShaderProgram
+public class ShaderProgram
 {
     /// <summary>
     /// default name for position attributes.
@@ -238,6 +238,7 @@ public sealed class ShaderProgram
     public ShaderProgram( FileInfo vertexShader, FileInfo fragmentShader )
         : this( "", "" ) //vertexShader.ReadString(), fragmentShader.ReadString() )
     {
+        //TODO:
     }
 
     /// <summary>

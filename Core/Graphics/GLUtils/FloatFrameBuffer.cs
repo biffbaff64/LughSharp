@@ -22,7 +22,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class FloatFrameBuffer : FrameBuffer
 {
-    protected FloatFrameBuffer()
+    public FloatFrameBuffer()
     {
     }
 
@@ -54,7 +54,7 @@ public class FloatFrameBuffer : FrameBuffer
             bufferBuilder.AddBasicDepthRenderBuffer();
         }
 
-        this.BufferBuilder = bufferBuilder;
+//        this.BufferBuilder = bufferBuilder;
 
         Build();
     }

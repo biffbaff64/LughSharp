@@ -124,8 +124,8 @@ public interface IInstanceData : IDisposable
     /// </summary>
     void Invalidate();
 
-    /// <summary>
-    /// Disposes this InstanceData and all its associated OpenGL resources.
-    /// </summary>
-    void Dispose();
+//    /// <summary>
+//    /// Disposes this InstanceData and all its associated OpenGL resources.
+//    /// </summary>
+//    void Dispose();
 }

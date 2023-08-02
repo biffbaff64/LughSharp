@@ -23,4 +23,35 @@ public abstract class GLApplicationBase : IApplication
     public abstract IGLAudio CreateAudio( GLApplicationConfiguration config );
 
     public abstract IGLInput CreateInput( GLWindow window );
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Getter and Setter for the log level.
+    /// LogNone will mute all log output.
+    /// LogError will only let error messages through.
+    /// LogInfo will let all non-debug messages through.
+    /// LogDebug will let all messages through.
+    /// </summary>
+    public int LogLevel { get; set; }
+
+    public IApplication.ApplicationType AppType   { get; set; }
+    public IClipboard?                  Clipboard { get; set; }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public abstract void         Log( string tag, string message );
+    public abstract void         Log( string tag, string message, Exception exception );
+    public abstract void         Error( string tag, string message );
+    public abstract void         Error( string tag, string message, Exception exception );
+    public abstract void         Debug( string tag, string message );
+    public abstract void         Debug( string tag, string message, Exception exception );
+    public abstract int          GetVersion();
+    public abstract IPreferences GetPreferences( string name );
+    public abstract void         Exit();
+    public abstract void         AddLifecycleListener( ILifecycleListener listener );
+    public abstract void         RemoveLifecycleListener( ILifecycleListener listener );
+    public abstract void         PostRunnable( IRunnable runnable );
 }

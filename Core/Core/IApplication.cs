@@ -88,6 +88,7 @@ public interface IApplication
     public int LogLevel { get; set; }
 
     public ApplicationType AppType { get; set; }
+    public IClipboard? Clipboard { get; set; }
 
     public void Log( string tag, string message );
     public void Log( string tag, string message, Exception exception );
@@ -105,8 +106,6 @@ public interface IApplication
     public void Exit();
     public void AddLifecycleListener( ILifecycleListener listener );
     public void RemoveLifecycleListener( ILifecycleListener listener );
-
-    public IClipboard GetClipBoard();
 
     public void PostRunnable( IRunnable runnable );
 }

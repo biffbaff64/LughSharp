@@ -42,7 +42,7 @@ public sealed class TextureAtlasLoader
     /// <param name="parameter"></param>
     /// <returns></returns>
     public override TextureAtlas Load( AssetManager assetManager,
-                                       string fileName,
+                                       string? fileName,
                                        FileInfo? file,
                                        TextureAtlasParameter parameter )
     {

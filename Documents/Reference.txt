@@ -61,4 +61,27 @@ Swap via deconstruction
  FrameBuffer                FrameBufferBuilder  FloatFrameBufferBuilder         GLTexture
        |                                                                            |
  FloatFrameBuffer                                                               Texture
- 
+
+    -------------------------------------------------------------------------------------------
+    
+java: protected GLFrameBufferBuilder<? extends GLFrameBuffer<T>> bufferBuilder
+c#  : protected GLFrameBufferBuilder<GLFrameBuffer<T>> BufferBuilder { get; init; }
+
+java: public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable
+c#  : public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
+
+java: public class FrameBuffer extends GLFrameBuffer<Texture>
+c#  : public class FrameBuffer : GLFrameBuffer< Texture > 
+
+java: public class FloatFrameBuffer extends FrameBuffer
+c#  : public class FloatFrameBuffer : FrameBuffer
+
+java: public static abstract class GLFrameBufferBuilder<U extends GLFrameBuffer<? extends GLTexture>>
+c#  : public abstract class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >
+
+java: public static class FrameBufferBuilder extends GLFrameBufferBuilder<FrameBuffer>
+c#  : public class FrameBufferBuilder : GLFrameBufferBuilder< FrameBuffer >
+
+java: public static class FloatFrameBufferBuilder extends GLFrameBufferBuilder<FloatFrameBuffer>
+c#  : public class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
+

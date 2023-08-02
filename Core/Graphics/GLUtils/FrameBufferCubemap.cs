@@ -29,7 +29,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// </summary>
     private readonly static Cubemap.CubemapSide[] cubemapSides = Cubemap.CubemapSide.Values();
 
-    protected FrameBufferCubemap()
+    public FrameBufferCubemap()
     {
     }
 
@@ -80,7 +80,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         if ( hasDepth ) frameBufferBuilder.AddBasicDepthRenderBuffer();
         if ( hasStencil ) frameBufferBuilder.AddBasicStencilRenderBuffer();
 
-        this.BufferBuilder = frameBufferBuilder;
+//        this.BufferBuilder = frameBufferBuilder;
 
         Build();
     }

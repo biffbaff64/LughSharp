@@ -27,7 +27,7 @@ public interface IVertexData : IDisposable
     public int NumMaxVertices { get; }
 
     /// <returns> the <see cref="VertexAttributes"/> as specified during construction. </returns>
-    public VertexAttributes? Attributes { get; set; }
+    public VertexAttributes Attributes { get; set; }
 
     /// <summary>
     /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer

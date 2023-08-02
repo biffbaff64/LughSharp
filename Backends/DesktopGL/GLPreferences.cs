@@ -18,6 +18,7 @@ using System.Xml.Linq;
 
 namespace LibGDXSharp.Backends.Desktop;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class GLPreferences : IPreferences
 {
     private readonly string     _filePath;
@@ -34,7 +35,7 @@ public class GLPreferences : IPreferences
         _filePath       = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + "//.prefs//";
         _propertiesFile = filename;
 
-        if ( !File.Exists( _filePath + _propertiesFile ) ) return;
+        if ( !Path.Exists( _filePath + _propertiesFile ) ) return;
 
         _properties = new Dictionary< string, object >();
         _xDocument  = new XDocument();
@@ -105,7 +106,7 @@ public class GLPreferences : IPreferences
             return defValue;
         }
 
-        return Convert.Tobool( value );
+        return Convert.ToBoolean( value );
     }
 
     /// <summary>

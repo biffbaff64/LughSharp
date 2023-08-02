@@ -26,11 +26,11 @@ public class GLApplication : GLApplicationBase
 {
     public GLApplicationConfiguration?        Config             { get; set; }
     public List< GLWindow >                   Windows            { get; set; } = new();
-    public GLClipboard?                       Clipboard          { get; set; }
     public ObjectMap< string, IPreferences >? Preferences        { get; set; }
     public List< IRunnable >                  Runnables          { get; set; } = new();
     public List< IRunnable >                  ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >         LifecycleListeners { get; set; } = new();
+    public GLApplicationLogger                ApplicationLogger  { get; set; }
 
     public static GLVersion? GLVersion { get; set; }
 
@@ -84,28 +84,24 @@ public class GLApplication : GLApplicationBase
         {
             try
             {
-                this.Audio = CreateAudio( config );
+                Gdx.Audio = CreateAudio( config );
             }
             catch ( Exception e )
             {
                 Log( "Lwjgl3Application", "Couldn't initialize audio, disabling audio", e );
 
-                this.Audio = new MockAudio();
+                Gdx.Audio = new MockAudio();
             }
         }
         else
         {
-            this.Audio = new MockAudio();
+            Gdx.Audio = new MockAudio();
         }
 
-        this.Files     = CreateFiles();
-        this.Net       = new GLNet( config );
+        Gdx.Files      = CreateFiles();
+        Gdx.Net        = new GLNet( config );
         this.Clipboard = new GLClipboard();
         this._sync     = new Sync();
-
-        Gdx.Audio = Audio;
-        Gdx.Files = Files;
-        Gdx.Net   = Net;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
 
@@ -148,61 +144,65 @@ public class GLApplication : GLApplicationBase
 
     public override void Debug( string tag, string message )
     {
-        if ( LogLevel >= LogDebug )
-        {
-            ApplicationLogger!.Debug( tag, message );
-        }
+//        if ( LogLevel >= LogDebug )
+//        {
+//            ApplicationLogger!.Debug( tag, message );
+//        }
     }
 
     public override void Debug( string tag, string message, Exception exception )
     {
-        if ( LogLevel >= LogDebug )
-        {
-            ApplicationLogger!.Debug( tag, message, exception );
-        }
+//        if ( LogLevel >= LogDebug )
+//        {
+//            ApplicationLogger!.Debug( tag, message, exception );
+//        }
     }
 
     public override void Log( string tag, string message )
     {
-        if ( LogLevel >= LogInfo )
-        {
-            ApplicationLogger!.Log( tag, message );
-        }
+//        if ( LogLevel >= LogInfo )
+//        {
+//            ApplicationLogger!.Log( tag, message );
+//        }
     }
 
     public override void Log( string tag, string message, Exception exception )
     {
-        if ( LogLevel >= LogInfo )
-        {
-            ApplicationLogger!.Log( tag, message, exception );
-        }
+//        if ( LogLevel >= LogInfo )
+//        {
+//            ApplicationLogger!.Log( tag, message, exception );
+//        }
     }
 
     public override void Error( string tag, string message )
     {
-        if ( LogLevel >= LogError )
-        {
-            ApplicationLogger!.Error( tag, message );
-        }
+//        if ( LogLevel >= LogError )
+//        {
+//            ApplicationLogger!.Error( tag, message );
+//        }
     }
 
     public override void Error( string tag, string message, Exception exception )
     {
-        if ( LogLevel >= LogError )
-        {
-            ApplicationLogger!.Error( tag, message, exception );
-        }
+//        if ( LogLevel >= LogError )
+//        {
+//            ApplicationLogger!.Error( tag, message, exception );
+//        }
     }
 
-    public override IPreferences? GetPreferences( string name )
+    public override IPreferences GetPreferences( string name )
     {
-        if ( Preferences!.ContainsKey( name ) ) return Preferences.Get( name );
+        if ( Preferences!.ContainsKey( name ) ) return Preferences.Get( name )!;
 
         IPreferences prefs = new GLPreferences( name );
 
         Preferences.Put( name, prefs );
 
         return prefs;
+    }
+
+    public void CreateWindow( GLWindow window, GLApplicationConfiguration config, long sharedContext )
+    {
     }
 
     public GLWindow CreateWindow( GLApplicationConfiguration config, IApplicationListener listener, long sharedContext )
@@ -217,20 +217,19 @@ public class GLApplication : GLApplicationBase
         else
         {
             // creation of additional windows is deferred to avoid GL context trouble
-            postRunnable
-                ( new Runnable()
-                {
- 
+//            postRunnable
+//                ( new Runnable()
+//                {
 
 
-                    public void run ()
-                    {
-                    createWindow( window, config, sharedContext );
-                    windows.add( window );
-                }
+//                    public void run ()
+//                    {
+//                    createWindow( window, config, sharedContext );
+//                    windows.add( window );
+//                }
 
-            }
-            );
+//            }
+//            );
         }
 
         return window;
@@ -256,8 +255,6 @@ public class GLApplication : GLApplicationBase
         return 0;
     }
 
-    public override IApplication.ApplicationType Type { get; set; }
-
     public override void Exit()
     {
     }
@@ -267,6 +264,10 @@ public class GLApplication : GLApplicationBase
     }
 
     public override void RemoveLifecycleListener( ILifecycleListener listener )
+    {
+    }
+
+    public override void PostRunnable( IRunnable runnable )
     {
     }
 
@@ -287,10 +288,10 @@ public class GLApplication : GLApplicationBase
 
         GLVersion = new GLVersion
             (
-             IApplication.ApplicationType.Desktop,
-             $"{major}.{minor}.{revision}",
-             Gdx.GL20.GLGetString( IGL20.GL_Vendor ),
-             Gdx.GL20.GLGetString( IGL20.GL_Renderer )
+            IApplication.ApplicationType.Desktop,
+            $"{major}.{minor}.{revision}",
+            Gdx.GL20.GLGetString( IGL20.GL_Vendor ),
+            Gdx.GL20.GLGetString( IGL20.GL_Renderer )
             );
     }
 }

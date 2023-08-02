@@ -22,7 +22,7 @@ using LibGDXSharp.Utils.Collections.Extensions;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public abstract class GLFrameBuffer<T> where T : GLTexture
+public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
 {
     public const int GL_Depth24_Stencil8_OES = 0x88F0;
 
@@ -47,7 +47,7 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
 
     public string ManagedStatus => GetManagedStatus( new StringBuilder() ).ToString();
 
-    public GLFrameBufferBuilder<GLFrameBuffer<T>> BufferBuilder { get; init; }
+    protected GLFrameBufferBuilder< GLFrameBuffer< T > > BufferBuilder { get; set; }
 
     protected GLFrameBuffer()
     {
@@ -57,10 +57,10 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
     /// <summary>
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder.
     /// </summary>
-    protected GLFrameBuffer( GLFrameBufferBuilder<GLFrameBuffer<T>> bufferBuilder )
+    protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< T > > bufferBuilder )
     {
         this.BufferBuilder = bufferBuilder;
-
+        
         Build();
     }
 
@@ -539,5 +539,207 @@ public abstract class GLFrameBuffer<T> where T : GLTexture
         builder.Append( '}' );
 
         return builder;
+    }
+
+    // ########################################################################
+
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    public class FrameBufferTextureAttachmentSpec
+    {
+        public int InternalFormat { get; }
+        public int Format         { get; }
+        public int Type           { get; }
+
+        public bool IsFloat   { get; init; }
+        public bool IsGpuOnly { get; init; }
+        public bool IsDepth   { get; init; }
+        public bool IsStencil { get; init; }
+
+        public FrameBufferTextureAttachmentSpec( int internalformat, int format, int type )
+        {
+            this.InternalFormat = internalformat;
+            this.Format         = format;
+            this.Type           = type;
+        }
+
+        public bool IsColorTexture => ( !IsDepth && !IsStencil );
+    }
+
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    public class FrameBufferRenderBufferAttachmentSpec
+    {
+        public int InternalFormat { get; set; }
+
+        public FrameBufferRenderBufferAttachmentSpec( int internalFormat )
+        {
+            this.InternalFormat = internalFormat;
+        }
+    }
+
+    public abstract class GLFrameBufferBuilder<TU>
+    {
+        public int Width  { get; }
+        public int Height { get; }
+
+        public List< FrameBufferTextureAttachmentSpec > TextureAttachmentSpecs { get; } = new();
+
+        public FrameBufferRenderBufferAttachmentSpec? StencilRenderBufferSpec            { get; set; }
+        public FrameBufferRenderBufferAttachmentSpec? DepthRenderBufferSpec              { get; set; }
+        public FrameBufferRenderBufferAttachmentSpec? PackedStencilDepthRenderBufferSpec { get; set; }
+
+        public bool HasStencilRenderBuffer            { get; set; }
+        public bool HasDepthRenderBuffer              { get; set; }
+        public bool HasPackedStencilDepthRenderBuffer { get; set; }
+
+        // ReSharper disable once PublicConstructorInAbstractClass
+        public GLFrameBufferBuilder( int width, int height )
+        {
+            this.Width  = width;
+            this.Height = height;
+        }
+
+        public GLFrameBufferBuilder< TU > AddColorTextureAttachment( int internalFormat, int format, int type )
+        {
+            TextureAttachmentSpecs.Add( new FrameBufferTextureAttachmentSpec( internalFormat, format, type ) );
+
+            return this;
+        }
+
+        public GLFrameBufferBuilder< TU > AddBasicColorTextureAttachment( Pixmap.Format format )
+        {
+            var glFormat = PixmapFormat.ToGLFormat( format );
+            var glType   = PixmapFormat.ToGLType( format );
+
+            return AddColorTextureAttachment( glFormat, glFormat, glType );
+        }
+
+        public GLFrameBufferBuilder< TU > AddFloatAttachment( int internalFormat,
+                                                              int format,
+                                                              int type,
+                                                              bool gpuOnly )
+        {
+            var spec = new FrameBufferTextureAttachmentSpec( internalFormat, format, type )
+            {
+                IsFloat   = true,
+                IsGpuOnly = gpuOnly
+            };
+
+            TextureAttachmentSpecs.Add( spec );
+
+            return this;
+        }
+
+        public GLFrameBufferBuilder< TU > AddDepthTextureAttachment( int internalFormat, int type )
+        {
+            var spec = new FrameBufferTextureAttachmentSpec( internalFormat, IGL20.GL_Depth_Component, type )
+            {
+                IsDepth = true
+            };
+
+            TextureAttachmentSpecs.Add( spec );
+
+            return this;
+        }
+
+        public GLFrameBufferBuilder< TU > AddStencilTextureAttachment( int internalFormat, int type )
+        {
+            var spec = new FrameBufferTextureAttachmentSpec( internalFormat, IGL20.GL_Stencil_Attachment, type )
+            {
+                IsStencil = true
+            };
+
+            TextureAttachmentSpecs.Add( spec );
+
+            return this;
+        }
+
+        public GLFrameBufferBuilder< TU > AddDepthRenderBuffer( int internalFormat )
+        {
+            DepthRenderBufferSpec = new FrameBufferRenderBufferAttachmentSpec( internalFormat );
+            HasDepthRenderBuffer  = true;
+
+            return this;
+        }
+
+        public GLFrameBufferBuilder< TU > AddStencilRenderBuffer( int internalFormat )
+        {
+            StencilRenderBufferSpec = new FrameBufferRenderBufferAttachmentSpec( internalFormat );
+            HasStencilRenderBuffer  = true;
+
+            return this;
+        }
+
+        public GLFrameBufferBuilder< TU > AddStencilDepthPackedRenderBuffer( int internalFormat )
+        {
+            PackedStencilDepthRenderBufferSpec = new FrameBufferRenderBufferAttachmentSpec( internalFormat );
+            HasPackedStencilDepthRenderBuffer  = true;
+
+            return this;
+        }
+
+        public GLFrameBufferBuilder< TU > AddBasicDepthRenderBuffer()
+        {
+            return AddDepthRenderBuffer( IGL20.GL_Depth_Component16 );
+        }
+
+        public GLFrameBufferBuilder< TU > AddBasicStencilRenderBuffer()
+        {
+            return AddStencilRenderBuffer( IGL20.GL_Stencil_Index8 );
+        }
+
+        public GLFrameBufferBuilder< TU > AddBasicStencilDepthPackedRenderBuffer()
+        {
+            return AddStencilDepthPackedRenderBuffer( IGL30.GL_Depth24_Stencil8 );
+        }
+
+        public abstract object Build();
+    }
+    
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
+    public class FrameBufferBuilder : GLFrameBufferBuilder< FrameBuffer >
+    {
+        public FrameBufferBuilder( int width, int height )
+            : base( width, height )
+        {
+        }
+
+        public override FrameBuffer Build()
+        {
+            return new FrameBuffer();
+//            return new FrameBuffer( this );
+        }
+    }
+    
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
+    public class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
+    {
+        public FloatFrameBufferBuilder( int width, int height )
+            : base( width, height )
+        {
+        }
+
+        public override FloatFrameBuffer Build()
+        {
+            return new FloatFrameBuffer();
+//            return new FloatFrameBuffer( this );
+        }
+    }
+    
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
+    public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< FrameBufferCubemap >
+    {
+        public FrameBufferCubemapBuilder( int width, int height )
+            : base( width, height )
+        {
+        }
+
+        public override FrameBufferCubemap Build()
+        {
+            return new FrameBufferCubemap();
+//            return new FrameBufferCubemap( this );
+        }
     }
 }

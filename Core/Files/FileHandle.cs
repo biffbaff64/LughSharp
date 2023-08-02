@@ -19,15 +19,16 @@ namespace LibGDXSharp.Files;
 [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
 public class FileHandle
 {
+    [SuppressMessage( "ReSharper", "UnusedType.Local" )]
     private enum PathStatus
     {
         Invalid,
         Checked
     };
 
-    protected readonly string fileName;
-    protected          File     file;
-    protected          FileType fileType;
+    public string   FileName { get; set; }
+    public File?    File     { get; set; }
+    public FileType FileType { get; set; }
 
     protected FileHandle() : this( "" )
     {
@@ -35,17 +36,17 @@ public class FileHandle
 
     public FileHandle( File file ) : this( "" )
     {
-        this.file = file;
+        this.File = file;
     }
 
     public FileHandle( string fileName, FileType type = FileType.Absolute )
     {
-        this.fileName = fileName;
-        this.fileType = type;
+        this.FileName = fileName;
+        this.FileType = type;
     }
 
     /// <summary>
     /// Convenience property for the path of the file.
     /// </summary>
-    public string Path => System.IO.Path.GetFullPath( fileName );
+    public string Path => System.IO.Path.GetFullPath( FileName );
 }

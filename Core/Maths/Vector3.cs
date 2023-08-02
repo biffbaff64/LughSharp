@@ -752,7 +752,7 @@ public sealed class Vector3 : IVector< Vector3 >
 
                 return this.Set( x, y, z );
             }
-            catch ( NumberFormatException ex )
+            catch ( NumberFormatException )
             {
                 // Throw a GdxRuntimeException
             }

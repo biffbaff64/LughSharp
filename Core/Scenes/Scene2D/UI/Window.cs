@@ -381,9 +381,9 @@ public class Window : Table
             var windowY = _window.Y;
 
             var minWidth  = _window.GetMinWidth();
-            var maxWidth  = _window.GetMaxWidth();
             var minHeight = _window.GetMinHeight();
-            var maxHeight = _window.GetMaxHeight();
+//            var maxWidth  = _window.GetMaxWidth();
+//            var maxHeight = _window.GetMaxHeight();
 
             Stage? stage = _window.Stage;
 
@@ -478,7 +478,7 @@ public class Window : Table
             return _window.IsModal;
         }
 
-        public new bool Scrolled( InputEvent ev, float x, float y, int amount )
+        public bool Scrolled( InputEvent ev, float x, float y, int amount )
         {
             return _window.IsModal;
         }

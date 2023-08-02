@@ -18,6 +18,7 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class InstanceBufferObject : IInstanceData
 {
     public InstanceBufferObject( bool isStatic, int maxInstances, VertexAttribute[] attributes )
@@ -143,11 +144,14 @@ public class InstanceBufferObject : IInstanceData
     /// <summary>
     /// Disposes this InstanceData and all its associated OpenGL resources.
     /// </summary>
-    void IInstanceData.Dispose()
+    public void Dispose()
     {
     }
 
-    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
     void IDisposable.Dispose()
     {
     }

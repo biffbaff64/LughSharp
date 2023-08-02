@@ -19,6 +19,7 @@ using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Backends.Desktop;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class GLWindow : IDisposable
 {
     private          GLApplicationBase          _application;
@@ -31,17 +32,20 @@ public class GLWindow : IDisposable
     private readonly List< IRunnable >          _executedRunnables = new();
     private          IntBuffer                  _tmpBuffer;
     private          IntBuffer                  _tmpBuffer2;
-    private          long                       _windowHandle;
     private          bool                       _listenerInitialised = false;
     private          bool                       _iconified           = false;
     private          bool                       _requestRendering    = false;
+
+    public GLWindow( IApplicationListener listener, GLApplicationConfiguration config, GLApplicationBase application )
+    {
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="windowHandle"></param>
     public void Create( long windowHandle )
     {
-        this._input    = _application.CreateInput();
+        this._input    = _application.CreateInput( this );
         this._graphics = new GLGraphics( this );
     }
 
@@ -58,7 +62,7 @@ public class GLWindow : IDisposable
             _runnables.Clear();
         }
 
-        foreach ( var runnable in _executedRunnables )
+        foreach ( IRunnable runnable in _executedRunnables )
         {
             runnable.Run();
         }
@@ -78,13 +82,13 @@ public class GLWindow : IDisposable
             _requestRendering =  false;
         }
 
-        if ( shouldRender )
-        {
-            _graphics.Update();
-            _listener.Render();
+//        if ( shouldRender )
+//        {
+//            _graphics.Update();
+//            _listener.Render();
 
-            OpenGdx.GLSwapBuffers( _windowHandle );
-        }
+//            OpenGdx.GLSwapBuffers( _windowHandle );
+//        }
 
         if ( !_iconified )
         {
@@ -93,6 +97,8 @@ public class GLWindow : IDisposable
 
         return shouldRender;
     }
+
+    public long WindowHandle { get; set; }
 
     private void InitialiseListener()
     {

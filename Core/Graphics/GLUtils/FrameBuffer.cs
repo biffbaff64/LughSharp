@@ -35,17 +35,17 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class FrameBuffer : GLFrameBuffer< Texture >
 {
-    protected FrameBuffer()
+    public FrameBuffer()
     {
     }
-
+    
     /// <summary>
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder">
     ///  </param>
     public FrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
-        : base( bufferBuilder )
+//        : base( bufferBuilder )
     {
     }
 
@@ -71,7 +71,7 @@ public class FrameBuffer : GLFrameBuffer< Texture >
         if ( hasDepth ) frameBufferBuilder.AddBasicDepthRenderBuffer();
         if ( hasStencil ) frameBufferBuilder.AddBasicStencilRenderBuffer();
 
-        this.BufferBuilder = frameBufferBuilder;
+//        this.BufferBuilder = frameBufferBuilder;
 
         Build();
     }

@@ -33,8 +33,8 @@ public sealed class GLFileHandle : FileHandle
     /// </summary>
     /// <param name="file"></param>
     /// <param name="type"></param>
-    public GLFileHandle( FileInfo file, FileType type )
-        : base( file, type )
+    public GLFileHandle( FileHandle file, FileType type )
+//        : base( file, type )
     {
     }
 
@@ -44,15 +44,17 @@ public sealed class GLFileHandle : FileHandle
     /// <returns></returns>
     public FileHandle Child( string name )
     {
-        if ( base.File != null )
-        {
-            if ( base.File.FullName.Length == 0 )
-            {
-                return new GLFileHandle( new FileInfo( name ), Type );
-            }
-        }
+//        if ( base.File != null )
+//        {
+//            if ( base.File.FullName.Length == 0 )
+//            {
+//                return new GLFileHandle( new FileHandle( name ), Type );
+//            }
+//        }
 
-        return new GLFileHandle( new FileInfo( name ), Type );
+//        return new GLFileHandle( new FileHandle( name ), Type );
+
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -100,7 +102,7 @@ public sealed class GLFileHandle : FileHandle
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public FileInfo? File()
+    public FileHandle? GetFile()
     {
 //            if ( Type == IFile.FileType.External )
 //            {
@@ -112,6 +114,8 @@ public sealed class GLFileHandle : FileHandle
 //                return new FileInfo( GLFiles.LocalPath + FileInfo!.FullName );
 //            }
 
-        return base.File;
+//        return base.File;
+
+        throw new NotImplementedException();
     }
 }

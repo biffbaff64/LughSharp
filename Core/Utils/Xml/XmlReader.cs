@@ -530,7 +530,7 @@ public sealed class XmlReader
                                     case 6:
                                         // line 140 "XmlReader.rl"
                                     {
-                                        Attribute( attributeName, new string( data, s, p - s ) );
+                                        Attribute( attributeName!, new string( data, s, p - s ) );
                                     }
 
                                         break;

@@ -35,7 +35,7 @@ public class ApplicationBase : IApplication
 
     public virtual IPreferences GetPreferences( string name ) => throw new NotImplementedException();
 
-    public virtual IClipboard GetClipBoard() => throw new NotImplementedException();
+    public virtual IClipboard? Clipboard { get; set; }
 
     public virtual void Log( string tag, string message )
     {
