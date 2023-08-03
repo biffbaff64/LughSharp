@@ -16,3 +16,17 @@ learn more about C#.
 Classes need checking to see if any methods should be made virtual.
 
 Project name is to change. Current possibility is LughEngine, or just Lugh.
+
+I think I will remove any mobile development support as I do NOT want to rival the official Java
+LibGDX framework and the original inspiration for this was desktop development anyway.
+
+As far as I can see, I do not need to convert:-
+
+    - Regex
+    - Reflection
+    - Concurrent ( AtomicInteger, AtomicQueue etc )
+    - Async?
+    - Network
+    - Compression?
+
+

@@ -52,31 +52,6 @@ ROOT
     - DONE - Gdx                            
     -      - LibraryConstants
 
-CORE
-----
-
-    - DONE - AbstractGraphics               
-    - DONE - AbstractInput                  
-    - DONE - ApplicationAdapter             
-    - DONE - ApplicationBase                New
-    - DONE - Game                           
-    - DONE - GDXVersion                     
-    - DONE - IApplication                   
-    - DONE - IApplicationListener           
-    - DONE - IApplicationLogger             
-    - DONE - IAudio                         
-    - DONE - IFile                          
-    - DONE - IGraphics                      
-    - DONE - IInput                         
-    - DONE - IInputProcessor                
-    - DONE - ILifecycleListener             
-    - DONE - INet                           
-    - DONE - InputAdapter                   
-    - DONE - InputEventQueue                
-    - DONE - IPreferences                   
-    - DONE - IScreen                        
-    - DONE - ScreenAdapter                  
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -143,10 +118,38 @@ AUDIO
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+CORE
+----
+
+    - DONE - AbstractGraphics               
+    - DONE - AbstractInput                  
+    - DONE - ApplicationAdapter             
+    - DONE - ApplicationBase                New
+    - DONE - Game                           
+    - DONE - GDXVersion                     
+    - DONE - IApplication                   
+    - DONE - IApplicationListener           
+    - DONE - IApplicationLogger             
+    - DONE - IAudio                         
+    - DONE - IFile                          
+    - DONE - IGraphics                      
+    - DONE - IInput                         
+    - DONE - IInputProcessor                
+    - DONE - ILifecycleListener             
+    - DONE - INet                           
+    - DONE - InputAdapter                   
+    - DONE - InputEventQueue                
+    - DONE - IPreferences                   
+    - DONE - IScreen                        
+    - DONE - ScreenAdapter                  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 FILES
 -----
 
-    - IP   - BufferedReader
+    - DONE - BufferedReader
     - DONE - CloseableStreamReader
     - DONE - CloseableStreamWriter
     - DONE - DataInputStream
@@ -225,6 +228,7 @@ GRAPHICS
     - DONE - OrthographicCamera                 
     - DONE - PerspectiveCamera                  
     - DONE - Pixmap                             
+    - DONE - PixmapFormat                             
     - IP   - PixmapIO                           
     - DONE - Texture                            
     - DONE - TextureArray                       

@@ -45,7 +45,6 @@ public static class PixmapFormat
 
     /// <summary>
     /// </summary>
-    /// <param name="f"></param>
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
@@ -68,7 +67,6 @@ public static class PixmapFormat
 
     /// <summary>
     /// </summary>
-    /// <param name="f"></param>
     /// <param name="format"></param>
     /// <returns></returns>
     public static int ToGLFormat( Pixmap.Format format )
@@ -78,7 +76,6 @@ public static class PixmapFormat
 
     /// <summary>
     /// </summary>
-    /// <param name="f"></param>
     /// <param name="format"></param>
     /// <returns></returns>
     public static int ToGLType( Pixmap.Format format )

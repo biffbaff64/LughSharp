@@ -35,7 +35,7 @@ public abstract class Reader : ICloseable
     /// <tt>this</tt> or a synchronized method.
     /// </summary>
     protected object Lockobj { get; set; }
-        
+
     /// <summary>
     /// Creates a new character-stream reader whose critical sections will
     /// synchronize on the reader itself.
@@ -130,7 +130,7 @@ public abstract class Reader : ICloseable
     /// The number of characters read, or -1 if the end of the stream has been reached
     /// </returns>
     /// <exception cref="IOException"> If an I/O error occurs </exception>
-    protected abstract int Read( char[] cbuf, int off, int len );
+    public abstract int Read( char[] cbuf, int off, int len );
 
     private const int     MaxSkipBufferSize = 8192;
     private       char[]? _skipBuffer       = null;
@@ -150,7 +150,6 @@ public abstract class Reader : ICloseable
         var nn = ( int )Math.Min( n, MaxSkipBufferSize );
 
         lock ( Lockobj )
-
         {
             if ( ( _skipBuffer == null ) || ( _skipBuffer.Length < nn ) )
             {
@@ -191,10 +190,7 @@ public abstract class Reader : ICloseable
     /// implementation always returns false. Subclasses should override this method.
     /// </summary>
     /// <returns>true if and only if this stream supports the mark operation.</returns>
-    public bool MarkSupported()
-    {
-        return false;
-    }
+    public bool MarkSupported => false;
 
     /// <summary>
     /// Marks the present position in the stream. Subsequent calls to reset()
@@ -237,7 +233,7 @@ public abstract class Reader : ICloseable
     /// mark(), reset(), or skip() invocations will throw an IOException.
     /// Closing a previously closed stream has no effect.
     /// </summary>
-    public void Close()
+    public virtual void Close()
     {
     }
 }

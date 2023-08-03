@@ -38,6 +38,7 @@
         <Folder Include="Core\Utils\Compression\Gzip\" />
         <Folder Include="Core\Utils\Json\" />
         <Folder Include="Core\Utils\Observers\" />
+        <Folder Include="DeleteCandidates\" />
         <Folder Include="Resources\" />
     </ItemGroup>
 

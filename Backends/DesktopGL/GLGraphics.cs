@@ -197,7 +197,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     /// <summary>Sets the IGL30 instance.</summary>
     /// <remarks>MAY be replaced by a property.</remarks>
-    public override void SetGL30( IGL30 gl30 )
+    public override void SetGL30( IGL30? gl30 )
     {
     }
 
