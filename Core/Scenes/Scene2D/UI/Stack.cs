@@ -20,7 +20,7 @@ using LibGDXSharp.Utils.Collections;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class Stack : WidgetGroup
+public class Stack : WidgetGroup
 {
     private float _prefWidth;
     private float _prefHeight;

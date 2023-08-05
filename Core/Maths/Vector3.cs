@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Maths;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class Vector3 : IVector< Vector3 >
+public class Vector3 : IVector< Vector3 >
 {
     public float X { get; set; }
     public float Y { get; set; }

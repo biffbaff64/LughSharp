@@ -21,7 +21,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// <summary>
 /// Adds a listener to an actor.
 /// </summary>
-public sealed class AddListenerAction : Action
+public class AddListenerAction : Action
 {
     public IEventListener? Listener { get; set; }
     public bool            Capture  { get; set; }

@@ -19,7 +19,7 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class Cell : IPoolable
+public class Cell : IPoolable
 {
     private const float Zerof   = 0f;
     private const float Onef    = 1f;

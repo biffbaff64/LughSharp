@@ -62,7 +62,7 @@ public interface INet
         Tcp
     }
 
-    public sealed class HttpRequest : IPoolable
+    public class HttpRequest : IPoolable
     {
         public string?       Url                { get; set; }
         public string?       HttpMethod         { get; set; }

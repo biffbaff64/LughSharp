@@ -28,6 +28,15 @@ public struct CallerID
     public int    lineNumber;
 }
 
+/// <summary>
+/// A class to write debug messages to console and a text file.
+/// Primarily intended for flow tracing, messages will display calling
+/// file/class/methods and any provided debug message.
+/// <see cref="LogLevel"/> must be set to either <see cref="LogDebug"/>,
+///  <see cref="LogInfo"/>, or <see cref="LogError"/> for messages to work.
+/// To enable writing to file, <see cref="EnableWriteToFile"/> must be TRUE
+/// and <see cref="OpenDebugFile"/> must be called.
+/// </summary>
 public static class Trace
 {
     public const int LogNone  = 0;
@@ -167,18 +176,18 @@ public static class Trace
     }
 
     /// <summary>
-    /// Write a message to logcat or console if the supplied condition is TRUE.
+    /// Write a message to console if the supplied condition is TRUE.
     /// </summary>
     /// <param name="condition">The condition to evaluate.</param>
     /// <param name="message">The string to write.</param>
     /// <param name="args">Optional extra argumnts for use in format strings.</param>
     [SuppressMessage( "ReSharper", "InvalidXmlDocComment" )]
-    public static void _assert( [CallerFilePath] string callerFilePath = "",
-                                [CallerMemberName] string callerMethod = "",
-                                [CallerLineNumber] int callerLine = 0,
-                                bool condition = false,
-                                string message = "",
-                                params object[] args )
+    public static void Assert( [CallerFilePath] string callerFilePath = "",
+                               [CallerMemberName] string callerMethod = "",
+                               [CallerLineNumber] int callerLine = 0,
+                               bool condition = false,
+                               string message = "",
+                               params object[] args )
     {
         if ( ( LogLevel == LogDebug ) && condition )
         {

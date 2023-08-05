@@ -22,7 +22,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// The data is not managed.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class GLOnlyTextureData : ITextureData
+public class GLOnlyTextureData : ITextureData
 {
     public int  Width          { get; set; } = 0;
     public int  Height         { get; set; } = 0;

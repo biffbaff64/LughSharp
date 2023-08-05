@@ -50,7 +50,8 @@ namespace LibGDXSharp.Utils;
 /// </p>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class TimSort<T>
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+public class TimSort<T>
 {
     /// <summary>
     /// This is the minimum sized sequence that will be merged. Shorter sequences will

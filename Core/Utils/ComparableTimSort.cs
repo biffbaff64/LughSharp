@@ -29,7 +29,7 @@ namespace LibGDXSharp.Utils;
 /// you are better off deleting ComparableTimSort to eliminate the code duplication.
 /// </para>
 /// </summary>
-public sealed class ComparableTimSort<T>
+public class ComparableTimSort<T>
 {
     /// <summary>
     /// This is the minimum sized sequence that will be merged. Shorter sequences will

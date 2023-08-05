@@ -32,7 +32,7 @@ public abstract partial class Value
     /// <summary>
     /// A fixed value that is not computed each time it is used.
     /// </summary>
-    public sealed class Fixed : Value
+    public class Fixed : Value
     {
         private readonly static Fixed?[] cache = new Fixed[ 111 ];
 

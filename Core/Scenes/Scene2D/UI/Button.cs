@@ -331,7 +331,7 @@ public class Button : Table, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class ButtonClickListener : ClickListener
+    public class ButtonClickListener : ClickListener
     {
         private readonly Button _button;
 

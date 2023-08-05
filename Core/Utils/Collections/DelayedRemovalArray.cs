@@ -18,7 +18,7 @@ using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Utils;
 
-public sealed class DelayedRemovalArray<T> : List< T >
+public class DelayedRemovalArray<T> : List< T >
 {
     private int _iterating = 0;
     private int _clear     = 0;

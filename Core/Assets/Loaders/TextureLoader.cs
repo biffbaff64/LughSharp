@@ -25,9 +25,9 @@ namespace LibGDXSharp.Assets.Loaders;
 /// to generate mipmaps and so on.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
+public class TextureLoader : AsynchronousAssetLoader, IDisposable
 {
-    public sealed class TextureLoaderInfo
+    public class TextureLoaderInfo
     {
         public string?       Filename { get; set; }
         public ITextureData? Data     { get; set; }
@@ -136,7 +136,7 @@ public sealed class TextureLoader : AsynchronousAssetLoader, IDisposable
     /// <summary>
     /// </summary>
     [SuppressMessage( "ReSharper", "PropertyCanBeMadeInitOnly.Global" )]
-    public sealed class TextureParameter : AssetLoaderParameters
+    public class TextureParameter : AssetLoaderParameters
     {
         /// <summary>
         /// the format of the final Texture. Uses the source images format if null

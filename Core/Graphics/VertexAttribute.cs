@@ -26,7 +26,7 @@ namespace LibGDXSharp.Graphics;
 /// The alias can be changed at any time.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class VertexAttribute
+public class VertexAttribute
 {
     /// <summary>
     /// The attribute <see cref="usage"/>, used for identification.

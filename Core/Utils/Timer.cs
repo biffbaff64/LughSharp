@@ -18,6 +18,9 @@ using Monitor = System.Threading.Monitor;
 
 namespace LibGDXSharp.Utils;
 
+/// <summary>
+/// Executes tasks in the future on the main loop thread.
+/// </summary>
 public class Timer
 {
     private readonly static object        threadLock = new();
@@ -30,6 +33,8 @@ public class Timer
     }
 
     /// <summary>
+    /// Timer instance singleton for general application wide usage.
+    /// Static methods on <see cref="Timer"/> make convenient use of this instance.
     /// </summary>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
@@ -135,18 +140,6 @@ public class Timer
     }
 
     /// <summary>
-    /// Stops the timer, tasks will not be executed and time that passes
-    /// will not be applied to the task delays.
-    /// </summary>
-    public void Stop()
-    {
-        lock ( threadLock )
-        {
-            Thread().instances.Remove( this );
-        }
-    }
-
-    /// <summary>
     /// Starts the timer if it is not currently running.
     /// </summary>
     public void Start()
@@ -158,6 +151,18 @@ public class Timer
             Thread().instances.Add( this );
 
             Monitor.PulseAll( threadLock );
+        }
+    }
+
+    /// <summary>
+    /// Stops the timer, tasks will not be executed and time that passes
+    /// will not be applied to the task delays.
+    /// </summary>
+    public void Stop()
+    {
+        lock ( threadLock )
+        {
+            Thread().instances.Remove( this );
         }
     }
 
@@ -248,7 +253,7 @@ public class Timer
     /// Adds the specified delay to all tasks.
     /// </summary>
     /// <param name="delayMillis"></param>
-    public virtual void Delay( long delayMillis )
+    protected virtual void Delay( long delayMillis )
     {
         lock ( threadLock )
         {
@@ -389,12 +394,13 @@ public class Timer
         }
     }
 
-    public sealed class TimerThread : IRunnable, ILifecycleListener
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    public class TimerThread : IRunnable, ILifecycleListener
     {
-        internal readonly List< Timer > instances = new( capacity: 1 );
-        internal readonly IFiles?       files;
-        internal          Timer?        instance;
-        internal          long          pauseTimeMillis;
+        public readonly List< Timer > instances = new( capacity: 1 );
+        public readonly IFiles?       files;
+        public          Timer?        instance;
+        public          long          pauseTimeMillis;
 
         public TimerThread()
         {

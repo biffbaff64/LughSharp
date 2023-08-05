@@ -1,6 +1,17 @@
 ﻿- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 LIBGDX CSharp CONVERSION - ROUND 1
 ----------------------------------
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+04-August-2023
+
+I have taken the decision that this Library / Framework will be OpenGL for desktop
+ONLY. Android / iOS is catered for by the Java LibGDX so there is no need to
+provide that facility.
+
+This means that 'Backends' can be removed and merged with 'Core'
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - STEP 1: Complete all conversions so that the code will build.
@@ -677,7 +688,7 @@ UTILS
     - DONE - Scaling
     - DONE - ScreenUtils                    Needs ByteBuffer.Read implementing
     - DONE - Select                         Renamed Selector
-    -      - SharedLibraryLoader            Check
+    -      - SharedLibraryLoader            Check - Remove this??
     - DONE - SortUtils
     - **** - SortedIntList                  Use SortedList<int>
     -      - StreamUtils

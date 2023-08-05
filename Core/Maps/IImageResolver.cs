@@ -32,7 +32,7 @@ public interface IImageResolver
 
     /// <summary>
     /// </summary>
-    public sealed class DirectImageResolver : IImageResolver
+    public class DirectImageResolver : IImageResolver
     {
         private readonly Dictionary< string, Texture > _images;
 
@@ -49,7 +49,7 @@ public interface IImageResolver
 
     /// <summary>
     /// </summary>
-    public sealed class AssetManagerImageResolver : IImageResolver
+    public class AssetManagerImageResolver : IImageResolver
     {
         private readonly AssetManager _assetManager;
 

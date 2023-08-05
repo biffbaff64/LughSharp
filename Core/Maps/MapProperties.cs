@@ -21,7 +21,7 @@ namespace LibGDXSharp.Maps;
 /// to retrieve, modify and add properties to the set.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class MapProperties
+public class MapProperties
 {
     private Dictionary< string, object? > _properties;
 

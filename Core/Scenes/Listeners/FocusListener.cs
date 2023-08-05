@@ -21,7 +21,7 @@ namespace LibGDXSharp.Scenes.Listeners;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class FocusListener : IEventListener
 {
-    public sealed class FocusEvent : Event
+    public class FocusEvent : Event
     {
         public bool    Focused      { get; set; }
         public FeType? Type         { get; set; }

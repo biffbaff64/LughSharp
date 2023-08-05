@@ -23,7 +23,7 @@ namespace LibGDXSharp.Utils;
 /// the log level set here.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class Logger
+public class Logger
 {
     public const int LogNone  = 0;
     public const int LogError = 1;

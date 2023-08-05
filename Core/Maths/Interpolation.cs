@@ -254,7 +254,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class PowIn : Pow
+    public class PowIn : Pow
     {
         public PowIn( int power ) : base( power )
         {
@@ -269,7 +269,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class PowOut : Pow
+    public class PowOut : Pow
     {
         public PowOut( int power ) : base( power )
         {
@@ -314,7 +314,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class ExpIn : Exp
+    public class ExpIn : Exp
     {
         public ExpIn( float value, float power )
             : base( value, power )
@@ -330,7 +330,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class ExpOut : Exp
+    public class ExpOut : Exp
     {
         public ExpOut( float value, float power )
             : base( value, power )
@@ -387,7 +387,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class ElasticIn : Elastic
+    public class ElasticIn : Elastic
     {
         public ElasticIn( float value, float power, int bounces, float scale )
             : base( value, power, bounces, scale )
@@ -405,7 +405,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class ElasticOut : Elastic
+    public class ElasticOut : Elastic
     {
         public ElasticOut( float value, float power, int bounces, float scale )
             : base( value, power, bounces, scale )
@@ -425,7 +425,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class Bounce : BounceOut
+    public class Bounce : BounceOut
     {
         public Bounce( float[] widths, float[] heights )
             : base( widths, heights )
@@ -561,7 +561,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class BounceIn : BounceOut
+    public class BounceIn : BounceOut
     {
         public BounceIn( float[] widths, float[] heights )
             : base( widths, heights )
@@ -581,7 +581,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class Swing : Interpolation
+    public class Swing : Interpolation
     {
         private readonly float _scale;
 
@@ -609,7 +609,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class SwingOut : Interpolation
+    public class SwingOut : Interpolation
     {
         private readonly float _scale;
 
@@ -629,7 +629,7 @@ public abstract class Interpolation : IInterpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public sealed class SwingIn : Interpolation
+    public class SwingIn : Interpolation
     {
         private readonly float _scale;
 

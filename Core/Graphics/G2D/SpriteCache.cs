@@ -1304,7 +1304,7 @@ public class SpriteCache
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private sealed class Cache
+    private class Cache
     {
         internal readonly int id;
         internal readonly int offset;

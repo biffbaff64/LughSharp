@@ -92,7 +92,8 @@ namespace LibGDXSharp.Utils;
 /// </code>
 /// </para>
 /// </summary>
-public sealed class StringTokenizer
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+public class StringTokenizer
 {
     private readonly int     _maxPosition;
     private readonly bool    _retDelims;
@@ -303,7 +304,7 @@ public sealed class StringTokenizer
             }
             else
             {
-                int c = char.ConvertToUtf32( _str!, position );
+                var c = char.ConvertToUtf32( _str!, position );
 
                 if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) )
                 {
@@ -395,7 +396,7 @@ public sealed class StringTokenizer
     /// </summary>
     /// <param name="delim">the new delimiters.</param>
     /// <returns>the next token, after switching to the new delimiter set.</returns>
-    public string? NextToken( string delim )
+    public string NextToken( string delim )
     {
         _delimiters = delim;
 

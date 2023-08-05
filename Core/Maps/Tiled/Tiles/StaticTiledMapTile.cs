@@ -19,7 +19,7 @@ using LibGDXSharp.G2D;
 namespace LibGDXSharp.Maps.Tiled.Tiles;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class StaticTiledMapTile : ITiledMapTile
+public class StaticTiledMapTile : ITiledMapTile
 {
     public int                     ID            { get; set; }
     public float                   OffsetX       { get; set; }

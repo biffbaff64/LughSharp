@@ -18,7 +18,7 @@ namespace LibGDXSharp.G2D;
 
 [SuppressMessage( "ReSharper", "PropertyCanBeMadeInitOnly.Global" )]
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class AtlasRegion : TextureRegion
+public class AtlasRegion : TextureRegion
 {
     /// <summary>
     /// The number at the end of the original image file name, or -1 if none.

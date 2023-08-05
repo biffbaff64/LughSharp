@@ -743,7 +743,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <typeparam name="TKe"></typeparam>
     /// <typeparam name="TVe"></typeparam>
-    public sealed class Entry<TKe, TVe>
+    public class Entry<TKe, TVe>
     {
         public TKe? key;
         public TVe? value;
@@ -842,7 +842,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <typeparam name="TKe"></typeparam>
     /// <typeparam name="TVe"></typeparam>
-    public sealed class Entries<TKe, TVe> : MapIterator< TKe, TVe, Entry< TKe, TVe > >
+    public class Entries<TKe, TVe> : MapIterator< TKe, TVe, Entry< TKe, TVe > >
     {
         private readonly Entry< TKe, TVe > _entry = new();
 
@@ -881,7 +881,7 @@ public class ObjectMap<TK, TV>
     /// <summary>
     /// </summary>
     /// <typeparam name="TVv"></typeparam>
-    public sealed class Values<TVv> : MapIterator< TK, TVv, TVv >
+    public class Values<TVv> : MapIterator< TK, TVv, TVv >
     {
         /// <summary>
         /// </summary>
@@ -935,7 +935,7 @@ public class ObjectMap<TK, TV>
     /// <summary>
     /// </summary>
     /// <typeparam name="TKk"></typeparam>
-    public sealed class Keys<TKk> : MapIterator< TKk, TV, TKk >
+    public class Keys<TKk> : MapIterator< TKk, TV, TKk >
     {
         public Keys( ObjectMap< TKk, TV > map )
             : base( map )

@@ -19,7 +19,7 @@ using LibGDXSharp.Audio;
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class MockAudio : IAudio
+public class MockAudio : IAudio
 {
     /// <summary>
     /// Creates a new <see cref="IAudioDevice"/> either in mono or stereo mode.

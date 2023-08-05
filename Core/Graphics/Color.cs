@@ -24,7 +24,7 @@ namespace LibGDXSharp.Graphics;
 /// All methods perform clamping on the internal values after execution.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class Color
+public class Color
 {
     public readonly static Color White      = new( 1, 1, 1, 1 );
     public readonly static Color LightGray  = new( 0xbfbfbfff );

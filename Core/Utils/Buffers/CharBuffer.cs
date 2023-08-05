@@ -737,7 +737,6 @@ public abstract class CharBuffer : Buffer
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    [UsedImplicitly]
     public abstract ByteOrder Order();
     
     #endregion miscellaneous abstract methods
@@ -829,7 +828,6 @@ public abstract class CharBuffer : Buffer
     /// is known that their contents will not change.  </para>
     /// </summary>
     /// <returns>  The current hash code of this buffer </returns>
-    [UsedImplicitly]
     public int HashCode()
     {
         var h = 1;
@@ -860,7 +858,6 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <returns>  A negative integer, zero, or a positive integer as this buffer
     ///          is less than, equal to, or greater than the given buffer </returns>
-    [UsedImplicitly]
     public new bool Equals( object ob )
     {
         if ( this == ob ) return true;
@@ -904,7 +901,6 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <returns>  A negative integer, zero, or a positive integer as this buffer
     ///          is less than, equal to, or greater than the given buffer </returns>
-    [UsedImplicitly]
     public int CompareTo( CharBuffer that )
     {
         var n = this.Position + Math.Min( this.Remaining(), that.Remaining() );

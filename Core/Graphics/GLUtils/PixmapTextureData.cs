@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class PixmapTextureData : ITextureData
+public class PixmapTextureData : ITextureData
 {
     public Pixmap        Pixmap        { get; set; }
     public Pixmap.Format Format        { get; set; }

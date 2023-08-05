@@ -18,7 +18,7 @@ using System.Diagnostics;
 
 namespace LibGDXSharp.Utils.Regex;
 
-public sealed partial class Pattern
+public partial class Pattern
 {
 
      #region CompanionClasses

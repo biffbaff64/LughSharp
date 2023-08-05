@@ -36,7 +36,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class ShaderProgramLoader
+public class ShaderProgramLoader
     : AsynchronousAssetLoader< ShaderProgram, ShaderProgramLoader.ShaderProgramParameter >
 {
     private readonly string _vertexFileSuffix   = ".vert";

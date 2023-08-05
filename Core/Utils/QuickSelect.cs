@@ -23,7 +23,7 @@ namespace LibGDXSharp.Utils;
 /// http://en.wikipedia.org/wiki/Quickselect
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class QuickSelect<T>
+public class QuickSelect<T>
 {
     private T[]            _array   = null!;
     private IComparer< T > _comp    = null!;

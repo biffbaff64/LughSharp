@@ -21,7 +21,7 @@ namespace LibGDXSharp.Maps;
 /// <summary>
 /// A Collection of <see cref="MapObject"/> instances.
 /// </summary>
-public sealed class MapObjects : IEnumerable< MapObject >
+public class MapObjects : IEnumerable< MapObject >
 {
     private readonly List< MapObject > _objects;
 

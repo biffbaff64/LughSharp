@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Maths;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class FloatCounter
+public class FloatCounter
 {
     /// <summary>
     /// The amount of values added

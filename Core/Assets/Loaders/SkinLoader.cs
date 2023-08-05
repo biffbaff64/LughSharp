@@ -20,7 +20,7 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 namespace LibGDXSharp.Assets.Loaders;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class SkinLoader : AsynchronousAssetLoader
+public class SkinLoader : AsynchronousAssetLoader
 {
     public SkinLoader( IFileHandleResolver resolver ) : base( resolver )
     {
@@ -124,7 +124,7 @@ public sealed class SkinLoader : AsynchronousAssetLoader
     {
     }
 
-    public sealed class SkinParameter : AssetLoaderParameters
+    public class SkinParameter : AssetLoaderParameters
     {
         public readonly string?                       textureAtlasPath;
         public readonly Dictionary< string, object >? resources;

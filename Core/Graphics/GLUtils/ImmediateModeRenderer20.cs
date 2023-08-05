@@ -23,7 +23,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// specify vertices on the fly and provides a default shader for (unlit) rendering.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class ImmediateModeRenderer20 : IImmediateModeRenderer
+public class ImmediateModeRenderer20 : IImmediateModeRenderer
 {
     public int MaxVertices { get; set; }
     public int NumVertices { get; set; }

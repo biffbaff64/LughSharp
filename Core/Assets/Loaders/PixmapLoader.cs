@@ -19,7 +19,7 @@ using System.Diagnostics;
 namespace LibGDXSharp.Assets.Loaders;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class PixmapLoader : AsynchronousAssetLoader
+public class PixmapLoader : AsynchronousAssetLoader
 {
     private Pixmap? _pixmap;
 

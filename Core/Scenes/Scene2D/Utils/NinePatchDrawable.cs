@@ -31,7 +31,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// drawable to be sized down as small as possible.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class NinePatchDrawable : BaseDrawable, ITransformDrawable
+public class NinePatchDrawable : BaseDrawable, ITransformDrawable
 {
     public NinePatch? Patch { get; set; }
 

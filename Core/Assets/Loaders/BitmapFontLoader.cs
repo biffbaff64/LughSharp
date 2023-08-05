@@ -63,7 +63,7 @@ public class BitmapFontParameter : AssetLoaderParameters
 /// <summary>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
+public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 {
     private BitmapFont.BitmapFontData? _data;
 

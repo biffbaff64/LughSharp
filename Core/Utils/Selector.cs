@@ -29,7 +29,7 @@ namespace LibGDXSharp.Utils;
 /// Hoare's quickselect for values in between.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class Selector<T>
+public class Selector<T>
 {
     private readonly static Selector< T > instance = new();
 

@@ -23,7 +23,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// The Music instance is loaded synchronously.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.MusicParameter >, IDisposable
+public class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.MusicParameter >, IDisposable
 {
     public IMusic LoadedMusic { get; set; }
 

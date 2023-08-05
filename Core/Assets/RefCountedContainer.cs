@@ -30,7 +30,7 @@ internal interface IRefCountedContainer
 /// AssetManager handles this automatically.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class RefCountedContainer : IRefCountedContainer
+public class RefCountedContainer : IRefCountedContainer
 {
     public int RefCount { get; set; } = 1;
 

@@ -24,7 +24,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// the atlas regions should be flipped on the y-axis or not.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class TextureAtlasLoader
+public class TextureAtlasLoader
     : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >
 {
     private TextureAtlasData? _data;

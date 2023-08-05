@@ -39,7 +39,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class Skin : IDisposable
+public class Skin : IDisposable
 {
     /// <summary>
     /// 

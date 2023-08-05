@@ -19,7 +19,7 @@ using LibGDXSharp.Utils.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class IndexArray : IIndexData
+public class IndexArray : IIndexData
 {
     public readonly ByteBuffer  byteBuffer;
 

@@ -23,7 +23,7 @@ namespace LibGDXSharp.Utils.Pooling;
 /// </summary>
 public class PooledLinkedList<T>
 {
-    internal sealed record Item<TT>
+    internal record Item<TT>
     {
         internal TT?         Payload { get; set; }
         internal Item< TT >? Next    { get; set; }

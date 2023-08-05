@@ -96,7 +96,7 @@ public class I18NBundleLoader : AsynchronousAssetLoader< I18NBundle, I18NBundleL
     }
 
     [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    public sealed class I18NBundleParameter : AssetLoaderParameters
+    public class I18NBundleParameter : AssetLoaderParameters
     {
         public CultureInfo? Locale   { get; private set; }
         public string?      Encoding { get; private set; }

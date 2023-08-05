@@ -19,7 +19,7 @@ using LibGDXSharp.Maths;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class ShapeRenderer : IDisposable
+public class ShapeRenderer : IDisposable
 {
     public enum ShapeTypes
     {

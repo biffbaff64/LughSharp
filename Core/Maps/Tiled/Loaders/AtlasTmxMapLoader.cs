@@ -31,7 +31,7 @@ namespace LibGDXSharp.Maps.Tiled;
 /// </summary>
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
-    public sealed class AtlasTiledMapLoaderParameters
+    public class AtlasTiledMapLoaderParameters
         : BaseTmxMapLoader< AtlasTiledMapLoaderParameters >.Parameters
     {
         public bool ForceTextureFilters { get; set; } = false;
@@ -41,7 +41,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
         public TextureAtlas GetAtlas();
 
-        public sealed class DirectAtlasResolver : IAtlasResolver
+        public class DirectAtlasResolver : IAtlasResolver
         {
             private readonly TextureAtlas _atlas;
 
@@ -55,7 +55,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
             public TextureRegion? GetImage( string name ) => _atlas.FindRegion( name );
         }
 
-        public sealed class AssetManagerAtlasResolver : IAtlasResolver
+        public class AssetManagerAtlasResolver : IAtlasResolver
         {
             private readonly AssetManager _assetManager;
             private readonly string       _atlasName;

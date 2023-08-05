@@ -31,7 +31,7 @@ namespace LibGDXSharp.Utils.Collections;
 /// </para>
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public sealed class SnapshotArray<T> : Array< T >
+public class SnapshotArray<T> : Array< T >
 {
     private T[]? _snapshot;
     private T[]? _recycled;

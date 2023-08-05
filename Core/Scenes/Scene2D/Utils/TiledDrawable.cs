@@ -22,7 +22,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// Draws a <see cref="TextureRegion"/> repeatedly to fill the area, instead of stretching it.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class TiledDrawable : TextureRegionDrawable
+public class TiledDrawable : TextureRegionDrawable
 {
 
     public TiledDrawable( TextureRegion region )

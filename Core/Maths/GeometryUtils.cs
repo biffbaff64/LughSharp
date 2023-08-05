@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Maths;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class GeometryUtils
+public class GeometryUtils
 {
     private readonly static Vector2 tmp1 = new();
     private readonly static Vector2 tmp2 = new();

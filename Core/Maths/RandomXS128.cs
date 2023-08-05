@@ -91,7 +91,7 @@ public class RandomXS128 : Random
     /// This protected method is final because, contrary to the superclass,
     /// it's not used anymore by the other methods.
     /// </summary>
-    public override sealed int Next( int bits )
+    public override int Next( int bits )
     {
         return ( int )( NextLong() & ( ( 1L << bits ) - 1 ) );
     }

@@ -292,7 +292,7 @@ public class Cubemap : GLTexture
 
     /// <summary>
     /// Enum to identify each side of a Cubemap </summary>
-    public sealed class CubemapSide
+    public class CubemapSide
     {
         /// <summary>
         /// The positive X and first side of the cubemap

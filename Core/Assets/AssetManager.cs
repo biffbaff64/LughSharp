@@ -31,7 +31,7 @@ namespace LibGDXSharp.Assets;
 // -------------------------------------------------------------------
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 // -------------------------------------------------------------------
-public sealed class AssetManager
+public class AssetManager
 {
     private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets  = new();
     private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? >        _loaders = new();

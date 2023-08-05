@@ -18,7 +18,7 @@ using System.Collections;
 
 namespace LibGDXSharp.Maps;
 
-public sealed class MapLayers : IEnumerable< MapLayer >
+public class MapLayers : IEnumerable< MapLayer >
 {
     private readonly List< MapLayer > _layers = new();
 

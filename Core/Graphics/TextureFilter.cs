@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Graphics;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class TextureFilter
+public class TextureFilter
 {
     /// <summary>
     /// Fetch the nearest texel that best maps to the pixel on screen. </summary>

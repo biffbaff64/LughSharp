@@ -19,7 +19,7 @@ using LibGDXSharp.Utils.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class VertexArray : IVertexData
+public class VertexArray : IVertexData
 {
 //    private readonly VertexAttributes _attributes;
 //    private readonly FloatBuffer      _buffer;

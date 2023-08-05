@@ -21,7 +21,7 @@ namespace LibGDXSharp.Assets;
 // -------------------------------------------------------------------
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 // -------------------------------------------------------------------
-public sealed class AssetLoadingTask
+public class AssetLoadingTask
 {
     private readonly AssetManager _manager;
     private readonly AssetLoader  _loader;

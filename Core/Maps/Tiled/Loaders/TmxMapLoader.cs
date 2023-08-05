@@ -22,7 +22,7 @@ namespace LibGDXSharp.Maps.Tiled;
 
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 {
-    public sealed new class Parameters
+    public new class Parameters
         : BaseTmxMapLoader< TmxMapLoader.Parameters >.Parameters
     {
     }

@@ -22,7 +22,7 @@ namespace LibGDXSharp.Graphics;
 /// A Camera with Orthographic Projection.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class OrthographicCamera : Camera
+public class OrthographicCamera : Camera
 {
     public float Zoom { get; set; } = 1;
 

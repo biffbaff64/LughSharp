@@ -21,7 +21,7 @@ using Trace = LibGDXSharp.Utils.Trace;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-public sealed class VertexBufferObject : IVertexData
+public class VertexBufferObject : IVertexData
 {
     private FloatBuffer _buffer;
     private ByteBuffer? _byteBuffer;

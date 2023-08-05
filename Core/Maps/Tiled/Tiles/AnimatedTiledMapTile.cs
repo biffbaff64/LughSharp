@@ -21,7 +21,7 @@ using Blendmode = LibGDXSharp.Maps.Tiled.ITiledMapTile.Blendmode;
 namespace LibGDXSharp.Maps.Tiled.Tiles;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class AnimatedTiledMapTile : ITiledMapTile
+public class AnimatedTiledMapTile : ITiledMapTile
 {
     private readonly static long initialTimeOffset = DateTime.Now.Millisecond;
 

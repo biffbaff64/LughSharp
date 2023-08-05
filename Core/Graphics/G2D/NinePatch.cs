@@ -34,7 +34,7 @@ namespace LibGDXSharp.G2D;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class NinePatch
+public class NinePatch
 {
     private const float Tolerance = 0.1f;
 

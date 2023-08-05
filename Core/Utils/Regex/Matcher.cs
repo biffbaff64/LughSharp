@@ -19,7 +19,7 @@ using System.Text;
 namespace LibGDXSharp.Utils.Regex;
 
 [Obsolete]
-public sealed class Matcher : IMatchResult
+public class Matcher : IMatchResult
 {
     // The Pattern object that created this Matcher.
     public Pattern parentPattern;

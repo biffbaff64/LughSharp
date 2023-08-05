@@ -138,7 +138,7 @@ public class ColorBleedEffect
 //        return ( ( a & 0xFF ) << 24 ) | ( ( r & 0xFF ) << 16 ) | ( ( g & 0xFF ) << 8 ) | ( ( b & 0xFF ) << 0 );
 //    }
 //
-//    private sealed class Mask
+//    private class Mask
 //    {
 //        private bool[] _blank;
 //        private int[]  _pending;

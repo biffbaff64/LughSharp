@@ -23,7 +23,7 @@ namespace LibGDXSharp.G2D;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "UnusedMember.Local" )]
 [SuppressMessage( "ReSharper", "LoopCanBePartlyConvertedToQuery" )]
-public sealed partial class BitmapFont
+public class BitmapFont
 {
     private const string RegexPattern   = ".*id=(\\d+)";
     private const string FontName       = "Resources/arial-15.fnt";
@@ -502,7 +502,7 @@ public sealed partial class BitmapFont
 
     /// <summary>
     /// Represents a single character in a font page. </summary>
-    public sealed class Glyph
+    public class Glyph
     {
         public int        id;
         public int        srcX;
@@ -566,7 +566,7 @@ public sealed partial class BitmapFont
     /// <summary>
     /// Backing data for a <see cref="BitmapFont"/>.
     /// </summary>
-    public sealed class BitmapFontData
+    public class BitmapFontData
     {
         // The name of the font, or null.
         public string? Name { get; private set; }

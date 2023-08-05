@@ -35,7 +35,7 @@ public class AssetLoaderParameters
 // -------------------------------------------------------------------
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 // -------------------------------------------------------------------
-public sealed class DefaultLoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
+public class DefaultLoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
 {
     private readonly int _refCount;
 

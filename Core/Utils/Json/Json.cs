@@ -1834,7 +1834,7 @@ public class Json
 //    }
 //
 //    [Obsolete]
-//    private sealed class FieldMetadata
+//    private class FieldMetadata
 //    {
 //        public Field Field       { get; set; }
 //        public Type  ElementType { get; set; }

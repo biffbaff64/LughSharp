@@ -20,7 +20,7 @@ namespace LibGDXSharp.Utils.Regex;
 
 /// <inheritdoc/>
 [Obsolete]
-public sealed partial class Pattern : IPattern
+public partial class Pattern : IPattern
 {
     public const int Unix_Lines              = 0x01;
     public const int Case_Insensitive        = 0x02;

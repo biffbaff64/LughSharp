@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Assets.Loaders.Resolvers;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class AbsoluteFileHandleResolver : IFileHandleResolver
+public class AbsoluteFileHandleResolver : IFileHandleResolver
 {
     public FileInfo Resolve( string fileName )
     {

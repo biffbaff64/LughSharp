@@ -22,7 +22,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// A <see cref="ITextureData"/> implementation which should be used
 /// to create float textures.
 /// </summary>
-public sealed class FloatTextureData : ITextureData
+public class FloatTextureData : ITextureData
 {
     public FloatBuffer Buffer     { get; private set; } = null!;
     public int         Width      { get; set; }         = 0;

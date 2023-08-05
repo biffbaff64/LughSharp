@@ -38,7 +38,7 @@ namespace LibGDXSharp.Maths;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class CumulativeDistribution<T>
 {
-    public sealed class CumulativeValue
+    public class CumulativeValue
     {
         public readonly T value;
 

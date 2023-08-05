@@ -20,7 +20,7 @@ namespace LibGDXSharp.Utils;
 /// A typesafe enumeration for byte orders.
 /// </summary>
 /// <remarks>Not sure if this is still needed.</remarks>
-public sealed class ByteOrder
+public class ByteOrder
 {
     private readonly string _name;
 

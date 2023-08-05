@@ -20,7 +20,7 @@ namespace LibGDXSharp.Maths;
 /// Encapsulates a 2D polygon defined by it's vertices relative to an origin point (default of 0, 0).
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class Polygon : IShape2D
+public class Polygon : IShape2D
 {
     public float X        { get; set; }
     public float Y        { get; set; }

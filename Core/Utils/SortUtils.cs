@@ -25,7 +25,7 @@ namespace LibGDXSharp.Utils;
 /// methods (uses timsort).
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class SortUtils
+public class SortUtils
 {
     private readonly static SortUtils instance = new();
 

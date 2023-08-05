@@ -53,7 +53,7 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public partial record TextureAtlasData
 {
-    public sealed class PageFieldParseClass : IField< Page >
+    public class PageFieldParseClass : IField< Page >
     {
         public void Parse( ref Page page, params string[] entry )
         {
@@ -62,7 +62,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public sealed class PageFieldFormatClass : IField< Page >
+    public class PageFieldFormatClass : IField< Page >
     {
         public void Parse( ref Page page, params string[] entry )
         {
@@ -70,7 +70,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public sealed class PageFieldFilterClass : IField< Page >
+    public class PageFieldFilterClass : IField< Page >
     {
         public void Parse( ref Page page, params string[] entry )
         {
@@ -80,7 +80,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public sealed class PageFieldRepeatClass : IField< Page >
+    public class PageFieldRepeatClass : IField< Page >
     {
         public void Parse( ref Page page, params string[] entry )
         {
@@ -89,7 +89,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public sealed class PageFieldPmaClass : IField< Page >
+    public class PageFieldPmaClass : IField< Page >
     {
         public void Parse( ref Page page, params string[] entry )
         {

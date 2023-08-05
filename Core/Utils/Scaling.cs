@@ -40,7 +40,7 @@ public abstract class Scaling
     /// Scales the source to fit the target while keeping the same aspect ratio.
     /// This may cause the source to be smaller than the target in one direction. 
     /// </summary>
-    private sealed class FitScalingAnonymousInnerClass : Scaling
+    private class FitScalingAnonymousInnerClass : Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
@@ -59,7 +59,7 @@ public abstract class Scaling
     /// Scales the source to fill the target while keeping the same aspect ratio.
     /// This may cause the source to be larger than the target in one direction. 
     /// </summary>
-    private sealed class FillScalingAnonymousInnerClass : Scaling
+    private class FillScalingAnonymousInnerClass : Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
@@ -79,7 +79,7 @@ public abstract class Scaling
     /// the same aspect ratio. This may cause the source to be smaller or larger
     /// than the target in the y direction. 
     /// </summary>
-    private sealed class FillXScalingAnonymousInnerClass : Scaling
+    private class FillXScalingAnonymousInnerClass : Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
@@ -97,7 +97,7 @@ public abstract class Scaling
     /// same aspect ratio. This may cause the source to be smaller or larger than
     /// the target in the x direction. 
     /// </summary>
-    private sealed class FillYScalingAnonymousInnerClass : Scaling
+    private class FillYScalingAnonymousInnerClass : Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
@@ -114,7 +114,7 @@ public abstract class Scaling
     /// Scales the source to fill the target.
     /// This may cause the source to not keep the same aspect ratio.
     /// </summary>
-    private sealed class StretchScalingAnonymousInnerClass : Scaling
+    private class StretchScalingAnonymousInnerClass : Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
@@ -129,7 +129,7 @@ public abstract class Scaling
     /// Scales the source to fill the target in the x direction, without changing the
     /// y direction. This may cause the source to not keep the same aspect ratio. 
     /// </summary>
-    private sealed class StretchXScalingAnonymousInnerClass : Scaling
+    private class StretchXScalingAnonymousInnerClass : Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
@@ -158,7 +158,7 @@ public abstract class Scaling
     /// <summary>
     /// The source is not scaled.
     /// </summary>
-    private sealed class NoScalingAnonymousInnerClass : Scaling
+    private class NoScalingAnonymousInnerClass : Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {

@@ -19,7 +19,7 @@ using StringBuilder = System.Text.StringBuilder;
 namespace LibGDXSharp.Assets;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class AssetDescriptor
+public class AssetDescriptor
 {
     public Type                  Type       { get; init; }
     public string?               FilePath   { get; init; }

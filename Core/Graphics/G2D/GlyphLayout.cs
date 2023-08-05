@@ -40,7 +40,7 @@ namespace LibGDXSharp.G2D;
 /// </para>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class GlyphLayout : IPoolable
+public class GlyphLayout : IPoolable
 {
     public List< GlyphRun > Runs { get; set; } = new( 1 );
 

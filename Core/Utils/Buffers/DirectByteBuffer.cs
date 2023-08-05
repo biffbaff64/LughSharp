@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Utils.Buffers;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class DirectByteBuffer : MappedByteBuffer
+public class DirectByteBuffer : MappedByteBuffer
 {
     public DirectByteBuffer( int capacity )
         : base( -1, 0, capacity, capacity )

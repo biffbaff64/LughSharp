@@ -95,9 +95,8 @@ public static class PixmapIO
     }
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    /// 
     /// </summary>
     private static class CIM
     {
@@ -106,6 +105,11 @@ public static class PixmapIO
         private readonly static byte[] writeBuffer = new byte[ BufferSize ];
         private readonly static byte[] readBuffer  = new byte[ BufferSize ];
 
+        /// <summary>
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="pixmap"></param>
+        /// <exception cref="GdxRuntimeException"></exception>
         public static void Write( FileInfo file, Pixmap pixmap )
         {
             try
@@ -113,11 +117,13 @@ public static class PixmapIO
                 var deflaterOutputStream = new DeflaterOutputStream( file.OpenWrite() );
 
                 var output = new BinaryWriter( deflaterOutputStream );
+
                 output.Write( pixmap.Width );
                 output.Write( pixmap.Height );
                 output.Write( PixmapFormat.ToGdx2DPixmapFormat( pixmap.GetFormat() ) );
 
                 ByteBuffer pixelBuf = pixmap.Pixels;
+
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
@@ -143,12 +149,13 @@ public static class PixmapIO
             {
                 throw new GdxRuntimeException( "Couldn't write Pixmap to file '" + file + "'", e );
             }
-//            finally
-//            {
-//                StreamUtils.CloseQuietly( output );
-//            }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        /// <exception cref="GdxRuntimeException"></exception>
         public static Pixmap Read( FileInfo file )
         {
             try
@@ -194,7 +201,8 @@ public static class PixmapIO
     /// <summary>
     /// Paeth filter - a filtering algorithm used in the compression of PNG images
     /// </summary>
-    public sealed class PNG : IDisposable
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    public class PNG : IDisposable
     {
         private const int  Ihdr                = 0x49484452;
         private const int  Idat                = 0x49444154;
@@ -203,10 +211,9 @@ public static class PixmapIO
         private const byte Compression_Deflate = 0;
         private const byte Filter_None         = 0;
         private const byte Interlace_None      = 0;
-        private const byte Paeth               = 4;
+        private const byte Paeth_Filter        = 4;
 
-        private readonly byte[] _signature = { 137, 80, 78, 71, 13, 10, 26, 10 };
-
+        private readonly byte[]      _signature = { 137, 80, 78, 71, 13, 10, 26, 10 };
         private readonly Deflater    _deflater;
         private readonly ChunkBuffer _buffer;
 
@@ -215,6 +222,9 @@ public static class PixmapIO
         private List< byte >? _prevLineBytes;
         private int           _lastLineLen;
 
+        /// <summary>
+        /// </summary>
+        /// <param name="initialBufferSize"></param>
         public PNG( int initialBufferSize = 128 * 128 )
         {
             _buffer   = new ChunkBuffer( initialBufferSize );
@@ -260,10 +270,10 @@ public static class PixmapIO
         /// <summary>
         /// Writes the pixmap to the stream without closing the stream.
         /// </summary>
-        public void Write( StreamWriter output, Pixmap pixmap )
+        public void Write( OutputStream output, Pixmap pixmap )
         {
             var deflaterOutput = new DeflaterOutputStream( _buffer, _deflater );
-            var dataOutput     = new BinaryWriter( output );
+            var dataOutput     = new DataOutputStream( output );
 
             dataOutput.Write( _signature );
 
@@ -315,7 +325,7 @@ public static class PixmapIO
 
             for ( int y = 0, h = pixmap.Height; y < h; y++ )
             {
-                var py = _flipY ? ( h - y - 1 ) : y;
+                var py = FlipY ? ( h - y - 1 ) : y;
 
                 if ( isRgba8888 )
                 {
@@ -370,7 +380,7 @@ public static class PixmapIO
                     lineOut[ x ] = ( byte )( curLine[ x ] - c );
                 }
 
-                deflaterOutput.Write( Paeth );
+                deflaterOutput.Write( new ReadOnlySpan< byte >( Paeth_Filter ) );
                 deflaterOutput.Write( lineOut, 0, lineLen );
 
                 ( curLine, prevLine ) = ( prevLine, curLine );
@@ -388,32 +398,33 @@ public static class PixmapIO
         }
 
         // --------------------------------------------------------------------
-        
-        public sealed class ChunkBuffer : BinaryWriter
+
+        public class ChunkBuffer : DataOutputStream
         {
-            private ByteArrayOutputStream _buffer;
-            private CRC32                 _crc;
+            private readonly MemoryStream _buffer;
+            private          CRC32        _crc;
 
             public ChunkBuffer( int initialSize )
-                : this( new ByteArrayOutputStream( initialSize ), new CRC32() )
+                : this( new MemoryStream( initialSize ), new CRC32() )
             {
             }
 
-            private ChunkBuffer( ByteArrayOutputStream buffer, CRC32 crc )
+            private ChunkBuffer( MemoryStream buffer, CRC32 crc )
                 : base( new CheckedOutputStream( buffer, crc ) )
             {
                 this._buffer = buffer;
                 this._crc    = crc;
             }
 
-            public void EndChunk( BinaryWriter target )
+            public void EndChunk( DataOutputStream target )
             {
                 Flush();
 
-                target.Write( _buffer.size() - 4 );
+                target.Write( _buffer.Length - 4 );
                 _buffer.WriteTo( target );
 
                 target.Write( ( int )_crc.getValue() );
+
                 _buffer.Reset();
 
                 _crc.Reset();

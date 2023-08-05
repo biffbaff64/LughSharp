@@ -22,7 +22,7 @@ using System.Collections.Generic;
 /// 
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class TextureWrap
+public class TextureWrap
 {
     public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_Mirrored_Repeat );
     public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_Clamp_To_Edge );

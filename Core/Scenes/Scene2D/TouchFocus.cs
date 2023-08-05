@@ -19,7 +19,7 @@ using LibGDXSharp.Scenes.Listeners;
 namespace LibGDXSharp.Scenes.Scene2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class TouchFocus
+public class TouchFocus
 {
     public IEventListener? listener;
     public Actor?          listenerActor;

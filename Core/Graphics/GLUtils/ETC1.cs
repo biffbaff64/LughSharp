@@ -35,7 +35,7 @@ public class ETC1
     /// <summary>
     /// Class for storing ETC1 compressed image data.
     /// </summary>
-    public sealed class ETC1Data : IDisposable
+    public class ETC1Data : IDisposable
     {
         /// <summary>
         /// the width in pixels.

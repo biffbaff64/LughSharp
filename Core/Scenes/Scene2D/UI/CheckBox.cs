@@ -20,7 +20,7 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class CheckBox : TextButton
+public class CheckBox : TextButton
 {
     private CheckBoxStyle? _style;
 
@@ -119,7 +119,7 @@ public sealed class CheckBox : TextButton
     /// <summary>
     /// The style for a select box, see <seealso cref="CheckBox"/>.
     /// </summary>
-    public sealed class CheckBoxStyle : TextButtonStyle
+    public class CheckBoxStyle : TextButtonStyle
     {
         public IDrawable? CheckboxOn          { get; set; }
         public IDrawable? CheckboxOff         { get; set; }

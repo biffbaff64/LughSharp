@@ -21,7 +21,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// <summary>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class GLVersion : LibGDXSharp.Core.GDXVersion
+public class GLVersion : LibGDXSharp.Core.GDXVersion
 {
     private const string Tag = "GLVersion";
 

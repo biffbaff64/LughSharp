@@ -36,7 +36,7 @@ namespace LibGDXSharp.Utils.Xml;
 ///     </p>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public sealed class XmlReader
+public class XmlReader
 {
     private const int Xml_Start          = 1;
     private const int Xml_First_Final    = 34;
@@ -734,7 +734,7 @@ public sealed class XmlReader
     //
     // --------------------------------------------------------------------
 
-    public sealed class Element
+    public class Element
     {
         private List< Element >? _children;
 
@@ -752,7 +752,7 @@ public sealed class XmlReader
 
         /// <summary>
         /// </summary>
-        [UsedImplicitly] public int ChildCount => _children?.Count ?? 0;
+        public int ChildCount => _children?.Count ?? 0;
 
         /// <summary>
         /// </summary>

@@ -18,7 +18,7 @@ namespace LibGDXSharp.Backends.Desktop;
 
 /// <summary>
 /// </summary>
-public sealed class GLFileHandle : FileHandle
+public class GLFileHandle : FileHandle
 {
     /// <summary>
     /// </summary>
