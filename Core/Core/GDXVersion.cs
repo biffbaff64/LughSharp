@@ -21,7 +21,7 @@ public class GDXVersion
     private readonly static Version version = new();
 
     // the current version of LibGDXSharp as a string in the major.minor.revision format
-    public const string VersionString = "0.0.1";
+    public const string VERSION_STRING = "0.0.1";
 
     protected static int MajorVersion    { get; set; }
     protected static int MinorVersion    { get; set; }
@@ -39,7 +39,7 @@ public class GDXVersion
         }
         catch ( Exception e )
         {
-            throw new GdxRuntimeException( "Invalid version " + VersionString, e );
+            throw new GdxRuntimeException( "Invalid version " + VERSION_STRING, e );
         }
     }
 

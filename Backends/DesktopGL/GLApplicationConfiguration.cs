@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using VideoMode = Silk.NET.GLFW.VideoMode;
+using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 
 namespace LibGDXSharp.Backends.Desktop;
 
@@ -160,16 +160,16 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// <summary>
     /// Gets the currently active display mode for the primary monitor.
     /// </summary>
-    public static unsafe DisplayMode GetDisplayMode()
+    public static unsafe GLGraphics.GLDisplayMode GetDisplayMode()
     {
         GLApplication.InitialiseGL();
 
-        VideoMode* videoMode = Glfw.GetApi().GetVideoMode( Glfw.GetApi().GetPrimaryMonitor() );
+        Monitor*   monitor   = GLFW.GetPrimaryMonitor();
+        VideoMode* videoMode = GLFW.GetVideoMode( monitor );
 
         return new GLGraphics.GLDisplayMode
             (
-//            Glfw.GetApi().GetPrimaryMonitor(),
-            0,
+            0,  //TODO:
             videoMode -> Width,
             videoMode -> Height,
             videoMode -> RefreshRate,

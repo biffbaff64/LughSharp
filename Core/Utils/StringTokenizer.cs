@@ -184,7 +184,7 @@ public class StringTokenizer
         {
             c = _delimiters[ i ];
 
-            if ( c is >= CharHelper.Min_High_Surrogate and <= CharHelper.Max_Low_Surrogate )
+            if ( c is >= CharHelper.MIN_HIGH_SURROGATE and <= CharHelper.MAX_LOW_SURROGATE )
             {
                 c = char.ConvertToUtf32( _delimiters, i );
 

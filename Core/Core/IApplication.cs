@@ -73,10 +73,10 @@ public interface IApplication
         WebGL,
     }
 
-    public const int LogNone  = 0;
-    public const int LogError = 1;
-    public const int LogInfo  = 2;
-    public const int LogDebug = 3;
+    public const int LOG_NONE  = 0;
+    public const int LOG_ERROR = 1;
+    public const int LOG_INFO  = 2;
+    public const int LOG_DEBUG = 3;
 
     /// <summary>
     /// Getter and Setter for the log level.

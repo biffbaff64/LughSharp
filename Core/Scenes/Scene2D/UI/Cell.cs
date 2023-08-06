@@ -21,15 +21,15 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Cell : IPoolable
 {
-    private const float Zerof   = 0f;
-    private const float Onef    = 1f;
-    private const int   Zeroi   = 0;
-    private const int   Onei    = 1;
-    private const int   Centeri = Onei;
-    private const int   Topi    = Align.Top;
-    private const int   Bottomi = Align.Bottom;
-    private const int   Lefti   = Align.Left;
-    private const int   Righti  = Align.Right;
+    private const float ZEROF   = 0f;
+    private const float ONEF    = 1f;
+    private const int   ZEROI   = 0;
+    private const int   ONEI    = 1;
+    private const int   CENTERI = ONEI;
+    private const int   TOPI    = Align.TOP;
+    private const int   BOTTOMI = Align.BOTTOM;
+    private const int   LEFTI   = Align.LEFT;
+    private const int   RIGHTI  = Align.RIGHT;
 
     private IFiles? _files;
     private Cell?   _defaults;
@@ -49,7 +49,7 @@ public class Cell : IPoolable
     public Value? PadBottom   { get; set; }
     public Value? PadRight    { get; set; }
 
-    public int  Alignment { get; set; } = Align.None;
+    public int  Alignment { get; set; } = Align.NONE;
     public int  ExpandX   { get; set; }
     public int  ExpandY   { get; set; }
     public int  Colspan   { get; set; }
@@ -786,37 +786,37 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    /// Sets <see cref="FillX"/> and <see cref="FillY"/> to <see cref="Onef"/>
+    /// Sets <see cref="FillX"/> and <see cref="FillY"/> to <see cref="ONEF"/>
     /// </summary>
     /// <returns>This Cell for chaining</returns>
     public Cell SetFill()
     {
-        FillX = Onef;
-        FillY = Onef;
+        FillX = ONEF;
+        FillY = ONEF;
 
         return this;
     }
 
     /// <summary>
-    /// Sets <see cref="FillX"/> to <see cref="Onef"/>.
+    /// Sets <see cref="FillX"/> to <see cref="ONEF"/>.
     /// Leaves <see cref="FillY"/> unchanged.
     /// </summary>
     /// <returns>This Cell for chaining</returns>
     public Cell SetFillX()
     {
-        FillX = Onef;
+        FillX = ONEF;
 
         return this;
     }
 
     /// <summary>
-    /// Sets <see cref="FillY"/> to <see cref="Onef"/>.
+    /// Sets <see cref="FillY"/> to <see cref="ONEF"/>.
     /// Leaves <see cref="FillX"/> unchanged.
     /// </summary>
     /// <returns>This Cell for chaining</returns>
     public Cell SetFillY()
     {
-        FillY = Onef;
+        FillY = ONEF;
 
         return this;
     }
@@ -831,24 +831,24 @@ public class Cell : IPoolable
 
     public Cell SetFill( bool x, bool y )
     {
-        FillX = x ? Onef : Zerof;
-        FillY = y ? Onef : Zerof;
+        FillX = x ? ONEF : ZEROF;
+        FillY = y ? ONEF : ZEROF;
 
         return this;
     }
 
     public Cell SetFill( bool fill )
     {
-        FillX = fill ? Onef : Zerof;
-        FillY = fill ? Onef : Zerof;
+        FillX = fill ? ONEF : ZEROF;
+        FillY = fill ? ONEF : ZEROF;
 
         return this;
     }
 
     /// <summary>
-    /// Sets the alignment of the actor within the cell. Set to <see cref="Align.Center"/>,
-    /// <see cref="Align.Top"/>, <see cref="Align.Bottom"/>, <see cref="Align.Left"/>,
-    /// <see cref="Align.Right"/>, or any combination of those. 
+    /// Sets the alignment of the actor within the cell. Set to <see cref="Align.CENTER"/>,
+    /// <see cref="Align.TOP"/>, <see cref="Align.BOTTOM"/>, <see cref="Align.LEFT"/>,
+    /// <see cref="Align.RIGHT"/>, or any combination of those. 
     /// </summary>
     public Cell SetAlignment( int align )
     {
@@ -858,83 +858,83 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    /// Sets the alignment of the actor within the cell to <see cref="Align.Center"/>.
+    /// Sets the alignment of the actor within the cell to <see cref="Align.CENTER"/>.
     /// This clears any other alignment.
     /// </summary>
     public Cell Center()
     {
-        Alignment = Centeri;
+        Alignment = CENTERI;
 
         return this;
     }
 
     /// <summary>
-    /// Adds <see cref="Align.Top"/> and clears <see cref="Align.Bottom"/> for
+    /// Adds <see cref="Align.TOP"/> and clears <see cref="Align.BOTTOM"/> for
     /// the alignment of the actor within the cell.
     /// </summary>
     public Cell Top()
     {
-        if ( Alignment == Align.None )
+        if ( Alignment == Align.NONE )
         {
-            Alignment = Topi;
+            Alignment = TOPI;
         }
         else
         {
-            Alignment = ( Alignment | Align.Top ) & ~Align.Bottom;
+            Alignment = ( Alignment | Align.TOP ) & ~Align.BOTTOM;
         }
 
         return this;
     }
 
     /// <summary>
-    /// Adds <see cref="Align.Left"/> and clears <see cref="Align.Right"/> for
+    /// Adds <see cref="Align.LEFT"/> and clears <see cref="Align.RIGHT"/> for
     /// the alignment of the actor within the cell.
     /// </summary>
     public Cell Left()
     {
-        if ( Alignment == Align.None )
+        if ( Alignment == Align.NONE )
         {
-            Alignment = Lefti;
+            Alignment = LEFTI;
         }
         else
         {
-            Alignment = ( Alignment | Align.Left ) & ~Align.Right;
+            Alignment = ( Alignment | Align.LEFT ) & ~Align.RIGHT;
         }
 
         return this;
     }
 
     /// <summary>
-    /// Adds <see cref="Align.Bottom"/> and clears <see cref="Align.Top"/> for
+    /// Adds <see cref="Align.BOTTOM"/> and clears <see cref="Align.TOP"/> for
     /// the alignment of the actor within the cell.
     /// </summary>
     public Cell Bottom()
     {
-        if ( Alignment == Align.None )
+        if ( Alignment == Align.NONE )
         {
-            Alignment = Bottomi;
+            Alignment = BOTTOMI;
         }
         else
         {
-            Alignment = ( Alignment | Align.Bottom ) & ~Align.Top;
+            Alignment = ( Alignment | Align.BOTTOM ) & ~Align.TOP;
         }
 
         return this;
     }
 
     /// <summary>
-    /// Adds <see cref="Align.Right"/> and clears <see cref="Align.Left"/> for
+    /// Adds <see cref="Align.RIGHT"/> and clears <see cref="Align.LEFT"/> for
     /// the alignment of the actor within the cell.
     /// </summary>
     public Cell Right()
     {
-        if ( Alignment == Align.None )
+        if ( Alignment == Align.NONE )
         {
-            Alignment = Righti;
+            Alignment = RIGHTI;
         }
         else
         {
-            Alignment = ( Alignment | Align.Right ) & ~Align.Left;
+            Alignment = ( Alignment | Align.RIGHT ) & ~Align.LEFT;
         }
 
         return this;
@@ -942,48 +942,48 @@ public class Cell : IPoolable
 
     public Cell Grow()
     {
-        ExpandX = Onei;
-        ExpandY = Onei;
-        FillX   = Onef;
-        FillY   = Onef;
+        ExpandX = ONEI;
+        ExpandY = ONEI;
+        FillX   = ONEF;
+        FillY   = ONEF;
 
         return this;
     }
 
     public Cell GrowX()
     {
-        ExpandX = Onei;
-        FillX   = Onef;
+        ExpandX = ONEI;
+        FillX   = ONEF;
 
         return this;
     }
 
     public Cell GrowY()
     {
-        ExpandY = Onei;
-        FillY   = Onef;
+        ExpandY = ONEI;
+        FillY   = ONEF;
 
         return this;
     }
 
     public Cell Expand()
     {
-        ExpandX = Onei;
-        ExpandY = Onei;
+        ExpandX = ONEI;
+        ExpandY = ONEI;
 
         return this;
     }
 
     public Cell SetExpandX()
     {
-        ExpandX = Onei;
+        ExpandX = ONEI;
 
         return this;
     }
 
     public Cell SetExpandY()
     {
-        ExpandY = Onei;
+        ExpandY = ONEI;
 
         return this;
     }
@@ -998,8 +998,8 @@ public class Cell : IPoolable
 
     public Cell Expand( bool x, bool y )
     {
-        ExpandX = x ? Onei : Zeroi;
-        ExpandY = y ? Onei : Zeroi;
+        ExpandX = x ? ONEI : ZEROI;
+        ExpandY = y ? ONEI : ZEROI;
 
         return this;
     }
@@ -1096,7 +1096,7 @@ public class Cell : IPoolable
         PadRight    = null;
         FillX       = 0f;
         FillY       = 0f;
-        Alignment   = Align.None;
+        Alignment   = Align.NONE;
         ExpandX     = default;
         ExpandY     = default;
         Colspan     = default;
@@ -1194,12 +1194,12 @@ public class Cell : IPoolable
                 PadLeft     = UI.Value.Zero,
                 PadBottom   = UI.Value.Zero,
                 PadRight    = UI.Value.Zero,
-                FillX       = Zerof,
-                FillY       = Zerof,
-                Alignment   = Centeri,
-                ExpandX     = Zeroi,
-                ExpandY     = Zeroi,
-                Colspan     = Onei,
+                FillX       = ZEROF,
+                FillY       = ZEROF,
+                Alignment   = CENTERI,
+                ExpandX     = ZEROI,
+                ExpandY     = ZEROI,
+                Colspan     = ONEI,
                 UniformX    = default( bool ),
                 UniformY    = default( bool )
             };

@@ -193,7 +193,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                     {
                         switch ( rotations )
                         {
-                            case TiledMapTileLayer.Cell.Rotate90:
+                            case TiledMapTileLayer.Cell.ROTATE90:
                             {
                                 var tempV = Vertices[ IBatch.V1 ];
                                 Vertices[ IBatch.V1 ] = Vertices[ IBatch.V2 ];
@@ -210,7 +210,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                                 break;
                             }
 
-                            case TiledMapTileLayer.Cell.Rotate180:
+                            case TiledMapTileLayer.Cell.ROTATE180:
                             {
                                 var tempU = Vertices[ IBatch.U1 ];
                                 Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
@@ -231,7 +231,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                                 break;
                             }
 
-                            case TiledMapTileLayer.Cell.Rotate270:
+                            case TiledMapTileLayer.Cell.ROTATE270:
                             {
                                 var tempV = Vertices[ IBatch.V1 ];
                                 Vertices[ IBatch.V1 ] = Vertices[ IBatch.V4 ];
@@ -250,7 +250,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                         }
                     }
 
-                    Batch.Draw( region.Texture, Vertices, 0, NumVertices );
+                    Batch.Draw( region.Texture, Vertices, 0, NUM_VERTICES );
                 }
             }
         }

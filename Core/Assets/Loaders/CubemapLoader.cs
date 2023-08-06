@@ -84,7 +84,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
             {
                 if ( fileName.Contains( ".ktx" ) || fileName.Contains( ".zktx" ) )
                 {
-                    _loaderInfo.cubemapData = new KTXTextureData( file, genMipMaps );
+                    _loaderInfo.cubemapData = new KtxTextureData( file, genMipMaps );
                 }
             }
         }

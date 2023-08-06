@@ -18,7 +18,7 @@ namespace LibGDXSharp.Utils;
 
 public static class TimeUtils
 {
-    private const long NanosPerMilli = 1000000;
+    private const long NANOS_PER_MILLI = 1000000;
 
     /// <summary>
     /// The current value of the system timer, in nanoseconds.
@@ -35,20 +35,20 @@ public static class TimeUtils
     /// </summary>
     /// <param name="nanos">Must be in nanoseconds.</param>
     /// <returns></returns>
-    public static long NanosToMillis( long nanos ) => nanos / NanosPerMilli;
+    public static long NanosToMillis( long nanos ) => nanos / NANOS_PER_MILLI;
 
     /// <summary>
     /// Converts the CURRENT time in nanoseconds to milliseconds.
     /// </summary>
     /// <returns></returns>
-    public static long NanosToMillis() => NanoTime() / NanosPerMilli;
+    public static long NanosToMillis() => NanoTime() / NANOS_PER_MILLI;
 
     /// <summary>
     /// Convert milliseconds time to nanoseconds
     /// </summary>
     /// <param name="millis">Must be in milliseconds.</param>
     /// <returns></returns>
-    public static long MillisToNanos( long millis ) => millis * NanosPerMilli;
+    public static long MillisToNanos( long millis ) => millis * NANOS_PER_MILLI;
 
     /// <summary>
     /// Get the time in nanos passed since a previous time

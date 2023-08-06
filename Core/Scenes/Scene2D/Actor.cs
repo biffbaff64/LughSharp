@@ -581,11 +581,11 @@ public class Actor : IActor
     {
         var x = this._x;
 
-        if ( ( alignment & Align.Right ) != 0 )
+        if ( ( alignment & Align.RIGHT ) != 0 )
         {
             x += _width;
         }
-        else if ( ( alignment & Align.Left ) == 0 )
+        else if ( ( alignment & Align.LEFT ) == 0 )
         {
             x += _width / 2;
         }
@@ -599,11 +599,11 @@ public class Actor : IActor
     /// </summary>
     public void SetX( float x, int alignment )
     {
-        if ( ( alignment & Align.Right ) != 0 )
+        if ( ( alignment & Align.RIGHT ) != 0 )
         {
             x -= _width;
         }
-        else if ( ( alignment & Align.Left ) == 0 )
+        else if ( ( alignment & Align.LEFT ) == 0 )
         {
             x -= _width / 2;
         }
@@ -638,11 +638,11 @@ public class Actor : IActor
     /// </summary>
     public void SetY( float y, int alignment )
     {
-        if ( ( alignment & Align.Top ) != 0 )
+        if ( ( alignment & Align.TOP ) != 0 )
         {
             y -= _height;
         }
-        else if ( ( alignment & Align.Bottom ) == 0 )
+        else if ( ( alignment & Align.BOTTOM ) == 0 )
         {
             y -= _height / 2;
         }
@@ -661,11 +661,11 @@ public class Actor : IActor
     {
         var y = this._y;
 
-        if ( ( alignment & Align.Top ) != 0 )
+        if ( ( alignment & Align.TOP ) != 0 )
         {
             y += _height;
         }
-        else if ( ( alignment & Align.Bottom ) == 0 )
+        else if ( ( alignment & Align.BOTTOM ) == 0 )
         {
             y += _height / 2;
         }
@@ -692,20 +692,20 @@ public class Actor : IActor
     /// </summary>
     public void SetPosition( float x, float y, int alignment )
     {
-        if ( ( alignment & Align.Right ) != 0 )
+        if ( ( alignment & Align.RIGHT ) != 0 )
         {
             x -= Width;
         }
-        else if ( ( alignment & Align.Left ) == 0 )
+        else if ( ( alignment & Align.LEFT ) == 0 )
         {
             x -= Width / 2;
         }
 
-        if ( ( alignment & Align.Top ) != 0 )
+        if ( ( alignment & Align.TOP ) != 0 )
         {
             y -= Height;
         }
-        else if ( ( alignment & Align.Bottom ) == 0 )
+        else if ( ( alignment & Align.BOTTOM ) == 0 )
         {
             y -= Height / 2;
         }
@@ -865,11 +865,11 @@ public class Actor : IActor
     /// </summary>
     public void SetOrigin( int alignment )
     {
-        if ( ( alignment & Align.Left ) != 0 )
+        if ( ( alignment & Align.LEFT ) != 0 )
         {
             OriginX = 0;
         }
-        else if ( ( alignment & Align.Right ) != 0 )
+        else if ( ( alignment & Align.RIGHT ) != 0 )
         {
             OriginX = Width;
         }
@@ -878,11 +878,11 @@ public class Actor : IActor
             OriginX = Width / 2;
         }
 
-        if ( ( alignment & Align.Bottom ) != 0 )
+        if ( ( alignment & Align.BOTTOM ) != 0 )
         {
             OriginY = 0;
         }
-        else if ( ( alignment & Align.Top ) != 0 )
+        else if ( ( alignment & Align.TOP ) != 0 )
         {
             OriginY = Height;
         }
@@ -1164,8 +1164,8 @@ public class Actor : IActor
         }
         else
         {
-            var cos = ( float )Math.Cos( rotation * MathUtils.DegreesToRadians );
-            var sin = ( float )Math.Sin( rotation * MathUtils.DegreesToRadians );
+            var cos = ( float )Math.Cos( rotation * MathUtils.DEGREES_TO_RADIANS );
+            var sin = ( float )Math.Sin( rotation * MathUtils.DEGREES_TO_RADIANS );
 
             var originX = this.OriginX;
             var originY = this.OriginY;
@@ -1230,8 +1230,8 @@ public class Actor : IActor
         }
         else
         {
-            var cos = ( float )Math.Cos( rotation * MathUtils.DegreesToRadians );
-            var sin = ( float )Math.Sin( rotation * MathUtils.DegreesToRadians );
+            var cos = ( float )Math.Cos( rotation * MathUtils.DEGREES_TO_RADIANS );
+            var sin = ( float )Math.Sin( rotation * MathUtils.DEGREES_TO_RADIANS );
 
             var originX = this.OriginX;
             var originY = this.OriginY;

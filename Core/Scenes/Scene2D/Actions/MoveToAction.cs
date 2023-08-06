@@ -26,7 +26,7 @@ public class MoveToAction : TemporalAction
     public float StartY    { get; set; }
     public float EndX      { get; set; }
     public float EndY      { get; set; }
-    public int   Alignment { get; set; } = Align.BottomLeft;
+    public int   Alignment { get; set; } = Align.BOTTOM_LEFT;
 
     protected new void Begin()
     {
@@ -65,7 +65,7 @@ public class MoveToAction : TemporalAction
     public new void Reset()
     {
         base.Reset();
-        Alignment = Align.BottomLeft;
+        Alignment = Align.BOTTOM_LEFT;
     }
 
     public void SetStartPosition( float x, float y )

@@ -252,7 +252,7 @@ public class ClickListener : InputListener
     
     /// <summary>
     /// Sets the button to listen for, all other buttons are ignored.
-    /// Default is <see cref="IInput.Buttons.Left"/>.
+    /// Default is <see cref="IInput.Buttons.LEFT"/>.
     /// Use -1 for any button.
     /// </summary>
     public long TapCountInterval

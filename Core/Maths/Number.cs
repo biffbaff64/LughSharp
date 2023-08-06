@@ -108,5 +108,5 @@ public abstract class Number
 
     /// <summary>
     /// </summary>
-    private const long SerialVersionUID = -8742448824652078965L;
+    private const long SERIAL_VERSION_UID = -8742448824652078965L;
 }

@@ -359,7 +359,7 @@ public class Vector2 : IVector< Vector2 >
 
     public float Angle()
     {
-        var angle = ( float )Math.Atan2( Y, X ) * MathUtils.RadiansToDegrees;
+        var angle = ( float )Math.Atan2( Y, X ) * MathUtils.RADIANS_TO_DEGREES;
 
         if ( angle < 0 ) angle += 360;
 
@@ -368,12 +368,12 @@ public class Vector2 : IVector< Vector2 >
 
     public float Angle( Vector2 reference )
     {
-        return ( float )Math.Atan2( Crs( reference ), Dot( reference ) ) * MathUtils.RadiansToDegrees;
+        return ( float )Math.Atan2( Crs( reference ), Dot( reference ) ) * MathUtils.RADIANS_TO_DEGREES;
     }
 
     public float AngleDeg()
     {
-        var angle = ( float )Math.Atan2( Y, X ) * MathUtils.RadiansToDegrees;
+        var angle = ( float )Math.Atan2( Y, X ) * MathUtils.RADIANS_TO_DEGREES;
 
         if ( angle < 0 ) angle += 360;
 
@@ -382,7 +382,7 @@ public class Vector2 : IVector< Vector2 >
 
     public float AngleDeg( Vector2 reference )
     {
-        var angle = ( float )Math.Atan2( reference.Crs( this ), reference.Dot( this ) ) * MathUtils.RadiansToDegrees;
+        var angle = ( float )Math.Atan2( reference.Crs( this ), reference.Dot( this ) ) * MathUtils.RADIANS_TO_DEGREES;
 
         if ( angle < 0 ) angle += 360;
 
@@ -401,12 +401,12 @@ public class Vector2 : IVector< Vector2 >
 
     public Vector2 SetAngle( float degrees )
     {
-        return SetAngleRad( degrees * MathUtils.DegreesToRadians );
+        return SetAngleRad( degrees * MathUtils.DEGREES_TO_RADIANS );
     }
 
     public Vector2 SetAngleDeg( float degrees )
     {
-        return SetAngleRad( degrees * MathUtils.DegreesToRadians );
+        return SetAngleRad( degrees * MathUtils.DEGREES_TO_RADIANS );
     }
 
     public Vector2 SetAngleRad( float radians )
@@ -419,7 +419,7 @@ public class Vector2 : IVector< Vector2 >
 
     public Vector2 Rotate( float degrees )
     {
-        return RotateRad( degrees * MathUtils.DegreesToRadians );
+        return RotateRad( degrees * MathUtils.DEGREES_TO_RADIANS );
     }
 
     public Vector2 RotateAround( Vector2 reference, float degrees )
@@ -429,7 +429,7 @@ public class Vector2 : IVector< Vector2 >
 
     public Vector2 RotateDeg( float degrees )
     {
-        return RotateRad( degrees * MathUtils.DegreesToRadians );
+        return RotateRad( degrees * MathUtils.DEGREES_TO_RADIANS );
     }
 
     public Vector2 RotateRad( float radians )
@@ -519,7 +519,7 @@ public class Vector2 : IVector< Vector2 >
         return true;
     }
 
-    public bool EpsilonEquals( Vector2? other, float epsilon = MathUtils.Float_Rounding_Error )
+    public bool EpsilonEquals( Vector2? other, float epsilon = MathUtils.FLOAT_ROUNDING_ERROR )
     {
         if ( other == null ) return false;
         if ( Math.Abs( other.X - X ) > epsilon ) return false;
@@ -538,7 +538,7 @@ public class Vector2 : IVector< Vector2 >
 
     public bool EpsilonEquals( float x, float y )
     {
-        return EpsilonEquals( x, y, MathUtils.Float_Rounding_Error );
+        return EpsilonEquals( x, y, MathUtils.FLOAT_ROUNDING_ERROR );
     }
 
     public bool IsUnit()

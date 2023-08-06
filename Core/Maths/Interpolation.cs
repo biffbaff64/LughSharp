@@ -82,7 +82,7 @@ public abstract class Interpolation : IInterpolation
     {
         public override float Apply( float a )
         {
-            if ( a < MathUtils.Float_Rounding_Error ) return 0;
+            if ( a < MathUtils.FLOAT_ROUNDING_ERROR ) return 0;
 
             return ( float )Math.Sqrt( a );
         }
@@ -92,7 +92,7 @@ public abstract class Interpolation : IInterpolation
     {
         public override float Apply( float a )
         {
-            if ( a < MathUtils.Float_Rounding_Error ) return 0;
+            if ( a < MathUtils.FLOAT_ROUNDING_ERROR ) return 0;
 
             return 1 - ( float )Math.Sqrt( -( a - 1 ) );
         }

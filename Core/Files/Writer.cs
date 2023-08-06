@@ -33,7 +33,7 @@ public abstract class Writer : ICloseable
     /// <summary>
     /// Size of writeBuffer, must be >= 1
     /// </summary>
-    private const int WriteBufferSize = 1024;
+    private const int WRITE_BUFFER_SIZE = 1024;
 
     /// <summary>
     /// The object used to synchronize operations on this stream.  For
@@ -79,7 +79,7 @@ public abstract class Writer : ICloseable
     {
         lock ( lockObject )
         {
-            _writeBuffer ??= new char[ WriteBufferSize ];
+            _writeBuffer ??= new char[ WRITE_BUFFER_SIZE ];
 
             _writeBuffer[ 0 ] = ( char )c;
             Write( _writeBuffer, 0, 1 );
@@ -126,9 +126,9 @@ public abstract class Writer : ICloseable
         {
             char[] cbuf;
 
-            if ( len <= WriteBufferSize )
+            if ( len <= WRITE_BUFFER_SIZE )
             {
-                _writeBuffer ??= new char[ WriteBufferSize ];
+                _writeBuffer ??= new char[ WRITE_BUFFER_SIZE ];
 
                 cbuf = _writeBuffer;
             }

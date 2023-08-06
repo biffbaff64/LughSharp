@@ -22,21 +22,21 @@ namespace LibGDXSharp.Utils.Regex;
 [Obsolete]
 public partial class Pattern : IPattern
 {
-    public const int Unix_Lines              = 0x01;
-    public const int Case_Insensitive        = 0x02;
-    public const int Comments                = 0x04;
-    public const int Multiline               = 0x08;
-    public const int Literal                 = 0x10;
-    public const int Dotall                  = 0x20;
-    public const int Unicode_Case            = 0x40;
-    public const int Canon_Eq                = 0x80;
-    public const int Unicode_Character_Class = 0x100;
+    public const int UNIX_LINES              = 0x01;
+    public const int CASE_INSENSITIVE        = 0x02;
+    public const int COMMENTS                = 0x04;
+    public const int MULTILINE               = 0x08;
+    public const int LITERAL                 = 0x10;
+    public const int DOTALL                  = 0x20;
+    public const int UNICODE_CASE            = 0x40;
+    public const int CANON_EQ                = 0x80;
+    public const int UNICODE_CHARACTER_CLASS = 0x100;
 
-    public const int Max_Reps    = 0x7fffffff;
-    public const int Greedy      = 0;
-    public const int Lazy        = 1;
-    public const int Possessive  = 2;
-    public const int Independant = 3;
+    public const int MAX_REPS    = 0x7fffffff;
+    public const int GREEDY      = 0;
+    public const int LAZY        = 1;
+    public const int POSSESSIVE  = 2;
+    public const int INDEPENDANT = 3;
 
     [NonSerialized] private volatile bool                      _compiled = false;
     [NonSerialized] private volatile Dictionary< string, int > _namedGroups;
@@ -548,7 +548,7 @@ public partial class Pattern : IPattern
     /// See the description of `quotemeta' in perlfunc(1).
     /// </summary>
     [Obsolete]
-    private void RemoveQEQuoting()
+    private void RemoveQeQuoting()
     {
         int pLen = _patternLength;
         int i    = 0;
@@ -752,7 +752,7 @@ public partial class Pattern : IPattern
      * displayed with a pointer to aid in locating the syntax error.
      */
     [Obsolete]
-    private PatternSyntaxException error( string s )
+    private PatternSyntaxException Error( string s )
     {
 //        return new PatternSyntaxException( s, normalizedPattern, _cursor - 1 );
         return default!;
@@ -763,11 +763,11 @@ public partial class Pattern : IPattern
      * surrogate in the specified range.
      */
     [Obsolete]
-    private bool findSupplementary( int start, int end )
+    private bool FindSupplementary( int start, int end )
     {
         for ( int i = start; i < end; i++ )
         {
-            if ( isSupplementary( _temp[ i ] ) )
+            if ( ISSupplementary( _temp[ i ] ) )
                 return true;
         }
 
@@ -779,7 +779,7 @@ public partial class Pattern : IPattern
      * character or unpaired surrogate.
      */
     [Obsolete]
-    private static bool isSupplementary( int ch )
+    private static bool ISSupplementary( int ch )
     {
 //        return ( ch >= Character.MIN_SUPPLEMENTARY_CODE_POINT ) || Character.isSurrogate( ( char )ch );
         return default!;
@@ -796,7 +796,7 @@ public partial class Pattern : IPattern
      * contain alternations.
      */
     [Obsolete]
-    private Node expr( Node end )
+    private Node Expr( Node end )
     {
         Node   prev       = null;
         Node   firstTail  = null;
@@ -805,7 +805,7 @@ public partial class Pattern : IPattern
 
         for ( ;; )
         {
-            Node node     = sequence( end );
+            Node node     = Sequence( end );
             Node nodeTail = root; //double return
 
             if ( prev == null )
@@ -869,7 +869,7 @@ public partial class Pattern : IPattern
      * Parsing of sequences between alternations.
      */
     [Obsolete]
-    private Node sequence( Node end )
+    private Node Sequence( Node end )
     {
         Node? head = null;
         Node? tail = null;
@@ -886,7 +886,7 @@ public partial class Pattern : IPattern
                 case '(':
                     // Because group handles its own closure,
                     // we need to treat it differently
-                    node = group0();
+                    node = Group0();
 
                     // Check for comment or flag group
                     if ( node == null ) continue;
@@ -906,7 +906,7 @@ public partial class Pattern : IPattern
                     continue;
 
                 case '[':
-                    node = clazz( true );
+                    node = Clazz( true );
 
                     break;
 
@@ -928,12 +928,12 @@ public partial class Pattern : IPattern
                             oneLetter = false;
                         }
 
-                        node = family( oneLetter, comp );
+                        node = Family( oneLetter, comp );
                     }
                     else
                     {
 //                        unread();
-                        node = atom();
+                        node = Atom();
                     }
 
                     break;
@@ -1000,7 +1000,7 @@ public partial class Pattern : IPattern
 
                 case ']': // Now interpreting dangling ] and } as literals
                 case '}':
-                    node = atom();
+                    node = Atom();
 
                     break;
 
@@ -1009,7 +1009,7 @@ public partial class Pattern : IPattern
                 case '+':
                     Next();
 
-                    throw error( "Dangling meta character '" + ( ( char )ch ) + "'" );
+                    throw Error( "Dangling meta character '" + ( ( char )ch ) + "'" );
 
                 case 0:
                     if ( _cursor >= _patternLength ) goto LOOP;
@@ -1017,7 +1017,7 @@ public partial class Pattern : IPattern
                     break;
                 // Fall through
                 default:
-                    node = atom();
+                    node = Atom();
 
                     break;
             }
@@ -1050,7 +1050,7 @@ public partial class Pattern : IPattern
      * Parse and add a new Single or Slice.
      */
     [Obsolete]
-    private Node atom()
+    private Node Atom()
     {
         int  first            = 0;
         int  prev             = -1;
@@ -1149,10 +1149,10 @@ public partial class Pattern : IPattern
                 // Fall through
                 default:
                     prev = _cursor;
-                    append( ch, first );
+                    Append( ch, first );
                     first++;
 
-                    if ( isSupplementary( ch ) )
+                    if ( ISSupplementary( ch ) )
                     {
                         hasSupplementary = true;
                     }
@@ -1178,7 +1178,7 @@ public partial class Pattern : IPattern
     }
 
     [Obsolete]
-    private void append( int ch, int len )
+    private void Append( int ch, int len )
     {
 //        if ( len >= buffer.length )
 //        {
@@ -1197,7 +1197,7 @@ public partial class Pattern : IPattern
      * least that many backrefs exist at this point in the regex.
      */
     [Obsolete]
-    private Node backref( int refNum )
+    private Node Backref( int refNum )
     {
         bool done = false;
 
@@ -1256,7 +1256,7 @@ public partial class Pattern : IPattern
      * matches the escape sequence.
      */
     [Obsolete]
-    private int escape( bool inclass, bool create, bool isrange )
+    private int Escape( bool inclass, bool create, bool isrange )
     {
 //        int ch = skip();
 
@@ -1534,7 +1534,7 @@ public partial class Pattern : IPattern
      * right hand node with "understood" brackets.
      */
     [Obsolete]
-    private CharProperty clazz( bool consume )
+    private CharProperty Clazz( bool consume )
     {
         CharProperty prev         = null;
         CharProperty node         = null;
@@ -1567,7 +1567,7 @@ public partial class Pattern : IPattern
 
                 case '[':
                     firstInClass = false;
-                    node         = clazz( true );
+                    node         = Clazz( true );
 
                     if ( prev == null )
                         prev = node;
@@ -1592,7 +1592,7 @@ public partial class Pattern : IPattern
                             if ( ch == '[' )
                             {
                                 if ( rightNode == null )
-                                    rightNode = clazz( true );
+                                    rightNode = Clazz( true );
 //                                else
 //                                    rightNode = union( rightNode, clazz( true ) );
                             }
@@ -1600,7 +1600,7 @@ public partial class Pattern : IPattern
                             {
                                 // abc&&def
 //                                unread();
-                                rightNode = clazz( false );
+                                rightNode = Clazz( false );
                             }
 
                             ch = Peek();
@@ -1612,7 +1612,7 @@ public partial class Pattern : IPattern
                         if ( prev == null )
                         {
                             if ( rightNode == null )
-                                throw error( "Bad class syntax" );
+                                throw Error( "Bad class syntax" );
                             else
                                 prev = rightNode;
                         }
@@ -1635,7 +1635,7 @@ public partial class Pattern : IPattern
                     firstInClass = false;
 
                     if ( _cursor >= _patternLength )
-                        throw error( "Unclosed character class" );
+                        throw Error( "Unclosed character class" );
 
                     break;
 
@@ -1658,7 +1658,7 @@ public partial class Pattern : IPattern
                     break;
             }
 
-            node = range( bits );
+            node = Range( bits );
 
             if ( include )
             {
@@ -1690,7 +1690,7 @@ public partial class Pattern : IPattern
     }
 
     [Obsolete]
-    private CharProperty bitsOrSingle( BitClass bits, int ch )
+    private CharProperty BitsOrSingle( BitClass bits, int ch )
     {
         /* Bits can only handle codepoints in [u+0000-u+00ff] range.
            Use "single" node instead of bits when dealing with unicode
@@ -1729,7 +1729,7 @@ public partial class Pattern : IPattern
 //                        || ( ch == 0xe5 ) ) ) ) //A+ring
 //            return bits.Add( ch, flags() );
 
-        return newSingle( ch );
+        return NewSingle( ch );
     }
 
     /**
@@ -1737,7 +1737,7 @@ public partial class Pattern : IPattern
      * and return its representative node.
      */
     [Obsolete]
-    private CharProperty range( BitClass bits )
+    private CharProperty Range( BitClass bits )
     {
         int ch = Peek();
 
@@ -1825,7 +1825,7 @@ public partial class Pattern : IPattern
      * Parses a Unicode character family and returns its representative node.
      */
     [Obsolete]
-    private CharProperty family( bool singleLetter,
+    private CharProperty Family( bool singleLetter,
                                  bool maybeComplement )
     {
         Next();
@@ -1955,7 +1955,7 @@ public partial class Pattern : IPattern
      * a UnicodeScript.
      */
     [Obsolete]
-    private CharProperty unicodeScriptPropertyFor( string name )
+    private CharProperty UnicodeScriptPropertyFor( string name )
     {
 //        Character.UnicodeScript script;
 
@@ -1976,7 +1976,7 @@ public partial class Pattern : IPattern
      * Returns a CharProperty matching all characters in a UnicodeBlock.
      */
     [Obsolete]
-    private CharProperty unicodeBlockPropertyFor( string name )
+    private CharProperty UnicodeBlockPropertyFor( string name )
     {
 //        Character.UnicodeBlock block;
 
@@ -1997,7 +1997,7 @@ public partial class Pattern : IPattern
      * Returns a CharProperty matching all characters in a named property.
      */
     [Obsolete]
-    private CharProperty charPropertyNodeFor( string name )
+    private CharProperty CharPropertyNodeFor( string name )
     {
 //        CharProperty p = CharPropertyNames.charPropertyFor( name );
 
@@ -2013,7 +2013,7 @@ public partial class Pattern : IPattern
      * ">" is consumed after parsing.
      */
     [Obsolete]
-    private string groupname( int ch )
+    private string Groupname( int ch )
     {
         StringBuilder sb = new StringBuilder();
 //        sb.append( Character.toChars( ch ) );
@@ -2038,7 +2038,7 @@ public partial class Pattern : IPattern
      * returned in root.
      */
     [Obsolete]
-    private Node group0()
+    private Node Group0()
     {
 /*
         bool capturingGroup = false;
@@ -2307,7 +2307,7 @@ public partial class Pattern : IPattern
         }
 */
 
-        throw error( "Internal logic error" );
+        throw Error( "Internal logic error" );
     }
 
     /**
@@ -2316,7 +2316,7 @@ public partial class Pattern : IPattern
      * affect group counting.
      */
     [Obsolete]
-    private Node createGroup( bool anonymous )
+    private Node CreateGroup( bool anonymous )
     {
 //        int localIndex = localCount++;
 //        int groupIndex = 0;
@@ -2338,7 +2338,7 @@ public partial class Pattern : IPattern
      * Parses inlined match flags and set them appropriately.
      */
     [Obsolete]
-    private void addFlag()
+    private void AddFlag()
     {
 //        int ch = Peek();
 
@@ -2403,7 +2403,7 @@ public partial class Pattern : IPattern
      * flags appropriately.
      */
     [Obsolete]
-    private void subFlag()
+    private void SubFlag()
     {
 //        int ch = Peek();
 
@@ -2463,7 +2463,7 @@ public partial class Pattern : IPattern
      * Prev could be a single or a group, so it could be a chain of nodes.
      */
     [Obsolete]
-    private Node closure( Node prev )
+    private Node Closure( Node prev )
     {
 //        Node atom;
 //        int  ch = Peek();
@@ -2598,21 +2598,21 @@ public partial class Pattern : IPattern
      *  Utility method for parsing control escape sequences.
      */
     [Obsolete]
-    private int c()
+    private int C()
     {
 //        if ( _cursor < _patternLength )
 //        {
 //            return read() ^ 64;
 //        }
 
-        throw error( "Illegal control escape sequence" );
+        throw Error( "Illegal control escape sequence" );
     }
 
     /**
      *  Utility method for parsing octal escape sequences.
      */
     [Obsolete]
-    private int o()
+    private int O()
     {
 //        int n = read();
 
@@ -2639,14 +2639,14 @@ public partial class Pattern : IPattern
 //            return ( n - '0' );
 //        }
 
-        throw error( "Illegal octal escape sequence" );
+        throw Error( "Illegal octal escape sequence" );
     }
 
     /**
      *  Utility method for parsing hexadecimal escape sequences.
      */
     [Obsolete]
-    private int x()
+    private int X()
     {
 //        int n = read();
 
@@ -2677,7 +2677,7 @@ public partial class Pattern : IPattern
 //            return ch;
 //    }
 
-        throw error( "Illegal hexadecimal escape sequence" );
+        throw Error( "Illegal hexadecimal escape sequence" );
     }
 
     /**
@@ -2690,13 +2690,13 @@ public partial class Pattern : IPattern
     }
 
     [Obsolete]
-    private void setcursor( int pos )
+    private void Setcursor( int pos )
     {
         _cursor = pos;
     }
 
     [Obsolete]
-    private int uxxxx()
+    private int Uxxxx()
     {
         int n = 0;
 
@@ -2716,9 +2716,9 @@ public partial class Pattern : IPattern
     }
 
     [Obsolete]
-    private int u()
+    private int U()
     {
-        int n = uxxxx();
+        int n = Uxxxx();
 
 //        if ( CharHelper.isHighSurrogate( ( char )n ) )
 //        {
@@ -2743,7 +2743,7 @@ public partial class Pattern : IPattern
     //
 
     [Obsolete]
-    private static int countChars( string seq,
+    private static int CountChars( string seq,
                                    int index,
                                    int lengthInCodePoints )
     {
@@ -2801,7 +2801,7 @@ public partial class Pattern : IPattern
     }
 
     [Obsolete]
-    private static int countCodePoints( string seq )
+    private static int CountCodePoints( string seq )
     {
 //        int length = seq.length();
         int n      = 0;
@@ -2826,9 +2826,9 @@ public partial class Pattern : IPattern
  *  Returns a suitably optimized, single character matcher.
  */
     [Obsolete]
-    private Pattern.CharProperty newSingle( int ch )
+    private Pattern.CharProperty NewSingle( int ch )
     {
-        if ( Has( Case_Insensitive ) )
+        if ( Has( CASE_INSENSITIVE ) )
         {
             int lower, upper;
 
@@ -2863,7 +2863,7 @@ public partial class Pattern : IPattern
  *  Utility method for creating a string slice matcher.
  */
     [Obsolete]
-    private Pattern.Node newSlice( int[] buf, int count, bool hasSupplementary )
+    private Pattern.Node NewSlice( int[] buf, int count, bool hasSupplementary )
     {
 //        int[] tmp = new int[ count ];
 

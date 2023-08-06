@@ -136,21 +136,21 @@ public class SpriteCache
             useIndices ? size * 6 : 0,
             new VertexAttribute
                 (
-                VertexAttributes.Usage.Position,
+                VertexAttributes.Usage.POSITION,
                 2,
-                ShaderProgram.PositionAttribute
+                ShaderProgram.POSITION_ATTRIBUTE
                 ),
             new VertexAttribute
                 (
-                VertexAttributes.Usage.ColorPacked,
+                VertexAttributes.Usage.COLOR_PACKED,
                 4,
-                ShaderProgram.ColorAttribute
+                ShaderProgram.COLOR_ATTRIBUTE
                 ),
             new VertexAttribute
                 (
-                VertexAttributes.Usage.TextureCoordinates,
+                VertexAttributes.Usage.TEXTURE_COORDINATES,
                 2,
-                ShaderProgram.TexcoordAttribute + "0"
+                ShaderProgram.TEXCOORD_ATTRIBUTE + "0"
                 )
             )
             {
@@ -1156,7 +1156,7 @@ public class SpriteCache
         {
             textures?[ i ].Bind();
 
-            _mesh.Render( CustomShader ?? _shader, IGL20.GL_Triangles, offset, counts![ i ] );
+            _mesh.Render( CustomShader ?? _shader, IGL20.GL_TRIANGLES, offset, counts![ i ] );
 
             offset += counts[ i ];
         }
@@ -1207,7 +1207,7 @@ public class SpriteCache
                 length -= count;
             }
 
-            _mesh.Render( CustomShader ?? _shader, IGL20.GL_Triangles, offset, count );
+            _mesh.Render( CustomShader ?? _shader, IGL20.GL_TRIANGLES, offset, count );
 
             offset += count;
         }
@@ -1239,13 +1239,13 @@ public class SpriteCache
     {
         var vertexShader =
             "attribute vec4 "
-            + ShaderProgram.PositionAttribute
+            + ShaderProgram.POSITION_ATTRIBUTE
             + ";\n" //
             + "attribute vec4 "
-            + ShaderProgram.ColorAttribute
+            + ShaderProgram.COLOR_ATTRIBUTE
             + ";\n" //
             + "attribute vec2 "
-            + ShaderProgram.TexcoordAttribute
+            + ShaderProgram.TEXCOORD_ATTRIBUTE
             + "0;\n"                                   //
             + "uniform mat4 u_projectionViewMatrix;\n" //
             + "varying vec4 v_color;\n"                //
@@ -1254,14 +1254,14 @@ public class SpriteCache
             + "void main()\n"                          //
             + "{\n"                                    //
             + "   v_color = "
-            + ShaderProgram.ColorAttribute
+            + ShaderProgram.COLOR_ATTRIBUTE
             + ";\n"                                         //
             + "   v_color.a = v_color.a * (255.0/254.0);\n" //
             + "   v_texCoords = "
-            + ShaderProgram.TexcoordAttribute
+            + ShaderProgram.TEXCOORD_ATTRIBUTE
             + "0;\n" //
             + "   gl_Position =  u_projectionViewMatrix * "
-            + ShaderProgram.PositionAttribute
+            + ShaderProgram.POSITION_ATTRIBUTE
             + ";\n" //
             + "}\n";
 

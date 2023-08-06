@@ -89,7 +89,7 @@ public class GlyphLayout : IPoolable
     /// </summary>
     public void SetText( BitmapFont font, string str )
     {
-        SetText( font, str, 0, str.Length, font.GetColor(), 0, Align.Left, false, null );
+        SetText( font, str, 0, str.Length, font.GetColor(), 0, Align.LEFT, false, null );
     }
 
     /// <summary>
@@ -452,10 +452,10 @@ public class GlyphLayout : IPoolable
         this.Width = width;
 
         // Align runs to center or right of targetWidth.
-        if ( ( halign & Align.Left ) == 0 )
+        if ( ( halign & Align.LEFT ) == 0 )
         {
             // Not left aligned, so must be center or right aligned.
-            var center    = ( halign & Align.Center ) != 0;
+            var center    = ( halign & Align.CENTER ) != 0;
             var lineWidth = 0f;
             var lineY     = float.MinValue;
             var lineStart = 0;

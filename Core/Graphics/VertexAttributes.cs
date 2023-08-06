@@ -23,15 +23,15 @@ public class VertexAttributes
 {
     public static class Usage
     {
-        public const int Position           = 1;
-        public const int ColorUnpacked      = 2;
-        public const int ColorPacked        = 4;
-        public const int Normal             = 8;
-        public const int TextureCoordinates = 16;
-        public const int Generic            = 32;
-        public const int BoneWeight         = 64;
-        public const int Tangent            = 128;
-        public const int BiNormal           = 256;
+        public const int POSITION           = 1;
+        public const int COLOR_UNPACKED      = 2;
+        public const int COLOR_PACKED        = 4;
+        public const int NORMAL             = 8;
+        public const int TEXTURE_COORDINATES = 16;
+        public const int GENERIC            = 32;
+        public const int BONE_WEIGHT         = 64;
+        public const int TANGENT            = 128;
+        public const int BI_NORMAL           = 256;
     }
 
     /// <summary>

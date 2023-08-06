@@ -497,7 +497,7 @@ public class Actions
     {
         var action = Action< RepeatAction >();
 
-        action.RepeatCount = RepeatAction.Forever;
+        action.RepeatCount = RepeatAction.FOREVER;
         action.Action      = repeatedAction;
 
         return action;

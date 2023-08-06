@@ -67,7 +67,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         _byteBuffer.Flip();
 
         _bufferHandle = Gdx.GL20.GLGenBuffer();
-        _usage        = isStatic ? IGL20.GL_Static_Draw : IGL20.GL_Dynamic_Draw;
+        _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
 
         CreateVAO();
     }
@@ -85,7 +85,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         _byteBuffer.Flip();
 
         _bufferHandle = Gdx.GL20.GLGenBuffer();
-        _usage        = isStatic ? IGL20.GL_Static_Draw : IGL20.GL_Dynamic_Draw;
+        _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
 
         CreateVAO();
     }
@@ -94,8 +94,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         if ( _isBound )
         {
-            Gdx.GL20.GLBindBuffer( IGL20.GL_Array_Buffer, _bufferHandle );
-            Gdx.GL20.GLBufferData( IGL20.GL_Array_Buffer, _byteBuffer.Limit, _byteBuffer, _usage );
+            Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
             _isDirty = false;
         }
     }
@@ -220,7 +220,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Dispose()
     {
-        Gdx.GL30.GLBindBuffer( IGL20.GL_Array_Buffer, 0 );
+        Gdx.GL30.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
         Gdx.GL30.GLDeleteBuffer( _bufferHandle );
 
         _bufferHandle = 0;
@@ -264,7 +264,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         if ( !stillValid )
         {
-            Gdx.GL.GLBindBuffer( IGL20.GL_Array_Buffer, _bufferHandle );
+            Gdx.GL.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
 
             UnbindAttributes( shader );
 
@@ -328,11 +328,11 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         if ( _isDirty )
         {
-            gl.GLBindBuffer( IGL20.GL_Array_Buffer, _bufferHandle );
+            gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
 
             _byteBuffer.Limit = _buffer.Limit * 4;
 
-            gl.GLBufferData( IGL20.GL_Array_Buffer, _byteBuffer.Limit, _byteBuffer, _usage );
+            gl.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
 
             _isDirty = false;
         }

@@ -20,7 +20,7 @@ namespace LibGDXSharp.Utils;
 
 public class PerformanceCounters
 {
-    private const float Nano2Seconds = 1f / 1000000000.0f;
+    private const float NANO2_SECONDS = 1f / 1000000000.0f;
 
     public readonly List< PerformanceCounter > counters = new();
 
@@ -50,7 +50,7 @@ public class PerformanceCounters
 
         if ( _lastTick > 0L )
         {
-            Tick( ( t - _lastTick ) * Nano2Seconds );
+            Tick( ( t - _lastTick ) * NANO2_SECONDS );
         }
 
         _lastTick = t;

@@ -108,7 +108,7 @@ public class Texture : GLTexture, IGLTexture
     }
 
     public Texture( ITextureData? data )
-        : this( IGL20.GL_Texture_2D, Gdx.GL.GLGenTexture(), data )
+        : this( IGL20.GL_TEXTURE_2D, Gdx.GL.GLGenTexture(), data )
     {
     }
 
@@ -145,7 +145,7 @@ public class Texture : GLTexture, IGLTexture
 
         Bind();
 
-        UploadImageData( IGL20.GL_Texture_2D, data );
+        UploadImageData( IGL20.GL_TEXTURE_2D, data );
 
         UnsafeSetFilter( MinFilter, MagFilter, true );
         UnsafeSetWrap( UWrap, VWrap, true );

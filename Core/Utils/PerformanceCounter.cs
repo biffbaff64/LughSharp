@@ -33,7 +33,7 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public class PerformanceCounter
 {
-    private const float Nano2Seconds = 1f / 1000000000.0f;
+    private const float NANO2_SECONDS = 1f / 1000000000.0f;
 
     private long _startTime = 0L;
     private long _lastTick  = 0L;
@@ -87,7 +87,7 @@ public class PerformanceCounter
 
         if ( _lastTick > 0L )
         {
-            Tick( ( t - _lastTick ) * Nano2Seconds );
+            Tick( ( t - _lastTick ) * NANO2_SECONDS );
         }
 
         _lastTick = t;
@@ -140,7 +140,7 @@ public class PerformanceCounter
     {
         if ( _startTime > 0L )
         {
-            Current    += ( TimeUtils.NanoTime() - _startTime ) * Nano2Seconds;
+            Current    += ( TimeUtils.NanoTime() - _startTime ) * NANO2_SECONDS;
             _startTime =  0L;
             Valid      =  true;
         }

@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.IO.Hashing;
+
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
@@ -100,10 +102,10 @@ public static class PixmapIO
     /// </summary>
     private static class CIM
     {
-        private const int BufferSize = 32000;
+        private const int BUFFER_SIZE = 32000;
 
-        private readonly static byte[] writeBuffer = new byte[ BufferSize ];
-        private readonly static byte[] readBuffer  = new byte[ BufferSize ];
+        private readonly static byte[] writeBuffer = new byte[ BUFFER_SIZE ];
+        private readonly static byte[] readBuffer  = new byte[ BUFFER_SIZE ];
 
         /// <summary>
         /// </summary>
@@ -114,9 +116,9 @@ public static class PixmapIO
         {
             try
             {
-                var deflaterOutputStream = new DeflaterOutputStream( file.OpenWrite() );
+//                var deflaterOutputStream = new DeflaterOutputStream( file.OpenWrite() );
 
-                var output = new BinaryWriter( deflaterOutputStream );
+                var output = new BinaryWriter( file.OpenWrite() );
 
                 output.Write( pixmap.Width );
                 output.Write( pixmap.Height );
@@ -127,8 +129,8 @@ public static class PixmapIO
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
-                var remainingBytes = pixelBuf.Capacity % BufferSize;
-                var iterations     = pixelBuf.Capacity / BufferSize;
+                var remainingBytes = pixelBuf.Capacity % BUFFER_SIZE;
+                var iterations     = pixelBuf.Capacity / BUFFER_SIZE;
 
                 lock ( writeBuffer )
                 {
@@ -204,14 +206,14 @@ public static class PixmapIO
     [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     public class PNG : IDisposable
     {
-        private const int  Ihdr                = 0x49484452;
-        private const int  Idat                = 0x49444154;
-        private const int  Iend                = 0x49454E44;
-        private const byte Color_ARGB          = 6;
-        private const byte Compression_Deflate = 0;
-        private const byte Filter_None         = 0;
-        private const byte Interlace_None      = 0;
-        private const byte Paeth_Filter        = 4;
+        private const int  IHDR                = 0x49484452;
+        private const int  IDAT                = 0x49444154;
+        private const int  IEND                = 0x49454E44;
+        private const byte COLOR_ARGB          = 6;
+        private const byte COMPRESSION_DEFLATE = 0;
+        private const byte FILTER_NONE         = 0;
+        private const byte INTERLACE_NONE      = 0;
+        private const byte PAETH_FILTER        = 4;
 
         private readonly byte[]      _signature = { 137, 80, 78, 71, 13, 10, 26, 10 };
         private readonly Deflater    _deflater;
@@ -240,14 +242,15 @@ public static class PixmapIO
         /// Sets the deflate compression level.
         /// Default is <see cref="Deflater.DEFAULT_COMPRESSION"/>. 
         /// </summary>
-        public void SetCompression( int level )
-        {
-            _deflater.SetLevel( level );
-        }
+        public void SetCompression( int level ) => _deflater.SetLevel( level );
 
+        /// <summary>
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="pixmap"></param>
         public void Write( FileInfo file, Pixmap pixmap )
         {
-            var output = new StreamWriter( file.OpenWrite() );
+            var output = new MemoryStream();
 
             try
             {
@@ -259,34 +262,25 @@ public static class PixmapIO
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing,
-        /// releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            _deflater.Finish();
-        }
-
-        /// <summary>
         /// Writes the pixmap to the stream without closing the stream.
         /// </summary>
-        public void Write( OutputStream output, Pixmap pixmap )
+        public void Write( Stream output, Pixmap pixmap )
         {
-            var deflaterOutput = new DeflaterOutputStream( _buffer, _deflater );
+            var deflaterOutput = new DeflaterOutputStream( output/*_buffer*/, _deflater );
             var dataOutput     = new DataOutputStream( output );
 
             dataOutput.Write( _signature );
 
-            _buffer.Write( Ihdr );
+            _buffer.Write( IHDR );
             _buffer.Write( pixmap.Width );
-            _buffer.Write( pixmap.Height );
-            _buffer.Write( 8 ); // 8 bits per component.
-            _buffer.Write( Color_ARGB );
-            _buffer.Write( Compression_Deflate );
-            _buffer.Write( Filter_None );
-            _buffer.Write( Interlace_None );
+            _buffer.Write( pixmap.Height );       // 
+            _buffer.Write( 8 );                   // 8 bits per component.
+            _buffer.Write( COLOR_ARGB );          // 
+            _buffer.Write( COMPRESSION_DEFLATE ); // 
+            _buffer.Write( FILTER_NONE );
+            _buffer.Write( INTERLACE_NONE );
             _buffer.EndChunk( dataOutput );
-            _buffer.Write( Idat );
+            _buffer.Write( IDAT );
 
             _deflater.Reset();
 
@@ -380,7 +374,7 @@ public static class PixmapIO
                     lineOut[ x ] = ( byte )( curLine[ x ] - c );
                 }
 
-                deflaterOutput.Write( new ReadOnlySpan< byte >( Paeth_Filter ) );
+                deflaterOutput.Write( new ReadOnlySpan< byte >( PAETH_FILTER ) );
                 deflaterOutput.Write( lineOut, 0, lineLen );
 
                 ( curLine, prevLine ) = ( prevLine, curLine );
@@ -391,7 +385,7 @@ public static class PixmapIO
             deflaterOutput.Finish();
             _buffer.EndChunk( dataOutput );
 
-            _buffer.Write( Iend );
+            _buffer.Write( IEND );
             _buffer.EndChunk( dataOutput );
 
             output.Flush();
@@ -402,15 +396,15 @@ public static class PixmapIO
         public class ChunkBuffer : DataOutputStream
         {
             private readonly MemoryStream _buffer;
-            private          CRC32        _crc;
+            private readonly Crc32        _crc;
 
             public ChunkBuffer( int initialSize )
-                : this( new MemoryStream( initialSize ), new CRC32() )
+                : this( new MemoryStream( initialSize ), new Crc32() )
             {
             }
 
-            private ChunkBuffer( MemoryStream buffer, CRC32 crc )
-                : base( new CheckedOutputStream( buffer, crc ) )
+            private ChunkBuffer( MemoryStream buffer, Crc32 crc )
+                : base( new MemoryStream()/*new CheckedOutputStream( buffer, crc )*/ )
             {
                 this._buffer = buffer;
                 this._crc    = crc;
@@ -420,15 +414,24 @@ public static class PixmapIO
             {
                 Flush();
 
-                target.Write( _buffer.Length - 4 );
-                _buffer.WriteTo( target );
+//                target.Write( _buffer.Length - 4 );
+//                _buffer.WriteTo( target );
 
-                target.Write( ( int )_crc.getValue() );
+//                target.Write( _crc.GetCurrentHash() );
 
-                _buffer.Reset();
+//                _buffer.Reset();
 
                 _crc.Reset();
             }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing,
+        /// releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            _deflater.Finish();
         }
     }
 }

@@ -18,8 +18,14 @@ global using System;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 
-global using Silk.NET.GLFW;
-global using Silk.NET.Windowing;
+// -----------------------------------------------------------------------
+// OpenTK OpenGL support
+
+global using OpenTK.Core;
+global using OpenTK.Graphics;
+global using OpenTK.Windowing;
+global using OpenTK.Windowing.Desktop;
+global using OpenTK.Windowing.GraphicsLibraryFramework;
 
 // -----------------------------------------------------------------------
 // LibGDXSharp
@@ -36,8 +42,8 @@ global using LibGDXSharp.Utils;
 global using Vector2 = LibGDXSharp.Maths.Vector2;
 global using Vector3 = LibGDXSharp.Maths.Vector3;
 
-//
 // -----------------------------------------------------------------------
+//
 
 
 

@@ -20,24 +20,24 @@ namespace LibGDXSharp.Utils;
 
 public static class Align
 {
-    public const int None   = 0;
-    public const int Center = 1 << 0;
-    public const int Top    = 1 << 1;
-    public const int Bottom = 1 << 2;
-    public const int Left   = 1 << 3;
-    public const int Right  = 1 << 4;
+    public const int NONE   = 0;
+    public const int CENTER = 1 << 0;
+    public const int TOP    = 1 << 1;
+    public const int BOTTOM = 1 << 2;
+    public const int LEFT   = 1 << 3;
+    public const int RIGHT  = 1 << 4;
 
-    public const int TopLeft     = Top | Left;
-    public const int TopRight    = Top | Right;
-    public const int BottomLeft  = Bottom | Left;
-    public const int BottomRight = Bottom | Right;
+    public const int TOP_LEFT     = TOP | LEFT;
+    public const int TOP_RIGHT    = TOP | RIGHT;
+    public const int BOTTOM_LEFT  = BOTTOM | LEFT;
+    public const int BOTTOM_RIGHT = BOTTOM | RIGHT;
 
-    public static bool IsLeft( int align )             => ( align & Left ) != 0;
-    public static bool IsRight( int align )            => ( align & Right ) != 0;
-    public static bool IsTop( int align )              => ( align & Top ) != 0;
-    public static bool IsBottom( int align )           => ( align & Bottom ) != 0;
-    public static bool IsCenterHorizontal( int align ) => ( ( ( align & Left ) == 0 ) && ( ( align & Right ) == 0 ) );
-    public static bool IsCenterVertical( int align )   => ( ( ( align & Top ) == 0 ) && ( ( align & Bottom ) == 0 ) );
+    public static bool IsLeft( int align )             => ( align & LEFT ) != 0;
+    public static bool IsRight( int align )            => ( align & RIGHT ) != 0;
+    public static bool IsTop( int align )              => ( align & TOP ) != 0;
+    public static bool IsBottom( int align )           => ( align & BOTTOM ) != 0;
+    public static bool IsCenterHorizontal( int align ) => ( ( ( align & LEFT ) == 0 ) && ( ( align & RIGHT ) == 0 ) );
+    public static bool IsCenterVertical( int align )   => ( ( ( align & TOP ) == 0 ) && ( ( align & BOTTOM ) == 0 ) );
 
     /// <summary>
     /// </summary>
@@ -47,11 +47,11 @@ public static class Align
     {
         var buffer = new StringBuilder();
 
-        if ( ( align & Top ) != 0 )
+        if ( ( align & TOP ) != 0 )
         {
             buffer.Append( "Top," );
         }
-        else if ( ( align & Bottom ) != 0 )
+        else if ( ( align & BOTTOM ) != 0 )
         {
             buffer.Append( "Bottom," );
         }
@@ -60,11 +60,11 @@ public static class Align
             buffer.Append( "Center," );
         }
 
-        if ( ( align & Left ) != 0 )
+        if ( ( align & LEFT ) != 0 )
         {
             buffer.Append( "Left" );
         }
-        else if ( ( align & Right ) != 0 )
+        else if ( ( align & RIGHT ) != 0 )
         {
             buffer.Append( "Right" );
         }

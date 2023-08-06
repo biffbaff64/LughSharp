@@ -118,7 +118,7 @@ public class FileTextureArrayData : ITextureArrayData
         {
             if ( _textureDatas[ i ]?.TextureDataType == ITextureData.TextureType.Custom )
             {
-                _textureDatas[ i ]?.ConsumeCustomData( IGL30.GL_Texture_2D_Array );
+                _textureDatas[ i ]?.ConsumeCustomData( IGL30.GL_TEXTURE_2D_ARRAY );
             }
             else
             {
@@ -147,7 +147,7 @@ public class FileTextureArrayData : ITextureArrayData
 
                 Gdx.GL30.GLTexSubImage3D
                     (
-                     IGL30.GL_Texture_2D_Array,
+                     IGL30.GL_TEXTURE_2D_ARRAY,
                      0,
                      0,
                      0,
@@ -162,7 +162,7 @@ public class FileTextureArrayData : ITextureArrayData
 
                 if ( _useMipMaps )
                 {
-                    Gdx.GL20.GLGenerateMipmap( IGL30.GL_Texture_2D_Array );
+                    Gdx.GL20.GLGenerateMipmap( IGL30.GL_TEXTURE_2D_ARRAY );
                 }
 
                 if ( disposePixmap ) pixmap.Dispose();

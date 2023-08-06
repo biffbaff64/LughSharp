@@ -190,14 +190,14 @@ public class Stage : InputAdapter
             }
         }
 
-        Gdx.GL.GLEnable( IGL20.GL_Blend );
+        Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
         _debugShapes.ProjectionMatrix = Camera.Combined;
         _debugShapes.Begin();
         Root.DrawDebug( _debugShapes );
         _debugShapes.End();
 
-        Gdx.GL.GLDisable( IGL20.GL_Blend );
+        Gdx.GL.GLDisable( IGL20.GL_BLEND );
     }
 
     /// <summary>

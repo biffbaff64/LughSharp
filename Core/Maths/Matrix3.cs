@@ -155,7 +155,7 @@ public class Matrix3
 	/// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToRotation( float degrees )
     {
-        return SetToRotationRad( MathUtils.DegreesToRadians * degrees );
+        return SetToRotationRad( MathUtils.DEGREES_TO_RADIANS * degrees );
     }
 
     /// <summary>
@@ -507,7 +507,7 @@ public class Matrix3
 	/// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Rotate( float degrees )
     {
-        return RotateRad( MathUtils.DegreesToRadians * degrees );
+        return RotateRad( MathUtils.DEGREES_TO_RADIANS * degrees );
     }
 
     /// <summary>
@@ -618,7 +618,7 @@ public class Matrix3
 
     public float GetRotation()
     {
-        return MathUtils.RadiansToDegrees * ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
+        return MathUtils.RADIANS_TO_DEGREES * ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
     }
 
     public float GetRotationRad()

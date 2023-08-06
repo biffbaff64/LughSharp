@@ -51,7 +51,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
     {
         public long MonitorHandle { get; set; }
 
-        public GLDisplayMode( long monitor, int width, int height, int refreshRate, int bitsPerPixel )
+        public unsafe GLDisplayMode( long monitor, int width, int height, int refreshRate, int bitsPerPixel )
             : base( width, height, refreshRate, bitsPerPixel )
         {
             this.MonitorHandle = monitor;
@@ -233,7 +233,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     public override float GetPpcY() => 0;
 
-    protected virtual void Dispose( bool disposing )
+    protected void Dispose( bool disposing )
     {
         if ( disposing )
         {

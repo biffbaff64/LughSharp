@@ -65,8 +65,8 @@ public class Pixmap : IDisposable
 
     // ----------------------------------------------------------
 
-    public Gdx2DPixmap gdx2DPixmap;
-    public bool        isDisposed = false;
+    public readonly Gdx2DPixmap gdx2DPixmap;
+    public          bool        isDisposed = false;
 
     #region PublicProperties
 
@@ -101,8 +101,8 @@ public class Pixmap : IDisposable
             gdx2DPixmap.Scale =
             (
                 _filter == Filter.NearestNeighbour
-                    ? Gdx2DPixmap.Gdx2D_Scale_Nearest
-                    : Gdx2DPixmap.Gdx2D_Scale_Linear
+                    ? Gdx2DPixmap.GDX_2D_SCALE_NEAREST
+                    : Gdx2DPixmap.GDX_2D_SCALE_LINEAR
             );
         }
     }
@@ -110,10 +110,6 @@ public class Pixmap : IDisposable
     #endregion
 
     private int _color = 0;
-
-    // ----------------------------------------------------------
-    // Code
-    // ----------------------------------------------------------
 
     /// <summary>
     /// Creates a new Pixmap instance with the given width, height and format.
@@ -294,8 +290,11 @@ public class Pixmap : IDisposable
     public void DrawPixmap( Pixmap pixmap, int srcx, int srcy, int srcWidth,
                             int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight )
     {
-        this.gdx2DPixmap.DrawPixmap( pixmap.gdx2DPixmap, srcx, srcy, srcWidth,
-                                     srcHeight, dstx, dsty, dstWidth, dstHeight );
+        this.gdx2DPixmap.DrawPixmap
+            (
+            pixmap.gdx2DPixmap, srcx, srcy, srcWidth,
+            srcHeight, dstx, dsty, dstWidth, dstHeight
+            );
     }
 
     /// <summary>
@@ -433,7 +432,7 @@ public class Pixmap : IDisposable
         set
         {
             ByteBuffer dst = gdx2DPixmap.pixelPtr;
-            
+
             BufferUtils.Copy( value, dst, dst.Limit );
         }
     }
@@ -453,13 +452,13 @@ public class Pixmap : IDisposable
     /// <returns>The new Pixmap.</returns>
     public static Pixmap CreateFromFrameBuffer( int x, int y, int width, int height )
     {
-        Gdx.GL.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
+        Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
 
         Pixmap pixmap = new( width, height, Pixmap.Format.RGBA8888 );
 
         ByteBuffer pixels = pixmap.Pixels;
 
-        Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
+        Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
 
         return pixmap;
     }

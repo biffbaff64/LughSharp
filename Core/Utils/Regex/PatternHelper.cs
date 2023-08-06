@@ -35,14 +35,14 @@ public partial class Pattern
     {
         var testChar = _temp[ _cursor++ ];
 
-        if ( Has( Comments ) )
+        if ( Has( COMMENTS ) )
         {
             testChar = ParsePastWhitespace( testChar );
         }
 
         if ( ch != testChar )
         {
-            throw error( s );
+            throw Error( s );
         }
     }
 
@@ -63,7 +63,7 @@ public partial class Pattern
     {
         var ch = _temp[ _cursor ];
 
-        if ( Has( Comments ) )
+        if ( Has( COMMENTS ) )
         {
             ch = PeekPastWhitespace( ch );
         }
@@ -79,7 +79,7 @@ public partial class Pattern
     {
         var ch = _temp[ _cursor++ ];
 
-        if ( Has( Comments ) )
+        if ( Has( COMMENTS ) )
         {
             ch = ParsePastWhitespace( ch );
         }
@@ -89,7 +89,7 @@ public partial class Pattern
 
     /// <summary>
     /// Read the next character, and advance the _cursor by one,
-    /// ignoring the <see cref="Comments"/> setting
+    /// ignoring the <see cref="COMMENTS"/> setting
     /// </summary>
     [Obsolete]
     private int ReadEscaped()
@@ -107,7 +107,7 @@ public partial class Pattern
     {
         var ch = _temp[ ++_cursor ];
 
-        if ( Has( Comments ) )
+        if ( Has( COMMENTS ) )
         {
             ch = PeekPastWhitespace( ch );
         }
@@ -117,7 +117,7 @@ public partial class Pattern
 
     /// <summary>
     /// Advance the _cursor by one, and peek the next character,
-    /// ignoring the <see cref="Comments"/> setting
+    /// ignoring the <see cref="COMMENTS"/> setting
     /// </summary>
     [Obsolete]
     private int NextEscaped()
@@ -133,9 +133,9 @@ public partial class Pattern
     [Obsolete]
     private int PeekPastWhitespace( int ch )
     {
-        while ( ASCII.IsSpace( ch ) || ( ch == '#' ) )
+        while ( Ascii.IsSpace( ch ) || ( ch == '#' ) )
         {
-            while ( ASCII.IsSpace( ch ) )
+            while ( Ascii.IsSpace( ch ) )
             {
                 ch = _temp[ ++_cursor ];
             }
@@ -155,9 +155,9 @@ public partial class Pattern
     [Obsolete]
     private int ParsePastWhitespace( int ch )
     {
-        while ( ASCII.IsSpace( ch ) || ( ch == '#' ) )
+        while ( Ascii.IsSpace( ch ) || ( ch == '#' ) )
         {
-            while ( ASCII.IsSpace( ch ) )
+            while ( Ascii.IsSpace( ch ) )
             {
                 ch = _temp[ _cursor++ ];
             }
@@ -221,7 +221,7 @@ public partial class Pattern
     [Obsolete]
     private bool IsLineSeparator( int ch )
     {
-        if ( Has( Unix_Lines ) )
+        if ( Has( UNIX_LINES ) )
         {
             return ch == '\n';
         }

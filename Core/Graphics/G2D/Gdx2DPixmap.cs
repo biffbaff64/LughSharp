@@ -24,18 +24,18 @@ namespace LibGDXSharp.G2D;
 // -------------------------------------------------------------------
 public class Gdx2DPixmap : IDisposable
 {
-    public const int Gdx2D_Format_Alpha           = 1;
-    public const int Gdx2D_Format_Luminance_Alpha = 2;
-    public const int Gdx2D_Format_RGB888          = 3;
-    public const int Gdx2D_Format_RGBA8888        = 4;
-    public const int Gdx2D_Format_RGB565          = 5;
-    public const int Gdx2D_Format_RGBA4444        = 6;
+    public const int GDX_2D_FORMAT_ALPHA           = 1;
+    public const int GDX_2D_FORMAT_LUMINANCE_ALPHA = 2;
+    public const int GDX_2D_FORMAT_RGB888          = 3;
+    public const int GDX_2D_FORMAT_RGBA8888        = 4;
+    public const int GDX_2D_FORMAT_RGB565          = 5;
+    public const int GDX_2D_FORMAT_RGBA4444        = 6;
 
-    public const int Gdx2D_Scale_Nearest = 0;
-    public const int Gdx2D_Scale_Linear  = 1;
+    public const int GDX_2D_SCALE_NEAREST = 0;
+    public const int GDX_2D_SCALE_LINEAR  = 1;
 
-    public const int Gdx2D_Blend_None     = 0;
-    public const int Gdx2D_Blend_Src_Over = 1;
+    public const int GDX_2D_BLEND_NONE     = 0;
+    public const int GDX_2D_BLEND_SRC_OVER = 1;
 
     public long       basePtr;
     public int        format;
@@ -157,19 +157,19 @@ public class Gdx2DPixmap : IDisposable
     {
         switch ( format )
         {
-            case Gdx2D_Format_Alpha:
-                return IGL20.GL_Alpha;
+            case GDX_2D_FORMAT_ALPHA:
+                return IGL20.GL_ALPHA;
 
-            case Gdx2D_Format_Luminance_Alpha:
-                return IGL20.GL_Luminance_Alpha;
+            case GDX_2D_FORMAT_LUMINANCE_ALPHA:
+                return IGL20.GL_LUMINANCE_ALPHA;
 
-            case Gdx2D_Format_RGB888:
-            case Gdx2D_Format_RGB565:
-                return IGL20.GL_Rgb;
+            case GDX_2D_FORMAT_RGB888:
+            case GDX_2D_FORMAT_RGB565:
+                return IGL20.GL_RGB;
 
-            case Gdx2D_Format_RGBA8888:
-            case Gdx2D_Format_RGBA4444:
-                return IGL20.GL_Rgba;
+            case GDX_2D_FORMAT_RGBA8888:
+            case GDX_2D_FORMAT_RGBA4444:
+                return IGL20.GL_RGBA;
 
             default:
                 throw new GdxRuntimeException( "unknown format: " + format );
@@ -186,17 +186,17 @@ public class Gdx2DPixmap : IDisposable
     {
         switch ( format )
         {
-            case Gdx2D_Format_Alpha:
-            case Gdx2D_Format_Luminance_Alpha:
-            case Gdx2D_Format_RGB888:
-            case Gdx2D_Format_RGBA8888:
-                return IGL20.GL_Unsigned_Byte;
+            case GDX_2D_FORMAT_ALPHA:
+            case GDX_2D_FORMAT_LUMINANCE_ALPHA:
+            case GDX_2D_FORMAT_RGB888:
+            case GDX_2D_FORMAT_RGBA8888:
+                return IGL20.GL_UNSIGNED_BYTE;
 
-            case Gdx2D_Format_RGB565:
-                return IGL20.GL_Unsigned_Short_5_6_5;
+            case GDX_2D_FORMAT_RGB565:
+                return IGL20.GL_UNSIGNED_SHORT_5_6_5;
 
-            case Gdx2D_Format_RGBA4444:
-                return IGL20.GL_Unsigned_Short_4_4_4_4;
+            case GDX_2D_FORMAT_RGBA4444:
+                return IGL20.GL_UNSIGNED_SHORT_4_4_4_4;
 
             default:
                 throw new GdxRuntimeException( "unknown format: " + format );
@@ -211,7 +211,7 @@ public class Gdx2DPixmap : IDisposable
     {
         Gdx2DPixmap pixmap = new(Width, Height, requestedFormat);
 
-        pixmap.Blend = Gdx2D_Blend_None;
+        pixmap.Blend = GDX_2D_BLEND_NONE;
         pixmap.DrawPixmap( this, 0, 0, 0, 0, Width, Height );
 
         Dispose();
@@ -342,12 +342,12 @@ public class Gdx2DPixmap : IDisposable
     {
         return format switch
                {
-                   Gdx2D_Format_Alpha           => "Alpha",
-                   Gdx2D_Format_Luminance_Alpha => "Luminance alpha",
-                   Gdx2D_Format_RGB888          => "Rgb888",
-                   Gdx2D_Format_RGBA8888        => "Rgba8888",
-                   Gdx2D_Format_RGB565          => "Rgb565",
-                   Gdx2D_Format_RGBA4444        => "Rgba4444",
+                   GDX_2D_FORMAT_ALPHA           => "Alpha",
+                   GDX_2D_FORMAT_LUMINANCE_ALPHA => "Luminance alpha",
+                   GDX_2D_FORMAT_RGB888          => "Rgb888",
+                   GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
+                   GDX_2D_FORMAT_RGB565          => "Rgb565",
+                   GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
                    _                            => "Unknown"
                };
     }

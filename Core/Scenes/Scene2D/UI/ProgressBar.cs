@@ -40,8 +40,8 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class ProgressBar : Widget, IDisableable
 {
-    private const float Default_Pref_Width  = 140f;
-    private const float Default_Pref_Height = 140f;
+    private const float DEFAULT_PREF_WIDTH  = 140f;
+    private const float DEFAULT_PREF_HEIGHT = 140f;
 
     private float         _animateFromValue;
     private float         _animateDuration;
@@ -468,12 +468,12 @@ public class ProgressBar : Widget, IDisableable
             return Math.Max( knob?.MinWidth ?? 0, bg?.MinWidth ?? 0 );
         }
 
-        return Default_Pref_Width;
+        return DEFAULT_PREF_WIDTH;
     }
 
     public float GetPrefHeight()
     {
-        if ( IsVertical ) return Default_Pref_Height;
+        if ( IsVertical ) return DEFAULT_PREF_HEIGHT;
 
         IDrawable? knob = Style.Knob;
         IDrawable? bg   = GetBackgroundDrawable();

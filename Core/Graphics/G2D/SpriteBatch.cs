@@ -49,10 +49,10 @@ public class SpriteBatch : IBatch
     private readonly Matrix4 _projectionMatrix = new();
     private readonly Matrix4 _combinedMatrix   = new();
 
-    private int _blendSrcFunc      = IGL20.GL_Src_Alpha;
-    private int _blendDstFunc      = IGL20.GL_One_Minus_Src_Alpha;
-    private int _blendSrcFuncAlpha = IGL20.GL_Src_Alpha;
-    private int _blendDstFuncAlpha = IGL20.GL_One_Minus_Src_Alpha;
+    private int _blendSrcFunc      = IGL20.GL_SRC_ALPHA;
+    private int _blendDstFunc      = IGL20.GL_ONE_MINUS_SRC_ALPHA;
+    private int _blendSrcFuncAlpha = IGL20.GL_SRC_ALPHA;
+    private int _blendDstFuncAlpha = IGL20.GL_ONE_MINUS_SRC_ALPHA;
 
     private readonly bool           _ownsShader;
     private readonly Mesh           _mesh;
@@ -107,21 +107,21 @@ public class SpriteBatch : IBatch
              size * 6,
              new VertexAttribute
                  (
-                  VertexAttributes.Usage.Position,
+                  VertexAttributes.Usage.POSITION,
                   2,
-                  ShaderProgram.PositionAttribute
+                  ShaderProgram.POSITION_ATTRIBUTE
                  ),
              new VertexAttribute
                  (
-                  VertexAttributes.Usage.ColorPacked,
+                  VertexAttributes.Usage.COLOR_PACKED,
                   4,
-                  ShaderProgram.ColorAttribute
+                  ShaderProgram.COLOR_ATTRIBUTE
                  ),
              new VertexAttribute
                  (
-                  VertexAttributes.Usage.TextureCoordinates,
+                  VertexAttributes.Usage.TEXTURE_COORDINATES,
                   2,
-                  ShaderProgram.TexcoordAttribute + "0"
+                  ShaderProgram.TEXCOORD_ATTRIBUTE + "0"
                  )
             );
 
@@ -163,13 +163,13 @@ public class SpriteBatch : IBatch
     public static ShaderProgram CreateDefaultShader()
     {
         var vertexShader = "attribute vec4 "
-                           + ShaderProgram.PositionAttribute
+                           + ShaderProgram.POSITION_ATTRIBUTE
                            + ";\n"
                            + "attribute vec4 "
-                           + ShaderProgram.ColorAttribute
+                           + ShaderProgram.COLOR_ATTRIBUTE
                            + ";\n"
                            + "attribute vec2 "
-                           + ShaderProgram.TexcoordAttribute
+                           + ShaderProgram.TEXCOORD_ATTRIBUTE
                            + "0;\n"
                            + "uniform mat4 u_projTrans;\n"
                            + "varying vec4 v_color;\n"
@@ -178,14 +178,14 @@ public class SpriteBatch : IBatch
                            + "void main()\n"
                            + "{\n"
                            + "   v_color = "
-                           + ShaderProgram.ColorAttribute
+                           + ShaderProgram.COLOR_ATTRIBUTE
                            + ";\n"
                            + "   v_color.a = v_color.a * (255.0/254.0);\n"
                            + "   v_texCoords = "
-                           + ShaderProgram.TexcoordAttribute
+                           + ShaderProgram.TEXCOORD_ATTRIBUTE
                            + "0;\n"
                            + "   gl_Position =  u_projTrans * "
-                           + ShaderProgram.PositionAttribute
+                           + ShaderProgram.POSITION_ATTRIBUTE
                            + ";\n"
                            + "}\n";
 
@@ -257,7 +257,7 @@ public class SpriteBatch : IBatch
 
         if ( !BlendingDisabled )
         {
-            Gdx.GL20.GLDisable( IGL20.GL_Blend );
+            Gdx.GL20.GLDisable( IGL20.GL_BLEND );
         }
     }
 
@@ -1162,11 +1162,11 @@ public class SpriteBatch : IBatch
 
         if ( BlendingDisabled )
         {
-            Gdx.GL.GLDisable( IGL20.GL_Blend );
+            Gdx.GL.GLDisable( IGL20.GL_BLEND );
         }
         else
         {
-            Gdx.GL.GLEnable( IGL20.GL_Blend );
+            Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
             if ( _blendSrcFunc != -1 )
             {
@@ -1180,7 +1180,7 @@ public class SpriteBatch : IBatch
             }
         }
 
-        _mesh.Render( _customShader ?? _shader, IGL20.GL_Triangles, 0, count );
+        _mesh.Render( _customShader ?? _shader, IGL20.GL_TRIANGLES, 0, count );
 
         idx = 0;
     }

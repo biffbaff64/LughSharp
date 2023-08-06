@@ -25,11 +25,11 @@ namespace LibGDXSharp.G2D;
 [SuppressMessage( "ReSharper", "LoopCanBePartlyConvertedToQuery" )]
 public class BitmapFont
 {
-    private const string RegexPattern   = ".*id=(\\d+)";
-    private const string FontName       = "Resources/arial-15.fnt";
-    private const int    Log2_Page_Size = 9;
-    private const int    Page_Size      = 1 << Log2_Page_Size;
-    private const int    Pages          = 0x10000 / Page_Size;
+    private const string REGEX_PATTERN   = ".*id=(\\d+)";
+    private const string FONT_NAME       = "Resources/arial-15.fnt";
+    private const int    LOG2_PAGE_SIZE = 9;
+    private const int    PAGE_SIZE      = 1 << LOG2_PAGE_SIZE;
+    private const int    PAGES          = 0x10000 / PAGE_SIZE;
 
     public bool Flipped     { get; set; }
     public bool OwnsTexture { get; set; }
@@ -49,8 +49,8 @@ public class BitmapFont
     public BitmapFont()
         : this
             (
-            Gdx.Files.Internal( FontName ),
-            Gdx.Files.Internal( FontName ),
+            Gdx.Files.Internal( FONT_NAME ),
+            Gdx.Files.Internal( FONT_NAME ),
             false
             )
     {
@@ -70,7 +70,7 @@ public class BitmapFont
     /// the upper left corner.
     /// </param>
     public BitmapFont( bool flip )
-        : this( Gdx.Files.Internal( FontName ), Gdx.Files.Internal( FontName ), flip )
+        : this( Gdx.Files.Internal( FONT_NAME ), Gdx.Files.Internal( FONT_NAME ), flip )
     {
         _fileType = FileType.Internal;
     }
@@ -525,21 +525,21 @@ public class BitmapFont
 
         public int GetKerning( char ch )
         {
-            var page = kerning?[ ch >>> Log2_Page_Size ];
+            var page = kerning?[ ch >>> LOG2_PAGE_SIZE ];
 
-            return page != null ? page[ ch & ( Page_Size - 1 ) ] : 0;
+            return page != null ? page[ ch & ( PAGE_SIZE - 1 ) ] : 0;
 
         }
 
         public void SetKerning( int ch, int value )
         {
-            kerning ??= new byte[ Pages ][];
+            kerning ??= new byte[ PAGES ][];
 
-            var page = kerning[ ch >>> Log2_Page_Size ];
+            var page = kerning[ ch >>> LOG2_PAGE_SIZE ];
 
-            if ( page == null ) kerning[ ch >>> Log2_Page_Size ] = page = new byte[ Page_Size ];
+            if ( page == null ) kerning[ ch >>> LOG2_PAGE_SIZE ] = page = new byte[ PAGE_SIZE ];
 
-            page[ ch & ( Page_Size - 1 ) ] = ( byte )value;
+            page[ ch & ( PAGE_SIZE - 1 ) ] = ( byte )value;
         }
 
         public new string ToString()
@@ -627,7 +627,7 @@ public class BitmapFont
         /// </summary>
         public float CursorX { get; set; }
 
-        public Glyph?[]?[] Glyphs { get; set; } = new Glyph[ Pages ][];
+        public Glyph?[]?[] Glyphs { get; set; } = new Glyph[ PAGES ][];
 
         /// <summary>
         /// The glyph to display for characters not in the font. May be null.
@@ -910,9 +910,9 @@ public class BitmapFont
                     var second = int.Parse( tokens.NextToken() );
 
                     if ( ( first < 0 )
-                         || ( first > CharHelper.Max_Value )
+                         || ( first > CharHelper.MAX_VALUE )
                          || ( second < 0 )
-                         || ( second > CharHelper.Max_Value ) )
+                         || ( second > CharHelper.MAX_VALUE ) )
                     {
                         continue;
                     }
@@ -1182,16 +1182,16 @@ public class BitmapFont
         /// <param name="glyph"></param>
         public void SetGlyph( int ch, Glyph glyph )
         {
-            Glyph?[]? page = Glyphs[ ch / Page_Size ];
+            Glyph?[]? page = Glyphs[ ch / PAGE_SIZE ];
 
             if ( page == null )
             {
-                page = new Glyph[ Page_Size ];
+                page = new Glyph[ PAGE_SIZE ];
 
-                Glyphs[ ch / Page_Size ] = page;
+                Glyphs[ ch / PAGE_SIZE ] = page;
             }
 
-            page[ ch & ( Page_Size - 1 ) ] = glyph;
+            page[ ch & ( PAGE_SIZE - 1 ) ] = glyph;
         }
 
         /// <summary>
@@ -1232,7 +1232,7 @@ public class BitmapFont
         /// </summary>
         /// See also <see cref="GetGlyphs"/> should be be used to shape a string
         /// of characters into a list of glyphs. 
-        public Glyph? GetGlyph( char ch ) => Glyphs[ ch / Page_Size ]?[ ch & ( Page_Size - 1 ) ];
+        public Glyph? GetGlyph( char ch ) => Glyphs[ ch / PAGE_SIZE ]?[ ch & ( PAGE_SIZE - 1 ) ];
 
         /// <summary>
         /// Using the specified string, populates the glyphs and positions of the

@@ -647,7 +647,7 @@ public class BitmapFontCache
     {
         Clear();
 
-        return AddText( str, x, y, 0, str.Length, 0, Align.Left, false );
+        return AddText( str, x, y, 0, str.Length, 0, Align.LEFT, false );
     }
 
     /// <summary>
@@ -730,7 +730,7 @@ public class BitmapFontCache
     /// </summary>
     public GlyphLayout AddText( string str, float x, float y )
     {
-        return AddText( str, x, y, 0, str.Length, 0, Align.Left, false );
+        return AddText( str, x, y, 0, str.Length, 0, Align.LEFT, false );
     }
 
     /// <summary>

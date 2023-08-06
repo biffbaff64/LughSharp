@@ -46,7 +46,7 @@ public class CheckBox : TextButton
 
         Add( label );
 
-        label?.SetAlignment( LibGDXSharp.Utils.Align.Left );
+        label?.SetAlignment( LibGDXSharp.Utils.Align.LEFT );
 
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }

@@ -144,9 +144,9 @@ public class Quaternion
     {
         return SetEulerAnglesRad
             (
-            yaw * MathUtils.DegreesToRadians,
-            pitch * MathUtils.DegreesToRadians,
-            roll * MathUtils.DegreesToRadians
+            yaw * MathUtils.DEGREES_TO_RADIANS,
+            pitch * MathUtils.DEGREES_TO_RADIANS,
+            roll * MathUtils.DEGREES_TO_RADIANS
             );
     }
 
@@ -226,7 +226,7 @@ public class Quaternion
 	/// </returns> 
     public float GetRoll()
     {
-        return GetRollRad() * MathUtils.RadiansToDegrees;
+        return GetRollRad() * MathUtils.RADIANS_TO_DEGREES;
     }
 
     /// <summary>
@@ -254,7 +254,7 @@ public class Quaternion
 	/// </returns>
     public float GetPitch()
     {
-        return GetPitchRad() * MathUtils.RadiansToDegrees;
+        return GetPitchRad() * MathUtils.RADIANS_TO_DEGREES;
     }
 
     /// <summary>
@@ -276,7 +276,7 @@ public class Quaternion
 	/// <returns> the rotation around the y axis in degrees (between -180 and +180) </returns>
     public float GetYaw()
     {
-        return GetYawRad() * MathUtils.RadiansToDegrees;
+        return GetYawRad() * MathUtils.RADIANS_TO_DEGREES;
     }
 
     public static float Len2( float x, float y, float z, float w )
@@ -559,7 +559,7 @@ public class Quaternion
 	/// <returns> This quaternion for chaining. </returns>
     public Quaternion SetFromAxis( float x, float y, float z, float degrees )
     {
-        return SetFromAxisRad( x, y, z, degrees * MathUtils.DegreesToRadians );
+        return SetFromAxisRad( x, y, z, degrees * MathUtils.DEGREES_TO_RADIANS );
     }
 
     /// <summary>
@@ -1020,7 +1020,7 @@ public class Quaternion
 	/// <returns> the angle in degrees </returns>
     public float GetAxisAngle( Vector3 axis )
     {
-        return GetAxisAngleRad( axis ) * MathUtils.RadiansToDegrees;
+        return GetAxisAngleRad( axis ) * MathUtils.RADIANS_TO_DEGREES;
     }
 
     /// <summary>
@@ -1046,7 +1046,7 @@ public class Quaternion
         // assuming quaternion normalised then w is less than 1, so term always positive.
         var s = Math.Sqrt( 1 - ( this.W * this.W ) );
 
-        if ( s < MathUtils.Float_Rounding_Error )
+        if ( s < MathUtils.FLOAT_ROUNDING_ERROR )
         {
             // test to avoid divide by zero, s is always positive due to Sqrt
             // if s close to zero then direction of axis not important
@@ -1090,7 +1090,7 @@ public class Quaternion
 	/// <returns> the angle in degrees of the rotation </returns>
     public float GetAngle()
     {
-        return GetAngleRad() * MathUtils.RadiansToDegrees;
+        return GetAngleRad() * MathUtils.RADIANS_TO_DEGREES;
     }
 
     /// <summary>
@@ -1201,7 +1201,7 @@ public class Quaternion
 	/// <returns> the angle in degrees of the rotation around the specified axis </returns>
     public float GetAngleAround( float axisX, float axisY, float axisZ )
     {
-        return GetAngleAroundRad( axisX, axisY, axisZ ) * MathUtils.RadiansToDegrees;
+        return GetAngleAroundRad( axisX, axisY, axisZ ) * MathUtils.RADIANS_TO_DEGREES;
     }
 
     /// <summary>

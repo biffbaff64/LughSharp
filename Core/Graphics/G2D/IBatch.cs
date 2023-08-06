@@ -384,8 +384,8 @@ public interface IBatch : IDisposable
     /// called "a_position", the texture coordinates attribute is called "a_texCoord0", the
     /// color attribute is called "a_color".
     /// <p>
-    /// See <see cref="ShaderProgram.PositionAttribute"/>, <see cref="ShaderProgram.ColorAttribute"/>
-    /// and <seealso cref="ShaderProgram.TexcoordAttribute"/> which gets "0" appended to indicate
+    /// See <see cref="ShaderProgram.POSITION_ATTRIBUTE"/>, <see cref="ShaderProgram.COLOR_ATTRIBUTE"/>
+    /// and <seealso cref="ShaderProgram.TEXCOORD_ATTRIBUTE"/> which gets "0" appended to indicate
     /// the use of the first texture unit.
     /// </p>
     /// <p>

@@ -66,7 +66,7 @@ public class Image : Widget
     {
     }
 
-    public Image( IDrawable? drawable, Scaling scaling, int align = Align.Center )
+    public Image( IDrawable? drawable, Scaling scaling, int align = Align.CENTER )
     {
         ArgumentNullException.ThrowIfNull( drawable );
 
@@ -92,11 +92,11 @@ public class Image : Widget
         ImageWidth  = size.X;
         ImageHeight = size.Y;
 
-        if ( ( Alignment & Align.Left ) != 0 )
+        if ( ( Alignment & Align.LEFT ) != 0 )
         {
             ImageX = 0;
         }
-        else if ( ( Alignment & Align.Right ) != 0 )
+        else if ( ( Alignment & Align.RIGHT ) != 0 )
         {
             ImageX = ( int )( width - ImageWidth );
         }
@@ -105,11 +105,11 @@ public class Image : Widget
             ImageX = ( int )( ( width / 2 ) - ( ImageWidth / 2 ) );
         }
 
-        if ( ( Alignment & Align.Top ) != 0 )
+        if ( ( Alignment & Align.TOP ) != 0 )
         {
             ImageY = ( int )( height - ImageHeight );
         }
-        else if ( ( Alignment & Align.Bottom ) != 0 )
+        else if ( ( Alignment & Align.BOTTOM ) != 0 )
         {
             ImageY = 0;
         }

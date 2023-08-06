@@ -85,10 +85,10 @@ public class Matcher : IMatchResult
     // Matcher state used by the last node. NoAnchor is used when a
     // match does not have to consume all of the input. EndAnchor is
     // the mode used for matching all the input.
-    private const int EndAnchor = 1;
-    private const int NoAnchor  = 0;
+    private const int END_ANCHOR = 1;
+    private const int NO_ANCHOR  = 0;
 
-    private int _acceptMode = NoAnchor;
+    private int _acceptMode = NO_ANCHOR;
 
     // The end index of what matched in the last match operation.
     private int _oldLast = -1;
@@ -430,7 +430,7 @@ public class Matcher : IMatchResult
     /// </summary>
     /// <returns></returns>
     [Obsolete]
-    public bool Matches() => Match( _regionStart, EndAnchor );
+    public bool Matches() => Match( _regionStart, END_ANCHOR );
 
     /// <summary>
     /// 
@@ -486,7 +486,7 @@ public class Matcher : IMatchResult
     /// </summary>
     /// <returns></returns>
     [Obsolete]
-    public bool LookingAt() => Match( _regionStart, NoAnchor );
+    public bool LookingAt() => Match( _regionStart, NO_ANCHOR );
 
     [Obsolete]
     public static string QuoteReplacement( string s )
@@ -565,7 +565,7 @@ public class Matcher : IMatchResult
                     {
                         nextChar = replacement[ cursor ];
 
-                        if ( ASCII.IsLower( nextChar ) || ASCII.IsUpper( nextChar ) || ASCII.IsDigit( nextChar ) )
+                        if ( Ascii.IsLower( nextChar ) || Ascii.IsUpper( nextChar ) || Ascii.IsDigit( nextChar ) )
                         {
                             gsb.Append( nextChar );
 
@@ -589,7 +589,7 @@ public class Matcher : IMatchResult
 
                     var gname = gsb.ToString();
 
-                    if ( ASCII.IsDigit( gname[ 0 ] ) )
+                    if ( Ascii.IsDigit( gname[ 0 ] ) )
                     {
                         throw new ArgumentException( $"capturing group name {gname} starts with digit character" );
                     }
@@ -800,7 +800,7 @@ public class Matcher : IMatchResult
             groups[ i ] = -1;
         }
 
-        _acceptMode = NoAnchor;
+        _acceptMode = NO_ANCHOR;
 
         bool result = parentPattern.root.Match( this, from, _text );
 

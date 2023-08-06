@@ -42,7 +42,7 @@ public class TextButton : Button
         this.Style = style;
 
         _label = new Label( text, new Label.LabelStyle( style.Font!, style.FontColor! ) );
-        _label.SetAlignment( Align.Center );
+        _label.SetAlignment( Align.CENTER );
 
         Add( _label ).Expand().SetFill();
 

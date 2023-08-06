@@ -18,17 +18,17 @@ namespace LibGDXSharp.Graphics.G3D.Models.Data;
 
 public class ModelTexture
 {
-    public const int Usage_Unknown      = 0;
-    public const int Usage_None         = 1;
-    public const int Usage_Diffuse      = 2;
-    public const int Usage_Emissive     = 3;
-    public const int Usage_Ambient      = 4;
-    public const int Usage_Specular     = 5;
-    public const int Usage_Shininess    = 6;
-    public const int Usage_Normal       = 7;
-    public const int Usage_Bump         = 8;
-    public const int Usage_Transparency = 9;
-    public const int Usage_Reflection   = 10;
+    public const int USAGE_UNKNOWN      = 0;
+    public const int USAGE_NONE         = 1;
+    public const int USAGE_DIFFUSE      = 2;
+    public const int USAGE_EMISSIVE     = 3;
+    public const int USAGE_AMBIENT      = 4;
+    public const int USAGE_SPECULAR     = 5;
+    public const int USAGE_SHININESS    = 6;
+    public const int USAGE_NORMAL       = 7;
+    public const int USAGE_BUMP         = 8;
+    public const int USAGE_TRANSPARENCY = 9;
+    public const int USAGE_REFLECTION   = 10;
 
     public string?  ID            { get; set; }
     public string?  FileName      { get; set; }

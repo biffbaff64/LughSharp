@@ -19,34 +19,34 @@ namespace LibGDXSharp.Maths;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class MathUtils
 {
-    public const float NanoToSec            = 1 / 1000000000f;
-    public const float Float_Rounding_Error = 0.000001f; // 32 bits
+    public const float NANO_TO_SEC            = 1 / 1000000000f;
+    public const float FLOAT_ROUNDING_ERROR = 0.000001f; // 32 bits
     public const float PI                   = 3.1415927f;
     public const float PI2                  = PI * 2;
     public const float E                    = 2.7182818f;
 
     // multiply by this to convert from radians to degrees.
-    public const float RadiansToDegrees = 180f / PI;
-    public const float RadDeg           = RadiansToDegrees;
+    public const float RADIANS_TO_DEGREES = 180f / PI;
+    public const float RAD_DEG           = RADIANS_TO_DEGREES;
 
     // multiply by this to convert from degrees to radians.
-    public const float DegreesToRadians = PI / 180;
-    public const float DegRad           = DegreesToRadians;
+    public const float DEGREES_TO_RADIANS = PI / 180;
+    public const float DEG_RAD           = DEGREES_TO_RADIANS;
 
-    private const int   Sin_Bits   = 14; // 16KB. Adjust for accuracy.
-    private const int   Sin_Mask   = ~( -1 << Sin_Bits );
-    private const int   Sin_Count  = Sin_Mask + 1;
-    private const float RadFull    = PI * 2;
-    private const float DegFull    = 360;
-    private const float RadToIndex = Sin_Count / RadFull;
-    private const float DegToIndex = Sin_Count / DegFull;
+    private const int   SIN_BITS   = 14; // 16KB. Adjust for accuracy.
+    private const int   SIN_MASK   = ~( -1 << SIN_BITS );
+    private const int   SIN_COUNT  = SIN_MASK + 1;
+    private const float RAD_FULL    = PI * 2;
+    private const float DEG_FULL    = 360;
+    private const float RAD_TO_INDEX = SIN_COUNT / RAD_FULL;
+    private const float DEG_TO_INDEX = SIN_COUNT / DEG_FULL;
 
     /// <summary>
     /// Returns the sine in radians from a lookup table. 
     /// </summary>
     public static float Sin( float radians )
     {
-        return SinClass.Table[ ( int )( radians * RadToIndex ) & Sin_Mask ];
+        return SinClass.Table[ ( int )( radians * RAD_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public class MathUtils
     /// </summary>
     public static float Cos( float radians )
     {
-        return SinClass.Table[ ( int )( ( radians + ( PI / 2 ) ) * RadToIndex ) & Sin_Mask ];
+        return SinClass.Table[ ( int )( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class MathUtils
     /// </summary>
     public static float SinDeg( float degrees )
     {
-        return SinClass.Table[ ( int )( degrees * DegToIndex ) & Sin_Mask ];
+        return SinClass.Table[ ( int )( degrees * DEG_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class MathUtils
     /// </summary>
     public static float CosDeg( float degrees )
     {
-        return SinClass.Table[ ( int )( ( degrees + 90 ) * DegToIndex ) & Sin_Mask ];
+        return SinClass.Table[ ( int )( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -364,11 +364,11 @@ public class MathUtils
         return ( fromDegrees + ( delta * progress ) + 360 ) % 360;
     }
 
-    private const int    Big_Enough_Int   = 16 * 1024;
-    private const double Big_Enough_Floor = Big_Enough_Int;
-    private const double Ceiling          = 0.9999999;
-    private const double Big_Enough_Ceil  = 16384.999999999996;
-    private const double Big_Enough_Round = Big_Enough_Int + 0.5f;
+    private const int    BIG_ENOUGH_INT   = 16 * 1024;
+    private const double BIG_ENOUGH_FLOOR = BIG_ENOUGH_INT;
+    private const double CEILING          = 0.9999999;
+    private const double BIG_ENOUGH_CEIL  = 16384.999999999996;
+    private const double BIG_ENOUGH_ROUND = BIG_ENOUGH_INT + 0.5f;
 
     /// <summary>
     /// Returns the largest integer less than or equal to the specified float.
@@ -377,7 +377,7 @@ public class MathUtils
     /// </summary>
     public static int Floor( float value )
     {
-        return ( int )( value + Big_Enough_Floor ) - Big_Enough_Int;
+        return ( int )( value + BIG_ENOUGH_FLOOR ) - BIG_ENOUGH_INT;
     }
 
     /// <summary>
@@ -396,7 +396,7 @@ public class MathUtils
     /// </summary>
     public static int Ceil( float value )
     {
-        return ( int )( value + Big_Enough_Ceil ) - Big_Enough_Int;
+        return ( int )( value + BIG_ENOUGH_CEIL ) - BIG_ENOUGH_INT;
     }
 
     /// <summary>
@@ -405,7 +405,7 @@ public class MathUtils
     /// </summary>
     public static int CeilPositive( float value )
     {
-        return ( int )( value + Ceiling );
+        return ( int )( value + CEILING );
     }
 
     /// <summary>
@@ -414,7 +414,7 @@ public class MathUtils
     /// </summary>
     public static int Round( float value )
     {
-        return ( int )( value + Big_Enough_Round ) - Big_Enough_Int;
+        return ( int )( value + BIG_ENOUGH_ROUND ) - BIG_ENOUGH_INT;
     }
 
     /// <summary>
@@ -430,7 +430,7 @@ public class MathUtils
     /// Returns true if the value is zero (using the default tolerance as upper bound) </summary>
     public static bool IsZero( float value )
     {
-        return Math.Abs( value ) <= Float_Rounding_Error;
+        return Math.Abs( value ) <= FLOAT_ROUNDING_ERROR;
     }
 
     /// <summary>
@@ -461,7 +461,7 @@ public class MathUtils
     /// <param name="b"> the second value.  </param>
     public static bool IsEqual( float a, float b )
     {
-        return Math.Abs( a - b ) <= Float_Rounding_Error;
+        return Math.Abs( a - b ) <= FLOAT_ROUNDING_ERROR;
     }
 
     /// <summary>
@@ -495,18 +495,18 @@ public class MathUtils
     /// </summary>
     internal class SinClass
     {
-        public readonly static float[] Table = new float[ Sin_Count ];
+        public readonly static float[] Table = new float[ SIN_COUNT ];
 
         public SinClass()
         {
-            for ( var i = 0; i < Sin_Count; i++ )
+            for ( var i = 0; i < SIN_COUNT; i++ )
             {
-                Table[ i ] = ( float )Math.Sin( ( ( i + 0.5f ) / Sin_Count ) * RadFull );
+                Table[ i ] = ( float )Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
             }
 
             for ( var i = 0; i < 360; i += 90 )
             {
-                Table[ ( int )( i * DegToIndex ) & Sin_Mask ] = ( float )Math.Sin( i * DegreesToRadians );
+                Table[ ( int )( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float )Math.Sin( i * DEGREES_TO_RADIANS );
             }
         }
     }

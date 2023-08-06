@@ -134,7 +134,7 @@ public interface ITextureData
 
             if ( file.Name.EndsWith( ".ktx" ) || file.Name.EndsWith( ".zktx" ) )
             {
-                return new KTXTextureData( file, useMipMaps );
+                return new KtxTextureData( file, useMipMaps );
             }
 
             return new FileTextureData( file, new Pixmap( file ), format, useMipMaps );

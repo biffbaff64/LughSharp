@@ -45,8 +45,8 @@ public class VertexAttribute
     public readonly bool normalized;
 
     /// <summary>
-    /// the OpenGL type of each component, e.g. <see cref="IGL20.GL_Float"/>
-    /// or <see cref="IGL20.GL_Unsigned_Byte"/>
+    /// the OpenGL type of each component, e.g. <see cref="IGL20.GL_FLOAT"/>
+    /// or <see cref="IGL20.GL_UNSIGNED_BYTE"/>
     /// </summary>
     public readonly int type;
 
@@ -89,8 +89,8 @@ public class VertexAttribute
             (
              usage,
              numComponents,
-             usage == VertexAttributes.Usage.ColorPacked ? IGL20.GL_Unsigned_Byte : IGL20.GL_Float,
-             usage == VertexAttributes.Usage.ColorPacked,
+             usage == VertexAttributes.Usage.COLOR_PACKED ? IGL20.GL_UNSIGNED_BYTE : IGL20.GL_FLOAT,
+             usage == VertexAttributes.Usage.COLOR_PACKED,
              alias,
              unit
             )
@@ -107,8 +107,8 @@ public class VertexAttribute
     /// The number of components of this attribute, must be between 1 and 4.
     /// </param>
     /// <param name="type">
-    /// The OpenGL type of each component, e.g. <see cref="IGL20.GL_Float"/>
-    /// or <see cref="IGL20.GL_Unsigned_Byte"/>. Since <see cref="Mesh"/>
+    /// The OpenGL type of each component, e.g. <see cref="IGL20.GL_FLOAT"/>
+    /// or <see cref="IGL20.GL_UNSIGNED_BYTE"/>. Since <see cref="Mesh"/>
     /// stores vertex data in 32bit floats, the total size of this attribute
     /// (type size times number of components) must be a multiple of four bytes.
     /// </param>
@@ -154,9 +154,9 @@ public class VertexAttribute
     {
         return new VertexAttribute
             (
-             VertexAttributes.Usage.Position,
+             VertexAttributes.Usage.POSITION,
              3,
-             ShaderProgram.PositionAttribute
+             ShaderProgram.POSITION_ATTRIBUTE
             );
     }
 
@@ -164,49 +164,49 @@ public class VertexAttribute
     {
         return new VertexAttribute
             (
-             VertexAttributes.Usage.TextureCoordinates,
+             VertexAttributes.Usage.TEXTURE_COORDINATES,
              2,
-             ShaderProgram.TexcoordAttribute + unit,
+             ShaderProgram.TEXCOORD_ATTRIBUTE + unit,
              unit
             );
     }
 
     public static VertexAttribute Normal()
     {
-        return new VertexAttribute( VertexAttributes.Usage.Normal, 
-                                    3, ShaderProgram.NormalAttribute );
+        return new VertexAttribute( VertexAttributes.Usage.NORMAL, 
+                                    3, ShaderProgram.NORMAL_ATTRIBUTE );
     }
 
     public static VertexAttribute ColorPacked()
     {
-        return new VertexAttribute( VertexAttributes.Usage.ColorPacked, 
-                                    4, IGL20.GL_Unsigned_Byte,
-                                    true, ShaderProgram.ColorAttribute );
+        return new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED, 
+                                    4, IGL20.GL_UNSIGNED_BYTE,
+                                    true, ShaderProgram.COLOR_ATTRIBUTE );
     }
 
     public static VertexAttribute ColorUnpacked()
     {
-        return new VertexAttribute( VertexAttributes.Usage.ColorUnpacked, 
-                                    4, IGL20.GL_Float, 
-                                    false, ShaderProgram.ColorAttribute );
+        return new VertexAttribute( VertexAttributes.Usage.COLOR_UNPACKED, 
+                                    4, IGL20.GL_FLOAT, 
+                                    false, ShaderProgram.COLOR_ATTRIBUTE );
     }
 
     public static VertexAttribute Tangent()
     {
-        return new VertexAttribute( VertexAttributes.Usage.Tangent, 
-                                    3, ShaderProgram.TangentAttribute );
+        return new VertexAttribute( VertexAttributes.Usage.TANGENT, 
+                                    3, ShaderProgram.TANGENT_ATTRIBUTE );
     }
 
     public static VertexAttribute Binormal()
     {
-        return new VertexAttribute( VertexAttributes.Usage.BiNormal, 
-                                    3, ShaderProgram.BinormalAttribute );
+        return new VertexAttribute( VertexAttributes.Usage.BI_NORMAL, 
+                                    3, ShaderProgram.BINORMAL_ATTRIBUTE );
     }
 
     public static VertexAttribute BoneWeight( int unit )
     {
-        return new VertexAttribute( VertexAttributes.Usage.BoneWeight, 2, 
-                                    ShaderProgram.BoneweightAttribute + unit, unit );
+        return new VertexAttribute( VertexAttributes.Usage.BONE_WEIGHT, 2, 
+                                    ShaderProgram.BONEWEIGHT_ATTRIBUTE + unit, unit );
     }
 
     /** Tests to determine if the passed object was created with the same parameters */
@@ -243,16 +243,16 @@ public class VertexAttribute
     {
         switch ( type )
         {
-            case IGL20.GL_Float:
-            case IGL20.GL_Fixed:
+            case IGL20.GL_FLOAT:
+            case IGL20.GL_FIXED:
                 return 4 * numComponents;
 
-            case IGL20.GL_Unsigned_Byte:
-            case IGL20.GL_Byte:
+            case IGL20.GL_UNSIGNED_BYTE:
+            case IGL20.GL_BYTE:
                 return numComponents;
 
-            case IGL20.GL_Unsigned_Short:
-            case IGL20.GL_Short:
+            case IGL20.GL_UNSIGNED_SHORT:
+            case IGL20.GL_SHORT:
                 return 2 * numComponents;
         }
 

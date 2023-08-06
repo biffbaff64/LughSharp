@@ -38,11 +38,11 @@ namespace LibGDXSharp.Utils.Xml;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class XmlReader
 {
-    private const int Xml_Start          = 1;
-    private const int Xml_First_Final    = 34;
-    private const int Xml_Error          = 0;
-    private const int Xml_En_ElementBody = 15;
-    private const int Xml_En_Main        = 1;
+    private const int XML_START          = 1;
+    private const int XML_FIRST_FINAL    = 34;
+    private const int XML_ERROR          = 0;
+    private const int XML_EN_ELEMENT_BODY = 15;
+    private const int XML_EN_MAIN        = 1;
 
     private readonly static byte[]  xmlActions       = Init_XmlActions_0();
     private readonly static byte[]  xmlKeyOffsets    = Init_XmlKeyOffsets_0();
@@ -255,7 +255,7 @@ public class XmlReader
 
         // line 93 "XmlReader.java"
         {
-            cs = Xml_Start;
+            cs = XML_START;
         }
 
         // line 97 "XmlReader.java"

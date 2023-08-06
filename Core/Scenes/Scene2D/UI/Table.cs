@@ -88,7 +88,7 @@ public class Table : WidgetGroup
     private Value _padBottom = BackgroundBottom;
     private Value _padRight  = BackgroundRight;
 
-    private int                _alignment = LibGDXSharp.Utils.Align.Center;
+    private int                _alignment = LibGDXSharp.Utils.Align.CENTER;
     private List< DebugRect >? _debugRects;
 
     private IDrawable? _background;
@@ -506,7 +506,7 @@ public class Table : WidgetGroup
         _padBottom = BackgroundBottom;
         _padRight  = BackgroundRight;
 
-        _alignment = LibGDXSharp.Utils.Align.Center;
+        _alignment = LibGDXSharp.Utils.Align.CENTER;
 
         Debug( DebugType.None );
 
@@ -843,8 +843,8 @@ public class Table : WidgetGroup
 
     /// <summary>
     /// Alignment of the logical table within the table actor.
-    /// Set to <see cref="Align.Center"/>, <see cref="Align.Top"/>, <see cref="Align.Bottom"/>,
-    /// <see cref="Align.Left"/>, <see cref="Align.Right"/>, or any combination of those.
+    /// Set to <see cref="Align.CENTER"/>, <see cref="Align.TOP"/>, <see cref="Align.BOTTOM"/>,
+    /// <see cref="Align.LEFT"/>, <see cref="Align.RIGHT"/>, or any combination of those.
     /// </summary>
     /// <param name="align"></param>
     /// <returns></returns>
@@ -857,62 +857,62 @@ public class Table : WidgetGroup
 
     /// <summary>
     /// Sets the alignment of the logical table within the table actor to
-    /// <see cref="Align.Center"/>. This clears any other alignment.
+    /// <see cref="Align.CENTER"/>. This clears any other alignment.
     /// </summary>
     /// <returns></returns>
     public Table Center()
     {
-        _alignment = LibGDXSharp.Utils.Align.Center;
+        _alignment = LibGDXSharp.Utils.Align.CENTER;
 
         return this;
     }
 
     /// <summary>
-    /// Adds <see cref="Align.Top"/> and clears <see cref="Align.Bottom"/> for
+    /// Adds <see cref="Align.TOP"/> and clears <see cref="Align.BOTTOM"/> for
     /// the alignment of the logical table within the table actor.
     /// </summary>
     /// <returns></returns>
     public new Table AddTopAlignment()
     {
-        _alignment |= LibGDXSharp.Utils.Align.Top;
-        _alignment &= ~LibGDXSharp.Utils.Align.Bottom;
+        _alignment |= LibGDXSharp.Utils.Align.TOP;
+        _alignment &= ~LibGDXSharp.Utils.Align.BOTTOM;
 
         return this;
     }
 
     /// <summary>
-    /// Adds <see cref="Align.Left"/> and clears <see cref="Align.Right"/> for
+    /// Adds <see cref="Align.LEFT"/> and clears <see cref="Align.RIGHT"/> for
     /// the alignment of the logical table within the table actor.
     /// </summary>
     /// <returns></returns>
     public Table AddLeftAlignment()
     {
-        _alignment |= LibGDXSharp.Utils.Align.Left;
-        _alignment &= ~LibGDXSharp.Utils.Align.Right;
+        _alignment |= LibGDXSharp.Utils.Align.LEFT;
+        _alignment &= ~LibGDXSharp.Utils.Align.RIGHT;
 
         return this;
     }
 
     /// <summary>
-    /// Adds <see cref="Align.Bottom"/> and clears <see cref="Align.Top"/> for the
+    /// Adds <see cref="Align.BOTTOM"/> and clears <see cref="Align.TOP"/> for the
     /// alignment of the logical table within the table actor. 
     /// </summary>
     public Table AddBottomAlignment()
     {
-        _alignment |= LibGDXSharp.Utils.Align.Bottom;
-        _alignment &= ~LibGDXSharp.Utils.Align.Top;
+        _alignment |= LibGDXSharp.Utils.Align.BOTTOM;
+        _alignment &= ~LibGDXSharp.Utils.Align.TOP;
 
         return this;
     }
 
     /// <summary>
-    /// Adds <see cref="Align.Right"/> and clears <see cref="Align.Left"/> for
+    /// Adds <see cref="Align.RIGHT"/> and clears <see cref="Align.LEFT"/> for
     /// the alignment of the logical table within the table actor.
     /// </summary>
     public Table AddRightAlignment()
     {
-        _alignment |= LibGDXSharp.Utils.Align.Right;
-        _alignment &= ~LibGDXSharp.Utils.Align.Left;
+        _alignment |= LibGDXSharp.Utils.Align.RIGHT;
+        _alignment &= ~LibGDXSharp.Utils.Align.LEFT;
 
         return this;
     }
@@ -1523,22 +1523,22 @@ public class Table : WidgetGroup
         // Position table within the container.
         var x = padLeft;
 
-        if ( ( this._alignment & Align.Right ) != 0 )
+        if ( ( this._alignment & Align.RIGHT ) != 0 )
         {
             x += layoutWidth - tableWidth;
         }
-        else if ( ( this._alignment & Align.Left ) == 0 ) // Center
+        else if ( ( this._alignment & Align.LEFT ) == 0 ) // Center
         {
             x += ( layoutWidth - tableWidth ) / 2;
         }
 
         var y = padTop;
 
-        if ( ( this._alignment & Align.Bottom ) != 0 )
+        if ( ( this._alignment & Align.BOTTOM ) != 0 )
         {
             y += layoutHeight - tableHeight;
         }
-        else if ( ( this._alignment & Align.Top ) == 0 ) // Center
+        else if ( ( this._alignment & Align.TOP ) == 0 ) // Center
         {
             y += ( layoutHeight - tableHeight ) / 2;
         }
@@ -1594,11 +1594,11 @@ public class Table : WidgetGroup
 
             this._alignment = c.Alignment;
 
-            if ( ( this._alignment & Align.Left ) != 0 )
+            if ( ( this._alignment & Align.LEFT ) != 0 )
             {
                 c.ActorX = currentX;
             }
-            else if ( ( this._alignment & Align.Right ) != 0 )
+            else if ( ( this._alignment & Align.RIGHT ) != 0 )
             {
                 c.ActorX = ( currentX + spannedCellWidth ) - c.ActorWidth;
             }
@@ -1607,11 +1607,11 @@ public class Table : WidgetGroup
                 c.ActorX = currentX + ( ( spannedCellWidth - c.ActorWidth ) / 2 );
             }
 
-            if ( ( this._alignment & Align.Top ) != 0 )
+            if ( ( this._alignment & Align.TOP ) != 0 )
             {
                 c.ActorY = c.ComputedPadTop;
             }
-            else if ( ( this._alignment & Align.Bottom ) != 0 )
+            else if ( ( this._alignment & Align.BOTTOM ) != 0 )
             {
                 c.ActorY = rowHeight[ c.Row ] - c.ActorHeight - c.ComputedPadBottom;
             }

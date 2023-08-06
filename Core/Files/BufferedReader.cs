@@ -54,16 +54,16 @@ namespace LibGDXSharp.Files;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class BufferedReader : Reader
 {
-    private const int DefaultCharBufferSize     = 8192;
-    private const int DefaultExpectedLineLength = 80;
-    private const int Invalidated               = -2;
-    private const int Unmarked                  = -1;
+    private const int DEFAULT_CHAR_BUFFER_SIZE     = 8192;
+    private const int DEFAULT_EXPECTED_LINE_LENGTH = 80;
+    private const int INVALIDATED               = -2;
+    private const int UNMARKED                  = -1;
 
     private Reader? _reader;
     private char[]  _cb;
     private int     _nChars;
     private int     _nextChar;
-    private int     _markedChar = Unmarked;
+    private int     _markedChar = UNMARKED;
 
     // Valid only when _markedChar > 0 
     private int _readAheadLimit = 0;
@@ -81,7 +81,7 @@ public class BufferedReader : Reader
     /// <param name="reader"> A Reader </param>
     /// <param name="sz"> Input-buffer size </param>
     /// <exception cref="ArgumentException"> If sz &lt;= 0 </exception>
-    public BufferedReader( Reader reader, int sz = DefaultCharBufferSize ) : base( reader )
+    public BufferedReader( Reader reader, int sz = DEFAULT_CHAR_BUFFER_SIZE ) : base( reader )
     {
         if ( sz <= 0 ) throw new ArgumentException( "Buffer size <= 0" );
 
@@ -109,7 +109,7 @@ public class BufferedReader : Reader
     {
         int dst;
 
-        if ( _markedChar <= Unmarked )
+        if ( _markedChar <= UNMARKED )
         {
             // No mark
             dst = 0;
@@ -122,7 +122,7 @@ public class BufferedReader : Reader
             if ( delta >= _readAheadLimit )
             {
                 // Gone past read-ahead limit: Invalidate mark
-                _markedChar     = Invalidated;
+                _markedChar     = INVALIDATED;
                 _readAheadLimit = 0;
                 dst             = 0;
             }
@@ -221,7 +221,7 @@ public class BufferedReader : Reader
             // being skipped, do not bother to copy the characters into the
             // local buffer.  In this way buffered streams will cascade
             // harmlessly.
-            if ( ( len >= _cb.Length ) && ( _markedChar <= Unmarked ) && !_skipLF )
+            if ( ( len >= _cb.Length ) && ( _markedChar <= UNMARKED ) && !_skipLF )
             {
                 return _reader!.Read( cbuf, offset, len );
             }
@@ -448,7 +448,7 @@ public class BufferedReader : Reader
                     return str;
                 }
 
-                s ??= new StringBuilder( DefaultExpectedLineLength );
+                s ??= new StringBuilder( DEFAULT_EXPECTED_LINE_LENGTH );
 
                 s.Append( _cb, startChar, i - startChar );
             }
@@ -597,7 +597,7 @@ public class BufferedReader : Reader
             {
                 throw new IOException
                     (
-                    ( _markedChar == Invalidated )
+                    ( _markedChar == INVALIDATED )
                         ? "Mark invalid"
                         : "Stream not marked"
                     );

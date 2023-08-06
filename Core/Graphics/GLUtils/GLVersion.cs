@@ -23,7 +23,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class GLVersion : LibGDXSharp.Core.GDXVersion
 {
-    private const string Tag = "GLVersion";
+    private const string TAG = "GLVersion";
 
     public enum GLType
     {
@@ -104,7 +104,7 @@ public class GLVersion : LibGDXSharp.Core.GDXVersion
         }
         else
         {
-            Gdx.App.Log( Tag, "Invalid version string: " + versionString );
+            Gdx.App.Log( TAG, "Invalid version string: " + versionString );
 
             MajorVersion    = 2;
             MinorVersion    = 0;

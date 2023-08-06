@@ -30,13 +30,13 @@ public static class PixmapFormat
             //@formatter:off
             return format switch
                    {
-                       Pixmap.Format.Alpha          => Gdx2DPixmap.Gdx2D_Format_Alpha,
-                       Pixmap.Format.Intensity      => Gdx2DPixmap.Gdx2D_Format_Alpha,
-                       Pixmap.Format.LuminanceAlpha => Gdx2DPixmap.Gdx2D_Format_Luminance_Alpha,
-                       Pixmap.Format.RGB565         => Gdx2DPixmap.Gdx2D_Format_RGB565,
-                       Pixmap.Format.RGBA4444       => Gdx2DPixmap.Gdx2D_Format_RGBA4444,
-                       Pixmap.Format.RGB888         => Gdx2DPixmap.Gdx2D_Format_RGB888,
-                       Pixmap.Format.RGBA8888       => Gdx2DPixmap.Gdx2D_Format_RGBA8888,
+                       Pixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+                       Pixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+                       Pixmap.Format.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
+                       Pixmap.Format.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
+                       Pixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
+                       Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
+                       Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
                        
                        _ => throw new GdxRuntimeException( $"Unknown Format: {format}" )
                    };
@@ -53,12 +53,12 @@ public static class PixmapFormat
             //@formatter:off
             return format switch
                    {
-                       Gdx2DPixmap.Gdx2D_Format_Alpha           => Pixmap.Format.Alpha,
-                       Gdx2DPixmap.Gdx2D_Format_Luminance_Alpha => Pixmap.Format.LuminanceAlpha,
-                       Gdx2DPixmap.Gdx2D_Format_RGB565          => Pixmap.Format.RGB565,
-                       Gdx2DPixmap.Gdx2D_Format_RGBA4444        => Pixmap.Format.RGBA4444,
-                       Gdx2DPixmap.Gdx2D_Format_RGB888          => Pixmap.Format.RGB888,
-                       Gdx2DPixmap.Gdx2D_Format_RGBA8888        => Pixmap.Format.RGBA8888,
+                       Gdx2DPixmap.GDX_2D_FORMAT_ALPHA           => Pixmap.Format.Alpha,
+                       Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA => Pixmap.Format.LuminanceAlpha,
+                       Gdx2DPixmap.GDX_2D_FORMAT_RGB565          => Pixmap.Format.RGB565,
+                       Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444        => Pixmap.Format.RGBA4444,
+                       Gdx2DPixmap.GDX_2D_FORMAT_RGB888          => Pixmap.Format.RGB888,
+                       Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888        => Pixmap.Format.RGBA8888,
                        
                        _ => throw new GdxRuntimeException( "Unknown Gdx2DPixmap Format: " + format )
                    };

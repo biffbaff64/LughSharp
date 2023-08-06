@@ -67,7 +67,7 @@ public class AssetManager
     /// <param name="defaultLoaders">Whether to add the default loaders (default is true).</param>
     public AssetManager( IFileHandleResolver resolver, bool defaultLoaders = true )
     {
-        this.Log = new Logger( "AssetManager", IApplication.LogNone );
+        this.Log = new Logger( "AssetManager", IApplication.LOG_NONE );
 
         if ( defaultLoaders )
         {

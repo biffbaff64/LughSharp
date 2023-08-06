@@ -59,11 +59,11 @@ public class ScreenUtils
     {
         Gdx.GL.GLClearColor( r, g, b, a );
 
-        var mask = IGL20.GL_Color_Buffer_Bit;
+        var mask = IGL20.GL_COLOR_BUFFER_BIT;
 
         if ( clearDepth )
         {
-            mask |= IGL20.GL_Depth_Buffer_Bit;
+            mask |= IGL20.GL_DEPTH_BUFFER_BIT;
         }
 
         Gdx.GL.GLClear( mask );
@@ -180,11 +180,11 @@ public class ScreenUtils
     {
         var numBytes = w * h * 4;
 
-        Gdx.GL.GLPixelStorei( IGL20.GL_Pack_Alignment, 1 );
+        Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
 
         ByteBuffer pixels = BufferUtils.NewByteBuffer( numBytes );
 
-        Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_Rgba, IGL20.GL_Unsigned_Byte, pixels );
+        Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
 
         var lines = new byte[ numBytes ];
 

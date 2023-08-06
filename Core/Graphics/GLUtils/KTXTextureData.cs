@@ -17,9 +17,9 @@
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class KTXTextureData : ITextureData, ICubemapData
+public class KtxTextureData : ITextureData, ICubemapData
 {
-    public KTXTextureData( FileInfo? file, bool useMipMaps )
+    public KtxTextureData( FileInfo? file, bool useMipMaps )
     {
         throw new NotImplementedException();
     }

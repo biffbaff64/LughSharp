@@ -23,9 +23,9 @@ public class ShapeRenderer : IDisposable
 {
     public enum ShapeTypes
     {
-        Point  = IGL20.GL_Points,
-        Line   = IGL20.GL_Lines,
-        Filled = IGL20.GL_Triangles
+        Point  = IGL20.GL_POINTS,
+        Line   = IGL20.GL_LINES,
+        Filled = IGL20.GL_TRIANGLES
     }
 
     public IImmediateModeRenderer Renderer  { get; set; }
@@ -1018,8 +1018,8 @@ public class ShapeRenderer : IDisposable
         var cos = MathUtils.Cos( theta );
         var sin = MathUtils.Sin( theta );
 
-        var cx = radius * MathUtils.Cos( start * MathUtils.DegreesToRadians );
-        var cy = radius * MathUtils.Sin( start * MathUtils.DegreesToRadians );
+        var cx = radius * MathUtils.Cos( start * MathUtils.DEGREES_TO_RADIANS );
+        var cy = radius * MathUtils.Sin( start * MathUtils.DEGREES_TO_RADIANS );
 
         float temp;
 

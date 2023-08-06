@@ -30,8 +30,8 @@ public abstract class AbstractInput : IInput
     /// </summary>
     protected AbstractInput()
     {
-        PressedKeys     = new bool[ IInput.Keys.MaxKeycode + 1 ];
-        JustPressedKeys = new bool[ IInput.Keys.MaxKeycode + 1 ];
+        PressedKeys     = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+        JustPressedKeys = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
 
         _keysToCatch = new List< int >();
     }
@@ -43,12 +43,12 @@ public abstract class AbstractInput : IInput
     /// <returns></returns>
     public bool IsKeyPressed( int key )
     {
-        if ( key == IInput.Keys.Any_Key )
+        if ( key == IInput.Keys.ANY_KEY )
         {
             return PressedKeyCount > 0;
         }
 
-        if ( key is < 0 or > IInput.Keys.MaxKeycode )
+        if ( key is < 0 or > IInput.Keys.MAX_KEYCODE )
         {
             return false;
         }
@@ -63,12 +63,12 @@ public abstract class AbstractInput : IInput
     /// <returns></returns>
     public bool IsKeyJustPressed( int key )
     {
-        if ( key == IInput.Keys.Any_Key )
+        if ( key == IInput.Keys.ANY_KEY )
         {
             return KeyJustPressed;
         }
 
-        if ( key is < 0 or > IInput.Keys.MaxKeycode )
+        if ( key is < 0 or > IInput.Keys.MAX_KEYCODE )
         {
             return false;
         }
@@ -82,7 +82,7 @@ public abstract class AbstractInput : IInput
     /// <returns></returns>
     public bool IsCatchBackKey()
     {
-        return _keysToCatch.Contains( IInput.Keys.Back );
+        return _keysToCatch.Contains( IInput.Keys.BACK );
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public abstract class AbstractInput : IInput
     /// <param name="catchBack"></param>
     public void SetCatchBackKey( bool catchBack )
     {
-        SetCatchKey( IInput.Keys.Back, catchBack );
+        SetCatchKey( IInput.Keys.BACK, catchBack );
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ public abstract class AbstractInput : IInput
     /// <returns></returns>
     public bool IsCatchMenuKey()
     {
-        return _keysToCatch.Contains( IInput.Keys.Menu );
+        return _keysToCatch.Contains( IInput.Keys.MENU );
     }
 
     /// <summary>
@@ -109,7 +109,7 @@ public abstract class AbstractInput : IInput
     /// <param name="catchMenu"></param>
     public void SetCatchMenuKey( bool catchMenu )
     {
-        SetCatchKey( IInput.Keys.Menu, catchMenu );
+        SetCatchKey( IInput.Keys.MENU, catchMenu );
     }
 
     /// <summary>

@@ -29,8 +29,8 @@ public class ETC1
     /// <summary>
     /// The PKM header size in bytes
     /// </summary>
-    public const int PkmHeaderSize = 16;
-    public const int Etc1Rgb8Oes = 0x00008d64;
+    public const int PKM_HEADER_SIZE = 16;
+    public const int ETC1_RGB8_OES = 0x00008d64;
 
     /// <summary>
     /// Class for storing ETC1 compressed image data.
@@ -180,7 +180,7 @@ public class ETC1
                        + "x"
                        + ETC1.GetHeightPKM( CompressedData, 0 )
                        + "], compressed: "
-                       + ( CompressedData.Capacity - ETC1.PkmHeaderSize );
+                       + ( CompressedData.Capacity - ETC1.PKM_HEADER_SIZE );
             }
             else
             {
@@ -189,7 +189,7 @@ public class ETC1
                        + "x"
                        + Height
                        + "], compressed: "
-                       + ( CompressedData.Capacity - ETC1.PkmHeaderSize );
+                       + ( CompressedData.Capacity - ETC1.PKM_HEADER_SIZE );
             }
         }
     }

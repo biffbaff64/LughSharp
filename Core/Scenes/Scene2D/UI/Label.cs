@@ -38,8 +38,8 @@ public class Label : Widget
 
     public BitmapFontCache FontCache   { get; set; }
     public StringBuilder   Text        { get; }      = new();
-    public int             LabelAlign  { get; set; } = Align.Left;
-    public int             LineAlign   { get; set; } = Align.Left;
+    public int             LabelAlign  { get; set; } = Align.LEFT;
+    public int             LineAlign   { get; set; } = Align.LEFT;
     public GlyphLayout     GlyphLayout { get; set; } = new();
 
     private          LabelStyle _style;
@@ -211,7 +211,7 @@ public class Label : Widget
                         - _style.Background.RightWidth;
             }
 
-            prefSizeLayout.SetText( FontCache.Font, Text.ToString(), Color.White, width, Align.Left, true );
+            prefSizeLayout.SetText( FontCache.Font, Text.ToString(), Color.White, width, Align.LEFT, true );
         }
         else
         {
@@ -268,9 +268,9 @@ public class Label : Widget
             textWidth  = layout.Width;
             textHeight = layout.Height;
 
-            if ( ( LabelAlign & Align.Left ) == 0 )
+            if ( ( LabelAlign & Align.LEFT ) == 0 )
             {
-                if ( ( LabelAlign & Align.Right ) != 0 )
+                if ( ( LabelAlign & Align.RIGHT ) != 0 )
                 {
                     x += width - textWidth;
                 }
@@ -288,12 +288,12 @@ public class Label : Widget
 
         Debug.Assert( Style.Font != null, "Style.Font != null" );
 
-        if ( ( LabelAlign & Align.Top ) != 0 )
+        if ( ( LabelAlign & Align.TOP ) != 0 )
         {
             y += FontCache.Font.Flipped ? 0 : height - textHeight;
             y += Style.Font.GetDescent();
         }
-        else if ( ( LabelAlign & Align.Bottom ) != 0 )
+        else if ( ( LabelAlign & Align.BOTTOM ) != 0 )
         {
             y += FontCache.Font.Flipped ? height - textHeight : 0;
             y -= Style.Font.GetDescent();
@@ -426,17 +426,17 @@ public class Label : Widget
     {
         this.LabelAlign = labelAlign;
 
-        if ( ( lineAlign & Align.Left ) != 0 )
+        if ( ( lineAlign & Align.LEFT ) != 0 )
         {
-            this.LineAlign = Align.Left;
+            this.LineAlign = Align.LEFT;
         }
-        else if ( ( lineAlign & Align.Right ) != 0 )
+        else if ( ( lineAlign & Align.RIGHT ) != 0 )
         {
-            this.LineAlign = Align.Right;
+            this.LineAlign = Align.RIGHT;
         }
         else
         {
-            this.LineAlign = Align.Center;
+            this.LineAlign = Align.CENTER;
         }
 
         Invalidate();

@@ -30,7 +30,7 @@ namespace LibGDXSharp.Graphics;
 /// Before a call to either <see cref="ConsumeCubemapData()"/>, Cubemap will
 /// bind the OpenGL ES texture.
 /// </para>
-/// Look at <see cref="KTXTextureData"/> for example implementation of this
+/// Look at <see cref="KtxTextureData"/> for example implementation of this
 /// interface.
 /// </summary>
 public interface ICubemapData

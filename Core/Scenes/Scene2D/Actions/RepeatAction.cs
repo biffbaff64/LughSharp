@@ -19,7 +19,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class RepeatAction : DelegateAction
 {
-    public const int Forever = -1;
+    public const int FOREVER = -1;
 
     public int  RepeatCount   { get; set; }
     public int  ExecutedCount { get; set; }

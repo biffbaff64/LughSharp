@@ -32,24 +32,24 @@ public struct CallerID
 /// A class to write debug messages to console and a text file.
 /// Primarily intended for flow tracing, messages will display calling
 /// file/class/methods and any provided debug message.
-/// <see cref="LogLevel"/> must be set to either <see cref="LogDebug"/>,
-///  <see cref="LogInfo"/>, or <see cref="LogError"/> for messages to work.
+/// <see cref="LogLevel"/> must be set to either <see cref="LOG_DEBUG"/>,
+///  <see cref="LOG_INFO"/>, or <see cref="LOG_ERROR"/> for messages to work.
 /// To enable writing to file, <see cref="EnableWriteToFile"/> must be TRUE
 /// and <see cref="OpenDebugFile"/> must be called.
 /// </summary>
 public static class Trace
 {
-    public const int LogNone  = 0;
-    public const int LogDebug = 1;
-    public const int LogInfo  = 2;
-    public const int LogError = 3;
+    public const int LOG_NONE  = 0;
+    public const int LOG_DEBUG = 1;
+    public const int LOG_INFO  = 2;
+    public const int LOG_ERROR = 3;
 
     public static bool EnableWriteToFile { get; set; } = false;
-    public static int  LogLevel          { get; set; } = LogNone;
+    public static int  LogLevel          { get; set; } = LOG_NONE;
 
-    private const string DebugTag = "[Debug] ";
-    private const string InfoTag  = "[Info ] ";
-    private const string ErrorTag = "[ERROR] ";
+    private const string DEBUG_TAG = "[Debug] ";
+    private const string INFO_TAG  = "[Info ] ";
+    private const string ERROR_TAG = "[ERROR] ";
 
     private static string _debugFilePath = "";
     private static string _debugFileName = "";
@@ -60,7 +60,7 @@ public static class Trace
     /// <param name="logLevel"></param>
     /// <param name="enableWriteToFile"></param>
     /// <param name="filename"></param>
-    public static void Initialise( int logLevel = LogNone, bool enableWriteToFile = false, string filename = "" )
+    public static void Initialise( int logLevel = LOG_NONE, bool enableWriteToFile = false, string filename = "" )
     {
         LogLevel          = logLevel;
         EnableWriteToFile = enableWriteToFile;
@@ -84,12 +84,12 @@ public static class Trace
                             string message = "",
                             params object[] args )
     {
-        if ( LogLevel != LogDebug )
+        if ( LogLevel != LOG_DEBUG )
         {
             return;
         }
 
-        message = string.Join( DebugTag, message );
+        message = string.Join( DEBUG_TAG, message );
 
         var callerID = new CallerID
         {
@@ -117,14 +117,14 @@ public static class Trace
                                  string message = "",
                                  params object[] args )
     {
-        if ( LogLevel == LogDebug )
+        if ( LogLevel == LOG_DEBUG )
         {
             return;
         }
 
         Divider();
 
-        message = string.Join( DebugTag, message );
+        message = string.Join( DEBUG_TAG, message );
 
         var callerID = new CallerID
         {
@@ -154,12 +154,12 @@ public static class Trace
                             string message = "",
                             params object[] args )
     {
-        if ( LogLevel != LogDebug )
+        if ( LogLevel != LOG_DEBUG )
         {
             return;
         }
 
-        message = string.Join( ErrorTag, message );
+        message = string.Join( ERROR_TAG, message );
 
         var callerID = new CallerID
         {
@@ -189,9 +189,9 @@ public static class Trace
                                string message = "",
                                params object[] args )
     {
-        if ( ( LogLevel == LogDebug ) && condition )
+        if ( ( LogLevel == LOG_DEBUG ) && condition )
         {
-            message = string.Join( DebugTag, message );
+            message = string.Join( DEBUG_TAG, message );
 
             var callerID = new CallerID
             {
@@ -218,7 +218,7 @@ public static class Trace
                                    [CallerMemberName] string callerMethod = "",
                                    [CallerLineNumber] int callerLine = 0 )
     {
-        if ( LogLevel != LogDebug )
+        if ( LogLevel != LOG_DEBUG )
         {
             return;
         }
@@ -249,12 +249,12 @@ public static class Trace
     /// <param name="args"></param>
     public static void Info( string message, params object[] args )
     {
-        if ( LogLevel != LogDebug )
+        if ( LogLevel != LOG_DEBUG )
         {
             return;
         }
 
-        message = string.Join( InfoTag, message );
+        message = string.Join( INFO_TAG, message );
 
         var sb = new StringBuilder( message );
 
@@ -267,7 +267,7 @@ public static class Trace
             }
         }
 
-        message = string.Join( DebugTag, message );
+        message = string.Join( DEBUG_TAG, message );
 
         Console.WriteLine( message );
 
@@ -345,7 +345,7 @@ public static class Trace
     /// <param name="length">The line length, default is 80.</param>
     public static void Divider( char ch = '-', int length = 80 )
     {
-        var sb = new StringBuilder( DebugTag );
+        var sb = new StringBuilder( DEBUG_TAG );
 
         for ( var i = 0; i < length; i++ )
         {

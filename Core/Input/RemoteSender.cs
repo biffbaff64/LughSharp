@@ -25,18 +25,18 @@ namespace LibGDXSharp.Input;
 /// </summary>
 public class RemoteSender : IInputProcessor
 {
-    public const int Key_Down = 0;
-    public const int Key_Up   = 1;
-    public const int Key_Typed = 2;
+    public const int KEY_DOWN = 0;
+    public const int KEY_UP   = 1;
+    public const int KEY_TYPED = 2;
 
-    public const int Touch_Down    = 3;
-    public const int Touch_Up      = 4;
-    public const int Touch_Dragged = 5;
+    public const int TOUCH_DOWN    = 3;
+    public const int TOUCH_UP      = 4;
+    public const int TOUCH_DRAGGED = 5;
 
-    public const int Accel   = 6;
-    public const int Compass = 7;
-    public const int Size    = 8;
-    public const int Gyro    = 9;
+    public const int ACCEL   = 6;
+    public const int COMPASS = 7;
+    public const int SIZE    = 8;
+    public const int GYRO    = 9;
 
 //    private BinaryWriter? _out;
 //    private bool          _connected = false;

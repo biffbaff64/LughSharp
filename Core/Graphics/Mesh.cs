@@ -775,7 +775,7 @@ public class Mesh
                 buffer.Position = offset;
                 buffer.Limit = ( offset + count );
                 
-                Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_Unsigned_Short, buffer );
+                Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
                 
                 buffer.Position = oldPosition;
                 buffer.Limit = oldLimit;
@@ -813,12 +813,12 @@ public class Mesh
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
                     Gdx.GL30.GLDrawElementsInstanced( primitiveType, count,
-                                                      IGL20.GL_Unsigned_Short,
+                                                      IGL20.GL_UNSIGNED_SHORT,
                                                       offset * 2, numInstances );
                 }
                 else
                 {
-                    Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_Unsigned_Short, offset * 2 );
+                    Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
                 }
             }
             else
@@ -898,7 +898,7 @@ public class Mesh
 
         FloatBuffer verts = _vertices.Buffer;
         bbox.ToInfinity();
-        VertexAttribute? posAttrib = GetVertexAttribute( VertexAttributes.Usage.Position );
+        VertexAttribute? posAttrib = GetVertexAttribute( VertexAttributes.Usage.POSITION );
 
         var offset     = posAttrib!.Offset / 4;
         var vertexSize = _vertices.Attributes.VertexSize / 4;
@@ -1001,7 +1001,7 @@ public class Mesh
 
         FloatBuffer      verts      = _vertices.Buffer;
         ShortBuffer      index      = _indices.Buffer;
-        VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.Position );
+        VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
         var              posoff     = posAttrib?.Offset / 4;
         var              vertexSize = _vertices.Attributes.VertexSize / 4;
         var              end        = offset + count;
@@ -1141,7 +1141,7 @@ public class Mesh
 
         FloatBuffer      verts      = _vertices.Buffer;
         ShortBuffer      index      = _indices.Buffer;
-        VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.Position );
+        VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
         var              posoff     = posAttrib?.Offset / 4;
         var              vertexSize = _vertices.Attributes.VertexSize / 4;
         var              end        = offset + count;
@@ -1359,7 +1359,7 @@ public class Mesh
     /// <param name="scaleZ"> scale on z  </param>
     public void Scale( float scaleX, float scaleY, float scaleZ )
     {
-        VertexAttribute? posAttr       = GetVertexAttribute( VertexAttributes.Usage.Position );
+        VertexAttribute? posAttr       = GetVertexAttribute( VertexAttributes.Usage.POSITION );
         var              offset        = posAttr!.Offset / 4;
         var              numComponents = posAttr.numComponents;
         var              numVertices   = NumVertices;
@@ -1420,7 +1420,7 @@ public class Mesh
     // TODO: Protected for now, because transforming a portion works but still copies all vertices
     protected void Transform( in Matrix4 matrix, in int start, in int count )
     {
-        VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.Position );
+        VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.POSITION );
 
         var posOffset     = posAttr!.Offset / 4;
         var stride        = VertexSize / 4;
@@ -1529,7 +1529,7 @@ public class Mesh
     // NB: Original message from Java LibGDX.
     protected void TransformUV( in Matrix3 matrix, in int start, in int count )
     {
-        VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.TextureCoordinates );
+        VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES );
 
         var offset   = posAttr!.Offset / 4;
         var vertices = new float[ NumVertices * ( VertexSize / 4 ) ];

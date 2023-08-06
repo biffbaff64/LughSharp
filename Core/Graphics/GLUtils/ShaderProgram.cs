@@ -55,37 +55,37 @@ public class ShaderProgram
     /// <summary>
     /// default name for position attributes.
     /// </summary>
-    public const string PositionAttribute = "a_position";
+    public const string POSITION_ATTRIBUTE = "a_position";
 
     /// <summary>
     /// default name for normal attributes.
     /// </summary>
-    public const string NormalAttribute = "a_normal";
+    public const string NORMAL_ATTRIBUTE = "a_normal";
 
     /// <summary>
     /// default name for color attributes.
     /// </summary>
-    public const string ColorAttribute = "a_color";
+    public const string COLOR_ATTRIBUTE = "a_color";
 
     /// <summary>
     /// default name for texcoords attributes, append texture unit number.
     /// </summary>
-    public const string TexcoordAttribute = "a_texCoord";
+    public const string TEXCOORD_ATTRIBUTE = "a_texCoord";
 
     /// <summary>
     /// default name for tangent attribute
     /// </summary>
-    public const string TangentAttribute = "a_tangent";
+    public const string TANGENT_ATTRIBUTE = "a_tangent";
 
     /// <summary>
     /// default name for binormal attribute
     /// </summary>
-    public const string BinormalAttribute = "a_binormal";
+    public const string BINORMAL_ATTRIBUTE = "a_binormal";
 
     /// <summary>
     /// default name for boneweight attribute
     /// </summary>
-    public const string BoneweightAttribute = "a_boneWeight";
+    public const string BONEWEIGHT_ATTRIBUTE = "a_boneWeight";
 
     /// <summary>
     /// flag indicating whether attributes & uniforms must be present
@@ -248,8 +248,8 @@ public class ShaderProgram
     /// <param name="fragmentShader">  </param>
     private void CompileShaders( string vertexShader, string fragmentShader )
     {
-        _vertexShaderHandle   = LoadShader( IGL20.GL_Vertex_Shader, vertexShader );
-        _fragmentShaderHandle = LoadShader( IGL20.GL_Fragment_Shader, fragmentShader );
+        _vertexShaderHandle   = LoadShader( IGL20.GL_VERTEX_SHADER, vertexShader );
+        _fragmentShaderHandle = LoadShader( IGL20.GL_FRAGMENT_SHADER, fragmentShader );
 
         if ( ( _vertexShaderHandle == -1 ) || ( _fragmentShaderHandle == -1 ) )
         {
@@ -283,7 +283,7 @@ public class ShaderProgram
 
         Gdx.GL20.GLShaderSource( shader, source );
         Gdx.GL20.GLCompileShader( shader );
-        Gdx.GL20.GLGetShaderiv( shader, IGL20.GL_Compile_Status, intbuf );
+        Gdx.GL20.GLGetShaderiv( shader, IGL20.GL_COMPILE_STATUS, intbuf );
 
         var compiled = intbuf.Get( 0 );
 
@@ -293,7 +293,7 @@ public class ShaderProgram
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
             string infoLog = Gdx.GL20.GLGetShaderInfoLog( shader );
-            _log += type == IGL20.GL_Vertex_Shader ? "Vertex shader\n" : "Fragment shader:\n";
+            _log += type == IGL20.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
 
 // }
@@ -329,7 +329,7 @@ public class ShaderProgram
         tmp.Order( ByteOrder.NativeOrder );
         IntBuffer intbuf = tmp.AsIntBuffer();
 
-        Gdx.GL20.GLGetProgramiv( program, IGL20.GL_Link_Status, intbuf );
+        Gdx.GL20.GLGetProgramiv( program, IGL20.GL_LINK_STATUS, intbuf );
 
         var linked = intbuf.Get( 0 );
 
@@ -996,7 +996,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Gdx.GL20.GLGetProgramiv( _programHandle, IGL20.GL_Active_Uniforms, _parameters );
+        Gdx.GL20.GLGetProgramiv( _programHandle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
 
         int numUniforms = _parameters.Get( 0 );
 
@@ -1026,7 +1026,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Gdx.GL20.GLGetProgramiv( _programHandle, IGL20.GL_Active_Attributes, _parameters );
+        Gdx.GL20.GLGetProgramiv( _programHandle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
 
         int numAttributes = _parameters.Get( 0 );
 
@@ -1058,8 +1058,8 @@ public class ShaderProgram
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns>
-    /// the type of the attribute, one of <see cref="IGL20.GL_Float"/>,
-    /// <see cref="IGL20.GL_Float_Vec2"/> etc.
+    /// the type of the attribute, one of <see cref="IGL20.GL_FLOAT"/>,
+    /// <see cref="IGL20.GL_FLOAT_VEC2"/> etc.
     /// </returns>
     public int GetAttributeType( string name )
     {
@@ -1089,8 +1089,8 @@ public class ShaderProgram
 
     /// <param name="name"> the name of the uniform </param>
     /// <returns>
-    /// the type of the uniform, one of <see cref="IGL20.GL_Float"/>,
-    /// <see cref="IGL20.GL_Float_Vec2"/> etc.
+    /// the type of the uniform, one of <see cref="IGL20.GL_FLOAT"/>,
+    /// <see cref="IGL20.GL_FLOAT_VEC2"/> etc.
     /// </returns>
     public int GetUniformType( string name )
     {

@@ -24,9 +24,9 @@ using System.Collections.Generic;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class TextureWrap
 {
-    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_Mirrored_Repeat );
-    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_Clamp_To_Edge );
-    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_Repeat );
+    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_MIRRORED_REPEAT );
+    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
+    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
 
     private readonly static List< TextureWrap > valueList = new();
 

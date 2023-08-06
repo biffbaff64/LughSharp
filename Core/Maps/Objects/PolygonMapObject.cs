@@ -48,7 +48,7 @@ public class PolygonMapObject : MapObject
     /// <summary>
     /// <param name="polygon">new object's polygon shape</param>
     /// </summary>
-    public void setPolygon( Polygon polygon )
+    public void SetPolygon( Polygon polygon )
     {
         this.Polygon = polygon;
     }

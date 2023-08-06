@@ -54,16 +54,16 @@ public class FloatTextureData : ITextureData
 
             if ( Gdx.Graphics.GetGLVersion().GLtype.Equals( GLVersion.GLType.OpenGL ) )
             {
-                if ( ( _internalFormat == IGL30.GL_RGBA16F ) || ( _internalFormat == IGL30.GL_RGBA32F ) )
+                if ( ( _internalFormat == IGL30.GL_RGBA16_F ) || ( _internalFormat == IGL30.GL_RGBA32_F ) )
                     amountOfFloats = 4;
 
-                if ( ( _internalFormat == IGL30.GL_RGB16F ) || ( _internalFormat == IGL30.GL_RGB32F ) )
+                if ( ( _internalFormat == IGL30.GL_RGB16_F ) || ( _internalFormat == IGL30.GL_RGB32_F ) )
                     amountOfFloats = 3;
 
-                if ( ( _internalFormat == IGL30.GL_Rg16F ) || ( _internalFormat == IGL30.GL_Rg32F ) )
+                if ( ( _internalFormat == IGL30.GL_RG16_F ) || ( _internalFormat == IGL30.GL_RG32_F ) )
                     amountOfFloats = 2;
 
-                if ( ( _internalFormat == IGL30.GL_R16F ) || ( _internalFormat == IGL30.GL_R32F ) )
+                if ( ( _internalFormat == IGL30.GL_R16_F ) || ( _internalFormat == IGL30.GL_R32_F ) )
                     amountOfFloats = 1;
             }
 
@@ -89,8 +89,8 @@ public class FloatTextureData : ITextureData
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
             Gdx.GL.GLTexImage2D
                 (
-                target, 0, IGL20.GL_Rgba, Width, Height, 0,
-                IGL20.GL_Rgba, IGL20.GL_Float, Buffer
+                target, 0, IGL20.GL_RGBA, Width, Height, 0,
+                IGL20.GL_RGBA, IGL20.GL_FLOAT, Buffer
                 );
         }
         else
@@ -108,7 +108,7 @@ public class FloatTextureData : ITextureData
             Gdx.GL.GLTexImage2D
                 (
                 target, 0, _internalFormat, Width, Height,
-                0, _format, IGL20.GL_Float, Buffer
+                0, _format, IGL20.GL_FLOAT, Buffer
                 );
         }
     }

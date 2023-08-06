@@ -81,15 +81,15 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         _vertices   = new float[ maxVertices * ( _mesh.VertexAttributes.VertexSize / 4 ) ];
         _vertexSize = _mesh.VertexAttributes.VertexSize / 4;
 
-        VertexAttribute? attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.Normal );
+        VertexAttribute? attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.NORMAL );
         
         _normalOffset = attribute != null ? attribute.Offset / 4 : 0;
 
-        attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.ColorPacked );
+        attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.COLOR_PACKED );
         
         _colorOffset = attribute != null ? attribute.Offset / 4 : 0;
 
-        attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.TextureCoordinates );
+        attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES );
 
         _texCoordOffset = attribute != null ? attribute.Offset / 4 : 0;
 
@@ -107,9 +107,9 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         {
             new
                 (
-                 VertexAttributes.Usage.Position,
+                 VertexAttributes.Usage.POSITION,
                  3,
-                 ShaderProgram.PositionAttribute
+                 ShaderProgram.POSITION_ATTRIBUTE
                 )
         };
 
@@ -119,9 +119,9 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
                 (
                  new VertexAttribute
                      (
-                      VertexAttributes.Usage.Normal,
+                      VertexAttributes.Usage.NORMAL,
                       3,
-                      ShaderProgram.NormalAttribute
+                      ShaderProgram.NORMAL_ATTRIBUTE
                      )
                 );
         }
@@ -132,9 +132,9 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
                 (
                  new VertexAttribute
                      (
-                      VertexAttributes.Usage.ColorPacked,
+                      VertexAttributes.Usage.COLOR_PACKED,
                       4,
-                      ShaderProgram.ColorAttribute
+                      ShaderProgram.COLOR_ATTRIBUTE
                      )
                 );
         }
@@ -145,9 +145,9 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
                 (
                  new VertexAttribute
                      (
-                      VertexAttributes.Usage.TextureCoordinates,
+                      VertexAttributes.Usage.TEXTURE_COORDINATES,
                       2,
-                      ShaderProgram.TexcoordAttribute + i
+                      ShaderProgram.TEXCOORD_ATTRIBUTE + i
                      )
                 );
         }
@@ -279,14 +279,14 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     private static string CreateVertexShader( bool hasNormals, bool hasColors, int numTexCoords )
     {
         var shader = "attribute vec4 "
-                     + ShaderProgram.PositionAttribute
+                     + ShaderProgram.POSITION_ATTRIBUTE
                      + ";\n"
-                     + ( hasNormals ? "attribute vec3 " + ShaderProgram.NormalAttribute + ";\n" : "" )
-                     + ( hasColors ? "attribute vec4 " + ShaderProgram.ColorAttribute + ";\n" : "" );
+                     + ( hasNormals ? "attribute vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "" )
+                     + ( hasColors ? "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "" );
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
-            shader += "attribute vec2 " + ShaderProgram.TexcoordAttribute + i + ";\n";
+            shader += "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
         }
 
         shader += "uniform mat4 u_projModelView;\n" //
@@ -299,20 +299,20 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
 
         shader += "void main() {\n"
                   + "   gl_Position = u_projModelView * "
-                  + ShaderProgram.PositionAttribute
+                  + ShaderProgram.POSITION_ATTRIBUTE
                   + ";\n";
 
         if ( hasColors )
         {
             shader += "   v_col = "
-                      + ShaderProgram.ColorAttribute
+                      + ShaderProgram.COLOR_ATTRIBUTE
                       + ";\n" //
                       + "   v_col.a *= 255.0 / 254.0;\n";
         }
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
-            shader += "   v_tex" + i + " = " + ShaderProgram.TexcoordAttribute + i + ";\n";
+            shader += "   v_tex" + i + " = " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
         }
 
         shader += "   gl_PointSize = 1.0;\n" + "}\n";

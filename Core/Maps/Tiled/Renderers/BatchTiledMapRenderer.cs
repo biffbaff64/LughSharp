@@ -22,7 +22,7 @@ namespace LibGDXSharp.Maps.Tiled.Renderers;
 
 public class BatchTileMapRenderer : ITiledMapRenderer
 {
-    protected const int NumVertices = 20;
+    protected const int NUM_VERTICES = 20;
 
     public TiledMap       TiledMap    { get; set; }
     public bool           OwnsBatch   { get; set; }
@@ -31,7 +31,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     protected IBatch         Batch      { get; set; }
     protected RectangleShape ViewBounds { get; set; }
     protected float          UnitScale  { get; set; }
-    protected float[]        Vertices   { get; set; } = new float[ NumVertices ];
+    protected float[]        Vertices   { get; set; } = new float[ NUM_VERTICES ];
 
     public BatchTileMapRenderer() : this( new TiledMap(), 1.0f )
     {
@@ -250,7 +250,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
             Vertices[ IBatch.U4 ] = u2;
             Vertices[ IBatch.V4 ] = v1;
 
-            Batch.Draw( region.Texture, Vertices, 0, NumVertices );
+            Batch.Draw( region.Texture, Vertices, 0, NUM_VERTICES );
         }
     }
 

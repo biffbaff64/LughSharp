@@ -20,15 +20,15 @@ namespace LibGDXSharp.Core;
 
 public class InputEventQueue
 {
-    private const int Skip           = -1;
-    private const int Key_Down       = 0;
-    private const int Key_Up         = 1;
-    private const int Key_Typed      = 2;
-    private const int Touch_Down     = 3;
-    private const int Touch_Up       = 4;
-    private const int Touch_Dragged  = 5;
-    private const int Mouse_Moved    = 6;
-    private const int Mouse_Scrolled = 7;
+    private const int SKIP           = -1;
+    private const int KEY_DOWN       = 0;
+    private const int KEY_UP         = 1;
+    private const int KEY_TYPED      = 2;
+    private const int TOUCH_DOWN     = 3;
+    private const int TOUCH_UP       = 4;
+    private const int TOUCH_DRAGGED  = 5;
+    private const int MOUSE_MOVED    = 6;
+    private const int MOUSE_SCROLLED = 7;
 
     private readonly List< int > _queue           = new();
     private readonly List< int > _processingQueue = new();
@@ -63,47 +63,47 @@ public class InputEventQueue
 
             switch ( type )
             {
-                case Skip:
+                case SKIP:
                     i += q[ i ];
 
                     break;
 
-                case Key_Down:
+                case KEY_DOWN:
                     processor.KeyDown( q[ i++ ] );
 
                     break;
 
-                case Key_Up:
+                case KEY_UP:
                     processor.KeyUp( q[ i++ ] );
 
                     break;
 
-                case Key_Typed:
+                case KEY_TYPED:
                     processor.KeyTyped( ( char )q[ i++ ] );
 
                     break;
 
-                case Touch_Down:
+                case TOUCH_DOWN:
                     processor.TouchDown( q[ i++ ], q[ i++ ], q[ i++ ], q[ i++ ] );
 
                     break;
 
-                case Touch_Up:
+                case TOUCH_UP:
                     processor.TouchUp( q[ i++ ], q[ i++ ], q[ i++ ], q[ i++ ] );
 
                     break;
 
-                case Touch_Dragged:
+                case TOUCH_DRAGGED:
                     processor.TouchDragged( q[ i++ ], q[ i++ ], q[ i++ ] );
 
                     break;
 
-                case Mouse_Moved:
+                case MOUSE_MOVED:
                     processor.MouseMoved( q[ i++ ], q[ i++ ] );
 
                     break;
 
-                case Mouse_Scrolled:
+                case MOUSE_SCROLLED:
                     processor.Scrolled
                         ( NumberUtils.IntBitsToFloat( q[ i++ ] ), NumberUtils.IntBitsToFloat( q[ i++ ] ) );
 
@@ -139,47 +139,47 @@ public class InputEventQueue
 
                 switch ( type )
                 {
-                    case Skip:
+                    case SKIP:
                         i += q[ i ];
 
                         break;
 
-                    case Key_Down:
+                    case KEY_DOWN:
                         i++;
 
                         break;
 
-                    case Key_Up:
+                    case KEY_UP:
                         i++;
 
                         break;
 
-                    case Key_Typed:
+                    case KEY_TYPED:
                         i++;
 
                         break;
 
-                    case Touch_Down:
+                    case TOUCH_DOWN:
                         i += 4;
 
                         break;
 
-                    case Touch_Up:
+                    case TOUCH_UP:
                         i += 4;
 
                         break;
 
-                    case Touch_Dragged:
+                    case TOUCH_DRAGGED:
                         i += 3;
 
                         break;
 
-                    case Mouse_Moved:
+                    case MOUSE_MOVED:
                         i += 2;
 
                         break;
 
-                    case Mouse_Scrolled:
+                    case MOUSE_SCROLLED:
                         i += 2;
 
                         break;
@@ -211,7 +211,7 @@ public class InputEventQueue
     {
         lock ( this )
         {
-            _queue.Add( Key_Down );
+            _queue.Add( KEY_DOWN );
             QueueTime( time );
             _queue.Add( keycode );
         }
@@ -228,7 +228,7 @@ public class InputEventQueue
     {
         lock ( this )
         {
-            _queue.Add( Key_Up );
+            _queue.Add( KEY_UP );
 
             QueueTime( time );
 
@@ -247,7 +247,7 @@ public class InputEventQueue
     {
         lock ( this )
         {
-            _queue.Add( Key_Typed );
+            _queue.Add( KEY_TYPED );
             QueueTime( time );
             _queue.Add( character );
         }
@@ -267,7 +267,7 @@ public class InputEventQueue
     {
         lock ( this )
         {
-            _queue.Add( Touch_Down );
+            _queue.Add( TOUCH_DOWN );
 
             QueueTime( time );
 
@@ -292,7 +292,7 @@ public class InputEventQueue
     {
         lock ( this )
         {
-            _queue.Add( Touch_Up );
+            _queue.Add( TOUCH_UP );
 
             QueueTime( time );
 
@@ -317,16 +317,16 @@ public class InputEventQueue
         lock ( this )
         {
             // Skip any queued touch dragged events for the same pointer.
-            for ( var i = Next( Touch_Dragged, 0 ); i >= 0; i = Next( Touch_Dragged, i + 6 ) )
+            for ( var i = Next( TOUCH_DRAGGED, 0 ); i >= 0; i = Next( TOUCH_DRAGGED, i + 6 ) )
             {
                 if ( _queue[ i + 5 ] == pointer )
                 {
-                    _queue[ i ]     = Skip;
+                    _queue[ i ]     = SKIP;
                     _queue[ i + 3 ] = 3;
                 }
             }
 
-            _queue.Add( Touch_Dragged );
+            _queue.Add( TOUCH_DRAGGED );
 
             QueueTime( time );
 
@@ -349,13 +349,13 @@ public class InputEventQueue
         lock ( this )
         {
             // Skip any queued mouse moved events.
-            for ( var i = Next( Mouse_Moved, 0 ); i >= 0; i = Next( Mouse_Moved, i + 5 ) )
+            for ( var i = Next( MOUSE_MOVED, 0 ); i >= 0; i = Next( MOUSE_MOVED, i + 5 ) )
             {
-                _queue[ i ]     = Skip;
+                _queue[ i ]     = SKIP;
                 _queue[ i + 3 ] = 2;
             }
 
-            _queue.Add( Mouse_Moved );
+            _queue.Add( MOUSE_MOVED );
 
             QueueTime( time );
 
@@ -376,7 +376,7 @@ public class InputEventQueue
     {
         lock ( this )
         {
-            _queue.Add( Mouse_Scrolled );
+            _queue.Add( MOUSE_SCROLLED );
 
             QueueTime( time );
 

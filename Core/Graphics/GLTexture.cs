@@ -87,7 +87,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        Gdx.GL.GLActiveTexture( IGL20.GL_Texture0 + unit );
+        Gdx.GL.GLActiveTexture( IGL20.GL_TEXTURE0 + unit );
         Gdx.GL.GLBindTexture( GLTarget, GLHandle );
     }
 
@@ -120,13 +120,13 @@ public abstract class GLTexture : IGLTexture, IDisposable
     {
         if ( ( u != null ) && ( force || ( UWrap != u ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_S, u.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
             UWrap = u;
         }
 
         if ( ( v != null ) && ( force || ( VWrap != v ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_T, v.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
             VWrap = v;
         }
     }
@@ -144,8 +144,8 @@ public abstract class GLTexture : IGLTexture, IDisposable
 
         Bind();
 
-        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_S, u.GLEnum );
-        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Wrap_T, v.GLEnum );
+        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
+        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
     }
 
     /// <summary>
@@ -162,13 +162,13 @@ public abstract class GLTexture : IGLTexture, IDisposable
     {
         if ( ( minFilter != null ) && ( force || ( this.MinFilter != minFilter ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Min_Filter, minFilter.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
             this.MinFilter = minFilter;
         }
 
         if ( ( magFilter != null ) && ( force || ( this.MagFilter != magFilter ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Mag_Filter, magFilter.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
             this.MagFilter = magFilter;
         }
     }
@@ -186,8 +186,8 @@ public abstract class GLTexture : IGLTexture, IDisposable
 
         Bind();
 
-        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Min_Filter, minFilter.GLEnum );
-        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_Texture_Mag_Filter, magFilter.GLEnum );
+        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
+        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
     }
 
     /// <summary>
@@ -218,8 +218,8 @@ public abstract class GLTexture : IGLTexture, IDisposable
 
         Gdx.GL20.GLTexParameterf
             (
-             IGL20.GL_Texture_2D,
-             IGL20.GL_Texture_Max_Anisotropy_Ext,
+             IGL20.GL_TEXTURE_2D,
+             IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
              level
             );
 
@@ -248,8 +248,8 @@ public abstract class GLTexture : IGLTexture, IDisposable
 
         Gdx.GL20.GLTexParameterf
             (
-             IGL20.GL_Texture_2D,
-             IGL20.GL_Texture_Max_Anisotropy_Ext,
+             IGL20.GL_TEXTURE_2D,
+             IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
              level
             );
 
@@ -271,7 +271,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
             buffer.SetPosition( 0 );
             buffer.SetLimit( buffer.Capacity );
 
-            Gdx.GL20.GLGetFloatv( IGL20.GL_Max_Texture_Max_Anisotropy_Ext, buffer );
+            Gdx.GL20.GLGetFloatv( IGL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
 
             return _maxAnisotropicFilterLevel = buffer.Get( 0 );
         }
@@ -335,7 +335,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
             disposePixmap = true;
         }
 
-        Gdx.GL.GLPixelStorei( IGL20.GL_Unpack_Alignment, 1 );
+        Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
 
         if ( data.UseMipMaps() )
         {

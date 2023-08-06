@@ -121,7 +121,7 @@ public class FacedCubemapData : ICubemapData
         {
             if ( _data[ i ]!.TextureDataType == ITextureData.TextureType.Custom )
             {
-                _data[ i ]!.ConsumeCustomData( IGL20.GL_Texture_Cube_Map_Positive_X + i );
+                _data[ i ]!.ConsumeCustomData( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i );
             }
             else
             {
@@ -144,11 +144,11 @@ public class FacedCubemapData : ICubemapData
                     disposePixmap = true;
                 }
 
-                Gdx.GL.GLPixelStorei( IGL20.GL_Unpack_Alignment, 1 );
+                Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
 
                 Gdx.GL.GLTexImage2D
                     (
-                     IGL20.GL_Texture_Cube_Map_Positive_X + i,
+                     IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                      0,
                      pixmap.GLInternalFormat,
                      pixmap.Width,

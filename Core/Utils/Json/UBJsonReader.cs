@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Utils.Json;
 
-public class UBJsonReader
+public class UbJsonReader
 {
         
 }

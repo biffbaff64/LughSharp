@@ -139,14 +139,14 @@ public partial class Pattern
         {
             Debug.Assert( c is >= 0 and <= 255 );
 
-            if ( ( flags & Case_Insensitive ) != 0 )
+            if ( ( flags & CASE_INSENSITIVE ) != 0 )
             {
-                if ( ASCII.IsAscii( c ) )
+                if ( Ascii.IsAscii( c ) )
                 {
-                    _bits[ ASCII.ToUpper( c ) ] = true;
-                    _bits[ ASCII.ToLower( c ) ] = true;
+                    _bits[ Ascii.ToUpper( c ) ] = true;
+                    _bits[ Ascii.ToLower( c ) ] = true;
                 }
-                else if ( ( flags & Unicode_Case ) != 0 )
+                else if ( ( flags & UNICODE_CASE ) != 0 )
                 {
                     _bits[ char.ToLower( (char)c ) ] = true;
                     _bits[ char.ToUpper( (char)c ) ] = true;
@@ -571,7 +571,7 @@ public partial class Pattern
     // ------------------------------------------------------------------------
 
     [Obsolete]
-    public class CIBackRef : Node
+    public class CiBackRef : Node
     {
     }
 

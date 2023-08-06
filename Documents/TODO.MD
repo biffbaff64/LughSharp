@@ -10,7 +10,7 @@ I have taken the decision that this Library / Framework will be OpenGL for deskt
 ONLY. Android / iOS is catered for by the Java LibGDX so there is no need to
 provide that facility.
 
-This means that 'Backends' can be removed and merged with 'Core'
+ - This means that 'Backends' can be removed and merged with 'Core'
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,10 +26,6 @@ This means that 'Backends' can be removed and merged with 'Core'
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - SORT OUT VERSIONING!!!
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-- ADD A LICENCE - MIT / APACHE ???
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -135,7 +131,6 @@ CORE
     - DONE - AbstractGraphics               
     - DONE - AbstractInput                  
     - DONE - ApplicationAdapter             
-    - DONE - ApplicationBase                New
     - DONE - Game                           
     - DONE - GDXVersion                     
     - DONE - IApplication                   
@@ -731,6 +726,7 @@ UTILS/BUFFERS
     - IP   - FloatBuffer
     - IP   - HeapByteBuffer
     - IP   - HeapCharBuffer
+    - IP   _ IDirectBuffer
     - IP   - IntBuffer
     - IP   - LongBuffer
     - IP   - MappedByteBuffer
@@ -797,10 +793,11 @@ UTILS/COLLECTIONS/EXTENSIONS
 UTILS/COMPRESSION
 -----------------
 
+    - IP   - CRC32
+    - DONE - IChecksum
+
     Convert later, purely for education purposes.
 
-    - **** - CRC
-    - **** - IChecksum
     - **** - ICodeProgress
     - **** - LzmaAdapted
 

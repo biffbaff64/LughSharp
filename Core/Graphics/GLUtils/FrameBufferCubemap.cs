@@ -118,8 +118,8 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         {
             Gdx.GL20.GLFramebufferTexture2D
                 (
-                IGL20.GL_Framebuffer,
-                IGL20.GL_Color_Attachment0,
+                IGL20.GL_FRAMEBUFFER,
+                IGL20.GL_COLOR_ATTACHMENT0,
                 side.GLEnum,
                 glHandle, 0
                 );
@@ -173,7 +173,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         
         Gdx.GL20.GLFramebufferTexture2D
             (
-            IGL20.GL_Framebuffer, IGL20.GL_Color_Attachment0, side.GLEnum,
+            IGL20.GL_FRAMEBUFFER, IGL20.GL_COLOR_ATTACHMENT0, side.GLEnum,
             GetColorBufferTexture().GetTextureObjectHandle(), 0
             );
     }

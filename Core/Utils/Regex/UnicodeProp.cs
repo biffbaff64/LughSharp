@@ -175,7 +175,7 @@ public static class UnicodePropExtensions
 
             // ------------------------------------------------------
             case UnicodeProp.Blank:
-                return ( ch == CharHelper.SpaceSeparator ) || ( ch == 0x09 );
+                return ( ch == CharHelper.SPACE_SEPARATOR ) || ( ch == 0x09 );
 
             // ------------------------------------------------------
 //            case UnicodeProp.Graph:

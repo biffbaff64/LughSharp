@@ -36,7 +36,7 @@ public class Cubemap : GLTexture
     /// <summary>
     /// Construct a Cubemap based on the given CubemapData.
     /// </summary>
-    public Cubemap( ICubemapData? data ) : base( IGL20.GL_Texture_Cube_Map )
+    public Cubemap( ICubemapData? data ) : base( IGL20.GL_TEXTURE_CUBE_MAP )
     {
         ArgumentNullException.ThrowIfNull( data );
         
@@ -298,32 +298,32 @@ public class Cubemap : GLTexture
         /// The positive X and first side of the cubemap
         /// </summary>
         public readonly static CubemapSide PositiveX = new
-            ( "PositiveX", InnerEnum.PositiveX, 0, IGL20.GL_Texture_Cube_Map_Positive_X, 0, -1, 0, 1, 0, 0 );
+            ( "PositiveX", InnerEnum.PositiveX, 0, IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, -1, 0, 1, 0, 0 );
         /// <summary>
         /// The negative X and second side of the cubemap
         /// </summary>
         public readonly static CubemapSide NegativeX = new
-            ( "NegativeX", InnerEnum.NegativeX, 1, IGL20.GL_Texture_Cube_Map_Negative_X, 0, -1, 0, -1, 0, 0 );
+            ( "NegativeX", InnerEnum.NegativeX, 1, IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, -1, 0, -1, 0, 0 );
         /// <summary>
         /// The positive Y and third side of the cubemap
         /// </summary>
         public readonly static CubemapSide PositiveY = new
-            ( "PositiveY", InnerEnum.PositiveY, 2, IGL20.GL_Texture_Cube_Map_Positive_Y, 0, 0, 1, 0, 1, 0 );
+            ( "PositiveY", InnerEnum.PositiveY, 2, IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 1, 0, 1, 0 );
         /// <summary>
         /// The negative Y and fourth side of the cubemap
         /// </summary>
         public readonly static CubemapSide NegativeY = new
-            ( "NegativeY", InnerEnum.NegativeY, 3, IGL20.GL_Texture_Cube_Map_Negative_Y, 0, 0, -1, 0, -1, 0 );
+            ( "NegativeY", InnerEnum.NegativeY, 3, IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, -1, 0, -1, 0 );
         /// <summary>
         /// The positive Z and fifth side of the cubemap
         /// </summary>
         public readonly static CubemapSide PositiveZ = new
-            ( "PositiveZ", InnerEnum.PositiveZ, 4, IGL20.GL_Texture_Cube_Map_Positive_Z, 0, -1, 0, 0, 0, 1 );
+            ( "PositiveZ", InnerEnum.PositiveZ, 4, IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, -1, 0, 0, 0, 1 );
         /// <summary>
         /// The negative Z and sixth side of the cubemap
         /// </summary>
         public readonly static CubemapSide NegativeZ = new
-            ( "NegativeZ", InnerEnum.NegativeZ, 5, IGL20.GL_Texture_Cube_Map_Negative_Z, 0, -1, 0, 0, 0, -1 );
+            ( "NegativeZ", InnerEnum.NegativeZ, 5, IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, -1, 0, 0, 0, -1 );
 
         private readonly static List< CubemapSide > valueList = new();
 

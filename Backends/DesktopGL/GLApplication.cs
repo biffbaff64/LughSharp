@@ -34,22 +34,22 @@ public class GLApplication : GLApplicationBase
 
     public static GLVersion? GLVersion { get; set; }
 
-    private static   GlfwCallbacks.ErrorCallback? errorCallback    = null;
+    private static   GLFWCallbacks.ErrorCallback? _errorCallback   = null;
     private static   Callback?                    _glDebugCallback = null;
     private volatile GLWindow?                    _currentWindow   = null;
     private          Sync?                        _sync;
 
     public static void InitialiseGL()
     {
-        if ( errorCallback == null )
+        if ( _errorCallback == null )
         {
             GLNativesLoader.Load();
 
-            // TODO: Create error callback
+            // TODO: Create error callback - See Java LibGDX
 
-            Glfw.GetApi().InitHint( InitHint.JoystickHatButtons, false );
+            GLFW.InitHint( InitHintBool.JoystickHatButtons, false );
 
-            if ( Glfw.GetApi().Init() )
+            if ( GLFW.Init() )
             {
                 throw new GdxRuntimeException( "Unable to initialise Glfw!" );
             }
@@ -284,14 +284,14 @@ public class GLApplication : GLApplicationBase
     /// </summary>
     private void InitiateGL()
     {
-        Glfw.GetApi().GetVersion( out var major, out var minor, out var revision );
+        GLFW.GetVersion( out var major, out var minor, out var revision );
 
         GLVersion = new GLVersion
             (
             IApplication.ApplicationType.Desktop,
             $"{major}.{minor}.{revision}",
-            Gdx.GL20.GLGetString( IGL20.GL_Vendor ),
-            Gdx.GL20.GLGetString( IGL20.GL_Renderer )
+            Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
+            Gdx.GL20.GLGetString( IGL20.GL_RENDERER )
             );
     }
 }

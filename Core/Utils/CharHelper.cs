@@ -24,33 +24,33 @@ public static class CharHelper
     /// the UTF-16 encoding, constant '\uDBFF'.
     /// A high-surrogate is also known as a leading-surrogate.
     /// </summary>
-    public const char Max_High_Surrogate = '\uDBFF';
+    public const char MAX_HIGH_SURROGATE = '\uDBFF';
 
     /// <summary>
     /// The minimum value of a Unicode high-surrogate code unit in
     /// the UTF-16 encoding, constant '\uD800'.
     /// A high-surrogate is also known as a leading-surrogate.
     /// </summary>
-    public const char Min_High_Surrogate = '\uD800';
+    public const char MIN_HIGH_SURROGATE = '\uD800';
 
     /// <summary>
     /// The maximum value of a Unicode low-surrogate code unit in
     /// the UTF-16 encoding, constant '\uDFFF'.
     /// A low-surrogate is also known as a trailing-surrogate.
     /// </summary>
-    public const char Max_Low_Surrogate = '\uDFFF';
+    public const char MAX_LOW_SURROGATE = '\uDFFF';
 
     /// <summary>
     /// The minimum value of a Unicode low-surrogate code unit in
     /// the UTF-16 encoding, constant '\uDC00'.
     /// A low-surrogate is also known as a trailing-surrogate.
     /// </summary>
-    public const char Min_Low_Surrogate = '\uDC00';
+    public const char MIN_LOW_SURROGATE = '\uDC00';
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public const int Min_Supplementary_Code_Point = 0x010000;
+    public const int MIN_SUPPLEMENTARY_CODE_POINT = 0x010000;
 
     /// <summary>
     /// Determines the number of char values needed to represent the specified
@@ -107,7 +107,7 @@ public static class CharHelper
     /// <tt>digit</tt> method, the <tt>forDigit</tt> method, and the
     /// <tt>toString</tt> method of class <tt>Integer</tt>.
     /// </summary>
-    public const int Min_Radix = 2;
+    public const int MIN_RADIX = 2;
 
     /// <summary>
     /// The maximum radix available for conversion to and from strings.
@@ -116,344 +116,289 @@ public static class CharHelper
     /// <tt>digit</tt> method, the <tt>forDigit</tt> method, and the
     /// <tt>toString</tt> method of class <tt>Integer</tt>.
     /// </summary>
-    public const int Max_Radix = 36;
+    public const int MAX_RADIX = 36;
 
     /// <summary>
     /// The constant value of this field is the smallest value of type
     /// <tt>char</tt>, <tt>'\u005Cu0000'</tt>.
     /// </summary>
-    public const char Min_Value = '\u0000';
+    public const char MIN_VALUE = '\u0000';
 
     /// <summary>
     /// The constant value of this field is the largest value of type
     /// <tt>char</tt>, <tt>'\u005CuFFFF'</tt>.
     /// </summary>
-    public const char Max_Value = '\uFFFF';
+    public const char MAX_VALUE = '\uFFFF';
     
 	/// <summary>
 	/// General category "Cn" in the Unicode specification.
 	/// </summary>
-	public const sbyte Unassigned = 0;
+	public const sbyte UNASSIGNED = 0;
 
 	/// <summary>
 	/// General category "Lu" in the Unicode specification.
 	/// </summary>
-	public const sbyte UppercaseLetter = 1;
+	public const sbyte UPPERCASE_LETTER = 1;
 
 	/// <summary>
 	/// General category "Ll" in the Unicode specification.
 	/// </summary>
-	public const sbyte LowercaseLetter = 2;
+	public const sbyte LOWERCASE_LETTER = 2;
 
 	/// <summary>
 	/// General category "Lt" in the Unicode specification.
 	/// </summary>
-	public const sbyte TitlecaseLetter = 3;
+	public const sbyte TITLECASE_LETTER = 3;
 
 	/// <summary>
 	/// General category "Lm" in the Unicode specification.
 	/// </summary>
-	public const sbyte ModifierLetter = 4;
+	public const sbyte MODIFIER_LETTER = 4;
 
 	/// <summary>
 	/// General category "Lo" in the Unicode specification.
 	/// </summary>
-	public const sbyte OtherLetter = 5;
+	public const sbyte OTHER_LETTER = 5;
 
 	/// <summary>
 	/// General category "Mn" in the Unicode specification.
 	/// </summary>
-	public const sbyte NonSpacingMark = 6;
+	public const sbyte NON_SPACING_MARK = 6;
 
 	/// <summary>
 	/// General category "Me" in the Unicode specification.
 	/// </summary>
-	public const sbyte EnclosingMark = 7;
+	public const sbyte ENCLOSING_MARK = 7;
 
 	/// <summary>
 	/// General category "Mc" in the Unicode specification.
 	/// </summary>
-	public const sbyte CombiningSpacingMark = 8;
+	public const sbyte COMBINING_SPACING_MARK = 8;
 
 	/// <summary>
 	/// General category "Nd" in the Unicode specification.
 	/// </summary>
-	public const sbyte DecimalDigitNumber = 9;
+	public const sbyte DECIMAL_DIGIT_NUMBER = 9;
 
 	/// <summary>
 	/// General category "Nl" in the Unicode specification.
 	/// </summary>
-	public const sbyte LetterNumber = 10;
+	public const sbyte LETTER_NUMBER = 10;
 
 	/// <summary>
 	/// General category "No" in the Unicode specification.
 	/// </summary>
-	public const sbyte OtherNumber = 11;
+	public const sbyte OTHER_NUMBER = 11;
 
 	/// <summary>
 	/// General category "Zs" in the Unicode specification.
 	/// </summary>
-	public const sbyte SpaceSeparator = 12;
+	public const sbyte SPACE_SEPARATOR = 12;
 
 	/// <summary>
 	/// General category "Zl" in the Unicode specification.
 	/// </summary>
-	public const sbyte LineSeparator = 13;
+	public const sbyte LINE_SEPARATOR = 13;
 
 	/// <summary>
 	/// General category "Zp" in the Unicode specification.
 	/// </summary>
-	public const sbyte ParagraphSeparator = 14;
+	public const sbyte PARAGRAPH_SEPARATOR = 14;
 
 	/// <summary>
 	/// General category "Cc" in the Unicode specification.
 	/// </summary>
-	public const sbyte Control = 15;
+	public const sbyte CONTROL = 15;
 
 	/// <summary>
 	/// General category "Cf" in the Unicode specification.
 	/// </summary>
-	public const sbyte Format = 16;
+	public const sbyte FORMAT = 16;
 	
 	/// <summary>
 	/// General category "Co" in the Unicode specification.
 	/// </summary>
-	public const sbyte PrivateUse = 18;
+	public const sbyte PRIVATE_USE = 18;
 
 	/// <summary>
 	/// General category "Cs" in the Unicode specification.
 	/// </summary>
-	public const sbyte Surrogate = 19;
+	public const sbyte SURROGATE = 19;
 
 	/// <summary>
 	/// General category "Pd" in the Unicode specification.
 	/// </summary>
-	public const sbyte DashPunctuation = 20;
+	public const sbyte DASH_PUNCTUATION = 20;
 
 	/// <summary>
 	/// General category "Ps" in the Unicode specification.
 	/// </summary>
-	public const sbyte StartPunctuation = 21;
+	public const sbyte START_PUNCTUATION = 21;
 
 	/// <summary>
 	/// General category "Pe" in the Unicode specification.
 	/// </summary>
-	public const sbyte EndPunctuation = 22;
+	public const sbyte END_PUNCTUATION = 22;
 
 	/// <summary>
 	/// General category "Pc" in the Unicode specification.
 	/// </summary>
-	public const sbyte ConnectorPunctuation = 23;
+	public const sbyte CONNECTOR_PUNCTUATION = 23;
 
 	/// <summary>
 	/// General category "Po" in the Unicode specification.
 	/// </summary>
-	public const sbyte OtherPunctuation = 24;
+	public const sbyte OTHER_PUNCTUATION = 24;
 
 	/// <summary>
 	/// General category "Sm" in the Unicode specification.
 	/// </summary>
-	public const sbyte MathSymbol = 25;
+	public const sbyte MATH_SYMBOL = 25;
 
 	/// <summary>
 	/// General category "Sc" in the Unicode specification.
 	/// </summary>
-	public const sbyte CurrencySymbol = 26;
+	public const sbyte CURRENCY_SYMBOL = 26;
 
 	/// <summary>
 	/// General category "Sk" in the Unicode specification.
 	/// </summary>
-	public const sbyte ModifierSymbol = 27;
+	public const sbyte MODIFIER_SYMBOL = 27;
 
 	/// <summary>
 	/// General category "So" in the Unicode specification.
 	/// </summary>
-	public const sbyte OtherSymbol = 28;
+	public const sbyte OTHER_SYMBOL = 28;
 
 	/// <summary>
 	/// General category "Pi" in the Unicode specification.
 	/// </summary>
-	public const sbyte InitialQuotePunctuation = 29;
+	public const sbyte INITIAL_QUOTE_PUNCTUATION = 29;
 
 	/// <summary>
 	/// General category "Pf" in the Unicode specification.
 	/// </summary>
-	public const sbyte FinalQuotePunctuation = 30;
+	public const sbyte FINAL_QUOTE_PUNCTUATION = 30;
 
 	/// <summary>
 	/// Error flag. Use int (code point) to avoid confusion with U+FFFF.
 	/// </summary>
-	public const int Error = unchecked((int)0xFFFFFFFF);
+	public const int ERROR = unchecked((int)0xFFFFFFFF);
     
 	/// <summary>
 	/// Undefined bidirectional character type. Undefined {@code char}
 	/// values have undefined directionality in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityUndefined = -1;
+	public const sbyte DIRECTIONALITY_UNDEFINED = -1;
 
 	/// <summary>
 	/// Strong bidirectional character type "L" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityLeftToRight = 0;
+	public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT = 0;
 	
 	/// <summary>
 	/// Strong bidirectional character type "R" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityRightToLeft = 1;
+	public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT = 1;
 
 	/// <summary>
 	/// Strong bidirectional character type "AL" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityRightToLeftArabic = 2;
+	public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC = 2;
 
 	/// <summary>
 	/// Weak bidirectional character type "EN" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityEuropeanNumber = 3;
+	public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER = 3;
 
 	/// <summary>
 	/// Weak bidirectional character type "ES" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityEuropeanNumberSeparator = 4;
+	public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER_SEPARATOR = 4;
 
 	/// <summary>
 	/// Weak bidirectional character type "ET" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityEuropeanNumberTerminator = 5;
+	public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER_TERMINATOR = 5;
 
 	/// <summary>
 	/// Weak bidirectional character type "AN" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityArabicNumber = 6;
+	public const sbyte DIRECTIONALITY_ARABIC_NUMBER = 6;
 
 	/// <summary>
 	/// Weak bidirectional character type "CS" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityCommonNumberSeparator = 7;
+	public const sbyte DIRECTIONALITY_COMMON_NUMBER_SEPARATOR = 7;
 
 	/// <summary>
 	/// Weak bidirectional character type "NSM" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityNonspacingMark = 8;
+	public const sbyte DIRECTIONALITY_NONSPACING_MARK = 8;
 
 	/// <summary>
 	/// Weak bidirectional character type "BN" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityBoundaryNeutral = 9;
+	public const sbyte DIRECTIONALITY_BOUNDARY_NEUTRAL = 9;
 
 	/// <summary>
 	/// Neutral bidirectional character type "B" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityParagraphSeparator = 10;
+	public const sbyte DIRECTIONALITY_PARAGRAPH_SEPARATOR = 10;
 
 	/// <summary>
 	/// Neutral bidirectional character type "S" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalitySegmentSeparator = 11;
+	public const sbyte DIRECTIONALITY_SEGMENT_SEPARATOR = 11;
 
 	/// <summary>
 	/// Neutral bidirectional character type "WS" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityWhitespace = 12;
+	public const sbyte DIRECTIONALITY_WHITESPACE = 12;
 
 	/// <summary>
 	/// Neutral bidirectional character type "ON" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityOtherNeutrals = 13;
+	public const sbyte DIRECTIONALITY_OTHER_NEUTRALS = 13;
 
 	/// <summary>
 	/// Strong bidirectional character type "LRE" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityLeftToRightEmbedding = 14;
+	public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT_EMBEDDING = 14;
 
 	/// <summary>
 	/// Strong bidirectional character type "LRO" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityLeftToRightOverride = 15;
+	public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT_OVERRIDE = 15;
 
 	/// <summary>
 	/// Strong bidirectional character type "RLE" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityRightToLeftEmbedding = 16;
+	public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING = 16;
 
 	/// <summary>
 	/// Strong bidirectional character type "RLO" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityRightToLeftOverride = 17;
+	public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE = 17;
 	
 	/// <summary>
 	/// Weak bidirectional character type "PDF" in the Unicode specification.
 	/// </summary>
-	public const sbyte DirectionalityPopDirectionalFormat = 18;
-
-	/// <summary>
-	/// The minimum value of a
-	/// <a href="http://www.unicode.org/glossary/#high_surrogate_code_unit">
-	/// Unicode high-surrogate code unit</a>
-	/// in the UTF-16 encoding, constant {@code '\u005CuD800'}.
-	/// A high-surrogate is also known as a <i>leading-surrogate</i>.
-	/// </summary>
-	public const char MinHighSurrogate = '\uD800';
-
-	/// <summary>
-	/// The maximum value of a
-	/// <a href="http://www.unicode.org/glossary/#high_surrogate_code_unit">
-	/// Unicode high-surrogate code unit</a>
-	/// in the UTF-16 encoding, constant {@code '\u005CuDBFF'}.
-	/// A high-surrogate is also known as a <i>leading-surrogate</i>.
-	/// </summary>
-	public const char MaxHighSurrogate = '\uDBFF';
-
-	/// <summary>
-	/// The minimum value of a
-	/// <a href="http://www.unicode.org/glossary/#low_surrogate_code_unit">
-	/// Unicode low-surrogate code unit</a>
-	/// in the UTF-16 encoding, constant {@code '\u005CuDC00'}.
-	/// A low-surrogate is also known as a <i>trailing-surrogate</i>.
-	/// </summary>
-	public const char MinLowSurrogate = '\uDC00';
-
-	/// <summary>
-	/// The maximum value of a
-	/// <a href="http://www.unicode.org/glossary/#low_surrogate_code_unit">
-	/// Unicode low-surrogate code unit</a>
-	/// in the UTF-16 encoding, constant {@code '\u005CuDFFF'}.
-	/// A low-surrogate is also known as a <i>trailing-surrogate</i>.
-	/// </summary>
-	public const char MaxLowSurrogate = '\uDFFF';
-
-	/// <summary>
-	/// The minimum value of a Unicode surrogate code unit in the
-	/// UTF-16 encoding, constant {@code '\u005CuD800'}.
-	/// </summary>
-	public const char MinSurrogate = MinHighSurrogate;
-
-	/// <summary>
-	/// The maximum value of a Unicode surrogate code unit in the
-	/// UTF-16 encoding, constant {@code '\u005CuDFFF'}.
-	/// </summary>
-	public const char MaxSurrogate = MaxLowSurrogate;
-
-	/// <summary>
-	/// The minimum value of a
-	/// <a href="http://www.unicode.org/glossary/#supplementary_code_point">
-	/// Unicode supplementary code point</a>, constant {@code U+10000}.
-	/// </summary>
-	public const int MinSupplementaryCodePoint = 0x010000;
+	public const sbyte DIRECTIONALITY_POP_DIRECTIONAL_FORMAT = 18;
 
 	/// <summary>
 	/// The minimum value of a
 	/// <a href="http://www.unicode.org/glossary/#code_point">
 	/// Unicode code point</a>, constant {@code U+0000}.
 	/// </summary>
-	public const int MinCodePoint = 0x000000;
+	public const int MIN_CODE_POINT = 0x000000;
 
 	/// <summary>
 	/// The maximum value of a
 	/// <a href="http://www.unicode.org/glossary/#code_point">
 	/// Unicode code point</a>, constant {@code U+10FFFF}.
 	/// </summary>
-	public const int MaxCodePoint = 0X10FFFF;
+	public const int MAX_CODE_POINT = 0X10FFFF;
 }
 
 

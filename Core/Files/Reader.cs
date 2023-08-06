@@ -132,7 +132,7 @@ public abstract class Reader : ICloseable
     /// <exception cref="IOException"> If an I/O error occurs </exception>
     public abstract int Read( char[] cbuf, int off, int len );
 
-    private const int     MaxSkipBufferSize = 8192;
+    private const int     MAX_SKIP_BUFFER_SIZE = 8192;
     private       char[]? _skipBuffer       = null;
 
     /// <summary>
@@ -147,7 +147,7 @@ public abstract class Reader : ICloseable
     {
         if ( n < 0L ) throw new ArgumentException( "skip value is negative" );
 
-        var nn = ( int )Math.Min( n, MaxSkipBufferSize );
+        var nn = ( int )Math.Min( n, MAX_SKIP_BUFFER_SIZE );
 
         lock ( Lockobj )
         {

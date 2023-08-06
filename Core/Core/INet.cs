@@ -40,12 +40,12 @@ public interface INet
     /// </summary>
     public interface IHttpMethods
     {
-        public const string Head   = "HEAD";
-        public const string Get    = "GET";
-        public const string Post   = "POST";
-        public const string Put    = "PUT";
-        public const string Patch  = "PATCH";
-        public const string Delete = "DELETE";
+        public const string HEAD   = "HEAD";
+        public const string GET    = "GET";
+        public const string POST   = "POST";
+        public const string PUT    = "PUT";
+        public const string PATCH  = "PATCH";
+        public const string DELETE = "DELETE";
     }
 
     public interface IHttpResponseListener

@@ -53,10 +53,10 @@ public abstract class BaseTmxMapLoader<TP>
         public bool FlipY { get; set; } = true;
     }
 
-    protected const uint Flag_Flip_Horizontally = 0x80000000;
-    protected const uint Flag_Flip_Vertically   = 0x40000000;
-    protected const uint Flag_Flip_Diagonally   = 0x20000000;
-    protected const uint Mask_Clear             = 0xE0000000;
+    protected const uint FLAG_FLIP_HORIZONTALLY = 0x80000000;
+    protected const uint FLAG_FLIP_VERTICALLY   = 0x40000000;
+    protected const uint FLAG_FLIP_DIAGONALLY   = 0x20000000;
+    protected const uint MASK_CLEAR             = 0xE0000000;
 
     protected readonly XmlReader         xml = new();
     protected          XmlReader.Element root;
@@ -291,11 +291,11 @@ public abstract class BaseTmxMapLoader<TP>
                 for ( var x = 0; x < width; x++ )
                 {
                     var id               = ids[ ( y * width ) + x ];
-                    var flipHorizontally = ( ( id & Flag_Flip_Horizontally ) != 0 );
-                    var flipVertically   = ( ( id & Flag_Flip_Vertically ) != 0 );
-                    var flipDiagonally   = ( ( id & Flag_Flip_Diagonally ) != 0 );
+                    var flipHorizontally = ( ( id & FLAG_FLIP_HORIZONTALLY ) != 0 );
+                    var flipVertically   = ( ( id & FLAG_FLIP_VERTICALLY ) != 0 );
+                    var flipDiagonally   = ( ( id & FLAG_FLIP_DIAGONALLY ) != 0 );
 
-                    ITiledMapTile? tile = tilesets.GetTile( ( int )( id & ~Mask_Clear ) );
+                    ITiledMapTile? tile = tilesets.GetTile( ( int )( id & ~MASK_CLEAR ) );
 
                     if ( tile != null )
                     {
@@ -506,10 +506,10 @@ public abstract class BaseTmxMapLoader<TP>
                 {
                     id = ( int )long.Parse( gid );
 
-                    var flipHorizontally = ( ( id & Flag_Flip_Horizontally ) != 0 );
-                    var flipVertically   = ( ( id & Flag_Flip_Vertically ) != 0 );
+                    var flipHorizontally = ( ( id & FLAG_FLIP_HORIZONTALLY ) != 0 );
+                    var flipVertically   = ( ( id & FLAG_FLIP_VERTICALLY ) != 0 );
 
-                    ITiledMapTile? tile = map.Tilesets.GetTile( ( int )( id & ~Mask_Clear ) );
+                    ITiledMapTile? tile = map.Tilesets.GetTile( ( int )( id & ~MASK_CLEAR ) );
 
                     var tiledMapTileMapObject = new TiledMapTileMapObject( tile!, flipHorizontally, flipVertically );
 
@@ -652,20 +652,20 @@ public abstract class BaseTmxMapLoader<TP>
             if ( flipHorizontally && flipVertically )
             {
                 cell.SetFlipHorizontally( true );
-                cell.SetRotation( TiledMapTileLayer.Cell.Rotate270 );
+                cell.SetRotation( TiledMapTileLayer.Cell.ROTATE270 );
             }
             else if ( flipHorizontally )
             {
-                cell.SetRotation( TiledMapTileLayer.Cell.Rotate270 );
+                cell.SetRotation( TiledMapTileLayer.Cell.ROTATE270 );
             }
             else if ( flipVertically )
             {
-                cell.SetRotation( TiledMapTileLayer.Cell.Rotate90 );
+                cell.SetRotation( TiledMapTileLayer.Cell.ROTATE90 );
             }
             else
             {
                 cell.SetFlipVertically( true );
-                cell.SetRotation( TiledMapTileLayer.Cell.Rotate270 );
+                cell.SetRotation( TiledMapTileLayer.Cell.ROTATE270 );
             }
         }
         else

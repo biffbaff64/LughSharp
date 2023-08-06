@@ -25,10 +25,10 @@ namespace LibGDXSharp.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Logger
 {
-    public const int LogNone  = 0;
-    public const int LogError = 1;
-    public const int LogInfo  = 2;
-    public const int LogDebug = 3;
+    public const int LOG_NONE  = 0;
+    public const int LOG_ERROR = 1;
+    public const int LOG_INFO  = 2;
+    public const int LOG_DEBUG = 3;
 
     private readonly string _tag;
 
@@ -36,7 +36,7 @@ public class Logger
     /// </summary>
     /// <param name="tag"></param>
     /// <param name="level"></param>
-    public Logger(string tag, int level = LogError )
+    public Logger(string tag, int level = LOG_ERROR )
     {
         this._tag  = tag;
         this.Level = level;
@@ -47,7 +47,7 @@ public class Logger
     /// <param name="message"></param>
     public void Debug(string message)
     {
-        if (Level >= LogDebug)
+        if (Level >= LOG_DEBUG)
         {
             Gdx.App.Debug(_tag, message);
         }
@@ -59,7 +59,7 @@ public class Logger
     /// <param name="exception"></param>
     public void Debug(string message, Exception exception)
     {
-        if (Level >= LogDebug)
+        if (Level >= LOG_DEBUG)
         {
             Gdx.App.Debug(_tag, message, exception);
         }
@@ -70,7 +70,7 @@ public class Logger
     /// <param name="message"></param>
     public void Info(string message)
     {
-        if (Level >= LogInfo)
+        if (Level >= LOG_INFO)
         {
             Gdx.App.Log(_tag, message);
         }
@@ -82,7 +82,7 @@ public class Logger
     /// <param name="exception"></param>
     public void Info(string message, Exception exception)
     {
-        if (Level >= LogInfo)
+        if (Level >= LOG_INFO)
         {
             Gdx.App.Log(_tag, message, exception);
         }
@@ -93,7 +93,7 @@ public class Logger
     /// <param name="message"></param>
     public void Error(string message)
     {
-        if (Level >= LogError)
+        if (Level >= LOG_ERROR)
         {
             Gdx.App.Error(_tag, message);
         }
@@ -105,7 +105,7 @@ public class Logger
     /// <param name="exception"></param>
     public void Error(string message, Exception exception)
     {
-        if (Level >= LogError)
+        if (Level >= LOG_ERROR)
         {
             Gdx.App.Error(_tag, message, exception);
         }
@@ -113,10 +113,10 @@ public class Logger
 
     /// <summary>
     /// Sets the log level.
-    /// <see cref="LogNone"/> will mute all log output.
-    /// <see cref="LogError"/> will only let error messages through.
-    /// <see cref="LogInfo"/> will let all non-debug messages through.
-    /// <see cref="LogDebug"/> will let all messages through.
+    /// <see cref="LOG_NONE"/> will mute all log output.
+    /// <see cref="LOG_ERROR"/> will only let error messages through.
+    /// <see cref="LOG_INFO"/> will let all non-debug messages through.
+    /// <see cref="LOG_DEBUG"/> will let all messages through.
     /// </summary>
     public int Level { set; get; }
 }

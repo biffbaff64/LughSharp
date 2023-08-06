@@ -41,11 +41,11 @@ public abstract class GLInterceptor : IGL20
     {
         return error switch
                {
-                   IGL20.GL_Invalid_Value                 => "GL_INVALID_VALUE",
-                   IGL20.GL_Invalid_Operation             => "GL_INVALID_OPERATION",
-                   IGL20.GL_Invalid_Framebuffer_Operation => "GL_INVALID_FRAMEBUFFER_OPERATION",
-                   IGL20.GL_Invalid_Enum                  => "GL_INVALID_ENUM",
-                   IGL20.GL_Out_Of_Memory                 => "GL_OUT_OF_MEMORY",
+                   IGL20.GL_INVALID_VALUE                 => "GL_INVALID_VALUE",
+                   IGL20.GL_INVALID_OPERATION             => "GL_INVALID_OPERATION",
+                   IGL20.GL_INVALID_FRAMEBUFFER_OPERATION => "GL_INVALID_FRAMEBUFFER_OPERATION",
+                   IGL20.GL_INVALID_ENUM                  => "GL_INVALID_ENUM",
+                   IGL20.GL_OUT_OF_MEMORY                 => "GL_OUT_OF_MEMORY",
                    _ => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
                };
     }

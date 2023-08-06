@@ -63,7 +63,7 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL30.GL_Texture_2D_Array, Gdx.GL.GLGenTexture() )
+        : base( IGL30.GL_TEXTURE_2D_ARRAY, Gdx.GL.GLGenTexture() )
     {
         if ( Gdx.GL30 == null )
         {
@@ -111,7 +111,7 @@ public class TextureArray : GLTexture
 
         Gdx.GL30.GLTexImage3D
             (
-             IGL30.GL_Texture_2D_Array,
+             IGL30.GL_TEXTURE_2D_ARRAY,
              0,
              data.InternalFormat,
              data.Width,

@@ -55,7 +55,7 @@ public class AssetLoadingTask
         AssetDesc  = assetDesc;
         _loader    = loader;
         _executor  = threadPool;
-        _startTime = manager.Log.Level == Logger.LogDebug ? TimeUtils.NanoTime() : 0;
+        _startTime = manager.Log.Level == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
     }
 
     /// <summary>

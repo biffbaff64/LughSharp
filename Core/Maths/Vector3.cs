@@ -528,7 +528,7 @@ public class Vector3 : IVector< Vector3 >
 
     public bool IsOnLine( Vector3 other )
     {
-        return Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) ) <= MathUtils.Float_Rounding_Error;
+        return Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) ) <= MathUtils.FLOAT_ROUNDING_ERROR;
     }
 
     public bool IsCollinear( Vector3 other, float epsilon )
@@ -694,7 +694,7 @@ public class Vector3 : IVector< Vector3 >
     /// <param name="other"></param>
     /// <param name="epsilon"></param>
     /// <returns></returns>
-    public bool EpsilonEquals( Vector3? other, float epsilon = MathUtils.Float_Rounding_Error )
+    public bool EpsilonEquals( Vector3? other, float epsilon = MathUtils.FLOAT_ROUNDING_ERROR )
     {
         if ( other == null ) return false;
         if ( Math.Abs( other.X - X ) > epsilon ) return false;
@@ -711,7 +711,7 @@ public class Vector3 : IVector< Vector3 >
     /// <param name="z"></param>
     /// <param name="epsilon"></param>
     /// <returns></returns>
-    public bool EpsilonEquals( float x, float y, float z, float epsilon = MathUtils.Float_Rounding_Error )
+    public bool EpsilonEquals( float x, float y, float z, float epsilon = MathUtils.FLOAT_ROUNDING_ERROR )
     {
         if ( Math.Abs( x - this.X ) > epsilon ) return false;
         if ( Math.Abs( y - this.Y ) > epsilon ) return false;
