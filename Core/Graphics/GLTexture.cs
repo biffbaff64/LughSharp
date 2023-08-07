@@ -92,20 +92,20 @@ public abstract class GLTexture : IGLTexture, IDisposable
     }
 
     /// <returns> The <see cref="TextureFilter"/> used for minification. </returns>
-    public TextureFilter MinFilter { get; private set; } = TextureFilter.Nearest;
+    public TextureFilter MinFilter { get; private set; } = TextureFilter.NEAREST;
 
     /// <returns> The <see cref="TextureFilter"/> used for magnification. </returns>
-    public TextureFilter MagFilter { get; private set; } = TextureFilter.Nearest;
+    public TextureFilter MagFilter { get; private set; } = TextureFilter.NEAREST;
 
     /// <returns>
     /// The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
     /// </returns>
-    public TextureWrap UWrap { get; set; } = TextureWrap.ClampToEdge;
+    public TextureWrap UWrap { get; set; } = TextureWrap.CLAMP_TO_EDGE;
 
     /// <returns>
     /// The <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
     /// </returns>
-    public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
+    public TextureWrap VWrap { get; set; } = TextureWrap.CLAMP_TO_EDGE;
 
     /// <summary>
     /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.

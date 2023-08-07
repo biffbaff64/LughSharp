@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
@@ -90,8 +92,8 @@ public class FrameBuffer : GLFrameBuffer< Texture >
 
         var result = new Texture( data );
 
-        result.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
-        result.SetWrap( TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
+        result.SetFilter( TextureFilter.LINEAR, TextureFilter.LINEAR );
+        result.SetWrap( TextureWrap.CLAMP_TO_EDGE, TextureWrap.CLAMP_TO_EDGE );
 
         return result;
     }

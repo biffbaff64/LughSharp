@@ -14,6 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Maths;

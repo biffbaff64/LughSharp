@@ -29,7 +29,7 @@ provide that facility.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- IP = Conversion In Progress.
+- IP   = Conversion In Progress.
 - DONE = Class finished but may not be fully 'CSharp-ified'
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -38,12 +38,12 @@ provide that facility.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-The following annotations will be found in many files.
+- The following annotations will be found in many files.
 
-- [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-- [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+  - [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+  - [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 
-They will mostly be removed when the project is complete.
+- They will mostly be removed when the project is complete.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -155,18 +155,6 @@ CORE
 FILES
 -----
 
-    - DONE - BufferedReader
-    - DONE - CloseableStreamReader
-    - DONE - CloseableStreamWriter
-    - DONE - DataInputStream
-    - DONE - DataOutputStream
-    - DONE - IDataInput
-    - DONE - IDataOutput
-    - DONE - Reader
-    - DONE - WindowsFolderUtils
-    - DONE - Writer
-    -      - 
-
     - java.io.BufferedReader                -> 
     - java.io.BufferedInputStream           -> BufferedStream
     - java.io.ByteArrayOutputStream         -> 
@@ -235,7 +223,7 @@ GRAPHICS
     - DONE - PerspectiveCamera                  
     - DONE - Pixmap                             
     - DONE - PixmapFormat                             
-    - IP   - PixmapIO                           
+    - DONE - PixmapIO                           
     - DONE - Texture                            
     - DONE - TextureArray                       
     - DONE - TextureFilter                      
@@ -348,6 +336,8 @@ GRAPHICS/PROFILING
 INPUT
 -----
 
+    Are these needed?
+
     -      - GestureDetector
     -      - RemoteInput
     - IP   - RemoteSender       Needs rework for compatibility with system.io.sockets.
@@ -404,7 +394,7 @@ MAPS/TILED/LOADERS
     - DONE - BaseTmxMapLoader                       Check for nullability issues
     - DONE - TmxMapLoader                           Check for nullability issues
 
-    -      - TideMapLoader                          Q: Should I support Tide?
+    -      - TideMapLoader                          Should I support Tide?
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

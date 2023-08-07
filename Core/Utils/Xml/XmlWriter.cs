@@ -34,20 +34,20 @@ namespace LibGDXSharp.Utils.Xml;
 ///		.pop()
 /// .pop()
 /// .pop();
-/// System.out.println(_writer);
+/// Console.WriteLn(_writer);
 /// </code>
 /// </para>
 /// </summary>
-public class XmlWriter : Writer
+public class XmlWriter
 {
-    private readonly Writer?   _writer;
+    private readonly StreamWriter?   _writer;
     private readonly List< string >? _stack = new();
     private          string?         _currentElement;
     private          bool            _indentNextClose;
 
     public int Indentation { get; set; }
 
-    public XmlWriter( Writer writer )
+    public XmlWriter( StreamWriter writer )
     {
         this._writer = writer;
     }
@@ -155,9 +155,10 @@ public class XmlWriter : Writer
     }
 
     /// <summary>
-    /// Calls <see cref="Pop()"/> for each remaining open element, if any, and closes the stream.
+    /// Calls <see cref="Pop()"/> for each remaining open element,
+    /// if any, and closes the stream.
     /// </summary>
-    public new void Close()
+    public void Close()
     {
         while ( _stack?.Count != 0 )
         {
@@ -167,14 +168,14 @@ public class XmlWriter : Writer
         _writer?.Close();
     }
 
-    public override void Write( char[] cbuf, int off, int len )
+    public void Write( char[] cbuf, int off, int len )
     {
         StartElementContent();
 
         _writer?.Write( cbuf, off, len );
     }
 
-    public override void Flush()
+    public void Flush()
     {
         _writer?.Flush();
     }

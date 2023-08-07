@@ -37,8 +37,8 @@ public interface ITextureProvider
 
         public FileTextureProvider()
         {
-            _minFilter  = _magFilter = TextureFilter.Linear;
-            _uWrap      = _vWrap     = TextureWrap.Repeat;
+            _minFilter  = _magFilter = TextureFilter.LINEAR;
+            _uWrap      = _vWrap     = TextureWrap.REPEAT;
             _useMipMaps = false;
         }
 

@@ -90,7 +90,7 @@ public interface IBatch : IDisposable
 
     /// <summary>
     /// Sets the color used to tint images when they are added to the Batch. Default
-    /// is <see cref="Color.White"/>.
+    /// is <see cref="Color.WHITE"/>.
     /// </summary>
     public void SetColor( Color tint );
 

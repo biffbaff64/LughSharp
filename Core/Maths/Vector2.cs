@@ -14,14 +14,16 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Maths;
 
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Vector2 : IVector< Vector2 >
 {
-    public readonly static Vector2 XDefault = new( 1, 0 );
-    public readonly static Vector2 YDefault = new( 0, 1 );
-    public readonly static Vector2 Zero     = new( 0, 0 );
+    public readonly static Vector2 X_DEFAULT = new( 1, 0 );
+    public readonly static Vector2 Y_DEFAULT = new( 0, 1 );
+    public readonly static Vector2 ZERO     = new( 0, 0 );
 
     public float X { get; set; } // the x-component of this vector.
     public float Y { get; set; } // the y-component of this vector.

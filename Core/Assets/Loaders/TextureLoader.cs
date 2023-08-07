@@ -25,6 +25,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// to generate mipmaps and so on.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class TextureLoader : AsynchronousAssetLoader, IDisposable
 {
     public class TextureLoaderInfo
@@ -158,10 +159,10 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
         /// </summary>
         public ITextureData? TextureData { get; set; } = null;
 
-        public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
-        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
-        public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
-        public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
+        public TextureFilter MinFilter { get; set; } = TextureFilter.NEAREST;
+        public TextureFilter MagFilter { get; set; } = TextureFilter.NEAREST;
+        public TextureWrap   WrapU     { get; set; } = TextureWrap.CLAMP_TO_EDGE;
+        public TextureWrap   WrapV     { get; set; } = TextureWrap.CLAMP_TO_EDGE;
     }
 
     /// <summary>

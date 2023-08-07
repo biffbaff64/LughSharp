@@ -18,6 +18,7 @@ using System.Runtime.Serialization;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Json;
 
@@ -52,7 +53,7 @@ public class Skin : IDisposable
     }
 
     //@formatter:off
-    private readonly static Type[] defaultTagClasses =
+    private readonly static Type[] DEFAULT_TAG_CLASSES =
     {
         typeof( BitmapFont ),                           typeof( Color ),
         typeof( TintedDrawable ),                       typeof( NinePatchDrawable ),
@@ -93,9 +94,9 @@ public class Skin : IDisposable
     static Skin()
     {
         Resources     = new Dictionary< Type, Dictionary< string, object >? >();
-        JsonClassTags = new Dictionary< string, Type >( defaultTagClasses.Length );
+        JsonClassTags = new Dictionary< string, Type >( DEFAULT_TAG_CLASSES.Length );
 
-        foreach ( Type c in defaultTagClasses )
+        foreach ( Type c in DEFAULT_TAG_CLASSES )
         {
             JsonClassTags.Add( c.Name, c );
         }

@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
@@ -72,15 +74,15 @@ public class FloatFrameBuffer : FrameBuffer
 
         if ( Gdx.App.AppType == IApplication.ApplicationType.Desktop )
         {
-            result.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
+            result.SetFilter( TextureFilter.LINEAR, TextureFilter.LINEAR );
         }
         else
         {
             // no filtering for float textures in OpenGL ES
-            result.SetFilter( TextureFilter.Nearest, TextureFilter.Nearest );
+            result.SetFilter( TextureFilter.NEAREST, TextureFilter.NEAREST );
         }
 
-        result.SetWrap( TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
+        result.SetWrap( TextureWrap.CLAMP_TO_EDGE, TextureWrap.CLAMP_TO_EDGE );
 
         return result;
     }

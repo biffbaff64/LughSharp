@@ -27,7 +27,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// <para>
 /// For all other file suffixes, the same file is used for both (and therefore should
 /// internally distinguish between the programs using preprocessor directives and
-/// <see cref="ShaderProgram.PrependVertexCode"/> and <see cref="ShaderProgram.PrependFragmentCode"/>).
+/// <see cref="ShaderProgram.PREPEND_VERTEX_CODE"/> and <see cref="ShaderProgram.PREPEND_FRAGMENT_CODE"/>).
 /// </para>
 /// <para>
 /// The above default behavior for finding the files can be overridden by explicitly
@@ -163,14 +163,14 @@ public class ShaderProgramLoader
         /// <summary>
         /// Code that is always added to the vertex shader code. This is added as-is,
         /// and you should include a newline (`\n`) if needed.
-        /// <see cref="ShaderProgram.PrependVertexCode"/> is placed before this code. 
+        /// <see cref="ShaderProgram.PREPEND_VERTEX_CODE"/> is placed before this code. 
         /// </summary>
         public string? PrependVertexCode { get; set; }
 
         /// <summary>
         /// Code that is always added to the fragment shader code. This is added as-is,
         /// and you should include a newline (`\n`) if needed.
-        /// <see cref="ShaderProgram.PrependFragmentCode"/> is placed before this code. 
+        /// <see cref="ShaderProgram.PREPEND_FRAGMENT_CODE"/> is placed before this code. 
         /// </summary>
         public string? PrependFragmentCode { get; set; }
     }

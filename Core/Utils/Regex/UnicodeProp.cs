@@ -46,32 +46,32 @@ public enum UnicodeProp
 [Obsolete]
 public static class UnicodePropExtensions
 {
-    private readonly static Dictionary< string, UnicodeProp > posix;
-    private readonly static Dictionary< string, UnicodeProp > aliases;
+    private readonly static Dictionary< string, UnicodeProp > POSIX;
+    private readonly static Dictionary< string, UnicodeProp > ALIASES;
 
     static UnicodePropExtensions()
     {
-        posix   = new Dictionary< string, UnicodeProp >();
-        aliases = new Dictionary< string, UnicodeProp >();
+        POSIX   = new Dictionary< string, UnicodeProp >();
+        ALIASES = new Dictionary< string, UnicodeProp >();
 
         //@formatter:off
-        posix.Add( "ALPHA",     UnicodeProp.Alphabetic );
-        posix.Add( "LOWER",     UnicodeProp.Lowercase );
-        posix.Add( "UPPER",     UnicodeProp.Uppercase );
-        posix.Add( "SPACE",     UnicodeProp.White_Space );
-        posix.Add( "PUNCT",     UnicodeProp.Punctuation );
-        posix.Add( "XDIGIT",    UnicodeProp.Hex_Digit );
-        posix.Add( "ALNUM",     UnicodeProp.Alnum );
-        posix.Add( "CNTRL",     UnicodeProp.Control );
-        posix.Add( "DIGIT",     UnicodeProp.Digit );
-        posix.Add( "BLANK",     UnicodeProp.Blank );
-        posix.Add( "GRAPH",     UnicodeProp.Graph );
-        posix.Add( "PRINT",     UnicodeProp.Print );
+        POSIX.Add( "ALPHA",     UnicodeProp.Alphabetic );
+        POSIX.Add( "LOWER",     UnicodeProp.Lowercase );
+        POSIX.Add( "UPPER",     UnicodeProp.Uppercase );
+        POSIX.Add( "SPACE",     UnicodeProp.White_Space );
+        POSIX.Add( "PUNCT",     UnicodeProp.Punctuation );
+        POSIX.Add( "XDIGIT",    UnicodeProp.Hex_Digit );
+        POSIX.Add( "ALNUM",     UnicodeProp.Alnum );
+        POSIX.Add( "CNTRL",     UnicodeProp.Control );
+        POSIX.Add( "DIGIT",     UnicodeProp.Digit );
+        POSIX.Add( "BLANK",     UnicodeProp.Blank );
+        POSIX.Add( "GRAPH",     UnicodeProp.Graph );
+        POSIX.Add( "PRINT",     UnicodeProp.Print );
 
-        aliases.Add( "WHITESPACE",              UnicodeProp.White_Space );
-        aliases.Add( "HEXDIGIT",                UnicodeProp.Hex_Digit );
-        aliases.Add( "NONCHARACTERCODEPOINT",   UnicodeProp.Noncharacter_Code_Point );
-        aliases.Add( "JOINCONTROL",             UnicodeProp.Join_Control );
+        ALIASES.Add( "WHITESPACE",              UnicodeProp.White_Space );
+        ALIASES.Add( "HEXDIGIT",                UnicodeProp.Hex_Digit );
+        ALIASES.Add( "NONCHARACTERCODEPOINT",   UnicodeProp.Noncharacter_Code_Point );
+        ALIASES.Add( "JOINCONTROL",             UnicodeProp.Join_Control );
         //@formatter:on
     }
 
@@ -81,7 +81,7 @@ public static class UnicodePropExtensions
     [Obsolete]
     public static UnicodeProp? ForName( string propName )
     {
-        return aliases[ propName.ToUpper() ];
+        return ALIASES[ propName.ToUpper() ];
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public static class UnicodePropExtensions
     [Obsolete]
     public static UnicodeProp? ForPosixName( string propName )
     {
-        return posix[ propName.ToUpper() ];
+        return POSIX[ propName.ToUpper() ];
     }
 
     /// <summary>

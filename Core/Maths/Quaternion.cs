@@ -22,8 +22,8 @@ namespace LibGDXSharp.Maths;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Quaternion
 {
-    private readonly static Quaternion tmp1 = new( 0, 0, 0, 0 );
-    private readonly static Quaternion tmp2 = new( 0, 0, 0, 0 );
+    private readonly static Quaternion TMP1 = new( 0, 0, 0, 0 );
+    private readonly static Quaternion TMP2 = new( 0, 0, 0, 0 );
 
     public float X { get; set; }
     public float Y { get; set; }
@@ -333,13 +333,13 @@ public class Quaternion
 	/// <param name="v"> Vector to transform </param>
     public Vector3 Transform( Vector3 v )
     {
-        tmp2.Set( this );
-        tmp2.Conjugate();
-        tmp2.MulLeft( tmp1.Set( v.X, v.Y, v.Z, 0 ) ).MulLeft( this );
+        TMP2.Set( this );
+        TMP2.Conjugate();
+        TMP2.MulLeft( TMP1.Set( v.X, v.Y, v.Z, 0 ) ).MulLeft( this );
 
-        v.X = tmp2.X;
-        v.Y = tmp2.Y;
-        v.Z = tmp2.Z;
+        v.X = TMP2.X;
+        v.Y = TMP2.Y;
+        v.Z = TMP2.Z;
 
         return v;
     }
@@ -842,7 +842,7 @@ public class Quaternion
 
         for ( var i = 1; i < q.Length; i++ )
         {
-            Mul( tmp1.Set( q[ i ] ).Exp( w ) );
+            Mul( TMP1.Set( q[ i ] ).Exp( w ) );
         }
 
         Nor();
@@ -869,7 +869,7 @@ public class Quaternion
 
         for ( var i = 1; i < q.Length; i++ )
         {
-            Mul( tmp1.Set( q[ i ] ).Exp( w[ i ] ) );
+            Mul( TMP1.Set( q[ i ] ).Exp( w[ i ] ) );
         }
 
         Nor();

@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Backends.Desktop;
 
 public class GLFiles : IFiles

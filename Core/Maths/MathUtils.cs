@@ -46,7 +46,7 @@ public class MathUtils
     /// </summary>
     public static float Sin( float radians )
     {
-        return SinClass.Table[ ( int )( radians * RAD_TO_INDEX ) & SIN_MASK ];
+        return SinClass.TABLE[ ( int )( radians * RAD_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public class MathUtils
     /// </summary>
     public static float Cos( float radians )
     {
-        return SinClass.Table[ ( int )( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
+        return SinClass.TABLE[ ( int )( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class MathUtils
     /// </summary>
     public static float SinDeg( float degrees )
     {
-        return SinClass.Table[ ( int )( degrees * DEG_TO_INDEX ) & SIN_MASK ];
+        return SinClass.TABLE[ ( int )( degrees * DEG_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class MathUtils
     /// </summary>
     public static float CosDeg( float degrees )
     {
-        return SinClass.Table[ ( int )( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
+        return SinClass.TABLE[ ( int )( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -106,14 +106,14 @@ public class MathUtils
         return y < 0f ? atan - PI : atan;
     }
 
-    private readonly static Random random = new();
+    private readonly static Random RANDOM = new();
 
     /// <summary>
     /// Returns a random number between 0 (inclusive) and the specified value (inclusive).
     /// </summary>
     public static int Random( int range )
     {
-        return random.Next( range + 1 );
+        return RANDOM.Next( range + 1 );
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public class MathUtils
     /// </summary>
     public static int Random( int start, int end )
     {
-        return start + random.Next( ( end - start ) + 1 );
+        return start + RANDOM.Next( ( end - start ) + 1 );
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public class MathUtils
     /// </summary>
     public static long Random( long range )
     {
-        return ( long )( random.NextDouble() * range );
+        return ( long )( RANDOM.NextDouble() * range );
     }
 
     /// <summary>
@@ -137,7 +137,7 @@ public class MathUtils
     /// </summary>
     public static long Random( long start, long end )
     {
-        return start + ( long )( random.NextDouble() * ( end - start ) );
+        return start + ( long )( RANDOM.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
@@ -145,7 +145,7 @@ public class MathUtils
     /// </summary>
     public static bool Randombool()
     {
-        return Convert.ToBoolean( random.Next( 1 ) );
+        return Convert.ToBoolean( RANDOM.Next( 1 ) );
     }
 
     /// <summary>
@@ -161,7 +161,7 @@ public class MathUtils
     /// </summary>
     public static float Random()
     {
-        return ( float )random.NextDouble();
+        return ( float )RANDOM.NextDouble();
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float range )
     {
-        return ( float )random.NextDouble() * range;
+        return ( float )RANDOM.NextDouble() * range;
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float start, float end )
     {
-        return start + ( ( float )random.NextDouble() * ( end - start ) );
+        return start + ( ( float )RANDOM.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public class MathUtils
     /// </summary>
     public static int RandomSign()
     {
-        return 1 | ( random.Next() >> 31 );
+        return 1 | ( RANDOM.Next() >> 31 );
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public class MathUtils
     /// </summary>
     public static float RandomTriangular()
     {
-        return ( float )random.NextDouble() - ( float )random.NextDouble();
+        return ( float )RANDOM.NextDouble() - ( float )RANDOM.NextDouble();
     }
 
     /// <summary>
@@ -204,7 +204,7 @@ public class MathUtils
     /// <param name="max"> the upper limit  </param>
     public static float RandomTriangular( float max )
     {
-        return ( float )( random.NextDouble() - random.NextDouble() ) * max;
+        return ( float )( RANDOM.NextDouble() - RANDOM.NextDouble() ) * max;
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ public class MathUtils
     /// <param name="mode"> the point around which the values are more likely  </param>
     public static float RandomTriangular( float min, float max, float mode )
     {
-        var u = ( float )random.NextDouble();
+        var u = ( float )RANDOM.NextDouble();
         var d = max - min;
 
         if ( u <= ( ( mode - min ) / d ) )
@@ -495,18 +495,18 @@ public class MathUtils
     /// </summary>
     internal class SinClass
     {
-        public readonly static float[] Table = new float[ SIN_COUNT ];
+        public readonly static float[] TABLE = new float[ SIN_COUNT ];
 
         public SinClass()
         {
             for ( var i = 0; i < SIN_COUNT; i++ )
             {
-                Table[ i ] = ( float )Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
+                TABLE[ i ] = ( float )Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
             }
 
             for ( var i = 0; i < 360; i += 90 )
             {
-                Table[ ( int )( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float )Math.Sin( i * DEGREES_TO_RADIANS );
+                TABLE[ ( int )( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float )Math.Sin( i * DEGREES_TO_RADIANS );
             }
         }
     }

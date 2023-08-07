@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections.Extensions;
 
@@ -67,7 +68,7 @@ namespace LibGDXSharp.G2D;
 /// </summary>
 public class SpriteCache
 {
-    private readonly static float[] tempVertices = new float[ Sprite.VertexSize * 6 ];
+    private readonly static float[] TEMP_VERTICES = new float[ Sprite.VERTEX_SIZE * 6 ];
 
     private readonly Mesh          _mesh;
     private          bool          _drawing;
@@ -80,7 +81,7 @@ public class SpriteCache
     private readonly List< Texture > _textures = new( 8 );
     private readonly List< int >     _counts   = new( 8 );
 
-    private float _colorPacked = Color.WhiteFloatBits;
+    private float _colorPacked = Color.WHITE_FLOAT_BITS;
 
     /// <summary>
     /// Number of render calls since the last <see cref="Begin"/>.
@@ -180,7 +181,7 @@ public class SpriteCache
     }
 
     /// Sets the color used to tint images when they are added to the
-    /// SpriteCache. Default is <see cref="Color.White"/>.
+    /// SpriteCache. Default is <see cref="Graphics.Color.WHITE"/>.
     public void SetColor( Color tint )
     {
         Color.Set( tint );
@@ -355,7 +356,7 @@ public class SpriteCache
             throw new IllegalStateException( "beginCache must be called before add." );
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
-        var count            = ( length / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
+        var count            = ( length / ( verticesPerImage * Sprite.VERTEX_SIZE ) ) * 6;
         var lastIndex        = _textures.Count - 1;
 
         if ( ( lastIndex < 0 ) || ( _textures[ lastIndex ] != texture ) )
@@ -379,55 +380,55 @@ public class SpriteCache
         var fx2 = x + texture.Width;
         var fy2 = y + texture.Height;
 
-        tempVertices[ 0 ] = x;
-        tempVertices[ 1 ] = y;
-        tempVertices[ 2 ] = PackedColor;
-        tempVertices[ 3 ] = 0;
-        tempVertices[ 4 ] = 1;
+        TEMP_VERTICES[ 0 ] = x;
+        TEMP_VERTICES[ 1 ] = y;
+        TEMP_VERTICES[ 2 ] = PackedColor;
+        TEMP_VERTICES[ 3 ] = 0;
+        TEMP_VERTICES[ 4 ] = 1;
 
-        tempVertices[ 5 ] = x;
-        tempVertices[ 6 ] = fy2;
-        tempVertices[ 7 ] = PackedColor;
-        tempVertices[ 8 ] = 0;
-        tempVertices[ 9 ] = 0;
+        TEMP_VERTICES[ 5 ] = x;
+        TEMP_VERTICES[ 6 ] = fy2;
+        TEMP_VERTICES[ 7 ] = PackedColor;
+        TEMP_VERTICES[ 8 ] = 0;
+        TEMP_VERTICES[ 9 ] = 0;
 
-        tempVertices[ 10 ] = fx2;
-        tempVertices[ 11 ] = fy2;
-        tempVertices[ 12 ] = PackedColor;
-        tempVertices[ 13 ] = 1;
-        tempVertices[ 14 ] = 0;
+        TEMP_VERTICES[ 10 ] = fx2;
+        TEMP_VERTICES[ 11 ] = fy2;
+        TEMP_VERTICES[ 12 ] = PackedColor;
+        TEMP_VERTICES[ 13 ] = 1;
+        TEMP_VERTICES[ 14 ] = 0;
 
         if ( _mesh.NumIndices > 0 )
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = y;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = 1;
-            tempVertices[ 19 ] = 1;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = y;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = 1;
+            TEMP_VERTICES[ 19 ] = 1;
 
-            Add( texture, tempVertices, 0, 20 );
+            Add( texture, TEMP_VERTICES, 0, 20 );
         }
         else
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = fy2;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = 1;
-            tempVertices[ 19 ] = 0;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = fy2;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = 1;
+            TEMP_VERTICES[ 19 ] = 0;
 
-            tempVertices[ 20 ] = fx2;
-            tempVertices[ 21 ] = y;
-            tempVertices[ 22 ] = PackedColor;
-            tempVertices[ 23 ] = 1;
-            tempVertices[ 24 ] = 1;
+            TEMP_VERTICES[ 20 ] = fx2;
+            TEMP_VERTICES[ 21 ] = y;
+            TEMP_VERTICES[ 22 ] = PackedColor;
+            TEMP_VERTICES[ 23 ] = 1;
+            TEMP_VERTICES[ 24 ] = 1;
 
-            tempVertices[ 25 ] = x;
-            tempVertices[ 26 ] = y;
-            tempVertices[ 27 ] = PackedColor;
-            tempVertices[ 28 ] = 0;
-            tempVertices[ 29 ] = 1;
+            TEMP_VERTICES[ 25 ] = x;
+            TEMP_VERTICES[ 26 ] = y;
+            TEMP_VERTICES[ 27 ] = PackedColor;
+            TEMP_VERTICES[ 28 ] = 0;
+            TEMP_VERTICES[ 29 ] = 1;
 
-            Add( texture, tempVertices, 0, 30 );
+            Add( texture, TEMP_VERTICES, 0, 30 );
         }
     }
 
@@ -448,55 +449,55 @@ public class SpriteCache
         var fx2 = x + srcWidth;
         var fy2 = y + srcHeight;
 
-        tempVertices[ 0 ] = x;
-        tempVertices[ 1 ] = y;
-        tempVertices[ 2 ] = color;
-        tempVertices[ 3 ] = u;
-        tempVertices[ 4 ] = v;
+        TEMP_VERTICES[ 0 ] = x;
+        TEMP_VERTICES[ 1 ] = y;
+        TEMP_VERTICES[ 2 ] = color;
+        TEMP_VERTICES[ 3 ] = u;
+        TEMP_VERTICES[ 4 ] = v;
 
-        tempVertices[ 5 ] = x;
-        tempVertices[ 6 ] = fy2;
-        tempVertices[ 7 ] = color;
-        tempVertices[ 8 ] = u;
-        tempVertices[ 9 ] = v2;
+        TEMP_VERTICES[ 5 ] = x;
+        TEMP_VERTICES[ 6 ] = fy2;
+        TEMP_VERTICES[ 7 ] = color;
+        TEMP_VERTICES[ 8 ] = u;
+        TEMP_VERTICES[ 9 ] = v2;
 
-        tempVertices[ 10 ] = fx2;
-        tempVertices[ 11 ] = fy2;
-        tempVertices[ 12 ] = color;
-        tempVertices[ 13 ] = u2;
-        tempVertices[ 14 ] = v2;
+        TEMP_VERTICES[ 10 ] = fx2;
+        TEMP_VERTICES[ 11 ] = fy2;
+        TEMP_VERTICES[ 12 ] = color;
+        TEMP_VERTICES[ 13 ] = u2;
+        TEMP_VERTICES[ 14 ] = v2;
 
         if ( _mesh.NumIndices > 0 )
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = y;
-            tempVertices[ 17 ] = color;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = y;
+            TEMP_VERTICES[ 17 ] = color;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v;
 
-            Add( texture, tempVertices, 0, 20 );
+            Add( texture, TEMP_VERTICES, 0, 20 );
         }
         else
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = fy2;
-            tempVertices[ 17 ] = color;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v2;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = fy2;
+            TEMP_VERTICES[ 17 ] = color;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v2;
 
-            tempVertices[ 20 ] = fx2;
-            tempVertices[ 21 ] = y;
-            tempVertices[ 22 ] = color;
-            tempVertices[ 23 ] = u2;
-            tempVertices[ 24 ] = v;
+            TEMP_VERTICES[ 20 ] = fx2;
+            TEMP_VERTICES[ 21 ] = y;
+            TEMP_VERTICES[ 22 ] = color;
+            TEMP_VERTICES[ 23 ] = u2;
+            TEMP_VERTICES[ 24 ] = v;
 
-            tempVertices[ 25 ] = x;
-            tempVertices[ 26 ] = y;
-            tempVertices[ 27 ] = color;
-            tempVertices[ 28 ] = u;
-            tempVertices[ 29 ] = v;
+            TEMP_VERTICES[ 25 ] = x;
+            TEMP_VERTICES[ 26 ] = y;
+            TEMP_VERTICES[ 27 ] = color;
+            TEMP_VERTICES[ 28 ] = u;
+            TEMP_VERTICES[ 29 ] = v;
 
-            Add( texture, tempVertices, 0, 30 );
+            Add( texture, TEMP_VERTICES, 0, 30 );
         }
     }
 
@@ -515,55 +516,55 @@ public class SpriteCache
         var fx2 = x + srcWidth;
         var fy2 = y + srcHeight;
 
-        tempVertices[ 0 ] = x;
-        tempVertices[ 1 ] = y;
-        tempVertices[ 2 ] = PackedColor;
-        tempVertices[ 3 ] = u;
-        tempVertices[ 4 ] = v;
+        TEMP_VERTICES[ 0 ] = x;
+        TEMP_VERTICES[ 1 ] = y;
+        TEMP_VERTICES[ 2 ] = PackedColor;
+        TEMP_VERTICES[ 3 ] = u;
+        TEMP_VERTICES[ 4 ] = v;
 
-        tempVertices[ 5 ] = x;
-        tempVertices[ 6 ] = fy2;
-        tempVertices[ 7 ] = PackedColor;
-        tempVertices[ 8 ] = u;
-        tempVertices[ 9 ] = v2;
+        TEMP_VERTICES[ 5 ] = x;
+        TEMP_VERTICES[ 6 ] = fy2;
+        TEMP_VERTICES[ 7 ] = PackedColor;
+        TEMP_VERTICES[ 8 ] = u;
+        TEMP_VERTICES[ 9 ] = v2;
 
-        tempVertices[ 10 ] = fx2;
-        tempVertices[ 11 ] = fy2;
-        tempVertices[ 12 ] = PackedColor;
-        tempVertices[ 13 ] = u2;
-        tempVertices[ 14 ] = v2;
+        TEMP_VERTICES[ 10 ] = fx2;
+        TEMP_VERTICES[ 11 ] = fy2;
+        TEMP_VERTICES[ 12 ] = PackedColor;
+        TEMP_VERTICES[ 13 ] = u2;
+        TEMP_VERTICES[ 14 ] = v2;
 
         if ( _mesh.NumIndices > 0 )
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = y;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = y;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v;
 
-            Add( texture, tempVertices, 0, 20 );
+            Add( texture, TEMP_VERTICES, 0, 20 );
         }
         else
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = fy2;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v2;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = fy2;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v2;
 
-            tempVertices[ 20 ] = fx2;
-            tempVertices[ 21 ] = y;
-            tempVertices[ 22 ] = PackedColor;
-            tempVertices[ 23 ] = u2;
-            tempVertices[ 24 ] = v;
+            TEMP_VERTICES[ 20 ] = fx2;
+            TEMP_VERTICES[ 21 ] = y;
+            TEMP_VERTICES[ 22 ] = PackedColor;
+            TEMP_VERTICES[ 23 ] = u2;
+            TEMP_VERTICES[ 24 ] = v;
 
-            tempVertices[ 25 ] = x;
-            tempVertices[ 26 ] = y;
-            tempVertices[ 27 ] = PackedColor;
-            tempVertices[ 28 ] = u;
-            tempVertices[ 29 ] = v;
+            TEMP_VERTICES[ 25 ] = x;
+            TEMP_VERTICES[ 26 ] = y;
+            TEMP_VERTICES[ 27 ] = PackedColor;
+            TEMP_VERTICES[ 28 ] = u;
+            TEMP_VERTICES[ 29 ] = v;
 
-            Add( texture, tempVertices, 0, 30 );
+            Add( texture, TEMP_VERTICES, 0, 30 );
         }
     }
 
@@ -603,55 +604,55 @@ public class SpriteCache
             ( v, v2 ) = ( v2, v );
         }
 
-        tempVertices[ 0 ] = x;
-        tempVertices[ 1 ] = y;
-        tempVertices[ 2 ] = PackedColor;
-        tempVertices[ 3 ] = u;
-        tempVertices[ 4 ] = v;
+        TEMP_VERTICES[ 0 ] = x;
+        TEMP_VERTICES[ 1 ] = y;
+        TEMP_VERTICES[ 2 ] = PackedColor;
+        TEMP_VERTICES[ 3 ] = u;
+        TEMP_VERTICES[ 4 ] = v;
 
-        tempVertices[ 5 ] = x;
-        tempVertices[ 6 ] = fy2;
-        tempVertices[ 7 ] = PackedColor;
-        tempVertices[ 8 ] = u;
-        tempVertices[ 9 ] = v2;
+        TEMP_VERTICES[ 5 ] = x;
+        TEMP_VERTICES[ 6 ] = fy2;
+        TEMP_VERTICES[ 7 ] = PackedColor;
+        TEMP_VERTICES[ 8 ] = u;
+        TEMP_VERTICES[ 9 ] = v2;
 
-        tempVertices[ 10 ] = fx2;
-        tempVertices[ 11 ] = fy2;
-        tempVertices[ 12 ] = PackedColor;
-        tempVertices[ 13 ] = u2;
-        tempVertices[ 14 ] = v2;
+        TEMP_VERTICES[ 10 ] = fx2;
+        TEMP_VERTICES[ 11 ] = fy2;
+        TEMP_VERTICES[ 12 ] = PackedColor;
+        TEMP_VERTICES[ 13 ] = u2;
+        TEMP_VERTICES[ 14 ] = v2;
 
         if ( _mesh.NumIndices > 0 )
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = y;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = y;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v;
 
-            Add( texture, tempVertices, 0, 20 );
+            Add( texture, TEMP_VERTICES, 0, 20 );
         }
         else
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = fy2;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v2;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = fy2;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v2;
 
-            tempVertices[ 20 ] = fx2;
-            tempVertices[ 21 ] = y;
-            tempVertices[ 22 ] = PackedColor;
-            tempVertices[ 23 ] = u2;
-            tempVertices[ 24 ] = v;
+            TEMP_VERTICES[ 20 ] = fx2;
+            TEMP_VERTICES[ 21 ] = y;
+            TEMP_VERTICES[ 22 ] = PackedColor;
+            TEMP_VERTICES[ 23 ] = u2;
+            TEMP_VERTICES[ 24 ] = v;
 
-            tempVertices[ 25 ] = x;
-            tempVertices[ 26 ] = y;
-            tempVertices[ 27 ] = PackedColor;
-            tempVertices[ 28 ] = u;
-            tempVertices[ 29 ] = v;
+            TEMP_VERTICES[ 25 ] = x;
+            TEMP_VERTICES[ 26 ] = y;
+            TEMP_VERTICES[ 27 ] = PackedColor;
+            TEMP_VERTICES[ 28 ] = u;
+            TEMP_VERTICES[ 29 ] = v;
 
-            Add( texture, tempVertices, 0, 30 );
+            Add( texture, TEMP_VERTICES, 0, 30 );
         }
     }
 
@@ -767,55 +768,55 @@ public class SpriteCache
 
         if ( flipY ) ( v, v2 ) = ( v2, v );
 
-        tempVertices[ 0 ] = x1;
-        tempVertices[ 1 ] = y1;
-        tempVertices[ 2 ] = PackedColor;
-        tempVertices[ 3 ] = u;
-        tempVertices[ 4 ] = v;
+        TEMP_VERTICES[ 0 ] = x1;
+        TEMP_VERTICES[ 1 ] = y1;
+        TEMP_VERTICES[ 2 ] = PackedColor;
+        TEMP_VERTICES[ 3 ] = u;
+        TEMP_VERTICES[ 4 ] = v;
 
-        tempVertices[ 5 ] = x2;
-        tempVertices[ 6 ] = y2;
-        tempVertices[ 7 ] = PackedColor;
-        tempVertices[ 8 ] = u;
-        tempVertices[ 9 ] = v2;
+        TEMP_VERTICES[ 5 ] = x2;
+        TEMP_VERTICES[ 6 ] = y2;
+        TEMP_VERTICES[ 7 ] = PackedColor;
+        TEMP_VERTICES[ 8 ] = u;
+        TEMP_VERTICES[ 9 ] = v2;
 
-        tempVertices[ 10 ] = x3;
-        tempVertices[ 11 ] = y3;
-        tempVertices[ 12 ] = PackedColor;
-        tempVertices[ 13 ] = u2;
-        tempVertices[ 14 ] = v2;
+        TEMP_VERTICES[ 10 ] = x3;
+        TEMP_VERTICES[ 11 ] = y3;
+        TEMP_VERTICES[ 12 ] = PackedColor;
+        TEMP_VERTICES[ 13 ] = u2;
+        TEMP_VERTICES[ 14 ] = v2;
 
         if ( _mesh.NumIndices > 0 )
         {
-            tempVertices[ 15 ] = x4;
-            tempVertices[ 16 ] = y4;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v;
+            TEMP_VERTICES[ 15 ] = x4;
+            TEMP_VERTICES[ 16 ] = y4;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v;
 
-            Add( texture, tempVertices, 0, 20 );
+            Add( texture, TEMP_VERTICES, 0, 20 );
         }
         else
         {
-            tempVertices[ 15 ] = x3;
-            tempVertices[ 16 ] = y3;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v2;
+            TEMP_VERTICES[ 15 ] = x3;
+            TEMP_VERTICES[ 16 ] = y3;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v2;
 
-            tempVertices[ 20 ] = x4;
-            tempVertices[ 21 ] = y4;
-            tempVertices[ 22 ] = PackedColor;
-            tempVertices[ 23 ] = u2;
-            tempVertices[ 24 ] = v;
+            TEMP_VERTICES[ 20 ] = x4;
+            TEMP_VERTICES[ 21 ] = y4;
+            TEMP_VERTICES[ 22 ] = PackedColor;
+            TEMP_VERTICES[ 23 ] = u2;
+            TEMP_VERTICES[ 24 ] = v;
 
-            tempVertices[ 25 ] = x1;
-            tempVertices[ 26 ] = y1;
-            tempVertices[ 27 ] = PackedColor;
-            tempVertices[ 28 ] = u;
-            tempVertices[ 29 ] = v;
+            TEMP_VERTICES[ 25 ] = x1;
+            TEMP_VERTICES[ 26 ] = y1;
+            TEMP_VERTICES[ 27 ] = PackedColor;
+            TEMP_VERTICES[ 28 ] = u;
+            TEMP_VERTICES[ 29 ] = v;
 
-            Add( texture, tempVertices, 0, 30 );
+            Add( texture, TEMP_VERTICES, 0, 30 );
         }
     }
 
@@ -839,55 +840,55 @@ public class SpriteCache
         var u2  = region.U2;
         var v2  = region.V;
 
-        tempVertices[ 0 ] = x;
-        tempVertices[ 1 ] = y;
-        tempVertices[ 2 ] = PackedColor;
-        tempVertices[ 3 ] = u;
-        tempVertices[ 4 ] = v;
+        TEMP_VERTICES[ 0 ] = x;
+        TEMP_VERTICES[ 1 ] = y;
+        TEMP_VERTICES[ 2 ] = PackedColor;
+        TEMP_VERTICES[ 3 ] = u;
+        TEMP_VERTICES[ 4 ] = v;
 
-        tempVertices[ 5 ] = x;
-        tempVertices[ 6 ] = fy2;
-        tempVertices[ 7 ] = PackedColor;
-        tempVertices[ 8 ] = u;
-        tempVertices[ 9 ] = v2;
+        TEMP_VERTICES[ 5 ] = x;
+        TEMP_VERTICES[ 6 ] = fy2;
+        TEMP_VERTICES[ 7 ] = PackedColor;
+        TEMP_VERTICES[ 8 ] = u;
+        TEMP_VERTICES[ 9 ] = v2;
 
-        tempVertices[ 10 ] = fx2;
-        tempVertices[ 11 ] = fy2;
-        tempVertices[ 12 ] = PackedColor;
-        tempVertices[ 13 ] = u2;
-        tempVertices[ 14 ] = v2;
+        TEMP_VERTICES[ 10 ] = fx2;
+        TEMP_VERTICES[ 11 ] = fy2;
+        TEMP_VERTICES[ 12 ] = PackedColor;
+        TEMP_VERTICES[ 13 ] = u2;
+        TEMP_VERTICES[ 14 ] = v2;
 
         if ( _mesh.NumIndices > 0 )
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = y;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = y;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v;
 
-            Add( region.Texture, tempVertices, 0, 20 );
+            Add( region.Texture, TEMP_VERTICES, 0, 20 );
         }
         else
         {
-            tempVertices[ 15 ] = fx2;
-            tempVertices[ 16 ] = fy2;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v2;
+            TEMP_VERTICES[ 15 ] = fx2;
+            TEMP_VERTICES[ 16 ] = fy2;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v2;
 
-            tempVertices[ 20 ] = fx2;
-            tempVertices[ 21 ] = y;
-            tempVertices[ 22 ] = PackedColor;
-            tempVertices[ 23 ] = u2;
-            tempVertices[ 24 ] = v;
+            TEMP_VERTICES[ 20 ] = fx2;
+            TEMP_VERTICES[ 21 ] = y;
+            TEMP_VERTICES[ 22 ] = PackedColor;
+            TEMP_VERTICES[ 23 ] = u2;
+            TEMP_VERTICES[ 24 ] = v;
 
-            tempVertices[ 25 ] = x;
-            tempVertices[ 26 ] = y;
-            tempVertices[ 27 ] = PackedColor;
-            tempVertices[ 28 ] = u;
-            tempVertices[ 29 ] = v;
+            TEMP_VERTICES[ 25 ] = x;
+            TEMP_VERTICES[ 26 ] = y;
+            TEMP_VERTICES[ 27 ] = PackedColor;
+            TEMP_VERTICES[ 28 ] = u;
+            TEMP_VERTICES[ 29 ] = v;
 
-            Add( region.Texture, tempVertices, 0, 30 );
+            Add( region.Texture, TEMP_VERTICES, 0, 30 );
         }
     }
 
@@ -989,55 +990,55 @@ public class SpriteCache
         var u2 = region.U2;
         var v2 = region.V;
 
-        tempVertices[ 0 ] = x1;
-        tempVertices[ 1 ] = y1;
-        tempVertices[ 2 ] = PackedColor;
-        tempVertices[ 3 ] = u;
-        tempVertices[ 4 ] = v;
+        TEMP_VERTICES[ 0 ] = x1;
+        TEMP_VERTICES[ 1 ] = y1;
+        TEMP_VERTICES[ 2 ] = PackedColor;
+        TEMP_VERTICES[ 3 ] = u;
+        TEMP_VERTICES[ 4 ] = v;
 
-        tempVertices[ 5 ] = x2;
-        tempVertices[ 6 ] = y2;
-        tempVertices[ 7 ] = PackedColor;
-        tempVertices[ 8 ] = u;
-        tempVertices[ 9 ] = v2;
+        TEMP_VERTICES[ 5 ] = x2;
+        TEMP_VERTICES[ 6 ] = y2;
+        TEMP_VERTICES[ 7 ] = PackedColor;
+        TEMP_VERTICES[ 8 ] = u;
+        TEMP_VERTICES[ 9 ] = v2;
 
-        tempVertices[ 10 ] = x3;
-        tempVertices[ 11 ] = y3;
-        tempVertices[ 12 ] = PackedColor;
-        tempVertices[ 13 ] = u2;
-        tempVertices[ 14 ] = v2;
+        TEMP_VERTICES[ 10 ] = x3;
+        TEMP_VERTICES[ 11 ] = y3;
+        TEMP_VERTICES[ 12 ] = PackedColor;
+        TEMP_VERTICES[ 13 ] = u2;
+        TEMP_VERTICES[ 14 ] = v2;
 
         if ( _mesh.NumIndices > 0 )
         {
-            tempVertices[ 15 ] = x4;
-            tempVertices[ 16 ] = y4;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v;
+            TEMP_VERTICES[ 15 ] = x4;
+            TEMP_VERTICES[ 16 ] = y4;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v;
             
-            Add( region.Texture, tempVertices, 0, 20 );
+            Add( region.Texture, TEMP_VERTICES, 0, 20 );
         }
         else
         {
-            tempVertices[ 15 ] = x3;
-            tempVertices[ 16 ] = y3;
-            tempVertices[ 17 ] = PackedColor;
-            tempVertices[ 18 ] = u2;
-            tempVertices[ 19 ] = v2;
+            TEMP_VERTICES[ 15 ] = x3;
+            TEMP_VERTICES[ 16 ] = y3;
+            TEMP_VERTICES[ 17 ] = PackedColor;
+            TEMP_VERTICES[ 18 ] = u2;
+            TEMP_VERTICES[ 19 ] = v2;
 
-            tempVertices[ 20 ] = x4;
-            tempVertices[ 21 ] = y4;
-            tempVertices[ 22 ] = PackedColor;
-            tempVertices[ 23 ] = u2;
-            tempVertices[ 24 ] = v;
+            TEMP_VERTICES[ 20 ] = x4;
+            TEMP_VERTICES[ 21 ] = y4;
+            TEMP_VERTICES[ 22 ] = PackedColor;
+            TEMP_VERTICES[ 23 ] = u2;
+            TEMP_VERTICES[ 24 ] = v;
 
-            tempVertices[ 25 ] = x1;
-            tempVertices[ 26 ] = y1;
-            tempVertices[ 27 ] = PackedColor;
-            tempVertices[ 28 ] = u;
-            tempVertices[ 29 ] = v;
+            TEMP_VERTICES[ 25 ] = x1;
+            TEMP_VERTICES[ 26 ] = y1;
+            TEMP_VERTICES[ 27 ] = PackedColor;
+            TEMP_VERTICES[ 28 ] = u;
+            TEMP_VERTICES[ 29 ] = v;
 
-            Add( region.Texture, tempVertices, 0, 30 );
+            Add( region.Texture, TEMP_VERTICES, 0, 30 );
         }
     }
 
@@ -1048,34 +1049,34 @@ public class SpriteCache
     {
         if ( _mesh.NumIndices > 0 )
         {
-            Add( sprite.Texture, sprite.Vertices, 0, Sprite.SpriteSize );
+            Add( sprite.Texture, sprite.Vertices, 0, Sprite.SPRITE_SIZE );
 
             return;
         }
 
-        Array.Copy( sprite.Vertices, 0, tempVertices, 0, 3 * Sprite.VertexSize ); // temp0,1,2=sprite0,1,2
+        Array.Copy( sprite.Vertices, 0, TEMP_VERTICES, 0, 3 * Sprite.VERTEX_SIZE ); // temp0,1,2=sprite0,1,2
 
         Array.Copy
             (
             sprite.Vertices,
-            2 * Sprite.VertexSize,
-            tempVertices,
-            3 * Sprite.VertexSize,
-            Sprite.VertexSize
+            2 * Sprite.VERTEX_SIZE,
+            TEMP_VERTICES,
+            3 * Sprite.VERTEX_SIZE,
+            Sprite.VERTEX_SIZE
             ); // temp3=sprite2
 
         Array.Copy
             (
             sprite.Vertices,
-            3 * Sprite.VertexSize,
-            tempVertices,
-            4 * Sprite.VertexSize,
-            Sprite.VertexSize
+            3 * Sprite.VERTEX_SIZE,
+            TEMP_VERTICES,
+            4 * Sprite.VERTEX_SIZE,
+            Sprite.VERTEX_SIZE
             ); // temp4=sprite3
 
-        Array.Copy( sprite.Vertices, 0, tempVertices, 5 * Sprite.VertexSize, Sprite.VertexSize ); // temp5=sprite0
+        Array.Copy( sprite.Vertices, 0, TEMP_VERTICES, 5 * Sprite.VERTEX_SIZE, Sprite.VERTEX_SIZE ); // temp5=sprite0
 
-        Add( sprite.Texture, tempVertices, 0, 30 );
+        Add( sprite.Texture, TEMP_VERTICES, 0, 30 );
     }
 
     /// <summary>
@@ -1146,7 +1147,7 @@ public class SpriteCache
         Cache cache = _caches[ cacheID ];
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
-        var offset           = ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
+        var offset           = ( cache.offset / ( verticesPerImage * Sprite.VERTEX_SIZE ) ) * 6;
         var counts           = cache.counts;
         var textureCount     = cache.textureCount;
 
@@ -1184,7 +1185,7 @@ public class SpriteCache
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
 
-        offset =  ( ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6 ) + ( offset * 6 );
+        offset =  ( ( cache.offset / ( verticesPerImage * Sprite.VERTEX_SIZE ) ) * 6 ) + ( offset * 6 );
         length *= 6;
         
         Texture[]? textures = cache.textures;

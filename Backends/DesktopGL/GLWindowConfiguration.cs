@@ -30,7 +30,7 @@ public class GLWindowConfiguration
     public bool                      WindowDecorated        { get; set; } = true;
     public bool                      WindowMaximized        { get; set; } = false;
     public bool                      AutoIconify            { get; set; } = false;
-    public Color                     InitialBackgroundColor { get; set; } = Color.Black;
+    public Color                     InitialBackgroundColor { get; set; } = Color.BLACK;
     public bool                      InitialVisible         { get; set; } = true;
     public bool                      VSyncEnabled           { get; set; } = true;
     public GLMonitor?                MaximizedMonitor       { get; set; }

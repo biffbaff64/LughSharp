@@ -16,6 +16,7 @@
 
 using System.Diagnostics;
 
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;

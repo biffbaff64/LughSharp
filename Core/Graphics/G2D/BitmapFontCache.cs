@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.G2D;
@@ -575,7 +576,7 @@ public class BitmapFontCache
         }
 
         // Cached glyphs have changed, reset the current tint.
-        _currentTint = Color.WhiteFloatBits;
+        _currentTint = Color.WHITE_FLOAT_BITS;
     }
 
     private void AddGlyph( BitmapFont.Glyph glyph, float x, float y, float color )

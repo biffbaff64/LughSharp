@@ -25,11 +25,11 @@ public class Intersector
     {
     }
 
-    private readonly static Vector3       v0          = new();
-    private readonly static Vector3       v1          = new();
-    private readonly static Vector3       v2          = new();
-    private readonly static List< float > floatArray  = new();
-    private readonly static List< float > floatArray2 = new();
+    private readonly static Vector3       V0          = new();
+    private readonly static Vector3       V1          = new();
+    private readonly static Vector3       V2          = new();
+    private readonly static List< float > FLOAT_ARRAY  = new();
+    private readonly static List< float > FLOAT_ARRAY2 = new();
 
     /// <summary>
     /// Returns whether the given point is inside the triangle. This assumes that
@@ -43,21 +43,21 @@ public class Intersector
     /// <returns> whether the point is in the triangle  </returns>
     public static bool IsPointInTriangle( Vector3 point, Vector3 t1, Vector3 t2, Vector3 t3 )
     {
-        v0.Set( t1 ).Sub( point );
-        v1.Set( t2 ).Sub( point );
-        v2.Set( t3 ).Sub( point );
+        V0.Set( t1 ).Sub( point );
+        V1.Set( t2 ).Sub( point );
+        V2.Set( t3 ).Sub( point );
 
-        var ab = v0.Dot( v1 );
-        var ac = v0.Dot( v2 );
-        var bc = v1.Dot( v2 );
-        var cc = v2.Dot( v2 );
+        var ab = V0.Dot( V1 );
+        var ac = V0.Dot( V2 );
+        var bc = V1.Dot( V2 );
+        var cc = V2.Dot( V2 );
 
         if ( ( ( bc * ac ) - ( cc * ab ) ) < 0 )
         {
             return false;
         }
 
-        var bb = v1.Dot( v1 );
+        var bb = V1.Dot( V1 );
 
         return !( ( ( ab * bc ) - ( ac * bb ) ) < 0 );
 
@@ -100,7 +100,7 @@ public class Intersector
 
     public static bool IntersectSegmentPlane( Vector3 start, Vector3 end, Plane plane, Vector3 intersection )
     {
-        Vector3 dir   = v0.Set( end ).Sub( start );
+        Vector3 dir   = V0.Set( end ).Sub( start );
         var     denom = dir.Dot( plane.Normal );
 
         if ( denom == 0f )

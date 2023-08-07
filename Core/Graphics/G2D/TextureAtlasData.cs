@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.G2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -29,7 +31,7 @@ public partial record TextureAtlasData
     public List< Region > Regions { get; set; } = new();
     public string[]       Entry   { get; set; } = new string[ 5 ];
 
-    internal readonly static bool[] HasIndexes = { false };
+    internal readonly static bool[] HAS_INDEXES = { false };
 
     #region Constructors
 
@@ -222,7 +224,7 @@ public partial record TextureAtlasData
             reader.Close();
         }
 
-        if ( HasIndexes[ 0 ] )
+        if ( HAS_INDEXES[ 0 ] )
         {
             Regions.Sort( new ComparatorAnonymousInnerClass( this ) );
         }
@@ -287,10 +289,10 @@ public partial record TextureAtlasData
 
         public bool          UseMipMaps { get; set; }
         public Pixmap.Format Format     { get; set; } = Pixmap.Format.RGBA8888;
-        public TextureFilter MinFilter  { get; set; } = TextureFilter.Nearest;
-        public TextureFilter MagFilter  { get; set; } = TextureFilter.Nearest;
-        public TextureWrap   UWrap      { get; set; } = TextureWrap.ClampToEdge;
-        public TextureWrap   VWrap      { get; set; } = TextureWrap.ClampToEdge;
+        public TextureFilter MinFilter  { get; set; } = TextureFilter.NEAREST;
+        public TextureFilter MagFilter  { get; set; } = TextureFilter.NEAREST;
+        public TextureWrap   UWrap      { get; set; } = TextureWrap.CLAMP_TO_EDGE;
+        public TextureWrap   VWrap      { get; set; } = TextureWrap.CLAMP_TO_EDGE;
         public float         Width      { get; set; }
         public float         Height     { get; set; }
         public bool          Pma        { get; set; }

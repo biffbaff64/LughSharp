@@ -16,6 +16,8 @@
 
 using System.Reflection;
 
+using LibGDXSharp.Utils;
+
 using BindingFlags = System.Reflection.BindingFlags;
 
 namespace LibGDXSharp.GdxCore.Utils.Pooling;

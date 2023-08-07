@@ -21,50 +21,50 @@ public class TextureFilter
 {
     /// <summary>
     /// Fetch the nearest texel that best maps to the pixel on screen. </summary>
-    public readonly static TextureFilter Nearest = new( "Nearest", InnerEnum.Nearest, IGL20.GL_NEAREST );
+    public readonly static TextureFilter NEAREST = new( "Nearest", InnerEnum.Nearest, IGL20.GL_NEAREST );
 
     /// <summary>
     /// Fetch four nearest texels that best maps to the pixel on screen. </summary>
-    public readonly static TextureFilter Linear = new( "Linear", InnerEnum.Linear, IGL20.GL_LINEAR );
+    public readonly static TextureFilter LINEAR = new( "Linear", InnerEnum.Linear, IGL20.GL_LINEAR );
 
-    /// <see cref="TextureFilter.MipMapLinearLinear "/>
-    public readonly static TextureFilter MipMap = new( "MipMap", InnerEnum.MipMap, IGL20.GL_LINEAR_MIPMAP_LINEAR );
+    /// <see cref="MIP_MAP_LINEAR_LINEAR "/>
+    public readonly static TextureFilter MIP_MAP = new( "MipMap", InnerEnum.MipMap, IGL20.GL_LINEAR_MIPMAP_LINEAR );
 
     /// <summary>
     /// Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with a
     /// nearest filter. 
     /// </summary>
-    public readonly static TextureFilter MipMapNearestNearest = new( "MipMapNearestNearest", InnerEnum.MipMapNearestNearest, IGL20.GL_NEAREST_MIPMAP_NEAREST );
+    public readonly static TextureFilter MIP_MAP_NEAREST_NEAREST = new( "MipMapNearestNearest", InnerEnum.MipMapNearestNearest, IGL20.GL_NEAREST_MIPMAP_NEAREST );
 
     /// <summary>
     /// Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with a
     /// linear filter. 
     /// </summary>
-    public readonly static TextureFilter MipMapLinearNearest = new( "MipMapLinearNearest", InnerEnum.MipMapLinearNearest, IGL20.GL_LINEAR_MIPMAP_NEAREST );
+    public readonly static TextureFilter MIP_MAP_LINEAR_NEAREST = new( "MipMapLinearNearest", InnerEnum.MipMapLinearNearest, IGL20.GL_LINEAR_MIPMAP_NEAREST );
 
     /// <summary>
     /// Fetch the two best fitting images from the mip map chain and then sample the nearest texel from each of the two images,
     /// combining them to the final output pixel. 
     /// </summary>
-    public readonly static TextureFilter MipMapNearestLinear = new( "MipMapNearestLinear", InnerEnum.MipMapNearestLinear, IGL20.GL_NEAREST_MIPMAP_LINEAR );
+    public readonly static TextureFilter MIP_MAP_NEAREST_LINEAR = new( "MipMapNearestLinear", InnerEnum.MipMapNearestLinear, IGL20.GL_NEAREST_MIPMAP_LINEAR );
 
     /// <summary>
     /// Fetch the two best fitting images from the mip map chain and then sample the four nearest texels from each of the two
     /// images, combining them to the final output pixel. 
     /// </summary>
-    public readonly static TextureFilter MipMapLinearLinear = new( "MipMapLinearLinear", InnerEnum.MipMapLinearLinear, IGL20.GL_LINEAR_MIPMAP_LINEAR );
+    public readonly static TextureFilter MIP_MAP_LINEAR_LINEAR = new( "MipMapLinearLinear", InnerEnum.MipMapLinearLinear, IGL20.GL_LINEAR_MIPMAP_LINEAR );
 
-    private readonly static List< TextureFilter > valueList = new();
+    private readonly static List< TextureFilter > VALUE_LIST = new();
 
     static TextureFilter()
     {
-        valueList.Add( Nearest );
-        valueList.Add( Linear );
-        valueList.Add( MipMap );
-        valueList.Add( MipMapNearestNearest );
-        valueList.Add( MipMapLinearNearest );
-        valueList.Add( MipMapNearestLinear );
-        valueList.Add( MipMapLinearLinear );
+        VALUE_LIST.Add( NEAREST );
+        VALUE_LIST.Add( LINEAR );
+        VALUE_LIST.Add( MIP_MAP );
+        VALUE_LIST.Add( MIP_MAP_NEAREST_NEAREST );
+        VALUE_LIST.Add( MIP_MAP_LINEAR_NEAREST );
+        VALUE_LIST.Add( MIP_MAP_NEAREST_LINEAR );
+        VALUE_LIST.Add( MIP_MAP_LINEAR_LINEAR );
     }
 
     public enum InnerEnum
@@ -98,7 +98,7 @@ public class TextureFilter
 
     public int GLEnum { get; }
 
-    public static TextureFilter[] Values() => valueList.ToArray();
+    public static TextureFilter[] Values() => VALUE_LIST.ToArray();
 
     public int Ordinal()
     {
@@ -112,7 +112,7 @@ public class TextureFilter
 
     public static TextureFilter ValueOf( string name )
     {
-        foreach ( var enumInstance in TextureFilter.valueList )
+        foreach ( var enumInstance in TextureFilter.VALUE_LIST )
         {
             if ( enumInstance._nameValue == name )
             {

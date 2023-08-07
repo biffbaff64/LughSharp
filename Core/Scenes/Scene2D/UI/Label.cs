@@ -19,6 +19,7 @@ using System.Text;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -33,8 +34,8 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Label : Widget
 {
-    private readonly static Color       tempColor      = new();
-    private readonly static GlyphLayout prefSizeLayout = new();
+    private readonly static Color       TEMP_COLOR      = new();
+    private readonly static GlyphLayout PREF_SIZE_LAYOUT = new();
 
     public BitmapFontCache FontCache   { get; set; }
     public StringBuilder   Text        { get; }      = new();
@@ -211,14 +212,14 @@ public class Label : Widget
                         - _style.Background.RightWidth;
             }
 
-            prefSizeLayout.SetText( FontCache.Font, Text.ToString(), Color.White, width, Align.LEFT, true );
+            PREF_SIZE_LAYOUT.SetText( FontCache.Font, Text.ToString(), Color.WHITE, width, Align.LEFT, true );
         }
         else
         {
-            prefSizeLayout.SetText( FontCache.Font, Text.ToString() );
+            PREF_SIZE_LAYOUT.SetText( FontCache.Font, Text.ToString() );
         }
 
-        _prefSize.Set( prefSizeLayout.Width, prefSizeLayout.Height );
+        _prefSize.Set( PREF_SIZE_LAYOUT.Width, PREF_SIZE_LAYOUT.Height );
     }
 
     public new void Layout()
@@ -263,7 +264,7 @@ public class Label : Widget
         {
             // If the text can span multiple lines, determine the text's actual
             // size so it can be aligned within the label.
-            layout.SetText( font, Text.ToString(), 0, Text.Length, Color.White, width, LineAlign, wrap, _ellipsis );
+            layout.SetText( font, Text.ToString(), 0, Text.Length, Color.WHITE, width, LineAlign, wrap, _ellipsis );
 
             textWidth  = layout.Width;
             textHeight = layout.Height;
@@ -308,7 +309,7 @@ public class Label : Widget
             y += textHeight;
         }
 
-        layout.SetText( font, Text.ToString(), 0, Text.Length, Color.White, textWidth, LineAlign, wrap, _ellipsis );
+        layout.SetText( font, Text.ToString(), 0, Text.Length, Color.WHITE, textWidth, LineAlign, wrap, _ellipsis );
         FontCache.SetText( layout, x, y );
 
         if ( _fontScaleChanged ) font.GetData().SetScale( oldScaleX, oldScaleY );
@@ -318,7 +319,7 @@ public class Label : Widget
     {
         Validate();
 
-        Color color = tempColor.Set( Color! );
+        Color color = TEMP_COLOR.Set( Color! );
         color.A *= parentAlpha;
 
         if ( Style.Background != null )

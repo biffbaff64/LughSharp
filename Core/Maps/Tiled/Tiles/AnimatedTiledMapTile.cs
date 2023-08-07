@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.G2D;
+using LibGDXSharp.Utils;
 
 using Blendmode = LibGDXSharp.Maps.Tiled.ITiledMapTile.Blendmode;
 
@@ -23,7 +24,7 @@ namespace LibGDXSharp.Maps.Tiled.Tiles;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class AnimatedTiledMapTile : ITiledMapTile
 {
-    private readonly static long initialTimeOffset = DateTime.Now.Millisecond;
+    private readonly static long INITIAL_TIME_OFFSET = DateTime.Now.Millisecond;
 
     private static long _lastTiledMapRenderTime = 0;
 
@@ -109,7 +110,7 @@ public class AnimatedTiledMapTile : ITiledMapTile
 
     public static void UpdateAnimationBaseTime()
     {
-        _lastTiledMapRenderTime = DateTime.Now.Millisecond - initialTimeOffset;
+        _lastTiledMapRenderTime = DateTime.Now.Millisecond - INITIAL_TIME_OFFSET;
     }
 
     public TextureRegion TextureRegion

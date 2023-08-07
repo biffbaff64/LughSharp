@@ -14,6 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
@@ -1186,14 +1187,14 @@ public class Cell : IPoolable
                 PrefHeight  = UI.Value.PrefHeight,
                 MaxWidth    = UI.Value.MaxWidth,
                 MaxHeight   = UI.Value.MaxHeight,
-                SpaceTop    = UI.Value.Zero,
-                SpaceLeft   = UI.Value.Zero,
-                SpaceBottom = UI.Value.Zero,
-                SpaceRight  = UI.Value.Zero,
-                PadTop      = UI.Value.Zero,
-                PadLeft     = UI.Value.Zero,
-                PadBottom   = UI.Value.Zero,
-                PadRight    = UI.Value.Zero,
+                SpaceTop    = UI.Value.ZERO,
+                SpaceLeft   = UI.Value.ZERO,
+                SpaceBottom = UI.Value.ZERO,
+                SpaceRight  = UI.Value.ZERO,
+                PadTop      = UI.Value.ZERO,
+                PadLeft     = UI.Value.ZERO,
+                PadBottom   = UI.Value.ZERO,
+                PadRight    = UI.Value.ZERO,
                 FillX       = ZEROF,
                 FillY       = ZEROF,
                 Alignment   = CENTERI,

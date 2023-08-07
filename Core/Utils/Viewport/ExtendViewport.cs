@@ -79,7 +79,7 @@ public class ExtendViewport : Viewport
         // Fit min size to the screen.
         var     worldWidth  = MinWorldWidth;
         var     worldHeight = MinWorldHeight;
-        Vector2 scaled      = Scaling.Fit.Apply( worldWidth, worldHeight, screenWidth, screenHeight );
+        Vector2 scaled      = Scaling.FIT.Apply( worldWidth, worldHeight, screenWidth, screenHeight );
 
         // Extend in the short direction.
         var viewportWidth  = ( int )Math.Round( scaled.X, MidpointRounding.AwayFromZero );

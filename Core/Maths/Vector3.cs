@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Maths;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -23,11 +25,11 @@ public class Vector3 : IVector< Vector3 >
     public float Y { get; set; }
     public float Z { get; set; }
 
-    public readonly static  Vector3 XDefault = new( 1, 0, 0 );
-    public readonly static  Vector3 YDefault = new( 0, 1, 0 );
-    public readonly static  Vector3 ZDefault = new( 0, 0, 1 );
-    public readonly static  Vector3 Zero     = new( 0, 0, 0 );
-    private readonly static Matrix4 tmpMat   = new();
+    public readonly static  Vector3 X_DEFAULT = new( 1, 0, 0 );
+    public readonly static  Vector3 Y_DEFAULT = new( 0, 1, 0 );
+    public readonly static  Vector3 Z_DEFAULT = new( 0, 0, 1 );
+    public readonly static  Vector3 ZERO     = new( 0, 0, 0 );
+    private readonly static Matrix4 TMP_MAT   = new();
 
     /// <summary>
     /// Default constructor.
@@ -479,26 +481,26 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 Rotate( float degrees, float axisX, float axisY, float axisZ )
     {
-        return this.Mul( tmpMat.SetToRotation( axisX, axisY, axisZ, degrees ) );
+        return this.Mul( TMP_MAT.SetToRotation( axisX, axisY, axisZ, degrees ) );
     }
 
     public Vector3 RotateRad( float radians, float axisX, float axisY, float axisZ )
     {
-        return this.Mul( tmpMat.SetToRotationRad( axisX, axisY, axisZ, radians ) );
+        return this.Mul( TMP_MAT.SetToRotationRad( axisX, axisY, axisZ, radians ) );
     }
 
     public Vector3 Rotate( Vector3 axis, float degrees )
     {
-        tmpMat.SetToRotation( axis, degrees );
+        TMP_MAT.SetToRotation( axis, degrees );
 
-        return this.Mul( tmpMat );
+        return this.Mul( TMP_MAT );
     }
 
     public Vector3 RotateRad( Vector3 axis, float radians )
     {
-        tmpMat.SetToRotationRad( axis, radians );
+        TMP_MAT.SetToRotationRad( axis, radians );
 
-        return this.Mul( tmpMat );
+        return this.Mul( TMP_MAT );
     }
 
     public bool IsUnit()

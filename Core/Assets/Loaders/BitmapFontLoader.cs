@@ -16,6 +16,7 @@
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
+using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Assets.Loaders;
 
@@ -36,15 +37,15 @@ public class BitmapFontParameter : AssetLoaderParameters
 
     /// <summary>
     /// The <see cref="TextureFilter"/> to use when scaling down the <see cref="BitmapFont"/>.
-    /// Defaults to <see cref="TextureFilter.Nearest"/>.
+    /// Defaults to <see cref="TextureFilter.NEAREST"/>.
     /// </summary>
-    internal TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
+    internal TextureFilter MinFilter { get; set; } = TextureFilter.NEAREST;
 
     /// <summary>
     /// The <see cref="TextureFilter"/> to use when scaling up the <see cref="BitmapFont"/>.
-    /// Defaults to <see cref="TextureFilter.Nearest"/>.
+    /// Defaults to <see cref="TextureFilter.NEAREST"/>.
     /// </summary>
-    internal TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
+    internal TextureFilter MagFilter { get; set; } = TextureFilter.NEAREST;
 
     /// <summary>
     /// optional <see cref="BitmapFont.BitmapFontData"/> to be used instead of

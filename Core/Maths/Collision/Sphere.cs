@@ -25,7 +25,7 @@ public class Sphere
     public readonly float   radius; // the radius of the sphere
     public readonly Vector3 center; // the center of the sphere
 
-    private readonly static float pi43 = ( MathUtils.PI * 4f ) / 3f;
+    private readonly static float PI43 = ( MathUtils.PI * 4f ) / 3f;
 
     /// <summary>
     /// Constructs a sphere with the given center and radius </summary>
@@ -79,7 +79,7 @@ public class Sphere
     /// <returns></returns>
     public virtual float Volume()
     {
-        return pi43 * this.radius * this.radius * this.radius;
+        return PI43 * this.radius * this.radius * this.radius;
     }
 
     /// <summary>

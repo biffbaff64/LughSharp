@@ -30,9 +30,9 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ScissorStack
 {
-    private readonly static List< RectangleShape > scissors = new();
-    private readonly static Vector3                tmp      = new();
-    private readonly static RectangleShape         viewport = new();
+    private readonly static List< RectangleShape > SCISSORS = new();
+    private readonly static Vector3                TMP      = new();
+    private readonly static RectangleShape         VIEWPORT = new();
 
     /// <summary>
     /// Pushes a new scissor <see cref="Rectangle"/> onto the stack, merging it with
@@ -53,7 +53,7 @@ public class ScissorStack
     {
         Fix( scissor );
 
-        if ( scissors.Count == 0 )
+        if ( SCISSORS.Count == 0 )
         {
             if ( ( scissor.Width < 1 ) || ( scissor.Height < 1 ) ) return false;
             Gdx.GL.GLEnable( IGL20.GL_SCISSOR_TEST );
@@ -61,7 +61,7 @@ public class ScissorStack
         else
         {
             // merge scissors
-            RectangleShape parent = scissors[ ^1 ];
+            RectangleShape parent = SCISSORS[ ^1 ];
 
             var minX = Math.Max( parent.X, scissor.X );
             var maxX = Math.Min( parent.X + parent.Width, scissor.X + scissor.Width );
@@ -79,7 +79,7 @@ public class ScissorStack
             scissor.Height = Math.Max( 1, maxY - minY );
         }
 
-        scissors.Add( scissor );
+        SCISSORS.Add( scissor );
         HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y, ( int )scissor.Width, ( int )scissor.Height );
 
         return true;
@@ -95,15 +95,15 @@ public class ScissorStack
     /// </summary>
     public static RectangleShape PopScissors()
     {
-        RectangleShape old = scissors.Pop();
+        RectangleShape old = SCISSORS.Pop();
 
-        if ( scissors.Count == 0 )
+        if ( SCISSORS.Count == 0 )
         {
             Gdx.GL.GLDisable( IGL20.GL_SCISSOR_TEST );
         }
         else
         {
-            RectangleShape scissor = scissors.Peek();
+            RectangleShape scissor = SCISSORS.Peek();
             HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y, ( int )scissor.Width, ( int )scissor.Height );
         }
 
@@ -112,7 +112,7 @@ public class ScissorStack
 
     public static RectangleShape? PeekScissors()
     {
-        return scissors.Count == 0 ? null : scissors.Peek();
+        return SCISSORS.Count == 0 ? null : SCISSORS.Peek();
     }
 
     private static void Fix( RectangleShape rect )
@@ -172,20 +172,20 @@ public class ScissorStack
                                           RectangleShape area,
                                           RectangleShape scissor )
     {
-        tmp.Set( area.X, area.Y, 0 );
-        tmp.Mul( batchTransform );
+        TMP.Set( area.X, area.Y, 0 );
+        TMP.Mul( batchTransform );
         
-        camera.Project( tmp, viewportX, viewportY, viewportWidth, viewportHeight );
+        camera.Project( TMP, viewportX, viewportY, viewportWidth, viewportHeight );
         
-        scissor.X = tmp.X;
-        scissor.Y = tmp.Y;
+        scissor.X = TMP.X;
+        scissor.Y = TMP.Y;
 
-        tmp.Set( area.X + area.Width, area.Y + area.Height, 0 );
-        tmp.Mul( batchTransform );
+        TMP.Set( area.X + area.Width, area.Y + area.Height, 0 );
+        TMP.Mul( batchTransform );
         
-        camera.Project( tmp, viewportX, viewportY, viewportWidth, viewportHeight );
-        scissor.Width  = tmp.X - scissor.X;
-        scissor.Height = tmp.Y - scissor.Y;
+        camera.Project( TMP, viewportX, viewportY, viewportWidth, viewportHeight );
+        scissor.Width  = TMP.X - scissor.X;
+        scissor.Height = TMP.Y - scissor.Y;
     }
 
     /// <summary>
@@ -194,16 +194,16 @@ public class ScissorStack
     /// </summary>
     public static RectangleShape GetViewport()
     {
-        if ( scissors.Count == 0 )
+        if ( SCISSORS.Count == 0 )
         {
-            viewport.Set( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+            VIEWPORT.Set( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
-            return viewport;
+            return VIEWPORT;
         }
 
-        RectangleShape scissor = scissors.Peek();
-        viewport.Set( scissor );
+        RectangleShape scissor = SCISSORS.Peek();
+        VIEWPORT.Set( scissor );
 
-        return viewport;
+        return VIEWPORT;
     }
 }

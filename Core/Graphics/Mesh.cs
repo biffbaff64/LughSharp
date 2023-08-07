@@ -20,6 +20,7 @@ using JetBrains.Annotations;
 
 using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics;
@@ -38,7 +39,7 @@ public class Mesh
 
     public bool IsInstanced { get; set; } = false;
 
-    private readonly static Dictionary< IApplication, List< Mesh >? > meshes = new();
+    private readonly static Dictionary< IApplication, List< Mesh >? > MESHES = new();
 
     private readonly ShortBuffer _shortBuffer = BufferUtils.NewShortBuffer( 100 );
     private readonly Vector3     _tmpV        = new();
@@ -1302,12 +1303,12 @@ public class Mesh
 
     private static void AddManagedMesh( IApplication app, Mesh mesh )
     {
-        List< Mesh >? managedResources = meshes[ app ];
+        List< Mesh >? managedResources = MESHES[ app ];
 
         managedResources ??= new List< Mesh >();
         managedResources.Add( mesh );
 
-        meshes[ app ] = managedResources;
+        MESHES[ app ] = managedResources;
     }
 
     /// <summary>
@@ -1315,10 +1316,10 @@ public class Mesh
     /// <param name="app">  </param>
     public static void InvalidateAllMeshes( IApplication app )
     {
-        for ( var i = 0; i < meshes.Count; i++ )
+        for ( var i = 0; i < MESHES.Count; i++ )
         {
-            meshes[ app ]?[ i ]._vertices.Invalidate();
-            meshes[ app ]?[ i ]._indices.Invalidate();
+            MESHES[ app ]?[ i ]._vertices.Invalidate();
+            MESHES[ app ]?[ i ]._indices.Invalidate();
         }
     }
 
@@ -1327,7 +1328,7 @@ public class Mesh
     /// </summary>
     public static void ClearAllMeshes( IApplication app )
     {
-        meshes.Remove( app );
+        MESHES.Remove( app );
     }
 
     public static string ManagedStatus
@@ -1337,9 +1338,9 @@ public class Mesh
             var builder = new StringBuilder();
             builder.Append( "Managed meshes/app: { " );
 
-            foreach ( IApplication app in meshes.Keys )
+            foreach ( IApplication app in MESHES.Keys )
             {
-                builder.Append( meshes[ app ]?.Count );
+                builder.Append( MESHES[ app ]?.Count );
                 builder.Append( ' ' );
             }
 
@@ -1763,9 +1764,9 @@ public class Mesh
     /// </summary>
     public void Dispose()
     {
-        if ( meshes[ Gdx.App ] != null )
+        if ( MESHES[ Gdx.App ] != null )
         {
-            meshes[ Gdx.App ]?.Remove( this );
+            MESHES[ Gdx.App ]?.Remove( this );
         }
 
         _vertices.Dispose();

@@ -19,9 +19,9 @@ namespace LibGDXSharp.Maths;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class GeometryUtils
 {
-    private readonly static Vector2 tmp1 = new();
-    private readonly static Vector2 tmp2 = new();
-    private readonly static Vector2 tmp3 = new();
+    private readonly static Vector2 TMP1 = new();
+    private readonly static Vector2 TMP2 = new();
+    private readonly static Vector2 TMP3 = new();
 
     /// <summary>
     /// Computes the barycentric coordinates v,w for the specified point in the triangle.
@@ -44,9 +44,9 @@ public class GeometryUtils
     /// <returns> barycentricOut </returns>
     public static Vector2 ToBarycoord( Vector2 p, Vector2 a, Vector2 b, Vector2 c, Vector2 barycentricOut )
     {
-        Vector2 v0 = tmp1.Set( b ).Sub( a );
-        Vector2 v1 = tmp2.Set( c ).Sub( a );
-        Vector2 v2 = tmp3.Set( p ).Sub( a );
+        Vector2 v0 = TMP1.Set( b ).Sub( a );
+        Vector2 v1 = TMP2.Set( c ).Sub( a );
+        Vector2 v2 = TMP3.Set( p ).Sub( a );
 
         var d00   = v0.Dot( v0 );
         var d01   = v0.Dot( v1 );

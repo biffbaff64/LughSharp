@@ -41,7 +41,7 @@ public class PropertiesUtils
 
     /// <summary>
     /// Adds to the specified <see cref="Dictionary{T,K}"/> the key/value pairs
-    /// loaded from the <see cref="Reader"/> in a simple line-oriented format.
+    /// loaded from the <see cref="StreamReader"/> in a simple line-oriented format.
     /// <para>
     /// The input stream remains open after this method returns.
     /// </para>
@@ -50,7 +50,7 @@ public class PropertiesUtils
     /// <param name="reader"> the input character stream reader. </param>
     /// <exception cref="IOException"> if an error occurred when reading from the input stream. </exception>
     /// <exception cref="ArgumentException"> if a malformed Unicode escape appears in the input.  </exception>
-    public static void Load( Dictionary< string, string > properties, Reader reader )
+    public static void Load( Dictionary< string, string > properties, StreamReader reader )
     {
         ArgumentNullException.ThrowIfNull( properties );
         ArgumentNullException.ThrowIfNull( reader );
@@ -63,11 +63,11 @@ public class PropertiesUtils
         var keyLength = -1;
         var firstChar = true;
 
-        var br = new BufferedReader( reader );
+//        var br = new StreamReader( reader );
 
         while ( true )
         {
-            int intVal = br.Read();
+            var intVal = reader.Read();
 
             if ( intVal == -1 )
             {
@@ -171,7 +171,7 @@ public class PropertiesUtils
                         {
                             while ( true )
                             {
-                                intVal = br.Read();
+                                intVal = reader.Read();
 
                                 if ( intVal == -1 )
                                 {
@@ -252,8 +252,6 @@ public class PropertiesUtils
                         break;
                 }
 
-                // if (Character.isWhitespace(nextChar)) { <-- not supported by GWT; replaced with isSpace.
-                // TODO: ^^
                 if ( char.IsWhiteSpace( nextChar ) )
                 {
                     if ( mode == CONTINUE )
@@ -343,12 +341,12 @@ public class PropertiesUtils
     /// if writing this property list to the specified output stream throws an <tt>IOException</tt>.
     /// </exception>
     /// <exception cref="NullReferenceException"> if <code>writer</code> is null.</exception>
-    public static void Store( Dictionary< string, string > properties, Writer writer, string comment )
+    public static void Store( Dictionary< string, string > properties, StreamWriter writer, string comment )
     {
         StoreImpl( properties, writer, comment, false );
     }
 
-    private static void StoreImpl( Dictionary< string, string > properties, Writer writer,
+    private static void StoreImpl( Dictionary< string, string > properties, StreamWriter writer,
                                    string? comment, bool escapeUnicode )
     {
         if ( comment != null )
@@ -377,11 +375,11 @@ public class PropertiesUtils
 
     private static void DumpString( StringBuilder outBuffer, string str, bool escapeSpace, bool escapeUnicode )
     {
-        int len = str.Length;
+        var len = str.Length;
 
         for ( var i = 0; i < len; i++ )
         {
-            char ch = str[ i ];
+            var ch = str[ i ];
 
             // Handle common case first
             if ( ( ch > 61 ) && ( ch < 127 ) )
@@ -457,7 +455,7 @@ public class PropertiesUtils
         }
     }
 
-    private static void WriteComment( Writer writer, string comment )
+    private static void WriteComment( StreamWriter writer, string comment )
     {
         writer.Write( "#" );
 

@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.G2D;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Xml;
 

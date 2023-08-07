@@ -21,7 +21,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class VertexBufferObjectWithVAO : IVertexData
 {
-    private readonly static IntBuffer tmpHandle = BufferUtils.NewIntBuffer( 1 );
+    private readonly static IntBuffer TMP_HANDLE = BufferUtils.NewIntBuffer( 1 );
 
     public VertexAttributes? Attributes { get; set; }
 
@@ -340,23 +340,23 @@ public class VertexBufferObjectWithVAO : IVertexData
 
     private void CreateVAO()
     {
-        tmpHandle.Clear();
+        TMP_HANDLE.Clear();
 
-        Gdx.GL30.GLGenVertexArrays( 1, tmpHandle );
+        Gdx.GL30.GLGenVertexArrays( 1, TMP_HANDLE );
 
-        _vaoHandle = tmpHandle.Get();
+        _vaoHandle = TMP_HANDLE.Get();
     }
 
     private void DeleteVAO()
     {
         if ( _vaoHandle != -1 )
         {
-            tmpHandle.Clear();
-            tmpHandle.Put( _vaoHandle );
+            TMP_HANDLE.Clear();
+            TMP_HANDLE.Put( _vaoHandle );
 
-            tmpHandle.Flip();
+            TMP_HANDLE.Flip();
 
-            Gdx.GL30.GLDeleteVertexArrays( 1, tmpHandle );
+            Gdx.GL30.GLDeleteVertexArrays( 1, TMP_HANDLE );
 
             _vaoHandle = -1;
         }

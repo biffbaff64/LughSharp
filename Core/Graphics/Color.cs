@@ -26,45 +26,45 @@ namespace LibGDXSharp.Graphics;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Color
 {
-    public readonly static Color White      = new( 1, 1, 1, 1 );
-    public readonly static Color LightGray  = new( 0xbfbfbfff );
-    public readonly static Color Gray       = new( 0x7f7f7fff );
-    public readonly static Color DarkGray   = new( 0x3f3f3fff );
-    public readonly static Color Black      = new( 0, 0, 0, 1 );
-    public readonly static Color Clear      = new( 0, 0, 0, 0 );
-    public readonly static Color Blue       = new( 0, 0, 1, 1 );
-    public readonly static Color Navy       = new( 0, 0, 0.5f, 1 );
-    public readonly static Color Royal      = new( 0x4169e1ff );
-    public readonly static Color Slate      = new( 0x708090ff );
-    public readonly static Color Sky        = new( 0x87ceebff );
-    public readonly static Color Cyan       = new( 0, 1, 1, 1 );
-    public readonly static Color Teal       = new( 0, 0.5f, 0.5f, 1 );
-    public readonly static Color Green      = new( 0x00ff00ff );
-    public readonly static Color Chartreuse = new( 0x7fff00ff );
-    public readonly static Color Lime       = new( 0x32cd32ff );
-    public readonly static Color Forest     = new( 0x228b22ff );
-    public readonly static Color Olive      = new( 0x6b8e23ff );
-    public readonly static Color Yellow     = new( 0xffff00ff );
-    public readonly static Color Gold       = new( 0xffd700ff );
-    public readonly static Color Goldenrod  = new( 0xdaa520ff );
-    public readonly static Color Orange     = new( 0xffa500ff );
-    public readonly static Color Brown      = new( 0x8b4513ff );
-    public readonly static Color Tan        = new( 0xd2b48cff );
-    public readonly static Color Firebrick  = new( 0xb22222ff );
-    public readonly static Color Red        = new( 0xff0000ff );
-    public readonly static Color Scarlet    = new( 0xff341cff );
-    public readonly static Color Coral      = new( 0xff7f50ff );
-    public readonly static Color Salmon     = new( 0xfa8072ff );
-    public readonly static Color Pink       = new( 0xff69b4ff );
-    public readonly static Color Magenta    = new( 1, 0, 1, 1 );
-    public readonly static Color Purple     = new( 0xa020f0ff );
-    public readonly static Color Violet     = new( 0xee82eeff );
-    public readonly static Color Maroon     = new( 0xb03060ff );
+    public readonly static Color WHITE      = new( 1, 1, 1, 1 );
+    public readonly static Color LIGHT_GRAY  = new( 0xbfbfbfff );
+    public readonly static Color GRAY       = new( 0x7f7f7fff );
+    public readonly static Color DARK_GRAY   = new( 0x3f3f3fff );
+    public readonly static Color BLACK      = new( 0, 0, 0, 1 );
+    public readonly static Color CLEAR      = new( 0, 0, 0, 0 );
+    public readonly static Color BLUE       = new( 0, 0, 1, 1 );
+    public readonly static Color NAVY       = new( 0, 0, 0.5f, 1 );
+    public readonly static Color ROYAL      = new( 0x4169e1ff );
+    public readonly static Color SLATE      = new( 0x708090ff );
+    public readonly static Color SKY        = new( 0x87ceebff );
+    public readonly static Color CYAN       = new( 0, 1, 1, 1 );
+    public readonly static Color TEAL       = new( 0, 0.5f, 0.5f, 1 );
+    public readonly static Color GREEN      = new( 0x00ff00ff );
+    public readonly static Color CHARTREUSE = new( 0x7fff00ff );
+    public readonly static Color LIME       = new( 0x32cd32ff );
+    public readonly static Color FOREST     = new( 0x228b22ff );
+    public readonly static Color OLIVE      = new( 0x6b8e23ff );
+    public readonly static Color YELLOW     = new( 0xffff00ff );
+    public readonly static Color GOLD       = new( 0xffd700ff );
+    public readonly static Color GOLDENROD  = new( 0xdaa520ff );
+    public readonly static Color ORANGE     = new( 0xffa500ff );
+    public readonly static Color BROWN      = new( 0x8b4513ff );
+    public readonly static Color TAN        = new( 0xd2b48cff );
+    public readonly static Color FIREBRICK  = new( 0xb22222ff );
+    public readonly static Color RED        = new( 0xff0000ff );
+    public readonly static Color SCARLET    = new( 0xff341cff );
+    public readonly static Color CORAL      = new( 0xff7f50ff );
+    public readonly static Color SALMON     = new( 0xfa8072ff );
+    public readonly static Color PINK       = new( 0xff69b4ff );
+    public readonly static Color MAGENTA    = new( 1, 0, 1, 1 );
+    public readonly static Color PURPLE     = new( 0xa020f0ff );
+    public readonly static Color VIOLET     = new( 0xee82eeff );
+    public readonly static Color MAROON     = new( 0xb03060ff );
 
     /// <summary>
     /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
     /// </summary>
-    public readonly static float WhiteFloatBits = White.ToFloatBits();
+    public readonly static float WHITE_FLOAT_BITS = WHITE.ToFloatBits();
 
     public float R { get; set; }
     public float G { get; set; }

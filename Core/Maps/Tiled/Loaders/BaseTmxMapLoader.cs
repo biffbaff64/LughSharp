@@ -24,6 +24,7 @@ using LibGDXSharp.Maps.Objects;
 using LibGDXSharp.Maps.Tiled.Objects;
 using LibGDXSharp.Maps.Tiled.Tiles;
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Xml;
 
 namespace LibGDXSharp.Maps.Tiled;
@@ -38,10 +39,10 @@ public abstract class BaseTmxMapLoader<TP>
         public bool GenerateMipMaps { get; set; } = false;
 
         // The TextureFilter to use for minification
-        public TextureFilter TextureMinFilter { get; set; } = TextureFilter.Nearest;
+        public TextureFilter TextureMinFilter { get; set; } = TextureFilter.NEAREST;
 
         // The TextureFilter to use for magnification
-        public TextureFilter TextureMagFilter { get; set; } = TextureFilter.Nearest;
+        public TextureFilter TextureMagFilter { get; set; } = TextureFilter.NEAREST;
 
         // Whether to convert the objects' pixel position and size to the equivalent in tile space.
         public bool ConvertObjectToTileSpace { get; set; } = false;
@@ -378,9 +379,9 @@ public abstract class BaseTmxMapLoader<TP>
             if ( image != null )
             {
                 var      source = image.GetAttribute( "source" );
-                FileInfo handle = GetRelativeFileHandle( tmxFile, source );
+                FileInfo? handle = GetRelativeFileHandle( tmxFile, source );
 
-                texture = imageResolver.GetImage( handle.FullName );
+                texture = imageResolver.GetImage( handle!.FullName );
 
                 if ( texture == null ) throw new GdxRuntimeException( "Image Texture cannot be null!" );
 
@@ -707,7 +708,7 @@ public abstract class BaseTmxMapLoader<TP>
             if ( true )
                 if ( encoding.Equals( "base64" ) )
                 {
-                    Stream inputStream = null!;
+                    Stream? inputStream = null;
 
                     try
                     {
@@ -786,10 +787,7 @@ public abstract class BaseTmxMapLoader<TP>
         return ids;
     }
 
-    protected static int UnsignedByteToInt( byte b )
-    {
-        return b & 0xFF;
-    }
+    protected static int UnsignedByteToInt( byte b ) => b & 0xFF;
 
     protected static FileInfo? GetRelativeFileHandle( FileInfo? file, string? path )
     {
@@ -820,11 +818,11 @@ public abstract class BaseTmxMapLoader<TP>
 
             if ( source != null )
             {
-                FileInfo tsx = GetRelativeFileHandle( tmxFile, source );
+                FileInfo? tsx = GetRelativeFileHandle( tmxFile, source );
 
                 try
                 {
-                    element = xml.Parse( tsx );
+                    element = xml.Parse( tsx! );
 
                     XmlReader.Element? imageElement = element.GetChildByName( "image" );
 
@@ -836,7 +834,7 @@ public abstract class BaseTmxMapLoader<TP>
                         image       = GetRelativeFileHandle( tsx, imageSource );
                     }
                 }
-                catch ( SerializationException e )
+                catch ( SerializationException )
                 {
                     throw new GdxRuntimeException( "Error parsing external tileset." );
                 }

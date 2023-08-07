@@ -31,11 +31,11 @@ namespace LibGDXSharp.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Selector<T>
 {
-    private readonly static Selector< T > instance = new();
+    private readonly static Selector< T > INSTANCE = new();
 
     private QuickSelect<T>? _quickSelect;
 
-    public static Selector< T > Instance() => instance;
+    public static Selector< T > Instance() => INSTANCE;
 
     public T Select( T[] items, IComparer< T > comp, int kthLowest, int size )
     {

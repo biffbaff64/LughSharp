@@ -36,29 +36,31 @@ namespace LibGDXSharp.Utils.Xml;
 ///     </p>
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class XmlReader
 {
-    private const int XML_START          = 1;
-    private const int XML_FIRST_FINAL    = 34;
-    private const int XML_ERROR          = 0;
+    private const int XML_START           = 1;
+    private const int XML_FIRST_FINAL     = 34;
+    private const int XML_ERROR           = 0;
     private const int XML_EN_ELEMENT_BODY = 15;
-    private const int XML_EN_MAIN        = 1;
-
-    private readonly static byte[]  xmlActions       = Init_XmlActions_0();
-    private readonly static byte[]  xmlKeyOffsets    = Init_XmlKeyOffsets_0();
-    private readonly static char[]  xmlTransKeys     = Init_XmlTransKeys_0();
-    private readonly static byte[]  xmlSingleLengths = Init_XmlSingleLengths_0();
-    private readonly static byte[]  xmlRangeLengths  = Init_XmlRangeLengths_0();
-    private readonly static short[] xmlIndexOffsets  = Init_XmlIndexOffsets_0();
-    private readonly static byte[]  xmlIndicies      = Init_XmlIndicies_0();
-    private readonly static byte[]  xmlTransTargs    = Init_XmlTransTargs_0();
-    private readonly static byte[]  xmlTransActions  = Init_XmlTransActions_0();
+    private const int XML_EN_MAIN         = 1;
 
     private readonly List< Element > _elements   = new( 8 );
     private readonly StringBuilder   _textBuffer = new( 64 );
     private          Element?        _current;
 
     private Element? _root;
+
+    //TODO: Why ???
+    private readonly static byte[]  XML_ACTIONS        = Init_XmlActions_0();
+    private readonly static byte[]  XML_KEY_OFFSETS    = Init_XmlKeyOffsets_0();
+    private readonly static char[]  XML_TRANS_KEYS     = Init_XmlTransKeys_0();
+    private readonly static byte[]  XML_SINGLE_LENGTHS = Init_XmlSingleLengths_0();
+    private readonly static byte[]  XML_RANGE_LENGTHS  = Init_XmlRangeLengths_0();
+    private readonly static short[] XML_INDEX_OFFSETS  = Init_XmlIndexOffsets_0();
+    private readonly static byte[]  XML_INDICIES       = Init_XmlIndicies_0();
+    private readonly static byte[]  XML_TRANS_TARGS    = Init_XmlTransTargs_0();
+    private readonly static byte[]  XML_TRANS_ACTIONS  = Init_XmlTransActions_0();
 
     private static byte[] Init_XmlActions_0()
     {
@@ -173,7 +175,7 @@ public class XmlReader
         return Parse( data, 0, data.Length );
     }
 
-    public Element Parse( Reader reader )
+    public Element Parse( StreamReader reader )
     {
         try
         {
@@ -209,33 +211,33 @@ public class XmlReader
         {
             throw new SerializationException( ex.Message );
         }
-        finally
-        {
-            StreamUtils.CloseQuietly( reader );
-        }
+//        finally
+//        {
+//            StreamUtils.CloseQuietly( reader );
+//        }
     }
 
-    public Element Parse( StreamReader input )
-    {
-        try
-        {
-            return Parse( new StreamReader( input.BaseStream, System.Text.Encoding.UTF8 ) );
-        }
-        catch ( IOException ex )
-        {
-            throw new SerializationException( ex.Message );
-        }
-        finally
-        {
-            input.Close();
-        }
-    }
+//    public Element Parse( StreamReader input )
+//    {
+//        try
+//        {
+//            return Parse( new StreamReader( input.BaseStream, System.Text.Encoding.UTF8 ) );
+//        }
+//        catch ( IOException ex )
+//        {
+//            throw new SerializationException( ex.Message );
+//        }
+//        finally
+//        {
+//            input.Close();
+//        }
+//    }
 
     public Element Parse( FileInfo file )
     {
         try
         {
-            return Parse( file );
+            return Parse( file.OpenText() );
         }
         catch ( Exception ex )
         {
@@ -295,9 +297,9 @@ public class XmlReader
 
                         do
                         {
-                            keys  = xmlKeyOffsets[ cs ];
-                            trans = xmlIndexOffsets[ cs ];
-                            klen  = xmlSingleLengths[ cs ];
+                            keys  = XML_KEY_OFFSETS[ cs ];
+                            trans = XML_INDEX_OFFSETS[ cs ];
+                            klen  = XML_SINGLE_LENGTHS[ cs ];
 
                             if ( klen > 0 )
                             {
@@ -314,11 +316,11 @@ public class XmlReader
 
                                     mid = lower + ( ( upper - lower ) >> 1 );
 
-                                    if ( data[ p ] < xmlTransKeys[ mid ] )
+                                    if ( data[ p ] < XML_TRANS_KEYS[ mid ] )
                                     {
                                         upper = mid - 1;
                                     }
-                                    else if ( data[ p ] > xmlTransKeys[ mid ] )
+                                    else if ( data[ p ] > XML_TRANS_KEYS[ mid ] )
                                     {
                                         lower = mid + 1;
                                     }
@@ -334,7 +336,7 @@ public class XmlReader
                                 trans += klen;
                             }
 
-                            klen = xmlRangeLengths[ cs ];
+                            klen = XML_RANGE_LENGTHS[ cs ];
 
                             if ( klen > 0 )
                             {
@@ -351,11 +353,11 @@ public class XmlReader
 
                                     mid = lower + ( ( ( upper - lower ) >> 1 ) & ~1 );
 
-                                    if ( data[ p ] < xmlTransKeys[ mid ] )
+                                    if ( data[ p ] < XML_TRANS_KEYS[ mid ] )
                                     {
                                         upper = mid - 2;
                                     }
-                                    else if ( data[ p ] > xmlTransKeys[ mid + 1 ] )
+                                    else if ( data[ p ] > XML_TRANS_KEYS[ mid + 1 ] )
                                     {
                                         lower = mid + 2;
                                     }
@@ -372,17 +374,17 @@ public class XmlReader
                         }
                         while ( false );
 
-                        trans = xmlIndicies[ trans ];
-                        cs    = xmlTransTargs[ trans ];
+                        trans = XML_INDICIES[ trans ];
+                        cs    = XML_TRANS_TARGS[ trans ];
 
-                        if ( xmlTransActions[ trans ] != 0 )
+                        if ( XML_TRANS_ACTIONS[ trans ] != 0 )
                         {
-                            acts  = xmlTransActions[ trans ];
-                            nacts = xmlActions[ acts++ ];
+                            acts  = XML_TRANS_ACTIONS[ trans ];
+                            nacts = XML_ACTIONS[ acts++ ];
 
                             while ( nacts-- > 0 )
                             {
-                                switch ( xmlActions[ acts++ ] )
+                                switch ( XML_ACTIONS[ acts++ ] )
                                 {
                                     case 0:
                                         // line 94 "XmlReader.rl"

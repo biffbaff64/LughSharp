@@ -19,6 +19,7 @@ using System.IO.Hashing;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics;
@@ -104,8 +105,8 @@ public static class PixmapIO
     {
         private const int BUFFER_SIZE = 32000;
 
-        private readonly static byte[] writeBuffer = new byte[ BUFFER_SIZE ];
-        private readonly static byte[] readBuffer  = new byte[ BUFFER_SIZE ];
+        private readonly static byte[] WRITE_BUFFER = new byte[ BUFFER_SIZE ];
+        private readonly static byte[] READ_BUFFER  = new byte[ BUFFER_SIZE ];
 
         /// <summary>
         /// </summary>
@@ -116,9 +117,8 @@ public static class PixmapIO
         {
             try
             {
-//                var deflaterOutputStream = new DeflaterOutputStream( file.OpenWrite() );
-
-                var output = new BinaryWriter( file.OpenWrite() );
+                var deflaterOutputStream = new DeflaterOutputStream( file.OpenWrite() );
+                var output = new BinaryWriter( deflaterOutputStream );
 
                 output.Write( pixmap.Width );
                 output.Write( pixmap.Height );
@@ -132,16 +132,16 @@ public static class PixmapIO
                 var remainingBytes = pixelBuf.Capacity % BUFFER_SIZE;
                 var iterations     = pixelBuf.Capacity / BUFFER_SIZE;
 
-                lock ( writeBuffer )
+                lock ( WRITE_BUFFER )
                 {
                     for ( var i = 0; i < iterations; i++ )
                     {
-                        pixelBuf.Get( writeBuffer );
-                        output.Write( writeBuffer );
+                        pixelBuf.Get( WRITE_BUFFER );
+                        output.Write( WRITE_BUFFER );
                     }
 
-                    pixelBuf.Get( writeBuffer, 0, remainingBytes );
-                    output.Write( writeBuffer, 0, remainingBytes );
+                    pixelBuf.Get( WRITE_BUFFER, 0, remainingBytes );
+                    output.Write( WRITE_BUFFER, 0, remainingBytes );
                 }
 
                 pixelBuf.Position = 0;
@@ -176,13 +176,13 @@ public static class PixmapIO
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
-                lock ( readBuffer )
+                lock ( READ_BUFFER )
                 {
                     int readBytes;
 
-                    while ( ( readBytes = input.Read( readBuffer ) ) > 0 )
+                    while ( ( readBytes = input.Read( READ_BUFFER ) ) > 0 )
                     {
-                        pixelBuf.Put( readBuffer, 0, readBytes );
+                        pixelBuf.Put( READ_BUFFER, 0, readBytes );
                     }
                 }
 
@@ -267,7 +267,7 @@ public static class PixmapIO
         public void Write( Stream output, Pixmap pixmap )
         {
             var deflaterOutput = new DeflaterOutputStream( output/*_buffer*/, _deflater );
-            var dataOutput     = new DataOutputStream( output );
+            var dataOutput     = new BinaryWriter( output );
 
             dataOutput.Write( _signature );
 
@@ -393,7 +393,7 @@ public static class PixmapIO
 
         // --------------------------------------------------------------------
 
-        public class ChunkBuffer : DataOutputStream
+        public class ChunkBuffer : BinaryWriter
         {
             private readonly MemoryStream _buffer;
             private readonly Crc32        _crc;
@@ -410,17 +410,15 @@ public static class PixmapIO
                 this._crc    = crc;
             }
 
-            public void EndChunk( DataOutputStream target )
+            public void EndChunk( BinaryWriter target )
             {
                 Flush();
 
-//                target.Write( _buffer.Length - 4 );
-//                _buffer.WriteTo( target );
+                target.Write( _buffer.Length - 4 );
+                target.Write( _buffer.ToArray() );
+                target.Write( _crc.GetCurrentHash() );
 
-//                target.Write( _crc.GetCurrentHash() );
-
-//                _buffer.Reset();
-
+                _buffer.Position = 0;
                 _crc.Reset();
             }
         }

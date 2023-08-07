@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Maths;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -107,16 +109,16 @@ public class Matrix4
     /// </summary>
     public const int M33 = 15;
 
-    public readonly static Quaternion Quat       = new();
-    public readonly static Quaternion Quat2      = new();
-    public readonly static Vector3    LVez       = new();
-    public readonly static Vector3    LVex       = new();
-    public readonly static Vector3    LVey       = new();
-    public readonly static Vector3    TmpVec     = new();
-    public readonly static Matrix4    TmpMat     = new();
-    public readonly static Vector3    Right      = new();
-    public readonly static Vector3    TmpForward = new();
-    public readonly static Vector3    TmpUp      = new();
+    public readonly static Quaternion QUAT       = new();
+    public readonly static Quaternion QUAT2      = new();
+    public readonly static Vector3    L_VEZ       = new();
+    public readonly static Vector3    L_VEX       = new();
+    public readonly static Vector3    L_VEY       = new();
+    public readonly static Vector3    TMP_VEC     = new();
+    public readonly static Matrix4    TMP_MAT     = new();
+    public readonly static Vector3    RIGHT      = new();
+    public readonly static Vector3    TMP_FORWARD = new();
+    public readonly static Vector3    TMP_UP      = new();
 
     public readonly float[] val = new float[ 16 ];
 
@@ -462,11 +464,11 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining operations together.  </returns>
     public Matrix4 MulLeft( Matrix4 matrix )
     {
-        TmpMat.Set( matrix );
+        TMP_MAT.Set( matrix );
 
-        Mul( TmpMat.val, val );
+        Mul( TMP_MAT.val, val );
 
-        return Set( TmpMat );
+        return Set( TMP_MAT );
     }
 
     /// <summary>
@@ -1043,7 +1045,7 @@ public class Matrix4
             return this;
         }
 
-        return Set( Quat.Set( axis, degrees ) );
+        return Set( QUAT.Set( axis, degrees ) );
     }
 
     /// <summary>
@@ -1060,7 +1062,7 @@ public class Matrix4
             return this;
         }
 
-        return Set( Quat.SetFromAxisRad( axis, radians ) );
+        return Set( QUAT.SetFromAxisRad( axis, radians ) );
     }
 
     /// <summary>
@@ -1079,7 +1081,7 @@ public class Matrix4
             return this;
         }
 
-        return Set( Quat.SetFromAxis( axisX, axisY, axisZ, degrees ) );
+        return Set( QUAT.SetFromAxis( axisX, axisY, axisZ, degrees ) );
     }
 
     /// <summary>
@@ -1098,7 +1100,7 @@ public class Matrix4
             return this;
         }
 
-        return Set( Quat.SetFromAxisRad( axisX, axisY, axisZ, radians ) );
+        return Set( QUAT.SetFromAxisRad( axisX, axisY, axisZ, radians ) );
     }
 
     /// <summary>
@@ -1108,7 +1110,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
     public Matrix4 SetToRotation( Vector3 v1, Vector3 v2 )
     {
-        return Set( Quat.SetFromCross( v1, v2 ) );
+        return Set( QUAT.SetFromCross( v1, v2 ) );
     }
 
     /// <summary>
@@ -1122,7 +1124,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
     public Matrix4 SetToRotation( float x1, float y1, float z1, float x2, float y2, float z2 )
     {
-        return Set( Quat.SetFromCross( x1, y1, z1, x2, y2, z2 ) );
+        return Set( QUAT.SetFromCross( x1, y1, z1, x2, y2, z2 ) );
     }
 
     /// <summary>
@@ -1133,9 +1135,9 @@ public class Matrix4
     /// <returns> This matrix  </returns>
     public Matrix4 SetFromEulerAngles( float yaw, float pitch, float roll )
     {
-        Quat.SetEulerAngles( yaw, pitch, roll );
+        QUAT.SetEulerAngles( yaw, pitch, roll );
 
-        return Set( Quat );
+        return Set( QUAT );
     }
 
     /// <summary>
@@ -1147,9 +1149,9 @@ public class Matrix4
     /// <returns> This matrix  </returns>
     public Matrix4 SetFromEulerAnglesRad( float yaw, float pitch, float roll )
     {
-        Quat.SetEulerAnglesRad( yaw, pitch, roll );
+        QUAT.SetEulerAnglesRad( yaw, pitch, roll );
 
-        return Set( Quat );
+        return Set( QUAT );
     }
 
     /// <summary>
@@ -1195,21 +1197,21 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 SetToLookAt( Vector3 direction, Vector3 up )
     {
-        LVez.Set( direction ).Nor();
-        LVex.Set( direction ).Crs( up ).Nor();
-        LVey.Set( LVex ).Crs( LVez ).Nor();
+        L_VEZ.Set( direction ).Nor();
+        L_VEX.Set( direction ).Crs( up ).Nor();
+        L_VEY.Set( L_VEX ).Crs( L_VEZ ).Nor();
 
         Idt();
 
-        val[ M00 ] = LVex.X;
-        val[ M01 ] = LVex.Y;
-        val[ M02 ] = LVex.Z;
-        val[ M10 ] = LVey.X;
-        val[ M11 ] = LVey.Y;
-        val[ M12 ] = LVey.Z;
-        val[ M20 ] = -LVez.X;
-        val[ M21 ] = -LVez.Y;
-        val[ M22 ] = -LVez.Z;
+        val[ M00 ] = L_VEX.X;
+        val[ M01 ] = L_VEX.Y;
+        val[ M02 ] = L_VEX.Z;
+        val[ M10 ] = L_VEY.X;
+        val[ M11 ] = L_VEY.Y;
+        val[ M12 ] = L_VEY.Z;
+        val[ M20 ] = -L_VEZ.X;
+        val[ M21 ] = -L_VEZ.Y;
+        val[ M22 ] = -L_VEZ.Z;
 
         return this;
     }
@@ -1224,9 +1226,9 @@ public class Matrix4
     /// <returns> This matrix  </returns>
     public Matrix4 SetToLookAt( Vector3 position, Vector3 target, Vector3 up )
     {
-        TmpVec.Set( target ).Sub( position );
-        SetToLookAt( TmpVec, up );
-        Mul( TmpMat.SetToTranslation( -position.X, -position.Y, -position.Z ) );
+        TMP_VEC.Set( target ).Sub( position );
+        SetToLookAt( TMP_VEC, up );
+        Mul( TMP_MAT.SetToTranslation( -position.X, -position.Y, -position.Z ) );
 
         return this;
     }
@@ -1234,10 +1236,10 @@ public class Matrix4
 
     public Matrix4 SetToWorld( Vector3 position, Vector3 forward, Vector3 up )
     {
-        TmpForward.Set( forward ).Nor();
-        Right.Set( TmpForward ).Crs( up ).Nor();
-        TmpUp.Set( Right ).Crs( TmpForward ).Nor();
-        Set( Right, TmpUp, TmpForward.Scl( -1 ), position );
+        TMP_FORWARD.Set( forward ).Nor();
+        RIGHT.Set( TMP_FORWARD ).Crs( up ).Nor();
+        TMP_UP.Set( RIGHT ).Crs( TMP_FORWARD ).Nor();
+        Set( RIGHT, TMP_UP, TMP_FORWARD.Scl( -1 ), position );
 
         return this;
     }
@@ -1266,18 +1268,18 @@ public class Matrix4
     /// <returns> This matrix for chaining  </returns>
     public Matrix4 Avg( Matrix4 other, float w )
     {
-        GetScale( TmpVec );
-        other.GetScale( TmpForward );
+        GetScale( TMP_VEC );
+        other.GetScale( TMP_FORWARD );
 
-        GetRotation( Quat );
-        other.GetRotation( Quat2 );
+        GetRotation( QUAT );
+        other.GetRotation( QUAT2 );
 
-        GetTranslation( TmpUp );
-        other.GetTranslation( Right );
+        GetTranslation( TMP_UP );
+        other.GetTranslation( RIGHT );
 
-        SetToScaling( TmpVec.Scl( w ).Add( TmpForward.Scl( 1 - w ) ) );
-        Rotate( Quat.Slerp( Quat2, 1 - w ) );
-        SetTranslation( TmpUp.Scl( w ).Add( Right.Scl( 1 - w ) ) );
+        SetToScaling( TMP_VEC.Scl( w ).Add( TMP_FORWARD.Scl( 1 - w ) ) );
+        Rotate( QUAT.Slerp( QUAT2, 1 - w ) );
+        SetTranslation( TMP_UP.Scl( w ).Add( RIGHT.Scl( 1 - w ) ) );
 
         return this;
     }
@@ -1293,22 +1295,22 @@ public class Matrix4
     {
         var w = 1.0f / t.Length;
 
-        TmpVec.Set( t[ 0 ].GetScale( TmpUp ).Scl( w ) );
-        Quat.Set( t[ 0 ].GetRotation( Quat2 ).Exp( w ) );
-        TmpForward.Set( t[ 0 ].GetTranslation( TmpUp ).Scl( w ) );
+        TMP_VEC.Set( t[ 0 ].GetScale( TMP_UP ).Scl( w ) );
+        QUAT.Set( t[ 0 ].GetRotation( QUAT2 ).Exp( w ) );
+        TMP_FORWARD.Set( t[ 0 ].GetTranslation( TMP_UP ).Scl( w ) );
 
         for ( var i = 1; i < t.Length; i++ )
         {
-            TmpVec.Add( t[ i ].GetScale( TmpUp ).Scl( w ) );
-            Quat.Mul( t[ i ].GetRotation( Quat2 ).Exp( w ) );
-            TmpForward.Add( t[ i ].GetTranslation( TmpUp ).Scl( w ) );
+            TMP_VEC.Add( t[ i ].GetScale( TMP_UP ).Scl( w ) );
+            QUAT.Mul( t[ i ].GetRotation( QUAT2 ).Exp( w ) );
+            TMP_FORWARD.Add( t[ i ].GetTranslation( TMP_UP ).Scl( w ) );
         }
 
-        Quat.Nor();
+        QUAT.Nor();
 
-        SetToScaling( TmpVec );
-        Rotate( Quat );
-        SetTranslation( TmpForward );
+        SetToScaling( TMP_VEC );
+        Rotate( QUAT );
+        SetTranslation( TMP_FORWARD );
 
         return this;
     }
@@ -1324,22 +1326,22 @@ public class Matrix4
     /// <returns> This matrix for chaining  </returns>
     public Matrix4 Avg( Matrix4[] t, float[] w )
     {
-        TmpVec.Set( t[ 0 ].GetScale( TmpUp ).Scl( w[ 0 ] ) );
-        Quat.Set( t[ 0 ].GetRotation( Quat2 ).Exp( w[ 0 ] ) );
-        TmpForward.Set( t[ 0 ].GetTranslation( TmpUp ).Scl( w[ 0 ] ) );
+        TMP_VEC.Set( t[ 0 ].GetScale( TMP_UP ).Scl( w[ 0 ] ) );
+        QUAT.Set( t[ 0 ].GetRotation( QUAT2 ).Exp( w[ 0 ] ) );
+        TMP_FORWARD.Set( t[ 0 ].GetTranslation( TMP_UP ).Scl( w[ 0 ] ) );
 
         for ( var i = 1; i < t.Length; i++ )
         {
-            TmpVec.Add( t[ i ].GetScale( TmpUp ).Scl( w[ i ] ) );
-            Quat.Mul( t[ i ].GetRotation( Quat2 ).Exp( w[ i ] ) );
-            TmpForward.Add( t[ i ].GetTranslation( TmpUp ).Scl( w[ i ] ) );
+            TMP_VEC.Add( t[ i ].GetScale( TMP_UP ).Scl( w[ i ] ) );
+            QUAT.Mul( t[ i ].GetRotation( QUAT2 ).Exp( w[ i ] ) );
+            TMP_FORWARD.Add( t[ i ].GetTranslation( TMP_UP ).Scl( w[ i ] ) );
         }
 
-        Quat.Nor();
+        QUAT.Nor();
 
-        SetToScaling( TmpVec );
-        Rotate( Quat );
-        SetTranslation( TmpForward );
+        SetToScaling( TMP_VEC );
+        Rotate( QUAT );
+        SetTranslation( TMP_FORWARD );
 
         return this;
     }
@@ -2110,9 +2112,9 @@ public class Matrix4
     {
         if ( degrees == 0 ) return this;
 
-        Quat.Set( axis, degrees );
+        QUAT.Set( axis, degrees );
 
-        return Rotate( Quat );
+        return Rotate( QUAT );
     }
 
     /// <summary>
@@ -2126,9 +2128,9 @@ public class Matrix4
     {
         if ( radians == 0 ) return this;
 
-        Quat.SetFromAxisRad( axis, radians );
+        QUAT.SetFromAxisRad( axis, radians );
 
-        return Rotate( Quat );
+        return Rotate( QUAT );
     }
 
     /// <summary>
@@ -2144,9 +2146,9 @@ public class Matrix4
     {
         if ( degrees == 0 ) return this;
 
-        Quat.SetFromAxis( axisX, axisY, axisZ, degrees );
+        QUAT.SetFromAxis( axisX, axisY, axisZ, degrees );
 
-        return Rotate( Quat );
+        return Rotate( QUAT );
     }
 
     /// <summary>
@@ -2161,9 +2163,9 @@ public class Matrix4
     public Matrix4 RotateRad( float axisX, float axisY, float axisZ, float radians )
     {
         if ( radians == 0 ) return this;
-        Quat.SetFromAxisRad( axisX, axisY, axisZ, radians );
+        QUAT.SetFromAxisRad( axisX, axisY, axisZ, radians );
 
-        return Rotate( Quat );
+        return Rotate( QUAT );
     }
 
     /// <summary>
@@ -2230,7 +2232,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
     public Matrix4 Rotate( Vector3 v1, Vector3 v2 )
     {
-        return Rotate( Quat.SetFromCross( v1, v2 ) );
+        return Rotate( QUAT.SetFromCross( v1, v2 ) );
     }
 
     /// <summary>
@@ -2241,22 +2243,22 @@ public class Matrix4
     /// <returns> This matrix for chaining  </returns>
     public Matrix4 RotateTowardDirection( Vector3 direction, Vector3 up )
     {
-        LVez.Set( direction ).Nor();
-        LVex.Set( direction ).Crs( up ).Nor();
-        LVey.Set( LVex ).Crs( LVez ).Nor();
+        L_VEZ.Set( direction ).Nor();
+        L_VEX.Set( direction ).Crs( up ).Nor();
+        L_VEY.Set( L_VEX ).Crs( L_VEZ ).Nor();
 
-        var m00 = ( val[ M00 ] * LVex.X ) + ( val[ M01 ] * LVex.Y ) + ( val[ M02 ] * LVex.Z );
-        var m01 = ( val[ M00 ] * LVey.X ) + ( val[ M01 ] * LVey.Y ) + ( val[ M02 ] * LVey.Z );
-        var m02 = ( val[ M00 ] * -LVez.X ) + ( val[ M01 ] * -LVez.Y ) + ( val[ M02 ] * -LVez.Z );
-        var m10 = ( val[ M10 ] * LVex.X ) + ( val[ M11 ] * LVex.Y ) + ( val[ M12 ] * LVex.Z );
-        var m11 = ( val[ M10 ] * LVey.X ) + ( val[ M11 ] * LVey.Y ) + ( val[ M12 ] * LVey.Z );
-        var m12 = ( val[ M10 ] * -LVez.X ) + ( val[ M11 ] * -LVez.Y ) + ( val[ M12 ] * -LVez.Z );
-        var m20 = ( val[ M20 ] * LVex.X ) + ( val[ M21 ] * LVex.Y ) + ( val[ M22 ] * LVex.Z );
-        var m21 = ( val[ M20 ] * LVey.X ) + ( val[ M21 ] * LVey.Y ) + ( val[ M22 ] * LVey.Z );
-        var m22 = ( val[ M20 ] * -LVez.X ) + ( val[ M21 ] * -LVez.Y ) + ( val[ M22 ] * -LVez.Z );
-        var m30 = ( val[ M30 ] * LVex.X ) + ( val[ M31 ] * LVex.Y ) + ( val[ M32 ] * LVex.Z );
-        var m31 = ( val[ M30 ] * LVey.X ) + ( val[ M31 ] * LVey.Y ) + ( val[ M32 ] * LVey.Z );
-        var m32 = ( val[ M30 ] * -LVez.X ) + ( val[ M31 ] * -LVez.Y ) + ( val[ M32 ] * -LVez.Z );
+        var m00 = ( val[ M00 ] * L_VEX.X ) + ( val[ M01 ] * L_VEX.Y ) + ( val[ M02 ] * L_VEX.Z );
+        var m01 = ( val[ M00 ] * L_VEY.X ) + ( val[ M01 ] * L_VEY.Y ) + ( val[ M02 ] * L_VEY.Z );
+        var m02 = ( val[ M00 ] * -L_VEZ.X ) + ( val[ M01 ] * -L_VEZ.Y ) + ( val[ M02 ] * -L_VEZ.Z );
+        var m10 = ( val[ M10 ] * L_VEX.X ) + ( val[ M11 ] * L_VEX.Y ) + ( val[ M12 ] * L_VEX.Z );
+        var m11 = ( val[ M10 ] * L_VEY.X ) + ( val[ M11 ] * L_VEY.Y ) + ( val[ M12 ] * L_VEY.Z );
+        var m12 = ( val[ M10 ] * -L_VEZ.X ) + ( val[ M11 ] * -L_VEZ.Y ) + ( val[ M12 ] * -L_VEZ.Z );
+        var m20 = ( val[ M20 ] * L_VEX.X ) + ( val[ M21 ] * L_VEX.Y ) + ( val[ M22 ] * L_VEX.Z );
+        var m21 = ( val[ M20 ] * L_VEY.X ) + ( val[ M21 ] * L_VEY.Y ) + ( val[ M22 ] * L_VEY.Z );
+        var m22 = ( val[ M20 ] * -L_VEZ.X ) + ( val[ M21 ] * -L_VEZ.Y ) + ( val[ M22 ] * -L_VEZ.Z );
+        var m30 = ( val[ M30 ] * L_VEX.X ) + ( val[ M31 ] * L_VEX.Y ) + ( val[ M32 ] * L_VEX.Z );
+        var m31 = ( val[ M30 ] * L_VEY.X ) + ( val[ M31 ] * L_VEY.Y ) + ( val[ M32 ] * L_VEY.Z );
+        var m32 = ( val[ M30 ] * -L_VEZ.X ) + ( val[ M31 ] * -L_VEZ.Y ) + ( val[ M32 ] * -L_VEZ.Z );
 
         val[ M00 ] = m00;
         val[ M10 ] = m10;
@@ -2282,9 +2284,9 @@ public class Matrix4
     /// <returns> This matrix for chaining  </returns>
     public Matrix4 RotateTowardTarget( Vector3 target, Vector3 up )
     {
-        TmpVec.Set( target.X - val[ M03 ], target.Y - val[ M13 ], target.Z - val[ M23 ] );
+        TMP_VEC.Set( target.X - val[ M03 ], target.Y - val[ M13 ], target.Z - val[ M23 ] );
 
-        return RotateTowardDirection( TmpVec, up );
+        return RotateTowardDirection( TMP_VEC, up );
     }
 
     /// <summary>

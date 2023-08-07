@@ -17,6 +17,7 @@
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -34,12 +35,12 @@ public class Container<T> : WidgetGroup where T : Actor
     private Value      _minHeight  = Value.MinHeight;
     private Value      _prefWidth  = Value.PrefWidth;
     private Value      _prefHeight = Value.PrefHeight;
-    private Value      _maxWidth   = Value.Zero;
-    private Value      _maxHeight  = Value.Zero;
-    private Value      _padTop     = Value.Zero;
-    private Value      _padLeft    = Value.Zero;
-    private Value      _padBottom  = Value.Zero;
-    private Value      _padRight   = Value.Zero;
+    private Value      _maxWidth   = Value.ZERO;
+    private Value      _maxHeight  = Value.ZERO;
+    private Value      _padTop     = Value.ZERO;
+    private Value      _padLeft    = Value.ZERO;
+    private Value      _padBottom  = Value.ZERO;
+    private Value      _padRight   = Value.ZERO;
     private float      _fillX;
     private float      _fillY;
     private int        _align;
@@ -77,7 +78,7 @@ public class Container<T> : WidgetGroup where T : Actor
         {
             if ( background == null )
             {
-                SetPadding( Value.Zero );
+                SetPadding( Value.ZERO );
             }
             else
             {
@@ -1115,7 +1116,7 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         if ( _background == null ) return;
 
-        Color color = base.Color ?? Color.Black;
+        Color color = base.Color ?? Color.BLACK;
 
         batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
         _background.Draw( batch, x, y, Width, Height );

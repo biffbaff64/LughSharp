@@ -18,6 +18,7 @@
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections.Extensions;
 using LibGDXSharp.Utils.Pooling;
 
@@ -45,9 +46,9 @@ public class Table : WidgetGroup
 
     // ------------------------------------------------------------------------
 
-    public readonly static Color DebugTableColor = new( 0, 0, 1, 1 );
-    public readonly static Color DebugCellColor  = new( 1, 0, 0, 1 );
-    public readonly static Color DebugActorColor = new( 0, 1, 0, 1 );
+    public readonly static Color DEBUG_TABLE_COLOR = new( 0, 0, 1, 1 );
+    public readonly static Color DEBUG_CELL_COLOR  = new( 1, 0, 0, 1 );
+    public readonly static Color DEBUG_ACTOR_COLOR = new( 0, 1, 0, 1 );
 
     // ------------------------------------------------------------------------
 
@@ -83,10 +84,10 @@ public class Table : WidgetGroup
     private float   _tablePrefWidth;
     private float   _tablePrefHeight;
 
-    private Value _padTop    = BackgroundTop;
-    private Value _padLeft   = BackgroundLeft;
-    private Value _padBottom = BackgroundBottom;
-    private Value _padRight  = BackgroundRight;
+    private Value _padTop    = BACKGROUND_TOP;
+    private Value _padLeft   = BACKGROUND_LEFT;
+    private Value _padBottom = BACKGROUND_BOTTOM;
+    private Value _padRight  = BACKGROUND_RIGHT;
 
     private int                _alignment = LibGDXSharp.Utils.Align.CENTER;
     private List< DebugRect >? _debugRects;
@@ -501,10 +502,10 @@ public class Table : WidgetGroup
     {
         ClearChildren();
 
-        _padTop    = BackgroundTop;
-        _padLeft   = BackgroundLeft;
-        _padBottom = BackgroundBottom;
-        _padRight  = BackgroundRight;
+        _padTop    = BACKGROUND_TOP;
+        _padLeft   = BACKGROUND_LEFT;
+        _padBottom = BACKGROUND_BOTTOM;
+        _padRight  = BACKGROUND_RIGHT;
 
         _alignment = LibGDXSharp.Utils.Align.CENTER;
 
@@ -1779,8 +1780,8 @@ public class Table : WidgetGroup
 
         if ( TableDebug is DebugType.Table or DebugType.All )
         {
-            AddDebugRect( 0, 0, Width, Height, DebugTableColor );
-            AddDebugRect( currentX, currentY, width, height, DebugTableColor );
+            AddDebugRect( 0, 0, Width, Height, DEBUG_TABLE_COLOR );
+            AddDebugRect( currentX, currentY, width, height, DEBUG_TABLE_COLOR );
         }
 
         var x = currentX;
@@ -1792,7 +1793,7 @@ public class Table : WidgetGroup
             // Actor bounds.
             if ( ( TableDebug == DebugType.Actor ) || ( TableDebug == DebugType.All ) )
             {
-                AddDebugRect( c.ActorX, c.ActorY, c.ActorWidth, c.ActorHeight, DebugActorColor );
+                AddDebugRect( c.ActorX, c.ActorY, c.ActorWidth, c.ActorHeight, DEBUG_ACTOR_COLOR );
             }
 
             // Cell bounds.
@@ -1814,7 +1815,7 @@ public class Table : WidgetGroup
                     ( currentY + c.ComputedPadTop ),
                     spannedCellWidth,
                     _rowHeight[ c.Row ] - c.ComputedPadTop - c.ComputedPadBottom,
-                    DebugCellColor
+                    DEBUG_CELL_COLOR
                     );
             }
 
@@ -1945,22 +1946,22 @@ public class Table : WidgetGroup
     /// <summary>
     /// Value that is the top padding of the table's background.
     /// </summary>
-    public readonly static Value BackgroundTop = new BackgroundTopDelegate();
+    public readonly static Value BACKGROUND_TOP = new BackgroundTopDelegate();
 
     /// <summary>
     /// Value that is the bottom padding of the table's background.
     /// </summary>
-    public readonly static Value BackgroundBottom = new BackgroundBottomDelegate();
+    public readonly static Value BACKGROUND_BOTTOM = new BackgroundBottomDelegate();
 
     /// <summary>
     /// Value that is the left padding of the table's background.
     /// </summary>
-    public readonly static Value BackgroundLeft = new BackgroundLeftDelegate();
+    public readonly static Value BACKGROUND_LEFT = new BackgroundLeftDelegate();
 
     /// <summary>
     /// Value that is the right padding of the table's background.
     /// </summary>
-    public readonly static Value BackgroundRight = new BackgroundRightDelegate();
+    public readonly static Value BACKGROUND_RIGHT = new BackgroundRightDelegate();
 
     private class BackgroundTopDelegate : Value
     {

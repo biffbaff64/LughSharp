@@ -16,6 +16,7 @@
 
 using System.Text;
 
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections.Extensions;
 
@@ -99,7 +100,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
             if ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
             {
                 IntBuffer intbuf = ByteBuffer.AllocateDirect
-                    ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NativeOrder ).AsIntBuffer();
+                    ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NATIVE_ORDER ).AsIntBuffer();
 
                 Gdx.GL20.GLGetIntegerv( IGL20.GL_FRAMEBUFFER_BINDING, intbuf );
                 DefaultFramebufferHandle = intbuf.Get( 0 );

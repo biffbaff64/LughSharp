@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
 
@@ -43,7 +44,7 @@ public class SpriteBatch : IBatch
     public int   idx          = 0;
     public float invTexWidth  = 0;
     public float invTexHeight = 0;
-    public float colorPacked  = Color.WhiteFloatBits;
+    public float colorPacked  = Color.WHITE_FLOAT_BITS;
 
     private readonly Matrix4 _transformMatrix  = new();
     private readonly Matrix4 _projectionMatrix = new();
@@ -127,7 +128,7 @@ public class SpriteBatch : IBatch
 
         _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
-        Vertices = new float[ size * Sprite.SpriteSize ];
+        Vertices = new float[ size * Sprite.SPRITE_SIZE ];
 
         var   len     = size * 6;
         var   indices = new short[ len ];

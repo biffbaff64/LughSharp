@@ -20,6 +20,7 @@ using System.Text;
 using LibGDXSharp.Audio;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Async;
 using LibGDXSharp.Utils.Collections.Extensions;
 
@@ -28,9 +29,8 @@ namespace LibGDXSharp.Assets;
 /// <summary>
 /// Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
 /// </summary>
-// -------------------------------------------------------------------
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-// -------------------------------------------------------------------
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class AssetManager
 {
     private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets  = new();
@@ -80,12 +80,11 @@ public class AssetManager
                 SetLoader( typeof(IMusic),          new MusicLoader( resolver ) );
                 SetLoader( typeof(ISound),          new SoundLoader( resolver ) );
                 SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
+                SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
+                SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
 
-                //TODO:
-//                SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
 //                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
 //                SetLoader( typeof(I18NBundle),      new I18NBundleLoader( resolver ) );
-//                SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
             //@formatter:on
         }
 
@@ -254,7 +253,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Removes the asset and all its dependencies, if they are not used by other assets.
+    /// Removes the asset and all its dependencies, IF they are not used by other assets.
     /// </summary>
     /// <param name="fileName"> the asset file name</param>
     public void Unload( string fileName )
@@ -348,6 +347,7 @@ public class AssetManager
                 {
                     if ( IsLoaded( dependency ) )
                     {
+                        //TODO: Say NO to recursiveness!
                         Unload( dependency );
                     }
                 }
@@ -393,7 +393,7 @@ public class AssetManager
         {
             Dictionary< string, IRefCountedContainer > assetsByType = _assets[ assetType ];
 
-//            if ( assetsByType != null )
+            if ( assetsByType != null )
             {
                 foreach ( var fileName in assetsByType.Keys )
                 {
@@ -548,7 +548,7 @@ public class AssetManager
     /// <summary>
     /// Adds the given asset to the loading queue of the AssetManager.
     /// </summary>
-    /// <param name="desc">the <see cref="AssetDescriptor"/></param>
+    /// <param name="desc">the <see cref="LibGDXSharp.Assets.AssetDescriptor"/></param>
     public void Load( AssetDescriptor desc )
     {
         Load( desc.FilePath, desc.Type, desc.Parameters );
@@ -793,7 +793,7 @@ public class AssetManager
 
 
     /// <summary>
-    /// Adds a <see cref="AssetLoadingTask"/> to the task stack for the given asset.
+    /// Adds a <see cref="LibGDXSharp.Assets.AssetLoadingTask"/> to the task stack for the given asset.
     /// </summary>
     private void AddTask( AssetDescriptor assetDesc )
     {

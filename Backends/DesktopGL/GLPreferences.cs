@@ -16,6 +16,8 @@
 
 using System.Xml.Linq;
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Backends.Desktop;
 
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]

@@ -16,6 +16,7 @@
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -43,12 +44,12 @@ public class Image : Widget
     }
 
     public Image( NinePatch patch )
-        : this( new NinePatchDrawable( patch ), Scaling.Stretch )
+        : this( new NinePatchDrawable( patch ), Scaling.STRETCH )
     {
     }
 
     public Image( TextureRegion region )
-        : this( new TextureRegionDrawable( region ), Scaling.Stretch )
+        : this( new TextureRegionDrawable( region ), Scaling.STRETCH )
     {
     }
 
@@ -58,11 +59,11 @@ public class Image : Widget
     }
 
     public Image( Skin skin, string drawableName )
-        : this( skin.GetDrawable( drawableName ), Scaling.Stretch )
+        : this( skin.GetDrawable( drawableName ), Scaling.STRETCH )
     {
     }
 
-    public Image( IDrawable? drawable ) : this( drawable, Scaling.Stretch )
+    public Image( IDrawable? drawable ) : this( drawable, Scaling.STRETCH )
     {
     }
 
@@ -123,7 +124,7 @@ public class Image : Widget
     {
         Validate();
 
-        Color color = Color ?? Color.Black;
+        Color color = Color ?? Color.BLACK;
 
         batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
 

@@ -16,6 +16,7 @@
 
 using System.Text.RegularExpressions;
 
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.G2D;
@@ -1378,7 +1379,7 @@ public class BitmapFont
         /// Scales the font by the specified amounts on both axes
         /// <para>
         /// Note that smoother scaling can be achieved if the texture backing
-        /// the BitmapFont is using <see cref="TextureFilter.Linear"/>.
+        /// the BitmapFont is using <see cref="TextureFilter.LINEAR"/>.
         /// The default is Nearest, so use a BitmapFont constructor that takes
         /// a <see cref="TextureRegion"/>.
         /// </para>

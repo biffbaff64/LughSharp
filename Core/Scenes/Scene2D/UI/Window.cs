@@ -17,6 +17,7 @@
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -43,8 +44,8 @@ public class Window : Table
     public int   ResizeBorder    { get; set; } = 8;
     public bool  KeepWithinStage { get; set; } = true;
 
-    private readonly static Vector2 tmpPosition = new();
-    private readonly static Vector2 tmpSize     = new();
+    private readonly static Vector2 TMP_POSITION = new();
+    private readonly static Vector2 TMP_SIZE     = new();
 
     private const int MOVE = 1 << 5;
 
@@ -180,17 +181,17 @@ public class Window : Table
 
             if ( Style.StageBackground != null )
             {
-                StageToLocalCoordinates( tmpPosition.Set( 0, 0 ) );
-                StageToLocalCoordinates( tmpSize.Set( this.Stage.StageWidth, this.Stage.StageHeight ) );
+                StageToLocalCoordinates( TMP_POSITION.Set( 0, 0 ) );
+                StageToLocalCoordinates( TMP_SIZE.Set( this.Stage.StageWidth, this.Stage.StageHeight ) );
 
                 DrawStageBackground
                     (
                      batch,
                      parentAlpha,
-                     ( X + tmpPosition.X ),
-                     ( Y + tmpPosition.Y ),
-                     ( X + tmpSize.X ),
-                     ( Y + tmpSize.Y )
+                     ( X + TMP_POSITION.X ),
+                     ( Y + TMP_POSITION.Y ),
+                     ( X + TMP_SIZE.X ),
+                     ( Y + TMP_SIZE.Y )
                     );
             }
         }

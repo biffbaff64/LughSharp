@@ -21,8 +21,8 @@ namespace LibGDXSharp.G2D;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Sprite : TextureRegion
 {
-    public readonly static int VertexSize = 2 + 1 + 2;
-    public readonly static int SpriteSize = 4 * VertexSize;
+    public readonly static int VERTEX_SIZE = 2 + 1 + 2;
+    public readonly static int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
     #region PrivateData
 
@@ -170,7 +170,7 @@ public class Sprite : TextureRegion
              0,
              Vertices,
              0,
-             SpriteSize
+             SPRITE_SIZE
             );
 
         Texture      = sprite.Texture;
@@ -421,7 +421,7 @@ public class Sprite : TextureRegion
 
     /// <summary>
     /// Sets the color used to tint this sprite.
-    /// Default is <see cref="Color.White"/>.
+    /// Default is <see cref="Graphics.Color.WHITE"/>.
     /// </summary>
     public void SetColor( Color tint )
     {
@@ -646,7 +646,7 @@ public class Sprite : TextureRegion
 
     public void Draw( IBatch batch )
     {
-        batch.Draw( Texture, Vertices, 0, SpriteSize );
+        batch.Draw( Texture, Vertices, 0, SPRITE_SIZE );
     }
 
     public void Draw( IBatch batch, float alphaModulation )

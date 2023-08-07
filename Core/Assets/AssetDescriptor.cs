@@ -19,6 +19,7 @@ using StringBuilder = System.Text.StringBuilder;
 namespace LibGDXSharp.Assets;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class AssetDescriptor
 {
     public Type                  Type       { get; init; }
@@ -39,9 +40,9 @@ public class AssetDescriptor
     /// <param name="filepath"></param>
     /// <param name="assetType"></param>
     /// <param name="parameters"></param>
-    public AssetDescriptor( string? filepath, Type assetType, AssetLoaderParameters parameters )
+    public AssetDescriptor( string filepath, Type assetType, AssetLoaderParameters parameters )
     {
-        FilePath   = filepath?.Replace( '\\', '/' );
+        FilePath   = filepath.Replace( '\\', '/' );
         Type       = assetType;
         Parameters = parameters;
         File       = null!;

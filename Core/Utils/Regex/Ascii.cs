@@ -49,7 +49,7 @@ public class Ascii
 
     public const int XDIGIT = ( HEX );
 
-    public readonly static int[] CType =
+    public readonly static int[] C_TYPE =
     {
         CNTRL,                 /* 00 (NUL) */
         CNTRL,                 /* 01 (SOH) */
@@ -184,7 +184,7 @@ public class Ascii
     [Obsolete]
     public static int GetCType( int ch )
     {
-        return ( ( ch & 0xFFFFFF80 ) == 0 ? CType[ ch ] : 0 );
+        return ( ( ch & 0xFFFFFF80 ) == 0 ? C_TYPE[ ch ] : 0 );
     }
 
     [Obsolete]
@@ -280,7 +280,7 @@ public class Ascii
     [Obsolete]
     public static int ToDigit( int ch )
     {
-        return ( CType[ ch & 0x7F ] & 0x3F );
+        return ( C_TYPE[ ch & 0x7F ] & 0x3F );
     }
 
     [Obsolete]

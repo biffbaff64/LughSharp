@@ -16,6 +16,8 @@
 
 using System.Runtime.Serialization;
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Maths;
 
 /// <summary>

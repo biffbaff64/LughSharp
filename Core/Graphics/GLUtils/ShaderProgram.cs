@@ -17,6 +17,7 @@
 using System.Text;
 
 using LibGDXSharp.Maths;
+using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections.Extensions;
 
@@ -91,26 +92,26 @@ public class ShaderProgram
     /// flag indicating whether attributes & uniforms must be present
     /// at all times.
     /// </summary>
-    public readonly static bool Pedantic = true;
+    public readonly static bool PEDANTIC = true;
 
     /// <summary>
     /// code that is always added to the vertex shader code, typically used to
     /// inject a #version line. Note that this is added as-is, you should include
     /// a newline (`\n`) if needed. 
     /// </summary>
-    public readonly static string PrependVertexCode = "";
+    public readonly static string PREPEND_VERTEX_CODE = "";
 
     /// <summary>
     /// code that is always added to every fragment shader code, typically used
     /// to inject a #version line. Note that this is added as-is, you should
     /// include a newline (`\n`) if needed. 
     /// </summary>
-    public readonly static string PrependFragmentCode = "";
+    public readonly static string PREPEND_FRAGMENT_CODE = "";
 
     /// <summary>
     /// the list of currently available shaders
     /// </summary>
-    private readonly static Dictionary< IApplication, List< ShaderProgram > > shaders = new();
+    private readonly static Dictionary< IApplication, List< ShaderProgram > > SHADERS = new();
 
     /// <summary>
     /// the log
@@ -154,9 +155,9 @@ public class ShaderProgram
         {
             var builder = new StringBuilder( "Managed shaders/app: { " );
 
-            foreach ( IApplication app in shaders.Keys )
+            foreach ( IApplication app in SHADERS.Keys )
             {
-                builder.Append( shaders[ app ].Count );
+                builder.Append( SHADERS[ app ].Count );
                 builder.Append( ' ' );
             }
 
@@ -170,7 +171,7 @@ public class ShaderProgram
     public bool IsCompiled { get; set; }
 
     /// <returns> the number of managed shader programs currently loaded </returns>
-    public static int NumManagedShaderPrograms => shaders[ Gdx.App ].Count;
+    public static int NumManagedShaderPrograms => SHADERS[ Gdx.App ].Count;
 
     public string[] Attributes => _attributeNames;
 
@@ -205,14 +206,14 @@ public class ShaderProgram
             throw new System.ArgumentException( "fragment shader must not be null" );
         }
 
-        if ( !string.IsNullOrEmpty( PrependVertexCode ) )
+        if ( !string.IsNullOrEmpty( PREPEND_VERTEX_CODE ) )
         {
-            vertexShader = PrependVertexCode + vertexShader;
+            vertexShader = PREPEND_VERTEX_CODE + vertexShader;
         }
 
-        if ( !string.IsNullOrEmpty( PrependFragmentCode ) )
+        if ( !string.IsNullOrEmpty( PREPEND_FRAGMENT_CODE ) )
         {
-            fragmentShader = PrependFragmentCode + fragmentShader;
+            fragmentShader = PREPEND_FRAGMENT_CODE + fragmentShader;
         }
 
         this._vertexShaderSource   = vertexShader;
@@ -326,7 +327,7 @@ public class ShaderProgram
         Gdx.GL20.GLLinkProgram( program );
 
         ByteBuffer tmp = ByteBuffer.AllocateDirect( 4 );
-        tmp.Order( ByteOrder.NativeOrder );
+        tmp.Order( ByteOrder.NATIVE_ORDER );
         IntBuffer intbuf = tmp.AsIntBuffer();
 
         Gdx.GL20.GLGetProgramiv( program, IGL20.GL_LINK_STATUS, intbuf );
@@ -388,7 +389,7 @@ public class ShaderProgram
 
     private int FetchUniformLocation( string name )
     {
-        return FetchUniformLocation( name, Pedantic );
+        return FetchUniformLocation( name, PEDANTIC );
     }
 
     public int FetchUniformLocation( string name, bool pedant )
@@ -878,7 +879,7 @@ public class ShaderProgram
         Gdx.GL20.GLDeleteShader( _fragmentShaderHandle );
         Gdx.GL20.GLDeleteProgram( _programHandle );
 
-        shaders.Get( Gdx.App ).Remove( this );
+        SHADERS.Get( Gdx.App ).Remove( this );
     }
 
     /// <summary>
@@ -940,10 +941,10 @@ public class ShaderProgram
 
     private void AddManagedShader( IApplication app, ShaderProgram shaderProgram )
     {
-        List< ShaderProgram > managedResources = shaders.Get( app );
+        List< ShaderProgram > managedResources = SHADERS.Get( app );
 
         managedResources.Add( shaderProgram );
-        shaders.Put( app, managedResources );
+        SHADERS.Put( app, managedResources );
     }
 
     /// <summary>
@@ -953,7 +954,7 @@ public class ShaderProgram
     /// <param name="app">  </param>
     public static void InvalidateAllShaderPrograms( IApplication app )
     {
-        List< ShaderProgram > shaderArray = shaders.Get( app );
+        List< ShaderProgram > shaderArray = SHADERS.Get( app );
 
         foreach ( ShaderProgram sp in shaderArray )
         {
@@ -964,7 +965,7 @@ public class ShaderProgram
 
     public static void ClearAllShaderPrograms( IApplication app )
     {
-        shaders.Remove( app );
+        SHADERS.Remove( app );
     }
 
     /// <summary>

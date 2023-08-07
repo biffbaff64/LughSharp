@@ -27,12 +27,12 @@ namespace LibGDXSharp.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class SortUtils
 {
-    private readonly static SortUtils instance = new();
+    private readonly static SortUtils INSTANCE = new();
 
     // ReSharper disable once ConvertToAutoProperty
     public static SortUtils Instance
     {
-        [DebuggerStepThrough] get => instance;
+        [DebuggerStepThrough] get => INSTANCE;
     }
 
     private TimSort< object >? _timSort;

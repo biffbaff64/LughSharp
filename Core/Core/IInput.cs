@@ -423,7 +423,7 @@ public interface IInput
             return str;
         }
 
-        private readonly static List< string > keyNames = new();
+        private readonly static List< string > KEY_NAMES = new();
 
         static Keys()
         {
@@ -432,7 +432,7 @@ public interface IInput
 
         public static int ValueOf( string keyname )
         {
-            return keyNames.IndexOf( keyname );
+            return KEY_NAMES.IndexOf( keyname );
         }
 
         private static void InitialiseKeyNames()
@@ -441,9 +441,9 @@ public interface IInput
             {
                 var name = Keys.ToString( i );
 
-                if ( ( name != null ) && ( keyNames != null ) )
+                if ( ( name != null ) && ( KEY_NAMES != null ) )
                 {
-                    keyNames[ i ] = name;
+                    KEY_NAMES[ i ] = name;
                 }
             }
         }

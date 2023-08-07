@@ -24,7 +24,7 @@ namespace LibGDXSharp.Maths.Collision;
 [Serializable]
 public class BoundingBox
 {
-    private readonly static Vector3 tmpVector = new();
+    private readonly static Vector3 TMP_VECTOR = new();
 
     public readonly Vector3 min = new();
     public readonly Vector3 max = new();
@@ -338,14 +338,14 @@ public class BoundingBox
     /// <returns>This bounding box for chaining.</returns>
     public BoundingBox Extend( BoundingBox bounds, Matrix4 transform )
     {
-        Extend( tmpVector.Set( bounds.min.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
-        Extend( tmpVector.Set( bounds.min.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
-        Extend( tmpVector.Set( bounds.min.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
-        Extend( tmpVector.Set( bounds.min.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
-        Extend( tmpVector.Set( bounds.max.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
-        Extend( tmpVector.Set( bounds.max.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
-        Extend( tmpVector.Set( bounds.max.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
-        Extend( tmpVector.Set( bounds.max.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( bounds.min.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( bounds.min.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( bounds.min.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( bounds.min.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( bounds.max.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( bounds.max.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( bounds.max.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( bounds.max.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
 
         return this;
     }
@@ -368,14 +368,14 @@ public class BoundingBox
 
         ToInfinity();
 
-        Extend( tmpVector.Set( x0, y0, z0 ).Mul( transform ) );
-        Extend( tmpVector.Set( x0, y0, z1 ).Mul( transform ) );
-        Extend( tmpVector.Set( x0, y1, z0 ).Mul( transform ) );
-        Extend( tmpVector.Set( x0, y1, z1 ).Mul( transform ) );
-        Extend( tmpVector.Set( x1, y0, z0 ).Mul( transform ) );
-        Extend( tmpVector.Set( x1, y0, z1 ).Mul( transform ) );
-        Extend( tmpVector.Set( x1, y1, z0 ).Mul( transform ) );
-        Extend( tmpVector.Set( x1, y1, z1 ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( x0, y0, z0 ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( x0, y0, z1 ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( x0, y1, z0 ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( x0, y1, z1 ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( x1, y0, z0 ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( x1, y0, z1 ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( x1, y1, z0 ).Mul( transform ) );
+        Extend( TMP_VECTOR.Set( x1, y1, z1 ).Mul( transform ) );
 
         return this;
     }

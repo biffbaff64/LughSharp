@@ -14,11 +14,13 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.Core;
 
 public class GDXVersion
 {
-    private readonly static Version version = new();
+    private readonly static Version VERSION = new();
 
     // the current version of LibGDXSharp as a string in the major.minor.revision format
     public const string VERSION_STRING = "0.0.1";
@@ -31,7 +33,7 @@ public class GDXVersion
     {
         try
         {
-            var v = version.ToString().Split( "\\." );
+            var v = VERSION.ToString().Split( "\\." );
 
             MajorVersion    = v.Length < 1 ? 0 : int.Parse( v[ 0 ] );
             MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1 ] );

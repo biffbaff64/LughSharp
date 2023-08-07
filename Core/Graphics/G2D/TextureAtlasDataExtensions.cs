@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+
 namespace LibGDXSharp.G2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -84,8 +86,8 @@ public partial record TextureAtlasData
     {
         public void Parse( ref Page page, params string[] entry )
         {
-            if ( entry[ 1 ].IndexOf( 'x' ) != -1 ) page.UWrap = TextureWrap.Repeat;
-            if ( entry[ 1 ].IndexOf( 'y' ) != -1 ) page.VWrap = TextureWrap.Repeat;
+            if ( entry[ 1 ].IndexOf( 'x' ) != -1 ) page.UWrap = TextureWrap.REPEAT;
+            if ( entry[ 1 ].IndexOf( 'y' ) != -1 ) page.VWrap = TextureWrap.REPEAT;
         }
     }
 
@@ -183,7 +185,7 @@ public partial record TextureAtlasData
         {
             region.Index = int.Parse( entry[ 1 ] );
 
-            if ( region.Index != -1 ) HasIndexes[ 0 ] = true;
+            if ( region.Index != -1 ) HAS_INDEXES[ 0 ] = true;
         }
     }
 }
