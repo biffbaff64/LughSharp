@@ -174,7 +174,7 @@ public class StringCharBuffer : CharBuffer
     /// Retrieves this buffer's byte order.
     /// <para>
     /// The byte order of a char buffer created by allocation or by wrapping an existing
-    /// <tt>char</tt> array is the <see cref="ByteOrder.NATIVE_ORDER"/> of the underlying
+    /// <tt>char</tt> array is the <see cref="ByteOrder.NativeOrder"/> of the underlying
     /// hardware.  The byte order of a char buffer created as a view of a byte buffer is
     /// that of the byte buffer at the moment that the view is created.
     /// </para>

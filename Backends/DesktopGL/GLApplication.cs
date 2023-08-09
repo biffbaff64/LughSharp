@@ -24,6 +24,7 @@ using LibGDXSharp.Utils.Collections;
 namespace LibGDXSharp;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class GLApplication : GLApplicationBase
 {
     public GLApplicationConfiguration?        Config             { get; set; }
@@ -114,9 +115,9 @@ public class GLApplication : GLApplicationBase
         }
         catch ( Exception e )
         {
-            if ( e is SystemException )
+            if ( e is SystemException exception )
             {
-                throw ( SystemException )e;
+                throw exception;
             }
             else
             {
@@ -146,50 +147,50 @@ public class GLApplication : GLApplicationBase
 
     public override void Debug( string tag, string message )
     {
-//        if ( LogLevel >= LogDebug )
-//        {
-//            ApplicationLogger!.Debug( tag, message );
-//        }
+        if ( LogLevel >= IApplication.LOG_DEBUG )
+        {
+            ApplicationLogger!.Debug( tag, message );
+        }
     }
 
     public override void Debug( string tag, string message, Exception exception )
     {
-//        if ( LogLevel >= LogDebug )
-//        {
-//            ApplicationLogger!.Debug( tag, message, exception );
-//        }
+        if ( LogLevel >= IApplication.LOG_DEBUG )
+        {
+            ApplicationLogger!.Debug( tag, message, exception );
+        }
     }
 
     public override void Log( string tag, string message )
     {
-//        if ( LogLevel >= LogInfo )
-//        {
-//            ApplicationLogger!.Log( tag, message );
-//        }
+        if ( LogLevel >= IApplication.LOG_INFO )
+        {
+            ApplicationLogger!.Log( tag, message );
+        }
     }
 
     public override void Log( string tag, string message, Exception exception )
     {
-//        if ( LogLevel >= LogInfo )
-//        {
-//            ApplicationLogger!.Log( tag, message, exception );
-//        }
+        if ( LogLevel >= IApplication.LOG_INFO )
+        {
+            ApplicationLogger!.Log( tag, message, exception );
+        }
     }
 
     public override void Error( string tag, string message )
     {
-//        if ( LogLevel >= LogError )
-//        {
-//            ApplicationLogger!.Error( tag, message );
-//        }
+        if ( LogLevel >= IApplication.LOG_ERROR )
+        {
+            ApplicationLogger!.Error( tag, message );
+        }
     }
 
     public override void Error( string tag, string message, Exception exception )
     {
-//        if ( LogLevel >= LogError )
-//        {
-//            ApplicationLogger!.Error( tag, message, exception );
-//        }
+        if ( LogLevel >= IApplication.LOG_ERROR )
+        {
+            ApplicationLogger!.Error( tag, message, exception );
+        }
     }
 
     public override IPreferences GetPreferences( string name )
@@ -219,17 +220,13 @@ public class GLApplication : GLApplicationBase
         else
         {
             // creation of additional windows is deferred to avoid GL context trouble
-//            postRunnable
-//                ( new Runnable()
+//            PostRunnable( new Runnable()
+//            {
+//                public void run ()
 //                {
-
-
-//                    public void run ()
-//                    {
-//                    createWindow( window, config, sharedContext );
-//                    windows.add( window );
-//                }
-
+//                createWindow( window, config, sharedContext );
+//                windows.add( window );
+//            }
 //            }
 //            );
         }

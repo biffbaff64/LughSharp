@@ -48,9 +48,9 @@ public class GlyphLayout : IPoolable
     public float Width  { get; set; }
     public float Height { get; set; }
 
-    private readonly static Pool< GlyphRun > GLYPH_RUN_POOL = Pools< GlyphRun >.Get();
-    private readonly static Pool< Color >    COLOR_POOL    = Pools< Color >.Get();
-    private readonly static List< Color >    COLOR_STACK   = new( 4 );
+    private readonly static Pool< GlyphRun > GlyphRunPool = Pools< GlyphRun >.Get();
+    private readonly static Pool< Color >    ColorPool    = Pools< Color >.Get();
+    private readonly static List< Color >    ColorStack   = new( 4 );
 
     private static float _epsilon = 0.0001f;
 
@@ -137,7 +137,7 @@ public class GlyphLayout : IPoolable
                          string? truncate )
     {
 
-        GLYPH_RUN_POOL.FreeAll( this.Runs );
+        GlyphRunPool.FreeAll( this.Runs );
         this.Runs.Clear();
 
         BitmapFont.BitmapFontData fontData = font.GetData();
@@ -167,13 +167,13 @@ public class GlyphLayout : IPoolable
 
         if ( markupEnabled )
         {
-            for ( int i = 1, n = COLOR_STACK.Count; i < n; i++ )
+            for ( int i = 1, n = ColorStack.Count; i < n; i++ )
             {
-                COLOR_POOL.Free( COLOR_STACK[ i ] );
+                ColorPool.Free( ColorStack[ i ] );
             }
 
-            COLOR_STACK.Clear();
-            COLOR_STACK.Add( color );
+            ColorStack.Clear();
+            ColorStack.Add( color );
         }
 
         float             x         = 0;
@@ -210,13 +210,13 @@ public class GlyphLayout : IPoolable
                         // Possible color tag.
                         if ( markupEnabled )
                         {
-                            var length = ParseColorMarkup( str, start, end, COLOR_POOL );
+                            var length = ParseColorMarkup( str, start, end, ColorPool );
 
                             if ( length >= 0 )
                             {
                                 runEnd    =  start - 1;
                                 start     += length + 1;
-                                nextColor =  COLOR_STACK.Peek();
+                                nextColor =  ColorStack.Peek();
                             }
                             else if ( length == -2 )
                             {
@@ -239,14 +239,14 @@ public class GlyphLayout : IPoolable
                 {
                     // Eg, when a color tag is at text start or a line is "\n".
                     // Store the run that has ended.
-                    GlyphRun run = GLYPH_RUN_POOL.Obtain();
+                    GlyphRun run = GlyphRunPool.Obtain();
 
                     run.Color.Set( color );
                     fontData.GetGlyphs( run, str, runStart, runEnd, lastGlyph! );
 
                     if ( run.Glyphs.Count == 0 )
                     {
-                        GLYPH_RUN_POOL.Free( run );
+                        GlyphRunPool.Free( run );
 
                         goto runEnded;
                     }
@@ -305,7 +305,7 @@ public class GlyphLayout : IPoolable
                         if ( truncate != null )
                         {
                             // Truncate.
-                            Truncate( fontData, run, targetWidth, truncate, i, GLYPH_RUN_POOL );
+                            Truncate( fontData, run, targetWidth, truncate, i, GlyphRunPool );
 
                             goto outer;
                         }
@@ -614,7 +614,7 @@ public class GlyphLayout : IPoolable
 
         if ( secondStart < glyphCount )
         {
-            second = GLYPH_RUN_POOL.Obtain();
+            second = GlyphRunPool.Obtain();
             second.Color.Set( first.Color );
 
             List< BitmapFont.Glyph > glyphs1 = second.Glyphs; // Starts empty.
@@ -642,7 +642,7 @@ public class GlyphLayout : IPoolable
         if ( firstEnd == 0 )
         {
             // If the first run is now empty, remove it.
-            GLYPH_RUN_POOL.Free( first );
+            GlyphRunPool.Free( first );
             Runs.Pop();
         }
         else
@@ -701,7 +701,7 @@ public class GlyphLayout : IPoolable
                         }
 
                         Color color = colorpool.Obtain();
-                        COLOR_STACK.Add( color );
+                        ColorStack.Add( color );
                         Color.Rgba8888ToColor( color, colorInt );
 
                         return i - start;
@@ -731,7 +731,7 @@ public class GlyphLayout : IPoolable
                 return -2;
 
             case ']': // "[]" is a "pop" color tag.
-                if ( COLOR_STACK.Count > 1 ) colorpool.Free( COLOR_STACK.Pop() );
+                if ( ColorStack.Count > 1 ) colorpool.Free( ColorStack.Pop() );
 
                 return 0;
         }
@@ -751,7 +751,7 @@ public class GlyphLayout : IPoolable
 
             Color color = colorpool.Obtain();
 
-            COLOR_STACK.Add( color );
+            ColorStack.Add( color );
             color.Set( namedColor );
 
             return i - start;

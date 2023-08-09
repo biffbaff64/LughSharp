@@ -24,7 +24,7 @@ public abstract class ByteBuffer : Buffer
     protected int     Offset { get; set; }
 
     private bool _bigEndian       = true;
-    private bool _nativeByteOrder = ( Bits.ByteOrder == ByteOrder.BIG_ENDIAN );
+    private bool _nativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
 
     protected ByteBuffer( int mark, int pos, int lim, int cap, byte[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
@@ -355,28 +355,28 @@ public abstract class ByteBuffer : Buffer
     /// <para>
     /// The byte order is used when reading or writing multibyte values, and
     /// when creating buffers that are views of this byte buffer. The order of
-    /// a newly-created byte buffer is always <see cref="ByteOrder.BIG_ENDIAN"/>.
+    /// a newly-created byte buffer is always <see cref="ByteOrder.BigEndian"/>.
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
     public ByteOrder Order()
     {
-        return _bigEndian ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
+        return _bigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
     }
 
     /// <summary>
     /// Modifies this buffer's byte order.
     /// </summary>
     /// <param name="bo">
-    /// The new byte order, either <see cref="ByteOrder.BIG_ENDIAN"/>
-    /// or <see cref="ByteOrder.LITTLE_ENDIAN"/>
+    /// The new byte order, either <see cref="ByteOrder.BigEndian"/>
+    /// or <see cref="ByteOrder.LittleEndian"/>
     /// </param>
     /// <returns> This buffer </returns>
     public ByteBuffer Order( ByteOrder bo )
     {
-        _bigEndian = ( bo == ByteOrder.BIG_ENDIAN );
+        _bigEndian = ( bo == ByteOrder.BigEndian );
 
-        _nativeByteOrder = ( _bigEndian == ( Bits.ByteOrder == ByteOrder.BIG_ENDIAN ) );
+        _nativeByteOrder = ( _bigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian ) );
 
         return this;
     }

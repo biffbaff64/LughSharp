@@ -53,7 +53,7 @@ public class Skin : IDisposable
     }
 
     //@formatter:off
-    private readonly static Type[] DEFAULT_TAG_CLASSES =
+    private readonly static Type[] DefaultTagClasses =
     {
         typeof( BitmapFont ),                           typeof( Color ),
         typeof( TintedDrawable ),                       typeof( NinePatchDrawable ),
@@ -94,9 +94,9 @@ public class Skin : IDisposable
     static Skin()
     {
         Resources     = new Dictionary< Type, Dictionary< string, object >? >();
-        JsonClassTags = new Dictionary< string, Type >( DEFAULT_TAG_CLASSES.Length );
+        JsonClassTags = new Dictionary< string, Type >( DefaultTagClasses.Length );
 
-        foreach ( Type c in DEFAULT_TAG_CLASSES )
+        foreach ( Type c in DefaultTagClasses )
         {
             JsonClassTags.Add( c.Name, c );
         }

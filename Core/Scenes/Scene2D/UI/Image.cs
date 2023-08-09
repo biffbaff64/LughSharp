@@ -44,12 +44,12 @@ public class Image : Widget
     }
 
     public Image( NinePatch patch )
-        : this( new NinePatchDrawable( patch ), Scaling.STRETCH )
+        : this( new NinePatchDrawable( patch ), Scaling.Stretch )
     {
     }
 
     public Image( TextureRegion region )
-        : this( new TextureRegionDrawable( region ), Scaling.STRETCH )
+        : this( new TextureRegionDrawable( region ), Scaling.Stretch )
     {
     }
 
@@ -59,11 +59,11 @@ public class Image : Widget
     }
 
     public Image( Skin skin, string drawableName )
-        : this( skin.GetDrawable( drawableName ), Scaling.STRETCH )
+        : this( skin.GetDrawable( drawableName ), Scaling.Stretch )
     {
     }
 
-    public Image( IDrawable? drawable ) : this( drawable, Scaling.STRETCH )
+    public Image( IDrawable? drawable ) : this( drawable, Scaling.Stretch )
     {
     }
 
@@ -124,7 +124,7 @@ public class Image : Widget
     {
         Validate();
 
-        Color color = Color ?? Color.BLACK;
+        Color color = Color ?? Color.Black;
 
         batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
 

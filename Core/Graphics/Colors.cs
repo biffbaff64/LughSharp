@@ -75,46 +75,46 @@ public class Colors
     public static void Reset()
     {
         Map.Clear();
-        Map.Put( "CLEAR", Color.CLEAR );
-        Map.Put( "BLACK", Color.BLACK );
+        Map.Put( "CLEAR", Color.Clear );
+        Map.Put( "BLACK", Color.Black );
 
-        Map.Put( "WHITE", Color.WHITE );
-        Map.Put( "LIGHT_GRAY", Color.LIGHT_GRAY );
-        Map.Put( "GRAY", Color.GRAY );
-        Map.Put( "DARK_GRAY", Color.DARK_GRAY );
+        Map.Put( "WHITE", Color.White );
+        Map.Put( "LIGHT_GRAY", Color.LightGray );
+        Map.Put( "GRAY", Color.Gray );
+        Map.Put( "DARK_GRAY", Color.DarkGray );
 
-        Map.Put( "BLUE", Color.BLUE );
-        Map.Put( "NAVY", Color.NAVY );
-        Map.Put( "ROYAL", Color.ROYAL );
-        Map.Put( "SLATE", Color.SLATE );
-        Map.Put( "SKY", Color.SKY );
-        Map.Put( "CYAN", Color.CYAN );
-        Map.Put( "TEAL", Color.TEAL );
+        Map.Put( "BLUE", Color.Blue );
+        Map.Put( "NAVY", Color.Navy );
+        Map.Put( "ROYAL", Color.Royal );
+        Map.Put( "SLATE", Color.Slate );
+        Map.Put( "SKY", Color.Sky );
+        Map.Put( "CYAN", Color.Cyan );
+        Map.Put( "TEAL", Color.Teal );
 
-        Map.Put( "GREEN", Color.GREEN );
-        Map.Put( "CHARTREUSE", Color.CHARTREUSE );
-        Map.Put( "LIME", Color.LIME );
-        Map.Put( "FOREST", Color.FOREST );
-        Map.Put( "OLIVE", Color.OLIVE );
+        Map.Put( "GREEN", Color.Green );
+        Map.Put( "CHARTREUSE", Color.Chartreuse );
+        Map.Put( "LIME", Color.Lime );
+        Map.Put( "FOREST", Color.Forest );
+        Map.Put( "OLIVE", Color.Olive );
 
-        Map.Put( "YELLOW", Color.YELLOW );
-        Map.Put( "GOLD", Color.GOLD );
-        Map.Put( "GOLDENROD", Color.GOLDENROD );
-        Map.Put( "ORANGE", Color.ORANGE );
+        Map.Put( "YELLOW", Color.Yellow );
+        Map.Put( "GOLD", Color.Gold );
+        Map.Put( "GOLDENROD", Color.Goldenrod );
+        Map.Put( "ORANGE", Color.Orange );
 
-        Map.Put( "BROWN", Color.BROWN );
-        Map.Put( "TAN", Color.TAN );
-        Map.Put( "FIREBRICK", Color.FIREBRICK );
+        Map.Put( "BROWN", Color.Brown );
+        Map.Put( "TAN", Color.Tan );
+        Map.Put( "FIREBRICK", Color.Firebrick );
 
-        Map.Put( "RED", Color.RED );
-        Map.Put( "SCARLET", Color.SCARLET );
-        Map.Put( "CORAL", Color.CORAL );
-        Map.Put( "SALMON", Color.SALMON );
-        Map.Put( "PINK", Color.PINK );
-        Map.Put( "MAGENTA", Color.MAGENTA );
+        Map.Put( "RED", Color.Red );
+        Map.Put( "SCARLET", Color.Scarlet );
+        Map.Put( "CORAL", Color.Coral );
+        Map.Put( "SALMON", Color.Salmon );
+        Map.Put( "PINK", Color.Pink );
+        Map.Put( "MAGENTA", Color.Magenta );
 
-        Map.Put( "PURPLE", Color.PURPLE );
-        Map.Put( "VIOLET", Color.VIOLET );
-        Map.Put( "MAROON", Color.MAROON );
+        Map.Put( "PURPLE", Color.Purple );
+        Map.Put( "VIOLET", Color.Violet );
+        Map.Put( "MAROON", Color.Maroon );
     }
 }

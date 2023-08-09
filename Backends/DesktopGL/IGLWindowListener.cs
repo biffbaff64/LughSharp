@@ -33,18 +33,20 @@ public interface IGLWindowListener
     /// <summary>
     /// Called when the window is iconified (i.e. its minimize button
     /// was clicked), or when restored from the iconified state. When a window becomes
-    /// iconified, its {@link ApplicationListener} will be paused, and when restored
+    /// iconified, its <see cref="IApplicationListener"/> will be paused, and when restored
     /// it will be resumed.
     /// </summary>
-    /// 
-    /// @param isIconified True if window is iconified, false if it leaves the iconified state
+    /// <param name="isIconified">
+    /// True if window is iconified, false if it leaves the iconified state
+    /// </param>
     void Iconified( bool isIconified );
 
     /// <summary>
     /// Called when the window is maximized, or restored from the maximized state.
     /// </summary>
-    ///
-    /// @param isMaximized true if window is maximized, false if it leaves the maximized state
+    /// <param name="isMaximized">
+    /// true if window is maximized, false if it leaves the maximized state
+    /// </param>
     void Maximized( bool isMaximized );
 
     /// <summary>
@@ -63,19 +65,19 @@ public interface IGLWindowListener
     /// Called when the user requested to close the window, e.g. clicking
     /// the close button or pressing the window closing keyboard shortcut.
     /// </summary>
-    /// @return whether the window should actually close
+    /// <returns> whether the window should actually close </returns>
     bool CloseRequested();
 
     /// <summary>
     /// Called when external files are dropped into the window,
     /// e.g from the Desktop.
     /// </summary>
-    /// @param files array with absolute paths to the files
+    /// <param name="files"> array with absolute paths to the files </param>
     void FilesDropped( string[] files );
 
     /// <summary>
     /// Called when the window content is damaged and needs to be refreshed.
-    /// When this occurs, {@link Lwjgl3Graphics#requestRendering()} is automatically called.
+    /// When this occurs, <see cref="GLGraphics.RequestRendering()"/> is automatically called.
     /// </summary>
     void RefreshRequested();
 }

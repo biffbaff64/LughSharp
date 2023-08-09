@@ -23,7 +23,7 @@ namespace LibGDXSharp.Maths;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Frustrum
 {
-    protected readonly static Vector3[] CLIP_SPACE_PLANE_POINTS = new Vector3[]
+    protected readonly static Vector3[] ClipSpacePlanePoints = new Vector3[]
     {
         new( -1, -1, -1 ),
         new( 1, -1, -1 ),
@@ -35,21 +35,21 @@ public class Frustrum
         new( -1, 1, 1 )
     };
 
-    protected readonly static float[] CLIP_SPACE_PLANE_POINTS_ARRAY = new float[ 8 * 3 ];
+    protected readonly static float[] ClipSpacePlanePointsArray = new float[ 8 * 3 ];
 
     static Frustrum()
     {
         int j = 0;
 
-        foreach ( Vector3 v in CLIP_SPACE_PLANE_POINTS )
+        foreach ( Vector3 v in ClipSpacePlanePoints )
         {
-            CLIP_SPACE_PLANE_POINTS_ARRAY[ j++ ] = v.X;
-            CLIP_SPACE_PLANE_POINTS_ARRAY[ j++ ] = v.Y;
-            CLIP_SPACE_PLANE_POINTS_ARRAY[ j++ ] = v.Z;
+            ClipSpacePlanePointsArray[ j++ ] = v.X;
+            ClipSpacePlanePointsArray[ j++ ] = v.Y;
+            ClipSpacePlanePointsArray[ j++ ] = v.Z;
         }
     }
 
-    private readonly static Vector3 TMP_V = new();
+    private readonly static Vector3 TmpV = new();
 
     /// <system>
     /// the six clipping planes, near, far, left, right, top, bottom
@@ -84,7 +84,7 @@ public class Frustrum
     /// <param name="inverseProjectionView">The combined projection and view matrices.</param>
     public virtual void Update( Matrix4 inverseProjectionView )
     {
-        Array.Copy( CLIP_SPACE_PLANE_POINTS_ARRAY, 0, planePointsArray, 0, CLIP_SPACE_PLANE_POINTS_ARRAY.Length );
+        Array.Copy( ClipSpacePlanePointsArray, 0, planePointsArray, 0, ClipSpacePlanePointsArray.Length );
 
         Matrix4.Prj( inverseProjectionView.val, planePointsArray, 0, 8, 3 );
 

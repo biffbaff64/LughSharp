@@ -25,7 +25,7 @@ namespace LibGDXSharp.Maths;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class RectangleShape : IShape2D
 {
-    public readonly static RectangleShape TMP = new();
+    public readonly static RectangleShape Tmp = new();
 
     public float X      { get; set; }
     public float Y      { get; set; }

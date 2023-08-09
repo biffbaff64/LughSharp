@@ -576,7 +576,7 @@ public class BitmapFontCache
         }
 
         // Cached glyphs have changed, reset the current tint.
-        _currentTint = Color.WHITE_FLOAT_BITS;
+        _currentTint = Color.WhiteFloatBits;
     }
 
     private void AddGlyph( BitmapFont.Glyph glyph, float x, float y, float color )

@@ -41,7 +41,7 @@ public class CheckBox : TextButton
 
         Label? label = Label;
 
-        this.Image = new Image( style.CheckboxOff, Scaling.NONE );
+        this.Image = new Image( style.CheckboxOff, Scaling.None );
 
         ImageCell = Add( this.Image );
 

@@ -44,7 +44,7 @@ public class SpriteBatch : IBatch
     public int   idx          = 0;
     public float invTexWidth  = 0;
     public float invTexHeight = 0;
-    public float colorPacked  = Color.WHITE_FLOAT_BITS;
+    public float colorPacked  = Color.WhiteFloatBits;
 
     private readonly Matrix4 _transformMatrix  = new();
     private readonly Matrix4 _projectionMatrix = new();
@@ -128,7 +128,7 @@ public class SpriteBatch : IBatch
 
         _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
-        Vertices = new float[ size * Sprite.SPRITE_SIZE ];
+        Vertices = new float[ size * Sprite.SpriteSize ];
 
         var   len     = size * 6;
         var   indices = new short[ len ];

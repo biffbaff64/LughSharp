@@ -24,17 +24,17 @@ using System.Collections.Generic;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class TextureWrap
 {
-    public readonly static TextureWrap MIRRORED_REPEAT = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_MIRRORED_REPEAT );
-    public readonly static TextureWrap CLAMP_TO_EDGE    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
-    public readonly static TextureWrap REPEAT         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
+    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_MIRRORED_REPEAT );
+    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
+    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
 
-    private readonly static List< TextureWrap > VALUE_LIST = new();
+    private readonly static List< TextureWrap > ValueList = new();
 
     static TextureWrap()
     {
-        VALUE_LIST.Add( MIRRORED_REPEAT );
-        VALUE_LIST.Add( CLAMP_TO_EDGE );
-        VALUE_LIST.Add( REPEAT );
+        ValueList.Add( MirroredRepeat );
+        ValueList.Add( ClampToEdge );
+        ValueList.Add( Repeat );
     }
 
     public enum InnerEnum
@@ -60,11 +60,11 @@ public class TextureWrap
     public int GLEnum       { get; }
     public int OrdinalValue { get; set; }
 
-    public static TextureWrap[] Values() => VALUE_LIST.ToArray();
+    public static TextureWrap[] Values() => ValueList.ToArray();
 
     public static TextureWrap ValueOf( string name )
     {
-        foreach ( TextureWrap enumInstance in TextureWrap.VALUE_LIST )
+        foreach ( TextureWrap enumInstance in TextureWrap.ValueList )
         {
             if ( enumInstance._nameValue == name )
             {

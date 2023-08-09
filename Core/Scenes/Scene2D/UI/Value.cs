@@ -27,14 +27,14 @@ public abstract partial class Value
 {
     public abstract float Get( Actor? context = null );
 
-    public readonly static Fixed ZERO = new(0);
+    public readonly static Fixed Zero = new(0);
 
     /// <summary>
     /// A fixed value that is not computed each time it is used.
     /// </summary>
     public class Fixed : Value
     {
-        private readonly static Fixed?[] CACHE = new Fixed[ 111 ];
+        private readonly static Fixed?[] Cache = new Fixed[ 111 ];
 
         public float Value { get; }
 
@@ -55,15 +55,15 @@ public abstract partial class Value
 
         public static Fixed ValueOf( float value )
         {
-            if ( value == 0 ) return ZERO;
+            if ( value == 0 ) return Zero;
 
             if ( value is >= -10 and <= 100 && value.Equals( ( int )value ) )
             {
-                Fixed? f = CACHE[ ( int )value + 10 ];
+                Fixed? f = Cache[ ( int )value + 10 ];
 
                 if ( f == null )
                 {
-                    CACHE[ ( int )value + 10 ] = f = new Fixed( value );
+                    Cache[ ( int )value + 10 ] = f = new Fixed( value );
                 }
 
                 return f;

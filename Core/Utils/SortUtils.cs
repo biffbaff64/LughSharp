@@ -27,7 +27,7 @@ namespace LibGDXSharp.Utils;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class SortUtils
 {
-    private readonly static SortUtils INSTANCE = new();
+    private readonly static SortUtils Instance = new();
 
     // ReSharper disable once ConvertToAutoProperty
     public static SortUtils Instance

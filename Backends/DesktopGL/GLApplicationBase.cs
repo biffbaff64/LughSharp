@@ -43,6 +43,7 @@ public abstract class GLApplicationBase : IApplication
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    public abstract IPreferences GetPreferences( string name );
     public abstract void         Log( string tag, string message );
     public abstract void         Log( string tag, string message, Exception exception );
     public abstract void         Error( string tag, string message );
@@ -50,9 +51,11 @@ public abstract class GLApplicationBase : IApplication
     public abstract void         Debug( string tag, string message );
     public abstract void         Debug( string tag, string message, Exception exception );
     public abstract int          GetVersion();
-    public abstract IPreferences GetPreferences( string name );
     public abstract void         Exit();
     public abstract void         AddLifecycleListener( ILifecycleListener listener );
     public abstract void         RemoveLifecycleListener( ILifecycleListener listener );
     public abstract void         PostRunnable( IRunnable runnable );
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }

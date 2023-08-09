@@ -28,8 +28,8 @@ public class Intersector
     private readonly static Vector3       V0          = new();
     private readonly static Vector3       V1          = new();
     private readonly static Vector3       V2          = new();
-    private readonly static List< float > FLOAT_ARRAY  = new();
-    private readonly static List< float > FLOAT_ARRAY2 = new();
+    private readonly static List< float > FloatArray  = new();
+    private readonly static List< float > FloatArray2 = new();
 
     /// <summary>
     /// Returns whether the given point is inside the triangle. This assumes that

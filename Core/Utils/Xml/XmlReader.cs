@@ -52,15 +52,15 @@ public class XmlReader
     private Element? _root;
 
     //TODO: Why ???
-    private readonly static byte[]  XML_ACTIONS        = Init_XmlActions_0();
-    private readonly static byte[]  XML_KEY_OFFSETS    = Init_XmlKeyOffsets_0();
-    private readonly static char[]  XML_TRANS_KEYS     = Init_XmlTransKeys_0();
-    private readonly static byte[]  XML_SINGLE_LENGTHS = Init_XmlSingleLengths_0();
-    private readonly static byte[]  XML_RANGE_LENGTHS  = Init_XmlRangeLengths_0();
-    private readonly static short[] XML_INDEX_OFFSETS  = Init_XmlIndexOffsets_0();
-    private readonly static byte[]  XML_INDICIES       = Init_XmlIndicies_0();
-    private readonly static byte[]  XML_TRANS_TARGS    = Init_XmlTransTargs_0();
-    private readonly static byte[]  XML_TRANS_ACTIONS  = Init_XmlTransActions_0();
+    private readonly static byte[]  XmlActions        = Init_XmlActions_0();
+    private readonly static byte[]  XmlKeyOffsets    = Init_XmlKeyOffsets_0();
+    private readonly static char[]  XmlTransKeys     = Init_XmlTransKeys_0();
+    private readonly static byte[]  XmlSingleLengths = Init_XmlSingleLengths_0();
+    private readonly static byte[]  XmlRangeLengths  = Init_XmlRangeLengths_0();
+    private readonly static short[] XmlIndexOffsets  = Init_XmlIndexOffsets_0();
+    private readonly static byte[]  XmlIndicies       = Init_XmlIndicies_0();
+    private readonly static byte[]  XmlTransTargs    = Init_XmlTransTargs_0();
+    private readonly static byte[]  XmlTransActions  = Init_XmlTransActions_0();
 
     private static byte[] Init_XmlActions_0()
     {
@@ -297,9 +297,9 @@ public class XmlReader
 
                         do
                         {
-                            keys  = XML_KEY_OFFSETS[ cs ];
-                            trans = XML_INDEX_OFFSETS[ cs ];
-                            klen  = XML_SINGLE_LENGTHS[ cs ];
+                            keys  = XmlKeyOffsets[ cs ];
+                            trans = XmlIndexOffsets[ cs ];
+                            klen  = XmlSingleLengths[ cs ];
 
                             if ( klen > 0 )
                             {
@@ -316,11 +316,11 @@ public class XmlReader
 
                                     mid = lower + ( ( upper - lower ) >> 1 );
 
-                                    if ( data[ p ] < XML_TRANS_KEYS[ mid ] )
+                                    if ( data[ p ] < XmlTransKeys[ mid ] )
                                     {
                                         upper = mid - 1;
                                     }
-                                    else if ( data[ p ] > XML_TRANS_KEYS[ mid ] )
+                                    else if ( data[ p ] > XmlTransKeys[ mid ] )
                                     {
                                         lower = mid + 1;
                                     }
@@ -336,7 +336,7 @@ public class XmlReader
                                 trans += klen;
                             }
 
-                            klen = XML_RANGE_LENGTHS[ cs ];
+                            klen = XmlRangeLengths[ cs ];
 
                             if ( klen > 0 )
                             {
@@ -353,11 +353,11 @@ public class XmlReader
 
                                     mid = lower + ( ( ( upper - lower ) >> 1 ) & ~1 );
 
-                                    if ( data[ p ] < XML_TRANS_KEYS[ mid ] )
+                                    if ( data[ p ] < XmlTransKeys[ mid ] )
                                     {
                                         upper = mid - 2;
                                     }
-                                    else if ( data[ p ] > XML_TRANS_KEYS[ mid + 1 ] )
+                                    else if ( data[ p ] > XmlTransKeys[ mid + 1 ] )
                                     {
                                         lower = mid + 2;
                                     }
@@ -374,17 +374,17 @@ public class XmlReader
                         }
                         while ( false );
 
-                        trans = XML_INDICIES[ trans ];
-                        cs    = XML_TRANS_TARGS[ trans ];
+                        trans = XmlIndicies[ trans ];
+                        cs    = XmlTransTargs[ trans ];
 
-                        if ( XML_TRANS_ACTIONS[ trans ] != 0 )
+                        if ( XmlTransActions[ trans ] != 0 )
                         {
-                            acts  = XML_TRANS_ACTIONS[ trans ];
-                            nacts = XML_ACTIONS[ acts++ ];
+                            acts  = XmlTransActions[ trans ];
+                            nacts = XmlActions[ acts++ ];
 
                             while ( nacts-- > 0 )
                             {
-                                switch ( XML_ACTIONS[ acts++ ] )
+                                switch ( XmlActions[ acts++ ] )
                                 {
                                     case 0:
                                         // line 94 "XmlReader.rl"

@@ -46,7 +46,7 @@ public class MathUtils
     /// </summary>
     public static float Sin( float radians )
     {
-        return SinClass.TABLE[ ( int )( radians * RAD_TO_INDEX ) & SIN_MASK ];
+        return SinClass.Table[ ( int )( radians * RAD_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public class MathUtils
     /// </summary>
     public static float Cos( float radians )
     {
-        return SinClass.TABLE[ ( int )( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
+        return SinClass.Table[ ( int )( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class MathUtils
     /// </summary>
     public static float SinDeg( float degrees )
     {
-        return SinClass.TABLE[ ( int )( degrees * DEG_TO_INDEX ) & SIN_MASK ];
+        return SinClass.Table[ ( int )( degrees * DEG_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class MathUtils
     /// </summary>
     public static float CosDeg( float degrees )
     {
-        return SinClass.TABLE[ ( int )( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
+        return SinClass.Table[ ( int )( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ public class MathUtils
         return y < 0f ? atan - PI : atan;
     }
 
-    private readonly static Random RANDOM = new();
+    private readonly static Random Random = new();
 
     /// <summary>
     /// Returns a random number between 0 (inclusive) and the specified value (inclusive).
@@ -495,18 +495,18 @@ public class MathUtils
     /// </summary>
     internal class SinClass
     {
-        public readonly static float[] TABLE = new float[ SIN_COUNT ];
+        public readonly static float[] Table = new float[ SIN_COUNT ];
 
         public SinClass()
         {
             for ( var i = 0; i < SIN_COUNT; i++ )
             {
-                TABLE[ i ] = ( float )Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
+                Table[ i ] = ( float )Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
             }
 
             for ( var i = 0; i < 360; i += 90 )
             {
-                TABLE[ ( int )( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float )Math.Sin( i * DEGREES_TO_RADIANS );
+                Table[ ( int )( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float )Math.Sin( i * DEGREES_TO_RADIANS );
             }
         }
     }

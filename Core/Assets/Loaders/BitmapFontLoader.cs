@@ -37,15 +37,15 @@ public class BitmapFontParameter : AssetLoaderParameters
 
     /// <summary>
     /// The <see cref="TextureFilter"/> to use when scaling down the <see cref="BitmapFont"/>.
-    /// Defaults to <see cref="TextureFilter.NEAREST"/>.
+    /// Defaults to <see cref="TextureFilter.Nearest"/>.
     /// </summary>
-    internal TextureFilter MinFilter { get; set; } = TextureFilter.NEAREST;
+    internal TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
 
     /// <summary>
     /// The <see cref="TextureFilter"/> to use when scaling up the <see cref="BitmapFont"/>.
-    /// Defaults to <see cref="TextureFilter.NEAREST"/>.
+    /// Defaults to <see cref="TextureFilter.Nearest"/>.
     /// </summary>
-    internal TextureFilter MagFilter { get; set; } = TextureFilter.NEAREST;
+    internal TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
 
     /// <summary>
     /// optional <see cref="BitmapFont.BitmapFontData"/> to be used instead of

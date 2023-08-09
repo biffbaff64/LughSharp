@@ -18,7 +18,7 @@ namespace LibGDXSharp.Utils;
 
 public abstract class Scaling
 {
-    protected readonly static Vector2 TEMP = new();
+    protected readonly static Vector2 Temp = new();
 
     /// <summary>
     /// Returns the size of the source scaled to the target.
@@ -27,14 +27,14 @@ public abstract class Scaling
     /// </summary>
     public abstract Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight );
 
-    public readonly static Scaling FIT      = new FitScalingAnonymousInnerClass();
-    public readonly static Scaling FILL     = new FillScalingAnonymousInnerClass();
-    public readonly static Scaling FILL_X    = new FillXScalingAnonymousInnerClass();
-    public readonly static Scaling FILL_Y    = new FillYScalingAnonymousInnerClass();
-    public readonly static Scaling STRETCH  = new StretchScalingAnonymousInnerClass();
-    public readonly static Scaling STRETCH_X = new StretchXScalingAnonymousInnerClass();
-    public readonly static Scaling STRETCH_Y = new StretchYScalingAnonymousInnerClass();
-    public readonly static Scaling NONE     = new NoScalingAnonymousInnerClass();
+    public readonly static Scaling Fit      = new FitScalingAnonymousInnerClass();
+    public readonly static Scaling Fill     = new FillScalingAnonymousInnerClass();
+    public readonly static Scaling FillX    = new FillXScalingAnonymousInnerClass();
+    public readonly static Scaling FillY    = new FillYScalingAnonymousInnerClass();
+    public readonly static Scaling Stretch  = new StretchScalingAnonymousInnerClass();
+    public readonly static Scaling StretchX = new StretchXScalingAnonymousInnerClass();
+    public readonly static Scaling StretchY = new StretchYScalingAnonymousInnerClass();
+    public readonly static Scaling None     = new NoScalingAnonymousInnerClass();
 
     /// <summary>
     /// Scales the source to fit the target while keeping the same aspect ratio.
@@ -48,10 +48,10 @@ public abstract class Scaling
             var sourceRatio = sourceHeight / sourceWidth;
             var scale       = targetRatio > sourceRatio ? targetWidth / sourceWidth : targetHeight / sourceHeight;
 
-            TEMP.X = sourceWidth * scale;
-            TEMP.Y = sourceHeight * scale;
+            Temp.X = sourceWidth * scale;
+            Temp.Y = sourceHeight * scale;
 
-            return TEMP;
+            return Temp;
         }
     }
 
@@ -67,10 +67,10 @@ public abstract class Scaling
             var sourceRatio = sourceHeight / sourceWidth;
             var scale       = targetRatio < sourceRatio ? targetWidth / sourceWidth : targetHeight / sourceHeight;
 
-            TEMP.X = sourceWidth * scale;
-            TEMP.Y = sourceHeight * scale;
+            Temp.X = sourceWidth * scale;
+            Temp.Y = sourceHeight * scale;
 
-            return TEMP;
+            return Temp;
         }
     }
 
@@ -85,10 +85,10 @@ public abstract class Scaling
         {
             var scale = targetWidth / sourceWidth;
 
-            TEMP.X = sourceWidth * scale;
-            TEMP.Y = sourceHeight * scale;
+            Temp.X = sourceWidth * scale;
+            Temp.Y = sourceHeight * scale;
 
-            return TEMP;
+            return Temp;
         }
     }
 
@@ -103,10 +103,10 @@ public abstract class Scaling
         {
             var scale = targetHeight / sourceHeight;
 
-            TEMP.X = sourceWidth * scale;
-            TEMP.Y = sourceHeight * scale;
+            Temp.X = sourceWidth * scale;
+            Temp.Y = sourceHeight * scale;
 
-            return TEMP;
+            return Temp;
         }
     }
 
@@ -118,10 +118,10 @@ public abstract class Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
-            TEMP.X = targetWidth;
-            TEMP.Y = targetHeight;
+            Temp.X = targetWidth;
+            Temp.Y = targetHeight;
 
-            return TEMP;
+            return Temp;
         }
     }
 
@@ -133,10 +133,10 @@ public abstract class Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
-            TEMP.X = targetWidth;
-            TEMP.Y = sourceHeight;
+            Temp.X = targetWidth;
+            Temp.Y = sourceHeight;
 
-            return TEMP;
+            return Temp;
         }
     }
 
@@ -148,10 +148,10 @@ public abstract class Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
-            TEMP.X = sourceWidth;
-            TEMP.Y = targetHeight;
+            Temp.X = sourceWidth;
+            Temp.Y = targetHeight;
 
-            return TEMP;
+            return Temp;
         }
     }
 
@@ -162,10 +162,10 @@ public abstract class Scaling
     {
         public override Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight )
         {
-            TEMP.X = sourceWidth;
-            TEMP.Y = sourceHeight;
+            Temp.X = sourceWidth;
+            Temp.Y = sourceHeight;
 
-            return TEMP;
+            return Temp;
         }
     }
 }

@@ -14,7 +14,11 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils;
+using LibGDXSharp.Utils.Buffers;
+
 using Monitor = LibGDXSharp.Graphics.Monitor;
+using Timer = LibGDXSharp.Utils.Timer;
 
 namespace LibGDXSharp.Backends.Desktop;
 
@@ -22,19 +26,42 @@ public class GLGraphics : AbstractGraphics, IDisposable
 {
     public GLWindow? Window { get; set; }
 
-    private IGL20? _gl20;
-    private IGL30? _gl30;
+    private          IGL20?       _gl20;
+    private          IGL30?       _gl30;
+    private          GLVersion    _glVersion;
+    private volatile int          _backBufferWidth;
+    private volatile int          _backBufferHeight;
+    private volatile int          _logicalWidth;
+    private volatile int          _logicalHeight;
+    private volatile bool         _isContinuous = true;
+    private          BufferFormat _bufferFormat;
+    private          long         _lastFrameTime = -1;
+    private          float        _deltaTime;
+    private          long         _frameId;
+    private          long         _frameCounterStart = 0;
+    private          int          _frames;
+    private          int          _fps;
+    private          int          _windowPosXBeforeFullscreen;
+    private          int          _windowPosYBeforeFullscreen;
+    private          int          _windowWidthBeforeFullscreen;
+    private          int          _windowHeightBeforeFullscreen;
+    private          DisplayMode  _displayModeBeforeFullscreen = null!;
+
+    IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
+    IntBuffer _tmpBuffer2 = BufferUtils.NewIntBuffer( 1 );
+    IntBuffer _tmpBuffer3 = BufferUtils.NewIntBuffer( 1 );
+    IntBuffer _tmpBuffer4 = BufferUtils.NewIntBuffer( 1 );
 
     public GLGraphics( GLWindow window )
     {
         this.Window = window;
 
-//        if ( window.GetConfig().useGL30 )
-//        {
-//            this._gl30 = new GL30();
-//            this._gl20 = this._gl30;
-//        }
-//        else
+        if ( window.Config.UseGL30 )
+        {
+            this._gl30 = new GL30();
+            this._gl20 = this._gl30;
+        }
+        else
         {
             this._gl20 = new GL20();
             this._gl30 = null;
@@ -43,7 +70,10 @@ public class GLGraphics : AbstractGraphics, IDisposable
         UpdateFramebufferInfo();
         InitiateGL();
 
-//        Glfw.GetApi().SetFramebufferSizeCallback( window.WindowHandle, resizeCallback );
+        unsafe
+        {
+            GLFW.SetFramebufferSizeCallback( window.WindowHandle, resizeCallback );
+        }
     }
 
     [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
@@ -58,11 +88,34 @@ public class GLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    private void UpdateFramebufferInfo()
+    private static void UpdateFramebufferInfo()
     {
     }
 
-    private void InitiateGL()
+    private void Update()
+    {
+        long time = TimeUtils.NanoTime();
+
+        if ( _lastFrameTime == -1 )
+        {
+            _lastFrameTime = time;
+        }
+
+        _deltaTime     = ( time - _lastFrameTime ) / 1000000000.0f;
+        _lastFrameTime = time;
+
+        if ( time - _frameCounterStart >= 1000000000 )
+        {
+            _fps               = _frames;
+            _frames            = 0;
+            _frameCounterStart = time;
+        }
+
+        _frames++;
+        _frameId++;
+    }
+
+    private static void InitiateGL()
     {
     }
 
@@ -74,23 +127,17 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     public override Monitor[] GetMonitors()
     {
-        return new Monitor[]
-        {
-        };
+        return Array.Empty< Monitor >();
     }
 
     public override DisplayMode[] GetDisplayModes()
     {
-        return new DisplayMode[]
-        {
-        };
+        return Array.Empty< DisplayMode >();
     }
 
     public override DisplayMode[] GetDisplayModes( Monitor monitor )
     {
-        return new DisplayMode[]
-        {
-        };
+        return Array.Empty< DisplayMode >();
     }
 
     public override DisplayMode GetDisplayMode() => default;
@@ -187,7 +234,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
     /// Returns the <see cref="T:LibGDXSharp.Graphics.IGL30" /> instance or null if unsupported.
     /// </summary>
     /// <remarks>MAY be replaced by a property.</remarks>
-    public override IGL30? GetGL30() => null;
+    public override IGL30 GetGL30() => null!;
 
     /// <summary>Sets the IGL20 instance.</summary>
     /// <remarks>MAY be replaced by a property.</remarks>

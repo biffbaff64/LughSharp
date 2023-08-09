@@ -211,8 +211,8 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
         public ModelParameters()
         {
             TextureParameter           = new TextureLoader.TextureParameter();
-            TextureParameter.MinFilter = TextureParameter.MagFilter = TextureFilter.LINEAR;
-            TextureParameter.WrapU     = TextureParameter.WrapV     = TextureWrap.REPEAT;
+            TextureParameter.MinFilter = TextureParameter.MagFilter = TextureFilter.Linear;
+            TextureParameter.WrapU     = TextureParameter.WrapV     = TextureWrap.Repeat;
         }
     }
 }

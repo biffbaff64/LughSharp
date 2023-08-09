@@ -28,7 +28,7 @@ namespace LibGDXSharp.Graphics;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class Cubemap : GLTexture
 {
-    private readonly static Dictionary< IApplication, List< Cubemap >? > MANAGED_CUBEMAPS = new();
+    private readonly static Dictionary< IApplication, List< Cubemap >? > ManagedCubemaps = new();
 
     public static AssetManager? AssetManager { get; set; }
 
@@ -170,19 +170,19 @@ public class Cubemap : GLTexture
 
         if ( Data.Managed )
         {
-            if ( MANAGED_CUBEMAPS[ Gdx.App ] != null )
+            if ( ManagedCubemaps[ Gdx.App ] != null )
             {
-                MANAGED_CUBEMAPS[ Gdx.App ]?.Remove( this );
+                ManagedCubemaps[ Gdx.App ]?.Remove( this );
             }
         }
     }
 
     private static void AddManagedCubemap( IApplication app, Cubemap cubemap )
     {
-        List< Cubemap > managedCubemapArray = MANAGED_CUBEMAPS[ app ] ?? new List< Cubemap >();
+        List< Cubemap > managedCubemapArray = ManagedCubemaps[ app ] ?? new List< Cubemap >();
 
         managedCubemapArray.Add( cubemap );
-        MANAGED_CUBEMAPS.Put( app, managedCubemapArray );
+        ManagedCubemaps.Put( app, managedCubemapArray );
     }
 
     /// <summary>
@@ -190,7 +190,7 @@ public class Cubemap : GLTexture
     /// </summary>
     public static void ClearAllCubemaps( IApplication app )
     {
-        MANAGED_CUBEMAPS.Remove( app );
+        ManagedCubemaps.Remove( app );
     }
 
     /// <summary>
@@ -198,7 +198,7 @@ public class Cubemap : GLTexture
     /// </summary>
     public static void InvalidateAllCubemaps( IApplication app )
     {
-        List< Cubemap >? managedCubemapArray = MANAGED_CUBEMAPS[ app ];
+        List< Cubemap >? managedCubemapArray = ManagedCubemaps[ app ];
 
         if ( managedCubemapArray == null ) return;
 
@@ -275,9 +275,9 @@ public class Cubemap : GLTexture
 
         builder.Append( "Managed cubemap/app: { " );
 
-        foreach ( IApplication app in MANAGED_CUBEMAPS.Keys )
+        foreach ( IApplication app in ManagedCubemaps.Keys )
         {
-            builder.Append( MANAGED_CUBEMAPS[ app ]!.Count );
+            builder.Append( ManagedCubemaps[ app ]!.Count );
             builder.Append( ' ' );
         }
 
@@ -289,7 +289,7 @@ public class Cubemap : GLTexture
     /// <summary>
     /// return the number of managed cubemaps currently loaded
     /// </summary>
-    public static int NumManagedCubemaps => MANAGED_CUBEMAPS[ Gdx.App ]?.Count ?? 0;
+    public static int NumManagedCubemaps => ManagedCubemaps[ Gdx.App ]?.Count ?? 0;
 
     /// <summary>
     /// Enum to identify each side of a Cubemap </summary>
@@ -298,44 +298,44 @@ public class Cubemap : GLTexture
         /// <summary>
         /// The positive X and first side of the cubemap
         /// </summary>
-        public readonly static CubemapSide POSITIVE_X = new
+        public readonly static CubemapSide PositiveX = new
             ( "PositiveX", InnerEnum.PositiveX, 0, IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, -1, 0, 1, 0, 0 );
         /// <summary>
         /// The negative X and second side of the cubemap
         /// </summary>
-        public readonly static CubemapSide NEGATIVE_X = new
+        public readonly static CubemapSide NegativeX = new
             ( "NegativeX", InnerEnum.NegativeX, 1, IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, -1, 0, -1, 0, 0 );
         /// <summary>
         /// The positive Y and third side of the cubemap
         /// </summary>
-        public readonly static CubemapSide POSITIVE_Y = new
+        public readonly static CubemapSide PositiveY = new
             ( "PositiveY", InnerEnum.PositiveY, 2, IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 1, 0, 1, 0 );
         /// <summary>
         /// The negative Y and fourth side of the cubemap
         /// </summary>
-        public readonly static CubemapSide NEGATIVE_Y = new
+        public readonly static CubemapSide NegativeY = new
             ( "NegativeY", InnerEnum.NegativeY, 3, IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, -1, 0, -1, 0 );
         /// <summary>
         /// The positive Z and fifth side of the cubemap
         /// </summary>
-        public readonly static CubemapSide POSITIVE_Z = new
+        public readonly static CubemapSide PositiveZ = new
             ( "PositiveZ", InnerEnum.PositiveZ, 4, IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, -1, 0, 0, 0, 1 );
         /// <summary>
         /// The negative Z and sixth side of the cubemap
         /// </summary>
-        public readonly static CubemapSide NEGATIVE_Z = new
+        public readonly static CubemapSide NegativeZ = new
             ( "NegativeZ", InnerEnum.NegativeZ, 5, IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, -1, 0, 0, 0, -1 );
 
-        private readonly static List< CubemapSide > VALUE_LIST = new();
+        private readonly static List< CubemapSide > ValueList = new();
 
         static CubemapSide()
         {
-            VALUE_LIST.Add( POSITIVE_X );
-            VALUE_LIST.Add( NEGATIVE_X );
-            VALUE_LIST.Add( POSITIVE_Y );
-            VALUE_LIST.Add( NEGATIVE_Y );
-            VALUE_LIST.Add( POSITIVE_Z );
-            VALUE_LIST.Add( NEGATIVE_Z );
+            ValueList.Add( PositiveX );
+            ValueList.Add( NegativeX );
+            ValueList.Add( PositiveY );
+            ValueList.Add( NegativeY );
+            ValueList.Add( PositiveZ );
+            ValueList.Add( NegativeZ );
         }
 
         public enum InnerEnum
@@ -413,7 +413,7 @@ public class Cubemap : GLTexture
 
         public static CubemapSide[] Values()
         {
-            return VALUE_LIST.ToArray();
+            return ValueList.ToArray();
         }
 
         public override string ToString()
@@ -424,7 +424,7 @@ public class Cubemap : GLTexture
         public static CubemapSide ValueOf( string name )
         {
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-            foreach ( CubemapSide enumInstance in VALUE_LIST )
+            foreach ( CubemapSide enumInstance in ValueList )
             {
                 if ( enumInstance._nameValue == name )
                 {

@@ -19,17 +19,18 @@ using LibGDXSharp.Utils;
 namespace LibGDXSharp.Maths;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Vector3 : IVector< Vector3 >
 {
     public float X { get; set; }
     public float Y { get; set; }
     public float Z { get; set; }
 
-    public readonly static  Vector3 X_DEFAULT = new( 1, 0, 0 );
-    public readonly static  Vector3 Y_DEFAULT = new( 0, 1, 0 );
-    public readonly static  Vector3 Z_DEFAULT = new( 0, 0, 1 );
-    public readonly static  Vector3 ZERO     = new( 0, 0, 0 );
-    private readonly static Matrix4 TMP_MAT   = new();
+    public readonly static  Vector3 XDefault = new( 1, 0, 0 );
+    public readonly static  Vector3 YDefault = new( 0, 1, 0 );
+    public readonly static  Vector3 ZDefault = new( 0, 0, 1 );
+    public readonly static  Vector3 Zero     = new( 0, 0, 0 );
+    private readonly static Matrix4 TmpMat   = new();
 
     /// <summary>
     /// Default constructor.
@@ -481,26 +482,26 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 Rotate( float degrees, float axisX, float axisY, float axisZ )
     {
-        return this.Mul( TMP_MAT.SetToRotation( axisX, axisY, axisZ, degrees ) );
+        return this.Mul( TmpMat.SetToRotation( axisX, axisY, axisZ, degrees ) );
     }
 
     public Vector3 RotateRad( float radians, float axisX, float axisY, float axisZ )
     {
-        return this.Mul( TMP_MAT.SetToRotationRad( axisX, axisY, axisZ, radians ) );
+        return this.Mul( TmpMat.SetToRotationRad( axisX, axisY, axisZ, radians ) );
     }
 
     public Vector3 Rotate( Vector3 axis, float degrees )
     {
-        TMP_MAT.SetToRotation( axis, degrees );
+        TmpMat.SetToRotation( axis, degrees );
 
-        return this.Mul( TMP_MAT );
+        return this.Mul( TmpMat );
     }
 
     public Vector3 RotateRad( Vector3 axis, float radians )
     {
-        TMP_MAT.SetToRotationRad( axis, radians );
+        TmpMat.SetToRotationRad( axis, radians );
 
-        return this.Mul( TMP_MAT );
+        return this.Mul( TmpMat );
     }
 
     public bool IsUnit()
@@ -582,7 +583,7 @@ public class Vector3 : IVector< Vector3 >
         return this;
     }
 
-    public Vector3 Interpolate( Vector3 target, float alpha, IInterpolation interpolator )
+    public Vector3 Interpolate( Vector3 target, float alpha, Interpolator interpolator )
     {
         return Lerp( target, interpolator.Apply( 0f, 1f, alpha ) );
     }

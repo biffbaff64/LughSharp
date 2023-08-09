@@ -44,8 +44,8 @@ public class Window : Table
     public int   ResizeBorder    { get; set; } = 8;
     public bool  KeepWithinStage { get; set; } = true;
 
-    private readonly static Vector2 TMP_POSITION = new();
-    private readonly static Vector2 TMP_SIZE     = new();
+    private readonly static Vector2 TmpPosition = new();
+    private readonly static Vector2 TmpSize     = new();
 
     private const int MOVE = 1 << 5;
 
@@ -181,17 +181,17 @@ public class Window : Table
 
             if ( Style.StageBackground != null )
             {
-                StageToLocalCoordinates( TMP_POSITION.Set( 0, 0 ) );
-                StageToLocalCoordinates( TMP_SIZE.Set( this.Stage.StageWidth, this.Stage.StageHeight ) );
+                StageToLocalCoordinates( TmpPosition.Set( 0, 0 ) );
+                StageToLocalCoordinates( TmpSize.Set( this.Stage.StageWidth, this.Stage.StageHeight ) );
 
                 DrawStageBackground
                     (
                      batch,
                      parentAlpha,
-                     ( X + TMP_POSITION.X ),
-                     ( Y + TMP_POSITION.Y ),
-                     ( X + TMP_SIZE.X ),
-                     ( Y + TMP_SIZE.Y )
+                     ( X + TmpPosition.X ),
+                     ( Y + TmpPosition.Y ),
+                     ( X + TmpSize.X ),
+                     ( Y + TmpSize.Y )
                     );
             }
         }

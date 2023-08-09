@@ -92,8 +92,8 @@ public class FrameBuffer : GLFrameBuffer< Texture >
 
         var result = new Texture( data );
 
-        result.SetFilter( TextureFilter.LINEAR, TextureFilter.LINEAR );
-        result.SetWrap( TextureWrap.CLAMP_TO_EDGE, TextureWrap.CLAMP_TO_EDGE );
+        result.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
+        result.SetWrap( TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
 
         return result;
     }

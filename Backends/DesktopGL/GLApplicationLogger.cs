@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class GLApplicationLogger : IApplicationLogger
 {
     public void Log( string tag, string message )

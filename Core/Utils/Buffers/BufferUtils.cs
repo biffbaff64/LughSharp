@@ -26,7 +26,7 @@ public class BufferUtils
     public static ByteBuffer NewByteBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NATIVE_ORDER );
+        buffer.Order( ByteOrder.NativeOrder );
 
         return buffer;
     }
@@ -45,7 +45,7 @@ public class BufferUtils
     public static CharBuffer NewCharBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NATIVE_ORDER );
+        buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsCharBuffer();
     }
@@ -53,7 +53,7 @@ public class BufferUtils
     public static ShortBuffer NewShortBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NATIVE_ORDER );
+        buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsShortBuffer();
     }
@@ -61,7 +61,7 @@ public class BufferUtils
     public static IntBuffer NewIntBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NATIVE_ORDER );
+        buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsIntBuffer();
     }
@@ -69,7 +69,7 @@ public class BufferUtils
     public static LongBuffer NewLongBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NATIVE_ORDER );
+        buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsLongBuffer();
     }
@@ -77,7 +77,7 @@ public class BufferUtils
     public static FloatBuffer NewFloatBuffer( int numFloats )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
-        buffer.Order( ByteOrder.NATIVE_ORDER );
+        buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsFloatBuffer();
     }
@@ -85,7 +85,7 @@ public class BufferUtils
     public static DoubleBuffer NewDoubleBuffer( int numFloats )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
-        buffer.Order( ByteOrder.NATIVE_ORDER );
+        buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsDoubleBuffer();
     }

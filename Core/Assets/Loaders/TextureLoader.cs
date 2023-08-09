@@ -159,10 +159,10 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
         /// </summary>
         public ITextureData? TextureData { get; set; } = null;
 
-        public TextureFilter MinFilter { get; set; } = TextureFilter.NEAREST;
-        public TextureFilter MagFilter { get; set; } = TextureFilter.NEAREST;
-        public TextureWrap   WrapU     { get; set; } = TextureWrap.CLAMP_TO_EDGE;
-        public TextureWrap   WrapV     { get; set; } = TextureWrap.CLAMP_TO_EDGE;
+        public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
+        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
+        public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
+        public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
     }
 
     /// <summary>

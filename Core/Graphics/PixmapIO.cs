@@ -105,8 +105,8 @@ public static class PixmapIO
     {
         private const int BUFFER_SIZE = 32000;
 
-        private readonly static byte[] WRITE_BUFFER = new byte[ BUFFER_SIZE ];
-        private readonly static byte[] READ_BUFFER  = new byte[ BUFFER_SIZE ];
+        private readonly static byte[] WriteBuffer = new byte[ BUFFER_SIZE ];
+        private readonly static byte[] ReadBuffer  = new byte[ BUFFER_SIZE ];
 
         /// <summary>
         /// </summary>
@@ -132,16 +132,16 @@ public static class PixmapIO
                 var remainingBytes = pixelBuf.Capacity % BUFFER_SIZE;
                 var iterations     = pixelBuf.Capacity / BUFFER_SIZE;
 
-                lock ( WRITE_BUFFER )
+                lock ( WriteBuffer )
                 {
                     for ( var i = 0; i < iterations; i++ )
                     {
-                        pixelBuf.Get( WRITE_BUFFER );
-                        output.Write( WRITE_BUFFER );
+                        pixelBuf.Get( WriteBuffer );
+                        output.Write( WriteBuffer );
                     }
 
-                    pixelBuf.Get( WRITE_BUFFER, 0, remainingBytes );
-                    output.Write( WRITE_BUFFER, 0, remainingBytes );
+                    pixelBuf.Get( WriteBuffer, 0, remainingBytes );
+                    output.Write( WriteBuffer, 0, remainingBytes );
                 }
 
                 pixelBuf.Position = 0;
@@ -176,13 +176,13 @@ public static class PixmapIO
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
-                lock ( READ_BUFFER )
+                lock ( ReadBuffer )
                 {
                     int readBytes;
 
-                    while ( ( readBytes = input.Read( READ_BUFFER ) ) > 0 )
+                    while ( ( readBytes = input.Read( ReadBuffer ) ) > 0 )
                     {
-                        pixelBuf.Put( READ_BUFFER, 0, readBytes );
+                        pixelBuf.Put( ReadBuffer, 0, readBytes );
                     }
                 }
 

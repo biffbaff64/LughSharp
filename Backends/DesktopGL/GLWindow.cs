@@ -23,36 +23,57 @@ namespace LibGDXSharp.Backends.Desktop;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class GLWindow : IDisposable
 {
-    private          GLApplicationBase          _application;
-    private          IGLWindowListener          _windowListener;
-    private          IGLInput                   _input;
-    private          GLApplicationConfiguration _config;
-    private          GLGraphics                 _graphics;
-    private          IApplicationListener       _listener;
-    private readonly List< IRunnable >          _runnables         = new();
-    private readonly List< IRunnable >          _executedRunnables = new();
-    private          IntBuffer                  _tmpBuffer;
-    private          IntBuffer                  _tmpBuffer2;
-    private          bool                       _listenerInitialised = false;
-    private          bool                       _iconified           = false;
-    private          bool                       _requestRendering    = false;
+    public        IGLWindowListener?         WindowListener      { get; set; }
+    public unsafe Window*                    WindowHandle        { get; set; }
+    public        IApplicationListener       Listener            { get; set; }
+    public        IGLInput                   Input               { get; set; } = null!;
+    public        GLGraphics                 Graphics            { get; set; } = null!;
+    public        GLApplicationConfiguration Config              { get; set; }
+    public        bool                       ListenerInitialised { get; set; } = false;
+
+    private readonly GLApplicationBase _application;
+    private readonly List< IRunnable > _runnables         = new();
+    private readonly List< IRunnable > _executedRunnables = new();
+    private          IntBuffer         _tmpBuffer;
+    private          IntBuffer         _tmpBuffer2;
+    private          bool              _iconified        = false;
+    private          bool              _requestRendering = false;
 
     public GLWindow( IApplicationListener listener, GLApplicationConfiguration config, GLApplicationBase application )
     {
+        this.Listener       = listener;
+        this.WindowListener = config.WindowListener;
+        this.Config         = config;
+        this._application   = application;
+        this._tmpBuffer     = BufferUtils.NewIntBuffer( 1 );
+        this._tmpBuffer2    = BufferUtils.NewIntBuffer( 1 );
     }
 
     /// <summary>
     /// </summary>
     /// <param name="windowHandle"></param>
-    public void Create( long windowHandle )
+    public unsafe void Create( Window* windowHandle )
     {
-        this._input    = _application.CreateInput( this );
-        this._graphics = new GLGraphics( this );
+        this.WindowHandle = windowHandle;
+        this.Input        = _application.CreateInput( this );
+        this.Graphics     = new GLGraphics( this );
+
+        GLFW.SetWindowFocusCallback( windowHandle, focusCallback );
+        GLFW.SetWindowIconifyCallback( windowHandle, iconifyCallback );
+        GLFW.SetWindowMaximizeCallback( windowHandle, maximizeCallback );
+        GLFW.SetWindowCloseCallback( windowHandle, closeCallback );
+        GLFW.SetDropCallback( windowHandle, dropCallback );
+        GLFW.SetWindowRefreshCallback( windowHandle, refreshCallback );
+
+        if ( WindowListener != null )
+        {
+            WindowListener.Created( this );
+        }
     }
 
     public bool Update()
     {
-        if ( !_listenerInitialised )
+        if ( !ListenerInitialised )
         {
             InitialiseListener();
         }
@@ -68,13 +89,13 @@ public class GLWindow : IDisposable
             runnable.Run();
         }
 
-        var shouldRender = ( ( _executedRunnables.Count > 0 ) || ( _graphics.IsContinuousRendering() ) );
+        var shouldRender = ( ( _executedRunnables.Count > 0 ) || ( Graphics.IsContinuousRendering() ) );
 
         _executedRunnables.Clear();
 
         if ( !_iconified )
         {
-            _input.Update();
+            Input.Update();
         }
 
         lock ( this )
@@ -83,29 +104,79 @@ public class GLWindow : IDisposable
             _requestRendering =  false;
         }
 
-//        if ( shouldRender )
-//        {
-//            _graphics.Update();
-//            _listener.Render();
+        if ( shouldRender )
+        {
+            unsafe
+            {
+                Graphics.Update();
+                Listener.Render();
 
-//            OpenGdx.GLSwapBuffers( _windowHandle );
-//        }
+                GLFW.SwapBuffers( WindowHandle );
+            }
+
+        }
 
         if ( !_iconified )
         {
-            _input.PrepareNext();
+            Input.PrepareNext();
         }
 
         return shouldRender;
     }
 
-    public long WindowHandle { get; set; }
-
     private void InitialiseListener()
     {
+        if ( !ListenerInitialised )
+        {
+            Listener.Create();
+            Listener.Resize( Graphics.Width, Graphics.Height );
+            ListenerInitialised = true;
+        }
     }
+
+    private unsafe void MakeCurrent()
+    {
+        Gdx.Graphics = this.Graphics;
+        Gdx.GL30     = this.Graphics.GetGL30();
+        Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30 : Graphics.GetGL20();
+        Gdx.GL       = Gdx.GL30 != null ? Gdx.GL30 : Gdx.GL20;
+        Gdx.Input    = this.Input;
+
+        GLFW.MakeContextCurrent( WindowHandle );
+    }
+
+    private void RequestRendering()
+    {
+        lock ( this )
+        {
+            this._requestRendering = true;
+        }
+    }
+
+    public bool ShouldClose() => false;
 
     public void Dispose()
     {
+        Listener.Pause();
+        Listener.Dispose();
+        GLCursor.Dispose( this );
+        Graphics.Dispose();
+        Input.Dispose();
+
+        unsafe
+        {
+            GLFW.SetWindowFocusCallback( WindowHandle, null );
+            GLFW.SetWindowIconifyCallback( WindowHandle, null );
+            GLFW.SetWindowCloseCallback( WindowHandle, null );
+            GLFW.SetDropCallback( WindowHandle, null );
+            GLFW.DestroyWindow( WindowHandle );
+        }
+
+        focusCallback.free();
+        iconifyCallback.free();
+        maximizeCallback.free();
+        closeCallback.free();
+        dropCallback.free();
+        refreshCallback.free();
     }
 }

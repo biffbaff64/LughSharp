@@ -38,32 +38,27 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// These parameters are reversed for a vertical progress bar.
 /// </para>
 /// </summary>
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class ProgressBar : Widget, IDisableable
 {
     private const float DEFAULT_PREF_WIDTH  = 140f;
     private const float DEFAULT_PREF_HEIGHT = 140f;
 
-    private float         _animateFromValue;
-    private float         _animateDuration;
-    private float         _animateTime;
-    private IInterpolation _animateInterpolation = new Interpolation.Linear();
-    private IInterpolation _visualInterpolation = new Interpolation.Linear();
+    private float _animateFromValue;
+    private float _animateDuration;
+    private float _animateTime;
 
     private readonly ProgressBarStyle? _style;
     private readonly float             _stepSize;
     private readonly bool              _programmaticChangeEvents = true;
 
+    //@formatter:off
     public ProgressBar( float min, float max, float stepSize, bool vertical, Skin skin )
-        : this
-            (
-             min,
-             max,
-             stepSize,
-             vertical,
-             ( ProgressBarStyle )skin.Get< ProgressBarStyle >( "default-" + ( vertical ? "vertical" : "horizontal" ) )
-            )
+        : this( min, max, stepSize, vertical,
+                ( ProgressBarStyle )skin.Get< ProgressBarStyle >( "default-" + ( vertical ? "vertical" : "horizontal" ) ) )
     {
     }
+    //@formatter:on
 
     public ProgressBar( float min, float max, float stepSize, bool vertical, Skin skin, string styleName )
         : this( min, max, stepSize, vertical, ( ProgressBarStyle )skin.Get< ProgressBarStyle >( styleName ) )
@@ -155,11 +150,8 @@ public class ProgressBar : Widget, IDisableable
                 {
                     bg.Draw
                         (
-                         batch,
-                         ( float )Math.Round( x + ( ( width - bg.MinWidth ) * 0.5f ) ),
-                         y,
-                         ( float )Math.Round( bg.MinWidth ),
-                         height
+                        batch, ( float )Math.Round( x + ( ( width - bg.MinWidth ) * 0.5f ) ),
+                        y, ( float )Math.Round( bg.MinWidth ), height
                         );
                 }
                 else
@@ -195,22 +187,22 @@ public class ProgressBar : Widget, IDisableable
                 {
                     knobBefore.Draw
                         (
-                         batch,
-                         ( float )Math.Round( x + ( ( width - knobBefore.MinWidth ) * 0.5f ) ),
-                         ( float )Math.Round( y + bgTopHeight ),
-                         ( float )Math.Round( knobBefore.MinWidth ),
-                         ( float )Math.Round( KnobPosition + knobHeightHalf )
+                        batch,
+                        ( float )Math.Round( x + ( ( width - knobBefore.MinWidth ) * 0.5f ) ),
+                        ( float )Math.Round( y + bgTopHeight ),
+                        ( float )Math.Round( knobBefore.MinWidth ),
+                        ( float )Math.Round( KnobPosition + knobHeightHalf )
                         );
                 }
                 else
                 {
                     knobBefore.Draw
                         (
-                         batch,
-                         x + ( ( width - knobBefore.MinWidth ) * 0.5f ),
-                         y + bgTopHeight,
-                         knobBefore.MinWidth,
-                         KnobPosition + knobHeightHalf
+                        batch,
+                        x + ( ( width - knobBefore.MinWidth ) * 0.5f ),
+                        y + bgTopHeight,
+                        knobBefore.MinWidth,
+                        KnobPosition + knobHeightHalf
                         );
                 }
             }
@@ -221,22 +213,22 @@ public class ProgressBar : Widget, IDisableable
                 {
                     knobAfter.Draw
                         (
-                         batch,
-                         ( float )Math.Round( x + ( ( width - knobAfter.MinWidth ) * 0.5f ) ),
-                         ( float )Math.Round( y + KnobPosition + knobHeightHalf ),
-                         ( float )Math.Round( knobAfter.MinWidth ),
-                         ( float )Math.Round( height - KnobPosition - knobHeightHalf - bgBottomHeight )
+                        batch,
+                        ( float )Math.Round( x + ( ( width - knobAfter.MinWidth ) * 0.5f ) ),
+                        ( float )Math.Round( y + KnobPosition + knobHeightHalf ),
+                        ( float )Math.Round( knobAfter.MinWidth ),
+                        ( float )Math.Round( height - KnobPosition - knobHeightHalf - bgBottomHeight )
                         );
                 }
                 else
                 {
                     knobAfter.Draw
                         (
-                         batch,
-                         x + ( ( width - knobAfter.MinWidth ) * 0.5f ),
-                         y + KnobPosition + knobHeightHalf,
-                         knobAfter.MinWidth,
-                         height - KnobPosition - knobHeightHalf - bgBottomHeight
+                        batch,
+                        x + ( ( width - knobAfter.MinWidth ) * 0.5f ),
+                        y + KnobPosition + knobHeightHalf,
+                        knobAfter.MinWidth,
+                        height - KnobPosition - knobHeightHalf - bgBottomHeight
                         );
                 }
             }
@@ -270,11 +262,11 @@ public class ProgressBar : Widget, IDisableable
                 {
                     bg.Draw
                         (
-                         batch,
-                         x,
-                         ( float )Math.Round( y + ( ( height - bg.MinHeight ) * 0.5f ) ),
-                         width,
-                         ( float )Math.Round( bg.MinHeight )
+                        batch,
+                        x,
+                        ( float )Math.Round( y + ( ( height - bg.MinHeight ) * 0.5f ) ),
+                        width,
+                        ( float )Math.Round( bg.MinHeight )
                         );
                 }
                 else
@@ -310,22 +302,22 @@ public class ProgressBar : Widget, IDisableable
                 {
                     knobBefore.Draw
                         (
-                         batch,
-                         ( float )Math.Round( x + bgLeftWidth ),
-                         ( float )Math.Round( y + ( ( height - knobBefore.MinHeight ) * 0.5f ) ),
-                         ( float )Math.Round( KnobPosition + knobWidthHalf ),
-                         ( float )Math.Round( knobBefore.MinHeight )
+                        batch,
+                        ( float )Math.Round( x + bgLeftWidth ),
+                        ( float )Math.Round( y + ( ( height - knobBefore.MinHeight ) * 0.5f ) ),
+                        ( float )Math.Round( KnobPosition + knobWidthHalf ),
+                        ( float )Math.Round( knobBefore.MinHeight )
                         );
                 }
                 else
                 {
                     knobBefore.Draw
                         (
-                         batch,
-                         x + bgLeftWidth,
-                         y + ( ( height - knobBefore.MinHeight ) * 0.5f ),
-                         KnobPosition + knobWidthHalf,
-                         knobBefore.MinHeight
+                        batch,
+                        x + bgLeftWidth,
+                        y + ( ( height - knobBefore.MinHeight ) * 0.5f ),
+                        KnobPosition + knobWidthHalf,
+                        knobBefore.MinHeight
                         );
                 }
             }
@@ -336,22 +328,22 @@ public class ProgressBar : Widget, IDisableable
                 {
                     knobAfter.Draw
                         (
-                         batch,
-                         ( float )Math.Round( x + KnobPosition + knobWidthHalf ),
-                         ( float )Math.Round( y + ( ( height - knobAfter.MinHeight ) * 0.5f ) ),
-                         ( float )Math.Round( width - KnobPosition - knobWidthHalf - bgRightWidth ),
-                         ( float )Math.Round( knobAfter.MinHeight )
+                        batch,
+                        ( float )Math.Round( x + KnobPosition + knobWidthHalf ),
+                        ( float )Math.Round( y + ( ( height - knobAfter.MinHeight ) * 0.5f ) ),
+                        ( float )Math.Round( width - KnobPosition - knobWidthHalf - bgRightWidth ),
+                        ( float )Math.Round( knobAfter.MinHeight )
                         );
                 }
                 else
                 {
                     knobAfter.Draw
                         (
-                         batch,
-                         x + KnobPosition + knobWidthHalf,
-                         y + ( ( height - knobAfter.MinHeight ) * 0.5f ),
-                         width - KnobPosition - knobWidthHalf - bgRightWidth,
-                         knobAfter.MinHeight
+                        batch,
+                        x + KnobPosition + knobWidthHalf,
+                        y + ( ( height - knobAfter.MinHeight ) * 0.5f ),
+                        width - KnobPosition - knobWidthHalf - bgRightWidth,
+                        knobAfter.MinHeight
                         );
                 }
             }
@@ -377,10 +369,12 @@ public class ProgressBar : Widget, IDisableable
         }
     }
 
+    /// <summary>
     /// Sets the progress bar _position, rounded to the nearest step size and
     /// clamped to the minimum and maximum values. <see cref="Clamp(float)"/>
     /// can be overridden to allow values outside of the progress bar's min/max
     /// range.
+    /// </summary>
     /// <returns>
     /// <tt>false</tt> if the value was not changed because the progress bar
     /// already had the value or it was canceled by a listener.
@@ -424,19 +418,13 @@ public class ProgressBar : Widget, IDisableable
     /// Rounds the value using the progress bar's step size.
     /// This can be overridden to customize or disable rounding.
     /// </summary>
-    private float Round( float value )
-    {
-        return ( float )( Math.Round( value / StepSize ) * StepSize );
-    }
+    private float Round( float value ) => ( float )( Math.Round( value / StepSize ) * StepSize );
 
     /// <summary>
     /// Clamps the value to the progress bar's min/max range. This can be overridden
     /// to allow a range different from the progress bar knob's range.
     /// </summary>
-    private float Clamp( float value )
-    {
-        return MathUtils.Clamp( value, MinValue, MaxValue );
-    }
+    private float Clamp( float value ) => MathUtils.Clamp( value, MinValue, MaxValue );
 
     /// <summary>
     /// Sets the range of this progress bar. The progress bar's current value is clamped to the range.
@@ -486,27 +474,7 @@ public class ProgressBar : Widget, IDisableable
     /// will happen over this duration in seconds.
     /// </summary>
     /// <param name="duration"></param>
-    public void SetAnimateDuration( float duration )
-    {
-        this._animateDuration = duration;
-    }
-
-    /// <summary>
-    /// Sets the interpolation to use for <see cref="SetAnimateDuration(float)"/>.
-    /// </summary>
-    public void SetAnimateInterpolation( Interpolation.Linear? animateInterpolation )
-    {
-        this._animateInterpolation = animateInterpolation
-                                     ?? throw new ArgumentException( "animateInterpolation cannot be null." );
-    }
-
-    /// <summary>
-    ///  Sets the interpolation to use for display.
-    /// </summary>
-    public void SetVisualInterpolation( IInterpolation interpolation )
-    {
-        this._visualInterpolation = interpolation;
-    }
+    public void SetAnimateDuration( float duration ) => this._animateDuration = duration;
 
     /// <summary>
     /// If <see cref="SetAnimateDuration(float)"/> animating the progress bar value,
@@ -516,7 +484,7 @@ public class ProgressBar : Widget, IDisableable
     {
         if ( _animateTime > 0 )
         {
-            return _animateInterpolation.Apply( _animateFromValue, Value, 1 - ( _animateTime / _animateDuration ) );
+            return AnimateInterpolation.Apply( _animateFromValue, Value, 1 - ( _animateTime / _animateDuration ) );
         }
 
         return Value;
@@ -542,7 +510,7 @@ public class ProgressBar : Widget, IDisableable
     {
         if ( MinValue.Equals( MaxValue ) ) return 0;
 
-        return _visualInterpolation.Apply( ( GetVisualValue() - MinValue ) / ( MaxValue - MinValue ) );
+        return VisualInterpolation.Apply( ( GetVisualValue() - MinValue ) / ( MaxValue - MinValue ) );
     }
 
     private IDrawable? GetBackgroundDrawable()
@@ -575,13 +543,15 @@ public class ProgressBar : Widget, IDisableable
 
     // ------------------------------------------------------------------------
 
-    public float KnobPosition { get; private set; }
-    public float MinValue     { get; set; }
-    public float MaxValue     { get; set; }
-    public float Value        { get; set; }
-    public bool  IsVertical   { get; set; }
-    public bool  IsRound      { get; set; } = true;
-    public bool  IsDisabled   { get; set; }
+    public float        KnobPosition         { get; private set; }
+    public float        MinValue             { get; set; }
+    public float        MaxValue             { get; set; }
+    public float        Value                { get; set; }
+    public bool         IsVertical           { get; set; }
+    public bool         IsRound              { get; set; } = true;
+    public bool         IsDisabled           { get; set; }
+    public Interpolator AnimateInterpolation { get; set; } = Interpolation.Linear;
+    public Interpolator VisualInterpolation  { get; set; } = Interpolation.Linear;
 
     public bool IsAnimating => ( _animateTime > 0 );
 

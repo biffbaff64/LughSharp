@@ -39,7 +39,7 @@ public abstract class Viewport
     public int    ScreenWidth  { get; set; }
     public int    ScreenHeight { get; set; }
 
-    private Vector3 _tmp = Vector3.ZERO;
+    private Vector3 _tmp = Vector3.Zero;
 
     /// <summary>
     /// Applies the viewport to the camera and sets the glViewport.

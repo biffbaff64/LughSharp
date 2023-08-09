@@ -29,7 +29,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// <summary>
     /// cubemap sides cache
     /// </summary>
-    private readonly static Cubemap.CubemapSide[] CUBEMAP_SIDES = Cubemap.CubemapSide.Values();
+    private readonly static Cubemap.CubemapSide[] CubemapSides = Cubemap.CubemapSide.Values();
 
     public FrameBufferCubemap()
     {
@@ -99,8 +99,8 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         Cubemap result = new( data, data, data, data, data, data );
 
-        result.SetFilter( TextureFilter.LINEAR, TextureFilter.LINEAR );
-        result.SetWrap( TextureWrap.CLAMP_TO_EDGE, TextureWrap.CLAMP_TO_EDGE );
+        result.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
+        result.SetWrap( TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
 
         return result;
     }
@@ -185,6 +185,6 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// </summary>
     public Cubemap.CubemapSide? GetSide()
     {
-        return _currentSide < 0 ? null : CUBEMAP_SIDES[ _currentSide ];
+        return _currentSide < 0 ? null : CubemapSides[ _currentSide ];
     }
 }

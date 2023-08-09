@@ -25,7 +25,7 @@ namespace LibGDXSharp.Utils.Pooling;
 /// </summary>
 public class Pools<T>
 {
-    private readonly static Dictionary< Type, Pool< T >? > TYPE_POOLS = new();
+    private readonly static Dictionary< Type, Pool< T >? > TypePools = new();
 
     private Pools()
     {
@@ -38,13 +38,13 @@ public class Pools<T>
     /// </summary>
     public static Pool< T > Get( int max = 100 )
     {
-        Pool< T >? pool = TYPE_POOLS[ typeof(T) ];
+        Pool< T >? pool = TypePools[ typeof(T) ];
 
         if ( pool == null )
         {
             pool = new ReflectionPool< T >( 4, max );
 
-            TYPE_POOLS.Put( typeof(T), pool );
+            TypePools.Put( typeof(T), pool );
         }
 
         return pool;
@@ -56,7 +56,7 @@ public class Pools<T>
     /// </summary>
     public static void Set( Type type, Pool< T > pool )
     {
-        TYPE_POOLS[ type ] = pool;
+        TypePools[ type ] = pool;
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ public class Pools<T>
     {
         if ( obj == null ) throw new ArgumentException( "object cannot be null." );
 
-        TYPE_POOLS[ typeof(T) ]?.Free( obj );
+        TypePools[ typeof(T) ]?.Free( obj );
     }
 
     /// <summary>
@@ -94,13 +94,13 @@ public class Pools<T>
 
             if ( obj == null ) continue;
 
-            if ( TYPE_POOLS[ typeof(T) ] == null ) continue;
+            if ( TypePools[ typeof(T) ] == null ) continue;
 
-            TYPE_POOLS[ typeof(T) ]?.Free( obj );
+            TypePools[ typeof(T) ]?.Free( obj );
 
             if ( !samePool )
             {
-                TYPE_POOLS[ typeof(T) ] = null;
+                TypePools[ typeof(T) ] = null;
             }
         }
     }

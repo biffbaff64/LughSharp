@@ -39,10 +39,10 @@ public abstract class BaseTmxMapLoader<TP>
         public bool GenerateMipMaps { get; set; } = false;
 
         // The TextureFilter to use for minification
-        public TextureFilter TextureMinFilter { get; set; } = TextureFilter.NEAREST;
+        public TextureFilter TextureMinFilter { get; set; } = TextureFilter.Nearest;
 
         // The TextureFilter to use for magnification
-        public TextureFilter TextureMagFilter { get; set; } = TextureFilter.NEAREST;
+        public TextureFilter TextureMagFilter { get; set; } = TextureFilter.Nearest;
 
         // Whether to convert the objects' pixel position and size to the equivalent in tile space.
         public bool ConvertObjectToTileSpace { get; set; } = false;

@@ -23,7 +23,7 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public class Timer
 {
-    private readonly static object        THREAD_LOCK = new();
+    private readonly static object        ThreadLock = new();
     private readonly        List< Task? > _tasks     = new( 8 );
     private static          TimerThread?  _thread;
 
@@ -40,7 +40,7 @@ public class Timer
     /// <exception cref="GdxRuntimeException"></exception>
     public static Timer Instance()
     {
-        lock ( THREAD_LOCK )
+        lock ( ThreadLock )
         {
             TimerThread? thread = Thread();
 
@@ -55,7 +55,7 @@ public class Timer
     /// <returns></returns>
     private static TimerThread Thread()
     {
-        lock ( THREAD_LOCK )
+        lock ( ThreadLock )
         {
             if ( ( _thread == null ) || ( _thread.files != Gdx.Files ) )
             {
@@ -104,7 +104,7 @@ public class Timer
     /// <param name="repeatCount"> If negative, the task will repeat forever.</param>
     protected virtual Task ScheduleTask( Task task, float delaySeconds, float intervalSeconds, int repeatCount )
     {
-        lock ( THREAD_LOCK )
+        lock ( ThreadLock )
         {
             lock ( this )
             {
@@ -133,7 +133,7 @@ public class Timer
                 }
             }
 
-            Monitor.PulseAll( THREAD_LOCK );
+            Monitor.PulseAll( ThreadLock );
         }
 
         return task;
@@ -144,13 +144,13 @@ public class Timer
     /// </summary>
     public void Start()
     {
-        lock ( THREAD_LOCK )
+        lock ( ThreadLock )
         {
             if ( Thread().instances.Contains( this ) ) return;
 
             Thread().instances.Add( this );
 
-            Monitor.PulseAll( THREAD_LOCK );
+            Monitor.PulseAll( ThreadLock );
         }
     }
 
@@ -160,7 +160,7 @@ public class Timer
     /// </summary>
     public void Stop()
     {
-        lock ( THREAD_LOCK )
+        lock ( ThreadLock )
         {
             Thread().instances.Remove( this );
         }
@@ -194,7 +194,7 @@ public class Timer
     /// <returns></returns>
     public bool IsEmpty()
     {
-        lock ( THREAD_LOCK )
+        lock ( ThreadLock )
         {
             return _tasks.Count == 0;
         }
@@ -207,7 +207,7 @@ public class Timer
     /// <returns></returns>
     public long Update( long timeMillis, long waitMillis )
     {
-        lock ( THREAD_LOCK )
+        lock ( ThreadLock )
         {
             for ( int i = 0, n = _tasks.Count; i < n; i++ )
             {
@@ -255,7 +255,7 @@ public class Timer
     /// <param name="delayMillis"></param>
     protected virtual void Delay( long delayMillis )
     {
-        lock ( THREAD_LOCK )
+        lock ( ThreadLock )
         {
             for ( int i = 0, n = _tasks.Count; i < n; i++ )
             {
@@ -420,7 +420,7 @@ public class Timer
 
         public void Run()
         {
-            lock ( THREAD_LOCK )
+            lock ( ThreadLock )
             {
                 if ( ( _thread != this ) || ( files != Gdx.Files ) ) goto exitlabel;
 
@@ -447,7 +447,7 @@ public class Timer
 
                 try
                 {
-                    if ( waitMillis > 0 ) Monitor.Wait( THREAD_LOCK, ( int )waitMillis );
+                    if ( waitMillis > 0 ) Monitor.Wait( ThreadLock, ( int )waitMillis );
                 }
                 catch ( ThreadInterruptedException ignored )
                 {
@@ -462,17 +462,17 @@ public class Timer
 
         public void Pause()
         {
-            lock ( THREAD_LOCK )
+            lock ( ThreadLock )
             {
                 pauseTimeMillis = TimeUtils.NanosToMillis();
 
-                Monitor.PulseAll( THREAD_LOCK );
+                Monitor.PulseAll( ThreadLock );
             }
         }
 
         public void Resume()
         {
-            lock ( THREAD_LOCK )
+            lock ( ThreadLock )
             {
                 var delayMillis = TimeUtils.NanosToMillis() - pauseTimeMillis;
 
@@ -483,19 +483,19 @@ public class Timer
 
                 pauseTimeMillis = 0;
 
-                Monitor.PulseAll( THREAD_LOCK );
+                Monitor.PulseAll( ThreadLock );
             }
         }
 
         public void Dispose()
         {
-            lock ( THREAD_LOCK )
+            lock ( ThreadLock )
             {
                 if ( _thread == this ) _thread = null;
 
                 instances.Clear();
 
-                Monitor.PulseAll( THREAD_LOCK );
+                Monitor.PulseAll( ThreadLock );
             }
 
             Gdx.App.RemoveLifecycleListener( this );

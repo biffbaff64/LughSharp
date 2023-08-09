@@ -320,7 +320,7 @@ public class CpuSpriteBatch : SpriteBatch
 
 	public new void Draw( Texture texture, float[] spriteVertices, int offset, int count )
 	{
-		if ( ( count % Sprite.SPRITE_SIZE ) != 0 )
+		if ( ( count % Sprite.SpriteSize ) != 0 )
 		{
 			throw new GdxRuntimeException( "invalid vertex count" );
 		}
@@ -502,7 +502,7 @@ public class CpuSpriteBatch : SpriteBatch
 		Vertices[ idx + 18 ] = u2;
 		Vertices[ idx + 19 ] = v;
 
-		idx += Sprite.SPRITE_SIZE;
+		idx += Sprite.SpriteSize;
 	}
     
 	private void DrawAdjusted( TextureRegion region, float x, float y, float originX,
@@ -648,7 +648,7 @@ public class CpuSpriteBatch : SpriteBatch
 		Vertices[ idx + 18 ] = u4;
 		Vertices[ idx + 19 ] = v4;
 
-		idx += Sprite.SPRITE_SIZE;
+		idx += Sprite.SpriteSize;
 	}
 
 	private void DrawAdjusted( TextureRegion region, float width, float height, Affine2 transform )
@@ -707,7 +707,7 @@ public class CpuSpriteBatch : SpriteBatch
 		Vertices[idx + 18] = u2;
 		Vertices[idx + 19] = v;
 
-		idx += Sprite.SPRITE_SIZE;
+		idx += Sprite.SpriteSize;
 	}
 
 	private void DrawAdjusted( Texture texture, float[] spriteVertices, int offset, int count )
@@ -739,9 +739,9 @@ public class CpuSpriteBatch : SpriteBatch
 				Vertices[idx + 3] = spriteVertices[offset + 3]; // u
 				Vertices[idx + 4] = spriteVertices[offset + 4]; // v
 
-				idx         += Sprite.VERTEX_SIZE;
-				offset      += Sprite.VERTEX_SIZE;
-				copyCount   -= Sprite.VERTEX_SIZE;
+				idx         += Sprite.VertexSize;
+				offset      += Sprite.VertexSize;
+				copyCount   -= Sprite.VertexSize;
 			}
 
 			if ( count > 0 )

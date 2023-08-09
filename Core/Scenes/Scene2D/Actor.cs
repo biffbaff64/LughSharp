@@ -1083,7 +1083,7 @@ public class Actor : IActor
 
         if ( this.Stage == null ) return false;
 
-        RectangleShape tableBounds = RectangleShape.TMP;
+        RectangleShape tableBounds = RectangleShape.Tmp;
 
         tableBounds.X      = x;
         tableBounds.Y      = y;

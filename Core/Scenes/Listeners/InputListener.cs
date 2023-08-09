@@ -25,7 +25,7 @@ namespace LibGDXSharp.Scenes.Listeners;
 /// </summary>
 public class InputListener : IEventListener
 {
-    private readonly static Vector2 TMP_COORDS = new();
+    private readonly static Vector2 TmpCoords = new();
 
     /// <summary>
     /// Try to handle the given event, if it is an <see cref="InputEvent"/>.
@@ -65,12 +65,12 @@ public class InputListener : IEventListener
                 break;
         }
 
-        inputEvent.ToCoordinates( inputEvent.ListenerActor, TMP_COORDS );
+        inputEvent.ToCoordinates( inputEvent.ListenerActor, TmpCoords );
 
         switch ( inputEvent.Type )
         {
             case InputEvent.EventType.TouchDown:
-                var handled = TouchDown( inputEvent, TMP_COORDS.X, TMP_COORDS.Y,
+                var handled = TouchDown( inputEvent, TmpCoords.X, TmpCoords.Y,
                                          inputEvent.Pointer, inputEvent.Button );
 
                 if ( handled && inputEvent.TouchFocus )
@@ -83,30 +83,30 @@ public class InputListener : IEventListener
                 return handled;
 
             case InputEvent.EventType.TouchUp:
-                TouchUp( inputEvent, TMP_COORDS.X, TMP_COORDS.Y,
+                TouchUp( inputEvent, TmpCoords.X, TmpCoords.Y,
                          inputEvent.Pointer, inputEvent.Button );
 
                 return true;
 
             case InputEvent.EventType.TouchDragged:
-                TouchDragged( inputEvent, TMP_COORDS.X, TMP_COORDS.Y, inputEvent.Pointer );
+                TouchDragged( inputEvent, TmpCoords.X, TmpCoords.Y, inputEvent.Pointer );
 
                 return true;
 
             case InputEvent.EventType.MouseMoved:
-                return MouseMoved( inputEvent, TMP_COORDS.X, TMP_COORDS.Y );
+                return MouseMoved( inputEvent, TmpCoords.X, TmpCoords.Y );
 
             case InputEvent.EventType.Scrolled:
-                return Scrolled( inputEvent, TMP_COORDS.X, TMP_COORDS.Y,
+                return Scrolled( inputEvent, TmpCoords.X, TmpCoords.Y,
                                  inputEvent.ScrollAmountX, inputEvent.ScrollAmountY );
 
             case InputEvent.EventType.Enter:
-                Enter( inputEvent, TMP_COORDS.X, TMP_COORDS.Y, inputEvent.Pointer, inputEvent.RelatedActor );
+                Enter( inputEvent, TmpCoords.X, TmpCoords.Y, inputEvent.Pointer, inputEvent.RelatedActor );
 
                 return false;
 
             case InputEvent.EventType.Exit:
-                Exit( inputEvent, TMP_COORDS.X, TMP_COORDS.Y, inputEvent.Pointer, inputEvent.RelatedActor );
+                Exit( inputEvent, TmpCoords.X, TmpCoords.Y, inputEvent.Pointer, inputEvent.RelatedActor );
 
                 return false;
             

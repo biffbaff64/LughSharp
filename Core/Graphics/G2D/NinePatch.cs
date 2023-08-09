@@ -50,7 +50,7 @@ public class NinePatch
     public const int BOTTOM_RIGHT  = 8;
 
     public float[] Vertices { get; set; } = new float[ 9 * 4 * 5 ];
-    public Color   Color    { get; set; } = new(Color.WHITE);
+    public Color   Color    { get; set; } = new(Color.White);
 
     public Texture? Texture      { get; set; }
     public int      Idx          { get; set; }
@@ -70,7 +70,7 @@ public class NinePatch
     public float    TopHeight    { get; set; }
     public float    BottomHeight { get; set; }
 
-    private readonly static Color TMP_DRAW_COLOR = new();
+    private readonly static Color TmpDrawColor = new();
 
     /// <summary>
     /// Create a ninepatch by cutting up the given texture into nine patches.
@@ -522,8 +522,8 @@ public class NinePatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        if ( ( Texture?.MagFilter == TextureFilter.LINEAR )
-             || ( Texture?.MinFilter == TextureFilter.LINEAR ) )
+        if ( ( Texture?.MagFilter == TextureFilter.Linear )
+             || ( Texture?.MinFilter == TextureFilter.Linear ) )
         {
             if ( isStretchW )
             {
@@ -591,7 +591,7 @@ public class NinePatch
         var centerHeight = height - TopHeight - BottomHeight;
         var rightX       = ( x + width ) - RightWidth;
         var topY         = ( y + height ) - TopHeight;
-        var c            = TMP_DRAW_COLOR.Set( Color ).Mul( batch.GetColor() ).ToFloatBits();
+        var c            = TmpDrawColor.Set( Color ).Mul( batch.GetColor() ).ToFloatBits();
 
         if ( BottomLeft != -1 )
         {

@@ -34,7 +34,7 @@ public class ClickListener : InputListener
     /// Time in seconds <see cref="VisualPressed"/> reports true after a press
     /// resulting in a click is released.
     /// </summary>
-    public readonly static float VISUAL_PRESSED_DURATION = 0.1f;
+    public readonly static float VisualPressedDuration = 0.1f;
 
     public float TouchDownX       { get; set; } = -1;
     public float TouchDownY       { get; set; } = -1;
@@ -236,7 +236,7 @@ public class ClickListener : InputListener
         {
             if ( value )
             {
-                _visualPressedTime = TimeUtils.Millis() + ( long )( VISUAL_PRESSED_DURATION * 1000 );
+                _visualPressedTime = TimeUtils.Millis() + ( long )( VisualPressedDuration * 1000 );
             }
             else
             {

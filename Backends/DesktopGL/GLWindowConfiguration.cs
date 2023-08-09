@@ -18,27 +18,28 @@ namespace LibGDXSharp.Backends.Desktop;
 
 public class GLWindowConfiguration
 {
-    public int                       WindowX                { get; set; } = -1;
-    public int                       WindowY                { get; set; } = -1;
-    public int                       WindowWidth            { get; set; } = 640;
-    public int                       WindowHeight           { get; set; } = 480;
-    public int                       WindowMinWidth         { get; set; } = -1;
-    public int                       WindowMinHeight        { get; set; } = -1;
-    public int                       WindowMaxWidth         { get; set; } = -1;
-    public int                       WindowMaxHeight        { get; set; } = -1;
-    public bool                      WindowResizable        { get; set; } = true;
-    public bool                      WindowDecorated        { get; set; } = true;
-    public bool                      WindowMaximized        { get; set; } = false;
-    public bool                      AutoIconify            { get; set; } = false;
-    public Color                     InitialBackgroundColor { get; set; } = Color.BLACK;
-    public bool                      InitialVisible         { get; set; } = true;
-    public bool                      VSyncEnabled           { get; set; } = true;
-    public GLMonitor?                MaximizedMonitor       { get; set; }
-    public FileType                  WindowIconFileType     { get; set; }
-    public string[]?                 WindowIconPaths        { get; set; }
-    public IGLWindowListener?        WindowListener         { get; set; }
-    public GLGraphics.GLDisplayMode? FullscreenMode         { get; set; }
-    public string?                   Title                  { get; set; }
+    public int   WindowX                { get; set; } = -1;
+    public int   WindowY                { get; set; } = -1;
+    public int   WindowWidth            { get; set; } = 640;
+    public int   WindowHeight           { get; set; } = 480;
+    public int   WindowMinWidth         { get; set; } = -1;
+    public int   WindowMinHeight        { get; set; } = -1;
+    public int   WindowMaxWidth         { get; set; } = -1;
+    public int   WindowMaxHeight        { get; set; } = -1;
+    public bool  WindowResizable        { get; set; } = true;
+    public bool  WindowDecorated        { get; set; } = true;
+    public bool  WindowMaximized        { get; set; } = false;
+    public bool  AutoIconify            { get; set; } = false;
+    public Color InitialBackgroundColor { get; set; } = Color.Black;
+    public bool  InitialVisible         { get; set; } = true;
+    public bool  VSyncEnabled           { get; set; } = true;
+
+    public GLMonitor?                MaximizedMonitor   { get; set; }
+    public FileType                  WindowIconFileType { get; set; }
+    public string[]?                 WindowIconPaths    { get; set; }
+    public IGLWindowListener?        WindowListener     { get; set; }
+    public GLGraphics.GLDisplayMode? FullscreenMode     { get; set; }
+    public string?                   Title              { get; set; }
 
     internal void SetWindowConfiguration( GLWindowConfiguration config )
     {

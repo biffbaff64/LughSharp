@@ -22,7 +22,7 @@ namespace LibGDXSharp.Graphics;
 
 public class TextureArray : GLTexture
 {
-    private readonly static Dictionary< IApplication, List< TextureArray > > MANAGED_TEXTURE_ARRAYS = new();
+    private readonly static Dictionary< IApplication, List< TextureArray > > ManagedTextureArrays = new();
 
     private ITextureArrayData _data;
 
@@ -166,10 +166,10 @@ public class TextureArray : GLTexture
     /// <param name="texture"></param>
     private static void AddManagedTexture( IApplication app, TextureArray texture )
     {
-        List< TextureArray > managedTextureArray = MANAGED_TEXTURE_ARRAYS[ app ];
+        List< TextureArray > managedTextureArray = ManagedTextureArrays[ app ];
 
-        MANAGED_TEXTURE_ARRAYS[ app ].Add( texture );
-        MANAGED_TEXTURE_ARRAYS[ app ] = managedTextureArray;
+        ManagedTextureArrays[ app ].Add( texture );
+        ManagedTextureArrays[ app ] = managedTextureArray;
     }
 
 
@@ -178,7 +178,7 @@ public class TextureArray : GLTexture
     /// </summary>
     public static void ClearAllTextureArrays( IApplication app )
     {
-        MANAGED_TEXTURE_ARRAYS.Remove( app );
+        ManagedTextureArrays.Remove( app );
     }
 
     /// <summary>
@@ -186,7 +186,7 @@ public class TextureArray : GLTexture
     /// </summary>
     public static void InvalidateAllTextureArrays( IApplication app )
     {
-        foreach ( TextureArray textureArray in MANAGED_TEXTURE_ARRAYS[ app ] )
+        foreach ( TextureArray textureArray in ManagedTextureArrays[ app ] )
         {
             textureArray.Reload();
         }
@@ -201,9 +201,9 @@ public class TextureArray : GLTexture
             var builder = new StringBuilder();
             builder.Append( "Managed TextureArrays/app: { " );
 
-            foreach ( IApplication app in MANAGED_TEXTURE_ARRAYS.Keys )
+            foreach ( IApplication app in ManagedTextureArrays.Keys )
             {
-                builder.Append( MANAGED_TEXTURE_ARRAYS[ app ].Count );
+                builder.Append( ManagedTextureArrays[ app ].Count );
                 builder.Append( ' ' );
             }
 
@@ -217,5 +217,5 @@ public class TextureArray : GLTexture
     /// </summary>
     /// <returns> the number of managed TextureArrays currently loaded.
     /// </returns>
-    public int NumManagedTextureArrays => MANAGED_TEXTURE_ARRAYS[ Gdx.App ].Count;
+    public int NumManagedTextureArrays => ManagedTextureArrays[ Gdx.App ].Count;
 }

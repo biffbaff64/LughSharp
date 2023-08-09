@@ -119,8 +119,29 @@ AUDIO
 
     - DONE - IAudioDevice                   
     - DONE - IAudioRecorder                 
+    -      - IGLAudio
     - DONE - IMusic                         
     - DONE - ISound                         
+    -      - Mp3
+    -      - Ogg
+    -      - OggInputStream
+    -      - OpenALAudioDevice
+    -      - OpenALGLAudio
+    -      - OpenALMusic
+    -      - OpenALSound
+    -      - SoundAudioRecorder
+    -      - Wav
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+AUDIO/MOCK
+----------
+
+    -      - MockAudio
+    -      - MockAudioDevice
+    -      - MockAudioRecorder
+    -      - MockMusicMockSound
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -243,7 +264,7 @@ GRAPHICS/G2D
     - DONE - BitmapFont                     
     - DONE - BitmapFontCache                
     - DONE - CpuSpriteBatch                 
-    -      - DistanceFieldFont              
+    - DONE - DistanceFieldFont              
     - DONE - Gdx2DPixmap                    
     - DONE - GlyphLayout                    
     - DONE - IBatch                         
@@ -449,7 +470,7 @@ MATH
     - DONE - GeometryUtils
     - DONE - GridPoint2
     - DONE - GridPoint3
-    - IP   - Interpolation
+    - DONE - Interpolation
     - DONE - Intersector
     - DONE - IPath
     - DONE - IShape2D
