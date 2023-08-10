@@ -21,13 +21,13 @@ namespace LibGDXSharp.Maths;
 /// non-linear, interpolated value.
 /// </summary>
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class Interpolator
+public class Interpolation
 {
-    protected Interpolator()
+    protected Interpolation()
     {
     }
 
-    public Interpolator( Action< object > action )
+    public Interpolation( Action< object > action )
     {
     }
 
@@ -50,19 +50,19 @@ public class Interpolator
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public abstract class Interpolation
+public abstract class Interpolator
 {
-    public readonly static Interpolator Linear = new( _ =>
+    public readonly static Interpolation Linear = new( _ =>
         {
             float Apply( float a ) => a;
         });
 
-    public readonly static Interpolator Smooth = new( _ =>
+    public readonly static Interpolation Smooth = new( _ =>
         {
             float Apply( float a ) => a * a * ( 3 - ( 2 * a ) );
         });
 
-    public readonly static Interpolator Smooth2 = new( _ =>
+    public readonly static Interpolation Smooth2 = new( _ =>
         {
             float Apply( float a )
             {
@@ -72,23 +72,23 @@ public abstract class Interpolation
             }
         });
 
-    public readonly static Interpolator Smoother = new( _ =>
+    public readonly static Interpolation Smoother = new( _ =>
         {
             float Apply( float a ) => a * a * a * ( ( a * ( ( a * 6 ) - 15 ) ) + 10 );
         });
 
-    public readonly static Interpolator Fade = Smoother;
+    public readonly static Interpolation Fade = Smoother;
 
     public readonly static Pow    Pow2    = new( 2 );
     public readonly static PowIn  Pow2In  = new( 2 );
     public readonly static PowOut Pow2Out = new( 2 );
 
-    public readonly static Interpolator Pow2InInverse = new( _ =>
+    public readonly static Interpolation Pow2InInverse = new( _ =>
         {
             float Apply( float a ) => a;
         });
 
-    public readonly static Interpolator Pow2OutInverse = new( _ =>
+    public readonly static Interpolation Pow2OutInverse = new( _ =>
         {
             float Apply( float a )
             {
@@ -102,12 +102,12 @@ public abstract class Interpolation
     public readonly static PowIn  Pow3In  = new( 3 );
     public readonly static PowOut Pow3Out = new( 3 );
 
-    public readonly static Interpolator Pow3InInverse = new( _ =>
+    public readonly static Interpolation Pow3InInverse = new( _ =>
         {
             float Apply( float a ) => ( float )Math.Cbrt( a );
         });
 
-    public readonly static Interpolator Pow3OutInverse = new( _ =>
+    public readonly static Interpolation Pow3OutInverse = new( _ =>
         {
             float Apply( float a ) => 1 - ( float )Math.Cbrt( -( a - 1 ) );
         });
@@ -120,17 +120,17 @@ public abstract class Interpolation
     public readonly static PowIn  Pow5In  = new( 5 );
     public readonly static PowOut Pow5Out = new( 5 );
 
-    public readonly static Interpolator Sine = new( _ =>
+    public readonly static Interpolation Sine = new( _ =>
         {
             float Apply( float a ) => ( 1 - MathUtils.Cos( a * MathUtils.PI ) ) / 2;
         });
 
-    public readonly static Interpolator SineIn = new( _ =>
+    public readonly static Interpolation SineIn = new( _ =>
         {
             float Apply( float a ) => 1 - MathUtils.Cos( a * ( MathUtils.PI / 2 ) );
         });
 
-    public readonly static Interpolator SineOut = new( _ =>
+    public readonly static Interpolation SineOut = new( _ =>
         {
             float Apply( float a ) => MathUtils.Sin( a * ( MathUtils.PI / 2 ) );
         });
@@ -142,7 +142,7 @@ public abstract class Interpolation
     public readonly static ExpIn  Exp5In   = new( 2, 5 );
     public readonly static ExpOut Exp5Out  = new( 2, 5 );
 
-    public readonly static Interpolator Circle = new( _ =>
+    public readonly static Interpolation Circle = new( _ =>
         {
             float Apply( float a )
             {
@@ -160,12 +160,12 @@ public abstract class Interpolation
             }
         });
 
-    public readonly static Interpolator CircleIn = new( _ =>
+    public readonly static Interpolation CircleIn = new( _ =>
         {
             float Apply( float a ) => 1 - ( float )Math.Sqrt( 1 - ( a * a ) );
         });
 
-    public readonly static Interpolator CircleOut = new( _ =>
+    public readonly static Interpolation CircleOut = new( _ =>
         {
             float Apply( float a )
             {
@@ -192,7 +192,7 @@ public abstract class Interpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public class Pow : Interpolator
+    public class Pow : Interpolation
     {
         protected readonly int power;
 
@@ -233,7 +233,7 @@ public abstract class Interpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public class Exp : Interpolator
+    public class Exp : Interpolation
     {
         protected readonly float value;
         protected readonly float power;
@@ -285,7 +285,7 @@ public abstract class Interpolation
         }
     }
 
-    public class ElasticImpl : Interpolator
+    public class ElasticImpl : Interpolation
     {
         protected readonly float value;
         protected readonly float power;
@@ -377,7 +377,7 @@ public abstract class Interpolation
         }
     }
 
-    public class BounceOutImpl : Interpolator
+    public class BounceOutImpl : Interpolation
     {
         protected readonly float[] widths;
         protected readonly float[] heights;
@@ -495,7 +495,7 @@ public abstract class Interpolation
         public new float Apply( float a ) => 1 - base.Apply( 1 - a );
     }
 
-    public class SwingImpl : Interpolator
+    public class SwingImpl : Interpolation
     {
         protected readonly float scale;
 
@@ -520,7 +520,7 @@ public abstract class Interpolation
         }
     }
 
-    public class SwingOutImpl : Interpolator
+    public class SwingOutImpl : Interpolation
     {
         private readonly float _scale;
 
@@ -537,7 +537,7 @@ public abstract class Interpolation
         }
     }
 
-    public class SwingInImpl : Interpolator
+    public class SwingInImpl : Interpolation
     {
         private readonly float _scale;
 

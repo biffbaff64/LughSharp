@@ -58,9 +58,9 @@ public interface IGraphics
 
     int Height { get; }
 
-    int GetBackBufferWidth();
+    int BackBufferWidth { get; }
 
-    int GetBackBufferHeight();
+    int BackBufferHeight { get; }
 
     float GetBackBufferScale();
 

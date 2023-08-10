@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils.Buffers;
+
 using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 
 namespace LibGDXSharp.Backends.Desktop;
@@ -169,11 +171,29 @@ public class GLApplicationConfiguration : GLWindowConfiguration
 
         return new GLGraphics.GLDisplayMode
             (
-            0,  //TODO:
+            0, //TODO:
             videoMode -> Width,
             videoMode -> Height,
             videoMode -> RefreshRate,
             videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
             );
+    }
+
+    public GLMonitor ToLwjgl3Monitor( long glfwMonitor )
+    {
+        unsafe
+        {
+            IntBuffer tmp  = BufferUtils.NewIntBuffer( 1 );
+            IntBuffer tmp2 = BufferUtils.NewIntBuffer( 1 );
+
+            GLFW.GetMonitorPos( glfwMonitor, tmp, tmp2 );
+
+            var virtualX = tmp.Get( 0 );
+            var virtualY = tmp2.Get( 0 );
+            var name     = GLFW.GetMonitorName( glfwMonitor );
+
+            return new GLMonitor( glfwMonitor, virtualX, virtualY, name );
+        }
+
     }
 }

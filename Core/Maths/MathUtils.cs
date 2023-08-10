@@ -106,14 +106,14 @@ public class MathUtils
         return y < 0f ? atan - PI : atan;
     }
 
-    private readonly static Random Random = new();
+    private readonly static Random Rand = new();
 
     /// <summary>
     /// Returns a random number between 0 (inclusive) and the specified value (inclusive).
     /// </summary>
     public static int Random( int range )
     {
-        return RANDOM.Next( range + 1 );
+        return Rand.Next( range + 1 );
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public class MathUtils
     /// </summary>
     public static int Random( int start, int end )
     {
-        return start + RANDOM.Next( ( end - start ) + 1 );
+        return start + Rand.Next( ( end - start ) + 1 );
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public class MathUtils
     /// </summary>
     public static long Random( long range )
     {
-        return ( long )( RANDOM.NextDouble() * range );
+        return ( long )( Rand.NextDouble() * range );
     }
 
     /// <summary>
@@ -137,21 +137,21 @@ public class MathUtils
     /// </summary>
     public static long Random( long start, long end )
     {
-        return start + ( long )( RANDOM.NextDouble() * ( end - start ) );
+        return start + ( long )( Rand.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
     /// Returns a random bool value.
     /// </summary>
-    public static bool Randombool()
+    public static bool RandomBool()
     {
-        return Convert.ToBoolean( RANDOM.Next( 1 ) );
+        return Convert.ToBoolean( Rand.Next( 1 ) );
     }
 
     /// <summary>
     /// Returns true if a random value between 0 and 1 is less than the specified value.
     /// </summary>
-    public static bool Randombool( float chance )
+    public static bool RandomBool( float chance )
     {
         return Random() < chance;
     }
@@ -161,7 +161,7 @@ public class MathUtils
     /// </summary>
     public static float Random()
     {
-        return ( float )RANDOM.NextDouble();
+        return ( float )Rand.NextDouble();
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float range )
     {
-        return ( float )RANDOM.NextDouble() * range;
+        return ( float )Rand.NextDouble() * range;
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float start, float end )
     {
-        return start + ( ( float )RANDOM.NextDouble() * ( end - start ) );
+        return start + ( ( float )Rand.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public class MathUtils
     /// </summary>
     public static int RandomSign()
     {
-        return 1 | ( RANDOM.Next() >> 31 );
+        return 1 | ( Rand.Next() >> 31 );
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public class MathUtils
     /// </summary>
     public static float RandomTriangular()
     {
-        return ( float )RANDOM.NextDouble() - ( float )RANDOM.NextDouble();
+        return ( float )Rand.NextDouble() - ( float )Rand.NextDouble();
     }
 
     /// <summary>
@@ -204,7 +204,7 @@ public class MathUtils
     /// <param name="max"> the upper limit  </param>
     public static float RandomTriangular( float max )
     {
-        return ( float )( RANDOM.NextDouble() - RANDOM.NextDouble() ) * max;
+        return ( float )( Rand.NextDouble() - Rand.NextDouble() ) * max;
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ public class MathUtils
     /// <param name="mode"> the point around which the values are more likely  </param>
     public static float RandomTriangular( float min, float max, float mode )
     {
-        var u = ( float )RANDOM.NextDouble();
+        var u = ( float )Rand.NextDouble();
         var d = max - min;
 
         if ( u <= ( ( mode - min ) / d ) )

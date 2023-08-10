@@ -550,8 +550,8 @@ public class ProgressBar : Widget, IDisableable
     public bool         IsVertical           { get; set; }
     public bool         IsRound              { get; set; } = true;
     public bool         IsDisabled           { get; set; }
-    public Interpolator AnimateInterpolation { get; set; } = Interpolation.Linear;
-    public Interpolator VisualInterpolation  { get; set; } = Interpolation.Linear;
+    public Interpolation AnimateInterpolation { get; set; } = Interpolator.Linear;
+    public Interpolation VisualInterpolation  { get; set; } = Interpolator.Linear;
 
     public bool IsAnimating => ( _animateTime > 0 );
 

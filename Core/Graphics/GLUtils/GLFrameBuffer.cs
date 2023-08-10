@@ -477,7 +477,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// </summary>
     public void End()
     {
-        End( 0, 0, Gdx.Graphics.GetBackBufferWidth(), Gdx.Graphics.GetBackBufferHeight() );
+        End( 0, 0, Gdx.Graphics.BackBufferWidth, Gdx.Graphics.BackBufferHeight );
     }
 
     /// <summary>

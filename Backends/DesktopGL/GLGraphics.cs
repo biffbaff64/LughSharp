@@ -18,39 +18,64 @@ using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 using Monitor = LibGDXSharp.Graphics.Monitor;
-using Timer = LibGDXSharp.Utils.Timer;
 
 namespace LibGDXSharp.Backends.Desktop;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class GLGraphics : AbstractGraphics, IDisposable
 {
     public GLWindow? Window { get; set; }
 
-    private          IGL20?       _gl20;
-    private          IGL30?       _gl30;
-    private          GLVersion    _glVersion;
-    private volatile int          _backBufferWidth;
-    private volatile int          _backBufferHeight;
-    private volatile int          _logicalWidth;
-    private volatile int          _logicalHeight;
-    private volatile bool         _isContinuous = true;
-    private          BufferFormat _bufferFormat;
-    private          long         _lastFrameTime = -1;
-    private          float        _deltaTime;
-    private          long         _frameId;
-    private          long         _frameCounterStart = 0;
-    private          int          _frames;
-    private          int          _fps;
-    private          int          _windowPosXBeforeFullscreen;
-    private          int          _windowPosYBeforeFullscreen;
-    private          int          _windowWidthBeforeFullscreen;
-    private          int          _windowHeightBeforeFullscreen;
-    private          DisplayMode  _displayModeBeforeFullscreen = null!;
+    private IGL20?       _gl20;
+    private IGL30?       _gl30;
+    private GLVersion    _glVersion    = null!;
+    private BufferFormat _bufferFormat = null!;
 
-    IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
-    IntBuffer _tmpBuffer2 = BufferUtils.NewIntBuffer( 1 );
-    IntBuffer _tmpBuffer3 = BufferUtils.NewIntBuffer( 1 );
-    IntBuffer _tmpBuffer4 = BufferUtils.NewIntBuffer( 1 );
+    private volatile bool _isContinuous = true;
+
+    private long        _lastFrameTime = -1;
+    private float       _deltaTime;
+    private long        _frameId;
+    private long        _frameCounterStart = 0;
+    private int         _frames;
+    private int         _fps;
+    private int         _windowPosXBeforeFullscreen;
+    private int         _windowPosYBeforeFullscreen;
+    private int         _windowWidthBeforeFullscreen;
+    private int         _windowHeightBeforeFullscreen;
+    private DisplayMode _displayModeBeforeFullscreen = null!;
+
+    public  IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
+    public  IntBuffer _tmpBuffer2 = BufferUtils.NewIntBuffer( 1 );
+    private IntBuffer _tmpBuffer3 = BufferUtils.NewIntBuffer( 1 );
+    private IntBuffer _tmpBuffer4 = BufferUtils.NewIntBuffer( 1 );
+
+    // ------------------------------------------------------------------------
+
+    #region Callbacks
+
+    public unsafe void ResizeCallback( Window* windowHandle, int width, int height )
+    {
+        UpdateFramebufferInfo();
+
+        if ( !Window!.ListenerInitialised )
+        {
+            return;
+        }
+
+        Window.MakeCurrent();
+
+        Gdx.GL20.GLViewport( 0, 0, width, height );
+
+        Window.Listener.Resize( Width, Height );
+        Window.Listener.Render();
+
+        GLFW.SwapBuffers( windowHandle );
+    }
+
+    #endregion Callbacks
+
+    // ------------------------------------------------------------------------
 
     public GLGraphics( GLWindow window )
     {
@@ -72,24 +97,36 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
         unsafe
         {
-            GLFW.SetFramebufferSizeCallback( window.WindowHandle, resizeCallback );
+            GLFW.SetFramebufferSizeCallback( window.WindowHandle, ResizeCallback );
         }
     }
 
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-    public class GLDisplayMode : DisplayMode
+    private unsafe void UpdateFramebufferInfo()
     {
-        public long MonitorHandle { get; set; }
+        if ( Window == null ) return;
 
-        public unsafe GLDisplayMode( long monitor, int width, int height, int refreshRate, int bitsPerPixel )
-            : base( width, height, refreshRate, bitsPerPixel )
+        GLFW.GetFramebufferSize( Window.WindowHandle, out var tmpWidth, out var tmpHeight );
+
+        this.BackBufferWidth  = tmpWidth;
+        this.BackBufferHeight = tmpHeight;
+
+        GLFW.GetWindowSize( Window.WindowHandle, out tmpWidth, out tmpHeight );
+
+        this.LogicalWidth  = tmpWidth;
+        this.LogicalHeight = tmpHeight;
+
+        _bufferFormat = new BufferFormat()
         {
-            this.MonitorHandle = monitor;
-        }
-    }
+            R                = Window.Config.R,
+            G                = Window.Config.G,
+            B                = Window.Config.B,
+            A                = Window.Config.A,
+            Depth            = Window.Config.Depth,
+            Stencil          = Window.Config.Stencil,
+            Samples          = Window.Config.Samples,
+            CoverageSampling = false
+        };
 
-    private static void UpdateFramebufferInfo()
-    {
     }
 
     private void Update()
@@ -104,7 +141,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
         _deltaTime     = ( time - _lastFrameTime ) / 1000000000.0f;
         _lastFrameTime = time;
 
-        if ( time - _frameCounterStart >= 1000000000 )
+        if ( ( time - _frameCounterStart ) >= 1000000000 )
         {
             _fps               = _frames;
             _frames            = 0;
@@ -115,13 +152,63 @@ public class GLGraphics : AbstractGraphics, IDisposable
         _frameId++;
     }
 
-    private static void InitiateGL()
+    private void InitiateGL()
     {
+        var vendorString   = string.Empty; //TODO: Gdx.GL20.GLGetString( GL11.GL_VENDOR );
+        var rendererString = string.Empty; //TODO: Gdx.GL20.GLGetString( GL11.GL_RENDERER );
+
+        _glVersion = new GLVersion
+            (
+            IApplication.ApplicationType.Desktop,
+            GLFW.GetVersionString(),
+            vendorString,
+            rendererString
+            );
+
+        if ( SupportsCubeMapSeamless() )
+        {
+            EnableCubeMapSeamless( true );
+        }
     }
 
-    public override bool SupportsDisplayModeChange() => false;
+    /// <summary>
+    /// Returns whether cubemap seamless feature is supported.
+    /// </summary>
+    public bool SupportsCubeMapSeamless()
+    {
+        return _glVersion.IsVersionEqualToOrHigher( 3, 2 ) || SupportsExtension( "GL_ARB_seamless_cube_map" );
+    }
 
-    public override Monitor GetPrimaryMonitor() => default;
+    /// <summary>
+    /// Enable or disable cubemap seamless feature. Default is true if supported.
+    /// Should only be called if this feature is supported.
+    /// <seealso cref="SupportsCubeMapSeamless()"/>
+    /// </summary>
+    /// <param name="enable"></param>
+    public void EnableCubeMapSeamless( bool enable )
+    {
+        //TODO:
+
+//        if ( enable )
+//        {
+//            Gdx.GL20.GLEnable( GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+//        }
+//        else
+//        {
+//            Gdx.GL20.GLDisable( GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+//        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    public override bool SupportsDisplayModeChange() => true;
+
+    // ------------------------------------------------------------------------
+
+    public override Monitor GetPrimaryMonitor()
+    {
+        return GLApplicationConfiguration.GLMonitor( GLFW.glfwGetPrimaryMonitor() );
+    }
 
     public override Monitor GetMonitor() => default;
 
@@ -147,6 +234,8 @@ public class GLGraphics : AbstractGraphics, IDisposable
     public override bool SetFullscreenMode( DisplayMode displayMode ) => false;
 
     public override bool SetWindowedMode( int width, int height ) => false;
+
+    // ------------------------------------------------------------------------
 
     public override void SetTitle( string title )
     {
@@ -248,11 +337,37 @@ public class GLGraphics : AbstractGraphics, IDisposable
     {
     }
 
-    public override int Width                { get; }
-    public override int Height               { get; }
-    public override int GetBackBufferWidth() => 0;
+    public override int Width
+    {
+        get
+        {
+            if ( Window?.Config.HdpiMode == HdpiMode.Pixels )
+            {
+                return BackBufferWidth;
+            }
+            else
+            {
+                return LogicalWidth;
+            }
+        }
+    }
 
-    public override int GetBackBufferHeight() => 0;
+    public override int Height
+    {
+        get
+        {
+            if ( Window?.Config.HdpiMode == HdpiMode.Pixels )
+            {
+                return BackBufferHeight;
+            }
+            else
+            {
+                return LogicalHeight;
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
 
     public override int GetSafeInsetLeft() => 0;
 
@@ -270,7 +385,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     public override GraphicsType GetGraphicsType() => GraphicsType.GL2;
 
-    public override GLVersion GetGLVersion() => null;
+    public override GLVersion GetGLVersion() => null!;
 
     public override float GetPpiX() => 0;
 
@@ -284,8 +399,6 @@ public class GLGraphics : AbstractGraphics, IDisposable
     {
         if ( disposing )
         {
-            this._gl20 = null;
-            this._gl30 = null;
         }
     }
 
@@ -293,5 +406,31 @@ public class GLGraphics : AbstractGraphics, IDisposable
     {
         Dispose( true );
         GC.SuppressFinalize( this );
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    public class GLDisplayMode : DisplayMode
+    {
+        public long MonitorHandle { get; set; }
+
+        public GLDisplayMode( long monitor, int width, int height, int refreshRate, int bitsPerPixel )
+            : base( width, height, refreshRate, bitsPerPixel )
+        {
+            this.MonitorHandle = monitor;
+        }
+    }
+
+    public class GLMonitor : Monitor
+    {
+        public long MonitorHandle { get; set; }
+
+        public GLMonitor( long monitor, int virtualX, int virtualY, string name )
+            : base( virtualX, virtualY, name )
+        {
+            this.MonitorHandle = monitor;
+        }
     }
 }

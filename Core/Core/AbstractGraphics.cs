@@ -24,7 +24,15 @@ public abstract class AbstractGraphics : IGraphics
 
     public float GetDensity() => GetPpiX() / 160f;
 
-    public float GetBackBufferScale() => GetBackBufferWidth() / ( float )Width;
+    public float GetBackBufferScale() => BackBufferWidth / ( float )Width;
+
+    public int BackBufferWidth { get; set; }
+
+    public int BackBufferHeight { get; set; }
+
+    public int LogicalWidth { get; set; }
+
+    public int LogicalHeight { get; set; }
 
     // ========================================================================
     // Abstract methods because C# insists this is done to fulfill the contract
@@ -91,10 +99,6 @@ public abstract class AbstractGraphics : IGraphics
     public abstract int Width { get; }
 
     public abstract int Height { get; }
-
-    public abstract int GetBackBufferWidth();
-
-    public abstract int GetBackBufferHeight();
 
     public abstract int GetSafeInsetLeft();
 

@@ -88,8 +88,8 @@ public class ScreenUtils
         {
             if ( Gdx.Graphics == null ) throw new NullReferenceException();
 
-            var w = Gdx.Graphics.GetBackBufferWidth();
-            var h = Gdx.Graphics.GetBackBufferHeight();
+            var w = Gdx.Graphics.BackBufferWidth;
+            var h = Gdx.Graphics.BackBufferHeight;
 
             return GetFrameBufferTexture( 0, 0, w, h );
         }
@@ -153,8 +153,8 @@ public class ScreenUtils
     {
         if ( Gdx.Graphics == null ) throw new NullReferenceException();
 
-        var w = Gdx.Graphics.GetBackBufferWidth();
-        var h = Gdx.Graphics.GetBackBufferHeight();
+        var w = Gdx.Graphics.BackBufferWidth;
+        var h = Gdx.Graphics.BackBufferHeight;
 
         return GetFrameBufferPixels( 0, 0, w, h, flipY );
     }

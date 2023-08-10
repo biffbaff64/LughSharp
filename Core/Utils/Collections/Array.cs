@@ -601,7 +601,7 @@ public class Array<T>
             throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
         }
 
-        return Selector< T >.Instance().Select( Items, comparator, kthLowest, Size );
+        return Selector< T >.Instance.Select( Items, comparator, kthLowest, Size );
     }
 
     /// <summary>
@@ -617,7 +617,7 @@ public class Array<T>
             throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
         }
 
-        return Selector< T >.Instance().SelectIndex( Items, comparator, kthLowest, Size );
+        return Selector< T >.Instance.SelectIndex( Items, comparator, kthLowest, Size );
     }
 
     /// <summary>

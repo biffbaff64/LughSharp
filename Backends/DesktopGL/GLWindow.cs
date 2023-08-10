@@ -39,7 +39,18 @@ public class GLWindow : IDisposable
     private          bool              _iconified        = false;
     private          bool              _requestRendering = false;
 
-    public GLWindow( IApplicationListener listener, GLApplicationConfiguration config, GLApplicationBase application )
+    // ------------------------------------------------------------------------
+
+//    #region Callbacks
+
+    
+//    #endregion Callbacks
+
+    // ------------------------------------------------------------------------
+
+    public GLWindow( IApplicationListener listener,
+                     GLApplicationConfiguration config,
+                     GLApplicationBase application )
     {
         this.Listener       = listener;
         this.WindowListener = config.WindowListener;
@@ -58,12 +69,12 @@ public class GLWindow : IDisposable
         this.Input        = _application.CreateInput( this );
         this.Graphics     = new GLGraphics( this );
 
-        GLFW.SetWindowFocusCallback( windowHandle, focusCallback );
-        GLFW.SetWindowIconifyCallback( windowHandle, iconifyCallback );
-        GLFW.SetWindowMaximizeCallback( windowHandle, maximizeCallback );
-        GLFW.SetWindowCloseCallback( windowHandle, closeCallback );
-        GLFW.SetDropCallback( windowHandle, dropCallback );
-        GLFW.SetWindowRefreshCallback( windowHandle, refreshCallback );
+        GLFW.SetWindowFocusCallback( windowHandle, FocusCallback );
+        GLFW.SetWindowIconifyCallback( windowHandle, IconifyCallback );
+        GLFW.SetWindowMaximizeCallback( windowHandle, MaximizeCallback );
+        GLFW.SetWindowCloseCallback( windowHandle, CloseCallback );
+        GLFW.SetDropCallback( windowHandle, DropCallback );
+        GLFW.SetWindowRefreshCallback( windowHandle, RefreshCallback );
 
         if ( WindowListener != null )
         {
@@ -134,7 +145,7 @@ public class GLWindow : IDisposable
         }
     }
 
-    private unsafe void MakeCurrent()
+    public unsafe void MakeCurrent()
     {
         Gdx.Graphics = this.Graphics;
         Gdx.GL30     = this.Graphics.GetGL30();

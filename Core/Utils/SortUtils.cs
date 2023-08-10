@@ -25,15 +25,10 @@ namespace LibGDXSharp.Utils;
 /// methods (uses timsort).
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class SortUtils
 {
-    private readonly static SortUtils Instance = new();
-
-    // ReSharper disable once ConvertToAutoProperty
-    public static SortUtils Instance
-    {
-        [DebuggerStepThrough] get => INSTANCE;
-    }
+    public static SortUtils Instance { [DebuggerStepThrough] get; } = new();
 
     private TimSort< object >? _timSort;
     private ComparableTimSort< object >? _comparableTimSort;

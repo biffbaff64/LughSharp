@@ -485,7 +485,7 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public Vector2 Interpolate( Vector2 target, float alpha, Interpolator interpolation )
+    public Vector2 Interpolate( Vector2 target, float alpha, Interpolation interpolation )
     {
         return Lerp( target, interpolation.Apply( alpha ) );
     }

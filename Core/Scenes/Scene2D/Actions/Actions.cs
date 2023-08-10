@@ -80,7 +80,7 @@ public class Actions
     public static MoveToAction MoveTo( float x,
                                        float y,
                                        float duration = 0,
-                                       IInterpolation? interpolation = null )
+                                       Interpolation? interpolation = null )
     {
         var action = Action< MoveToAction >();
 
@@ -95,7 +95,7 @@ public class Actions
                                               float y,
                                               int alignment,
                                               float duration = 0,
-                                              IInterpolation? interpolation = null )
+                                              Interpolation? interpolation = null )
     {
         var action = Action< MoveToAction >();
 
@@ -112,7 +112,7 @@ public class Actions
     public static MoveByAction MoveBy( float amountX,
                                        float amountY,
                                        float duration = 0,
-                                       IInterpolation? interpolation = null )
+                                       Interpolation? interpolation = null )
     {
         var action = Action< MoveByAction >();
 
@@ -129,7 +129,7 @@ public class Actions
     public static SizeToAction SizeTo( float x,
                                        float y,
                                        float duration = 0,
-                                       IInterpolation? interpolation = null )
+                                       Interpolation? interpolation = null )
     {
         var action = Action< SizeToAction >();
 
@@ -146,7 +146,7 @@ public class Actions
     public static SizeByAction SizeBy( float amountX,
                                        float amountY,
                                        float duration = 0,
-                                       IInterpolation? interpolation = null )
+                                       Interpolation? interpolation = null )
     {
         var action = Action< SizeByAction >();
 
@@ -158,7 +158,7 @@ public class Actions
     }
 
     /** Scales the actor instantly. */
-    public static ScaleToAction ScaleTo( float x, float y, float duration = 0, IInterpolation? interpolation = null )
+    public static ScaleToAction ScaleTo( float x, float y, float duration = 0, Interpolation? interpolation = null )
     {
         var action = Action< ScaleToAction >();
 
@@ -173,7 +173,7 @@ public class Actions
     public static ScaleByAction ScaleBy( float amountX,
                                          float amountY,
                                          float duration = 0,
-                                         IInterpolation? interpolation = null )
+                                         Interpolation? interpolation = null )
     {
         var action = Action< ScaleByAction >();
 
@@ -185,7 +185,7 @@ public class Actions
     }
 
     /** Rotates the actor instantly. */
-    public static RotateToAction RotateTo( float rotation, float duration = 0, IInterpolation? interpolation = null )
+    public static RotateToAction RotateTo( float rotation, float duration = 0, Interpolation? interpolation = null )
     {
         var action = Action< RotateToAction >();
 
@@ -199,7 +199,7 @@ public class Actions
     /** Rotates the actor instantly. */
     public static RotateByAction RotateBy( float rotationAmount,
                                            float duration = 0,
-                                           IInterpolation? interpolation = null )
+                                           Interpolation? interpolation = null )
     {
         var action = Action< RotateByAction >();
 
@@ -212,7 +212,7 @@ public class Actions
 
     /// Sets the actor's color instantly.
     /// Transitions from the color at the time this action starts to the specified color.
-    public static ColorAction Color( Color color, float duration = 0, IInterpolation? interpolation = null )
+    public static ColorAction Color( Color color, float duration = 0, Interpolation? interpolation = null )
     {
         var action = Action< ColorAction >();
 
@@ -225,7 +225,7 @@ public class Actions
 
     /** Sets the actor's alpha instantly. */
     /** Transitions from the alpha at the time this action starts to the specified alpha. */
-    public static AlphaAction Alpha( float a, float duration = 0, IInterpolation? interpolation = null )
+    public static AlphaAction Alpha( float a, float duration = 0, Interpolation? interpolation = null )
     {
         var action = Action< AlphaAction >();
 
@@ -243,7 +243,7 @@ public class Actions
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 0. */
-    public static AlphaAction FadeOut( float duration, IInterpolation? interpolation )
+    public static AlphaAction FadeOut( float duration, Interpolation? interpolation )
     {
         var action = Action< AlphaAction >();
 
@@ -261,7 +261,7 @@ public class Actions
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 1. */
-    public static AlphaAction FadeIn( float duration, IInterpolation? interpolation )
+    public static AlphaAction FadeIn( float duration, Interpolation? interpolation )
     {
         var action = Action< AlphaAction >();
 
