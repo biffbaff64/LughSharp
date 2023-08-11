@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Monitor = LibGDXSharp.Graphics.Monitor;
-
 namespace LibGDXSharp.Core;
 
 public interface IGraphics
@@ -33,27 +31,17 @@ public interface IGraphics
     /// <summary>
     /// Returns the <see cref="IGL20"/> instance.
     /// </summary>
-    /// <remarks>MAY be replaced by a property.</remarks>
-    IGL20 GetGL20();
+    IGL20? GL20 { get; set; }
 
     /// <summary>
     /// Returns the <see cref="IGL30"/> instance or null if unsupported.
     /// </summary>
-    /// <remarks>MAY be replaced by a property.</remarks>
-    IGL30? GetGL30();
+    IGL30? GL30 { get; set; }
 
-    /// <summary>
-    /// Sets the IGL20 instance.
-    /// </summary>
-    /// <remarks>MAY be replaced by a property.</remarks>
-    void SetGL20( IGL20 gl20 );
-
-    /// <summary>
-    /// Sets the IGL30 instance.
-    /// </summary>
-    /// <remarks>MAY be replaced by a property.</remarks>
-    void SetGL30( IGL30? gl30 );
-
+    float DeltaTime { get; set; }
+    
+    GLVersion GLVersion { get; set; }
+    
     int Width { get; }
 
     int Height { get; }
@@ -74,13 +62,9 @@ public interface IGraphics
 
     long GetFrameId();
 
-    float GetDeltaTime();
-
     int GetFramesPerSecond();
 
     GraphicsType GetGraphicsType();
-
-    GLVersion GetGLVersion();
 
     float GetPpiX();
 
@@ -169,4 +153,63 @@ public interface IGraphics
     /// </summary>
     /// <param name="systemCursor">The system cursor to use.</param>
     void SetSystemCursor( ICursor.SystemCursor systemCursor );
+    
+    public class DisplayMode
+    {
+        public int Width        { get; set; }
+        public int Height       { get; set; }
+        public int RefreshRate  { get; set; }
+        public int BitsPerPixel { get; set; }
+
+        public DisplayMode( int width, int height, int refreshRate, int bitsPerPixel )
+        {
+            this.Width        = width;
+            this.Height       = height;
+            this.RefreshRate  = refreshRate;
+            this.BitsPerPixel = bitsPerPixel;
+        }
+
+        public new string ToString()
+        {
+            return Width + "x" + Height + ", bpp: " + BitsPerPixel + ", hz: " + RefreshRate;
+        }
+    }
+    
+    public class Monitor
+    {
+        public int    VirtualX { get; set; }
+        public int    VirtualY { get; set; }
+        public string Name     { get; set; }
+
+        public Monitor( int virtualX, int virtualY, string name )
+        {
+            this.VirtualX = virtualX;
+            this.VirtualY = virtualY;
+            this.Name     = name;
+        }
+    }
+    
+    /// <summary>
+    /// Class describing the bits per pixel, depth buffer precision,
+    /// stencil precision and number of MSAA samples.
+    /// </summary>
+    public record BufferFormat
+    {
+        public int  R                { get; set; } // number of bits per color channel.
+        public int  G                { get; set; } // ...
+        public int  B                { get; set; } // ...
+        public int  A                { get; set; } // ...
+        public int  Depth            { get; set; } // number of bits for depth and stencil buffer.
+        public int  Stencil          { get; set; } // ...
+        public int  Samples          { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
+        public bool CoverageSampling { get; set; } // whether coverage sampling anti-aliasing is used.
+//                                                 If so, you have to clear the coverage buffer as well!
+
+        public override string ToString()
+        {
+            return "r - " + R + ", g - " + G + ", b - " + B + ", a - " + A
+                   + ", depth - " + Depth + ", stencil - " + Stencil
+                   + ", num samples - " + Samples + ", coverage sampling - " + CoverageSampling;
+        }
+    }
 }

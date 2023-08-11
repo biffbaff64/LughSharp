@@ -43,15 +43,15 @@ public abstract class Game : IApplicationListener
             {
                 _screen.Show();
 
-                if ( Gdx.Graphics != null )
-                {
-                    _screen.Resize( Gdx.Graphics.Width, Gdx.Graphics.Height );
-                }
+                _screen.Resize( Gdx.Graphics.Width, Gdx.Graphics.Height );
             }
 
         }
     }
 
+    /// <summary>
+    /// Called when the <see cref="IApplication"/> is first created.
+    /// </summary>
     public virtual void Create()
     {
     }
@@ -61,27 +61,44 @@ public abstract class Game : IApplicationListener
     /// </summary>
     public virtual void Render()
     {
-        if ( Gdx.Graphics != null )
-        {
-            Screen?.Render( Gdx.Graphics.GetDeltaTime() );
-        }
+        Screen?.Render( Gdx.Graphics.DeltaTime );
     }
 
+    /// <summary>
+    /// Called when the <see cref="IApplication"/> is resized. This can
+    /// happen at any point during a non-paused state but will never happen
+    /// before a call to <see cref="Create"/>
+    /// </summary>
+    /// <param name="width">The new width in pixels.</param>
+    /// <param name="height">The new height in pixels.</param>
     public virtual void Resize( int width, int height )
     {
         Screen?.Resize( width, height );
     }
 
+    /// <summary>
+    /// Called when the <see cref="IApplication"/> is paused, usually when
+    /// it's not active or visible on-screen. An Application is also
+    /// paused before it is destroyed.
+    /// </summary>
     public virtual void Pause()
     {
         Screen?.Pause();
     }
 
+    /// <summary>
+    /// Called when the <see cref="IApplication"/> is resumed from a paused state,
+    /// usually when it regains focus.
+    /// </summary>
     public virtual void Resume()
     {
         Screen?.Resume();
     }
 
+    /// <summary>
+    /// Called when the <see cref="IApplication"/> is destroyed.
+    /// Preceded by a call to <see cref="Pause"/>.
+    /// </summary>
     public virtual void Dispose()
     {
         Screen?.Hide();

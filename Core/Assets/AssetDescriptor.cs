@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using StringBuilder = System.Text.StringBuilder;
-
 namespace LibGDXSharp.Assets;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
@@ -67,11 +65,6 @@ public class AssetDescriptor
     /// <returns></returns>
     public new string ToString()
     {
-        var sb = new StringBuilder();
-        sb.Append( FilePath );
-        sb.Append( ", " );
-        sb.Append( Type.FullName );
-
-        return sb.ToString();
+        return $"{FilePath}, {Type.FullName}";
     }
 }

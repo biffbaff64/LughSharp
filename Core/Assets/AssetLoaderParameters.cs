@@ -16,9 +16,6 @@
 
 namespace LibGDXSharp.Assets;
 
-// -------------------------------------------------------------------
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-// -------------------------------------------------------------------
 public class AssetLoaderParameters
 {
     /// <summary>
@@ -32,9 +29,7 @@ public class AssetLoaderParameters
     public ILoadedCallback? LoadedCallback { get; set; }
 }
 
-// -------------------------------------------------------------------
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-// -------------------------------------------------------------------
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class DefaultLoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
 {
     private readonly int _refCount;

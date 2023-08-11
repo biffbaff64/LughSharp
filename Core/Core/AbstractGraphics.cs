@@ -14,47 +14,44 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Monitor = LibGDXSharp.Graphics.Monitor;
-
 namespace LibGDXSharp.Core;
 
+[SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
 public abstract class AbstractGraphics : IGraphics
 {
-    public float GetRawDeltaTime() => GetDeltaTime();
-
-    public float GetDensity() => GetPpiX() / 160f;
+    public float GetRawDeltaTime() => DeltaTime;
+    public float GetDensity()      => GetPpiX() / 160f;
 
     public float GetBackBufferScale() => BackBufferWidth / ( float )Width;
 
-    public int BackBufferWidth { get; set; }
-
-    public int BackBufferHeight { get; set; }
-
-    public int LogicalWidth { get; set; }
-
-    public int LogicalHeight { get; set; }
+    public int       BackBufferWidth  { get; protected set; }
+    public int       BackBufferHeight { get; protected set; }
+    public int       LogicalWidth     { get; set; }
+    public int       LogicalHeight    { get; set; }
+    public IGL20?    GL20             { get; set; }
+    public IGL30?    GL30             { get; set; }
+    public float     DeltaTime        { get; set; }
+    public GLVersion GLVersion        { get; set; } = null!;
 
     // ========================================================================
     // Abstract methods because C# insists this is done to fulfill the contract
     // between the class and interface.
 
-    public abstract bool SupportsDisplayModeChange();
+    public abstract IGraphics.Monitor GetPrimaryMonitor();
 
-    public abstract Monitor GetPrimaryMonitor();
+    public abstract IGraphics.Monitor GetMonitor();
 
-    public abstract Monitor GetMonitor();
+    public abstract IGraphics.Monitor[] GetMonitors();
 
-    public abstract Monitor[] GetMonitors();
+    public abstract IGraphics.DisplayMode[] GetDisplayModes();
 
-    public abstract DisplayMode[] GetDisplayModes();
+    public abstract IGraphics.DisplayMode[] GetDisplayModes( IGraphics.Monitor monitor );
 
-    public abstract DisplayMode[] GetDisplayModes( Monitor monitor );
+    public abstract IGraphics.DisplayMode GetDisplayMode();
 
-    public abstract DisplayMode GetDisplayMode();
+    public abstract IGraphics.DisplayMode GetDisplayMode( IGraphics.Monitor monitor );
 
-    public abstract DisplayMode GetDisplayMode( Monitor monitor );
-
-    public abstract bool SetFullscreenMode( DisplayMode displayMode );
+    public abstract bool SetFullscreenMode( IGraphics.DisplayMode displayMode );
 
     public abstract bool SetWindowedMode( int width, int height );
 
@@ -68,9 +65,11 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract void SetForegroundFps( int fps );
 
-    public abstract BufferFormat GetBufferFormat();
+    public abstract IGraphics.BufferFormat GetBufferFormat();
 
     public abstract bool SupportsExtension( string extension );
+
+    public abstract bool SupportsDisplayModeChange();
 
     public abstract void SetContinuousRendering( bool isContinuous );
 
@@ -88,14 +87,6 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract bool IsGL30Available();
 
-    public abstract IGL20 GetGL20();
-
-    public abstract IGL30? GetGL30();
-
-    public abstract void SetGL20( IGL20 gl20 );
-
-    public abstract void SetGL30( IGL30? gl30 );
-
     public abstract int Width { get; }
 
     public abstract int Height { get; }
@@ -110,13 +101,9 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract long GetFrameId();
 
-    public abstract float GetDeltaTime();
-
     public abstract int GetFramesPerSecond();
 
     public abstract GraphicsType GetGraphicsType();
-
-    public abstract GLVersion GetGLVersion();
 
     public abstract float GetPpiX();
 

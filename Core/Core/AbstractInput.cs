@@ -26,7 +26,6 @@ public abstract class AbstractInput : IInput
     private readonly List< int > _keysToCatch;
 
     /// <summary>
-    /// 
     /// </summary>
     protected AbstractInput()
     {
@@ -37,7 +36,6 @@ public abstract class AbstractInput : IInput
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
@@ -80,37 +78,25 @@ public abstract class AbstractInput : IInput
     /// 
     /// </summary>
     /// <returns></returns>
-    public bool IsCatchBackKey()
-    {
-        return _keysToCatch.Contains( IInput.Keys.BACK );
-    }
+    public bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="catchBack"></param>
-    public void SetCatchBackKey( bool catchBack )
-    {
-        SetCatchKey( IInput.Keys.BACK, catchBack );
-    }
+    public void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    public bool IsCatchMenuKey()
-    {
-        return _keysToCatch.Contains( IInput.Keys.MENU );
-    }
+    public bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="catchMenu"></param>
-    public void SetCatchMenuKey( bool catchMenu )
-    {
-        SetCatchKey( IInput.Keys.MENU, catchMenu );
-    }
+    public void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
 
     /// <summary>
     /// 
@@ -134,10 +120,10 @@ public abstract class AbstractInput : IInput
     /// </summary>
     /// <param name="keycode"></param>
     /// <returns></returns>
-    public bool IsCatchKey( int keycode )
-    {
-        return _keysToCatch.Contains( keycode );
-    }
+    public bool IsCatchKey( int keycode ) => _keysToCatch.Contains( keycode );
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     public abstract float GetAccelerometerX();
 
@@ -187,7 +173,10 @@ public abstract class AbstractInput : IInput
 
     public abstract void SetCursorPosition( int x, int y );
 
-    public abstract void GetTextInput( IInput.ITextInputListener listener, string title, string text, string hint );
+    public abstract void GetTextInput( IInput.ITextInputListener listener,
+                                       string title,
+                                       string text,
+                                       string hint );
 
     public abstract void GetTextInput( IInput.ITextInputListener listener,
                                        string title,

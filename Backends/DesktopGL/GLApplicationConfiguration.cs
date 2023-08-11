@@ -49,6 +49,10 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     public HdpiMode      HdpiMode             { get; set; } = HdpiMode.Logical;
     public StreamWriter? DebugStream          { get; set; }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="config"></param>
+    /// <returns></returns>
     public static GLApplicationConfiguration Copy( GLApplicationConfiguration config )
     {
         var copy = new GLApplicationConfiguration();
@@ -58,6 +62,9 @@ public class GLApplicationConfiguration : GLWindowConfiguration
         return copy;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="config"></param>
     private void Set( GLApplicationConfiguration config )
     {
         base.SetWindowConfiguration( config );
@@ -149,7 +156,6 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="enable"></param>
     /// <param name="debugOutputStream"></param>
@@ -179,7 +185,11 @@ public class GLApplicationConfiguration : GLWindowConfiguration
             );
     }
 
-    public GLMonitor ToLwjgl3Monitor( long glfwMonitor )
+    /// <summary>
+    /// </summary>
+    /// <param name="glfwMonitor"></param>
+    /// <returns></returns>
+    public GLMonitor ToGLMonitor( long glfwMonitor )
     {
         unsafe
         {

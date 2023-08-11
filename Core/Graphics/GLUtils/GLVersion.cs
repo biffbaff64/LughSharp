@@ -20,11 +20,9 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class GLVersion : LibGDXSharp.Core.GDXVersion
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+public class GLVersion : GDXVersion
 {
-    private const string TAG = "GLVersion";
-
     public enum GLType
     {
         None,
@@ -36,6 +34,8 @@ public class GLVersion : LibGDXSharp.Core.GDXVersion
     public string? VendorString   { get; set; }
     public string? RendererString { get; set; }
     public GLType  GLtype         { get; set; }
+
+    private const string TAG = "GLVersion";
 
     /// <summary>
     /// </summary>
@@ -50,10 +50,10 @@ public class GLVersion : LibGDXSharp.Core.GDXVersion
     {
         this.GLtype = appType switch
                       {
-                          IApplication.ApplicationType.Android => GLType.GLES,
-                          IApplication.ApplicationType.Desktop => GLType.OpenGL,
-                          IApplication.ApplicationType.WebGL   => GLType.WebGL,
-                          _                                    => GLType.None
+                              IApplication.ApplicationType.Android => GLType.GLES,
+                              IApplication.ApplicationType.Desktop => GLType.OpenGL,
+                              IApplication.ApplicationType.WebGL   => GLType.WebGL,
+                              _                                    => GLType.None
                       };
 
         if ( GLtype == GLType.GLES )
@@ -97,7 +97,7 @@ public class GLVersion : LibGDXSharp.Core.GDXVersion
         if ( matches.Count > 0 )
         {
             var resultSplit = rx.Split( "\\." );
-            
+
             MajorVersion    = ParseInt( resultSplit[ 0 ], 2 );
             MinorVersion    = resultSplit.Length < 2 ? 0 : ParseInt( resultSplit[ 1 ], 0 );
             RevisionVersion = resultSplit.Length < 3 ? 0 : ParseInt( resultSplit[ 2 ], 0 );
@@ -140,7 +140,7 @@ public class GLVersion : LibGDXSharp.Core.GDXVersion
     public bool IsVersionEqualToOrHigher( int testMajorVersion, int testMinorVersion )
     {
         return ( MajorVersion > testMajorVersion )
-               || ( ( MajorVersion == testMajorVersion ) && ( MinorVersion >= testMinorVersion ) );
+            || ( ( MajorVersion == testMajorVersion ) && ( MinorVersion >= testMinorVersion ) );
     }
 
     /// <summary>
@@ -149,8 +149,8 @@ public class GLVersion : LibGDXSharp.Core.GDXVersion
     public string DebugVersionString()
     {
         return $"Type: {GLtype}\n"
-               + $"Version: {MajorVersion}:{MinorVersion}:{RevisionVersion}\n"
-               + $"Vendor: {VendorString}\n"
-               + $"Renderer: {RendererString}";
+             + $"Version: {MajorVersion}:{MinorVersion}:{RevisionVersion}\n"
+             + $"Vendor: {VendorString}\n"
+             + $"Renderer: {RendererString}";
     }
 }

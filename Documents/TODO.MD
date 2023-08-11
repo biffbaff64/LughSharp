@@ -20,6 +20,9 @@ provide that facility.
 -         Some/Most Get / Set method declarations in interfaces could become Properties.
 -         switch expressions instead of switch statements where appropriate.
 -         Check methods to see if they can be virtual.
+-         Use [PublicApi] where necessary.
+-         Use [UsedImplicitly] where necessary.
+-         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
 
@@ -35,15 +38,6 @@ provide that facility.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - PRIORITY is 2D classes first
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-- The following annotations will be found in many files.
-
-  - [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-  - [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-
-- They will mostly be removed when the project is complete.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -222,12 +216,10 @@ FILES
 GRAPHICS
 --------
 
-    - DONE - BufferFormat                       record class
     - DONE - Camera                             
     - DONE - Color                              
     - DONE - Colors                             
     - DONE - Cubemap                            
-    - DONE - DisplayMode                        
     - DONE - FPSLogger                          
     - DONE - GLTexture                          
     - DONE - GraphicsType                       
@@ -239,7 +231,6 @@ GRAPHICS
     - DONE - ITextureArrayData                  
     - DONE - ITextureData                       
     - DONE - Mesh                               
-    - DONE - Monitor                            
     - DONE - OrthographicCamera                 
     - DONE - PerspectiveCamera                  
     - DONE - Pixmap                             

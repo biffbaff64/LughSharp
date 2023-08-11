@@ -14,20 +14,25 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Core;
 
+/// <summary>
+/// </summary>
+[PublicAPI]
 public class GDXVersion
 {
-    private readonly static Version Version = new();
-
     // the current version of LibGDXSharp as a string in the major.minor.revision format
-    public const string VERSION_STRING = "0.0.1";
+    public const string LIBRARY_VERSION_STRING = "0.0.1";
 
     protected static int MajorVersion    { get; set; }
     protected static int MinorVersion    { get; set; }
     protected static int RevisionVersion { get; set; }
+
+    private readonly static Version Version = new();
 
     static GDXVersion()
     {
@@ -41,7 +46,7 @@ public class GDXVersion
         }
         catch ( Exception e )
         {
-            throw new GdxRuntimeException( "Invalid version " + VERSION_STRING, e );
+            throw new GdxRuntimeException( $"Invalid version {LIBRARY_VERSION_STRING}", e );
         }
     }
 

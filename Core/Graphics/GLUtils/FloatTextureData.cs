@@ -23,6 +23,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// A <see cref="ITextureData"/> implementation which should be used
 /// to create float textures.
 /// </summary>
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class FloatTextureData : ITextureData
 {
     public FloatBuffer Buffer     { get; private set; } = null!;
@@ -53,7 +54,7 @@ public class FloatTextureData : ITextureData
         {
             var amountOfFloats = 4;
 
-            if ( Gdx.Graphics.GetGLVersion().GLtype.Equals( GLVersion.GLType.OpenGL ) )
+            if ( Gdx.Graphics.GLVersion.GLtype.Equals( GLVersion.GLType.OpenGL ) )
             {
                 if ( ( _internalFormat == IGL30.GL_RGBA16_F ) || ( _internalFormat == IGL30.GL_RGBA32_F ) )
                     amountOfFloats = 4;

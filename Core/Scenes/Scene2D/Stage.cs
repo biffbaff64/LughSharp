@@ -20,7 +20,6 @@ using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Pooling;
@@ -57,7 +56,7 @@ public class Stage : InputAdapter
     private readonly int[]    _pointerScreenX    = new int[ 20 ];
     private readonly int[]    _pointerScreenY    = new int[ 20 ];
 
-    public readonly SnapshotArray< TouchFocus > touchFocuses = new(true, 4);
+    public readonly SnapshotArray< TouchFocus > touchFocuses = new( true, 4 );
 
     private readonly bool  _ownsBatch;
     private readonly Group _root = null!;
@@ -69,21 +68,28 @@ public class Stage : InputAdapter
     private Actor? _keyboardFocus;
     private Actor? _scrollFocus;
 
-    private ShapeRenderer?   _debugShapes;
-    private bool             _debugAll;
-    private bool             _debugUnderMouse;
-    private bool             _debugParentUnderMouse;
-    private Table.DebugType  _debugTableUnderMouse = Table.DebugType.None;
+    private ShapeRenderer?  _debugShapes;
+    private bool            _debugAll;
+    private bool            _debugUnderMouse;
+    private bool            _debugParentUnderMouse;
+    private Table.DebugType _debugTableUnderMouse = Table.DebugType.None;
 
     /// <summary>
     /// Creates a stage with a <see cref="ScalingViewport"/> set to
     /// <see cref="Scaling.Stretch"/>. The stage will use its own <see cref="IBatch"/>
     /// which will be disposed when the stage is disposed. 
     /// </summary>
-    public Stage()
-        : this( new ScalingViewport( Scaling.Stretch, Gdx.Graphics.Width,
-                                     Gdx.Graphics.Height, new OrthographicCamera() ),
-                new SpriteBatch() )
+    public Stage() : this
+            (
+            new ScalingViewport
+                    (
+                    Scaling.Stretch,
+                    Gdx.Graphics.Width,
+                    Gdx.Graphics.Height,
+                    new OrthographicCamera()
+                    ),
+            new SpriteBatch()
+            )
     {
         _ownsBatch = true;
     }
@@ -227,7 +233,7 @@ public class Stage : InputAdapter
     /// </summary>
     public void Act()
     {
-        Act( Math.Min( Gdx.Graphics.GetDeltaTime(), 1 / 30f ) );
+        Act( Math.Min( Gdx.Graphics.DeltaTime, 1 / 30f ) );
     }
 
     /// <summary>
@@ -252,13 +258,13 @@ public class Stage : InputAdapter
                     _pointerOverActors[ pointer ] = null;
 
                     ScreenToStageCoordinates
-                        (
-                        _tempCoords.Set
                             (
-                            _pointerScreenX[ pointer ],
-                            _pointerScreenY[ pointer ]
-                            )
-                        );
+                            _tempCoords.Set
+                                    (
+                                    _pointerScreenX[ pointer ],
+                                    _pointerScreenY[ pointer ]
+                                    )
+                            );
 
                     // Exit over last.
                     InputEvent inputEvent = Pools< InputEvent >.Obtain();
@@ -280,12 +286,12 @@ public class Stage : InputAdapter
 
             // Update over actor for the pointer.
             _pointerOverActors[ pointer ] = FireEnterAndExit
-                (
-                overLast,
-                _pointerScreenX[ pointer ],
-                _pointerScreenY[ pointer ],
-                pointer
-                );
+                    (
+                    overLast,
+                    _pointerScreenX[ pointer ],
+                    _pointerScreenY[ pointer ],
+                    pointer
+                    );
         }
 
         // Update over actor for the mouse on the desktop.
@@ -682,10 +688,10 @@ public class Stage : InputAdapter
             TouchFocus focus = this.touchFocuses.Get( i );
 
             if ( ( focus.listener == listener )
-                 && ( focus.listenerActor == listenerActor )
-                 && ( focus.target == target )
-                 && ( focus.pointer == pointer )
-                 && ( focus.button == button ) )
+              && ( focus.listenerActor == listenerActor )
+              && ( focus.target == target )
+              && ( focus.pointer == pointer )
+              && ( focus.button == button ) )
             {
                 this.touchFocuses.RemoveIndex( i );
                 Pools< TouchFocus >.Free( focus );
@@ -778,7 +784,7 @@ public class Stage : InputAdapter
             TouchFocus? focus = items[ i ];
 
             if ( ( focus?.listener == exceptListener )
-                 && ( focus?.listenerActor == exceptActor ) )
+              && ( focus?.listenerActor == exceptActor ) )
             {
                 continue;
             }
@@ -1170,7 +1176,7 @@ public class Stage : InputAdapter
             }
         }
     }
-    
+
     /// <summary>
     /// If true, debug is enabled only for the actor under the mouse.
     /// Can be combined with <see cref="DebugAll"/>.

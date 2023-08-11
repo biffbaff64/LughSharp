@@ -29,7 +29,7 @@ internal interface IRefCountedContainer
 /// using the object, and decrement it after you're done using it.
 /// AssetManager handles this automatically.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class RefCountedContainer : IRefCountedContainer
 {
     public int RefCount { get; set; } = 1;

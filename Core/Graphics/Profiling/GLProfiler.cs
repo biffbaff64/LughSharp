@@ -44,11 +44,11 @@ public class GLProfiler
 
         if ( graphics.IsGL30Available() )
         {
-            Interceptor = new GL30Interceptor( this, graphics.GetGL30() );
+            Interceptor = new GL30Interceptor( this, graphics.GL30! );
         }
         else
         {
-            Interceptor = new GL20Interceptor( this, graphics.GetGL20() );
+            Interceptor = new GL20Interceptor( this, graphics.GL20! );
         }
 
         Listener = new GLLoggingListener();
@@ -64,11 +64,11 @@ public class GLProfiler
 
         if ( Graphics.IsGL30Available() )
         {
-            Graphics.SetGL30( ( IGL30 )Interceptor );
+            Graphics.GL30 = ( IGL30 )Interceptor;
         }
         else
         {
-            Graphics.SetGL20( Interceptor );
+            Graphics.GL20 = Interceptor;
         }
 
         Enabled = true;
@@ -80,15 +80,13 @@ public class GLProfiler
     {
         if ( !Enabled ) return;
 
-        IGL30? gl30 = Graphics.GetGL30();
-
-        if ( gl30 != null )
+        if ( Graphics.GL30 != null )
         {
-            Graphics.SetGL30( ( ( GL30Interceptor )Graphics.GetGL30()! ).GL30 );
+            Graphics.GL30 = ( ( GL30Interceptor )Graphics.GL30! ).GL30;
         }
         else
         {
-            Graphics.SetGL20( ( ( GL20Interceptor )Graphics.GetGL20() ).GL20 );
+            Graphics.GL20 = ( ( GL20Interceptor )Graphics.GL20! ).GL20;
         }
 
         Enabled = false;

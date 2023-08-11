@@ -41,7 +41,10 @@ public class GLWindowConfiguration
     public GLGraphics.GLDisplayMode? FullscreenMode     { get; set; }
     public string?                   Title              { get; set; }
 
-    internal void SetWindowConfiguration( GLWindowConfiguration config )
+    /// <summary>
+    /// </summary>
+    /// <param name="config"></param>
+    public void SetWindowConfiguration( GLWindowConfiguration config )
     {
         WindowX            = config.WindowX;
         WindowY            = config.WindowY;
@@ -73,9 +76,11 @@ public class GLWindowConfiguration
         VSyncEnabled           = config.VSyncEnabled;
     }
 
-    ///
-    /// @param visibility whether the window will be visible on creation. (default true)
-    ///
+    /// <summary>
+    /// </summary>
+    /// <param name="visibility">
+    /// whether the window will be visible on creation. (default true)
+    /// </param>
     public void SetInitialVisible( bool visibility )
     {
         this.InitialVisible = visibility;
@@ -95,61 +100,71 @@ public class GLWindowConfiguration
         this.WindowHeight = height;
     }
 
-    /// 
-    /// @param resizable whether the windowed mode window is resizable (default true)
-    ///
+    /// <summary>
+    /// </summary>
+    /// <param name="resizable">
+    /// whether the windowed mode window is resizable (default true)
+    /// </param>
     public void SetResizable( bool resizable )
     {
         this.WindowResizable = resizable;
     }
 
-    ///
-    /// @param decorated whether the windowed mode window is decorated, i.e. displaying the title bars (default true)
-    ///
+    /// <summary>
+    /// </summary>
+    /// <param name="decorated">
+    /// whether the windowed mode window is decorated, i.e. displaying the title bars (default true)
+    /// </param>
     public void SetDecorated( bool decorated )
     {
         this.WindowDecorated = decorated;
     }
 
-    ///
-    /// @param maximized whether the window starts maximized. Ignored if the window is full screen. (default false)
-    ///
+    /// <summary>
+    /// </summary>
+    /// <param name="maximized">
+    /// whether the window starts maximized. Ignored if the window is full screen. (default false)
+    /// </param>
     public void SetMaximized( bool maximized )
     {
         this.WindowMaximized = maximized;
     }
 
-    ///
-    /// @param monitor what monitor the window should maximize to
-    ///
+    /// <summary>
+    /// </summary>
+    /// <param name="monitor"> what monitor the window should maximize to. </param>
     public void SetMaximizedMonitor( GLMonitor monitor )
     {
         this.MaximizedMonitor = monitor;
     }
 
-    /// 
-    /// @param autoIconify whether the window should automatically iconify and restore previous video mode on input focus loss. (default false)
-    ///                    Does nothing in windowed mode.
-    /// 
+    /// <summary>
+    /// </summary>
+    /// <param name="autoIconify">
+    /// whether the window should automatically iconify and restore previous
+    /// video mode on input focus loss. (default false).
+    /// Does nothing in windowed mode.
+    /// </param>
     public void SetAutoIconify( bool autoIconify )
     {
         this.AutoIconify = autoIconify;
     }
 
-    ///
+    /// <summary>
     /// Sets the position of the window in windowed mode.
     /// Default -1 for both coordinates for centered on primary monitor.
-    ///
+    /// </summary>
     public void SetWindowPosition( int x, int y )
     {
         WindowX = x;
         WindowY = y;
     }
 
-    ///
-    /// Sets minimum and maximum size limits for the window. If the window is full screen or not resizable, these 
-    /// limits are ignored. The default for all four parameters is -1, which means unrestricted.
-    ///
+    /// <summary>
+    /// Sets minimum and maximum size limits for the window. If the window is full
+    /// screen or not resizable, these limits are ignored. The default for all four
+    /// parameters is -1, which means unrestricted.
+    /// </summary>
     public void SetWindowSizeLimits( int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         WindowMinWidth  = minWidth;
@@ -158,71 +173,80 @@ public class GLWindowConfiguration
         WindowMaxHeight = maxHeight;
     }
 
-    ///
-    /// Sets the icon that will be used in the window's title bar. Has no effect in macOS, which doesn't use window icons.
-    /// @param filePaths One or more {@linkplain FileType#Internal internal} image paths. Must be JPEG, PNG, or BMP format.
-    /// The one closest to the system's desired size will be scaled. Good sizes include 16x16, 32x32 and 48x48.
-    ///
+    /// <summary>
+    /// Sets the icon that will be used in the window's title bar. Has no effect in
+    /// macOS, which doesn't use window icons.
+    /// </summary>
+    /// <param name="filePaths">
+    /// One or more internal image paths. Must be JPEG, PNG, or BMP format.
+    /// The one closest to the system's desired size will be scaled. Good
+    /// sizes include 16x16, 32x32 and 48x48.
+    /// </param>
     public void SetWindowIcon( params string[] filePaths )
     {
         SetWindowIcon( FileType.Internal, filePaths );
     }
 
-    ///
-    /// Sets the icon that will be used in the window's title bar. Has no effect in macOS, which doesn't use window icons.
-    /// @param fileType The type of file handle the paths are relative to.
-    /// @param filePaths One or more image paths, relative to the given {@linkplain FileType}. Must be JPEG, PNG, or BMP format. 
-    /// The one closest to the system's desired size will be scaled. Good sizes include 16x16, 32x32 and 48x48.
-    ///
+    /// <summary>
+    /// Sets the icon that will be used in the window's title bar. Has no effect in macOS,
+    /// which doesn't use window icons.
+    /// </summary>
+    /// <param name="fileType"> The type of file handle the paths are relative to. </param>
+    /// <param name="filePaths">
+    /// One or more image paths, relative to the given {@linkplain FileType}. Must be JPEG,
+    /// PNG, or BMP format. The one closest to the system's desired size will be scaled.
+    /// Good sizes include 16x16, 32x32 and 48x48.
+    /// </param>
     public void SetWindowIcon( FileType fileType, params string[] filePaths )
     {
         WindowIconFileType = fileType;
         WindowIconPaths    = filePaths;
     }
 
-    ///
+    /// <summary>
     /// Sets the {@link GLWindowListener} which will be informed about
     /// iconficiation, focus loss and window close events.
-    ///
+    /// </summary>
     public void SetWindowListener( IGLWindowListener windowListener )
     {
         this.WindowListener = windowListener;
     }
 
-    ///
+    /// <summary>
     /// Sets the app to use fullscreen mode. Use the static methods like
     /// {@link GLApplicationConfiguration#getDisplayMode()} on this class to enumerate connected monitors
     /// and their fullscreen display modes.
-    ///
+    /// </summary>
     public void SetFullscreenMode( GLGraphics.GLDisplayMode mode )
     {
         this.FullscreenMode = mode;
     }
 
-    ///
+    /// <summary>
     /// Sets the window title. Defaults to empty string.
-    ///
+    /// </summary>
     public void SetTitle( string title )
     {
         this.Title = title;
     }
 
-    ///
+    /// <summary>
     /// Sets the initial background color. Defaults to black.
-    ///
+    /// </summary>
     public void SetInitialBackgroundColor( Color color )
     {
         InitialBackgroundColor = color;
     }
 
-    ///
+    /// <summary>
     /// Sets whether to use vsync. This setting can be changed anytime at runtime
-    /// via {@link Graphics#setVSync(bool)}.
-    ///
+    /// via <see cref="IGraphics.SetVSync(bool)"/>.
+    /// <para>
     /// For multi-window applications, only one (the main) window should enable vsync.
     /// Otherwise, every window will wait for the vertical blank on swap individually,
     /// effectively cutting the frame rate to (refreshRate / numberOfWindows).
-    ///
+    /// </para>
+    /// </summary>
     public void UseVsync( bool vsync )
     {
         this.VSyncEnabled = vsync;

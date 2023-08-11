@@ -149,7 +149,7 @@ public class GLWindow : IDisposable
     {
         Gdx.Graphics = this.Graphics;
         Gdx.GL30     = this.Graphics.GetGL30();
-        Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30 : Graphics.GetGL20();
+        Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30 : Graphics.GL20;
         Gdx.GL       = Gdx.GL30 != null ? Gdx.GL30 : Gdx.GL20;
         Gdx.Input    = this.Input;
 
