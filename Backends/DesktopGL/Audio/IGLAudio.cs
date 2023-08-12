@@ -1,4 +1,4 @@
-﻿// ///////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////
 // Copyright [2023] [Richard Ikin]
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,5 +19,4 @@ namespace LibGDXSharp.Backends.Desktop.Audio;
 [SuppressMessage( "ReSharper", "UnusedMember.Global" )]
 public interface IGLAudio : IAudio
 {
-    void Update();
 }

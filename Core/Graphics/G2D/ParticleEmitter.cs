@@ -18,5 +18,77 @@ namespace LibGDXSharp.G2D;
 
 public class ParticleEmitter
 {
-        
+
+    public void Start()
+    {
+    }
+
+    public void Reset()
+    {
+    }
+
+    public void Update( float delta )
+    {
+    }
+
+    public void Draw( IBatch spriteBatch )
+    {
+    }
+
+    public void Draw( IBatch spriteBatch, float delta )
+    {
+    }
+
+    public void AllowCompletion()
+    {
+    }
+
+    public bool IsComplete()
+    {
+        return false;
+    }
+
+    public void SetContinuous( bool b )
+    {
+    }
+
+    public int Duration { get; set; }
+    public int DurationTimer { get; set; }
+
+    public void SetPosition( float f, float f1 )
+    {
+    }
+
+    public void SetFlip( bool flipX, bool flipY )
+    {
+    }
+
+    public void FlipY()
+    {
+    }
+
+    public string GetName()
+    {
+        return null;
+    }
+
+    public void PreAllocateParticles()
+    {
+    }
+
+    public void Save( StreamWriter output )
+    {
+    }
+
+    public void SetCleansUpBlendFunction( bool cleanUpBlendFunction )
+    {
+    }
+
+    public void ScaleSize( float xSizeScaleFactor, float ySizeScaleFactor )
+    {
+    }
+
+    public void ScaleMotion( float motionScaleFactor )
+    {
+    }
 }

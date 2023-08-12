@@ -113,29 +113,8 @@ AUDIO
 
     - DONE - IAudioDevice                   
     - DONE - IAudioRecorder                 
-    -      - IGLAudio
     - DONE - IMusic                         
     - DONE - ISound                         
-    -      - Mp3
-    -      - Ogg
-    -      - OggInputStream
-    -      - OpenALAudioDevice
-    -      - OpenALGLAudio
-    -      - OpenALMusic
-    -      - OpenALSound
-    -      - SoundAudioRecorder
-    -      - Wav
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-AUDIO/MOCK
-----------
-
-    -      - MockAudio
-    -      - MockAudioDevice
-    -      - MockAudioRecorder
-    -      - MockMusicMockSound
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
