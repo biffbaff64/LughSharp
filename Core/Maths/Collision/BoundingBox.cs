@@ -463,7 +463,7 @@ public class BoundingBox
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    internal static float Min( in float a, in float b )
+    public static float Min( in float a, in float b )
     {
         return a > b ? b : a;
     }
@@ -473,7 +473,7 @@ public class BoundingBox
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    internal static float Max( in float a, in float b )
+    public static float Max( in float a, in float b )
     {
         return a > b ? a : b;
     }

@@ -18,8 +18,13 @@ using LibGDXSharp.Scenes.Scene2D;
 
 namespace LibGDXSharp.Scenes.Listeners;
 
-public abstract class ChangeListener : IEventListener
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+public class ChangeListener : IEventListener
 {
+    public ChangeListener( Action< object > action )
+    {
+    }
+    
     public bool Handle( Event ev )
     {
         if ( ev is not ChangeEvent changeEvent ) return false;
@@ -35,7 +40,9 @@ public abstract class ChangeListener : IEventListener
     /// <param name="actor">
     /// The event target, which is the actor that emitted the change event.
     /// </param>
-    protected abstract void Changed( ChangeEvent ev, Actor? actor);
+    protected void Changed( ChangeEvent ev, Actor? actor )
+    {
+    }
 
     /// <summary>
     /// Fired when something in an actor has changed. This is a generic event, exactly

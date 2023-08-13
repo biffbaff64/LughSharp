@@ -14,13 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Maths.Collision;
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class ParticleEffect : IDisposable
 {
     private const int DEFAULT_EMITTERS_SIZE = 8;
@@ -30,7 +29,7 @@ public class ParticleEffect : IDisposable
     protected float motionScale = 1f;
 
     private readonly List< ParticleEmitter > _emitters;
-    private          BoundingBox             _bounds;
+    private          BoundingBox?             _bounds;
     private          bool                    _ownsTexture;
 
     public ParticleEffect()
@@ -44,7 +43,7 @@ public class ParticleEffect : IDisposable
 
         for ( int i = 0, n = effect._emitters.Count; i < n; i++ )
         {
-            _emitters.Add( newEmitter( effect._emitters[ i ] ) );
+            _emitters.Add( NewEmitter( effect._emitters[ i ] ) );
         }
     }
 
@@ -56,9 +55,13 @@ public class ParticleEffect : IDisposable
         }
     }
 
-    /** Resets the effect so it can be started again like a new effect.
-     * @param resetScaling Whether to restore the original size and motion parameters if they were scaled. Repeated scaling and
-     *           resetting may introduce error. */
+    /// <summary>
+    /// Resets the effect so it can be started again like a new effect.
+    /// </summary>
+    /// <param name="resetScaling">
+    /// Whether to restore the original size and motion parameters if they
+    /// were scaled. Repeated scaling and resetting may introduce error.
+    /// </param>
     public void Reset( bool resetScaling = true )
     {
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
@@ -205,20 +208,24 @@ public class ParticleEffect : IDisposable
 
     public void LoadEmitters( FileInfo effectFile )
     {
-        InputStream input = effectFile.read();
-        _emitters.clear();
+        StreamReader input = effectFile.Read();
+        _emitters.Clear();
+        
         BufferedReader reader = null;
 
         try
         {
-            reader = new BufferedReader( new InputStreamReader( input ), 512 );
+            reader = new BufferedReader( new StreamReader( input ), 512 );
 
             while ( true )
             {
-                ParticleEmitter emitter = newEmitter( reader );
+                ParticleEmitter emitter = NewEmitter( reader );
                 _emitters.Add( emitter );
 
-                if ( reader.readLine() == null ) break;
+                if ( reader.readLine() == null )
+                {
+                    break;
+                }
             }
         }
         catch ( IOException ex )
@@ -243,28 +250,28 @@ public class ParticleEffect : IDisposable
 
             foreach ( string imagePath in _emitters.GetImagePaths() )
             {
-                string imageName    = new File( imagePath.replace( '\\', '/' ) ).getName();
-                int    lastDotIndex = imageName.LastIndexOf( '.' );
+                string imageName    = new File( imagePath.Replace( '\\', '/' ) ).getName();
+                var    lastDotIndex = imageName.LastIndexOf( '.' );
 
                 if ( lastDotIndex != -1 ) imageName  = imageName.Substring( 0, lastDotIndex );
                 if ( atlasPrefix != null ) imageName = atlasPrefix + imageName;
 
-                Sprite sprite = atlas.createSprite( imageName );
+                Sprite? sprite = atlas.CreateSprite( imageName );
 
                 if ( sprite == null ) throw new ArgumentException( "SpriteSheet missing image: " + imageName );
 
                 sprites.Add( sprite );
             }
 
-            emitter.setSprites( sprites );
+            emitter.SetSprites( sprites );
         }
     }
 
-    public void loadEmitterImages( FileInfo imagesDir )
+    public void LoadEmitterImages( DirectoryInfo imagesDir )
     {
         _ownsTexture = true;
 
-        Dictionary< string, Sprite > loadedSprites = new( _emitters.Count );
+        Dictionary< string, Sprite? > loadedSprites = new( _emitters.Count );
 
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
         {
@@ -276,87 +283,122 @@ public class ParticleEffect : IDisposable
 
             foreach ( string imagePath in _emitters.GetImagePaths() )
             {
-                string imageName = new File( imagePath.replace( '\\', '/' ) ).getName();
+                string imageName = File( imagePath.Replace( '\\', '/' ) ).GetName();
 
-                Sprite sprite = loadedSprites.get( imageName );
+                Sprite? sprite = loadedSprites[ imageName ];
 
                 if ( sprite == null )
                 {
-                    sprite = new Sprite( loadTexture( imagesDir.child( imageName ) ) );
+                    sprite = new Sprite( LoadTexture( imagesDir.Child( imageName ) ) );
 
-                    loadedSprites.put( imageName, sprite );
+                    loadedSprites[ imageName ] = sprite;
                 }
 
                 sprites.Add( sprite );
             }
 
-            emitter.setSprites( sprites );
+            emitter.SetSprites( sprites );
         }
     }
 
-    protected ParticleEmitter newEmitter( BufferedReader reader )
+    protected ParticleEmitter NewEmitter( BufferedStream reader )
     {
         return new ParticleEmitter( reader );
     }
 
-    protected ParticleEmitter newEmitter( ParticleEmitter emitter )
+    protected ParticleEmitter NewEmitter( ParticleEmitter emitter )
     {
         return new ParticleEmitter( emitter );
     }
 
-    protected Texture loadTexture( FileInfo file )
+    protected Texture LoadTexture( FileInfo file )
     {
         return new Texture( file, false );
     }
 
-    /** Disposes the texture for each sprite for each ParticleEmitter. */
-    public void dispose()
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Disposes the texture for each sprite for each ParticleEmitter.
+    /// </summary>
+    protected void Dispose( bool disposing )
     {
-        if ( !_ownsTexture ) return;
-
-        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        if ( disposing )
         {
-            ParticleEmitter emitter = _emitters[ i ];
-
-            foreach ( Sprite sprite in emitter.getSprites() )
+            if ( !_ownsTexture )
             {
-                sprite.getTexture().dispose();
+                return;
+            }
+
+            for ( int i = 0, n = _emitters.Count; i < n; i++ )
+            {
+                ParticleEmitter emitter = _emitters[ i ];
+
+                foreach ( Sprite sprite in emitter.GetSprites() )
+                {
+                    sprite.Texture.Dispose();
+                }
             }
         }
     }
 
-    /** Returns the bounding box for all active particles. z axis will always be zero. */
-    public BoundingBox getBoundingBox()
+    public void Dispose()
     {
-        if ( bounds == null ) bounds = new BoundingBox();
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
 
-        BoundingBox bounds = this._bounds;
-        bounds.inf();
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// Returns the bounding box for all active particles. z axis will always be zero.
+    /// </summary>
+    public BoundingBox GetBoundingBox()
+    {
+        _bounds ??= new BoundingBox();
+
+        BoundingBox box = this._bounds;
+        box.ToInfinity();
 
         foreach ( ParticleEmitter emitter in this._emitters )
         {
-            bounds.Ext( emitter.getBoundingBox() );
+            box.Extend( emitter.BoundingBox );
         }
 
-        return bounds;
+        return box;
     }
 
-    /** Permanently scales all the size and motion parameters of all the emitters in this effect. If this effect originated from a
-     * {@link ParticleEffectPool}, the scale will be reset when it is returned to the pool. */
+    /// <summary>
+    /// Permanently scales all the size and motion parameters of all the emitters
+    /// in this effect. If this effect originated from a <see cref="ParticleEffectPool"/>,
+    /// the scale will be reset when it is returned to the pool.
+    /// </summary>
+    /// <param name="scaleFactor"></param>
     public void ScaleEffect( float scaleFactor )
     {
         ScaleEffect( scaleFactor, scaleFactor, scaleFactor );
     }
 
-    /** Permanently scales all the size and motion parameters of all the emitters in this effect. If this effect originated from a
-     * {@link ParticleEffectPool}, the scale will be reset when it is returned to the pool. */
+    /// <summary>
+    /// Permanently scales all the size and motion parameters of all the emitters
+    /// in this effect. If this effect originated from a <see cref="ParticleEffectPool"/>,
+    /// the scale will be reset when it is returned to the pool.
+    /// </summary>
+    /// <param name="scaleFactor"></param>
+    /// <param name="motionScaleFactor"></param>
     public void ScaleEffect( float scaleFactor, float motionScaleFactor )
     {
         ScaleEffect( scaleFactor, scaleFactor, motionScaleFactor );
     }
-
-    /** Permanently scales all the size and motion parameters of all the emitters in this effect. If this effect originated from a
-     * {@link ParticleEffectPool}, the scale will be reset when it is returned to the pool. */
+    
+    /// <summary>
+    /// Permanently scales all the size and motion parameters of all the emitters
+    /// in this effect. If this effect originated from a <see cref="ParticleEffectPool"/>,
+    /// the scale will be reset when it is returned to the pool.
+    /// </summary>
+    /// <param name="xSizeScaleFactor"></param>
+    /// <param name="ySizeScaleFactor"></param>
+    /// <param name="motionScaleFactor"></param>
     public void ScaleEffect( float xSizeScaleFactor, float ySizeScaleFactor, float motionScaleFactor )
     {
         xSizeScale  *= xSizeScaleFactor;
@@ -370,12 +412,15 @@ public class ParticleEffect : IDisposable
         }
     }
 
-    /** Sets the {@link com.badlogic.gdx.graphics.g2d.ParticleEmitter#setCleansUpBlendFunction(bool) cleansUpBlendFunction}
-     * parameter on all {@link com.badlogic.gdx.graphics.g2d.ParticleEmitter ParticleEmitters} currently in this ParticleEffect.
-     * <p>
-     * IMPORTANT: If set to false and if the next object to use this Batch expects alpha blending, you are responsible for setting
-     * the Batch's blend function to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
-     * @param cleanUpBlendFunction */
+    /// <summary>
+    /// Sets the 'CleansUpBlendFunction' <see cref="ParticleEmitter"/> currently in this ParticleEffect.
+    /// <para>
+    /// IMPORTANT: If set to false and if the next object to use this Batch expects alpha blending,
+    /// you are responsible for setting the Batch's blend function to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    /// before that next object is drawn.
+    /// </para>
+    /// </summary>
+    /// <param name="cleanUpBlendFunction"></param>
     public void SetEmittersCleanUpBlendFunction( bool cleanUpBlendFunction )
     {
         for ( int i = 0, n = _emitters.Count; i < n; i++ )

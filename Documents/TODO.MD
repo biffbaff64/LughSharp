@@ -242,7 +242,7 @@ GRAPHICS/G2D
     - DONE - NinePatch                      
     - IP   - ParticleEffect                 
     -      - ParticleEffectPool             
-    -      - ParticleEmitter                
+    - IP   - ParticleEmitter                
     -      - PixmapPacker                   
     -      - PixmapPacker10                 
     -      - PolygonRegion                  

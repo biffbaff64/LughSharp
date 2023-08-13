@@ -14,16 +14,25 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Maths.Collision;
+
 namespace LibGDXSharp.G2D;
 
 public class ParticleEmitter
 {
-
-    public void Start()
+    public int         Duration      { get; set; }
+    public int         DurationTimer { get; set; }
+    public BoundingBox BoundingBox   { get; set; }
+    
+    public ParticleEmitter( BufferedStream reader )
     {
     }
 
-    public void Reset()
+    public ParticleEmitter( ParticleEmitter emitter )
+    {
+    }
+
+    public void Start()
     {
     }
 
@@ -51,9 +60,6 @@ public class ParticleEmitter
     public void SetContinuous( bool b )
     {
     }
-
-    public int Duration { get; set; }
-    public int DurationTimer { get; set; }
 
     public void SetPosition( float f, float f1 )
     {
@@ -89,6 +95,19 @@ public class ParticleEmitter
     }
 
     public void ScaleMotion( float motionScaleFactor )
+    {
+    }
+
+    public void Reset()
+    {
+    }
+
+    public IEnumerable<Sprite> GetSprites()
+    {
+        yield break;
+    }
+
+    public void SetSprites( List< Sprite > sprites )
     {
     }
 }

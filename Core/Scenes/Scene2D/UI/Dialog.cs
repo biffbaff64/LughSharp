@@ -29,18 +29,20 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Dialog : Window
 {
-    public bool CancelHide { get; set; }
+    public bool   CancelHide   { get; set; }
+    public Table? ContentTable { get; private set; }
+    public Table? ButtonTable  { get; private set; }
 
-    private Skin?                        _skin;
+    private readonly Skin? _skin;
+
     private Dictionary< Actor, object >? _values = new();
     private Actor?                       _previousKeyboardFocus;
     private Actor?                       _previousScrollFocus;
     private FocusListener?               _focusListener;
 
     public Dialog( string title, Skin skin )
-        : base( title, skin.Get< Window.WindowStyle >() )
+            : base( title, skin.Get< Window.WindowStyle >() )
     {
-        //TODO: Why is there base.Skin AND this._skin?
         base.Skin  = skin;
         this._skin = skin;
 
@@ -48,19 +50,15 @@ public class Dialog : Window
     }
 
     public Dialog( string title, Skin skin, string windowStyleName )
-        : base
-            (
-            title, ( Window.WindowStyle )skin.Get< Window.WindowStyle >( windowStyleName )
-            ) //TODO: <= Don't like this, find a better way
+            : base( title, ( Window.WindowStyle )skin.Get< Window.WindowStyle >( windowStyleName ) )
     {
-        //TODO: Why is there base.Skin AND this._skin?
         base.Skin  = skin;
         this._skin = skin;
         Initialise();
     }
 
     public Dialog( string title, Window.WindowStyle windowStyle )
-        : base( title, windowStyle )
+            : base( title, windowStyle )
     {
         Initialise();
     }
@@ -80,6 +78,22 @@ public class Dialog : Window
 
         ContentTable.Defaults().Space( 6 );
         ButtonTable.Defaults().Space( 6 );
+
+        ButtonTable.AddListener( new ChangeListener( _ =>
+                {
+                    void Changed( ChangeListener.ChangeEvent ev, Actor actor )
+                    {
+                        if ( !_values.Contains<Actor>( actor ) )
+                        {
+                            return;
+                        }
+
+                        while ( actor.Parent is not ButtonTable )
+                        {
+                            
+                        }
+                    }
+                }));
 
 //        buttonTable.addListener( new ChangeListener()
 //        {
@@ -130,14 +144,14 @@ public class Dialog : Window
 
     protected new void SetStage( Stage? stage )
     {
-//        if ( stage == null )
-//        {
-//            AddListener( _focusListener );
-//        }
-//        else
-//        {
-//            RemoveListener( _focusListener );
-//        }
+        if ( stage == null )
+        {
+            AddListener( _focusListener );
+        }
+        else
+        {
+            RemoveListener( _focusListener );
+        }
 
         base.SetStage( stage! );
     }
@@ -151,10 +165,6 @@ public class Dialog : Window
 //        }
 //    };
 
-    public Table? ContentTable { get; private set; }
-
-    public Table? ButtonTable { get; private set; }
-
     /// <summary>
     /// Adds a label to the content table. The dialog must have
     /// been constructed with a skin to use this method. 
@@ -163,7 +173,7 @@ public class Dialog : Window
     {
         if ( _skin == null )
             throw new IllegalStateException
-                ( "This method may only be used if the dialog was constructed with a Skin." );
+                    ( "This method may only be used if the dialog was constructed with a Skin." );
 
         return Text( text, _skin.Get< Label.LabelStyle >() );
     }
@@ -195,7 +205,7 @@ public class Dialog : Window
     {
         if ( _skin == null )
             throw new IllegalStateException
-                ( "This method may only be used if the dialog was constructed with a Skin." );
+                    ( "This method may only be used if the dialog was constructed with a Skin." );
 
         return Button( text, obj, _skin.Get< TextButton.TextButtonStyle >() );
     }
@@ -236,7 +246,7 @@ public class Dialog : Window
     public Dialog Show( Stage stage, Action? action )
     {
         ClearActions();
-//        RemoveCaptureListener( ignoreTouchDown );
+        RemoveCaptureListener( ignoreTouchDown );
         _previousKeyboardFocus = null;
 
         Actor? actor = stage.KeyboardFocus;
@@ -274,13 +284,13 @@ public class Dialog : Window
      */
     public Dialog Show( Stage stage )
     {
-//        Show( stage, sequence( Actions.alpha( 0 ), Actions.fadeIn( 0.4f, Interpolation.fade ) ) );
+        Show( stage, Sequence( Actions.Alpha( 0 ), Actions.FadeIn( 0.4f, Interpolator.Fade ) ) );
 
         SetPosition
-            (
-            (float)Math.Round( ( stage.StageWidth - Width ) / 2 ),
-            (float)Math.Round( ( stage.StageHeight - Height ) / 2 )
-            );
+                (
+                ( float )Math.Round( ( stage.StageWidth - Width ) / 2 ),
+                ( float )Math.Round( ( stage.StageHeight - Height ) / 2 )
+                );
 
         return this;
     }
@@ -341,7 +351,7 @@ public class Dialog : Window
     /// </summary>
     public void Hide()
     {
-//        Hide( FadeOut( 0.4f, Interpolation.Fade ) );
+        Hide( FadeOut( 0.4f, Interpolator.Fade ) );
     }
 
     public void SetObject( Actor actor, object obj )
@@ -358,27 +368,27 @@ public class Dialog : Window
     /// <seealso cref="IInput.Keys"/>
     public Dialog Key( int keycode, object obj )
     {
-//        addListener( new InputListener()
-//        {
-//            public bool keyDown (InputEvent event, int keycode2)
-//            {
-//                if (keycode == keycode2)
-//                {
-        // Delay a frame to eat the keyTyped event.
-//                    Gdx.app.postRunnable(new Runnable()
-//                    {
-//                        public void run ()
-//                        {
-//                            result(object);
-//                            if (!CancelHide) hide();
-//                            CancelHide = false;
-//                        }
-//                    });
-//                }
+        AddListener( new InputListener( _ =>
+        {
+            public bool keyDown (InputEvent ev, int keycode2)
+            {
+                if (keycode == keycode2)
+                {
+                    // Delay a frame to eat the keyTyped event.
+                    Gdx.App.PostRunnable(new IRunnable( _ =>
+                    {
+                        public void Run()
+                        {
+                            result(object);
+                            if (!CancelHide) hide();
+                            CancelHide = false;
+                        }
+                    });
+                }
 
-//                return false;
-//            }
-//        });
+                return false;
+            }
+        });
 
         return this;
     }
