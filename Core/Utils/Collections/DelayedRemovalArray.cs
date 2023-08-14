@@ -117,13 +117,19 @@ public class DelayedRemovalArray<T> : List< T >
     /// <param name="index"></param>
     public void Remove( int index )
     {
-        if ( index < _clear ) return;
+        if ( index < _clear )
+        {
+            return;
+        }
 
         for ( int i = 0, n = _remove.Count; i < n; i++ )
         {
             var removeIndex = _remove[ i ];
 
-            if ( index == removeIndex ) return;
+            if ( index == removeIndex )
+            {
+                return;
+            }
 
             if ( index < removeIndex )
             {
@@ -146,7 +152,10 @@ public class DelayedRemovalArray<T> : List< T >
         {
             var index = IndexOf( value );
 
-            if ( index == -1 ) return false;
+            if ( index == -1 )
+            {
+                return false;
+            }
 
             Remove( index );
 
@@ -215,7 +224,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public void Set( int index, T value )
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         this[ index ] = value;
     }
@@ -227,7 +239,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public new void Insert( int index, T value )
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         base.Insert( index, value );
     }
@@ -242,7 +257,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public void InsertRange( int index, int count )
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         T insertItem = base[ index ];
 
@@ -259,7 +277,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public void Swap( int first, int second )
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         ( this[ first ], this[ second ] ) = ( this[ second ], this[ first ] );
     }
@@ -270,7 +291,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public T Pop()
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         T t = base[ ^1 ];
             
@@ -284,7 +308,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public new void Sort()
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         base.Sort();
     }
@@ -294,7 +321,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <param name="comparator"></param>
     public new void Sort( IComparer<T> comparator)
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         base.Sort( comparator );
     }
@@ -304,7 +334,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public new void Reverse()
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         base.Reverse();
     }
@@ -314,7 +347,10 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public void Shuffle()
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
 
         ListExtensions.Shuffle( this );
     }
@@ -325,10 +361,21 @@ public class DelayedRemovalArray<T> : List< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public void Truncate( int newSize )
     {
-        if ( _iterating > 0 ) throw new GdxRuntimeException( "Invalid between begin/end." );
-        if ( newSize < 0 ) throw new GdxRuntimeException( "New size must be >= 0: {newSize}");
-        if ( Count < newSize ) return;
-            
+        if ( _iterating > 0 )
+        {
+            throw new GdxRuntimeException( "Invalid between begin/end." );
+        }
+
+        if ( newSize < 0 )
+        {
+            throw new GdxRuntimeException( "New size must be >= 0: {newSize}");
+        }
+
+        if ( Count < newSize )
+        {
+            return;
+        }
+
         if ( newSize < Count )
         {
             base.RemoveRange( newSize + 1, Count - newSize );
@@ -343,10 +390,14 @@ public class DelayedRemovalArray<T> : List< T >
     public int SetSize( int newSize )
     {
         if ( _iterating > 0 )
+        {
             throw new GdxRuntimeException( "Invalid between begin/end." );
-            
+        }
+
         if ( base.Count >= newSize )
+        {
             throw new GdxRuntimeException( $"Invalid new size: {newSize} (current: {Count} )" );
+        }
 
         return base.EnsureCapacity( newSize );
     }

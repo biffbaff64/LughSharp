@@ -21,29 +21,29 @@ namespace LibGDXSharp.Maps.Tiled.Renderers;
 public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
 {
     public OrthogonalTiledMapRenderer( TiledMap map )
-        : base( map )
+            : base( map )
     {
     }
 
     public OrthogonalTiledMapRenderer( TiledMap map, IBatch batch )
-        : base( map, batch )
+            : base( map, batch )
     {
     }
 
     public OrthogonalTiledMapRenderer( TiledMap map, float unitScale )
-        : base( map, unitScale )
+            : base( map, unitScale )
     {
     }
 
     public OrthogonalTiledMapRenderer( TiledMap map, float unitScale, IBatch batch )
-        : base( map, unitScale, batch )
+            : base( map, unitScale, batch )
     {
     }
 
-    public new void RenderTileLayer( TiledMapTileLayer layer )
+    public override void RenderTileLayer( TiledMapTileLayer layer )
     {
         Color batchColor = Batch.GetColor();
-        var color      = Color.ToFloatBits( batchColor.R, batchColor.G, batchColor.B, batchColor.A * layer.Opacity );
+        var   color      = Color.ToFloatBits( batchColor.R, batchColor.G, batchColor.B, batchColor.A * layer.Opacity );
 
         var layerWidth  = layer.Width;
         var layerHeight = layer.Height;
@@ -59,21 +59,21 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
         var col1 = Math.Max( 0, ( int )( ( ViewBounds.X - layerOffsetX ) / layerTileWidth ) );
 
         var col2 = Math.Min
-            (
-             layerWidth,
-             ( int )( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth ) - layerOffsetX ) / layerTileWidth )
-            );
+                (
+                layerWidth,
+                ( int )( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth ) - layerOffsetX ) / layerTileWidth )
+                );
 
         var row1 = Math.Max( 0, ( int )( ( ViewBounds.Y - layerOffsetY ) / layerTileHeight ) );
 
         var row2 = Math.Min
-            (
-             layerHeight,
-             ( int )( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetY ) / layerTileHeight )
-            );
+                (
+                layerHeight,
+                ( int )( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetY ) / layerTileHeight )
+                );
 
-        var   y        = ( row2 * layerTileHeight ) + layerOffsetY;
-        var   xStart   = ( col1 * layerTileWidth ) + layerOffsetX;
+        var y        = ( row2 * layerTileHeight ) + layerOffsetY;
+        var xStart   = ( col1 * layerTileWidth ) + layerOffsetX;
         var vertices = this.Vertices;
 
         for ( var row = row2; row >= row1; row-- )
@@ -97,7 +97,7 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
                 {
                     var flipX     = cell.GetFlipHorizontally();
                     var flipY     = cell.GetFlipVertically();
-                    var  rotations = cell.GetRotation();
+                    var rotations = cell.GetRotation();
 
                     TextureRegion region = tile.TextureRegion;
 
@@ -138,19 +138,19 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
                     if ( flipX )
                     {
                         ( vertices[ IBatch.U1 ], vertices[ IBatch.U3 ] ) =
-                            ( vertices[ IBatch.U3 ], vertices[ IBatch.U1 ] );
+                                ( vertices[ IBatch.U3 ], vertices[ IBatch.U1 ] );
 
                         ( vertices[ IBatch.U2 ], vertices[ IBatch.U4 ] ) =
-                            ( vertices[ IBatch.U4 ], vertices[ IBatch.U2 ] );
+                                ( vertices[ IBatch.U4 ], vertices[ IBatch.U2 ] );
                     }
 
                     if ( flipY )
                     {
                         ( vertices[ IBatch.V1 ], vertices[ IBatch.V3 ] ) =
-                            ( vertices[ IBatch.V3 ], vertices[ IBatch.V1 ] );
+                                ( vertices[ IBatch.V3 ], vertices[ IBatch.V1 ] );
 
                         ( vertices[ IBatch.V2 ], vertices[ IBatch.V4 ] ) =
-                            ( vertices[ IBatch.V4 ], vertices[ IBatch.V2 ] );
+                                ( vertices[ IBatch.V4 ], vertices[ IBatch.V2 ] );
                     }
 
                     if ( rotations != 0 )
@@ -180,15 +180,15 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
                                 vertices[ IBatch.U1 ] = vertices[ IBatch.U3 ];
                                 vertices[ IBatch.U3 ] = tempU;
 
-                                tempU          = vertices[ IBatch.U2 ];
+                                tempU                 = vertices[ IBatch.U2 ];
                                 vertices[ IBatch.U2 ] = vertices[ IBatch.U4 ];
                                 vertices[ IBatch.U4 ] = tempU;
-                                
+
                                 var tempV = vertices[ IBatch.V1 ];
                                 vertices[ IBatch.V1 ] = vertices[ IBatch.V3 ];
                                 vertices[ IBatch.V3 ] = tempV;
-                                
-                                tempV          = vertices[ IBatch.V2 ];
+
+                                tempV                 = vertices[ IBatch.V2 ];
                                 vertices[ IBatch.V2 ] = vertices[ IBatch.V4 ];
                                 vertices[ IBatch.V4 ] = tempV;
 

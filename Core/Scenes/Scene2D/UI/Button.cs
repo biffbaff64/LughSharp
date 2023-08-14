@@ -143,9 +143,15 @@ public class Button : Table, IDisableable
 
     public void SetChecked( bool isChecked, bool fireEvent )
     {
-        if ( this.IsChecked == isChecked ) return;
+        if ( this.IsChecked == isChecked )
+        {
+            return;
+        }
 
-        if ( ( ButtonGroup != null ) && !ButtonGroup.CanCheck( this, isChecked ) ) return;
+        if ( ( ButtonGroup != null ) && !ButtonGroup.CanCheck( this, isChecked ) )
+        {
+            return;
+        }
 
         this.IsChecked = isChecked;
 
@@ -153,7 +159,10 @@ public class Button : Table, IDisableable
         {
             ChangeListener.ChangeEvent changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
 
-            if ( Fire( changeEvent ) ) this.IsChecked = !isChecked;
+            if ( Fire( changeEvent ) )
+            {
+                this.IsChecked = !isChecked;
+            }
 
             Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
         }
@@ -190,24 +199,39 @@ public class Button : Table, IDisableable
     /// </summary>
     public IDrawable? GetBackgroundDrawable()
     {
-        if ( IsDisabled && ( Style?.Disabled != null ) ) return Style.Disabled;
+        if ( IsDisabled && ( Style?.Disabled != null ) )
+        {
+            return Style.Disabled;
+        }
 
         if ( IsPressed() )
         {
-            if ( IsChecked && ( Style?.CheckedDown != null ) ) return Style.CheckedDown;
+            if ( IsChecked && ( Style?.CheckedDown != null ) )
+            {
+                return Style.CheckedDown;
+            }
 
-            if ( Style?.Down != null ) return Style.Down;
+            if ( Style?.Down != null )
+            {
+                return Style.Down;
+            }
         }
 
         if ( IsOver() )
         {
             if ( IsChecked )
             {
-                if ( Style?.CheckedOver != null ) return Style.CheckedOver;
+                if ( Style?.CheckedOver != null )
+                {
+                    return Style.CheckedOver;
+                }
             }
             else
             {
-                if ( Style?.Over != null ) return Style.Over;
+                if ( Style?.Over != null )
+                {
+                    return Style.Over;
+                }
             }
         }
 
@@ -215,14 +239,26 @@ public class Button : Table, IDisableable
 
         if ( IsChecked )
         {
-            if ( focused && ( Style?.CheckedFocused != null ) ) return Style.CheckedFocused;
+            if ( focused && ( Style?.CheckedFocused != null ) )
+            {
+                return Style.CheckedFocused;
+            }
 
-            if ( Style?.Checked != null ) return Style.Checked;
+            if ( Style?.Checked != null )
+            {
+                return Style.Checked;
+            }
 
-            if ( IsOver() && ( Style?.Over != null ) ) return Style.Over;
+            if ( IsOver() && ( Style?.Over != null ) )
+            {
+                return Style.Over;
+            }
         }
 
-        if ( focused && ( Style?.Focused != null ) ) return Style.Focused;
+        if ( focused && ( Style?.Focused != null ) )
+        {
+            return Style.Focused;
+        }
 
         return Style?.Up;
     }
@@ -290,9 +326,20 @@ public class Button : Table, IDisableable
         {
             var width = GetPrefWidth();
 
-            if ( Style?.Up != null ) width      = Math.Max( width, Style.Up.MinWidth );
-            if ( Style?.Down != null ) width    = Math.Max( width, Style.Down.MinWidth );
-            if ( Style?.Checked != null ) width = Math.Max( width, Style.Checked.MinWidth );
+            if ( Style?.Up != null )
+            {
+                width = Math.Max( width, Style.Up.MinWidth );
+            }
+
+            if ( Style?.Down != null )
+            {
+                width = Math.Max( width, Style.Down.MinWidth );
+            }
+
+            if ( Style?.Checked != null )
+            {
+                width = Math.Max( width, Style.Checked.MinWidth );
+            }
 
             return width;
         }
@@ -304,9 +351,20 @@ public class Button : Table, IDisableable
         {
             var height = base.GetPrefHeight();
 
-            if ( Style?.Up != null ) height      = Math.Max( height, Style.Up.MinHeight );
-            if ( Style?.Down != null ) height    = Math.Max( height, Style.Down.MinHeight );
-            if ( Style?.Checked != null ) height = Math.Max( height, Style.Checked!.MinHeight );
+            if ( Style?.Up != null )
+            {
+                height = Math.Max( height, Style.Up.MinHeight );
+            }
+
+            if ( Style?.Down != null )
+            {
+                height = Math.Max( height, Style.Down.MinHeight );
+            }
+
+            if ( Style?.Checked != null )
+            {
+                height = Math.Max( height, Style.Checked!.MinHeight );
+            }
 
             return height;
         }
@@ -342,7 +400,10 @@ public class Button : Table, IDisableable
 
         public new void Clicked( InputEvent inputEvent, float x, float y )
         {
-            if ( _button.IsDisabled ) return;
+            if ( _button.IsDisabled )
+            {
+                return;
+            }
 
             _button.SetChecked( !_button.IsChecked, true );
         }

@@ -116,7 +116,10 @@ public class Texture : GLTexture, IGLTexture
     protected Texture( int glTarget, int glHandle, ITextureData? data )
         : base( glTarget, glHandle )
     {
-        if ( data == null ) throw new GdxRuntimeException( "data cannot be null!" );
+        if ( data == null )
+        {
+            throw new GdxRuntimeException( "data cannot be null!" );
+        }
 
         Load( data );
 
@@ -142,7 +145,10 @@ public class Texture : GLTexture, IGLTexture
 
         this.TextureData = data;
 
-        if ( !data.IsPrepared ) data.Prepare();
+        if ( !data.IsPrepared )
+        {
+            data.Prepare();
+        }
 
         Bind();
 
@@ -211,7 +217,7 @@ public class Texture : GLTexture, IGLTexture
     /// <summary>
     /// Disposes all resources associated with the texture.
     /// </summary>
-    public new void Dispose()
+    public override void Dispose()
     {
         // this is a hack. reason: we have to set the glHandle to 0 for textures that are
         // reloaded through the asset manager as we first remove (and thus dispose) the texture
@@ -316,6 +322,7 @@ public class Texture : GLTexture, IGLTexture
         }
     }
 
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Local" )]
     private class LoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
     {
         private readonly int _refCount;

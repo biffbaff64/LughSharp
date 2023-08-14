@@ -24,14 +24,14 @@ public class ExtendViewport : Viewport
     public float MinWorldHeight { get; set; }
     public float MaxWorldWidth  { get; set; }
     public float MaxWorldHeight { get; set; }
-
+    
     #endregion
 
     /// <summary>
     /// Creates a new viewport using a new <seealso cref="OrthographicCamera"/> with no maximum world size.
     /// </summary>
     public ExtendViewport( float minWorldWidth, float minWorldHeight )
-        : this( minWorldWidth, minWorldHeight, 0, 0, new OrthographicCamera() )
+            : this( minWorldWidth, minWorldHeight, 0, 0, new OrthographicCamera() )
     {
     }
 
@@ -39,7 +39,7 @@ public class ExtendViewport : Viewport
     /// Creates a new viewport with no maximum world size.
     /// </summary>
     public ExtendViewport( float minWorldWidth, float minWorldHeight, Camera camera )
-        : this( minWorldWidth, minWorldHeight, 0, 0, camera )
+            : this( minWorldWidth, minWorldHeight, 0, 0, camera )
     {
     }
 
@@ -47,34 +47,31 @@ public class ExtendViewport : Viewport
     /// Creates a new viewport using a new <seealso cref="OrthographicCamera"/> and a maximum world size.
     /// </summary>
     /// <see cref="ExtendViewport(float, float, float, float, Camera)"/>
-    public ExtendViewport( float minWorldWidth, float minWorldHeight, float maxWorldWidth, float maxWorldHeight )
-        : this( minWorldWidth, minWorldHeight, maxWorldWidth, maxWorldHeight, new OrthographicCamera() )
+    public ExtendViewport( float minWorldWidth, float minWorldHeight,
+                           float maxWorldWidth, float maxWorldHeight )
+            : this( minWorldWidth, minWorldHeight, maxWorldWidth, maxWorldHeight, new OrthographicCamera() )
     {
     }
-
+    
     /// <summary>
     /// Creates a new viewport with a maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"></param>
     /// <param name="minWorldHeight"></param>
-    /// <param name="maxWorldWidth"> User 0 for no maximum width. </param>
-    /// <param name="maxWorldHeight"> User 0 for no maximum height.  </param>
+    /// <param name="maxWorldWidth"> Use zero for no maximum width. </param>
+    /// <param name="maxWorldHeight"> Use zero for no maximum height.  </param>
     /// <param name="camera"></param>
-    public ExtendViewport( float minWorldWidth,
-                           float minWorldHeight,
-                           float maxWorldWidth,
-                           float maxWorldHeight,
-                           Camera camera )
+    public ExtendViewport( float minWorldWidth, float minWorldHeight,
+                           float maxWorldWidth, float maxWorldHeight,
+                           Camera camera ) : base( camera )
     {
         this.MinWorldWidth  = minWorldWidth;
         this.MinWorldHeight = minWorldHeight;
         this.MaxWorldWidth  = maxWorldWidth;
         this.MaxWorldHeight = maxWorldHeight;
-
-        this.Camera = camera;
     }
 
-    public new void Update( int screenWidth, int screenHeight, bool centerCamera )
+    public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
         // Fit min size to the screen.
         var     worldWidth  = MinWorldWidth;
@@ -118,12 +115,12 @@ public class ExtendViewport : Viewport
 
         // Center.
         SetScreenBounds
-            (
-             ( screenWidth - viewportWidth ) / 2,
-             ( screenHeight - viewportHeight ) / 2,
-             viewportWidth,
-             viewportHeight
-            );
+                (
+                ( screenWidth - viewportWidth ) / 2,
+                ( screenHeight - viewportHeight ) / 2,
+                viewportWidth,
+                viewportHeight
+                );
 
         Apply( centerCamera );
     }

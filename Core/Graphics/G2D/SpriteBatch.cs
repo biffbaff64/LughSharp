@@ -286,7 +286,7 @@ public class SpriteBatch : IBatch
         get => colorPacked;
     }
 
-    public void Draw( Texture texture,
+    public virtual void Draw( Texture texture,
                       float x,
                       float y,
                       float originX,
@@ -305,7 +305,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
         }
 
         if ( texture != LastTexture )
@@ -401,9 +401,15 @@ public class SpriteBatch : IBatch
         var v2    = srcY * invTexHeight;
         var color = this.colorPacked;
 
-        if ( flipX ) ( u, u2 ) = ( u2, u );
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
 
-        if ( flipY ) ( v, v2 ) = ( v2, v );
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
 
         this.Vertices[ idx ]     = x1;
         this.Vertices[ idx + 1 ] = y1;
@@ -432,21 +438,21 @@ public class SpriteBatch : IBatch
         this.idx = idx + 20;
     }
 
-    public void Draw( Texture texture,
-                      float x,
-                      float y,
-                      float width,
-                      float height,
-                      int srcX,
-                      int srcY,
-                      int srcWidth,
-                      int srcHeight,
-                      bool flipX,
-                      bool flipY )
+    public virtual void Draw( Texture texture,
+                              float x,
+                              float y,
+                              float width,
+                              float height,
+                              int srcX,
+                              int srcY,
+                              int srcWidth,
+                              int srcHeight,
+                              bool flipX,
+                              bool flipY )
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
         }
 
         if ( texture != LastTexture )
@@ -466,9 +472,15 @@ public class SpriteBatch : IBatch
         var fy2   = y + height;
         var color = this.colorPacked;
 
-        if ( flipX ) ( u, u2 ) = ( u2, u );
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
 
-        if ( flipY ) ( v, v2 ) = ( v2, v );
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
 
         this.Vertices[ idx ]     = x;
         this.Vertices[ idx + 1 ] = y;
@@ -497,11 +509,11 @@ public class SpriteBatch : IBatch
         this.idx = idx + 20;
     }
 
-    public void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
+    public virtual void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
         }
 
         if ( texture != LastTexture )
@@ -549,19 +561,19 @@ public class SpriteBatch : IBatch
         this.idx = idx + 20;
     }
 
-    public void Draw( Texture texture,
-                      float x,
-                      float y,
-                      float width,
-                      float height,
-                      float u,
-                      float v,
-                      float u2,
-                      float v2 )
+    public virtual void Draw( Texture texture,
+                              float x,
+                              float y,
+                              float width,
+                              float height,
+                              float u,
+                              float v,
+                              float u2,
+                              float v2 )
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
         }
 
         if ( texture != LastTexture )
@@ -604,16 +616,16 @@ public class SpriteBatch : IBatch
         this.idx = idx + 20;
     }
 
-    public void Draw( Texture texture, float x, float y )
+    public virtual void Draw( Texture texture, float x, float y )
     {
         Draw( texture, x, y, texture.Width, texture.Height );
     }
 
-    public void Draw( Texture texture, float x, float y, float width, float height )
+    public virtual void Draw( Texture texture, float x, float y, float width, float height )
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
         }
 
         if ( texture != LastTexture )
@@ -629,43 +641,43 @@ public class SpriteBatch : IBatch
         var fy2   = y + height;
         var color = this.colorPacked;
 
-        const float u  = 0;
-        const float v  = 1;
-        const float u2 = 1;
-        const float v2 = 0;
+        const float U  = 0;
+        const float V  = 1;
+        const float U2 = 1;
+        const float V2 = 0;
 
         this.Vertices[ idx ]     = x;
         this.Vertices[ idx + 1 ] = y;
         this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = u;
-        this.Vertices[ idx + 4 ] = v;
+        this.Vertices[ idx + 3 ] = U;
+        this.Vertices[ idx + 4 ] = V;
 
         this.Vertices[ idx + 5 ] = x;
         this.Vertices[ idx + 6 ] = fy2;
         this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = u;
-        this.Vertices[ idx + 9 ] = v2;
+        this.Vertices[ idx + 8 ] = U;
+        this.Vertices[ idx + 9 ] = V2;
 
         this.Vertices[ idx + 10 ] = fx2;
         this.Vertices[ idx + 11 ] = fy2;
         this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = u2;
-        this.Vertices[ idx + 14 ] = v2;
+        this.Vertices[ idx + 13 ] = U2;
+        this.Vertices[ idx + 14 ] = V2;
 
         this.Vertices[ idx + 15 ] = fx2;
         this.Vertices[ idx + 16 ] = y;
         this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = u2;
-        this.Vertices[ idx + 19 ] = v;
+        this.Vertices[ idx + 18 ] = U2;
+        this.Vertices[ idx + 19 ] = V;
 
         this.idx = idx + 20;
     }
 
-    public void Draw( Texture texture, float[] spriteVertices, int offset, int count )
+    public virtual void Draw( Texture texture, float[] spriteVertices, int offset, int count )
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
         }
 
         var verticesLength    = Vertices.Length;
@@ -722,16 +734,16 @@ public class SpriteBatch : IBatch
         }
     }
 
-    public void Draw( TextureRegion region, float x, float y )
+    public virtual void Draw( TextureRegion region, float x, float y )
     {
         Draw( region, x, y, region.RegionWidth, region.RegionHeight );
     }
 
-    public void Draw( TextureRegion region, float x, float y, float width, float height )
+    public virtual void Draw( TextureRegion region, float x, float y, float width, float height )
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
         }
 
         Texture texture = region.Texture;
@@ -781,20 +793,20 @@ public class SpriteBatch : IBatch
         this.idx = idx + 20;
     }
 
-    public void Draw( TextureRegion region,
-                      float x,
-                      float y,
-                      float originX,
-                      float originY,
-                      float width,
-                      float height,
-                      float scaleX,
-                      float scaleY,
-                      float rotation )
+    public virtual void Draw( TextureRegion region,
+                              float x,
+                              float y,
+                              float originX,
+                              float originY,
+                              float width,
+                              float height,
+                              float scaleX,
+                              float scaleY,
+                              float rotation )
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
         }
 
         Texture texture = region.Texture;
@@ -920,17 +932,17 @@ public class SpriteBatch : IBatch
         this.idx = idx + 20;
     }
 
-    public void Draw( TextureRegion region,
-                      float x,
-                      float y,
-                      float originX,
-                      float originY,
-                      float width,
-                      float height,
-                      float scaleX,
-                      float scaleY,
-                      float rotation,
-                      bool clockwise )
+    public virtual void Draw( TextureRegion region,
+                              float x,
+                              float y,
+                              float originX,
+                              float originY,
+                              float width,
+                              float height,
+                              float scaleX,
+                              float scaleY,
+                              float rotation,
+                              bool clockwise )
     {
         if ( !IsDrawing )
         {
@@ -1080,7 +1092,7 @@ public class SpriteBatch : IBatch
         this.idx = idx + 20;
     }
 
-    public void Draw( TextureRegion region, float width, float height, Affine2 transform )
+    public virtual void Draw( TextureRegion region, float width, float height, Affine2 transform )
     {
         if ( !IsDrawing )
         {
@@ -1144,14 +1156,20 @@ public class SpriteBatch : IBatch
     /// </summary>
     public void Flush()
     {
-        if ( idx == 0 ) return;
+        if ( idx == 0 )
+        {
+            return;
+        }
 
         RenderCalls++;
         TotalRenderCalls++;
 
         var spritesInBatch = idx / 20;
 
-        if ( spritesInBatch > MaxSpritesInBatch ) MaxSpritesInBatch = spritesInBatch;
+        if ( spritesInBatch > MaxSpritesInBatch )
+        {
+            MaxSpritesInBatch = spritesInBatch;
+        }
 
         var count = spritesInBatch * 6;
 
@@ -1188,7 +1206,10 @@ public class SpriteBatch : IBatch
 
     public void DisableBlending()
     {
-        if ( BlendingDisabled ) return;
+        if ( BlendingDisabled )
+        {
+            return;
+        }
 
         Flush();
         BlendingDisabled = true;
@@ -1196,7 +1217,10 @@ public class SpriteBatch : IBatch
 
     public void EnableBlending()
     {
-        if ( !BlendingDisabled ) return;
+        if ( !BlendingDisabled )
+        {
+            return;
+        }
 
         Flush();
         BlendingDisabled = false;
@@ -1218,7 +1242,10 @@ public class SpriteBatch : IBatch
         if ( ( _blendSrcFunc == srcFuncColor )
              && ( _blendDstFunc == dstFuncColor )
              && ( _blendSrcFuncAlpha == srcFuncAlpha )
-             && ( _blendDstFuncAlpha == dstFuncAlpha ) ) return;
+             && ( _blendDstFuncAlpha == dstFuncAlpha ) )
+        {
+            return;
+        }
 
         Flush();
 
@@ -1240,7 +1267,10 @@ public class SpriteBatch : IBatch
     {
         _mesh.Dispose();
 
-        if ( _ownsShader && ( _shader != null ) ) _shader.Dispose();
+        if ( _ownsShader && ( _shader != null ) )
+        {
+            _shader.Dispose();
+        }
     }
 
     public Matrix4 GetProjectionMatrix() => _projectionMatrix;
@@ -1249,16 +1279,30 @@ public class SpriteBatch : IBatch
 
     public void SetProjectionMatrix( Matrix4 projection )
     {
-        if ( IsDrawing ) Flush();
+        if ( IsDrawing )
+        {
+            Flush();
+        }
+
         _projectionMatrix.Set( projection );
-        if ( IsDrawing ) SetupMatrices();
+        if ( IsDrawing )
+        {
+            SetupMatrices();
+        }
     }
 
-    public void SetTransformMatrix( Matrix4 transform )
+    public virtual void SetTransformMatrix( Matrix4 transform )
     {
-        if ( IsDrawing ) Flush();
+        if ( IsDrawing )
+        {
+            Flush();
+        }
+
         _transformMatrix.Set( transform );
-        if ( IsDrawing ) SetupMatrices();
+        if ( IsDrawing )
+        {
+            SetupMatrices();
+        }
     }
 
     protected void SetupMatrices()

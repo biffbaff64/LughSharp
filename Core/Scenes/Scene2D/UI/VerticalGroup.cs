@@ -435,7 +435,10 @@ public class VerticalGroup : WidgetGroup
                 r           += 2;
             }
 
-            if ( fill > 0 ) width = columnWidth * fill;
+            if ( fill > 0 )
+            {
+                width = columnWidth * fill;
+            }
 
             if ( layout != null )
             {
@@ -443,7 +446,10 @@ public class VerticalGroup : WidgetGroup
 
                 var maxWidth = layout.MaxWidth;
 
-                if ( ( maxWidth > 0 ) && ( width > maxWidth ) ) width = maxWidth;
+                if ( ( maxWidth > 0 ) && ( width > maxWidth ) )
+                {
+                    width = maxWidth;
+                }
             }
 
             var x = columnX;
@@ -474,22 +480,34 @@ public class VerticalGroup : WidgetGroup
                 child.SetBounds( x, y, width, height );
             }
 
-            if ( layout != null ) layout.Validate();
+            if ( layout != null )
+            {
+                layout.Validate();
+            }
         }
     }
 
     public new float GetPrefWidth()
     {
-        if ( _sizeInvalid ) ComputeSize();
+        if ( _sizeInvalid )
+        {
+            ComputeSize();
+        }
 
         return _prefWidth;
     }
 
     public new float GetPrefHeight()
     {
-        if ( Wrapping ) return 0;
+        if ( Wrapping )
+        {
+            return 0;
+        }
 
-        if ( _sizeInvalid ) ComputeSize();
+        if ( _sizeInvalid )
+        {
+            ComputeSize();
+        }
 
         return _prefHeight;
     }
@@ -740,11 +758,17 @@ public class VerticalGroup : WidgetGroup
     {
         base.DrawDebugBounds( shapes );
 
-        if ( !DebugActive ) return;
+        if ( !DebugActive )
+        {
+            return;
+        }
 
         shapes.Set( ShapeRenderer.ShapeTypes.Line );
 
-        if ( Stage != null ) shapes.Color = Stage.DebugColor;
+        if ( Stage != null )
+        {
+            shapes.Color = Stage.DebugColor;
+        }
 
         shapes.Rect
             (

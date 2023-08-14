@@ -316,7 +316,7 @@ public class TextureRegion
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public void Flip( bool x, bool y )
+    public virtual void Flip( bool x, bool y )
     {
         if ( x )
         {

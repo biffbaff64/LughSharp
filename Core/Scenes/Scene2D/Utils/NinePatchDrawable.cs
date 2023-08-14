@@ -54,7 +54,7 @@ public class NinePatchDrawable : BaseDrawable, ITransformDrawable
         this.Patch = drawable.Patch;
     }
 
-    public new void Draw( IBatch batch, float x, float y, float width, float height )
+    public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
         Patch?.Draw( batch, x, y, width, height );
     }

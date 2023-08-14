@@ -100,7 +100,10 @@ public class WidgetGroup : Group, ILayout
 
     public void Validate()
     {
-        if ( !_layoutEnabled ) return;
+        if ( !_layoutEnabled )
+        {
+            return;
+        }
 
         Group? parent = Parent;
 
@@ -128,7 +131,10 @@ public class WidgetGroup : Group, ILayout
             }
         }
 
-        if ( !NeedsLayout ) return;
+        if ( !NeedsLayout )
+        {
+            return;
+        }
 
         NeedsLayout = false;
 
@@ -138,7 +144,10 @@ public class WidgetGroup : Group, ILayout
         // The root-most widget group retries layout a reasonable number of times.
         if ( NeedsLayout )
         {
-            if ( parent is WidgetGroup ) return; // The parent widget will layout again.
+            if ( parent is WidgetGroup )
+            {
+                return; // The parent widget will layout again.
+            }
 
             for ( var i = 0; i < 5; i++ )
             {
@@ -146,7 +155,10 @@ public class WidgetGroup : Group, ILayout
 
                 Layout();
 
-                if ( !NeedsLayout ) break;
+                if ( !NeedsLayout )
+                {
+                    break;
+                }
             }
         }
     }
@@ -165,7 +177,10 @@ public class WidgetGroup : Group, ILayout
     {
         Invalidate();
 
-        if ( Parent is ILayout layout ) layout.InvalidateHierarchy();
+        if ( Parent is ILayout layout )
+        {
+            layout.InvalidateHierarchy();
+        }
     }
 
     protected new void ChildrenChanged()

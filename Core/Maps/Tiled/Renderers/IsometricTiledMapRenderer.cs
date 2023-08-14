@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Trace = LibGDXSharp.Utils.Trace;
+
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 
@@ -23,7 +25,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 {
     private Matrix4? _isoTransform;
     private Matrix4? _invIsotransform;
-    
+
     private readonly Vector3 _screenPos   = new();
     private readonly Vector2 _topRight    = new();
     private readonly Vector2 _bottomLeft  = new();
@@ -31,25 +33,25 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
     private readonly Vector2 _bottomRight = new();
 
     public IsometricTiledMapRenderer( TiledMap map )
-        : base( map )
+            : base( map )
     {
         Init();
     }
 
     public IsometricTiledMapRenderer( TiledMap map, IBatch batch )
-        : base( map, batch )
+            : base( map, batch )
     {
         Init();
     }
 
     public IsometricTiledMapRenderer( TiledMap map, float unitScale )
-        : base( map, unitScale )
+            : base( map, unitScale )
     {
         Init();
     }
 
     public IsometricTiledMapRenderer( TiledMap map, float unitScale, IBatch batch )
-        : base( map, unitScale, batch )
+            : base( map, unitScale, batch )
     {
         Init();
     }
@@ -61,9 +63,13 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
         _isoTransform.Idt();
 
         // isoTransform.translate(0, 32, 0);
-        _isoTransform.Scale( ( float )( Math.Sqrt( 2.0 ) / 2.0 ),
-                             ( float )( Math.Sqrt( 2.0 ) / 4.0 ),
-                             1.0f );
+        _isoTransform.Scale
+                (
+                ( float )( Math.Sqrt( 2.0 ) / 2.0 ),
+                ( float )( Math.Sqrt( 2.0 ) / 4.0 ),
+                1.0f
+                );
+
         _isoTransform.Rotate( 0.0f, 0.0f, 1.0f, -45 );
 
         // ... and the inverse matrix
@@ -74,16 +80,28 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
     private Vector3 TranslateScreenToIso( Vector2 vec )
     {
         _screenPos.Set( vec.X, vec.Y, 0 );
-        _screenPos.Mul( _invIsotransform! );
+
+        if ( _invIsotransform == null )
+        {
+            Trace.Dbg( message: "_invIsotransform is null!" );
+        }
+        else
+        {
+            _screenPos.Mul( _invIsotransform );
+        }
 
         return _screenPos;
     }
 
-    public new void RenderTileLayer( TiledMapTileLayer layer )
+    public override void RenderTileLayer( TiledMapTileLayer layer )
     {
         Color batchColor = Batch.GetColor();
-        var color = Color.ToFloatBits( batchColor.R, batchColor.G, batchColor.B,
-                                       batchColor.A * layer.Opacity );
+
+        var color = Color.ToFloatBits
+                (
+                batchColor.R, batchColor.G, batchColor.B,
+                batchColor.A * layer.Opacity
+                );
 
         var tileWidth  = layer.TileWidth * UnitScale;
         var tileHeight = layer.TileHeight * UnitScale;
@@ -104,8 +122,8 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
         _topLeft.Set( ViewBounds.X - layerOffsetX, ViewBounds.Y - layerOffsetY );
 
         // ROW2
-        _bottomRight.Set
-            ( ( ViewBounds.X + ViewBounds.Width ) - layerOffsetX, ( ViewBounds.Y + ViewBounds.Height ) - layerOffsetY );
+        _bottomRight.Set( ( ViewBounds.X + ViewBounds.Width ) - layerOffsetX,
+                          ( ViewBounds.Y + ViewBounds.Height ) - layerOffsetY );
 
         // transforming screen coordinates to iso coordinates
         var row1 = ( int )( TranslateScreenToIso( _topLeft ).Y / tileWidth ) - 2;
@@ -123,13 +141,18 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 
                 TiledMapTileLayer.Cell? cell = layer.GetCell( col, row );
 
-                ITiledMapTile? tile = cell?.GetTile();
+                if ( cell == null )
+                {
+                    return;
+                }
+
+                ITiledMapTile? tile = cell.GetTile();
 
                 if ( tile != null )
                 {
-                    var flipX     = cell!.GetFlipHorizontally();
+                    var flipX     = cell.GetFlipHorizontally();
                     var flipY     = cell.GetFlipVertically();
-                    var  rotations = cell.GetRotation();
+                    var rotations = cell.GetRotation();
 
                     TextureRegion region = tile.TextureRegion;
 
@@ -172,10 +195,10 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                         var temp = Vertices[ IBatch.U1 ];
                         Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
                         Vertices[ IBatch.U3 ] = temp;
-                        
-                        temp           = Vertices[ IBatch.U2 ];
+
+                        temp                  = Vertices[ IBatch.U2 ];
                         Vertices[ IBatch.U2 ] = Vertices[ IBatch.U4 ];
-                        Vertices[IBatch. U4 ] = temp;
+                        Vertices[ IBatch.U4 ] = temp;
                     }
 
                     if ( flipY )
@@ -184,7 +207,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                         Vertices[ IBatch.V1 ] = Vertices[ IBatch.V3 ];
                         Vertices[ IBatch.V3 ] = temp;
 
-                        temp           = Vertices[ IBatch.V2 ];
+                        temp                  = Vertices[ IBatch.V2 ];
                         Vertices[ IBatch.V2 ] = Vertices[ IBatch.V4 ];
                         Vertices[ IBatch.V4 ] = temp;
                     }
@@ -215,16 +238,16 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                                 var tempU = Vertices[ IBatch.U1 ];
                                 Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
                                 Vertices[ IBatch.U3 ] = tempU;
-                                
-                                tempU          = Vertices[ IBatch.U2 ];
+
+                                tempU                 = Vertices[ IBatch.U2 ];
                                 Vertices[ IBatch.U2 ] = Vertices[ IBatch.U4 ];
                                 Vertices[ IBatch.U4 ] = tempU;
-                                
+
                                 var tempV = Vertices[ IBatch.V1 ];
                                 Vertices[ IBatch.V1 ] = Vertices[ IBatch.V3 ];
                                 Vertices[ IBatch.V3 ] = tempV;
-                                
-                                tempV          = Vertices[ IBatch.V2 ];
+
+                                tempV                 = Vertices[ IBatch.V2 ];
                                 Vertices[ IBatch.V2 ] = Vertices[ IBatch.V4 ];
                                 Vertices[ IBatch.V4 ] = tempV;
 

@@ -57,7 +57,7 @@ public class BaseDrawable : IDrawable
     /// Draws this drawable at the specified bounds. The drawable should be tinted
     /// with <see cref="IBatch.GetColor"/>, possibly by mixing its own color. 
     /// </summary>
-    public void Draw( IBatch batch, float x, float y, float width, float height )
+    public virtual void Draw( IBatch batch, float x, float y, float width, float height )
     {
     }
 

@@ -36,8 +36,11 @@ public class DelayAction : DelegateAction
         {
             Time += delta;
 
-            if ( Time < Duration ) return false;
-            
+            if ( Time < Duration )
+            {
+                return false;
+            }
+
             delta = Time - Duration;
         }
 

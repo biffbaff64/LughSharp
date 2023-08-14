@@ -70,10 +70,17 @@ public class FrameBuffer : GLFrameBuffer< Texture >
 
         frameBufferBuilder.AddBasicColorTextureAttachment( format );
 
-        if ( hasDepth ) frameBufferBuilder.AddBasicDepthRenderBuffer();
-        if ( hasStencil ) frameBufferBuilder.AddBasicStencilRenderBuffer();
+        if ( hasDepth )
+        {
+            frameBufferBuilder.AddBasicDepthRenderBuffer();
+        }
 
-//        this.BufferBuilder = frameBufferBuilder;
+        if ( hasStencil )
+        {
+            frameBufferBuilder.AddBasicStencilRenderBuffer();
+        }
+
+        //        this.BufferBuilder = frameBufferBuilder;
 
         Build();
     }
@@ -120,7 +127,7 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     /// <summary>
     /// See <see cref="GLFrameBuffer{T}.Unbind()"/>
     /// </summary>
-    public new void Unbind()
+    public override void Unbind()
     {
         base.Unbind();
     }

@@ -98,7 +98,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// are realigned by restoring the original matrix, or by calling
     /// <see cref="FlushAndSyncTransformMatrix()"/>. 
     /// </summary>
-    public new void SetTransformMatrix( Matrix4 transform )
+    public override void SetTransformMatrix( Matrix4 transform )
     {
         Matrix4 realMatrix = base.GetTransformMatrix();
 
@@ -182,26 +182,52 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    //@formatter:off
-    public new void Draw( Texture texture, float x, float y, float originX,
-                          float originY, float width, float height, float scaleX,
-                          float scaleY, float rotation, int srcX, int srcY, int srcWidth,
-                          int srcHeight, bool flipX, bool flipY )
+    public override void Draw( Texture texture,
+                               float x,
+                               float y,
+                               float originX,
+                               float originY,
+                               float width,
+                               float height,
+                               float scaleX,
+                               float scaleY,
+                               float rotation,
+                               int srcX,
+                               int srcY,
+                               int srcWidth,
+                               int srcHeight,
+                               bool flipX,
+                               bool flipY )
     {
         if ( !_adjustNeeded )
         {
-            base.Draw( texture, x, y, originX, originY, width, height, scaleX, scaleY,
-                       rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY );
+            base.Draw
+                (
+                texture, x, y, originX, originY, width, height, scaleX, scaleY,
+                rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY
+                );
         }
         else
         {
-            DrawAdjusted( texture, x, y, originX, originY, width, height, scaleX, scaleY,
-                          rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY );
+            DrawAdjusted
+                (
+                texture, x, y, originX, originY, width, height, scaleX, scaleY,
+                rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY
+                );
         }
     }
 
-    public new void Draw( Texture texture, float x, float y, float width, float height,
-                          int srcX, int srcY, int srcWidth, int srcHeight, bool flipX, bool flipY )
+    public override void Draw( Texture texture,
+                               float x,
+                               float y,
+                               float width,
+                               float height,
+                               int srcX,
+                               int srcY,
+                               int srcWidth,
+                               int srcHeight,
+                               bool flipX,
+                               bool flipY )
     {
         if ( !_adjustNeeded )
         {
@@ -209,12 +235,15 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted( texture, x, y, 0, 0, width, height, 1, 1, 0,
-                          srcX, srcY, srcWidth, srcHeight, flipX, flipY );
+            DrawAdjusted
+                (
+                texture, x, y, 0, 0, width, height, 1, 1, 0,
+                srcX, srcY, srcWidth, srcHeight, flipX, flipY
+                );
         }
     }
 
-    public new void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
+    public override void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
     {
         if ( !_adjustNeeded )
         {
@@ -222,13 +251,23 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted( texture, x, y, 0, 0, srcWidth, srcHeight, 1, 1, 0,
-                          srcX, srcY, srcWidth, srcHeight, false, false );
+            DrawAdjusted
+                (
+                texture, x, y, 0, 0, srcWidth, srcHeight, 1, 1, 0,
+                srcX, srcY, srcWidth, srcHeight, false, false
+                );
         }
     }
 
-    public new void Draw( Texture texture, float x, float y, float width,
-                          float height, float u, float v, float u2, float v2 )
+    public override void Draw( Texture texture,
+                               float x,
+                               float y,
+                               float width,
+                               float height,
+                               float u,
+                               float v,
+                               float u2,
+                               float v2 )
     {
         if ( !_adjustNeeded )
         {
@@ -240,7 +279,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    public new void Draw( Texture texture, float x, float y )
+    public override void Draw( Texture texture, float x, float y )
     {
         if ( !_adjustNeeded )
         {
@@ -248,12 +287,15 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted( texture, x, y, 0, 0, texture.Width, texture.Height,
-                          1, 1, 0, 0, 1, 1, 0, false, false );
+            DrawAdjusted
+                (
+                texture, x, y, 0, 0, texture.Width, texture.Height,
+                1, 1, 0, 0, 1, 1, 0, false, false
+                );
         }
     }
 
-    public new void Draw( Texture texture, float x, float y, float width, float height )
+    public override void Draw( Texture texture, float x, float y, float width, float height )
     {
         if ( !_adjustNeeded )
         {
@@ -265,534 +307,602 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-	public new void Draw(TextureRegion region, float x, float y)
-	{
-		if ( !_adjustNeeded )
-		{
-			base.Draw(region, x, y);
-		}
-		else
-		{
-			DrawAdjusted(region, x, y, 0, 0, region.RegionWidth, region.RegionHeight, 1, 1, 0);
-		}
-	}
-
-	public new void Draw( TextureRegion region, float x, float y, float width, float height )
-	{
-		if ( !_adjustNeeded )
-		{
-			base.Draw(region, x, y, width, height);
-		}
-		else
-		{
-			DrawAdjusted(region, x, y, 0, 0, width, height, 1, 1, 0);
-		}
-	}
-
-	public new void Draw( TextureRegion region, float x, float y, float originX,
-                          float originY, float width, float height, float scaleX,
-                          float scaleY, float rotation )
-	{
-		if ( !_adjustNeeded )
-		{
-			base.Draw( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
-		}
-		else
-		{
-			DrawAdjusted( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
-		}
-	}
-
-	public new void Draw( TextureRegion region, float x, float y, float originX,
-                          float originY, float width, float height, float scaleX,
-                          float scaleY, float rotation, bool clockwise )
-	{
-		if ( !_adjustNeeded )
-		{
-			base.Draw(region, x, y, originX, originY, width, height, scaleX, scaleY, rotation, clockwise);
-		}
-		else
-		{
-			DrawAdjusted( region, x, y, originX, originY, width, height,
-                          scaleX, scaleY, rotation, clockwise );
-		}
-	}
-
-	public new void Draw( Texture texture, float[] spriteVertices, int offset, int count )
-	{
-		if ( ( count % Sprite.SpriteSize ) != 0 )
-		{
-			throw new GdxRuntimeException( "invalid vertex count" );
-		}
-
-		if ( !_adjustNeeded )
-		{
-			base.Draw( texture, spriteVertices, offset, count );
-		}
-		else
-		{
-			DrawAdjusted( texture, spriteVertices, offset, count );
-		}
-	}
-
-	public new void Draw( TextureRegion region, float width, float height, Affine2 transform )
-	{
-		if ( !_adjustNeeded )
-		{
-			base.Draw( region, width, height, transform );
-		}
-		else
-		{
-			DrawAdjusted( region, width, height, transform );
-		}
-	}
-
-	private void DrawAdjusted( TextureRegion region, float x, float y, float originX,
-                               float originY, float width, float height, float scaleX,
-                               float scaleY, float rotation )
-	{
-		// v must be flipped
-		DrawAdjustedUV( region.Texture, x, y, originX, originY, width, height, scaleX,
-                        scaleY, rotation, region.U, region.V2, region.U2, region.V, false, false );
-	}
-
-	private void DrawAdjusted( Texture texture, float x, float y, float originX, float originY,
-                               float width, float height, float scaleX, float scaleY, float rotation,
-                               int srcX, int srcY, int srcWidth, int srcHeight, bool flipX, bool flipY )
-	{
-		var invWidth = 1.0f / texture.Width;
-		var invHeight = 1.0f / texture.Height;
-
-		var u = srcX * invWidth;
-		var v = (srcY + srcHeight) * invHeight;
-		var u2 = (srcX + srcWidth) * invWidth;
-		var v2 = srcY * invHeight;
-
-		DrawAdjustedUV( texture, x, y, originX, originY, width, height, scaleX,
-                        scaleY, rotation, u, v, u2, v2, flipX, flipY );
-	}
-
-	private void DrawAdjustedUV(Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, float u, float v, float u2, float v2, bool flipX, bool flipY)
-	{
-		if ( !IsDrawing )
-		{
-			throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
-		}
-
-		if (texture != LastTexture)
-		{
-			SwitchTexture(texture);
-		}
-		else if (idx == Vertices.Length)
-		{
-			base.Flush();
-		}
-
-		// bottom left and top right corner points relative to origin
-		var worldOriginX = x + originX;
-		var worldOriginY = y + originY;
-		var fx = -originX;
-		var fy = -originY;
-		var fx2 = width - originX;
-		var fy2 = height - originY;
-
-		// scale
-		if (( scaleX is not 1 ) || ( scaleY is not 1 ))
-		{
-			fx *= scaleX;
-			fy *= scaleY;
-			fx2 *= scaleX;
-			fy2 *= scaleY;
-		}
-
-		// construct corner points, start from top left and go counter clockwise
-		var p1X = fx;
-		var p1Y = fy;
-		var p2X = fx;
-		var p2Y = fy2;
-		var p3X = fx2;
-		var p3Y = fy2;
-		var p4X = fx2;
-		var p4Y = fy;
-
-		float x1;
-		float y1;
-		float x2;
-		float y2;
-		float x3;
-		float y3;
-		float x4;
-		float y4;
-
-		// rotate
-		if (rotation != 0)
-		{
-			var cos = MathUtils.CosDeg(rotation);
-			var sin = MathUtils.SinDeg(rotation);
-
-			x1 = ( cos * p1X ) - ( sin * p1Y );
-			y1 = ( sin * p1X ) + ( cos * p1Y );
-
-			x2 = ( cos * p2X ) - ( sin * p2Y );
-			y2 = ( sin * p2X ) + ( cos * p2Y );
-
-			x3 = ( cos * p3X ) - ( sin * p3Y );
-			y3 = ( sin * p3X ) + ( cos * p3Y );
-
-			x4 = x1 + (x3 - x2);
-			y4 = y3 - (y2 - y1);
-		}
-		else
-		{
-			x1 = p1X;
-			y1 = p1Y;
-
-			x2 = p2X;
-			y2 = p2Y;
-
-			x3 = p3X;
-			y3 = p3Y;
-
-			x4 = p4X;
-			y4 = p4Y;
-		}
-
-		x1 += worldOriginX;
-		y1 += worldOriginY;
-		x2 += worldOriginX;
-		y2 += worldOriginY;
-		x3 += worldOriginX;
-		y3 += worldOriginY;
-		x4 += worldOriginX;
-		y4 += worldOriginY;
-
-		if (flipX)
-		{
-			( u, u2 ) = ( u2, u );
-        }
-        
-		if (flipY)
-		{
-			( v, v2 ) = ( v2, v );
-        }
-
-		Affine2 t = _adjustAffine;
-
-		Vertices[ idx + 0 ] = ( t.m00 * x1 ) + ( t.m01 * y1 ) + t.m02;
-		Vertices[ idx + 1 ] = ( t.m10 * x1 ) + ( t.m11 * y1 ) + t.m12;
-		Vertices[ idx + 2 ] = colorPacked;
-		Vertices[ idx + 3 ] = u;
-		Vertices[ idx + 4 ] = v;
-
-		Vertices[ idx + 5 ] = ( t.m00 * x2 ) + ( t.m01 * y2 ) + t.m02;
-		Vertices[ idx + 6 ] = ( t.m10 * x2 ) + ( t.m11 * y2 ) + t.m12;
-		Vertices[ idx + 7 ] = colorPacked;
-		Vertices[ idx + 8 ] = u;
-		Vertices[ idx + 9 ] = v2;
-
-		Vertices[ idx + 10 ] = ( t.m00 * x3 ) + ( t.m01 * y3 ) + t.m02;
-		Vertices[ idx + 11 ] = ( t.m10 * x3 ) + ( t.m11 * y3 ) + t.m12;
-		Vertices[ idx + 12 ] = colorPacked;
-		Vertices[ idx + 13 ] = u2;
-		Vertices[ idx + 14 ] = v2;
-
-		Vertices[ idx + 15 ] = ( t.m00 * x4 ) + ( t.m01 * y4 ) + t.m02;
-		Vertices[ idx + 16 ] = ( t.m10 * x4 ) + ( t.m11 * y4 ) + t.m12;
-		Vertices[ idx + 17 ] = colorPacked;
-		Vertices[ idx + 18 ] = u2;
-		Vertices[ idx + 19 ] = v;
-
-		idx += Sprite.SpriteSize;
-	}
-    
-	private void DrawAdjusted( TextureRegion region, float x, float y, float originX,
-                               float originY, float width, float height, float scaleX,
-                               float scaleY, float rotation, bool clockwise )
+    public override void Draw( TextureRegion region, float x, float y )
     {
-		if ( !IsDrawing )
-            throw new IllegalStateException("CpuSpriteBatch.begin must be called before draw.");
-
-		if ( region.Texture != LastTexture )
-		{
-            SwitchTexture( region.Texture );
+        if ( !_adjustNeeded )
+        {
+            base.Draw( region, x, y );
         }
-		else if ( idx == Vertices.Length )
+        else
+        {
+            DrawAdjusted( region, x, y, 0, 0, region.RegionWidth, region.RegionHeight, 1, 1, 0 );
+        }
+    }
+
+    public override void Draw( TextureRegion region, float x, float y, float width, float height )
+    {
+        if ( !_adjustNeeded )
+        {
+            base.Draw( region, x, y, width, height );
+        }
+        else
+        {
+            DrawAdjusted( region, x, y, 0, 0, width, height, 1, 1, 0 );
+        }
+    }
+
+    public override void Draw( TextureRegion region,
+                               float x,
+                               float y,
+                               float originX,
+                               float originY,
+                               float width,
+                               float height,
+                               float scaleX,
+                               float scaleY,
+                               float rotation )
+    {
+        if ( !_adjustNeeded )
+        {
+            base.Draw( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
+        }
+        else
+        {
+            DrawAdjusted( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
+        }
+    }
+
+    public override void Draw( TextureRegion region,
+                               float x,
+                               float y,
+                               float originX,
+                               float originY,
+                               float width,
+                               float height,
+                               float scaleX,
+                               float scaleY,
+                               float rotation,
+                               bool clockwise )
+    {
+        if ( !_adjustNeeded )
+        {
+            base.Draw( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation, clockwise );
+        }
+        else
+        {
+            DrawAdjusted
+                (
+                region, x, y, originX, originY, width, height,
+                scaleX, scaleY, rotation, clockwise
+                );
+        }
+    }
+
+    public override void Draw( Texture texture, float[] spriteVertices, int offset, int count )
+    {
+        if ( ( count % Sprite.SpriteSize ) != 0 )
+        {
+            throw new GdxRuntimeException( "invalid vertex count" );
+        }
+
+        if ( !_adjustNeeded )
+        {
+            base.Draw( texture, spriteVertices, offset, count );
+        }
+        else
+        {
+            DrawAdjusted( texture, spriteVertices, offset, count );
+        }
+    }
+
+    public override void Draw( TextureRegion region, float width, float height, Affine2 transform )
+    {
+        if ( !_adjustNeeded )
+        {
+            base.Draw( region, width, height, transform );
+        }
+        else
+        {
+            DrawAdjusted( region, width, height, transform );
+        }
+    }
+
+    private void DrawAdjusted( TextureRegion region,
+                               float x,
+                               float y,
+                               float originX,
+                               float originY,
+                               float width,
+                               float height,
+                               float scaleX,
+                               float scaleY,
+                               float rotation )
+    {
+        // v must be flipped
+        DrawAdjustedUV
+            (
+            region.Texture, x, y, originX, originY, width, height, scaleX,
+            scaleY, rotation, region.U, region.V2, region.U2, region.V, false, false
+            );
+    }
+
+    private void DrawAdjusted( Texture texture,
+                               float x,
+                               float y,
+                               float originX,
+                               float originY,
+                               float width,
+                               float height,
+                               float scaleX,
+                               float scaleY,
+                               float rotation,
+                               int srcX,
+                               int srcY,
+                               int srcWidth,
+                               int srcHeight,
+                               bool flipX,
+                               bool flipY )
+    {
+        var invWidth  = 1.0f / texture.Width;
+        var invHeight = 1.0f / texture.Height;
+
+        var u  = srcX * invWidth;
+        var v  = ( srcY + srcHeight ) * invHeight;
+        var u2 = ( srcX + srcWidth ) * invWidth;
+        var v2 = srcY * invHeight;
+
+        DrawAdjustedUV
+            (
+            texture, x, y, originX, originY, width, height, scaleX,
+            scaleY, rotation, u, v, u2, v2, flipX, flipY
+            );
+    }
+
+    private void DrawAdjustedUV( Texture texture,
+                                 float x,
+                                 float y,
+                                 float originX,
+                                 float originY,
+                                 float width,
+                                 float height,
+                                 float scaleX,
+                                 float scaleY,
+                                 float rotation,
+                                 float u,
+                                 float v,
+                                 float u2,
+                                 float v2,
+                                 bool flipX,
+                                 bool flipY )
+    {
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        }
+
+        if ( texture != LastTexture )
+        {
+            SwitchTexture( texture );
+        }
+        else if ( idx == Vertices.Length )
         {
             base.Flush();
         }
 
-		// bottom left and top right corner points relative to origin
-		var worldOriginX = x + originX;
-		var worldOriginY = y + originY;
-		var fx = -originX;
-		var fy = -originY;
-		var fx2 = width - originX;
-		var fy2 = height - originY;
+        // bottom left and top right corner points relative to origin
+        var worldOriginX = x + originX;
+        var worldOriginY = y + originY;
+        var fx           = -originX;
+        var fy           = -originY;
+        var fx2          = width - originX;
+        var fy2          = height - originY;
 
-		// scale
-		if ( ( scaleX is not 1 ) || ( scaleY is not 1 ) )
+        // scale
+        if ( ( scaleX is not 1 ) || ( scaleY is not 1 ) )
         {
-			fx *= scaleX;
-			fy *= scaleY;
-			fx2 *= scaleX;
-			fy2 *= scaleY;
-		}
+            fx  *= scaleX;
+            fy  *= scaleY;
+            fx2 *= scaleX;
+            fy2 *= scaleY;
+        }
 
-		// construct corner points, start from top left and go counter clockwise
-		var p1X = fx;
-		var p1Y = fy;
-		var p2X = fx;
-		var p2Y = fy2;
-		var p3X = fx2;
-		var p3Y = fy2;
-		var p4X = fx2;
-		var p4Y = fy;
+        // construct corner points, start from top left and go counter clockwise
+        var p1X = fx;
+        var p1Y = fy;
+        var p2X = fx;
+        var p2Y = fy2;
+        var p3X = fx2;
+        var p3Y = fy2;
+        var p4X = fx2;
+        var p4Y = fy;
 
-		float x1;
-		float y1;
-		float x2;
-		float y2;
-		float x3;
-		float y3;
-		float x4;
-		float y4;
+        float x1;
+        float y1;
+        float x2;
+        float y2;
+        float x3;
+        float y3;
+        float x4;
+        float y4;
 
-		// rotate
-		if ( rotation != 0 )
+        // rotate
+        if ( rotation != 0 )
         {
-			var cos = MathUtils.CosDeg( rotation );
-			var sin = MathUtils.SinDeg( rotation );
+            var cos = MathUtils.CosDeg( rotation );
+            var sin = MathUtils.SinDeg( rotation );
 
-			x1 = ( cos * p1X ) - ( sin * p1Y );
-			y1 = ( sin * p1X ) + ( cos * p1Y );
+            x1 = ( cos * p1X ) - ( sin * p1Y );
+            y1 = ( sin * p1X ) + ( cos * p1Y );
 
-			x2 = ( cos * p2X ) - ( sin * p2Y );
-			y2 = ( sin * p2X ) + ( cos * p2Y );
+            x2 = ( cos * p2X ) - ( sin * p2Y );
+            y2 = ( sin * p2X ) + ( cos * p2Y );
 
-			x3 = ( cos * p3X ) - ( sin * p3Y );
-			y3 = ( sin * p3X ) + ( cos * p3Y );
+            x3 = ( cos * p3X ) - ( sin * p3Y );
+            y3 = ( sin * p3X ) + ( cos * p3Y );
 
-			x4 = x1 + (x3 - x2);
-			y4 = y3 - (y2 - y1);
-		}
+            x4 = x1 + ( x3 - x2 );
+            y4 = y3 - ( y2 - y1 );
+        }
         else
         {
-			x1 = p1X;
-			y1 = p1Y;
+            x1 = p1X;
+            y1 = p1Y;
 
-			x2 = p2X;
-			y2 = p2Y;
+            x2 = p2X;
+            y2 = p2Y;
 
-			x3 = p3X;
-			y3 = p3Y;
+            x3 = p3X;
+            y3 = p3Y;
 
-			x4 = p4X;
-			y4 = p4Y;
-		}
+            x4 = p4X;
+            y4 = p4Y;
+        }
 
-		x1 += worldOriginX;
-		y1 += worldOriginY;
-		x2 += worldOriginX;
-		y2 += worldOriginY;
-		x3 += worldOriginX;
-		y3 += worldOriginY;
-		x4 += worldOriginX;
-		y4 += worldOriginY;
+        x1 += worldOriginX;
+        y1 += worldOriginY;
+        x2 += worldOriginX;
+        y2 += worldOriginY;
+        x3 += worldOriginX;
+        y3 += worldOriginY;
+        x4 += worldOriginX;
+        y4 += worldOriginY;
 
-		float u1, v1, u2, v2, u3, v3, u4, v4;
-		
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
+
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
+
+        Affine2 t = _adjustAffine;
+
+        Vertices[ idx + 0 ] = ( t.m00 * x1 ) + ( t.m01 * y1 ) + t.m02;
+        Vertices[ idx + 1 ] = ( t.m10 * x1 ) + ( t.m11 * y1 ) + t.m12;
+        Vertices[ idx + 2 ] = colorPacked;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
+
+        Vertices[ idx + 5 ] = ( t.m00 * x2 ) + ( t.m01 * y2 ) + t.m02;
+        Vertices[ idx + 6 ] = ( t.m10 * x2 ) + ( t.m11 * y2 ) + t.m12;
+        Vertices[ idx + 7 ] = colorPacked;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
+
+        Vertices[ idx + 10 ] = ( t.m00 * x3 ) + ( t.m01 * y3 ) + t.m02;
+        Vertices[ idx + 11 ] = ( t.m10 * x3 ) + ( t.m11 * y3 ) + t.m12;
+        Vertices[ idx + 12 ] = colorPacked;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
+
+        Vertices[ idx + 15 ] = ( t.m00 * x4 ) + ( t.m01 * y4 ) + t.m02;
+        Vertices[ idx + 16 ] = ( t.m10 * x4 ) + ( t.m11 * y4 ) + t.m12;
+        Vertices[ idx + 17 ] = colorPacked;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
+
+        idx += Sprite.SpriteSize;
+    }
+
+    private void DrawAdjusted( TextureRegion region,
+                               float x,
+                               float y,
+                               float originX,
+                               float originY,
+                               float width,
+                               float height,
+                               float scaleX,
+                               float scaleY,
+                               float rotation,
+                               bool clockwise )
+    {
+        if ( !IsDrawing )
+        {
+            throw new IllegalStateException( "CpuSpriteBatch.begin must be called before draw." );
+        }
+
+        if ( region.Texture != LastTexture )
+        {
+            SwitchTexture( region.Texture );
+        }
+        else if ( idx == Vertices.Length )
+        {
+            base.Flush();
+        }
+
+        // bottom left and top right corner points relative to origin
+        var worldOriginX = x + originX;
+        var worldOriginY = y + originY;
+        var fx           = -originX;
+        var fy           = -originY;
+        var fx2          = width - originX;
+        var fy2          = height - originY;
+
+        // scale
+        if ( ( scaleX is not 1 ) || ( scaleY is not 1 ) )
+        {
+            fx  *= scaleX;
+            fy  *= scaleY;
+            fx2 *= scaleX;
+            fy2 *= scaleY;
+        }
+
+        // construct corner points, start from top left and go counter clockwise
+        var p1X = fx;
+        var p1Y = fy;
+        var p2X = fx;
+        var p2Y = fy2;
+        var p3X = fx2;
+        var p3Y = fy2;
+        var p4X = fx2;
+        var p4Y = fy;
+
+        float x1;
+        float y1;
+        float x2;
+        float y2;
+        float x3;
+        float y3;
+        float x4;
+        float y4;
+
+        // rotate
+        if ( rotation != 0 )
+        {
+            var cos = MathUtils.CosDeg( rotation );
+            var sin = MathUtils.SinDeg( rotation );
+
+            x1 = ( cos * p1X ) - ( sin * p1Y );
+            y1 = ( sin * p1X ) + ( cos * p1Y );
+
+            x2 = ( cos * p2X ) - ( sin * p2Y );
+            y2 = ( sin * p2X ) + ( cos * p2Y );
+
+            x3 = ( cos * p3X ) - ( sin * p3Y );
+            y3 = ( sin * p3X ) + ( cos * p3Y );
+
+            x4 = x1 + ( x3 - x2 );
+            y4 = y3 - ( y2 - y1 );
+        }
+        else
+        {
+            x1 = p1X;
+            y1 = p1Y;
+
+            x2 = p2X;
+            y2 = p2Y;
+
+            x3 = p3X;
+            y3 = p3Y;
+
+            x4 = p4X;
+            y4 = p4Y;
+        }
+
+        x1 += worldOriginX;
+        y1 += worldOriginY;
+        x2 += worldOriginX;
+        y2 += worldOriginY;
+        x3 += worldOriginX;
+        y3 += worldOriginY;
+        x4 += worldOriginX;
+        y4 += worldOriginY;
+
+        float u1, v1, u2, v2, u3, v3, u4, v4;
+
         if ( clockwise )
         {
-			u1 = region.U2;
-			v1 = region.V2;
-			u2 = region.U;
-			v2 = region.V2;
-			u3 = region.U;
-			v3 = region.V;
-			u4 = region.U2;
-			v4 = region.V;
-		}
+            u1 = region.U2;
+            v1 = region.V2;
+            u2 = region.U;
+            v2 = region.V2;
+            u3 = region.U;
+            v3 = region.V;
+            u4 = region.U2;
+            v4 = region.V;
+        }
         else
         {
-			u1 = region.U;
-			v1 = region.V;
-			u2 = region.U2;
-			v2 = region.V;
-			u3 = region.U2;
-			v3 = region.V2;
-			u4 = region.U;
-			v4 = region.V2;
-		}
+            u1 = region.U;
+            v1 = region.V;
+            u2 = region.U2;
+            v2 = region.V;
+            u3 = region.U2;
+            v3 = region.V2;
+            u4 = region.U;
+            v4 = region.V2;
+        }
 
         Vertices[ idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
-		Vertices[ idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
-		Vertices[ idx + 2 ] = colorPacked;
-		Vertices[ idx + 3 ] = u1;
-		Vertices[ idx + 4 ] = v1;
+        Vertices[ idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
+        Vertices[ idx + 2 ] = colorPacked;
+        Vertices[ idx + 3 ] = u1;
+        Vertices[ idx + 4 ] = v1;
 
-		Vertices[ idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
-		Vertices[ idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
-		Vertices[ idx + 7 ] = colorPacked;
-		Vertices[ idx + 8 ] = u2;
-		Vertices[ idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
+        Vertices[ idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
+        Vertices[ idx + 7 ] = colorPacked;
+        Vertices[ idx + 8 ] = u2;
+        Vertices[ idx + 9 ] = v2;
 
-		Vertices[ idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
-		Vertices[ idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
-		Vertices[ idx + 12 ] = colorPacked;
-		Vertices[ idx + 13 ] = u3;
-		Vertices[ idx + 14 ] = v3;
+        Vertices[ idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
+        Vertices[ idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
+        Vertices[ idx + 12 ] = colorPacked;
+        Vertices[ idx + 13 ] = u3;
+        Vertices[ idx + 14 ] = v3;
 
-		Vertices[ idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
-		Vertices[ idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
-		Vertices[ idx + 17 ] = colorPacked;
-		Vertices[ idx + 18 ] = u4;
-		Vertices[ idx + 19 ] = v4;
+        Vertices[ idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
+        Vertices[ idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
+        Vertices[ idx + 17 ] = colorPacked;
+        Vertices[ idx + 18 ] = u4;
+        Vertices[ idx + 19 ] = v4;
 
-		idx += Sprite.SpriteSize;
-	}
+        idx += Sprite.SpriteSize;
+    }
 
-	private void DrawAdjusted( TextureRegion region, float width, float height, Affine2 transform )
-	{
-		if ( !IsDrawing )
-		{
-			throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
-		}
+    private void DrawAdjusted( TextureRegion region, float width, float height, Affine2 transform )
+    {
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        }
 
-		if ( region.Texture != LastTexture )
-		{
-			SwitchTexture( region.Texture );
-		}
-		else if ( idx == Vertices.Length )
-		{
-			base.Flush();
-		}
+        if ( region.Texture != LastTexture )
+        {
+            SwitchTexture( region.Texture );
+        }
+        else if ( idx == Vertices.Length )
+        {
+            base.Flush();
+        }
 
-		// construct corner points
-		var x1 = transform.m02;
-		var y1 = transform.m12;
-		var x2 = ( transform.m01 * height ) + transform.m02;
-		var y2 = ( transform.m11 * height ) + transform.m12;
-		var x3 = ( transform.m00 * width ) + ( transform.m01 * height ) + transform.m02;
-		var y3 = ( transform.m10 * width ) + ( transform.m11 * height ) + transform.m12;
-		var x4 = ( transform.m00 * width ) + transform.m02;
-		var y4 = ( transform.m10 * width ) + transform.m12;
+        // construct corner points
+        var x1 = transform.m02;
+        var y1 = transform.m12;
+        var x2 = ( transform.m01 * height ) + transform.m02;
+        var y2 = ( transform.m11 * height ) + transform.m12;
+        var x3 = ( transform.m00 * width ) + ( transform.m01 * height ) + transform.m02;
+        var y3 = ( transform.m10 * width ) + ( transform.m11 * height ) + transform.m12;
+        var x4 = ( transform.m00 * width ) + transform.m02;
+        var y4 = ( transform.m10 * width ) + transform.m12;
 
-		// v must be flipped
-		var u = region.U;
-		var v = region.V2;
-		var u2 = region.U2;
-		var v2 = region.V;
+        // v must be flipped
+        var u  = region.U;
+        var v  = region.V2;
+        var u2 = region.U2;
+        var v2 = region.V;
 
-		Vertices[idx + 0] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
-		Vertices[idx + 1] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
-		Vertices[idx + 2] = colorPacked;
-		Vertices[idx + 3] = u;
-		Vertices[idx + 4] = v;
+        Vertices[ idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
+        Vertices[ idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
+        Vertices[ idx + 2 ] = colorPacked;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
 
-		Vertices[idx + 5] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
-		Vertices[idx + 6] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
-		Vertices[idx + 7] = colorPacked;
-		Vertices[idx + 8] = u;
-		Vertices[idx + 9] = v2;
+        Vertices[ idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
+        Vertices[ idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
+        Vertices[ idx + 7 ] = colorPacked;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
 
-		Vertices[idx + 10] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
-		Vertices[idx + 11] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
-		Vertices[idx + 12] = colorPacked;
-		Vertices[idx + 13] = u2;
-		Vertices[idx + 14] = v2;
+        Vertices[ idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
+        Vertices[ idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
+        Vertices[ idx + 12 ] = colorPacked;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
 
-		Vertices[idx + 15] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
-		Vertices[idx + 16] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
-		Vertices[idx + 17] = colorPacked;
-		Vertices[idx + 18] = u2;
-		Vertices[idx + 19] = v;
+        Vertices[ idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
+        Vertices[ idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
+        Vertices[ idx + 17 ] = colorPacked;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
 
-		idx += Sprite.SpriteSize;
-	}
+        idx += Sprite.SpriteSize;
+    }
 
-	private void DrawAdjusted( Texture texture, float[] spriteVertices, int offset, int count )
-	{
-		if ( !IsDrawing )
-		{
-			throw new System.InvalidOperationException("CpuSpriteBatch.begin must be called before draw.");
-		}
+    private void DrawAdjusted( Texture texture, float[] spriteVertices, int offset, int count )
+    {
+        if ( !IsDrawing )
+        {
+            throw new System.InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        }
 
-		if ( texture != LastTexture )
-		{
-			SwitchTexture( texture );
-		}
+        if ( texture != LastTexture )
+        {
+            SwitchTexture( texture );
+        }
 
         var copyCount = Math.Min( Vertices.Length - idx, count );
 
         do
-		{
-			count -= copyCount;
-            
-			while (copyCount > 0)
-			{
-				var x = spriteVertices[offset];
-				var y = spriteVertices[offset + 1];
+        {
+            count -= copyCount;
 
-				Vertices[idx] = ( _adjustAffine.m00 * x ) + ( _adjustAffine.m01 * y ) + _adjustAffine.m02; // x
-				Vertices[idx + 1] = ( _adjustAffine.m10 * x ) + ( _adjustAffine.m11 * y ) + _adjustAffine.m12; // y
-				Vertices[idx + 2] = spriteVertices[offset + 2]; // color
-				Vertices[idx + 3] = spriteVertices[offset + 3]; // u
-				Vertices[idx + 4] = spriteVertices[offset + 4]; // v
+            while ( copyCount > 0 )
+            {
+                var x = spriteVertices[ offset ];
+                var y = spriteVertices[ offset + 1 ];
 
-				idx         += Sprite.VertexSize;
-				offset      += Sprite.VertexSize;
-				copyCount   -= Sprite.VertexSize;
-			}
+                Vertices[ idx ]     = ( _adjustAffine.m00 * x ) + ( _adjustAffine.m01 * y ) + _adjustAffine.m02; // x
+                Vertices[ idx + 1 ] = ( _adjustAffine.m10 * x ) + ( _adjustAffine.m11 * y ) + _adjustAffine.m12; // y
+                Vertices[ idx + 2 ] = spriteVertices[ offset + 2 ];                                              // color
+                Vertices[ idx + 3 ] = spriteVertices[ offset + 3 ];                                              // u
+                Vertices[ idx + 4 ] = spriteVertices[ offset + 4 ];                                              // v
 
-			if ( count > 0 )
-			{
-				base.Flush();
-				copyCount = Math.Min( Vertices.Length, count );
-			}
-		}
+                idx       += Sprite.VertexSize;
+                offset    += Sprite.VertexSize;
+                copyCount -= Sprite.VertexSize;
+            }
+
+            if ( count > 0 )
+            {
+                base.Flush();
+                copyCount = Math.Min( Vertices.Length, count );
+            }
+        }
         while ( count > 0 );
-	}
+    }
 
-	private static bool CheckEqual(Matrix4 a, Matrix4 b)
-	{
-		if (a == b)
-		{
-			return true;
-		}
+    private static bool CheckEqual( Matrix4 a, Matrix4 b )
+    {
+        if ( a == b )
+        {
+            return true;
+        }
 
-		// matrices are assumed to be 2D transformations
-		return ( ( a.val[Matrix4.M00].Equals(b.val[Matrix4.M00]) )
-                && ( a.val[Matrix4.M10].Equals(b.val[Matrix4.M10]) )
-                && ( a.val[Matrix4.M01].Equals(b.val[Matrix4.M01]) )
-                && ( a.val[Matrix4.M11].Equals(b.val[Matrix4.M11]) )
-                && ( a.val[Matrix4.M03].Equals(b.val[Matrix4.M03]) )
-                && ( a.val[Matrix4.M13].Equals(b.val[Matrix4.M13]) ) );
-	}
+        // matrices are assumed to be 2D transformations
+        return ( ( a.val[ Matrix4.M00 ].Equals( b.val[ Matrix4.M00 ] ) )
+              && ( a.val[ Matrix4.M10 ].Equals( b.val[ Matrix4.M10 ] ) )
+              && ( a.val[ Matrix4.M01 ].Equals( b.val[ Matrix4.M01 ] ) )
+              && ( a.val[ Matrix4.M11 ].Equals( b.val[ Matrix4.M11 ] ) )
+              && ( a.val[ Matrix4.M03 ].Equals( b.val[ Matrix4.M03 ] ) )
+              && ( a.val[ Matrix4.M13 ].Equals( b.val[ Matrix4.M13 ] ) ) );
+    }
 
-	private static bool CheckEqual(Matrix4 matrix, Affine2 affine)
-	{
-		var val = matrix.Values;
+    private static bool CheckEqual( Matrix4 matrix, Affine2 affine )
+    {
+        var val = matrix.Values;
 
-		// matrix is assumed to be 2D transformation
-		return ( ( val[Matrix4.M00].Equals(affine.m00) )
-                 && ( val[Matrix4.M10].Equals(affine.m10) )
-                 && ( val[Matrix4.M01].Equals(affine.m01) )
-                 && ( val[Matrix4.M11].Equals(affine.m11) )
-                 && ( val[Matrix4.M03].Equals(affine.m02) )
-                 && ( val[Matrix4.M13].Equals(affine.m12) ) );
-	}
+        // matrix is assumed to be 2D transformation
+        return ( ( val[ Matrix4.M00 ].Equals( affine.m00 ) )
+              && ( val[ Matrix4.M10 ].Equals( affine.m10 ) )
+              && ( val[ Matrix4.M01 ].Equals( affine.m01 ) )
+              && ( val[ Matrix4.M11 ].Equals( affine.m11 ) )
+              && ( val[ Matrix4.M03 ].Equals( affine.m02 ) )
+              && ( val[ Matrix4.M13 ].Equals( affine.m12 ) ) );
+    }
 
-	private static bool CheckIdt(Matrix4 matrix)
-	{
-		var val = matrix.Values;
+    private static bool CheckIdt( Matrix4 matrix )
+    {
+        var val = matrix.Values;
 
-		// matrix is assumed to be 2D transformation
-		return ( ( val[Matrix4.M00] is 1 )
-                 && ( val[Matrix4.M10] is 0 )
-                 && ( val[Matrix4.M01] is 0 )
-                 && ( val[Matrix4.M11] is 1 )
-                 && ( val[Matrix4.M03] is 0 )
-                 && ( val[Matrix4.M13] is 0 ) );
-	}
-    //@formatter:on
+        // matrix is assumed to be 2D transformation
+        return ( ( val[ Matrix4.M00 ] is 1 )
+              && ( val[ Matrix4.M10 ] is 0 )
+              && ( val[ Matrix4.M01 ] is 0 )
+              && ( val[ Matrix4.M11 ] is 1 )
+              && ( val[ Matrix4.M03 ] is 0 )
+              && ( val[ Matrix4.M13 ] is 0 ) );
+    }
 }

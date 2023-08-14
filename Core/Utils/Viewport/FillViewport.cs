@@ -26,13 +26,13 @@ public class FillViewport : ScalingViewport
     /// <summary>
     /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
     /// </summary>
-    public FillViewport(float worldWidth, float worldHeight)
-        : base(Scaling.Fill, worldWidth, worldHeight)
+    public FillViewport( float worldWidth, float worldHeight )
+            : base( Scaling.Fill, worldWidth, worldHeight )
     {
     }
 
-    public FillViewport(float worldWidth, float worldHeight, Camera camera)
-        : base(Scaling.Fill, worldWidth, worldHeight, camera)
+    public FillViewport( float worldWidth, float worldHeight, Camera camera )
+            : base( Scaling.Fill, worldWidth, worldHeight, camera )
     {
     }
 }

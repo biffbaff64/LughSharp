@@ -41,8 +41,11 @@ public class RunnableAction : Action
     /// </summary>
     public void Run()
     {
-        if ( Runnable == null ) throw new GdxRuntimeException( "Runnable is not initialised!" );
-        
+        if ( Runnable == null )
+        {
+            throw new GdxRuntimeException( "Runnable is not initialised!" );
+        }
+
         Pool< object >? pool = base.Pool;
 
         // Ensure this action can't be returned to the pool inside the runnable.

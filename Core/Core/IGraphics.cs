@@ -169,7 +169,7 @@ public interface IGraphics
             this.BitsPerPixel = bitsPerPixel;
         }
 
-        public new string ToString()
+        public override string ToString()
         {
             return Width + "x" + Height + ", bpp: " + BitsPerPixel + ", hz: " + RefreshRate;
         }

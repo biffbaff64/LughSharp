@@ -207,7 +207,10 @@ public abstract class GLTexture : IGLTexture, IDisposable
     {
         var max = GetMaxAnisotropicFilterLevel();
 
-        if ( Math.Abs( max - 1f ) < 0.1f ) return 1f;
+        if ( Math.Abs( max - 1f ) < 0.1f )
+        {
+            return 1f;
+        }
 
         level = Math.Min( level, max );
 
@@ -235,7 +238,10 @@ public abstract class GLTexture : IGLTexture, IDisposable
     {
         var max = GetMaxAnisotropicFilterLevel();
 
-        if ( Math.Abs( max - 1f ) < 0.1f ) return 1f;
+        if ( Math.Abs( max - 1f ) < 0.1f )
+        {
+            return 1f;
+        }
 
         level = Math.Min( level, max );
 
@@ -262,7 +268,10 @@ public abstract class GLTexture : IGLTexture, IDisposable
     /// <returns></returns>
     public static float GetMaxAnisotropicFilterLevel()
     {
-        if ( _maxAnisotropicFilterLevel > 0 ) return _maxAnisotropicFilterLevel;
+        if ( _maxAnisotropicFilterLevel > 0 )
+        {
+            return _maxAnisotropicFilterLevel;
+        }
 
         if ( Gdx.Graphics.SupportsExtension( "GL_EXT_texture_filter_anisotropic" ) )
         {
@@ -305,7 +314,10 @@ public abstract class GLTexture : IGLTexture, IDisposable
             return;
         }
 
-        if ( !data.IsPrepared ) data.Prepare();
+        if ( !data.IsPrepared )
+        {
+            data.Prepare();
+        }
 
         ITextureData.TextureType type = data.TextureDataType;
 
@@ -357,7 +369,10 @@ public abstract class GLTexture : IGLTexture, IDisposable
                 );
         }
 
-        if ( disposePixmap ) pixmap.Dispose();
+        if ( disposePixmap )
+        {
+            pixmap.Dispose();
+        }
     }
 
     /// <summary>
@@ -366,7 +381,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
     // TODO: Check usages of GLHandle to see if if can be renamed to TextureObjectHandle without causing any issues.
     public int GetTextureObjectHandle() => GLHandle;
     
-    public void Dispose()
+    public virtual void Dispose()
     {
         Delete();
     }

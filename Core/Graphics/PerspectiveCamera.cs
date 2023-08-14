@@ -40,22 +40,20 @@ public class PerspectiveCamera : Camera
     /// </param>
     /// <param name="viewportWidth">Viewport width in pixels.</param>
     /// <param name="viewportHeight">Viewport height in pixels.</param>
+    /// <remarks>Call <see cref="Update"/> immediately after this constructor.</remarks>
     public PerspectiveCamera( float fieldOfViewY, float viewportWidth, float viewportHeight )
     {
         this.fieldOfView    = fieldOfViewY;
         this.ViewportWidth  = viewportWidth;
         this.ViewportHeight = viewportHeight;
-
-        this.Update( true );
     }
 
     private readonly Vector3 _tmp = new();
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="updateFrustum"></param>
-    public new void Update( bool updateFrustum )
+    public override void Update( bool updateFrustum = true )
     {
         var aspect = ViewportWidth / ViewportHeight;
 

@@ -126,7 +126,7 @@ public class InputListener : IEventListener
     /// the event is handled by <see cref="Event.Handle()"/>.
     /// </summary>
     /// <see cref="InputEvent "/>
-    protected bool TouchDown( InputEvent inputEvent, float x, float y, int pointer, int button )
+    protected virtual bool TouchDown( InputEvent inputEvent, float x, float y, int pointer, int button )
     {
         return false;
     }
@@ -137,7 +137,7 @@ public class InputListener : IEventListener
     /// The touchUp event is always handled by <see cref="Event.Handle()"/>.
     /// </summary>
     /// <see cref="InputEvent "/>
-    protected void TouchUp( InputEvent inputEvent, float x, float y, int pointer, int button )
+    protected virtual void TouchUp( InputEvent inputEvent, float x, float y, int pointer, int button )
     {
     }
 
@@ -147,7 +147,7 @@ public class InputListener : IEventListener
     /// The touchDragged event is always handled by <see cref="Event.Handle()"/>.
     /// </summary>
     /// <see cref="InputEvent "/>
-    protected void TouchDragged( InputEvent inputEvent, float x, float y, int pointer )
+    protected virtual void TouchDragged( InputEvent inputEvent, float x, float y, int pointer )
     {
     }
 

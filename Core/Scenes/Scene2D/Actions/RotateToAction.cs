@@ -63,7 +63,10 @@ public class RotateToAction : TemporalAction
 
     protected override void Update( float percent )
     {
-        if ( Target == null ) return;
+        if ( Target == null )
+        {
+            return;
+        }
 
         float rotation;
 

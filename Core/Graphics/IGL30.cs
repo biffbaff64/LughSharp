@@ -94,12 +94,12 @@ public interface IGL30 : IGL20
     public const int GL_PIXEL_UNPACK_BUFFER                           = 0x88EC;
     public const int GL_PIXEL_PACK_BUFFER_BINDING                     = 0x88ED;
     public const int GL_PIXEL_UNPACK_BUFFER_BINDING                   = 0x88EF;
-    public const int GL_FLOAT_MAT2_X3                                  = 0x8B65;
-    public const int GL_FLOAT_MAT2_X4                                  = 0x8B66;
-    public const int GL_FLOAT_MAT3_X2                                  = 0x8B67;
-    public const int GL_FLOAT_MAT3_X4                                  = 0x8B68;
-    public const int GL_FLOAT_MAT4_X2                                  = 0x8B69;
-    public const int GL_FLOAT_MAT4_X3                                  = 0x8B6A;
+    public const int GL_FLOAT_MAT2_X3                                 = 0x8B65;
+    public const int GL_FLOAT_MAT2_X4                                 = 0x8B66;
+    public const int GL_FLOAT_MAT3_X2                                 = 0x8B67;
+    public const int GL_FLOAT_MAT3_X4                                 = 0x8B68;
+    public const int GL_FLOAT_MAT4_X2                                 = 0x8B69;
+    public const int GL_FLOAT_MAT4_X3                                 = 0x8B6A;
     public const int GL_SRGB                                          = 0x8C40;
     public const int GL_SRGB8                                         = 0x8C41;
     public const int GL_SRGB8_ALPHA8                                  = 0x8C43;
@@ -107,10 +107,10 @@ public interface IGL30 : IGL20
     public const int GL_MAJOR_VERSION                                 = 0x821B;
     public const int GL_MINOR_VERSION                                 = 0x821C;
     public const int GL_NUM_EXTENSIONS                                = 0x821D;
-    public const int GL_RGBA32_F                                       = 0x8814;
-    public const int GL_RGB32_F                                        = 0x8815;
-    public const int GL_RGBA16_F                                       = 0x881A;
-    public const int GL_RGB16_F                                        = 0x881B;
+    public const int GL_RGBA32_F                                      = 0x8814;
+    public const int GL_RGB32_F                                       = 0x8815;
+    public const int GL_RGBA16_F                                      = 0x881A;
+    public const int GL_RGB16_F                                       = 0x881B;
     public const int GL_VERTEX_ATTRIB_ARRAY_INTEGER                   = 0x88FD;
     public const int GL_MAX_ARRAY_TEXTURE_LAYERS                      = 0x88FF;
     public const int GL_MIN_PROGRAM_TEXEL_OFFSET                      = 0x8904;
@@ -118,8 +118,8 @@ public interface IGL30 : IGL20
     public const int GL_MAX_VARYING_COMPONENTS                        = 0x8B4B;
     public const int GL_TEXTURE_2D_ARRAY                              = 0x8C1A;
     public const int GL_TEXTURE_BINDING_2D_ARRAY                      = 0x8C1D;
-    public const int GL_R11_F_G11_F_B10_F                                = 0x8C3A;
-    public const int GL_UNSIGNED_INT_10_F_11_F_11_F_REV                  = 0x8C3B;
+    public const int GL_R11_F_G11_F_B10_F                             = 0x8C3A;
+    public const int GL_UNSIGNED_INT_10_F_11_F_11_F_REV               = 0x8C3B;
     public const int GL_RGB9_E5                                       = 0x8C3D;
     public const int GL_UNSIGNED_INT_5_9_9_9_REV                      = 0x8C3E;
     public const int GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH         = 0x8C76;
@@ -136,18 +136,18 @@ public interface IGL30 : IGL20
     public const int GL_SEPARATE_ATTRIBS                              = 0x8C8D;
     public const int GL_TRANSFORM_FEEDBACK_BUFFER                     = 0x8C8E;
     public const int GL_TRANSFORM_FEEDBACK_BUFFER_BINDING             = 0x8C8F;
-    public const int GL_RGBA32_UI                                      = 0x8D70;
-    public const int GL_RGB32_UI                                       = 0x8D71;
-    public const int GL_RGBA16_UI                                      = 0x8D76;
-    public const int GL_RGB16_UI                                       = 0x8D77;
-    public const int GL_RGBA8_UI                                       = 0x8D7C;
-    public const int GL_RGB8_UI                                        = 0x8D7D;
-    public const int GL_RGBA32_I                                       = 0x8D82;
-    public const int GL_RGB32_I                                        = 0x8D83;
-    public const int GL_RGBA16_I                                       = 0x8D88;
-    public const int GL_RGB16_I                                        = 0x8D89;
-    public const int GL_RGBA8_I                                        = 0x8D8E;
-    public const int GL_RGB8_I                                         = 0x8D8F;
+    public const int GL_RGBA32_UI                                     = 0x8D70;
+    public const int GL_RGB32_UI                                      = 0x8D71;
+    public const int GL_RGBA16_UI                                     = 0x8D76;
+    public const int GL_RGB16_UI                                      = 0x8D77;
+    public const int GL_RGBA8_UI                                      = 0x8D7C;
+    public const int GL_RGB8_UI                                       = 0x8D7D;
+    public const int GL_RGBA32_I                                      = 0x8D82;
+    public const int GL_RGB32_I                                       = 0x8D83;
+    public const int GL_RGBA16_I                                      = 0x8D88;
+    public const int GL_RGB16_I                                       = 0x8D89;
+    public const int GL_RGBA8_I                                       = 0x8D8E;
+    public const int GL_RGB8_I                                        = 0x8D8F;
     public const int GL_RED_INTEGER                                   = 0x8D94;
     public const int GL_RGB_INTEGER                                   = 0x8D98;
     public const int GL_RGBA_INTEGER                                  = 0x8D99;
@@ -168,8 +168,8 @@ public interface IGL30 : IGL20
     public const int GL_BUFFER_ACCESS_FLAGS                           = 0x911F;
     public const int GL_BUFFER_MAP_LENGTH                             = 0x9120;
     public const int GL_BUFFER_MAP_OFFSET                             = 0x9121;
-    public const int GL_DEPTH_COMPONENT32_F                            = 0x8CAC;
-    public const int GL_DEPTH32_F_STENCIL8                             = 0x8CAD;
+    public const int GL_DEPTH_COMPONENT32_F                           = 0x8CAC;
+    public const int GL_DEPTH32_F_STENCIL8                            = 0x8CAD;
     public const int GL_FLOAT_32_UNSIGNED_INT_24_8_REV                = 0x8DAD;
     public const int GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING         = 0x8210;
     public const int GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE         = 0x8211;
@@ -221,22 +221,22 @@ public interface IGL30 : IGL20
     public const int GL_RG_INTEGER                                    = 0x8228;
     public const int GL_R8                                            = 0x8229;
     public const int GL_RG8                                           = 0x822B;
-    public const int GL_R16_F                                          = 0x822D;
-    public const int GL_R32_F                                          = 0x822E;
-    public const int GL_RG16_F                                         = 0x822F;
-    public const int GL_RG32_F                                         = 0x8230;
-    public const int GL_R8_I                                           = 0x8231;
-    public const int GL_R8_UI                                          = 0x8232;
-    public const int GL_R16_I                                          = 0x8233;
-    public const int GL_R16_UI                                         = 0x8234;
-    public const int GL_R32_I                                          = 0x8235;
-    public const int GL_R32_UI                                         = 0x8236;
-    public const int GL_RG8_I                                          = 0x8237;
-    public const int GL_RG8_UI                                         = 0x8238;
-    public const int GL_RG16_I                                         = 0x8239;
-    public const int GL_RG16_UI                                        = 0x823A;
-    public const int GL_RG32_I                                         = 0x823B;
-    public const int GL_RG32_UI                                        = 0x823C;
+    public const int GL_R16_F                                         = 0x822D;
+    public const int GL_R32_F                                         = 0x822E;
+    public const int GL_RG16_F                                        = 0x822F;
+    public const int GL_RG32_F                                        = 0x8230;
+    public const int GL_R8_I                                          = 0x8231;
+    public const int GL_R8_UI                                         = 0x8232;
+    public const int GL_R16_I                                         = 0x8233;
+    public const int GL_R16_UI                                        = 0x8234;
+    public const int GL_R32_I                                         = 0x8235;
+    public const int GL_R32_UI                                        = 0x8236;
+    public const int GL_RG8_I                                         = 0x8237;
+    public const int GL_RG8_UI                                        = 0x8238;
+    public const int GL_RG16_I                                        = 0x8239;
+    public const int GL_RG16_UI                                       = 0x823A;
+    public const int GL_RG32_I                                        = 0x823B;
+    public const int GL_RG32_UI                                       = 0x823C;
     public const int GL_VERTEX_ARRAY_BINDING                          = 0x85B5;
     public const int GL_R8_SNORM                                      = 0x8F94;
     public const int GL_RG8_SNORM                                     = 0x8F95;
@@ -303,7 +303,7 @@ public interface IGL30 : IGL20
     public const int  GL_ANY_SAMPLES_PASSED                        = 0x8C2F;
     public const int  GL_ANY_SAMPLES_PASSED_CONSERVATIVE           = 0x8D6A;
     public const int  GL_SAMPLER_BINDING                           = 0x8919;
-    public const int  GL_RGB10_A2_UI                                = 0x906F;
+    public const int  GL_RGB10_A2_UI                               = 0x906F;
     public const int  GL_TEXTURE_SWIZZLE_R                         = 0x8E42;
     public const int  GL_TEXTURE_SWIZZLE_G                         = 0x8E43;
     public const int  GL_TEXTURE_SWIZZLE_B                         = 0x8E44;
@@ -336,215 +336,279 @@ public interface IGL30 : IGL20
 
     // ------------------------------------------------
 
-    //@formatter:off
-    
-	public void GLReadBuffer( int mode );
+    public void GLReadBuffer( int mode );
 
-	public void GLDrawRangeElements( int mode, int start, int end, int count, int type, Buffer indices );
+    public void GLDrawRangeElements( int mode, int start, int end, int count, int type, Buffer indices );
 
-	public void GLDrawRangeElements( int mode, int start, int end, int count, int type, int offset );
+    public void GLDrawRangeElements( int mode, int start, int end, int count, int type, int offset );
+
+    public void GLTexImage3D( int target,
+                              int level,
+                              int internalformat,
+                              int width,
+                              int height,
+                              int depth,
+                              int border,
+                              int format,
+                              int type,
+                              Buffer pixels );
+
+    public void GLTexImage3D( int target,
+                              int level,
+                              int internalformat,
+                              int width,
+                              int height,
+                              int depth,
+                              int border,
+                              int format,
+                              int type,
+                              int offset );
 
-	public void GLTexImage3D( int target, int level, int internalformat, int width, int height,
-	                          int depth, int border, int format, int type, Buffer pixels );
-	
-	public void GLTexImage3D( int target, int level, int internalformat, int width, int height,
-	                          int depth, int border, int format, int type, int offset );
+    public void GLTexSubImage3D( int target,
+                                 int level,
+                                 int xoffset,
+                                 int yoffset,
+                                 int zoffset,
+                                 int width,
+                                 int height,
+                                 int depth,
+                                 int format,
+                                 int type,
+                                 Buffer pixels );
 
-	public void GLTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset, int width,
-	                             int height, int depth, int format, int type, Buffer pixels );
+    public void GLTexSubImage3D( int target,
+                                 int level,
+                                 int xoffset,
+                                 int yoffset,
+                                 int zoffset,
+                                 int width,
+                                 int height,
+                                 int depth,
+                                 int format,
+                                 int type,
+                                 int offset );
 
-	public void GLTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset, int width,
-	                             int height, int depth, int format, int type, int offset );
+    public void GLCopyTexSubImage3D( int target,
+                                     int level,
+                                     int xoffset,
+                                     int yoffset,
+                                     int zoffset,
+                                     int x,
+                                     int y,
+                                     int width,
+                                     int height );
 
-	public void GLCopyTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset,
-	                                 int x, int y, int width, int height );
-	
-	public void GLGenQueries( int n, int[] ids, int offset );
+    public void GLGenQueries( int n, int[] ids, int offset );
 
-	public void GLGenQueries( int n, IntBuffer ids );
+    public void GLGenQueries( int n, IntBuffer ids );
 
-	public void GLDeleteQueries( int n, int[] ids, int offset );
+    public void GLDeleteQueries( int n, int[] ids, int offset );
 
-	public void GLDeleteQueries( int n, IntBuffer ids );
+    public void GLDeleteQueries( int n, IntBuffer ids );
 
-	public bool GLIsQuery( int id );
+    public bool GLIsQuery( int id );
 
-	public void GLBeginQuery( int target, int id );
+    public void GLBeginQuery( int target, int id );
 
-	public void GLEndQuery( int target );
+    public void GLEndQuery( int target );
 
-	public void GLGetQueryiv( int target, int pname, IntBuffer param );
+    public void GLGetQueryiv( int target, int pname, IntBuffer param );
 
-	public void GLGetQueryObjectuiv( int id, int pname, IntBuffer param );
+    public void GLGetQueryObjectuiv( int id, int pname, IntBuffer param );
 
-	public bool GLUnmapBuffer( int target );
+    public bool GLUnmapBuffer( int target );
 
-	public Buffer GLGetBufferPointerv( int target, int pname );
+    public Buffer GLGetBufferPointerv( int target, int pname );
 
-	public void GLDrawBuffers( int n, IntBuffer bufs );
+    public void GLDrawBuffers( int n, IntBuffer bufs );
 
-	public void GLUniformMatrix2X3Fv( int location, int count, bool transpose, FloatBuffer value );
+    public void GLUniformMatrix2X3Fv( int location, int count, bool transpose, FloatBuffer value );
 
-	public void GLUniformMatrix3X2Fv( int location, int count, bool transpose, FloatBuffer value );
+    public void GLUniformMatrix3X2Fv( int location, int count, bool transpose, FloatBuffer value );
 
-	public void GLUniformMatrix2X4Fv( int location, int count, bool transpose, FloatBuffer value );
+    public void GLUniformMatrix2X4Fv( int location, int count, bool transpose, FloatBuffer value );
 
-	public void GLUniformMatrix4X2Fv( int location, int count, bool transpose, FloatBuffer value );
+    public void GLUniformMatrix4X2Fv( int location, int count, bool transpose, FloatBuffer value );
 
-	public void GLUniformMatrix3X4Fv( int location, int count, bool transpose, FloatBuffer value );
+    public void GLUniformMatrix3X4Fv( int location, int count, bool transpose, FloatBuffer value );
 
-	public void GLUniformMatrix4X3Fv( int location, int count, bool transpose, FloatBuffer value );
+    public void GLUniformMatrix4X3Fv( int location, int count, bool transpose, FloatBuffer value );
 
-	public void GLBlitFramebuffer( int srcX0, int srcY0, int srcX1, int srcY1,
-	                               int dstX0, int dstY0, int dstX1, int dstY1,
-	                               int mask, int filter );
+    public void GLBlitFramebuffer( int srcX0,
+                                   int srcY0,
+                                   int srcX1,
+                                   int srcY1,
+                                   int dstX0,
+                                   int dstY0,
+                                   int dstX1,
+                                   int dstY1,
+                                   int mask,
+                                   int filter );
 
-	public void GLRenderbufferStorageMultisample( int target, int samples,
-	                                              int internalformat, int width, int height );
+    public void GLRenderbufferStorageMultisample( int target,
+                                                  int samples,
+                                                  int internalformat,
+                                                  int width,
+                                                  int height );
 
-	public void GLFramebufferTextureLayer( int target, int attachment, int texture, int level, int layer );
+    public void GLFramebufferTextureLayer( int target, int attachment, int texture, int level, int layer );
 
-	public Buffer GLMapBufferRange( int target, int offset, int length, int access );
+    public Buffer GLMapBufferRange( int target, int offset, int length, int access );
 
-	public void GLFlushMappedBufferRange( int target, int offset, int length );
+    public void GLFlushMappedBufferRange( int target, int offset, int length );
 
-	public void GLBindVertexArray( int array );
+    public void GLBindVertexArray( int array );
 
-	public void GLDeleteVertexArrays( int n, int[] arrays, int offset );
+    public void GLDeleteVertexArrays( int n, int[] arrays, int offset );
 
-	public void GLDeleteVertexArrays( int n, IntBuffer arrays );
+    public void GLDeleteVertexArrays( int n, IntBuffer arrays );
 
-	public void GLGenVertexArrays( int n, int[] arrays, int offset );
+    public void GLGenVertexArrays( int n, int[] arrays, int offset );
 
-	public void GLGenVertexArrays( int n, IntBuffer arrays );
+    public void GLGenVertexArrays( int n, IntBuffer arrays );
 
-	public bool GLIsVertexArray( int array );
+    public bool GLIsVertexArray( int array );
 
-	public void GLBeginTransformFeedback( int primitiveMode );
+    public void GLBeginTransformFeedback( int primitiveMode );
 
-	public void GLEndTransformFeedback();
+    public void GLEndTransformFeedback();
 
-	public void GLBindBufferRange( int target, int index, int buffer, int offset, int size );
+    public void GLBindBufferRange( int target, int index, int buffer, int offset, int size );
 
-	public void GLBindBufferBase( int target, int index, int buffer );
+    public void GLBindBufferBase( int target, int index, int buffer );
 
-	public void GLTransformFeedbackVaryings( int program, string[] varyings, int bufferMode );
+    public void GLTransformFeedbackVaryings( int program, string[] varyings, int bufferMode );
 
-	public void GLVertexAttribIPointer( int index, int size, int type, int stride, int offset );
+    public void GLVertexAttribIPointer( int index, int size, int type, int stride, int offset );
 
-	public void GLGetVertexAttribIiv( int index, int pname, IntBuffer param );
+    public void GLGetVertexAttribIiv( int index, int pname, IntBuffer param );
 
-	public void GLGetVertexAttribIuiv( int index, int pname, IntBuffer parameters );
+    public void GLGetVertexAttribIuiv( int index, int pname, IntBuffer parameters );
 
-	public void GLVertexAttribI4I( int index, int x, int y, int z, int w );
+    public void GLVertexAttribI4I( int index, int x, int y, int z, int w );
 
-	public void GLVertexAttribI4Ui( int index, int x, int y, int z, int w );
-	
-	public void GLGetUniformuiv( int program, int location, IntBuffer parameters );
+    public void GLVertexAttribI4Ui( int index, int x, int y, int z, int w );
 
-	public int GLGetFragDataLocation( int program, String name );
+    public void GLGetUniformuiv( int program, int location, IntBuffer parameters );
 
-	public void GLUniform1Uiv( int location, int count, IntBuffer value );
+    public int GLGetFragDataLocation( int program, String name );
 
-	public void GLUniform3Uiv( int location, int count, IntBuffer value );
+    public void GLUniform1Uiv( int location, int count, IntBuffer value );
 
-	public void GLUniform4Uiv( int location, int count, IntBuffer value );
+    public void GLUniform3Uiv( int location, int count, IntBuffer value );
 
-	public void GLClearBufferiv( int buffer, int drawbuffer, IntBuffer value );
+    public void GLUniform4Uiv( int location, int count, IntBuffer value );
 
-	public void GLClearBufferuiv( int buffer, int drawbuffer, IntBuffer value );
+    public void GLClearBufferiv( int buffer, int drawbuffer, IntBuffer value );
 
-	public void GLClearBufferfv( int buffer, int drawbuffer, FloatBuffer value );
+    public void GLClearBufferuiv( int buffer, int drawbuffer, IntBuffer value );
 
-	public void GLClearBufferfi( int buffer, int drawbuffer, float depth, int stencil );
+    public void GLClearBufferfv( int buffer, int drawbuffer, FloatBuffer value );
 
-	public string GLGetStringi( int name, int index );
+    public void GLClearBufferfi( int buffer, int drawbuffer, float depth, int stencil );
 
-	public void GLCopyBufferSubData( int readTarget, int writeTarget, int readOffset,
-	                                 int writeOffset, int size );
+    public string GLGetStringi( int name, int index );
 
-	public void GLGetUniformIndices( int program, string[] uniformNames, IntBuffer uniformIndices );
+    public void GLCopyBufferSubData( int readTarget,
+                                     int writeTarget,
+                                     int readOffset,
+                                     int writeOffset,
+                                     int size );
 
-	public void GLGetActiveUniformsiv( int program, int uniformCount, IntBuffer uniformIndices,
-	                                   int pname, IntBuffer parameters );
+    public void GLGetUniformIndices( int program, string[] uniformNames, IntBuffer uniformIndices );
 
-	public int GLGetUniformBlockIndex( int program, string uniformBlockName );
+    public void GLGetActiveUniformsiv( int program,
+                                       int uniformCount,
+                                       IntBuffer uniformIndices,
+                                       int pname,
+                                       IntBuffer parameters );
 
-	public void GLGetActiveUniformBlockiv( int program, int uniformBlockIndex,
-	                                       int pname, IntBuffer parameters );
+    public int GLGetUniformBlockIndex( int program, string uniformBlockName );
 
-	public void GLGetActiveUniformBlockName( int program, int uniformBlockIndex,
-	                                         Buffer length, Buffer uniformBlockName );
+    public void GLGetActiveUniformBlockiv( int program,
+                                           int uniformBlockIndex,
+                                           int pname,
+                                           IntBuffer parameters );
 
-	public string GLGetActiveUniformBlockName( int program, int uniformBlockIndex );
+    public void GLGetActiveUniformBlockName( int program,
+                                             int uniformBlockIndex,
+                                             Buffer length,
+                                             Buffer uniformBlockName );
 
-	public void GLUniformBlockBinding( int program, int uniformBlockIndex, int uniformBlockBinding );
+    public string GLGetActiveUniformBlockName( int program, int uniformBlockIndex );
 
-	public void GLDrawArraysInstanced( int mode, int first, int count, int instanceCount );
+    public void GLUniformBlockBinding( int program, int uniformBlockIndex, int uniformBlockBinding );
 
-	public void GLDrawElementsInstanced( int mode, int count, int type,
-	                                     int indicesOffset, int instanceCount );
+    public void GLDrawArraysInstanced( int mode, int first, int count, int instanceCount );
 
-	public void GLGetInteger64V( int pname, LongBuffer parameters );
+    public void GLDrawElementsInstanced( int mode,
+                                         int count,
+                                         int type,
+                                         int indicesOffset,
+                                         int instanceCount );
 
-	public void GLGetBufferParameteri64V( int target, int pname, LongBuffer parameters);
+    public void GLGetInteger64V( int pname, LongBuffer parameters );
 
-	public void GLGenSamplers( int count, int[] samplers, int offset );
+    public void GLGetBufferParameteri64V( int target, int pname, LongBuffer parameters );
 
-	public void GLGenSamplers( int count, IntBuffer samplers );
+    public void GLGenSamplers( int count, int[] samplers, int offset );
 
-	public void GLDeleteSamplers( int count, int[] samplers, int offset );
+    public void GLGenSamplers( int count, IntBuffer samplers );
 
-	public void GLDeleteSamplers( int count, IntBuffer samplers );
+    public void GLDeleteSamplers( int count, int[] samplers, int offset );
 
-	public bool GLIsSampler( int sampler );
+    public void GLDeleteSamplers( int count, IntBuffer samplers );
 
-	public void GLBindSampler( int unit, int sampler );
+    public bool GLIsSampler( int sampler );
 
-	public void GLSamplerParameteri( int sampler, int pname, int param );
+    public void GLBindSampler( int unit, int sampler );
 
-	public void GLSamplerParameteriv( int sampler, int pname, IntBuffer param );
+    public void GLSamplerParameteri( int sampler, int pname, int param );
 
-	public void GLSamplerParameterf( int sampler, int pname, float param );
+    public void GLSamplerParameteriv( int sampler, int pname, IntBuffer param );
 
-	public void GLSamplerParameterfv( int sampler, int pname, FloatBuffer param );
+    public void GLSamplerParameterf( int sampler, int pname, float param );
 
-	public void GLGetSamplerParameteriv( int sampler, int pname, IntBuffer parameters );
+    public void GLSamplerParameterfv( int sampler, int pname, FloatBuffer param );
 
-	public void GLGetSamplerParameterfv( int sampler, int pname, FloatBuffer parameters );
+    public void GLGetSamplerParameteriv( int sampler, int pname, IntBuffer parameters );
 
-	public void GLVertexAttribDivisor( int index, int divisor );
+    public void GLGetSamplerParameterfv( int sampler, int pname, FloatBuffer parameters );
 
-	public void GLBindTransformFeedback( int target, int id );
+    public void GLVertexAttribDivisor( int index, int divisor );
 
-	public void GLDeleteTransformFeedbacks( int n, int[] ids, int offset );
+    public void GLBindTransformFeedback( int target, int id );
 
-	public void GLDeleteTransformFeedbacks( int n, IntBuffer ids );
+    public void GLDeleteTransformFeedbacks( int n, int[] ids, int offset );
 
-	public void GLGenTransformFeedbacks( int n, int[] ids, int offset );
+    public void GLDeleteTransformFeedbacks( int n, IntBuffer ids );
 
-	public void GLGenTransformFeedbacks( int n, IntBuffer ids );
+    public void GLGenTransformFeedbacks( int n, int[] ids, int offset );
 
-	public bool GLIsTransformFeedback( int id );
+    public void GLGenTransformFeedbacks( int n, IntBuffer ids );
 
-	public void GLPauseTransformFeedback();
+    public bool GLIsTransformFeedback( int id );
 
-	public void GLResumeTransformFeedback();
+    public void GLPauseTransformFeedback();
 
-	public void GLProgramParameteri( int program, int pname, int value );
+    public void GLResumeTransformFeedback();
 
-	public void GLInvalidateFramebuffer( int target, int numAttachments, IntBuffer attachments );
+    public void GLProgramParameteri( int program, int pname, int value );
 
-	public void GLInvalidateSubFramebuffer( int target, int numAttachments, IntBuffer attachments,
-	                                        int x, int y, int width, int height );
+    public void GLInvalidateFramebuffer( int target, int numAttachments, IntBuffer attachments );
 
-	/// <summary>
-	/// In OpenGl core profiles (3.1+), passing a pointer to client memory is
-	/// not valid. Use the other version of this function instead, pass a
-	/// zero-based offset which references the buffer currently bound to GL_Array_Buffer.
-	/// </summary>
-	public new void GLVertexAttribPointer( int indx, int size, int type,
-	                                       bool normalized, int stride, Buffer ptr );
+    public void GLInvalidateSubFramebuffer( int target,
+                                            int numAttachments,
+                                            IntBuffer attachments,
+                                            int x,
+                                            int y,
+                                            int width,
+                                            int height );
 
-    //@formatter:on
+    public new void GLVertexAttribPointer( int indx,
+                                           int size,
+                                           int type,
+                                           bool normalized,
+                                           int stride,
+                                           Buffer ptr );
 }

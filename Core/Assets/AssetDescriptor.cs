@@ -63,7 +63,7 @@ public class AssetDescriptor
     /// 
     /// </summary>
     /// <returns></returns>
-    public new string ToString()
+    public override string ToString()
     {
         return $"{FilePath}, {Type.FullName}";
     }

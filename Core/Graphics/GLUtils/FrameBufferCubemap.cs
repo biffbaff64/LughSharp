@@ -79,10 +79,17 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         frameBufferBuilder.AddBasicColorTextureAttachment( format );
 
-        if ( hasDepth ) frameBufferBuilder.AddBasicDepthRenderBuffer();
-        if ( hasStencil ) frameBufferBuilder.AddBasicStencilRenderBuffer();
+        if ( hasDepth )
+        {
+            frameBufferBuilder.AddBasicDepthRenderBuffer();
+        }
 
-//        this.BufferBuilder = frameBufferBuilder;
+        if ( hasStencil )
+        {
+            frameBufferBuilder.AddBasicStencilRenderBuffer();
+        }
+
+        //        this.BufferBuilder = frameBufferBuilder;
 
         Build();
     }
@@ -90,12 +97,12 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     protected override Cubemap CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
         GLOnlyTextureData data = new
-            (
-            BufferBuilder.Width, BufferBuilder.Height, 0,
-            attachmentSpec.InternalFormat,
-            attachmentSpec.Format,
-            attachmentSpec.Type
-            );
+                (
+                BufferBuilder.Width, BufferBuilder.Height, 0,
+                attachmentSpec.InternalFormat,
+                attachmentSpec.Format,
+                attachmentSpec.Type
+                );
 
         Cubemap result = new( data, data, data, data, data, data );
 
@@ -131,10 +138,10 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// <summary>
     /// Makes the frame buffer current so everything gets drawn to it,
     /// must be followed by call to either <see cref="NextSide()"/> or
-	/// <see cref="BindSide(Cubemap.CubemapSide)"/> to activate the side
-	/// to render onto.
+    /// <see cref="BindSide(Cubemap.CubemapSide)"/> to activate the side
+    /// to render onto.
     /// </summary>
-    public new void Bind()
+    protected override void Bind()
     {
         _currentSide = -1;
         
@@ -174,10 +181,10 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         ArgumentNullException.ThrowIfNull( side );
         
         Gdx.GL20.GLFramebufferTexture2D
-            (
-            IGL20.GL_FRAMEBUFFER, IGL20.GL_COLOR_ATTACHMENT0, side.GLEnum,
-            GetColorBufferTexture().GetTextureObjectHandle(), 0
-            );
+                (
+                IGL20.GL_FRAMEBUFFER, IGL20.GL_COLOR_ATTACHMENT0, side.GLEnum,
+                GetColorBufferTexture().GetTextureObjectHandle(), 0
+                );
     }
 
     /// <summary>

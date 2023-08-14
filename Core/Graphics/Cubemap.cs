@@ -44,7 +44,10 @@ public class Cubemap : GLTexture
         this.Data = data;
         Load( data );
 
-        if ( data.Managed ) AddManagedCubemap( Gdx.App, this );
+        if ( data.Managed )
+        {
+            AddManagedCubemap( Gdx.App, this );
+        }
     }
 
     /// <summary>
@@ -127,7 +130,10 @@ public class Cubemap : GLTexture
     /// </summary>
     public void Load( ICubemapData data )
     {
-        if ( !data.Prepared ) data.Prepare();
+        if ( !data.Prepared )
+        {
+            data.Prepare();
+        }
 
         Bind();
 
@@ -144,7 +150,10 @@ public class Cubemap : GLTexture
 
     public override void Reload()
     {
-        if ( !IsManaged() ) throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
+        if ( !IsManaged() )
+        {
+            throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
+        }
 
         GLHandle = Gdx.GL.GLGenTexture();
 
@@ -158,13 +167,16 @@ public class Cubemap : GLTexture
     /// <summary>
     /// Disposes all resources associated with the cubemap.
     /// </summary>
-    public new void Dispose()
+    public override void Dispose()
     {
         // this is a hack. reason: we have to set the glHandle to 0 for textures that are
         // reloaded through the asset manager as we first remove (and thus dispose) the texture
         // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
         // removal from the asset manager.
-        if ( GLHandle == 0 ) return;
+        if ( GLHandle == 0 )
+        {
+            return;
+        }
 
         Delete();
 
@@ -200,7 +212,10 @@ public class Cubemap : GLTexture
     {
         List< Cubemap >? managedCubemapArray = ManagedCubemaps[ app ];
 
-        if ( managedCubemapArray == null ) return;
+        if ( managedCubemapArray == null )
+        {
+            return;
+        }
 
         if ( AssetManager == null )
         {

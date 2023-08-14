@@ -195,7 +195,10 @@ public class GLApplication : GLApplicationBase
 
     public override IPreferences GetPreferences( string name )
     {
-        if ( Preferences!.ContainsKey( name ) ) return Preferences.Get( name )!;
+        if ( Preferences!.ContainsKey( name ) )
+        {
+            return Preferences.Get( name )!;
+        }
 
         IPreferences prefs = new GLPreferences( name );
 

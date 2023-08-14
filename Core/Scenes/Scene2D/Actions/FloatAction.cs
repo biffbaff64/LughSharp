@@ -58,13 +58,13 @@ public class FloatAction : TemporalAction
     /// Creates a FloatAction that transitions from start to end.
     /// </summary>
     public FloatAction( float start, float end, float duration, Interpolation interpolation )
-        : base( duration, interpolation )
+            : base( duration, interpolation )
     {
         this.Start    = start;
         this.EndValue = end;
     }
 
-    protected new void Begin()
+    protected override void Begin()
     {
         Value = Start;
     }

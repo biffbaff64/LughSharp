@@ -109,7 +109,10 @@ public class Stack : WidgetGroup
 
     public new void Layout()
     {
-        if ( _sizeInvalid ) ComputeSize();
+        if ( _sizeInvalid )
+        {
+            ComputeSize();
+        }
 
         var width  = Width;
         var height = Height;
@@ -121,7 +124,10 @@ public class Stack : WidgetGroup
             Actor child = children.Get( i );
             child.SetBounds( 0, 0, width, height );
 
-            if ( child is ILayout layout ) layout.Validate();
+            if ( child is ILayout layout )
+            {
+                layout.Validate();
+            }
         }
     }
 
@@ -129,7 +135,10 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid ) ComputeSize();
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
 
             return _prefWidth;
         }
@@ -139,7 +148,10 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid ) ComputeSize();
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
 
             return _prefHeight;
         }
@@ -149,7 +161,10 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid ) ComputeSize();
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
 
             return _minWidth;
         }
@@ -159,7 +174,10 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid ) ComputeSize();
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
 
             return _minHeight;
         }
@@ -169,7 +187,10 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid ) ComputeSize();
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
 
             return _maxWidth;
         }
@@ -179,7 +200,10 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid ) ComputeSize();
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
 
             return _maxHeight;
         }

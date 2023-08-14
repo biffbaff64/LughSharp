@@ -41,7 +41,10 @@ public class AlphaAction : TemporalAction
 
     protected override void Update( float percent )
     {
-        if ( Target!.Color == null ) return;
+        if ( Target!.Color == null )
+        {
+            return;
+        }
 
         if ( percent == 0 )
         {

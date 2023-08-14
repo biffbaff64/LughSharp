@@ -114,7 +114,10 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            if ( !emitter.IsComplete() ) return false;
+            if ( !emitter.IsComplete() )
+            {
+                return false;
+            }
         }
 
         return true;
@@ -165,7 +168,10 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            if ( emitter.GetName().Equals( name ) ) return emitter;
+            if ( emitter.GetName().Equals( name ) )
+            {
+                return emitter;
+            }
         }
 
         return null;
@@ -188,7 +194,10 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            if ( index++ > 0 ) output.Write( "\n" );
+            if ( index++ > 0 )
+            {
+                output.Write( "\n" );
+            }
 
             emitter.Save( output );
         }
@@ -244,7 +253,10 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            if ( _emitters.GetImagePaths().size == 0 ) continue;
+            if ( _emitters.GetImagePaths().size == 0 )
+            {
+                continue;
+            }
 
             var sprites = new List< Sprite >();
 
@@ -253,12 +265,22 @@ public class ParticleEffect : IDisposable
                 string imageName    = new File( imagePath.Replace( '\\', '/' ) ).getName();
                 var    lastDotIndex = imageName.LastIndexOf( '.' );
 
-                if ( lastDotIndex != -1 ) imageName  = imageName.Substring( 0, lastDotIndex );
-                if ( atlasPrefix != null ) imageName = atlasPrefix + imageName;
+                if ( lastDotIndex != -1 )
+                {
+                    imageName = imageName.Substring( 0, lastDotIndex );
+                }
+
+                if ( atlasPrefix != null )
+                {
+                    imageName = atlasPrefix + imageName;
+                }
 
                 Sprite? sprite = atlas.CreateSprite( imageName );
 
-                if ( sprite == null ) throw new ArgumentException( "SpriteSheet missing image: " + imageName );
+                if ( sprite == null )
+                {
+                    throw new ArgumentException( "SpriteSheet missing image: " + imageName );
+                }
 
                 sprites.Add( sprite );
             }
@@ -277,7 +299,10 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            if ( _emitters.GetImagePaths().size == 0 ) continue;
+            if ( _emitters.GetImagePaths().size == 0 )
+            {
+                continue;
+            }
 
             var sprites = new List< Sprite >();
 

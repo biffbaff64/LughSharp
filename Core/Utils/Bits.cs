@@ -59,7 +59,10 @@ public class Bits
     {
         var word = index >>> 6;
 
-        if ( word >= _bits.Length ) return false;
+        if ( word >= _bits.Length )
+        {
+            return false;
+        }
 
         var oldBits = _bits[ word ];
 
@@ -131,7 +134,10 @@ public class Bits
     {
         var word = index >>> 6;
 
-        if ( word >= _bits.Length ) return;
+        if ( word >= _bits.Length )
+        {
+            return;
+        }
 
         _bits[ word ] &= ~( 1L << ( index & 0x3F ) );
     }
@@ -457,12 +463,12 @@ public class Bits
 
     public override int GetHashCode()
     {
-        const int prime = 73;
+        const int PRIME = 73;
 
-        var hash = prime + Gdx.App.GetVersion().GetHashCode();
-        hash = ( prime * hash ) + Gdx.App.GetHashCode();
+        var hash = PRIME + Gdx.App.GetVersion().GetHashCode();
+        hash = ( PRIME * hash ) + Gdx.App.GetHashCode();
 
-        return hash!;
+        return hash;
     }
 
     /// <summary>
@@ -471,11 +477,20 @@ public class Bits
     /// <returns></returns>
     public override bool Equals( object? obj )
     {
-        if ( this == obj ) return true;
+        if ( this == obj )
+        {
+            return true;
+        }
 
-        if ( obj == null ) return false;
+        if ( obj == null )
+        {
+            return false;
+        }
 
-        if ( this.GetType() != obj.GetType() ) return false;
+        if ( this.GetType() != obj.GetType() )
+        {
+            return false;
+        }
 
         var other     = ( Bits )obj;
         var otherBits = other._bits;

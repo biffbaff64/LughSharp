@@ -31,7 +31,7 @@ namespace LibGDXSharp.Utils.Viewport;
 [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
 public abstract class Viewport
 {
-    public Camera Camera       { get; set; } = null!;
+    public Camera Camera       { get; set; }
     public float  WorldWidth   { get; set; }
     public float  WorldHeight  { get; set; }
     public int    ScreenX      { get; set; }
@@ -41,15 +41,23 @@ public abstract class Viewport
 
     private Vector3 _tmp = Vector3.Zero;
 
+    protected Viewport( Camera camera )
+    {
+        this.Camera = camera;
+    }
+    
     /// <summary>
     /// Applies the viewport to the camera and sets the glViewport.
     /// </summary>
     /// <param name="centerCamera">
     /// If true, the camera position is set to the center of the world.
     /// </param>
-    public void Apply( bool centerCamera = false )
+    public virtual void Apply( bool centerCamera = false )
     {
-        if ( Camera == null ) throw new NullReferenceException();
+        if ( Camera == null )
+        {
+            throw new NullReferenceException();
+        }
 
         HdpiUtils.GLViewport( ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
@@ -76,7 +84,7 @@ public abstract class Viewport
     /// <remarks>
     /// The default implementation only calls <see cref="Apply(bool)"/>. 
     /// </remarks>
-    public void Update( int screenWidth, int screenHeight, bool centerCamera = false )
+    public virtual void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
         Apply( centerCamera );
     }
@@ -86,15 +94,18 @@ public abstract class Viewport
     /// </summary>
     /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
     /// <see cref="Camera.Unproject(Vector3)"/>
-    public Vector2 Unproject( Vector2 screenCoords )
+    public virtual Vector2 Unproject( Vector2 screenCoords )
     {
-        if ( Camera == null ) throw new NullReferenceException();
+        if ( Camera == null )
+        {
+            throw new NullReferenceException();
+        }
 
         _tmp = new Vector3
         {
-            X = screenCoords.X,
-            Y = screenCoords.Y,
-            Z = 1.0f
+                X = screenCoords.X,
+                Y = screenCoords.Y,
+                Z = 1.0f
         };
 
         Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
@@ -109,9 +120,12 @@ public abstract class Viewport
     /// </summary>
     /// <returns> The vector that was passed in, transformed to screen coordinates.</returns>
     /// <see cref="Camera.Project(Vector3) "/>
-    public Vector2 Project( Vector2 worldCoords )
+    public virtual Vector2 Project( Vector2 worldCoords )
     {
-        if ( Camera == null ) throw new NullReferenceException();
+        if ( Camera == null )
+        {
+            throw new NullReferenceException();
+        }
 
         _tmp.Set( worldCoords.X, worldCoords.Y, 1 );
 
@@ -126,9 +140,12 @@ public abstract class Viewport
     /// </summary>
     /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
     /// <see cref="Camera.Unproject(Vector3)"/>
-    public Vector3 Unproject( Vector3 screenCoords )
+    public virtual Vector3 Unproject( Vector3 screenCoords )
     {
-        if ( Camera == null ) throw new NullReferenceException();
+        if ( Camera == null )
+        {
+            throw new NullReferenceException();
+        }
 
         Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
@@ -139,9 +156,12 @@ public abstract class Viewport
     /// Transforms the specified world coordinate to screen coordinates. </summary>
     /// <returns> The vector that was passed in, transformed to screen coordinates. </returns>
     /// <see cref="Camera.Project(Vector3) "/>
-    public Vector3 Project( Vector3 worldCoords )
+    public virtual Vector3 Project( Vector3 worldCoords )
     {
-        if ( Camera == null ) throw new NullReferenceException();
+        if ( Camera == null )
+        {
+            throw new NullReferenceException();
+        }
 
         Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
@@ -151,33 +171,37 @@ public abstract class Viewport
     /// <summary>
     /// </summary>
     /// <see cref="Camera.GetPickRay(float, float, float, float, float, float) "/>
-    public Ray GetPickRay( float screenX, float screenY )
+    public virtual Ray GetPickRay( float screenX, float screenY )
     {
-        if ( Camera == null ) throw new NullReferenceException();
+        if ( Camera == null )
+        {
+            throw new NullReferenceException();
+        }
 
         return Camera.GetPickRay
-            (
-            screenX, screenY, this.ScreenX,
-            this.ScreenY, ScreenWidth, ScreenHeight
-            );
+                (
+                screenX, screenY, this.ScreenX,
+                this.ScreenY, ScreenWidth, ScreenHeight
+                );
     }
 
     /// <summary>
     /// </summary>
-    /// <see cref="ScissorStack.CalculateScissors(LibGDXSharp.Graphics.Camera,LibGDXSharp.Maths.Matrix4,System.Drawing.Rectangle,System.Drawing.Rectangle)"/>
-    public void CalculateScissors( Matrix4 batchTransform, RectangleShape area, RectangleShape scissor )
+    public virtual void CalculateScissors( Matrix4 batchTransform,
+                                           RectangleShape area,
+                                           RectangleShape scissor )
     {
         ScissorStack.CalculateScissors
-            (
-            Camera,
-            ScreenX,
-            ScreenY,
-            ScreenWidth,
-            ScreenHeight,
-            batchTransform,
-            area,
-            scissor
-            );
+                (
+                Camera,
+                ScreenX,
+                ScreenY,
+                ScreenWidth,
+                ScreenHeight,
+                batchTransform,
+                area,
+                scissor
+                );
     }
 
     /// <summary>
@@ -185,9 +209,12 @@ public abstract class Viewport
     /// window coordinates), where the origin is in the top left and the
     /// the y-axis is pointing downwards. 
     /// </summary>
-    public Vector2 ToScreenCoordinates( Vector2 worldCoords, Matrix4 transformMatrix )
+    public virtual Vector2 ToScreenCoordinates( Vector2 worldCoords, Matrix4 transformMatrix )
     {
-        if ( Camera == null ) throw new NullReferenceException();
+        if ( Camera == null )
+        {
+            throw new NullReferenceException();
+        }
 
         _tmp.Set( worldCoords.X, worldCoords.Y, 0 );
         _tmp.Mul( transformMatrix );
@@ -208,7 +235,7 @@ public abstract class Viewport
     /// </summary>
     /// <param name="worldWidth"></param>
     /// <param name="worldHeight"></param>
-    public void SetWorldSize( float worldWidth, float worldHeight )
+    public virtual void SetWorldSize( float worldWidth, float worldHeight )
     {
         this.WorldWidth  = worldWidth;
         this.WorldHeight = worldHeight;
@@ -218,7 +245,7 @@ public abstract class Viewport
     /// Sets the viewport's position in screen coordinates.
     /// This is typically set by <see cref="Update(int, int, bool)"/>.
     /// </summary>
-    public void SetScreenPosition( int screenX, int screenY )
+    public virtual void SetScreenPosition( int screenX, int screenY )
     {
         this.ScreenX = screenX;
         this.ScreenY = screenY;
@@ -228,7 +255,7 @@ public abstract class Viewport
     /// Sets the viewport's size in screen coordinates.
     /// This is typically set by <see cref="Update(int, int, bool)"/>.
     /// </summary>
-    public void SetScreenSize( int screenWidth, int screenHeight )
+    public virtual void SetScreenSize( int screenWidth, int screenHeight )
     {
         this.ScreenWidth  = screenWidth;
         this.ScreenHeight = screenHeight;
@@ -238,7 +265,7 @@ public abstract class Viewport
     /// Sets the viewport's bounds in screen coordinates.
     /// This is typically set by <see cref="Update(int, int, bool)"/>.
     /// </summary>
-    public void SetScreenBounds( int screenX, int screenY, int screenWidth, int screenHeight )
+    public virtual void SetScreenBounds( int screenX, int screenY, int screenWidth, int screenHeight )
     {
         this.ScreenX      = screenX;
         this.ScreenY      = screenY;
@@ -259,15 +286,7 @@ public abstract class Viewport
     /// <summary>
     /// Returns the right gutter (black bar) width in screen coordinates.
     /// </summary>
-    public virtual int RightGutterWidth
-    {
-        get
-        {
-            Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
-
-            return ( Gdx.Graphics.Width - ( ScreenX + ScreenWidth ) );
-        }
-    }
+    public virtual int RightGutterWidth => ( Gdx.Graphics.Width - ( ScreenX + ScreenWidth ) );
 
     /// <summary>
     /// Returns the bottom gutter (black bar) height in screen coordinates.
@@ -282,13 +301,5 @@ public abstract class Viewport
     /// <summary>
     /// Returns the top gutter (black bar) height in screen coordinates.
     /// </summary>
-    public virtual int TopGutterHeight
-    {
-        get
-        {
-            Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
-
-            return ( Gdx.Graphics.Height - ( ScreenY + ScreenHeight ) );
-        }
-    }
+    public virtual int TopGutterHeight => ( Gdx.Graphics.Height - ( ScreenY + ScreenHeight ) );
 }

@@ -43,9 +43,12 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
         Sprite = drawable?.Sprite;
     }
 
-    public new void Draw( IBatch batch, float x, float y, float width, float height )
+    public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
-        if ( Sprite == null ) return;
+        if ( Sprite == null )
+        {
+            return;
+        }
 
         Color spriteColor = Sprite.Color;
         var   oldColor    = spriteColor.ToFloatBits();

@@ -118,8 +118,15 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( child == null ) continue;
-                    if ( !child.IsVisible ) continue;
+                    if ( child == null )
+                    {
+                        continue;
+                    }
+
+                    if ( !child.IsVisible )
+                    {
+                        continue;
+                    }
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -146,8 +153,15 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( child == null ) continue;
-                    if ( !child.IsVisible ) continue;
+                    if ( child == null )
+                    {
+                        continue;
+                    }
+
+                    if ( !child.IsVisible )
+                    {
+                        continue;
+                    }
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -178,8 +192,15 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( child == null ) continue;
-                    if ( !child.IsVisible ) continue;
+                    if ( child == null )
+                    {
+                        continue;
+                    }
+
+                    if ( !child.IsVisible )
+                    {
+                        continue;
+                    }
 
                     child.Draw( batch, parentAlpha );
                 }
@@ -197,8 +218,15 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( child == null ) continue;
-                    if ( !child.IsVisible ) continue;
+                    if ( child == null )
+                    {
+                        continue;
+                    }
+
+                    if ( !child.IsVisible )
+                    {
+                        continue;
+                    }
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -262,8 +290,15 @@ public class Group : Actor, ICullable
             {
                 Actor? child = actors[ i ];
 
-                if ( child == null ) continue;
-                if ( !child.IsVisible ) continue;
+                if ( child == null )
+                {
+                    continue;
+                }
+
+                if ( !child.IsVisible )
+                {
+                    continue;
+                }
 
                 if ( !child.DebugActive && !( child is Group ) )
                 {
@@ -288,8 +323,15 @@ public class Group : Actor, ICullable
             {
                 Actor? child = actors[ i ];
 
-                if ( child == null ) continue;
-                if ( !child.IsVisible ) continue;
+                if ( child == null )
+                {
+                    continue;
+                }
+
+                if ( !child.IsVisible )
+                {
+                    continue;
+                }
 
                 if ( !child.DebugActive && ( child is not Group ) )
                 {
@@ -401,8 +443,15 @@ public class Group : Actor, ICullable
 
     protected new Actor? Hit( float x, float y, bool touchable )
     {
-        if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
-        if ( !IsVisible ) return null;
+        if ( touchable && ( Touchable == Touchable.Disabled ) )
+        {
+            return null;
+        }
+
+        if ( !IsVisible )
+        {
+            return null;
+        }
 
         for ( var i = Children.Size - 1; i >= 0; i-- )
         {
@@ -412,7 +461,10 @@ public class Group : Actor, ICullable
 
             Actor? hit = child.Hit( _tmp.X, _tmp.Y, touchable );
 
-            if ( hit != null ) return hit;
+            if ( hit != null )
+            {
+                return hit;
+            }
         }
 
         return base.Hit( x, y, touchable );
@@ -433,7 +485,11 @@ public class Group : Actor, ICullable
     {
         if ( actor.Parent != null )
         {
-            if ( actor.Parent == this ) return;
+            if ( actor.Parent == this )
+            {
+                return;
+            }
+
             actor.Parent.RemoveActor( actor, false );
         }
 
@@ -456,7 +512,10 @@ public class Group : Actor, ICullable
     {
         if ( actor.Parent != null )
         {
-            if ( actor.Parent == this ) return;
+            if ( actor.Parent == this )
+            {
+                return;
+            }
 
             actor.Parent.RemoveActor( actor, false );
         }
@@ -485,7 +544,10 @@ public class Group : Actor, ICullable
     {
         if ( actor.Parent != null )
         {
-            if ( actor.Parent == this ) return;
+            if ( actor.Parent == this )
+            {
+                return;
+            }
 
             actor.Parent.RemoveActor( actor, false );
         }
@@ -510,7 +572,10 @@ public class Group : Actor, ICullable
     {
         if ( actor.Parent != null )
         {
-            if ( actor.Parent == this ) return;
+            if ( actor.Parent == this )
+            {
+                return;
+            }
 
             actor.Parent.RemoveActor( actor, false );
         }
@@ -541,7 +606,10 @@ public class Group : Actor, ICullable
     {
         var index = Children.IndexOf( actor );
 
-        if ( index == -1 ) return false;
+        if ( index == -1 )
+        {
+            return false;
+        }
 
         RemoveActorAt( index, unfocus );
 
@@ -626,7 +694,10 @@ public class Group : Actor, ICullable
             {
                 Actor? actor = group.FindActor<T>( name );
 
-                if ( actor != null ) return ( T )actor;
+                if ( actor != null )
+                {
+                    return ( T )actor;
+                }
             }
         }
 
@@ -651,8 +722,15 @@ public class Group : Actor, ICullable
     {
         var maxIndex = Children.Size;
 
-        if ( ( first < 0 ) || ( first >= maxIndex ) ) return false;
-        if ( ( second < 0 ) || ( second >= maxIndex ) ) return false;
+        if ( ( first < 0 ) || ( first >= maxIndex ) )
+        {
+            return false;
+        }
+
+        if ( ( second < 0 ) || ( second >= maxIndex ) )
+        {
+            return false;
+        }
 
         Children.Swap( first, second );
 
@@ -668,8 +746,11 @@ public class Group : Actor, ICullable
         var firstIndex  = Children.IndexOf( first );
         var secondIndex = Children.IndexOf( second );
 
-        if ( ( firstIndex == -1 ) || ( secondIndex == -1 ) ) return false;
-        
+        if ( ( firstIndex == -1 ) || ( secondIndex == -1 ) )
+        {
+            return false;
+        }
+
         Children.Swap( firstIndex, secondIndex );
 
         return true;
@@ -710,11 +791,17 @@ public class Group : Actor, ICullable
     {
         Group? parent = descendant.Parent;
 
-        if ( parent == null ) throw new ArgumentException( "Child is not a descendant: " + descendant );
+        if ( parent == null )
+        {
+            throw new ArgumentException( "Child is not a descendant: " + descendant );
+        }
 
         // First convert to the actor's parent coordinates.
-        if ( parent != this ) LocalToDescendantCoordinates( parent, localCoords );
-        
+        if ( parent != this )
+        {
+            LocalToDescendantCoordinates( parent, localCoords );
+        }
+
         // Then from each parent down to the descendant.
         descendant.ParentToLocalCoordinates( localCoords );
 

@@ -28,16 +28,30 @@ public class AtlasSprite : Sprite
     public float       OriginalOffsetX { get; set; }
     public float       OriginalOffsetY { get; set; }
 
+    public AtlasSprite( AtlasSprite sprite )
+    {
+        Region               = sprite.Region;
+        this.OriginalOffsetX = sprite.OriginalOffsetX;
+        this.OriginalOffsetY = sprite.OriginalOffsetY;
+
+        Set( sprite );
+    }
+
     public AtlasSprite( AtlasRegion region )
     {
         this.Region = new AtlasRegion( region );
 
+        Init( region );
+    }
+    
+    private void Init( AtlasRegion region )
+    {
         OriginalOffsetX = region.OffsetX;
         OriginalOffsetY = region.OffsetY;
 
         SetRegion( region );
 
-        SetOrigin( region.OriginalWidth / 2f, region.OriginalHeight / 2f );
+        this.SetOrigin( region.OriginalWidth / 2f, region.OriginalHeight / 2f );
 
         var width  = region.RegionWidth;
         var height = region.RegionHeight;
@@ -55,20 +69,6 @@ public class AtlasSprite : Sprite
         SetColor( 1, 1, 1, 1 );
     }
 
-    public AtlasSprite( AtlasSprite sprite )
-    {
-        Region               = sprite.Region;
-        this.OriginalOffsetX = sprite.OriginalOffsetX;
-        this.OriginalOffsetY = sprite.OriginalOffsetY;
-
-        Set( sprite );
-    }
-
-    public new void SetPosition( float x, float y )
-    {
-        base.SetPosition( x + Region.OffsetX, y + Region.OffsetY );
-    }
-
     public void SetX( float x )
     {
         base.X = x + Region.OffsetX;
@@ -79,7 +79,7 @@ public class AtlasSprite : Sprite
         base.Y = y + Region.OffsetY;
     }
 
-    public new void SetBounds( float x, float y, float width, float height )
+    public override void SetBounds( float x, float y, float width, float height )
     {
         var widthRatio  = width / Region.OriginalWidth;
         var heightRatio = height / Region.OriginalHeight;
@@ -87,8 +87,8 @@ public class AtlasSprite : Sprite
         Region.OffsetX = OriginalOffsetX * widthRatio;
         Region.OffsetY = OriginalOffsetY * heightRatio;
 
-        int packedWidth  = Region.Rotate ? Region.PackedHeight : Region.PackedWidth;
-        int packedHeight = Region.Rotate ? Region.PackedWidth : Region.PackedHeight;
+        var packedWidth  = Region.Rotate ? Region.PackedHeight : Region.PackedWidth;
+        var packedHeight = Region.Rotate ? Region.PackedWidth : Region.PackedHeight;
 
         base.SetBounds
             (
@@ -99,22 +99,22 @@ public class AtlasSprite : Sprite
             );
     }
 
-    public new void SetSize( float width, float height )
+    public override void SetSize( float width, float height )
     {
         SetBounds( GetX(), GetY(), width, height );
     }
 
-    public new void SetOrigin( float originX, float originY )
+    public override void SetOrigin( float originX, float originY )
     {
         base.SetOrigin( originX - Region.OffsetX, originY - Region.OffsetY );
     }
 
-    public new void SetOriginCenter()
+    public override void SetOriginCenter()
     {
         base.SetOrigin( ( Width / 2 ) - Region.OffsetX, ( Height / 2 ) - Region.OffsetY );
     }
 
-    public new void Flip( bool x, bool y )
+    public override void Flip( bool x, bool y )
     {
         // Flip texture.
         if ( Region.Rotate )
@@ -147,7 +147,7 @@ public class AtlasSprite : Sprite
         SetOrigin( oldOriginX, oldOriginY );
     }
 
-    public new void Rotate90( bool clockwise )
+    public override void Rotate90( bool clockwise )
     {
         // Rotate texture.
         base.Rotate90( clockwise );
@@ -222,7 +222,7 @@ public class AtlasSprite : Sprite
         return base.Height / Region.RotatedPackedHeight;
     }
 
-    public new string? ToString()
+    public override string? ToString()
     {
         return Region.ToString();
     }

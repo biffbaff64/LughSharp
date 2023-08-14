@@ -26,17 +26,13 @@ public class ScreenViewport : Viewport
     public float UnitsPerPixel { get; set; } = 1;
 
     /// <summary>
-    /// Creates a new viewport using a new <see cref="OrthographicCamera"/>. </summary>
-    public ScreenViewport() : this( new OrthographicCamera() )
+    /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
+    /// </summary>
+    public ScreenViewport() : base( new OrthographicCamera() )
     {
     }
 
-    public ScreenViewport( Camera camera )
-    {
-        Camera = camera;
-    }
-
-    public virtual new void Update( int screenWidth, int screenHeight, bool centerCamera )
+    public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
         SetScreenBounds( 0, 0, screenWidth, screenHeight );
         SetWorldSize( screenWidth * UnitsPerPixel, screenHeight * UnitsPerPixel );

@@ -66,7 +66,10 @@ public abstract class ByteBuffer : Buffer
     /// </exception>
     public static ByteBuffer Allocate( int capacity )
     {
-        if ( capacity < 0 ) throw new ArgumentException();
+        if ( capacity < 0 )
+        {
+            throw new ArgumentException();
+        }
 
         return new HeapByteBuffer( capacity, capacity );
     }
@@ -116,7 +119,10 @@ public abstract class ByteBuffer : Buffer
     {
         CheckBounds( offset, length, dst.Length );
 
-        if ( length > Remaining() ) throw new BufferUnderflowException();
+        if ( length > Remaining() )
+        {
+            throw new BufferUnderflowException();
+        }
 
         var end = offset + length;
 
@@ -135,13 +141,22 @@ public abstract class ByteBuffer : Buffer
 
     public ByteBuffer Put( ByteBuffer src )
     {
-        if ( src == this ) throw new ArgumentException();
+        if ( src == this )
+        {
+            throw new ArgumentException();
+        }
 
-        if ( IsReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly )
+        {
+            throw new ReadOnlyBufferException();
+        }
 
         int n = src.Remaining();
 
-        if ( n > Remaining() ) throw new BufferOverflowException();
+        if ( n > Remaining() )
+        {
+            throw new BufferOverflowException();
+        }
 
         for ( var i = 0; i < n; i++ )
         {
@@ -155,7 +170,10 @@ public abstract class ByteBuffer : Buffer
     {
         CheckBounds( offset, length, src.Length );
 
-        if ( length > Remaining() ) throw new BufferOverflowException();
+        if ( length > Remaining() )
+        {
+            throw new BufferOverflowException();
+        }
 
         var end = offset + length;
 
@@ -207,9 +225,15 @@ public abstract class ByteBuffer : Buffer
     /// </exception>
     public byte[] Array()
     {
-        if ( Hb == null ) throw new UnsupportedOperationException();
+        if ( Hb == null )
+        {
+            throw new UnsupportedOperationException();
+        }
 
-        if ( IsReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly )
+        {
+            throw new ReadOnlyBufferException();
+        }
 
         return Hb;
     }
@@ -237,14 +261,20 @@ public abstract class ByteBuffer : Buffer
     /// </exception>
     public override int ArrayOffset()
     {
-        if ( Hb == null ) throw new UnsupportedOperationException();
+        if ( Hb == null )
+        {
+            throw new UnsupportedOperationException();
+        }
 
-        if ( IsReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly )
+        {
+            throw new ReadOnlyBufferException();
+        }
 
         return Offset;
     }
 
-    public new string ToString()
+    public override string ToString()
     {
         return $"{GetType().Name} [pos={Position} lim={Limit} cap={Capacity}]";
     }
@@ -295,13 +325,22 @@ public abstract class ByteBuffer : Buffer
     /// <returns>
     /// <tt>true</tt> if, and only if, this buffer is equal to the given object
     /// </returns>
-    public new bool Equals( Object ob )
+    public override bool Equals( object ob )
     {
-        if ( this == ob ) return true;
+        if ( this == ob )
+        {
+            return true;
+        }
 
-        if ( !( ob is ByteBuffer that ) ) return false;
+        if ( !( ob is ByteBuffer that ) )
+        {
+            return false;
+        }
 
-        if ( this.Remaining() != that.Remaining() ) return false;
+        if ( this.Remaining() != that.Remaining() )
+        {
+            return false;
+        }
 
         var p = this.Position;
 
@@ -344,7 +383,10 @@ public abstract class ByteBuffer : Buffer
         {
             var cmp = BufferUtils.Compare( this.Get( i ), that.Get( j ) );
 
-            if ( cmp != 0 ) return cmp;
+            if ( cmp != 0 )
+            {
+                return cmp;
+            }
         }
 
         return this.Remaining() - that.Remaining();

@@ -48,7 +48,7 @@ public abstract class Action : IPoolable
     /// If a subclass has optional state, it must override this method,
     /// call super, and reset the optional state.
     /// </summary>
-    public void Reset()
+    public virtual void Reset()
     {
         Actor  = null;
         Target = null;
@@ -71,7 +71,7 @@ public abstract class Action : IPoolable
     /// <summary>
     /// Sets the state of the action so it can be run again.
     /// </summary>
-    public void Restart()
+    public virtual void Restart()
     {
     }
 

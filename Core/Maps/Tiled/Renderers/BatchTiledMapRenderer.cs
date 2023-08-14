@@ -134,7 +134,10 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <param name="layer"></param>
     protected void RenderMapLayer( MapLayer layer )
     {
-        if ( !layer.Visible ) return;
+        if ( !layer.Visible )
+        {
+            return;
+        }
 
         if ( layer is MapGroupLayer groupLayer )
         {
@@ -144,7 +147,10 @@ public class BatchTileMapRenderer : ITiledMapRenderer
             {
                 MapLayer childLayer = childLayers.Get( i );
 
-                if ( !childLayer.Visible ) continue;
+                if ( !childLayer.Visible )
+                {
+                    continue;
+                }
 
                 RenderMapLayer( childLayer );
             }
@@ -187,7 +193,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <summary>
     /// </summary>
     /// <param name="layer"></param>
-    public void RenderTileLayer( TiledMapTileLayer layer )
+    public virtual void RenderTileLayer( TiledMapTileLayer layer )
     {
     }
 
@@ -208,7 +214,10 @@ public class BatchTileMapRenderer : ITiledMapRenderer
 
         TextureRegion? region = layer.Region;
 
-        if ( region == null ) return;
+        if ( region == null )
+        {
+            return;
+        }
 
         var x  = layer.X;
         var y  = layer.Y;

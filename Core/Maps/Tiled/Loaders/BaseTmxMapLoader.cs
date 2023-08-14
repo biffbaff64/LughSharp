@@ -119,7 +119,10 @@ public abstract class BaseTmxMapLoader<TP>
             this.flipY                    = true;
         }
 
-        if ( root == null ) throw new GdxRuntimeException( "Root cannot be null!" );
+        if ( root == null )
+        {
+            throw new GdxRuntimeException( "Root cannot be null!" );
+        }
 
         var mapOrientation = root.GetAttribute( "orientation", null );
 
@@ -213,7 +216,10 @@ public abstract class BaseTmxMapLoader<TP>
 
         var name = element.Name;
 
-        if ( name == null ) throw new GdxRuntimeException( $"{name} cannot be null!" );
+        if ( name == null )
+        {
+            throw new GdxRuntimeException( $"{name} cannot be null!" );
+        }
 
         if ( name.Equals( "group" ) )
         {
@@ -272,7 +278,10 @@ public abstract class BaseTmxMapLoader<TP>
 
     protected void LoadTileLayer( TiledMap map, MapLayers parentLayers, XmlReader.Element element )
     {
-        if ( element.Name == null ) throw new ArgumentException( "element cannot by null!" );
+        if ( element.Name == null )
+        {
+            throw new ArgumentException( "element cannot by null!" );
+        }
 
         if ( element.Name.Equals( "layer" ) )
         {
@@ -322,7 +331,10 @@ public abstract class BaseTmxMapLoader<TP>
 
     protected void LoadObjectGroup( TiledMap map, MapLayers parentLayers, XmlReader.Element element )
     {
-        if ( element.Name == null ) throw new ArgumentException( "element cannot by null!" );
+        if ( element.Name == null )
+        {
+            throw new ArgumentException( "element cannot by null!" );
+        }
 
         if ( element.Name.Equals( "objectgroup" ) )
         {
@@ -352,7 +364,10 @@ public abstract class BaseTmxMapLoader<TP>
                                    FileInfo tmxFile,
                                    IImageResolver imageResolver )
     {
-        if ( element.Name == null ) throw new ArgumentException( "element cannot by null!" );
+        if ( element.Name == null )
+        {
+            throw new ArgumentException( "element cannot by null!" );
+        }
 
         if ( element.Name.Equals( "imagelayer" ) )
         {
@@ -370,7 +385,10 @@ public abstract class BaseTmxMapLoader<TP>
                     : element.GetAttribute( "y", "0" )!
                 );
 
-            if ( flipY ) y = MapHeightInPixels - y;
+            if ( flipY )
+            {
+                y = MapHeightInPixels - y;
+            }
 
             TextureRegion? texture = null;
 
@@ -383,7 +401,10 @@ public abstract class BaseTmxMapLoader<TP>
 
                 texture = imageResolver.GetImage( handle!.FullName );
 
-                if ( texture == null ) throw new GdxRuntimeException( "Image Texture cannot be null!" );
+                if ( texture == null )
+                {
+                    throw new GdxRuntimeException( "Image Texture cannot be null!" );
+                }
 
                 y -= texture.RegionHeight;
             }
@@ -436,7 +457,10 @@ public abstract class BaseTmxMapLoader<TP>
 
     protected void LoadObject( TiledMap map, MapObjects objects, XmlReader.Element element, float heightInPixels )
     {
-        if ( element.Name == null ) throw new ArgumentException( "element cannot by null!" );
+        if ( element.Name == null )
+        {
+            throw new ArgumentException( "element cannot by null!" );
+        }
 
         if ( element.Name.Equals( "object" ) )
         {
@@ -585,7 +609,10 @@ public abstract class BaseTmxMapLoader<TP>
 
     protected void LoadProperties( MapProperties properties, XmlReader.Element? element )
     {
-        if ( ( element == null ) || ( element.Name == null ) ) return;
+        if ( ( element == null ) || ( element.Name == null ) )
+        {
+            return;
+        }
 
         if ( element.Name.Equals( "properties" ) )
         {
@@ -682,7 +709,10 @@ public abstract class BaseTmxMapLoader<TP>
     {
         XmlReader.Element? data = element.GetChildByName( "data" );
 
-        if ( data == null ) throw new GdxRuntimeException( "data is missing" );
+        if ( data == null )
+        {
+            throw new GdxRuntimeException( "data is missing" );
+        }
 
         var encoding = data.GetAttribute( "encoding", null );
 
@@ -706,6 +736,7 @@ public abstract class BaseTmxMapLoader<TP>
         else
         {
             if ( true )
+            {
                 if ( encoding.Equals( "base64" ) )
                 {
                     Stream? inputStream = null;
@@ -722,17 +753,17 @@ public abstract class BaseTmxMapLoader<TP>
                         else if ( compression.Equals( "gzip" ) )
                         {
                             inputStream = new BufferedStream
-                                ( new GZipStream( new MemoryStream( bytes ), CompressionMode.Decompress ) );
+                                    ( new GZipStream( new MemoryStream( bytes ), CompressionMode.Decompress ) );
                         }
                         else if ( compression.Equals( "zlib" ) )
                         {
                             inputStream = new BufferedStream
-                                ( new InflaterInputStream( new MemoryStream( bytes ) ) );
+                                    ( new InflaterInputStream( new MemoryStream( bytes ) ) );
                         }
                         else
                         {
                             throw new GdxRuntimeException
-                                ( "Unrecognised compression (" + compression + ") for TMX Layer Data" );
+                                    ( "Unrecognised compression (" + compression + ") for TMX Layer Data" );
                         }
 
                         var temp = new byte[ 4 ];
@@ -747,20 +778,24 @@ public abstract class BaseTmxMapLoader<TP>
                                 {
                                     var curr = inputStream.Read( temp, read, temp.Length - read );
 
-                                    if ( curr == -1 ) break;
+                                    if ( curr == -1 )
+                                    {
+                                        break;
+                                    }
+
                                     read += curr;
                                 }
 
                                 if ( read != temp.Length )
                                 {
                                     throw new GdxRuntimeException
-                                        ( "Error Reading TMX Layer Data: Premature end of tile data" );
+                                            ( "Error Reading TMX Layer Data: Premature end of tile data" );
                                 }
 
                                 ids[ ( y * width ) + x ] = UnsignedByteToInt( temp[ 0 ] )
-                                                           | ( UnsignedByteToInt( temp[ 1 ] ) << 8 )
-                                                           | ( UnsignedByteToInt( temp[ 2 ] ) << 16 )
-                                                           | ( UnsignedByteToInt( temp[ 3 ] ) << 24 );
+                                                         | ( UnsignedByteToInt( temp[ 1 ] ) << 8 )
+                                                         | ( UnsignedByteToInt( temp[ 2 ] ) << 16 )
+                                                         | ( UnsignedByteToInt( temp[ 3 ] ) << 24 );
                             }
                         }
                     }
@@ -782,6 +817,7 @@ public abstract class BaseTmxMapLoader<TP>
                     // a feature of a future version of Tiled or another editor
                     throw new GdxRuntimeException( "Unrecognised encoding (" + encoding + ") for TMX Layer Data" );
                 }
+            }
         }
 
         return ids;

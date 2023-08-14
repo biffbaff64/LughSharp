@@ -47,8 +47,15 @@ public class TiledMapTileLayer : MapLayer
     /// </summary>
     public Cell? GetCell( int x, int y )
     {
-        if ( ( x < 0 ) || ( x >= Width ) ) return null;
-        if ( ( y < 0 ) || ( y >= Height ) ) return null;
+        if ( ( x < 0 ) || ( x >= Width ) )
+        {
+            return null;
+        }
+
+        if ( ( y < 0 ) || ( y >= Height ) )
+        {
+            return null;
+        }
 
         return Cells[ x, y ];
     }
@@ -61,15 +68,23 @@ public class TiledMapTileLayer : MapLayer
     /// </summary>
     public void SetCell( int x, int y, Cell cell )
     {
-        if ( ( x < 0 ) || ( x >= Width ) ) return;
-        if ( ( y < 0 ) || ( y >= Height ) ) return;
+        if ( ( x < 0 ) || ( x >= Width ) )
+        {
+            return;
+        }
+
+        if ( ( y < 0 ) || ( y >= Height ) )
+        {
+            return;
+        }
 
         Cells[ x, y ] = cell;
     }
 
     /// <summary>
-    /// @brief represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties.
+    /// represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties.
     /// </summary>
+    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     public class Cell
     {
         private ITiledMapTile? _tile;
@@ -78,7 +93,7 @@ public class TiledMapTileLayer : MapLayer
         private int            _rotation;
 
         /// <summary>
-        /// @return The tile currently assigned to this cell.
+        /// return The tile currently assigned to this cell.
         /// </summary>
         public ITiledMapTile? GetTile()
         {

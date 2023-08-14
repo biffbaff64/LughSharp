@@ -351,7 +351,7 @@ public class Window : Table
             }
         }
 
-        public new bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+        public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
         {
             if ( button == 0 )
             {
@@ -367,14 +367,17 @@ public class Window : Table
             return ( _window.edge != 0 ) || _window.IsModal;
         }
 
-        public new void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+        protected override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
         {
             _window.Dragging = false;
         }
 
-        public new void TouchDragged( InputEvent ev, float x, float y, int pointer )
+        protected override void TouchDragged( InputEvent ev, float x, float y, int pointer )
         {
-            if ( !_window.Dragging ) return;
+            if ( !_window.Dragging )
+            {
+                return;
+            }
 
             var width   = _window.Width;
             var height  = _window.Height;

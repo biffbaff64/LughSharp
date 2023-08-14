@@ -69,7 +69,7 @@ public class DistanceFieldFont : BitmapFont
     {
     }
 
-    protected new void Load( BitmapFontData data )
+    protected override void Load( BitmapFontData data )
     {
         base.Load( data );
 
@@ -201,14 +201,14 @@ public class DistanceFieldFont : BitmapFont
             spriteBatch.Shader?.SetUniformf( "u_smoothing", smoothing );
         }
 
-        public new void Draw( IBatch spriteBatch )
+        public override void Draw( IBatch spriteBatch )
         {
             SetSmoothingUniform( spriteBatch, GetSmoothingFactor() );
             base.Draw( spriteBatch );
             SetSmoothingUniform( spriteBatch, 0 );
         }
 
-        public new void Draw( IBatch spriteBatch, int start, int end )
+        public override void Draw( IBatch spriteBatch, int start, int end )
         {
             SetSmoothingUniform( spriteBatch, GetSmoothingFactor() );
             base.Draw( spriteBatch, start, end );

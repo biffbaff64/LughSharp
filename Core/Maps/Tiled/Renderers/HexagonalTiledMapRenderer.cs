@@ -45,40 +45,40 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
     }
 
     public HexagonalTiledMapRenderer( TiledMap map, float unitScale )
-        : base( map, unitScale )
+            : base( map, unitScale )
     {
         Init( map );
     }
 
     public HexagonalTiledMapRenderer( TiledMap map, IBatch batch )
-        : base( map, batch )
+            : base( map, batch )
     {
         Init( map );
     }
 
     public HexagonalTiledMapRenderer( TiledMap map, float unitScale, IBatch batch )
-        : base( map, unitScale, batch )
+            : base( map, unitScale, batch )
     {
         Init( map );
     }
 
     private void Init( TiledMap map )
     {
-        var axis = map.Properties.Get<string>( "staggeraxis" );
+        var axis = map.Properties.Get< string >( "staggeraxis" );
 
         if ( !string.ReferenceEquals( axis, null ) )
         {
             _staggerAxisX = axis.Equals( "x" );
         }
 
-        var index = map.Properties.Get<string>( "staggerindex" );
+        var index = map.Properties.Get< string >( "staggerindex" );
 
         if ( !string.ReferenceEquals( index, null ) )
         {
             _staggerIndexEven = index.Equals( "even" );
         }
 
-        int? length = map.Properties.Get<int>( "hexsidelength" );
+        int? length = map.Properties.Get< int >( "hexsidelength" );
 
         if ( length != null )
         {
@@ -88,7 +88,7 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
         {
             if ( _staggerAxisX )
             {
-                length = map.Properties.Get<int>( "tilewidth" );
+                length = map.Properties.Get< int >( "tilewidth" );
 
                 if ( length != null )
                 {
@@ -102,7 +102,7 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
             }
             else
             {
-                length = map.Properties.Get<int>( "tileheight" );
+                length = map.Properties.Get< int >( "tileheight" );
 
                 if ( length != null )
                 {
@@ -117,10 +117,10 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
         }
     }
 
-    public new void RenderTileLayer( TiledMapTileLayer layer )
+    public override void RenderTileLayer( TiledMapTileLayer layer )
     {
         Color batchColor = Batch.GetColor();
-        var color = Color.ToFloatBits( batchColor.R, batchColor.G, batchColor.B, batchColor.A * layer.Opacity );
+        var   color      = Color.ToFloatBits( batchColor.R, batchColor.G, batchColor.B, batchColor.A * layer.Opacity );
 
         var layerWidth  = layer.Width;
         var layerHeight = layer.Height;
@@ -143,19 +143,19 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
             var row1 = Math.Max( 0, ( int )( ( ViewBounds.Y - layerTileHeight50 - layerOffsetX ) / layerTileHeight ) );
 
             var row2 = Math.Min
-                (
-                 layerHeight,
-                 ( int )( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetX ) / layerTileHeight )
-                );
+                    (
+                    layerHeight,
+                    ( int )( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetX ) / layerTileHeight )
+                    );
 
             var col1 = Math.Max( 0, ( int )( ( ( ViewBounds.X - tileWidthLowerCorner - layerOffsetY ) / tileWidthUpperCorner ) ) );
 
             var col2 = Math.Min
-                (
-                 layerWidth,
-                 ( int )( ( ( ViewBounds.X + ViewBounds.Width + tileWidthUpperCorner ) - layerOffsetY )
-                          / tileWidthUpperCorner )
-                );
+                    (
+                    layerWidth,
+                    ( int )( ( ( ViewBounds.X + ViewBounds.Width + tileWidthUpperCorner ) - layerOffsetY )
+                           / tileWidthUpperCorner )
+                    );
 
             // depending on the stagger index either draw all even before the odd or vice versa
             var colA = ( _staggerIndexEven == ( ( col1 % 2 ) == 0 ) ) ? col1 + 1 : col1;
@@ -166,23 +166,23 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
                 for ( var col = colA; col < col2; col += 2 )
                 {
                     RenderCell
-                        (
-                         layer.GetCell( col, row ),
-                         ( tileWidthUpperCorner * col ) + layerOffsetX,
-                         layerTileHeight50 + ( layerTileHeight * row ) + layerOffsetY,
-                         color
-                        );
+                            (
+                            layer.GetCell( col, row ),
+                            ( tileWidthUpperCorner * col ) + layerOffsetX,
+                            layerTileHeight50 + ( layerTileHeight * row ) + layerOffsetY,
+                            color
+                            );
                 }
 
                 for ( var col = colB; col < col2; col += 2 )
                 {
                     RenderCell
-                        (
-                         layer.GetCell( col, row ),
-                         ( tileWidthUpperCorner * col ) + layerOffsetX,
-                         ( layerTileHeight * row ) + layerOffsetY,
-                         color
-                        );
+                            (
+                            layer.GetCell( col, row ),
+                            ( tileWidthUpperCorner * col ) + layerOffsetX,
+                            ( layerTileHeight * row ) + layerOffsetY,
+                            color
+                            );
                 }
             }
         }
@@ -193,23 +193,23 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
             var layerTileWidth50      = layerTileWidth * 0.50f;
 
             var row1 = Math.Max
-                ( 0, ( int )( ( ( ViewBounds.Y - tileHeightLowerCorner - layerOffsetX ) / tileHeightUpperCorner ) ) );
+                    ( 0, ( int )( ( ( ViewBounds.Y - tileHeightLowerCorner - layerOffsetX ) / tileHeightUpperCorner ) ) );
 
             var row2 = Math.Min
-                (
-                 layerHeight,
-                 ( int )( ( ( ViewBounds.Y + ViewBounds.Height + tileHeightUpperCorner ) - layerOffsetX )
-                          / tileHeightUpperCorner )
-                );
+                    (
+                    layerHeight,
+                    ( int )( ( ( ViewBounds.Y + ViewBounds.Height + tileHeightUpperCorner ) - layerOffsetX )
+                           / tileHeightUpperCorner )
+                    );
 
             var col1 = Math.Max
-                ( 0, ( int )( ( ( ViewBounds.X - layerTileWidth50 - layerOffsetY ) / layerTileWidth ) ) );
+                    ( 0, ( int )( ( ( ViewBounds.X - layerTileWidth50 - layerOffsetY ) / layerTileWidth ) ) );
 
             var col2 = Math.Min
-                (
-                 layerWidth,
-                 ( int )( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth ) - layerOffsetY ) / layerTileWidth )
-                );
+                    (
+                    layerWidth,
+                    ( int )( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth ) - layerOffsetY ) / layerTileWidth )
+                    );
 
             for ( var row = row2 - 1; row >= row1; row-- )
             {
@@ -219,12 +219,12 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
                 for ( var col = col1; col < col2; col++ )
                 {
                     RenderCell
-                        (
-                         layer.GetCell( col, row ),
-                         ( layerTileWidth * col ) + shiftX + layerOffsetX,
-                         ( tileHeightUpperCorner * row ) + layerOffsetY,
-                         color
-                        );
+                            (
+                            layer.GetCell( col, row ),
+                            ( layerTileWidth * col ) + shiftX + layerOffsetX,
+                            ( tileHeightUpperCorner * row ) + layerOffsetY,
+                            color
+                            );
                 }
             }
         }
@@ -232,15 +232,20 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 
     private void RenderCell( in TiledMapTileLayer.Cell? cell, in float x, in float y, in float color )
     {
-        ITiledMapTile? tile = cell?.GetTile();
+        ArgumentNullException.ThrowIfNull( cell );
+        
+        ITiledMapTile? tile = cell.GetTile();
 
         if ( tile != null )
         {
-            if ( tile is AnimatedTiledMapTile ) return;
+            if ( tile is AnimatedTiledMapTile )
+            {
+                return;
+            }
 
-            var flipX     = cell!.GetFlipHorizontally();
+            var flipX     = cell.GetFlipHorizontally();
             var flipY     = cell.GetFlipVertically();
-            var  rotations = cell.GetRotation();
+            var rotations = cell.GetRotation();
 
             TextureRegion region = tile.TextureRegion;
 
@@ -281,34 +286,34 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
             if ( flipX )
             {
                 ( Vertices[ IBatch.U1 ], Vertices[ IBatch.U3 ] )
-                    = ( Vertices[ IBatch.U3 ], Vertices[ IBatch.U1 ] );
+                        = ( Vertices[ IBatch.U3 ], Vertices[ IBatch.U1 ] );
 
                 ( Vertices[ IBatch.U2 ], Vertices[ IBatch.U4 ] )
-                    = ( Vertices[ IBatch.U4 ], Vertices[ IBatch.U2 ] );
+                        = ( Vertices[ IBatch.U4 ], Vertices[ IBatch.U2 ] );
             }
 
             if ( flipY )
             {
                 ( Vertices[ IBatch.V1 ], Vertices[ IBatch.V3 ] )
-                    = ( Vertices[ IBatch.V3 ], Vertices[ IBatch.V1 ] );
+                        = ( Vertices[ IBatch.V3 ], Vertices[ IBatch.V1 ] );
 
                 ( Vertices[ IBatch.V2 ], Vertices[ IBatch.V4 ] )
-                    = ( Vertices[ IBatch.V4 ], Vertices[ IBatch.V2 ] );
+                        = ( Vertices[ IBatch.V4 ], Vertices[ IBatch.V2 ] );
             }
 
             if ( rotations == 2 )
             {
                 ( Vertices[ IBatch.U1 ], Vertices[ IBatch.U3 ] )
-                    = ( Vertices[ IBatch.U3 ], Vertices[ IBatch.U1 ] );
+                        = ( Vertices[ IBatch.U3 ], Vertices[ IBatch.U1 ] );
 
                 ( Vertices[ IBatch.U2 ], Vertices[ IBatch.U4 ] )
-                    = ( Vertices[ IBatch.U4 ], Vertices[ IBatch.U2 ] );
+                        = ( Vertices[ IBatch.U4 ], Vertices[ IBatch.U2 ] );
 
                 ( Vertices[ IBatch.V1 ], Vertices[ IBatch.V3 ] )
-                    = ( Vertices[ IBatch.V3 ], Vertices[ IBatch.V1 ] );
+                        = ( Vertices[ IBatch.V3 ], Vertices[ IBatch.V1 ] );
 
                 ( Vertices[ IBatch.V2 ], Vertices[ IBatch.V4 ] )
-                    = ( Vertices[ IBatch.V4 ], Vertices[ IBatch.V2 ] );
+                        = ( Vertices[ IBatch.V4 ], Vertices[ IBatch.V2 ] );
             }
 
             Batch.Draw( region.Texture, Vertices, 0, NUM_VERTICES );

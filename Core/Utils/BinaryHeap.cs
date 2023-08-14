@@ -27,8 +27,8 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public record BinaryHeapNode
 {
-    internal float Value { get; set; }
-    internal int   Index { get; set; }
+    public float Value { get; set; }
+    public int   Index { get; set; }
 }
 
 /// <summary>
@@ -99,20 +99,14 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// </param>
     public bool Contains( T node, bool identity )
     {
-        if ( node == null ) throw new ArgumentException( "node cannot be null." );
+        ArgumentNullException.ThrowIfNull( node );
 
-        if ( identity )
+        foreach ( BinaryHeapNode n in _nodes )
         {
-            foreach ( BinaryHeapNode n in _nodes )
+            if ( ( identity && ( n == node ) )
+              || ( !identity && ( n.Equals( node ) ) ) )
             {
-                if ( n == node ) return true;
-            }
-        }
-        else
-        {
-            foreach ( BinaryHeapNode other in _nodes )
-            {
-                if ( other.Equals( node ) ) return true;
+                return true;
             }
         }
 
@@ -123,7 +117,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// Returns the first item in the heap. This is the item with the lowest
     /// value (or highest value if this heap is configured as a max heap). 
     /// </summary>
-    public T Peek()
+    public virtual T Peek()
     {
         if ( Size == 0 )
         {
@@ -134,9 +128,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     }
 
     /// <summary>
-    /// Removes the first item in the heap and returns it. This is the item
-    /// with the lowest value (or highest value if this heap is configured
-    /// as a max heap). 
+    /// Removes the first item in the heap and returns it. This is
+    /// the item with the lowest value (or highest value if this heap
+    /// is configured as a max heap). 
     /// </summary>
     public virtual T Pop()
     {
@@ -145,13 +139,13 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         if ( --Size > 0 )
         {
             _nodes[ 0 ]    = _nodes[ Size ];
-            _nodes[ Size ] = null!;
+            _nodes[ Size ] = null;
 
             Down( 0 );
         }
         else
         {
-            _nodes[ 0 ] = null!;
+            _nodes[ 0 ] = null;
         }
 
         return ( T )removed;
@@ -262,7 +256,10 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             var leftIndex  = 1 + ( index << 1 );
             var rightIndex = leftIndex + 1;
 
-            if ( leftIndex >= size ) break;
+            if ( leftIndex >= size )
+            {
+                break;
+            }
 
             // Always has a left child.
             BinaryHeapNode leftNode  = this._nodes[ leftIndex ];
@@ -304,7 +301,10 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
                 this._nodes[ index ] = rightNode!;
 
-                if ( rightNode != null ) rightNode.Index = index;
+                if ( rightNode != null )
+                {
+                    rightNode.Index = index;
+                }
 
                 index = rightIndex;
             }
@@ -314,18 +314,24 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         _nodes[ index ] = node;
     }
 
-    public new bool Equals( object obj )
+    public override bool Equals( object obj )
     {
-        if (  obj is not BinaryHeap<T> other ) return false;
+        if ( obj is not BinaryHeap< T > other )
+        {
+            return false;
+        }
 
-        if ( other.Size != Size ) return false;
-        
+        if ( other.Size != Size )
+        {
+            return false;
+        }
+
         BinaryHeapNode[] nodes1 = this._nodes;
         BinaryHeapNode[] nodes2 = other._nodes;
 
         for ( int i = 0, n = Size; i < n; i++ )
         {
-            if ( !nodes1[ i ].Value.Equals( nodes2[ i ].Value ) ) 
+            if ( !nodes1[ i ].Value.Equals( nodes2[ i ].Value ) )
             {
                 return false;
             }
@@ -334,9 +340,10 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         return true;
     }
 
-    public int HashCode()
+    public override int GetHashCode()
     {
-        var              h     = 1;
+        var h = 1;
+
         BinaryHeapNode[] nodes = this._nodes;
 
         for ( int i = 0, n = Size; i < n; i++ )
@@ -349,8 +356,11 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
     public new string ToString()
     {
-        if ( Size == 0 ) return "[]";
-        
+        if ( Size == 0 )
+        {
+            return "[]";
+        }
+
         BinaryHeapNode[] nodes  = this._nodes;
         var              buffer = new StringBuilder( 32 );
 

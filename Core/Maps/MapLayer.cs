@@ -57,7 +57,10 @@ public class MapLayer
     {
         get
         {
-            if ( _renderOffsetDirty ) CalculateRenderOffsets();
+            if ( _renderOffsetDirty )
+            {
+                CalculateRenderOffsets();
+            }
 
             return _renderOffsetX;
         }
@@ -67,7 +70,10 @@ public class MapLayer
     {
         get
         {
-            if ( _renderOffsetDirty ) CalculateRenderOffsets();
+            if ( _renderOffsetDirty )
+            {
+                CalculateRenderOffsets();
+            }
 
             return _renderOffsetY;
         }
@@ -87,7 +93,7 @@ public class MapLayer
         }
     }
 
-    internal void InvalidateRenderOffset()
+    public virtual void InvalidateRenderOffset()
     {
         _renderOffsetDirty = true;
     }

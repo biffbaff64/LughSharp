@@ -145,7 +145,9 @@ public class TextureAtlas
     public AtlasRegion AddRegion( string name, TextureRegion textureRegion )
     {
         if ( textureRegion.Texture == null )
+        {
             throw new GdxRuntimeException( "cannot add null texture!" );
+        }
 
         Textures.Add( textureRegion.Texture );
 
@@ -315,10 +317,13 @@ public class TextureAtlas
     /// <returns></returns>
     private static Sprite NewSprite( AtlasRegion? region )
     {
-        if ( region == null ) throw new GdxRuntimeException( "atlas region cannot be null!" );
+        if ( region == null )
+        {
+            throw new GdxRuntimeException( "atlas region cannot be null!" );
+        }
 
         if ( ( region.PackedWidth == region.OriginalWidth )
-             && ( region.PackedHeight == region.OriginalHeight ) )
+          && ( region.PackedHeight == region.OriginalHeight ) )
         {
             if ( region.Rotate )
             {

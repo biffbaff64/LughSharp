@@ -130,7 +130,10 @@ public class Stage : InputAdapter
         Camera = Viewport.Camera;
         Camera.Update();
 
-        if ( !Root.IsVisible ) return;
+        if ( !Root.IsVisible )
+        {
+            return;
+        }
 
         Batch.SetProjectionMatrix( Camera.Combined );
 
@@ -138,7 +141,10 @@ public class Stage : InputAdapter
         Root.Draw( Batch, 1 );
         Batch.End();
 
-        if ( debug ) DrawDebug();
+        if ( debug )
+        {
+            DrawDebug();
+        }
     }
 
     /// <summary>
@@ -157,7 +163,10 @@ public class Stage : InputAdapter
 
             Actor? actor = Hit( _tempCoords.X, _tempCoords.Y, true );
 
-            if ( actor == null ) return;
+            if ( actor == null )
+            {
+                return;
+            }
 
             if ( _debugParentUnderMouse && ( actor.Parent != null ) )
             {
@@ -172,12 +181,18 @@ public class Stage : InputAdapter
             {
                 while ( actor != null )
                 {
-                    if ( actor is Table ) break;
+                    if ( actor is Table )
+                    {
+                        break;
+                    }
 
                     actor = actor.Parent;
                 }
 
-                if ( actor == null ) return;
+                if ( actor == null )
+                {
+                    return;
+                }
 
                 ( ( Table )actor ).Debug( _debugTableUnderMouse );
             }
@@ -214,7 +229,10 @@ public class Stage : InputAdapter
     // TODO: Refactor this to remove the recursiveness
     private void DisableDebug( Actor actor, Actor except )
     {
-        if ( actor == except ) return;
+        if ( actor == except )
+        {
+            return;
+        }
 
         actor.DebugActive = false;
 
@@ -319,7 +337,10 @@ public class Stage : InputAdapter
 
         Actor? over = Hit( _tempCoords.X, _tempCoords.Y, true );
 
-        if ( over == overLast ) return overLast;
+        if ( over == overLast )
+        {
+            return overLast;
+        }
 
         // Exit overLast.
         if ( overLast != null )
@@ -363,7 +384,10 @@ public class Stage : InputAdapter
     /// </summary>
     public new bool TouchDown( int screenX, int screenY, int pointer, int button )
     {
-        if ( !IsInsideViewport( screenX, screenY ) ) return false;
+        if ( !IsInsideViewport( screenX, screenY ) )
+        {
+            return false;
+        }
 
         _pointerTouched[ pointer ] = true;
         _pointerScreenX[ pointer ] = screenX;
@@ -435,7 +459,10 @@ public class Stage : InputAdapter
         {
             TouchFocus? focus = focuses[ i ];
 
-            if ( focus?.pointer != pointer ) continue;
+            if ( focus?.pointer != pointer )
+            {
+                continue;
+            }
 
             if ( !touchFocuses.Contains( focus ) )
             {
@@ -473,7 +500,10 @@ public class Stage : InputAdapter
         _pointerScreenX[ pointer ] = screenX;
         _pointerScreenY[ pointer ] = screenY;
 
-        if ( this.touchFocuses.Size == 0 ) return false;
+        if ( this.touchFocuses.Size == 0 )
+        {
+            return false;
+        }
 
         ScreenToStageCoordinates( _tempCoords.Set( screenX, screenY ) );
 
@@ -1052,7 +1082,10 @@ public class Stage : InputAdapter
         get => _scrollFocus;
         set
         {
-            if ( _scrollFocus == value ) return;
+            if ( _scrollFocus == value )
+            {
+                return;
+            }
 
             FocusListener.FocusEvent focusEvent = Pools< FocusListener.FocusEvent >.Obtain();
 
@@ -1162,7 +1195,10 @@ public class Stage : InputAdapter
         get => _debugAll;
         set
         {
-            if ( this._debugAll == value ) return;
+            if ( this._debugAll == value )
+            {
+                return;
+            }
 
             this._debugAll = value;
 
@@ -1185,7 +1221,10 @@ public class Stage : InputAdapter
     {
         set
         {
-            if ( this._debugUnderMouse == value ) return;
+            if ( this._debugUnderMouse == value )
+            {
+                return;
+            }
 
             this._debugUnderMouse = value;
 
@@ -1208,7 +1247,10 @@ public class Stage : InputAdapter
     {
         set
         {
-            if ( this._debugParentUnderMouse == value ) return;
+            if ( this._debugParentUnderMouse == value )
+            {
+                return;
+            }
 
             this._debugParentUnderMouse = value;
 
@@ -1236,7 +1278,10 @@ public class Stage : InputAdapter
             _debugTableUnderMouse = Table.DebugType.None;
         }
 
-        if ( this._debugTableUnderMouse == debugTableUnderMouse ) return;
+        if ( this._debugTableUnderMouse == debugTableUnderMouse )
+        {
+            return;
+        }
 
         this._debugTableUnderMouse = debugTableUnderMouse;
 

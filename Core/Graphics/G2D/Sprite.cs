@@ -199,7 +199,7 @@ public class Sprite : TextureRegion
     /// and rotation are applied. If origin, rotation, or scale are changed,
     /// it is slightly more efficient to set the bounds after those operations. 
     /// </summary>
-    public void SetBounds( float x, float y, float width, float height )
+    public virtual void SetBounds( float x, float y, float width, float height )
     {
         this._x      = x;
         this._y      = y;
@@ -243,7 +243,7 @@ public class Sprite : TextureRegion
     /// <see cref="SetBounds(float, float, float, float)"/>. 
     /// </para>
     /// </summary>
-    public void SetSize( float width, float height )
+    public virtual void SetSize( float width, float height )
     {
         this._width  = width;
         this._height = height;
@@ -450,7 +450,7 @@ public class Sprite : TextureRegion
     /// <summary>
     /// Sets the origin in relation to the sprite's position for scaling and rotation.
     /// </summary>
-    public void SetOrigin( float originX, float originY )
+    public virtual void SetOrigin( float originX, float originY )
     {
         this._originX = originX;
         this._originY = originY;
@@ -460,7 +460,7 @@ public class Sprite : TextureRegion
     /// <summary>
     /// Place origin in the center of the sprite
     /// </summary>
-    public void SetOriginCenter()
+    public virtual void SetOriginCenter()
     {
         this._originX = Width / 2;
         this._originY = Height / 2;
@@ -484,7 +484,7 @@ public class Sprite : TextureRegion
     /// This rotation is unaffected by <see cref="Rotation"/> and
     /// <see cref="Rotate(float)"/>. 
     /// </summary>
-    public void Rotate90( bool clockwise )
+    public virtual void Rotate90( bool clockwise )
     {
         if ( clockwise )
         {
@@ -667,7 +667,7 @@ public class Sprite : TextureRegion
     /// <param name="v"></param>
     /// <param name="u2"></param>
     /// <param name="v2"></param>
-    public new void SetRegion( float u, float v, float u2, float v2 )
+    public override void SetRegion( float u, float v, float u2, float v2 )
     {
         base.SetRegion( u, v, u2, v2 );
 
@@ -749,7 +749,7 @@ public class Sprite : TextureRegion
     /// </summary>
     /// <param name="flipx"> perform horizontal flip </param>
     /// <param name="flipy"> perform vertical flip  </param>
-    public new void Flip( bool flipx, bool flipy )
+    public virtual new void Flip( bool flipx, bool flipy )
     {
         base.Flip( flipx, flipy );
 
@@ -785,7 +785,7 @@ public class Sprite : TextureRegion
     /// </summary>
     /// <param name="xAmount"></param>
     /// <param name="yAmount"></param>
-    public new void Scroll( float xAmount, float yAmount )
+    public override void Scroll( float xAmount, float yAmount )
     {
         if ( xAmount != 0 )
         {

@@ -61,7 +61,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
     protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< T > > bufferBuilder )
     {
         this.BufferBuilder = bufferBuilder;
-        
+
         Build();
     }
 
@@ -100,7 +100,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
             if ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
             {
                 IntBuffer intbuf = ByteBuffer.AllocateDirect
-                    ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NativeOrder ).AsIntBuffer();
+                        ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NativeOrder ).AsIntBuffer();
 
                 Gdx.GL20.GLGetIntegerv( IGL20.GL_FRAMEBUFFER_BINDING, intbuf );
                 DefaultFramebufferHandle = intbuf.Get( 0 );
@@ -122,8 +122,11 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
             DepthbufferHandle = Gdx.GL20.GLGenRenderbuffer();
             Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, DepthbufferHandle );
 
-            Gdx.GL20.GLRenderbufferStorage
-                ( IGL20.GL_RENDERBUFFER, BufferBuilder.DepthRenderBufferSpec!.InternalFormat, width, height );
+            if ( BufferBuilder.DepthRenderBufferSpec != null )
+            {
+                Gdx.GL20.GLRenderbufferStorage
+                        ( IGL20.GL_RENDERBUFFER, BufferBuilder.DepthRenderBufferSpec.InternalFormat, width, height );
+            }
         }
 
         if ( BufferBuilder.HasStencilRenderBuffer )
@@ -131,8 +134,11 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
             StencilbufferHandle = Gdx.GL20.GLGenRenderbuffer();
             Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, StencilbufferHandle );
 
-            Gdx.GL20.GLRenderbufferStorage
-                ( IGL20.GL_RENDERBUFFER, BufferBuilder.StencilRenderBufferSpec!.InternalFormat, width, height );
+            if ( BufferBuilder.StencilRenderBufferSpec != null )
+            {
+                Gdx.GL20.GLRenderbufferStorage
+                        ( IGL20.GL_RENDERBUFFER, BufferBuilder.StencilRenderBufferSpec.InternalFormat, width, height );
+            }
         }
 
         if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
@@ -140,13 +146,16 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
             DepthStencilPackedBufferHandle = Gdx.GL20.GLGenRenderbuffer();
             Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, DepthStencilPackedBufferHandle );
 
-            Gdx.GL20.GLRenderbufferStorage
-                (
-                IGL20.GL_RENDERBUFFER,
-                BufferBuilder.PackedStencilDepthRenderBufferSpec!.InternalFormat,
-                width,
-                height
-                );
+            if ( BufferBuilder.PackedStencilDepthRenderBufferSpec != null )
+            {
+                Gdx.GL20.GLRenderbufferStorage
+                    (
+                    IGL20.GL_RENDERBUFFER,
+                    BufferBuilder.PackedStencilDepthRenderBufferSpec.InternalFormat,
+                    width,
+                    height
+                    );
+            }
         }
 
         HasMultipleTexturesPresent = BufferBuilder.TextureAttachmentSpecs.Count > 1;
@@ -163,37 +172,37 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
                 if ( attachmentSpec.IsColorTexture )
                 {
                     Gdx.GL20.GLFramebufferTexture2D
-                        (
-                        IGL20.GL_FRAMEBUFFER,
-                        IGL20.GL_COLOR_ATTACHMENT0 + colorTextureCounter,
-                        IGL20.GL_TEXTURE_2D,
-                        texture.GetTextureObjectHandle(),
-                        0
-                        );
+                            (
+                            IGL20.GL_FRAMEBUFFER,
+                            IGL20.GL_COLOR_ATTACHMENT0 + colorTextureCounter,
+                            IGL20.GL_TEXTURE_2D,
+                            texture.GetTextureObjectHandle(),
+                            0
+                            );
 
                     colorTextureCounter++;
                 }
                 else if ( attachmentSpec.IsDepth )
                 {
                     Gdx.GL20.GLFramebufferTexture2D
-                        (
-                        IGL20.GL_FRAMEBUFFER,
-                        IGL20.GL_DEPTH_ATTACHMENT,
-                        IGL20.GL_TEXTURE_2D,
-                        texture.GetTextureObjectHandle(),
-                        0
-                        );
+                            (
+                            IGL20.GL_FRAMEBUFFER,
+                            IGL20.GL_DEPTH_ATTACHMENT,
+                            IGL20.GL_TEXTURE_2D,
+                            texture.GetTextureObjectHandle(),
+                            0
+                            );
                 }
                 else if ( attachmentSpec.IsStencil )
                 {
                     Gdx.GL20.GLFramebufferTexture2D
-                        (
-                        IGL20.GL_FRAMEBUFFER,
-                        IGL20.GL_STENCIL_ATTACHMENT,
-                        IGL20.GL_TEXTURE_2D,
-                        texture.GetTextureObjectHandle(),
-                        0
-                        );
+                            (
+                            IGL20.GL_FRAMEBUFFER,
+                            IGL20.GL_STENCIL_ATTACHMENT,
+                            IGL20.GL_TEXTURE_2D,
+                            texture.GetTextureObjectHandle(),
+                            0
+                            );
                 }
             }
         }
@@ -226,24 +235,24 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
         if ( BufferBuilder.HasDepthRenderBuffer )
         {
             Gdx.GL20.GLFramebufferRenderbuffer
-                ( IGL20.GL_FRAMEBUFFER, IGL20.GL_DEPTH_ATTACHMENT, IGL20.GL_RENDERBUFFER, DepthbufferHandle );
+                    ( IGL20.GL_FRAMEBUFFER, IGL20.GL_DEPTH_ATTACHMENT, IGL20.GL_RENDERBUFFER, DepthbufferHandle );
         }
 
         if ( BufferBuilder.HasStencilRenderBuffer )
         {
             Gdx.GL20.GLFramebufferRenderbuffer
-                ( IGL20.GL_FRAMEBUFFER, IGL20.GL_STENCIL_ATTACHMENT, IGL20.GL_RENDERBUFFER, StencilbufferHandle );
+                    ( IGL20.GL_FRAMEBUFFER, IGL20.GL_STENCIL_ATTACHMENT, IGL20.GL_RENDERBUFFER, StencilbufferHandle );
         }
 
         if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
         {
             Gdx.GL20.GLFramebufferRenderbuffer
-                (
-                IGL20.GL_FRAMEBUFFER,
-                IGL30.GL_DEPTH_STENCIL_ATTACHMENT,
-                IGL20.GL_RENDERBUFFER,
-                DepthStencilPackedBufferHandle
-                );
+                    (
+                    IGL20.GL_FRAMEBUFFER,
+                    IGL30.GL_DEPTH_STENCIL_ATTACHMENT,
+                    IGL20.GL_RENDERBUFFER,
+                    DepthStencilPackedBufferHandle
+                    );
         }
 
         Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, 0 );
@@ -256,9 +265,9 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
         var result = Gdx.GL20.GLCheckFramebufferStatus( IGL20.GL_FRAMEBUFFER );
 
         if ( ( result == IGL20.GL_FRAMEBUFFER_UNSUPPORTED )
-             && BufferBuilder is { HasDepthRenderBuffer: true, HasStencilRenderBuffer: true }
-             && ( Gdx.Graphics.SupportsExtension( "GL_OES_packed_depth_stencil" )
-                  || Gdx.Graphics.SupportsExtension( "GL_EXT_packed_depth_stencil" ) ) )
+          && BufferBuilder is { HasDepthRenderBuffer: true, HasStencilRenderBuffer: true }
+          && ( Gdx.Graphics.SupportsExtension( "GL_OES_packed_depth_stencil" )
+            || Gdx.Graphics.SupportsExtension( "GL_EXT_packed_depth_stencil" ) ) )
         {
             if ( BufferBuilder.HasDepthRenderBuffer )
             {
@@ -287,20 +296,20 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
             Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, 0 );
 
             Gdx.GL20.GLFramebufferRenderbuffer
-                (
-                IGL20.GL_FRAMEBUFFER,
-                IGL20.GL_DEPTH_ATTACHMENT,
-                IGL20.GL_RENDERBUFFER,
-                DepthStencilPackedBufferHandle
-                );
+                    (
+                    IGL20.GL_FRAMEBUFFER,
+                    IGL20.GL_DEPTH_ATTACHMENT,
+                    IGL20.GL_RENDERBUFFER,
+                    DepthStencilPackedBufferHandle
+                    );
 
             Gdx.GL20.GLFramebufferRenderbuffer
-                (
-                IGL20.GL_FRAMEBUFFER,
-                IGL20.GL_STENCIL_ATTACHMENT,
-                IGL20.GL_RENDERBUFFER,
-                DepthStencilPackedBufferHandle
-                );
+                    (
+                    IGL20.GL_FRAMEBUFFER,
+                    IGL20.GL_STENCIL_ATTACHMENT,
+                    IGL20.GL_RENDERBUFFER,
+                    DepthStencilPackedBufferHandle
+                    );
 
             result = Gdx.GL20.GLCheckFramebufferStatus( IGL20.GL_FRAMEBUFFER );
         }
@@ -351,7 +360,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
             if ( result == IGL20.GL_FRAMEBUFFER_UNSUPPORTED )
             {
                 throw new IllegalStateException
-                    ( "Frame buffer couldn't be constructed: unsupported combination of formats" );
+                        ( "Frame buffer couldn't be constructed: unsupported combination of formats" );
             }
 
             throw new IllegalStateException( "Frame buffer couldn't be constructed: unknown error " + result );
@@ -392,8 +401,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
                 {
                     if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
                     {
-                        throw new GdxRuntimeException
-                            ( "Float texture FrameBuffer Attachment not available on GLES 2.0" );
+                        throw new GdxRuntimeException( "Float texture FrameBuffer Attachment not available on GLES 2.0" );
                     }
                 }
             }
@@ -438,7 +446,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// <summary>
     /// Makes the frame buffer current so everything gets drawn to it.
     /// </summary>
-    public void Bind()
+    protected virtual void Bind()
     {
         Gdx.GL20.GLBindFramebuffer( IGL20.GL_FRAMEBUFFER, FramebufferHandle );
     }
@@ -447,7 +455,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// Unbinds the framebuffer, all drawing will be performed to the
     /// normal framebuffer from here on.
     /// </summary>
-    protected void Unbind()
+    public virtual void Unbind()
     {
         Gdx.GL20.GLBindFramebuffer( IGL20.GL_FRAMEBUFFER, DefaultFramebufferHandle );
     }
@@ -456,7 +464,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// Binds the frame buffer and sets the viewport accordingly,
     /// so everything gets drawn to it.
     /// </summary>
-    public void Begin()
+    public virtual void Begin()
     {
         Bind();
         SetFrameBufferViewport();
@@ -475,7 +483,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// Unbinds the framebuffer, all drawing will be performed to the
     /// normal framebuffer from here on.
     /// </summary>
-    public void End()
+    public virtual void End()
     {
         End( 0, 0, Gdx.Graphics.BackBufferWidth, Gdx.Graphics.BackBufferHeight );
     }
@@ -488,12 +496,16 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// <param name="y"> the y-asis position of the viewport in pixels </param>
     /// <param name="width"> the width of the viewport in pixels </param>
     /// <param name="height"> the height of the viewport in pixels  </param>
-    public void End( int x, int y, int width, int height )
+    public virtual void End( int x, int y, int width, int height )
     {
         Unbind();
         Gdx.GL20.GLViewport( x, y, width, height );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="frameBuffer"></param>
     private void AddManagedFrameBuffer( IApplication app, GLFrameBuffer< T > frameBuffer )
     {
         List< GLFrameBuffer< T > > managedResources = Buffers?[ app ] ?? new List< GLFrameBuffer< T > >();
@@ -531,10 +543,13 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
     {
         builder.Append( "Managed buffers/app: { " );
 
-        foreach ( IApplication app in Buffers!.Keys )
+        if ( Buffers?.Keys != null )
         {
-            builder.Append( Buffers[ app ]?.Count );
-            builder.Append( ' ' );
+            foreach ( IApplication app in Buffers.Keys )
+            {
+                builder.Append( Buffers[ app ]?.Count );
+                builder.Append( ' ' );
+            }
         }
 
         builder.Append( '}' );
@@ -621,8 +636,8 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
         {
             var spec = new FrameBufferTextureAttachmentSpec( internalFormat, format, type )
             {
-                IsFloat   = true,
-                IsGpuOnly = gpuOnly
+                    IsFloat   = true,
+                    IsGpuOnly = gpuOnly
             };
 
             TextureAttachmentSpecs.Add( spec );
@@ -634,7 +649,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
         {
             var spec = new FrameBufferTextureAttachmentSpec( internalFormat, IGL20.GL_DEPTH_COMPONENT, type )
             {
-                IsDepth = true
+                    IsDepth = true
             };
 
             TextureAttachmentSpecs.Add( spec );
@@ -646,7 +661,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
         {
             var spec = new FrameBufferTextureAttachmentSpec( internalFormat, IGL20.GL_STENCIL_ATTACHMENT, type )
             {
-                IsStencil = true
+                    IsStencil = true
             };
 
             TextureAttachmentSpecs.Add( spec );
@@ -695,13 +710,13 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         public abstract object Build();
     }
-    
+
     [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
     public class FrameBufferBuilder : GLFrameBufferBuilder< FrameBuffer >
     {
         public FrameBufferBuilder( int width, int height )
-            : base( width, height )
+                : base( width, height )
         {
         }
 
@@ -711,13 +726,13 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
 //            return new FrameBuffer( this );
         }
     }
-    
+
     [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
     public class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
     {
         public FloatFrameBufferBuilder( int width, int height )
-            : base( width, height )
+                : base( width, height )
         {
         }
 
@@ -727,13 +742,13 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
 //            return new FloatFrameBuffer( this );
         }
     }
-    
+
     [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
     [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
     public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< FrameBufferCubemap >
     {
         public FrameBufferCubemapBuilder( int width, int height )
-            : base( width, height )
+                : base( width, height )
         {
         }
 

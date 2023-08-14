@@ -47,7 +47,10 @@ public abstract class TemporalAction : Action
 
     public override bool Act( float delta )
     {
-        if ( _complete ) return true;
+        if ( _complete )
+        {
+            return true;
+        }
 
         Pool< object >? pool = base.Pool;
 
@@ -74,7 +77,10 @@ public abstract class TemporalAction : Action
             
             Update( Reverse ? 1 - percent : percent );
 
-            if ( _complete ) End();
+            if ( _complete )
+            {
+                End();
+            }
 
             return _complete;
         }
@@ -88,14 +94,14 @@ public abstract class TemporalAction : Action
     /// Called the first time <see cref="Act(float)"/> is called. This is a good place
     /// to query the <see cref="Actor"/>'s starting state.
     /// </summary>
-    protected static void Begin()
+    protected virtual void Begin()
     {
     }
 
     /// <summary>
     /// Called the last time <see cref="Act(float)"/> is called.
     /// </summary>
-    protected static void End()
+    protected virtual void End()
     {
     }
 
@@ -116,14 +122,14 @@ public abstract class TemporalAction : Action
         Time = Duration;
     }
 
-    public new void Restart()
+    public override void Restart()
     {
         Time      = 0;
         _began    = false;
         _complete = false;
     }
 
-    protected new void Reset()
+    public override void Reset()
     {
         base.Reset();
 

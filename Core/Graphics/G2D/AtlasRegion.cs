@@ -130,7 +130,7 @@ public class AtlasRegion : TextureRegion
         OriginalHeight = PackedHeight;
     }
 
-    public new void Flip( bool x, bool y )
+    public override void Flip( bool x, bool y )
     {
         base.Flip( x, y );
 

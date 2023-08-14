@@ -55,8 +55,15 @@ public class Array<T>
     [Incomplete("DO NOT USE", true)]
     public Array( Array< T > array )
     {
-        if ( array == null ) throw new GdxRuntimeException( "array cannot be null!" );
-        if ( array.Items == null ) throw new GdxRuntimeException( "array cannot be null!" );
+        if ( array == null )
+        {
+            throw new GdxRuntimeException( "array cannot be null!" );
+        }
+
+        if ( array.Items == null )
+        {
+            throw new GdxRuntimeException( "array cannot be null!" );
+        }
 
         Ordered = array.Ordered;
         Size    = array.Size;
@@ -183,7 +190,7 @@ public class Array<T>
     /// <param name="index"></param>
     /// <param name="value"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public void Set( int index, T value )
+    public virtual void Set( int index, T value )
     {
         if ( index >= Size )
         {
@@ -198,14 +205,17 @@ public class Array<T>
     /// <param name="index"></param>
     /// <param name="value"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public void Insert( int index, T value )
+    public virtual void Insert( int index, T value )
     {
         if ( index > Size )
         {
             throw new ArgumentOutOfRangeException( "index can't be > size - " + index + " > " + Size );
         }
 
-        if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
 
         if ( Size == Items.Length )
         {
@@ -237,7 +247,10 @@ public class Array<T>
             throw new IndexOutOfRangeException( "index can't be > size - " + index + " > " + Size );
         }
 
-        if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
 
         var sizeNeeded = Size + count;
 
@@ -256,7 +269,7 @@ public class Array<T>
     /// <param name="first"></param>
     /// <param name="second"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public void Swap( int first, int second )
+    public virtual void Swap( int first, int second )
     {
         if ( first >= Size )
         {
@@ -268,7 +281,10 @@ public class Array<T>
             throw new ArgumentOutOfRangeException( "second can't be >= size - " + second + " >= " + Size );
         }
 
-        if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
 
         ( Items[ first ], Items[ second ] ) = ( Items[ second ], Items[ first ] );
     }
@@ -298,7 +314,10 @@ public class Array<T>
     /// <returns></returns>
     public int IndexOf( T? value )
     {
-        if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
 
         if ( value == null )
         {
@@ -398,7 +417,7 @@ public class Array<T>
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public void RemoveRange( int start, int end )
+    public virtual void RemoveRange( int start, int end )
     {
         if ( end >= Size )
         {
@@ -497,7 +516,10 @@ public class Array<T>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
     public T First()
     {
-        if ( Size == 0 ) throw new NullReferenceException( "Array is empty." );
+        if ( Size == 0 )
+        {
+            throw new NullReferenceException( "Array is empty." );
+        }
 
         return Items[ 0 ];
     }
@@ -675,7 +697,10 @@ public class Array<T>
     /// <param name="newSize"></param>
     public void Truncate( int newSize )
     {
-        if ( Size <= newSize ) return;
+        if ( Size <= newSize )
+        {
+            return;
+        }
 
         for ( var i = newSize; i < Size; i++ )
         {
@@ -729,7 +754,10 @@ public class Array<T>
     /// <returns></returns>
     public new int GetHashCode()
     {
-        if ( !Ordered ) return base.GetHashCode();
+        if ( !Ordered )
+        {
+            return base.GetHashCode();
+        }
 
         var h = 1;
 
@@ -754,24 +782,39 @@ public class Array<T>
     /// <returns></returns>
     public new bool Equals( object obj )
     {
-        if ( obj == this ) return true;
+        if ( obj == this )
+        {
+            return true;
+        }
 
-        if ( !Ordered ) return false;
+        if ( !Ordered )
+        {
+            return false;
+        }
 
         var array = ( Array< T > )obj;
 
-        if ( !array.Ordered ) return false;
+        if ( !array.Ordered )
+        {
+            return false;
+        }
 
         var n = Size;
 
-        if ( n != array.Size ) return false;
+        if ( n != array.Size )
+        {
+            return false;
+        }
 
         for ( var i = 0; i < n; i++ )
         {
             T o1 = this.Items[ i ];
             T o2 = array.Items[ i ];
 
-            if ( !( o1?.Equals( o2 ) ?? ( o2 == null ) ) ) return false;
+            if ( !( o1?.Equals( o2 ) ?? ( o2 == null ) ) )
+            {
+                return false;
+            }
         }
 
         return true;
@@ -790,7 +833,10 @@ public class Array<T>
     /// <returns></returns>
     public new string ToString()
     {
-        if ( Size == 0 ) return "[]";
+        if ( Size == 0 )
+        {
+            return "[]";
+        }
 
         var buffer = new StringBuilder( 32 );
 
@@ -814,7 +860,10 @@ public class Array<T>
     /// <returns></returns>
     public string ToString( string separator )
     {
-        if ( Size == 0 ) return "";
+        if ( Size == 0 )
+        {
+            return "";
+        }
 
         var buffer = new StringBuilder( 32 );
 

@@ -22,9 +22,9 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// Draws a <see cref="TextureRegion"/> repeatedly to fill the area, instead of stretching it.
 /// </summary>
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class TiledDrawable : TextureRegionDrawable
 {
-
     public TiledDrawable( TextureRegion region )
         : base( region )
     {
@@ -35,7 +35,7 @@ public class TiledDrawable : TextureRegionDrawable
     {
     }
 
-    public new void Draw( IBatch batch, float x, float y, float width, float height )
+    public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
         TextureRegion? region = this.Region;
 
@@ -113,7 +113,7 @@ public class TiledDrawable : TextureRegionDrawable
         }
     }
 
-    public new void Draw( IBatch batch,
+    public override void Draw( IBatch batch,
                           float x,
                           float y,
                           float originX,
@@ -131,7 +131,7 @@ public class TiledDrawable : TextureRegionDrawable
 
     public float Scale { set; get; } = 1;
 
-    public new TiledDrawable Tint( Color tint )
+    public override TiledDrawable Tint( Color tint )
     {
         var drawable = new TiledDrawable( this );
 

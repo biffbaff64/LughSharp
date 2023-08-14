@@ -25,12 +25,12 @@ public class StretchViewport : ScalingViewport
     /// <summary>
     /// Creates a new viewport using a new <seealso cref="OrthographicCamera"/>. </summary>
     public StretchViewport( float worldWidth, float worldHeight )
-        : base( Scaling.Stretch, worldWidth, worldHeight )
+            : base( Scaling.Stretch, worldWidth, worldHeight )
     {
     }
 
     public StretchViewport( float worldWidth, float worldHeight, Camera camera )
-        : base( Scaling.Stretch, worldWidth, worldHeight, camera )
+            : base( Scaling.Stretch, worldWidth, worldHeight, camera )
     {
     }
 }

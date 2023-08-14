@@ -64,7 +64,7 @@ public class IntAction : TemporalAction
         this.EndValue = end;
     }
 
-    protected new void Begin()
+    protected override void Begin()
     {
         Value = Start;
     }

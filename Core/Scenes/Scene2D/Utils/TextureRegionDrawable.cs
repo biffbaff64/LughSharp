@@ -48,7 +48,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
         Region = drawable.Region;
     }
 
-    public new void Draw( IBatch batch, float x, float y, float width, float height )
+    public virtual new void Draw( IBatch batch, float x, float y, float width, float height )
     {
         if ( Region != null )
         {
@@ -56,7 +56,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
         }
     }
 
-    public void Draw( IBatch batch,
+    public virtual void Draw( IBatch batch,
                               float x,
                               float y,
                               float originX,
@@ -91,9 +91,12 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     /// <summary>
     /// Creates a new drawable that renders the same as this drawable tinted the specified color.
     /// </summary>
-    public IDrawable Tint( Color tint )
+    public virtual IDrawable Tint( Color tint )
     {
-        if ( Region == null ) throw new NullReferenceException();
+        if ( Region == null )
+        {
+            throw new NullReferenceException();
+        }
         
         Sprite sprite;
 

@@ -31,6 +31,7 @@ namespace LibGDXSharp.Utils.Collections;
 /// </para>
 /// </summary>
 /// <typeparam name="T"></typeparam>
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class SnapshotArray<T> : Array< T >
 {
     private T[]? _snapshot;
@@ -99,7 +100,10 @@ public class SnapshotArray<T> : Array< T >
     /// </summary>
     public void Modified()
     {
-        if ( _snapshot != base.ToArray() ) return;
+        if ( _snapshot != base.ToArray() )
+        {
+            return;
+        }
 
         // Snapshot is in use, copy backing array to recycled
         // array or create new backing array.
@@ -112,7 +116,7 @@ public class SnapshotArray<T> : Array< T >
             }
 
             // 'recycled' now references nothing 
-            _recycled = default!;
+            _recycled = null;
         }
         else
         {
@@ -125,7 +129,7 @@ public class SnapshotArray<T> : Array< T >
     /// </summary>
     /// <param name="index"></param>
     /// <param name="value"></param>
-    public new void Set( int index, T value )
+    public override void Set( int index, T value )
     {
         Modified();
 
@@ -137,13 +141,13 @@ public class SnapshotArray<T> : Array< T >
     /// </summary>
     /// <param name="index"></param>
     /// <param name="value"></param>
-    public new void Insert( int index, T value )
+    public override void Insert( int index, T value )
     {
         Modified();
         base.Insert( index, value );
     }
 
-    public new void Swap( int first, int second )
+    public override void Swap( int first, int second )
     {
         Modified();
 
@@ -179,7 +183,7 @@ public class SnapshotArray<T> : Array< T >
     /// </summary>
     /// <param name="start">The zero-based starting index of the range of elements to remove.</param>
     /// <param name="count">The number of elements to remove.</param>
-    public new void RemoveRange( int start, int count )
+    public override void RemoveRange( int start, int count )
     {
         Modified();
         base.RemoveRange( start, count );

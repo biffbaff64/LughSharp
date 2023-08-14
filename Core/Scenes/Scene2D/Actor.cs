@@ -81,7 +81,10 @@ public class Actor : IActor
     /// <exception cref="SystemException"></exception>
     public void Act( float delta )
     {
-        if ( Actions.Count == 0 ) return;
+        if ( Actions.Count == 0 )
+        {
+            return;
+        }
 
         if ( Stage is { ActionsRequestRendering: true } )
         {
@@ -170,19 +173,32 @@ public class Actor : IActor
 
                 currentTarget.Notify( ev, true );
 
-                if ( ev.IsStopped ) return ev.IsCancelled;
+                if ( ev.IsStopped )
+                {
+                    return ev.IsCancelled;
+                }
             }
 
             // Notify the target capture listeners.
             Notify( ev, true );
 
-            if ( ev.IsStopped ) return ev.IsCancelled;
+            if ( ev.IsStopped )
+            {
+                return ev.IsCancelled;
+            }
 
             // Notify the target listeners.
             Notify( ev, false );
 
-            if ( !ev.Bubbles ) return ev.IsCancelled;
-            if ( ev.IsStopped ) return ev.IsCancelled;
+            if ( !ev.Bubbles )
+            {
+                return ev.IsCancelled;
+            }
+
+            if ( ev.IsStopped )
+            {
+                return ev.IsCancelled;
+            }
 
             // Notify ascendants' actor listeners, starting at the target.
             // Children may stop an event before ascendants receive it.
@@ -190,7 +206,10 @@ public class Actor : IActor
             {
                 ascendantsArray[ i ].Notify( ev, false );
 
-                if ( ev.IsStopped ) return ev.IsCancelled;
+                if ( ev.IsStopped )
+                {
+                    return ev.IsCancelled;
+                }
             }
 
             return ev.IsCancelled;
@@ -212,7 +231,10 @@ public class Actor : IActor
 
         DelayedRemovalArray< IEventListener > listeners = capture ? CaptureListeners : this.Listeners;
 
-        if ( listeners.Count == 0 ) return ev.IsCancelled;
+        if ( listeners.Count == 0 )
+        {
+            return ev.IsCancelled;
+        }
 
         ev.ListenerActor = this;
         ev.Capture       = capture;
@@ -266,9 +288,15 @@ public class Actor : IActor
     /// <returns></returns>
     public Actor? Hit( float x, float y, bool touchable )
     {
-        if ( touchable && ( this.Touchable != Touchable.Enabled ) ) return null;
+        if ( touchable && ( this.Touchable != Touchable.Enabled ) )
+        {
+            return null;
+        }
 
-        if ( !IsVisible ) return null;
+        if ( !IsVisible )
+        {
+            return null;
+        }
 
         return ( ( x >= 0 ) && ( x < _width ) && ( y >= 0 ) && ( y < _height ) ) ? this : null;
     }
@@ -279,7 +307,10 @@ public class Actor : IActor
     /// <returns>True if successful.</returns>
     public bool Remove()
     {
-        if ( Parent != null ) return Parent.RemoveActor( this );
+        if ( Parent != null )
+        {
+            return Parent.RemoveActor( this );
+        }
 
         return false;
     }
@@ -318,7 +349,10 @@ public class Actor : IActor
     /// <exception cref="ArgumentException"></exception>
     public bool AddCaptureListener( IEventListener listener )
     {
-        if ( !CaptureListeners.Contains( listener ) ) CaptureListeners.Add( listener );
+        if ( !CaptureListeners.Contains( listener ) )
+        {
+            CaptureListeners.Add( listener );
+        }
 
         return true;
     }
@@ -411,13 +445,19 @@ public class Actor : IActor
     /// <exception cref="ArgumentException"></exception>
     public bool IsDescendantOf( Actor? actor )
     {
-        if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
+        if ( actor == null )
+        {
+            throw new ArgumentException( "actor cannot be null." );
+        }
 
         Actor? parent = this;
 
         do
         {
-            if ( parent == actor ) return true;
+            if ( parent == actor )
+            {
+                return true;
+            }
 
             parent = parent.Parent;
         }
@@ -432,11 +472,17 @@ public class Actor : IActor
     /// </summary>
     public bool IsAscendantOf( Actor? actor )
     {
-        if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
+        if ( actor == null )
+        {
+            throw new ArgumentException( "actor cannot be null." );
+        }
 
         do
         {
-            if ( actor == this ) return true;
+            if ( actor == this )
+            {
+                return true;
+            }
 
             actor = actor.Parent;
         }
@@ -451,7 +497,10 @@ public class Actor : IActor
     /// </summary>
     public T? FirstAscendant<T>( Type type ) where T : Actor
     {
-        if ( type == null ) throw new ArgumentException( "actor cannot be null." );
+        if ( type == null )
+        {
+            throw new ArgumentException( "actor cannot be null." );
+        }
 
         Actor? actor = this;
 
@@ -494,7 +543,11 @@ public class Actor : IActor
 
         do
         {
-            if ( !actor.IsVisible ) return false;
+            if ( !actor.IsVisible )
+            {
+                return false;
+            }
+
             actor = actor.Parent;
         }
         while ( actor != null );
@@ -524,7 +577,10 @@ public class Actor : IActor
     /// </summary>
     public bool IsTouchFocusTarget()
     {
-        if ( Stage == null ) return false;
+        if ( Stage == null )
+        {
+            return false;
+        }
 
         for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
         {
@@ -543,7 +599,10 @@ public class Actor : IActor
     /// </summary>
     public bool IsTouchFocusListener()
     {
-        if ( Stage == null ) return false;
+        if ( Stage == null )
+        {
+            return false;
+        }
 
         for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
         {
@@ -1033,16 +1092,32 @@ public class Actor : IActor
     /// <returns>true if the z-index changed.</returns>
     public bool SetZIndex( int index )
     {
-        if ( index < 0 ) throw new ArgumentException( "ZIndex cannot be < 0." );
+        if ( index < 0 )
+        {
+            throw new ArgumentException( "ZIndex cannot be < 0." );
+        }
 
-        if ( this.Parent == null ) return false;
+        if ( this.Parent == null )
+        {
+            return false;
+        }
 
-        if ( Parent.Children.Size <= 1 ) return false;
+        if ( Parent.Children.Size <= 1 )
+        {
+            return false;
+        }
 
         index = Math.Min( index, this.Parent.Children.Size - 1 );
 
-        if ( Parent.Children.Get( index ) == this ) return false;
-        if ( !Parent.Children.RemoveValue( this ) ) return false;
+        if ( Parent.Children.Get( index ) == this )
+        {
+            return false;
+        }
+
+        if ( !Parent.Children.RemoveValue( this ) )
+        {
+            return false;
+        }
 
         Parent.Children.Insert( index, this );
 
@@ -1056,7 +1131,10 @@ public class Actor : IActor
     /// <returns></returns>
     public int GetZIndex()
     {
-        if ( Parent == null ) return -1;
+        if ( Parent == null )
+        {
+            return -1;
+        }
 
         return Parent.Children.IndexOf( this );
     }
@@ -1079,9 +1157,15 @@ public class Actor : IActor
     /// <see cref="ScissorStack"/>
     public bool ClipBegin( float x, float y, float width, float height )
     {
-        if ( ( width <= 0 ) || ( height <= 0 ) ) return false;
+        if ( ( width <= 0 ) || ( height <= 0 ) )
+        {
+            return false;
+        }
 
-        if ( this.Stage == null ) return false;
+        if ( this.Stage == null )
+        {
+            return false;
+        }
 
         RectangleShape tableBounds = RectangleShape.Tmp;
 
@@ -1094,7 +1178,10 @@ public class Actor : IActor
 
         this.Stage.CalculateScissors( tableBounds, scissorBounds );
 
-        if ( ScissorStack.PushScissors( scissorBounds ) ) return true;
+        if ( ScissorStack.PushScissors( scissorBounds ) )
+        {
+            return true;
+        }
 
         Pools< RectangleShape >.Free( scissorBounds );
 
@@ -1263,7 +1350,10 @@ public class Actor : IActor
 
             actor = actor.Parent;
 
-            if ( actor == ascendant ) break;
+            if ( actor == ascendant )
+            {
+                break;
+            }
         }
         while ( actor != null );
 
@@ -1295,7 +1385,10 @@ public class Actor : IActor
     /// </summary>
     protected void DrawDebugBounds( ShapeRenderer shapes )
     {
-        if ( !DebugActive ) return;
+        if ( !DebugActive )
+        {
+            return;
+        }
 
         shapes.Set( ShapeRenderer.ShapeTypes.Line );
 
