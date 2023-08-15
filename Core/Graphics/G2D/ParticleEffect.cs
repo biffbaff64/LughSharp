@@ -241,10 +241,6 @@ public class ParticleEffect : IDisposable
         {
             throw new GdxRuntimeException( "Error loading effect: " + effectFile, ex );
         }
-        finally
-        {
-            StreamUtils.CloseQuietly( reader );
-        }
     }
 
     public void LoadEmitterImages( TextureAtlas atlas, string? atlasPrefix = null )

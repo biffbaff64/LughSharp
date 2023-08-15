@@ -44,7 +44,10 @@ public class Timer
         {
             TimerThread? thread = Thread();
 
-            if ( thread == null ) throw new GdxRuntimeException( "Thread instance is null!" );
+            if ( thread == null )
+            {
+                throw new GdxRuntimeException( "Thread instance is null!" );
+            }
 
             return thread.instance ?? ( thread.instance = new Timer() );
         }
@@ -146,7 +149,10 @@ public class Timer
     {
         lock ( ThreadLock )
         {
-            if ( Thread().instances.Contains( this ) ) return;
+            if ( Thread().instances.Contains( this ) )
+            {
+                return;
+            }
 
             Thread().instances.Add( this );
 
@@ -422,7 +428,10 @@ public class Timer
         {
             lock ( ThreadLock )
             {
-                if ( ( _thread != this ) || ( files != Gdx.Files ) ) goto exitlabel;
+                if ( ( _thread != this ) || ( files != Gdx.Files ) )
+                {
+                    goto exitlabel;
+                }
 
                 long waitMillis = 5000;
 
@@ -443,15 +452,20 @@ public class Timer
                     }
                 }
 
-                if ( ( _thread != this ) || ( files != Gdx.Files ) ) goto exitlabel;
+                if ( ( _thread != this ) || ( files != Gdx.Files ) )
+                {
+                    goto exitlabel;
+                }
 
                 try
                 {
-                    if ( waitMillis > 0 ) Monitor.Wait( ThreadLock, ( int )waitMillis );
+                    if ( waitMillis > 0 )
+                    {
+                        Monitor.Wait( ThreadLock, ( int )waitMillis );
+                    }
                 }
-                catch ( ThreadInterruptedException ignored )
+                catch ( ThreadInterruptedException )
                 {
-                    // ...
                 }
             }
 
@@ -491,7 +505,10 @@ public class Timer
         {
             lock ( ThreadLock )
             {
-                if ( _thread == this ) _thread = null;
+                if ( _thread == this )
+                {
+                    _thread = null;
+                }
 
                 instances.Clear();
 

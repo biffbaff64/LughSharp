@@ -17,10 +17,12 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 
-using File = System.IO.File;
-
 namespace LibGDXSharp.Utils;
 
+/// <summary>
+/// Object used for creating debug messages which include
+/// the calling file and method.
+/// </summary>
 public struct CallerID
 {
     public string fileName;
@@ -60,7 +62,9 @@ public static class Trace
     /// <param name="logLevel"></param>
     /// <param name="enableWriteToFile"></param>
     /// <param name="filename"></param>
-    public static void Initialise( int logLevel = LOG_NONE, bool enableWriteToFile = false, string filename = "" )
+    public static void Initialise( int logLevel = LOG_NONE,
+                                   bool enableWriteToFile = false,
+                                   string filename = "" )
     {
         LogLevel          = logLevel;
         EnableWriteToFile = enableWriteToFile;
@@ -74,10 +78,13 @@ public static class Trace
     /// <summary>
     /// Write a debug string to logcat or console.
     /// The string can contain format options.
+    /// 
     /// </summary>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
     /// <param name="message">The string to write.</param>
     /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    [SuppressMessage( "ReSharper", "InvalidXmlDocComment" )]
     public static void Dbg( [CallerFilePath] string callerFilePath = "",
                             [CallerMemberName] string callerMethod = "",
                             [CallerLineNumber] int callerLine = 0,
@@ -108,9 +115,11 @@ public static class Trace
     /// <summary>
     /// Writes a Debug message, but adds a divider line before and after the message.
     /// </summary>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
     /// <param name="message">The string to write.</param>
     /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    [SuppressMessage( "ReSharper", "InvalidXmlDocComment" )]
     public static void BoxedDbg( [CallerFilePath] string callerFilePath = "",
                                  [CallerMemberName] string callerMethod = "",
                                  [CallerLineNumber] int callerLine = 0,
@@ -145,9 +154,11 @@ public static class Trace
     /// <summary>
     /// Write an error string to logcat or console.
     /// </summary>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
     /// <param name="message">The string to write.</param>
     /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    [SuppressMessage( "ReSharper", "InvalidXmlDocComment" )]
     public static void Err( [CallerFilePath] string callerFilePath = "",
                             [CallerMemberName] string callerMethod = "",
                             [CallerLineNumber] int callerLine = 0,
@@ -178,10 +189,12 @@ public static class Trace
     /// <summary>
     /// Write a message to console if the supplied condition is TRUE.
     /// </summary>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
     /// <param name="condition">The condition to evaluate.</param>
     /// <param name="message">The string to write.</param>
     /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    [SuppressMessage( "ReSharper", "InvalidXmlDocComment" )]
     public static void Assert( [CallerFilePath] string callerFilePath = "",
                                [CallerMemberName] string callerMethod = "",
                                [CallerLineNumber] int callerLine = 0,
@@ -213,7 +226,9 @@ public static class Trace
     /// - Current time and date.
     /// - Calling Class/method/line number information.
     /// </summary>
-    [SuppressMessage( "ReSharper", "InvalidXmlDocComment" )]
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
     public static void CheckPoint( [CallerFilePath] string callerFilePath = "",
                                    [CallerMemberName] string callerMethod = "",
                                    [CallerLineNumber] int callerLine = 0 )
@@ -234,7 +249,7 @@ public static class Trace
 
         sb.Append( GetTimeStampInfo() );
         sb.Append( " : " );
-        sb.Append( GetFileInfo( callerID ) );
+        sb.Append( GetCallerInfo( callerID ) );
 
         Console.WriteLine( sb.ToString() );
 
@@ -288,7 +303,7 @@ public static class Trace
         var sb = new StringBuilder( GetTimeStampInfo() );
 
         sb.Append( " : " );
-        sb.Append( GetFileInfo( cid ) );
+        sb.Append( GetCallerInfo( cid ) );
         sb.Append( " : " );
 
         if ( !string.IsNullOrEmpty( formatString ) )
@@ -327,7 +342,7 @@ public static class Trace
     /// <summary>
     /// Returns a string holding the calling filename, method and line number.
     /// </summary>
-    private static string GetFileInfo( CallerID cid )
+    private static string GetCallerInfo( CallerID cid )
     {
         var sb = new StringBuilder();
 
@@ -384,8 +399,8 @@ public static class Trace
         }
         else
         {
-            _debugFilePath =  Environment.GetFolderPath( Environment.SpecialFolder.UserProfile );
-            _debugFilePath += "//.prefs//";
+            _debugFilePath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile );
+            _debugFilePath = string.Join( _debugFilePath, "//.prefs//" );
         }
 
         _debugFileName = fileName;
@@ -396,7 +411,7 @@ public static class Trace
 
         var divider =
             new UTF8Encoding( true )
-                .GetBytes( "-----------------------------------------------------" );
+               .GetBytes( "-----------------------------------------------------" );
 
         var time = new UTF8Encoding( true ).GetBytes( dateTime.ToShortTimeString() );
 

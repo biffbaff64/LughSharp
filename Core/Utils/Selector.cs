@@ -28,12 +28,12 @@ namespace LibGDXSharp.Utils;
 /// The underlying algorithms used are a naive single-pass for k = min and k =max, and
 /// Hoare's quickselect for values in between.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Selector<T>
 {
     public static Selector< T > Instance { get; } = new();
 
-    private QuickSelect<T>? _quickSelect;
+    private QuickSelect< T >? _quickSelect;
 
     public T Select( T[] items, IComparer< T > comp, int kthLowest, int size )
     {
@@ -48,15 +48,17 @@ public class Selector<T>
         {
             throw new GdxRuntimeException( "cannot select from empty array (size < 1)" );
         }
-        
+
         if ( kthLowest > size )
         {
-            throw new GdxRuntimeException( "Kth rank is larger than size. k: " + kthLowest + ", size: " + size );
+            throw new GdxRuntimeException
+                ( $"Kth rank is larger than size. k: {kthLowest}, size: {size}" );
         }
 
         int idx;
 
-        // naive partial selection sort almost certain to outperform quickselect where n is min or max
+        // naive partial selection sort almost certain to outperform
+        // quickselect where n is min or max
         if ( kthLowest == 1 )
         {
             // find min

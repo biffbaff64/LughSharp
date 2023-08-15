@@ -509,7 +509,10 @@ public class PropertiesUtils
             curIndex++;
         }
 
-        if ( lastIndex != curIndex ) writer.Write( comment.Substring( lastIndex, curIndex ) );
+        if ( lastIndex != curIndex )
+        {
+            writer.Write( comment.Substring( lastIndex, curIndex ) );
+        }
 
         writer.Write( LINE_SEPARATOR );
     }

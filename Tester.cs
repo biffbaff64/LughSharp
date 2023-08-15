@@ -16,6 +16,9 @@
 
 using LibGDXSharp;
 using LibGDXSharp.Backends.Desktop;
+using LibGDXSharp.Utils;
+
+using OpenTK.Graphics.ES30;
 
 namespace LibGDXSharpTest;
 

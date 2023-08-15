@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Local" )]
 public abstract class Scaling
 {
     protected readonly static Vector2 Temp = new();

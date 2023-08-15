@@ -117,10 +117,10 @@ public class StringTokenizer
     private int _maxDelimCodePoint;
 
     /// <summary>
-    /// If delimiters include any surrogates (including surrogate
-    /// pairs), hasSurrogates is true and the tokenizer uses the
-    /// different code path. This is because String.indexOf(int)
-    /// doesn't handle unpaired surrogates as a single character.
+    /// If delimiters include any surrogates (including surrogate pairs),
+    /// hasSurrogates is true and the tokenizer uses the different code
+    /// path. This is because String.indexOf(int) doesn't handle unpaired
+    /// surrogates as a single character.
     /// </summary>
     private bool _hasSurrogates = false;
 
@@ -233,7 +233,7 @@ public class StringTokenizer
             if ( !_hasSurrogates )
             {
                 var c = _str![ position ];
-                    
+
                 if ( ( c > _maxDelimCodePoint ) || ( _delimiters.IndexOf( c ) < 0 ) )
                 {
                     break;
@@ -322,7 +322,10 @@ public class StringTokenizer
     /// <returns></returns>
     private bool IsDelimiter( int codePoint )
     {
-        if ( _delimiterCodePoints == null ) return false;
+        if ( _delimiterCodePoints == null )
+        {
+            return false;
+        }
 
         foreach ( var t in _delimiterCodePoints )
         {
@@ -436,10 +439,4 @@ public class StringTokenizer
 
         return count;
     }
-
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing,
-    /// or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose() { }
 }
