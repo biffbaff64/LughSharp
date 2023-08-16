@@ -21,17 +21,22 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public class DataOutput : BinaryWriter
 {
+    private StreamWriter _writer;
+
     public DataOutput( StreamWriter output )
     {
+        this._writer = output;
     }
 
     /// <summary>
     /// Writes a 1-5 byte int.
     /// </summary>
-    ///<param name="value"></param>
-    /// <param name="optimizePositive"> If true, small positive numbers will be more efficient (1 byte) and small negative numbers will be
-    ///           inefficient (5 bytes).  </param>
-    public int WriteInt( int value, bool optimizePositive )
+    /// <param name="value"></param>
+    /// <param name="optimizePositive">
+    /// If true, small positive numbers will be more efficient (1 byte) and
+    /// small negative numbers will be inefficient (5 bytes).
+    /// </param>
+    public void WriteInt( int value, bool optimizePositive )
     {
         if ( !optimizePositive )
         {
@@ -41,8 +46,6 @@ public class DataOutput : BinaryWriter
         if ( ( value >>> 7 ) == 0 )
         {
             Write( ( sbyte )value );
-
-            return 1;
         }
 
         Write( unchecked( ( sbyte )( ( value & 0x7F ) | 0x80 ) ) );
@@ -50,8 +53,6 @@ public class DataOutput : BinaryWriter
         if ( ( value >>> 14 ) == 0 )
         {
             Write( ( sbyte )( value >>> 7 ) );
-
-            return 2;
         }
 
         Write( unchecked( ( sbyte )( ( value >>> 7 ) | 0x80 ) ) );
@@ -59,8 +60,6 @@ public class DataOutput : BinaryWriter
         if ( ( value >>> 21 ) == 0 )
         {
             Write( ( sbyte )( value >>> 14 ) );
-
-            return 3;
         }
 
         Write( unchecked( ( sbyte )( ( value >>> 14 ) | 0x80 ) ) );
@@ -68,18 +67,15 @@ public class DataOutput : BinaryWriter
         if ( ( value >>> 28 ) == 0 )
         {
             Write( ( sbyte )( value >>> 21 ) );
-
-            return 4;
         }
 
         Write( unchecked( ( sbyte )( ( value >>> 21 ) | 0x80 ) ) );
         Write( ( sbyte )( value >>> 28 ) );
-
-        return 5;
     }
 
     /// <summary>
-    /// Writes a length and then the string as UTF8. </summary>
+    /// Writes a length and then the string as UTF8.
+    /// </summary>
     /// <param name="value"> May be null.  </param>
     public void WriteString( string? value )
     {
@@ -94,7 +90,7 @@ public class DataOutput : BinaryWriter
 
         if ( charCount == 0 )
         {
-            Write( (byte)1 );
+            Write( ( byte )1 );
 
             return;
         }
@@ -122,7 +118,7 @@ public class DataOutput : BinaryWriter
         }
     }
 
-    private void WriteStringSlow( string value, int charCount, int charIndex )
+    public void WriteStringSlow( string value, int charCount, int charIndex )
     {
         for ( ; charIndex < charCount; charIndex++ )
         {

@@ -4,16 +4,6 @@ LIBGDX CSharp CONVERSION - ROUND 1
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-04-August-2023
-
-I have taken the decision that this Library / Framework will be OpenGL for desktop
-ONLY. Android / iOS is catered for by the Java LibGDX so there is no need to
-provide that facility.
-
- - This means that 'Backends' can be removed and merged with 'Core'
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 - STEP 1: Complete all conversions so that the code will build.
 - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
 -         Some classes can become structs / records instead.
@@ -26,6 +16,10 @@ provide that facility.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- NO MAGIC NUMBERS!!!
+- 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - SORT OUT VERSIONING!!!
@@ -45,6 +39,11 @@ provide that facility.
 - Constantly look for opportunities to improve this code.
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- Do I still need the following:-
+  - Logger
+  - 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ROOT

@@ -20,7 +20,7 @@ public record FloatConsts
 {
     public const float POSITIVE_INFINITY = float.PositiveInfinity;
     public const float NEGATIVE_INFINITY = float.NegativeInfinity;
-    public const float NA_N               = float.NaN;
+    public const float NA_N              = float.NaN;
     public const float MAX_VALUE         = float.MaxValue;
     public const float MIN_VALUE         = float.MinValue;
     public const float MIN_NORMAL        = 1.17549435E-38f;

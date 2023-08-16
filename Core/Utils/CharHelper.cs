@@ -80,13 +80,13 @@ public static class CharHelper
     {
         return char.ConvertToUtf32( str, position );
     }
-    
+
     /// <summary>
     /// Compares two <tt>char</tt> values numerically.
     /// The value returned is identical to what would be returned by:
-    /// <pre>
+    /// <code>
     ///    CharHelper.ValueOf(x).CompareTo(CharHelper.ValueOf(y))
-    /// </pre>
+    /// </code>
     ///
     /// </summary>
     /// <param name="x"> the first <tt>char</tt> to compare </param>
@@ -95,7 +95,7 @@ public static class CharHelper
     /// the value <tt>0</tt> if <tt>x == y</tt>; a value less than <tt>0</tt> if <tt>x &lt; y</tt>;
     /// and a value greater than <tt>0</tt> if <tt>x > y</tt>
     /// </returns>
-    public static int Compare(char x, char y)
+    public static int Compare( char x, char y )
     {
         return x - y;
     }
@@ -129,276 +129,274 @@ public static class CharHelper
     /// <tt>char</tt>, <tt>'\u005CuFFFF'</tt>.
     /// </summary>
     public const char MAX_VALUE = '\uFFFF';
-    
-	/// <summary>
-	/// General category "Cn" in the Unicode specification.
-	/// </summary>
-	public const sbyte UNASSIGNED = 0;
 
-	/// <summary>
-	/// General category "Lu" in the Unicode specification.
-	/// </summary>
-	public const sbyte UPPERCASE_LETTER = 1;
+    /// <summary>
+    /// General category "Cn" in the Unicode specification.
+    /// </summary>
+    public const sbyte UNASSIGNED = 0;
 
-	/// <summary>
-	/// General category "Ll" in the Unicode specification.
-	/// </summary>
-	public const sbyte LOWERCASE_LETTER = 2;
+    /// <summary>
+    /// General category "Lu" in the Unicode specification.
+    /// </summary>
+    public const sbyte UPPERCASE_LETTER = 1;
 
-	/// <summary>
-	/// General category "Lt" in the Unicode specification.
-	/// </summary>
-	public const sbyte TITLECASE_LETTER = 3;
+    /// <summary>
+    /// General category "Ll" in the Unicode specification.
+    /// </summary>
+    public const sbyte LOWERCASE_LETTER = 2;
 
-	/// <summary>
-	/// General category "Lm" in the Unicode specification.
-	/// </summary>
-	public const sbyte MODIFIER_LETTER = 4;
+    /// <summary>
+    /// General category "Lt" in the Unicode specification.
+    /// </summary>
+    public const sbyte TITLECASE_LETTER = 3;
 
-	/// <summary>
-	/// General category "Lo" in the Unicode specification.
-	/// </summary>
-	public const sbyte OTHER_LETTER = 5;
+    /// <summary>
+    /// General category "Lm" in the Unicode specification.
+    /// </summary>
+    public const sbyte MODIFIER_LETTER = 4;
 
-	/// <summary>
-	/// General category "Mn" in the Unicode specification.
-	/// </summary>
-	public const sbyte NON_SPACING_MARK = 6;
+    /// <summary>
+    /// General category "Lo" in the Unicode specification.
+    /// </summary>
+    public const sbyte OTHER_LETTER = 5;
 
-	/// <summary>
-	/// General category "Me" in the Unicode specification.
-	/// </summary>
-	public const sbyte ENCLOSING_MARK = 7;
+    /// <summary>
+    /// General category "Mn" in the Unicode specification.
+    /// </summary>
+    public const sbyte NON_SPACING_MARK = 6;
 
-	/// <summary>
-	/// General category "Mc" in the Unicode specification.
-	/// </summary>
-	public const sbyte COMBINING_SPACING_MARK = 8;
+    /// <summary>
+    /// General category "Me" in the Unicode specification.
+    /// </summary>
+    public const sbyte ENCLOSING_MARK = 7;
 
-	/// <summary>
-	/// General category "Nd" in the Unicode specification.
-	/// </summary>
-	public const sbyte DECIMAL_DIGIT_NUMBER = 9;
+    /// <summary>
+    /// General category "Mc" in the Unicode specification.
+    /// </summary>
+    public const sbyte COMBINING_SPACING_MARK = 8;
 
-	/// <summary>
-	/// General category "Nl" in the Unicode specification.
-	/// </summary>
-	public const sbyte LETTER_NUMBER = 10;
+    /// <summary>
+    /// General category "Nd" in the Unicode specification.
+    /// </summary>
+    public const sbyte DECIMAL_DIGIT_NUMBER = 9;
 
-	/// <summary>
-	/// General category "No" in the Unicode specification.
-	/// </summary>
-	public const sbyte OTHER_NUMBER = 11;
+    /// <summary>
+    /// General category "Nl" in the Unicode specification.
+    /// </summary>
+    public const sbyte LETTER_NUMBER = 10;
 
-	/// <summary>
-	/// General category "Zs" in the Unicode specification.
-	/// </summary>
-	public const sbyte SPACE_SEPARATOR = 12;
+    /// <summary>
+    /// General category "No" in the Unicode specification.
+    /// </summary>
+    public const sbyte OTHER_NUMBER = 11;
 
-	/// <summary>
-	/// General category "Zl" in the Unicode specification.
-	/// </summary>
-	public const sbyte LINE_SEPARATOR = 13;
+    /// <summary>
+    /// General category "Zs" in the Unicode specification.
+    /// </summary>
+    public const sbyte SPACE_SEPARATOR = 12;
 
-	/// <summary>
-	/// General category "Zp" in the Unicode specification.
-	/// </summary>
-	public const sbyte PARAGRAPH_SEPARATOR = 14;
+    /// <summary>
+    /// General category "Zl" in the Unicode specification.
+    /// </summary>
+    public const sbyte LINE_SEPARATOR = 13;
 
-	/// <summary>
-	/// General category "Cc" in the Unicode specification.
-	/// </summary>
-	public const sbyte CONTROL = 15;
+    /// <summary>
+    /// General category "Zp" in the Unicode specification.
+    /// </summary>
+    public const sbyte PARAGRAPH_SEPARATOR = 14;
 
-	/// <summary>
-	/// General category "Cf" in the Unicode specification.
-	/// </summary>
-	public const sbyte FORMAT = 16;
-	
-	/// <summary>
-	/// General category "Co" in the Unicode specification.
-	/// </summary>
-	public const sbyte PRIVATE_USE = 18;
+    /// <summary>
+    /// General category "Cc" in the Unicode specification.
+    /// </summary>
+    public const sbyte CONTROL = 15;
 
-	/// <summary>
-	/// General category "Cs" in the Unicode specification.
-	/// </summary>
-	public const sbyte SURROGATE = 19;
+    /// <summary>
+    /// General category "Cf" in the Unicode specification.
+    /// </summary>
+    public const sbyte FORMAT = 16;
 
-	/// <summary>
-	/// General category "Pd" in the Unicode specification.
-	/// </summary>
-	public const sbyte DASH_PUNCTUATION = 20;
+    /// <summary>
+    /// General category "Co" in the Unicode specification.
+    /// </summary>
+    public const sbyte PRIVATE_USE = 18;
 
-	/// <summary>
-	/// General category "Ps" in the Unicode specification.
-	/// </summary>
-	public const sbyte START_PUNCTUATION = 21;
+    /// <summary>
+    /// General category "Cs" in the Unicode specification.
+    /// </summary>
+    public const sbyte SURROGATE = 19;
 
-	/// <summary>
-	/// General category "Pe" in the Unicode specification.
-	/// </summary>
-	public const sbyte END_PUNCTUATION = 22;
+    /// <summary>
+    /// General category "Pd" in the Unicode specification.
+    /// </summary>
+    public const sbyte DASH_PUNCTUATION = 20;
 
-	/// <summary>
-	/// General category "Pc" in the Unicode specification.
-	/// </summary>
-	public const sbyte CONNECTOR_PUNCTUATION = 23;
+    /// <summary>
+    /// General category "Ps" in the Unicode specification.
+    /// </summary>
+    public const sbyte START_PUNCTUATION = 21;
 
-	/// <summary>
-	/// General category "Po" in the Unicode specification.
-	/// </summary>
-	public const sbyte OTHER_PUNCTUATION = 24;
+    /// <summary>
+    /// General category "Pe" in the Unicode specification.
+    /// </summary>
+    public const sbyte END_PUNCTUATION = 22;
 
-	/// <summary>
-	/// General category "Sm" in the Unicode specification.
-	/// </summary>
-	public const sbyte MATH_SYMBOL = 25;
+    /// <summary>
+    /// General category "Pc" in the Unicode specification.
+    /// </summary>
+    public const sbyte CONNECTOR_PUNCTUATION = 23;
 
-	/// <summary>
-	/// General category "Sc" in the Unicode specification.
-	/// </summary>
-	public const sbyte CURRENCY_SYMBOL = 26;
+    /// <summary>
+    /// General category "Po" in the Unicode specification.
+    /// </summary>
+    public const sbyte OTHER_PUNCTUATION = 24;
 
-	/// <summary>
-	/// General category "Sk" in the Unicode specification.
-	/// </summary>
-	public const sbyte MODIFIER_SYMBOL = 27;
+    /// <summary>
+    /// General category "Sm" in the Unicode specification.
+    /// </summary>
+    public const sbyte MATH_SYMBOL = 25;
 
-	/// <summary>
-	/// General category "So" in the Unicode specification.
-	/// </summary>
-	public const sbyte OTHER_SYMBOL = 28;
+    /// <summary>
+    /// General category "Sc" in the Unicode specification.
+    /// </summary>
+    public const sbyte CURRENCY_SYMBOL = 26;
 
-	/// <summary>
-	/// General category "Pi" in the Unicode specification.
-	/// </summary>
-	public const sbyte INITIAL_QUOTE_PUNCTUATION = 29;
+    /// <summary>
+    /// General category "Sk" in the Unicode specification.
+    /// </summary>
+    public const sbyte MODIFIER_SYMBOL = 27;
 
-	/// <summary>
-	/// General category "Pf" in the Unicode specification.
-	/// </summary>
-	public const sbyte FINAL_QUOTE_PUNCTUATION = 30;
+    /// <summary>
+    /// General category "So" in the Unicode specification.
+    /// </summary>
+    public const sbyte OTHER_SYMBOL = 28;
 
-	/// <summary>
-	/// Error flag. Use int (code point) to avoid confusion with U+FFFF.
-	/// </summary>
-	public const int ERROR = unchecked((int)0xFFFFFFFF);
-    
-	/// <summary>
-	/// Undefined bidirectional character type. Undefined {@code char}
-	/// values have undefined directionality in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_UNDEFINED = -1;
+    /// <summary>
+    /// General category "Pi" in the Unicode specification.
+    /// </summary>
+    public const sbyte INITIAL_QUOTE_PUNCTUATION = 29;
 
-	/// <summary>
-	/// Strong bidirectional character type "L" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT = 0;
-	
-	/// <summary>
-	/// Strong bidirectional character type "R" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT = 1;
+    /// <summary>
+    /// General category "Pf" in the Unicode specification.
+    /// </summary>
+    public const sbyte FINAL_QUOTE_PUNCTUATION = 30;
 
-	/// <summary>
-	/// Strong bidirectional character type "AL" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC = 2;
+    /// <summary>
+    /// Error flag. Use int (code point) to avoid confusion with U+FFFF.
+    /// </summary>
+    public const int ERROR = unchecked( ( int )0xFFFFFFFF );
 
-	/// <summary>
-	/// Weak bidirectional character type "EN" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER = 3;
+    /// <summary>
+    /// Undefined bidirectional character type. Undefined {@code char}
+    /// values have undefined directionality in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_UNDEFINED = -1;
 
-	/// <summary>
-	/// Weak bidirectional character type "ES" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER_SEPARATOR = 4;
+    /// <summary>
+    /// Strong bidirectional character type "L" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT = 0;
 
-	/// <summary>
-	/// Weak bidirectional character type "ET" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER_TERMINATOR = 5;
+    /// <summary>
+    /// Strong bidirectional character type "R" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT = 1;
 
-	/// <summary>
-	/// Weak bidirectional character type "AN" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_ARABIC_NUMBER = 6;
+    /// <summary>
+    /// Strong bidirectional character type "AL" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC = 2;
 
-	/// <summary>
-	/// Weak bidirectional character type "CS" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_COMMON_NUMBER_SEPARATOR = 7;
+    /// <summary>
+    /// Weak bidirectional character type "EN" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER = 3;
 
-	/// <summary>
-	/// Weak bidirectional character type "NSM" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_NONSPACING_MARK = 8;
+    /// <summary>
+    /// Weak bidirectional character type "ES" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER_SEPARATOR = 4;
 
-	/// <summary>
-	/// Weak bidirectional character type "BN" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_BOUNDARY_NEUTRAL = 9;
+    /// <summary>
+    /// Weak bidirectional character type "ET" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_EUROPEAN_NUMBER_TERMINATOR = 5;
 
-	/// <summary>
-	/// Neutral bidirectional character type "B" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_PARAGRAPH_SEPARATOR = 10;
+    /// <summary>
+    /// Weak bidirectional character type "AN" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_ARABIC_NUMBER = 6;
 
-	/// <summary>
-	/// Neutral bidirectional character type "S" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_SEGMENT_SEPARATOR = 11;
+    /// <summary>
+    /// Weak bidirectional character type "CS" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_COMMON_NUMBER_SEPARATOR = 7;
 
-	/// <summary>
-	/// Neutral bidirectional character type "WS" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_WHITESPACE = 12;
+    /// <summary>
+    /// Weak bidirectional character type "NSM" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_NONSPACING_MARK = 8;
 
-	/// <summary>
-	/// Neutral bidirectional character type "ON" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_OTHER_NEUTRALS = 13;
+    /// <summary>
+    /// Weak bidirectional character type "BN" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_BOUNDARY_NEUTRAL = 9;
 
-	/// <summary>
-	/// Strong bidirectional character type "LRE" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT_EMBEDDING = 14;
+    /// <summary>
+    /// Neutral bidirectional character type "B" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_PARAGRAPH_SEPARATOR = 10;
 
-	/// <summary>
-	/// Strong bidirectional character type "LRO" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT_OVERRIDE = 15;
+    /// <summary>
+    /// Neutral bidirectional character type "S" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_SEGMENT_SEPARATOR = 11;
 
-	/// <summary>
-	/// Strong bidirectional character type "RLE" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING = 16;
+    /// <summary>
+    /// Neutral bidirectional character type "WS" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_WHITESPACE = 12;
 
-	/// <summary>
-	/// Strong bidirectional character type "RLO" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE = 17;
-	
-	/// <summary>
-	/// Weak bidirectional character type "PDF" in the Unicode specification.
-	/// </summary>
-	public const sbyte DIRECTIONALITY_POP_DIRECTIONAL_FORMAT = 18;
+    /// <summary>
+    /// Neutral bidirectional character type "ON" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_OTHER_NEUTRALS = 13;
 
-	/// <summary>
-	/// The minimum value of a
-	/// <a href="http://www.unicode.org/glossary/#code_point">
-	/// Unicode code point</a>, constant {@code U+0000}.
-	/// </summary>
-	public const int MIN_CODE_POINT = 0x000000;
+    /// <summary>
+    /// Strong bidirectional character type "LRE" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT_EMBEDDING = 14;
 
-	/// <summary>
-	/// The maximum value of a
-	/// <a href="http://www.unicode.org/glossary/#code_point">
-	/// Unicode code point</a>, constant {@code U+10FFFF}.
-	/// </summary>
-	public const int MAX_CODE_POINT = 0X10FFFF;
+    /// <summary>
+    /// Strong bidirectional character type "LRO" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_LEFT_TO_RIGHT_OVERRIDE = 15;
+
+    /// <summary>
+    /// Strong bidirectional character type "RLE" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING = 16;
+
+    /// <summary>
+    /// Strong bidirectional character type "RLO" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE = 17;
+
+    /// <summary>
+    /// Weak bidirectional character type "PDF" in the Unicode specification.
+    /// </summary>
+    public const sbyte DIRECTIONALITY_POP_DIRECTIONAL_FORMAT = 18;
+
+    /// <summary>
+    /// The minimum value of a
+    /// <a href="http://www.unicode.org/glossary/#code_point">
+    /// Unicode code point</a>, constant {@code U+0000}.
+    /// </summary>
+    public const int MIN_CODE_POINT = 0x000000;
+
+    /// <summary>
+    /// The maximum value of a
+    /// <a href="http://www.unicode.org/glossary/#code_point">
+    /// Unicode code point</a>, constant {@code U+10FFFF}.
+    /// </summary>
+    public const int MAX_CODE_POINT = 0X10FFFF;
 }
-
-

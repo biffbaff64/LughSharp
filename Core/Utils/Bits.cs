@@ -83,6 +83,7 @@ public class Bits
         CheckCapacity( word );
 
         var oldBits = _bits[ word ];
+        
         _bits[ word ] |= 1L << ( index & 0x3F );
 
         return _bits[ word ] == oldBits;

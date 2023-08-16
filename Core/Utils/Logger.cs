@@ -22,7 +22,7 @@ namespace LibGDXSharp.Utils;
 /// The log level set with <see cref="IApplication.LogLevel"/> overrides
 /// the log level set here.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class Logger
 {
     public const int LOG_NONE  = 0;
@@ -36,7 +36,7 @@ public class Logger
     /// </summary>
     /// <param name="tag"></param>
     /// <param name="level"></param>
-    public Logger(string tag, int level = LOG_ERROR )
+    public Logger( string tag, int level = LOG_ERROR )
     {
         this._tag  = tag;
         this.Level = level;
@@ -45,11 +45,11 @@ public class Logger
     /// <summary>
     /// </summary>
     /// <param name="message"></param>
-    public void Debug(string message)
+    public void Debug( string message )
     {
-        if (Level >= LOG_DEBUG)
+        if ( Level >= LOG_DEBUG )
         {
-            Gdx.App.Debug(_tag, message);
+            Gdx.App.Debug( _tag, message );
         }
     }
 
@@ -57,45 +57,22 @@ public class Logger
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
-    public void Debug(string message, Exception exception)
+    public void Debug( string message, Exception exception )
     {
-        if (Level >= LOG_DEBUG)
+        if ( Level >= LOG_DEBUG )
         {
-            Gdx.App.Debug(_tag, message, exception);
+            Gdx.App.Debug( _tag, message, exception );
         }
     }
 
     /// <summary>
     /// </summary>
     /// <param name="message"></param>
-    public void Info(string message)
+    public void Info( string message )
     {
-        if (Level >= LOG_INFO)
+        if ( Level >= LOG_INFO )
         {
-            Gdx.App.Log(_tag, message);
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="message"></param>
-    /// <param name="exception"></param>
-    public void Info(string message, Exception exception)
-    {
-        if (Level >= LOG_INFO)
-        {
-            Gdx.App.Log(_tag, message, exception);
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="message"></param>
-    public void Error(string message)
-    {
-        if (Level >= LOG_ERROR)
-        {
-            Gdx.App.Error(_tag, message);
+            Gdx.App.Log( _tag, message );
         }
     }
 
@@ -103,11 +80,34 @@ public class Logger
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
-    public void Error(string message, Exception exception)
+    public void Info( string message, Exception exception )
     {
-        if (Level >= LOG_ERROR)
+        if ( Level >= LOG_INFO )
         {
-            Gdx.App.Error(_tag, message, exception);
+            Gdx.App.Log( _tag, message, exception );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="message"></param>
+    public void Error( string message )
+    {
+        if ( Level >= LOG_ERROR )
+        {
+            Gdx.App.Error( _tag, message );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="exception"></param>
+    public void Error( string message, Exception exception )
+    {
+        if ( Level >= LOG_ERROR )
+        {
+            Gdx.App.Error( _tag, message, exception );
         }
     }
 
@@ -118,5 +118,5 @@ public class Logger
     /// <see cref="LOG_INFO"/> will let all non-debug messages through.
     /// <see cref="LOG_DEBUG"/> will let all messages through.
     /// </summary>
-    public int Level { set; get; }
+    public int Level { get; set; }
 }

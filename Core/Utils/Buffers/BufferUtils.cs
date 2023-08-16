@@ -139,11 +139,9 @@ public class BufferUtils
     public static void Copy( float[] src, Buffer dst, int offset, int numElements )
     {
     }
-    
+
     private static void Copy( Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes )
     {
-        //TODO
-        throw new NotImplementedException();
     }
 
     private static int PositionInBytes( Buffer dst )

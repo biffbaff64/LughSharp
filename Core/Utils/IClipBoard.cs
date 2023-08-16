@@ -31,6 +31,6 @@ public interface IClipboard
     /// The current content of the clipboard if it contains text
     /// </summary>
     /// <returns> the clipboard content or null  </returns>
-    string Contents {get; set;}
+    string Contents { get; set; }
 
 }

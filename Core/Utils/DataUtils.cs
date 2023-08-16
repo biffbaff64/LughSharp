@@ -29,30 +29,26 @@ public abstract class DataUtils
     /// </returns>
     public static short ReverseBytes( short input )
     {
-        return (short) (((input & 0xFF00) >> 8) | (input << 8));
+        return ( short )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
     }
-        
+
     public static char ReverseBytes( char input )
     {
-        return (char) (((input & 0xFF00) >> 8) | (input << 8));
+        return ( char )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
     }
-        
+
     public static int ReverseBytes( int input )
     {
-        return ((input >>> 24)           ) |
-               ((input >>   8) &   0xFF00) |
-               ((input <<   8) & 0xFF0000) |
-               ((input << 24));
+        return ( ( input >>> 24 ) ) | ( ( input >> 8 ) & 0xFF00 ) | ( ( input << 8 ) & 0xFF0000 ) | ( ( input << 24 ) );
     }
-        
+
     public static long ReverseBytes( long input )
     {
-        input = ( (input & 0x00ff00ff00ff00ffL) << 8 ) | ( (input >>> 8) & 0x00ff00ff00ff00ffL );
-            
-        return (input << 48) | ((input & 0xffff0000L) << 16) |
-               ((input >>> 16) & 0xffff0000L) | (input >>> 48);
+        input = ( ( input & 0x00ff00ff00ff00ffL ) << 8 ) | ( ( input >>> 8 ) & 0x00ff00ff00ff00ffL );
+
+        return ( input << 48 ) | ( ( input & 0xffff0000L ) << 16 ) | ( ( input >>> 16 ) & 0xffff0000L ) | ( input >>> 48 );
     }
-        
+
     /// <summary>
     /// Converts the argument to an <tt>int</tt> by an unsigned
     /// conversion.  In an unsigned conversion to an <tt>int</tt>, the
@@ -68,9 +64,9 @@ public abstract class DataUtils
     /// <returns> the argument converted to <tt>int</tt> by an unsigned
     ///         conversion
     /// </returns>
-    public static int ToUnsignedInt(short x)
+    public static int ToUnsignedInt( short x )
     {
-        return ((int) x) & 0xffff;
+        return x & 0xffff;
     }
 
     /// <summary>
@@ -88,8 +84,8 @@ public abstract class DataUtils
     /// <returns> the argument converted to <tt>long</tt> by an unsigned
     ///         conversion
     /// </returns>
-    public static long ToUnsignedLong(short x)
+    public static long ToUnsignedLong( short x )
     {
-        return ((long) x) & 0xffffL;
+        return x & 0xffffL;
     }
 }

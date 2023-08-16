@@ -146,13 +146,13 @@ namespace LibGDXSharp.Utils.Buffers;
 /// return the buffer upon which they are invoked.  This allows method invocations to be
 /// chained; for example, the sequence of statements
 /// <code>
-/// b.flip();
-/// b.position(23);
-/// b.limit(42);
+///     b.flip();
+///     b.position(23);
+///     b.limit(42);
 /// </code>
 /// can be replaced by the single, more compact statement
 /// <code>
-/// b.flip().position(23).limit(42);
+///     b.flip().position(23).limit(42);
 /// </code>
 /// </para>
 /// </summary>
@@ -167,7 +167,7 @@ public abstract class Buffer
     internal readonly static int SpliteratorCharacteristics =
         Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.ORDERED;
     #endif
-    
+
     // Invariants: mark <= position <= limit <= capacity
     private int _mark = -1;
 
@@ -177,7 +177,10 @@ public abstract class Buffer
     /// </summary>
     protected Buffer( int mark, int pos, int lim, int cap )
     {
-        if ( cap < 0 ) throw new ArgumentException( "Negative capacity: " + cap );
+        if ( cap < 0 )
+        {
+            throw new ArgumentException( "Negative capacity: " + cap );
+        }
 
         this.Capacity = cap;
 
@@ -186,7 +189,10 @@ public abstract class Buffer
 
         if ( mark >= 0 )
         {
-            if ( mark > pos ) throw new ArgumentException( "mark > position: (" + mark + " > " + pos + ")" );
+            if ( mark > pos )
+            {
+                throw new ArgumentException( "mark > position: (" + mark + " > " + pos + ")" );
+            }
 
             this._mark = mark;
         }
@@ -225,11 +231,17 @@ public abstract class Buffer
     /// </exception>
     public Buffer SetPosition( int newPosition )
     {
-        if ( ( newPosition > Limit ) || ( newPosition < 0 ) ) throw new ArgumentException();
+        if ( ( newPosition > Limit ) || ( newPosition < 0 ) )
+        {
+            throw new ArgumentException();
+        }
 
         Position = newPosition;
 
-        if ( _mark > Position ) _mark = -1;
+        if ( _mark > Position )
+        {
+            _mark = -1;
+        }
 
         return this;
     }
@@ -248,13 +260,22 @@ public abstract class Buffer
     /// </exception>
     public Buffer SetLimit( int newLimit )
     {
-        if ( ( newLimit > Capacity ) || ( newLimit < 0 ) ) throw new ArgumentException();
+        if ( ( newLimit > Capacity ) || ( newLimit < 0 ) )
+        {
+            throw new ArgumentException();
+        }
 
         Limit = newLimit;
 
-        if ( Position > Limit ) Position = Limit;
+        if ( Position > Limit )
+        {
+            Position = Limit;
+        }
 
-        if ( _mark > Limit ) _mark = -1;
+        if ( _mark > Limit )
+        {
+            _mark = -1;
+        }
 
         return this;
     }
@@ -282,7 +303,10 @@ public abstract class Buffer
     {
         int m;
 
-        if ( (m = _mark) < 0 ) throw new InvalidMarkException();
+        if ( ( m = _mark ) < 0 )
+        {
+            throw new InvalidMarkException();
+        }
 
         Position = m;
 
@@ -298,7 +322,6 @@ public abstract class Buffer
     /// </para>
     /// <para>
     /// For example:
-    /// 
     /// <code>
     /// buf.clear();     // Prepare buffer for reading
     /// in.read(buf);    // Read data
@@ -330,12 +353,11 @@ public abstract class Buffer
     /// </para>
     /// <para>
     /// For example:
-    /// 
     /// <code>
-    /// buf.put(magic);    // Prepend header
-    /// in.read(buf);      // Read data into rest of buffer
-    /// buf.flip();        // Flip buffer
-    /// out.write(buf);    // Write header + data to channel
+    ///     buf.put(magic);    // Prepend header
+    ///     in.read(buf);      // Read data into rest of buffer
+    ///     buf.flip();        // Flip buffer
+    ///     out.write(buf);    // Write header + data to channel
     /// </code>
     /// </para>
     /// <para>
@@ -467,14 +489,20 @@ public abstract class Buffer
     /// <returns> The current position value, before it is incremented </returns>
     internal int NextGetIndex()
     {
-        if ( Position >= Limit ) throw new BufferUnderflowException();
+        if ( Position >= Limit )
+        {
+            throw new BufferUnderflowException();
+        }
 
         return Position++;
     }
 
     internal int NextGetIndex( int nb )
     {
-        if ( ( Limit - Position ) < nb ) throw new BufferUnderflowException();
+        if ( ( Limit - Position ) < nb )
+        {
+            throw new BufferUnderflowException();
+        }
 
         var p = Position;
 
@@ -491,14 +519,20 @@ public abstract class Buffer
     /// <returns> The current position value, before it is incremented </returns>
     internal int NextPutIndex()
     {
-        if ( Position >= Limit ) throw new BufferOverflowException();
+        if ( Position >= Limit )
+        {
+            throw new BufferOverflowException();
+        }
 
         return Position++;
     }
 
     internal int NextPutIndex( int nb )
     {
-        if ( ( Limit - Position ) < nb ) throw new BufferOverflowException();
+        if ( ( Limit - Position ) < nb )
+        {
+            throw new BufferOverflowException();
+        }
 
         var p = Position;
 
@@ -514,14 +548,20 @@ public abstract class Buffer
     /// </summary>
     internal int CheckIndex( int i )
     {
-        if ( ( i < 0 ) || ( i >= Limit ) ) throw new IndexOutOfRangeException();
+        if ( ( i < 0 ) || ( i >= Limit ) )
+        {
+            throw new IndexOutOfRangeException();
+        }
 
         return i;
     }
 
     internal int CheckIndex( int i, int nb )
     {
-        if ( ( i < 0 ) || ( nb > ( Limit - i ) ) ) throw new IndexOutOfRangeException();
+        if ( ( i < 0 ) || ( nb > ( Limit - i ) ) )
+        {
+            throw new IndexOutOfRangeException();
+        }
 
         return i;
     }

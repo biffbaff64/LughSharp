@@ -42,10 +42,13 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 {
     public int Size { get; set; }
 
-    private          BinaryHeapNode[] _nodes;
-    private readonly bool             _isMaxHeap;
+    private readonly bool _isMaxHeap;
 
-    public BinaryHeap( int capacity = 16, bool isMaxHeap = false )
+    private BinaryHeapNode[]? _nodes;
+
+    private const int DEFAULT_CAPACITY = 16;
+    
+    public BinaryHeap( int capacity = DEFAULT_CAPACITY, bool isMaxHeap = false )
     {
         this._isMaxHeap = isMaxHeap;
         this._nodes     = new BinaryHeapNode[ capacity ];
@@ -58,6 +61,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <returns>The specified node.</returns>
     public T Add( ref T node )
     {
+        GdxRuntimeException.ThrowIfNull( _nodes );
+        
         // Expand if necessary.
         if ( Size == _nodes.Length )
         {
@@ -99,8 +104,13 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// </param>
     public bool Contains( T node, bool identity )
     {
+        if ( _nodes == null )
+        {
+            return false;
+        }
+            
         ArgumentNullException.ThrowIfNull( node );
-
+        
         foreach ( BinaryHeapNode n in _nodes )
         {
             if ( ( identity && ( n == node ) )
@@ -139,13 +149,13 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         if ( --Size > 0 )
         {
             _nodes[ 0 ]    = _nodes[ Size ];
-            _nodes[ Size ] = null;
+            _nodes[ Size ] = null!;
 
             Down( 0 );
         }
         else
         {
-            _nodes[ 0 ] = null;
+            _nodes[ 0 ] = null!;
         }
 
         return ( T )removed;
@@ -314,7 +324,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         _nodes[ index ] = node;
     }
 
-    public override bool Equals( object obj )
+    public override bool Equals( object? obj )
     {
         if ( obj is not BinaryHeap< T > other )
         {

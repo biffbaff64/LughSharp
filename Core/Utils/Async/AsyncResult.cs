@@ -18,7 +18,6 @@ namespace LibGDXSharp.Utils.Async;
 
 public class AsyncResult
 {
-
     public bool IsDone()
     {
         throw new NotImplementedException();

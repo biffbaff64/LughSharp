@@ -16,8 +16,6 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
 public abstract class ByteBuffer : Buffer
 {
     protected byte[]? Hb     { get; set; }
@@ -141,7 +139,7 @@ public abstract class ByteBuffer : Buffer
 
     public ByteBuffer Put( ByteBuffer src )
     {
-        if ( src == this )
+        if ( src.Equals( this ) )
         {
             throw new ArgumentException();
         }
@@ -151,7 +149,7 @@ public abstract class ByteBuffer : Buffer
             throw new ReadOnlyBufferException();
         }
 
-        int n = src.Remaining();
+        var n = src.Remaining();
 
         if ( n > Remaining() )
         {
@@ -218,10 +216,10 @@ public abstract class ByteBuffer : Buffer
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
     /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is backed by an array but is read-only
+    /// If this buffer is backed by an array but is read-only
     /// </exception>
     /// <exception cref="UnsupportedOperationException">
-    ///          If this buffer is not backed by an accessible array
+    /// If this buffer is not backed by an accessible array
     /// </exception>
     public byte[] Array()
     {
@@ -254,10 +252,10 @@ public abstract class ByteBuffer : Buffer
     /// <returns>
     /// The offset within this buffer's array of the first element of the buffer </returns>
     /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is backed by an array but is read-only
+    /// If this buffer is backed by an array but is read-only
     /// </exception>
     /// <exception cref="UnsupportedOperationException">
-    ///          If this buffer is not backed by an accessible array
+    /// If this buffer is not backed by an accessible array
     /// </exception>
     public override int ArrayOffset()
     {
@@ -325,7 +323,7 @@ public abstract class ByteBuffer : Buffer
     /// <returns>
     /// <tt>true</tt> if, and only if, this buffer is equal to the given object
     /// </returns>
-    public override bool Equals( object ob )
+    public override bool Equals( object? ob )
     {
         if ( this == ob )
         {
@@ -359,6 +357,11 @@ public abstract class ByteBuffer : Buffer
     {
         return x == y;
     }
+
+    /// <summary>Serves as the default hash function.
+    /// </summary>
+    /// <returns>A hash code for the current object.</returns>
+    public override int GetHashCode() => HashCode();
 
     /// <summary>
     /// Compares this buffer to another.
@@ -433,11 +436,11 @@ public abstract class ByteBuffer : Buffer
 
     public abstract ByteBuffer AsReadOnlyBuffer();
 
-    public abstract byte Get();
+    protected abstract byte Get();
 
-    public abstract ByteBuffer Put( byte b );
+    protected abstract ByteBuffer Put( byte b );
 
-    public abstract byte Get( int index );
+    protected abstract byte Get( int index );
 
     public abstract ByteBuffer Put( int index, byte b );
 
