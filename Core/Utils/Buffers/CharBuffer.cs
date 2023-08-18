@@ -14,8 +14,6 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
-
 namespace LibGDXSharp.Utils.Buffers;
 
 /// <summary>
@@ -23,78 +21,71 @@ namespace LibGDXSharp.Utils.Buffers;
 /// <para>
 /// This class defines four categories of operations upon char buffers:
 /// </para>
-/// <para>
-/// Absolute and relative {@link #get() <i>get</i>} and <see cref="Put(char)"/>
+/// <li>
+/// Absolute and relative <see cref="Get()"/> and <see cref="Put(char)"/>
 /// methods that read and write single chars;
-/// </para>
+/// </li>
+/// <li>
+/// Relative <see cref="Get(char[])"/> methods that transfer contiguous
+/// sequences of chars from this buffer into an array; and
+/// </li>
+/// <li>
+/// Relative <see cref="Put(char[])"/> methods that transfer contiguous
+/// sequences of chars from a char array, string, or some other char
+/// buffer into this buffer; and
+/// </li>
+/// <li>
+/// Methods for <see cref="Compact"/>, <see cref="Duplicate"/>, and
+/// <see cref="Slice"/> a char buffer.
+/// </li>
 /// <para>
-/// Relative {@link #get(char[]) <i>bulk get</i>}
-///   methods that transfer contiguous sequences of chars from this buffer
-///   into an array; and</para></li>
-///
-///   <li><para> Relative {@link #put(char[]) <i>bulk put</i>}
-///   methods that transfer contiguous sequences of chars from a
-///   char array,&#32;a&#32;string, or some other char
-///   buffer into this buffer;&#32;and </para></li>
-///   <li><para> Methods for {@link #compact compacting}, {@link
-///   #duplicate duplicating}, and {@link #slice slicing}
-///   a char buffer.  </para></li>
-///
-/// </ul>
-///
-/// <para>
-/// Char buffers can be created either by {@link #allocate
-/// <i>allocation</i>}, which allocates space for the buffer's
-/// content, by {@link #wrap(char[]) <i>wrapping</i>} an existing
-/// char array or&#32;string into a buffer, or by creating a
+/// Char buffers can be created either by <see cref="Allocate"/>, which
+/// allocates space for the buffer's content, by <see cref="Wrap(char[])"/>
+/// an existing char array or, string into a buffer, or by creating a
 /// <a href="ByteBuffer.html#views"><i>view</i></a> of an existing byte buffer.
 /// </para>
 /// <para>
-/// Like a byte buffer, a char buffer is either <a
-/// href="ByteBuffer.html#direct"><i>direct</i> or <i>non-direct</i></a>.  A
-/// char buffer created via the <tt>wrap</tt> methods of this class will
-/// be non-direct.  A char buffer created as a view of a byte buffer will
-/// be direct if, and only if, the byte buffer itself is direct.  Whether or not
-/// a char buffer is direct may be determined by invoking the {@link
-/// #isDirect isDirect} method.  </para>
-/// <para>
-/// <para> Methods in this class that do not otherwise have a value to return are
-/// specified to return the buffer upon which they are invoked.  This allows
-/// method invocations to be chained.
-/// The sequence of statements
+/// Like a byte buffer, a char buffer is either <i>direct</i> or <i>non-direct</i>.
+/// A char buffer created via the <tt><b>wrap</b></tt> methods of this class will
+/// be non-direct.  A char buffer created as a view of a byte buffer will be direct
+/// if, and only if, the byte buffer itself is direct.  Whether or not a char buffer
+/// is direct may be determined by invoking the <see cref="Buffer.IsDirect()"/> method.
 /// </para>
+/// <para>
+/// Methods in this class that do not otherwise have a value to return are specified
+/// to return the buffer upon which they are invoked. This allows method invocations
+/// to be chained. The sequence of statements
 /// <code>
-///     cb.put("text/");
-///     cb.put(subtype);
-///     cb.put("; charset=");
-///     cb.put(enc);
+///     cb.Put( "text/" );
+///     cb.Put( subtype );
+///     cb.Put( "; charset=" );
+///     cb.Put( enc );
 /// </code>
-///
 /// can, for example, be replaced by the single statement
-///
 /// <code>
-///     cb.put("text/").put(subtype).put("; charset=").put(enc);
+///     cb.Put( "text/" ).Put( subtype ).Put( "; charset=" ).Put( Enc );
 /// </code>
+/// </para>
 /// </summary>
 public abstract class CharBuffer : Buffer
 {
-    private readonly char[]? _hb; // Non-null only for heap buffers
-    private readonly int     _offset;
+    protected readonly int offset;
 
-    public CharBuffer( int mark, int pos, int lim, int cap, char[]? hb = null, int offset = 0 )
+    private readonly char[]? _hb; // Non-null only for heap buffers
+
+    protected CharBuffer( int mark, int pos, int lim, int cap, char[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        this._hb     = hb;
-        this._offset = offset;
+        this._hb    = hb;
+        this.offset = offset;
     }
 
     /// <summary>
     /// Allocates a new char buffer.
     /// <para>
-    /// The new buffer's position will be zero, its limit will be its
-    /// capacity, its mark will be undefined, and each of its elements will be
-    /// initialized to zero.  It will have a {@link #array backing array},
-    /// and its {@link #arrayOffset array offset} will be zero.
+    /// The new buffer's position will be zero, its limit will be its capacity, its
+    /// mark will be undefined, and each of its elements will be initialized to zero.
+    /// It will have a backing array, and its <see cref="ArrayOffset"/> will be zero.
     /// </para>
     /// <param name="capacity"> The new buffer's capacity, in chars </param>
     /// <returns> The new char buffer </returns>
@@ -104,7 +95,10 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     public static CharBuffer Allocate( int capacity )
     {
-        if ( capacity < 0 ) throw new ArgumentException();
+        if ( capacity < 0 )
+        {
+            throw new ArgumentException();
+        }
 
         return new HeapCharBuffer( capacity, capacity );
     }
@@ -139,7 +133,7 @@ public abstract class CharBuffer : Buffer
         {
             return new HeapCharBuffer( array, offset, length );
         }
-        catch ( ArgumentException x )
+        catch ( ArgumentException )
         {
             throw new IndexOutOfRangeException();
         }
@@ -163,10 +157,10 @@ public abstract class CharBuffer : Buffer
     }
 
     /// <summary>
-    /// Attempts to read characters into the specified character buffer.
-    /// The buffer is used as a repository of characters as-is: the only
-    /// changes made are the results of a put operation. No flipping or
-    /// rewinding of the buffer is performed.
+    /// Attempts to read characters into the specified character buffer. The
+    /// buffer is used as a repository of characters as-is: the only changes made
+    /// are the results of a put operation. No flipping or rewinding of the buffer
+    /// is performed.
     /// </summary>
     /// <param name="target"> the buffer to read characters into </param>
     /// <returns>
@@ -182,13 +176,19 @@ public abstract class CharBuffer : Buffer
         var targetRemaining = target.Remaining();
         var remaining       = Remaining();
 
-        if ( remaining == 0 ) return -1;
+        if ( remaining == 0 )
+        {
+            return -1;
+        }
 
         var n     = Math.Min( remaining, targetRemaining );
         var limit = Limit;
 
         // Set source limit to prevent target overflow
-        if ( targetRemaining < remaining ) Limit = Position + n;
+        if ( targetRemaining < remaining )
+        {
+            Limit = Position + n;
+        }
 
         try
         {
@@ -235,7 +235,7 @@ public abstract class CharBuffer : Buffer
         {
             return new StringCharBuffer( csq, start, end );
         }
-        catch ( ArgumentException x )
+        catch ( ArgumentException )
         {
             throw new IndexOutOfRangeException();
         }
@@ -290,7 +290,7 @@ public abstract class CharBuffer : Buffer
     /// </para>
     /// </summary>
     /// <param name="dst">The array into which chars are to be written</param>
-    /// <param name="offset">
+    /// <param name="off">
     /// The offset within the array of the first char to be written; must be non-negative
     /// and no larger than <tt>dst.length</tt>
     /// </param>
@@ -305,15 +305,18 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     /// If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold
     /// </exception>
-    public CharBuffer Get( char[] dst, int offset, int length )
+    public CharBuffer Get( char[] dst, int off, int length )
     {
-        CheckBounds( offset, length, dst.Length );
+        CheckBounds( off, length, dst.Length );
 
-        if ( length > Remaining() ) throw new BufferUnderflowException();
+        if ( length > Remaining() )
+        {
+            throw new BufferUnderflowException();
+        }
 
-        var end = offset + length;
+        var end = off + length;
 
-        for ( var i = offset; i < end; i++ )
+        for ( var i = off; i < end; i++ )
         {
             dst[ i ] = Get();
         }
@@ -323,24 +326,20 @@ public abstract class CharBuffer : Buffer
 
     /// <summary>
     /// Relative bulk <i>get</i> method.
-    /// 
-    /// <para> This method transfers chars from this buffer into the given
-    /// destination array.  An invocation of this method of the form
-    /// <tt>src.get(a)</tt> behaves in exactly the same way as the invocation
-    /// 
-    /// <pre>
-    ///     src.get(a, 0, a.length) </pre>
-    /// 
+    /// <para>
+    /// This method transfers chars from this buffer into the given destination
+    /// array. An invocation of this method of the form <tt>src.get(a)</tt> behaves
+    /// in exactly the same way as the invocation
+    /// <code>
+    ///     src.get(a, 0, a.length)
+    /// </code>
     /// </para>
     /// </summary>
-    /// <param name="dst">
-    ///          The destination array
-    /// </param>
-    /// <returns>  This buffer
-    /// </returns>
+    /// <param name="dst"> The destination array </param>
+    /// <returns> This buffer </returns>
     /// <exception cref="BufferUnderflowException">
-    ///          If there are fewer than <tt>length</tt> chars
-    ///          remaining in this buffer </exception>
+    /// If there are fewer than <tt>length</tt> chars remaining in this buffer
+    /// </exception>
     public CharBuffer Get( char[] dst )
     {
         return Get( dst, 0, dst.Length );
@@ -354,57 +353,57 @@ public abstract class CharBuffer : Buffer
 
     /// <summary>
     /// Relative bulk <i>put</i> method  <i>(optional operation)</i>.
-    /// 
-    /// <para> This method transfers the chars remaining in the given source
-    /// buffer into this buffer.  If there are more chars remaining in the
-    /// source buffer than in this buffer, that is, if
-    /// <tt>src.Remaining()</tt> <tt>&gt;</tt> <tt>Remaining()</tt>,
-    /// then no chars are transferred and a {@link
-    /// BufferOverflowException} is thrown.
-    /// 
+    /// <para>
+    /// This method transfers the chars remaining in the given source buffer into this
+    /// buffer. If there are more chars remaining in the source buffer than in this
+    /// buffer, that is, if <tt>src.Remaining()</tt> <tt>&gt;</tt> <tt>Remaining()</tt>,
+    /// then no chars are transferred and a <see cref="BufferOverflowException"/> is thrown.
     /// </para>
-    /// <para> Otherwise, this method copies
-    /// <i>n</i> = <tt>src.Remaining()</tt> chars from the given
-    /// buffer into this buffer, starting at each buffer's current position.
-    /// The positions of both buffers are then incremented by <i>n</i>.
-    /// 
+    /// <para>
+    /// Otherwise, this method copies <i>n</i> = <tt>src.Remaining()</tt> chars from the
+    /// given buffer into this buffer, starting at each buffer's current position. The
+    /// positions of both buffers are then incremented by <i>n</i>.
     /// </para>
-    /// <para> In other words, an invocation of this method of the form
-    /// <tt>dst.put(src)</tt> has exactly the same effect as the loop
-    /// 
-    /// <pre>
+    /// <para>
+    /// In other words, an invocation of this method of the form <tt>dst.put(src)</tt>
+    /// has exactly the same effect as the loop
+    /// <code>
     ///     while (src.hasRemaining())
-    ///         dst.put(src.get()); </pre>
-    /// 
-    /// except that it first checks that there is sufficient space in this
-    /// buffer and it is potentially much more efficient.
-    /// 
+    ///     {
+    ///         dst.put( src.get() );
+    /// </code>
+    /// except that it first checks that there is sufficient space in this buffer and it
+    /// is potentially much more efficient.
     /// </para>
     /// </summary>
     /// <param name="src">
-    ///         The source buffer from which chars are to be read;
-    ///         must not be this buffer
+    /// The source buffer from which chars are to be read; must not be this buffer
     /// </param>
-    /// <returns>  This buffer
-    /// </returns>
+    /// <returns> This buffer </returns>
     /// <exception cref="BufferOverflowException">
-    ///          If there is insufficient space in this buffer
-    ///          for the remaining chars in the source buffer
+    /// If there is insufficient space in this buffer for the remaining chars in the
+    /// source buffer
     /// </exception>
-    /// <exception cref="IllegalArgumentException">
-    ///          If the source buffer is this buffer
-    /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is read-only </exception>
+    /// <exception cref="ArgumentException"> If the source buffer is this buffer </exception>
+    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public CharBuffer Put( CharBuffer src )
     {
-        if ( src == this ) throw new ArgumentException();
+        if ( src == this )
+        {
+            throw new ArgumentException();
+        }
 
-        if ( IsReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly )
+        {
+            throw new ReadOnlyBufferException();
+        }
 
         var n = src.Remaining();
 
-        if ( n > Remaining() ) throw new BufferOverflowException();
+        if ( n > Remaining() )
+        {
+            throw new BufferOverflowException();
+        }
 
         for ( var i = 0; i < n; i++ )
         {
@@ -429,23 +428,20 @@ public abstract class CharBuffer : Buffer
     /// of this buffer.  The position of this buffer is then incremented by <tt>length</tt>.
     /// </para>
     /// <para>
-    /// In other words, an invocation of this method of the form
-    /// <tt>dst.put(src, off, len)</tt> has exactly the same effect as
-    /// the loop
-    /// 
+    /// In other words, an invocation of this method of the form <tt>dst.put(src, off, len)</tt>
+    /// has exactly the same effect as the loop
     /// <code>
     ///     for (int i = off; i &lt; off + len; i++)
     ///     {
     ///         dst.put(a[i]);
     ///     }
     /// </code>
-    /// 
-    /// except that it first checks that there is sufficient space in this
-    /// buffer and it is potentially much more efficient.
+    /// except that it first checks that there is sufficient space in this buffer and it is
+    /// potentially much more efficient.
     /// </para>
     /// </summary>
     /// <param name="src"> The array from which chars are to be read </param>
-    /// <param name="offset">
+    /// <param name="off">
     /// The offset within the array of the first char to be read; must be non-negative
     /// and no larger than <tt>array.length</tt>
     /// </param>
@@ -459,15 +455,18 @@ public abstract class CharBuffer : Buffer
     /// If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold
     /// </exception>
     /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
-    public CharBuffer Put( char[] src, int offset, int length )
+    public CharBuffer Put( char[] src, int off, int length )
     {
-        CheckBounds( offset, length, src.Length );
+        CheckBounds( off, length, src.Length );
 
-        if ( length > Remaining() ) throw new BufferOverflowException();
+        if ( length > Remaining() )
+        {
+            throw new BufferOverflowException();
+        }
 
-        var end = offset + length;
+        var end = off + length;
 
-        for ( var i = offset; i < end; i++ )
+        for ( var i = off; i < end; i++ )
         {
             this.Put( src[ i ] );
         }
@@ -481,7 +480,6 @@ public abstract class CharBuffer : Buffer
     /// This method transfers the entire content of the given source char array
     /// into this buffer. An invocation of this method of the form <tt>dst.put(a)</tt>
     /// behaves in exactly the same way as the invocation
-    ///
     /// <code>
     ///     dst.put(a, 0, a.length)
     /// </code>
@@ -510,7 +508,6 @@ public abstract class CharBuffer : Buffer
     /// <para>
     /// In other words, an invocation of this method of the form <tt>dst.put(src, start, end)</tt>
     /// has exactly the same effect as the loop
-    /// 
     /// <code>
     ///     for (int i = start; i &lt; end; i++)
     ///     {
@@ -542,9 +539,15 @@ public abstract class CharBuffer : Buffer
     {
         CheckBounds( start, end - start, src.Length );
 
-        if ( IsReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly )
+        {
+            throw new ReadOnlyBufferException();
+        }
 
-        if ( ( end - start ) > Remaining() ) throw new BufferOverflowException();
+        if ( ( end - start ) > Remaining() )
+        {
+            throw new BufferOverflowException();
+        }
 
         for ( var i = start; i < end; i++ )
         {
@@ -559,7 +562,6 @@ public abstract class CharBuffer : Buffer
     /// <para>
     /// This method transfers the entire content of the given source string into this
     /// buffer. An invocation of this method of the form
-    ///
     /// <code>
     ///     <tt>dst.put(s)</tt>
     /// </code>
@@ -583,7 +585,7 @@ public abstract class CharBuffer : Buffer
     #endregion Bulk put operations
 
     // ------------------------------------------------------------------------
-    
+
     #region miscellaneous abstract methods
 
     /// <summary>
@@ -594,7 +596,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="BufferUnderflowException">
     /// If the buffer's current position is not smaller than its limit
     /// </exception>
-    public abstract char Get();
+    protected abstract char Get();
 
     /// <summary>
     /// Relative <i>put</i> method  <i>(optional operation)</i>.
@@ -609,9 +611,9 @@ public abstract class CharBuffer : Buffer
     /// If this buffer's current position is not smaller than its limit
     /// </exception>
     /// <exception cref="ReadOnlyBufferException">
-    /// If this buffer is read-only, which it shouldn't be!````
+    /// If this buffer is read-only, which it shouldn't be!
     /// </exception>
-    public abstract CharBuffer Put( char c );
+    protected abstract CharBuffer Put( char c );
 
     /// <summary>
     /// Absolute <i>get</i> method.  Reads the char at the given index.
@@ -621,7 +623,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     /// If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    public abstract char Get( int index );
+    protected abstract char Get( int index );
 
     /// <summary>
     /// Absolute <i>get</i> method. Reads the char at the given index without
@@ -629,7 +631,7 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <param name="index">The index from which the char will be read</param>
     /// <returns>  The char at the given index </returns>
-    public abstract char GetUnchecked( int index ); // package-private
+    public abstract char GetUnchecked( int index );
 
     /// <summary>
     /// Absolute <i>put</i> method  <i>(optional operation)</i>.
@@ -650,12 +652,14 @@ public abstract class CharBuffer : Buffer
 
     /// <summary>
     /// Compacts this buffer  <i>(optional operation)</i>.
+    /// <para>
     /// The chars between the buffer's current position and its limit, if any, are
     /// copied to the beginning of the buffer. That is, the char at index p = position()
     /// is copied to index zero, the char at index p + 1 is copied to index one, and so
     /// forth until the char at index limit() - 1 is copied to index n = limit() - 1 - p.
     /// The buffer's position is then set to n+1 and its limit is set to its capacity.
     /// The mark, if defined, is discarded.
+    /// </para>
     /// <para>
     /// The buffer's position is set to the number of chars copied, rather than to zero,
     /// so that an invocation of this method can be followed immediately by an invocation
@@ -704,8 +708,7 @@ public abstract class CharBuffer : Buffer
     public abstract CharBuffer Duplicate();
 
     /// <summary>
-    /// Creates a new, read-only char buffer that shares this buffer's
-    /// content.
+    /// Creates a new, read-only char buffer that shares this buffer's content.
     /// <para>
     /// The content of the new buffer will be that of this buffer.  Changes
     /// to this buffer's content will be visible in the new buffer; the new
@@ -719,13 +722,13 @@ public abstract class CharBuffer : Buffer
     /// </para>
     /// <para>
     /// If this buffer is itself read-only then this method behaves in
-    /// exactly the same way as the <see cref="duplicate duplicate"/> method.
+    /// exactly the same way as the <see cref="Duplicate"/> method.
     /// </para>
     /// </summary>
     /// <returns>  The new, read-only char buffer </returns>
     public abstract CharBuffer AsReadOnlyBuffer();
 
-    public abstract string ToString( int start, int end );
+    protected abstract string ToString( int start, int end );
 
     /// <summary>
     /// Retrieves this buffer's byte order.
@@ -738,50 +741,53 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <returns> This buffer's byte order </returns>
     public abstract ByteOrder Order();
-    
+
     #endregion miscellaneous abstract methods
-    
+
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Tells whether or not this buffer is backed by an accessible char
-    /// array.
-    /// 
-    /// <para> If this method returns <tt>true</tt> then the <see cref="Array()"/>
+    /// Tells whether or not this buffer is backed by an accessible char array.
+    /// <para>
+    /// If this method returns <tt>true</tt> then the <see cref="Array()"/>
     /// and <see cref="ArrayOffset()"/> methods may safely be invoked.
     /// </para>
     /// </summary>
-    /// <returns>  <tt>true</tt> if, and only if, this buffer
-    ///          is backed by an array and is not read-only </returns>
-    public override bool HasArray()
-    {
-        return ( _hb != null ) && !IsReadOnly;
-    }
+    /// <returns>
+    /// <tt>true</tt> if, and only if, this buffer is backed by an array and
+    /// is not read-only
+    /// </returns>
+    public override bool HasArray() => ( _hb != null ) && !IsReadOnly;
 
     /// <summary>
-    /// Returns the char array that backs this
-    /// buffer  <i>(optional operation)</i>.
-    /// 
-    /// <para> Modifications to this buffer's content will cause the returned
-    /// array's content to be modified, and vice versa.
-    /// 
+    /// Returns the char array that backs this buffer <i>(optional operation)</i>.
+    /// <para>
+    /// Modifications to this buffer's content will cause the returned array's
+    /// content to be modified, and vice versa.
     /// </para>
-    /// <para> Invoke the <see cref="HasArray"/> method before invoking this
-    /// method in order to ensure that this buffer has an accessible backing
-    /// array.  </para>
+    /// <para>
+    /// Invoke the <see cref="HasArray"/> method before invoking this method in
+    /// order to ensure that this buffer has an accessible backing array.
+    /// </para>
     /// </summary>
-    /// <returns>  The array that backs this buffer
-    /// </returns>
+    /// <returns> The array that backs this buffer </returns>
     /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is backed by an array but is read-only
+    /// If this buffer is backed by an array but is read-only
     /// </exception>
     /// <exception cref="UnsupportedOperationException">
-    ///          If this buffer is not backed by an accessible array </exception>
+    /// If this buffer is not backed by an accessible array.
+    /// </exception>
     public override char[] BackingArray()
     {
-        if ( _hb == null ) throw new UnsupportedOperationException();
+        if ( _hb == null )
+        {
+            throw new UnsupportedOperationException();
+        }
 
-        if ( IsReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly )
+        {
+            throw new ReadOnlyBufferException();
+        }
 
         return _hb;
     }
@@ -798,34 +804,42 @@ public abstract class CharBuffer : Buffer
     /// order to ensure that this buffer has an accessible backing array.
     /// </para>
     /// </summary>
-    /// <returns>  The offset within this buffer's array
-    ///          of the first element of the buffer
+    /// <returns>
+    /// The offset within this buffer's array of the first element of the buffer
     /// </returns>
     /// <exception cref="ReadOnlyBufferException">
-    ///          If this buffer is backed by an array but is read-only
+    /// If this buffer is backed by an array but is read-only.
     /// </exception>
     /// <exception cref="UnsupportedOperationException">
-    ///          If this buffer is not backed by an accessible array </exception>
+    /// If this buffer is not backed by an accessible array.
+    /// </exception>
     public override int ArrayOffset()
     {
-        if ( _hb == null ) throw new UnsupportedOperationException();
+        if ( _hb == null )
+        {
+            throw new UnsupportedOperationException();
+        }
 
-        if ( IsReadOnly ) throw new ReadOnlyBufferException();
+        if ( IsReadOnly )
+        {
+            throw new ReadOnlyBufferException();
+        }
 
-        return _offset;
+        return offset;
     }
 
     /// <summary>
     /// Returns the current hash code of this buffer.
-    /// 
-    /// <para> The hash code of a char buffer depends only upon its remaining
+    /// <para>
+    /// The hash code of a char buffer depends only upon its remaining
     /// elements; that is, upon the elements from <tt>position()</tt> up to, and
     /// including, the element at <tt>limit()</tt> - <tt>1</tt>.
-    /// 
     /// </para>
-    /// <para> Because buffer hash codes are content-dependent, it is inadvisable
+    /// <para>
+    /// Because buffer hash codes are content-dependent, it is inadvisable
     /// to use buffers as keys in hash maps or similar data structures unless it
-    /// is known that their contents will not change.  </para>
+    /// is known that their contents will not change.
+    /// </para>
     /// </summary>
     /// <returns>  The current hash code of this buffer </returns>
     public int HashCode()
@@ -843,28 +857,36 @@ public abstract class CharBuffer : Buffer
 
     /// <summary>
     /// Compares this buffer to another.
-    /// 
-    /// <para> Two char buffers are compared by comparing their sequences of
-    /// remaining elements lexicographically, without regard to the starting
-    /// position of each sequence within its corresponding buffer.
-    /// Pairs of {@code char} elements are compared as if by invoking
-    /// <see cref="Character.compare(char,char)"/>.
-    /// 
-    /// 
+    /// <para>
+    /// Two char buffers are compared by comparing their sequences of remaining
+    /// elements lexicographically, without regard to the starting position of
+    /// each sequence within its corresponding buffer. Pairs of <tt>char</tt>
+    /// elements are compared as if by invoking <see cref="CharHelper.Compare(char,char)"/>.
     /// </para>
-    /// <para> A char buffer is not comparable to any other type of object.
-    /// 
+    /// <para>
+    /// A char buffer is not comparable to any other type of object.
     /// </para>
     /// </summary>
-    /// <returns>  A negative integer, zero, or a positive integer as this buffer
-    ///          is less than, equal to, or greater than the given buffer </returns>
+    /// <returns>
+    /// A negative integer, zero, or a positive integer as this buffer is less than,
+    /// equal to, or greater than the given buffer
+    /// </returns>
     public new bool Equals( object ob )
     {
-        if ( this == ob ) return true;
+        if ( this == ob )
+        {
+            return true;
+        }
 
-        if ( !( ob is CharBuffer that ) ) return false;
+        if ( !( ob is CharBuffer that ) )
+        {
+            return false;
+        }
 
-        if ( this.Remaining() != that.Remaining() ) return false;
+        if ( this.Remaining() != that.Remaining() )
+        {
+            return false;
+        }
 
         var p = this.Position;
 
@@ -886,21 +908,19 @@ public abstract class CharBuffer : Buffer
 
     /// <summary>
     /// Compares this buffer to another.
-    /// 
-    /// <para> Two char buffers are compared by comparing their sequences of
+    /// <para>
+    /// Two char buffers are compared by comparing their sequences of
     /// remaining elements lexicographically, without regard to the starting
     /// position of each sequence within its corresponding buffer.
     /// Pairs of {@code char} elements are compared as if by invoking
-    /// <see cref="Character.compare(char,char)"/>.
-    /// 
-    /// 
+    /// <see cref="CharHelper.Compare(char,char)"/>.
     /// </para>
-    /// <para> A char buffer is not comparable to any other type of object.
-    /// 
-    /// </para>
+    /// <para> A char buffer is not comparable to any other type of object. </para>
     /// </summary>
-    /// <returns>  A negative integer, zero, or a positive integer as this buffer
-    ///          is less than, equal to, or greater than the given buffer </returns>
+    /// <returns>
+    /// A negative integer, zero, or a positive integer as this buffer is less than,
+    /// equal to, or greater than the given buffer
+    /// </returns>
     public int CompareTo( CharBuffer that )
     {
         var n = this.Position + Math.Min( this.Remaining(), that.Remaining() );
@@ -909,7 +929,10 @@ public abstract class CharBuffer : Buffer
         {
             int cmp = BufferUtils.Compare( this.Get( i ), that.Get( j ) );
 
-            if ( cmp != 0 ) return cmp;
+            if ( cmp != 0 )
+            {
+                return cmp;
+            }
         }
 
         return this.Remaining() - that.Remaining();
@@ -917,22 +940,23 @@ public abstract class CharBuffer : Buffer
 
     /// <summary>
     /// Returns a string containing the characters in this buffer.
-    /// 
-    /// <para> The first character of the resulting string will be the character at
+    /// <para>
+    /// The first character of the resulting string will be the character at
     /// this buffer's position, while the last character will be the character
     /// at index <tt>limit()</tt> - 1.  Invoking this method does not
-    /// change the buffer's position. </para>
+    /// change the buffer's position.
+    /// </para>
     /// </summary>
-    /// <returns>  The specified string </returns>
-    public new string ToString()
+    /// <returns> The specified string </returns>
+    public override string ToString()
     {
         return ToString( Position, Limit );
     }
 
     // ------------------------------------------------------------------------
 
+    //TODO:
     #if USING_INTSTREAM
-
     public virtual IntStream Chars()
     {
         return StreamSupport.IntStream
@@ -940,40 +964,34 @@ public abstract class CharBuffer : Buffer
               Buffer.SpliteratorCharacteristics,
               false );
     }
-
     #endif
 
     // ------------------------------------------------------------------------
-    
+
     #region methods to support charsequence
 
     /// <summary>
     /// Returns the length of this character buffer.
-    /// 
-    /// <para> When viewed as a character sequence, the length of a character
-    /// buffer is simply the number of characters between the position
-    /// (inclusive) and the limit (exclusive); that is, it is equivalent to
-    /// <tt>Remaining()</tt>. </para>
+    /// <para>
+    /// When viewed as a character sequence, the length of a character buffer is
+    /// simply the number of characters between the position (inclusive) and the
+    /// limit (exclusive); that is, it is equivalent to <tt>Remaining()</tt>.
+    /// </para>
     /// </summary>
-    /// <returns>  The length of this character buffer </returns>
-    public int Length()
-    {
-        return Remaining();
-    }
+    /// <returns> The length of this character buffer </returns>
+    public int Length() => Remaining();
 
     /// <summary>
-    /// Reads the character at the given index relative to the current
-    /// position.
+    /// Reads the character at the given index relative to the current position.
     /// </summary>
     /// <param name="index">
-    ///         The index of the character to be read, relative to the position;
-    ///         must be non-negative and smaller than <tt>Remaining()</tt>
+    /// The index of the character to be read, relative to the position. Must be
+    /// non-negative and smaller than <tt>Remaining()</tt>
     /// </param>
-    /// <returns>  The character at index
-    ///          <tt>position() + index</tt>
-    /// </returns>
+    /// <returns> The character at index <tt>position() + index</tt> </returns>
     /// <exception cref="IndexOutOfRangeException">
-    ///          If the preconditions on <tt>index</tt> do not hold </exception>
+    /// If the preconditions on <tt>index</tt> do not hold
+    /// </exception>
     public char CharAt( int index )
     {
         return Get( Position + CheckIndex( index, 1 ) );
@@ -982,26 +1000,24 @@ public abstract class CharBuffer : Buffer
     /// <summary>
     /// Creates a new character buffer that represents the specified subsequence
     /// of this buffer, relative to the current position.
-    /// 
-    /// <para> The new buffer will share this buffer's content; that is, if the
-    /// content of this buffer is mutable then modifications to one buffer will
-    /// cause the other to be modified.  The new buffer's capacity will be that
-    /// of this buffer, its position will be
-    /// <tt>position()</tt> + <tt>start</tt>, and its limit will be
-    /// <tt>position()</tt> + <tt>end</tt>.  The new buffer will be
-    /// direct if, and only if, this buffer is direct, and it will be read-only
-    /// if, and only if, this buffer is read-only.  </para>
+    /// <para>
+    /// The new buffer will share this buffer's content; that is, if the content
+    /// of this buffer is mutable then modifications to one buffer will cause the
+    /// other to be modified.  The new buffer's capacity will be that of this
+    /// buffer, its position will be:- <tt>position()</tt> + <tt>start</tt>, and
+    /// its limit will be <tt>position()</tt> + <tt>end</tt>.  The new buffer will
+    /// be direct if, and only if, this buffer is direct, and it will be read-only
+    /// if, and only if, this buffer is read-only.
+    /// </para>
     /// </summary>
     /// <param name="start">
-    ///         The index, relative to the current position, of the first
-    ///         character in the subsequence; must be non-negative and no larger
-    ///         than <tt>Remaining()</tt>
+    /// The index, relative to the current position, of the first character in the
+    /// subsequence; must be non-negative and no larger than <tt>Remaining()</tt>
     /// </param>
     /// <param name="end">
-    ///         The index, relative to the current position, of the character
-    ///         following the last character in the subsequence; must be no
-    ///         smaller than <tt>start</tt> and no larger than
-    ///         <tt>Remaining()</tt>
+    /// The index, relative to the current position, of the character following the
+    /// last character in the subsequence; must be no smaller than <tt>start</tt>
+    /// and no larger than <tt>Remaining()</tt>
     /// </param>
     /// <returns> The new character buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
@@ -1012,7 +1028,7 @@ public abstract class CharBuffer : Buffer
     #endregion methods to support charsequence
 
     // ------------------------------------------------------------------------
-    
+
     #region Methods to support Appendable
 
     /// <summary>
@@ -1039,9 +1055,12 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
     public CharBuffer Append( string? csq )
     {
-        if ( csq == null ) return Put( "null" );
+        if ( csq == null )
+        {
+            return Put( "null" );
+        }
 
-        return Put( csq.ToString() );
+        return Put( csq );
     }
 
     /// <summary>
@@ -1060,8 +1079,7 @@ public abstract class CharBuffer : Buffer
     /// </param>
     /// <param name="start"></param>
     /// <param name="end"></param>
-    /// <returns>  This buffer
-    /// </returns>
+    /// <returns> This buffer </returns>
     /// <exception cref="BufferOverflowException">
     /// If there is insufficient space in this buffer
     /// </exception>
@@ -1089,13 +1107,12 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="BufferOverflowException">
     /// If there is insufficient space in this buffer
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
-    /// If this buffer is read-only
-    /// </exception>
+    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public CharBuffer Append( char c )
     {
         return Put( c );
     }
 
     #endregion Methods to support IAppendable
+
 }

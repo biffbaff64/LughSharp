@@ -16,8 +16,8 @@
 
 using System.Drawing;
 
+using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Maths;
-using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 

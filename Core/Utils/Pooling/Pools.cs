@@ -14,8 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.GdxCore.Utils.Pooling;
-using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Utils.Pooling;
 

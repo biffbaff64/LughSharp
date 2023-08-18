@@ -20,11 +20,11 @@ using System.Text;
 using JetBrains.Annotations;
 
 using LibGDXSharp.Audio;
+using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Async;
-using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Assets;
 

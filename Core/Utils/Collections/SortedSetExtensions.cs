@@ -14,7 +14,7 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Utils.Collections.Extensions;
+namespace LibGDXSharp.Core.Utils.Collections;
 
 public static class SortedSetExtensions
 {

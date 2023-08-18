@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class BufferUtils
 {
     private BufferUtils()
@@ -31,7 +30,6 @@ public class BufferUtils
         return buffer;
     }
 
-    //TODO:
     public static ByteBuffer NewUnsafeByteBuffer( int numBytes )
     {
         throw new NotImplementedException();

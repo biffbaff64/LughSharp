@@ -14,8 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.G2D;
-using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Graphics;
 

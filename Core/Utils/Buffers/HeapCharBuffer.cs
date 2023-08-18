@@ -42,7 +42,7 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="BufferUnderflowException">
     /// If the buffer's current position is not smaller than its limit
     /// </exception>
-    public override char Get() => '\0';
+    protected override char Get() => '\0';
 
     /// <summary>
     /// Relative <i>put</i> method  <i>(optional operation)</i>.
@@ -69,7 +69,7 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="IndexOutOfRangeException">
     /// If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    public override char Get( int index ) => '\0';
+    protected override char Get( int index ) => '\0';
 
     /// <summary>
     /// Absolute <i>get</i> method. Reads the char at the given index without
@@ -173,7 +173,7 @@ public class HeapCharBuffer : CharBuffer
     /// <returns>  The new, read-only char buffer </returns>
     public override CharBuffer AsReadOnlyBuffer() => null;
 
-    public override string ToString( int start, int end ) => null;
+    protected override string ToString( int start, int end ) => null;
 
     /// <summary>
     /// Retrieves this buffer's byte order.

@@ -14,31 +14,70 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics;
+
 namespace LibGDXSharp.Utils.Buffers;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class DirectByteBuffer : MappedByteBuffer
+public sealed class DirectByteBuffer : MappedByteBuffer
 {
+    private readonly static bool Unaligned = Bits.Unaligned();
+    private readonly static bool Unsafe    = Bits.Unsafe();
+
     public DirectByteBuffer( int capacity )
         : base( -1, 0, capacity, capacity )
     {
     }
 
+    public DirectByteBuffer( long addr, int cap, Object ob )
+        : base( -1, 0, cap, cap )
+    {
+        address = addr;
+        cleaner = null;
+        att     = ob;
+    }
+
+    public DirectByteBuffer( IDirectBuffer db, // package-private
+                      int mark,
+                      int pos,
+                      int lim,
+                      int cap,
+                      int off )
+        : base( mark, pos, lim, cap )
+    {
+        address = db.address() + off;
+
+        cleaner = null;
+        att     = db;
+    }
+
     public override object BackingArray() => null;
 
-    public override bool IsDirect() => false;
+    public override bool IsDirect() => true;
 
-    public override ByteBuffer Slice() => null;
+    public override ByteBuffer Slice()
+    {
+        var pos = this.Position;
+        var lim = this.Limit;
+
+        Debug.Assert( pos <= lim );
+
+        var rem = ( pos <= lim ? lim - pos : 0 );
+        var off = ( pos << 0 );
+
+        Debug.Assert( off >= 0 );
+
+        return new DirectByteBuffer( this, -1, 0, rem, rem, off );
+    }
 
     public override ByteBuffer Duplicate() => null;
 
     public override ByteBuffer AsReadOnlyBuffer() => null;
 
-    public override byte Get() => 0;
+    protected override byte Get() => 0;
 
-    public override ByteBuffer Put( byte b ) => null;
+    protected override ByteBuffer Put( byte b ) => null;
 
-    public override byte Get( int index ) => 0;
+    protected override byte Get( int index ) => 0;
 
     public override ByteBuffer Put( int index, byte b ) => null;
 
@@ -102,5 +141,60 @@ public class DirectByteBuffer : MappedByteBuffer
 
     public override ByteBuffer PutDouble( int index, double value ) => null;
 
-    public override DoubleBuffer AsDoubleBuffer() => null;
+    public override DoubleBuffer AsDoubleBuffer()
+    {
+        var off = this.Position;
+        var lim = this.Limit;
+
+        Debug.Assert( off <= lim );
+
+        var rem = ( off <= lim ? lim - off : 0 );
+
+        var size = rem >> 3;
+
+        if ( !Unaligned && ( ( address + off ) % ( 1 << 3 ) != 0 ) )
+        {
+            return ( bigEndian
+                ? ( DoubleBuffer )( new ByteBufferAsDoubleBufferB
+                    (
+                    this,
+                    -1,
+                    0,
+                    size,
+                    size,
+                    off
+                    ) )
+                : ( DoubleBuffer )( new ByteBufferAsDoubleBufferL
+                    (
+                    this,
+                    -1,
+                    0,
+                    size,
+                    size,
+                    off
+                    ) ) );
+        }
+        else
+        {
+            return ( nativeByteOrder
+                ? ( DoubleBuffer )( new DirectDoubleBufferU
+                    (
+                    this,
+                    -1,
+                    0,
+                    size,
+                    size,
+                    off
+                    ) )
+                : ( DoubleBuffer )( new DirectDoubleBufferS
+                    (
+                    this,
+                    -1,
+                    0,
+                    size,
+                    size,
+                    off
+                    ) ) );
+        }
+    }
 }

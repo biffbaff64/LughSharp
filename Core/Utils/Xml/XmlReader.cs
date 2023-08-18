@@ -20,7 +20,6 @@ using System.Text;
 using JetBrains.Annotations;
 
 using LibGDXSharp.Core.Utils.Collections;
-using LibGDXSharp.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Utils.Xml;
 

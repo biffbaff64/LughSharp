@@ -700,7 +700,7 @@ UTILS/BUFFERS
     - DONE - Buffer
     - IP   - BufferUtils
     - DONE - ByteBuffer
-    - IP   - CharBuffer
+    - DONE - CharBuffer
     - IP   - DirectByteBuffer
     - IP   - DoubleBuffer
     - IP   - FloatBuffer
@@ -711,9 +711,7 @@ UTILS/BUFFERS
     - IP   - LongBuffer
     - IP   - MappedByteBuffer
     - IP   - ShortBuffer
-    - IP   - StringCharBuffer
-    -      - 
-    -      - 
+    - DONE - StringCharBuffer
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -723,14 +721,12 @@ UTILS/COLLECTIONS
 
     Note: C# has IEnumerable and IEnumerator interfaces...
 
-    - DONE - Array<T>                       Converted, but use List<T> so can be deprecated
+    - DONE - Array<T>                       Converted, but use List<T> so can be removed
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - **** - IPredicate
     - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
-    - **** - ObjectSet<T>                   Use List<T>
-    - **** - OrderedSet<T>                  Use SortedSet<T> ?
     - **** - PredicateIterable
     - **** - PredicateIterator
     - DONE - SnapshotArray                  Convert / extend List<T>
@@ -754,7 +750,9 @@ UTILS/COLLECTIONS
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
     - **** - ObjectIntMap                   Use Dictionary< object, int >
     - **** - ObjectLongMap                  Use Dictionary< object, long >
+    - **** - ObjectSet<T>                   Use List<T>
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
+    - **** - OrderedSet<T>                  Use SortedSet<T>
     - **** - ShortArray                     Use List< short >
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

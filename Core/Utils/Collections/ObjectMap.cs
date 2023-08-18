@@ -44,13 +44,26 @@ namespace LibGDXSharp.Core.Utils.Collections;
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public class ObjectMap<TK, TV>
 {
+
+    #region data
+
     protected TK?[] keyTable;
     protected TV?[] valueTable;
 
-    private readonly float _loadFactor;
-    private          int   _threshold;
-
     private readonly object _dummy = new();
+    private readonly float  _loadFactor;
+    private          int    _threshold;
+
+    [NonSerialized] private Entries< TK, TV >? _entries1;
+    [NonSerialized] private Entries< TK, TV >? _entries2;
+    [NonSerialized] private Values< TV >?      _values1;
+    [NonSerialized] private Values< TV >?      _values2;
+    [NonSerialized] private Keys< TK >?        _keys1;
+    [NonSerialized] private Keys< TK >?        _keys2;
+
+    #endregion data
+
+    #region properties
 
     /// <summary>
     /// Used by <see cref="Place"/> to bit shift the upper bits of a <b>long</b>
@@ -81,12 +94,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     public int Size { get; set; }
 
-    [NonSerialized] private Entries< TK, TV >? _entries1;
-    [NonSerialized] private Entries< TK, TV >? _entries2;
-    [NonSerialized] private Values< TV >?      _values1;
-    [NonSerialized] private Values< TV >?      _values2;
-    [NonSerialized] private Keys< TK >?        _keys1;
-    [NonSerialized] private Keys< TK >?        _keys2;
+    #endregion properties
 
     /// <summary>
     /// </summary>
@@ -104,8 +112,8 @@ public class ObjectMap<TK, TV>
         var tableSize = TableSize( initialCapacity, loadFactor );
 
         _threshold = ( int )( tableSize * loadFactor );
-        Mask      = tableSize - 1;
-        Shift     = int.LeadingZeroCount( Mask );
+        Mask       = tableSize - 1;
+        Shift      = int.LeadingZeroCount( Mask );
         keyTable   = new TK[ tableSize ];
         valueTable = new TV[ tableSize ];
     }
@@ -115,9 +123,12 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <param name="map">The ObjectMap to copy.</param>
     /// <exception cref="ArgumentException"></exception>
-    protected ObjectMap( ObjectMap< TK, TV > map )
+    protected ObjectMap( ref ObjectMap< TK, TV > map )
     {
-        if ( map == null ) throw new ArgumentException( "supplied map is null!" );
+        if ( map == null )
+        {
+            throw new ArgumentException( "supplied map is null!" );
+        }
 
         if ( map.valueTable == null )
         {
@@ -128,13 +139,13 @@ public class ObjectMap<TK, TV>
 
         var tableSize = TableSize
             (
-             ( int )( map.keyTable.Length * map._loadFactor ),
-             _loadFactor
+            ( int )( map.keyTable.Length * map._loadFactor ),
+            _loadFactor
             );
 
         _threshold = ( int )( tableSize * _loadFactor );
-        Mask      = tableSize - 1;
-        Shift     = int.LeadingZeroCount( Mask );
+        Mask       = tableSize - 1;
+        Shift      = int.LeadingZeroCount( Mask );
 
         keyTable   = new TK[ tableSize ];
         valueTable = new TV[ tableSize ];
@@ -146,11 +157,27 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Returns an index greater than or equal to 0 and less than or equal
-    /// to <see cref="Mask"/> for the specified <tt>item</tt>.
+    /// Returns an index between 0 and <see cref="Mask"/> for the specified <c>item</c>.
+    /// <para>
+    /// The default implementation uses Fibonacci hashing based on the <c>item.GetHashCode()</c>.
+    /// The hash code is multiplied by a constant (2 to the 64th, divided by the golden ratio),
+    /// and the uppermost bits are shifted to obtain an index within the desired range.
+    /// This method can handle even poor hash codes, preventing high collision rates.
+    /// However, it may have increased collision rates when most hash codes are multiples
+    /// of larger Fibonacci numbers.
+    /// </para>
+    /// <para>
+    /// For more details, see <a href="https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">Malte Skarupke's blog post</a>.
+    /// </para>
+    /// <para>
+    /// You can override this method to customize hashing. This might be useful, for instance,
+    /// in cases where most hash codes are Fibonacci numbers, when keys have poor or incorrect
+    /// hash codes, or when high-quality hash codes negate the need for Fibonacci hashing.
+    /// Example: <c>return item.GetHashCode() &amp; Mask;</c>
+    /// </para>
     /// </summary>
-    /// <param name="item"></param>
-    public int Place( TK item )
+    /// <param name="item">The item to calculate the index for.</param>
+    protected virtual int Place( TK item )
     {
         if ( item == null )
         {
@@ -167,17 +194,29 @@ public class ObjectMap<TK, TV>
     /// <exception cref="ArgumentException"></exception>
     private int LocateKey( TK key )
     {
-        if ( key == null ) throw new ArgumentException( "key cannot be null." );
+        if ( key == null )
+        {
+            throw new ArgumentException( "key cannot be null." );
+        }
 
-        if ( keyTable == null ) throw new NullReferenceException( "_keyTable is null" );
+        if ( keyTable == null )
+        {
+            throw new NullReferenceException( "_keyTable is null" );
+        }
 
         for ( var i = Place( key ); /*..*/; i = ( i + 1 ) & Mask )
         {
             TK? other = keyTable[ i ];
 
-            if ( other == null ) return -( i + 1 ); // Empty space is available.
+            if ( other == null )
+            {
+                return -( i + 1 ); // Empty space is available.
+            }
 
-            if ( other.Equals( key ) ) return i; // Same key was found.
+            if ( other.Equals( key ) )
+            {
+                return i; // Same key was found.
+            }
         }
     }
 
@@ -190,8 +229,15 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public TV? Put( TK key, TV? value )
     {
-        if ( keyTable == null ) throw new NullReferenceException( "Put(): _keyTable is null" );
-        if ( valueTable == null ) throw new NullReferenceException( "Put(): _valueTable is null" );
+        if ( keyTable == null )
+        {
+            throw new NullReferenceException( "Put(): _keyTable is null" );
+        }
+
+        if ( valueTable == null )
+        {
+            throw new NullReferenceException( "Put(): _valueTable is null" );
+        }
 
         var i = LocateKey( key );
 
@@ -209,14 +255,29 @@ public class ObjectMap<TK, TV>
         keyTable[ i ]   = key;
         valueTable[ i ] = value;
 
-        if ( ++Size >= _threshold ) Resize( keyTable.Length << 1 );
+        if ( ++Size >= _threshold )
+        {
+            Resize( keyTable.Length << 1 );
+        }
 
-        return default;
+        return default( TV? );
     }
 
     /// <summary>
+    /// Copies all key-value pairs from the specified <paramref name="map"/> into the current collection.
     /// </summary>
-    /// <param name="map"></param>
+    /// <param name="map">The source map containing the key-value pairs to copy.</param>
+    /// <remarks>
+    /// <para>
+    /// This method ensures that the current collection has sufficient capacity to accommodate the
+    /// key-value pairs from the <paramref name="map"/>. Then, it iterates through the key table,
+    /// copying each non-null key along with its associated value from the <paramref name="map"/>
+    /// into the current collection using the <see cref="Put"/> method.
+    /// </para>
+    /// </remarks>
+    /// <seealso cref="Put"/>
+    /// <typeparam name="TK">The type of the keys in the collection.</typeparam>
+    /// <typeparam name="TV">The type of the values in the collection.</typeparam>
     public void PutAll( ObjectMap< TK, TV > map )
     {
         EnsureCapacity( map.Size );
@@ -225,27 +286,57 @@ public class ObjectMap<TK, TV>
         {
             TK? key = keyTable[ i ];
 
-            if ( key != null ) Put( key, valueTable[ i ] );
+            if ( key != null )
+            {
+                Put( key, map.valueTable[ i ] );
+            }
         }
     }
 
     /// <summary>
+    /// Retrieves the value associated with the specified <paramref name="key"/> from the collection.
     /// </summary>
-    /// <param name="key"></param>
-    /// <typeparam name="TT"></typeparam>
-    /// <returns></returns>
+    /// <typeparam name="TT">The type of the key to retrieve.</typeparam>
+    /// <param name="key">The key to look up.</param>
+    /// <returns>
+    /// The value associated with the <paramref name="key"/> if found; otherwise, <c>null</c>.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This method searches the collection for the given <paramref name="key"/> using the <see cref="LocateKey"/> method.
+    /// If the key is found, the associated value is returned; otherwise, <c>null</c> is returned.
+    /// </para>
+    /// </remarks>
+    /// <seealso cref="LocateKey"/>
+    /// <typeparam name="TK">The type constraint for the key type.</typeparam>
+    /// <typeparam name="TV">The type of the value to retrieve.</typeparam>
     public TV? Get<TT>( TT key ) where TT : TK
     {
         var i = LocateKey( key );
 
-        return ( i < 0 ) ? default : valueTable[ i ];
+        return ( i < 0 ) ? default( TV? ) : valueTable[ i ];
     }
 
     /// <summary>
+    /// Retrieves the value associated with the specified <paramref name="key"/> from the collection,
+    /// or returns the provided <paramref name="defaultValue"/> if the key is not found.
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="defaultValue"></param>
-    /// <returns></returns>
+    /// <param name="key">The key to look up.</param>
+    /// <param name="defaultValue">The value to return if the key is not found.</param>
+    /// <returns>
+    /// The value associated with the <paramref name="key"/> if found; otherwise, the
+    /// <paramref name="defaultValue"/> is returned.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This method searches the collection for the given <paramref name="key"/> using
+    /// the <see cref="LocateKey"/> method. If the key is found, the associated value is
+    /// returned; otherwise, the provided <paramref name="defaultValue"/> is returned.
+    /// </para>
+    /// </remarks>
+    /// <seealso cref="LocateKey"/>
+    /// <typeparam name="TK">The type of the keys in the collection.</typeparam>
+    /// <typeparam name="TV">The type of the values in the collection.</typeparam>
     public TV? Get( TK key, TV? defaultValue )
     {
         var i = LocateKey( key );
@@ -307,7 +398,10 @@ public class ObjectMap<TK, TV>
     /// </summary>
     public void Clear()
     {
-        if ( Size == 0 ) return;
+        if ( Size == 0 )
+        {
+            return;
+        }
 
         Size = 0;
 
@@ -431,7 +525,7 @@ public class ObjectMap<TK, TV>
         {
             throw new ArgumentException( "capacity must be >= 0: " + capacity );
         }
-        
+
         var tableSize = MathUtils.NextPowerOfTwo( Math.Max( 2, ( int )Math.Ceiling( capacity / loadFactor ) ) );
 
         if ( tableSize > ( 1 << 30 ) )
@@ -448,11 +542,20 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public new bool Equals( object obj )
     {
-        if ( obj == this ) return true;
+        if ( obj == this )
+        {
+            return true;
+        }
 
-        if ( obj is not ObjectMap< TK, TV > other ) return false;
+        if ( obj is not ObjectMap< TK, TV > other )
+        {
+            return false;
+        }
 
-        if ( other.Size != Size ) return false;
+        if ( other.Size != Size )
+        {
+            return false;
+        }
 
         for ( int i = 0, n = keyTable.Length; i < n; i++ )
         {
@@ -464,11 +567,17 @@ public class ObjectMap<TK, TV>
 
                 if ( value == null )
                 {
-                    if ( other.Get( key, ( TV? )_dummy ) != null ) return false;
+                    if ( other.Get( key, ( TV? )_dummy ) != null )
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    if ( !value.Equals( other.Get( key ) ) ) return false;
+                    if ( !value.Equals( other.Get( key ) ) )
+                    {
+                        return false;
+                    }
                 }
             }
         }
@@ -482,11 +591,17 @@ public class ObjectMap<TK, TV>
 
     protected string ToString( string separator, bool braces )
     {
-        if ( Size == 0 ) return braces ? "{}" : "";
+        if ( Size == 0 )
+        {
+            return braces ? "{}" : "";
+        }
 
         var buffer = new StringBuilder( 32 );
 
-        if ( braces ) buffer.Append( '{' );
+        if ( braces )
+        {
+            buffer.Append( '{' );
+        }
 
         var i = keyTable.Length;
 
@@ -494,7 +609,10 @@ public class ObjectMap<TK, TV>
         {
             TK? key = keyTable[ i ];
 
-            if ( key == null ) continue;
+            if ( key == null )
+            {
+                continue;
+            }
 
             buffer.Append( key );
             buffer.Append( '=' );
@@ -510,7 +628,10 @@ public class ObjectMap<TK, TV>
         {
             TK? key = keyTable[ i ];
 
-            if ( key == null ) continue;
+            if ( key == null )
+            {
+                continue;
+            }
 
             buffer.Append( separator );
             buffer.Append( key );
@@ -528,7 +649,10 @@ public class ObjectMap<TK, TV>
             }
         }
 
-        if ( braces ) buffer.Append( '}' );
+        if ( braces )
+        {
+            buffer.Append( '}' );
+        }
 
         return buffer.ToString();
     }
@@ -541,8 +665,8 @@ public class ObjectMap<TK, TV>
         var oldCapacity = keyTable.Length;
 
         _threshold = ( int )( newSize * _loadFactor );
-        Mask      = newSize - 1;
-        Shift     = int.LeadingZeroCount( Mask );
+        Mask       = newSize - 1;
+        Shift      = int.LeadingZeroCount( Mask );
 
         TK?[] oldKeyTable   = keyTable;
         TV?[] oldValueTable = valueTable;
@@ -593,12 +717,22 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public TV? Remove( TK key )
     {
-        if ( keyTable == null ) throw new NullReferenceException( "Remove(): _keyTable is null" );
-        if ( valueTable == null ) throw new NullReferenceException( "Remove(): _valueTable is null" );
+        if ( keyTable == null )
+        {
+            throw new NullReferenceException( "Remove(): _keyTable is null" );
+        }
+
+        if ( valueTable == null )
+        {
+            throw new NullReferenceException( "Remove(): _valueTable is null" );
+        }
 
         var i = LocateKey( key );
 
-        if ( i < 0 ) return default;
+        if ( i < 0 )
+        {
+            return default;
+        }
 
         TV? oldValue = valueTable[ i ];
 
@@ -638,7 +772,10 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public Entries< TK, TV > GetEntries()
     {
-        if ( CollectionsData.AllocateIterators ) return new Entries< TK, TV >( this );
+        if ( CollectionsData.AllocateIterators )
+        {
+            return new Entries< TK, TV >( this );
+        }
 
         if ( _entries1 == null )
         {
@@ -675,7 +812,10 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public Values< TV > GetValues()
     {
-        if ( CollectionsData.AllocateIterators ) return new Values< TV >( this );
+        if ( CollectionsData.AllocateIterators )
+        {
+            return new Values< TV >( this );
+        }
 
         if ( _values1 == null )
         {
@@ -713,7 +853,10 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public Keys< TK > GetKeys()
     {
-        if ( CollectionsData.AllocateIterators ) return new Keys< TK >( this );
+        if ( CollectionsData.AllocateIterators )
+        {
+            return new Keys< TK >( this );
+        }
 
         if ( _keys1 == null )
         {
@@ -809,7 +952,10 @@ public class ObjectMap<TK, TV>
         {
             var i = currentIndex;
 
-            if ( i < 0 ) throw new IllegalStateException( "Next() must be called before Remove()." );
+            if ( i < 0 )
+            {
+                throw new IllegalStateException( "Next() must be called before Remove()." );
+            }
 
             var mask = map.Mask;
             var next = ( i + 1 ) & mask;
@@ -833,7 +979,10 @@ public class ObjectMap<TK, TV>
 
             map.Size--;
 
-            if ( i != currentIndex ) --nextIndex;
+            if ( i != currentIndex )
+            {
+                --nextIndex;
+            }
 
             currentIndex = -1;
         }
@@ -859,8 +1008,15 @@ public class ObjectMap<TK, TV>
         /// </summary>
         public Entry< TKe, TVe > Next()
         {
-            if ( !HasNext ) throw new NoSuchElementException();
-            if ( !Valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            if ( !HasNext )
+            {
+                throw new NoSuchElementException();
+            }
+
+            if ( !Valid )
+            {
+                throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            }
 
             TKe[] keyTable = map.keyTable!;
 
@@ -894,8 +1050,15 @@ public class ObjectMap<TK, TV>
 
         public TVv? Next()
         {
-            if ( !HasNext ) throw new NoSuchElementException();
-            if ( !Valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            if ( !HasNext )
+            {
+                throw new NoSuchElementException();
+            }
+
+            if ( !Valid )
+            {
+                throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            }
 
             TVv? value = map.valueTable[ nextIndex ];
 
@@ -945,8 +1108,15 @@ public class ObjectMap<TK, TV>
 
         public TKk Next()
         {
-            if ( !HasNext ) throw new NoSuchElementException();
-            if ( !Valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            if ( !HasNext )
+            {
+                throw new NoSuchElementException();
+            }
+
+            if ( !Valid )
+            {
+                throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            }
 
             TKk key = map.keyTable[ nextIndex ]!;
 

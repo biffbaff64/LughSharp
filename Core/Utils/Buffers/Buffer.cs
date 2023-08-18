@@ -156,14 +156,13 @@ namespace LibGDXSharp.Utils.Buffers;
 /// </code>
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 public abstract class Buffer
 {
     /// <summary>
     /// The characteristics of Spliterators that traverse and split elements
     /// maintained in Buffers.
     /// </summary>
-    #if USING_SPLITERATOR
+    #if USING_SPLITERATOR //TODO:
     internal readonly static int SpliteratorCharacteristics =
         Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.ORDERED;
     #endif
@@ -216,7 +215,7 @@ public abstract class Buffer
     /// <summary>
     /// Returns <tt>true</tt> if, and only if, this buffer is read-only
     /// </summary>
-    public bool IsReadOnly { get; set; }
+    public virtual bool IsReadOnly { get; set; }
 
     /// <summary>
     /// Sets this buffer's position.  If the mark is defined and larger than the
