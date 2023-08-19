@@ -115,7 +115,10 @@ public class BitmapFontCache
     /// <param name="yAmount"> The amount in y to move the text </param>
     public void Translate( float xAmount, float yAmount )
     {
-        if ( ( xAmount == 0 ) && ( yAmount == 0 ) ) return;
+        if ( ( xAmount == 0 ) && ( yAmount == 0 ) )
+        {
+            return;
+        }
 
         if ( UseIntegerPositions )
         {
@@ -145,7 +148,10 @@ public class BitmapFontCache
     {
         var newTint = tint.ToFloatBits();
 
-        if ( _currentTint.Equals( newTint ) ) return;
+        if ( _currentTint.Equals( newTint ) )
+        {
+            return;
+        }
 
         _currentTint = newTint;
 
@@ -306,7 +312,10 @@ public class BitmapFontCache
                 var glyphIndex = glyphIndices[ j ];
 
                 // Break early if the glyph is out of bounds.
-                if ( glyphIndex >= end ) break;
+                if ( glyphIndex >= end )
+                {
+                    break;
+                }
 
                 // If inside start and end, change its colour.
                 if ( glyphIndex >= start )
@@ -349,7 +358,7 @@ public class BitmapFontCache
         _color.Set( r, g, b, a );
     }
 
-    public void Draw( IBatch spriteBatch )
+    public virtual void Draw( IBatch spriteBatch )
     {
         List< TextureRegion > regions = Font.GetRegions();
 
@@ -365,7 +374,7 @@ public class BitmapFontCache
         }
     }
 
-    public void Draw( IBatch spriteBatch, int start, int end )
+    protected virtual void Draw( IBatch spriteBatch, int start, int end )
     {
         if ( _pageVertices.Length == 1 )
         {
@@ -387,20 +396,32 @@ public class BitmapFontCache
 
             for ( int ii = 0, n = glyphIndices.Count; ii < n; ii++ )
             {
-                int glyphIndex = glyphIndices[ ii ];
+                var glyphIndex = glyphIndices[ ii ];
 
                 // Break early if the glyph is out of bounds.
-                if ( glyphIndex >= end ) break;
+                if ( glyphIndex >= end )
+                {
+                    break;
+                }
 
                 // Determine if this glyph is within bounds. Use the first match of that for the offset.
-                if ( ( offset == -1 ) && ( glyphIndex >= start ) ) offset = ii;
+                if ( ( offset == -1 ) && ( glyphIndex >= start ) )
+                {
+                    offset = ii;
+                }
 
                 // Determine the vertex count by counting glyphs within bounds.
-                if ( glyphIndex >= start ) count++;
+                if ( glyphIndex >= start )
+                {
+                    count++;
+                }
             }
 
             // Page doesn't need to be rendered.
-            if ( ( offset == -1 ) || ( count == 0 ) ) continue;
+            if ( ( offset == -1 ) || ( count == 0 ) )
+            {
+                continue;
+            }
 
             // Render the page vertex data with the offset and count.
             spriteBatch.Draw( regions[ i ].Texture, _pageVertices[ i ]!, offset * 20, count * 20 );
@@ -521,7 +542,7 @@ public class BitmapFontCache
     private void AddToCache( GlyphLayout layout, float x, float y )
     {
         // Check if the number of font pages has changed.
-        int pageCount = Font.GetRegions().Count;
+        var pageCount = Font.GetRegions().Count;
 
         if ( _pageVertices.Length < pageCount )
         {

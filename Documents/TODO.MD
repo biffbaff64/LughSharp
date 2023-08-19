@@ -41,16 +41,10 @@ LIBGDX CSharp CONVERSION - ROUND 1
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- Do I still need the following:-
-  - Logger
-  - 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 ROOT
 ----
 
     - DONE - Gdx                            
-    -      - LibraryConstants
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -239,7 +233,7 @@ GRAPHICS/G2D
     - DONE - IBatch                         
     - DONE - IPolygonBatch                  
     - DONE - NinePatch                      
-    - IP   - ParticleEffect                 
+    - DONE - ParticleEffect                 
     -      - ParticleEffectPool             
     - IP   - ParticleEmitter                
     -      - PixmapPacker                   
@@ -473,7 +467,7 @@ MATH/COLLISION
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-NETWORK
+NETWORK - DELETE CANDIDATE
 -------
 
     Note:- All this is probably already supported by C# System
@@ -681,10 +675,10 @@ UTILS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/ASYNC
+UTILS/ASYNC - DELETE CANDIDATE
 -----------
 
-     later, purely for education purposes.
+     Convert later, purely for education purposes.
 
     - **** - AsyncExecutor
     - **** - AsyncResult|
@@ -722,53 +716,43 @@ UTILS/COLLECTIONS
     Note: C# has IEnumerable and IEnumerator interfaces...
 
     - DONE - Array<T>                       Converted, but use List<T> so can be removed
-    - DONE - CollectionsData
-    - DONE - DelayedRemovalArray            Convert / Extend List<>
-    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
-    - **** - IPredicate
-    - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
-    - **** - PredicateIterable
-    - **** - PredicateIterator
-    - DONE - SnapshotArray                  Convert / extend List<T>
-
-
-    - **** - Array                          Use List<>
     - **** - ArrayMap                       Use Dictionary<K, V>
     - **** - ArrayIterable                  Use IEnumerable?
     - **** - ArrayIterator                  Use IEnumerator?
     - **** - BoolArray                      Use List< bool >
     - **** - ByteArray                      Use List< byte >
     - **** - CharArray                      Use List< char >
+    - DONE - CollectionsData
+    - DONE - DelayedRemovalArray            Convert / Extend List<>
+    - IP   - DictionaryExtensions
     - **** - FloatArray                     Use List< float >
+    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - **** - IntArray                       Use List< int >
     - **** - IntFloatMap                    Use Dictionary< int, float >
     - **** - IntIntMap                      Use Dictionary< int, int >
     - **** - IntMap                         Use Dictionary< int, V >
     - **** - IntSet                         Use List<int>
+    - **** - IPredicate
+    - IP   - ListExtensions
     - **** - LongArray                      Use List< long >
     - **** - LongMap                        Use Dictionary< long, V >
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
     - **** - ObjectIntMap                   Use Dictionary< object, int >
     - **** - ObjectLongMap                  Use Dictionary< object, long >
+    - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
     - **** - ObjectSet<T>                   Use List<T>
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
     - **** - OrderedSet<T>                  Use SortedSet<T>
+    - **** - PredicateIterable
+    - **** - PredicateIterator
     - **** - ShortArray                     Use List< short >
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/COLLECTIONS/EXTENSIONS
-----------------------------
-
-    - IP   - DictionaryExtensions
-    - IP   - ListExtensions
+    - DONE - SnapshotArray                  Convert / extend List<T>
     - IP   - SortedSetExtensions
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/COMPRESSION
+UTILS/COMPRESSION - DELETE CANDIDATE
 -----------------
 
     - IP   - CRC32
@@ -779,7 +763,7 @@ UTILS/COMPRESSION
     - **** - ICodeProgress
     - **** - LzmaAdapted
 
-UTILS/COMPRESSION/LZ
+UTILS/COMPRESSION/LZ - DELETE CANDIDATE
 --------------------
 
     Convert later, purely for education purposes.
@@ -788,7 +772,7 @@ UTILS/COMPRESSION/LZ
     - **** - InWindow
     - **** - OutWindow
 
-UTILS/COMPRESSION/LZMA
+UTILS/COMPRESSION/LZMA - DELETE CANDIDATE
 ----------------------
 
     Convert later, purely for education purposes.
@@ -797,7 +781,7 @@ UTILS/COMPRESSION/LZMA
     - **** - Decoder
     - **** - Encoder
 
-UTILS/COMPRESSION/RANGECODER
+UTILS/COMPRESSION/RANGECODER - DELETE CANDIDATE
 ----------------------------
 
     Convert later, purely for education purposes.
@@ -810,7 +794,7 @@ UTILS/COMPRESSION/RANGECODER
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/CONCURRENT
+UTILS/CONCURRENT - DELETE CANDIDATE
 ----------------
 
     Convert later, purely for education purposes.
@@ -842,7 +826,7 @@ UTILS/EXCEPTIONS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/JSON
+UTILS/JSON - DELETE CANDIDATE
 ----------
 
     Use an existing Json library, but this could be converted at a later date.
@@ -885,7 +869,7 @@ UTILS/POOLING
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/REFLECT
+UTILS/REFLECT - DELETE CANDIDATE
 -------------
 
     Convert later, purely for education purposes.
@@ -902,7 +886,7 @@ UTILS/REFLECT
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/REGEX
+UTILS/REGEX - DELETE CANDIDATE
 -----------
 
     USE C# REGEX LIBS, THEY'RE MUCH EASIER!!
@@ -933,7 +917,7 @@ UTILS/VIEWPORT
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/XML
+UTILS/XML - DELETE CANDIDATE
 ---------
 
     Use C# XML Libraries, but convert these, eventually, anyway.

@@ -23,13 +23,13 @@ namespace LibGDXSharp.G2D;
 public class ParticleEffect : IDisposable
 {
     private const int DEFAULT_EMITTERS_SIZE = 8;
-            
+
     protected float xSizeScale  = 1f;
     protected float ySizeScale  = 1f;
     protected float motionScale = 1f;
 
     private readonly List< ParticleEmitter > _emitters;
-    private          BoundingBox?             _bounds;
+    private          BoundingBox?            _bounds;
     private          bool                    _ownsTexture;
 
     public ParticleEffect()
@@ -203,7 +203,7 @@ public class ParticleEffect : IDisposable
         }
     }
 
-    public void Load( FileInfo effectFile, FileInfo imagesDir )
+    public void Load( FileInfo effectFile, DirectoryInfo imagesDir )
     {
         LoadEmitters( effectFile );
         LoadEmitterImages( imagesDir );
@@ -217,21 +217,20 @@ public class ParticleEffect : IDisposable
 
     public void LoadEmitters( FileInfo effectFile )
     {
-        StreamReader input = effectFile.Read();
-        _emitters.Clear();
+        Stream input = effectFile.OpenRead();
         
-        BufferedReader reader = null;
+        _emitters.Clear();
 
         try
         {
-            reader = new BufferedReader( new StreamReader( input ), 512 );
+            var reader = new StreamReader( input );
 
             while ( true )
             {
                 ParticleEmitter emitter = NewEmitter( reader );
                 _emitters.Add( emitter );
 
-                if ( reader.readLine() == null )
+                if ( reader.ReadLine() == null )
                 {
                     break;
                 }
@@ -249,17 +248,17 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            if ( _emitters.GetImagePaths().size == 0 )
+            if ( !emitter.GetImagePaths().Any() )
             {
                 continue;
             }
 
             var sprites = new List< Sprite >();
 
-            foreach ( string imagePath in _emitters.GetImagePaths() )
+            foreach ( var imagePath in emitter.GetImagePaths() )
             {
-                string imageName    = new File( imagePath.Replace( '\\', '/' ) ).getName();
-                var    lastDotIndex = imageName.LastIndexOf( '.' );
+                var imageName    = Path.GetFileName( imagePath.Replace( '\\', '/' ) );
+                var lastDotIndex = imageName.LastIndexOf( '.' );
 
                 if ( lastDotIndex != -1 )
                 {
@@ -293,24 +292,22 @@ public class ParticleEffect : IDisposable
 
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
         {
-            ParticleEmitter emitter = _emitters[ i ];
-
-            if ( _emitters.GetImagePaths().size == 0 )
+            if ( !_emitters[ i ].GetImagePaths().Any() )
             {
                 continue;
             }
 
             var sprites = new List< Sprite >();
 
-            foreach ( string imagePath in _emitters.GetImagePaths() )
+            foreach ( var imagePath in _emitters[ i ].GetImagePaths() )
             {
-                string imageName = File( imagePath.Replace( '\\', '/' ) ).GetName();
+                var imageName = Path.GetFileName( imagePath.Replace( '\\', '/' ) );
 
                 Sprite? sprite = loadedSprites[ imageName ];
 
                 if ( sprite == null )
                 {
-                    sprite = new Sprite( LoadTexture( imagesDir.Child( imageName ) ) );
+                    sprite = new Sprite( LoadTexture( new FileInfo( imagePath ) ) );
 
                     loadedSprites[ imageName ] = sprite;
                 }
@@ -318,11 +315,13 @@ public class ParticleEffect : IDisposable
                 sprites.Add( sprite );
             }
 
-            emitter.SetSprites( sprites );
+            _emitters[ i ].SetSprites( sprites );
         }
     }
 
-    protected ParticleEmitter NewEmitter( BufferedStream reader )
+    // ------------------------------------------------------------------------
+
+    protected ParticleEmitter NewEmitter( StreamReader reader )
     {
         return new ParticleEmitter( reader );
     }
@@ -370,7 +369,7 @@ public class ParticleEffect : IDisposable
     }
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Returns the bounding box for all active particles. z axis will always be zero.
     /// </summary>
@@ -411,7 +410,7 @@ public class ParticleEffect : IDisposable
     {
         ScaleEffect( scaleFactor, scaleFactor, motionScaleFactor );
     }
-    
+
     /// <summary>
     /// Permanently scales all the size and motion parameters of all the emitters
     /// in this effect. If this effect originated from a <see cref="ParticleEffectPool"/>,
@@ -434,11 +433,12 @@ public class ParticleEffect : IDisposable
     }
 
     /// <summary>
-    /// Sets the 'CleansUpBlendFunction' <see cref="ParticleEmitter"/> currently in this ParticleEffect.
+    /// Sets the 'CleansUpBlendFunction' <see cref="ParticleEmitter"/> currently
+    /// in this ParticleEffect.
     /// <para>
-    /// IMPORTANT: If set to false and if the next object to use this Batch expects alpha blending,
-    /// you are responsible for setting the Batch's blend function to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    /// before that next object is drawn.
+    /// IMPORTANT: If set to false and if the next object to use this Batch expects
+    /// alpha blending, you are responsible for setting the Batch's blend function
+    /// to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
     /// </para>
     /// </summary>
     /// <param name="cleanUpBlendFunction"></param>

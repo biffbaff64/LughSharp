@@ -216,8 +216,7 @@ public class BitmapFont
         Load( data );
     }
 
-    [SuppressMessage( "ReSharper", "LoopCanBePartlyConvertedToQuery" )]
-    public void Load( BitmapFontData data )
+    protected virtual void Load( BitmapFontData data )
     {
         foreach ( Glyph?[]? page in data.Glyphs )
         {

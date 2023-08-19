@@ -727,8 +727,6 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
         }
     }
 
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-    [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
     public class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
     {
         public FloatFrameBufferBuilder( int width, int height )
@@ -743,8 +741,6 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
         }
     }
 
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-    [SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
     public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< FrameBufferCubemap >
     {
         public FrameBufferCubemapBuilder( int width, int height )

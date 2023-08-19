@@ -17,26 +17,22 @@
 using System.Runtime.Serialization;
 using System.Text;
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Utils.Xml;
 
 /// <summary>
-///     Lightweight XML parser. Supports a subset of XML features: elements, attributes,
-///     text, predefined entities, CDATA, mixed content. Namespaces are parsed as part
-///     of the element or attribute name. Prologs and doctypes are ignored. Only 8-bit
-///     character encodings are supported. Input is assumed to be well formed.
-///     <p>
-///         The default behavior is to parse the XML into a DOM. Extends this class and
-///         override methods to perform event driven parsing. When this is done, the parse
-///         methods will return null.
-///     </p>
+/// Lightweight XML parser. Supports a subset of XML features: elements, attributes,
+/// text, predefined entities, CDATA, mixed content. Namespaces are parsed as part
+/// of the element or attribute name. Prologs and doctypes are ignored. Only 8-bit
+/// character encodings are supported. Input is assumed to be well formed.
+/// <para>
+/// The default behavior is to parse the XML into a DOM. Extends this class and
+/// override methods to perform event driven parsing. When this is done, the parse
+/// methods will return null.
+/// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class XmlReader
+public sealed class XmlReader
 {
     private const int XML_START           = 1;
     private const int XML_FIRST_FINAL     = 34;
@@ -47,17 +43,16 @@ public class XmlReader
     private readonly List< Element > _elements   = new( 8 );
     private readonly StringBuilder   _textBuffer = new( 64 );
     private          Element?        _current;
-
-    private Element? _root;
+    private          Element?        _root;
 
     //TODO: Why ???
-    private readonly static byte[]  XmlActions        = Init_XmlActions_0();
+    private readonly static byte[]  XmlActions       = Init_XmlActions_0();
     private readonly static byte[]  XmlKeyOffsets    = Init_XmlKeyOffsets_0();
     private readonly static char[]  XmlTransKeys     = Init_XmlTransKeys_0();
     private readonly static byte[]  XmlSingleLengths = Init_XmlSingleLengths_0();
     private readonly static byte[]  XmlRangeLengths  = Init_XmlRangeLengths_0();
     private readonly static short[] XmlIndexOffsets  = Init_XmlIndexOffsets_0();
-    private readonly static byte[]  XmlIndicies       = Init_XmlIndicies_0();
+    private readonly static byte[]  XmlIndicies      = Init_XmlIndicies_0();
     private readonly static byte[]  XmlTransTargs    = Init_XmlTransTargs_0();
     private readonly static byte[]  XmlTransActions  = Init_XmlTransActions_0();
 
@@ -210,6 +205,7 @@ public class XmlReader
         {
             throw new SerializationException( ex.Message );
         }
+
 //        finally
 //        {
 //            StreamUtils.CloseQuietly( reader );
@@ -401,25 +397,25 @@ public class XmlReader
                                         if ( ( c == '?' ) || ( c == '!' ) )
                                         {
                                             if ( ( data[ s + 1 ] == '[' )
-                                                 && //
+                                              && //
                                                  ( data[ s + 2 ] == 'C' )
-                                                 && //
+                                              && //
                                                  ( data[ s + 3 ] == 'D' )
-                                                 && //
+                                              && //
                                                  ( data[ s + 4 ] == 'A' )
-                                                 && //
+                                              && //
                                                  ( data[ s + 5 ] == 'T' )
-                                                 && //
+                                              && //
                                                  ( data[ s + 6 ] == 'A' )
-                                                 && //
+                                              && //
                                                  ( data[ s + 7 ] == '[' ) )
                                             {
                                                 s += 8;
                                                 p =  s + 2;
 
                                                 while ( ( data[ p - 2 ] != ']' )
-                                                        || ( data[ p - 1 ] != ']' )
-                                                        || ( data[ p ] != '>' ) )
+                                                     || ( data[ p - 1 ] != ']' )
+                                                     || ( data[ p ] != '>' ) )
                                                 {
                                                     p++;
                                                 }
@@ -427,14 +423,14 @@ public class XmlReader
                                                 Text( new string( data, s, p - s - 2 ) );
                                             }
                                             else if ( ( c == '!' )
-                                                      && ( data[ s + 1 ] == '-' )
-                                                      && ( data[ s + 2 ] == '-' ) )
+                                                   && ( data[ s + 1 ] == '-' )
+                                                   && ( data[ s + 2 ] == '-' ) )
                                             {
                                                 p = s + 3;
 
                                                 while ( ( data[ p ] != '-' )
-                                                        || ( data[ p + 1 ] != '-' )
-                                                        || ( data[ p + 2 ] != '>' ) )
+                                                     || ( data[ p + 1 ] != '-' )
+                                                     || ( data[ p + 2 ] != '>' ) )
                                                 {
                                                     p++;
                                                 }
@@ -607,6 +603,7 @@ public class XmlReader
                                     }
 
                                         break;
+
                                     // line 286 "XmlReader.java"
                                 }
                             }

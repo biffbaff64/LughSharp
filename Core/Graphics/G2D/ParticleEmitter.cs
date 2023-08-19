@@ -23,8 +23,8 @@ public class ParticleEmitter
     public int         Duration      { get; set; }
     public int         DurationTimer { get; set; }
     public BoundingBox BoundingBox   { get; set; }
-    
-    public ParticleEmitter( BufferedStream reader )
+
+    public ParticleEmitter( StreamReader reader )
     {
     }
 
@@ -102,12 +102,17 @@ public class ParticleEmitter
     {
     }
 
-    public IEnumerable<Sprite> GetSprites()
+    public IEnumerable< Sprite > GetSprites()
     {
         yield break;
     }
 
     public void SetSprites( List< Sprite > sprites )
     {
+    }
+
+    public IEnumerable< string > GetImagePaths()
+    {
+        yield break;
     }
 }

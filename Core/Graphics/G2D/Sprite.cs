@@ -14,11 +14,13 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.G2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Sprite : TextureRegion
 {
     public readonly static int VertexSize = 2 + 1 + 2;
@@ -26,19 +28,20 @@ public class Sprite : TextureRegion
 
     #region PrivateData
 
-    private readonly Color _color = new(1, 1, 1, 1);
+    private readonly Color _color = new( 1, 1, 1, 1 );
 
-    private float           _x;
-    private float           _y;
-    private float           _width;
-    private float           _height;
-    private float           _originX;
-    private float           _originY;
-    private float           _rotation;
-    private float           _scaleX = 1;
-    private float           _scaleY = 1;
-    private bool            _dirty  = true;
     private RectangleShape? _bounds;
+
+    private float _x;
+    private float _y;
+    private float _width;
+    private float _height;
+    private float _originX;
+    private float _originY;
+    private float _rotation;
+    private float _scaleX = 1;
+    private float _scaleY = 1;
+    private bool  _dirty  = true;
 
     #endregion
 
@@ -50,7 +53,7 @@ public class Sprite : TextureRegion
     /// The sprite will need a texture region and bounds set before it can be drawn.
     /// </para>
     /// </summary>
-    public Sprite()
+    protected Sprite()
     {
         SetColor( 1, 1, 1, 1 );
     }
@@ -103,8 +106,8 @@ public class Sprite : TextureRegion
 
         SetRegion( srcX, srcY, srcWidth, srcHeight );
         SetColor( 1, 1, 1, 1 );
-        SetSize( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
-        SetOrigin( _width / 2, _height / 2 );
+        
+        SetSizeAndOrigin( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
     }
 
     // Note the region is copied.
@@ -117,8 +120,8 @@ public class Sprite : TextureRegion
     {
         SetRegion( region );
         SetColor( 1, 1, 1, 1 );
-        SetSize( region.RegionWidth, region.RegionHeight );
-        SetOrigin( _width / 2, _height / 2 );
+        
+        SetSizeAndOrigin( region.RegionWidth, region.RegionHeight );
     }
 
     /// <summary>
@@ -140,10 +143,10 @@ public class Sprite : TextureRegion
     {
         SetRegion( region, srcX, srcY, srcWidth, srcHeight );
         SetColor( 1, 1, 1, 1 );
-        SetSize( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
-        SetOrigin( _width / 2, _height / 2 );
+        
+        SetSizeAndOrigin( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
     }
-
+    
     /// <summary>
     /// Creates a sprite that is a copy in every way of the specified sprite.
     /// </summary>
@@ -155,9 +158,22 @@ public class Sprite : TextureRegion
     #endregion
 
     /// <summary>
+    /// Helper method for constructors which allows calls to <see cref="SetSize"/>
+    /// and <see cref="SetOrigin"/> as they are virtual methods which cannot be
+    /// called from constructors.
+    /// </summary>
+    /// <param name="srcWidth"></param>
+    /// <param name="srcHeight"></param>
+    private void SetSizeAndOrigin( int srcWidth, int srcHeight )
+    {
+        SetSize( srcWidth, srcHeight );
+        SetOrigin( _width / 2, _height / 2 );
+    }
+
+    /// <summary>
     /// Make this sprite a copy in every way of the specified sprite
     /// </summary>
-    public void Set( Sprite sprite )
+    protected void Set( Sprite sprite )
     {
         if ( sprite == null )
         {
@@ -166,11 +182,11 @@ public class Sprite : TextureRegion
 
         Array.Copy
             (
-             sprite.Vertices,
-             0,
-             Vertices,
-             0,
-             SpriteSize
+            sprite.Vertices,
+            0,
+            Vertices,
+            0,
+            SpriteSize
             );
 
         Texture      = sprite.Texture;
@@ -389,7 +405,7 @@ public class Sprite : TextureRegion
     /// be drawn. If origin, rotation, or scale are changed, it is slightly more
     /// efficient to translate after those operations. 
     /// </summary>
-    public void Translate( float xAmount, float yAmount )
+    protected void Translate( float xAmount, float yAmount )
     {
         X += xAmount;
         Y += yAmount;
@@ -435,7 +451,7 @@ public class Sprite : TextureRegion
         Vertices[ IBatch.C4 ] = color;
     }
 
-    public void SetColor( float r, float g, float b, float a )
+    protected void SetColor( float r, float g, float b, float a )
     {
         Color.Set( r, g, b, a );
 
@@ -473,7 +489,10 @@ public class Sprite : TextureRegion
     /// </summary>
     public void Rotate( float degrees )
     {
-        if ( degrees == 0 ) return;
+        if ( degrees == 0 )
+        {
+            return;
+        }
 
         _rotation   += degrees;
         this._dirty =  true;
@@ -749,6 +768,7 @@ public class Sprite : TextureRegion
     /// </summary>
     /// <param name="flipx"> perform horizontal flip </param>
     /// <param name="flipy"> perform vertical flip  </param>
+    [PublicAPI]
     public virtual new void Flip( bool flipx, bool flipy )
     {
         base.Flip( flipx, flipy );
@@ -980,7 +1000,10 @@ public class Sprite : TextureRegion
         {
             this._x = value;
 
-            if ( this._dirty ) return;
+            if ( this._dirty )
+            {
+                return;
+            }
 
             if ( ( this._rotation != 0 ) || ( this._scaleX is not 1 ) || ( this._scaleY is not 1 ) )
             {
@@ -1011,7 +1034,10 @@ public class Sprite : TextureRegion
         {
             this._y = value;
 
-            if ( this._dirty ) return;
+            if ( this._dirty )
+            {
+                return;
+            }
 
             if ( ( this._rotation != 0 ) || ( this._scaleX is not 1 ) || ( this._scaleY is not 1 ) )
             {

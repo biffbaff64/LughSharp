@@ -18,10 +18,13 @@ using System.Diagnostics;
 
 namespace LibGDXSharp.Utils.Buffers;
 
-public sealed class DirectByteBuffer : MappedByteBuffer
+public sealed class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 {
     private readonly static bool Unaligned = Bits.Unaligned();
     private readonly static bool Unsafe    = Bits.Unsafe();
+
+    public object  Attachment { get; set; }
+    public Cleaner cleaner    { get; set; }
 
     public DirectByteBuffer( int capacity )
         : base( -1, 0, capacity, capacity )
@@ -31,23 +34,23 @@ public sealed class DirectByteBuffer : MappedByteBuffer
     public DirectByteBuffer( long addr, int cap, Object ob )
         : base( -1, 0, cap, cap )
     {
-        address = addr;
-        cleaner = null;
-        att     = ob;
+        address    = addr;
+        cleaner    = null;
+        Attachment = ob;
     }
 
     public DirectByteBuffer( IDirectBuffer db, // package-private
-                      int mark,
-                      int pos,
-                      int lim,
-                      int cap,
-                      int off )
+                             int mark,
+                             int pos,
+                             int lim,
+                             int cap,
+                             int off )
         : base( mark, pos, lim, cap )
     {
         address = db.address() + off;
 
-        cleaner = null;
-        att     = db;
+        cleaner    = null;
+        Attachment = db;
     }
 
     public override object BackingArray() => null;

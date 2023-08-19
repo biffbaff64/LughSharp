@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
@@ -23,7 +25,7 @@ namespace LibGDXSharp.G2D;
 /// its origin in the upper left corner with the x-axis pointing to the
 /// right and the y axis pointing downwards.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class TextureRegion
 {
     private int   _regionWidth;
@@ -89,7 +91,7 @@ public class TextureRegion
     public TextureRegion( Texture texture, float u, float v, float u2, float v2 )
     {
         Texture = texture;
-        SetRegion( u, v, u2, v2 );
+        SetRegionNV( u, v, u2, v2 );
     }
 
     /// <summary>
@@ -130,7 +132,10 @@ public class TextureRegion
     /// <exception cref="GdxRuntimeException"></exception>
     public void SetRegion( int x, int y, int width, int height )
     {
-        if ( Texture == null ) throw new GdxRuntimeException( "Texture cannot be null" );
+        if ( Texture == null )
+        {
+            throw new GdxRuntimeException( "Texture cannot be null" );
+        }
 
         var invTexWidth  = 1f / Texture.Width;
         var invTexHeight = 1f / Texture.Height;
@@ -142,15 +147,26 @@ public class TextureRegion
     }
 
     /// <summary>
+    /// Non-Virtual version of <see cref="SetRegion( float, float, float, float )"/>
+    /// </summary>
+    private void SetRegionNV( float u, float v, float u2, float v2 )
+    {
+        SetRegion( u, v, u2, v2 );
+    }
+    
+    /// <summary>
     /// </summary>
     /// <param name="u"></param>
     /// <param name="v"></param>
     /// <param name="u2"></param>
     /// <param name="v2"></param>
     /// <exception cref="GdxRuntimeException"></exception>
-    public void SetRegion( float u, float v, float u2, float v2 )
+    public virtual void SetRegion( float u, float v, float u2, float v2 )
     {
-        if ( Texture == null ) throw new GdxRuntimeException( "Texture cannot be null" );
+        if ( Texture == null )
+        {
+            throw new GdxRuntimeException( "Texture cannot be null" );
+        }
 
         var texWidth  = Texture.Width;
         var texHeight = Texture.Height;
@@ -182,7 +198,6 @@ public class TextureRegion
     /// <summary>
     /// </summary>
     /// <param name="region"></param>
-    // ReSharper disable once MemberCanBeProtected.Global
     public void SetRegion( TextureRegion region )
     {
         Texture = region.Texture;
@@ -342,7 +357,7 @@ public class TextureRegion
     /// The percentage to offset vertically.
     /// This is done in texture space, so up is negative.
     /// </param>
-    public void Scroll( float xAmount, float yAmount )
+    public virtual void Scroll( float xAmount, float yAmount )
     {
         if ( xAmount != 0 )
         {

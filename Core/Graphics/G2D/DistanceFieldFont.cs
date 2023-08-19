@@ -21,9 +21,9 @@ namespace LibGDXSharp.G2D;
 /// <a href="https://github.com/libgdx/libgdx/wiki/Distance-field-fonts">
 /// Distance Field Fonts wiki article</a> for usage. Initialize
 /// the SpriteBatch with the <see cref="CreateDistanceFieldShader()"/> shader.
-/// <p>
+/// <para>
 /// Attention: The batch is flushed before and after each string is rendered.
-/// </p>
+/// </para>
 /// </summary>
 public class DistanceFieldFont : BitmapFont
 {
@@ -175,8 +175,7 @@ public class DistanceFieldFont : BitmapFont
     /// Attention: breaks batching because uniform is needed for smoothing factor,
     /// so a flush is performed before and after every font rendering.
     /// </summary>
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Local" )]
-    private class DistanceFieldFontCache : BitmapFontCache
+    private sealed class DistanceFieldFontCache : BitmapFontCache
     {
         public DistanceFieldFontCache( DistanceFieldFont font )
             : base( font, font.UseIntegerPositions )
@@ -208,7 +207,7 @@ public class DistanceFieldFont : BitmapFont
             SetSmoothingUniform( spriteBatch, 0 );
         }
 
-        public override void Draw( IBatch spriteBatch, int start, int end )
+        protected override void Draw( IBatch spriteBatch, int start, int end )
         {
             SetSmoothingUniform( spriteBatch, GetSmoothingFactor() );
             base.Draw( spriteBatch, start, end );

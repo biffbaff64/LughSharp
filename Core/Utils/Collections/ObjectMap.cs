@@ -587,7 +587,7 @@ public class ObjectMap<TK, TV>
 
     public string ToString( string separator ) => ToString( separator, false );
 
-    public new string ToString() => ToString( ", ", true );
+    public override string ToString() => ToString( ", ", true );
 
     protected string ToString( string separator, bool braces )
     {
