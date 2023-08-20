@@ -24,22 +24,52 @@ namespace LibGDXSharp.Assets.Loaders;
 /// allows to specify an atlas file or an image directory to be used for the effect's images.
 /// Per default images are loaded from the directory in which the effect file is found. 
 /// </summary>
-public class ParticleEffectLoader : SynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
+public sealed class ParticleEffectLoader : SynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
 {
     public ParticleEffectLoader( IFileHandleResolver resolver ) : base( resolver )
     {
     }
 
+    /// <summary>
+    /// Loads a particle effect asset using the provided asset manager, file information, and parameters.
+    /// <para>
+    /// This method constructs a new instance of <see cref="ParticleEffect"/> and loads its configuration
+    /// based on the provided parameters. If the <paramref name="param"/> contains a non-null value for
+    /// <see cref="ParticleEffectParameter.AtlasFile"/>, the effect's configuration is loaded using the
+    /// associated <see cref="TextureAtlas"/> and atlas prefix. If the <paramref name="param"/> contains a
+    /// non-null value for <see cref="ParticleEffectParameter.ImagesDir"/>, the effect's configuration is
+    /// loaded using the specified images directory. Otherwise, the effect's configuration is loaded from
+    /// the provided <paramref name="file"/>.
+    /// </para>
+    /// </summary>
+    /// <param name="am">The asset manager used for loading dependent assets.</param>
+    /// <param name="fileName">The name of the file associated with the asset.</param>
+    /// <param name="file">The file information associated with the asset.</param>
+    /// <param name="param">The parameters used for loading the asset.</param>
+    /// <returns>
+    /// A loaded instance of the <see cref="ParticleEffect"/> class.
+    /// </returns>
+    /// <seealso cref="ParticleEffect"/>
+    /// <seealso cref="ParticleEffectParameter"/>
+    /// <seealso cref="TextureAtlas"/>
     public override ParticleEffect Load( AssetManager? am,
                                          string? fileName,
                                          FileInfo? file,
                                          ParticleEffectParameter? param )
     {
+        ArgumentNullException.ThrowIfNull( am );
+        ArgumentNullException.ThrowIfNull( file );
+        
         var effect = new ParticleEffect();
 
         if ( param is { AtlasFile: not null } )
         {
-            effect.Load( file, am?.Get< TextureAtlas >( param.AtlasFile, typeof( TextureAtlas ) ), param.AtlasPrefix );
+            effect.Load
+                (
+                file,
+                am.Get< TextureAtlas >( param.AtlasFile, typeof( TextureAtlas ) ),
+                param.AtlasPrefix
+                );
         }
         else if ( param is { ImagesDir: not null } )
         {
@@ -47,25 +77,48 @@ public class ParticleEffectLoader : SynchronousAssetLoader< ParticleEffect, Part
         }
         else
         {
-            effect.Load( file );
+            effect.Load( file, file.Directory! );
         }
 
         return effect;
     }
 
+    /// <summary>
+    /// Retrieves a list of asset dependencies required for loading a particle effect.
+    /// <para>
+    /// This method checks if the provided <paramref name="param"/> is not null and if the associated
+    /// <see cref="ParticleEffectParameter.AtlasFile"/> is not null. If both conditions are met, the
+    /// method creates a list of asset descriptors containing a single <see cref="AssetDescriptor"/>
+    /// representing the dependency on a <see cref="TextureAtlas"/> loaded from the specified
+    /// <see cref="ParticleEffectParameter.AtlasFile"/>.
+    /// </para>
+    /// </summary>
+    /// <param name="fileName">The name of the file associated with the asset.</param>
+    /// <param name="file">The file information associated with the asset.</param>
+    /// <param name="param">The parameters used for loading the asset.</param>
+    /// <seealso cref="ParticleEffectParameter"/>
+    /// <seealso cref="AssetDescriptor"/>
+    /// <seealso cref="TextureAtlas"/>
+    /// <returns>
+    /// A list of asset descriptors representing the dependencies required for loading the particle effect.
+    /// </returns>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
                                                              AssetLoaderParameters? param )
     {
         List< AssetDescriptor >? deps = null;
 
-        if ( ( param != null ) && !string.ReferenceEquals( ( ( ParticleEffectParameter )param ).AtlasFile, null ) )
+        if ( ( param != null )
+          && !string.ReferenceEquals( ( ( ParticleEffectParameter )param ).AtlasFile, null ) )
         {
             deps = new List< AssetDescriptor >
             {
-                new( ( ( ParticleEffectParameter )param ).AtlasFile,
-                     typeof( TextureAtlas ),
-                     ( ParticleEffectParameter )param )
+                new
+                    (
+                    ( ( ParticleEffectParameter )param ).AtlasFile!,
+                    typeof( TextureAtlas ),
+                    ( ParticleEffectParameter )param
+                    )
             };
         }
 
@@ -91,6 +144,6 @@ public class ParticleEffectLoader : SynchronousAssetLoader< ParticleEffect, Part
         /// <summary>
         /// Image directory.
         /// </summary>
-        public FileInfo? ImagesDir { get; set; }
+        public DirectoryInfo? ImagesDir { get; set; }
     }
 }

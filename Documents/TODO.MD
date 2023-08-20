@@ -240,7 +240,7 @@ GRAPHICS/G2D
     -      - PixmapPacker10                 
     -      - PolygonRegion                  
     -      - PolygonRegionLoader            
-    -      - PolygonSprite                  
+    - DONE - PolygonSprite                  
     -      - PolygonSpriteBatch             
     -      - RepeatablePolygonSprite        
     - DONE - Sprite                         

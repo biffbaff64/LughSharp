@@ -18,5 +18,8 @@ namespace LibGDXSharp.G2D;
 
 public class PolygonSpriteBatch
 {
-        
+
+    public void Draw( Texture regionTexture, float[]? getVertices, int i, int? verticesLength, short[] regionTriangles, int i1, int trianglesLength )
+    {
+    }
 }
