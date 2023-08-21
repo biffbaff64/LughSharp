@@ -238,7 +238,7 @@ GRAPHICS/G2D
     - IP   - ParticleEmitter                
     -      - PixmapPacker                   
     -      - PixmapPacker10                 
-    -      - PolygonRegion                  
+    - DONE - PolygonRegion                  
     -      - PolygonRegionLoader            
     - DONE - PolygonSprite                  
     -      - PolygonSpriteBatch             

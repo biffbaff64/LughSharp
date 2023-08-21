@@ -88,21 +88,12 @@ public interface IBatch : IDisposable
     /// </summary>
     public void End();
 
-    /// <summary>
-    /// Sets the color used to tint images when they are added to the Batch. Default
-    /// is <see cref="Color.White"/>.
-    /// </summary>
-    public void SetColor( Color tint );
-
-    /// <see cref="SetColor(Color) "/>
-    public void SetColor( float r, float g, float b, float a );
-
     /// <returns>
-    /// The rendering color of this Batch. If the returned instance is manipulated,
-    /// <see cref="SetColor(Color)"/> or <see cref="SetColor(float,float,float,float)"/>
-    /// must be called afterward.
+    /// The rendering color of this Batch.
     /// </returns>
-    public Color GetColor();
+    public Color Color { get; set; }
+
+    public void SetColor( float r, float g, float b, float a );
 
     /// <returns>
     /// the rendering color of this Batch in vertex format (alpha compressed to 0-254)
@@ -234,7 +225,7 @@ public interface IBatch : IDisposable
 
     /// <summary>
     /// Draws a rectangle using the given vertices. There must be 4 vertices, each made
-    /// up of 5 elements in this order: x, y, color, u, v. The <see cref="GetColor()"/>
+    /// up of 5 elements in this order: x, y, color, u, v. The <see cref="Color"/>
     /// from the Batch is not applied. 
     /// </summary>
     public void Draw( Texture texture, float[] spriteVertices, int offset, int count );
@@ -347,25 +338,25 @@ public interface IBatch : IDisposable
     ///  </param>
     public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha );
 
-    public int GetBlendSrcFunc();
+    public int BlendSrcFunc { get; }
 
-    public int GetBlendDstFunc();
+    public int BlendDstFunc { get; }
 
-    public int GetBlendSrcFuncAlpha();
+    public int BlendSrcFuncAlpha { get; }
 
-    public int GetBlendDstFuncAlpha();
+    public int BlendDstFuncAlpha { get; }
 
     /// <summary>
     /// Returns the current projection matrix.
     /// Changing this within <see cref="Begin()"/> / <see cref="End()"/> results in undefined behaviour.
     /// </summary>
-    public Matrix4 GetProjectionMatrix();
+    public Matrix4 ProjectionMatrix { get; }
 
     /// <summary>
     /// Returns the current transform matrix.
     /// Changing this within <see cref="Begin()"/> / <see cref="End()"/> results in undefined behaviour.
     /// </summary>
-    public Matrix4 GetTransformMatrix();
+    public Matrix4 TransformMatrix { get; }
 
     /// <summary>
     /// Sets the projection matrix to be used by this Batch.

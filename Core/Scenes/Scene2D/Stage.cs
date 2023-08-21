@@ -1007,7 +1007,7 @@ public class Stage : InputAdapter
         }
         else
         {
-            transformMatrix = Batch.GetTransformMatrix();
+            transformMatrix = Batch.TransformMatrix;
         }
 
         Viewport.CalculateScissors( transformMatrix, localRect, scissorRect );

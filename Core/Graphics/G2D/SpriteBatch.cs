@@ -60,7 +60,7 @@ public class SpriteBatch : IBatch
     private readonly ShaderProgram? _shader;
     private          ShaderProgram? _customShader;
 
-    private readonly Color _color = new(1, 1, 1, 1);
+    private readonly Color _color = new( 1, 1, 1, 1 );
 
     /// <summary>
     /// Constructs a new SpriteBatch with a size of 1000, one buffer,
@@ -88,7 +88,7 @@ public class SpriteBatch : IBatch
     /// The default shader to use. This is not owned by the SpriteBatch and must
     /// be disposed separately.
     /// </param>
-    public SpriteBatch( int size, ShaderProgram? defaultShader = null )
+    protected SpriteBatch( int size, ShaderProgram? defaultShader = null )
     {
         // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
         if ( size > 8191 )
@@ -102,28 +102,28 @@ public class SpriteBatch : IBatch
 
         _mesh = new Mesh
             (
-             vertexDataType,
-             false,
-             size * 4,
-             size * 6,
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.POSITION,
-                  2,
-                  ShaderProgram.POSITION_ATTRIBUTE
-                 ),
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.COLOR_PACKED,
-                  4,
-                  ShaderProgram.COLOR_ATTRIBUTE
-                 ),
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.TEXTURE_COORDINATES,
-                  2,
-                  ShaderProgram.TEXCOORD_ATTRIBUTE + "0"
-                 )
+            vertexDataType,
+            false,
+            size * 4,
+            size * 6,
+            new VertexAttribute
+                (
+                VertexAttributes.Usage.POSITION,
+                2,
+                ShaderProgram.POSITION_ATTRIBUTE
+                ),
+            new VertexAttribute
+                (
+                VertexAttributes.Usage.COLOR_PACKED,
+                4,
+                ShaderProgram.COLOR_ATTRIBUTE
+                ),
+            new VertexAttribute
+                (
+                VertexAttributes.Usage.TEXTURE_COORDINATES,
+                2,
+                ShaderProgram.TEXCOORD_ATTRIBUTE + "0"
+                )
             );
 
         _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
@@ -164,45 +164,45 @@ public class SpriteBatch : IBatch
     public static ShaderProgram CreateDefaultShader()
     {
         var vertexShader = "attribute vec4 "
-                           + ShaderProgram.POSITION_ATTRIBUTE
-                           + ";\n"
-                           + "attribute vec4 "
-                           + ShaderProgram.COLOR_ATTRIBUTE
-                           + ";\n"
-                           + "attribute vec2 "
-                           + ShaderProgram.TEXCOORD_ATTRIBUTE
-                           + "0;\n"
-                           + "uniform mat4 u_projTrans;\n"
-                           + "varying vec4 v_color;\n"
-                           + "varying vec2 v_texCoords;\n"
-                           + "\n"
-                           + "void main()\n"
-                           + "{\n"
-                           + "   v_color = "
-                           + ShaderProgram.COLOR_ATTRIBUTE
-                           + ";\n"
-                           + "   v_color.a = v_color.a * (255.0/254.0);\n"
-                           + "   v_texCoords = "
-                           + ShaderProgram.TEXCOORD_ATTRIBUTE
-                           + "0;\n"
-                           + "   gl_Position =  u_projTrans * "
-                           + ShaderProgram.POSITION_ATTRIBUTE
-                           + ";\n"
-                           + "}\n";
+                         + ShaderProgram.POSITION_ATTRIBUTE
+                         + ";\n"
+                         + "attribute vec4 "
+                         + ShaderProgram.COLOR_ATTRIBUTE
+                         + ";\n"
+                         + "attribute vec2 "
+                         + ShaderProgram.TEXCOORD_ATTRIBUTE
+                         + "0;\n"
+                         + "uniform mat4 u_projTrans;\n"
+                         + "varying vec4 v_color;\n"
+                         + "varying vec2 v_texCoords;\n"
+                         + "\n"
+                         + "void main()\n"
+                         + "{\n"
+                         + "   v_color = "
+                         + ShaderProgram.COLOR_ATTRIBUTE
+                         + ";\n"
+                         + "   v_color.a = v_color.a * (255.0/254.0);\n"
+                         + "   v_texCoords = "
+                         + ShaderProgram.TEXCOORD_ATTRIBUTE
+                         + "0;\n"
+                         + "   gl_Position =  u_projTrans * "
+                         + ShaderProgram.POSITION_ATTRIBUTE
+                         + ";\n"
+                         + "}\n";
 
         var fragmentShader = "#ifdef GL_ES\n"
-                             + "#define LOWP lowp\n"
-                             + "precision mediump float;\n"
-                             + "#else\n"
-                             + "#define LOWP \n"
-                             + "#endif\n"
-                             + "varying LOWP vec4 v_color;\n"
-                             + "varying vec2 v_texCoords;\n"
-                             + "uniform sampler2D u_texture;\n"
-                             + "void main()\n"
-                             + "{\n"
-                             + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
-                             + "}";
+                           + "#define LOWP lowp\n"
+                           + "precision mediump float;\n"
+                           + "#else\n"
+                           + "#define LOWP \n"
+                           + "#endif\n"
+                           + "varying LOWP vec4 v_color;\n"
+                           + "varying vec2 v_texCoords;\n"
+                           + "uniform sampler2D u_texture;\n"
+                           + "void main()\n"
+                           + "{\n"
+                           + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
+                           + "}";
 
         var shader = new ShaderProgram( vertexShader, fragmentShader );
 
@@ -262,10 +262,14 @@ public class SpriteBatch : IBatch
         }
     }
 
-    public void SetColor( Color tint )
+    public Color Color
     {
-        _color.Set( tint );
-        colorPacked = tint.ToFloatBits();
+        get => _color;
+        set
+        {
+            _color.Set( value );
+            colorPacked = value.ToFloatBits();
+        }
     }
 
     public void SetColor( float r, float g, float b, float a )
@@ -273,8 +277,6 @@ public class SpriteBatch : IBatch
         _color.Set( r, g, b, a );
         colorPacked = _color.ToFloatBits();
     }
-
-    public Color GetColor() => _color;
 
     public float PackedColor
     {
@@ -287,21 +289,21 @@ public class SpriteBatch : IBatch
     }
 
     public virtual void Draw( Texture texture,
-                      float x,
-                      float y,
-                      float originX,
-                      float originY,
-                      float width,
-                      float height,
-                      float scaleX,
-                      float scaleY,
-                      float rotation,
-                      int srcX,
-                      int srcY,
-                      int srcWidth,
-                      int srcHeight,
-                      bool flipX,
-                      bool flipY )
+                              float x,
+                              float y,
+                              float originX,
+                              float originY,
+                              float width,
+                              float height,
+                              float scaleX,
+                              float scaleY,
+                              float rotation,
+                              int srcX,
+                              int srcY,
+                              int srcWidth,
+                              int srcHeight,
+                              bool flipX,
+                              bool flipY )
     {
         if ( !IsDrawing )
         {
@@ -702,11 +704,11 @@ public class SpriteBatch : IBatch
 
         Array.Copy
             (
-             spriteVertices,
-             offset,
-             Vertices,
-             idx,
-             copyCount
+            spriteVertices,
+            offset,
+            Vertices,
+            idx,
+            copyCount
             );
 
         idx   += copyCount;
@@ -722,11 +724,11 @@ public class SpriteBatch : IBatch
 
             Array.Copy
                 (
-                 spriteVertices,
-                 offset,
-                 Vertices,
-                 0,
-                 copyCount
+                spriteVertices,
+                offset,
+                Vertices,
+                0,
+                copyCount
                 );
 
             idx   += copyCount;
@@ -1191,10 +1193,10 @@ public class SpriteBatch : IBatch
             {
                 Gdx.GL.GLBlendFuncSeparate
                     (
-                     _blendSrcFunc,
-                     _blendDstFunc,
-                     _blendSrcFuncAlpha,
-                     _blendDstFuncAlpha
+                    _blendSrcFunc,
+                    _blendDstFunc,
+                    _blendSrcFuncAlpha,
+                    _blendDstFuncAlpha
                     );
             }
         }
@@ -1230,19 +1232,19 @@ public class SpriteBatch : IBatch
     {
         SetBlendFunctionSeparate
             (
-             srcFunc,
-             dstFunc,
-             srcFunc,
-             dstFunc
+            srcFunc,
+            dstFunc,
+            srcFunc,
+            dstFunc
             );
     }
 
     public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
     {
         if ( ( _blendSrcFunc == srcFuncColor )
-             && ( _blendDstFunc == dstFuncColor )
-             && ( _blendSrcFuncAlpha == srcFuncAlpha )
-             && ( _blendDstFuncAlpha == dstFuncAlpha ) )
+          && ( _blendDstFunc == dstFuncColor )
+          && ( _blendSrcFuncAlpha == srcFuncAlpha )
+          && ( _blendDstFuncAlpha == dstFuncAlpha ) )
         {
             return;
         }
@@ -1255,13 +1257,13 @@ public class SpriteBatch : IBatch
         _blendDstFuncAlpha = dstFuncAlpha;
     }
 
-    public int GetBlendSrcFunc() => _blendSrcFunc;
+    public int BlendSrcFunc => _blendSrcFunc;
 
-    public int GetBlendDstFunc() => _blendDstFunc;
+    public int BlendDstFunc => _blendDstFunc;
 
-    public int GetBlendSrcFuncAlpha() => _blendSrcFuncAlpha;
+    public int BlendSrcFuncAlpha => _blendSrcFuncAlpha;
 
-    public int GetBlendDstFuncAlpha() => _blendDstFuncAlpha;
+    public int BlendDstFuncAlpha => _blendDstFuncAlpha;
 
     public void Dispose()
     {
@@ -1273,9 +1275,9 @@ public class SpriteBatch : IBatch
         }
     }
 
-    public Matrix4 GetProjectionMatrix() => _projectionMatrix;
+    public Matrix4 ProjectionMatrix => _projectionMatrix;
 
-    public Matrix4 GetTransformMatrix() => _transformMatrix;
+    public Matrix4 TransformMatrix => _transformMatrix;
 
     public void SetProjectionMatrix( Matrix4 projection )
     {
@@ -1285,6 +1287,7 @@ public class SpriteBatch : IBatch
         }
 
         _projectionMatrix.Set( projection );
+
         if ( IsDrawing )
         {
             SetupMatrices();
@@ -1299,6 +1302,7 @@ public class SpriteBatch : IBatch
         }
 
         _transformMatrix.Set( transform );
+
         if ( IsDrawing )
         {
             SetupMatrices();

@@ -86,7 +86,7 @@ public class CpuSpriteBatch : SpriteBatch
 
     public new Matrix4 GetTransformMatrix()
     {
-        return ( _adjustNeeded ? _virtualMatrix : base.GetTransformMatrix() );
+        return ( _adjustNeeded ? _virtualMatrix : base.TransformMatrix );
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// </summary>
     public override void SetTransformMatrix( Matrix4 transform )
     {
-        Matrix4 realMatrix = base.GetTransformMatrix();
+        Matrix4 realMatrix = base.TransformMatrix;
 
         if ( CheckEqual( realMatrix, transform ) )
         {
@@ -148,7 +148,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// </summary>
     public virtual void SetTransformMatrix( Affine2 transform )
     {
-        Matrix4 realMatrix = base.GetTransformMatrix();
+        Matrix4 realMatrix = base.TransformMatrix;
 
         if ( CheckEqual( realMatrix, transform ) )
         {

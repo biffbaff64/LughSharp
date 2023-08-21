@@ -399,7 +399,7 @@ public class Group : Actor, ICullable
     /// </summary>
     protected void ApplyTransform( IBatch batch, Matrix4 transform )
     {
-        _oldTransform.Set( batch.GetTransformMatrix() );
+        _oldTransform.Set( batch.TransformMatrix );
 
         batch.SetTransformMatrix( transform );
     }
