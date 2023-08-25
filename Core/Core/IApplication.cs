@@ -66,7 +66,7 @@ public interface IApplication
 {
     /// <summary>
     /// </summary>
-    public enum ApplicationType
+    enum ApplicationType
     {
         IOS,
         Android,
@@ -75,10 +75,10 @@ public interface IApplication
         WebGL,
     }
 
-    public const int LOG_NONE  = 0;
-    public const int LOG_ERROR = 1;
-    public const int LOG_INFO  = 2;
-    public const int LOG_DEBUG = 3;
+    const int LOG_NONE  = 0;
+    const int LOG_ERROR = 1;
+    const int LOG_INFO  = 2;
+    const int LOG_DEBUG = 3;
 
     /// <summary>
     /// Getter and Setter for the log level.
@@ -87,27 +87,27 @@ public interface IApplication
     /// LogInfo will let all non-debug messages through.
     /// LogDebug will let all messages through.
     /// </summary>
-    public int LogLevel { get; set; }
+    int LogLevel { get; set; }
 
-    public ApplicationType AppType { get; set; }
-    public IClipboard? Clipboard { get; set; }
+    ApplicationType AppType { get; set; }
+    IClipboard? Clipboard { get; set; }
 
-    public void Log( string tag, string message );
-    public void Log( string tag, string message, Exception exception );
+    void Log( string tag, string message );
+    void Log( string tag, string message, Exception exception );
 
-    public void Error( string tag, string message );
-    public void Error( string tag, string message, Exception exception );
+    void Error( string tag, string message );
+    void Error( string tag, string message, Exception exception );
 
-    public void Debug( string tag, string message );
-    public void Debug( string tag, string message, Exception exception );
+    void Debug( string tag, string message );
+    void Debug( string tag, string message, Exception exception );
 
-    public int GetVersion();
+    int GetVersion();
 
-    public IPreferences GetPreferences( string name );
+    IPreferences GetPreferences( string name );
 
-    public void Exit();
-    public void AddLifecycleListener( ILifecycleListener listener );
-    public void RemoveLifecycleListener( ILifecycleListener listener );
+    void Exit();
+    void AddLifecycleListener( ILifecycleListener listener );
+    void RemoveLifecycleListener( ILifecycleListener listener );
 
-    public void PostRunnable( IRunnable runnable );
+    void PostRunnable( IRunnable runnable );
 }

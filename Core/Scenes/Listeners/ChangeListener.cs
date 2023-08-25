@@ -27,7 +27,10 @@ public class ChangeListener : IEventListener
     
     public bool Handle( Event ev )
     {
-        if ( ev is not ChangeEvent changeEvent ) return false;
+        if ( ev is not ChangeEvent changeEvent )
+        {
+            return false;
+        }
 
         Changed( changeEvent, changeEvent.TargetActor );
 

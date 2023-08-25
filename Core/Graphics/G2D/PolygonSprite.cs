@@ -361,9 +361,9 @@ public class PolygonSprite
         spriteBatch.Draw
             (
             Region.Region.Texture,
-            GetVertices(),
+            GetVertices()!,
             0,
-            _vertices?.Length,
+            _vertices!.Length,
             Region.Triangles,
             0,
             Region.Triangles.Length

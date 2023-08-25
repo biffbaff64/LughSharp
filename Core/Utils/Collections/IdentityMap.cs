@@ -98,7 +98,10 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
 
     public int LocateKey( TK key )
     {
-        if ( key == null ) throw new ArgumentException( "key cannot be null." );
+        if ( key == null )
+        {
+            throw new ArgumentException( "key cannot be null." );
+        }
 
         TK?[] keytab = this.keyTable;
 
@@ -106,14 +109,24 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
         {
             TK? other = keytab[ i ];
 
-            if ( other == null ) return -( i + 1 ); // Empty space is available.
-            if ( Equals( other, key ) ) return i;   // Same key was found.
+            if ( other == null )
+            {
+                // Empty space is available.
+                return -( i + 1 );
+            }
+
+            if ( Equals( other, key ) )
+            {
+                // Same key was found.
+                return i;
+            }
         }
     }
 
     public int HashCode()
     {
-        var   h        = Size;
+        var h = Size;
+
         TK?[] keytab   = this.keyTable;
         TV?[] valuetab = this.valueTable;
 
@@ -125,8 +138,12 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
             {
                 h += ( int )_objectIDGenerator.GetId( this, out _firstTimeGen );
 
-                TV? value              = valuetab[ i ];
-                if ( value != null ) h += value.GetHashCode();
+                TV? value = valuetab[ i ];
+
+                if ( value != null )
+                {
+                    h += value.GetHashCode();
+                }
             }
         }
 

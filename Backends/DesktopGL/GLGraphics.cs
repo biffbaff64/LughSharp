@@ -39,8 +39,6 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    #region Callbacks
-
     public unsafe void ResizeCallback( Window* windowHandle, int width, int height )
     {
         UpdateFramebufferInfo();
@@ -59,8 +57,6 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
         GLFW.SwapBuffers( windowHandle );
     }
-
-    #endregion Callbacks
 
     // ------------------------------------------------------------------------
 
@@ -90,7 +86,10 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     private unsafe void UpdateFramebufferInfo()
     {
-        if ( Window == null ) return;
+        if ( Window == null )
+        {
+            return;
+        }
 
         GLFW.GetFramebufferSize( Window.WindowHandle, out var tmpWidth, out var tmpHeight );
 
@@ -118,7 +117,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     public void Update()
     {
-        long time = TimeUtils.NanoTime();
+        var time = TimeUtils.NanoTime();
 
         if ( _lastFrameTime == -1 )
         {

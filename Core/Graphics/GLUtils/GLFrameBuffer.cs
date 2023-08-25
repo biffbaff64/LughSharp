@@ -722,12 +722,11 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         public override FrameBuffer Build()
         {
-            return new FrameBuffer();
-//            return new FrameBuffer( this );
+            return new FrameBuffer( this );
         }
     }
 
-    public class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
+    public sealed class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
     {
         public FloatFrameBufferBuilder( int width, int height )
                 : base( width, height )
@@ -736,12 +735,11 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         public override FloatFrameBuffer Build()
         {
-            return new FloatFrameBuffer();
-//            return new FloatFrameBuffer( this );
+            return new FloatFrameBuffer( this );
         }
     }
 
-    public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< FrameBufferCubemap >
+    public sealed class FrameBufferCubemapBuilder : GLFrameBufferBuilder< FrameBufferCubemap >
     {
         public FrameBufferCubemapBuilder( int width, int height )
                 : base( width, height )
@@ -750,8 +748,7 @@ public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         public override FrameBufferCubemap Build()
         {
-            return new FrameBufferCubemap();
-//            return new FrameBufferCubemap( this );
+            return new FrameBufferCubemap( this );
         }
     }
 }

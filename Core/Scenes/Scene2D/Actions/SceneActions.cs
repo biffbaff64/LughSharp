@@ -24,7 +24,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// <summary>
 /// Static convenience methods for using pooled actions, intended for static import.
 /// </summary>
-public class Actions
+public class SceneActions
 {
     /// <summary>
     /// Returns a new or pooled action of the specified type.

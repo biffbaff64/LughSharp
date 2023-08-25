@@ -194,7 +194,7 @@ public class Stage : InputAdapter
                     return;
                 }
 
-                ( ( Table )actor ).Debug( _debugTableUnderMouse );
+                ( ( Table )actor ).DebugLines( _debugTableUnderMouse );
             }
 
             if ( _debugAll && actor is Group group )

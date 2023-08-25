@@ -55,6 +55,9 @@ public sealed class FloatFrameBuffer : FrameBuffer
             bufferBuilder.AddBasicDepthRenderBuffer();
         }
 
+// LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.Texture>.FloatFrameBufferBuilder
+// LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.Texture>.GLFrameBufferBuilder<LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.Texture>>
+
         BufferBuilder = bufferBuilder;
 
         Build();

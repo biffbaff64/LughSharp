@@ -202,7 +202,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <param name="layer"></param>
     public void RenderImageLayer( TiledMapImageLayer layer )
     {
-        Color batchColor = Batch.GetColor();
+        Color batchColor = Batch.Color;
 
         var color = Color.ToFloatBits
             (

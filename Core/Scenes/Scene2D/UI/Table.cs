@@ -66,7 +66,6 @@ public class Table : WidgetGroup
 
     private readonly List< Cell > _cells          = new( 4 );
     private readonly List< Cell > _columnDefaults = new( 2 );
-    private readonly Cell         _cellDefaults;
     private readonly float[]      _columnWidth;
     private readonly float[]      _rowHeight;
 
@@ -103,6 +102,7 @@ public class Table : WidgetGroup
     /// <summary>
     /// Creates a table with a skin, which is required to use <see cref="AssetDescriptor"/>
     /// </summary>
+
     // ReSharper disable once MemberCanBeProtected.Global
     public Table( Skin? skin )
     {
@@ -115,11 +115,12 @@ public class Table : WidgetGroup
         _rowPrefHeight   = default!;
         _expandWidth     = default!;
         _expandHeight    = default!;
+
         // ----------------------------
 
         this.Skin = skin;
 
-        _cellDefaults = ObtainCell();
+        CellDefaults = ObtainCell();
 
         Transform = false;
         Touchable = Touchable.ChildrenOnly;
@@ -234,14 +235,14 @@ public class Table : WidgetGroup
         var padRightNew  = GetPadRight();
 
         if ( ( !( padTopOld + padBottomOld ).Equals( padTopNew + padBottomNew ) )
-             || ( !( padLeftOld + padRightOld ).Equals( padLeftNew + padRightNew ) ) )
+          || ( !( padLeftOld + padRightOld ).Equals( padLeftNew + padRightNew ) ) )
         {
             InvalidateHierarchy();
         }
         else if ( !padTopOld.Equals( padTopNew )
-                  || !padLeftOld.Equals( padLeftNew )
-                  || !padBottomOld.Equals( padBottomNew )
-                  || !padRightOld.Equals( padRightNew ) )
+               || !padLeftOld.Equals( padLeftNew )
+               || !padBottomOld.Equals( padBottomNew )
+               || !padRightOld.Equals( padRightNew ) )
         {
             Invalidate();
         }
@@ -373,7 +374,7 @@ public class Table : WidgetGroup
 
         _cells.Add( cell );
 
-        cell.Set( _cellDefaults );
+        cell.Set( CellDefaults );
 
         if ( cell.Column < _columnDefaults.Count )
         {
@@ -394,7 +395,7 @@ public class Table : WidgetGroup
     {
         for ( int i = 0, n = actors.Length; i < n; i++ )
         {
-            Add<Actor>( actors[ i ] );
+            Add< Actor >( actors[ i ] );
         }
 
         return this;
@@ -546,9 +547,9 @@ public class Table : WidgetGroup
 
         _alignment = LibGDXSharp.Utils.Align.CENTER;
 
-        Debug( DebugType.None );
+        DebugLines( DebugType.None );
 
-        _cellDefaults.Reset();
+        CellDefaults.Reset();
 
         for ( int i = 0, n = _columnDefaults.Count; i < n; i++ )
         {
@@ -734,8 +735,8 @@ public class Table : WidgetGroup
     /// <summary>
     /// The cell values that will be used as the defaults for all cells.
     /// </summary>
-    /// <returns></returns>
-    public Cell Defaults() => _cellDefaults;
+    /// <value></value>
+    public Cell CellDefaults { get; set; }
 
     /// <summary>
     /// Sets the padTop, padLeft, padBottom, and padRight around the
@@ -1174,7 +1175,7 @@ public class Table : WidgetGroup
             // Compute combined padding/spacing for cells.
             // Spacing between actors isn't additive, the larger is used. Also, no spacing around edges.
             c.ComputedPadLeft = ( float )( c.PadLeft?.Get( c.Actor )
-                                           + ( c.Column == 0 ? 0 : Math.Max( 0f, ( float )( c.SpaceLeft?.Get( c.Actor ) - spaceRightLast )! ) ) )!;
+                                         + ( c.Column == 0 ? 0 : Math.Max( 0f, ( float )( c.SpaceLeft?.Get( c.Actor ) - spaceRightLast )! ) ) )!;
 
             c.ComputedPadTop = c.PadTop!.Get( c.Actor );
 
@@ -1189,10 +1190,10 @@ public class Table : WidgetGroup
             var spaceRight = c.SpaceRight?.Get( c.Actor );
 
             c.ComputedPadRight = ( float )( c.PadRight?.Get( c.Actor )
-                                            + ( ( c.Column + c.Colspan ) == columns ? 0f : spaceRight ) )!;
+                                          + ( ( c.Column + c.Colspan ) == columns ? 0f : spaceRight ) )!;
 
             c.ComputedPadBottom = ( float )( c.PadBottom?.Get( c.Actor )
-                                             + ( c.Row == ( rows - 1 ) ? 0 : c.SpaceBottom?.Get( c.Actor ) ) )!;
+                                           + ( c.Row == ( rows - 1 ) ? 0 : c.SpaceBottom?.Get( c.Actor ) ) )!;
 
             spaceRightLast = spaceRight ?? 0f;
 
@@ -1237,11 +1238,17 @@ public class Table : WidgetGroup
                 // Spanned column min and pref width is added later.
                 var hpadding = c.ComputedPadLeft + c.ComputedPadRight;
 
-                columnPrefWidth[ c.Column ] = Math.Max( columnPrefWidth[ c.Column ],
-                                                        ( float )( prefWidth + hpadding )! );
+                columnPrefWidth[ c.Column ] = Math.Max
+                    (
+                    columnPrefWidth[ c.Column ],
+                    ( float )( prefWidth + hpadding )!
+                    );
 
-                columnMinWidth[ c.Column ] = Math.Max( columnMinWidth[ c.Column ],
-                                                       ( float )( minWidth + hpadding )! );
+                columnMinWidth[ c.Column ] = Math.Max
+                    (
+                    columnMinWidth[ c.Column ],
+                    ( float )( minWidth + hpadding )!
+                    );
             }
 
             var vpadding = c.ComputedPadTop + c.ComputedPadBottom;
@@ -1811,7 +1818,7 @@ public class Table : WidgetGroup
 
     public void SetDebug( bool enabled )
     {
-        Debug( enabled ? DebugType.All : DebugType.None );
+        DebugLines( enabled ? DebugType.All : DebugType.None );
     }
 
     public new Table EnableDebug()
@@ -1879,7 +1886,7 @@ public class Table : WidgetGroup
     /// <summary>
     /// Turns debug lines on or off.
     /// </summary>
-    public Table Debug( DebugType debug )
+    public Table DebugLines( DebugType debug )
     {
         base.SetDebug( debug != DebugType.None, false );
 

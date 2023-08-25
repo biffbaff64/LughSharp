@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.Utils;
@@ -31,8 +33,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// of the children.
 /// </p>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Window : Table
 {
     public bool  DrawTitleTable  { get; set; }
@@ -49,12 +50,14 @@ public class Window : Table
 
     private const int MOVE = 1 << 5;
 
-    private readonly WindowStyle _style;
+    private WindowStyle _style;
     private readonly Table       _titleTable;
 
     protected int edge;
 
-    public Window( String title, Skin skin )
+    // ------------------------------------------------------------------------
+
+    public Window( string title, Skin skin )
         : this( title, skin.Get< WindowStyle >() )
     {
         Skin = skin;
@@ -68,9 +71,6 @@ public class Window : Table
 
     public Window( string title, WindowStyle style )
     {
-        ArgumentNullException.ThrowIfNull( title );
-        ArgumentNullException.ThrowIfNull( style );
-
         Touchable = Touchable.Enabled;
         Clip      = true;
 
@@ -81,8 +81,7 @@ public class Window : Table
         _titleTable.Add( TitleLabel ).SetExpandX().SetFillX().SetMinWidth( 0 );
         AddActor( _titleTable );
 
-        _style = default!;
-        Style  = style;
+        Style = _style = style;
         SetSize( 150, 150 );
 
         AddCaptureListener( new WindowCaptureListener( this ) );
@@ -93,10 +92,8 @@ public class Window : Table
     public WindowStyle Style
     {
         get => _style;
-        init
+        set
         {
-            ArgumentNullException.ThrowIfNull( value );
-
             this._style = value;
 
             SetBackground( _style.Background );
@@ -107,9 +104,10 @@ public class Window : Table
 
     public void DoKeepWithinStage()
     {
-        if ( !KeepWithinStage ) return;
-
-        if ( this.Stage == null ) return;
+        if ( !KeepWithinStage || ( this.Stage == null ) )
+        {
+            return;
+        }
 
         if ( this.Stage.Camera is OrthographicCamera orthographicCamera )
         {
@@ -117,24 +115,24 @@ public class Window : Table
             var parentHeight = this.Stage.StageHeight;
 
             if ( ( GetX( Align.RIGHT ) - this.Stage.Camera.Position.X )
-                 > ( parentWidth / 2 / orthographicCamera.Zoom ) )
+               > ( parentWidth / 2 / orthographicCamera.Zoom ) )
             {
                 SetPosition
                     (
-                     this.Stage.Camera.Position.X + ( parentWidth / 2 / orthographicCamera.Zoom ),
-                     GetY( Align.RIGHT ),
-                     Align.RIGHT
+                    this.Stage.Camera.Position.X + ( parentWidth / 2 / orthographicCamera.Zoom ),
+                    GetY( Align.RIGHT ),
+                    Align.RIGHT
                     );
             }
 
             if ( ( GetX( Align.LEFT ) - this.Stage.Camera.Position.X )
-                 < ( -parentWidth / 2 / orthographicCamera.Zoom ) )
+               < ( -parentWidth / 2 / orthographicCamera.Zoom ) )
             {
                 SetPosition
                     (
-                     this.Stage.Camera.Position.X - ( parentWidth / 2 / orthographicCamera.Zoom ),
-                     GetY( Align.LEFT ),
-                     Align.LEFT
+                    this.Stage.Camera.Position.X - ( parentWidth / 2 / orthographicCamera.Zoom ),
+                    GetY( Align.LEFT ),
+                    Align.LEFT
                     );
             }
 
@@ -142,20 +140,20 @@ public class Window : Table
             {
                 SetPosition
                     (
-                     GetX( Align.TOP ),
-                     this.Stage.Camera.Position.Y + ( parentHeight / 2 / orthographicCamera.Zoom ),
-                     Align.TOP
+                    GetX( Align.TOP ),
+                    this.Stage.Camera.Position.Y + ( parentHeight / 2 / orthographicCamera.Zoom ),
+                    Align.TOP
                     );
             }
 
             if ( ( GetY( Align.BOTTOM ) - this.Stage.Camera.Position.Y )
-                 < ( -parentHeight / 2 / orthographicCamera.Zoom ) )
+               < ( -parentHeight / 2 / orthographicCamera.Zoom ) )
             {
                 SetPosition
                     (
-                     GetX( Align.BOTTOM ),
-                     this.Stage.Camera.Position.Y - ( parentHeight / 2 / orthographicCamera.Zoom ),
-                     Align.BOTTOM
+                    GetX( Align.BOTTOM ),
+                    this.Stage.Camera.Position.Y - ( parentHeight / 2 / orthographicCamera.Zoom ),
+                    Align.BOTTOM
                     );
             }
         }
@@ -164,10 +162,25 @@ public class Window : Table
             var parentWidth  = this.Stage.StageWidth;
             var parentHeight = this.Stage.StageHeight;
 
-            if ( X < 0 ) X                   = 0;
-            if ( RightEdge > parentWidth ) X = ( parentWidth - Width );
-            if ( Y < 0 ) Y                   = 0;
-            if ( TopEdge > parentHeight ) Y  = ( parentHeight - Height );
+            if ( X < 0 )
+            {
+                X = 0;
+            }
+
+            if ( RightEdge > parentWidth )
+            {
+                X = ( parentWidth - Width );
+            }
+
+            if ( Y < 0 )
+            {
+                Y = 0;
+            }
+
+            if ( TopEdge > parentHeight )
+            {
+                Y = ( parentHeight - Height );
+            }
         }
     }
 
@@ -186,12 +199,12 @@ public class Window : Table
 
                 DrawStageBackground
                     (
-                     batch,
-                     parentAlpha,
-                     ( X + TmpPosition.X ),
-                     ( Y + TmpPosition.Y ),
-                     ( X + TmpSize.X ),
-                     ( Y + TmpSize.Y )
+                    batch,
+                    parentAlpha,
+                    ( X + TmpPosition.X ),
+                    ( Y + TmpPosition.Y ),
+                    ( X + TmpSize.X ),
+                    ( Y + TmpSize.Y )
                     );
             }
         }
@@ -236,7 +249,10 @@ public class Window : Table
 
     public new Actor? Hit( float x, float y, bool touchable )
     {
-        if ( !IsVisible ) return null;
+        if ( !IsVisible )
+        {
+            return null;
+        }
 
         Actor? hit = base.Hit( x, y, touchable );
 
@@ -245,7 +261,10 @@ public class Window : Table
             return this;
         }
 
-        if ( ( hit == null ) || ( hit == this ) ) return hit;
+        if ( ( hit == null ) || ( hit == this ) )
+        {
+            return hit;
+        }
 
         if ( ( y <= Height ) && ( y >= ( Height - GetPadTop() ) ) && ( x >= 0 ) && ( x <= Width ) )
         {
@@ -257,7 +276,10 @@ public class Window : Table
                 current = current?.Parent;
             }
 
-            if ( GetCell( current ) != null ) return this;
+            if ( GetCell( current ) != null )
+            {
+                return this;
+            }
         }
 
         return hit;
@@ -282,11 +304,14 @@ public class Window : Table
 
         public new void Draw( IBatch batch, float parentAlpha )
         {
-            if ( _window.DrawTitleTable ) base.Draw( batch, parentAlpha );
+            if ( _window.DrawTitleTable )
+            {
+                base.Draw( batch, parentAlpha );
+            }
         }
     }
 
-    internal class WindowCaptureListener : InputListener, IEventListener
+    internal class WindowCaptureListener : InputListener
     {
         private readonly Window _window;
 
@@ -335,23 +360,56 @@ public class Window : Table
             _window.edge = 0;
 
             if ( _window.IsResizable
-                 && ( x >= ( left - border ) )
-                 && ( x <= ( right + border ) )
-                 && ( y >= ( bottom - border ) ) )
+              && ( x >= ( left - border ) )
+              && ( x <= ( right + border ) )
+              && ( y >= ( bottom - border ) ) )
             {
-                if ( x < ( left + border ) ) _window.edge   |= Align.LEFT;
-                if ( x > ( right - border ) ) _window.edge  |= Align.RIGHT;
-                if ( y < ( bottom + border ) ) _window.edge |= Align.BOTTOM;
+                if ( x < ( left + border ) )
+                {
+                    _window.edge |= Align.LEFT;
+                }
 
-                if ( _window.edge != 0 ) border += 25;
+                if ( x > ( right - border ) )
+                {
+                    _window.edge |= Align.RIGHT;
+                }
 
-                if ( x < ( left + border ) ) _window.edge   |= Align.LEFT;
-                if ( x > ( right - border ) ) _window.edge  |= Align.RIGHT;
-                if ( y < ( bottom + border ) ) _window.edge |= Align.BOTTOM;
+                if ( y < ( bottom + border ) )
+                {
+                    _window.edge |= Align.BOTTOM;
+                }
+
+                if ( _window.edge != 0 )
+                {
+                    border += 25;
+                }
+
+                if ( x < ( left + border ) )
+                {
+                    _window.edge |= Align.LEFT;
+                }
+
+                if ( x > ( right - border ) )
+                {
+                    _window.edge |= Align.RIGHT;
+                }
+
+                if ( y < ( bottom + border ) )
+                {
+                    _window.edge |= Align.BOTTOM;
+                }
+            }
+
+            if ( _window is { IsMovable: true, edge: 0 }
+              && ( ( y <= height ) && ( y >= ( height - padTop ) ) )
+              && ( ( x >= left ) && ( x <= right ) )
+               )
+            {
+                _window.edge = MOVE;
             }
         }
 
-        public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+        protected override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
         {
             if ( button == 0 )
             {
@@ -386,16 +444,17 @@ public class Window : Table
 
             var minWidth  = _window.GetMinWidth();
             var minHeight = _window.GetMinHeight();
+
 //            var maxWidth  = _window.GetMaxWidth();
 //            var maxHeight = _window.GetMaxHeight();
 
             Stage? stage = _window.Stage;
 
             var clampPosition = _window.KeepWithinStage
-                                && ( stage != null )
-                                && ( _window.Parent == stage.Root );
+                             && ( stage != null )
+                             && ( _window.Parent == stage.Root );
 
-            if ( ( _window.edge & Window.MOVE ) != 0 )
+            if ( ( _window.edge & MOVE ) != 0 )
             {
                 var amountX = x - _startX;
                 var amountY = y - _startY;
@@ -412,8 +471,11 @@ public class Window : Table
                 {
                     amountX = -( minWidth - width );
                 }
-                
-                if ( clampPosition && ( ( windowX + amountX ) < 0 ) ) amountX = -windowX;
+
+                if ( clampPosition && ( ( windowX + amountX ) < 0 ) )
+                {
+                    amountX = -windowX;
+                }
 
                 width   -= amountX;
                 windowX += amountX;
@@ -456,7 +518,7 @@ public class Window : Table
 
             if ( ( _window.edge & Align.TOP ) != 0 )
             {
-                var amountY                                   = y - _lastY - height;
+                var amountY = y - _lastY - height;
 
                 if ( ( height + amountY ) < minHeight )
                 {
@@ -471,8 +533,11 @@ public class Window : Table
                 height += amountY;
             }
 
-            _window.SetBounds( ( float )Math.Round( windowX ), ( float )Math.Round( windowY ),
-                               ( float )Math.Round( width ), ( float )Math.Round( height ) );
+            _window.SetBounds
+                (
+                ( float )Math.Round( windowX ), ( float )Math.Round( windowY ),
+                ( float )Math.Round( width ), ( float )Math.Round( height )
+                );
         }
 
         public new bool MouseMoved( InputEvent ev, float x, float y )

@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
@@ -21,14 +23,14 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// <summary>
 /// Drawable for a <seealso cref="Sprite"/>.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class SpriteDrawable : BaseDrawable, ITransformDrawable
 {
     private Sprite? _sprite;
 
     /// <summary>
-    /// Creates an uninitialized SpriteDrawable. The sprite must be set before use. </summary>
+    /// Creates an uninitialized SpriteDrawable. The sprite must be set before use.
+    /// </summary>
     public SpriteDrawable()
     {
     }
@@ -53,7 +55,7 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
         Color spriteColor = Sprite.Color;
         var   oldColor    = spriteColor.ToFloatBits();
 
-        Sprite.SetColor( spriteColor.Mul( batch.GetColor() ) );
+        Sprite.SetColor( spriteColor.Mul( batch.Color ) );
 
         Sprite.Rotation = 0;
         Sprite.SetScale( 1, 1 );
@@ -74,12 +76,15 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
                       float scaleY,
                       float rotation )
     {
-        if ( Sprite == null ) return;
+        if ( Sprite == null )
+        {
+            return;
+        }
 
         Color spriteColor = Sprite.Color;
         var   oldColor    = spriteColor.ToFloatBits();
 
-        Sprite.SetColor( spriteColor.Mul( batch.GetColor() ) );
+        Sprite.SetColor( spriteColor.Mul( batch.Color ) );
 
         Sprite.SetOrigin( originX, originY );
         Sprite.Rotation = rotation;
@@ -92,7 +97,6 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
     public Sprite? Sprite
     {
         get => _sprite;
-        // ReSharper disable once PropertyCanBeMadeInitOnly.Global
         set
         {
             this._sprite = value;

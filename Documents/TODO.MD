@@ -241,7 +241,7 @@ GRAPHICS/G2D
     - DONE - PolygonRegion                  
     -      - PolygonRegionLoader            
     - DONE - PolygonSprite                  
-    -      - PolygonSpriteBatch             
+    - DONE - PolygonSpriteBatch             
     -      - RepeatablePolygonSprite        
     - DONE - Sprite                         
     - DONE - SpriteBatch                    

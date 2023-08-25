@@ -14,8 +14,11 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics;
+
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Listeners;
+using LibGDXSharp.Scenes.Scene2D.Actions;
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
@@ -29,19 +32,25 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Dialog : Window
 {
-    public bool   CancelHide   { get; set; }
     public Table? ContentTable { get; private set; }
     public Table? ButtonTable  { get; private set; }
+    public bool   CancelHide   { get; set; }
 
-    private readonly Skin? _skin;
+    private readonly IEventListener _dialogChangeListener = new DialogChangeObserver();
+    private readonly IEventListener _dialogClickListener  = new DialogClickObserver();
+    private readonly IEventListener _dialogFocusListener  = new DialogFocusObserver();
+    private readonly IEventListener _dialogInputListener  = new DialogInputObserver();
+    private readonly Skin?          _skin;
 
     private Dictionary< Actor, object >? _values = new();
-    private Actor?                       _previousKeyboardFocus;
-    private Actor?                       _previousScrollFocus;
-    private FocusListener?               _focusListener;
 
+    private Actor? _previousKeyboardFocus;
+    private Actor? _previousScrollFocus;
+
+    // ------------------------------------------------------------------------
+    
     public Dialog( string title, Skin skin )
-            : base( title, skin.Get< Window.WindowStyle >() )
+        : base( title, skin.Get< Window.WindowStyle >() )
     {
         base.Skin  = skin;
         this._skin = skin;
@@ -50,15 +59,16 @@ public class Dialog : Window
     }
 
     public Dialog( string title, Skin skin, string windowStyleName )
-            : base( title, ( Window.WindowStyle )skin.Get< Window.WindowStyle >( windowStyleName ) )
+        : base( title, ( Window.WindowStyle )skin.Get< Window.WindowStyle >( windowStyleName ) )
     {
         base.Skin  = skin;
         this._skin = skin;
+
         Initialise();
     }
 
     public Dialog( string title, Window.WindowStyle windowStyle )
-            : base( title, windowStyle )
+        : base( title, windowStyle )
     {
         Initialise();
     }
@@ -67,7 +77,7 @@ public class Dialog : Window
     {
         base.IsModal = true;
 
-        Defaults().Space( 6 );
+        CellDefaults.Space( 6 );
 
         ContentTable = new Table( _skin );
         ButtonTable  = new Table( _skin );
@@ -76,24 +86,13 @@ public class Dialog : Window
         AddRow();
         Add( ButtonTable ).SetFillX();
 
-        ContentTable.Defaults().Space( 6 );
-        ButtonTable.Defaults().Space( 6 );
+        ContentTable.CellDefaults.Space( 6 );
+        ButtonTable.CellDefaults.Space( 6 );
 
-        ButtonTable.AddListener( new ChangeListener( _ =>
-                {
-                    void Changed( ChangeListener.ChangeEvent ev, Actor actor )
-                    {
-                        if ( !_values.Contains<Actor>( actor ) )
-                        {
-                            return;
-                        }
-
-                        while ( actor.Parent is not ButtonTable )
-                        {
-                            
-                        }
-                    }
-                }));
+        AddCaptureListener( _dialogChangeListener );
+        AddCaptureListener( _dialogClickListener );
+        AddCaptureListener( _dialogFocusListener );
+        AddCaptureListener( _dialogInputListener );
 
 //        buttonTable.addListener( new ChangeListener()
 //        {
@@ -146,11 +145,11 @@ public class Dialog : Window
     {
         if ( stage == null )
         {
-            AddListener( _focusListener );
+            AddListener( _dialogFocusListener );
         }
         else
         {
-            RemoveListener( _focusListener );
+            RemoveListener( _dialogFocusListener );
         }
 
         base.SetStage( stage! );
@@ -172,8 +171,10 @@ public class Dialog : Window
     public Dialog Text( string? text )
     {
         if ( _skin == null )
+        {
             throw new IllegalStateException
-                    ( "This method may only be used if the dialog was constructed with a Skin." );
+                ( "This method may only be used if the dialog was constructed with a Skin." );
+        }
 
         return Text( text, _skin.Get< Label.LabelStyle >() );
     }
@@ -204,8 +205,10 @@ public class Dialog : Window
     public Dialog Button( string text, object? obj = null )
     {
         if ( _skin == null )
+        {
             throw new IllegalStateException
-                    ( "This method may only be used if the dialog was constructed with a Skin." );
+                ( "This method may only be used if the dialog was constructed with a Skin." );
+        }
 
         return Button( text, obj, _skin.Get< TextButton.TextButtonStyle >() );
     }
@@ -224,10 +227,14 @@ public class Dialog : Window
         return Button( new TextButton( text, buttonStyle ), obj );
     }
 
-    /**
-     * Adds the given button to the button table.
-     * @param object The object that will be passed to {@link #result(Object)} if this button is clicked. May be null.
-     */
+    /// <summary>
+    /// Adds the given button to the button table.
+    /// </summary>
+    /// <param name="button"></param>
+    /// <param name="obj">
+    /// The object that will be passed to <see cref="Result(object)"/> if this
+    /// button is clicked. May be null.
+    /// </param>
     public Dialog Button( Button button, object? obj = null )
     {
         ButtonTable?.Add( button );
@@ -237,32 +244,33 @@ public class Dialog : Window
         return this;
     }
 
-    /**
-     * {@link #pack() Packs} the dialog (but doesn't set the position), adds it to the stage, sets it as the keyboard and scroll
-     * focus, clears any actions on the dialog, and adds the specified action to it. The previous keyboard and scroll focus are
-     * remembered so they can be restored when the dialog is hidden.
-     * @param action May be null.
-     */
+    /// <summary>
+    /// <see cref="WidgetGroup.Pack()"/> the dialog (but doesn't set the position),
+    /// adds it to the stage, sets it as the keyboard and scroll focus, clears any
+    /// actions on the dialog, and adds the specified action to it. The previous
+    /// keyboard and scroll focus are remembered so they can be restored when the
+    /// dialog is hidden.
+    /// </summary>
+    /// <param name="stage"></param>
+    /// <param name="action"> May be null. </param>
     public Dialog Show( Stage stage, Action? action )
     {
         ClearActions();
-        RemoveCaptureListener( ignoreTouchDown );
+
+//        RemoveCaptureListener( ignoreTouchDown );
+
         _previousKeyboardFocus = null;
 
-        Actor? actor = stage.KeyboardFocus;
-
-        if ( ( actor != null ) && !actor.IsDescendantOf( this ) )
+        if ( ( stage.KeyboardFocus != null ) && !stage.KeyboardFocus.IsDescendantOf( this ) )
         {
-            _previousKeyboardFocus = actor;
+            _previousKeyboardFocus = stage.KeyboardFocus;
         }
 
         _previousScrollFocus = null;
 
-        actor = stage.ScrollFocus;
-
-        if ( ( actor != null ) && !actor.IsDescendantOf( this ) )
+        if ( ( stage.ScrollFocus != null ) && !stage.ScrollFocus.IsDescendantOf( this ) )
         {
-            _previousScrollFocus = actor;
+            _previousScrollFocus = stage.ScrollFocus;
         }
 
         stage.AddActor( this );
@@ -273,34 +281,45 @@ public class Dialog : Window
         stage.KeyboardFocus = this;
         stage.ScrollFocus   = this;
 
-        if ( action != null ) AddAction( action );
+        if ( action != null )
+        {
+            AddAction( action );
+        }
 
         return this;
     }
 
-    /**
-     * Centers the dialog in the stage and calls {@link #show(Stage, Action)}
-     * with a {@link Actions#fadeIn(float, Interpolation)} action.
-     */
+    /// <summary>
+    /// Centers the dialog in the stage and calls <see cref="Show(Stage, Action)"/>
+    /// with a <see cref="SceneActions.FadeIn(float, Interpolation)"/> action.
+    /// </summary>
     public Dialog Show( Stage stage )
     {
-        Show( stage, Sequence( Actions.Alpha( 0 ), Actions.FadeIn( 0.4f, Interpolator.Fade ) ) );
+        Show
+            (
+            stage,
+            SceneActions.Sequence
+                ( SceneActions.Alpha( 0 ), SceneActions.FadeIn( 0.4f, Interpolator.Fade ) )
+            );
 
         SetPosition
-                (
-                ( float )Math.Round( ( stage.StageWidth - Width ) / 2 ),
-                ( float )Math.Round( ( stage.StageHeight - Height ) / 2 )
-                );
+            (
+            ( float )Math.Round( ( stage.StageWidth - Width ) / 2 ),
+            ( float )Math.Round( ( stage.StageHeight - Height ) / 2 )
+            );
 
         return this;
     }
 
-    /**
-     * Removes the dialog from the stage, restoring the previous keyboard and
-     * scroll focus, and adds the specified action to the dialog.
-     * @param action
-     * If null, the dialog is removed immediately. Otherwise, the dialog is removed when the action completes. The
-     * dialog will not respond to touch down events during the action. */
+    /// <summary>
+    /// Removes the dialog from the stage, restoring the previous keyboard and
+    /// scroll focus, and adds the specified action to the dialog.
+    /// </summary>
+    /// <param name="action">
+    /// If null, the dialog is removed immediately. Otherwise, the dialog is
+    /// removed when the action completes. The dialog will not respond to touch
+    /// down events during the action.
+    /// </param>
     public void Hide( Action? action )
     {
         Stage? stage = base.Stage;
@@ -314,9 +333,7 @@ public class Dialog : Window
                 _previousKeyboardFocus = null;
             }
 
-            Actor? actor = stage.KeyboardFocus;
-
-            if ( ( actor == null ) || actor.IsDescendantOf( this ) )
+            if ( ( stage.KeyboardFocus == null ) || stage.KeyboardFocus.IsDescendantOf( this ) )
             {
                 stage.KeyboardFocus = _previousKeyboardFocus;
             }
@@ -326,9 +343,7 @@ public class Dialog : Window
                 _previousScrollFocus = null;
             }
 
-            actor = stage.ScrollFocus;
-
-            if ( ( actor == null ) || actor.IsDescendantOf( this ) )
+            if ( ( stage.ScrollFocus == null ) || stage.ScrollFocus.IsDescendantOf( this ) )
             {
                 stage.ScrollFocus = _previousScrollFocus;
             }
@@ -351,12 +366,12 @@ public class Dialog : Window
     /// </summary>
     public void Hide()
     {
-        Hide( FadeOut( 0.4f, Interpolator.Fade ) );
+        Hide( SceneActions.FadeOut( 0.4f, Interpolator.Fade ) );
     }
 
     public void SetObject( Actor actor, object obj )
     {
-        System.Diagnostics.Debug.Assert( _values != null, nameof( _values ) + " != null" );
+        Debug.Assert( _values != null, nameof( _values ) + " != null" );
 
         _values[ actor ] = obj;
     }
@@ -368,37 +383,82 @@ public class Dialog : Window
     /// <seealso cref="IInput.Keys"/>
     public Dialog Key( int keycode, object obj )
     {
-        AddListener( new InputListener( _ =>
-        {
-            public bool keyDown (InputEvent ev, int keycode2)
-            {
-                if (keycode == keycode2)
-                {
-                    // Delay a frame to eat the keyTyped event.
-                    Gdx.App.PostRunnable(new IRunnable( _ =>
-                    {
-                        public void Run()
-                        {
-                            result(object);
-                            if (!CancelHide) hide();
-                            CancelHide = false;
-                        }
-                    });
-                }
+//        AddListener
+//            ( new InputListener
+//                  (
+//                  _ =>
+//                  {
+//                      public bool keyDown( InputEvent ev, int keycode2 )
+//                      {
+//                          if ( keycode == keycode2 )
+//                          {
+        // Delay a frame to eat the keyTyped event.
+//                              Gdx.App.PostRunnable
+//                                  ( new IRunnable
+//                                        (
+//                                        _ =>
+//                                        {
+//                                            public void Run()
+//                                            {
+//                                                result( object );
 
-                return false;
-            }
-        });
+//                                                if ( !CancelHide )
+//                                                {
+//                                                    hide();
+//                                                }
+
+//                                                CancelHide = false;
+//                                            }
+//                                        }
+//                                        );
+//                          }
+
+//                          return false;
+//                      }
+//                  }
+//                  );
 
         return this;
     }
 
     /// <summary>
     /// Called when a button is clicked. The dialog will be hidden after this
-    /// method returns unless <see cref="Cancel()"/> is called.
+    /// method returns unless <see cref="CancelHide"/> is set.
     /// </summary>
     /// <param name="obj"> The object specified when the button was added. </param>
     protected void Result( object? obj )
     {
+    }
+
+    protected internal sealed class DialogChangeObserver : IEventListener
+    {
+        public bool Handle( Event ev )
+        {
+            return false;
+        }
+    }
+
+    protected internal sealed class DialogClickObserver : IEventListener
+    {
+        public bool Handle( Event ev )
+        {
+            return false;
+        }
+    }
+
+    protected internal sealed class DialogFocusObserver : IEventListener
+    {
+        public bool Handle( Event ev )
+        {
+            return false;
+        }
+    }
+
+    protected internal sealed class DialogInputObserver : IEventListener
+    {
+        public bool Handle( Event ev )
+        {
+            return false;
+        }
     }
 }

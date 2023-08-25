@@ -17,8 +17,6 @@
 using System.Diagnostics;
 using System.Text;
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.Audio;
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.G2D;

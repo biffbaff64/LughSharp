@@ -591,7 +591,7 @@ public class NinePatch
         var centerHeight = height - TopHeight - BottomHeight;
         var rightX       = ( x + width ) - RightWidth;
         var topY         = ( y + height ) - TopHeight;
-        var c            = TmpDrawColor.Set( Color ).Mul( batch.GetColor() ).ToFloatBits();
+        var c            = TmpDrawColor.Set( Color ).Mul( batch.Color ).ToFloatBits();
 
         if ( BottomLeft != -1 )
         {

@@ -14,15 +14,17 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// Draws a <see cref="TextureRegion"/> repeatedly to fill the area, instead of stretching it.
+/// Draws a <see cref="TextureRegion"/> repeatedly to fill the area,
+/// instead of stretching it.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class TiledDrawable : TextureRegionDrawable
 {
     public TiledDrawable( TextureRegion region )
@@ -43,7 +45,7 @@ public class TiledDrawable : TextureRegionDrawable
         {
             var oldColor = batch.PackedColor;
 
-            batch.SetColor( batch.GetColor().Mul( Color ) );
+            batch.Color = Color.Mul( batch.Color );
 
             var regionWidth  = region.RegionWidth * Scale;
             var regionHeight = region.RegionHeight * Scale;

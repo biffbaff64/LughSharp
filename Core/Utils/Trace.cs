@@ -34,7 +34,7 @@ public struct CallerID
 /// A class to write debug messages to console and a text file.
 /// Primarily intended for flow tracing, messages will display calling
 /// file/class/methods and any provided debug message.
-/// <see cref="LogLevel"/> must be set to either <see cref="LOG_DEBUG"/>,
+/// <see cref="TraceLevel"/> must be set to either <see cref="LOG_DEBUG"/>,
 ///  <see cref="LOG_INFO"/>, or <see cref="LOG_ERROR"/> for messages to work.
 /// To enable writing to file, <see cref="EnableWriteToFile"/> must be TRUE
 /// and <see cref="OpenDebugFile"/> must be called.
@@ -47,7 +47,7 @@ public static class Trace
     public const int LOG_ERROR = 3;
 
     public static bool EnableWriteToFile { get; set; } = false;
-    public static int  LogLevel          { get; set; } = LOG_NONE;
+    public static int  TraceLevel        { get; set; } = LOG_NONE;
 
     private const string DEBUG_TAG = "[Debug] ";
     private const string INFO_TAG  = "[Info ] ";
@@ -66,7 +66,7 @@ public static class Trace
                                    bool enableWriteToFile = false,
                                    string filename = "" )
     {
-        LogLevel          = logLevel;
+        TraceLevel        = logLevel;
         EnableWriteToFile = enableWriteToFile;
 
         if ( EnableWriteToFile )
@@ -91,7 +91,7 @@ public static class Trace
                             string message = "",
                             params object[] args )
     {
-        if ( LogLevel != LOG_DEBUG )
+        if ( TraceLevel != LOG_DEBUG )
         {
             return;
         }
@@ -126,7 +126,7 @@ public static class Trace
                                  string message = "",
                                  params object[] args )
     {
-        if ( LogLevel == LOG_DEBUG )
+        if ( TraceLevel == LOG_DEBUG )
         {
             return;
         }
@@ -165,7 +165,7 @@ public static class Trace
                             string message = "",
                             params object[] args )
     {
-        if ( LogLevel != LOG_DEBUG )
+        if ( TraceLevel != LOG_DEBUG )
         {
             return;
         }
@@ -202,7 +202,7 @@ public static class Trace
                                string message = "",
                                params object[] args )
     {
-        if ( ( LogLevel == LOG_DEBUG ) && condition )
+        if ( ( TraceLevel == LOG_DEBUG ) && condition )
         {
             message = string.Join( DEBUG_TAG, message );
 
@@ -233,7 +233,7 @@ public static class Trace
                                    [CallerMemberName] string callerMethod = "",
                                    [CallerLineNumber] int callerLine = 0 )
     {
-        if ( LogLevel != LOG_DEBUG )
+        if ( TraceLevel != LOG_DEBUG )
         {
             return;
         }
@@ -264,7 +264,7 @@ public static class Trace
     /// <param name="args"></param>
     public static void Info( string message, params object[] args )
     {
-        if ( LogLevel != LOG_DEBUG )
+        if ( TraceLevel != LOG_DEBUG )
         {
             return;
         }

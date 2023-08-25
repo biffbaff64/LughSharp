@@ -41,13 +41,6 @@ public class GLWindow : IDisposable
 
     // ------------------------------------------------------------------------
 
-//    #region Callbacks
-
-    
-//    #endregion Callbacks
-
-    // ------------------------------------------------------------------------
-
     public GLWindow( IApplicationListener listener,
                      GLApplicationConfiguration config,
                      GLApplicationBase application )
@@ -148,7 +141,7 @@ public class GLWindow : IDisposable
     public unsafe void MakeCurrent()
     {
         Gdx.Graphics = this.Graphics;
-        Gdx.GL30     = this.Graphics.GetGL30();
+        Gdx.GL30     = this.Graphics.GL30;
         Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30 : Graphics.GL20;
         Gdx.GL       = Gdx.GL30 != null ? Gdx.GL30 : Gdx.GL20;
         Gdx.Input    = this.Input;

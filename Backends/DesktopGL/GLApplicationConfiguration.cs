@@ -115,7 +115,7 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// <param name="useGL30">whether to use OpenGL ES 3.0</param>
     /// <param name="gles3MajorVersion">OpenGL ES major version, use 3 as default</param>
     /// <param name="gles3MinorVersion">OpenGL ES minor version, use 2 as default</param>
-    public void UseOpenGL3( bool useGL30, int gles3MajorVersion = 3, int gles3MinorVersion = 2 )
+    public void UseOpenGL30( bool useGL30, int gles3MajorVersion = 3, int gles3MinorVersion = 2 )
     {
         this.UseGL30                   = useGL30;
         this.Gles30ContextMajorVersion = gles3MajorVersion;

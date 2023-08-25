@@ -14,12 +14,15 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class InputEvent : Event
 {
     /// <summary>
@@ -128,38 +131,47 @@ public class InputEvent : Event
         /// A new touch for a pointer on the stage was detected
         /// </summary>
         TouchDown,
+        
         /// <summary>
         /// A pointer has stopped touching the stage.
         /// </summary>
         TouchUp,
+        
         /// <summary>
         /// A pointer that is touching the stage has moved.
         /// </summary>
         TouchDragged,
+        
         /// <summary>
         /// The mouse pointer has moved (without a mouse button being active).
         /// </summary>
         MouseMoved,
+        
         /// <summary>
         /// The mouse pointer or an active touch have entered (i.e., <see cref="Actor.Hit(float, float, bool)"/>) an actor.
         /// </summary>
         Enter,
+        
         /// <summary>
         /// The mouse pointer or an active touch have exited an actor.
         /// </summary>
         Exit,
+        
         /// <summary>
         /// The mouse scroll wheel has changed.
         /// </summary>
         Scrolled,
+        
         /// <summary>
         /// A keyboard key has been pressed.
         /// </summary>
         KeyDown,
+        
         /// <summary>
         /// A keyboard key has been released.
         /// </summary>
         KeyUp,
+        
         /// <summary>
         /// A keyboard key has been pressed and released.
         /// </summary>

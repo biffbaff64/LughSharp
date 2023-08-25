@@ -42,7 +42,7 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
 
     public override void RenderTileLayer( TiledMapTileLayer layer )
     {
-        Color batchColor = Batch.GetColor();
+        Color batchColor = Batch.Color;
         var   color      = Color.ToFloatBits( batchColor.R, batchColor.G, batchColor.B, batchColor.A * layer.Opacity );
 
         var layerWidth  = layer.Width;
