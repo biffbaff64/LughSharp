@@ -14,21 +14,22 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 namespace LibGDXSharp.Assets;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class AssetDescriptor
 {
-    public Type                  Type       { get; init; }
-    public string?               FilePath   { get; init; }
-    public AssetLoaderParameters Parameters { get; init; }
+    public Type                  Type       { get; set; }
+    public string?               FilePath   { get; set; }
+    public AssetLoaderParameters Parameters { get; set; }
     public FileInfo?             File       { get; set; }
 
     public AssetDescriptor()
     {
-        FilePath   = string.Empty;
         Type       = null!;
+        FilePath   = string.Empty;
         Parameters = null!;
         File       = null!;
     }
@@ -40,8 +41,8 @@ public class AssetDescriptor
     /// <param name="parameters"></param>
     public AssetDescriptor( string filepath, Type assetType, AssetLoaderParameters parameters )
     {
-        FilePath   = filepath.Replace( '\\', '/' );
         Type       = assetType;
+        FilePath   = filepath.Replace( '\\', '/' );
         Parameters = parameters;
         File       = null!;
     }
@@ -53,10 +54,10 @@ public class AssetDescriptor
     /// <param name="parameters"></param>
     public AssetDescriptor( FileInfo file, Type assetType, AssetLoaderParameters parameters )
     {
-        FilePath   = file.FullName.Replace( '\\', '/' );
-        File       = file;
         Type       = assetType;
+        FilePath   = file.FullName.Replace( '\\', '/' );
         Parameters = parameters;
+        File       = file;
     }
 
     /// <summary>

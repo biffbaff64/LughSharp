@@ -14,14 +14,23 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Async;
 
 namespace LibGDXSharp.Assets;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class AssetLoadingTask
 {
+    public volatile bool                     dependenciesLoaded;
+    public volatile List< AssetDescriptor >? dependencies;
+
+    public AssetDescriptor AssetDesc { get; set; }
+    public bool            Cancel    { get; set; }
+    public object?         Asset     { get; set; }
+
     private readonly AssetManager _manager;
     private readonly AssetLoader  _loader;
 
@@ -31,13 +40,6 @@ public class AssetLoadingTask
     private volatile AsyncExecutor _executor;
 
     private long _startTime;
-
-    public volatile bool                     dependenciesLoaded;
-    public volatile List< AssetDescriptor >? dependencies;
-
-    public AssetDescriptor AssetDesc { get; set; }
-    public bool            Cancel    { get; set; }
-    public object?         Asset     { get; set; }
 
     /// <summary>
     /// </summary>
@@ -63,7 +65,10 @@ public class AssetLoadingTask
     /// </summary>
     public void Call()
     {
-        if ( Cancel ) return;
+        if ( Cancel )
+        {
+            return;
+        }
 
         var asyncLoader = _loader as AsynchronousAssetLoader;
 
@@ -83,7 +88,8 @@ public class AssetLoadingTask
             }
             else
             {
-                // if we have no dependencies, we load the async part of the task immediately.
+                // if we have no dependencies, we load the
+                // async part of the task immediately.
                 asyncLoader?.LoadAsync
                     (
                      _manager,
@@ -174,7 +180,10 @@ public class AssetLoadingTask
     {
         var syncLoader = ( SynchronousAssetLoader< Type, AssetLoaderParameters >? )_loader;
 
-        if ( syncLoader == null ) return;
+        if ( syncLoader == null )
+        {
+            return;
+        }
 
         if ( !dependenciesLoaded )
         {
@@ -219,11 +228,17 @@ public class AssetLoadingTask
     /// </summary>
     private void HandleAsyncLoader()
     {
-        if ( AssetDesc == null ) throw new GdxRuntimeException( "Unable to load asset: AssetDesc is null" );
+        if ( AssetDesc == null )
+        {
+            throw new GdxRuntimeException( "Unable to load asset: AssetDesc is null" );
+        }
 
         var asyncLoader = ( AsynchronousAssetLoader? )_loader;
 
-        if ( asyncLoader == null ) throw new GdxRuntimeException( "asyncLoader is null" );
+        if ( asyncLoader == null )
+        {
+            throw new GdxRuntimeException( "asyncLoader is null" );
+        }
 
         if ( !dependenciesLoaded )
         {

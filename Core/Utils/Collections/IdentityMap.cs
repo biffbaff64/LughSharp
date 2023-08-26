@@ -16,6 +16,8 @@
 
 using System.Runtime.Serialization;
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Utils.Collections;
@@ -45,12 +47,15 @@ namespace LibGDXSharp.Utils.Collections;
 /// collide, just more slowly.
 /// </para>
 /// </summary>
+[PublicAPI]
 public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
 {
     private readonly ObjectIDGenerator _objectIDGenerator = new();
 
     private bool _firstTimeGen  = true;
     private bool _firstPlaceGen = true;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Creates a new map with an initial capacity of 51 and a load factor of 0.8.
@@ -85,8 +90,9 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
     /// <summary>
     /// Creates a new map identical to the specified map.
     /// </summary>
-    public IdentityMap( IdentityMap< TK, TV > map ) : base( map )
+    public IdentityMap( IdentityMap< TK, TV > map ) //: base( map )
     {
+        //TODO:
     }
 
     protected new int Place( TK item )
@@ -123,6 +129,10 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public int HashCode()
     {
         var h = Size;

@@ -39,7 +39,6 @@
         <Folder Include="Core\Graphics\GL\" />
         <Folder Include="Core\Utils\Compression\Gzip\" />
         <Folder Include="Core\Utils\Json\" />
-        <Folder Include="DeleteCandidates\" />
         <Folder Include="Resources\" />
     </ItemGroup>
 

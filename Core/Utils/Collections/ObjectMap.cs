@@ -17,6 +17,8 @@
 using System.Diagnostics;
 using System.Text;
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Maths;
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections;
@@ -41,18 +43,17 @@ namespace LibGDXSharp.Core.Utils.Collections;
 /// probing continues to work even when all hashCodes collide, just more slowly.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class ObjectMap<TK, TV>
 {
-
-    #region data
-
     protected TK?[] keyTable;
     protected TV?[] valueTable;
 
     private readonly object _dummy = new();
     private readonly float  _loadFactor;
     private          int    _threshold;
+
+    // ------------------------------------------------------------------------
 
     [NonSerialized] private Entries< TK, TV >? _entries1;
     [NonSerialized] private Entries< TK, TV >? _entries2;
@@ -61,9 +62,7 @@ public class ObjectMap<TK, TV>
     [NonSerialized] private Keys< TK >?        _keys1;
     [NonSerialized] private Keys< TK >?        _keys2;
 
-    #endregion data
-
-    #region properties
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Used by <see cref="Place"/> to bit shift the upper bits of a <b>long</b>
@@ -94,8 +93,8 @@ public class ObjectMap<TK, TV>
     /// </summary>
     public int Size { get; set; }
 
-    #endregion properties
-
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// </summary>
     /// <param name="initialCapacity"></param>
@@ -125,10 +124,7 @@ public class ObjectMap<TK, TV>
     /// <exception cref="ArgumentException"></exception>
     protected ObjectMap( ref ObjectMap< TK, TV > map )
     {
-        if ( map == null )
-        {
-            throw new ArgumentException( "supplied map is null!" );
-        }
+        ArgumentNullException.ThrowIfNull( map );
 
         if ( map.valueTable == null )
         {
@@ -179,10 +175,7 @@ public class ObjectMap<TK, TV>
     /// <param name="item">The item to calculate the index for.</param>
     protected virtual int Place( TK item )
     {
-        if ( item == null )
-        {
-            throw new ArgumentException( "item cannot be null!" );
-        }
+        ArgumentNullException.ThrowIfNull( item );
 
         return ( int )( ( ( ulong )item.GetHashCode() * 0x9E3779B97F4A7C15L ) >>> Shift );
     }
@@ -194,10 +187,7 @@ public class ObjectMap<TK, TV>
     /// <exception cref="ArgumentException"></exception>
     private int LocateKey( TK key )
     {
-        if ( key == null )
-        {
-            throw new ArgumentException( "key cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( key );
 
         if ( keyTable == null )
         {
@@ -444,7 +434,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public bool ContainsKey( TK key ) => LocateKey( key ) >= 0;
+    public bool ContainsKey( TK key ) => ( LocateKey( key ) >= 0 );
 
     /// <summary>
     /// Returns the key for the specified value, or null if it is not in the map.
@@ -474,7 +464,7 @@ public class ObjectMap<TK, TV>
             }
         }
 
-        return default;
+        return default( TK? );
     }
 
     /// <summary>

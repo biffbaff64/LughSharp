@@ -14,8 +14,11 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public class HeapCharBuffer : CharBuffer
 {
     public HeapCharBuffer( char[] array, int offset, int length )
@@ -59,7 +62,7 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="ReadOnlyBufferException">
     /// If this buffer is read-only, which it shouldn't be!````
     /// </exception>
-    public override CharBuffer Put( char c ) => null;
+    protected override CharBuffer Put( char c ) => null;
 
     /// <summary>
     /// Absolute <i>get</i> method.  Reads the char at the given index.

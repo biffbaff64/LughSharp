@@ -14,9 +14,11 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 namespace LibGDXSharp.Utils.Buffers;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class HeapByteBuffer : ByteBuffer
 {
     public HeapByteBuffer( int cap, int lim )
@@ -51,11 +53,11 @@ public class HeapByteBuffer : ByteBuffer
 //        return new HeapByteBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
     }
 
-    public override byte Get() => 0;
+    protected override byte Get() => 0;
 
-    public override ByteBuffer Put( byte b ) => null;
+    protected override ByteBuffer Put( byte b ) => null;
 
-    public override byte Get( int index ) => 0;
+    protected override byte Get( int index ) => 0;
 
     public override ByteBuffer Put( int index, byte b ) => null;
 

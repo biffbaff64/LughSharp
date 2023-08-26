@@ -14,22 +14,26 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 namespace LibGDXSharp.Assets;
 
+[PublicAPI]
 public class AssetLoaderParameters
 {
     /// <summary>
-    /// Callback interface that will be invoked when the <see cref="LibGDXSharp.Assets.AssetManager"/> loaded an asset.
+    /// Callback interface that will be invoked when the
+    /// <see cref="AssetManager"/> loaded an asset.
     /// </summary>
     public interface ILoadedCallback
     {
-        void FinishedLoading(AssetManager assetManager, string fileName, Type type);
+        void FinishedLoading( AssetManager assetManager, string fileName, Type type );
     }
 
     public ILoadedCallback? LoadedCallback { get; set; }
 }
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class DefaultLoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
 {
     private readonly int _refCount;

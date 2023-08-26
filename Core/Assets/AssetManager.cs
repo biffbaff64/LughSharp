@@ -369,7 +369,7 @@ public class AssetManager
                 {
                     if ( IsLoaded( dependency ) )
                     {
-                        //TODO: Say NO to recursiveness!
+                        //TODO:
                         Unload( dependency );
                     }
                 }
@@ -530,11 +530,11 @@ public class AssetManager
             if ( ( desc.FilePath == fileName ) && ( desc.Type != type ) )
             {
                 throw new GdxRuntimeException
-                        (
-                        $"Asset with name '{fileName}'"
-                      + $"' already in preload queue, but has different type (expected: {type?.Name}"
-                      + ", found: {desc.Type?.Name})"
-                        );
+                    (
+                    $"Asset with name '{fileName}'"
+                  + $"' already in preload queue, but has different type (expected: {type?.Name}"
+                  + ", found: {desc.Type?.Name})"
+                    );
             }
         }
 
@@ -546,11 +546,11 @@ public class AssetManager
             if ( ( desc.FilePath == fileName ) && ( desc.Type != type ) )
             {
                 throw new GdxRuntimeException
-                        (
-                        $"Asset with name '{fileName}'"
-                      + $"' already in preload queue, but has different type (expected: {type?.Name}"
-                      + $", found: {desc.Type.Name})"
-                        );
+                    (
+                    $"Asset with name '{fileName}'"
+                  + $"' already in preload queue, but has different type (expected: {type?.Name}"
+                  + $", found: {desc.Type.Name})"
+                    );
             }
         }
 
@@ -560,19 +560,19 @@ public class AssetManager
         if ( ( otherType != null ) && ( otherType != type ) )
         {
             throw new GdxRuntimeException
-                    (
-                    $"Asset with name '{fileName}' already loaded, but has"
-                  + $"different type (expected: {type?.Name}, found: {otherType.Name})"
-                    );
+                (
+                $"Asset with name '{fileName}' already loaded, but has"
+              + $"different type (expected: {type?.Name}, found: {otherType.Name})"
+                );
         }
 
         _toLoad++;
 
         var assetDesc = new AssetDescriptor
         {
-                FilePath   = fileName,
-                Type       = type!,
-                Parameters = parameter
+            FilePath   = fileName,
+            Type       = type!,
+            Parameters = parameter
         };
 
         _loadQueue.Add( assetDesc );
@@ -819,11 +819,11 @@ public class AssetManager
             IncrementRefCountedDependencies( assetDesc.FilePath );
 
             assetDesc.Parameters.LoadedCallback?.FinishedLoading
-                    (
-                    this,
-                    assetDesc.FilePath,
-                    assetDesc.Type
-                    );
+                (
+                this,
+                assetDesc.FilePath,
+                assetDesc.Type
+                );
 
             _loaded++;
         }
@@ -920,11 +920,11 @@ public class AssetManager
 
             // otherwise, if a listener was found in the parameter invoke it
             task.AssetDesc.Parameters.LoadedCallback?.FinishedLoading
-                    (
-                    this,
-                    task.AssetDesc.FilePath,
-                    task.AssetDesc.Type
-                    );
+                (
+                this,
+                task.AssetDesc.FilePath,
+                task.AssetDesc.Type
+                );
 
             return true;
         }
