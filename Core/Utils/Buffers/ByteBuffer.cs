@@ -18,12 +18,14 @@ namespace LibGDXSharp.Utils.Buffers;
 
 public abstract class ByteBuffer : Buffer
 {
-    protected byte[]? Hb     { get; set; }
-    protected int     Offset { get; set; }
+    protected byte[]? Hb         { get; set; }
+    protected int     Offset     { get; set; }
+    protected bool    BigEndian  { get; set; } = true;
 
-    private bool _bigEndian       = true;
     private bool _nativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
 
+    // ------------------------------------------------------------------------
+    
     protected ByteBuffer( int mark, int pos, int lim, int cap, byte[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
@@ -221,7 +223,7 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="UnsupportedOperationException">
     /// If this buffer is not backed by an accessible array
     /// </exception>
-    public byte[] Array()
+    public override byte[] BackingArray()
     {
         if ( Hb == null )
         {
@@ -406,7 +408,7 @@ public abstract class ByteBuffer : Buffer
     /// <returns> This buffer's byte order </returns>
     public ByteOrder Order()
     {
-        return _bigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
+        return BigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
     }
 
     /// <summary>
@@ -419,9 +421,9 @@ public abstract class ByteBuffer : Buffer
     /// <returns> This buffer </returns>
     public ByteBuffer Order( ByteOrder bo )
     {
-        _bigEndian = ( bo == ByteOrder.BigEndian );
+        BigEndian = ( bo == ByteOrder.BigEndian );
 
-        _nativeByteOrder = ( _bigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian ) );
+        _nativeByteOrder = ( BigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian ) );
 
         return this;
     }
@@ -484,13 +486,13 @@ public abstract class ByteBuffer : Buffer
 
     // ------------------------------------------------------------------------
 
-    #region Unchecked accessors, for use by ByteBufferAs-X-Buffer classes
+    #region Abstract Methods, for use by ByteBufferAs-X-Buffer classes
 
     public abstract char GetChar();
 
-    public abstract ByteBuffer PutChar( char value );
-
     public abstract char GetChar( int index );
+
+    public abstract ByteBuffer PutChar( char value );
 
     public abstract ByteBuffer PutChar( int index, char value );
 
@@ -498,9 +500,9 @@ public abstract class ByteBuffer : Buffer
 
     public abstract short GetShort();
 
-    public abstract ByteBuffer PutShort( short value );
-
     public abstract short GetShort( int index );
+
+    public abstract ByteBuffer PutShort( short value );
 
     public abstract ByteBuffer PutShort( int index, short value );
 
@@ -508,9 +510,9 @@ public abstract class ByteBuffer : Buffer
 
     public abstract int GetInt();
 
-    public abstract ByteBuffer PutInt( int value );
-
     public abstract int GetInt( int index );
+
+    public abstract ByteBuffer PutInt( int value );
 
     public abstract ByteBuffer PutInt( int index, int value );
 
@@ -518,9 +520,9 @@ public abstract class ByteBuffer : Buffer
 
     public abstract long GetLong();
 
-    public abstract ByteBuffer PutLong( long value );
-
     public abstract long GetLong( int index );
+
+    public abstract ByteBuffer PutLong( long value );
 
     public abstract ByteBuffer PutLong( int index, long value );
 
@@ -528,25 +530,119 @@ public abstract class ByteBuffer : Buffer
 
     public abstract float GetFloat();
 
-    public abstract ByteBuffer PutFloat( float value );
-
     public abstract float GetFloat( int index );
+
+    public abstract ByteBuffer PutFloat( float value );
 
     public abstract ByteBuffer PutFloat( int index, float value );
 
     public abstract FloatBuffer AsFloatBuffer();
 
+    /**
+     * Relative <i>get</i> method for reading a double value.
+     *
+     * <p>
+     * Reads the next eight bytes at this buffer's current position,
+     * composing them into a double value according to the current byte order,
+     * and then increments the position by eight.
+     * </p>
+     *
+     * @return  The double value at the buffer's current position
+     *
+     * @throws  BufferUnderflowException
+     *          If there are fewer than eight bytes
+     *          remaining in this buffer
+     */
     public abstract double GetDouble();
 
-    public abstract ByteBuffer PutDouble( double value );
-
+    /**
+     * Absolute <i>get</i> method for reading a double value.
+     *
+     * <p> Reads eight bytes at the given index, composing them into a
+     * double value according to the current byte order.  </p>
+     *
+     * @param  index
+     *         The index from which the bytes will be read
+     *
+     * @return  The double value at the given index
+     *
+     * @throws  IndexOutOfBoundsException
+     *          If <tt>index</tt> is negative
+     *          or not smaller than the buffer's limit,
+     *          minus seven
+     */
     public abstract double GetDouble( int index );
 
+    /**
+     * Relative <i>put</i> method for writing a double
+     * value <i>(optional operation)</i>.
+     * <p>
+     * Writes eight bytes containing the given double value, in the
+     * current byte order, into this buffer at the current position, and then
+     * increments the position by eight.
+     * </p>
+     *
+     * @param  value
+     *         The double value to be written
+     *
+     * @return  This buffer
+     *
+     * @throws  BufferOverflowException
+     *          If there are fewer than eight bytes
+     *          remaining in this buffer
+     *
+     * @throws  ReadOnlyBufferException
+     *          If this buffer is read-only
+     */
+    public abstract ByteBuffer PutDouble( double value );
+
+    /**
+     * Absolute <i>put</i> method for writing a double
+     * value <i>(optional operation)</i>.
+     *
+     * <p>
+     * Writes eight bytes containing the given double value, in the
+     * current byte order, into this buffer at the given index.
+     * </p>
+     *
+     * @param  index
+     *         The index at which the bytes will be written
+     *
+     * @param  value
+     *         The double value to be written
+     *
+     * @return  This buffer
+     *
+     * @throws  IndexOutOfBoundsException
+     *          If <tt>index</tt> is negative
+     *          or not smaller than the buffer's limit,
+     *          minus seven
+     *
+     * @throws  ReadOnlyBufferException
+     *          If this buffer is read-only
+     */
     public abstract ByteBuffer PutDouble( int index, double value );
 
+    /**
+     * Creates a view of this byte buffer as a double buffer.
+     * <p>
+     * The content of the new buffer will start at this buffer's current
+     * position.  Changes to this buffer's content will be visible in the new
+     * buffer, and vice versa; the two buffers' position, limit, and mark
+     * values will be independent.
+     * </p>
+     * <p>
+     * The new buffer's position will be zero, its capacity and its limit
+     * will be the number of bytes remaining in this buffer divided by
+     * eight, and its mark will be undefined.  The new buffer will be direct
+     * if, and only if, this buffer is direct, and it will be read-only if, and
+     * only if, this buffer is read-only.
+     * </p>
+     * @return  A new double buffer
+     */
     public abstract DoubleBuffer AsDoubleBuffer();
 
-    #endregion Unchecked accessors, for use by ByteBufferAs-X-Buffer classes
+    #endregion Abstract Methods, for use by ByteBufferAs-X-Buffer classes
 
     // ------------------------------------------------------------------------
 }

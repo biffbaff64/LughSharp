@@ -691,6 +691,9 @@ UTILS/ASYNC - DELETE CANDIDATE
 UTILS/BUFFERS
 -------------
 
+    Does C# have these classes already?
+        - MemoryStream?
+
     - DONE - Buffer
     - IP   - BufferUtils
     - DONE - ByteBuffer

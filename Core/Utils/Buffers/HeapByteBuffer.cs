@@ -36,6 +36,9 @@ public class HeapByteBuffer : ByteBuffer
     {
     }
 
+    /// <inheritdoc cref="ByteBuffer.IsDirect()"/>
+    public override bool IsDirect() => false;
+
     public override ByteBuffer Slice()
     {
         return new HeapByteBuffer( Hb, -1, 0, this.Remaining(), this.Remaining(), this.Position + Offset );
@@ -49,136 +52,185 @@ public class HeapByteBuffer : ByteBuffer
     public override ByteBuffer AsReadOnlyBuffer()
     {
         throw new NotImplementedException();
-        
+
 //        return new HeapByteBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
     }
 
-    protected override byte Get() => 0;
+    // ------------------------------------------------------------------------
 
-    protected override ByteBuffer Put( byte b ) => null;
+    protected override byte Get()
+    {
+        throw new NotImplementedException();
+    }
 
-    protected override byte Get( int index ) => 0;
+    protected override byte Get( int index )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer Put( int index, byte b ) => null;
+    protected override ByteBuffer Put( byte b )
+    {
+        throw new NotImplementedException();
+    }
 
-    /// <summary>
-    /// Compacts this buffer <i>(optional operation)</i>.
-    /// <para>
-    /// The bytes between the buffer's current position and its limit, if any,
-    /// are copied to the beginning of the buffer. That is, the byte at index
-    /// <i>p</i> = <tt>position()</tt> is copied to index zero, the byte at index
-    /// <i>p</i> + 1 is copied to index one, and so forth until the byte at index
-    /// <tt>limit()</tt> - 1 is copied to index <i><tt>n = limit() - 1 - p</tt></i>.
-    /// The buffer's position is then set to <i>n+1</i> and its limit is set to
-    /// its capacity. The mark, if defined, is discarded.
-    /// </para>
-    /// <para> The buffer's position is set to the number of bytes copied,
-    /// rather than to zero, so that an invocation of this method can be
-    /// followed immediately by an invocation of another relative <i>put</i>
-    /// method.
-    /// </para>
-    /// <para>
-    /// Invoke this method after writing data from a buffer in case the write
-    /// was incomplete. The following loop, for example, copies bytes from one
-    /// channel to another via the buffer <tt>buf</tt>:
-    /// 
-    /// <code>
-    ///   buf.clear();          // Prepare buffer for use
-    ///   while (in.read(buf) >= 0 || buf.position != 0)
-    ///   {
-    ///       buf.flip();
-    ///       out.write(buf);
-    ///       buf.compact();    // In case of partial write
-    ///   }
-    /// </code>
-    /// </para>
-    /// </summary>
-    /// <returns> This buffer </returns>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
-    public override ByteBuffer Compact() => null;
+    public override ByteBuffer Put( int index, byte b )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override char GetChar() => '\0';
+    /// <inheritdoc cref="ByteBuffer.Compact()"/>
+    public override ByteBuffer Compact()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutChar( char value ) => null;
+    public override char GetChar()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override char GetChar( int index ) => '\0';
+    public override ByteBuffer PutChar( char value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutChar( int index, char value ) => null;
+    public override char GetChar( int index )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override CharBuffer AsCharBuffer() => null;
+    public override ByteBuffer PutChar( int index, char value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override short GetShort() => 0;
+    public override CharBuffer AsCharBuffer()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutShort( short value ) => null;
+    public override short GetShort()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override short GetShort( int index ) => 0;
+    public override ByteBuffer PutShort( short value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutShort( int index, short value ) => null;
+    public override short GetShort( int index )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ShortBuffer AsShortBuffer() => null;
+    public override ByteBuffer PutShort( int index, short value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override int GetInt() => 0;
+    public override ShortBuffer AsShortBuffer()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutInt( int value ) => null;
+    public override int GetInt()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override int GetInt( int index ) => 0;
+    public override ByteBuffer PutInt( int value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutInt( int index, int value ) => null;
+    public override int GetInt( int index )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override IntBuffer AsIntBuffer() => null;
+    public override ByteBuffer PutInt( int index, int value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override long GetLong() => 0;
+    public override IntBuffer AsIntBuffer()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutLong( long value ) => null;
+    public override long GetLong()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override long GetLong( int index ) => 0;
+    public override ByteBuffer PutLong( long value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutLong( int index, long value ) => null;
+    public override long GetLong( int index )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override LongBuffer AsLongBuffer() => null;
+    public override ByteBuffer PutLong( int index, long value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override float GetFloat() => 0;
+    public override LongBuffer AsLongBuffer()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutFloat( float value ) => null;
+    public override float GetFloat()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override float GetFloat( int index ) => 0;
+    public override ByteBuffer PutFloat( float value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutFloat( int index, float value ) => null;
+    public override float GetFloat( int index )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override FloatBuffer AsFloatBuffer() => null;
+    public override ByteBuffer PutFloat( int index, float value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override double GetDouble() => 0;
+    public override FloatBuffer AsFloatBuffer()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutDouble( double value ) => null;
+    public override double GetDouble()
+    {
+        throw new NotImplementedException();
+    }
 
-    public override double GetDouble( int index ) => 0;
+    public override ByteBuffer PutDouble( double value )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override ByteBuffer PutDouble( int index, double value ) => null;
+    public override double GetDouble( int index )
+    {
+        throw new NotImplementedException();
+    }
 
-    public override DoubleBuffer AsDoubleBuffer() => null;
+    public override ByteBuffer PutDouble( int index, double value )
+    {
+        throw new NotImplementedException();
+    }
 
-    /// <summary>
-    /// Returns the array that backs this buffer  <i>(optional operation)</i>.
-    /// <para>
-    /// This method is intended to allow array-backed buffers to be passed to
-    /// native code more efficiently. Concrete subclasses provide more strongly
-    /// typed return values for this method.
-    /// </para>
-    /// <para>
-    /// Modifications to this buffer's content will cause the returned array's
-    /// content to be modified, and vice versa.
-    /// </para>
-    /// <para>
-    /// Invoke the <see cref="Buffer.HasArray"/> method before invoking this method in
-    /// order to ensure that this buffer has an accessible backing array.
-    /// </para>
-    /// </summary>
-    /// <returns>  The array that backs this buffer </returns>
-    public override object BackingArray() => null;
-
-    /// <summary>
-    /// Tells whether or not this buffer is <i>direct</i>.
-    /// </summary>
-    /// <returns> <tt>true</tt> if, and only if, this buffer is direct </returns>
-    public override bool IsDirect() => false;
+    public override DoubleBuffer AsDoubleBuffer()
+    {
+        throw new NotImplementedException();
+    }
 }

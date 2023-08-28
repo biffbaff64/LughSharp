@@ -421,7 +421,7 @@ public abstract class Buffer
     /// <summary>
     /// Tells whether or not this buffer is backed by an accessible array.
     /// <para>
-    /// If this method returns <tt>true</tt> then the <see cref="BackingArray"/>
+    /// If this method returns <tt>true</tt> then the <see cref="Array"/>
     /// and <see cref="ArrayOffset"/> methods may safely be invoked.
     /// </para>
     /// </summary>
@@ -431,7 +431,7 @@ public abstract class Buffer
     public abstract bool HasArray();
 
     /// <summary>
-    /// Returns the array that backs this buffer  <i>(optional operation)</i>.
+    /// Returns the array that backs this buffer <i>(optional operation)</i>.
     /// <para>
     /// This method is intended to allow array-backed buffers to be passed to
     /// native code more efficiently. Concrete subclasses provide more strongly
@@ -451,7 +451,7 @@ public abstract class Buffer
 
     /// <summary>
     /// Returns the offset within this buffer's backing array of the first
-    /// element of the buffer  <i>(optional operation)</i>.
+    /// element of the buffer <i>(optional operation)</i>.
     /// <para>
     /// If this buffer is backed by an array then buffer position <b><i>p</i></b>
     /// corresponds to array index <b><i>p</i> + <tt>arrayOffset()</tt></b>.
@@ -477,8 +477,6 @@ public abstract class Buffer
     // ------------------------------------------------------------------------
     // -- Package-private methods for bounds checking, etc. --
     // ------------------------------------------------------------------------
-
-    #region package private methods
 
     /// <summary>
     /// Checks the current position against the limit, throwing a {@link
@@ -584,7 +582,4 @@ public abstract class Buffer
             throw new IndexOutOfRangeException();
         }
     }
-
-    #endregion package private methods
-
 }
