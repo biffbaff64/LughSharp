@@ -14,12 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 namespace LibGDXSharp.Assets.Loaders;
 
 /// <summary>
 /// Abstract base class for asset loaders.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public abstract class AssetLoader
 {
     public IFileHandleResolver Resolver      { get; set; }
@@ -38,10 +40,7 @@ public abstract class AssetLoader
     /// </summary>
     /// <param name="fileName"></param>
     /// <returns></returns>
-    public FileInfo Resolve( string fileName )
-    {
-        return Resolver.Resolve( fileName );
-    }
+    public FileInfo Resolve( string fileName ) => Resolver.Resolve( fileName );
 
     /// <summary>
     /// Returns the assets this asset requires to be loaded first.
@@ -50,7 +49,7 @@ public abstract class AssetLoader
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
-    public abstract List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter );
+    public abstract List< AssetDescriptor > GetDependencies( string fileName,
+                                                             FileInfo file,
+                                                             IAssetLoaderParameters parameter );
 }

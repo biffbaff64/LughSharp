@@ -21,10 +21,10 @@ namespace LibGDXSharp.Assets;
 [PublicAPI]
 public class AssetDescriptor
 {
-    public Type                  Type       { get; set; }
-    public string?               FilePath   { get; set; }
-    public AssetLoaderParameters Parameters { get; set; }
-    public FileInfo?             File       { get; set; }
+    public Type                   Type       { get; set; }
+    public string?                FilePath   { get; set; }
+    public IAssetLoaderParameters Parameters { get; set; }
+    public FileInfo?              File       { get; set; }
 
     public AssetDescriptor()
     {
@@ -39,12 +39,14 @@ public class AssetDescriptor
     /// <param name="filepath"></param>
     /// <param name="assetType"></param>
     /// <param name="parameters"></param>
-    public AssetDescriptor( string filepath, Type assetType, AssetLoaderParameters parameters )
+    public AssetDescriptor( string? filepath, Type assetType, IAssetLoaderParameters parameters )
     {
+        ArgumentNullException.ThrowIfNull( filepath );
+
         Type       = assetType;
         FilePath   = filepath.Replace( '\\', '/' );
         Parameters = parameters;
-        File       = null!;
+        File       = new FileInfo( Path.GetFileName( filepath ) );
     }
 
     /// <summary>
@@ -52,7 +54,7 @@ public class AssetDescriptor
     /// <param name="file"></param>
     /// <param name="assetType"></param>
     /// <param name="parameters"></param>
-    public AssetDescriptor( FileInfo file, Type assetType, AssetLoaderParameters parameters )
+    public AssetDescriptor( FileInfo file, Type assetType, IAssetLoaderParameters parameters )
     {
         Type       = assetType;
         FilePath   = file.FullName.Replace( '\\', '/' );
@@ -61,7 +63,6 @@ public class AssetDescriptor
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <returns></returns>
     public override string ToString()

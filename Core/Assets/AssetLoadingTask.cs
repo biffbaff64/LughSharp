@@ -24,12 +24,12 @@ namespace LibGDXSharp.Assets;
 [PublicAPI]
 public class AssetLoadingTask
 {
-    public volatile bool                     dependenciesLoaded;
-    public volatile List< AssetDescriptor >? dependencies;
+    public bool                     DependenciesLoaded { get; set; }
+    public AssetDescriptor          AssetDesc          { get; set; }
+    public bool                     Cancel             { get; set; }
+    public object?                  Asset              { get; set; }
 
-    public AssetDescriptor AssetDesc { get; set; }
-    public bool            Cancel    { get; set; }
-    public object?         Asset     { get; set; }
+    public List< AssetDescriptor >? dependencies;
 
     private readonly AssetManager _manager;
     private readonly AssetLoader  _loader;
@@ -72,46 +72,49 @@ public class AssetLoadingTask
 
         var asyncLoader = _loader as AsynchronousAssetLoader;
 
-        if ( !dependenciesLoaded )
+        if ( asyncLoader != null )
         {
-            dependencies = asyncLoader?.GetDependencies
-                (
-                 AssetDesc.FilePath,
-                 Resolve( asyncLoader, AssetDesc ),
-                 AssetDesc.Parameters
-                );
-
-            if ( dependencies != null )
+            if ( !DependenciesLoaded )
             {
-                RemoveDuplicates( dependencies );
-                _manager.InjectDependencies( AssetDesc.FilePath!, dependencies );
+                dependencies = asyncLoader.GetDependencies
+                    (
+                    AssetDesc.FilePath ?? "",
+                    Resolve( asyncLoader, AssetDesc ),
+                    AssetDesc.Parameters
+                    );
+
+                if ( dependencies != null )
+                {
+                    RemoveDuplicates( ref dependencies );
+                    _manager.InjectDependencies( AssetDesc.FilePath!, dependencies );
+                }
+                else
+                {
+                    // if we have no dependencies, we load the
+                    // async part of the task immediately.
+                    asyncLoader?.LoadAsync
+                        (
+                        _manager,
+                        AssetDesc.FilePath,
+                        Resolve( _loader, AssetDesc ),
+                        AssetDesc.Parameters
+                        );
+
+                    _asyncDone = true;
+                }
             }
             else
             {
-                // if we have no dependencies, we load the
-                // async part of the task immediately.
                 asyncLoader?.LoadAsync
                     (
-                     _manager,
-                     AssetDesc.FilePath,
-                     Resolve( _loader, AssetDesc ),
-                     AssetDesc.Parameters
+                    _manager,
+                    AssetDesc.FilePath,
+                    Resolve( _loader, AssetDesc ),
+                    AssetDesc.Parameters
                     );
 
                 _asyncDone = true;
             }
-        }
-        else
-        {
-            asyncLoader?.LoadAsync
-                (
-                 _manager,
-                 AssetDesc.FilePath,
-                 Resolve( _loader, AssetDesc ),
-                 AssetDesc.Parameters
-                );
-
-            _asyncDone = true;
         }
     }
 
@@ -148,10 +151,10 @@ public class AssetLoadingTask
         {
             ( ( AsynchronousAssetLoader< Type, AssetLoaderParameters > )_loader ).UnloadAsync
                 (
-                 _manager,
-                 AssetDesc.FilePath,
-                 Resolve( _loader, AssetDesc ),
-                 AssetDesc.Parameters
+                _manager,
+                AssetDesc.FilePath,
+                Resolve( _loader, AssetDesc ),
+                AssetDesc.Parameters
                 );
         }
     }
@@ -185,41 +188,41 @@ public class AssetLoadingTask
             return;
         }
 
-        if ( !dependenciesLoaded )
+        if ( !DependenciesLoaded )
         {
-            dependenciesLoaded = true;
+            DependenciesLoaded = true;
 
             dependencies = syncLoader.GetDependencies
                 (
-                 AssetDesc.FilePath,
-                 Resolve( _loader, AssetDesc ),
-                 AssetDesc.Parameters
+                AssetDesc.FilePath,
+                Resolve( _loader, AssetDesc ),
+                AssetDesc.Parameters
                 );
 
             if ( dependencies == null )
             {
                 Asset = syncLoader.Load
                     (
-                     _manager,
-                     AssetDesc.FilePath,
-                     Resolve( _loader, AssetDesc ),
-                     AssetDesc.Parameters
+                    _manager,
+                    AssetDesc.FilePath,
+                    Resolve( _loader, AssetDesc ),
+                    AssetDesc.Parameters
                     );
 
                 return;
             }
 
-            RemoveDuplicates( dependencies );
+            RemoveDuplicates( ref dependencies );
             _manager.InjectDependencies( AssetDesc.FilePath, dependencies );
         }
         else
         {
             Asset = syncLoader.Load
                 (
-                 _manager,
-                 AssetDesc.FilePath,
-                 Resolve( _loader, AssetDesc ),
-                 AssetDesc.Parameters
+                _manager,
+                AssetDesc.FilePath,
+                Resolve( _loader, AssetDesc ),
+                AssetDesc.Parameters
                 );
         }
     }
@@ -240,7 +243,7 @@ public class AssetLoadingTask
             throw new GdxRuntimeException( "asyncLoader is null" );
         }
 
-        if ( !dependenciesLoaded )
+        if ( !DependenciesLoaded )
         {
             if ( _depsFuture == null )
             {
@@ -255,19 +258,19 @@ public class AssetLoadingTask
                 catch ( Exception e )
                 {
                     throw new GdxRuntimeException
-                        ( "Couldn't load dependencies of asset: " + AssetDesc.FilePath, e );
+                        ( $"Couldn't load dependencies of asset: {AssetDesc.FilePath}", e );
                 }
 
-                dependenciesLoaded = true;
+                DependenciesLoaded = true;
 
                 if ( _asyncDone )
                 {
                     Asset = asyncLoader.LoadSync
                         (
-                         _manager,
-                         AssetDesc.FilePath,
-                         Resolve( _loader, AssetDesc ),
-                         AssetDesc.Parameters
+                        _manager,
+                        AssetDesc.FilePath,
+                        Resolve( _loader, AssetDesc ),
+                        AssetDesc.Parameters
                         );
                 }
             }
@@ -280,10 +283,10 @@ public class AssetLoadingTask
         {
             Asset = asyncLoader.LoadSync
                 (
-                 _manager,
-                 AssetDesc.FilePath,
-                 Resolve( _loader, AssetDesc ),
-                 AssetDesc.Parameters
+                _manager,
+                AssetDesc.FilePath,
+                Resolve( _loader, AssetDesc ),
+                AssetDesc.Parameters
                 );
         }
         else if ( ( _loadFuture != null ) && _loadFuture.IsDone() )
@@ -294,15 +297,15 @@ public class AssetLoadingTask
             }
             catch ( Exception e )
             {
-                throw new GdxRuntimeException( "Couldn't load asset: " + AssetDesc.FilePath, e );
+                throw new GdxRuntimeException( $"Couldn't load asset: {AssetDesc.FilePath}", e );
             }
 
             Asset = asyncLoader.LoadSync
                 (
-                 _manager,
-                 AssetDesc.FilePath,
-                 Resolve( _loader, AssetDesc ),
-                 AssetDesc.Parameters
+                _manager,
+                AssetDesc.FilePath,
+                Resolve( _loader, AssetDesc ),
+                AssetDesc.Parameters
                 );
         }
     }
@@ -311,7 +314,7 @@ public class AssetLoadingTask
     /// 
     /// </summary>
     /// <param name="array"></param>
-    private static void RemoveDuplicates( IList< AssetDescriptor > array )
+    private static void RemoveDuplicates( ref List< AssetDescriptor > array )
     {
         for ( var i = 0; i < array.Count; ++i )
         {

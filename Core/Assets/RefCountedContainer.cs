@@ -14,36 +14,30 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 namespace LibGDXSharp.Assets;
 
 internal interface IRefCountedContainer
 {
-    public object? Asset    { get; set; }
-    public int     RefCount { get; set; }
+    object? Asset    { get; set; }
+    int     RefCount { get; set; }
 }
 
 /// <summary>
-/// A class that stores a reference to an object, as well as counts
-/// the number of times it has been referenced.
-/// <see cref="RefCount"/>must be incremented each time you start
-/// using the object, and decrement it after you're done using it.
-/// AssetManager handles this automatically.
+/// A class that stores a reference to an object, as well as counts the number
+/// of times it has been referenced. <see cref="RefCount"/> must be incremented
+/// each time you start using the object, and decrement it after you're done
+/// using it. AssetManager handles this automatically.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class RefCountedContainer : IRefCountedContainer
+[PublicAPI]
+public sealed class RefCountedContainer : IRefCountedContainer
 {
-    public int RefCount { get; set; } = 1;
-
-    private object? _object;
+    public int     RefCount { get; set; } = 1;
+    public object? Asset    { get; set; }
 
     public RefCountedContainer( object obj )
     {
-        this._object = obj ?? throw new System.ArgumentException( "Object must not be null" );
-    }
-
-    object? IRefCountedContainer.Asset
-    {
-        get => _object;
-        set => _object = value;
+        this.Asset = obj ?? throw new System.ArgumentException( "Object must not be null" );
     }
 }

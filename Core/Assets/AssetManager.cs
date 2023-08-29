@@ -32,6 +32,8 @@ namespace LibGDXSharp.Assets;
 [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
 public class AssetManager
 {
+    public Logger Log { get; set; }
+
     private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets  = new();
     private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? >        _loaders = new();
 
@@ -47,8 +49,6 @@ public class AssetManager
     private int _loaded;
     private int _toLoad;
     private int _peakTasks;
-
-    public Logger Log { get; set; }
 
     /// <summary>
     /// Creates a new AssetManager with all default loaders.
@@ -84,7 +84,7 @@ public class AssetManager
 
 //                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
 //                SetLoader( typeof(I18NBundle),      new I18NBundleLoader( resolver ) );
-            //@formatter:on
+                //@formatter:on
         }
 
         this.FileHandleResolver = resolver;
@@ -146,8 +146,6 @@ public class AssetManager
     /// <exception cref="GdxRuntimeException"></exception>
     public T Get<T>( string name, Type type )
     {
-        T? asset;
-
         lock ( this )
         {
             Dictionary< string, IRefCountedContainer >? assetsByType = _assets[ type ];
@@ -164,15 +162,15 @@ public class AssetManager
                 throw new GdxRuntimeException( "Asset not loaded - " + name );
             }
 
-            asset = ( T? )assetContainer.Asset;
+            var asset = ( T? )assetContainer.Asset;
 
             if ( asset == null )
             {
                 throw new GdxRuntimeException( "Asset not loaded - " + name );
             }
-        }
 
-        return asset;
+            return asset;
+        }
     }
 
     /// <summary>
@@ -201,8 +199,6 @@ public class AssetManager
         lock ( this )
         {
             Dictionary< string, IRefCountedContainer >? assetsByType = _assets[ type ];
-
-            Debug.Assert( assetsByType != null, nameof( assetsByType ) + " != null" );
 
             foreach ( IRefCountedContainer asset in assetsByType.Values )
             {
@@ -723,7 +719,11 @@ public class AssetManager
         }
     }
 
-    public void InjectDependencies( string? parentAssetFilename, IList< AssetDescriptor > dependendAssetDescs )
+    /// <summary>
+    /// </summary>
+    /// <param name="parentAssetFilename"></param>
+    /// <param name="dependendAssetDescs"></param>
+    public void InjectDependencies( string? parentAssetFilename, List< AssetDescriptor > dependendAssetDescs )
     {
         ArgumentNullException.ThrowIfNull( parentAssetFilename );
 
@@ -747,7 +747,6 @@ public class AssetManager
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="parentAssetFilename"></param>
     /// <param name="dependendAssetDesc"></param>
@@ -935,16 +934,14 @@ public class AssetManager
     /// <summary>
     /// Called when a task throws an exception during loading. The default implementation
     /// rethrows the exception and does not use the <tt>assetDesc</tt> parameter.
-    /// <p>
     /// A subclass may supress the default implementation when loading assets where loading
     /// failure is recoverable.
-    /// </p>
     /// </summary>
-    private void TaskFailed( AssetDescriptor assetDesc, System.Exception ex )
+    protected virtual void TaskFailed( AssetDescriptor assetDesc, System.Exception ex )
     {
         throw ex;
     }
-
+ 
     /// <summary>
     /// 
     /// </summary>
@@ -991,7 +988,7 @@ public class AssetManager
 
         // remove all dependencies if dependences are loaded and
         // those dependencies actually exist...
-        if ( task is { dependenciesLoaded: true, dependencies: not null } )
+        if ( task is { DependenciesLoaded: true, dependencies: not null } )
         {
             foreach ( AssetDescriptor desc in task.dependencies )
             {
@@ -1042,15 +1039,8 @@ public class AssetManager
     {
         lock ( this )
         {
-            if ( type == null )
-            {
-                throw new System.ArgumentException( "type cannot be null." );
-            }
-
-            if ( loader == null )
-            {
-                throw new System.ArgumentException( "loader cannot be null." );
-            }
+            ArgumentNullException.ThrowIfNull( type );
+            ArgumentNullException.ThrowIfNull( loader );
 
             if ( this._loaders[ type ] == null )
             {
@@ -1063,20 +1053,24 @@ public class AssetManager
         }
     }
 
-    /// <returns>The number of loaded assets.</returns>
+    /// <summary>
+    /// Returns the number of loaded assets.
+    /// </summary>
     public int LoadedAssetsCount => _assetTypes.Count;
 
-    /// <returns>the number of currently queued assets.</returns>
+    /// <summary>
+    /// Returns the number of currently queued assets.
+    /// </summary>
     public int GetQueuedAssets() => _loadQueue.Count + _tasks.Count;
 
     /// <summary>
+    /// Returns the progress in percent of completion.
     /// </summary>
-    /// <returns>the progress in percent of completion.</returns>
     public float GetProgress()
     {
         if ( _toLoad == 0 )
         {
-            return 1;
+            return 1f;
         }
 
         float fractionalLoaded = _loaded;
@@ -1086,7 +1080,7 @@ public class AssetManager
             fractionalLoaded += ( ( _peakTasks - _tasks.Count ) / ( float )_peakTasks );
         }
 
-        return Math.Min( 1, fractionalLoaded / _toLoad );
+        return Math.Min( 1f, fractionalLoaded / _toLoad );
     }
 
     /// <summary>
@@ -1102,8 +1096,6 @@ public class AssetManager
     /// </summary>
     public void Dispose()
     {
-        Log.Debug( "Disposing." );
-
         Clear();
 
         _executor.Dispose();

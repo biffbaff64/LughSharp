@@ -187,7 +187,7 @@ public class ScreenUtils
         var numBytes = w * h * 4;
 
         Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
-
+        
         ByteBuffer pixels = BufferUtils.NewByteBuffer( numBytes );
 
         Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );

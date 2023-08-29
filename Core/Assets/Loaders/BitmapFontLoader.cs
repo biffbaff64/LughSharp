@@ -14,56 +14,58 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Assets.Loaders;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class BitmapFontParameter : AssetLoaderParameters
+[PublicAPI]
+public class BitmapFontParameter : IAssetLoaderParameters
 {
     /// <summary>
-    /// Flips the font vertically if <tt>true</tt>.
-    /// Defaults to <tt>false</tt>.
+    /// Flips the font vertically if <tt>true</tt>. Defaults to <tt>false</tt>.
     /// </summary>
-    internal bool Flip { get; set; } = false;
+    public bool Flip { get; set; } = false;
 
     /// <summary>
-    /// Generates mipmaps for the font if <tt>true</tt>.
-    /// Defaults to <tt>false</tt>.
+    /// Generates mipmaps for the font if <tt>true</tt>. Defaults to <tt>false</tt>.
     /// </summary>
-    internal bool GenMipMaps { get; set; } = false;
+    public bool GenMipMaps { get; set; } = false;
 
     /// <summary>
     /// The <see cref="TextureFilter"/> to use when scaling down the <see cref="BitmapFont"/>.
     /// Defaults to <see cref="TextureFilter.Nearest"/>.
     /// </summary>
-    internal TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
+    public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
 
     /// <summary>
     /// The <see cref="TextureFilter"/> to use when scaling up the <see cref="BitmapFont"/>.
     /// Defaults to <see cref="TextureFilter.Nearest"/>.
     /// </summary>
-    internal TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
+    public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
 
     /// <summary>
     /// optional <see cref="BitmapFont.BitmapFontData"/> to be used instead of
     /// loading the <see cref="Texture"/> directly. Use this if your font is
     /// embedded in a <see cref="Skin"/>.
     /// </summary>
-    internal BitmapFont.BitmapFontData? BitmapFontData { get; set; } = null;
+    public BitmapFont.BitmapFontData? BitmapFontData { get; set; } = null;
 
     /// <summary>
     /// The name of the <see cref="TextureAtlas"/> to load the <see cref="BitmapFont"/>.
     /// if null, will look for a separate image.
     /// </summary>
-    internal string? AtlasName { get; set; } = null;
+    public string? AtlasName { get; set; }
+
+    public IAssetLoaderParameters.ILoadedCallback? LoadedCallback { get; set; }
 }
 
 /// <summary>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 {
     private BitmapFont.BitmapFontData? _data;
@@ -84,9 +86,12 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter )
+                                                             IAssetLoaderParameters parameter )
     {
-        if ( file == null ) throw new NullReferenceException();
+        if ( file == null )
+        {
+            throw new NullReferenceException();
+        }
 
         var deps = new List< AssetDescriptor >();
 
@@ -97,11 +102,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
             return deps;
         }
 
-        _data = new BitmapFont.BitmapFontData
-            (
-             file,
-             ( ( BitmapFontParameter )parameter! ).Flip
-            );
+        _data = new BitmapFont.BitmapFontData( file, ( ( BitmapFontParameter )parameter! ).Flip );
 
         if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
         {
@@ -132,8 +133,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
                     textureParams.MagFilter  = ( ( BitmapFontParameter )parameter ).MagFilter;
                 }
 
-                var descriptor = new AssetDescriptor( resolved, typeof( Texture ), textureParams );
-                deps.Add( descriptor );
+                deps.Add( new AssetDescriptor( resolved, typeof( Texture ), textureParams ) );
             }
         }
 
@@ -146,10 +146,10 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    AssetLoaderParameters parameter )
+    public override void LoadAsync( AssetManager manager,
+                                    string fileName,
+                                    FileInfo file,
+                                    IAssetLoaderParameters parameter )
     {
     }
 
@@ -161,20 +161,21 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="parameter"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public override BitmapFont LoadSync( AssetManager? manager,
-                                         string? fileName,
-                                         FileInfo? file,
-                                         AssetLoaderParameters parameter )
+    public override BitmapFont LoadSync( AssetManager manager,
+                                         string fileName,
+                                         FileInfo file,
+                                         IAssetLoaderParameters parameter )
     {
-        if ( file == null ) throw new GdxRuntimeException( "LoadSync: 'file' cannot be null!" );
-
+        ArgumentNullException.ThrowIfNull( manager );
+        ArgumentNullException.ThrowIfNull( file );
+        
         if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
         {
-            var atlas = manager?.Get< TextureAtlas >( ( ( BitmapFontParameter )parameter ).AtlasName! );
+            var atlas = manager.Get< TextureAtlas >( ( ( BitmapFontParameter )parameter ).AtlasName! );
 
             var name = Path.GetFileNameWithoutExtension( _data?.ImagePaths?[ 0 ] );
 
-            TextureRegion? region = atlas?.FindRegion( name );
+            TextureRegion? region = atlas.FindRegion( name );
 
             if ( region == null )
             {
@@ -193,7 +194,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 
         for ( var i = 0; i < n; i++ )
         {
-            regs.Add( new TextureRegion( manager?.Get< Texture >( _data.ImagePaths[ i ] )! ) );
+            regs.Add( new TextureRegion( manager.Get< Texture >( _data.ImagePaths[ i ] ) ) );
         }
 
         return new BitmapFont( _data, regs, true );
