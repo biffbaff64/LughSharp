@@ -51,5 +51,5 @@ public abstract class AssetLoader
     /// <param name="parameter">parameters for loading the asset</param>
     public abstract List< AssetDescriptor > GetDependencies( string fileName,
                                                              FileInfo file,
-                                                             IAssetLoaderParameters parameter );
+                                                             AssetLoaderParameters parameter );
 }

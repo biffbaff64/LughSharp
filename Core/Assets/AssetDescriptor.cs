@@ -23,7 +23,7 @@ public class AssetDescriptor
 {
     public Type                   Type       { get; set; }
     public string?                FilePath   { get; set; }
-    public IAssetLoaderParameters Parameters { get; set; }
+    public AssetLoaderParameters Parameters { get; set; }
     public FileInfo?              File       { get; set; }
 
     public AssetDescriptor()
@@ -39,7 +39,7 @@ public class AssetDescriptor
     /// <param name="filepath"></param>
     /// <param name="assetType"></param>
     /// <param name="parameters"></param>
-    public AssetDescriptor( string? filepath, Type assetType, IAssetLoaderParameters parameters )
+    public AssetDescriptor( string? filepath, Type assetType, AssetLoaderParameters parameters )
     {
         ArgumentNullException.ThrowIfNull( filepath );
 
@@ -54,7 +54,7 @@ public class AssetDescriptor
     /// <param name="file"></param>
     /// <param name="assetType"></param>
     /// <param name="parameters"></param>
-    public AssetDescriptor( FileInfo file, Type assetType, IAssetLoaderParameters parameters )
+    public AssetDescriptor( FileInfo file, Type assetType, AssetLoaderParameters parameters )
     {
         Type       = assetType;
         FilePath   = file.FullName.Replace( '\\', '/' );

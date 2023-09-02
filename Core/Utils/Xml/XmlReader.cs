@@ -17,6 +17,8 @@
 using System.Runtime.Serialization;
 using System.Text;
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Utils.Xml;
@@ -32,6 +34,7 @@ namespace LibGDXSharp.Utils.Xml;
 /// methods will return null.
 /// </para>
 /// </summary>
+[PublicAPI]
 public sealed class XmlReader
 {
     private const int XML_START           = 1;
@@ -242,7 +245,7 @@ public sealed class XmlReader
 
     private Element Parse( char[] data, int offset, int length )
     {
-        int cs;
+        int cs = XML_START;
         var p  = offset;
         var pe = length;
 
@@ -250,18 +253,8 @@ public sealed class XmlReader
         string? attributeName = null;
         var     hasBody       = false;
 
-        // line 93 "XmlReader.java"
-        {
-            cs = XML_START;
-        }
-
         // line 97 "XmlReader.java"
         {
-            int klen;
-            int trans;
-            int acts;
-            int nacts;
-            int keys;
             var gotoTarg = 0;
 
             _goto:
@@ -290,16 +283,17 @@ public sealed class XmlReader
                     case 1:
                         _match:
 
+                        int trans;
+
                         do
                         {
-                            keys  = XmlKeyOffsets[ cs ];
+                            int keys = XmlKeyOffsets[ cs ];
                             trans = XmlIndexOffsets[ cs ];
-                            klen  = XmlSingleLengths[ cs ];
+                            int klen = XmlSingleLengths[ cs ];
 
                             if ( klen > 0 )
                             {
                                 var lower = keys;
-                                int mid;
                                 var upper = ( keys + klen ) - 1;
 
                                 while ( true )
@@ -309,7 +303,7 @@ public sealed class XmlReader
                                         break;
                                     }
 
-                                    mid = lower + ( ( upper - lower ) >> 1 );
+                                    var mid = lower + ( ( upper - lower ) >> 1 );
 
                                     if ( data[ p ] < XmlTransKeys[ mid ] )
                                     {
@@ -374,8 +368,8 @@ public sealed class XmlReader
 
                         if ( XmlTransActions[ trans ] != 0 )
                         {
-                            acts  = XmlTransActions[ trans ];
-                            nacts = XmlActions[ acts++ ];
+                            int acts  = XmlTransActions[ trans ];
+                            int nacts = XmlActions[ acts++ ];
 
                             while ( nacts-- > 0 )
                             {

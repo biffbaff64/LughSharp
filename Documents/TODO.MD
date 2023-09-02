@@ -257,22 +257,27 @@ GRAPHICS/G2D
 GRAPHICS/GLUTILS
 ----------------
 
+        FrameBuffers
+        ------------
+    - IP   - FloatFrameBuffer                       Inheritance order correct
+    - IP   - FloatFrameBufferBuilder                Inheritance order correct
+    - IP   - FrameBuffer                            Inheritance order correct
+    - IP   - FrameBufferBuilder                     Inheritance order correct
+    - IP   - FrameBufferCubemap
+    - IP   - FrameBufferCubemapBuilder
+    - IP   - FrameBufferRenderBufferAttachmentSpec
+    - IP   - FrameBufferTextureAttachmentSpec
+    - IP   - GLFrameBuffer                          Inheritance order correct
+    - IP   - GLFrameBufferBuilder
+
+        Everything Else.
+        ----------------
     - IP   - ETC1                                   Find alternative / Has native
     - IP   - ETC1TextureData                        Find alternative / Has native
     - DONE - FacedCubemapData
     - IP   - FileTextureArrayData
     - IP   - FileTextureData
-    - IP   - FloatFrameBuffer                       Inheritance order correct
-    - DONE - FloatFrameBufferBuilder                Inheritance order correct
     - DONE - FloatTextureData
-    - DONE - FrameBuffer                            Inheritance order correct
-    - DONE - FrameBufferBuilder                     Inheritance order correct
-    -      - FrameBufferCubemap
-    - DONE - FrameBufferCubemapBuilder
-    - DONE - FrameBufferRenderBufferAttachmentSpec
-    - DONE - FrameBufferTextureAttachmentSpec
-    - DONE - GLFrameBuffer                          Inheritance order correct
-    - DONE - GLFrameBufferBuilder
     - DONE - GLOnlyTextureData
     - DONE - GLVersion
     - DONE - HdpiMode
@@ -759,7 +764,7 @@ UTILS/COMPRESSION - DELETE CANDIDATE
 -----------------
 
     - IP   - CRC32
-    - DONE - IChecksum
+    - IP   - IChecksum
 
     Convert later, purely for education purposes.
 
@@ -845,7 +850,7 @@ UTILS/JSON - DELETE CANDIDATE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/OBSERVERS
+UTILS/OBSERVERS - DELETE CANDIDATE
 ---------------
 
     -      - ActorGestureObserver
@@ -867,7 +872,6 @@ UTILS/POOLING
     - DONE - Pool                           
     - DONE - PooledLinkedList               
     - DONE - Pools                          
-    - IP   - ReflectionPool                 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -16,6 +16,8 @@
 
 using System.Diagnostics;
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Compression;
 
@@ -28,7 +30,7 @@ namespace LibGDXSharp.Utils;
 /// a <see cref="NullReferenceException"/> to be thrown.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class CRC32 : IChecksum
 {
     private int _crc;
@@ -97,17 +99,20 @@ public class CRC32 : IChecksum
 
         var rem = limit - pos;
 
-        if ( rem <= 0 ) return;
+        if ( rem <= 0 )
+        {
+            return;
+        }
 
-//        if ( buffer is IDirectBuffer )
-//        {
-//            _crc = UpdateByteBuffer( _crc, ( ( IDirectBuffer )buffer ).Address(), pos, rem );
-//        }
-//        else
+        if ( buffer is IDirectBuffer directBuffer )
+        {
+            _crc = UpdateByteBuffer( _crc, directBuffer.Address(), pos, rem );
+        }
+        else
         {
             if ( buffer.HasArray() )
             {
-                _crc = UpdateBytes( _crc, buffer.Array(), pos + buffer.ArrayOffset(), rem );
+                _crc = UpdateBytes( _crc, buffer.BackingArray(), pos + buffer.ArrayOffset(), rem );
             }
             else
             {
@@ -135,18 +140,40 @@ public class CRC32 : IChecksum
     /// </summary>
     public long Value => _crc & 0xffffffffL;
 
+    /// <summary>
+    /// </summary>
+    /// <param name="crc"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     private int Update( int crc, int b )
     {
-        throw new NotImplementedException();
+        return 0;
     }
-    
+
+    /// <summary>
+    /// </summary>
+    /// <param name="crc"></param>
+    /// <param name="b"></param>
+    /// <param name="off"></param>
+    /// <param name="len"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     private int UpdateBytes( int crc, byte[] b, int off, int len )
     {
-        throw new NotImplementedException();
+        return 0;
     }
-    
+
+    /// <summary>
+    /// </summary>
+    /// <param name="adler"></param>
+    /// <param name="addr"></param>
+    /// <param name="off"></param>
+    /// <param name="len"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     private int UpdateByteBuffer( int adler, long addr, int off, int len )
     {
-        throw new NotImplementedException();
+        return 0;
     }
 }

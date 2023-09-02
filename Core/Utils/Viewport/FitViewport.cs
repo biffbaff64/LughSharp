@@ -27,12 +27,12 @@ public class FitViewport : ScalingViewport
     /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
     /// </summary>
     public FitViewport( float worldWidth, float worldHeight )
-            : base( Scaling.Fit, worldWidth, worldHeight )
+            : base( Utils.Scaling.Fit, worldWidth, worldHeight )
     {
     }
 
     public FitViewport( float worldWidth, float worldHeight, Camera camera )
-            : base( Scaling.Fit, worldWidth, worldHeight, camera )
+            : base( Utils.Scaling.Fit, worldWidth, worldHeight, camera )
     {
     }
 }

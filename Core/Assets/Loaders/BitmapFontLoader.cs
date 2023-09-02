@@ -23,7 +23,7 @@ using LibGDXSharp.Utils;
 namespace LibGDXSharp.Assets.Loaders;
 
 [PublicAPI]
-public class BitmapFontParameter : IAssetLoaderParameters
+public class BitmapFontParameter : AssetLoaderParameters
 {
     /// <summary>
     /// Flips the font vertically if <tt>true</tt>. Defaults to <tt>false</tt>.
@@ -59,8 +59,6 @@ public class BitmapFontParameter : IAssetLoaderParameters
     /// if null, will look for a separate image.
     /// </summary>
     public string? AtlasName { get; set; }
-
-    public IAssetLoaderParameters.ILoadedCallback? LoadedCallback { get; set; }
 }
 
 /// <summary>
@@ -86,12 +84,9 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             IAssetLoaderParameters parameter )
+                                                             AssetLoaderParameters parameter )
     {
-        if ( file == null )
-        {
-            throw new NullReferenceException();
-        }
+        ArgumentNullException.ThrowIfNull( file );
 
         var deps = new List< AssetDescriptor >();
 
@@ -149,7 +144,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     public override void LoadAsync( AssetManager manager,
                                     string fileName,
                                     FileInfo file,
-                                    IAssetLoaderParameters parameter )
+                                    AssetLoaderParameters parameter )
     {
     }
 
@@ -164,7 +159,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     public override BitmapFont LoadSync( AssetManager manager,
                                          string fileName,
                                          FileInfo file,
-                                         IAssetLoaderParameters parameter )
+                                         AssetLoaderParameters parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );

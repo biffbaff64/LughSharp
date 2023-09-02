@@ -14,15 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.G2D;
 
-// -------------------------------------------------------------------
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassWithVirtualMembersNeverInherited.Global" )]
-// -------------------------------------------------------------------
+[PublicAPI]
 public class Gdx2DPixmap : IDisposable
 {
     public const int GDX_2D_FORMAT_ALPHA           = 1;
@@ -44,7 +43,6 @@ public class Gdx2DPixmap : IDisposable
     public long[]     nativeData = new long[ 4 ];
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="encodedData"></param>
     /// <param name="offset"></param>
@@ -55,7 +53,10 @@ public class Gdx2DPixmap : IDisposable
     {
         pixelPtr = Load( nativeData, encodedData, offset, len );
 
-        if ( pixelPtr == null ) throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
+        if ( pixelPtr == null )
+        {
+            throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
+        }
 
         basePtr = nativeData[ 0 ];
         Width   = ( int )nativeData[ 1 ];
@@ -69,19 +70,14 @@ public class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="inStream"></param>
     /// <param name="requestedFormat"></param>
     /// <exception cref="IOException"></exception>
-    // -------------------------------------------------------------------
-    // ReSharper disable once SuggestBaseTypeForParameterInConstructor
-    // ReSharper disable once MemberCanBePrivate.Global
-    // -------------------------------------------------------------------
     public Gdx2DPixmap( StreamReader inStream, int requestedFormat )
     {
-        MemoryStream memoryStream = new(1024);
-        StreamWriter writer       = new(memoryStream);
+        MemoryStream memoryStream = new( 1024 );
+        StreamWriter writer       = new( memoryStream );
 
         int readBytes;
 
@@ -95,7 +91,9 @@ public class Gdx2DPixmap : IDisposable
         pixelPtr = Load( nativeData, buffer, 0, buffer.Length );
 
         if ( pixelPtr == null )
+        {
             throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
+        }
 
         basePtr = nativeData[ 0 ];
         Width   = ( int )nativeData[ 1 ];
@@ -109,7 +107,6 @@ public class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
@@ -123,8 +120,8 @@ public class Gdx2DPixmap : IDisposable
         {
             throw new GdxRuntimeException
                 (
-                 $"Unable to allocate memory for pixmap: "
-                 + $"{width} x {height}: {GetFormatString( format )}"
+                $"Unable to allocate memory for pixmap: "
+              + $"{width} x {height}: {GetFormatString( format )}"
                 );
         }
 
@@ -149,68 +146,49 @@ public class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
     public static int ToGLFormat( int format )
     {
-        switch ( format )
-        {
-            case GDX_2D_FORMAT_ALPHA:
-                return IGL20.GL_ALPHA;
-
-            case GDX_2D_FORMAT_LUMINANCE_ALPHA:
-                return IGL20.GL_LUMINANCE_ALPHA;
-
-            case GDX_2D_FORMAT_RGB888:
-            case GDX_2D_FORMAT_RGB565:
-                return IGL20.GL_RGB;
-
-            case GDX_2D_FORMAT_RGBA8888:
-            case GDX_2D_FORMAT_RGBA4444:
-                return IGL20.GL_RGBA;
-
-            default:
-                throw new GdxRuntimeException( "unknown format: " + format );
-        }
+        return format switch
+               {
+                   GDX_2D_FORMAT_ALPHA           => IGL20.GL_ALPHA,
+                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL20.GL_LUMINANCE_ALPHA,
+                   GDX_2D_FORMAT_RGB888          => IGL20.GL_RGB,
+                   GDX_2D_FORMAT_RGB565          => IGL20.GL_RGB,
+                   GDX_2D_FORMAT_RGBA8888        => IGL20.GL_RGBA,
+                   GDX_2D_FORMAT_RGBA4444        => IGL20.GL_RGBA,
+                   _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+               };
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
     public static int ToGLType( int format )
     {
-        switch ( format )
-        {
-            case GDX_2D_FORMAT_ALPHA:
-            case GDX_2D_FORMAT_LUMINANCE_ALPHA:
-            case GDX_2D_FORMAT_RGB888:
-            case GDX_2D_FORMAT_RGBA8888:
-                return IGL20.GL_UNSIGNED_BYTE;
-
-            case GDX_2D_FORMAT_RGB565:
-                return IGL20.GL_UNSIGNED_SHORT_5_6_5;
-
-            case GDX_2D_FORMAT_RGBA4444:
-                return IGL20.GL_UNSIGNED_SHORT_4_4_4_4;
-
-            default:
-                throw new GdxRuntimeException( "unknown format: " + format );
-        }
+        return format switch
+               {
+                   GDX_2D_FORMAT_ALPHA           => IGL20.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL20.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGB888          => IGL20.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGBA8888        => IGL20.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGB565          => IGL20.GL_UNSIGNED_SHORT_5_6_5,
+                   GDX_2D_FORMAT_RGBA4444        => IGL20.GL_UNSIGNED_SHORT_4_4_4_4,
+                   _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+               };
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="requestedFormat"></param>
     private void Convert( int requestedFormat )
     {
-        Gdx2DPixmap pixmap = new(Width, Height, requestedFormat);
+        Gdx2DPixmap pixmap = new( Width, Height, requestedFormat );
 
         pixmap.Blend = GDX_2D_BLEND_NONE;
         pixmap.DrawPixmap( this, 0, 0, 0, 0, Width, Height );
@@ -225,19 +203,13 @@ public class Gdx2DPixmap : IDisposable
         this.Width      = pixmap.Width;
     }
 
-    public void Clear( int color )
-    {
-        Clear( basePtr, color );
-    }
+    public void Clear( int color ) => Clear( basePtr, color );
+
+    public int GetPixel( int x, int y ) => GetPixel( basePtr, x, y );
 
     public void SetPixel( int x, int y, int color )
     {
         SetPixel( basePtr, x, y, color );
-    }
-
-    public int GetPixel( int x, int y )
-    {
-        return GetPixel( basePtr, x, y );
     }
 
     public void DrawLine( int x, int y, int x2, int y2, int color )
@@ -310,7 +282,7 @@ public class Gdx2DPixmap : IDisposable
         catch ( IOException e )
         {
             Gdx.App.Log( "Gdx2DPixmap", e.Message );
-            
+
             return null;
         }
     }
@@ -335,7 +307,6 @@ public class Gdx2DPixmap : IDisposable
     public string FormatString     => GetFormatString( format );
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
@@ -349,7 +320,7 @@ public class Gdx2DPixmap : IDisposable
                    GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
                    GDX_2D_FORMAT_RGB565          => "Rgb565",
                    GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
-                   _                            => "Unknown"
+                   _                             => "Unknown"
                };
     }
 
@@ -380,16 +351,17 @@ public class Gdx2DPixmap : IDisposable
 
     private static extern ByteBuffer Load( long[] nativeData, byte[] buffer, int offset, int len );
     private static extern ByteBuffer NewPixmap( long[] nativeData, int width, int height, int format );
-    private static extern void       Free( long pixmap );
-    private static extern void       Clear( long pixmap, int color );
-    private static extern void       SetPixel( long pixmap, int x, int y, int color );
-    private static extern int        GetPixel( long pixmap, int x, int y );
-    private static extern void       DrawLine( long pixmap, int x, int y, int x2, int y2, int color );
-    private static extern void       DrawRect( long pixmap, int x, int y, int width, int height, int color );
-    private static extern void       DrawCircle( long pixmap, int x, int y, int radius, int color );
-    private static extern void       FillRect( long pixmap, int x, int y, int width, int height, int color );
-    private static extern void       FillCircle( long pixmap, int x, int y, int radius, int color );
-    private static extern void       FillTriangle( long pixmap, int x1, int y1, int x2, int y2, int x3, int y3, int color );
+
+    private static extern void Free( long pixmap );
+    private static extern void Clear( long pixmap, int color );
+    private static extern void SetPixel( long pixmap, int x, int y, int color );
+    private static extern int  GetPixel( long pixmap, int x, int y );
+    private static extern void DrawLine( long pixmap, int x, int y, int x2, int y2, int color );
+    private static extern void DrawRect( long pixmap, int x, int y, int width, int height, int color );
+    private static extern void DrawCircle( long pixmap, int x, int y, int radius, int color );
+    private static extern void FillRect( long pixmap, int x, int y, int width, int height, int color );
+    private static extern void FillCircle( long pixmap, int x, int y, int radius, int color );
+    private static extern void FillTriangle( long pixmap, int x1, int y1, int x2, int y2, int x3, int y3, int color );
 
     private static extern void DrawPixmap( long src,
                                            long dst,

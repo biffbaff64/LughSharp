@@ -14,11 +14,13 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Utils;
 
-namespace LibGDXSharp.Graphics.GLUtils;
+namespace LibGDXSharp.Graphics.FrameBuffers;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 {
     /// <summary>
@@ -45,19 +47,6 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     }
 
     /// <summary>
-    /// Creates a new FrameBuffer having the given dimensions and
-    /// potentially a depth buffer attached.
-    /// <param name="format"></param>
-    /// <param name="width"></param>
-    /// <param name="height"></param>
-    /// <param name="hasDepth"></param>
-    /// </summary>
-    public FrameBufferCubemap( Pixmap.Format format, int width, int height, bool hasDepth )
-        : this( format, width, height, hasDepth, false )
-    {
-    }
-
-    /// <summary>
     /// Creates a new FrameBuffer having the given dimensions and potentially
     /// a depth and a stencil buffer attached.
     /// </summary>
@@ -73,8 +62,10 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// Thrown if the FrameBuffer could not be created
     /// </exception>
     public FrameBufferCubemap( Pixmap.Format format, int width,
-                               int height, bool hasDepth, bool hasStencil )
+                               int height, bool hasDepth, bool hasStencil = false )
     {
+        this.BufferBuilder = new FrameBufferBuilder( width, height );
+        
         FrameBufferCubemapBuilder frameBufferBuilder = new( width, height );
 
         frameBufferBuilder.AddBasicColorTextureAttachment( format );

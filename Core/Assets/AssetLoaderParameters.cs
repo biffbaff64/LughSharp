@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 namespace LibGDXSharp.Assets;
 
 [PublicAPI]
-public interface IAssetLoaderParameters
+public class AssetLoaderParameters
 {
     /// <summary>
     /// Callback interface that will be invoked when the
@@ -30,17 +30,11 @@ public interface IAssetLoaderParameters
         void FinishedLoading( AssetManager assetManager, string fileName, Type type );
     }
     
-    ILoadedCallback? LoadedCallback { get; set; }
+    public ILoadedCallback? LoadedCallback { get; set; }
 }
 
 [PublicAPI]
-public class AssetLoaderParameters : IAssetLoaderParameters
-{
-    public IAssetLoaderParameters.ILoadedCallback? LoadedCallback { get; set; }
-}
-
-[PublicAPI]
-public class DefaultLoadedCallbackInnerClass : IAssetLoaderParameters.ILoadedCallback
+public class DefaultLoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
 {
     private readonly int _refCount;
 

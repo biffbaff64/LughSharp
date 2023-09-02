@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Assets.Loaders;
 
 [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
+public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
     public struct CubemapLoaderInfo
     {
@@ -51,7 +51,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
                                                              FileInfo? file,
                                                              AssetLoaderParameters parameter )
     {
-        return default!;
+        return default( List< AssetDescriptor > )!;
     }
 
     /// <summary>
@@ -94,7 +94,10 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
             _loaderInfo.cubemap     = ( ( CubemapParameter? )parameter )?.cubemap;
         }
 
-        if ( !_loaderInfo.cubemapData!.Prepared ) _loaderInfo.cubemapData.Prepare();
+        if ( !_loaderInfo.cubemapData!.Prepared )
+        {
+            _loaderInfo.cubemapData.Prepare();
+        }
     }
 
     /// <summary>
@@ -147,7 +150,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     {
     }
 
-    public class CubemapParameter : AssetLoaderParameters
+    public sealed class CubemapParameter : AssetLoaderParameters
     {
         // the format of the final Texture. Uses the source images format if null
         public Pixmap.Format? format = null;

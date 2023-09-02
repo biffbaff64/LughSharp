@@ -14,9 +14,11 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Utils;
 
-namespace LibGDXSharp.Graphics.GLUtils;
+namespace LibGDXSharp.Graphics.FrameBuffers;
 
 /// <summary>
 /// Encapsulates OpenGL ES 2.0 frame buffer objects. This is a simple helper
@@ -33,21 +35,23 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// A FrameBuffer must be disposed if it is no longer needed.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class FrameBuffer : GLFrameBuffer< Texture >
 {
     public FrameBuffer()
     {
     }
-    
+
     /// <summary>
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder">
     ///  </param>
+
+    // LibGDXSharp.Graphics.FrameBuffers.GLFrameBufferBuilder<LibGDXSharp.Graphics.FrameBuffers.GLFrameBuffer<LibGDXSharp.Graphics.GLTexture>>
+    // LibGDXSharp.Graphics.FrameBuffers.GLFrameBufferBuilder<LibGDXSharp.Graphics.FrameBuffers.GLFrameBuffer<LibGDXSharp.Graphics.Texture>>
     public FrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
-//        : base( bufferBuilder )
+        : base( bufferBuilder )
     {
     }
 
@@ -80,7 +84,7 @@ public class FrameBuffer : GLFrameBuffer< Texture >
             frameBufferBuilder.AddBasicStencilRenderBuffer();
         }
 
-        //        this.BufferBuilder = frameBufferBuilder;
+        this.BufferBuilder = frameBufferBuilder;
 
         Build();
     }
@@ -89,12 +93,12 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     {
         var data = new GLOnlyTextureData
             (
-             BufferBuilder.Width,
-             BufferBuilder.Height,
-             0,
-             attachmentSpec.InternalFormat,
-             attachmentSpec.Format,
-             attachmentSpec.Type
+            BufferBuilder.Width,
+            BufferBuilder.Height,
+            0,
+            attachmentSpec.InternalFormat,
+            attachmentSpec.Format,
+            attachmentSpec.Type
             );
 
         var result = new Texture( data );
@@ -120,14 +124,17 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     /// </summary>
     protected override void AttachFrameBufferColorTexture( Texture texture )
     {
-        Gdx.GL20.GLFramebufferTexture2D(IGL20.GL_FRAMEBUFFER, IGL20.GL_COLOR_ATTACHMENT0,
-                                         IGL20.GL_TEXTURE_2D, texture.GetTextureObjectHandle(), 0);
+        Gdx.GL20.GLFramebufferTexture2D
+            (
+            IGL20.GL_FRAMEBUFFER, IGL20.GL_COLOR_ATTACHMENT0,
+            IGL20.GL_TEXTURE_2D, texture.GetTextureObjectHandle(), 0
+            );
     }
 
     /// <summary>
     /// See <see cref="GLFrameBuffer{T}.Unbind()"/>
     /// </summary>
-    public override void Unbind()
+    public new void Unbind()
     {
         base.Unbind();
     }

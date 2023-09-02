@@ -44,7 +44,9 @@ namespace LibGDXSharp.G2D;
 /// can be changed. If the screen is <see cref="IApplicationListener.Resize(int, int)"/>,
 /// the SpriteCache's matrices must be updated. For example:
 /// </para>
-/// <code>cache.GetProjectionMatrix().SetToOrtho2D(0, 0, Gdx.Graphics.GetWidth(), Gdx.Graphics.GetHeight());</code>
+/// <code>
+/// cache.GetProjectionMatrix().SetToOrtho2D(0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height);
+/// </code>
 /// <para>
 /// Note that SpriteCache does not manage blending. You will need to enable blending
 /// (<tt>Gdx.GL.GLEnable(IGL20.GL_Blend);</tt>) and set the blend func as needed before
@@ -70,28 +72,27 @@ public class SpriteCache
 {
     private readonly static float[] TempVertices = new float[ Sprite.VertexSize * 6 ];
 
-    private readonly Mesh          _mesh;
-    private          bool          _drawing;
-    private readonly List< Cache > _caches = new();
-
-    private readonly Matrix4        _combinedMatrix = new();
-    private readonly ShaderProgram? _shader;
-
-    private          Cache?          _currentCache;
+    private readonly Mesh            _mesh;
+    private readonly List< Cache >   _caches         = new();
+    private readonly Matrix4         _combinedMatrix = new();
+    private readonly ShaderProgram?  _shader;
     private readonly List< Texture > _textures = new( 8 );
     private readonly List< int >     _counts   = new( 8 );
+
+    private Cache? _currentCache;
+    private bool   _drawing;
 
     private float _colorPacked = Color.WhiteFloatBits;
 
     /// <summary>
     /// Number of render calls since the last <see cref="Begin"/>.
     /// </summary>
-    public int renderCalls = 0;
+    public int RenderCalls { get; set; } = 0;
 
     /// <summary>
     /// Number of rendering calls, ever. Will not be reset unless set manually.
     /// </summary>
-    public int totalRenderCalls = 0;
+    public int TotalRenderCalls { get; set; } = 0;
 
     /// <summary>
     /// Creates a cache that uses indexed geometry and can contain up to 1000 images.
@@ -128,7 +129,9 @@ public class SpriteCache
         this._shader = shader;
 
         if ( useIndices && ( size > 8191 ) )
-            throw new ArgumentException( "Can't have more than 8191 sprites per batch: " + size );
+        {
+            throw new ArgumentException( $"Can't have more than 8191 sprites per batch: {size}" );
+        }
 
         _mesh = new Mesh
             (
@@ -219,10 +222,14 @@ public class SpriteCache
     public void BeginCache()
     {
         if ( _drawing )
+        {
             throw new IllegalStateException( "end must be called before beginCache" );
+        }
 
         if ( _currentCache != null )
+        {
             throw new IllegalStateException( "endCache must be called before begin." );
+        }
 
         _currentCache = new Cache( _caches.Count, _mesh.VerticesBuffer.Limit );
         _caches.Add( _currentCache );
@@ -239,10 +246,14 @@ public class SpriteCache
     public void BeginCache( int cacheID )
     {
         if ( _drawing )
+        {
             throw new IllegalStateException( "end must be called before beginCache" );
+        }
 
         if ( _currentCache != null )
+        {
             throw new IllegalStateException( "endCache must be called before begin." );
+        }
 
         if ( cacheID == ( _caches.Count - 1 ) )
         {
@@ -264,7 +275,9 @@ public class SpriteCache
     public int EndCache()
     {
         if ( _currentCache == null )
+        {
             throw new IllegalStateException( "beginCache must be called before endCache." );
+        }
 
         Cache cache      = _currentCache;
         var   cacheCount = _mesh.VerticesBuffer.Position - cache.offset;
@@ -292,8 +305,8 @@ public class SpriteCache
                 throw new GdxRuntimeException
                     (
                     $"If a cache is not the last created, it cannot be redefined"
-                    + $"with more entries than when it was first created: "
-                    + $"{cacheCount} ({cache.maxCount} max)"
+                  + $"with more entries than when it was first created: "
+                  + $"{cacheCount} ({cache.maxCount} max)"
                     );
             }
 
@@ -353,7 +366,9 @@ public class SpriteCache
     public void Add( Texture texture, float[] vertices, int offset, int length )
     {
         if ( _currentCache == null )
+        {
             throw new IllegalStateException( "beginCache must be called before add." );
+        }
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
         var count            = ( length / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
@@ -764,9 +779,15 @@ public class SpriteCache
         var u2 = ( srcX + srcWidth ) * invTexWidth;
         var v2 = srcY * invTexHeight;
 
-        if ( flipX ) ( u, u2 ) = ( u2, u );
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
 
-        if ( flipY ) ( v, v2 ) = ( v2, v );
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
 
         TempVertices[ 0 ] = x1;
         TempVertices[ 1 ] = y1;
@@ -1015,7 +1036,7 @@ public class SpriteCache
             TempVertices[ 17 ] = PackedColor;
             TempVertices[ 18 ] = u2;
             TempVertices[ 19 ] = v;
-            
+
             Add( region.Texture, TempVertices, 0, 20 );
         }
         else
@@ -1084,11 +1105,17 @@ public class SpriteCache
     /// </summary>
     public void Begin()
     {
-        if ( _drawing ) throw new IllegalStateException( "end must be called before begin." );
+        if ( _drawing )
+        {
+            throw new IllegalStateException( "end must be called before begin." );
+        }
 
-        if ( _currentCache != null ) throw new IllegalStateException( "endCache must be called before begin" );
+        if ( _currentCache != null )
+        {
+            throw new IllegalStateException( "endCache must be called before begin" );
+        }
 
-        renderCalls = 0;
+        RenderCalls = 0;
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
 
         Gdx.GL20.GLDepthMask( false );
@@ -1162,8 +1189,8 @@ public class SpriteCache
             offset += counts[ i ];
         }
 
-        renderCalls      += textureCount;
-        totalRenderCalls += textureCount;
+        RenderCalls      += textureCount;
+        TotalRenderCalls += textureCount;
     }
 
     /// <summary>
@@ -1187,7 +1214,7 @@ public class SpriteCache
 
         offset =  ( ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6 ) + ( offset * 6 );
         length *= 6;
-        
+
         Texture[]? textures = cache.textures;
 
         var counts       = cache.counts;
@@ -1213,8 +1240,8 @@ public class SpriteCache
             offset += count;
         }
 
-        renderCalls      += cache.textureCount;
-        totalRenderCalls += textureCount;
+        RenderCalls      += cache.textureCount;
+        TotalRenderCalls += textureCount;
     }
 
     public Matrix4 ProjectionMatrix { get; init; } = new();
@@ -1235,48 +1262,48 @@ public class SpriteCache
     }
 
     #region shaders
-    
+
     private static ShaderProgram CreateDefaultShader()
     {
         var vertexShader =
             "attribute vec4 "
-            + ShaderProgram.POSITION_ATTRIBUTE
-            + ";\n" //
-            + "attribute vec4 "
-            + ShaderProgram.COLOR_ATTRIBUTE
-            + ";\n" //
-            + "attribute vec2 "
-            + ShaderProgram.TEXCOORD_ATTRIBUTE
-            + "0;\n"                                   //
-            + "uniform mat4 u_projectionViewMatrix;\n" //
-            + "varying vec4 v_color;\n"                //
-            + "varying vec2 v_texCoords;\n"            //
-            + "\n"                                     //
-            + "void main()\n"                          //
-            + "{\n"                                    //
-            + "   v_color = "
-            + ShaderProgram.COLOR_ATTRIBUTE
-            + ";\n"                                         //
-            + "   v_color.a = v_color.a * (255.0/254.0);\n" //
-            + "   v_texCoords = "
-            + ShaderProgram.TEXCOORD_ATTRIBUTE
-            + "0;\n" //
-            + "   gl_Position =  u_projectionViewMatrix * "
-            + ShaderProgram.POSITION_ATTRIBUTE
-            + ";\n" //
-            + "}\n";
+          + ShaderProgram.POSITION_ATTRIBUTE
+          + ";\n" //
+          + "attribute vec4 "
+          + ShaderProgram.COLOR_ATTRIBUTE
+          + ";\n" //
+          + "attribute vec2 "
+          + ShaderProgram.TEXCOORD_ATTRIBUTE
+          + "0;\n"                                   //
+          + "uniform mat4 u_projectionViewMatrix;\n" //
+          + "varying vec4 v_color;\n"                //
+          + "varying vec2 v_texCoords;\n"            //
+          + "\n"                                     //
+          + "void main()\n"                          //
+          + "{\n"                                    //
+          + "   v_color = "
+          + ShaderProgram.COLOR_ATTRIBUTE
+          + ";\n"                                         //
+          + "   v_color.a = v_color.a * (255.0/254.0);\n" //
+          + "   v_texCoords = "
+          + ShaderProgram.TEXCOORD_ATTRIBUTE
+          + "0;\n" //
+          + "   gl_Position =  u_projectionViewMatrix * "
+          + ShaderProgram.POSITION_ATTRIBUTE
+          + ";\n" //
+          + "}\n";
 
         var fragmentShader =
-            "#ifdef GL_ES\n"                                                    //
-            + "precision mediump float;\n"                                      //
-            + "#endif\n"                                                        //
-            + "varying vec4 v_color;\n"                                         //
-            + "varying vec2 v_texCoords;\n"                                     //
-            + "uniform sampler2D u_texture;\n"                                  //
-            + "void main()\n"                                                   //
-            + "{\n"                                                             //
-            + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
-            + "}";
+            "#ifdef GL_ES\n"                                                  //
+          + "precision mediump float;\n"                                      //
+          + "#endif\n"                                                        //
+          + "varying vec4 v_color;\n"                                         //
+          + "varying vec2 v_texCoords;\n"                                     //
+          + "uniform sampler2D u_texture;\n"                                  //
+          + "void main()\n"                                                   //
+          + "{\n"                                                             //
+          + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
+          + "}";
 
         var shader = new ShaderProgram( vertexShader, fragmentShader );
 
@@ -1301,7 +1328,7 @@ public class SpriteCache
     public ShaderProgram? CustomShader { get; set; }
 
     #endregion shaders
-    
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

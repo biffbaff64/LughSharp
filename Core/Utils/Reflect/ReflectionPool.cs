@@ -16,18 +16,20 @@
 
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Utils;
 
 using BindingFlags = System.Reflection.BindingFlags;
 
-namespace LibGDXSharp.GdxCore.Utils.Pooling;
+namespace LibGDXSharp.GdxCore.Utils.Reflect;
 
 /// <summary>
 /// Pool that creates new instances of a type using reflection.
 /// The type must have a zero argument constructor.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class ReflectionPool<T> : Pool< T >
 {
     private readonly System.Reflection.ConstructorInfo? _constructor;
@@ -76,7 +78,7 @@ public class ReflectionPool<T> : Pool< T >
 //            }
 //            catch ( ReflectionException )
 //            {
-                return null;
+            return null;
 //            }
         }
     }

@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
+
 using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Utils.Xml;
@@ -38,6 +40,7 @@ namespace LibGDXSharp.Utils.Xml;
 /// </code>
 /// </para>
 /// </summary>
+[PublicAPI]
 public class XmlWriter
 {
     private readonly StreamWriter?   _writer;

@@ -15,7 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Core.Utils.Collections;
-using LibGDXSharp.GdxCore.Utils.Pooling;
+using LibGDXSharp.GdxCore.Utils.Reflect;
 
 namespace LibGDXSharp.Utils.Pooling;
 
@@ -38,13 +38,13 @@ public class Pools<T>
     /// </summary>
     public static Pool< T > Get( int max = 100 )
     {
-        Pool< T >? pool = TypePools[ typeof(T) ];
+        Pool< T >? pool = TypePools[ typeof( T ) ];
 
         if ( pool == null )
         {
             pool = new ReflectionPool< T >( 4, max );
 
-            TypePools.Put( typeof(T), pool );
+            TypePools.Put( typeof( T ), pool );
         }
 
         return pool;
@@ -67,9 +67,12 @@ public class Pools<T>
     /// </summary>
     public static void Free( T obj )
     {
-        if ( obj == null ) throw new ArgumentException( "object cannot be null." );
+        if ( obj == null )
+        {
+            throw new ArgumentException( "object cannot be null." );
+        }
 
-        TypePools[ typeof(T) ]?.Free( obj );
+        TypePools[ typeof( T ) ]?.Free( obj );
     }
 
     /// <summary>
@@ -92,15 +95,16 @@ public class Pools<T>
         {
             T? obj = objects[ i ];
 
-            if ( obj == null ) continue;
+            if ( ( obj == null ) || ( TypePools[ typeof( T ) ] == null ) )
+            {
+                continue;
+            }
 
-            if ( TypePools[ typeof(T) ] == null ) continue;
-
-            TypePools[ typeof(T) ]?.Free( obj );
+            TypePools[ typeof( T ) ]?.Free( obj );
 
             if ( !samePool )
             {
-                TypePools[ typeof(T) ] = null;
+                TypePools[ typeof( T ) ] = null;
             }
         }
     }
