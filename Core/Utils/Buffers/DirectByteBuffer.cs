@@ -18,297 +18,185 @@ using System.Diagnostics;
 
 namespace LibGDXSharp.Utils.Buffers;
 
-/** DirectByteBuffer, DirectReadWriteByteBuffer and DirectReadOnlyHeapByteBuffer compose the implementation of direct byte buffers.
- * <p>
- * DirectByteBuffer implements all the shared readonly methods and is extended by the other two classes.
- * </p>
- * <p>
- * All methods are marked for runtime performance.
- * </p> */
-abstract class DirectByteBuffer : BaseByteBuffer, HasArrayBufferView
+public sealed class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 {
-    private readonly List< int > _byteArray;
+    private readonly static bool Unaligned = Bits.Unaligned();
+    private readonly static bool Unsafe    = Bits.Unsafe();
 
-    DirectByteBuffer( int capacity )
-        : this( ArrayBufferNative.create( capacity ), capacity, 0 )
+    public object Attachment { get; set; }
+    
+    public DirectByteBuffer( int capacity )
+        : base( -1, 0, capacity, capacity )
     {
     }
 
-    DirectByteBuffer( ArrayBuffer buf )
-        : this( buf, buf.byteLength(), 0 )
+    public DirectByteBuffer( long addr, int cap, Object ob )
+        : base( -1, 0, cap, cap )
     {
+        address = addr;
+        cleaner = null;
+        Attachment     = ob;
     }
 
-    DirectByteBuffer( ArrayBuffer buffer, int capacity, int offset )
-        : base( capacity )
+    public DirectByteBuffer( IDirectBuffer db, // package-private
+                      int mark,
+                      int pos,
+                      int lim,
+                      int cap,
+                      int off )
+        : base( mark, pos, lim, cap )
     {
-        _byteArray = Int8ArrayNative.create( buffer, offset, capacity );
+        address = db.address() + off;
+
+        cleaner = null;
+        Attachment     = db;
     }
 
-    public ArrayBufferView GetTypedArray()
+    public override object BackingArray() => null;
+
+    public override bool IsDirect() => true;
+
+    public override ByteBuffer Slice()
     {
-        return _byteArray;
+        var pos = this.Position;
+        var lim = this.Limit;
+
+        Debug.Assert( pos <= lim );
+
+        var rem = ( pos <= lim ? lim - pos : 0 );
+        var off = ( pos << 0 );
+
+        Debug.Assert( off >= 0 );
+
+        return new DirectByteBuffer( this, -1, 0, rem, rem, off );
     }
 
-    public int GetElementSize()
-    {
-        return 1;
-    }
+    public override ByteBuffer Duplicate() => null;
 
-    /*
-     * Override ByteBuffer.get(byte[], int, int) to improve performance.
-     *
-     * (non-Javadoc)
-     *
-     * @see java.nio.ByteBuffer#get(byte[], int, int)
-     */
-    public ByteBuffer Get( byte[] dest, int off, int len )
-    {
-        int length = dest.Length;
+    public override ByteBuffer AsReadOnlyBuffer() => null;
 
-        if ( off < 0 || len < 0 || ( long )off + ( long )len > length )
+    protected override byte Get() => 0;
+
+    protected override ByteBuffer Put( byte b ) => null;
+
+    protected override byte Get( int index ) => 0;
+
+    public override ByteBuffer Put( int index, byte b ) => null;
+
+    public override ByteBuffer Compact() => null;
+
+    public override char GetChar() => '\0';
+
+    public override ByteBuffer PutChar( char value ) => null;
+
+    public override char GetChar( int index ) => '\0';
+
+    public override ByteBuffer PutChar( int index, char value ) => null;
+
+    public override CharBuffer AsCharBuffer() => null;
+
+    public override short GetShort() => 0;
+
+    public override ByteBuffer PutShort( short value ) => null;
+
+    public override short GetShort( int index ) => 0;
+
+    public override ByteBuffer PutShort( int index, short value ) => null;
+
+    public override ShortBuffer AsShortBuffer() => null;
+
+    public override int GetInt() => 0;
+
+    public override ByteBuffer PutInt( int value ) => null;
+
+    public override int GetInt( int index ) => 0;
+
+    public override ByteBuffer PutInt( int index, int value ) => null;
+
+    public override IntBuffer AsIntBuffer() => null;
+
+    public override long GetLong() => 0;
+
+    public override ByteBuffer PutLong( long value ) => null;
+
+    public override long GetLong( int index ) => 0;
+
+    public override ByteBuffer PutLong( int index, long value ) => null;
+
+    public override LongBuffer AsLongBuffer() => null;
+
+    public override float GetFloat() => 0;
+
+    public override ByteBuffer PutFloat( float value ) => null;
+
+    public override float GetFloat( int index ) => 0;
+
+    public override ByteBuffer PutFloat( int index, float value ) => null;
+
+    public override FloatBuffer AsFloatBuffer() => null;
+
+    public override double GetDouble() => 0;
+
+    public override ByteBuffer PutDouble( double value ) => null;
+
+    public override double GetDouble( int index ) => 0;
+
+    public override ByteBuffer PutDouble( int index, double value ) => null;
+
+    public override DoubleBuffer AsDoubleBuffer()
+    {
+        var off = this.Position;
+        var lim = this.Limit;
+
+        Debug.Assert( off <= lim );
+
+        var rem = ( off <= lim ? lim - off : 0 );
+
+        var size = rem >> 3;
+
+        if ( !Unaligned && ( ( address + off ) % ( 1 << 3 ) != 0 ) )
         {
-            throw new IndexOutOfRangeException();
-        }
-
-        if ( len > Remaining() )
-        {
-            throw new BufferUnderflowException();
-        }
-
-        for ( int i = 0; i < len; i++ )
-        {
-            dest[ i + off ] = get( position + i );
-        }
-
-        position += len;
-
-        return this;
-    }
-
-    public byte get()
-    {
-
-// if (position == limit) {
-// throw new BufferUnderflowException();
-// }
-        return ( byte )_byteArray.get( position++ );
-
-    }
-
-    public byte get( int index )
-    {
-// if (index < 0 || index >= limit) {
-// throw new IndexOutOfBoundsException();
-// }
-        return ( byte )_byteArray.get( index );
-    }
-
-    public double getDouble()
-    {
-        return Numbers.longBitsToDouble( getLong() );
-    }
-
-    public double getDouble( int index )
-    {
-        return Numbers.longBitsToDouble( getLong( index ) );
-    }
-
-    public float getFloat()
-    {
-        return Numbers.intBitsToFloat( getInt() );
-    }
-
-    public float getFloat( int index )
-    {
-        return Numbers.intBitsToFloat( getInt( index ) );
-    }
-
-    public int getInt()
-    {
-        int newPosition = position + 4;
-
-// if (newPosition > limit) {
-// throw new BufferUnderflowException();
-// }
-        int result = loadInt( position );
-        position = newPosition;
-
-        return result;
-    }
-
-    public int getInt( int index )
-    {
-// if (index < 0 || index + 4 > limit) {
-// throw new IndexOutOfBoundsException();
-// }
-        return loadInt( index );
-    }
-
-    public long getLong()
-    {
-        int newPosition = position + 8;
-
-// if (newPosition > limit) {
-// throw new BufferUnderflowException();
-// }
-        long result = loadLong( position );
-        position = newPosition;
-
-        return result;
-    }
-
-    public long getLong( int index )
-    {
-// if (index < 0 || index + 8 > limit) {
-// throw new IndexOutOfBoundsException();
-// }
-        return loadLong( index );
-    }
-
-    public short getShort()
-    {
-        int newPosition = position + 2;
-
-// if (newPosition > limit) {
-// throw new BufferUnderflowException();
-// }
-        short result = loadShort( position );
-        position = newPosition;
-
-        return result;
-    }
-
-    public short getShort( int index )
-    {
-// if (index < 0 || index + 2 > limit) {
-// throw new IndexOutOfBoundsException();
-// }
-        return loadShort( index );
-    }
-
-    public boolean isDirect()
-    {
-        return false;
-    }
-
-    protected int loadInt( int baseOffset )
-    {
-        int bytes = 0;
-
-        if ( order == Endianness.BIG_ENDIAN )
-        {
-            for ( int i = 0; i < 4; i++ )
-            {
-                bytes = bytes << 8;
-                bytes = bytes | ( _byteArray.get( baseOffset + i ) & 0xFF );
-            }
+            return ( bigEndian
+                ? ( DoubleBuffer )( new ByteBufferAsDoubleBufferB
+                    (
+                    this,
+                    -1,
+                    0,
+                    size,
+                    size,
+                    off
+                    ) )
+                : ( DoubleBuffer )( new ByteBufferAsDoubleBufferL
+                    (
+                    this,
+                    -1,
+                    0,
+                    size,
+                    size,
+                    off
+                    ) ) );
         }
         else
         {
-            for ( int i = 3; i >= 0; i-- )
-            {
-                bytes = bytes << 8;
-                bytes = bytes | ( _byteArray.get( baseOffset + i ) & 0xFF );
-            }
-        }
-
-        return bytes;
-    }
-
-    protected long loadLong( int baseOffset )
-    {
-        long bytes = 0;
-
-        if ( order == Endianness.BIG_ENDIAN )
-        {
-            for ( int i = 0; i < 8; i++ )
-            {
-                bytes = bytes << 8;
-                bytes = bytes | ( _byteArray.get( baseOffset + i ) & 0xFF );
-            }
-        }
-        else
-        {
-            for ( int i = 7; i >= 0; i-- )
-            {
-                bytes = bytes << 8;
-                bytes = bytes | ( _byteArray.get( baseOffset + i ) & 0xFF );
-            }
-        }
-
-        return bytes;
-    }
-
-    protected short loadShort( int baseOffset )
-    {
-        short bytes = 0;
-
-        if ( order == Endianness.BIG_ENDIAN )
-        {
-            bytes =  ( short )( _byteArray.get( baseOffset ) << 8 );
-            bytes |= ( _byteArray.get( baseOffset + 1 ) & 0xFF );
-        }
-        else
-        {
-            bytes =  ( short )( _byteArray.get( baseOffset + 1 ) << 8 );
-            bytes |= ( _byteArray.get( baseOffset ) & 0xFF );
-        }
-
-        return bytes;
-    }
-
-    protected void store( int baseOffset, int value )
-    {
-        if ( order == Endianness.BIG_ENDIAN )
-        {
-            for ( int i = 3; i >= 0; i-- )
-            {
-                _byteArray.set( baseOffset + i, ( byte )( value & 0xFF ) );
-                value = value >> 8;
-            }
-        }
-        else
-        {
-            for ( int i = 0; i <= 3; i++ )
-            {
-                _byteArray.set( baseOffset + i, ( byte )( value & 0xFF ) );
-                value = value >> 8;
-            }
-        }
-    }
-
-    protected void store( int baseOffset, long value )
-    {
-        if ( order == Endianness.BIG_ENDIAN )
-        {
-            for ( int i = 7; i >= 0; i-- )
-            {
-                _byteArray.set( baseOffset + i, ( byte )( value & 0xFF ) );
-                value = value >> 8;
-            }
-        }
-        else
-        {
-            for ( int i = 0; i <= 7; i++ )
-            {
-                _byteArray.set( baseOffset + i, ( byte )( value & 0xFF ) );
-                value = value >> 8;
-            }
-        }
-    }
-
-    protected void store( int baseOffset, short value )
-    {
-        if ( order == Endianness.BIG_ENDIAN )
-        {
-            _byteArray.set( baseOffset, ( byte )( ( value >> 8 ) & 0xFF ) );
-            _byteArray.set( baseOffset + 1, ( byte )( value & 0xFF ) );
-        }
-        else
-        {
-            _byteArray.set( baseOffset + 1, ( byte )( ( value >> 8 ) & 0xFF ) );
-            _byteArray.set( baseOffset, ( byte )( value & 0xFF ) );
+            return ( nativeByteOrder
+                ? ( DoubleBuffer )( new DirectDoubleBufferU
+                    (
+                    this,
+                    -1,
+                    0,
+                    size,
+                    size,
+                    off
+                    ) )
+                : ( DoubleBuffer )( new DirectDoubleBufferS
+                    (
+                    this,
+                    -1,
+                    0,
+                    size,
+                    size,
+                    off
+                    ) ) );
         }
     }
 }

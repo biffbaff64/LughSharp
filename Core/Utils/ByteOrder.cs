@@ -22,6 +22,12 @@ namespace LibGDXSharp.Utils;
 /// <remarks>Not sure if this is still needed.</remarks>
 public sealed class ByteOrder
 {
+    public enum Endians
+    {
+        Big_Endian,
+        Little_Endian
+    }
+
     private readonly string _name;
 
     private ByteOrder( string name )
@@ -29,7 +35,7 @@ public sealed class ByteOrder
         this._name = name;
     }
 
-    public readonly static ByteOrder NativeOrder = new("NativeOrder");
+    public readonly static ByteOrder NativeOrder = new( "NativeOrder" );
 
     /// <summary>
     /// Constant denoting big-endian byte order.  In this order, the bytes of a

@@ -19,13 +19,12 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 
 // -----------------------------------------------------------------------
-// OpenTK OpenGL support
+// Jetbrains
 
-global using OpenTK.Core;
-global using OpenTK.Graphics;
-global using OpenTK.Windowing;
-global using OpenTK.Windowing.Desktop;
-global using OpenTK.Windowing.GraphicsLibraryFramework;
+global using JetBrains.Annotations;
+
+// -----------------------------------------------------------------------
+// OpenGL support
 
 // -----------------------------------------------------------------------
 // LibGDXSharp

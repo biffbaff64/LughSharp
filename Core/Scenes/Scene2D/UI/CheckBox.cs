@@ -20,7 +20,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class CheckBox : TextButton
 {
     private CheckBoxStyle? _style;

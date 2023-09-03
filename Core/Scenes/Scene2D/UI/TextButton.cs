@@ -20,7 +20,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class TextButton : Button
 {
     private Label?           _label;
@@ -57,23 +57,39 @@ public class TextButton : Button
     {
         System.Diagnostics.Debug.Assert( Style != null, "Style != null" );
 
-        if ( IsDisabled && ( Style.DisabledFontColor != null ) ) return Style.DisabledFontColor;
+        if ( IsDisabled && ( Style.DisabledFontColor != null ) )
+        {
+            return Style.DisabledFontColor;
+        }
 
         if ( IsPressed() )
         {
-            if ( IsChecked && ( Style.CheckedDownFontColor != null ) ) return Style.CheckedDownFontColor;
-            if ( Style.DownFontColor != null ) return Style.DownFontColor;
+            if ( IsChecked && ( Style.CheckedDownFontColor != null ) )
+            {
+                return Style.CheckedDownFontColor;
+            }
+
+            if ( Style.DownFontColor != null )
+            {
+                return Style.DownFontColor;
+            }
         }
 
         if ( IsOver() )
         {
             if ( IsChecked )
             {
-                if ( Style.CheckedOverFontColor != null ) return Style.CheckedOverFontColor;
+                if ( Style.CheckedOverFontColor != null )
+                {
+                    return Style.CheckedOverFontColor;
+                }
             }
             else
             {
-                if ( Style.OverFontColor != null ) return Style.OverFontColor;
+                if ( Style.OverFontColor != null )
+                {
+                    return Style.OverFontColor;
+                }
             }
         }
 
@@ -81,12 +97,26 @@ public class TextButton : Button
 
         if ( IsChecked )
         {
-            if ( focused && ( Style.CheckedFocusedFontColor != null ) ) return Style.CheckedFocusedFontColor;
-            if ( Style.CheckedFontColor != null ) return Style.CheckedFontColor;
-            if ( IsOver() && ( Style.OverFontColor != null ) ) return Style.OverFontColor;
+            if ( focused && ( Style.CheckedFocusedFontColor != null ) )
+            {
+                return Style.CheckedFocusedFontColor;
+            }
+
+            if ( Style.CheckedFontColor != null )
+            {
+                return Style.CheckedFontColor;
+            }
+
+            if ( IsOver() && ( Style.OverFontColor != null ) )
+            {
+                return Style.OverFontColor;
+            }
         }
 
-        if ( focused && ( Style?.FocusedFontColor != null ) ) return Style.FocusedFontColor;
+        if ( focused && ( Style?.FocusedFontColor != null ) )
+        {
+            return Style.FocusedFontColor;
+        }
 
         return Style?.FontColor;
     }
@@ -155,12 +185,18 @@ public class TextButton : Button
 
     public new string ToString()
     {
-        if ( Name != null ) return Name;
+        if ( Name != null )
+        {
+            return Name;
+        }
 
         var className = GetType().Name;
         var dotIndex  = className.LastIndexOf( '.' );
 
-        if ( dotIndex != -1 ) className = className.Substring( dotIndex + 1 );
+        if ( dotIndex != -1 )
+        {
+            className = className.Substring( dotIndex + 1 );
+        }
 
         return ( className.IndexOf( '$' ) != -1 ? "TextButton " : "" ) + className + ": " + _label?.Text;
     }

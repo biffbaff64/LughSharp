@@ -26,8 +26,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// a <see cref="TextureRegionDrawable"/> will the actor's scale, rotation, and
 /// origin be used when drawing.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Image : Widget
 {
     public float ImageX      { get; set; }
@@ -81,7 +80,10 @@ public class Image : Widget
 
     public new void Layout()
     {
-        if ( _drawable == null ) return;
+        if ( _drawable == null )
+        {
+            return;
+        }
 
         var regionWidth  = _drawable.MinWidth;
         var regionHeight = _drawable.MinHeight;
@@ -165,14 +167,18 @@ public class Image : Widget
     }
 
     /// <summary>
-    /// Sets a new drawable for the image. The image's pref size is the drawable's min
-    /// size. If using the image actor's size rather than the pref size, <see cref="Widget.Pack"/>
-    /// can be used to size the image to its pref size.
+    /// Sets a new drawable for the image. The image's pref size is the
+    /// drawable's min size. If using the image actor's size rather than
+    /// the pref size, <see cref="Widget.Pack"/> can be used to size the
+    /// image to its pref size.
     /// </summary>
     /// <param name="drawable"> May be null. </param>
     public void SetDrawable( IDrawable? drawable )
     {
-        if ( this._drawable == drawable ) return;
+        if ( this._drawable == drawable )
+        {
+            return;
+        }
 
         if ( drawable != null )
         {
@@ -218,14 +224,20 @@ public class Image : Widget
 
     public float GetPrefWidth()
     {
-        if ( _drawable != null ) return _drawable.MinWidth;
+        if ( _drawable != null )
+        {
+            return _drawable.MinWidth;
+        }
 
         return 0;
     }
 
     public float GetPrefHeight()
     {
-        if ( _drawable != null ) return _drawable.MinHeight;
+        if ( _drawable != null )
+        {
+            return _drawable.MinHeight;
+        }
 
         return 0;
     }
@@ -234,11 +246,17 @@ public class Image : Widget
     {
         var name = Name;
 
-        if ( name != null ) return name;
+        if ( name != null )
+        {
+            return name;
+        }
 
         var className                   = GetType().Name;
         var dotIndex                    = className.LastIndexOf( '.' );
-        if ( dotIndex != -1 ) className = className.Substring( dotIndex + 1 );
+        if ( dotIndex != -1 )
+        {
+            className = className.Substring( dotIndex + 1 );
+        }
 
         return ( className.IndexOf( '$' ) != -1 ? "Image " : "" ) + className + ": " + _drawable;
     }
