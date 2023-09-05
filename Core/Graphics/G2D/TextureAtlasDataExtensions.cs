@@ -57,7 +57,7 @@ public partial record TextureAtlasData
 {
     public class PageFieldParseClass : IField< Page >
     {
-        public void Parse( ref Page page, params string[] entry )
+        public void Parse( Page page, params string[] entry )
         {
             page.Width  = int.Parse( entry[ 1 ] );
             page.Height = int.Parse( entry[ 2 ] );
@@ -66,7 +66,7 @@ public partial record TextureAtlasData
 
     public class PageFieldFormatClass : IField< Page >
     {
-        public void Parse( ref Page page, params string[] entry )
+        public void Parse( Page page, params string[] entry )
         {
             page.Format = Pixmap.FormatFromString( entry[ 1 ] );
         }
@@ -74,7 +74,7 @@ public partial record TextureAtlasData
 
     public class PageFieldFilterClass : IField< Page >
     {
-        public void Parse( ref Page page, params string[] entry )
+        public void Parse( Page page, params string[] entry )
         {
             page.MinFilter  = TextureFilter.ValueOf( entry[ 1 ] );
             page.MagFilter  = TextureFilter.ValueOf( entry[ 2 ] );
@@ -84,7 +84,7 @@ public partial record TextureAtlasData
 
     public class PageFieldRepeatClass : IField< Page >
     {
-        public void Parse( ref Page page, params string[] entry )
+        public void Parse( Page page, params string[] entry )
         {
             if ( entry[ 1 ].IndexOf( 'x' ) != -1 ) page.UWrap = TextureWrap.Repeat;
             if ( entry[ 1 ].IndexOf( 'y' ) != -1 ) page.VWrap = TextureWrap.Repeat;
@@ -93,7 +93,7 @@ public partial record TextureAtlasData
 
     public class PageFieldPmaClass : IField< Page >
     {
-        public void Parse( ref Page page, params string[] entry )
+        public void Parse( Page page, params string[] entry )
         {
             // Note: I'm not sure what 'Pma' stands for. It's called that
             // in Java LibGDX so it's been carried over. Once I've figured
@@ -104,7 +104,7 @@ public partial record TextureAtlasData
 
     public class RegionFieldXYClass : IField< TextureAtlasData.Region >
     {
-        public void Parse( ref Region region, params string[] entry )
+        public void Parse( Region region, params string[] entry )
         {
             region.Left = int.Parse( entry[ 1 ] );
             region.Top  = int.Parse( entry[ 2 ] );
@@ -113,7 +113,7 @@ public partial record TextureAtlasData
 
     public class RegionFieldSizeClass : IField< TextureAtlasData.Region >
     {
-        public void Parse( ref Region region, params string[] entry )
+        public void Parse( Region region, params string[] entry )
         {
             region.Width  = int.Parse( entry[ 1 ] );
             region.Height = int.Parse( entry[ 2 ] );
@@ -122,7 +122,7 @@ public partial record TextureAtlasData
 
     public class RegionFieldBoundsClass : IField< TextureAtlasData.Region >
     {
-        public void Parse( ref Region region, params string[] entry )
+        public void Parse( Region region, params string[] entry )
         {
             region.Left   = int.Parse( entry[ 1 ] );
             region.Top    = int.Parse( entry[ 2 ] );
@@ -133,7 +133,7 @@ public partial record TextureAtlasData
 
     public class RegionFieldOffsetClass : IField< TextureAtlasData.Region >
     {
-        public void Parse( ref Region region, params string[] entry )
+        public void Parse( Region region, params string[] entry )
         {
             region.OffsetX = int.Parse( entry[ 1 ] );
             region.OffsetY = int.Parse( entry[ 2 ] );
@@ -142,7 +142,7 @@ public partial record TextureAtlasData
 
     public class RegionFieldOrigClass : IField< TextureAtlasData.Region >
     {
-        public void Parse( ref Region region, params string[] entry )
+        public void Parse( Region region, params string[] entry )
         {
             region.OriginalWidth  = int.Parse( entry[ 1 ] );
             region.OriginalHeight = int.Parse( entry[ 2 ] );
@@ -151,7 +151,7 @@ public partial record TextureAtlasData
 
     public class RegionFieldOffsetsClass : IField< TextureAtlasData.Region >
     {
-        public void Parse( ref Region region, params string[] entry )
+        public void Parse( Region region, params string[] entry )
         {
             region.OffsetX        = int.Parse( entry[ 1 ] );
             region.OffsetY        = int.Parse( entry[ 2 ] );
@@ -162,7 +162,7 @@ public partial record TextureAtlasData
 
     public class RegionFieldRotateClass : IField< TextureAtlasData.Region >
     {
-        public void Parse( ref Region region, params string[] entry )
+        public void Parse( Region region, params string[] entry )
         {
             var value = entry[ 1 ];
 
@@ -181,7 +181,7 @@ public partial record TextureAtlasData
 
     public class RegionFieldIndexClass : IField< TextureAtlasData.Region >
     {
-        public void Parse( ref Region region, params string[] entry )
+        public void Parse( Region region, params string[] entry )
         {
             region.Index = int.Parse( entry[ 1 ] );
 

@@ -42,10 +42,10 @@ namespace LibGDXSharp.Graphics;
 /// A Texture must be disposed when it is no longer used
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-public class Texture : GLTexture, IGLTexture
+[PublicAPI]
+public class Texture : GLTexture
 {
+    // ------------------------------------------------------------------------
 
     #region Properties
 
@@ -54,7 +54,11 @@ public class Texture : GLTexture, IGLTexture
 
     #endregion
 
+    // ------------------------------------------------------------------------
+
     private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
+
+    // ------------------------------------------------------------------------
 
     #region Constructors
 
@@ -64,7 +68,7 @@ public class Texture : GLTexture, IGLTexture
     }
 
     public Texture( FileInfo file, bool useMipMaps )
-        : this( file, default, useMipMaps )
+        : this( file, default( Pixmap.Format ), useMipMaps )
     {
     }
 
@@ -131,6 +135,8 @@ public class Texture : GLTexture, IGLTexture
 
     #endregion
 
+    // ------------------------------------------------------------------------
+    
     public void Load( ITextureData? data )
     {
         if ( ( this.TextureData == null ) || ( data == null ) )
@@ -249,7 +255,8 @@ public class Texture : GLTexture, IGLTexture
     }
 
     /// <summary>
-    /// Invalidate all managed textures. This is an internal method. Do not use it! </summary>
+    /// Invalidate all managed textures. This is an internal method. Do not use it!
+    /// </summary>
     public void InvalidateAllTextures( IApplication app )
     {
         List< Texture >? managedTextureArray = _managedTextures[ app ];
@@ -292,6 +299,7 @@ public class Texture : GLTexture, IGLTexture
                     // handle to zero, otherwise we might accidentially dispose
                     // already reloaded textures.
                     var refCount = AssetManager.GetReferenceCount( fileName );
+                    
                     AssetManager.SetReferenceCount( fileName, 0 );
                     texture.GLHandle = 0;
 
@@ -322,7 +330,6 @@ public class Texture : GLTexture, IGLTexture
         }
     }
 
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Local" )]
     private class LoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
     {
         private readonly int _refCount;

@@ -14,9 +14,9 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Concurrent;
+namespace LibGDXSharp.Core.Files;
 
-public class AtomicReferenceArray< T >
+public class FileHandle
 {
     
 }

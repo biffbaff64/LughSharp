@@ -17,8 +17,6 @@
 using System.Diagnostics;
 using System.Text;
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.Maths;
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections;
@@ -122,7 +120,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <param name="map">The ObjectMap to copy.</param>
     /// <exception cref="ArgumentException"></exception>
-    protected ObjectMap( ref ObjectMap< TK, TV > map )
+    protected ObjectMap( ObjectMap< TK, TV > map )
     {
         ArgumentNullException.ThrowIfNull( map );
 

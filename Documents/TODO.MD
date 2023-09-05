@@ -38,7 +38,8 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
 - Constantly look for opportunities to improve this code.
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
-
+- Make more use of <inheritdoc cref=""/>>
+- 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ROOT
@@ -792,8 +793,6 @@ UTILS/COMPRESSION/LZMA - DELETE CANDIDATE
 UTILS/COMPRESSION/RANGECODER - DELETE CANDIDATE
 ----------------------------
 
-    Convert later, purely for education purposes.
-
     - **** - BitTreeDecoder
     - **** - BitTreeEncoder
     - **** - Decoder
@@ -804,8 +803,6 @@ UTILS/COMPRESSION/RANGECODER - DELETE CANDIDATE
 
 UTILS/CONCURRENT - DELETE CANDIDATE
 ----------------
-
-    Convert later, purely for education purposes.
 
     - **** - AtomicInteger
     - **** - AtomicQueue
@@ -837,7 +834,7 @@ UTILS/EXCEPTIONS
 UTILS/JSON - DELETE CANDIDATE
 ----------
 
-    Use an existing Json library, but this could be converted at a later date.
+    Use an existing Json library, but could this be converted at a later date?
 
     - **** - IBaseJsonReader
     - **** - Json
@@ -878,8 +875,6 @@ UTILS/POOLING
 
 UTILS/REFLECT - DELETE CANDIDATE
 -------------
-
-    Convert later, purely for education purposes.
 
     - **** - Annotation
     - **** - ArrayReflection
@@ -926,8 +921,6 @@ UTILS/VIEWPORT
 
 UTILS/XML - DELETE CANDIDATE
 ---------
-
-    Use C# XML Libraries, but convert these, eventually, anyway.
 
     - DONE - XmlReader
     - DONE - XmlWriter

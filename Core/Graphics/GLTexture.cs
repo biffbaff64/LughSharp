@@ -25,8 +25,8 @@ namespace LibGDXSharp.Graphics;
 /// Also provides some (protected) static methods to create TextureData
 /// and upload image data.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-public abstract class GLTexture : IGLTexture, IDisposable
+[PublicAPI]
+public abstract class GLTexture : IDisposable
 {
     public int   GLHandle               { get; set; }
     public int   GLTarget               { get; set; }
@@ -34,28 +34,15 @@ public abstract class GLTexture : IGLTexture, IDisposable
 
     private static float _maxAnisotropicFilterLevel = 0;
 
-    /// <returns> the width of the texture in pixels </returns>
     public abstract int Width { get; }
-
-    /// <returns> the height of the texture in pixels </returns>
     public abstract int Height { get; }
-
-    /// <returns> the depth of the texture in pixels </returns>
     public abstract int Depth { get; }
 
-    /// <summary>
-    /// Generates a new OpenGL texture with the specified target.
-    /// </summary>
     protected GLTexture( int glTarget )
         : this( glTarget, Gdx.GL.GLGenTexture() )
     {
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="glTarget"></param>
-    /// <param name="glHandle"></param>
     protected GLTexture( int glTarget, int glHandle )
     {
         this.GLTarget = glTarget;
@@ -66,6 +53,8 @@ public abstract class GLTexture : IGLTexture, IDisposable
     public abstract bool IsManaged();
 
     /// <summary>
+    /// Used internally to reload after context loss. Creates a new GL handle then
+    /// calls <see cref="Texture.Load"/>.
     /// </summary>
     public abstract void Reload();
 
@@ -116,7 +105,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
     /// <param name="force">
     /// True to always set the values, even if they are the same as the current values.
     /// </param>
-    protected void UnsafeSetWrap( TextureWrap? u, TextureWrap? v, bool force = false )
+    public void UnsafeSetWrap( TextureWrap? u, TextureWrap? v, bool force = false )
     {
         if ( ( u != null ) && ( force || ( UWrap != u ) ) )
         {
@@ -158,7 +147,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
     /// True to always set the values, even if they are the same as the current values.
     /// Default is false.
     /// </param>
-    protected void UnsafeSetFilter( TextureFilter? minFilter, TextureFilter? magFilter, bool force = false )
+    public void UnsafeSetFilter( TextureFilter? minFilter, TextureFilter? magFilter, bool force = false )
     {
         if ( ( minFilter != null ) && ( force || ( this.MinFilter != minFilter ) ) )
         {
@@ -203,7 +192,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
     /// The actual level set, which may be lower than the provided value
     /// due to device limitations.
     /// </returns>
-    protected float UnsafeSetAnisotropicFilter( float level, bool force = false )
+    public float UnsafeSetAnisotropicFilter( float level, bool force = false )
     {
         var max = GetMaxAnisotropicFilterLevel();
 
@@ -266,7 +255,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
     ///
     /// </summary>
     /// <returns></returns>
-    public static float GetMaxAnisotropicFilterLevel()
+    public float GetMaxAnisotropicFilterLevel()
     {
         if ( _maxAnisotropicFilterLevel > 0 )
         {
@@ -291,7 +280,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
     /// <summary>
     ///
     /// </summary>
-    protected void Delete()
+    public void Delete()
     {
         if ( GLHandle != 0 )
         {
@@ -306,7 +295,7 @@ public abstract class GLTexture : IGLTexture, IDisposable
     /// <param name="target"></param>
     /// <param name="data"></param>
     /// <param name="miplevel"></param>
-    protected static void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
+    public void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
     {
         if ( data == null )
         {
@@ -378,9 +367,9 @@ public abstract class GLTexture : IGLTexture, IDisposable
     /// <summary>
     /// Convenience method for when 'GLHandle' isn't descriptive enough.
     /// </summary>
-    // TODO: Check usages of GLHandle to see if if can be renamed to TextureObjectHandle without causing any issues.
     public int GetTextureObjectHandle() => GLHandle;
     
+    /// <inheritdoc cref="IDisposable.Dispose"/>>
     public virtual void Dispose()
     {
         Delete();

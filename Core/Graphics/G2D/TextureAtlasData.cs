@@ -24,7 +24,7 @@ public partial record TextureAtlasData
 {
     protected interface IField<T>
     {
-        void Parse( ref T obj, params string[] entry );
+        void Parse( T obj, params string[] entry );
     }
 
     public List< Page >   Pages   { get; set; } = new();
@@ -137,7 +137,7 @@ public partial record TextureAtlasData
                             break;
                         }
 
-                        pageFields?[ Entry[ 0 ] ].Parse( ref page );
+                        pageFields?[ Entry[ 0 ] ].Parse( page );
                     }
 
                     Pages.Add( page );
@@ -166,7 +166,7 @@ public partial record TextureAtlasData
 
                         if ( regionFields?[ Entry[ 0 ] ] != null )
                         {
-                            regionFields[ Entry[ 0 ] ].Parse( ref region );
+                            regionFields[ Entry[ 0 ] ].Parse( region );
                         }
                         else
                         {

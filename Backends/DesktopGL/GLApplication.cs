@@ -19,12 +19,10 @@ using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Utils;
-using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class GLApplication : GLApplicationBase
 {
     public GLApplicationConfiguration?        Config             { get; set; }
@@ -42,6 +40,19 @@ public class GLApplication : GLApplicationBase
     private volatile GLWindow?                    _currentWindow   = null;
     private          Sync?                        _sync;
 
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// </summary>
+    /// <param name="listener"></param>
+    /// <param name="config"></param>
+    /// <exception cref="SystemException"></exception>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public GLApplication( IApplicationListener listener, GLApplicationConfiguration config )
+    {
+        CreateApplication( listener, config );
+    }
+
     public static void InitialiseGL()
     {
         if ( _errorCallback == null )
@@ -57,17 +68,6 @@ public class GLApplication : GLApplicationBase
                 throw new GdxRuntimeException( "Unable to initialise Glfw!" );
             }
         }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="listener"></param>
-    /// <param name="config"></param>
-    /// <exception cref="SystemException"></exception>
-    /// <exception cref="GdxRuntimeException"></exception>
-    public GLApplication( IApplicationListener listener, GLApplicationConfiguration config )
-    {
-        CreateApplication( listener, config );
     }
 
     // ----- ----- -----

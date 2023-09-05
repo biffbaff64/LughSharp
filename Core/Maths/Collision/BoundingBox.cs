@@ -139,7 +139,7 @@ public class BoundingBox
     /// The <see cref="Vector3"/> to receive the center of the bounding box.
     /// </param>
     /// <returns>The vector specified with the vec3 argument.</returns>
-    public Vector3 GetCenter( ref Vector3 vec3 )
+    public Vector3 GetCenter( Vector3 vec3 )
     {
         return vec3.Set( _cnt );
     }

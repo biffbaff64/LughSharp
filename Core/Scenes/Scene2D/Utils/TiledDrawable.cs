@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;

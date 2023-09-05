@@ -16,16 +16,32 @@
 
 using System.Text;
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
+/// <summary>
+/// Encapsulates OpenGL ES 2.0 frame buffer objects. This is a simple helper
+/// class which should cover most FBO uses. It will automatically create a
+/// gltexture for the color attachment and a renderbuffer for the depth buffer.
+/// You can get a hold of the gltexture by <see cref="GLFrameBuffer{T}.GetColorBufferTexture()"/>.
+/// This class will only work with OpenGL ES 2.0.
+/// <para>
+/// FrameBuffers are managed. In case of an OpenGL context loss, which only
+/// happens on Android when a user switches to another application or receives
+/// an incoming call, the framebuffer will be automatically recreated.
+/// </para>
+/// <para>
+/// A FrameBuffer must be disposed if it is no longer needed
+/// </para>
+/// </summary>
+/// <typeparam name="T">
+/// Types which derive from GLTexture, such as Texture, Cubemap, TextureArray.
+/// </typeparam>
 [PublicAPI]
-public class GLFrameBuffer<T> : IFrameBuffer, IDisposable where T : GLTexture
+public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 {
     public const int GL_DEPTH24_STENCIL8_OES = 0x88F0;
 
@@ -50,7 +66,7 @@ public class GLFrameBuffer<T> : IFrameBuffer, IDisposable where T : GLTexture
 
     public string ManagedStatus => GetManagedStatus( new StringBuilder() ).ToString();
 
-    protected GLFrameBufferBuilder< GLFrameBuffer< T > > BufferBuilder { get; set; }
+    protected GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > BufferBuilder { get; set; }
 
     protected GLFrameBuffer()
     {
@@ -61,7 +77,7 @@ public class GLFrameBuffer<T> : IFrameBuffer, IDisposable where T : GLTexture
     /// Creates a GLFrameBuffer from the specifications provided
     /// by bufferBuilder.
     /// </summary>
-    protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< T > > bufferBuilder )
+    protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
     {
         this.BufferBuilder = bufferBuilder;
 

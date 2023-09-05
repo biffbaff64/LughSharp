@@ -31,17 +31,17 @@ namespace LibGDXSharp.Scenes.Scene2D;
 /// events that hit more than one actor are distributed to topmost actors first.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Group : Actor, ICullable
 {
-    public SnapshotArray< Actor > Children    { get; set; } = new(4);
+    public SnapshotArray< Actor > Children    { get; set; } = new( 4 );
     public RectangleShape?        CullingArea { get; set; }
 
     private readonly Affine2 _worldTransform    = new();
     private readonly Matrix4 _computedTransform = new();
     private readonly Matrix4 _oldTransform      = new();
     private readonly Vector2 _tmp               = new();
-    
+
     /// <summary>
     /// </summary>
     /// <param name="delta"></param>
@@ -118,12 +118,7 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( child == null )
-                    {
-                        continue;
-                    }
-
-                    if ( !child.IsVisible )
+                    if ( ( child == null ) || ( !child.IsVisible ) )
                     {
                         continue;
                     }
@@ -132,9 +127,9 @@ public class Group : Actor, ICullable
                     var cy = child.Y;
 
                     if ( ( cx <= cullRight )
-                         && ( cy <= cullTop )
-                         && ( ( cx + child.Width ) >= cullLeft )
-                         && ( ( cy + child.Height ) >= cullBottom ) )
+                      && ( cy <= cullTop )
+                      && ( ( cx + child.Width ) >= cullLeft )
+                      && ( ( cy + child.Height ) >= cullBottom ) )
                     {
                         child.Draw( batch, parentAlpha );
                     }
@@ -167,9 +162,9 @@ public class Group : Actor, ICullable
                     var cy = child.Y;
 
                     if ( ( cx <= cullRight )
-                         && ( cy <= cullTop )
-                         && ( ( cx + child.Width ) >= cullLeft )
-                         && ( ( cy + child.Height ) >= cullBottom ) )
+                      && ( cy <= cullTop )
+                      && ( ( cx + child.Width ) >= cullLeft )
+                      && ( ( cy + child.Height ) >= cullBottom ) )
                     {
                         child.X = cx + offsetX;
                         child.Y = cy + offsetY;
@@ -689,10 +684,10 @@ public class Group : Actor, ICullable
         for ( int i = 0, n = Children.Size; i < n; i++ )
         {
             Actor child = Children.Get( i );
-            
-            if ( child is Group group)
+
+            if ( child is Group group )
             {
-                Actor? actor = group.FindActor<T>( name );
+                Actor? actor = group.FindActor< T >( name );
 
                 if ( actor != null )
                 {
@@ -707,7 +702,7 @@ public class Group : Actor, ICullable
     public void SetStage( Stage stage )
     {
         base.Stage = stage;
-        
+
         for ( int i = 0, n = Children.Size; i < n; i++ )
         {
             Children.Get( i ).Stage = stage; // StackOverflowError here means the group is its own ascendant.
@@ -793,7 +788,7 @@ public class Group : Actor, ICullable
 
         if ( parent == null )
         {
-            throw new ArgumentException( "Child is not a descendant: " + descendant );
+            throw new ArgumentException( $"Child is not a descendant: {descendant}" );
         }
 
         // First convert to the actor's parent coordinates.

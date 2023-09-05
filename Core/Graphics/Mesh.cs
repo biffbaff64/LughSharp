@@ -16,8 +16,6 @@
 
 using System.Text;
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
 using LibGDXSharp.Utils;

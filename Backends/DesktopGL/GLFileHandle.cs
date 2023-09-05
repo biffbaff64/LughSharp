@@ -14,6 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Core.Files;
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Backends.Desktop;
@@ -27,7 +28,7 @@ public class GLFileHandle : FileHandle
     /// <param name="fileName"></param>
     /// <param name="type"></param>
     public GLFileHandle( string fileName, FileType type )
-        : base( fileName, type )
+//        : base( fileName, type )
     {
     }
 

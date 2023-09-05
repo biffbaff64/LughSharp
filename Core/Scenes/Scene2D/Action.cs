@@ -19,7 +19,7 @@ using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public abstract class Action : IPoolable
 {
     /// <summary>

@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
@@ -45,8 +43,7 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     /// <summary>
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
-    /// <param name="bufferBuilder">
-    ///  </param>
+    /// <param name="bufferBuilder"></param>
 
     // LibGDXSharp.Graphics.FrameBuffers.GLFrameBufferBuilder<LibGDXSharp.Graphics.FrameBuffers.GLFrameBuffer<LibGDXSharp.Graphics.GLTexture>>
     // LibGDXSharp.Graphics.FrameBuffers.GLFrameBufferBuilder<LibGDXSharp.Graphics.FrameBuffers.GLFrameBuffer<LibGDXSharp.Graphics.Texture>>

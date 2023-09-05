@@ -16,7 +16,8 @@
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
-public sealed class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
+[PublicAPI]
+public class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
 {
     public FloatFrameBufferBuilder( int width, int height )
         : base( width, height )

@@ -21,7 +21,8 @@ namespace LibGDXSharp.Graphics.FrameBuffers;
 /// <summary>
 /// This is a <see cref="FrameBuffer"/> variant backed by a float texture.
 /// </summary>
-public sealed class FloatFrameBuffer : FrameBuffer
+[PublicAPI]
+public class FloatFrameBuffer : FrameBuffer
 {
     public FloatFrameBuffer()
     {
@@ -46,7 +47,7 @@ public sealed class FloatFrameBuffer : FrameBuffer
     /// <exception cref="GdxRuntimeException"> in case the FrameBuffer could not be created  </exception>
     public FloatFrameBuffer( int width, int height, bool hasDepth )
     {
-        this.BufferBuilder = new FloatFrameBufferBuilder( width, height );
+        var bufferBuilder = new FrameBufferBuilder( width, height );
 
         bufferBuilder.AddFloatAttachment( IGL30.GL_RGBA32_F, IGL20.GL_RGBA, IGL20.GL_FLOAT, false );
 
@@ -54,9 +55,6 @@ public sealed class FloatFrameBuffer : FrameBuffer
         {
             bufferBuilder.AddBasicDepthRenderBuffer();
         }
-
-// LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.Texture>.FloatFrameBufferBuilder
-// LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.Texture>.GLFrameBufferBuilder<LibGDXSharp.Graphics.GLUtils.GLFrameBuffer<LibGDXSharp.Graphics.Texture>>
 
         BufferBuilder = bufferBuilder;
 

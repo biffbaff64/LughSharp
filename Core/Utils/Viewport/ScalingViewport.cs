@@ -37,12 +37,12 @@ namespace LibGDXSharp.Utils.Viewport;
 /// </summary>
 public class ScalingViewport : Viewport
 {
-    protected IScaling Scaling { get; set; }
+    protected Scaling Scaling { get; set; }
 
     /// <summary>
     /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
     /// </summary>
-    protected ScalingViewport( IScaling scaling, float worldWidth, float worldHeight )
+    protected ScalingViewport( Scaling scaling, float worldWidth, float worldHeight )
             : this( scaling, worldWidth, worldHeight, new OrthographicCamera() )
     {
     }
@@ -53,7 +53,7 @@ public class ScalingViewport : Viewport
     /// <param name="worldWidth"></param>
     /// <param name="worldHeight"></param>
     /// <param name="camera"></param>
-    public ScalingViewport( IScaling scaling, float worldWidth, float worldHeight, Camera camera )
+    public ScalingViewport( Scaling scaling, float worldWidth, float worldHeight, Camera camera )
             : base( camera )
     {
         this.Scaling = scaling;

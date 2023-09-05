@@ -14,9 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
-using System.Net.Sockets;
-
 namespace LibGDXSharp.Input;
 
 /// <summary>

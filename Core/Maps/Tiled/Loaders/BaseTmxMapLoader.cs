@@ -29,7 +29,7 @@ using LibGDXSharp.Utils.Xml;
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public abstract class BaseTmxMapLoader<TP>
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.Parameters
 {
@@ -59,8 +59,8 @@ public abstract class BaseTmxMapLoader<TP>
     protected const uint FLAG_FLIP_DIAGONALLY   = 0x20000000;
     protected const uint MASK_CLEAR             = 0xE0000000;
 
-    protected readonly XmlReader         xml = new();
-    protected          XmlReader.Element root;
+    protected XmlReader?         xml = new();
+    protected XmlReader.Element? root;
 
     protected bool convertObjectToTileSpace;
     protected bool flipY = true;
@@ -71,12 +71,19 @@ public abstract class BaseTmxMapLoader<TP>
     public    int      MapHeightInPixels { get; set; }
     protected TiledMap Map               { get; set; } = null!;
 
+    // ------------------------------------------------------------------------
+
     protected BaseTmxMapLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
-        root = default!;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="fileName"></param>
+    /// <param name="tmxFile"></param>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
     public List< AssetDescriptor >? GetDependencies( string fileName, FileInfo tmxFile, TP? parameter )
     {
         var textureParameter = new TextureLoader.TextureParameter();
@@ -91,10 +98,15 @@ public abstract class BaseTmxMapLoader<TP>
         return GetDependencyAssetDescriptors( tmxFile, textureParameter );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="tmxFile"></param>
+    /// <param name="textureParameter"></param>
+    /// <returns></returns>
     protected List< AssetDescriptor >? GetDependencyAssetDescriptors( FileInfo tmxFile,
                                                                       TextureLoader.TextureParameter textureParameter )
     {
-        return default;
+        return default( List< AssetDescriptor >? );
     }
 
     /// <summary>
@@ -396,7 +408,7 @@ public abstract class BaseTmxMapLoader<TP>
 
             if ( image != null )
             {
-                var      source = image.GetAttribute( "source" );
+                var       source = image.GetAttribute( "source" );
                 FileInfo? handle = GetRelativeFileHandle( tmxFile, source );
 
                 texture = imageResolver.GetImage( handle!.FullName );
@@ -431,7 +443,7 @@ public abstract class BaseTmxMapLoader<TP>
         var opacity = float.Parse
             (
             element.GetAttribute( "opacity", "1.0" )
-            ?? throw new NullReferenceException()
+         ?? throw new NullReferenceException()
             );
 
         var visible = element.GetIntAttribute( "visible", 1 ) == 1;
@@ -474,7 +486,7 @@ public abstract class BaseTmxMapLoader<TP>
             var y = ( flipY
                         ? ( heightInPixels - element.GetFloatAttribute( "y", 0 ) )
                         : element.GetFloatAttribute( "y", 0 ) )
-                    * scaleY;
+                  * scaleY;
 
             var width  = element.GetFloatAttribute( "width", 0 ) * scaleX;
             var height = element.GetFloatAttribute( "height", 0 ) * scaleY;
@@ -661,10 +673,10 @@ public abstract class BaseTmxMapLoader<TP>
             throw new GdxRuntimeException
                 (
                 "Wrong type given for property "
-                + name
-                + ", given : "
-                + type
-                + ", supported : string, bool, int, float, color"
+              + name
+              + ", given : "
+              + type
+              + ", supported : string, bool, int, float, color"
                 );
         }
     }
@@ -753,17 +765,17 @@ public abstract class BaseTmxMapLoader<TP>
                         else if ( compression.Equals( "gzip" ) )
                         {
                             inputStream = new BufferedStream
-                                    ( new GZipStream( new MemoryStream( bytes ), CompressionMode.Decompress ) );
+                                ( new GZipStream( new MemoryStream( bytes ), CompressionMode.Decompress ) );
                         }
                         else if ( compression.Equals( "zlib" ) )
                         {
                             inputStream = new BufferedStream
-                                    ( new InflaterInputStream( new MemoryStream( bytes ) ) );
+                                ( new InflaterInputStream( new MemoryStream( bytes ) ) );
                         }
                         else
                         {
                             throw new GdxRuntimeException
-                                    ( "Unrecognised compression (" + compression + ") for TMX Layer Data" );
+                                ( "Unrecognised compression (" + compression + ") for TMX Layer Data" );
                         }
 
                         var temp = new byte[ 4 ];
@@ -789,7 +801,7 @@ public abstract class BaseTmxMapLoader<TP>
                                 if ( read != temp.Length )
                                 {
                                     throw new GdxRuntimeException
-                                            ( "Error Reading TMX Layer Data: Premature end of tile data" );
+                                        ( "Error Reading TMX Layer Data: Premature end of tile data" );
                                 }
 
                                 ids[ ( y * width ) + x ] = UnsignedByteToInt( temp[ 0 ] )
@@ -831,7 +843,7 @@ public abstract class BaseTmxMapLoader<TP>
         {
             return null;
         }
-        
+
         var uri1         = new Uri( file.FullName );
         var uri2         = new Uri( path );
         var relativePath = uri1.MakeRelativeUri( uri2 ).ToString();

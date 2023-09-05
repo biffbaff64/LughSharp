@@ -16,7 +16,11 @@
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+/// <summary>
+/// Unchecked exception thrown when a relative <i>get</i> operation reaches
+/// the source buffer's limit.
+/// </summary>
+[PublicAPI]
 public class BufferUnderflowException : Exception
 {
     public BufferUnderflowException() : base()
@@ -31,7 +35,8 @@ public class BufferUnderflowException : Exception
     {
     }
 
-    public BufferUnderflowException( string message, Exception? exception ) : base( message, exception )
+    public BufferUnderflowException( string message, Exception? exception )
+        : base( message, exception )
     {
     }
 }

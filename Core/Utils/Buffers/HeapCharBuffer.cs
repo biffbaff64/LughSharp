@@ -14,8 +14,6 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
-
 namespace LibGDXSharp.Utils.Buffers;
 
 [PublicAPI]

@@ -14,10 +14,9 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Observers;
+namespace LibGDXSharp.Backends.Android;
 
-public interface IObserver
+public class AndroidApplication
 {
-    void Update();
 }
 

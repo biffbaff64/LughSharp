@@ -24,8 +24,7 @@ namespace LibGDXSharp.Graphics;
 /// <summary>
 /// Wraps a standard OpenGL ES Cubemap. Must be disposed when it is no longer used.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Cubemap : GLTexture
 {
     private readonly static Dictionary< IApplication, List< Cubemap >? > ManagedCubemaps = new();
@@ -412,7 +411,7 @@ public class Cubemap : GLTexture
         /// Sets the supplied <see cref="Vector3"/> to the contents of <see cref="Up"/>
         /// and returns it to the caller. 
         /// </summary>
-        public Vector3 GetUp( ref Vector3 vec3 )
+        public Vector3 GetUp( Vector3 vec3 )
         {
             return vec3.Set( Up );
         }

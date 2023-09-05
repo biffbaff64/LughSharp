@@ -16,8 +16,8 @@
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
-public sealed class FrameBufferCubemapBuilder
-    : GLFrameBufferBuilder< FrameBufferCubemap >
+[PublicAPI]
+public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< FrameBufferCubemap >
 {
     public FrameBufferCubemapBuilder( int width, int height )
         : base( width, height )

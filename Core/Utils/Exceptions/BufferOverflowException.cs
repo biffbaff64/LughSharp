@@ -16,13 +16,17 @@
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+/// <summary>
+/// Unchecked exception thrown when a relative <i>put</i> operation reaches
+/// the target buffer's limit.
+/// </summary>
+[PublicAPI]
 public class BufferOverflowException : Exception
 {
     public BufferOverflowException() : base()
     {
     }
-        
+
     public BufferOverflowException( string message ) : base( message )
     {
     }

@@ -40,7 +40,7 @@ namespace LibGDXSharp.Scenes.Scene2D;
 /// been removed and replaced with C# Properties.
 /// Therefore, Event.isHandled() is now Event.IsHandled etc.
 /// </remarks>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Event : IPoolable
 {
     // The Stage for the Actor the event was fired on.
@@ -71,8 +71,8 @@ public class Event : IPoolable
     /// <summary>
     /// Marks this event as handled. This does not affect event propagation inside
     /// scene2d, but causes the <see cref="Stage"/> <see cref="IInputProcessor"/>
-    /// methods to return true, which will eat the event so it is not passed on to
-    /// the application under the stage. 
+    /// methods to return true, which will consume the event so it is not passed
+    /// on to the application under the stage. 
     /// </summary>
     public void Handle()
     {
@@ -80,11 +80,13 @@ public class Event : IPoolable
     }
 
     /// <summary>
-    /// Marks this event cancelled. This handles the event and stops
-    /// the event propagation. It also cancels any default action that
-    /// would have been taken by the code that fired the event.
+    /// Marks this event cancelled. This handles the event and stops the event
+    /// propagation. It also cancels any default action that would have been taken
+    /// by the code that fired the event.
+    /// <para>
     /// Eg, if the event is for a checkbox being checked, cancelling
     /// the event could uncheck the checkbox.
+    /// </para>
     /// </summary>
     public void Cancel()
     {
@@ -94,7 +96,7 @@ public class Event : IPoolable
     }
 
     /// <summary>
-    /// Marks this event has being stopped. This halts event propagation. Any other
+    /// Marks this event as being stopped. This halts event propagation. Any other
     /// listeners on the <see cref="ListenerActor"/> are notified, but
     /// after that no other listeners are notified.
     /// </summary>

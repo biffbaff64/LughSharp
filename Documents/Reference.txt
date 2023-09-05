@@ -14,8 +14,11 @@ new - HIDES an accessible base class method
 override - Extends a base class virtual method.
 
 ref (method parameters) - pass by reference. Variable passed must be initialised first. (check other uses of ref)
+                        - parameter MAY be modified by the method.
 out (method parameters) - Like ref but variable does not need to be initialised.
-in  (method parameters) - pass by reference but disable modification
+                        - parameter MUST be modified by the method.
+in  (method parameters) - pass by reference but disable modification.
+                        - parameter CANNOT be modified by the method.
 
 Record vs Struct vs Class
 -------------------------
@@ -55,33 +58,5 @@ Swap via deconstruction
                         first = second;
                         second = temp;
                         
-                        
- GLFrameBuffer                      GLFrameBufferBuilder                        IGLTexture
-       |                            |                   |                           |
- FrameBuffer                FrameBufferBuilder  FloatFrameBufferBuilder         GLTexture
-       |                                                                            |
- FloatFrameBuffer                                                               Texture
-
     -------------------------------------------------------------------------------------------
-    
-java: protected GLFrameBufferBuilder<? extends GLFrameBuffer<T>> bufferBuilder
-c#  : protected GLFrameBufferBuilder<GLFrameBuffer<T>> BufferBuilder { get; init; }
-
-java: public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable
-c#  : public abstract class GLFrameBuffer<T> : IDisposable where T : GLTexture
-
-java: public class FrameBuffer extends GLFrameBuffer<Texture>
-c#  : public class FrameBuffer : GLFrameBuffer< Texture > 
-
-java: public class FloatFrameBuffer extends FrameBuffer
-c#  : public class FloatFrameBuffer : FrameBuffer
-
-java: public static abstract class GLFrameBufferBuilder<U extends GLFrameBuffer<? extends GLTexture>>
-c#  : public abstract class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >
-
-java: public static class FrameBufferBuilder extends GLFrameBufferBuilder<FrameBuffer>
-c#  : public class FrameBufferBuilder : GLFrameBufferBuilder< FrameBuffer >
-
-java: public static class FloatFrameBufferBuilder extends GLFrameBufferBuilder<FloatFrameBuffer>
-c#  : public class FloatFrameBufferBuilder : GLFrameBufferBuilder< FloatFrameBuffer >
 

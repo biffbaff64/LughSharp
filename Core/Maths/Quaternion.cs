@@ -1118,7 +1118,7 @@ public class Quaternion
     /// <param name="twist">
     /// will receive the twist rotation: the rotation around the specified axis
     /// </param>
-    public void GetSwingTwist( float axisX, float axisY, float axisZ, ref Quaternion swing, ref Quaternion twist )
+    public void GetSwingTwist( float axisX, float axisY, float axisZ, Quaternion swing, Quaternion twist )
     {
         float d = Vector3.Dot( this.X, this.Y, this.Z, axisX, axisY, axisZ );
 
@@ -1149,9 +1149,9 @@ public class Quaternion
     /// <param name="twist">
     /// will receive the twist rotation: the rotation around the specified axis
     /// </param>
-    public void GetSwingTwist( Vector3 axis, ref Quaternion swing, ref Quaternion twist )
+    public void GetSwingTwist( Vector3 axis, Quaternion swing, Quaternion twist )
     {
-        GetSwingTwist( axis.X, axis.Y, axis.Z, ref swing, ref twist );
+        GetSwingTwist( axis.X, axis.Y, axis.Z, swing, twist );
     }
 
     /// <summary>

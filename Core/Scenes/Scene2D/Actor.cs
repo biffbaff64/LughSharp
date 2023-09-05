@@ -18,13 +18,14 @@ using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Listeners;
+using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Actor : IActor
 {
     public    Stage?    Stage      { get; set; }
@@ -39,7 +40,7 @@ public class Actor : IActor
     public Color? Color
     {
         get => _color;
-        set => _color.Set( value! );
+        set => _color.Set( value ?? Color.Black );
     }
 
     public DelayedRemovalArray< IEventListener > Listeners        { get; private set; }
@@ -71,7 +72,7 @@ public class Actor : IActor
     /// The parent alpha, to be multiplied with this actor's alpha,
     /// allowing the parent's alpha to affect all children.
     /// </param>
-    public void Draw( IBatch batch, float parentAlpha )
+    public virtual void Draw( IBatch batch, float parentAlpha )
     {
     }
 
@@ -79,7 +80,7 @@ public class Actor : IActor
     /// </summary>
     /// <param name="delta"></param>
     /// <exception cref="SystemException"></exception>
-    public void Act( float delta )
+    public virtual void Act( float delta )
     {
         if ( Actions.Count == 0 )
         {
@@ -97,8 +98,8 @@ public class Actor : IActor
             {
                 if ( Actions[ i ].Act( delta ) && ( i < Actions.Count ) )
                 {
-                    var current     = Actions[ i ];
-                    var actionIndex = current == Actions[ i ] ? i : Actions.IndexOf( Actions[ i ] );
+                    Action current     = Actions[ i ];
+                    var    actionIndex = current == Actions[ i ] ? i : Actions.IndexOf( Actions[ i ] );
 
                     if ( actionIndex != -1 )
                     {
@@ -118,8 +119,8 @@ public class Actor : IActor
             {
                 throw new SystemException
                     (
-                     string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
-                     ex
+                    $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
+                    ex
                     );
             }
         }
@@ -143,7 +144,7 @@ public class Actor : IActor
     /// </summary>
     /// <param name="ev">The <see cref="Event"/></param>
     /// <returns>True if the event was cancelled.</returns>
-    public bool Fire( Event ev )
+    public virtual bool Fire( Event ev )
     {
         ev.Stage ??= this.Stage;
 
@@ -222,14 +223,14 @@ public class Actor : IActor
         }
     }
 
-    public bool Notify( Event ev, bool capture )
+    public virtual bool Notify( Event ev, bool capture )
     {
         if ( ev.TargetActor == null )
         {
             throw new ArgumentException( "The event target cannot be null." );
         }
 
-        DelayedRemovalArray< IEventListener > listeners = capture ? CaptureListeners : this.Listeners;
+        DelayedRemovalArray< IEventListener > listeners = capture ? CaptureListeners : Listeners;
 
         if ( listeners.Count == 0 )
         {
@@ -263,8 +264,8 @@ public class Actor : IActor
             {
                 throw new SystemException
                     (
-                     string.Concat( "Actor - ", context.AsSpan( 0, System.Math.Min( context.Length, 128 ) ) ),
-                     ex
+                    $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
+                    ex
                     );
             }
         }
@@ -286,7 +287,7 @@ public class Actor : IActor
     /// <param name="y"></param>
     /// <param name="touchable"></param>
     /// <returns></returns>
-    public Actor? Hit( float x, float y, bool touchable )
+    public virtual Actor? Hit( float x, float y, bool touchable )
     {
         if ( touchable && ( this.Touchable != Touchable.Enabled ) )
         {
@@ -400,10 +401,7 @@ public class Actor : IActor
     /// <summary>
     /// Returns true if the actor has one or more actions.
     /// </summary>
-    public bool HasActions()
-    {
-        return Actions.Count > 0;
-    }
+    public bool HasActions() => Actions.Count > 0;
 
     /// <summary>
     /// Removes all actions on this actor.
@@ -445,10 +443,7 @@ public class Actor : IActor
     /// <exception cref="ArgumentException"></exception>
     public bool IsDescendantOf( Actor? actor )
     {
-        if ( actor == null )
-        {
-            throw new ArgumentException( "actor cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( actor );
 
         Actor? parent = this;
 
@@ -472,10 +467,7 @@ public class Actor : IActor
     /// </summary>
     public bool IsAscendantOf( Actor? actor )
     {
-        if ( actor == null )
-        {
-            throw new ArgumentException( "actor cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( actor );
 
         do
         {
@@ -495,18 +487,13 @@ public class Actor : IActor
     /// Returns this actor or the first ascendant of this actor that is assignable
     /// with the specified type, or null if none were found.
     /// </summary>
-    public T? FirstAscendant<T>( Type type ) where T : Actor
+    public T? FirstAscendant<T>( T type ) where T : Actor
     {
-        if ( type == null )
-        {
-            throw new ArgumentException( "actor cannot be null." );
-        }
-
         Actor? actor = this;
 
         do
         {
-            if ( actor.GetType() == type )
+            if ( actor.GetType() == type.GetType() )
             {
                 return ( T )actor;
             }
@@ -521,18 +508,12 @@ public class Actor : IActor
     /// <summary>
     /// Returns true if the actor's parent is not null.
     /// </summary>
-    public bool HasParent()
-    {
-        return Parent != null;
-    }
+    public bool HasParent() => Parent != null;
 
     /// <summary>
     /// Returns true if input events are processed by this actor. 
     /// </summary>
-    public bool IsTouchable()
-    {
-        return Touchable == Scene2D.Touchable.Enabled;
-    }
+    public bool IsTouchable() => Touchable == Scene2D.Touchable.Enabled;
 
     /// <summary>
     /// Returns true if this actor and all ascendants are visible. 
@@ -826,28 +807,28 @@ public class Actor : IActor
     /// <summary>
     /// Called when the actor's position has been changed.
     /// </summary>
-    protected void PositionChanged()
+    public virtual void PositionChanged()
     {
     }
 
     /// <summary>
     /// Called when the actor's size has been changed.
     /// </summary>
-    protected void SizeChanged()
+    public virtual void SizeChanged()
     {
     }
 
     /// <summary>
     /// Called when the actor's scale has been changed.
     /// </summary>
-    protected void ScaleChanged()
+    public virtual void ScaleChanged()
     {
     }
 
     /// <summary>
     /// Called when the actor's rotation has been changed.
     /// </summary>
-    protected void RotationChanged()
+    public virtual void RotationChanged()
     {
     }
 
@@ -857,7 +838,7 @@ public class Actor : IActor
     public void SetSize( float width, float height )
     {
         if ( MathUtils.IsNotEqual( this._width, width )
-             || MathUtils.IsNotEqual( this._height, height ) )
+          || MathUtils.IsNotEqual( this._height, height ) )
         {
             this._width  = width;
             this._height = height;
@@ -952,6 +933,9 @@ public class Actor : IActor
         }
     }
 
+    /// <summary>
+    /// The X Scaling factor
+    /// </summary>
     public float ScaleX
     {
         get => _scaleX;
@@ -965,6 +949,9 @@ public class Actor : IActor
         }
     }
 
+    /// <summary>
+    /// The Y Scaling factor
+    /// </summary>
     public float ScaleY
     {
         get => _scaleY;
@@ -979,7 +966,8 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Sets the scale for both X and Y
+    /// Sets the X and Y scale to the the same value as specified
+    /// in <paramref name="scaleXY"/>.
     /// </summary>
     public void SetScale( float scaleXY )
     {
@@ -992,8 +980,10 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Sets the scale X and scale Y.
+    /// Sets the X and Y scale.
     /// </summary>
+    /// <param name="scaleX"> The new X sc ale value. </param>
+    /// <param name="scaleY"> The new Y sc ale value. </param>
     public void SetScale( float scaleX, float scaleY )
     {
         if ( !this.ScaleX.Equals( scaleX ) || !this.ScaleY.Equals( scaleY ) )
@@ -1005,7 +995,7 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Adds the specified scale to the current scale.
+    /// Adds the specified scale to the current X andf Y scale values..
     /// </summary>
     public void ScaleBy( float scale )
     {
@@ -1018,7 +1008,7 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Adds the specified scale to the current scale.
+    /// Adds the specified X and Y scales to the current X andf Y scale values..
     /// </summary>
     public void ScaleBy( float scaleX, float scaleY )
     {
@@ -1236,7 +1226,7 @@ public class Actor : IActor
         if ( rotation == 0 )
         {
             if ( ( Math.Abs( scaleX - 1f ) < 0.001f )
-                 && ( Math.Abs( scaleY - 1f ) < 0.001f ) )
+              && ( Math.Abs( scaleY - 1f ) < 0.001f ) )
             {
                 parentCoords.X -= childX;
                 parentCoords.Y -= childY;
@@ -1302,7 +1292,7 @@ public class Actor : IActor
         if ( rotation == 0 )
         {
             if ( ( Math.Abs( scaleX - 1f ) < 0.001f )
-                 && ( Math.Abs( scaleY - 1f ) < 0.001f ) )
+              && ( Math.Abs( scaleY - 1f ) < 0.001f ) )
             {
                 localCoords.X += x;
                 localCoords.Y += y;

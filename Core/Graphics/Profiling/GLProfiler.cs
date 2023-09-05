@@ -14,7 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Backends.Desktop;
 using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Graphics.Profiling;

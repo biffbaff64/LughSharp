@@ -92,7 +92,8 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Returns the <see cref="IFileHandleResolver"/> which this AssetManager was loaded with.
+    /// Returns the <see cref="IFileHandleResolver"/> which this
+    /// AssetManager was loaded with.
     /// </summary>
     /// <returns>the file handle resolver which this AssetManager uses.</returns>
     public IFileHandleResolver FileHandleResolver { get; set; }

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
+[PublicAPI]
 public class FrameBufferRenderBufferAttachmentSpec
 {
     public int InternalFormat { get; set; }

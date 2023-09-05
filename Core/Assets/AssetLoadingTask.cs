@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Async;
 
@@ -79,13 +77,13 @@ public class AssetLoadingTask
                 dependencies = asyncLoader.GetDependencies
                     (
                     AssetDesc.FilePath ?? "",
-                    Resolve( asyncLoader, AssetDesc ),
+                    Resolve( asyncLoader, AssetDesc )!,
                     AssetDesc.Parameters
                     );
 
                 if ( dependencies != null )
                 {
-                    RemoveDuplicates( ref dependencies );
+                    RemoveDuplicates( dependencies );
                     _manager.InjectDependencies( AssetDesc.FilePath!, dependencies );
                 }
                 else
@@ -95,8 +93,8 @@ public class AssetLoadingTask
                     asyncLoader?.LoadAsync
                         (
                         _manager,
-                        AssetDesc.FilePath,
-                        Resolve( _loader, AssetDesc ),
+                        AssetDesc.FilePath!,
+                        Resolve( _loader, AssetDesc )!,
                         AssetDesc.Parameters
                         );
 
@@ -212,7 +210,7 @@ public class AssetLoadingTask
                 return;
             }
 
-            RemoveDuplicates( ref dependencies );
+            RemoveDuplicates( dependencies );
             _manager.InjectDependencies( AssetDesc.FilePath, dependencies );
         }
         else
@@ -314,7 +312,7 @@ public class AssetLoadingTask
     /// 
     /// </summary>
     /// <param name="array"></param>
-    private static void RemoveDuplicates( ref List< AssetDescriptor > array )
+    private static void RemoveDuplicates( List< AssetDescriptor > array )
     {
         for ( var i = 0; i < array.Count; ++i )
         {

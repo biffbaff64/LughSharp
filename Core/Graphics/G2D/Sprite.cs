@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
-
 using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.G2D;

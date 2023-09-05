@@ -22,8 +22,8 @@ namespace LibGDXSharp.Utils;
 
 /// <summary>
 /// Node record holding a value and its index.
-/// To change the contents of <see cref="Value"/> use <see cref="BinaryHeap{T}.Add(ref T, float)"/>
-/// if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(ref T, float)"/>.
+/// To change the contents of <see cref="Value"/> use <see cref="BinaryHeap{T}.Add(T, float)"/>
+/// if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(T, float)"/>.
 /// </summary>
 public record BinaryHeapNode
 {
@@ -59,7 +59,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// The node should not already be in the heap.
     /// </summary>
     /// <returns>The specified node.</returns>
-    public T Add( ref T node )
+    public T Add( T node )
     {
         GdxRuntimeException.ThrowIfNull( _nodes );
         
@@ -88,11 +88,11 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// The node should not already be in the heap.
     /// </summary>
     /// <returns>The specified node.</returns>
-    public T Add( ref T node, float value )
+    public T Add( T node, float value )
     {
         node.Value = value;
 
-        return Add( ref node );
+        return Add( node );
     }
 
     /// <summary>
@@ -212,7 +212,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <summary>
     /// Changes the value of the node, which should already be in the heap.
     /// </summary>
-    public void SetValue( ref T node, float value )
+    public void SetValue( T node, float value )
     {
         var oldValue = node.Value;
 

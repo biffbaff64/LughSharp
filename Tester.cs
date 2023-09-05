@@ -16,9 +16,6 @@
 
 using LibGDXSharp;
 using LibGDXSharp.Backends.Desktop;
-using LibGDXSharp.Utils;
-
-using OpenTK.Graphics.ES30;
 
 namespace LibGDXSharpTest;
 
@@ -32,7 +29,7 @@ public class Tester
 
     private static void CreateApplication()
     {
-        new GLApplication( new MainGame(), GetDefaultConfiguration() );
+        GLApplication( new MainGame(), GetDefaultConfiguration() );
     }
 
     private static GLApplicationConfiguration GetDefaultConfiguration()
