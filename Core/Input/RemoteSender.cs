@@ -14,16 +14,19 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics;
+
 namespace LibGDXSharp.Input;
 
 /// <summary>
-/// Sends all inputs from touch, key, accelerometer and compass to a <see cref="RemoteInput"/>
-/// at the given ip/port. Instantiate this and call SendUpdate() periodically.
+/// Sends all inputs from touch, key, accelerometer and compass to
+/// a <see cref="RemoteInput"/> at the given ip/port. Instantiate
+/// this and call SendUpdate() periodically.
 /// </summary>
 public class RemoteSender : IInputProcessor
 {
-    public const int KEY_DOWN = 0;
-    public const int KEY_UP   = 1;
+    public const int KEY_DOWN  = 0;
+    public const int KEY_UP    = 1;
     public const int KEY_TYPED = 2;
 
     public const int TOUCH_DOWN    = 3;
@@ -35,8 +38,8 @@ public class RemoteSender : IInputProcessor
     public const int SIZE    = 8;
     public const int GYRO    = 9;
 
-//    private BinaryWriter? _out;
-//    private bool          _connected = false;
+    private BinaryWriter? _out;
+    private bool          _connected = false;
 
     public RemoteSender( string ip, int port )
     {
@@ -49,7 +52,7 @@ public class RemoteSender : IInputProcessor
 
 //            _out = new BinaryWriter()
 //            _connected = true;
-            
+
 //            Gdx.Input.SetInputProcessor( this );
 //        }
 //        catch ( Exception )
@@ -60,217 +63,217 @@ public class RemoteSender : IInputProcessor
 
     public void SendUpdate()
     {
-//        lock ( this )
-//        {
-//            if ( !_connected )
-//            {
-//                return;
-//            }
-//        }
+        lock ( this )
+        {
+            if ( !_connected )
+            {
+                return;
+            }
+        }
 
-//        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " != null" );
 
-//        try
-//        {
-//            _out.WriteInt( Accel );
-//            _out.WriteFloat( Gdx.Input.GetAccelerometerX() );
-//            _out.WriteFloat( Gdx.Input.GetAccelerometerY() );
-//            _out.WriteFloat( Gdx.Input.GetAccelerometerZ() );
-//            _out.WriteInt( Compass );
-//            _out.WriteFloat( Gdx.Input.GetAzimuth() );
-//            _out.WriteFloat( Gdx.Input.GetPitch() );
-//            _out.WriteFloat( Gdx.Input.GetRoll() );
-//            _out.WriteInt( Size );
-//            _out.WriteFloat( Gdx.Graphics.Width );
-//            _out.WriteFloat( Gdx.Graphics.Height );
-//            _out.WriteInt( Gyro );
-//            _out.WriteFloat( Gdx.Input.GetGyroscopeX() );
-//            _out.WriteFloat( Gdx.Input.GetGyroscopeY() );
-//            _out.WriteFloat( Gdx.Input.GetGyroscopeZ() );
-//        }
-//        catch ( Exception )
-//        {
-//            _out       = null;
-//            _connected = false;
-//        }
+        try
+        {
+            _out.Write( ACCEL );
+            _out.Write( Gdx.Input.GetAccelerometerX() );
+            _out.Write( Gdx.Input.GetAccelerometerY() );
+            _out.Write( Gdx.Input.GetAccelerometerZ() );
+            _out.Write( COMPASS );
+            _out.Write( Gdx.Input.GetAzimuth() );
+            _out.Write( Gdx.Input.GetPitch() );
+            _out.Write( Gdx.Input.GetRoll() );
+            _out.Write( SIZE );
+            _out.Write( Gdx.Graphics.Width );
+            _out.Write( Gdx.Graphics.Height );
+            _out.Write( GYRO );
+            _out.Write( Gdx.Input.GetGyroscopeX() );
+            _out.Write( Gdx.Input.GetGyroscopeY() );
+            _out.Write( Gdx.Input.GetGyroscopeZ() );
+        }
+        catch ( Exception )
+        {
+            _out       = null;
+            _connected = false;
+        }
     }
 
     public bool KeyDown( int keycode )
     {
-//        lock ( this )
-//        {
-//            if ( !_connected )
-//            {
-//                return false;
-//            }
-//        }
+        lock ( this )
+        {
+            if ( !_connected )
+            {
+                return false;
+            }
+        }
 
-//        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " != null" );
 
-//        try
-//        {
-//            _out.WriteInt( Key_Down );
-//            _out.WriteInt( keycode );
-//        }
-//        catch ( Exception )
-//        {
-//            lock ( this )
-//            {
-//                _connected = false;
-//            }
-//        }
+        try
+        {
+            _out.Write( KEY_DOWN );
+            _out.Write( keycode );
+        }
+        catch ( Exception )
+        {
+            lock ( this )
+            {
+                _connected = false;
+            }
+        }
 
         return false;
     }
 
     public bool KeyUp( int keycode )
     {
-//        lock ( this )
-//        {
-//            if ( !_connected )
-//            {
-//                return false;
-//            }
-//        }
+        lock ( this )
+        {
+            if ( !_connected )
+            {
+                return false;
+            }
+        }
 
-//        try
-//        {
-//            _out?.WriteInt( Key_Up );
-//            _out?.WriteInt( keycode );
-//        }
-//        catch ( Exception )
-//        {
-//            lock ( this )
-//            {
-//                _connected = false;
-//            }
-//        }
+        try
+        {
+            _out?.Write( KEY_UP );
+            _out?.Write( keycode );
+        }
+        catch ( Exception )
+        {
+            lock ( this )
+            {
+                _connected = false;
+            }
+        }
 
         return false;
     }
-    
-    public virtual bool KeyTyped(char character)
+
+    public virtual bool KeyTyped( char character )
     {
-//        lock (this)
-//        {
-//            if (!_connected)
-//            {
-//                return false;
-//            }
-//        }
+        lock ( this )
+        {
+            if ( !_connected )
+            {
+                return false;
+            }
+        }
 
-//        try
-//        {
-//            _out?.WriteInt(Key_Typed);
-//            _out?.WriteChar(character);
-//        }
-//        catch (Exception)
-//        {
-//            lock (this)
-//            {
-//                _connected = false;
-//            }
-//        }
+        try
+        {
+            _out?.Write( KEY_TYPED );
+            _out?.Write( character );
+        }
+        catch ( Exception )
+        {
+            lock ( this )
+            {
+                _connected = false;
+            }
+        }
 
         return false;
     }
 
-    public bool TouchDown(int x, int y, int pointer, int button)
+    public bool TouchDown( int x, int y, int pointer, int button )
     {
-//        lock (this)
-//        {
-//            if (!_connected)
-//            {
-//                return false;
-//            }
-//        }
+        lock ( this )
+        {
+            if ( !_connected )
+            {
+                return false;
+            }
+        }
 
-//        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " != null" );
 
-//        try
-//        {
-//            _out.WriteInt(Touch_Down);
-//            _out.WriteInt(x);
-//            _out.WriteInt(y);
-//            _out.WriteInt(pointer);
-//        }
-//        catch (Exception)
-//        {
-//            lock (this)
-//            {
-//                _connected = false;
-//            }
-//        }
+        try
+        {
+            _out.Write( TOUCH_DOWN );
+            _out.Write( x );
+            _out.Write( y );
+            _out.Write( pointer );
+        }
+        catch ( Exception )
+        {
+            lock ( this )
+            {
+                _connected = false;
+            }
+        }
 
         return false;
     }
 
-    public bool TouchUp(int x, int y, int pointer, int button)
+    public bool TouchUp( int x, int y, int pointer, int button )
     {
-//        lock (this)
-//        {
-//            if (!_connected)
-//            {
-//                return false;
-//            }
-//        }
+        lock ( this )
+        {
+            if ( !_connected )
+            {
+                return false;
+            }
+        }
 
-//        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " != null" );
 
-//        try
-//        {
-//            _out.WriteInt(Touch_Up);
-//            _out.WriteInt(x);
-//            _out.WriteInt(y);
-//            _out.WriteInt(pointer);
-//        }
-//        catch (Exception)
-//        {
-//            lock (this)
-//            {
-//                _connected = false;
-//            }
-//        }
+        try
+        {
+            _out.Write( TOUCH_UP );
+            _out.Write( x );
+            _out.Write( y );
+            _out.Write( pointer );
+        }
+        catch ( Exception )
+        {
+            lock ( this )
+            {
+                _connected = false;
+            }
+        }
 
         return false;
     }
 
-    public bool TouchDragged(int x, int y, int pointer)
+    public bool TouchDragged( int x, int y, int pointer )
     {
-//        lock (this)
-//        {
-//            if (!_connected)
-//            {
-//                return false;
-//            }
-//        }
+        lock ( this )
+        {
+            if ( !_connected )
+            {
+                return false;
+            }
+        }
 
-//        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " != null" );
 
-//        try
-//        {
-//            _out.WriteInt(Touch_Dragged);
-//            _out.WriteInt(x);
-//            _out.WriteInt(y);
-//            _out.WriteInt(pointer);
-//        }
-//        catch (Exception)
-//        {
-//            lock (this)
-//            {
-//                _connected = false;
-//            }
-//        }
+        try
+        {
+            _out.Write( TOUCH_DRAGGED );
+            _out.Write( x );
+            _out.Write( y );
+            _out.Write( pointer );
+        }
+        catch ( Exception )
+        {
+            lock ( this )
+            {
+                _connected = false;
+            }
+        }
 
         return false;
     }
 
-    public bool MouseMoved(int x, int y)
+    public bool MouseMoved( int x, int y )
     {
         return false;
     }
 
-    public bool Scrolled(float amountX, float amountY)
+    public bool Scrolled( float amountX, float amountY )
     {
         return false;
     }
@@ -279,10 +282,9 @@ public class RemoteSender : IInputProcessor
     {
         get
         {
-            lock (this)
+            lock ( this )
             {
-//                return _connected;
-                return false;
+                return _connected;
             }
         }
     }

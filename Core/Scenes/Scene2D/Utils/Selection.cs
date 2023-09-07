@@ -25,6 +25,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// Selection changes can be vetoed via <see cref="ChangeListener.ChangeEvent.Cancel()"/>.
 /// </summary>
 /// <seealso cref="SortedSet{T}"/>
+[PublicAPI]
 public class Selection<T> : IDisableable
 {
     public SortedSet< T > Selected                 { get; set; } = new();
@@ -56,7 +57,10 @@ public class Selection<T> : IDisableable
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( IsDisabled ) return;
+        if ( IsDisabled )
+        {
+            return;
+        }
 
         Snapshot();
 
@@ -64,10 +68,13 @@ public class Selection<T> : IDisableable
         {
             if ( ( Toggle || UIUtils.Ctrl() ) && Selected.Contains( item ) )
             {
-                if ( Required && ( Selected.Count == 1 ) ) return;
+                if ( Required && ( Selected.Count == 1 ) )
+                {
+                    return;
+                }
 
                 Selected.Remove( item );
-                LastSelected = default;
+                LastSelected = default( T? );
             }
             else
             {
@@ -141,7 +148,7 @@ public class Selection<T> : IDisableable
     /// </summary>
     public T? First()
     {
-        return Selected.Count == 0 ? default : Selected.First();
+        return Selected.Count == 0 ? default( T? ) : Selected.First();
     }
 
     public void Snapshot()
@@ -168,7 +175,10 @@ public class Selection<T> : IDisableable
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( ( Selected.Count == 1 ) && ( Equals( Selected.First(), item ) ) ) return;
+        if ( ( Selected.Count == 1 ) && ( Equals( Selected.First(), item ) ) )
+        {
+            return;
+        }
 
         Snapshot();
         Selected.Clear( 8 );
@@ -193,7 +203,7 @@ public class Selection<T> : IDisableable
 
         Snapshot();
 
-        LastSelected = default;
+        LastSelected = default( T? );
 
         Selected.Clear( items.Count );
 
@@ -201,9 +211,15 @@ public class Selection<T> : IDisableable
         {
             T item = items[ i ];
 
-            if ( item == null ) throw new ArgumentException( "item cannot be null." );
-            
-            if ( Selected.Add( item ) ) added = true;
+            if ( item == null )
+            {
+                throw new ArgumentException( "item cannot be null." );
+            }
+
+            if ( Selected.Add( item ) )
+            {
+                added = true;
+            }
         }
 
         if ( added )
@@ -227,9 +243,12 @@ public class Selection<T> : IDisableable
     /// </summary>
     public void Add( T item )
     {
-        if ( item == null ) throw new ArgumentException( "item cannot be null." );
+        ArgumentNullException.ThrowIfNull( item );
 
-        if ( !Selected.Add( item ) ) return;
+        if ( !Selected.Add( item ) )
+        {
+            return;
+        }
 
         if ( ProgrammaticChangeEvents && FireChangeEvent() )
         {
@@ -255,9 +274,15 @@ public class Selection<T> : IDisableable
         {
             T item = items[ i ];
 
-            if ( item == null ) throw new ArgumentException( "item cannot be null." );
+            if ( item == null )
+            {
+                throw new ArgumentException( "item cannot be null." );
+            }
 
-            if ( Selected.Add( item ) ) added = true;
+            if ( Selected.Add( item ) )
+            {
+                added = true;
+            }
         }
 
         if ( added )
@@ -278,9 +303,12 @@ public class Selection<T> : IDisableable
 
     public void Remove( T item )
     {
-        if ( item == null ) throw new ArgumentException( "item cannot be null." );
+        ArgumentNullException.ThrowIfNull( item );
 
-        if ( !Selected.Remove( item ) ) return;
+        if ( !Selected.Remove( item ) )
+        {
+            return;
+        }
 
         if ( ProgrammaticChangeEvents && FireChangeEvent() )
         {
@@ -288,7 +316,7 @@ public class Selection<T> : IDisableable
         }
         else
         {
-            LastSelected = default;
+            LastSelected = default( T? );
             Changed();
         }
     }
@@ -303,9 +331,15 @@ public class Selection<T> : IDisableable
         {
             T item = items[ i ];
 
-            if ( item == null ) throw new ArgumentException( "item cannot be null." );
+            if ( item == null )
+            {
+                throw new ArgumentException( "item cannot be null." );
+            }
 
-            if ( Selected.Remove( item ) ) removed = true;
+            if ( Selected.Remove( item ) )
+            {
+                removed = true;
+            }
         }
 
         if ( removed )
@@ -316,7 +350,7 @@ public class Selection<T> : IDisableable
             }
             else
             {
-                LastSelected = default;
+                LastSelected = default( T? );
                 Changed();
             }
         }
@@ -326,7 +360,10 @@ public class Selection<T> : IDisableable
 
     public void Clear()
     {
-        if ( Selected.Count == 0 ) return;
+        if ( Selected.Count == 0 )
+        {
+            return;
+        }
 
         Snapshot();
 
@@ -338,7 +375,7 @@ public class Selection<T> : IDisableable
         }
         else
         {
-            LastSelected = default;
+            LastSelected = default( T? );
             Changed();
         }
 
@@ -359,7 +396,10 @@ public class Selection<T> : IDisableable
 	/// <returns> true if the change should be undone. </returns>
     public bool FireChangeEvent()
     {
-        if ( Actor == null ) return false;
+        if ( Actor == null )
+        {
+            return false;
+        }
 
         ChangeListener.ChangeEvent changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
 
@@ -375,7 +415,10 @@ public class Selection<T> : IDisableable
 
     public bool Contains( T? item )
     {
-        if ( item == null ) return false;
+        if ( item == null )
+        {
+            return false;
+        }
 
         return Selected.Contains( item );
     }
@@ -386,11 +429,17 @@ public class Selection<T> : IDisableable
     /// </summary>
     public T? GetLastSelected()
     {
-        if ( LastSelected != null ) return LastSelected;
+        if ( LastSelected != null )
+        {
+            return LastSelected;
+        }
 
-        if ( Selected.Count > 0 ) return Selected.First();
+        if ( Selected.Count > 0 )
+        {
+            return Selected.First();
+        }
 
-        return default;
+        return default( T? );
     }
 
     public IEnumerator< T > Iterator() => Selected.GetEnumerator();

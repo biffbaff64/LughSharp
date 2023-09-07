@@ -149,7 +149,7 @@ public class GLApplication : GLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
         {
-            ApplicationLogger!.Debug( tag, message );
+            ApplicationLogger.Debug( tag, message );
         }
     }
 
@@ -157,7 +157,7 @@ public class GLApplication : GLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
         {
-            ApplicationLogger!.Debug( tag, message, exception );
+            ApplicationLogger.Debug( tag, message, exception );
         }
     }
 
@@ -165,7 +165,7 @@ public class GLApplication : GLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_INFO )
         {
-            ApplicationLogger!.Log( tag, message );
+            ApplicationLogger.Log( tag, message );
         }
     }
 
@@ -173,7 +173,7 @@ public class GLApplication : GLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_INFO )
         {
-            ApplicationLogger!.Log( tag, message, exception );
+            ApplicationLogger.Log( tag, message, exception );
         }
     }
 
@@ -181,7 +181,7 @@ public class GLApplication : GLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_ERROR )
         {
-            ApplicationLogger!.Error( tag, message );
+            ApplicationLogger.Error( tag, message );
         }
     }
 

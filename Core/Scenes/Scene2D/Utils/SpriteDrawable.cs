@@ -19,7 +19,7 @@ using LibGDXSharp.G2D;
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// Drawable for a <seealso cref="Sprite"/>.
+/// Drawable for a <see cref="Sprite"/>.
 /// </summary>
 [PublicAPI]
 public class SpriteDrawable : BaseDrawable, ITransformDrawable
@@ -103,10 +103,10 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
             MinHeight = value?.Height ?? 0;
         }
     }
-
-
+    
     /// <summary>
-    /// Creates a new drawable that renders the same as this drawable tinted the specified color.
+    /// Creates a new drawable that renders the same as this
+    /// drawable tinted the specified color.
     /// </summary>
     public SpriteDrawable Tint( Color tint )
     {

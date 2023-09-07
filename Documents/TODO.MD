@@ -610,7 +610,7 @@ SCENES.SCENE2D/UI
 SCENES.SCENE2D/UTILS
 --------------------
 
-    -      - ArraySelection                 
+    - DONE - ArraySelection                 
     - DONE - BaseDrawable                   
     -      - DragAndDrop                    
     - DONE - ICullable                      
@@ -767,15 +767,11 @@ UTILS/COMPRESSION - DELETE CANDIDATE
     - IP   - CRC32
     - IP   - IChecksum
 
-    Convert later, purely for education purposes.
-
     - **** - ICodeProgress
     - **** - LzmaAdapted
 
 UTILS/COMPRESSION/LZ - DELETE CANDIDATE
 --------------------
-
-    Convert later, purely for education purposes.
 
     - **** - BinTree
     - **** - InWindow
@@ -783,8 +779,6 @@ UTILS/COMPRESSION/LZ - DELETE CANDIDATE
 
 UTILS/COMPRESSION/LZMA - DELETE CANDIDATE
 ----------------------
-
-    Convert later, purely for education purposes.
 
     - **** - Base
     - **** - Decoder
@@ -833,8 +827,6 @@ UTILS/EXCEPTIONS
 
 UTILS/JSON - DELETE CANDIDATE
 ----------
-
-    Use an existing Json library, but could this be converted at a later date?
 
     - **** - IBaseJsonReader
     - **** - Json

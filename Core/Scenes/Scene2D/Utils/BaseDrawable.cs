@@ -18,7 +18,7 @@ using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class BaseDrawable : IDrawable
 {
     public string? Name         { get; set; }
@@ -55,7 +55,7 @@ public class BaseDrawable : IDrawable
 
     /// <summary>
     /// Draws this drawable at the specified bounds. The drawable should be tinted
-    /// with <see cref="IBatch.GetColor"/>, possibly by mixing its own color. 
+    /// with <see cref="IBatch.Color"/>, possibly by mixing its own color. 
     /// </summary>
     public virtual void Draw( IBatch batch, float x, float y, float width, float height )
     {

@@ -18,7 +18,7 @@ using LibGDXSharp.Scenes.Scene2D;
 
 namespace LibGDXSharp.Scenes.Listeners;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class ChangeListener : IEventListener
 {
     public ChangeListener( Action< object > action )

@@ -21,13 +21,14 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// <summary>
 /// Drawable for a <see cref="TextureRegion"/>.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 {
     private readonly TextureRegion? _region;
 
     /// <summary>
-    /// Creates an uninitialized TextureRegionDrawable. The texture region must be set before use.
+    /// Creates an uninitialized TextureRegionDrawable.
+    /// The texture region must be set before use.
     /// </summary>
     public TextureRegionDrawable()
     {
@@ -89,7 +90,8 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     }
 
     /// <summary>
-    /// Creates a new drawable that renders the same as this drawable tinted the specified color.
+    /// Creates a new drawable that renders the same as this drawable
+    /// tinted the specified color.
     /// </summary>
     public virtual IDrawable Tint( Color tint )
     {

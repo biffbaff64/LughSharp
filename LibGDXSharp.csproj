@@ -33,7 +33,7 @@
         <Folder Include="Core\Graphics\G3D\Loader\" />
         <Folder Include="Core\Graphics\G3D\Shaders\" />
         <Folder Include="Core\Graphics\GL\" />
-        <Folder Include="DeleteCandidates\Utils\" />
+        <Folder Include="DeleteCandidates\" />
         <Folder Include="Resources\" />
     </ItemGroup>
 

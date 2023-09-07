@@ -23,11 +23,11 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// child to cull when drawing itself. This must only be used for actors that are
 /// not rotated or scaled.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public interface ICullable
 {
     /// <summary>
     /// <param name="value"> The culling area in the child actor's coordinates. </param>
     /// </summary>
-    RectangleShape CullingArea {set;}
+    RectangleShape CullingArea { set; }
 }

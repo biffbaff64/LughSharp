@@ -63,18 +63,18 @@ public static class UIUtils
     public static bool Ctrl()
     {
         #if MACOS
-            return Gdx.Input.isKeyPressed( Keys.SYM );
-        #else        
-            return Gdx.Input.IsKeyPressed( Keys.CONTROL_LEFT ) || Gdx.Input.IsKeyPressed( Keys.CONTROL_RIGHT );
+        return Gdx.Input.isKeyPressed( Keys.SYM );
+        #else
+        return Gdx.Input.IsKeyPressed( Keys.CONTROL_LEFT ) || Gdx.Input.IsKeyPressed( Keys.CONTROL_RIGHT );
         #endif
     }
 
     public static bool Ctrl( int keycode )
     {
         #if MACOS
-            return keycode == Keys.SYM;
+        return keycode == Keys.SYM;
         #else
-            return keycode is Keys.CONTROL_LEFT or Keys.CONTROL_RIGHT;
+        return keycode is Keys.CONTROL_LEFT or Keys.CONTROL_RIGHT;
         #endif
     }
 

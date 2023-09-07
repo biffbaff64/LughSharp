@@ -30,7 +30,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// to the left+right and top+bottom, excluding the middle size, to allow the
 /// drawable to be sized down as small as possible.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class NinePatchDrawable : BaseDrawable, ITransformDrawable
 {
     public NinePatch? Patch { get; set; }
@@ -64,8 +64,11 @@ public class NinePatchDrawable : BaseDrawable, ITransformDrawable
     {
     }
 
-    /** Sets this drawable's ninepatch and set the min width, min height, top height, right width, bottom height, and left width to
-	 * the patch's padding. */
+    /// <summary>
+    /// Sets this drawable's ninepatch and set the min width, min height,
+    /// top height, right width, bottom height, and left width to the
+    /// patch's padding.
+    /// </summary>
     public void SetPatch( NinePatch patch )
     {
         this.Patch = patch;
@@ -81,7 +84,10 @@ public class NinePatchDrawable : BaseDrawable, ITransformDrawable
         }
     }
 
-    /** Creates a new drawable that renders the same as this drawable tinted the specified color. */
+    /// <summary>
+    /// Creates a new drawable that renders the same as this
+    /// drawable tinted the specified color.
+    /// </summary>
     public NinePatchDrawable Tint( Color tint )
     {
         var drawable = new NinePatchDrawable( this );

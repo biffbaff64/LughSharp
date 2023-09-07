@@ -27,7 +27,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// pushed onto the stack, it will be merged with the current top of stack. The
 /// minimum area of overlap is then set as the real top of the stack.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class ScissorStack
 {
     private readonly static List< RectangleShape > Scissors = new();
@@ -48,14 +48,18 @@ public class ScissorStack
     /// <returns>
     /// true if the scissors were pushed. false if the scissor area was zero, in this
     /// case the scissors were not pushed and no drawing should occur.
-    /// ....</returns>
+    /// </returns>
     public static bool PushScissors( RectangleShape scissor )
     {
         Fix( scissor );
 
         if ( Scissors.Count == 0 )
         {
-            if ( ( scissor.Width < 1 ) || ( scissor.Height < 1 ) ) return false;
+            if ( ( scissor.Width < 1 ) || ( scissor.Height < 1 ) )
+            {
+                return false;
+            }
+            
             Gdx.GL.GLEnable( IGL20.GL_SCISSOR_TEST );
         }
         else
@@ -66,12 +70,18 @@ public class ScissorStack
             var minX = Math.Max( parent.X, scissor.X );
             var maxX = Math.Min( parent.X + parent.Width, scissor.X + scissor.Width );
 
-            if ( ( maxX - minX ) < 1 ) return false;
+            if ( ( maxX - minX ) < 1 )
+            {
+                return false;
+            }
 
             var minY = Math.Max( parent.Y, scissor.Y );
             var maxY = Math.Min( parent.Y + parent.Height, scissor.Y + scissor.Height );
 
-            if ( ( maxY - minY ) < 1 ) return false;
+            if ( ( maxY - minY ) < 1 )
+            {
+                return false;
+            }
 
             scissor.X      = minX;
             scissor.Y      = minY;
@@ -80,7 +90,8 @@ public class ScissorStack
         }
 
         Scissors.Add( scissor );
-        HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y, ( int )scissor.Width, ( int )scissor.Height );
+        HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y,
+                             ( int )scissor.Width, ( int )scissor.Height );
 
         return true;
     }
@@ -104,7 +115,8 @@ public class ScissorStack
         else
         {
             RectangleShape scissor = Scissors.Peek();
-            HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y, ( int )scissor.Width, ( int )scissor.Height );
+            HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y,
+                                 ( int )scissor.Width, ( int )scissor.Height );
         }
 
         return old;
