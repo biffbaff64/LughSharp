@@ -22,6 +22,7 @@ namespace LibGDXSharp.Core;
 /// must handle whether you want to keep screens around or dispose of them when
 /// another screen is set.
 /// </summary>
+[PublicAPI]
 public abstract class Game : IApplicationListener
 {
     private IScreen? _screen;

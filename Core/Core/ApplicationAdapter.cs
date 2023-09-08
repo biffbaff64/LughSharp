@@ -20,12 +20,13 @@ namespace LibGDXSharp.Core;
 /// Convenience implementation of <see cref="IApplicationListener"/>.
 /// Derive from this and only override what you need.
 /// </summary>
-public class ApplicationAdapter : IApplicationListener
+[PublicAPI]
+public class ApplicationAdapter : IApplicationListener, IDisposable
 {
     /// <summary>
     /// Called when the <see cref="IApplication"/> is first created.
     /// </summary>
-    public void Create()
+    public virtual void Create()
     {
     }
 
@@ -36,14 +37,14 @@ public class ApplicationAdapter : IApplicationListener
     /// </summary>
     /// <param name="width">The new width in pixels.</param>
     /// <param name="height">The new height in pixels.</param>
-    public void Resize( int width, int height )
+    public virtual void Resize( int width, int height )
     {
     }
 
     /// <summary>
     /// Called when the <see cref="IApplication"/> should draw itself.
     /// </summary>
-    public void Render()
+    public virtual void Render()
     {
     }
 
@@ -52,7 +53,7 @@ public class ApplicationAdapter : IApplicationListener
     /// it's not active or visible on-screen. An Application is also
     /// paused before it is destroyed.
     /// </summary>
-    public void Pause()
+    public virtual void Pause()
     {
     }
 
@@ -60,7 +61,7 @@ public class ApplicationAdapter : IApplicationListener
     /// Called when the <see cref="IApplication"/> is resumed from a paused state,
     /// usually when it regains focus.
     /// </summary>
-    public void Resume()
+    public virtual void Resume()
     {
     }
 
@@ -68,7 +69,7 @@ public class ApplicationAdapter : IApplicationListener
     /// Called when the <see cref="IApplication"/> is destroyed.
     /// Preceded by a call to <see cref="IApplicationListener.Pause"/>.
     /// </summary>
-    public void Dispose()
+    public virtual void Dispose()
     {
     }
 }

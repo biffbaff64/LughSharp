@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public abstract class AbstractInput : IInput
 {
     protected bool[] PressedKeys     { get; set; }
@@ -39,7 +40,7 @@ public abstract class AbstractInput : IInput
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public bool IsKeyPressed( int key )
+    public virtual bool IsKeyPressed( int key )
     {
         if ( key == IInput.Keys.ANY_KEY )
         {
@@ -59,7 +60,7 @@ public abstract class AbstractInput : IInput
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public bool IsKeyJustPressed( int key )
+    public virtual bool IsKeyJustPressed( int key )
     {
         if ( key == IInput.Keys.ANY_KEY )
         {
@@ -78,32 +79,32 @@ public abstract class AbstractInput : IInput
     /// 
     /// </summary>
     /// <returns></returns>
-    public bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
+    public virtual bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="catchBack"></param>
-    public void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
+    public virtual void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    public bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
+    public virtual bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="catchMenu"></param>
-    public void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
+    public virtual void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="keycode"></param>
     /// <param name="catchKey"></param>
-    public void SetCatchKey( int keycode, bool catchKey )
+    public virtual void SetCatchKey( int keycode, bool catchKey )
     {
         if ( !catchKey )
         {
@@ -120,7 +121,7 @@ public abstract class AbstractInput : IInput
     /// </summary>
     /// <param name="keycode"></param>
     /// <returns></returns>
-    public bool IsCatchKey( int keycode ) => _keysToCatch.Contains( keycode );
+    public virtual bool IsCatchKey( int keycode ) => _keysToCatch.Contains( keycode );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

@@ -14,8 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Scenes.Listeners;
+using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
@@ -38,59 +38,78 @@ public class DragAndDrop
     private readonly        Dictionary< Source, DragListener > _sourceListeners = new();
     private readonly        List< Target >                     _targets         = new();
 
-    private Source  _dragSource;
-    private Payload _payload;
-    private Actor   _dragActor;
-    private bool    _removeDragActor;
-    private Target  _target;
-    private bool    _isValidTarget;
-    private float   _tapSquareSize = 8;
-    private int     _button;
-    private float   _dragActorX = 0;
-    private float   _dragActorY = 0;
-    private float   _touchOffsetX;
-    private float   _touchOffsetY;
-    private long    _dragValidTime;
-    private int     _activePointer    = -1;
-    private bool    _cancelTouchFocus = true;
-    private bool    _keepWithinStage  = true;
+    private Source       _dragSource;
+    private Payload      _payload;
+    private Actor        _dragActor;
+    private Target       _target;
+    private DragListener _dragListener;
 
-    private DragListener _dragListener = new DragListenerImpl();
+    private bool  _cancelTouchFocus = true;
+    private bool  _keepWithinStage  = true;
+    private bool  _removeDragActor;
+    private bool  _isValidTarget;
+    private float _tapSquareSize = 8;
+    private float _dragActorX    = 0;
+    private float _dragActorY    = 0;
+    private float _touchOffsetX;
+    private float _touchOffsetY;
+    private long  _dragValidTime;
+    private int   _button;
+
+    protected int activePointer = -1;
+
+    // ------------------------------------------------------------------------
 
     internal class DragListenerImpl : DragListener
     {
+        private readonly DragAndDrop _parent;
+        private readonly Source      _source;
+
+        internal DragListenerImpl( DragAndDrop parent, Source source )
+        {
+            this._parent = parent;
+            this._source = source;
+        }
+
         public override void DragStart( InputEvent ev, float x, float y, int pointer )
         {
-            if ( _activePointer != -1 )
+            if ( _parent.activePointer != -1 )
             {
                 ev.Stop();
 
                 return;
             }
 
-            _activePointer = pointer;
+            _parent.activePointer  = pointer;
+            _parent._dragValidTime = TimeUtils.Millis() + _parent.DragTime;
+            _parent._dragSource    = _source;
+            _parent._payload       = _source.DragStart( ev, TouchDownX, TouchDownY, pointer )!;
+
+            ev.Stop();
         }
     }
 
     public void AddSource( Source source )
     {
-        DragListener listener = new DragListener()
+        DragListener listener = new
         {
  
-            public void dragStart (InputEvent event, float x, float y, int pointer)
+
+            public void dragStart( InputEvent ev, float x, float y, int pointer )
             {
             if (activePointer != -1)
             {
-            event.stop();
+            ev.stop();
             return;
         }
 
-        _activePointer = pointer;
+        activePointer = pointer;
 
-        _dragValidTime = System.currentTimeMillis() + DragTime;
+        _dragValidTime = TimeUtils.Millis() + DragTime;
         _dragSource    = source;
-        _payload       = source.dragStart(  event, getTouchDownX(), getTouchDownY(), pointer);
-        event.stop();
+        _payload       = source.dragStart( ev, getTouchDownX(), getTouchDownY(), pointer );
+
+        ev.stop();
 
         if ( _cancelTouchFocus && ( _payload != null ) )
         {
@@ -111,7 +130,7 @@ public class DragAndDrop
                 return;
             }
 
-            if ( pointer != _activePointer )
+            if ( pointer != activePointer )
             {
                 return;
             }
@@ -251,12 +270,12 @@ public class DragAndDrop
 
         public void DragStop( InputEvent event, float x, float y, int pointer )
         {
-            if ( pointer != _activePointer )
+            if ( pointer != activePointer )
             {
                 return;
             }
 
-            _activePointer = -1;
+            activePointer = -1;
 
             if ( _payload == null )
             {
@@ -420,10 +439,11 @@ public class DragAndDrop
         this._keepWithinStage = keepWithinStage;
     }
 
-    /** A source where a payload can be dragged from.
-     * @author Nathan Sweet */
+    /// <summary>
+    /// A source where a payload can be dragged from.
+    /// </summary>
     [PublicAPI]
-    public abstract class Source
+    public class Source
     {
         public Actor Actor { get; set; }
 
@@ -437,19 +457,21 @@ public class DragAndDrop
         /** Called when a drag is started on the source. The coordinates are in the source's local coordinate system.
          * @return If null the drag will not affect any targets.
          */
-        public abstract Payload? DragStart( InputEvent ev, float x, float y, int pointer );
+        public virtual Payload? DragStart( InputEvent ev, float x, float y, int pointer )
+        {
+        }
 
         /**
          * Called repeatedly during a drag which started on this source.
          */
-        public void Drag( InputEvent ev, float x, float y, int pointer )
+        public virtual void Drag( InputEvent ev, float x, float y, int pointer )
         {
         }
 
         /** Called when a drag for the source is stopped. The coordinates are in the source's local coordinate system.
          * @param payload null if dragStart returned null.
          * @param target null if not dropped on a valid target. */
-        public void DragStop( InputEvent ev, float x, float y, int pointer, Payload? payload, Target? target )
+        public virtual void DragStop( InputEvent ev, float x, float y, int pointer, Payload? payload, Target? target )
         {
         }
     }

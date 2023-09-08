@@ -19,6 +19,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public interface IAudio
 {
     /// <summary>

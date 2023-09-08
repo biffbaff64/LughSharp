@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public interface IApplicationListener
 {
     /// <summary>
@@ -49,10 +50,4 @@ public interface IApplicationListener
     /// usually when it regains focus.
     /// </summary>
     void Resume();
-
-    /// <summary>
-    /// Called when the <see cref="IApplication"/> is destroyed.
-    /// Preceded by a call to <see cref="Pause"/>.
-    /// </summary>
-    void Dispose();
 }

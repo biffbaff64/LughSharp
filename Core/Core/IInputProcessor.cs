@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public interface IInputProcessor
 {
     /// <summary>
@@ -23,21 +24,21 @@ public interface IInputProcessor
     /// </summary>
     /// <param name="keycode">One of the constants in <see cref="IInput.Keys"/></param>
     /// <returns>TRUE if the input was processed.</returns>
-    public bool KeyDown( int keycode );
+    bool KeyDown( int keycode );
 
     /// <summary>
     /// Called when a key is released.
     /// </summary>
     /// <param name="keycode">One of the constants in <see cref="IInput.Keys"/></param>
     /// <returns>TRUE if the input was processed.</returns>
-    public bool KeyUp( int keycode );
+    bool KeyUp( int keycode );
 
     /// <summary>
     /// Called when a key was typed
     /// </summary>
     /// <param name="character"></param>
     /// <returns>TRUE if the input was processed.</returns>
-    public bool KeyTyped( char character );
+    bool KeyTyped( char character );
 
     /// <summary>
     /// Called when the screen was touched or a mouse button was pressed.
@@ -47,7 +48,7 @@ public interface IInputProcessor
     /// <param name="pointer"></param>
     /// <param name="button"></param>
     /// <returns>TRUE if the input was processed.</returns>
-    public bool TouchDown( int screenX, int screenY, int pointer, int button );
+    bool TouchDown( int screenX, int screenY, int pointer, int button );
 
     /// <summary>
     /// 
@@ -57,7 +58,7 @@ public interface IInputProcessor
     /// <param name="pointer"></param>
     /// <param name="button"></param>
     /// <returns>TRUE if the input was processed.</returns>
-    public bool TouchUp( int screenX, int screenY, int pointer, int button );
+    bool TouchUp( int screenX, int screenY, int pointer, int button );
 
     /// <summary>
     /// 
@@ -66,7 +67,7 @@ public interface IInputProcessor
     /// <param name="screenY"></param>
     /// <param name="pointer"></param>
     /// <returns>TRUE if the input was processed.</returns>
-    public bool TouchDragged( int screenX, int screenY, int pointer );
+    bool TouchDragged( int screenX, int screenY, int pointer );
 
     /// <summary>
     /// 
@@ -74,7 +75,7 @@ public interface IInputProcessor
     /// <param name="screenX"></param>
     /// <param name="screenY"></param>
     /// <returns>TRUE if the input was processed.</returns>
-    public bool MouseMoved( int screenX, int screenY );
+    bool MouseMoved( int screenX, int screenY );
 
     /// <summary>
     /// 
@@ -82,5 +83,5 @@ public interface IInputProcessor
     /// <param name="amountX"></param>
     /// <param name="amountY"></param>
     /// <returns>TRUE if the input was processed.</returns>
-    public bool Scrolled( float amountX, float amountY );
+    bool Scrolled( float amountX, float amountY );
 }

@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 /// Executes tasks in the future on the main loop thread.
 /// </summary>
+[PublicAPI]
 public class Timer
 {
     private readonly static object        ThreadLock = new();
@@ -314,6 +315,7 @@ public class Timer
     /// <summary>
     /// A <see cref="IRunnable"/> that can be scheduled on a <see cref="Timer"/>
     /// </summary>
+    [PublicAPI]
     public abstract class Task : IRunnable
     {
         internal volatile Timer?        timer;
@@ -400,8 +402,8 @@ public class Timer
         }
     }
 
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-    public class TimerThread : IRunnable, ILifecycleListener
+    [PublicAPI]
+    public class TimerThread : IRunnable, ILifecycleListener, IDisposable
     {
         public readonly List< Timer > instances = new( capacity: 1 );
         public readonly IFiles?       files;

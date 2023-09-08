@@ -18,6 +18,7 @@ using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public interface INet
 {
     public interface IHttpResponse

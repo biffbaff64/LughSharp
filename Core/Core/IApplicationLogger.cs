@@ -22,6 +22,7 @@ namespace LibGDXSharp.Core;
 /// each backend, custom implementations can be provided and set using
 /// IApplication.ApplicationLogger = ApplicationLogger
 /// </summary>
+[PublicAPI]
 public interface IApplicationLogger
 {
     /// <summary>

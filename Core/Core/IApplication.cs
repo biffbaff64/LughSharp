@@ -62,6 +62,7 @@ namespace LibGDXSharp.Core;
 /// facilities.
 /// The Application also has a simple logging method which will print to standard out on the desktop.
 /// </summary>
+[PublicAPI]
 public interface IApplication
 {
     /// <summary>
@@ -90,6 +91,7 @@ public interface IApplication
     int LogLevel { get; set; }
 
     ApplicationType AppType { get; set; }
+    
     IClipboard? Clipboard { get; set; }
 
     void Log( string tag, string message );
@@ -106,6 +108,7 @@ public interface IApplication
     IPreferences GetPreferences( string name );
 
     void Exit();
+
     void AddLifecycleListener( ILifecycleListener listener );
     void RemoveLifecycleListener( ILifecycleListener listener );
 

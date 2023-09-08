@@ -30,8 +30,7 @@ namespace LibGDXSharp.Core;
 /// like vibration, compass, on-screen keyboards, and cursor capture.
 /// Support for simple input dialogs is also provided.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "MemberCanBePrivate.Global" )]
+[PublicAPI]
 public interface IInput
 {
     /// <summary>
@@ -425,17 +424,9 @@ public interface IInput
 
         private readonly static List< string > KeyNames = new();
 
+        // --------------------------------------------------------------------
+        
         static Keys()
-        {
-            InitialiseKeyNames();
-        }
-
-        public static int ValueOf( string keyname )
-        {
-            return KeyNames.IndexOf( keyname );
-        }
-
-        private static void InitialiseKeyNames()
         {
             for ( var i = 0; i <= Keys.MAX_KEYCODE; i++ )
             {
@@ -447,7 +438,14 @@ public interface IInput
                 }
             }
         }
+
+        public static int ValueOf( string keyname )
+        {
+            return KeyNames.IndexOf( keyname );
+        }
     }
+
+    // --------------------------------------------------------------------
 
     public interface ITextInputListener
     {
@@ -455,6 +453,8 @@ public interface IInput
 
         void Canceled();
     }
+
+    // --------------------------------------------------------------------
 
     public enum Peripheral
     {
@@ -469,15 +469,21 @@ public interface IInput
         Pressure
     }
 
+    // --------------------------------------------------------------------
+
     public enum OnscreenKeyboardType
     {
         Default, NumberPad, PhonePad, Email, Password, Uri
     }
 
+    // --------------------------------------------------------------------
+
     public enum Orientation
     {
         Landscape, Portrait
     }
+
+    // --------------------------------------------------------------------
 
     public float GetAccelerometerX();
     public float GetAccelerometerY();

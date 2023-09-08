@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Core;
 
-[SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
+[PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
     public float GetRawDeltaTime() => DeltaTime;

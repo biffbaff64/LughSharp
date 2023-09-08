@@ -14,13 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Core.Files;
 using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public interface IFiles
 {
-
     /// <summary>
     /// Returns a handle representing a file or directory.
     /// </summary>
@@ -30,42 +31,42 @@ public interface IFiles
     /// if the type is classpath or internal and the file does not exist.
     /// </exception>
     /// 
-    FileInfo GetFileHandle( string path, FileType type );
+    FileHandle GetFileHandle( string path, FileType type );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Classpath"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileInfo Classpath( string path );
+    FileHandle Classpath( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Internal"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileInfo Internal( string path );
+    FileHandle Internal( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.External"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileInfo External( string path );
+    FileHandle External( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Absolute"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileInfo Absolute( string path );
+    FileHandle Absolute( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Local"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileInfo Local( string path );
+    FileHandle Local( string path );
 
     /// <summary>
     /// Returns the external storage path directory. This is the app
