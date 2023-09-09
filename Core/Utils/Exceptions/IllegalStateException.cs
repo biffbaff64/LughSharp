@@ -16,9 +16,6 @@
 
 namespace LibGDXSharp.Utils;
 
-/// <summary>
-/// 
-/// </summary>
 [PublicAPI]
 public class IllegalStateException : Exception
 {

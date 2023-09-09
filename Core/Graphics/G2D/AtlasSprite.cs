@@ -20,8 +20,8 @@ namespace LibGDXSharp.G2D;
 /// A sprite that, if whitespace was stripped from the region when it was packed,
 /// is automatically positioned as if whitespace had not been stripped. */
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class AtlasSprite : Sprite
 {
     public AtlasRegion Region          { get; set; }

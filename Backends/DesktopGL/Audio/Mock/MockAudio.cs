@@ -19,7 +19,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class MockAudio : IAudio
 {
     /// <summary>

@@ -19,7 +19,7 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 /// A simple Quaternion class.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Quaternion
 {
     private readonly static Quaternion Tmp1 = new( 0, 0, 0, 0 );

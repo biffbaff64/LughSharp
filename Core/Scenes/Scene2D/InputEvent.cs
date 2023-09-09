@@ -18,8 +18,8 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 [PublicAPI]
 public class InputEvent : Event
 {

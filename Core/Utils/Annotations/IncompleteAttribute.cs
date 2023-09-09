@@ -30,7 +30,7 @@ namespace LibGDXSharp.Utils.Annotations;
                 | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event
                 | AttributeTargets.Delegate,
                 Inherited = false)]
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class IncompleteAttribute : Attribute
 {
     public IncompleteAttribute()

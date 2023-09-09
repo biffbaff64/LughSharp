@@ -20,8 +20,8 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class FileTextureArrayData : ITextureArrayData
 {
     private readonly ITextureData?[] _textureDatas;

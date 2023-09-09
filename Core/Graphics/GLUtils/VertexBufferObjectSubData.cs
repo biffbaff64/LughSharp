@@ -31,7 +31,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// must be disposed via the <see cref="Dispose()"/> method when no longer needed.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class VertexBufferObjectSubData : IVertexData
 {
     public VertexAttributes? Attributes { get; set; }

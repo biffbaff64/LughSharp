@@ -39,13 +39,13 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// The new* methods return a copy of an instance in the skin.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Skin : IDisposable
 {
     /// <summary>
     /// 
     /// </summary>
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    [PublicAPI]
     public struct TintedDrawable
     {
         public string Name  { get; set; }

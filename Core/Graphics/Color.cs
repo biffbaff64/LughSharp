@@ -23,7 +23,7 @@ namespace LibGDXSharp.Graphics;
 /// the range [0,1].
 /// All methods perform clamping on the internal values after execution.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Color
 {
     public readonly static Color White      = new( 1, 1, 1, 1 );

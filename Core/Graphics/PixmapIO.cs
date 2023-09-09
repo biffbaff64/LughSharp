@@ -27,7 +27,7 @@ namespace LibGDXSharp.Graphics;
 /// <summary>
 /// Write Pixmaps to various formats.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public static class PixmapIO
 {
     /// <summary>
@@ -203,7 +203,7 @@ public static class PixmapIO
     /// <summary>
     /// Paeth filter - a filtering algorithm used in the compression of PNG images
     /// </summary>
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    [PublicAPI]
     public class PNG : IDisposable
     {
         private const int  IHDR                = 0x49484452;

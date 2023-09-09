@@ -35,7 +35,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// can also be used to prepend code to the programs.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class ShaderProgramLoader
     : AsynchronousAssetLoader< ShaderProgram, ShaderProgramLoader.ShaderProgramParameter >
 {

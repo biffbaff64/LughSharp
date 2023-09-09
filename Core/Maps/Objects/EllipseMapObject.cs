@@ -18,8 +18,8 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Objects;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class EllipseMapObject : MapObject
 {
     public Ellipse Ellipse { get; set; }

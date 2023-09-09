@@ -21,7 +21,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// <summary>
 /// Moves an actor from its current position to a specific position.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class MoveToAction : TemporalAction
 {
     public float StartX    { get; set; }

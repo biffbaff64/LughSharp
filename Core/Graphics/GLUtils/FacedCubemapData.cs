@@ -18,7 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class FacedCubemapData : ICubemapData
 {
     private readonly ITextureData?[]? _data = new ITextureData[ 6 ];

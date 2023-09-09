@@ -24,7 +24,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// class will ensure, that you pass the correct values to OpenGL for any function
 /// that expects backbuffer coordinates instead of logical coordinates.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class HdpiUtils
 {
     private static HdpiMode _mode = HdpiMode.Logical;

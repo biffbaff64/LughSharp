@@ -57,6 +57,5 @@ public class GdxRuntimeException : Exception
     }
 
     [DoesNotReturn]
-    internal static void Throw( string? paramName ) =>
-        throw new NullReferenceException( paramName );
+    internal static void Throw( string? paramName ) => throw new ArgumentNullException( paramName );
 }

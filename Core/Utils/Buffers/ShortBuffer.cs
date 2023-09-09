@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public abstract class ShortBuffer : Buffer
 {
     public ShortBuffer() : base( 0, 0, 0, 0 )

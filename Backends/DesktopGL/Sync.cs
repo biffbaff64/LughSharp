@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Sync
 {
     private const long NANOS_IN_SECOND = 1000L * 1000L * 1000L;
@@ -104,7 +104,6 @@ public class Sync
 
     private long GetTime() => ( DateTime.UtcNow.Ticks * 100 );
 
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Local" )]
     private class RunningAvg
     {
         private readonly long[] _slots;

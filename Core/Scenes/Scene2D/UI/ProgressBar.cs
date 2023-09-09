@@ -38,7 +38,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// These parameters are reversed for a vertical progress bar.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class ProgressBar : Widget, IDisableable
 {
     private const float DEFAULT_PREF_WIDTH  = 140f;
@@ -587,7 +587,7 @@ public class ProgressBar : Widget, IDisableable
     /// <summary>
     /// The style for a progress bar, see <see cref="ProgressBar"/>.
     /// </summary>
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    [PublicAPI]
     public class ProgressBarStyle
     {
         // The progress bar background, stretched only in one direction.

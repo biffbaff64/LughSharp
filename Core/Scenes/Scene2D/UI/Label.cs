@@ -30,8 +30,8 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// unless <see cref="Wrap"/> is enabled.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class Label : Widget
 {
     private readonly static Color       TempColor      = new();

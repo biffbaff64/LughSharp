@@ -23,7 +23,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// It is implemented as either a <see cref="InstanceBufferObject"/> or a
 /// <see cref="InstanceBufferObjectSubData"/>. Both require Open GL 3.3+.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public interface IInstanceData : IDisposable
 {
 

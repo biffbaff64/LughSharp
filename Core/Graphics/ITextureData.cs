@@ -31,7 +31,7 @@ namespace LibGDXSharp.Graphics;
 /// Look at FileTextureData and ETC1TextureData for example implementations of this interface.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public interface ITextureData
 {
     public enum TextureType

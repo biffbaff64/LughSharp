@@ -24,8 +24,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// can be passed to the various Texture constructors, e.g. filtering, whether
 /// to generate mipmaps and so on.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class TextureLoader : AsynchronousAssetLoader, IDisposable
 {
     public class TextureLoaderInfo
@@ -136,7 +135,7 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
 
     /// <summary>
     /// </summary>
-    [SuppressMessage( "ReSharper", "PropertyCanBeMadeInitOnly.Global" )]
+    [PublicAPI]
     public class TextureParameter : AssetLoaderParameters
     {
         /// <summary>

@@ -21,7 +21,7 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 /// A convenient 2D ellipse class, based on the circle class
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Ellipse : ISerializable, IShape2D
 {
     public float X      { get; set; }

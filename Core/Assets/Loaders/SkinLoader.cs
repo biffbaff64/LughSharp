@@ -20,7 +20,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Assets.Loaders;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class SkinLoader : AsynchronousAssetLoader
 {
     public SkinLoader( IFileHandleResolver resolver ) : base( resolver )

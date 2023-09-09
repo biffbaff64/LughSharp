@@ -202,8 +202,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    [PublicAPI]
     public class ModelParameters : AssetLoaderParameters
     {
         public TextureLoader.TextureParameter TextureParameter { get; set; }

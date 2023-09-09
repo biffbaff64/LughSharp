@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class KtxTextureData : ITextureData, ICubemapData
 {
     public KtxTextureData( FileInfo? file, bool useMipMaps )

@@ -18,8 +18,8 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Maths;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class Vector3 : IVector< Vector3 >
 {
     public float X { get; set; }

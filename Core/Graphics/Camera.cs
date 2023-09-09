@@ -25,7 +25,7 @@ namespace LibGDXSharp.Graphics;
 /// <summary>
 /// Base class for <see cref="OrthographicCamera"/> and <see cref="PerspectiveCamera"/>.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public abstract class Camera
 {
     #region Properties

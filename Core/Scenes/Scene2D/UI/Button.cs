@@ -41,7 +41,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// button contents.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Button : Table, IDisableable
 {
 
@@ -412,7 +412,7 @@ public class Button : Table, IDisableable
     /// <summary>
     /// The style for a button, see <see cref="Button"/>.
     /// </summary>
-    [SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+    [PublicAPI]
     public class ButtonStyle
     {
         public IDrawable? Up               { get; set; }

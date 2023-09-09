@@ -34,7 +34,7 @@ namespace LibGDXSharp.G2D;
 /// a postprocessed ninepatch texture regions from ".9.png" files.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class NinePatch
 {
     private const float TOLERANCE = 0.1f;

@@ -20,7 +20,7 @@ namespace LibGDXSharp.Maps;
 /// Set of string indexed values representing map elements' properties, allowing
 /// to retrieve, modify and add properties to the set.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class MapProperties
 {
     private Dictionary< string, object? > _properties;

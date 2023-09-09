@@ -22,7 +22,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// instances that need to be created and reduce verbosity in code that specifies
 /// values.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public abstract partial class Value
 {
     public abstract float Get( Actor? context = null );

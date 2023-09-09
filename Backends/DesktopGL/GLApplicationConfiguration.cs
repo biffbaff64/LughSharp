@@ -20,7 +20,7 @@ using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class GLApplicationConfiguration : GLWindowConfiguration
 {
     public bool DisableAudio           { get; set; } = false;

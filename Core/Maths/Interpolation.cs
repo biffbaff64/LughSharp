@@ -20,7 +20,7 @@ namespace LibGDXSharp.Maths;
 /// Takes a linear value in the range of 0-1 and outputs a (usually)
 /// non-linear, interpolated value.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Interpolation
 {
     protected Interpolation()
@@ -48,8 +48,7 @@ public class Interpolation
 
 //@formatter:off
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public abstract class Interpolator
 {
     public readonly static Interpolation Linear = new( _ =>

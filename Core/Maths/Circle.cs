@@ -18,8 +18,8 @@ namespace LibGDXSharp.Maths;
 
 /// <summary>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class Circle : IShape2D
 {
     public float X      { get; set; }

@@ -35,7 +35,7 @@ namespace LibGDXSharp.Maths;
 /// for a detailed explanation.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class CumulativeDistribution<T>
 {
     public class CumulativeValue

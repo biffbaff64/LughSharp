@@ -20,7 +20,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class GLPreferences : IPreferences
 {
     private readonly string     _filePath;
@@ -37,7 +37,10 @@ public class GLPreferences : IPreferences
         _filePath       = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + "//.prefs//";
         _propertiesFile = filename;
 
-        if ( !Path.Exists( _filePath + _propertiesFile ) ) return;
+        if ( !Path.Exists( _filePath + _propertiesFile ) )
+        {
+            return;
+        }
 
         _properties = new Dictionary< string, object >();
         _xDocument  = new XDocument();
@@ -52,7 +55,10 @@ public class GLPreferences : IPreferences
     /// <exception cref="NullReferenceException"></exception>
     public IPreferences PutEntry( string key, object? val )
     {
-        if ( _properties == null ) throw new NullReferenceException();
+        if ( _properties == null )
+        {
+            throw new NullReferenceException();
+        }
 
         _properties[ key ] = val ?? throw new NullReferenceException();
 

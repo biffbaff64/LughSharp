@@ -39,8 +39,7 @@ namespace LibGDXSharp.Graphics;
 /// neighbour or bilinear filtering can be used.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Pixmap : IDisposable
 {
     // ----------------------------------------------------------

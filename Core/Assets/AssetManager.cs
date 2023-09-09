@@ -29,7 +29,7 @@ namespace LibGDXSharp.Assets;
 /// <summary>
 /// Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class AssetManager
 {
     public Logger Log { get; set; }

@@ -19,7 +19,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class ParticleEffect : IDisposable
 {
     private const int DEFAULT_EMITTERS_SIZE = 8;

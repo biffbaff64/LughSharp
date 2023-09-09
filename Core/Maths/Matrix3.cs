@@ -18,7 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Maths;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Matrix3
 {
     public const int M00 = 0;

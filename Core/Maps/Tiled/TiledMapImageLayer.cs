@@ -18,8 +18,8 @@ using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class TiledMapImageLayer : MapLayer
 {
     public TextureRegion? Region { get; set; }

@@ -57,8 +57,8 @@ namespace LibGDXSharp.Utils;
 /// to warrant the full-blown TimSort. Small arrays are sorted in place, using a binary insertion sort.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class TimSort<T>
 {
     /// <summary>

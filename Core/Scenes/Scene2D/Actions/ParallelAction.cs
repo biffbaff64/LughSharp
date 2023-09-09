@@ -20,7 +20,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class ParallelAction : Action
 {
     private readonly List< Action > _actions = new( 4 );

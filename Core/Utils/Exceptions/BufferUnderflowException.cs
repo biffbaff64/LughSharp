@@ -27,11 +27,13 @@ public class BufferUnderflowException : Exception
     {
     }
         
-    public BufferUnderflowException( string message ) : base( message )
+    public BufferUnderflowException( string message )
+        : base( message )
     {
     }
 
-    public BufferUnderflowException( Exception e ) : this( "", e )
+    public BufferUnderflowException( Exception e )
+        : this( "", e )
     {
     }
 

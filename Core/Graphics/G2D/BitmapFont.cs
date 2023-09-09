@@ -21,9 +21,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "UnusedMember.Local" )]
-[SuppressMessage( "ReSharper", "LoopCanBePartlyConvertedToQuery" )]
+[PublicAPI]
 public class BitmapFont
 {
     private const string REGEX_PATTERN   = ".*id=(\\d+)";

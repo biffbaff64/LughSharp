@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
-[SuppressMessage( "ReSharper", "UnusedMember.Global" )]
+[PublicAPI]
 public interface IGLAudio : IAudio
 {
 }

@@ -14,6 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Network;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Core;
@@ -29,7 +30,7 @@ public interface INet
 
         StreamReader GetResultAsStream();
 
-//        HttpStatus GetStatus();
+        HttpStatus GetStatus();
 
         string GetHeader( string name );
 
@@ -147,9 +148,9 @@ public interface INet
 
     public bool OpenUri( string uri );
 
-//    public IServerSocket NewServerSocket( Protocol protocol, string hostname, int port, ServerSocketHints hints );
+    public IServerSocket NewServerSocket( Protocol protocol, string hostname, int port, ServerSocketHints hints );
 
-//    public IServerSocket NewServerSocket( Protocol protocol, int port, ServerSocketHints hints );
+    public IServerSocket NewServerSocket( Protocol protocol, int port, ServerSocketHints hints );
 
-//    public ISocket NewClientSocket( Protocol protocol, string host, int port, SocketHints hints );
+    public ISocket NewClientSocket( Protocol protocol, string host, int port, SocketHints hints );
 }

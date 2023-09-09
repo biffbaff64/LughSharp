@@ -31,7 +31,7 @@ namespace LibGDXSharp.Utils;
 /// the load value, which is the percentage of the total time.
 /// </p>
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class PerformanceCounter
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;

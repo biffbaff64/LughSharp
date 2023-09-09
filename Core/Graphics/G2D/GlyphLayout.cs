@@ -40,7 +40,7 @@ namespace LibGDXSharp.G2D;
 /// be used from the game thread.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class GlyphLayout : IPoolable
 {
     public List< GlyphRun > Runs { get; set; } = new( 1 );

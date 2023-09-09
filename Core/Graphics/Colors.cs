@@ -24,7 +24,7 @@ namespace LibGDXSharp.Graphics;
 /// For example, the markup language defined by the <see cref="BitmapFontCache"/> class
 /// uses this class to retrieve colors and the user can define his own colors.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Colors
 {
     public static Dictionary< string, Color? > Map { get; set; } = new();

@@ -16,8 +16,8 @@
 
 namespace LibGDXSharp.Maths;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class Plane
 {
     /// <summary>

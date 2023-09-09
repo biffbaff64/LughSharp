@@ -18,8 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "MemberCanBeProtected.Global" )]
+[PublicAPI]
 public abstract class DelegateAction : Action
 {
     public Action? Action { get; set; }

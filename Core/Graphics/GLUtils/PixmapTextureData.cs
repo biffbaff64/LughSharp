@@ -18,7 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class PixmapTextureData : ITextureData
 {
     public Pixmap        Pixmap        { get; set; }

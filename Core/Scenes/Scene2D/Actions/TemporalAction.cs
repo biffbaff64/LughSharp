@@ -19,7 +19,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public abstract class TemporalAction : Action
 {
     public bool            Reverse       { get; set; }

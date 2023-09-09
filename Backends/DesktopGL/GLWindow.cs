@@ -20,7 +20,7 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class GLWindow : IDisposable
 {
     public        IGLWindowListener?         WindowListener      { get; set; }

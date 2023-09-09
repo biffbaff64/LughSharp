@@ -50,7 +50,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// have to do this manually.
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class ShaderProgram
 {
     /// <summary>

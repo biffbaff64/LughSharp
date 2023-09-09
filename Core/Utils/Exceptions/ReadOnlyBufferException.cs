@@ -19,7 +19,8 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class ReadOnlyBufferException : Exception
 {
-    public ReadOnlyBufferException( string message = "" ) : base( message )
+    public ReadOnlyBufferException( string message = "" )
+        : base( message )
     {
     }
 }

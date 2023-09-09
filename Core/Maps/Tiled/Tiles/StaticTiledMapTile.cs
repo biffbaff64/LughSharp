@@ -18,7 +18,7 @@ using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Maps.Tiled.Tiles;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class StaticTiledMapTile : ITiledMapTile
 {
     public int                     ID            { get; set; }

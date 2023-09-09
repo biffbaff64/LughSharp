@@ -18,7 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Maths;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class NumberUtils
 {
     public static int FloatToIntBits( float value )

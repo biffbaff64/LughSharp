@@ -21,8 +21,8 @@ namespace LibGDXSharp.Graphics.G3D.Utils;
 /// <summary>
 /// Used by <see cref="Model"/> to load textures from <see cref="ModelData"/>.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public interface ITextureProvider
 {
     Texture Load( string fileName );

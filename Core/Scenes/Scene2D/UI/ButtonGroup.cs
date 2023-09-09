@@ -23,7 +23,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// The <see cref="CanCheck(T, bool)"/> method can be overridden to control
 /// if a button check or uncheck is allowed.
 /// </para>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class ButtonGroup<T> where T : Button
 {
     private readonly List< T > _buttons        = new();

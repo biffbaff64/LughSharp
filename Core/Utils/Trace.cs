@@ -23,7 +23,7 @@ namespace LibGDXSharp.Utils;
 /// Object used for creating debug messages which include
 /// the calling file and method.
 /// </summary>
-public struct CallerID
+internal struct CallerID
 {
     public string fileName;
     public string methodName;
@@ -39,6 +39,7 @@ public struct CallerID
 /// To enable writing to file, <see cref="EnableWriteToFile"/> must be TRUE
 /// and <see cref="OpenDebugFile"/> must be called.
 /// </summary>
+[PublicAPI]
 public static class Trace
 {
     public const int LOG_NONE  = 0;
@@ -78,7 +79,6 @@ public static class Trace
     /// <summary>
     /// Write a debug string to logcat or console.
     /// The string can contain format options.
-    /// 
     /// </summary>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>

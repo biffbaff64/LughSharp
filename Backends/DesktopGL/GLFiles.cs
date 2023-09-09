@@ -18,7 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class GLFiles : IFiles
 {
     /// <summary>

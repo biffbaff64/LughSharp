@@ -23,7 +23,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// gl only textures. This TextureData fits perfectly for <see cref="FrameBuffer"/>s.
 /// The data is not managed.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class GLOnlyTextureData : ITextureData
 {
     public int  Width          { get; set; } = 0;

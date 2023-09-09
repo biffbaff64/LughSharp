@@ -27,15 +27,18 @@ public class BufferOverflowException : Exception
     {
     }
 
-    public BufferOverflowException( string message ) : base( message )
+    public BufferOverflowException( string message )
+        : base( message )
     {
     }
 
-    public BufferOverflowException( Exception e ) : this( "", e )
+    public BufferOverflowException( Exception e )
+        : this( "", e )
     {
     }
 
-    public BufferOverflowException( string message, Exception? exception ) : base( message, exception )
+    public BufferOverflowException( string message, Exception? exception )
+        : base( message, exception )
     {
     }
 }

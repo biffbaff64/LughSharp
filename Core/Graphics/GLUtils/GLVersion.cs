@@ -20,7 +20,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class GLVersion : GDXVersion
 {
     public enum GLType

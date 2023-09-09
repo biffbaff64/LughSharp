@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class TiledMap : Map, IDisposable
 {
     public TiledMapTileSets Tilesets       { get; set; }

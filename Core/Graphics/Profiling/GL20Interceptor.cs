@@ -20,7 +20,7 @@ using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class GL20Interceptor : GLInterceptor, IGL20
 {
     public IGL20 GL20 { get; set; }

@@ -23,7 +23,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// Immediate mode rendering class for GLES 2.0. The renderer will allow you to
 /// specify vertices on the fly and provides a default shader for (unlit) rendering.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class ImmediateModeRenderer20 : IImmediateModeRenderer
 {
     public int MaxVertices { get; set; }

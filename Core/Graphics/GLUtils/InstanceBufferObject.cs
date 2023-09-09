@@ -18,7 +18,7 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class InstanceBufferObject : IInstanceData
 {
     public InstanceBufferObject( bool isStatic, int maxInstances, VertexAttribute[] attributes )

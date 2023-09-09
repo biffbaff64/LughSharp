@@ -18,8 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public partial record TextureAtlasData
 {
     protected interface IField<T>
@@ -273,7 +272,7 @@ public partial record TextureAtlasData
 
     #region Companions
 
-    [SuppressMessage( "ReSharper", "UnusedAutoPropertyAccessor.Global" )]
+    [PublicAPI]
     public record Page
     {
         /// <summary>
@@ -298,7 +297,7 @@ public partial record TextureAtlasData
         public bool          Pma        { get; set; }
     }
 
-    [SuppressMessage( "ReSharper", "UnusedAutoPropertyAccessor.Global" )]
+    [PublicAPI]
     public class Region
     {
         public Page?     Page           { get; init; }

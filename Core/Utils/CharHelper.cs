@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public static class CharHelper
 {
     /// <summary>

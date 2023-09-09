@@ -28,7 +28,7 @@ namespace LibGDXSharp.Utils;
 /// The underlying algorithms used are a naive single-pass for k = min and k =max, and
 /// Hoare's quickselect for values in between.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Selector<T>
 {
     public static Selector< T > Instance { get; } = new();

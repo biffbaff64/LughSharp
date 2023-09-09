@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class MathUtils
 {
     public const float NANO_TO_SEC            = 1 / 1000000000f;

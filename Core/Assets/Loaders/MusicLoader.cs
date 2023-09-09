@@ -22,7 +22,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// <see cref="AssetLoader"/> for <see cref="IMusic"/> instances.
 /// The Music instance is loaded synchronously.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.MusicParameter >, IDisposable
 {
     public IMusic LoadedMusic { get; set; }

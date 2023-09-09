@@ -18,7 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class GLGraphics : AbstractGraphics, IDisposable
 {
     public GLWindow?              Window       { get; set; }
@@ -390,7 +390,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    [PublicAPI]
     public class GLDisplayMode : IGraphics.DisplayMode
     {
         public long MonitorHandle { get; set; }

@@ -23,8 +23,8 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class Mesh
 {
     public enum VertexDataType

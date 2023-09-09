@@ -22,7 +22,7 @@ namespace LibGDXSharp.Utils;
 /// performance than a random pivot for partially sorted data.
 /// http://en.wikipedia.org/wiki/Quickselect
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class QuickSelect<T>
 {
     private T[]            _array   = null!;

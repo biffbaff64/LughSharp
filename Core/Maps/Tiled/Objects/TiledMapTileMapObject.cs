@@ -26,8 +26,8 @@ namespace LibGDXSharp.Maps.Tiled.Objects;
 /// For compatibility reasons, this extends <see cref="TextureMapObject"/>.
 /// Use <see cref="ITiledMapTile.TextureRegion"/> instead of <see cref="TextureRegion"/>.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class TiledMapTileMapObject : TextureMapObject
 {
     public ITiledMapTile Tile             { get; set; }

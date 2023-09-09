@@ -19,4 +19,15 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class NumberFormatException : FormatException
 {
+    /// <inheritdoc cref="FormatException(string?)"/>
+    public NumberFormatException( string? message )
+        : base( message )
+    {
+    }
+
+    /// <inheritdoc cref="FormatException(string?,Exception?)"/>
+    public NumberFormatException( string? message, Exception? innerException )
+        : base( message, innerException )
+    {
+    }
 }

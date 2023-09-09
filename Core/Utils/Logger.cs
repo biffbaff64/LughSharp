@@ -22,7 +22,7 @@ namespace LibGDXSharp.Utils;
 /// The log level set with <see cref="IApplication.LogLevel"/> overrides
 /// the log level set here.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Logger
 {
     public const int LOG_NONE  = 0;

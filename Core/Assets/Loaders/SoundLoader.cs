@@ -21,7 +21,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// <summary>
 /// <see cref="AssetLoader"/> to load <see cref="ISound"/> instances.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundParameter >
 {
     /// <summary>

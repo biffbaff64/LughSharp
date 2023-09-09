@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class FloatCounter
 {
     /// <summary>

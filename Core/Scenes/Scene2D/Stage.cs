@@ -43,8 +43,8 @@ namespace LibGDXSharp.Scenes.Scene2D;
 /// thread). Methods should be reentrant, so you can update Actors and Stages from within
 /// callbacks and handlers.
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
+[PublicAPI]
 public class Stage : InputAdapter
 {
     // True if any actor has ever had debug enabled.

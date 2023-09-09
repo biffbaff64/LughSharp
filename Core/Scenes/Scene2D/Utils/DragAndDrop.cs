@@ -34,18 +34,19 @@ public class DragAndDrop
     /// </summary>
     public int DragTime { get; set; } = 250;
 
-    private readonly static Vector2                            TmpVector        = new();
-    private readonly        Dictionary< Source, DragListener > _sourceListeners = new();
-    private readonly        List< Target >                     _targets         = new();
+    public DragSource? Source          { get; set; }
+    public DragTarget? Target          { get; set; }
+    public Actor?      DragActor       { get; set; }
+    public bool        KeepWithinStage { get; set; } = true;
+    public Payload?    DragPayload     { get; set; }
+    public int         Button          { get; set; }
 
-    private Source       _dragSource;
-    private Payload      _payload;
-    private Actor        _dragActor;
-    private Target       _target;
+    private readonly static Vector2                                TmpVector        = new();
+    private readonly        Dictionary< DragSource, DragListener > _sourceListeners = new();
+    private readonly        List< DragTarget >                     _targets         = new();
+
     private DragListener _dragListener;
 
-    private bool  _cancelTouchFocus = true;
-    private bool  _keepWithinStage  = true;
     private bool  _removeDragActor;
     private bool  _isValidTarget;
     private float _tapSquareSize = 8;
@@ -54,7 +55,6 @@ public class DragAndDrop
     private float _touchOffsetX;
     private float _touchOffsetY;
     private long  _dragValidTime;
-    private int   _button;
 
     protected int activePointer = -1;
 
@@ -63,9 +63,9 @@ public class DragAndDrop
     internal class DragListenerImpl : DragListener
     {
         private readonly DragAndDrop _parent;
-        private readonly Source      _source;
+        private readonly DragSource  _source;
 
-        internal DragListenerImpl( DragAndDrop parent, Source source )
+        internal DragListenerImpl( DragAndDrop parent, DragSource source )
         {
             this._parent = parent;
             this._source = source;
@@ -82,154 +82,131 @@ public class DragAndDrop
 
             _parent.activePointer  = pointer;
             _parent._dragValidTime = TimeUtils.Millis() + _parent.DragTime;
-            _parent._dragSource    = _source;
-            _parent._payload       = _source.DragStart( ev, TouchDownX, TouchDownY, pointer )!;
+            _parent.Source         = _source;
+            _parent.DragPayload    = _source.DragStart( ev, TouchDownX, TouchDownY, pointer )!;
 
             ev.Stop();
-        }
-    }
 
-    public void AddSource( Source source )
-    {
-        DragListener listener = new
-        {
- 
-
-            public void dragStart( InputEvent ev, float x, float y, int pointer )
+            if ( _parent is { CancelTouchFocus: true, DragPayload: not null } )
             {
-            if (activePointer != -1)
-            {
-            ev.stop();
-            return;
-        }
+                Stage? stage = _source.Actor.Stage;
 
-        activePointer = pointer;
-
-        _dragValidTime = TimeUtils.Millis() + DragTime;
-        _dragSource    = source;
-        _payload       = source.dragStart( ev, getTouchDownX(), getTouchDownY(), pointer );
-
-        ev.stop();
-
-        if ( _cancelTouchFocus && ( _payload != null ) )
-        {
-            Stage stage = source.getActor().getStage();
-
-            if ( stage != null )
-            {
-                stage.cancelTouchFocusExcept( this, source.getActor() );
+                if ( stage != null )
+                {
+                    stage.CancelTouchFocusExcept( this, _source.Actor );
+                }
             }
         }
 
-        }
-
-        public void Drag( InputEvent event, float x, float y, int pointer )
+        public override void Drag( InputEvent ev, float x, float y, int pointer )
         {
-            if ( _payload == null )
+            if ( _parent.DragPayload == null )
             {
                 return;
             }
 
-            if ( pointer != activePointer )
+            if ( pointer != _parent.activePointer )
             {
                 return;
             }
 
-            source.drag(  event, x, y, pointer);
+            _source.Drag( ev, x, y, pointer );
 
-            Stage stage =  event.getStage();
+            Stage? stage = ev.Stage;
 
             // Move the drag actor away, so it cannot be hit.
-            Actor oldDragActor  = _dragActor;
-            float oldDragActorX = 0, oldDragActorY = 0;
+            Actor? oldDragActor  = _parent.DragActor;
+            float  oldDragActorX = 0;
+            float  oldDragActorY = 0;
 
             if ( oldDragActor != null )
             {
-                oldDragActorX = oldDragActor.getX();
-                oldDragActorY = oldDragActor.getY();
-                oldDragActor.setPosition( Integer.MAX_VALUE, Integer.MAX_VALUE );
+                oldDragActorX = oldDragActor.X;
+                oldDragActorY = oldDragActor.Y;
+                oldDragActor.SetPosition( int.MaxValue, int.MaxValue );
             }
 
-            float stageX =  event.getStageX() + _touchOffsetX, stageY =  event.getStageY() + _touchOffsetY;
-            Actor hit    =  event.getStage().hit( stageX, stageY, true ); // Prefer touchable actors.
+            var stageX = ev.StageX + _parent._touchOffsetX;
+            var stageY = ev.StageY + _parent._touchOffsetY;
 
-            if ( hit == null )
-            {
-                hit =  event.
-            }
-
-            getStage().hit( stageX, stageY, false );
+            Actor? hit = ev.Stage?.Hit( stageX, stageY, true )
+                      ?? ev.Stage?.Hit( stageX, stageY, false );
 
             if ( oldDragActor != null )
             {
-                oldDragActor.setPosition( oldDragActorX, oldDragActorY );
+                oldDragActor.SetPosition( oldDragActorX, oldDragActorY );
             }
 
             // Find target.
-            Target newTarget = null;
-            _isValidTarget = false;
+            DragTarget? newTarget = null;
+
+            _parent._isValidTarget = false;
 
             if ( hit != null )
             {
-                for ( int i = 0, n = _targets.size; i < n; i++ )
+                for ( int i = 0, n = _parent._targets.Count; i < n; i++ )
                 {
-                    Target target = _targets.get( i );
+                    DragTarget target = _parent._targets[ i ];
 
-                    if ( !target.actor.isAscendantOf( hit ) )
+                    if ( !target.Actor.IsAscendantOf( hit ) )
                     {
                         continue;
                     }
 
                     newTarget = target;
-                    target.actor.stageToLocalCoordinates( TmpVector.set( stageX, stageY ) );
+                    target.Actor.StageToLocalCoordinates( TmpVector.Set( stageX, stageY ) );
 
                     break;
                 }
             }
 
             // If over a new target, notify the former target that it's being left behind.
-            if ( newTarget != _target )
+            if ( newTarget != _parent.Target )
             {
-                if ( _target != null )
+                if ( _parent.Target != null )
                 {
-                    _target.reset( source, _payload );
+                    _parent.Target.Reset( _source, _parent.DragPayload );
                 }
 
-                _target = newTarget;
+                _parent.Target = newTarget;
             }
 
             // Notify new target of drag.
             if ( newTarget != null )
             {
-                _isValidTarget = newTarget.drag( source, _payload, TmpVector.x, TmpVector.y, pointer );
+                _parent._isValidTarget = newTarget.Drag
+                    (
+                     _source,
+                     _parent.DragPayload,
+                     TmpVector.X, TmpVector.Y,
+                     pointer
+                    );
             }
 
             // Determine the drag actor, remove the old one if it was added by DragAndDrop, and add the new one.
-            Actor actor = null;
+            Actor? actor = null;
 
-            if ( _target != null )
+            if ( _parent.Target != null )
             {
-                actor = _isValidTarget ? _payload.validDragActor : _payload.invalidDragActor;
+                actor = _parent._isValidTarget
+                    ? _parent.DragPayload.ValidDragActor : _parent.DragPayload.InvalidDragActor;
             }
 
-            if ( actor == null )
-            {
-                actor = _payload.dragActor;
-            }
+            actor ??= _parent.DragPayload.DragActor;
 
             if ( actor != oldDragActor )
             {
-                if ( ( oldDragActor != null ) && _removeDragActor )
+                if ( ( oldDragActor != null ) && _parent._removeDragActor )
                 {
-                    oldDragActor.remove();
+                    oldDragActor.Remove();
                 }
 
-                _dragActor       = actor;
-                _removeDragActor = actor.getStage() == null; // Only remove later if not already in the stage now.
+                _parent.DragActor       = actor;
+                _parent._removeDragActor = actor?.Stage == null; // Only remove later if not already in the stage now.
 
-                if ( _removeDragActor )
+                if ( _parent._removeDragActor )
                 {
-                    stage.addActor( actor );
+                    stage?.AddActor( actor ?? throw new NullReferenceException() );
                 }
             }
 
@@ -239,8 +216,8 @@ public class DragAndDrop
             }
 
             // Position the drag actor.
-            float actorX =  event.( getStageX() - actor.getWidth() ) + _dragActorX;
-            float actorY =  event.getStageY() + _dragActorY;
+            float actorX = ev.( getStageX() - actor.getWidth() ) + _dragActorX;
+            float actorY = ev.getStageY() + _dragActorY;
 
             if ( _keepWithinStage )
             {
@@ -268,84 +245,245 @@ public class DragAndDrop
             actor.SetPosition( actorX, actorY );
         }
 
-        public void DragStop( InputEvent event, float x, float y, int pointer )
+        public override void DragStop( InputEvent ev, float x, float y, int pointer )
         {
-            if ( pointer != activePointer )
-            {
-                return;
-            }
-
-            activePointer = -1;
-
-            if ( _payload == null )
-            {
-                return;
-            }
-
-            if ( System.currentTimeMillis() < _dragValidTime )
-            {
-                _isValidTarget = false;
-            }
-
-            if ( ( _dragActor != null ) && _removeDragActor )
-            {
-                _dragActor.remove();
-            }
-
-            if ( _isValidTarget )
-            {
-                float stageX =  event.getStageX() + _touchOffsetX, stageY =  event.getStageY() + _touchOffsetY;
-                _target.actor.stageToLocalCoordinates( TmpVector.set( stageX, stageY ) );
-                _target.drop( source, _payload, TmpVector.x, TmpVector.y, pointer );
-            }
-
-            source.dragStop(  event, x, y, pointer, _payload, _isValidTarget ? _target : null);
-
-            if ( _target != null )
-            {
-                _target.Reset( source, _payload );
-            }
-
-            _dragSource    = null;
-            _payload       = null;
-            _target        = null;
-            _isValidTarget = false;
-            _dragActor     = null;
         }
-
-        };
-
-        listener.SetTapSquareSize( _tapSquareSize );
-        listener.SetButton( _button );
-
-        source.Actor.AddCaptureListener( listener );
-
-        _sourceListeners[ source ] = listener;
     }
 
-    public void RemoveSource( Source source )
+    public void AddSource( DragSource source )
+    {
+        _dragListener = new DragListenerImpl( this, source );
+
+        _dragListener.TapSquareSize = _tapSquareSize;
+        _dragListener.Button        = Button;
+
+        source.Actor.AddCaptureListener( _dragListener );
+
+        _sourceListeners[ source ] = _dragListener;
+
+//        public void Drag( InputEvent event, float x, float y, int pointer )
+//        {
+//            if ( _payload == null )
+//            {
+//                return;
+//            }
+//
+//            if ( pointer != activePointer )
+//            {
+//                return;
+//            }
+//
+//            source.drag(  event, x, y, pointer);
+//
+//            Stage stage =  event.getStage();
+//
+//            // Move the drag actor away, so it cannot be hit.
+//            Actor oldDragActor  = _dragActor;
+//            float oldDragActorX = 0, oldDragActorY = 0;
+//
+//            if ( oldDragActor != null )
+//            {
+//                oldDragActorX = oldDragActor.getX();
+//                oldDragActorY = oldDragActor.getY();
+//                oldDragActor.setPosition( Integer.MAX_VALUE, Integer.MAX_VALUE );
+//            }
+//
+//            float stageX =  event.getStageX() + _touchOffsetX, stageY =  event.getStageY() + _touchOffsetY;
+//            Actor hit    =  event.getStage().hit( stageX, stageY, true ); // Prefer touchable actors.
+//
+//            if ( hit == null )
+//            {
+//                hit =  event.getStage().hit( stageX, stageY, false );
+//            }
+//
+//            if ( oldDragActor != null )
+//            {
+//                oldDragActor.setPosition( oldDragActorX, oldDragActorY );
+//            }
+//
+//            // Find target.
+//            Target newTarget = null;
+//            _isValidTarget = false;
+//
+//            if ( hit != null )
+//            {
+//                for ( int i = 0, n = _targets.size; i < n; i++ )
+//                {
+//                    Target target = _targets.get( i );
+//
+//                    if ( !target.actor.isAscendantOf( hit ) )
+//                    {
+//                        continue;
+//                    }
+//
+//                    newTarget = target;
+//                    target.actor.stageToLocalCoordinates( TmpVector.set( stageX, stageY ) );
+//
+//                    break;
+//                }
+//            }
+//
+//            // If over a new target, notify the former target that it's being left behind.
+//            if ( newTarget != _target )
+//            {
+//                if ( _target != null )
+//                {
+//                    _target.reset( source, _payload );
+//                }
+//
+//                _target = newTarget;
+//            }
+//
+//            // Notify new target of drag.
+//            if ( newTarget != null )
+//            {
+//                _isValidTarget = newTarget.drag( source, _payload, TmpVector.x, TmpVector.y, pointer );
+//            }
+//
+//            // Determine the drag actor, remove the old one if it was added by DragAndDrop, and add the new one.
+//            Actor actor = null;
+//
+//            if ( _target != null )
+//            {
+//                actor = _isValidTarget ? _payload.validDragActor : _payload.invalidDragActor;
+//            }
+//
+//            if ( actor == null )
+//            {
+//                actor = _payload.dragActor;
+//            }
+//
+//            if ( actor != oldDragActor )
+//            {
+//                if ( ( oldDragActor != null ) && _removeDragActor )
+//                {
+//                    oldDragActor.remove();
+//                }
+//
+//                _dragActor       = actor;
+//                _removeDragActor = actor.getStage() == null; // Only remove later if not already in the stage now.
+//
+//                if ( _removeDragActor )
+//                {
+//                    stage.addActor( actor );
+//                }
+//            }
+//
+//            if ( actor == null )
+//            {
+//                return;
+//            }
+//
+//            // Position the drag actor.
+//            float actorX =  event.( getStageX() - actor.getWidth() ) + _dragActorX;
+//            float actorY =  event.getStageY() + _dragActorY;
+//
+//            if ( _keepWithinStage )
+//            {
+//                if ( actorX < 0 )
+//                {
+//                    actorX = 0;
+//                }
+//
+//                if ( actorY < 0 )
+//                {
+//                    actorY = 0;
+//                }
+//
+//                if ( ( actorX + actor.getWidth() ) > stage.getWidth() )
+//                {
+//                    actorX = stage.getWidth() - actor.getWidth();
+//                }
+//
+//                if ( ( actorY + actor.getHeight() ) > stage.getHeight() )
+//                {
+//                    actorY = stage.getHeight() - actor.getHeight();
+//                }
+//            }
+//
+//            actor.SetPosition( actorX, actorY );
+//        }
+//
+//        public void DragStop( InputEvent event, float x, float y, int pointer )
+//        {
+//            if ( pointer != activePointer )
+//            {
+//                return;
+//            }
+//
+//            activePointer = -1;
+//
+//            if ( _payload == null )
+//            {
+//                return;
+//            }
+//
+//            if ( System.currentTimeMillis() < _dragValidTime )
+//            {
+//                _isValidTarget = false;
+//            }
+//
+//            if ( ( _dragActor != null ) && _removeDragActor )
+//            {
+//                _dragActor.remove();
+//            }
+//
+//            if ( _isValidTarget )
+//            {
+//                float stageX =  event.getStageX() + _touchOffsetX, stageY =  event.getStageY() + _touchOffsetY;
+//                _target.actor.stageToLocalCoordinates( TmpVector.set( stageX, stageY ) );
+//                _target.drop( source, _payload, TmpVector.x, TmpVector.y, pointer );
+//            }
+//
+//            source.dragStop(  event, x, y, pointer, _payload, _isValidTarget ? _target : null);
+//
+//            if ( _target != null )
+//            {
+//                _target.Reset( source, _payload );
+//            }
+//
+//            _dragSource    = null;
+//            _payload       = null;
+//            _target        = null;
+//            _isValidTarget = false;
+//            _dragActor     = null;
+//        }
+//
+//        };
+//
+//        listener.SetTapSquareSize( _tapSquareSize );
+//        listener.SetButton( _button );
+//
+//        source.Actor.AddCaptureListener( listener );
+//
+//        _sourceListeners[ source ] = listener;
+    }
+
+    public void RemoveSource( DragSource source )
     {
         _sourceListeners.Remove( source, out DragListener? dragListener );
 
         source.Actor.RemoveCaptureListener( dragListener! );
     }
 
-    public void AddTarget( Target target )
+    public void AddTarget( DragTarget target )
     {
         _targets.Add( target );
     }
 
-    public void RemoveTarget( Target target )
+    public void RemoveTarget( DragTarget target )
     {
         _targets.Remove( target );
     }
 
-    /** Removes all targets and sources. */
+    /// <summary>
+    /// Removes all targets and sources.
+    /// </summary>
     public void Clear()
     {
         _targets.Clear();
 
-        foreach ( KeyValuePair< Source, DragListener > entry in _sourceListeners )
+        foreach ( KeyValuePair< DragSource, DragListener > entry in _sourceListeners )
         {
             entry.Key.Actor.RemoveCaptureListener( entry.Value );
         }
@@ -354,7 +492,7 @@ public class DragAndDrop
     }
 
     /** Cancels the touch focus for everything except the specified source. */
-    public void CancelTouchFocusExcept( Source except )
+    public void CancelTouchFocusExcept( DragSource except )
     {
         DragListener listener;
 
@@ -377,20 +515,18 @@ public class DragAndDrop
         _tapSquareSize = halfTapSquareSize;
     }
 
-    /** Sets the button to listen for, all other buttons are ignored. Default is {@link Buttons#LEFT}. Use -1 for any button. */
-    public void SetButton( int button )
-    {
-        this._button = button;
-    }
-
     public void SetDragActorPosition( float dragActorX, float dragActorY )
     {
         this._dragActorX = dragActorX;
         this._dragActorY = dragActorY;
     }
 
-    /** Sets an offset in stage coordinates from the touch position which is used to determine the drop location. Default is
-     * 0,0. */
+    /// <summary>
+    /// Sets an offset in stage coordinates from the touch position which
+    /// is used to determine the drop location. Default is 0,0.
+    /// </summary>
+    /// <param name="touchOffsetX"></param>
+    /// <param name="touchOffsetY"></param>
     public void SetTouchOffset( float touchOffsetX, float touchOffsetY )
     {
         this._touchOffsetX = touchOffsetX;
@@ -399,92 +535,88 @@ public class DragAndDrop
 
     public bool IsDragging()
     {
-        return _payload != null;
+        return DragPayload != null;
     }
 
-    /** Returns the current drag actor, or null. */
-    public Actor? GetDragActor()
-    {
-        return _dragActor;
-    }
-
-    /** Returns the current drag payload, or null. */
-    public Payload? GetDragPayload()
-    {
-        return _payload;
-    }
-
-    /** Returns the current drag source, or null. */
-    public Source? GetDragSource()
-    {
-        return _dragSource;
-    }
-
-    /** Returns true if a drag is in progress and the {@link #setDragTime(int) drag time} has elapsed since the drag started. */
+    /// <summary>
+    /// Returns true if a drag is in progress and the <see cref="DragTime"/>"
+    /// has elapsed since the drag started.
+    /// </summary>
     public bool IsDragValid()
     {
-        return ( _payload != null ) && ( TimeUtils.Millis() >= _dragValidTime );
+        return ( DragPayload != null ) && ( TimeUtils.Millis() >= _dragValidTime );
     }
 
-    /** When true (default), the {@link Stage#cancelTouchFocus()} touch focus} is cancelled if
-     * {@link Source#dragStart(InputEvent, float, float, int) dragStart} returns non-null. This ensures the DragAndDrop is the only
-     * touch focus listener, eg when the source is inside a {@link ScrollPane} with flick scroll enabled. */
-    public void SetCancelTouchFocus( bool cancelTouchFocus )
-    {
-        this._cancelTouchFocus = cancelTouchFocus;
-    }
-
-    public void SetKeepWithinStage( bool keepWithinStage )
-    {
-        this._keepWithinStage = keepWithinStage;
-    }
+    /// <summary>
+    /// When true (default), the touch focus (<see cref="Stage.CancelTouchFocus()"/>)
+    /// is cancelled if <see cref="LibGDXSharp.Scenes.Scene2D.Utils.DragAndDrop.DragSource.DragStart(InputEvent, float, float, int)"/>"
+    /// returns non-null. This ensures the DragAndDrop is the only touch focus listener,
+    /// eg when the source is inside a <see cref="ScrollPane"/> with flick scroll
+    /// enabled.
+    /// </summary>
+    public bool CancelTouchFocus { get; set; } = true;
 
     /// <summary>
     /// A source where a payload can be dragged from.
     /// </summary>
     [PublicAPI]
-    public class Source
+    public class DragSource
     {
         public Actor Actor { get; set; }
 
-        public Source( Actor actor )
+        public DragSource( Actor actor )
         {
             ArgumentNullException.ThrowIfNull( actor );
 
             this.Actor = actor;
         }
 
-        /** Called when a drag is started on the source. The coordinates are in the source's local coordinate system.
-         * @return If null the drag will not affect any targets.
-         */
+        /// <summary>
+        /// Called when a drag is started on the source. The coordinates
+        /// are in the source's local coordinate system.
+        /// </summary>
+        /// <returns> If null the drag will not affect any targets. </returns>
         public virtual Payload? DragStart( InputEvent ev, float x, float y, int pointer )
         {
+            return default( Payload? );
         }
 
-        /**
-         * Called repeatedly during a drag which started on this source.
-         */
+        /// <summary>
+        /// Called repeatedly during a drag which started on this source.
+        /// </summary>
         public virtual void Drag( InputEvent ev, float x, float y, int pointer )
         {
         }
 
-        /** Called when a drag for the source is stopped. The coordinates are in the source's local coordinate system.
-         * @param payload null if dragStart returned null.
-         * @param target null if not dropped on a valid target. */
-        public virtual void DragStop( InputEvent ev, float x, float y, int pointer, Payload? payload, Target? target )
+        /// <summary>
+        /// Called when a drag for the source is stopped. The coordinates are
+        /// in the source's local coordinate system.
+        /// </summary>
+        /// <param name="ev"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="pointer"></param>
+        /// <param name="payload"> null if dragStart returned null. </param>
+        /// <param name="target"> null if not dropped on a valid target. </param>
+        public virtual void DragStop( InputEvent ev, float x, float y, int pointer, Payload? payload, DragTarget? target )
         {
         }
     }
 
-    /**
-     * A target where a payload can be dropped to.
-     */
+    /// <summary>
+    /// A target where a payload can be dropped to.
+    /// </summary>
     [PublicAPI]
-    public abstract class Target
+    public abstract class DragTarget
     {
         public Actor Actor { get; set; }
 
-        public Target( Actor actor )
+        /// <summary>
+        /// Constructor, creates a new Target actor. 
+        /// </summary>
+        /// <param name="actor"></param>
+        /// <exception cref="ArgumentException"></exception>
+        protected DragTarget( Actor actor )
         {
             ArgumentNullException.ThrowIfNull( actor );
 
@@ -497,26 +629,29 @@ public class DragAndDrop
             }
         }
 
-        /**
-         * Called when the payload is dragged over the target. The coordinates are in the target's local coordinate system.
-         * @return true if this is a valid target for the payload.
-         */
-        public abstract bool Drag( Source source, Payload payload, float x, float y, int pointer );
+        /// <summary>
+        /// Called when the payload is dragged over the target. The
+        /// coordinates are in the target's local coordinate system.
+        /// </summary>
+        /// <returns> true if this is a valid target for the payload. </returns>
+        public abstract bool Drag( DragSource source, Payload payload, float x, float y, int pointer );
 
-        /**
-         * Called when the payload is no longer over the target, whether because the touch was moved or a drop occurred. This is
-         * called even if {@link #drag(Source, Payload, float, float, int)} returned false.
-         */
-        public void Reset( Source source, Payload payload )
+        /// <summary>
+        /// Called when the payload is no longer over the target, whether
+        /// because the touch was moved or a drop occurred. This is called
+        /// even if <see cref="Drag(DragSource, Payload, float, float, int)"/>
+        /// returned false.
+        /// </summary>
+        public void Reset( DragSource source, Payload payload )
         {
         }
 
-        /**
-         * Called when the payload is dropped on the target. The coordinates are in the
-         * target's local coordinate system.
-         * This is not called if {@link #drag(Source, Payload, float, float, int)} returned false.
-         */
-        public abstract void Drop( Source source, Payload payload, float x, float y, int pointer );
+        /// <summary>
+        /// Called when the payload is dropped on the target. The coordinates
+        /// are in the target's local coordinate system. This is not called if
+        /// <see cref="Drag(DragSource, Payload, float, float, int)"/> returned false.
+        /// </summary>
+        public abstract void Drop( DragSource source, Payload payload, float x, float y, int pointer );
     }
 
     /// <summary>

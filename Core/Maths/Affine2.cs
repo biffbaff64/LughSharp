@@ -25,7 +25,7 @@ namespace LibGDXSharp.Maths;
 /// Operations on affine matrices are faster because the last row can always be
 /// assumed (0, 0, 1).
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Affine2// : ISerializable
 {
     public float m00 = 1;

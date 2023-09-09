@@ -18,7 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Maths;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class Vector2 : IVector< Vector2 >
 {
     public readonly static Vector2 XDefault = new( 1, 0 );

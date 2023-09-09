@@ -23,7 +23,7 @@ namespace LibGDXSharp.Graphics.G3D.Models.Data;
 /// buffer objects are not stored. Instead, a ModelData instance needs to be converted to a Model first.
 /// @author badlogic 
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class ModelData
 {
     public string?                ID         { get; set; }

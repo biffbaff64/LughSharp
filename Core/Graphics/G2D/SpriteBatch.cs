@@ -19,7 +19,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class SpriteBatch : IBatch
 {
     /// <summary>

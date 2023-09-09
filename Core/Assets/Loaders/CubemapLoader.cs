@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
     public struct CubemapLoaderInfo

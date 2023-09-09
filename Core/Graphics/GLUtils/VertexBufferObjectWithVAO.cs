@@ -18,7 +18,7 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class VertexBufferObjectWithVAO : IVertexData
 {
     private readonly static IntBuffer TmpHandle = BufferUtils.NewIntBuffer( 1 );

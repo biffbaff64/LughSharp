@@ -92,7 +92,7 @@ namespace LibGDXSharp.Utils;
 /// </code>
 /// </para>
 /// </summary>
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public class StringTokenizer
 {
     private readonly int     _maxPosition;

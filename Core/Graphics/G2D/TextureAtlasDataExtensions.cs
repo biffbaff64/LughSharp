@@ -18,8 +18,8 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
+[PublicAPI]
 public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region >
 {
     public ComparatorAnonymousInnerClass( TextureAtlasData textureAtlasData )
@@ -52,7 +52,7 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
     }
 }
 
-[SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+[PublicAPI]
 public partial record TextureAtlasData
 {
     public class PageFieldParseClass : IField< Page >

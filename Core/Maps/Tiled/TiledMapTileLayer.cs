@@ -84,7 +84,7 @@ public class TiledMapTileLayer : MapLayer
     /// <summary>
     /// represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties.
     /// </summary>
-    [SuppressMessage( "ReSharper", "ClassCanBeSealed.Global" )]
+    [PublicAPI]
     public class Cell
     {
         private ITiledMapTile? _tile;

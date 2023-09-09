@@ -20,7 +20,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 using System.Threading;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class RunnableAction : Action
 {
     private bool _ran;

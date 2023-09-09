@@ -19,7 +19,7 @@ using LibGDXSharp.Graphics.G3D.Utils;
 
 namespace LibGDXSharp.Graphics.G3D;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class Model
 {
     private List< IDisposable > _disposables = new();

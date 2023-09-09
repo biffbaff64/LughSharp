@@ -18,7 +18,7 @@ using LibGDXSharp.Scenes.Scene2D;
 
 namespace LibGDXSharp.Scenes.Listeners;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class FocusListener : IEventListener
 {
     public class FocusEvent : Event

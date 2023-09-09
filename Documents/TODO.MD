@@ -612,7 +612,7 @@ SCENES.SCENE2D/UTILS
 
     - DONE - ArraySelection                 
     - DONE - BaseDrawable                   
-    -      - DragAndDrop                    
+    - IP   - DragAndDrop                    
     - DONE - ICullable                      
     - DONE - IDisableable                   
     - DONE - IDrawable                      
@@ -646,7 +646,7 @@ UTILS
     -      - DataOutput                     Check
     - DONE - DataUtils                      Added Class
     - DONE - FloatConsts                    Done, but is it needed?
-    -      - GdxNativesLoader
+    -      - GdxNativesLoader               Check
     -      - I18NBundle                     Check
     - DONE - ICloseable                     
     - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backends.                 
@@ -698,7 +698,7 @@ UTILS/BUFFERS
 -------------
 
     Does C# have these classes already?
-        - MemoryStream?
+        - Could MemoryStream be used?
 
     - DONE - Buffer
     - IP   - BufferUtils
@@ -733,7 +733,6 @@ UTILS/COLLECTIONS
     - **** - CharArray                      Use List< char >
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
-    - IP   - DictionaryExtensions
     - **** - FloatArray                     Use List< float >
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - **** - IntArray                       Use List< int >
@@ -742,7 +741,6 @@ UTILS/COLLECTIONS
     - **** - IntMap                         Use Dictionary< int, V >
     - **** - IntSet                         Use List<int>
     - **** - IPredicate
-    - IP   - ListExtensions
     - **** - LongArray                      Use List< long >
     - **** - LongMap                        Use Dictionary< long, V >
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
@@ -756,6 +754,11 @@ UTILS/COLLECTIONS
     - **** - PredicateIterator
     - **** - ShortArray                     Use List< short >
     - DONE - SnapshotArray                  Convert / extend List<T>
+
+    ----------------------------------------------------------------------------------
+
+    - IP   - DictionaryExtensions
+    - IP   - ListExtensions
     - IP   - SortedSetExtensions
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

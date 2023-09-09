@@ -25,7 +25,7 @@ namespace LibGDXSharp.Graphics;
 /// is used by a <see cref="Mesh"/> when drawing with a <see cref="ShaderProgram"/>.
 /// The alias can be changed at any time.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class VertexAttribute
 {
     /// <summary>

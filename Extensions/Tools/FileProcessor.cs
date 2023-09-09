@@ -26,7 +26,7 @@ namespace LibGDXSharp.Extensions.Tools;
 /// and the output file. If <see cref="SetFlattenOutput(bool)"/> is false, the output
 /// will match the directory structure of the input.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class FileProcessor
 {
 }

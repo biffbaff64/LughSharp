@@ -16,8 +16,7 @@
 
 namespace LibGDXSharp.G2D;
 
-[SuppressMessage( "ReSharper", "PropertyCanBeMadeInitOnly.Global" )]
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class AtlasRegion : TextureRegion
 {
     /// <summary>

@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
     protected float[]? Hb     { get; set; }

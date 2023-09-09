@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public interface IPath<T>
 {
     T DerivativeAt( in T outParam, in float t );

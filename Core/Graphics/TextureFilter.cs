@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Graphics;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class TextureFilter
 {
     /// <summary>

@@ -19,7 +19,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// <summary>
 /// Adds an action to an actor.
 /// </summary>
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class AddAction : Action
 {
     public Action? Action { get; set; }

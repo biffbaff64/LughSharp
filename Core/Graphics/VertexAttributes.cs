@@ -18,7 +18,7 @@ using System.Text;
 
 namespace LibGDXSharp.Graphics;
 
-[SuppressMessage( "ReSharper", "MemberCanBeInternal" )]
+[PublicAPI]
 public class VertexAttributes
 {
     public static class Usage
