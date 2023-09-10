@@ -27,7 +27,7 @@ namespace LibGDXSharp.Utils.Xml;
 /// of the element or attribute name. Prologs and doctypes are ignored. Only 8-bit
 /// character encodings are supported. Input is assumed to be well formed.
 /// <para>
-/// The default behavior is to parse the XML into a DOM. Extends this class and
+/// The default behavior is to parse the XML into a DOM. Extend this class and
 /// override methods to perform event driven parsing. When this is done, the parse
 /// methods will return null.
 /// </para>
@@ -56,6 +56,12 @@ public sealed class XmlReader
     private readonly static byte[]  XmlIndicies      = Init_XmlIndicies_0();
     private readonly static byte[]  XmlTransTargs    = Init_XmlTransTargs_0();
     private readonly static byte[]  XmlTransActions  = Init_XmlTransActions_0();
+
+    private static byte[] _initXmlActions1 =
+    {
+        0, 1, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5,
+        1, 6, 1, 7, 2, 0, 6, 2, 1, 4, 2, 2, 4
+    };
 
     private static byte[] Init_XmlActions_0()
     {
@@ -160,17 +166,17 @@ public sealed class XmlReader
     }
 
     // ----------------------------------------------------------
-    // 
+    // Code
     // ----------------------------------------------------------
 
-    public Element Parse( string xml )
+    public Element? Parse( string xml )
     {
         var data = xml.ToCharArray();
 
         return Parse( data, 0, data.Length );
     }
 
-    public Element Parse( StreamReader reader )
+    public Element? Parse( StreamReader reader )
     {
         try
         {
@@ -206,11 +212,6 @@ public sealed class XmlReader
         {
             throw new SerializationException( ex.Message );
         }
-
-//        finally
-//        {
-//            StreamUtils.CloseQuietly( reader );
-//        }
     }
 
 //    public Element Parse( StreamReader input )
@@ -229,7 +230,7 @@ public sealed class XmlReader
 //        }
 //    }
 
-    public Element Parse( FileInfo file )
+    public Element? Parse( FileInfo file )
     {
         try
         {
@@ -241,395 +242,369 @@ public sealed class XmlReader
         }
     }
 
-    private Element Parse( char[] data, int offset, int length )
+    //TODO: Validate these suppressions!
+    [SuppressMessage( "ReSharper", "UnreachableSwitchCaseDueToIntegerAnalysis" )]
+    [SuppressMessage( "ReSharper", "ConditionIsAlwaysTrueOrFalse" )]
+    private Element? Parse( char[] data, int offset, int length )
     {
-        int cs = XML_START;
-        var p  = offset;
-        var pe = length;
+        var cs      = XML_START;
+        var p       = offset;
+        var pe      = length;
+        var s       = 0;
+        var hasBody = false;
+        var gotoTarg = 0;
 
-        var     s             = 0;
         string? attributeName = null;
-        var     hasBody       = false;
 
-        // line 97 "XmlReader.java"
+        _goto:
+
+        while ( true )
         {
-            var gotoTarg = 0;
-
-            _goto:
-
-            while ( true )
+            switch ( gotoTarg )
             {
-                switch ( gotoTarg )
-                {
-                    case 0:
-                        if ( p == pe )
+                case 0:
+                    if ( p == pe )
+                    {
+                        gotoTarg = 4;
+
+                        goto _goto;
+                    }
+
+                    if ( cs == 0 )
+                    {
+                        gotoTarg = 5;
+
+                        goto _goto;
+                    }
+
+                    break;
+
+                case 1:
+                    _match:
+
+                    int trans;
+
+                    do
+                    {
+                        int keys = XmlKeyOffsets[ cs ];
+                        trans = XmlIndexOffsets[ cs ];
+                        int klen = XmlSingleLengths[ cs ];
+
+                        if ( klen > 0 )
                         {
-                            gotoTarg = 4;
+                            var lower = keys;
+                            var upper = ( keys + klen ) - 1;
 
-                            goto _goto;
-                        }
-
-                        if ( cs == 0 )
-                        {
-                            gotoTarg = 5;
-
-                            goto _goto;
-                        }
-
-                        break;
-
-                    case 1:
-                        _match:
-
-                        int trans;
-
-                        do
-                        {
-                            int keys = XmlKeyOffsets[ cs ];
-                            trans = XmlIndexOffsets[ cs ];
-                            int klen = XmlSingleLengths[ cs ];
-
-                            if ( klen > 0 )
+                            while ( true )
                             {
-                                var lower = keys;
-                                var upper = ( keys + klen ) - 1;
-
-                                while ( true )
+                                if ( upper < lower )
                                 {
-                                    if ( upper < lower )
-                                    {
-                                        break;
-                                    }
-
-                                    var mid = lower + ( ( upper - lower ) >> 1 );
-
-                                    if ( data[ p ] < XmlTransKeys[ mid ] )
-                                    {
-                                        upper = mid - 1;
-                                    }
-                                    else if ( data[ p ] > XmlTransKeys[ mid ] )
-                                    {
-                                        lower = mid + 1;
-                                    }
-                                    else
-                                    {
-                                        trans += mid - keys;
-
-                                        goto _match;
-                                    }
+                                    break;
                                 }
 
-                                keys  += klen;
-                                trans += klen;
+                                var mid = lower + ( ( upper - lower ) >> 1 );
+
+                                if ( data[ p ] < XmlTransKeys[ mid ] )
+                                {
+                                    upper = mid - 1;
+                                }
+                                else if ( data[ p ] > XmlTransKeys[ mid ] )
+                                {
+                                    lower = mid + 1;
+                                }
+                                else
+                                {
+                                    trans += mid - keys;
+
+                                    goto _match;
+                                }
                             }
 
-                            klen = XmlRangeLengths[ cs ];
+                            keys  += klen;
+                            trans += klen;
+                        }
 
-                            if ( klen > 0 )
+                        klen = XmlRangeLengths[ cs ];
+
+                        if ( klen > 0 )
+                        {
+                            var lower = keys;
+                            var upper = ( keys + ( klen << 1 ) ) - 2;
+
+                            while ( true )
                             {
-                                var lower = keys;
-                                int mid;
-                                var upper = ( keys + ( klen << 1 ) ) - 2;
-
-                                while ( true )
+                                if ( upper < lower )
                                 {
-                                    if ( upper < lower )
-                                    {
-                                        break;
-                                    }
-
-                                    mid = lower + ( ( ( upper - lower ) >> 1 ) & ~1 );
-
-                                    if ( data[ p ] < XmlTransKeys[ mid ] )
-                                    {
-                                        upper = mid - 2;
-                                    }
-                                    else if ( data[ p ] > XmlTransKeys[ mid + 1 ] )
-                                    {
-                                        lower = mid + 2;
-                                    }
-                                    else
-                                    {
-                                        trans += ( mid - keys ) >> 1;
-
-                                        goto _match;
-                                    }
+                                    break;
                                 }
 
-                                trans += klen;
-                            }
-                        }
-                        while ( false );
+                                var mid = lower + ( ( ( upper - lower ) >> 1 ) & ~1 );
 
-                        trans = XmlIndicies[ trans ];
-                        cs    = XmlTransTargs[ trans ];
-
-                        if ( XmlTransActions[ trans ] != 0 )
-                        {
-                            int acts  = XmlTransActions[ trans ];
-                            int nacts = XmlActions[ acts++ ];
-
-                            while ( nacts-- > 0 )
-                            {
-                                switch ( XmlActions[ acts++ ] )
+                                if ( data[ p ] < XmlTransKeys[ mid ] )
                                 {
-                                    case 0:
-                                        // line 94 "XmlReader.rl"
+                                    upper = mid - 2;
+                                }
+                                else if ( data[ p ] > XmlTransKeys[ mid + 1 ] )
+                                {
+                                    lower = mid + 2;
+                                }
+                                else
+                                {
+                                    trans += ( mid - keys ) >> 1;
+
+                                    goto _match;
+                                }
+                            }
+
+                            trans += klen;
+                        }
+                    }
+                    while ( false );
+
+                    trans = XmlIndicies[ trans ];
+                    cs    = XmlTransTargs[ trans ];
+
+                    if ( XmlTransActions[ trans ] != 0 )
+                    {
+                        int acts  = XmlTransActions[ trans ];
+                        int nacts = XmlActions[ acts++ ];
+
+                        while ( nacts-- > 0 )
+                        {
+                            switch ( XmlActions[ acts++ ] )
+                            {
+                                case 0:
+                                {
+                                    s = p;
+
+                                    break;
+                                }
+
+                                case 1:
+                                {
+                                    var c = data[ s ];
+
+                                    if ( ( c == '?' ) || ( c == '!' ) )
                                     {
-                                        s = p;
-                                    }
-
-                                        break;
-
-                                    case 1:
-                                        // line 95 "XmlReader.rl"
-                                    {
-                                        var c = data[ s ];
-
-                                        if ( ( c == '?' ) || ( c == '!' ) )
+                                        if ( ( data[ s + 1 ] == '[' )
+                                          && ( data[ s + 2 ] == 'C' )
+                                          && ( data[ s + 3 ] == 'D' )
+                                          && ( data[ s + 4 ] == 'A' )
+                                          && ( data[ s + 5 ] == 'T' )
+                                          && ( data[ s + 6 ] == 'A' )
+                                          && ( data[ s + 7 ] == '[' ) )
                                         {
-                                            if ( ( data[ s + 1 ] == '[' )
-                                              && //
-                                                 ( data[ s + 2 ] == 'C' )
-                                              && //
-                                                 ( data[ s + 3 ] == 'D' )
-                                              && //
-                                                 ( data[ s + 4 ] == 'A' )
-                                              && //
-                                                 ( data[ s + 5 ] == 'T' )
-                                              && //
-                                                 ( data[ s + 6 ] == 'A' )
-                                              && //
-                                                 ( data[ s + 7 ] == '[' ) )
+                                            s += 8;
+                                            p =  s + 2;
+
+                                            while ( ( data[ p - 2 ] != ']' )
+                                                 || ( data[ p - 1 ] != ']' )
+                                                 || ( data[ p ] != '>' ) )
                                             {
-                                                s += 8;
-                                                p =  s + 2;
-
-                                                while ( ( data[ p - 2 ] != ']' )
-                                                     || ( data[ p - 1 ] != ']' )
-                                                     || ( data[ p ] != '>' ) )
-                                                {
-                                                    p++;
-                                                }
-
-                                                Text( new string( data, s, p - s - 2 ) );
-                                            }
-                                            else if ( ( c == '!' )
-                                                   && ( data[ s + 1 ] == '-' )
-                                                   && ( data[ s + 2 ] == '-' ) )
-                                            {
-                                                p = s + 3;
-
-                                                while ( ( data[ p ] != '-' )
-                                                     || ( data[ p + 1 ] != '-' )
-                                                     || ( data[ p + 2 ] != '>' ) )
-                                                {
-                                                    p++;
-                                                }
-
-                                                p += 2;
-                                            }
-                                            else
-                                            {
-                                                while ( data[ p ] != '>' )
-                                                {
-                                                    p++;
-                                                }
+                                                p++;
                                             }
 
-                                            {
-                                                cs       = 15;
-                                                gotoTarg = 2;
+                                            Text( new string( data, s, p - s - 2 ) );
+                                        }
+                                        else if ( ( c == '!' )
+                                               && ( data[ s + 1 ] == '-' )
+                                               && ( data[ s + 2 ] == '-' ) )
+                                        {
+                                            p = s + 3;
 
-                                                if ( true )
-                                                {
-                                                    goto _goto;
-                                                }
+                                            while ( ( data[ p ] != '-' )
+                                                 || ( data[ p + 1 ] != '-' )
+                                                 || ( data[ p + 2 ] != '>' ) )
+                                            {
+                                                p++;
+                                            }
+
+                                            p += 2;
+                                        }
+                                        else
+                                        {
+                                            while ( data[ p ] != '>' )
+                                            {
+                                                p++;
                                             }
                                         }
 
-                                        hasBody = true;
-                                        Open( new string( data, s, p - s ) );
-                                    }
+                                        cs       = 15;
+                                        gotoTarg = 2;
 
-                                        break;
-
-                                    case 2:
-                                        // line 125 "XmlReader.rl"
-                                    {
-                                        hasBody = false;
-                                        Close();
-
+                                        if ( true )
                                         {
-                                            cs       = 15;
-                                            gotoTarg = 2;
-
-                                            if ( true )
-                                            {
-                                                goto _goto;
-                                            }
+                                            goto _goto;
                                         }
                                     }
 
-                                        break;
+                                    hasBody = true;
+                                    Open( new string( data, s, p - s ) );
 
-                                    case 3:
-                                        // line 130 "XmlReader.rl"
+                                    break;
+                                }
+
+                                case 2:
+                                {
+                                    hasBody = false;
+                                    Close();
+
+                                    cs       = 15;
+                                    gotoTarg = 2;
+
+                                    if ( true )
                                     {
-                                        Close();
+                                        goto _goto;
+                                    }
 
+                                    break;
+                                }
+
+                                case 3:
+                                {
+                                    Close();
+
+                                    cs       = 15;
+                                    gotoTarg = 2;
+
+                                    if ( true )
+                                    {
+                                        goto _goto;
+                                    }
+
+                                    break;
+                                }
+
+                                case 4:
+                                {
+                                    if ( hasBody )
+                                    {
+                                        cs       = 15;
+                                        gotoTarg = 2;
+
+                                        if ( true )
                                         {
-                                            cs       = 15;
-                                            gotoTarg = 2;
-
-                                            if ( true )
-                                            {
-                                                goto _goto;
-                                            }
+                                            goto _goto;
                                         }
                                     }
 
-                                        break;
+                                    break;
+                                }
 
-                                    case 4:
-                                        // line 134 "XmlReader.rl"
+                                case 5:
+                                {
+                                    attributeName = new string( data, s, p - s );
+
+                                    break;
+                                }
+
+                                case 6:
+                                {
+                                    Attribute( attributeName!, new string( data, s, p - s ) );
+
+                                    break;
+                                }
+
+                                case 7:
+                                {
+                                    var end = p;
+
+                                    while ( end != s )
                                     {
-                                        if ( hasBody )
+                                        switch ( data[ end - 1 ] )
                                         {
-                                            cs       = 15;
-                                            gotoTarg = 2;
+                                            case ' ':
+                                            case '\t':
+                                            case '\n':
+                                            case '\r':
+                                                end--;
 
-                                            if ( true )
-                                            {
-                                                goto _goto;
-                                            }
-                                        }
-                                    }
-
-                                        break;
-
-                                    case 5:
-                                        // line 137 "XmlReader.rl"
-                                    {
-                                        attributeName = new string( data, s, p - s );
-                                    }
-
-                                        break;
-
-                                    case 6:
-                                        // line 140 "XmlReader.rl"
-                                    {
-                                        Attribute( attributeName!, new string( data, s, p - s ) );
-                                    }
-
-                                        break;
-
-                                    case 7:
-                                        // line 143 "XmlReader.rl"
-                                    {
-                                        var end = p;
-
-                                        while ( end != s )
-                                        {
-                                            switch ( data[ end - 1 ] )
-                                            {
-                                                case ' ':
-                                                case '\t':
-                                                case '\n':
-                                                case '\r':
-                                                    end--;
-
-                                                    continue;
-                                            }
-
-                                            break;
+                                                continue;
                                         }
 
-                                        var current     = s;
-                                        var entityFound = false;
+                                        break;
+                                    }
+
+                                    var current     = s;
+                                    var entityFound = false;
+
+                                    while ( current != end )
+                                    {
+                                        if ( data[ current++ ] != '&' )
+                                        {
+                                            continue;
+                                        }
+
+                                        var entityStart = current;
 
                                         while ( current != end )
                                         {
-                                            if ( data[ current++ ] != '&' )
+                                            if ( data[ current++ ] != ';' )
                                             {
                                                 continue;
                                             }
 
-                                            var entityStart = current;
+                                            _textBuffer.Append( data, s, entityStart - s - 1 );
 
-                                            while ( current != end )
-                                            {
-                                                if ( data[ current++ ] != ';' )
-                                                {
-                                                    continue;
-                                                }
+                                            var name  = new string( data, entityStart, current - entityStart - 1 );
+                                            var value = Entity( name );
 
-                                                _textBuffer.Append( data, s, entityStart - s - 1 );
+                                            _textBuffer.Append( value ?? name );
 
-                                                var name  = new string( data, entityStart, current - entityStart - 1 );
-                                                var value = Entity( name );
+                                            s           = current;
+                                            entityFound = true;
 
-                                                _textBuffer.Append( value ?? name );
-
-                                                s           = current;
-                                                entityFound = true;
-
-                                                break;
-                                            }
-                                        }
-
-                                        if ( entityFound )
-                                        {
-                                            if ( s < end )
-                                            {
-                                                _textBuffer.Append( data, s, end - s );
-                                            }
-
-                                            Text( _textBuffer.ToString() );
-                                            _textBuffer.Length = 0;
-                                        }
-                                        else
-                                        {
-                                            Text( new string( data, s, end - s ) );
+                                            break;
                                         }
                                     }
 
-                                        break;
+                                    if ( entityFound )
+                                    {
+                                        if ( s < end )
+                                        {
+                                            _textBuffer.Append( data, s, end - s );
+                                        }
 
-                                    // line 286 "XmlReader.java"
+                                        Text( _textBuffer.ToString() );
+                                        _textBuffer.Length = 0;
+                                    }
+                                    else
+                                    {
+                                        Text( new string( data, s, end - s ) );
+                                    }
+
+                                    break;
                                 }
                             }
                         }
+                    }
 
-                        break;
+                    break;
 
-                    case 2:
-                        if ( cs == 0 )
-                        {
-                            gotoTarg = 5;
+                case 2:
+                    if ( cs == 0 )
+                    {
+                        gotoTarg = 5;
 
-                            goto _goto;
-                        }
+                        goto _goto;
+                    }
 
-                        if ( ++p != pe )
-                        {
-                            gotoTarg = 1;
+                    if ( ++p != pe )
+                    {
+                        gotoTarg = 1;
 
-                            goto _goto;
-                        }
+                        goto _goto;
+                    }
 
-                        break;
+                    break;
 
-                    case 4:
-                    case 5:
-                        break;
-                }
-
-                break;
+                case 4:
+                case 5:
+                    break;
             }
-        }
 
-        // line 190 "XmlReader.rl"
+            break;
+        }
 
         if ( p < pe )
         {
@@ -645,7 +620,7 @@ public sealed class XmlReader
 
             throw new SerializationException
                 (
-                $"Error parsing XML on line {lineNumber} near: {new string( data, p, Math.Min( 32, pe - p ) )}"
+                 $"Error parsing XML on line {lineNumber} near: {new string( data, p, Math.Min( 32, pe - p ) )}"
                 );
         }
 
@@ -969,26 +944,30 @@ public sealed class XmlReader
         }
 
         /// <param name="name"> the name of the children </param>
-        /// <returns> the children with the given name or an empty <seealso cref="Array" />  </returns>
+        /// <returns>
+        /// the children with the given name or an empty <seealso cref="Array"/>
+        /// </returns>
         public List< Element > GetChildrenByName( string name )
         {
             var result = new List< Element >();
 
-            if ( _children == null ) return result;
+            if ( _children == null )
+            {
+                return result;
+            }
 
             // ----------------------------------------------------------------
-
             // FYI: This Linq...
             result.AddRange( _children.Where( child => ( child.Name != null ) && child.Name.Equals( name ) ) );
 
             // ...is the equivalent of this c#
-//            foreach ( Element child in _children )
-//            {
-//                if ( ( child.Name != null ) && child.Name.Equals( name ) )
-//                {
-//                    result.Add( child );
-//                }
-//            }
+            // foreach ( Element child in _children )
+            // {
+            //     if ( ( child.Name != null ) && child.Name.Equals( name ) )
+            //     {
+            //         result.Add( child );
+            //     }
+            // }
 
             // ----------------------------------------------------------------
 
@@ -1137,7 +1116,10 @@ public sealed class XmlReader
 
             Element? child = GetChildByName( name );
 
-            if ( child == null ) return defaultValue;
+            if ( child == null )
+            {
+                return defaultValue;
+            }
 
             str = child.Text;
 

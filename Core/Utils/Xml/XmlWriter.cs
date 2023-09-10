@@ -57,7 +57,10 @@ public class XmlWriter
     {
         var count = Indentation;
 
-        if ( _currentElement != null ) count++;
+        if ( _currentElement != null )
+        {
+            count++;
+        }
 
         for ( var i = 0; i < count; i++ )
         {
@@ -67,7 +70,10 @@ public class XmlWriter
 
     public XmlWriter Element( string name )
     {
-        if ( StartElementContent() ) _writer?.Write( '\n' );
+        if ( StartElementContent() )
+        {
+            _writer?.Write( '\n' );
+        }
 
         Indent();
         
@@ -86,8 +92,11 @@ public class XmlWriter
 
     private bool StartElementContent()
     {
-        if ( _currentElement == null ) return false;
-        
+        if ( _currentElement == null )
+        {
+            return false;
+        }
+
         Indentation++;
         
         _stack?.Add( _currentElement );
@@ -100,8 +109,11 @@ public class XmlWriter
 
     public XmlWriter Attribute( string name, object? value )
     {
-        if ( _currentElement == null ) throw new IllegalStateException( "_currentElement cannot be NULL!" );
-        
+        if ( _currentElement == null )
+        {
+            throw new IllegalStateException( "_currentElement cannot be NULL!" );
+        }
+
         _writer?.Write( ' ' );
         _writer?.Write( name );
         _writer?.Write( "=\"" );
@@ -127,7 +139,10 @@ public class XmlWriter
 
         _writer?.Write( str! );
         
-        if ( _indentNextClose ) _writer?.Write( '\n' );
+        if ( _indentNextClose )
+        {
+            _writer?.Write( '\n' );
+        }
 
         return this;
     }
@@ -143,7 +158,10 @@ public class XmlWriter
         {
             Indentation = Math.Max( Indentation - 1, 0 );
             
-            if ( _indentNextClose ) Indent();
+            if ( _indentNextClose )
+            {
+                Indent();
+            }
 
             _writer?.Write( "</" );
             _writer?.Write( _stack?.Pop()! );
