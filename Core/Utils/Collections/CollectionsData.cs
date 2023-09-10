@@ -18,14 +18,14 @@ using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Utils.Collections;
 
+[PublicAPI]
 public class CollectionsData
 {
     /// <summary>
-    /// When true, <see cref="IEnumerator{T}"/> for <see cref="Array{T}"/>,
-    /// <see cref="ObjectMap{TK,TV}"/>, and other collections will allocate a new
-    /// iterator for each invocation.
+    /// When true, <see cref="IEnumerator{T}"/> for collections will allocate a new
+    /// iterator for each invocation. When false, the iterator is reused and nested
+    /// use will throw an exception.
     /// <p>
-    /// When false, the iterator is reused and nested use will throw an exception.
     /// Default is false.
     /// </p> 
     /// </summary>

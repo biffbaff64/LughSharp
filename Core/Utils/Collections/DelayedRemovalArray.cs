@@ -18,6 +18,7 @@ using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class DelayedRemovalArray<T> : List< T >
 {
     private int _iterating = 0;
@@ -28,7 +29,8 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public DelayedRemovalArray( IEnumerable< T > array ) : base( array )
+    public DelayedRemovalArray( IEnumerable< T > array )
+        : base( array )
     {
         Reset();
     }
@@ -36,7 +38,8 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public DelayedRemovalArray( T[] array ) : base( array )
+    public DelayedRemovalArray( T[] array )
+        : base( array )
     {
         Reset();
     }
@@ -52,14 +55,15 @@ public class DelayedRemovalArray<T> : List< T >
         {
             Add( array[ startIndex + i ] );
         }
-            
+
         Reset();
     }
 
     /// <summary>
     /// </summary>
     /// <param name="initialCapacity"></param>
-    public DelayedRemovalArray( int initialCapacity = 16 ) : base( initialCapacity )
+    public DelayedRemovalArray( int initialCapacity = 16 )
+        : base( initialCapacity )
     {
         Reset();
     }
@@ -297,7 +301,7 @@ public class DelayedRemovalArray<T> : List< T >
         }
 
         T t = base[ ^1 ];
-            
+
         base.RemoveAt( Count - 1 );
 
         return t;
@@ -319,7 +323,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <param name="comparator"></param>
-    public new void Sort( IComparer<T> comparator)
+    public new void Sort( IComparer< T > comparator )
     {
         if ( _iterating > 0 )
         {
@@ -368,7 +372,7 @@ public class DelayedRemovalArray<T> : List< T >
 
         if ( newSize < 0 )
         {
-            throw new GdxRuntimeException( "New size must be >= 0: {newSize}");
+            throw new GdxRuntimeException( "New size must be >= 0: {newSize}" );
         }
 
         if ( Count < newSize )

@@ -509,7 +509,7 @@ public class Array<T>
 
         T item = Items[ Size ];
 
-        Items[ Size ] = default!;
+        Items[ Size ] = default( T )!;
 
         return item;
     }

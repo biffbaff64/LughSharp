@@ -18,27 +18,14 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Core.Utils.Collections;
 
+[PublicAPI]
 public static class ListExtensions
 {
     public static T[] Resize<T>( this List< T > ts, int newSize )
     {
         var newItems = new T[ newSize ];
-            
-        Array.Copy( ts.ToArray(), newItems, newSize  );
 
-        // TODO
-        
-//            if ( newSize < ts. )
-            
-//            if ( newSize < ts.Capacity )
-//            {
-//                ts.RemoveRange
-//            }
-                
-//            T[] items    = this.items;
-//            T[] newItems = ( T[] )ArrayReflection.newInstance( items.getClass().getComponentType(), newSize );
-//            System.arraycopy( items, 0, newItems, 0, Math.min( size, newItems.length ) );
-//            this.items = newItems;
+        Array.Copy( ts.ToArray(), newItems, newSize );
 
         return newItems;
     }
@@ -61,7 +48,7 @@ public static class ListExtensions
         }
     }
 
-    public static void AddAll<T>( this List< T > ts, List<T> array, int start, int count )
+    public static void AddAll<T>( this List< T > ts, List< T > array, int start, int count )
     {
         for ( var i = start; i < count; i++ )
         {
@@ -69,14 +56,14 @@ public static class ListExtensions
         }
     }
 
-    public static void AddAll<T>( this List< T > ts, List<T> array )
+    public static void AddAll<T>( this List< T > ts, List< T > array )
     {
         foreach ( T tex in array )
         {
             ts.Add( tex );
         }
     }
-        
+
     /// <summary>
     /// Shuffles the element order of the specified list.
     /// </summary>
@@ -106,7 +93,7 @@ public static class ListExtensions
             ts.RemoveRange( newSize, ts.Count - newSize );
         }
     }
-    
+
     /// <summary>
     /// Removes and returns the last item in the list.
     /// </summary>
@@ -116,7 +103,10 @@ public static class ListExtensions
     /// <exception cref="IllegalStateException"></exception>
     public static T Pop<T>( this List< T > ts )
     {
-        if ( ts.Count == 0 ) throw new IllegalStateException( "Array is empty." );
+        if ( ts.Count == 0 )
+        {
+            throw new IllegalStateException( "Array is empty." );
+        }
 
         T item = ts[ ^1 ];
 
@@ -135,7 +125,7 @@ public static class ListExtensions
     {
         return ts[ ^1 ];
     }
-    
+
     /// <summary>
     /// Removes and returns the item at the specified index.
     /// </summary>

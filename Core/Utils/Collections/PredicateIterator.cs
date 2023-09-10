@@ -18,6 +18,7 @@ using System.Collections;
 
 namespace LibGDXSharp.Utils.Collections;
 
+[PublicAPI]
 public class PredicateIterator<T> : IEnumerator< T >
 {
     public IEnumerator< T? > Enumerator { get; set; }
@@ -45,7 +46,8 @@ public class PredicateIterator<T> : IEnumerator< T >
         this.Predicate  = predicate;
         End             = false;
         Peeked          = false;
-        NextItem        = default;
+        NextItem        = default( T? );
+        Current         = default( T? )!;
     }
 
     /// <summary>
@@ -67,20 +69,26 @@ public class PredicateIterator<T> : IEnumerator< T >
         this.Predicate  = predicate;
         End             = false;
         Peeked          = false;
-        NextItem        = default;
+        NextItem        = default( T? );
     }
 
     public bool HasNext()
     {
-        if ( End ) return false;
+        if ( End )
+        {
+            return false;
+        }
 
-        if ( NextItem != null ) return true;
+        if ( NextItem != null )
+        {
+            return true;
+        }
 
         Peeked = true;
 
         while ( Enumerator.MoveNext() )
         {
-            var n = Enumerator.Current;
+            T? n = Enumerator.Current;
 
             if ( Predicate.Evaluate( n ) )
             {
@@ -102,7 +110,7 @@ public class PredicateIterator<T> : IEnumerator< T >
             return default( T );
         }
 
-        var result = NextItem;
+        T? result = NextItem;
         NextItem = default( T );
         Peeked   = false;
 
@@ -119,19 +127,19 @@ public class PredicateIterator<T> : IEnumerator< T >
         Enumerator.Dispose();
     }
 
-    public bool MoveNext()
+    public virtual bool MoveNext()
     {
         throw new NotImplementedException();
     }
 
-    public void Reset()
+    public virtual void Reset()
     {
         throw new NotImplementedException();
     }
 
     object? IEnumerator.Current => Current;
 
-    public T Current { get; }
+    public T Current { get; init; }
 
     public void Dispose()
     {

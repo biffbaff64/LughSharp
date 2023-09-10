@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils.Collections;
 /// <summary>
 /// </summary>
 /// <typeparam name="T"></typeparam>
+[PublicAPI]
 public class PredicateIterable<T> : IEnumerable< T >
 {
     public IEnumerable< T >        Enumerable { get; set; }

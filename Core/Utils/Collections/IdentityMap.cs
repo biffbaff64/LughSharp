@@ -68,7 +68,8 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
     /// <param name="initialCapacity">
     /// If not a power of two, it is increased to the next nearest power of two.
     /// </param>
-    public IdentityMap( int initialCapacity ) : base( initialCapacity )
+    public IdentityMap( int initialCapacity )
+        : base( initialCapacity )
     {
     }
 
@@ -102,10 +103,7 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
 
     public int LocateKey( TK key )
     {
-        if ( key == null )
-        {
-            throw new ArgumentException( "key cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( key );
 
         TK?[] keytab = this.keyTable;
 

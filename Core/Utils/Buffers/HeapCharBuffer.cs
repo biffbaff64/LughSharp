@@ -58,7 +58,7 @@ public class HeapCharBuffer : CharBuffer
     /// If this buffer's current position is not smaller than its limit
     /// </exception>
     /// <exception cref="ReadOnlyBufferException">
-    /// If this buffer is read-only, which it shouldn't be!````
+    /// If this buffer is read-only, which it shouldn't be!
     /// </exception>
     protected override CharBuffer Put( char c ) => null;
 

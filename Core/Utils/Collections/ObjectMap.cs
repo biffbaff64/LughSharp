@@ -217,16 +217,9 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public TV? Put( TK key, TV? value )
     {
-        if ( keyTable == null )
-        {
-            throw new NullReferenceException( "Put(): _keyTable is null" );
-        }
-
-        if ( valueTable == null )
-        {
-            throw new NullReferenceException( "Put(): _valueTable is null" );
-        }
-
+        ArgumentNullException.ThrowIfNull( keyTable );
+        ArgumentNullException.ThrowIfNull( valueTable );
+        
         var i = LocateKey( key );
 
         if ( i >= 0 )
@@ -252,15 +245,17 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Copies all key-value pairs from the specified <paramref name="map"/> into the current collection.
+    /// Copies all key-value pairs from the specified <paramref name="map"/>
+    /// into the current collection.
     /// </summary>
     /// <param name="map">The source map containing the key-value pairs to copy.</param>
     /// <remarks>
     /// <para>
-    /// This method ensures that the current collection has sufficient capacity to accommodate the
-    /// key-value pairs from the <paramref name="map"/>. Then, it iterates through the key table,
-    /// copying each non-null key along with its associated value from the <paramref name="map"/>
-    /// into the current collection using the <see cref="Put"/> method.
+    /// This method ensures that the current collection has sufficient capacity
+    /// to accommodate the key-value pairs from the <paramref name="map"/>. Then,
+    /// it iterates through the key table, copying each non-null key along with
+    /// its associated value from the <paramref name="map"/> into the current
+    /// collection using the <see cref="Put"/> method.
     /// </para>
     /// </remarks>
     /// <seealso cref="Put"/>
@@ -282,20 +277,20 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Retrieves the value associated with the specified <paramref name="key"/> from the collection.
+    /// Retrieves the value associated with the specified <paramref name="key"/>
+    /// from the collection.
     /// </summary>
-    /// <typeparam name="TT">The type of the key to retrieve.</typeparam>
     /// <param name="key">The key to look up.</param>
     /// <returns>
-    /// The value associated with the <paramref name="key"/> if found; otherwise, <c>null</c>.
+    /// The value associated with the <paramref name="key"/> if found; otherwise null.
     /// </returns>
     /// <remarks>
-    /// <para>
-    /// This method searches the collection for the given <paramref name="key"/> using the <see cref="LocateKey"/> method.
-    /// If the key is found, the associated value is returned; otherwise, <c>null</c> is returned.
-    /// </para>
+    /// This method searches the collection for the given <paramref name="key"/>
+    /// using the <see cref="LocateKey"/> method. If the key is found, the associated
+    /// value is returned; otherwise, <c>null</c> is returned.
     /// </remarks>
     /// <seealso cref="LocateKey"/>
+    /// <typeparam name="TT">The type of the key to look up.</typeparam>
     /// <typeparam name="TK">The type constraint for the key type.</typeparam>
     /// <typeparam name="TV">The type of the value to retrieve.</typeparam>
     public TV? Get<TT>( TT key ) where TT : TK
@@ -719,7 +714,7 @@ public class ObjectMap<TK, TV>
 
         if ( i < 0 )
         {
-            return default;
+            return default( TV? );
         }
 
         TV? oldValue = valueTable[ i ];
@@ -962,8 +957,8 @@ public class ObjectMap<TK, TV>
                 next = ( next + 1 ) & mask;
             }
 
-            map.keyTable[ i ]   = default!;
-            map.valueTable[ i ] = default;
+            map.keyTable[ i ]   = default( TKm? )!;
+            map.valueTable[ i ] = default( TVm? );
 
             map.Size--;
 
@@ -998,7 +993,7 @@ public class ObjectMap<TK, TV>
         {
             if ( !HasNext )
             {
-                throw new NoSuchElementException();
+                throw new NoSuchElementException( "HasNext : false!" );
             }
 
             if ( !Valid )
@@ -1040,7 +1035,7 @@ public class ObjectMap<TK, TV>
         {
             if ( !HasNext )
             {
-                throw new NoSuchElementException();
+                throw new NoSuchElementException( "HasNext : false!" );
             }
 
             if ( !Valid )
@@ -1098,7 +1093,7 @@ public class ObjectMap<TK, TV>
         {
             if ( !HasNext )
             {
-                throw new NoSuchElementException();
+                throw new NoSuchElementException( "HasNext : false!" );
             }
 
             if ( !Valid )

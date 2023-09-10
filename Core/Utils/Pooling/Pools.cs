@@ -15,13 +15,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Core.Utils.Collections;
-using LibGDXSharp.GdxCore.Utils.Reflect;
 
 namespace LibGDXSharp.Utils.Pooling;
 
 /// <summary>
-/// Stores a map of <see cref="Pool{T}"/>s (usually <see cref="ReflectionPool{T}"/>s)
-/// by type for convenient static access.
+/// Stores a map of <see cref="Pool{T}"/>s by type for convenient static access.
 /// </summary>
 public class Pools<T>
 {
@@ -42,7 +40,7 @@ public class Pools<T>
 
         if ( pool == null )
         {
-            pool = new ReflectionPool< T >( 4, max );
+            pool = new Pool< T >( 4, max );
 
             TypePools.Put( typeof( T ), pool );
         }

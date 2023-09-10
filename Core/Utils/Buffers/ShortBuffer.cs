@@ -19,7 +19,7 @@ namespace LibGDXSharp.Utils.Buffers;
 [PublicAPI]
 public abstract class ShortBuffer : Buffer
 {
-    public ShortBuffer() : base( 0, 0, 0, 0 )
+    protected ShortBuffer() : base( 0, 0, 0, 0 )
     {
     }
     

@@ -25,6 +25,7 @@ namespace LibGDXSharp.Utils;
 /// To change the contents of <see cref="Value"/> use <see cref="BinaryHeap{T}.Add(T, float)"/>
 /// if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(T, float)"/>.
 /// </summary>
+[PublicAPI]
 public record BinaryHeapNode
 {
     public float Value { get; set; }
@@ -38,16 +39,17 @@ public record BinaryHeapNode
 /// The <see cref="BinaryHeapNode"/> class can be extended to store additional information.
 /// </para>
 /// </summary>
+[PublicAPI]
 public class BinaryHeap<T> where T : BinaryHeapNode
 {
     public int Size { get; set; }
+
+    private const int DEFAULT_CAPACITY = 16;
 
     private readonly bool _isMaxHeap;
 
     private BinaryHeapNode[]? _nodes;
 
-    private const int DEFAULT_CAPACITY = 16;
-    
     public BinaryHeap( int capacity = DEFAULT_CAPACITY, bool isMaxHeap = false )
     {
         this._isMaxHeap = isMaxHeap;
@@ -61,8 +63,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <returns>The specified node.</returns>
     public T Add( T node )
     {
-        GdxRuntimeException.ThrowIfNull( _nodes );
-        
+        MemberNullException.ThrowIfNull( _nodes );
+
         // Expand if necessary.
         if ( Size == _nodes.Length )
         {
@@ -108,9 +110,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         {
             return false;
         }
-            
+
         ArgumentNullException.ThrowIfNull( node );
-        
+
         foreach ( BinaryHeapNode n in _nodes )
         {
             if ( ( identity && ( n == node ) )
@@ -131,7 +133,12 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     {
         if ( Size == 0 )
         {
-            throw new System.InvalidOperationException( "The heap is empty." );
+            throw new InvalidOperationException( "The heap is empty." );
+        }
+
+        if ( _nodes == null )
+        {
+            MemberNullException.ThrowIfNull( _nodes );
         }
 
         return ( T )_nodes[ 0 ];
@@ -144,6 +151,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// </summary>
     public virtual T Pop()
     {
+        MemberNullException.ThrowIfNull( _nodes );
+
         BinaryHeapNode removed = _nodes[ 0 ];
 
         if ( --Size > 0 )
@@ -164,6 +173,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <returns> The specified node. </returns>
     public virtual T Remove( T node )
     {
+        MemberNullException.ThrowIfNull( _nodes );
+
         if ( --Size > 0 )
         {
             BinaryHeapNode moved = _nodes[ Size ];
@@ -205,6 +216,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
     public void Clear()
     {
+        // If _nodes hasn't been created, fix that problem...
+        _nodes ??= new BinaryHeapNode[ DEFAULT_CAPACITY ];
+
         Array.Fill( _nodes, null, 0, Size );
         Size = 0;
     }
@@ -230,6 +244,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
     private void Up( int index )
     {
+        MemberNullException.ThrowIfNull( _nodes );
+
         var ix = index;
 
         while ( ix > 0 )
@@ -256,6 +272,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
     private void Down( int index )
     {
+        MemberNullException.ThrowIfNull( _nodes );
+
         BinaryHeapNode node = this._nodes[ index ];
 
         var size  = this.Size;
@@ -336,6 +354,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             return false;
         }
 
+        MemberNullException.ThrowIfNull( _nodes );
+        MemberNullException.ThrowIfNull( other._nodes );
+
         BinaryHeapNode[] nodes1 = this._nodes;
         BinaryHeapNode[] nodes2 = other._nodes;
 
@@ -352,21 +373,16 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
     public override int GetHashCode()
     {
-        var h = 1;
+        var hash = 37 + GetType().GetHashCode();
+        
+        hash = ( hash * 67 ) + NumberUtils.FloatToIntBits( hash );
 
-        BinaryHeapNode[] nodes = this._nodes;
-
-        for ( int i = 0, n = Size; i < n; i++ )
-        {
-            h = ( h * 31 ) + NumberUtils.FloatToIntBits( nodes[ i ].Value );
-        }
-
-        return h;
+        return hash;
     }
 
     public new string ToString()
     {
-        if ( Size == 0 )
+        if ( ( Size == 0 ) || ( _nodes == null ) )
         {
             return "[]";
         }

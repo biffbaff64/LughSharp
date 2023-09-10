@@ -58,7 +58,6 @@ namespace LibGDXSharp.Utils;
 /// </para>
 /// </summary>
 [PublicAPI]
-[PublicAPI]
 public class TimSort<T>
 {
     /// <summary>

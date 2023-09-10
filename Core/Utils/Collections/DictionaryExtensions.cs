@@ -18,6 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Core.Utils.Collections;
 
+[PublicAPI]
 public static class DictionaryExtension
 {
     /// <summary>
@@ -51,7 +52,7 @@ public static class DictionaryExtension
             }
         }
 
-        return default;
+        return default( TK? );
     }
 
     /// <summary>
@@ -60,13 +61,15 @@ public static class DictionaryExtension
     /// </summary>
     public static TV Get<TK, TV>( this Dictionary< TK, TV > self, TK key, TV defaultValue ) where TK : notnull
     {
-        if ( key == null ) throw new GdxRuntimeException( "key is null" );
+        if ( key == null )
+        {
+            throw new GdxRuntimeException( "key is null" );
+        }
 
         return self.TryGetValue( key, out TV? value ) ? value : defaultValue;
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="self"></param>
     /// <param name="key"></param>
@@ -77,9 +80,15 @@ public static class DictionaryExtension
     /// <exception cref="KeyNotFoundException"></exception>
     public static TV Get<TK, TV>( this Dictionary< TK, TV > self, TK key ) where TK : notnull
     {
-        if ( key == null ) throw new GdxRuntimeException( "key is null" );
+        if ( key == null )
+        {
+            throw new GdxRuntimeException( "key is null" );
+        }
 
-        if ( self.TryGetValue( key, out TV? value ) ) return value;
+        if ( self.TryGetValue( key, out TV? value ) )
+        {
+            return value;
+        }
 
         throw new KeyNotFoundException( key.ToString() );
     }

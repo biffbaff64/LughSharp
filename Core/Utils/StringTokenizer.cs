@@ -378,7 +378,7 @@ public class StringTokenizer
 
         if ( _currentPosition >= _maxPosition )
         {
-            throw new NoSuchElementException();
+            throw new IndexOutOfRangeException( $"{_currentPosition} > {_maxPosition}" );
         }
 
         var start = _currentPosition;

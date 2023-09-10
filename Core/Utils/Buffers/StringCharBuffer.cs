@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public sealed class StringCharBuffer : CharBuffer
 {
     private readonly string _string;
@@ -160,7 +161,7 @@ public sealed class StringCharBuffer : CharBuffer
     public override bool IsReadOnly => true;
     
     protected override string ToString( int start, int end )
-        => _string.ToString().Substring( start + offset, end + offset );
+        => _string.Substring( start + offset, end + offset );
     
     /// <summary>
     /// Creates a new character buffer that represents the specified subsequence

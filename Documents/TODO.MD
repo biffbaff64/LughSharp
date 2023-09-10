@@ -681,19 +681,6 @@ UTILS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/ASYNC - DELETE CANDIDATE
------------
-
-     Convert later, purely for education purposes.
-
-    - **** - AsyncExecutor
-    - **** - AsyncResult|
-    - **** - IAsyncTask
-    - **** - ThreadUtils
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 UTILS/BUFFERS
 -------------
 
@@ -722,19 +709,20 @@ UTILS/BUFFERS
 UTILS/COLLECTIONS
 -----------------
 
-    Note: C# has IEnumerable and IEnumerator interfaces...
-
     - DONE - Array<T>                       Converted, but use List<T> so can be removed
+    - DONE - CollectionsData
+    - DONE - DelayedRemovalArray            Convert / Extend List<>
+    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
+    - IP   - SnapshotArray                  Insert the necessary bits from Array<> / remove dependency
+
     - **** - ArrayMap                       Use Dictionary<K, V>
     - **** - ArrayIterable                  Use IEnumerable?
     - **** - ArrayIterator                  Use IEnumerator?
     - **** - BoolArray                      Use List< bool >
     - **** - ByteArray                      Use List< byte >
     - **** - CharArray                      Use List< char >
-    - DONE - CollectionsData
-    - DONE - DelayedRemovalArray            Convert / Extend List<>
     - **** - FloatArray                     Use List< float >
-    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - **** - IntArray                       Use List< int >
     - **** - IntFloatMap                    Use Dictionary< int, float >
     - **** - IntIntMap                      Use Dictionary< int, int >
@@ -746,64 +734,18 @@ UTILS/COLLECTIONS
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
     - **** - ObjectIntMap                   Use Dictionary< object, int >
     - **** - ObjectLongMap                  Use Dictionary< object, long >
-    - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
     - **** - ObjectSet<T>                   Use List<T>
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
     - **** - OrderedSet<T>                  Use SortedSet<T>
     - **** - PredicateIterable
     - **** - PredicateIterator
     - **** - ShortArray                     Use List< short >
-    - DONE - SnapshotArray                  Convert / extend List<T>
 
     ----------------------------------------------------------------------------------
 
-    - IP   - DictionaryExtensions
-    - IP   - ListExtensions
+    - DONE - DictionaryExtensions
+    - DONE - ListExtensions
     - IP   - SortedSetExtensions
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/COMPRESSION - DELETE CANDIDATE
------------------
-
-    - IP   - CRC32
-    - IP   - IChecksum
-
-    - **** - ICodeProgress
-    - **** - LzmaAdapted
-
-UTILS/COMPRESSION/LZ - DELETE CANDIDATE
---------------------
-
-    - **** - BinTree
-    - **** - InWindow
-    - **** - OutWindow
-
-UTILS/COMPRESSION/LZMA - DELETE CANDIDATE
-----------------------
-
-    - **** - Base
-    - **** - Decoder
-    - **** - Encoder
-
-UTILS/COMPRESSION/RANGECODER - DELETE CANDIDATE
-----------------------------
-
-    - **** - BitTreeDecoder
-    - **** - BitTreeEncoder
-    - **** - Decoder
-    - **** - Encoder
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/CONCURRENT - DELETE CANDIDATE
-----------------
-
-    - **** - AtomicInteger
-    - **** - AtomicQueue
-    - **** - AtomicReferenceArray
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -811,47 +753,18 @@ UTILS/CONCURRENT - DELETE CANDIDATE
 UTILS/EXCEPTIONS
 ----------------
 
-    All classes need documenting / tidying.
-
-    - IP   - AssetNotLoadedException        
-    - IP   - BufferOverflowException        
-    - IP   - BufferUnderflowException       
-    - IP   - GdxRuntimeException            
-    - IP   - IllegalStateException          
-    - IP   - InvalidMarkException           
-    - IP   - NoSuchElementException         
-    - IP   - NumberFormatException          
-    - IP   - ReadOnlyBufferException        
-    - IP   - UnsupportedEncodingException   
-    - IP   - UnsupportedOperationException  
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/JSON - DELETE CANDIDATE
-----------
-
-    - **** - IBaseJsonReader
-    - **** - Json
-    - **** - JsonReader
-    - **** - JsonValue
-    - **** - JsonWriter
-    - **** - UBJsonReader
-    - **** - UBJsonWriter
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/OBSERVERS - DELETE CANDIDATE
----------------
-
-    -      - ActorGestureObserver
-    -      - ChangeObserver
-    -      - ClickObserver
-    -      - DragObserver
-    -      - DragScrollObserver
-    -      - FocusObserver
-    -      - InputObserver
+    - DONE - AssetNotLoadedException        
+    - DONE - BufferOverflowException        
+    - DONE - BufferUnderflowException       
+    - DONE - GdxRuntimeException            
+    - DONE - IllegalStateException          
+    - DONE - InvalidMarkException       
+    - DONE _ MemberNullException
+    - DONE - NoSuchElementException         
+    - DONE - NumberFormatException          
+    - DONE - ReadOnlyBufferException        
+    - DONE - UnsupportedEncodingException   
+    - DONE - UnsupportedOperationException  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -864,38 +777,6 @@ UTILS/POOLING
     - DONE - Pool                           
     - DONE - PooledLinkedList               
     - DONE - Pools                          
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/REFLECT - DELETE CANDIDATE
--------------
-
-    - **** - Annotation
-    - **** - ArrayReflection
-    - **** - ClassReflection
-    - **** - Constructor
-    - **** - Field
-    - **** - Method
-    - **** - ReflectionException
-    - **** - ReflectionPool
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/REGEX - DELETE CANDIDATE
------------
-
-    USE C# REGEX LIBS, THEY'RE MUCH EASIER!!
-
-    - **** - ASCII
-    - **** - IMatchResult
-    - **** - Matcher
-    - **** - Pattern
-    - **** - PatternCompanions
-    - **** - PatternHelper
-    - **** - PatternSyntaxException
-    - **** - UnicodeProp
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -914,10 +795,11 @@ UTILS/VIEWPORT
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/XML - DELETE CANDIDATE
+UTILS/XML
 ---------
 
     - DONE - XmlReader
+    - DONE - XmlReaderData
     - DONE - XmlWriter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

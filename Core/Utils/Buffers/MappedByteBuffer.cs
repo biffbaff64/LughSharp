@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public abstract class MappedByteBuffer : ByteBuffer
 {
     protected MappedByteBuffer( int mark, int pos, int lim, int cap, FileInfo? fd = null )

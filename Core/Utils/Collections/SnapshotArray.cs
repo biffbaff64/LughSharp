@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Text;
+
 namespace LibGDXSharp.Utils.Collections;
 
 /// <summary>
@@ -32,28 +34,53 @@ namespace LibGDXSharp.Utils.Collections;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [PublicAPI]
-public class SnapshotArray<T> : Array< T >
+public class SnapshotArray<T>
 {
+    public T[]  Items   { get; private set; }
+    public int  Size    { get; private set; }
+    public bool Ordered { get; private set; }
+
     private T[]? _snapshot;
     private T[]? _recycled;
     private int  _snapshotCount;
 
-    public SnapshotArray( int capacity = 0 ) : base( capacity: capacity )
+    private IEnumerable< T >?       _iterable;
+    private PredicateIterable< T >? _predicateIEnumerable;
+
+    public SnapshotArray( int capacity = 0 )
+        : this( true, capacity )
     {
     }
 
-    public SnapshotArray( Array< T > array ) : base( array )
+    public SnapshotArray( SnapshotArray< T > array )
     {
+        ArgumentNullException.ThrowIfNull( array );
+
+        if ( array.Items == null )
+        {
+            throw new GdxRuntimeException( "array cannot be null!" );
+        }
+
+        Ordered = array.Ordered;
+        Size    = array.Size;
+        Items   = new T[ Size ];
+
+        Array.Copy( array.Items, 0, Items, 0, Size );
     }
 
-    public SnapshotArray( bool ordered, int capacity )
-        : base( ordered, capacity )
+    public SnapshotArray( bool ordered = true, int capacity = 16 )
     {
+        Ordered = ordered;
+        Items   = new T[ capacity ];
     }
 
     public SnapshotArray( bool ordered, T[] array, int startIndex, int count )
-        : base( ordered, array, startIndex, count )
     {
+        Ordered = ordered;
+        Size    = count;
+        Items   = new T[ count ];
+
+        Array.Copy( array, startIndex, Items, 0, count );
     }
 
     /// <summary>
@@ -61,7 +88,6 @@ public class SnapshotArray<T> : Array< T >
     /// returns the array. 
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NullReferenceException"></exception>
     public T?[] Begin()
     {
         Modified();
@@ -79,7 +105,7 @@ public class SnapshotArray<T> : Array< T >
     {
         _snapshotCount = Math.Max( 0, _snapshotCount - 1 );
 
-        if ( ( _snapshot != base.ToArray() ) && ( _snapshotCount == 0 ) )
+        if ( ( _snapshot != ToArray() ) && ( _snapshotCount == 0 ) )
         {
             // The backing array was copied, keep around the old array.
             _recycled = _snapshot;
@@ -88,7 +114,7 @@ public class SnapshotArray<T> : Array< T >
             {
                 for ( int i = 0, n = _recycled.Length; i < n; i++ )
                 {
-                    _recycled[ i ] = default!;
+                    _recycled[ i ] = default( T )!;
                 }
             }
         }
@@ -100,7 +126,7 @@ public class SnapshotArray<T> : Array< T >
     /// </summary>
     public void Modified()
     {
-        if ( _snapshot != base.ToArray() )
+        if ( _snapshot != ToArray() )
         {
             return;
         }
@@ -120,34 +146,129 @@ public class SnapshotArray<T> : Array< T >
         }
         else
         {
-            this.Resize( base.Size );
+            this.Resize( Size );
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
-    public override void Set( int index, T value )
+    public void Add( T value )
     {
         Modified();
+        
+        if ( Size == Items.Length )
+        {
+            Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
+        }
 
-        base.Set( index, value );
+        Items[ Size++ ] = value;
     }
 
     /// <summary>
-    /// 
+    /// Copy 'count' items from the supplied array to this array,
+    /// starting from position 'start'.
+    /// </summary>
+    /// <param name="array">The array of items to add.</param>
+    /// <param name="start">The start index.</param>
+    /// <param name="count">The number of items to copy.</param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public void AddAll( SnapshotArray< T > array, int start, int count )
+    {
+        if ( ( start + count ) > array.Size )
+        {
+            throw new ArgumentOutOfRangeException
+                ( "start + count must be <= size - " + start + " + " + count + " <= " + array.Size );
+        }
+
+        Modified();
+        
+        AddAll( array.Items, start, count );
+    }
+
+    /// <summary>
+    /// Copy 'count' items from the supplied array to this array,
+    /// starting from position 'start'.
+    /// </summary>
+    /// <param name="array">The array of items to add.</param>
+    /// <param name="start">The start index.</param>
+    /// <param name="count">The number of items to copy.</param>
+    public void AddAll( T?[] array, int start, int count )
+    {
+        Modified();
+        
+        var sizeNeeded = Size + count;
+
+        if ( sizeNeeded > Items.Length )
+        {
+            Items = Resize( Math.Max( 8, ( int )( sizeNeeded * 1.75f ) ) );
+        }
+
+        Array.Copy( array, start, Items, Size, count );
+
+        Size += count;
+    }
+
+    public T Get( int index )
+    {
+        if ( index >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+        }
+
+        return Items[ index ];
+    }
+
+    /// <summary>
     /// </summary>
     /// <param name="index"></param>
     /// <param name="value"></param>
-    public override void Insert( int index, T value )
+    public void Set( int index, T value )
     {
+        if ( index >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+        }
+
         Modified();
-        base.Insert( index, value );
+
+        Items[ index ] = value;
     }
 
-    public override void Swap( int first, int second )
+    /// <summary>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="value"></param>
+    public void Insert( int index, T value )
+    {
+        if ( index > Size )
+        {
+            throw new ArgumentOutOfRangeException( "index can't be > size - " + index + " > " + Size );
+        }
+
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
+
+        Modified();
+        
+        if ( Size == Items.Length )
+        {
+            Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
+        }
+
+        if ( Ordered )
+        {
+            Array.Copy( Items, index, Items, index + 1, Size - index );
+        }
+        else
+        {
+            Items[ Size ] = Items[ index ];
+        }
+
+        Size++;
+        Items[ index ] = value;
+    }
+
+    public void Swap( int first, int second )
     {
         Modified();
 
@@ -163,11 +284,20 @@ public class SnapshotArray<T> : Array< T >
     {
         Modified();
 
-        return base.RemoveValue( value );
+        for ( int i = 0, n = Size; i < n; i++ )
+        {
+            if ( value!.Equals( Items[ i ] ) )
+            {
+                RemoveAt( i );
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
@@ -175,18 +305,65 @@ public class SnapshotArray<T> : Array< T >
     {
         Modified();
 
-        return this.RemoveIndex( index );
+        if ( index >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+        }
+
+        T value = Items[ index ];
+
+        Size--;
+
+        if ( Ordered )
+        {
+            Array.Copy( Items, index + 1, Items, index, Size - index );
+        }
+        else
+        {
+            Items[ index ] = Items[ Size ];
+        }
+
+        Items[ Size ] = default( T )!;
+
+        return value;
     }
 
     /// <summary>
     /// Removes a range of elements from the array.
     /// </summary>
     /// <param name="start">The zero-based starting index of the range of elements to remove.</param>
-    /// <param name="count">The number of elements to remove.</param>
-    public override void RemoveRange( int start, int count )
+    /// <param name="end">The ending index of the range.</param>
+    public void RemoveRange( int start, int end )
     {
         Modified();
-        base.RemoveRange( start, count );
+        
+        if ( end >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "end can't be >= size - " + end + " >= " + Size );
+        }
+
+        if ( start > end )
+        {
+            throw new ArgumentOutOfRangeException( "start can't be > end - " + start + " > " + end );
+        }
+
+        var count = ( end - start ) + 1;
+
+        if ( Ordered )
+        {
+            Array.Copy( Items, start + count, Items, start, Size - ( start + count ) );
+        }
+        else
+        {
+            var lastIndex = this.Size - 1;
+
+            for ( var i = 0; i < count; i++ )
+            {
+                Items[ start + i ] = Items[ lastIndex - i ];
+            }
+        }
+
+        Size -= count;
     }
 
     /// <summary>
@@ -195,10 +372,154 @@ public class SnapshotArray<T> : Array< T >
     /// </summary>
     /// <param name="array"></param>
     /// <returns></returns>
-    public bool RemoveAll<TT>( TT array ) where TT : Array<T>
+    public bool RemoveAll( SnapshotArray< T > array )
     {
         Modified();
 
-        return base.RemoveAll( array );
+        var size      = this.Size;
+        var startSize = size;
+
+        for ( int i = 0, n = array.Size; i < n; i++ )
+        {
+            T item = array.Get( i );
+
+            for ( var ii = 0; ii < size; ii++ )
+            {
+                if ( item!.Equals( Items[ ii ] ) )
+                {
+                    RemoveAt( ii );
+                    size--;
+
+                    break;
+                }
+            }
+        }
+
+        return size != startSize;
+    }
+    
+    protected T[] Resize( int newSize )
+    {
+        var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
+
+        Array.Copy( Items, 0, newItems, 0, System.Math.Min( Size, newItems.Length ) );
+
+        this.Items = newItems;
+
+        return newItems;
+    }
+
+    public T[] ToArray()
+    {
+        Type? memberInfo = Items.GetType().BaseType;
+
+        return memberInfo != null
+            ? ToArray( memberInfo )
+            : ( T[] )Array.CreateInstance( Items.GetType(), Size );
+    }
+    
+    public T[] ToArray( Type type )
+    {
+        var result = ( T[] )Array.CreateInstance( type, Size );
+
+        Array.Copy( Items, 0, result, 0, Size );
+
+        return result;
+    }
+    
+    public override int GetHashCode()
+    {
+        var h = 31 * GetType().GetHashCode();
+        h *= 67 + 689696484;
+
+        return h;
+    }
+
+    public override bool Equals( object? obj )
+    {
+        if ( obj == this )
+        {
+            return true;
+        }
+
+        if ( !Ordered )
+        {
+            return false;
+        }
+
+        var array = ( SnapshotArray< T >? )obj;
+
+        if ( ( array == null ) || !array.Ordered )
+        {
+            return false;
+        }
+
+        var n = Size;
+
+        if ( n != array.Size )
+        {
+            return false;
+        }
+
+        for ( var i = 0; i < n; i++ )
+        {
+            T obj1 = this.Items[ i ];
+            T obj2 = array.Items[ i ];
+
+            if ( !( obj1?.Equals( obj2 ) ?? ( obj2 == null ) ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public IEnumerator< T > GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override string ToString()
+    {
+        if ( Size == 0 )
+        {
+            return "[]";
+        }
+
+        var buffer = new StringBuilder( 32 );
+
+        buffer.Append( '[' );
+        buffer.Append( Items[ 0 ] );
+
+        for ( var i = 1; i < Size; i++ )
+        {
+            buffer.Append( ", " );
+            buffer.Append( Items[ i ] );
+        }
+
+        buffer.Append( ']' );
+
+        return buffer.ToString();
+    }
+
+    public string ToString( string separator )
+    {
+        if ( Size == 0 )
+        {
+            return "";
+        }
+
+        var buffer = new StringBuilder( 32 );
+
+        buffer.Append( Items[ 0 ] );
+
+        for ( var i = 1; i < Size; i++ )
+        {
+            buffer.Append( separator );
+            buffer.Append( Items[ i ] );
+        }
+
+        return buffer.ToString();
     }
 }
