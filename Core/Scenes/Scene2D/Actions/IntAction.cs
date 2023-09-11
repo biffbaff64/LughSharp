@@ -21,6 +21,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// <summary>
 /// An action that has a int, whose value is transitioned over time.
 /// </summary>
+[PublicAPI]
 public class IntAction : TemporalAction
 {
     public int Start    { get; set; }

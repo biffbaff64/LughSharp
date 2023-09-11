@@ -52,12 +52,7 @@ public class Table : WidgetGroup
 
     // ------------------------------------------------------------------------
 
-    public Pool< Cell > CellPool { get; } = new()
-    {
-        NewObject = NewCellObject
-    };
-
-    private static Cell NewCellObject() => new();
+    public Pool< Cell > CellPool { get; } = new();
 
     // ------------------------------------------------------------------------
 
@@ -107,14 +102,14 @@ public class Table : WidgetGroup
     public Table( Skin? skin )
     {
         // ----------------------------
-        _columnWidth     = default!;
-        _columnMinWidth  = default!;
-        _columnPrefWidth = default!;
-        _rowHeight       = default!;
-        _rowMinHeight    = default!;
-        _rowPrefHeight   = default!;
-        _expandWidth     = default!;
-        _expandHeight    = default!;
+        _columnWidth     = default( float[]? )!;
+        _columnMinWidth  = default( float[]? )!;
+        _columnPrefWidth = default( float[]? )!;
+        _rowHeight       = default( float[]? )!;
+        _rowMinHeight    = default( float[]? )!;
+        _rowPrefHeight   = default( float[]? )!;
+        _expandWidth     = default( float[]? )!;
+        _expandHeight    = default( float[]? )!;
 
         // ----------------------------
 
@@ -124,12 +119,14 @@ public class Table : WidgetGroup
 
         Transform = false;
         Touchable = Touchable.ChildrenOnly;
+
+        this.CellPool.newObject = GetNewObject;
     }
 
     private Cell ObtainCell()
     {
-        Cell cell = CellPool.Obtain();
-        cell.Table = this;
+        Cell? cell = CellPool.Obtain();
+        cell!.Table = this;
 
         return cell;
     }
@@ -938,7 +935,7 @@ public class Table : WidgetGroup
     /// the alignment of the logical table within the table actor.
     /// </summary>
     /// <returns></returns>
-    public new Table AddTopAlignment()
+    public Table AddTopAlignment()
     {
         _alignment |= LibGDXSharp.Utils.Align.TOP;
         _alignment &= ~LibGDXSharp.Utils.Align.BOTTOM;
@@ -1812,6 +1809,11 @@ public class Table : WidgetGroup
         }
     }
 
+    public Cell GetNewObject()
+    {
+        return new Cell();
+    }
+    
     // ------------------------------------------------------------------------
 
     #region Debugging
@@ -1918,9 +1920,9 @@ public class Table : WidgetGroup
 
     private void AddDebugRect( float x, float y, float w, float h, Color color )
     {
-        DebugRect rect = DebugRect.Pool.Obtain();
+        DebugRect? rect = DebugRect.Pool.Obtain();
 
-        rect.Color = color;
+        rect!.Color = color;
         rect.Set( x, y, w, h );
 
         _debugRects?.Add( rect );

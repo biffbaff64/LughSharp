@@ -44,7 +44,6 @@ namespace LibGDXSharp.Scenes.Scene2D;
 /// callbacks and handlers.
 /// </summary>
 [PublicAPI]
-[PublicAPI]
 public class Stage : InputAdapter
 {
     // True if any actor has ever had debug enabled.

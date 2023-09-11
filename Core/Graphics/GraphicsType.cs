@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Graphics;
 
+[PublicAPI]
 public enum GraphicsType
 {
     GL2,

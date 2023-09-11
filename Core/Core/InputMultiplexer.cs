@@ -18,6 +18,7 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public class InputMultiplexer : IInputProcessor
 {
     private readonly SnapshotArray< IInputProcessor > _processors;

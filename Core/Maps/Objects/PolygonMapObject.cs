@@ -18,6 +18,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Objects;
 
+[PublicAPI]
 public class PolygonMapObject : MapObject
 {        
     public Polygon Polygon { get; set; }

@@ -17,7 +17,6 @@
 namespace LibGDXSharp.Maths;
 
 [PublicAPI]
-[PublicAPI]
 public class Plane
 {
     /// <summary>

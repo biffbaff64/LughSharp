@@ -657,7 +657,7 @@ UTILS
     - DONE - PerformanceCounter             Check
     - DONE - PerformanceCounters            Check
     - DONE - PropertiesUtils                Convert, but check if necessary first
-    -      - QuadTreeFloat
+    - DONE - QuadTreeFloat
     -      - Queue                          Use system.collection.generics.Queue<T>?
     - DONE - QuickSelect
     - DONE - Scaling
@@ -666,7 +666,7 @@ UTILS
     -      - SharedLibraryLoader            Check - Remove this??
     - DONE - SortUtils
     - **** - SortedIntList                  Use SortedList<int>
-    -      - StreamUtils
+    - IP   - StreamUtils
     - DONE - StringTokenizer
     ----------------------------------------------------------------------------------
     - **** - StringBuilder                  Use System.Text.StringBuilder

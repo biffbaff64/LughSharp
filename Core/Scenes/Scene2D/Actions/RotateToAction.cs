@@ -35,6 +35,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// <seealso cref="LibGDXSharp.Maths.MathUtils.LerpAngleDeg(float, float, float)"/>
 /// </para>
 /// </summary>
+[PublicAPI]
 public class RotateToAction : TemporalAction
 {
     public float Start                { get; set; }

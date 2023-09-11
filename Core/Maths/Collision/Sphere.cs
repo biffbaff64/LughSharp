@@ -20,6 +20,7 @@ namespace LibGDXSharp.Maths.Collision;
 /// Encapsulates a 3D sphere with a center and a radius
 /// </summary>
 [Serializable]
+[PublicAPI]
 public class Sphere
 {
     public readonly float   radius; // the radius of the sphere

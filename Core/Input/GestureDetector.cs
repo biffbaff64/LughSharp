@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Input;
 
+[PublicAPI]
 public class GestureDetector
 {
         

@@ -20,6 +20,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
+[PublicAPI]
 public class BatchTileMapRenderer : ITiledMapRenderer
 {
     protected const int NUM_VERTICES = 20;

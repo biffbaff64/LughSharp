@@ -19,6 +19,7 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 /// A very simple clipboard interface for text content.
 /// </summary>
+[PublicAPI]
 public interface IClipboard
 {
     /// <summary>
@@ -32,5 +33,4 @@ public interface IClipboard
     /// </summary>
     /// <returns> the clipboard content or null  </returns>
     string Contents { get; set; }
-
 }

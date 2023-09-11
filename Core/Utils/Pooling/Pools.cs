@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils.Pooling;
 /// <summary>
 /// Stores a map of <see cref="Pool{T}"/>s by type for convenient static access.
 /// </summary>
+[PublicAPI]
 public class Pools<T>
 {
     private readonly static Dictionary< Type, Pool< T >? > TypePools = new();
@@ -59,16 +60,13 @@ public class Pools<T>
 
     /// <summary>
     /// </summary>
-    public static T Obtain() => Get().Obtain();
+    public static T? Obtain() => Get().Obtain();
 
     /// <summary>
     /// </summary>
     public static void Free( T obj )
     {
-        if ( obj == null )
-        {
-            throw new ArgumentException( "object cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( obj );
 
         TypePools[ typeof( T ) ]?.Free( obj );
     }
@@ -84,10 +82,7 @@ public class Pools<T>
     /// </param>
     public static void FreeAll( List< T? > objects, bool samePool = false )
     {
-        if ( objects == null )
-        {
-            throw new ArgumentException( "objects cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( objects );
 
         for ( int i = 0, n = objects.Count; i < n; i++ )
         {

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
+[PublicAPI]
 public enum Touchable
 {
     /// All touch input events will be received by the actor and any children.

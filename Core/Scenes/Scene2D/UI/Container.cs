@@ -26,6 +26,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// This provides layout similar to a <see cref="Table"/> with a single cell but is
 /// more lightweight.
 /// </summary>
+[PublicAPI]
 public class Container<T> : WidgetGroup where T : Actor
 {
     public bool Rounding { get; set; } = true;

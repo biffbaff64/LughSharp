@@ -19,6 +19,7 @@ using LibGDXSharp.Maps.Tiled.Tiles;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
+[PublicAPI]
 public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 {
     /// <summary>

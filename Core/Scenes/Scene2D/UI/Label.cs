@@ -31,7 +31,6 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </para>
 /// </summary>
 [PublicAPI]
-[PublicAPI]
 public class Label : Widget
 {
     private readonly static Color       TempColor      = new();

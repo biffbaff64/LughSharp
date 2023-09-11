@@ -17,7 +17,6 @@
 namespace LibGDXSharp.Maths;
 
 [PublicAPI]
-[PublicAPI]
 public class GridPoint2
 {
     public int X { get; set; }

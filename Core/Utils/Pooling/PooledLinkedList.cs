@@ -14,16 +14,15 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
-
 namespace LibGDXSharp.Utils.Pooling;
 
 /// <summary>
 /// A simple linked list that pools its nodes.
 /// </summary>
+[PublicAPI]
 public class PooledLinkedList<T>
 {
-    internal record Item<TT>
+    public record Item<TT>
     {
         internal TT?         Payload { get; set; }
         internal Item< TT >? Next    { get; set; }
@@ -47,7 +46,7 @@ public class PooledLinkedList<T>
     {
         this._pool = new Pool< Item< T > >( 16, maxPoolSize )
         {
-            NewObject = NewObjectImplementation
+            newObject = GetNewObject
         };
     }
 
@@ -56,7 +55,12 @@ public class PooledLinkedList<T>
     /// </summary>
     public void Add( T obj )
     {
-        Item< T > item = _pool.Obtain();
+        Item< T >? item;
+
+        if ( ( item = _pool.Obtain() ) == null )
+        {
+            return;
+        }
 
         item.Payload = obj;
         item.Next    = null;
@@ -85,7 +89,12 @@ public class PooledLinkedList<T>
     /// </summary>
     public void AddFirst( T obj )
     {
-        Item< T > item = _pool.Obtain();
+        Item< T >? item;
+
+        if ( ( item = _pool.Obtain() ) == null )
+        {
+            return;
+        }
 
         item.Payload = obj;
         item.Next    = _head;
@@ -127,7 +136,10 @@ public class PooledLinkedList<T>
     /// <returns> the next item in the list or null if there are no more items</returns>
     protected T? Next()
     {
-        if ( _iter == null ) return default;
+        if ( _iter == null )
+        {
+            return default( T? );
+        }
 
         T? payload = _iter.Payload;
 
@@ -143,7 +155,10 @@ public class PooledLinkedList<T>
     /// <returns> the previous item in the list or null if there are no more items </returns>
     public T? Previous()
     {
-        if ( _iter == null ) return default;
+        if ( _iter == null )
+        {
+            return default( T? );
+        }
 
         T? payload = _iter.Payload;
 
@@ -158,7 +173,10 @@ public class PooledLinkedList<T>
     /// </summary>
     protected void Remove()
     {
-        if ( _curr == null ) return;
+        if ( _curr == null )
+        {
+            return;
+        }
 
         Size--;
 
@@ -206,7 +224,10 @@ public class PooledLinkedList<T>
     /// </summary>
     public T? RemoveLast()
     {
-        if ( _tail == null ) return default;
+        if ( _tail == null )
+        {
+            return default( T? );
+        }
 
         T? payload = _tail.Payload;
 
@@ -246,9 +267,7 @@ public class PooledLinkedList<T>
         }
     }
 
-    // ------------------------------------------------
-
-    private static Item< T > NewObjectImplementation()
+    public Item< T > GetNewObject()
     {
         return new Item< T >();
     }

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Core.Files;
 
+[PublicAPI]
 public class FileHandle
 {
     

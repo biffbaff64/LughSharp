@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils.Viewport;
 /// ratio by scaling the world up to take the whole screen (some of the world may
 /// be off screen).
 /// </summary>
+[PublicAPI]
 public class FillViewport : ScalingViewport
 {
     /// <summary>

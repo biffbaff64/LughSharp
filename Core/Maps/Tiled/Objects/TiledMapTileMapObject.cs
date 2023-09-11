@@ -27,7 +27,6 @@ namespace LibGDXSharp.Maps.Tiled.Objects;
 /// Use <see cref="ITiledMapTile.TextureRegion"/> instead of <see cref="TextureRegion"/>.
 /// </summary>
 [PublicAPI]
-[PublicAPI]
 public class TiledMapTileMapObject : TextureMapObject
 {
     public ITiledMapTile Tile             { get; set; }

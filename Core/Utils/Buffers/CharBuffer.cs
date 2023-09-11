@@ -67,6 +67,7 @@ namespace LibGDXSharp.Utils.Buffers;
 /// </code>
 /// </para>
 /// </summary>
+[PublicAPI]
 public abstract class CharBuffer : Buffer
 {
     protected readonly int offset;

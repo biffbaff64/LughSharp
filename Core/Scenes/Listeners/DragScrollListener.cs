@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Listeners;
 
+[PublicAPI]
 public class DragScrollListener
 {
         

@@ -20,6 +20,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Graphics;
 
+[PublicAPI]
 public class TextureArray : GLTexture
 {
     private readonly static Dictionary< IApplication, List< TextureArray > > ManagedTextureArrays = new();

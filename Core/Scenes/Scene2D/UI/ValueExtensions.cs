@@ -18,6 +18,7 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public abstract partial class Value
 {
     /// <summary>

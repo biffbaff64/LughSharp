@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[PublicAPI]
 public enum HdpiMode
 {
 	/// <summary>

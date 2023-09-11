@@ -23,6 +23,7 @@ namespace LibGDXSharp.Core;
 /// use specific names like "game1.settings" instead of "settings".
 /// To persist changes made to a preferences instance Flush() has to be invoked.
 /// </summary>
+[PublicAPI]
 public interface IPreferences
 {
     public IPreferences PutEntry( string key, object? val );

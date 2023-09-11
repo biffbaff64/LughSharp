@@ -22,6 +22,7 @@ namespace LibGDXSharp.Maths.Collision;
 /// box's center, dimensions and corner points.
 /// </summary>
 [Serializable]
+[PublicAPI]
 public class BoundingBox
 {
     private readonly static Vector3 TmpVector = new();

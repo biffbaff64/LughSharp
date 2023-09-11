@@ -22,6 +22,7 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 /// Implementation of the Bezier curve.
 /// </summary>
+[PublicAPI]
 public class Bezier<T> : IPath< T > where T : IVector< T >
 {
     public List< T > Points { get; set; } = new();

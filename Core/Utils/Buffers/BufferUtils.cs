@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public class BufferUtils
 {
     private BufferUtils()

@@ -35,6 +35,7 @@ namespace LibGDXSharp.Utils.Viewport;
 /// (the world may not fill the screen or some of the world may be off screen).
 /// </para>
 /// </summary>
+[PublicAPI]
 public class ScalingViewport : Viewport
 {
     protected Scaling Scaling { get; set; }

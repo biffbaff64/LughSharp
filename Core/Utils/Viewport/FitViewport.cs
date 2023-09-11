@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils.Viewport;
 /// ratio by scaling the world up to fit the screen, adding black bars (letterboxing)
 /// for the remaining space.
 /// </summary>
+[PublicAPI]
 public class FitViewport : ScalingViewport
 {
     /// <summary>

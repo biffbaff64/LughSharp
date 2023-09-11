@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils.Pooling;
 /// (see <see cref="Obtain()"/>), which can be freed all at once using the
 /// <see cref="Flush()"/> method.
 /// </summary>
+[PublicAPI]
 public abstract class FlushablePool<T> : Pool< T >
 {
     private readonly List< T > _obtained = new();
@@ -39,11 +40,12 @@ public abstract class FlushablePool<T> : Pool< T >
     {
     }
 
-    public override T Obtain()
+    public override T? Obtain()
     {
-        T result = base.Obtain();
-        _obtained.Add( result );
+        T? result = base.Obtain();
 
+        _obtained.Add( result! );
+        
         return result;
     }
 

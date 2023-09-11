@@ -25,6 +25,7 @@ namespace LibGDXSharp.Utils;
 /// <see cref="Dictionary{TK,TV}"/> with the same line-oriented syntax supported
 /// by <see cref="IPreferences"/>
 /// </summary>
+[PublicAPI]
 public class PropertiesUtils
 {
     private const int    NONE           = 0;

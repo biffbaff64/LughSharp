@@ -30,6 +30,7 @@ namespace LibGDXSharp.Maps.Tiled;
 /// rotation should not be used when creating the atlas.
 /// </p>
 /// </summary>
+[PublicAPI]
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
     public class AtlasTiledMapLoaderParameters

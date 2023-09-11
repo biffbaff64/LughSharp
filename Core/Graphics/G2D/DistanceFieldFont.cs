@@ -25,6 +25,7 @@ namespace LibGDXSharp.G2D;
 /// Attention: The batch is flushed before and after each string is rendered.
 /// </para>
 /// </summary>
+[PublicAPI]
 public class DistanceFieldFont : BitmapFont
 {
     private float _distanceFieldSmoothing;

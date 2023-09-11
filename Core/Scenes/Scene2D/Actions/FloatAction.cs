@@ -21,6 +21,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// <summary>
 /// An action that has a float, whose value is transitioned over time.
 /// </summary>
+[PublicAPI]
 public class FloatAction : TemporalAction
 {
     public float Start    { get; set; }

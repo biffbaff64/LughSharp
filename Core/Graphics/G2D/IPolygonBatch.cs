@@ -20,6 +20,7 @@ namespace LibGDXSharp.G2D;
 /// A PolygonBatch is an extension of the Batch interface that provides additional
 /// render methods specifically for rendering polygons.
 /// </summary>
+[PublicAPI]
 public interface IPolygonBatch : IBatch
 {
     /// <summary>

@@ -22,6 +22,7 @@ namespace LibGDXSharp.Maps;
 /// esolves an image by a string, wrapper around a Map or AssetManager to load
 /// maps either directly or via AssetManager.
 /// </summary>
+[PublicAPI]
 public interface IImageResolver
 {
     /// <summary>

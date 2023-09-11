@@ -18,6 +18,7 @@ using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
+[PublicAPI]
 public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
 {
     public OrthogonalTiledMapRenderer( TiledMap map )

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maps.Tiled;
 
+[PublicAPI]
 public class TideMapLoader
 {
         

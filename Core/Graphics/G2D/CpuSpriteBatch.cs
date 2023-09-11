@@ -28,6 +28,7 @@ namespace LibGDXSharp.G2D;
 /// </summary>
 /// <see cref="SpriteBatch.RenderCalls"/>
 /// <see cref="Group.Transform"/>
+[PublicAPI]
 public class CpuSpriteBatch : SpriteBatch
 {
     private readonly Matrix4 _virtualMatrix = new();

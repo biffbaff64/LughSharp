@@ -18,6 +18,7 @@ using System.Collections;
 
 namespace LibGDXSharp.Maps.Tiled;
 
+[PublicAPI]
 public class TiledMapTileSet : IEnumerable< ITiledMapTile >
 {
     public string? Name { get; set; }

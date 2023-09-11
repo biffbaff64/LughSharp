@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public interface IShape2D
 {
     /// <summary>

@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class LittleEndianInputStream
 {
-        
 }

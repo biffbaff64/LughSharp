@@ -19,7 +19,6 @@ using LibGDXSharp.G2D;
 namespace LibGDXSharp.Maps.Tiled;
 
 [PublicAPI]
-[PublicAPI]
 public class TiledMapImageLayer : MapLayer
 {
     public TextureRegion? Region { get; set; }

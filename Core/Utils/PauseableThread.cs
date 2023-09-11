@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class PauseableThread
 {
         

@@ -19,6 +19,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Graphics;
 
+[PublicAPI]
 public static class PixmapFormat
 {
     /// <summary>

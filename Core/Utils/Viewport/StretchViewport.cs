@@ -20,6 +20,7 @@ namespace LibGDXSharp.Utils.Viewport;
 /// A ScalingViewport that uses <seealso cref="Scaling.Stretch"/> so it does not
 /// keep the aspect ratio, the world is scaled to take the whole screen.
 /// </summary>
+[PublicAPI]
 public class StretchViewport : ScalingViewport
 {
     /// <summary>

@@ -22,6 +22,7 @@ namespace LibGDXSharp.Graphics.Profiling;
 /// Listener for GL errors detected by <see cref="GLProfiler"/>.
 /// </summary>
 /// <seealso cref="GLProfiler"/>
+[PublicAPI]
 public interface IGLErrorListener
 {
     /// <summary>
@@ -34,6 +35,7 @@ public interface IGLErrorListener
 /// <summary>
 /// Listener that will log using Gdx.app.error GL error name and GL function.
 /// </summary>
+[PublicAPI]
 public class GLLoggingListener : IGLErrorListener
 {
     public void OnError( int error )
@@ -78,6 +80,7 @@ public class GLLoggingListener : IGLErrorListener
 /// <summary>
 /// Listener that will throw a GdxRuntimeException with error name.
 /// </summary>
+[PublicAPI]
 class ThrowingListener : IGLErrorListener
 {
     public void OnError( int error )

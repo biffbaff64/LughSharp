@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.G2D;
 
+[PublicAPI]
 public class RepeatablePolygonSprite
 {
         

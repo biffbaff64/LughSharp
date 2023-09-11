@@ -156,6 +156,7 @@ namespace LibGDXSharp.Utils.Buffers;
 /// </code>
 /// </para>
 /// </summary>
+[PublicAPI]
 public abstract class Buffer
 {
     /// <summary>

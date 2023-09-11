@@ -18,6 +18,7 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[PublicAPI]
 public class IndexBufferObject : IIndexData
 {
     public IndexBufferObject( bool isStatic, int maxIndices )

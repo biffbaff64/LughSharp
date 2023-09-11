@@ -18,6 +18,7 @@ using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Maps.Objects;
 
+[PublicAPI]
 public class TextureMapObject : MapObject
 {
     public float          X             { get; set; } = 0.0f;

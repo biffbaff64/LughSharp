@@ -33,6 +33,7 @@ namespace LibGDXSharp.Utils;
 /// the programmer intends on modifying or enhancing the fundamental behavior
 /// of the class.
 /// </summary>
+[PublicAPI]
 public interface IRunnable
 {
     /// <summary>
@@ -41,5 +42,5 @@ public interface IRunnable
     /// called in that separately executing thread. The general contract
     /// of the method run is that it may take any action whatsoever.
     /// </summary>
-    public abstract void Run();
+    void Run();
 }

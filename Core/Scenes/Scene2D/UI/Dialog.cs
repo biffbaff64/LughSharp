@@ -30,6 +30,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// is clicked, <see cref="Result(object)"/> is called and the dialog is
 /// removed from the stage.
 /// </summary>
+[PublicAPI]
 public class Dialog : Window
 {
     public Table? ContentTable { get; private set; }

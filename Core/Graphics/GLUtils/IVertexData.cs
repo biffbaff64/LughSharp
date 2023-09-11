@@ -18,6 +18,7 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[PublicAPI]
 public interface IVertexData : IDisposable
 {
     /// <returns> the number of vertices this VertexData stores </returns>

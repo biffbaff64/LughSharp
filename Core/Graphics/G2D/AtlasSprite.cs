@@ -21,7 +21,6 @@ namespace LibGDXSharp.G2D;
 /// is automatically positioned as if whitespace had not been stripped. */
 /// </summary>
 [PublicAPI]
-[PublicAPI]
 public class AtlasSprite : Sprite
 {
     public AtlasRegion Region          { get; set; }

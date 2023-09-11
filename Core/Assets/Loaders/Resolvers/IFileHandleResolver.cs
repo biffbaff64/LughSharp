@@ -21,6 +21,7 @@ namespace LibGDXSharp.Assets.Loaders.Resolvers;
 /// Used to allow the AssetManager to load files from anywhere, or
 /// implement caching strategies.
 /// </summary>
+[PublicAPI]
 public interface IFileHandleResolver
 {
     public FileInfo Resolve( string fileName );

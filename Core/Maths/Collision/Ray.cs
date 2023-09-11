@@ -20,6 +20,7 @@ namespace LibGDXSharp.Maths.Collision;
 /// Encapsulates a ray having a starting position and a unit length direction.
 /// </summary>
 [Serializable]
+[PublicAPI]
 public class Ray
 {
     public readonly Vector3 origin    = new();

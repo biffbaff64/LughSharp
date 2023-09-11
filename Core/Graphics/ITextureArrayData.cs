@@ -32,6 +32,7 @@ namespace LibGDXSharp.Graphics;
 /// </para>
 /// Look at <see cref="FileTextureArrayData"/> for example implementation of this interface.
 /// </summary>
+[PublicAPI]
 public interface ITextureArrayData
 {
     /// <returns> whether the TextureArrayData is prepared or not. </returns>

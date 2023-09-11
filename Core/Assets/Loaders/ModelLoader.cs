@@ -21,6 +21,7 @@ using LibGDXSharp.Graphics.G3D.Utils;
 
 namespace LibGDXSharp.Assets.Loaders;
 
+[PublicAPI]
 public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     where TP : ModelLoader< TP >.ModelParameters
 {

@@ -25,6 +25,7 @@ namespace LibGDXSharp.Graphics.Profiling;
 /// </summary>
 /// <seealso cref="GL20Interceptor"/>
 /// <seealso cref="GL30Interceptor"/>
+[PublicAPI]
 public class GLProfiler
 {
     public IGLErrorListener Listener    { get; set; }

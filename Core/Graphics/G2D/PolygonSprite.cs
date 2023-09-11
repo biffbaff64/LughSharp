@@ -20,6 +20,7 @@ using Color = LibGDXSharp.Graphics.Color;
 
 namespace LibGDXSharp.G2D;
 
+[PublicAPI]
 public class PolygonSprite
 {
     public PolygonRegion? Region   { get; private set; }

@@ -32,6 +32,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// A widget's mutator methods should call <see cref="Invalidate"/> or
 /// <see cref="InvalidateHierarchy"/> as needed.
 /// </summary>
+[PublicAPI]
 public class Widget : Actor, ILayout
 {
     private bool _layoutEnabled = true;

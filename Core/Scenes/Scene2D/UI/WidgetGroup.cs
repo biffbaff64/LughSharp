@@ -35,6 +35,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// or <see cref="InvalidateHierarchy()"/> as needed. By default, InvalidateHierarchy
 /// is called when child widgets are added and removed.
 /// </summary>
+[PublicAPI]
 public class WidgetGroup : Group, ILayout
 {
     public bool FillParent { get; set; }

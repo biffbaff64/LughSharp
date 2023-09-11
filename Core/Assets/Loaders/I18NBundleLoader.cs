@@ -43,6 +43,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// If you want to load the English bundle without replacing the Italian bundle you should use a second asset manager.
 /// </para>
 /// </summary>
+[PublicAPI]
 public class I18NBundleLoader : AsynchronousAssetLoader< I18NBundle, I18NBundleLoader.I18NBundleParameter >
 {
     private I18NBundle? _bundle;
@@ -69,14 +70,9 @@ public class I18NBundleLoader : AsynchronousAssetLoader< I18NBundle, I18NBundleL
             encoding = ( ( I18NBundleParameter )parameter ).Encoding;
         }
 
-        if ( encoding == null )
-        {
-            this._bundle = I18NBundle.CreateBundle( file, locale );
-        }
-        else
-        {
-            this._bundle = I18NBundle.CreateBundle( file, locale, encoding );
-        }
+        this._bundle = encoding == null
+            ? I18NBundle.CreateBundle( file, locale )
+            : I18NBundle.CreateBundle( file, locale, encoding );
     }
 
     public override I18NBundle LoadSync( AssetManager? manager,

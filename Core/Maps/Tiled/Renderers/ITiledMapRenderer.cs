@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maps.Tiled;
 
+[PublicAPI]
 public interface ITiledMapRenderer : IMapRenderer
 {
     void RenderObjects( MapLayer layer );

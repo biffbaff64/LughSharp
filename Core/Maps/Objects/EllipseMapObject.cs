@@ -19,7 +19,6 @@ using LibGDXSharp.Maths;
 namespace LibGDXSharp.Maps.Objects;
 
 [PublicAPI]
-[PublicAPI]
 public class EllipseMapObject : MapObject
 {
     public Ellipse Ellipse { get; set; }

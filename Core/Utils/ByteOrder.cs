@@ -20,6 +20,7 @@ namespace LibGDXSharp.Utils;
 /// A typesafe enumeration for byte orders.
 /// </summary>
 /// <remarks>Not sure if this is still needed.</remarks>
+[PublicAPI]
 public sealed class ByteOrder
 {
     public enum Endians

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Viewport;
 
+[PublicAPI]
 public class ExtendViewport : Viewport
 {
     #region Properties

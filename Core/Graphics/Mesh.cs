@@ -24,7 +24,6 @@ using LibGDXSharp.Utils.Buffers;
 namespace LibGDXSharp.Graphics;
 
 [PublicAPI]
-[PublicAPI]
 public class Mesh
 {
     public enum VertexDataType

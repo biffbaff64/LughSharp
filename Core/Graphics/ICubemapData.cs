@@ -33,6 +33,7 @@ namespace LibGDXSharp.Graphics;
 /// Look at <see cref="KtxTextureData"/> for example implementation of this
 /// interface.
 /// </summary>
+[PublicAPI]
 public interface ICubemapData
 {
     /// <summary>

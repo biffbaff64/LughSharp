@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class TouchableAction : Action
 {
     public Touchable Touchable { get; set; }

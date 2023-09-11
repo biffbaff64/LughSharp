@@ -21,7 +21,6 @@ using LibGDXSharp.Utils;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [PublicAPI]
-[PublicAPI]
 public class FileTextureArrayData : ITextureArrayData
 {
     private readonly ITextureData?[] _textureDatas;

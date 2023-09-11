@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Xml;
 
+[PublicAPI]
 public partial class XmlReader
 {
     internal static byte[] XmlActions =

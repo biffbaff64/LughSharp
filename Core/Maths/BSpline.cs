@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public class BSpline<T> : IPath< T > where T : IVector< T >
 {
     private const float D6 = 1f / 6f;

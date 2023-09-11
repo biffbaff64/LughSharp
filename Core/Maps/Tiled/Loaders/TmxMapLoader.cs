@@ -21,6 +21,7 @@ using LibGDXSharp.Utils.Xml;
 
 namespace LibGDXSharp.Maps.Tiled;
 
+[PublicAPI]
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 {
     public new class Parameters

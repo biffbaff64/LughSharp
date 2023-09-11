@@ -18,6 +18,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps;
 
+[PublicAPI]
 public interface IMapRenderer
 {
     /// <summary>

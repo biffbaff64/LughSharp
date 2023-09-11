@@ -20,6 +20,7 @@ namespace LibGDXSharp.Maths.Collision;
 /// A Segment is a line in 3-space having a starting and an ending position.
 /// </summary>
 [Serializable]
+[PublicAPI]
 public class Segment
 {
     public readonly Vector3 vectorA = new(); // the starting position

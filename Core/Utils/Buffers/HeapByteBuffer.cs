@@ -20,12 +20,12 @@ namespace LibGDXSharp.Utils.Buffers;
 public class HeapByteBuffer : ByteBuffer
 {
     public HeapByteBuffer( int cap, int lim )
-        : base( -1, 0, lim, cap, new byte[ cap ], 0 )
+        : base( -1, 0, lim, cap, new byte[ cap ] )
     {
     }
 
     public HeapByteBuffer( byte[]? buf, int off, int len )
-        : base( -1, off, off + len, buf!.Length, buf, 0 )
+        : base( -1, off, off + len, buf!.Length, buf )
     {
     }
 
@@ -56,17 +56,17 @@ public class HeapByteBuffer : ByteBuffer
 
     // ------------------------------------------------------------------------
 
-    protected override byte Get()
+    public override byte Get()
     {
         throw new NotImplementedException();
     }
 
-    protected override byte Get( int index )
+    public override byte Get( int index )
     {
         throw new NotImplementedException();
     }
 
-    protected override ByteBuffer Put( byte b )
+    public override ByteBuffer Put( byte b )
     {
         throw new NotImplementedException();
     }

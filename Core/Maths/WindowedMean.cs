@@ -23,6 +23,7 @@ namespace LibGDXSharp.Maths;
 /// oldest sample will be replaced by the newest in case a new sample is
 /// added.
 /// </summary>
+[PublicAPI]
 public class WindowedMean
 {
     private readonly float[] _values;

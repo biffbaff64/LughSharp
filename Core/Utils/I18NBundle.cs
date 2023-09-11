@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class I18NBundle
 {
     public static I18NBundle? CreateBundle( FileInfo? file, CultureInfo? locale, string encoding = "" )

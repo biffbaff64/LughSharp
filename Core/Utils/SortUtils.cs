@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
-
 namespace LibGDXSharp.Utils;
 
 /// <summary>
@@ -27,9 +25,9 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class SortUtils
 {
-    public static SortUtils Instance { [DebuggerStepThrough] get; } = new();
+    public static SortUtils Instance { get; } = new();
 
-    private TimSort< object >? _timSort;
+    private TimSort< object >?           _timSort;
     private ComparableTimSort< object >? _comparableTimSort;
 
     public void Sort<T>( List< T > a ) where T : IComparable< T >
@@ -41,7 +39,7 @@ public class SortUtils
     public void Sort( object[] a )
     {
         _comparableTimSort ??= new ComparableTimSort< object >();
-        _comparableTimSort.DoSort(a, 0, a.Length);
+        _comparableTimSort.DoSort( a, 0, a.Length );
     }
 
     public void Sort( object[] a, int fromIndex, int toIndex )

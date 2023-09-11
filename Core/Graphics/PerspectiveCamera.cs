@@ -21,6 +21,7 @@ namespace LibGDXSharp.Graphics;
 /// <summary>
 /// A Camera with Perspective Projection.
 /// </summary>
+[PublicAPI]
 public class PerspectiveCamera : Camera
 {
     // the field of view of the height, in degrees.

@@ -19,7 +19,6 @@ using LibGDXSharp.Utils;
 namespace LibGDXSharp.G2D;
 
 [PublicAPI]
-[PublicAPI]
 public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region >
 {
     public ComparatorAnonymousInnerClass( TextureAtlasData textureAtlasData )

@@ -23,6 +23,7 @@ using System.Collections.Generic;
 /// <summary>
 /// A Collection of <see cref="TiledMapTileSet"/> objects.
 /// </summary>
+[PublicAPI]
 public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
 {
 

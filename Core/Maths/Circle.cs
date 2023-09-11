@@ -19,7 +19,6 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 /// </summary>
 [PublicAPI]
-[PublicAPI]
 public class Circle : IShape2D
 {
     public float X      { get; set; }

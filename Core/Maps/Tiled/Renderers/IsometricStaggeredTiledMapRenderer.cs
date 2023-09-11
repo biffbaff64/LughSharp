@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
+[PublicAPI]
 public class IsometricStaggeredTiledMapRenderer
 {
         

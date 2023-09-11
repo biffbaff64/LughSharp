@@ -49,6 +49,7 @@ namespace LibGDXSharp.G2D;
 /// A Batch has to be disposed if it is no longer used.
 /// </para>
 /// </summary>
+[PublicAPI]
 public interface IBatch : IDisposable
 {
     public const int X1 = 0;

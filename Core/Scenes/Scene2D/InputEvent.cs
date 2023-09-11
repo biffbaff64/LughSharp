@@ -19,8 +19,6 @@ using LibGDXSharp.Maths;
 namespace LibGDXSharp.Scenes.Scene2D;
 
 [PublicAPI]
-[PublicAPI]
-[PublicAPI]
 public class InputEvent : Event
 {
     /// <summary>

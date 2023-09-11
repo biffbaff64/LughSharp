@@ -95,9 +95,9 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class StringTokenizer
 {
-    private readonly int     _maxPosition;
-    private readonly bool    _retDelims;
-    private readonly string? _str;
+    private readonly int     _maxPosition   = 0;
+    private readonly bool    _retDelims     = false;
+    private readonly string  _str;
 
     private int     _currentPosition;
     private int     _newPosition;
@@ -108,11 +108,12 @@ public class StringTokenizer
     /// maxDelimCodePoint stores the value of the delimiter character with the
     /// highest value. It is used to optimize the detection of delimiter
     /// characters.
-    /// 
+    /// <para>
     /// It is unlikely to provide any optimization benefit in the
     /// hasSurrogates case because most string characters will be
     /// smaller than the limit, but we keep it so that the two code
     /// paths remain similar.
+    /// </para>
     /// </summary>
     private int _maxDelimCodePoint;
 
@@ -232,7 +233,7 @@ public class StringTokenizer
         {
             if ( !_hasSurrogates )
             {
-                var c = _str![ position ];
+                var c = _str[ position ];
 
                 if ( ( c > _maxDelimCodePoint ) || ( _delimiters.IndexOf( c ) < 0 ) )
                 {
@@ -243,7 +244,7 @@ public class StringTokenizer
             }
             else
             {
-                var c = char.ConvertToUtf32( _str!, position );
+                var c = char.ConvertToUtf32( _str, position );
 
                 if ( ( c > _maxDelimCodePoint ) || !IsDelimiter( c ) )
                 {
@@ -269,7 +270,7 @@ public class StringTokenizer
         {
             if ( !_hasSurrogates )
             {
-                var c = _str![ position ];
+                var c = _str[ position ];
 
                 if ( ( c <= _maxDelimCodePoint ) && ( _delimiters?.IndexOf( c ) >= 0 ) )
                 {
@@ -280,7 +281,7 @@ public class StringTokenizer
             }
             else
             {
-                var c = char.ConvertToUtf32( _str!, position );
+                var c = char.ConvertToUtf32( _str, position );
 
                 if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) )
                 {
@@ -295,7 +296,7 @@ public class StringTokenizer
         {
             if ( !_hasSurrogates )
             {
-                var c = _str![ position ];
+                var c = _str[ position ];
 
                 if ( ( c <= _maxDelimCodePoint ) && ( _delimiters?.IndexOf( c ) >= 0 ) )
                 {
@@ -304,7 +305,7 @@ public class StringTokenizer
             }
             else
             {
-                var c = char.ConvertToUtf32( _str!, position );
+                var c = char.ConvertToUtf32( _str, position );
 
                 if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) )
                 {
@@ -385,7 +386,7 @@ public class StringTokenizer
 
         _currentPosition = ScanToken( _currentPosition );
 
-        return _str!.Substring( start, _currentPosition - start );
+        return _str.Substring( start, _currentPosition - start );
     }
 
     /// <summary>

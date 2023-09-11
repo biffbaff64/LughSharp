@@ -21,6 +21,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
+[PublicAPI]
 public class IsometricTiledMapRenderer : BatchTileMapRenderer
 {
     private Matrix4? _isoTransform;

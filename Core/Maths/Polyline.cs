@@ -17,7 +17,6 @@
 namespace LibGDXSharp.Maths;
 
 [PublicAPI]
-[PublicAPI]
 public class Polyline : IShape2D
 {
     private float[]? _worldVertices;

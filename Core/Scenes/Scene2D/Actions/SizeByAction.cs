@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class SizeByAction : RelativeTemporalAction
 {
     public float AmountWidth  { get; set; }

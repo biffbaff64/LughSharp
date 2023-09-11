@@ -18,6 +18,7 @@ using Keys = LibGDXSharp.Core.IInput.Keys;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
+[PublicAPI]
 public static class UIUtils
 {
     public static bool Left()

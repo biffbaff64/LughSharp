@@ -19,6 +19,7 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 /// A point in a 3D grid, with integer x and y coordinates
 /// </summary>
+[PublicAPI]
 public class GridPoint3
 {
     public int X { get; set; }

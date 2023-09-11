@@ -18,6 +18,7 @@ using System.Text;
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class PerformanceCounters
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;
@@ -46,7 +47,7 @@ public class PerformanceCounters
 
     public void Tick()
     {
-        long t = TimeUtils.NanoTime();
+        var t = TimeUtils.NanoTime();
 
         if ( _lastTick > 0L )
         {

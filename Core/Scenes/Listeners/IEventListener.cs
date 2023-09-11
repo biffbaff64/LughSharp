@@ -24,6 +24,7 @@ namespace LibGDXSharp.Scenes.Listeners;
 /// </summary>
 /// <see cref="InputListener"/>
 /// <see cref="InputEvent"/>
+[PublicAPI]
 public interface IEventListener
 {
     /// <summary>

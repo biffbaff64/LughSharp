@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
+[PublicAPI]
 public class NullActor : IActor
 {
         

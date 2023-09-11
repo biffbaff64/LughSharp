@@ -28,6 +28,7 @@ namespace LibGDXSharp.Scenes.Listeners;
 /// detected using <see cref="TapCount"/>. Any touch (not just the first) will
 /// trigger this listener. While pressed, other touch downs are ignored.
 /// </summary>
+[PublicAPI]
 public class ClickListener : InputListener
 {
     /// <summary>

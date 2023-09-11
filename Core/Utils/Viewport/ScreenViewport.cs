@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils.Viewport;
 /// By default 1 world unit == 1 screen pixel, but this ratio can be
 /// changed by modifying <see cref="UnitsPerPixel"/>.
 /// </summary>
+[PublicAPI]
 public class ScreenViewport : Viewport
 {
     public float UnitsPerPixel { get; set; } = 1;

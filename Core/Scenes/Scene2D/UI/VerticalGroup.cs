@@ -39,6 +39,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// 0 as their preferred height will be given a height of 0.
 /// </para>
 /// </summary>
+[PublicAPI]
 public class VerticalGroup : WidgetGroup
 {
     private float          _prefWidth;

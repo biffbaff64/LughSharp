@@ -16,9 +16,21 @@
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class StreamUtils
 {
-    public static void CloseQuietly( ICloseable reader )
+    public static void CloseQuietly( ICloseable? closeable )
     {
+        if ( closeable != null )
+        {
+            try
+            {
+                closeable.Close();
+            }
+            catch ( Exception )
+            {
+                throw new GdxRuntimeException( $"Failed to close: {closeable.GetType().Name}" );
+            }
+        }
     }
 }

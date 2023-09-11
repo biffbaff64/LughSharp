@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class VisibleAction : Action
 {
     public bool Visible { get; set; }

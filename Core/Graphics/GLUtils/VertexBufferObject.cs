@@ -22,6 +22,7 @@ using Trace = LibGDXSharp.Utils.Trace;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[PublicAPI]
 public class VertexBufferObject : IVertexData
 {
     private FloatBuffer _buffer;

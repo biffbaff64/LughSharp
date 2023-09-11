@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public class RandomXS128 : Random
 {
     /// <summary>

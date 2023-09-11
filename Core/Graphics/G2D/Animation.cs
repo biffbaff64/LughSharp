@@ -18,6 +18,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.G2D;
 
+[PublicAPI]
 public class Animation<T>
 {
     /// <summary>

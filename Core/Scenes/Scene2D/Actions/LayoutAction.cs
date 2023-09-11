@@ -19,6 +19,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class LayoutAction : Action
 {
     public bool Enabled { get; set; }

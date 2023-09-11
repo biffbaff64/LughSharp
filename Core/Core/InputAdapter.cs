@@ -20,6 +20,7 @@ namespace LibGDXSharp.Core;
 /// An adapter class for <see cref="IInputProcessor"/>.
 /// You can derive from this and only override what you are interested in.
 /// </summary>
+[PublicAPI]
 public class InputAdapter : IInputProcessor
 {
     public virtual bool KeyDown( int keycode )

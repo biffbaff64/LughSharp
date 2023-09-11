@@ -21,6 +21,7 @@ namespace LibGDXSharp.Core;
 /// a settings menu, the game screen and so on.
 /// Note that Dispose() is not called automatically.
 /// </summary>
+[PublicAPI]
 public interface IScreen
 {
     void Show();

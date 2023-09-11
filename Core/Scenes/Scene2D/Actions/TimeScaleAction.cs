@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class TimeScaleAction : DelegateAction
 {
     public float Scale { get; set; }

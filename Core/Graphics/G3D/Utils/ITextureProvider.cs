@@ -22,7 +22,6 @@ namespace LibGDXSharp.Graphics.G3D.Utils;
 /// Used by <see cref="Model"/> to load textures from <see cref="ModelData"/>.
 /// </summary>
 [PublicAPI]
-[PublicAPI]
 public interface ITextureProvider
 {
     Texture Load( string fileName );

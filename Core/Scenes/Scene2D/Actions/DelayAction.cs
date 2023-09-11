@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class DelayAction : DelegateAction
 {
     public float Duration { get; set; }

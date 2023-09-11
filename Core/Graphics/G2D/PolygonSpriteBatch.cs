@@ -54,6 +54,7 @@ namespace LibGDXSharp.G2D;
 /// A PolygonSpriteBatch has to be disposed if it is no longer used.
 /// </p>
 /// </summary>
+[PublicAPI]
 public sealed class PolygonSpriteBatch : IPolygonBatch
 {
     private readonly Mesh           _mesh;

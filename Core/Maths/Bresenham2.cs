@@ -28,19 +28,17 @@ namespace LibGDXSharp.Maths;
 /// vectors.
 /// </para>
 /// </summary>
+[PublicAPI]
 public class Bresenham2
 {
     private readonly List< GridPoint2 > _points = new();
-    private readonly Pool< GridPoint2 > _pool = new()
-    {
-        NewObject = NewGridPointGenerator
-    };
+    private readonly Pool< GridPoint2 > _pool = new();
 
-    private static GridPoint2 NewGridPointGenerator()
+    public Bresenham2()
     {
-        return new GridPoint2();
+        _pool.newObject = GetNewObject;
     }
-
+    
     /// <summary>
     /// Returns a list of <see cref="GridPoint2"/> instances along the given line,
     /// at integer coordinates.
@@ -142,9 +140,11 @@ public class Bresenham2
 
         for ( int i = 0; i <= longest; i++ )
         {
-            GridPoint2 point = pool.Obtain();
-            point.Set( startX, startY );
-            output.Add( point );
+            GridPoint2? point = pool.Obtain();
+            
+            point?.Set( startX, startY );
+            output.Add( point! );
+
             numerator += shortest2;
 
             if ( numerator > longest )
@@ -161,5 +161,10 @@ public class Bresenham2
         }
 
         return output;
+    }
+
+    public GridPoint2 GetNewObject()
+    {
+        return new GridPoint2();
     }
 }

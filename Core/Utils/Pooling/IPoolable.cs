@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Pooling;
 
+[PublicAPI]
 public interface IPoolable
 {
     /// <summary>

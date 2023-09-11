@@ -19,7 +19,6 @@ using LibGDXSharp.Utils;
 namespace LibGDXSharp.Maths;
 
 [PublicAPI]
-[PublicAPI]
 public class Vector3 : IVector< Vector3 >
 {
     public float X { get; set; }

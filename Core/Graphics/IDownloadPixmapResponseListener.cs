@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Graphics;
 
+[PublicAPI]
 public interface IDownloadPixmapResponseListener
 {
     /// <summary>

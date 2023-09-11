@@ -68,6 +68,7 @@ namespace LibGDXSharp.G2D;
 /// SpriteCache must be disposed once it is no longer needed.
 /// </para> 
 /// </summary>
+[PublicAPI]
 public class SpriteCache
 {
     private readonly static float[] TempVertices = new float[ Sprite.VertexSize * 6 ];

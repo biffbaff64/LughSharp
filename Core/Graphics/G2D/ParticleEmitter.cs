@@ -18,6 +18,7 @@ using LibGDXSharp.Maths.Collision;
 
 namespace LibGDXSharp.G2D;
 
+[PublicAPI]
 public class ParticleEmitter
 {
     public int         Duration      { get; set; }

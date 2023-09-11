@@ -18,6 +18,7 @@ using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Maps;
 
+[PublicAPI]
 public class MapLayer
 {
     public MapObjects    Objects    { get; private set; } = new();

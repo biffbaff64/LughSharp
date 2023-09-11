@@ -18,6 +18,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public class InputEventQueue
 {
     private const int SKIP           = -1;

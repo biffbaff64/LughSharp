@@ -20,6 +20,7 @@ namespace LibGDXSharp.Core;
 /// Convenience implementation of <see cref="IScreen"/>.
 /// Derive from this and only override what you need.
 /// </summary>
+[PublicAPI]
 public class ScreenAdapter : IScreen
 {
     public virtual void Show()

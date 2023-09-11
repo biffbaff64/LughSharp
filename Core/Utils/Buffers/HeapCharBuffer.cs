@@ -60,7 +60,7 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="ReadOnlyBufferException">
     /// If this buffer is read-only, which it shouldn't be!
     /// </exception>
-    protected override CharBuffer Put( char c ) => null;
+    protected override CharBuffer Put( char c ) => this;
 
     /// <summary>
     /// Absolute <i>get</i> method.  Reads the char at the given index.
@@ -95,7 +95,7 @@ public class HeapCharBuffer : CharBuffer
     /// If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
     /// <exception cref="ReadOnlyBufferException">If this buffer is read-only </exception>
-    public override CharBuffer Put( int index, char c ) => null;
+    public override CharBuffer Put( int index, char c ) => this;
 
     /// <summary>
     /// Compacts this buffer  <i>(optional operation)</i>.
@@ -112,7 +112,7 @@ public class HeapCharBuffer : CharBuffer
     /// </para>
     /// </summary>
     /// <returns> This Buffer </returns>
-    public override CharBuffer Compact() => null;
+    public override CharBuffer Compact() => this;
 
     /// <summary>
     /// Creates a new char buffer whose content is a shared subsequence of
@@ -132,7 +132,7 @@ public class HeapCharBuffer : CharBuffer
     /// </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Slice() => null;
+    public override CharBuffer Slice() => this;
 
     /// <summary>
     /// Creates a new char buffer that shares this buffer's content.
@@ -150,7 +150,7 @@ public class HeapCharBuffer : CharBuffer
     /// </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Duplicate() => null;
+    public override CharBuffer Duplicate() => this;
 
     /// <summary>
     /// Creates a new, read-only char buffer that shares this buffer's
@@ -168,13 +168,13 @@ public class HeapCharBuffer : CharBuffer
     /// </para>
     /// <para>
     /// If this buffer is itself read-only then this method behaves in
-    /// exactly the same way as the <see cref="duplicate duplicate"/> method.
+    /// exactly the same way as the <see cref="Duplicate"/> method.
     /// </para>
     /// </summary>
     /// <returns>  The new, read-only char buffer </returns>
-    public override CharBuffer AsReadOnlyBuffer() => null;
+    public override CharBuffer AsReadOnlyBuffer() => this;
 
-    protected override string ToString( int start, int end ) => null;
+    protected override string ToString( int start, int end ) => "";
 
     /// <summary>
     /// Retrieves this buffer's byte order.
@@ -186,7 +186,7 @@ public class HeapCharBuffer : CharBuffer
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public override ByteOrder Order() => null;
+    public override ByteOrder Order() => ByteOrder.NativeOrder;
 
     /// <summary>
     /// Creates a new character buffer that represents the specified subsequence
@@ -216,5 +216,5 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="IndexOutOfRangeException">
     /// If the preconditions on <tt>start</tt> and <tt>end</tt> do not hold
     /// </exception>
-    public override CharBuffer SubSequence( int start, int end ) => null;
+    public override CharBuffer SubSequence( int start, int end ) => this;
 }

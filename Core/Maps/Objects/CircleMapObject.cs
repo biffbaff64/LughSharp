@@ -18,6 +18,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Objects;
 
+[PublicAPI]
 public class CircleMapObject : MapObject
 {
     public Circle Circle { get; set; }

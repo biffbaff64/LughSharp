@@ -18,6 +18,7 @@ using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Objects;
 
+[PublicAPI]
 public class RectangleMapObject : MapObject
 {
 	public RectangleShape Rectangle { get; set;}

@@ -19,6 +19,7 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 /// Class offering various static methods for intersection testing between different geometric objects.
 /// </summary>
+[PublicAPI]
 public class Intersector
 {
     private Intersector()

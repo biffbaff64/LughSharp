@@ -19,6 +19,7 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 /// Extends <see cref="BinaryWriter"/> with additional convenience methods.
 /// </summary>
+[PublicAPI]
 public class DataOutput : BinaryWriter
 {
     private StreamWriter _writer;

@@ -19,7 +19,6 @@ using LibGDXSharp.Utils;
 namespace LibGDXSharp.Maths;
 
 [PublicAPI]
-[PublicAPI]
 public class Matrix4
 {
     /// <summary>

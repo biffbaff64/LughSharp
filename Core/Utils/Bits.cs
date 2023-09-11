@@ -20,6 +20,7 @@ namespace LibGDXSharp.Utils;
 /// A bitset, without size limitation, allows comparison via
 /// bitwise operators to other bitfields.
 /// </summary>
+[PublicAPI]
 public class Bits
 {
     private long[] _bits = { 0 };

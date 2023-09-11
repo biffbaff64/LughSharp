@@ -47,7 +47,7 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="ArgumentException">
     /// If the <tt>capacity</tt> is a negative integer
     /// </exception>
-    public static ByteBuffer AllocateDirect( int capacity )
+    public static DirectByteBuffer AllocateDirect( int capacity )
     {
         return new DirectByteBuffer( capacity );
     }

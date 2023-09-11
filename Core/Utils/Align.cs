@@ -18,6 +18,7 @@ using System.Text;
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public static class Align
 {
     public const int NONE   = 0;
