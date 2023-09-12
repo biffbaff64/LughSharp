@@ -427,7 +427,7 @@ MATH
     - DONE - Bezier
     - DONE - Bresenham2
     - DONE - BSpline
-    -      - CatmullRomSpline
+    - DONE - CatmullRomSpline
     - DONE - Circle
     - DONE - ConvexHull
     - DONE - CumulativeDistribution
@@ -452,7 +452,7 @@ MATH
     - DONE - Plane
     - DONE - Polygon
     - DONE - Polyline
-    - DONE - Quaternion                     Documentation needs completing
+    - DONE - Quaternion
     - DONE - RandomXS128
     - DONE - RectangleShape
     - DONE - Vector2                        Convert, I prefer the way the LibGDX class works.
@@ -633,14 +633,9 @@ UTILS
 -----
 
     - DONE - Align                          
-    ----------------------------------------------------------------------------------
-    - **** - Base64Coder                    Use System.Convert classes
-    ----------------------------------------------------------------------------------
     - DONE - BinaryHeap
     - DONE - Bits                           
-    ----------------------------------------------------------------------------------
     - DONE - CharHelper                     Might be added to.
-    ----------------------------------------------------------------------------------
     - DONE - ComparableTimSort              
     - DONE - DataInput                      Check
     -      - DataOutput                     Check
@@ -665,24 +660,25 @@ UTILS
     - DONE - Select                         Renamed Selector
     -      - SharedLibraryLoader            Check - Remove this??
     - DONE - SortUtils
-    - **** - SortedIntList                  Use SortedList<int>
     - IP   - StreamUtils
     - DONE - StringTokenizer
-    ----------------------------------------------------------------------------------
-    - **** - StringBuilder                  Use System.Text.StringBuilder
-    - **** - TextFormatter                  Remove, look into C# localisation
-    ----------------------------------------------------------------------------------
     - DONE - Timer                          Use System.Timer instead??
-    ----------------------------------------------------------------------------------
     - DONE - TimeUtils
     - DONE - TimSort
     - DONE - Trace                          Addition
+
+    - **** - Base64Coder                    Use System.Convert classes
+    - **** - SortedIntList                  Use SortedList<int>
+    - **** - StringBuilder                  Use System.Text.StringBuilder
+    - **** - TextFormatter                  Remove, look into C# localisation
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/BUFFERS
 -------------
+
+    IMPORTANT! - Establish whether or not I actually need these.
 
     Does C# have these classes already?
         - Could MemoryStream be used?

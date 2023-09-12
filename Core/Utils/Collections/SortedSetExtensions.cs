@@ -19,14 +19,15 @@ namespace LibGDXSharp.Core.Utils.Collections;
 [PublicAPI]
 public static class SortedSetExtensions
 {
+    [Incomplete( "Method not fully implemented" )]
     public static void Clear<T>( this SortedSet< T > ss, int maximumCapacity )
     {
         throw new NotImplementedException();
     }
 
+    [Incomplete( "Method not fully implemented" )]
     public static void AddAll<T>( this SortedSet< T > ss, SortedSet< T > array )
     {
         throw new NotImplementedException();
     }
 }
-

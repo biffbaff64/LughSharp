@@ -21,17 +21,18 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public class InputMultiplexer : IInputProcessor
 {
-    private readonly SnapshotArray< IInputProcessor > _processors;
+    private readonly SnapshotArray< IInputProcessor > _processors = new SnapshotArray< IInputProcessor >( 4 );
 
     public InputMultiplexer()
     {
-        _processors = new SnapshotArray< IInputProcessor >( 4 );
     }
 
     public InputMultiplexer( params IInputProcessor[] processors )
     {
-        _processors = new SnapshotArray< IInputProcessor >();
-        _processors.AddAll( processors );
+        foreach ( IInputProcessor inputProcessor in processors )
+        {
+            this._processors.Add( inputProcessor );
+        }
     }
 
     public void AddProcessor( int index, IInputProcessor processor )
@@ -41,12 +42,12 @@ public class InputMultiplexer : IInputProcessor
             throw new NullReferenceException( "processor cannot be null" );
         }
 
-        _processors.Insert( index, processor );
+        this._processors.Insert( index, processor );
     }
 
     public void RemoveProcessor( int index )
     {
-        _processors.RemoveAt( index );
+        this._processors.RemoveAt( index );
     }
 
     public void AddProcessor( IInputProcessor processor )
@@ -56,39 +57,47 @@ public class InputMultiplexer : IInputProcessor
             throw new NullReferenceException( "processor cannot be null" );
         }
 
-        _processors.Add( processor );
+        this._processors.Add( processor );
     }
 
     public void RemoveProcessor( IInputProcessor processor )
     {
-        _processors.Remove( processor );
+        this._processors.Remove( processor );
     }
 
     public int Size()
     {
-        return _processors.Size;
+        return this._processors.Size;
     }
 
     public void Clear()
     {
-        _processors.Clear();
+        this._processors.Clear();
     }
 
     public void SetProcessors( params IInputProcessor[] processorList )
     {
         this._processors.Clear();
-        this._processors.AddAll( processorList );
+
+        foreach ( IInputProcessor inputProcessor in processorList )
+        {
+            this._processors.Add( inputProcessor );
+        }
     }
 
     public void SetProcessors( List< IInputProcessor > processorList )
     {
         this._processors.Clear();
-        this._processors.AddAll( processorList.ToArray() );
+
+        foreach ( IInputProcessor inputProcessor in processorList )
+        {
+            this._processors.Add( inputProcessor );
+        }
     }
 
     public SnapshotArray< IInputProcessor > GetProcessors()
     {
-        return _processors;
+        return this._processors;
     }
 
     public bool KeyDown( int keycode )

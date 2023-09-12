@@ -64,7 +64,7 @@ public class Quaternion
 	/// <param name="angle"> The angle in degrees. </param> 
     public Quaternion( Vector3 axis, float angle )
     {
-        this.Set( axis, angle );
+        this.SetFromAxis( axis, angle );
     }
 
     /// <summary>
@@ -101,6 +101,7 @@ public class Quaternion
 	/// <param name="axis"> The axis </param>
 	/// <param name="angle"> The angle in degrees </param>
 	/// <returns> This quaternion for chaining. </returns>
+    [Obsolete( "Use SetFromAxis(Vector3, float) instead" )]
     public Quaternion Set( Vector3 axis, float angle )
     {
         return SetFromAxis( axis.X, axis.Y, axis.Z, angle );
@@ -326,7 +327,6 @@ public class Quaternion
         return this;
     }
 
-    // TODO : this would better fit into the vector3 class
     /// <summary>
     /// Transforms the given vector using this quaternion
     /// </summary>
@@ -574,7 +574,10 @@ public class Quaternion
     {
         var d = Vector3.Len( x, y, z );
 
-        if ( d == 0f ) return Idt();
+        if ( d == 0f )
+        {
+	        return Idt();
+        }
 
         d = 1f / d;
 
@@ -810,7 +813,10 @@ public class Quaternion
             scale1 = ( ( float )Math.Sin( ( alpha * angle ) ) * invSinTheta );
         }
 
-        if ( d < 0.0f ) scale1 = -scale1;
+        if ( d < 0.0f )
+        {
+	        scale1 = -scale1;
+        }
 
         // Calculate the x, y, z and w values for the quaternion by using a
         // special form of linear interpolation for quaternions.
@@ -934,9 +940,15 @@ public class Quaternion
 
     public new bool Equals( object? obj )
     {
-        if ( this == obj ) return true;
+        if ( this == obj )
+        {
+	        return true;
+        }
 
-        if ( obj == null ) return false;
+        if ( obj == null )
+        {
+	        return false;
+        }
 
         if ( obj is not Quaternion quaternion )
         {
@@ -1039,7 +1051,10 @@ public class Quaternion
     public float GetAxisAngleRad( Vector3 axis )
     {
         // if w>1 Acos and Sqrt will produce errors, this cant happen if quaternion is normalised
-        if ( this.W > 1 ) this.Nor();
+        if ( this.W > 1 )
+        {
+	        this.Nor();
+        }
 
         var angle = ( float )( 2.0 * Math.Acos( this.W ) );
 
@@ -1084,8 +1099,12 @@ public class Quaternion
     }
 
     /// <summary>
-    /// Get the angle in degrees of the rotation this quaternion represents. Use {@link #getAxisAngle(Vector3)} to get both the axis
-	/// and the angle of this rotation. Use {@link #getAngleAround(Vector3)} to get the angle around a specific axis.
+    /// Get the angle in degrees of the rotation this quaternion represents.
+    /// Use <see cref="GetAxisAngle(Vector3)"/>" to get both the axis
+	/// and the angle of this rotation.
+	/// <para>
+	/// Use <see cref="GetAngleAround(Vector3)"/> to get the angle around a specific axis.
+    /// </para>
     /// </summary>
 	/// <returns> the angle in degrees of the rotation </returns>
     public float GetAngle()
@@ -1113,7 +1132,8 @@ public class Quaternion
     /// the Z component of the normalized axis for which to get the swing and twist rotation
     /// </param>
     /// <param name="swing">
-    /// will receive the swing rotation: the rotation around an axis perpendicular to the specified axis
+    /// will receive the swing rotation: the rotation around an axis perpendicular
+    /// to the specified axis
     /// </param>
     /// <param name="twist">
     /// will receive the twist rotation: the rotation around the specified axis
@@ -1124,8 +1144,11 @@ public class Quaternion
 
         twist.Set( axisX * d, axisY * d, axisZ * d, this.W ).Nor();
         
-        if ( d < 0 ) twist.Mul( -1f );
-        
+        if ( d < 0 )
+        {
+	        twist.Mul( -1f );
+        }
+
         swing.Set( twist ).Conjugate().MulLeft( this );
     }
 
@@ -1193,7 +1216,8 @@ public class Quaternion
     }
 
     /// <summary>
-    /// Get the angle in degrees of the rotation around the specified axis. The axis must be normalized.
+    /// Get the angle in degrees of the rotation around the specified axis.
+    /// The axis must be normalized.
     /// </summary>
 	/// <param name="axisX"> the x component of the normalized axis for which to get the angle </param>
 	/// <param name="axisY"> the y component of the normalized axis for which to get the angle </param>

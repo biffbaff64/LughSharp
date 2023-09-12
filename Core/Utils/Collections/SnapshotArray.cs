@@ -182,7 +182,7 @@ public class SnapshotArray<T>
         
         AddAll( array.Items, start, count );
     }
-
+    
     /// <summary>
     /// Copy 'count' items from the supplied array to this array,
     /// starting from position 'start'.
@@ -397,7 +397,42 @@ public class SnapshotArray<T>
 
         return size != startSize;
     }
+
+    public T Peek()
+    {
+        if ( Size == 0 )
+        {
+            throw new NullReferenceException( "Array is empty." );
+        }
+
+        return Items[ Size - 1 ];
+    }
     
+    public T Pop()
+    {
+        Modified();
+        
+        if ( Size == 0 )
+        {
+            throw new IndexOutOfRangeException( "Array is empty." );
+        }
+
+        --Size;
+
+        T item = Items[ Size ];
+
+        Items[ Size ] = default( T )!;
+
+        return item;
+    }
+    
+    public void Clear()
+    {
+        Array.Clear( Items );
+
+        Size = 0;
+    }
+
     protected T[] Resize( int newSize )
     {
         var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
