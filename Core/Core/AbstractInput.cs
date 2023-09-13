@@ -21,8 +21,8 @@ public abstract class AbstractInput : IInput
 {
     protected bool[] PressedKeys     { get; set; }
     protected bool[] JustPressedKeys { get; set; }
-    protected int    PressedKeyCount { get; set; }
     protected bool   KeyJustPressed  { get; set; }
+    protected int    PressedKeyCount { get; set; }
 
     private readonly List< int > _keysToCatch;
 
@@ -124,6 +124,7 @@ public abstract class AbstractInput : IInput
     public virtual bool IsCatchKey( int keycode ) => _keysToCatch.Contains( keycode );
 
     // ------------------------------------------------------------------------
+    // Abstract methods to be implemented by any inheriting classes.
     // ------------------------------------------------------------------------
 
     public abstract float GetAccelerometerX();

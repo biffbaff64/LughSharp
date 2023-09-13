@@ -14,15 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Assets.Loaders.Resolvers;
+namespace LibGDXSharp.Utils.Async;
 
-/// <summary>
-/// An interface for classes that can map a file name to a FileInfo.
-/// Used to allow the AssetManager to load files from anywhere, or
-/// implement caching strategies.
-/// </summary>
-[PublicAPI]
-public interface IFileHandleResolver
+public interface IAsyncTask
 {
-    FileInfo Resolve( string fileName );
+    void Call();
 }

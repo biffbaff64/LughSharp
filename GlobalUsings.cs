@@ -33,9 +33,15 @@ global using JetBrains.Annotations;
 global using LibGDXSharp.Assets;
 global using LibGDXSharp.Assets.Loaders;
 global using LibGDXSharp.Assets.Loaders.Resolvers;
+global using LibGDXSharp.Audio;
 global using LibGDXSharp.Core;
 global using LibGDXSharp.Graphics;
 global using LibGDXSharp.Graphics.GLUtils;
+global using LibGDXSharp.Input;
+global using LibGDXSharp.Maps;
+global using LibGDXSharp.Maths;
+global using LibGDXSharp.Scenes;
+global using LibGDXSharp.Utils;
 global using LibGDXSharp.Utils.Annotations;
 
 global using Vector2 = LibGDXSharp.Maths.Vector2;

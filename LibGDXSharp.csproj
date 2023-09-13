@@ -27,12 +27,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Core\Files\" />
         <Folder Include="Core\Graphics\G3D\Attributes\" />
         <Folder Include="Core\Graphics\G3D\Decals\" />
         <Folder Include="Core\Graphics\G3D\Environment\" />
         <Folder Include="Core\Graphics\G3D\Loader\" />
         <Folder Include="Core\Graphics\G3D\Shaders\" />
         <Folder Include="Core\Graphics\GL\" />
+        <Folder Include="Core\Utils\Async\" />
         <Folder Include="DeleteCandidates\" />
         <Folder Include="Resources\" />
     </ItemGroup>

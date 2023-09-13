@@ -189,7 +189,6 @@ public class ShaderProgram
     // ------------------------------------------------------------------------
     
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="vertexShader"></param>
     /// <param name="fragmentShader"></param>
@@ -232,12 +231,12 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="vertexShader"></param>
     /// <param name="fragmentShader"></param>
     public ShaderProgram( FileInfo vertexShader, FileInfo fragmentShader )
-        : this( "", "" ) //vertexShader.ReadString(), fragmentShader.ReadString() )
+        : this( File.ReadAllText( vertexShader.Name ),
+                File.ReadAllText( fragmentShader.Name ) )
     {
         //TODO:
     }
@@ -275,7 +274,7 @@ public class ShaderProgram
     {
         IntBuffer intbuf = BufferUtils.NewIntBuffer( 1 );
 
-        int shader = Gdx.GL20.GLCreateShader( type );
+        var shader = Gdx.GL20.GLCreateShader( type );
 
         if ( shader == 0 )
         {
@@ -293,7 +292,7 @@ public class ShaderProgram
 // gl.glGetShaderiv(shader, IGL20.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            string infoLog = Gdx.GL20.GLGetShaderInfoLog( shader );
+            var infoLog = Gdx.GL20.GLGetShaderInfoLog( shader );
             _log += type == IGL20.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
 
@@ -326,7 +325,7 @@ public class ShaderProgram
         Gdx.GL20.GLAttachShader( program, _fragmentShaderHandle );
         Gdx.GL20.GLLinkProgram( program );
 
-        ByteBuffer tmp = ByteBuffer.AllocateDirect( 4 );
+        ByteBuffer tmp = ByteBuffer.Allocate( 4 );
         tmp.Order( ByteOrder.NativeOrder );
         IntBuffer intbuf = tmp.AsIntBuffer();
 
@@ -797,7 +796,7 @@ public class ShaderProgram
     {
         CheckManaged();
 
-        int location = FetchAttributeLocation( name );
+        var location = FetchAttributeLocation( name );
 
         if ( location == -1 )
         {
@@ -835,7 +834,7 @@ public class ShaderProgram
     {
         CheckManaged();
 
-        int location = FetchAttributeLocation( name );
+        var location = FetchAttributeLocation( name );
 
         if ( location == -1 )
         {
@@ -890,7 +889,7 @@ public class ShaderProgram
     {
         CheckManaged();
 
-        int location = FetchAttributeLocation( name );
+        var location = FetchAttributeLocation( name );
 
         if ( location == -1 )
         {
@@ -914,7 +913,7 @@ public class ShaderProgram
     {
         CheckManaged();
 
-        int location = FetchAttributeLocation( name );
+        var location = FetchAttributeLocation( name );
 
         if ( location == -1 )
         {
@@ -999,11 +998,11 @@ public class ShaderProgram
 
         Gdx.GL20.GLGetProgramiv( _programHandle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
 
-        int numUniforms = _parameters.Get( 0 );
+        var numUniforms = _parameters.Get( 0 );
 
         _uniformNames = new string[ numUniforms ];
 
-        for ( int i = 0; i < numUniforms; i++ )
+        for ( var i = 0; i < numUniforms; i++ )
         {
             _parameters.Clear();
             _parameters.Put( 0, 1 );
@@ -1029,11 +1028,11 @@ public class ShaderProgram
 
         Gdx.GL20.GLGetProgramiv( _programHandle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
 
-        int numAttributes = _parameters.Get( 0 );
+        var numAttributes = _parameters.Get( 0 );
 
         _attributeNames = new string[ numAttributes ];
 
-        for ( int i = 0; i < numAttributes; i++ )
+        for ( var i = 0; i < numAttributes; i++ )
         {
             _parameters.Clear();
             _parameters.Put( 0, 1 );

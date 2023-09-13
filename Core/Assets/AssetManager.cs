@@ -14,14 +14,11 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
 using System.Text;
 
-using LibGDXSharp.Audio;
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Async;
 
 namespace LibGDXSharp.Assets;
@@ -199,7 +196,7 @@ public class AssetManager
     {
         lock ( this )
         {
-            Dictionary< string, IRefCountedContainer >? assetsByType = _assets[ type ];
+            Dictionary< string, IRefCountedContainer > assetsByType = _assets[ type ];
 
             foreach ( IRefCountedContainer asset in assetsByType.Values )
             {

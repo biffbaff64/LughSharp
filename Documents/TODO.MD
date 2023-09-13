@@ -41,13 +41,6 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - Make more use of <inheritdoc cref=""/>>
 - 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-ROOT
-----
-
-    - DONE - Gdx                            
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ASSETS
@@ -116,10 +109,14 @@ AUDIO
 CORE
 ----
 
+    Do I need IInput, IInputAdapter, AbstractInput, and InputAdapter?
+    Could they become just one interface and one class?
+
     - DONE - AbstractGraphics               
     - DONE - AbstractInput                  
     - DONE - ApplicationAdapter             
     - DONE - Game                           
+    - DONE - Gdx                            
     - DONE - GDXVersion                     
     - DONE - IApplication                   
     - DONE - IApplicationListener           
@@ -150,7 +147,7 @@ FILES
     - java.io.DataOutputStream              -> BinaryWriter
     - java.io.File                          -> 
     - java.io.FileHandle                    -> 
-    - java.io.FileHandleStream              -> 
+    - java.io.FileInputStream               -> 
     - java.io.FilterOutputStream            -> 
     - java.io.DataOuput                     -> (Interface)
     - java.io.InputStream                   -> StreamReader

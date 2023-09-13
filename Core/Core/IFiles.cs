@@ -14,9 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files;
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.Core;
 
 [PublicAPI]
@@ -31,42 +28,42 @@ public interface IFiles
     /// if the type is classpath or internal and the file does not exist.
     /// </exception>
     /// 
-    FileHandle GetFileHandle( string path, FileType type );
+    FileInfo GetFileHandle( string path, FileType type );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Classpath"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileHandle Classpath( string path );
+    FileInfo Classpath( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Internal"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileHandle Internal( string path );
+    FileInfo Internal( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.External"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileHandle External( string path );
+    FileInfo External( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Absolute"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileHandle Absolute( string path );
+    FileInfo Absolute( string path );
 
     /// <summary>
     /// Convenience method that returns a <see cref="FileType.Local"/> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    FileHandle Local( string path );
+    FileInfo Local( string path );
 
     /// <summary>
     /// Returns the external storage path directory. This is the app
@@ -98,7 +95,7 @@ public enum FileType
     /// <summary>
     /// Path relative to the root of the classpath. Classpath files are always readonly.
     /// Note that classpath files are not compatible with some functionality on Android,
-    /// such as Audio#newSound(FileHandle) and Audio#newMusic(FileHandle).
+    /// such as Audio#newSound(FileInfo) and Audio#newMusic(FileInfo).
     /// </summary>
     Classpath,
 

@@ -17,36 +17,47 @@
 namespace LibGDXSharp.Core;
 
 /// <summary>
-/// Convenience implementation of <see cref="IScreen"/>.
-/// Derive from this and only override what you need.
+/// Convenience implementation of <see cref="IScreen"/>. Derive from this and
+/// only override what you need.
+/// <para>
+/// Using this means that any app screens use only what they need and don't
+/// duplicate unnecessary code. 
+/// </para>
 /// </summary>
 [PublicAPI]
 public class ScreenAdapter : IScreen
 {
+    /// <inheritdoc cref="IScreen.Show"/>
     public virtual void Show()
     {
     }
 
+    /// <inheritdoc cref="IScreen.Render"/>
     public virtual void Render( float delta )
     {
     }
 
+    /// <inheritdoc cref="IScreen.Resize"/>
     public virtual void Resize( int width, int height )
     {
     }
 
+    /// <inheritdoc cref="IScreen.Pause"/>
     public virtual void Pause()
     {
     }
 
+    /// <inheritdoc cref="IScreen.Resume"/>
     public virtual void Resume()
     {
     }
 
+    /// <inheritdoc cref="IScreen.Hide"/>
     public virtual void Hide()
     {
     }
 
+    /// <inheritdoc cref="IScreen.Dispose"/>
     public virtual void Dispose()
     {
     }

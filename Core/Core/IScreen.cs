@@ -24,17 +24,41 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public interface IScreen
 {
+    /// <summary>
+    /// Called when this screen becomes the current screen for
+    /// a <see cref="Game"/>.
+    /// </summary>
     void Show();
 
+    /// <summary>
+    /// Called when the screen should render itself.
+    /// </summary>
+    /// <param name="delta"> The time in seconds since the last render. </param>
     void Render( float delta );
 
+    /// <summary>
+    /// </summary>
+    /// <seealso cref="IApplicationListener.Resize(int, int)"/>
     void Resize( int width, int height );
 
+    /// <summary>
+    /// </summary>
+    /// <seealso cref="IApplicationListener.Pause()"/>
     void Pause();
 
+    /// <summary>
+    /// </summary>
+    /// <seealso cref="IApplicationListener.Resume()"/>
     void Resume();
 
+    /// <summary>
+    /// Called when this screen is no longer the current screen for
+    /// a <see cref="Game"/>.
+    /// </summary>
     void Hide();
 
+    /// <summary>
+    /// Called when this screen should release all resources.
+    /// </summary>
     void Dispose();
 }
