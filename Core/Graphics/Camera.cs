@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.G2D;
-using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
 
 using Quaternion = LibGDXSharp.Maths.Quaternion;

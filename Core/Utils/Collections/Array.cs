@@ -16,9 +16,6 @@
 
 using System.Text;
 
-using LibGDXSharp.Maths;
-using LibGDXSharp.Utils.Annotations;
-
 namespace LibGDXSharp.Utils.Collections;
 
 [PublicAPI]

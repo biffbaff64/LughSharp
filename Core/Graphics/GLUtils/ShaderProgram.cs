@@ -17,8 +17,6 @@
 using System.Text;
 
 using LibGDXSharp.Core.Utils.Collections;
-using LibGDXSharp.Maths;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
@@ -142,6 +140,9 @@ public class ShaderProgram
     private readonly string      _vertexShaderSource;
     private readonly string      _fragmentShaderSource;
 
+    private const int CACHED_NOT_FOUND = -1;
+    private const int NOT_CACHED       = -2;
+
     public bool invalidated;
 
     // ------------------------------------------------------------------------
@@ -182,12 +183,12 @@ public class ShaderProgram
     public string FragmentShaderSource => _fragmentShaderSource;
 
     public int Handle => _programHandle;
-    
+
     #endregion properties
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// </summary>
     /// <param name="vertexShader"></param>
@@ -235,10 +236,12 @@ public class ShaderProgram
     /// <param name="vertexShader"></param>
     /// <param name="fragmentShader"></param>
     public ShaderProgram( FileInfo vertexShader, FileInfo fragmentShader )
-        : this( File.ReadAllText( vertexShader.Name ),
-                File.ReadAllText( fragmentShader.Name ) )
+        : this
+            (
+             File.ReadAllText( vertexShader.Name ),
+             File.ReadAllText( fragmentShader.Name )
+            )
     {
-        //TODO:
     }
 
     /// <summary>

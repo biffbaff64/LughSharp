@@ -17,7 +17,6 @@
 using Trace = LibGDXSharp.Utils.Trace;
 
 using LibGDXSharp.G2D;
-using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 

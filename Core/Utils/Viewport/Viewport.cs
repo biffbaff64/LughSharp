@@ -14,9 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
-
-using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 

@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Maths;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;

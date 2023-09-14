@@ -21,7 +21,6 @@
 #define ALLOW_ASSERTS
 
 #if ALLOW_ASSERTS
-using System.Diagnostics;
 #endif
 
 namespace LibGDXSharp.Utils;

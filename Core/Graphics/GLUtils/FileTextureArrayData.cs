@@ -14,10 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
-
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [PublicAPI]

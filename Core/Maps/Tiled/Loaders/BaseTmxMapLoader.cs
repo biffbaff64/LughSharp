@@ -23,8 +23,6 @@ using LibGDXSharp.G2D;
 using LibGDXSharp.Maps.Objects;
 using LibGDXSharp.Maps.Tiled.Objects;
 using LibGDXSharp.Maps.Tiled.Tiles;
-using LibGDXSharp.Maths;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Xml;
 
 namespace LibGDXSharp.Maps.Tiled;

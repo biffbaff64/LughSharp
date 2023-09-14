@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Maths;
-
 using Color = LibGDXSharp.Graphics.Color;
 
 namespace LibGDXSharp.G2D;

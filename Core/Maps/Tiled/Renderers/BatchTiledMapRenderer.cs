@@ -16,7 +16,6 @@
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maps.Tiled.Tiles;
-using LibGDXSharp.Maths;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 

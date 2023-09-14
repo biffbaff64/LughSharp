@@ -14,11 +14,8 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
 using System.Text;
 
-using LibGDXSharp.Maths;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Core.Utils.Collections;

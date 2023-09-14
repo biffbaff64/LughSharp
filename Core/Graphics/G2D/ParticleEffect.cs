@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Maths.Collision;
-using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.G2D;
 
@@ -24,9 +23,9 @@ public class ParticleEffect : IDisposable
 {
     private const int DEFAULT_EMITTERS_SIZE = 8;
 
-    protected float xSizeScale  = 1f;
-    protected float ySizeScale  = 1f;
-    protected float motionScale = 1f;
+    public float XSizeScale  { get; set; } = 1f;
+    public float YSizeScale  { get; set; } = 1f;
+    public float MotionScale { get; set; } = 1f;
 
     private readonly List< ParticleEmitter > _emitters;
     private          BoundingBox?            _bounds;
@@ -69,10 +68,10 @@ public class ParticleEffect : IDisposable
             _emitters[ i ].Reset();
         }
 
-        if ( resetScaling && ( xSizeScale is not 1f || ySizeScale is not 1f || motionScale is not 1f ) )
+        if ( resetScaling && ( XSizeScale is not 1f || YSizeScale is not 1f || MotionScale is not 1f ) )
         {
-            ScaleEffect( 1f / xSizeScale, 1f / ySizeScale, 1f / motionScale );
-            xSizeScale = ySizeScale = motionScale = 1f;
+            ScaleEffect( 1f / XSizeScale, 1f / YSizeScale, 1f / MotionScale );
+            XSizeScale = YSizeScale = MotionScale = 1f;
         }
     }
 
@@ -488,9 +487,9 @@ public class ParticleEffect : IDisposable
     /// <param name="motionScaleFactor"></param>
     public void ScaleEffect( float xSizeScaleFactor, float ySizeScaleFactor, float motionScaleFactor )
     {
-        xSizeScale  *= xSizeScaleFactor;
-        ySizeScale  *= ySizeScaleFactor;
-        motionScale *= motionScaleFactor;
+        XSizeScale  *= xSizeScaleFactor;
+        YSizeScale  *= ySizeScaleFactor;
+        MotionScale *= motionScaleFactor;
 
         foreach ( ParticleEmitter particleEmitter in _emitters )
         {

@@ -14,9 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Listeners;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;

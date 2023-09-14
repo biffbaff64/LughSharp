@@ -14,7 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 using Buffer = LibGDXSharp.Utils.Buffers.Buffer;

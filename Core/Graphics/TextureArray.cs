@@ -16,8 +16,6 @@
 
 using System.Text;
 
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.Graphics;
 
 [PublicAPI]

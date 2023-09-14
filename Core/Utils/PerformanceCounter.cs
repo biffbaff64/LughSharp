@@ -16,8 +16,6 @@
 
 using System.Text;
 
-using LibGDXSharp.Maths;
-
 namespace LibGDXSharp.Utils;
 
 /// <summary>

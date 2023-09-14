@@ -14,12 +14,10 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
 using System.Text;
 
 using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
-using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 

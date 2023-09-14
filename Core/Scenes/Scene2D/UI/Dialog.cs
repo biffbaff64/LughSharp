@@ -14,12 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Diagnostics;
-
-using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.Actions;
-using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 

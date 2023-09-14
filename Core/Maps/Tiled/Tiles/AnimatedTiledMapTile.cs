@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.G2D;
-using LibGDXSharp.Utils;
 
 using Blendmode = LibGDXSharp.Maps.Tiled.ITiledMapTile.Blendmode;
 

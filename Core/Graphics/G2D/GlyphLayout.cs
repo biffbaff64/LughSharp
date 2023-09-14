@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Core.Utils.Collections;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.G2D;

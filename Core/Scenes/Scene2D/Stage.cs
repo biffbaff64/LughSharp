@@ -17,10 +17,8 @@
 using System.Reflection.Metadata;
 
 using LibGDXSharp.G2D;
-using LibGDXSharp.Maths;
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Pooling;
 using LibGDXSharp.Utils.Viewport;

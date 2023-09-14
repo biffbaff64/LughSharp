@@ -17,7 +17,65 @@
 namespace LibGDXSharp.G2D;
 
 [PublicAPI]
-public class ParticleEffectPool
+public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
 {
-        
+    private readonly ParticleEffect _effect;
+
+    public ParticleEffectPool( ParticleEffect effect, int initialCapacity, int max )
+        : base( initialCapacity, max )
+    {
+        this._effect = effect;
+    }
+
+    protected PooledEffect NewObject()
+    {
+        var pooledEffect = new PooledEffect( _effect, this );
+        pooledEffect.Start();
+
+        return pooledEffect;
+    }
+
+    public override void Free( PooledEffect effect )
+    {
+        base.Free( effect );
+
+        effect.Reset( false ); // copy parameters exactly to avoid introducing error
+
+        if ( ( !effect.XSizeScale.Equals( this._effect.XSizeScale ) )
+          || ( !effect.YSizeScale.Equals( this._effect.YSizeScale ) )
+          || ( !effect.MotionScale.Equals( this._effect.MotionScale ) ) )
+        {
+            List< ParticleEmitter > emitters         = effect.GetEmitters();
+            List< ParticleEmitter > templateEmitters = this._effect.GetEmitters();
+
+            for ( var i = 0; i < emitters.Count; i++ )
+            {
+                ParticleEmitter emitter         = emitters[ i ];
+                ParticleEmitter templateEmitter = templateEmitters[ i ];
+
+                emitter.MatchSize( templateEmitter );
+                emitter.MatchMotion( templateEmitter );
+            }
+
+            effect.XSizeScale  = this._effect.XSizeScale;
+            effect.YSizeScale  = this._effect.YSizeScale;
+            effect.MotionScale = this._effect.MotionScale;
+        }
+    }
+
+    public class PooledEffect : ParticleEffect
+    {
+        private readonly ParticleEffectPool _effectPool;
+
+        public PooledEffect( ParticleEffect effect, ParticleEffectPool pep )
+            : base( effect )
+        {
+            _effectPool = pep;
+        }
+
+        public void Free()
+        {
+            _effectPool.Free( this );
+        }
+    }
 }

@@ -14,9 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Maths;
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>

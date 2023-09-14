@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.G2D;
 
 [PublicAPI]
@@ -31,8 +29,7 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
     /// </summary>
     /// <param name="region1">The first object to compare.</param>
     /// <param name="region2">The second object to compare.</param>
-    /// <returns>A signed integer that indicates the relative values of <paramref name="x" /> and <paramref name="y" />, as shown in the following table.
-    /// <list type="table"><listheader><term> Value</term><description> Meaning</description></listheader><item><term> Less than zero</term><description><paramref name="x" /> is less than <paramref name="y" />.</description></item><item><term> Zero</term><description><paramref name="x" /> equals <paramref name="y" />.</description></item><item><term> Greater than zero</term><description><paramref name="x" /> is greater than <paramref name="y" />.</description></item></list></returns>
+    /// <returns></returns>
     public int Compare( TextureAtlasData.Region? region1, TextureAtlasData.Region? region2 )
     {
         if ( ( region1 == null ) || ( region2 == null ) )
@@ -43,15 +40,20 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
         var i1 = region1.Index;
         var i2 = region2.Index;
 
-        if ( i1 == -1 ) i1 = int.MaxValue;
+        if ( i1 == -1 )
+        {
+            i1 = int.MaxValue;
+        }
 
-        if ( i2 == -1 ) i2 = int.MaxValue;
+        if ( i2 == -1 )
+        {
+            i2 = int.MaxValue;
+        }
 
         return i1 - i2;
     }
 }
 
-[PublicAPI]
 public partial record TextureAtlasData
 {
     public class PageFieldParseClass : IField< Page >
@@ -85,8 +87,15 @@ public partial record TextureAtlasData
     {
         public void Parse( Page page, params string[] entry )
         {
-            if ( entry[ 1 ].IndexOf( 'x' ) != -1 ) page.UWrap = TextureWrap.Repeat;
-            if ( entry[ 1 ].IndexOf( 'y' ) != -1 ) page.VWrap = TextureWrap.Repeat;
+            if ( entry[ 1 ].IndexOf( 'x' ) != -1 )
+            {
+                page.UWrap = TextureWrap.Repeat;
+            }
+
+            if ( entry[ 1 ].IndexOf( 'y' ) != -1 )
+            {
+                page.VWrap = TextureWrap.Repeat;
+            }
         }
     }
 
@@ -184,7 +193,10 @@ public partial record TextureAtlasData
         {
             region.Index = int.Parse( entry[ 1 ] );
 
-            if ( region.Index != -1 ) HasIndexes[ 0 ] = true;
+            if ( region.Index != -1 )
+            {
+                HasIndexes[ 0 ] = true;
+            }
         }
     }
 }

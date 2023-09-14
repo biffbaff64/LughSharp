@@ -16,8 +16,6 @@
 
 using System.Text;
 
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 [PublicAPI]

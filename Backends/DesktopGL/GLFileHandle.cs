@@ -14,9 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files;
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.Backends.Desktop;
 
 /// <summary>

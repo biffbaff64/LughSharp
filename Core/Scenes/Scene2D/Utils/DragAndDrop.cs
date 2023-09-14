@@ -16,7 +16,6 @@
 
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 

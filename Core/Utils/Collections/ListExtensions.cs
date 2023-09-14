@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.Core.Utils.Collections;
 
 [PublicAPI]

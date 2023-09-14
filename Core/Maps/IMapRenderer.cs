@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Maths;
-
 namespace LibGDXSharp.Maps;
 
 [PublicAPI]

@@ -14,9 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Audio;
-using LibGDXSharp.Utils;
-
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
 [PublicAPI]

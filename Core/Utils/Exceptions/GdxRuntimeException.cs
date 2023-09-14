@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.CompilerServices;
-
 namespace LibGDXSharp.Utils;
 
 /// <summary>

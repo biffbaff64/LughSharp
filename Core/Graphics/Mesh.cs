@@ -16,9 +16,7 @@
 
 using System.Text;
 
-using LibGDXSharp.Maths;
 using LibGDXSharp.Maths.Collision;
-using LibGDXSharp.Utils;
 using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics;
