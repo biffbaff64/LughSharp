@@ -128,9 +128,9 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            emitter.SetContinuous( false );
-            emitter.Duration      = duration;
-            emitter.DurationTimer = 0;
+            emitter.Continuous    = false;
+            emitter.duration      = duration;
+            emitter.durationTimer = 0;
         }
     }
 
@@ -169,7 +169,7 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            if ( emitter.GetName().Equals( name ) )
+            if ( emitter.Name.Equals( name ) )
             {
                 return emitter;
             }
@@ -242,7 +242,7 @@ public class ParticleEffect : IDisposable
     public void LoadEmitters( FileInfo effectFile )
     {
         Stream input = effectFile.OpenRead();
-        
+
         _emitters.Clear();
 
         try
@@ -276,7 +276,7 @@ public class ParticleEffect : IDisposable
     /// <para>
     /// This method loads images from the provided <paramref name="atlas"/> and associates
     /// them with the corresponding emitters in the collection. Each emitter's image paths
-    /// are retrieved using the <see cref="ParticleEmitter.GetImagePaths"/> method.
+    /// are retrieved using the <see cref="ParticleEmitter.ImagePaths"/> method.
     /// If an emitter has no image paths, it is skipped.
     /// </para>
     /// <para>
@@ -286,7 +286,7 @@ public class ParticleEffect : IDisposable
     /// indicating the missing image.
     /// </para>
     /// </remarks>
-    /// <seealso cref="ParticleEmitter.GetImagePaths"/>
+    /// <seealso cref="ParticleEmitter.ImagePaths"/>
     /// <seealso cref="ParticleEmitter.SetSprites"/>
     public void LoadEmitterImages( TextureAtlas atlas, string? atlasPrefix = null )
     {
@@ -294,14 +294,14 @@ public class ParticleEffect : IDisposable
         {
             ParticleEmitter emitter = _emitters[ i ];
 
-            if ( !emitter.GetImagePaths().Any() )
+            if ( !emitter.ImagePaths.Any() )
             {
                 continue;
             }
 
             var sprites = new List< Sprite >();
 
-            foreach ( var imagePath in emitter.GetImagePaths() )
+            foreach ( var imagePath in emitter.ImagePaths )
             {
                 var imageName    = Path.GetFileName( imagePath.Replace( '\\', '/' ) );
                 var lastDotIndex = imageName.LastIndexOf( '.' );
@@ -339,7 +339,7 @@ public class ParticleEffect : IDisposable
     /// <para>
     /// This method loads images from the <paramref name="imagesDir"/> directory and
     /// associates them with the corresponding emitters in the collection. Each emitter's
-    /// image paths are retrieved using the <see cref="ParticleEmitter.GetImagePaths()"/>
+    /// image paths are retrieved using the <see cref="ParticleEmitter.ImagePaths"/>
     /// method. If an emitter has no image paths, it is skipped.
     /// </para>
     /// <para>
@@ -348,7 +348,7 @@ public class ParticleEffect : IDisposable
     /// textures.
     /// </para>
     /// </remarks>
-    /// <seealso cref="ParticleEmitter.GetImagePaths"/>
+    /// <seealso cref="ParticleEmitter.ImagePaths"/>
     /// <seealso cref="ParticleEmitter.SetSprites"/>
     public void LoadEmitterImages( DirectoryInfo imagesDir )
     {
@@ -358,14 +358,14 @@ public class ParticleEffect : IDisposable
 
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
         {
-            if ( !_emitters[ i ].GetImagePaths().Any() )
+            if ( !_emitters[ i ].ImagePaths.Any() )
             {
                 continue;
             }
 
             var sprites = new List< Sprite >();
 
-            foreach ( var imagePath in _emitters[ i ].GetImagePaths() )
+            foreach ( var imagePath in _emitters[ i ].ImagePaths )
             {
                 var imageName = Path.GetFileName( imagePath.Replace( '\\', '/' ) );
 

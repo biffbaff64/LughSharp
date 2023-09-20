@@ -29,6 +29,18 @@ public static class ListExtensions
     }
 
     /// <summary>
+    /// Returns the element found at a random position
+    /// within the list.
+    /// </summary>
+    /// <param name="list"> This list </param>
+    /// <typeparam name="T"> This list type </typeparam>
+    /// <returns></returns>
+    public static T Random<T>( this List< T > list )
+    {
+        return list[ MathUtils.Random( list.Count - 1 ) ];
+    }
+    
+    /// <summary>
     /// </summary>
     /// <param name="t"></param>
     /// <typeparam name="T"></typeparam>

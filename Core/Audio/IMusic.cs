@@ -48,7 +48,7 @@ public interface IMusic
     /// <param name="isLooping"> whether to loop the stream</param>
     public void SetLooping( bool isLooping );
 
-    /// <returns> whether the music stream is playing. </returns>
+    /// <returns> whether the music stream is set to loop. </returns>
     public bool IsLooping();
 
     /// <summary>

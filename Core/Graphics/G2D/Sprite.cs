@@ -49,7 +49,7 @@ public class Sprite : TextureRegion
     /// The sprite will need a texture region and bounds set before it can be drawn.
     /// </para>
     /// </summary>
-    protected Sprite()
+    public Sprite()
     {
         SetColor( 1, 1, 1, 1 );
     }
@@ -169,7 +169,7 @@ public class Sprite : TextureRegion
     /// <summary>
     /// Make this sprite a copy in every way of the specified sprite
     /// </summary>
-    protected void Set( Sprite sprite )
+    public void Set( Sprite sprite )
     {
         if ( sprite == null )
         {
@@ -401,7 +401,7 @@ public class Sprite : TextureRegion
     /// be drawn. If origin, rotation, or scale are changed, it is slightly more
     /// efficient to translate after those operations. 
     /// </summary>
-    protected void Translate( float xAmount, float yAmount )
+    public void Translate( float xAmount, float yAmount )
     {
         X += xAmount;
         Y += yAmount;
@@ -447,7 +447,7 @@ public class Sprite : TextureRegion
         Vertices[ IBatch.C4 ] = color;
     }
 
-    protected void SetColor( float r, float g, float b, float a )
+    public void SetColor( float r, float g, float b, float a )
     {
         Color.Set( r, g, b, a );
 
