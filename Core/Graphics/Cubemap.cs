@@ -21,10 +21,11 @@ using LibGDXSharp.Core.Utils.Collections;
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
-/// Wraps a standard OpenGL ES Cubemap. Must be disposed when it is no longer used.
+/// Wraps a standard OpenGL ES Cubemap.
+/// Must be disposed when it is no longer used.
 /// </summary>
 [PublicAPI]
-public class Cubemap : GLTexture
+public class Cubemap : GLTexture, IGLTexture
 {
     private readonly static Dictionary< IApplication, List< Cubemap >? > ManagedCubemaps = new();
 
@@ -35,7 +36,8 @@ public class Cubemap : GLTexture
     /// <summary>
     /// Construct a Cubemap based on the given CubemapData.
     /// </summary>
-    public Cubemap( ICubemapData? data ) : base( IGL20.GL_TEXTURE_CUBE_MAP )
+    public Cubemap( ICubemapData? data )
+        : base( IGL20.GL_TEXTURE_CUBE_MAP )
     {
         ArgumentNullException.ThrowIfNull( data );
         

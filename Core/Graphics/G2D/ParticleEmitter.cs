@@ -80,8 +80,7 @@ public class ParticleEmitter
     public ScaledNumericValue            SpawnWidthValue   { get; set; } = new();
     public ScaledNumericValue            SpawnHeightValue  { get; set; } = new();
     public ParticleSpawnShapeValue       SpawnShapeValue   { get; set; } = new();
-
-    protected bool[] isActive = { false, };
+    public bool[]                        IsActive          { get; set; } = { false, };
 
     private readonly static int UpdateScale    = 1 << 0;
     private readonly static int UpdateAngle    = 1 << 1;
@@ -126,7 +125,7 @@ public class ParticleEmitter
         Initialise();
     }
 
-    public ParticleEmitter( BufferedReader reader )
+    public ParticleEmitter( StreamReader reader )
     {
         Initialise();
         Load( reader );
@@ -193,7 +192,7 @@ public class ParticleEmitter
     public void SetMaxParticleCount( int maxParticleCount )
     {
         MaxParticleCount = maxParticleCount;
-        isActive         = new bool[ maxParticleCount ];
+        IsActive         = new bool[ maxParticleCount ];
         ActiveCount      = 0;
         _particles       = new Particle[ maxParticleCount ];
     }
@@ -207,7 +206,7 @@ public class ParticleEmitter
             return;
         }
 
-        var active = this.isActive;
+        var active = this.IsActive;
 
         for ( int i = 0, n = active.Length; i < n; i++ )
         {
@@ -231,7 +230,7 @@ public class ParticleEmitter
             return;
         }
 
-        var active = this.isActive;
+        var active = this.IsActive;
         int index  = 0, n = active.Length;
 
         outer:
@@ -326,13 +325,13 @@ public class ParticleEmitter
             }
         }
 
-        for ( int i = 0, n = this.isActive.Length; i < n; i++ )
+        for ( int i = 0, n = this.IsActive.Length; i < n; i++ )
         {
             if ( _particles[ i ] != null )
             {
-                if ( this.isActive[ i ] && !UpdateParticle( _particles[ i ]!, delta, deltaMillis ) )
+                if ( this.IsActive[ i ] && !UpdateParticle( _particles[ i ]!, delta, deltaMillis ) )
                 {
-                    this.isActive[ i ] = false;
+                    this.IsActive[ i ] = false;
                     this.ActiveCount--;
                 }
             }
@@ -354,9 +353,9 @@ public class ParticleEmitter
             batch.SetBlendFunction( IGL20.GL_SRC_ALPHA, IGL20.GL_ONE_MINUS_SRC_ALPHA );
         }
 
-        for ( int i = 0, n = this.isActive.Length; i < n; i++ )
+        for ( int i = 0, n = this.IsActive.Length; i < n; i++ )
         {
-            if ( this.isActive[ i ] )
+            if ( this.IsActive[ i ] )
             {
                 _particles?[ i ]?.Draw( batch );
             }
@@ -400,7 +399,7 @@ public class ParticleEmitter
             batch.SetBlendFunction( IGL20.GL_SRC_ALPHA, IGL20.GL_ONE_MINUS_SRC_ALPHA );
         }
 
-        var active      = this.isActive;
+        var active      = this.IsActive;
         var activeCount = this.ActiveCount;
 
         for ( int i = 0, n = active.Length; i < n; i++ )
@@ -489,7 +488,7 @@ public class ParticleEmitter
     {
         _emissionDelta = 0;
         durationTimer  = duration;
-        var active = this.isActive;
+        var active = this.IsActive;
 
         for ( int i = 0, n = active.Length; i < n; i++ )
         {
@@ -774,6 +773,7 @@ public class ParticleEmitter
             {
                 var width  = _spawnWidth + ( _spawnWidthDiff * SpawnWidthValue.GetScale( percent ) );
                 var height = _spawnHeight + ( _spawnHeightDiff * SpawnHeightValue.GetScale( percent ) );
+
                 x += MathUtils.Random( width ) - ( width / 2 );
                 y += MathUtils.Random( height ) - ( height / 2 );
 
@@ -1038,7 +1038,7 @@ public class ParticleEmitter
         {
             var xAmount = x - this.X;
             var yAmount = y - this.Y;
-            var active  = this.isActive;
+            var active  = this.IsActive;
 
             for ( int i = 0, n = active.Length; i < n; i++ )
             {
@@ -1136,12 +1136,7 @@ public class ParticleEmitter
 
     public bool IsComplete()
     {
-        if ( Continuous && !_allowCompletion )
-        {
-            return false;
-        }
-
-        if ( _delayTimer < _delay )
+        if ( ( Continuous && !_allowCompletion ) || ( _delayTimer < _delay ) )
         {
             return false;
         }
@@ -1156,7 +1151,7 @@ public class ParticleEmitter
             return 0;
         }
 
-        return Math.Min( 1, durationTimer / ( float )duration );
+        return Math.Min( 1, durationTimer / duration );
     }
 
     public void SetFlip( bool flipX, bool flipY )
@@ -1164,60 +1159,52 @@ public class ParticleEmitter
         this._flipX = flipX;
         this._flipY = flipY;
 
-        if ( _particles == null )
-        {
-            return;
-        }
-
         for ( int i = 0, n = _particles.Length; i < n; i++ )
         {
-            Particle particle = _particles[ i ];
-
-            if ( particle != null )
+            if ( _particles[ i ] != null )
             {
-                particle.flip( flipX, flipY );
+                _particles[ i ]?.Flip( flipX, flipY );
             }
         }
     }
 
     public void FlipY()
     {
-        AngleValue.SetHigh( -AngleValue.GetHighMin(), -AngleValue.GetHighMax() );
-        AngleValue.SetLow( -AngleValue.GetLowMin(), -AngleValue.GetLowMax() );
+        AngleValue.SetHigh( -AngleValue.HighMin, -AngleValue.HighMax );
+        AngleValue.SetLow( -AngleValue.LowMin, -AngleValue.LowMax );
 
-        GravityValue.SetHigh( -GravityValue.GetHighMin(), -GravityValue.GetHighMax() );
-        GravityValue.SetLow( -GravityValue.GetLowMin(), -GravityValue.GetLowMax() );
+        GravityValue.SetHigh( -GravityValue.HighMin, -GravityValue.HighMax );
+        GravityValue.SetLow( -GravityValue.LowMin, -GravityValue.LowMax );
 
-        WindValue.SetHigh( -WindValue.GetHighMin(), -WindValue.GetHighMax() );
-        WindValue.SetLow( -WindValue.GetLowMin(), -WindValue.GetLowMax() );
+        WindValue.SetHigh( -WindValue.HighMin, -WindValue.HighMax );
+        WindValue.SetLow( -WindValue.LowMin, -WindValue.LowMax );
 
-        RotationValue.SetHigh( -RotationValue.GetHighMin(), -RotationValue.GetHighMax() );
-        RotationValue.SetLow( -RotationValue.GetLowMin(), -RotationValue.GetLowMax() );
+        RotationValue.SetHigh( -RotationValue.HighMin, -RotationValue.HighMax );
+        RotationValue.SetLow( -RotationValue.LowMin, -RotationValue.LowMax );
 
-        YOffsetValue.SetLow( -YOffsetValue.GetLowMin(), -YOffsetValue.GetLowMax() );
+        YOffsetValue.SetLow( -YOffsetValue.LowMin, -YOffsetValue.LowMax );
     }
 
-    /** Returns the bounding box for all active particles. z axis will always be zero. */
+    /// <summary>
+    /// Returns the bounding box for all active particles.
+    /// Z axis will always be zero.
+    /// </summary>
     public BoundingBox GetBoundingBox()
     {
-        if ( bounds == null )
+        this._bounds ??= new BoundingBox();
+
+        BoundingBox bounds = this._bounds;
+
+        bounds.ToInfinity();
+
+        for ( int i = 0, n = this.IsActive.Length; i < n; i++ )
         {
-            bounds = new BoundingBox();
-        }
-
-        Particle[]  particles = this._particles;
-        var         active    = this.isActive;
-        BoundingBox bounds    = this._bounds;
-
-        bounds.inf();
-
-        for ( int i = 0, n = active.Length; i < n; i++ )
-        {
-            if ( active[ i ] )
+            if ( this.IsActive[ i ] )
             {
-                Rectangle r = particles[ i ].getBoundingRectangle();
-                bounds.ext( r.x, r.y, 0 );
-                bounds.ext( r.x + r.width, r.y + r.height, 0 );
+                RectangleShape r = this._particles[ i ]!.BoundingRectangle;
+
+                bounds.Extend( r.X, r.Y, 0 );
+                bounds.Extend( r.X + r.Width, r.Y + r.Height, 0 );
             }
         }
 
@@ -1421,7 +1408,7 @@ public class ParticleEmitter
         output.Write( "\n" );
     }
 
-    public void Load( BufferedReader reader )
+    public void Load( StreamReader reader )
     {
         try
         {
@@ -1451,9 +1438,10 @@ public class ParticleEmitter
             SpawnWidthValue.Load( reader );
             reader.ReadLine();
             SpawnHeightValue.Load( reader );
-            string line = reader.ReadLine();
+            
+            var line = reader.ReadLine();
 
-            if ( line.Trim().Equals( "- Scale -" ) )
+            if ( ( line != null ) && line.Trim().Equals( "- Scale -" ) )
             {
                 XScaleValue.Load( reader );
                 YScaleValue.Active = false;
@@ -1490,13 +1478,13 @@ public class ParticleEmitter
             // Backwards compatibility
             line = reader.ReadLine();
 
-            if ( line.StartsWith( "premultipliedAlpha" ) )
+            if ( ( bool )line?.StartsWith( "premultipliedAlpha" ) )
             {
                 PremultipliedAlpha = ReadBoolean( line );
                 line               = reader.ReadLine();
             }
 
-            if ( line.StartsWith( "spriteMode" ) )
+            if ( ( bool )line?.StartsWith( "spriteMode" ) )
             {
                 SpriteMode = Enum.Parse< SpriteModes >( ReadString( line ) );
 
@@ -1505,7 +1493,7 @@ public class ParticleEmitter
 
             List< string > imagePaths = new();
 
-            while ( ( ( line = reader.ReadLine() ) != null ) && !line.IsEmpty() )
+            while ( ( ( line = reader.ReadLine() ) != null ) && ( line.Length != 0 ) )
             {
                 imagePaths.Add( line );
             }
@@ -1674,6 +1662,18 @@ public class ParticleEmitter
         public float NewLowValue()
         {
             return LowMin + ( ( LowMax - LowMin ) * MathUtils.Random() );
+        }
+
+        public void SetLow( float value )
+        {
+            LowMin = value;
+            LowMax = value;
+        }
+
+        public void SetLow( float min, float max )
+        {
+            LowMin = min;
+            LowMax = max;
         }
 
         /// <summary>

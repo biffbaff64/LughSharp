@@ -25,7 +25,7 @@ namespace LibGDXSharp.Graphics;
 /// and upload image data.
 /// </summary>
 [PublicAPI]
-public abstract class GLTexture : IDisposable
+public abstract class GLTexture : IDisposable, IGLTexture
 {
     public int   GLHandle               { get; set; }
     public int   GLTarget               { get; set; }

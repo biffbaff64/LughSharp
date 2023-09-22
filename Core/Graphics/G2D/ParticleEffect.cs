@@ -420,7 +420,7 @@ public class ParticleEffect : IDisposable
             {
                 ParticleEmitter emitter = _emitters[ i ];
 
-                foreach ( Sprite sprite in emitter.GetSprites() )
+                foreach ( Sprite sprite in emitter.Sprites )
                 {
                     sprite.Texture.Dispose();
                 }
@@ -448,7 +448,7 @@ public class ParticleEffect : IDisposable
 
         foreach ( ParticleEmitter emitter in this._emitters )
         {
-            box.Extend( emitter.BoundingBox );
+            box.Extend( emitter.GetBoundingBox() );
         }
 
         return box;
@@ -512,7 +512,7 @@ public class ParticleEffect : IDisposable
     {
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
         {
-            _emitters[ i ].SetCleansUpBlendFunction( cleanUpBlendFunction );
+            _emitters[ i ].CleansUpBlendFunction = cleanUpBlendFunction;
         }
     }
 }

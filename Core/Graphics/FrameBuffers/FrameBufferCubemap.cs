@@ -37,7 +37,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder"></param>
-    public FrameBufferCubemap( GLFrameBufferBuilder< GLFrameBuffer< Cubemap > > bufferBuilder )
+    public FrameBufferCubemap( FrameBufferCubemapBuilder bufferBuilder )
         : base( bufferBuilder )
     {
     }

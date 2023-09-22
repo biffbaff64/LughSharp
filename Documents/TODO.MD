@@ -216,6 +216,25 @@ GRAPHICS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+GRAPHICS/FRAMEBUFFERS
+---------------------
+
+    - IP   - FloatFrameBuffer
+    - IP   - FloatFrameBufferBuilder
+    - IP   - FrameBuffer
+    - IP   - FrameBufferBuilder
+    - IP   - FrameBufferCubemap
+    - IP   - FrameBufferCubemapBuilder
+    - IP   - FrameBufferRenderBufferAttachmentSpec
+    - IP   - FrameBufferTextureAttachmentSpec
+    - IP   - GLFrameBuffer
+    - IP   - GLFrameBufferBuilder
+
+    ** Restructure GLFrameBuffer.Build(), this method is too long.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 GRAPHICS/G2D
 ------------
 
@@ -232,9 +251,9 @@ GRAPHICS/G2D
     - DONE - IPolygonBatch                  
     - DONE - NinePatch                      
     - DONE - ParticleEffect                 
-    -      - ParticleEffectPool             
-    - IP   - ParticleEmitter                
-    -      - PixmapPacker                   
+    - DONE - ParticleEffectPool             
+    - DONE - ParticleEmitter                
+    - IP   - PixmapPacker                   
     -      - PixmapPacker10                 
     - DONE - PolygonRegion                  
     -      - PolygonRegionLoader            
@@ -255,21 +274,6 @@ GRAPHICS/G2D
 GRAPHICS/GLUTILS
 ----------------
 
-        FrameBuffers
-        ------------
-    - IP   - FloatFrameBuffer                       Inheritance order correct
-    - IP   - FloatFrameBufferBuilder                Inheritance order correct
-    - IP   - FrameBuffer                            Inheritance order correct
-    - IP   - FrameBufferBuilder                     Inheritance order correct
-    - IP   - FrameBufferCubemap
-    - IP   - FrameBufferCubemapBuilder
-    - IP   - FrameBufferRenderBufferAttachmentSpec
-    - IP   - FrameBufferTextureAttachmentSpec
-    - IP   - GLFrameBuffer                          Inheritance order correct
-    - IP   - GLFrameBufferBuilder
-
-        Everything Else.
-        ----------------
     - IP   - ETC1                                   Find alternative / Has native
     - IP   - ETC1TextureData                        Find alternative / Has native
     - DONE - FacedCubemapData
@@ -327,7 +331,7 @@ INPUT
 
     -      - GestureDetector
     -      - RemoteInput
-    - IP   - RemoteSender       Needs rework for compatibility with system.io.sockets.
+    -      - RemoteSender       Needs rework for compatibility with system.io.sockets.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -381,7 +385,7 @@ MAPS/TILED/LOADERS
     - DONE - BaseTmxMapLoader                       Check for nullability issues
     - DONE - TmxMapLoader                           Check for nullability issues
 
-    -      - TideMapLoader                          Should I support Tide?
+    - **** - TideMapLoader                          Should I support Tide?
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

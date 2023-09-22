@@ -32,7 +32,6 @@
         <Folder Include="Core\Graphics\G3D\Environment\" />
         <Folder Include="Core\Graphics\G3D\Loader\" />
         <Folder Include="Core\Graphics\G3D\Shaders\" />
-        <Folder Include="Core\Graphics\GL\" />
         <Folder Include="Core\Utils\Async\" />
         <Folder Include="DeleteCandidates\" />
         <Folder Include="Resources\" />

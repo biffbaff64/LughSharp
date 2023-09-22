@@ -40,7 +40,7 @@ namespace LibGDXSharp.Graphics.FrameBuffers;
 /// Types which derive from GLTexture, such as Texture, Cubemap, TextureArray.
 /// </typeparam>
 [PublicAPI]
-public class GLFrameBuffer<T> : IDisposable where T : GLTexture
+public class GLFrameBuffer<T> : IDisposable where T : IGLTexture
 {
     public const int GL_DEPTH24_STENCIL8_OES = 0x88F0;
 
@@ -65,7 +65,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
     public string ManagedStatus => GetManagedStatus( new StringBuilder() ).ToString();
 
-    protected GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > BufferBuilder { get; set; }
+    protected GLFrameBufferBuilder< GLFrameBuffer< IGLTexture > > BufferBuilder { get; set; }
 
     protected GLFrameBuffer()
     {
@@ -76,7 +76,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// Creates a GLFrameBuffer from the specifications provided
     /// by bufferBuilder.
     /// </summary>
-    protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
+    protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< IGLTexture > > bufferBuilder )
     {
         this.BufferBuilder = bufferBuilder;
 
