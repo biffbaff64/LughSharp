@@ -283,7 +283,7 @@ public class Stage : InputAdapter
 
                     // Exit over last.
                     InputEvent inputEvent = Pools< InputEvent >.Obtain();
-
+                    
                     inputEvent.Type         = InputEvent.EventType.Exit;
                     inputEvent.Stage        = this;
                     inputEvent.StageX       = _tempCoords.X;
@@ -312,7 +312,8 @@ public class Stage : InputAdapter
         // Update over actor for the mouse on the desktop.
         IApplication.ApplicationType type = Gdx.App.AppType;
 
-        if ( type is IApplication.ApplicationType.Desktop or IApplication.ApplicationType.WebGL )
+        if ( type is IApplication.ApplicationType.Desktop
+                     or IApplication.ApplicationType.WebGL )
         {
             _mouseOverActor = FireEnterAndExit( _mouseOverActor, _mouseScreenX, _mouseScreenY, -1 );
         }

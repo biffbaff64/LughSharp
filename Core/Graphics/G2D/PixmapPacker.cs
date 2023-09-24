@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Text.RegularExpressions;
+
 namespace LibGDXSharp.G2D;
 
 /// <summary>
@@ -90,15 +92,15 @@ public class PixmapPacker : IDisposable
     public int           PageHeight       { get; set; }
     public Pixmap.Format PageFormat       { get; set; }
     public Color         TransparentColor { get; set; } = new( 0f, 0f, 0f, 0f );
+    public bool          PackToTexture    { get; set; }
+    public bool          DuplicateBorder  { get; set; }
+    public int           Padding          { get; set; }
+    public List< Page >  Pages            { get; set; } = new();
 
-    private bool          _packToTexture;
     private bool          _disposed;
-    private int           _padding;
-    private bool          _duplicateBorder;
     private bool          _stripWhitespaceX;
     private bool          _stripWhitespaceY;
     private int           _alphaThreshold;
-    private List< Page >  _pages = new();
     private IPackStrategy _packStrategy;
 
 //    private Pattern       _indexPattern = Pattern.Compile( "(.+)_(\\d+)$" );
@@ -163,8 +165,8 @@ public class PixmapPacker : IDisposable
         this.PageWidth         = pageWidth;
         this.PageHeight        = pageHeight;
         this.PageFormat        = pageFormat;
-        this._padding          = padding;
-        this._duplicateBorder  = duplicateBorder;
+        this.Padding           = padding;
+        this.DuplicateBorder   = duplicateBorder;
         this._stripWhitespaceX = stripWhitespaceX;
         this._stripWhitespaceY = stripWhitespaceY;
         this._packStrategy     = packStrategy;
@@ -182,7 +184,7 @@ public class PixmapPacker : IDisposable
     /// <summary>
     /// Inserts the pixmap without a name. It cannot be looked up by name.
     /// </summary>
-    public RectangleShape Pack( Pixmap image )
+    public RectangleShape? Pack( Pixmap image )
     {
         return Pack( null, image );
     }
@@ -211,122 +213,138 @@ public class PixmapPacker : IDisposable
         }
 
         PixmapPackerRectangle rect;
-        Pixmap                pixmapToDispose = null;
+        Pixmap?               pixmapToDispose = null;
 
-        if ( name != null && name.endsWith( ".9" ) )
+        if ( ( name != null ) && name.EndsWith( ".9" ) )
         {
-            rect            = new PixmapPackerRectangle( 0, 0, image.getWidth() - 2, image.getHeight() - 2 );
-            pixmapToDispose = new Pixmap( image.getWidth() - 2, image.getHeight() - 2, image.getFormat() );
-            pixmapToDispose.setBlending( Blending.None );
-            rect.splits = getSplits( image );
-            rect.pads   = getPads( image, rect.splits );
-            pixmapToDispose.drawPixmap( image, 0, 0, 1, 1, image.getWidth() - 1, image.getHeight() - 1 );
+            rect            = new PixmapPackerRectangle( 0, 0, image.Width - 2, image.Height - 2 );
+            pixmapToDispose = new Pixmap( image.Width - 2, image.Height - 2, image.GetFormat() );
+
+            pixmapToDispose.Blend = Pixmap.Blending.None;
+
+            rect.Splits = GetSplits( image );
+            rect.Pads   = GetPads( image, rect.Splits );
+
+            pixmapToDispose.DrawPixmap( image, 0, 0, 1, 1, image.Width - 1, image.Height - 1 );
+
             image = pixmapToDispose;
-            name  = name.split( "\\." )[ 0 ];
+            name  = name.Split( "\\." )[ 0 ];
         }
         else
         {
-            if ( stripWhitespaceX || stripWhitespaceY )
+            if ( _stripWhitespaceX || _stripWhitespaceY )
             {
-                int originalWidth  = image.getWidth();
-                int originalHeight = image.getHeight();
+                var originalWidth  = image.Width;
+                var originalHeight = image.Height;
 
-                //Strip whitespace, manipulate the pixmap and return corrected Rect
-                int top    = 0;
-                int bottom = image.getHeight();
+                // Strip whitespace, manipulate the pixmap and return corrected Rect
+                var top    = 0;
+                var bottom = image.Height;
 
-                if ( stripWhitespaceY )
+                if ( _stripWhitespaceY )
                 {
-                    outer:
+                    outer1:
 
-                    for ( int y = 0; y < image.getHeight(); y++ )
+                    for ( var y = 0; y < image.Height; y++ )
                     {
-                        for ( int x = 0; x < image.getWidth(); x++ )
+                        for ( var x = 0; x < image.Width; x++ )
                         {
-                            int pixel = image.getPixel( x, y );
-                            int alpha = ( ( pixel & 0x000000ff ) );
+                            var pixel = image.GetPixel( x, y );
+                            var alpha = ( ( pixel & 0x000000ff ) );
 
-                            if ( alpha > alphaThreshold ) break
-                            outer;
+                            if ( alpha > _alphaThreshold )
+                            {
+                                goto outer1;
+                            }
                         }
 
                         top++;
                     }
 
-                    outer:
+                    outer2:
 
-                    for ( int y = image.getHeight(); --y >= top; )
+                    for ( var y = image.Height; --y >= top; )
                     {
-                        for ( int x = 0; x < image.getWidth(); x++ )
+                        for ( var x = 0; x < image.Width; x++ )
                         {
-                            int pixel = image.getPixel( x, y );
-                            int alpha = ( ( pixel & 0x000000ff ) );
+                            var pixel = image.GetPixel( x, y );
+                            var alpha = ( ( pixel & 0x000000ff ) );
 
-                            if ( alpha > alphaThreshold ) break
-                            outer;
+                            if ( alpha > _alphaThreshold )
+                            {
+                                goto outer2;
+                            }
                         }
 
                         bottom--;
                     }
                 }
 
-                int left  = 0;
-                int right = image.getWidth();
+                var left  = 0;
+                var right = image.Width;
 
-                if ( stripWhitespaceX )
+                if ( _stripWhitespaceX )
                 {
-                    outer:
+                    outer3:
 
-                    for ( int x = 0; x < image.getWidth(); x++ )
+                    for ( var x = 0; x < image.Width; x++ )
                     {
-                        for ( int y = top; y < bottom; y++ )
+                        for ( var y = top; y < bottom; y++ )
                         {
-                            int pixel = image.getPixel( x, y );
-                            int alpha = ( ( pixel & 0x000000ff ) );
+                            var pixel = image.GetPixel( x, y );
+                            var alpha = ( ( pixel & 0x000000ff ) );
 
-                            if ( alpha > alphaThreshold ) break
-                            outer;
+                            if ( alpha > _alphaThreshold )
+                            {
+                                goto outer3;
+                            }
                         }
 
                         left++;
                     }
 
-                    outer:
+                    outer4:
 
-                    for ( int x = image.getWidth(); --x >= left; )
+                    for ( var x = image.Width; --x >= left; )
                     {
-                        for ( int y = top; y < bottom; y++ )
+                        for ( var y = top; y < bottom; y++ )
                         {
-                            int pixel = image.getPixel( x, y );
-                            int alpha = ( ( pixel & 0x000000ff ) );
+                            var pixel = image.GetPixel( x, y );
+                            var alpha = ( ( pixel & 0x000000ff ) );
 
-                            if ( alpha > alphaThreshold ) break
-                            outer;
+                            if ( alpha > _alphaThreshold )
+                            {
+                                goto outer4;
+                            }
                         }
 
                         right--;
                     }
                 }
 
-                int newWidth  = right - left;
-                int newHeight = bottom - top;
+                var newWidth  = right - left;
+                var newHeight = bottom - top;
 
-                pixmapToDispose = new Pixmap( newWidth, newHeight, image.getFormat() );
-                pixmapToDispose.setBlending( Blending.None );
-                pixmapToDispose.drawPixmap( image, 0, 0, left, top, newWidth, newHeight );
+                pixmapToDispose       = new Pixmap( newWidth, newHeight, image.GetFormat() );
+                pixmapToDispose.Blend = Pixmap.Blending.None;
+                pixmapToDispose.DrawPixmap( image, 0, 0, left, top, newWidth, newHeight );
+
                 image = pixmapToDispose;
 
                 rect = new PixmapPackerRectangle( 0, 0, newWidth, newHeight, left, top, originalWidth, originalHeight );
             }
             else
             {
-                rect = new PixmapPackerRectangle( 0, 0, image.getWidth(), image.getHeight() );
+                rect = new PixmapPackerRectangle( 0, 0, image.Width, image.Height );
             }
         }
 
-        if ( rect.getWidth() > pageWidth || rect.getHeight() > pageHeight )
+        if ( ( rect.Width > PageWidth ) || ( rect.Height > PageHeight ) )
         {
-            if ( name == null ) throw new GdxRuntimeException( "Page size too small for pixmap." );
+            if ( name == null )
+            {
+                throw new GdxRuntimeException( "Page size too small for pixmap." );
+            }
 
             throw new GdxRuntimeException( "Page size too small for pixmap: " + name );
         }
@@ -344,13 +362,13 @@ public class PixmapPacker : IDisposable
         var rectWidth  = ( int )rect.Width;
         var rectHeight = ( int )rect.Height;
 
-        if ( _packToTexture && !_duplicateBorder && ( page.Texture != null ) && !page.Dirty )
+        if ( PackToTexture && !DuplicateBorder && page is { Texture: not null, Dirty: false } )
         {
             page.Texture?.Bind();
 
             Gdx.GL.GLTexSubImage2D
                 (
-                 page.Texture.GLTarget, 0, rectX, rectY, rectWidth, rectHeight, image.GLFormat,
+                 page.Texture!.GLTarget, 0, rectX, rectY, rectWidth, rectHeight, image.GLFormat,
                  image.GLType, image.Pixels
                 );
         }
@@ -361,7 +379,7 @@ public class PixmapPacker : IDisposable
 
         page.Image.DrawPixmap( image, rectX, rectY );
 
-        if ( _duplicateBorder )
+        if ( DuplicateBorder )
         {
             var imageWidth  = image.Width;
             var imageHeight = image.Height;
@@ -387,18 +405,394 @@ public class PixmapPacker : IDisposable
         return rect;
     }
 
-    // ========================================================================
+    public RectangleShape? GetRect( string name )
+    {
+        foreach ( Page page in Pages )
+        {
+            RectangleShape? rect = page.Rects[ name ];
 
+            if ( rect != null )
+            {
+                return rect;
+            }
+        }
+
+        return null;
+    }
+
+    public Page? GetPage( string name )
+    {
+        foreach ( Page page in Pages )
+        {
+            if ( page.Rects[ name ] != null )
+            {
+                return page;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Returns the index of the page containing the given packed rectangle.
+    /// </summary>
+    /// <param name="name"> the name of the image </param>
+    /// <returns> the index of the page the image is stored in or -1 </returns>
+    public int GetPageIndex( string name )
+    {
+        for ( var i = 0; i < Pages.Count; i++ )
+        {
+            if ( Pages[ i ].Rects[ name ] != null )
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    /// Generates a new <see cref="TextureAtlas"/> from the pixmaps inserted
+    /// so far. After calling this method, disposing the packer will no longer
+    /// dispose the page pixmaps.
+    /// </summary>
+    public TextureAtlas GenerateTextureAtlas( TextureFilter minFilter, TextureFilter magFilter, bool useMipMaps )
+    {
+        var atlas = new TextureAtlas();
+
+        UpdateTextureAtlas( atlas, minFilter, magFilter, useMipMaps );
+
+        return atlas;
+    }
+
+    /** Updates the {@link TextureAtlas}, adding any new {@link Pixmap} instances packed since the last call to this method. This
+     * can be used to insert Pixmap instances on a separate thread via {@link #pack(String, Pixmap)} and update the TextureAtlas on
+     * the rendering thread. This method must be called on the rendering thread. After calling this method, disposing the packer
+     * will no longer dispose the page pixmaps. Has useIndexes on by default so as to keep backwards compatibility*/
+    public void UpdateTextureAtlas( TextureAtlas atlas,
+                                    TextureFilter minFilter,
+                                    TextureFilter magFilter,
+                                    bool useMipMaps )
+    {
+        UpdateTextureAtlas( atlas, minFilter, magFilter, useMipMaps, true );
+    }
+
+    /// <summary>
+    /// Updates the <see cref="TextureAtlas"/>, adding any new <see cref="Pixmap"/>
+    /// instances packed since the last call to this method. This can be used to
+    /// insert Pixmap instances on a separate thread via <see cref="Pack(String, Pixmap)"/>
+    /// and update the TextureAtlas on the rendering thread. This method must be
+    /// called on the rendering thread. After calling this method, disposing the
+    /// packer will no longer dispose the page pixmaps.
+    /// </summary>
+    public void UpdateTextureAtlas( TextureAtlas atlas,
+                                    TextureFilter minFilter,
+                                    TextureFilter magFilter,
+                                    bool useMipMaps,
+                                    bool useIndexes )
+    {
+        UpdatePageTextures( minFilter, magFilter, useMipMaps );
+
+        foreach ( Page page in Pages )
+        {
+            if ( page.AddedRects.Count > 0 )
+            {
+                foreach ( var name in page.AddedRects )
+                {
+                    PixmapPackerRectangle? rect = page.Rects[ name ];
+
+                    if ( rect == null )
+                    {
+                        continue;
+                    }
+
+                    var region = new AtlasRegion
+                        ( page.Texture, ( int )rect.X, ( int )rect.Y, ( int )rect.Width, ( int )rect.Height );
+
+                    if ( rect.Splits != null )
+                    {
+                        region.Names  = new[] { "split", "pad" };
+                        region.values = new[] { rect.Splits, rect.Pads };
+                    }
+
+                    var imageIndex = -1;
+                    var imageName  = name;
+
+                    if ( useIndexes )
+                    {
+                        var rx = new Regex( "(.+)_(\\d+)$" );
+
+                        MatchCollection matches = rx.Matches( imageName );
+
+                        if ( matches.Count > 0 )
+                        {
+                            // The image filename
+                            imageName = matches[ 1 ].Name;
+
+                            // The number at the end of the image filename, or -1 if none.
+                            imageIndex = int.Parse( matches[ 2 ].Name );
+                        }
+                    }
+
+                    region.Name           = imageName;
+                    region.Index          = imageIndex;
+                    region.OffsetX        = rect.OffsetX;
+                    region.OffsetY        = ( int )( rect.OriginalHeight - rect.Height - rect.OffsetY );
+                    region.OriginalWidth  = rect.OriginalWidth;
+                    region.OriginalHeight = rect.OriginalHeight;
+
+                    atlas.Regions.Add( region );
+                }
+
+                page.AddedRects.Clear();
+                atlas.Textures.Add( page.Texture! );
+            }
+        }
+    }
+
+    /// <summary>
+    /// Calls <see cref="Page.UpdateTexture(TextureFilter, TextureFilter, bool)"/>
+    /// for each page and adds a region to the specified array for each page texture.
+    /// </summary>
+    public void UpdateTextureRegions( List< TextureRegion > regions,
+                                      TextureFilter minFilter,
+                                      TextureFilter magFilter,
+                                      bool useMipMaps )
+    {
+        UpdatePageTextures( minFilter, magFilter, useMipMaps );
+
+        while ( regions.Count < Pages.Count )
+        {
+            Texture? texture = Pages[ regions.Count ].Texture;
+
+            if ( texture != null )
+            {
+                regions.Add( new TextureRegion( texture ) );
+            }
+        }
+    }
+
+    /// <summary>
+    /// Calls <see cref="Page.UpdateTexture(TextureFilter, TextureFilter, bool)"/>"
+    /// for each page.
+    /// </summary>
+    public void UpdatePageTextures( TextureFilter minFilter, TextureFilter magFilter, bool useMipMaps )
+    {
+        foreach ( Page page in Pages )
+        {
+            page.UpdateTexture( minFilter, magFilter, useMipMaps );
+        }
+    }
+
+    private int[]? GetSplits( Pixmap raster )
+    {
+        var startX = GetSplitPoint( raster, 1, 0, true, true );
+        var endX   = GetSplitPoint( raster, startX, 0, false, true );
+        var startY = GetSplitPoint( raster, 0, 1, true, false );
+        var endY   = GetSplitPoint( raster, 0, startY, false, false );
+
+        // Ensure pixels after the end are not invalid.
+        GetSplitPoint( raster, endX + 1, 0, true, true );
+        GetSplitPoint( raster, 0, endY + 1, true, false );
+
+        // No splits, or all splits.
+        if ( ( startX == 0 ) && ( endX == 0 ) && ( startY == 0 ) && ( endY == 0 ) )
+        {
+            return null;
+        }
+
+        // Subtraction here is because the coordinates were computed
+        // before the 1px border was stripped.
+        if ( startX != 0 )
+        {
+            startX--;
+            endX = raster.Width - 2 - ( endX - 1 );
+        }
+        else
+        {
+            // If no start point was ever found, we assume full stretch.
+            endX = raster.Width - 2;
+        }
+
+        if ( startY != 0 )
+        {
+            startY--;
+            endY = raster.Height - 2 - ( endY - 1 );
+        }
+        else
+        {
+            // If no start point was ever found, we assume full stretch.
+            endY = raster.Height - 2;
+        }
+
+        return new[] { startX, endX, startY, endY };
+    }
+
+    private int[]? GetPads( Pixmap raster, int[]? splits )
+    {
+        var bottom = raster.Height - 1;
+        var right  = raster.Width - 1;
+
+        var startX = GetSplitPoint( raster, 1, bottom, true, true );
+        var startY = GetSplitPoint( raster, right, 1, true, false );
+
+        // No need to hunt for the end if a start was never found.
+        var endX = 0;
+        var endY = 0;
+
+        if ( startX != 0 )
+        {
+            endX = GetSplitPoint( raster, startX + 1, bottom, false, true );
+        }
+
+        if ( startY != 0 )
+        {
+            endY = GetSplitPoint( raster, right, startY + 1, false, false );
+        }
+
+        // Ensure pixels after the end are not invalid.
+        GetSplitPoint( raster, endX + 1, bottom, true, true );
+        GetSplitPoint( raster, right, endY + 1, true, false );
+
+        // No pads.
+        if ( ( startX == 0 ) && ( endX == 0 ) && ( startY == 0 ) && ( endY == 0 ) )
+        {
+            return null;
+        }
+
+        // -2 here is because the coordinates were computed before the 1px border was stripped.
+        if ( ( startX == 0 ) && ( endX == 0 ) )
+        {
+            startX = -1;
+            endX   = -1;
+        }
+        else
+        {
+            if ( startX > 0 )
+            {
+                startX--;
+                endX = raster.Width - 2 - ( endX - 1 );
+            }
+            else
+            {
+                // If no start point was ever found, we assume full stretch.
+                endX = raster.Width - 2;
+            }
+        }
+
+        if ( ( startY == 0 ) && ( endY == 0 ) )
+        {
+            startY = -1;
+            endY   = -1;
+        }
+        else
+        {
+            if ( startY > 0 )
+            {
+                startY--;
+                endY = raster.Height - 2 - ( endY - 1 );
+            }
+            else
+            {
+                // If no start point was ever found, we assume full stretch.
+                endY = raster.Height - 2;
+            }
+        }
+
+        var pads = new[] { startX, endX, startY, endY };
+
+        if ( ( splits != null ) && splits.Equals( pads ) )
+        {
+            return null;
+        }
+
+        return pads;
+    }
+
+    private int GetSplitPoint( Pixmap raster, int startX, int startY, bool startPoint, bool xAxis )
+    {
+        var rgba = new int[ 4 ];
+
+        var next   = xAxis ? startX : startY;
+        var end    = xAxis ? raster.Width : raster.Height;
+        var breakA = startPoint ? 255 : 0;
+
+        var x = startX;
+        var y = startY;
+
+        while ( next != end )
+        {
+            if ( xAxis )
+            {
+                x = next;
+            }
+            else
+            {
+                y = next;
+            }
+
+            Color c = new();
+
+            c.Set( ( uint )raster.GetPixel( x, y ) );
+
+            rgba[ 0 ] = ( int )( c.R * 255 );
+            rgba[ 1 ] = ( int )( c.G * 255 );
+            rgba[ 2 ] = ( int )( c.B * 255 );
+            rgba[ 3 ] = ( int )( c.A * 255 );
+
+            if ( rgba[ 3 ] == breakA )
+            {
+                return next;
+            }
+
+            if ( !startPoint
+              && ( ( rgba[ 0 ] != 0 )
+                || ( rgba[ 1 ] != 0 )
+                || ( rgba[ 2 ] != 0 )
+                || ( rgba[ 3 ] != 255 ) ) )
+            {
+                Console.WriteLine( $@"{x}  {y} {rgba}" );
+            }
+
+            next++;
+        }
+
+        return 0;
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        foreach ( Page page in Pages )
+        {
+            if ( page.Texture == null )
+            {
+                page.Image.Dispose();
+            }
+        }
+
+        _disposed = true;
+    }
+
+// ========================================================================
+
+    [PublicAPI]
     public class Page
     {
-        public Dictionary< string, PixmapPackerRectangle > Rects { get; set; } = new();
+        public Dictionary< string, PixmapPackerRectangle? > Rects { get; set; } = new();
 
         public Pixmap         Image      { get; set; }
         public Texture?       Texture    { get; set; }
         public List< string > AddedRects { get; set; } = new();
         public bool           Dirty      { get; set; }
 
-        /** Creates a new page filled with the color provided by the {@link PixmapPacker#getTransparentColor()} */
+        /// <summary>
+        /// Creates a new page filled with the color provided by the
+        /// <see cref="PixmapPacker.TransparentColor"/>"
+        /// </summary>
         public Page( PixmapPacker packer )
         {
             Image       = new Pixmap( packer.PageWidth, packer.PageHeight, packer.PageFormat );
@@ -460,6 +854,7 @@ public class PixmapPacker : IDisposable
     /// Does bin packing by inserting to the right or below previously packed
     /// rectangles. This is good at packing arbitrarily sized images.
     /// </summary>
+    [PublicAPI]
     public class GuillotineStrategy : IPackStrategy
     {
         public void Sort( List< Pixmap > images )
@@ -470,7 +865,7 @@ public class PixmapPacker : IDisposable
         /// Returns the page the rectangle should be placed in and
         /// modifies the specified rectangle position.
         /// </summary>
-        public Page Pack( PixmapPacker packer, string name, RectangleShape rect )
+        public Page Pack( PixmapPacker packer, string? name, RectangleShape rect )
         {
             return null!;
         }
@@ -480,6 +875,7 @@ public class PixmapPacker : IDisposable
     /// Does bin packing by inserting in rows. This is good at
     /// packing images that have similar heights.
     /// </summary>
+    [PublicAPI]
     public class SkylineStrategy : IPackStrategy
     {
         public void Sort( List< Pixmap > images )
@@ -490,12 +886,13 @@ public class PixmapPacker : IDisposable
         /// Returns the page the rectangle should be placed in and
         /// modifies the specified rectangle position.
         /// </summary>
-        public Page Pack( PixmapPacker packer, string name, RectangleShape rect )
+        public Page Pack( PixmapPacker packer, string? name, RectangleShape rect )
         {
             return null!;
         }
     }
 
+    [PublicAPI]
     public class PixmapPackerRectangle : RectangleShape
     {
         public int[]? Splits         { get; set; }
@@ -542,15 +939,7 @@ public class PixmapPacker : IDisposable
         /// Returns the page the rectangle should be placed in and
         /// modifies the specified rectangle position.
         /// </summary>
-        Page Pack( PixmapPacker packer, string name, RectangleShape rect );
+        Page Pack( PixmapPacker packer, string? name, RectangleShape rect );
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        // TODO release managed resources here
-    }
 }

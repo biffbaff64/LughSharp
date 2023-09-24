@@ -20,7 +20,14 @@ namespace LibGDXSharp.G2D;
 public class TextureAtlas
 {
     public List< AtlasRegion? > Regions  { get; set; } = new();
-    public List< Texture >      Textures { get; set; } = new(4);
+    public List< Texture >      Textures { get; set; } = new( 4 );
+
+    /// <summary>
+    /// Creates an empty atlas to which regions can be added.
+    /// </summary>
+    public TextureAtlas()
+    {
+    }
 
     /// <summary>
     /// Loads the specified pack file using <see cref="FileType.Internal"/>,

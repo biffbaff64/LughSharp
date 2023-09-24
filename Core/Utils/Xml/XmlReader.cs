@@ -167,9 +167,9 @@ public partial class XmlReader
 
                     do
                     {
-                        int keys = XmlKeyOffsets[ cs ];
-                        trans = XmlIndexOffsets[ cs ];
-                        int klen = XmlSingleLengths[ cs ];
+                        int keys = xmlKeyOffsets[ cs ];
+                        trans = xmlIndexOffsets[ cs ];
+                        int klen = xmlSingleLengths[ cs ];
 
                         if ( klen > 0 )
                         {
@@ -185,11 +185,11 @@ public partial class XmlReader
 
                                 var mid = lower + ( ( upper - lower ) >> 1 );
 
-                                if ( data[ p ] < XmlTransKeys[ mid ] )
+                                if ( data[ p ] < xmlTransKeys[ mid ] )
                                 {
                                     upper = mid - 1;
                                 }
-                                else if ( data[ p ] > XmlTransKeys[ mid ] )
+                                else if ( data[ p ] > xmlTransKeys[ mid ] )
                                 {
                                     lower = mid + 1;
                                 }
@@ -205,7 +205,7 @@ public partial class XmlReader
                             trans += klen;
                         }
 
-                        klen = XmlRangeLengths[ cs ];
+                        klen = xmlRangeLengths[ cs ];
 
                         if ( klen > 0 )
                         {
@@ -221,11 +221,11 @@ public partial class XmlReader
 
                                 var mid = lower + ( ( ( upper - lower ) >> 1 ) & ~1 );
 
-                                if ( data[ p ] < XmlTransKeys[ mid ] )
+                                if ( data[ p ] < xmlTransKeys[ mid ] )
                                 {
                                     upper = mid - 2;
                                 }
-                                else if ( data[ p ] > XmlTransKeys[ mid + 1 ] )
+                                else if ( data[ p ] > xmlTransKeys[ mid + 1 ] )
                                 {
                                     lower = mid + 2;
                                 }
@@ -242,17 +242,17 @@ public partial class XmlReader
                     }
                     while ( false );
 
-                    trans = XmlIndicies[ trans ];
-                    cs    = XmlTransTargs[ trans ];
+                    trans = xmlIndicies[ trans ];
+                    cs    = xmlTransTargs[ trans ];
 
-                    if ( XmlTransActions[ trans ] != 0 )
+                    if ( xmlTransActions[ trans ] != 0 )
                     {
-                        int acts  = XmlTransActions[ trans ];
-                        int nacts = XmlActions[ acts++ ];
+                        int acts  = xmlTransActions[ trans ];
+                        int nacts = xmlActions[ acts++ ];
 
                         while ( nacts-- > 0 )
                         {
-                            switch ( XmlActions[ acts++ ] )
+                            switch ( xmlActions[ acts++ ] )
                             {
                                 case 0:
                                 {

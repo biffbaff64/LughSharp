@@ -1488,6 +1488,9 @@ public class ParticleEmitter
             {
                 SpriteMode = Enum.Parse< SpriteModes >( ReadString( line ) );
 
+                // Check the purpose of this.
+                // Is it reading the next line to effectively
+                // skip past some un-needed data?
                 line = reader.ReadLine();
             }
 

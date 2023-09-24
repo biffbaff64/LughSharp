@@ -148,7 +148,7 @@ FILES
     - java.io.File                          -> 
     - java.io.FileHandle                    -> 
     - java.io.FileInputStream               -> 
-    - java.io.FilterOutputStream            -> 
+    - java.io.FileOutputStream              -> 
     - java.io.DataOuput                     -> (Interface)
     - java.io.InputStream                   -> StreamReader
     - java.io.InputStreamReader             -> StreamReader
@@ -253,13 +253,13 @@ GRAPHICS/G2D
     - DONE - ParticleEffect                 
     - DONE - ParticleEffectPool             
     - DONE - ParticleEmitter                
-    - IP   - PixmapPacker                   
-    -      - PixmapPacker10                 
+    - DONE - PixmapPacker                   
+    - DONE - PixmapPacker10                 
     - DONE - PolygonRegion                  
-    -      - PolygonRegionLoader            
+    - IP   - PolygonRegionLoader            
     - DONE - PolygonSprite                  
     - DONE - PolygonSpriteBatch             
-    -      - RepeatablePolygonSprite        
+    - IP   - RepeatablePolygonSprite        
     - DONE - Sprite                         
     - DONE - SpriteBatch                    
     - DONE - SpriteCache                    
