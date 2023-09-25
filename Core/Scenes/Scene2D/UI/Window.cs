@@ -108,8 +108,8 @@ public class Window : Table
 
         if ( this.Stage.Camera is OrthographicCamera orthographicCamera )
         {
-            var parentWidth  = this.Stage.StageWidth;
-            var parentHeight = this.Stage.StageHeight;
+            var parentWidth  = this.Stage.Width;
+            var parentHeight = this.Stage.Height;
 
             if ( ( GetX( Align.RIGHT ) - this.Stage.Camera.Position.X )
                > ( parentWidth / 2 / orthographicCamera.Zoom ) )
@@ -156,8 +156,8 @@ public class Window : Table
         }
         else if ( Parent == this.Stage.Root )
         {
-            var parentWidth  = this.Stage.StageWidth;
-            var parentHeight = this.Stage.StageHeight;
+            var parentWidth  = this.Stage.Width;
+            var parentHeight = this.Stage.Height;
 
             if ( X < 0 )
             {
@@ -192,7 +192,7 @@ public class Window : Table
             if ( Style.StageBackground != null )
             {
                 StageToLocalCoordinates( TmpPosition.Set( 0, 0 ) );
-                StageToLocalCoordinates( TmpSize.Set( this.Stage.StageWidth, this.Stage.StageHeight ) );
+                StageToLocalCoordinates( TmpSize.Set( this.Stage.Width, this.Stage.Height ) );
 
                 DrawStageBackground
                     (
@@ -505,9 +505,9 @@ public class Window : Table
                     amountX = minWidth - width;
                 }
 
-                if ( clampPosition && ( ( windowX + width + amountX ) > stage?.StageWidth ) )
+                if ( clampPosition && ( ( windowX + width + amountX ) > stage?.Width ) )
                 {
-                    amountX = stage.StageWidth - windowX - width;
+                    amountX = stage.Width - windowX - width;
                 }
 
                 width += amountX;
@@ -522,9 +522,9 @@ public class Window : Table
                     amountY = minHeight - height;
                 }
 
-                if ( clampPosition && ( ( windowY + height + amountY ) > stage?.StageHeight ) )
+                if ( clampPosition && ( ( windowY + height + amountY ) > stage?.Height ) )
                 {
-                    amountY = stage.StageHeight - windowY - height;
+                    amountY = stage.Height - windowY - height;
                 }
 
                 height += amountY;

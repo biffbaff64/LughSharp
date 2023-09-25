@@ -80,13 +80,13 @@ public class Pools<T>
     /// If true, objects don't need to be from the same pool but the
     /// pool must be looked up for each object.
     /// </param>
-    public static void FreeAll( List< T? > objects, bool samePool = false )
+    public static void FreeAll( List< T > objects, bool samePool = false )
     {
         ArgumentNullException.ThrowIfNull( objects );
 
         for ( int i = 0, n = objects.Count; i < n; i++ )
         {
-            T? obj = objects[ i ];
+            T obj = objects[ i ];
 
             if ( ( obj == null ) || ( TypePools[ typeof( T ) ] == null ) )
             {

@@ -96,8 +96,8 @@ public class Widget : Actor, ILayout
 
             if ( ( Stage != null ) && ( parent == Stage.Root ) )
             {
-                parentWidth  = Stage.StageWidth;
-                parentHeight = Stage.StageHeight;
+                parentWidth  = Stage.Width;
+                parentHeight = Stage.Height;
             }
             else
             {

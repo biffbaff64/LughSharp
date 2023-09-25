@@ -32,7 +32,6 @@ namespace LibGDXSharp.Utils.Collections;
 /// during iteration.
 /// </para>
 /// </summary>
-/// <typeparam name="T"></typeparam>
 [PublicAPI]
 public class SnapshotArray<T>
 {
@@ -153,7 +152,7 @@ public class SnapshotArray<T>
     public void Add( T value )
     {
         Modified();
-        
+
         if ( Size == Items.Length )
         {
             Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
@@ -179,10 +178,10 @@ public class SnapshotArray<T>
         }
 
         Modified();
-        
+
         AddAll( array.Items, start, count );
     }
-    
+
     /// <summary>
     /// Copy 'count' items from the supplied array to this array,
     /// starting from position 'start'.
@@ -193,7 +192,7 @@ public class SnapshotArray<T>
     public void AddAll( T?[] array, int start, int count )
     {
         Modified();
-        
+
         var sizeNeeded = Size + count;
 
         if ( sizeNeeded > Items.Length )
@@ -249,7 +248,7 @@ public class SnapshotArray<T>
         }
 
         Modified();
-        
+
         if ( Size == Items.Length )
         {
             Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
@@ -336,7 +335,7 @@ public class SnapshotArray<T>
     public void RemoveRange( int start, int end )
     {
         Modified();
-        
+
         if ( end >= Size )
         {
             throw new ArgumentOutOfRangeException( "end can't be >= size - " + end + " >= " + Size );
@@ -398,6 +397,42 @@ public class SnapshotArray<T>
         return size != startSize;
     }
 
+    /// <summary>
+    /// Returns the index of first occurrence of value in the array,
+    /// or -1 if no such value exists.
+    /// </summary>
+    /// <param name="value"> May be null. </param>
+    /// <returns>
+    /// An index of first occurrence of value in array or -1 if no such value exists
+    /// </returns>
+    public int IndexOf( T? value )
+    {
+        for ( int i = 0, n = Size; i < n; i++ )
+        {
+            if ( ( value != null ) && value.Equals( Items[ i ] ) )
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public bool Contains( T value )
+    {
+        var i = Size - 1;
+
+        while ( i >= 0 )
+        {
+            if ( Items[ i-- ]!.Equals( value ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public T Peek()
     {
         if ( Size == 0 )
@@ -407,11 +442,11 @@ public class SnapshotArray<T>
 
         return Items[ Size - 1 ];
     }
-    
+
     public T Pop()
     {
         Modified();
-        
+
         if ( Size == 0 )
         {
             throw new IndexOutOfRangeException( "Array is empty." );
@@ -425,7 +460,7 @@ public class SnapshotArray<T>
 
         return item;
     }
-    
+
     public void Clear()
     {
         Array.Clear( Items );
@@ -452,7 +487,7 @@ public class SnapshotArray<T>
             ? ToArray( memberInfo )
             : ( T[] )Array.CreateInstance( Items.GetType(), Size );
     }
-    
+
     public T[] ToArray( Type type )
     {
         var result = ( T[] )Array.CreateInstance( type, Size );
@@ -461,7 +496,7 @@ public class SnapshotArray<T>
 
         return result;
     }
-    
+
     public override int GetHashCode()
     {
         var h = 31 * GetType().GetHashCode();

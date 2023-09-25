@@ -301,8 +301,8 @@ public class Dialog : Window
 
         SetPosition
             (
-            ( float )Math.Round( ( stage.StageWidth - Width ) / 2 ),
-            ( float )Math.Round( ( stage.StageHeight - Height ) / 2 )
+            ( float )Math.Round( ( stage.Width - Width ) / 2 ),
+            ( float )Math.Round( ( stage.Height - Height ) / 2 )
             );
 
         return this;

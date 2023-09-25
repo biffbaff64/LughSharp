@@ -44,7 +44,7 @@ public class DragAndDrop
     private readonly        Dictionary< DragSource, DragListener > _sourceListeners = new();
     private readonly        List< DragTarget >                     _targets         = new();
 
-    private DragListener _dragListener;
+    private DragListener? _dragListener;
 
     private bool  _removeDragActor;
     private bool  _isValidTarget;
@@ -99,12 +99,8 @@ public class DragAndDrop
 
         public override void Drag( InputEvent ev, float x, float y, int pointer )
         {
-            if ( _parent.DragPayload == null )
-            {
-                return;
-            }
-
-            if ( pointer != _parent.activePointer )
+            if ( ( _parent.DragPayload == null )
+                || ( pointer != _parent.activePointer ) )
             {
                 return;
             }
@@ -182,13 +178,15 @@ public class DragAndDrop
                     );
             }
 
-            // Determine the drag actor, remove the old one if it was added by DragAndDrop, and add the new one.
+            // Determine the drag actor, remove the old one if it
+            // was added by DragAndDrop, and add the new one.
             Actor? actor = null;
 
             if ( _parent.Target != null )
             {
                 actor = _parent._isValidTarget
-                    ? _parent.DragPayload.ValidDragActor : _parent.DragPayload.InvalidDragActor;
+                    ? _parent.DragPayload.ValidDragActor
+                    : _parent.DragPayload.InvalidDragActor;
             }
 
             actor ??= _parent.DragPayload.DragActor;
@@ -215,10 +213,10 @@ public class DragAndDrop
             }
 
             // Position the drag actor.
-            float actorX = ev.( getStageX() - actor.getWidth() ) + _dragActorX;
-            float actorY = ev.getStageY() + _dragActorY;
+            var actorX = ( ev.StageX - actor.Width ) + _parent._dragActorX;
+            var actorY = ev.StageY + _parent._dragActorY;
 
-            if ( _keepWithinStage )
+            if ( _parent.KeepWithinStage )
             {
                 if ( actorX < 0 )
                 {
@@ -230,14 +228,14 @@ public class DragAndDrop
                     actorY = 0;
                 }
 
-                if ( ( actorX + actor.getWidth() ) > stage.getWidth() )
+                if ( ( actorX + actor.Width ) > stage?.Width )
                 {
-                    actorX = stage.getWidth() - actor.getWidth();
+                    actorX = stage.Width - actor.Width;
                 }
 
-                if ( ( actorY + actor.getHeight() ) > stage.getHeight() )
+                if ( ( actorY + actor.Height ) > stage?.Height )
                 {
-                    actorY = stage.getHeight() - actor.getHeight();
+                    actorY = stage.Height - actor.Height;
                 }
             }
 

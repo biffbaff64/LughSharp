@@ -149,8 +149,13 @@ public class Actor : IActor
 
         // Collect ascendants so event propagation is unaffected by
         // hierarchy changes.
-        List< Group > ascendants = Pools< List< Group > >.Obtain();
+        List< Group >? ascendants = Pools< List< Group > >.Obtain();
 
+        if ( ascendants == null )
+        {
+            return ev.IsCancelled;
+        }
+        
         Group? parent = this.Parent;
 
         while ( parent != null )
@@ -1084,12 +1089,7 @@ public class Actor : IActor
             throw new ArgumentException( "ZIndex cannot be < 0." );
         }
 
-        if ( this.Parent == null )
-        {
-            return false;
-        }
-
-        if ( Parent.Children.Size <= 1 )
+        if ( ( this.Parent == null ) || ( Parent.Children.Size <= 1 ) )
         {
             return false;
         }
@@ -1101,7 +1101,7 @@ public class Actor : IActor
             return false;
         }
 
-        if ( !Parent.Children.RemoveValue( this ) )
+        if ( !Parent.Children.Remove( this ) )
         {
             return false;
         }
@@ -1161,8 +1161,13 @@ public class Actor : IActor
         tableBounds.Width  = width;
         tableBounds.Height = height;
 
-        RectangleShape scissorBounds = Pools< RectangleShape >.Obtain();
+        RectangleShape? scissorBounds = Pools< RectangleShape >.Obtain();
 
+        if ( scissorBounds == null )
+        {
+            return false;
+        }
+        
         this.Stage.CalculateScissors( tableBounds, scissorBounds );
 
         if ( ScissorStack.PushScissors( scissorBounds ) )

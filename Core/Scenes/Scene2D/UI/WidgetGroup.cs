@@ -115,8 +115,8 @@ public class WidgetGroup : Group, ILayout
 
             if ( ( stage != null ) && ( parent == stage.Root ) )
             {
-                parentWidth  = stage.StageWidth;
-                parentHeight = stage.StageHeight;
+                parentWidth  = stage.Width;
+                parentHeight = stage.Height;
             }
             else
             {

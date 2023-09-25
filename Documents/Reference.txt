@@ -1,5 +1,4 @@
 ﻿
-Debug Assert Example -
 Debug.Assert( Style.Font != null, "Style.Font != null" );
 
 T?[] - Array of nullable Ts
