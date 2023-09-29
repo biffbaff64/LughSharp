@@ -35,7 +35,6 @@
         <Folder Include="Core\Graphics\G3D\Shaders\" />
         <Folder Include="Core\Utils\Async\" />
         <Folder Include="DeleteCandidates\" />
-        <Folder Include="Resources\" />
     </ItemGroup>
 
     <ItemGroup>

@@ -43,8 +43,7 @@ public class SnapshotArray<T>
     private T[]? _recycled;
     private int  _snapshotCount;
 
-    private IEnumerable< T >?       _iterable;
-    private PredicateIterable< T >? _predicateIEnumerable;
+    private IEnumerable< T >? _iterable;
 
     public SnapshotArray( int capacity = 0 )
         : this( true, capacity )

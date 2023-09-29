@@ -59,12 +59,12 @@ public class Skin : IDisposable
         typeof( TiledDrawable ),                        typeof( Button.ButtonStyle ),
         typeof( TextButton.TextButtonStyle ),           typeof( CheckBox.CheckBoxStyle ),
         typeof( Label.LabelStyle ),                     typeof( ProgressBar.ProgressBarStyle ),
-//        typeof( TextField.TextFieldStyle ),             typeof( ImageButton.ImageButtonStyle ),
-//        typeof( ImageTextButton.ImageTextButtonStyle ), typeof( List.ListStyle ),                       
-//        typeof( ScrollPane.ScrollPaneStyle ),           typeof( SelectBox.SelectBoxStyle ),
-//        typeof( Slider.SliderStyle ),                   typeof( SplitPane.SplitPaneStyle ),
-//        typeof( TextTooltip.TextTooltipStyle ),         typeof( Touchpad.TouchpadStyle ),
-//        typeof( Tree.TreeStyle ),                       typeof( Window.WindowStyle )
+        typeof( TextField.TextFieldStyle ),             typeof( ImageButton.ImageButtonStyle ),
+        typeof( ImageTextButton.ImageTextButtonStyle ), typeof( List.ListStyle ),                       
+        typeof( ScrollPane.ScrollPaneStyle ),           typeof( SelectBox.SelectBoxStyle ),
+        typeof( Slider.SliderStyle ),                   typeof( SplitPane.SplitPaneStyle ),
+        typeof( TextTooltip.TextTooltipStyle ),         typeof( Touchpad.TouchpadStyle ),
+        typeof( Tree.TreeStyle ),                       typeof( Window.WindowStyle )
     };
     //@formatter:on
 
@@ -159,8 +159,7 @@ public class Skin : IDisposable
     {
         try
         {
-            //TODO:
-//            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
+            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
         }
         catch ( SerializationException ex )
         {
@@ -194,15 +193,8 @@ public class Skin : IDisposable
 
     public void Add( string? name, object? resource, Type type )
     {
-        if ( string.ReferenceEquals( name, null ) )
-        {
-            throw new System.ArgumentException( "name cannot be null." );
-        }
-
-        if ( resource == null )
-        {
-            throw new System.ArgumentException( "resource cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( name );
+        ArgumentNullException.ThrowIfNull( resource );
 
         Dictionary< string, object >? typeResources = Resources.Get( type );
 
@@ -225,10 +217,7 @@ public class Skin : IDisposable
 
     public void Remove( string name, Type type )
     {
-        if ( string.ReferenceEquals( name, null ) )
-        {
-            throw new System.ArgumentException( "name cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( name );
 
         Resources.Get( type )?.Remove( name );
     }
@@ -259,13 +248,25 @@ public class Skin : IDisposable
     {
         ArgumentNullException.ThrowIfNull( name );
 
-        if ( type == typeof( IDrawable ) ) return GetDrawable( name );
+        if ( type == typeof( IDrawable ) )
+        {
+            return GetDrawable( name );
+        }
 
-        if ( type == typeof( TextureRegion ) ) return GetRegion( name );
+        if ( type == typeof( TextureRegion ) )
+        {
+            return GetRegion( name );
+        }
 
-        if ( type == typeof( NinePatch ) ) return GetPatch( name );
+        if ( type == typeof( NinePatch ) )
+        {
+            return GetPatch( name );
+        }
 
-        if ( type == typeof( Sprite ) ) return GetSprite( name );
+        if ( type == typeof( Sprite ) )
+        {
+            return GetSprite( name );
+        }
 
         Dictionary< string, object >? typeResources = Resources[ type ];
 
@@ -321,7 +322,10 @@ public class Skin : IDisposable
     {
         var region = Optional< TextureRegion? >( name );
 
-        if ( region != null ) return region;
+        if ( region != null )
+        {
+            return region;
+        }
 
         var texture = Optional< Texture >( name );
 
@@ -535,6 +539,7 @@ public class Skin : IDisposable
         }
         catch ( GdxRuntimeException )
         {
+            // TODO:
         }
 
         // Check for explicit registration of ninepatch, sprite, or tiled drawable.
@@ -722,7 +727,10 @@ public class Skin : IDisposable
         // Get current style.
         System.Reflection.MethodInfo? method = actor.GetType().GetMethod( "GetStyle" );
 
-        if ( method == null ) return;
+        if ( method == null )
+        {
+            return;
+        }
 
         object style;
 
@@ -738,7 +746,10 @@ public class Skin : IDisposable
         // Determine new style.
         var name = Find( style );
 
-        if ( string.ReferenceEquals( name, null ) ) return;
+        if ( string.ReferenceEquals( name, null ) )
+        {
+            return;
+        }
 
         name  = name.Replace( "-disabled", "" ) + ( enabled ? "" : "-disabled" );
         
@@ -756,6 +767,7 @@ public class Skin : IDisposable
         }
         catch ( Exception )
         {
+            // ignored
         }
     }
 
@@ -765,7 +777,8 @@ public class Skin : IDisposable
     }
 
     /// <summary>
-    /// Disposes the <see cref="TextureAtlas"/> and all <see cref="IDisposable"/> resources in the skin.
+    /// Disposes the <see cref="TextureAtlas"/> and all <see cref="IDisposable"/>
+    /// resources in the skin.
     /// </summary>
     public void Dispose()
     {
@@ -783,8 +796,7 @@ public class Skin : IDisposable
         }
     }
 
-    public Json GetJsonLoader( in FileInfo skinFile )
-    {
-        throw new NotImplementedException();
-    }
+//    public Json GetJsonLoader( in FileInfo skinFile )
+//    {
+//    }
 }

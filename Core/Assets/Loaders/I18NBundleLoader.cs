@@ -42,69 +42,69 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </para>
 /// </summary>
 [PublicAPI]
-public class I18NBundleLoader : AsynchronousAssetLoader< I18NBundle, I18NBundleLoader.I18NBundleParameter >
+public class I18NBundleLoader //: AsynchronousAssetLoader< I18NBundle, I18NBundleLoader.I18NBundleParameter >
 {
-    private I18NBundle? _bundle;
-
-    public I18NBundleLoader( IFileHandleResolver resolver ) : base( resolver )
-    {
-    }
-
-    public override void LoadAsync( AssetManager? manager, string? fileName, FileInfo? file, AssetLoaderParameters? parameter )
-    {
-        this._bundle = null;
-
-        CultureInfo? locale;
-        string?      encoding;
-
-        if ( parameter == null )
-        {
-            locale   = CultureInfo.DefaultThreadCurrentCulture;
-            encoding = null;
-        }
-        else
-        {
-            locale   = ( ( I18NBundleParameter )parameter ).Locale ?? CultureInfo.DefaultThreadCurrentCulture;
-            encoding = ( ( I18NBundleParameter )parameter ).Encoding;
-        }
-
-        this._bundle = encoding == null
-            ? I18NBundle.CreateBundle( file, locale )
-            : I18NBundle.CreateBundle( file, locale, encoding );
-    }
-
-    public override I18NBundle LoadSync( AssetManager? manager,
-                                         string? fileName,
-                                         FileInfo? file,
-                                         AssetLoaderParameters parameter )
-    {
-        I18NBundle? bundle = this._bundle;
-        this._bundle = null;
-
-        return bundle!;
-    }
-
-    public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter )
-    {
-        return null!;
-    }
-
-    [PublicAPI]
-    public class I18NBundleParameter : AssetLoaderParameters
-    {
-        public CultureInfo? Locale   { get; private set; }
-        public string?      Encoding { get; private set; }
-
-        public I18NBundleParameter() : this( null )
-        {
-        }
-
-        public I18NBundleParameter( CultureInfo? locale, string? encoding = null )
-        {
-            this.Locale   = locale;
-            this.Encoding = encoding;
-        }
-    }
+//    private I18NBundle? _bundle;
+//
+//    public I18NBundleLoader( IFileHandleResolver resolver ) : base( resolver )
+//    {
+//    }
+//
+//    public override void LoadAsync( AssetManager? manager, string? fileName, FileInfo? file, AssetLoaderParameters? parameter )
+//    {
+//        this._bundle = null;
+//
+//        CultureInfo? locale;
+//        string?      encoding;
+//
+//        if ( parameter == null )
+//        {
+//            locale   = CultureInfo.DefaultThreadCurrentCulture;
+//            encoding = null;
+//        }
+//        else
+//        {
+//            locale   = ( ( I18NBundleParameter )parameter ).Locale ?? CultureInfo.DefaultThreadCurrentCulture;
+//            encoding = ( ( I18NBundleParameter )parameter ).Encoding;
+//        }
+//
+//        this._bundle = encoding == null
+//            ? I18NBundle.CreateBundle( file, locale )
+//            : I18NBundle.CreateBundle( file, locale, encoding );
+//    }
+//
+//    public override I18NBundle LoadSync( AssetManager? manager,
+//                                         string? fileName,
+//                                         FileInfo? file,
+//                                         AssetLoaderParameters parameter )
+//    {
+//        I18NBundle? bundle = this._bundle;
+//        this._bundle = null;
+//
+//        return bundle!;
+//    }
+//
+//    public override List< AssetDescriptor > GetDependencies( string? fileName,
+//                                                             FileInfo? file,
+//                                                             AssetLoaderParameters parameter )
+//    {
+//        return null!;
+//    }
+//
+//    [PublicAPI]
+//    public class I18NBundleParameter : AssetLoaderParameters
+//    {
+//        public CultureInfo? Locale   { get; private set; }
+//        public string?      Encoding { get; private set; }
+//
+//        public I18NBundleParameter() : this( null )
+//        {
+//        }
+//
+//        public I18NBundleParameter( CultureInfo? locale, string? encoding = null )
+//        {
+//            this.Locale   = locale;
+//            this.Encoding = encoding;
+//        }
+//    }
 }

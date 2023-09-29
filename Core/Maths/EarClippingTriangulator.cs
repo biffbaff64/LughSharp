@@ -19,5 +19,9 @@ namespace LibGDXSharp.Maths;
 [PublicAPI]
 public class EarClippingTriangulator
 {
-        
+
+    public List< short > ComputeTriangles( float[] vertices )
+    {
+        return null!;
+    }
 }

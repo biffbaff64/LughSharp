@@ -14,9 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Drawing;
-
-using LibGDXSharp.Core.Files;
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Maths.Collision;
 

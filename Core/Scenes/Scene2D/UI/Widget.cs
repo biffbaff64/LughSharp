@@ -68,11 +68,17 @@ public class Widget : Actor, ILayout
     /// </summary>
     public void InvalidateHierarchy()
     {
-        if ( !LayoutEnabled ) return;
+        if ( !LayoutEnabled )
+        {
+            return;
+        }
 
         Invalidate();
 
-        if ( Parent is ILayout layout ) layout.InvalidateHierarchy();
+        if ( Parent is ILayout layout )
+        {
+            layout.InvalidateHierarchy();
+        }
     }
 
     /// <summary>
@@ -86,7 +92,10 @@ public class Widget : Actor, ILayout
     /// </summary>
     public void Validate()
     {
-        if ( !LayoutEnabled ) return;
+        if ( !LayoutEnabled )
+        {
+            return;
+        }
 
         Group? parent = Parent;
 
@@ -108,7 +117,10 @@ public class Widget : Actor, ILayout
             SetSize( parentWidth, parentHeight );
         }
 
-        if ( !NeedsLayout ) return;
+        if ( !NeedsLayout )
+        {
+            return;
+        }
 
         NeedsLayout = false;
 
@@ -130,7 +142,7 @@ public class Widget : Actor, ILayout
     /// Generally this method should not be called in an actor's constructor because it calls
     /// <see cref="ILayout.Layout"/>, which means a subclass would have Layout() called before the
     /// subclass' constructor. Instead, in constructors simply set the actor's size
-    /// to <see cref="ILayout.GetPrefWidth"/> and <see cref="ILayout.GetPrefHeight"/>. This allows
+    /// to <see cref="ILayout.PrefWidth"/> and <see cref="ILayout.PrefHeight"/>. This allows
     /// the actor to have a size at construction time for more convenient use with groups that do
     /// not layout their children. 
     /// </para>
@@ -178,20 +190,6 @@ public class Widget : Actor, ILayout
             }
         }
     }
-
-    public float MinWidth   { get => PrefWidth; set{} }
-    public float MinHeight  { get => PrefHeight; set{} }
-    public float PrefWidth  { get => 0; set{} }
-    public float PrefHeight { get => 0; set{} }
-    public float MaxWidth   { get => 0; set{} }
-    public float MaxHeight  { get => 0; set{} }
-
-//    public float GetMinWidth()   => GetPrefWidth();
-//    public float GetMinHeight()  => GetPrefHeight();
-//    public float GetPrefWidth()  => 0;
-//    public float GetPrefHeight() => 0;
-//    public float GetMaxWidth()   => 0;
-//    public float GetMaxHeight()  => 0;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

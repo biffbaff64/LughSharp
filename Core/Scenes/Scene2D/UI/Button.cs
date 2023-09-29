@@ -185,6 +185,7 @@ public class Button : Table, IDisableable
     public ButtonStyle? Style
     {
         get => _style;
+
         // ReSharper disable once PropertyCanBeMadeInitOnly.Global
         set
         {
@@ -309,7 +310,7 @@ public class Button : Table, IDisableable
         }
 
         if ( Stage is { ActionsRequestRendering: true }
-             && ( IsPressed() != ClickListener?.Pressed ) )
+          && ( IsPressed() != ClickListener?.Pressed ) )
         {
             Gdx.Graphics.RequestRendering();
         }
@@ -370,6 +371,9 @@ public class Button : Table, IDisableable
         }
     }
 
+    public override float MinWidth  => PrefWidth;
+    public override float MinHeight => PrefHeight;
+
     public ButtonClickListener?  ClickListener { get; set; }
     public bool                  IsChecked     { get; private set; }
     public bool                  IsDisabled    { get; set; }
@@ -380,11 +384,9 @@ public class Button : Table, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public     void  Toggle()    => SetChecked( !IsChecked );
-    public     bool  IsPressed() => ClickListener!.VisualPressed;
-    public     bool  IsOver()    => ClickListener!.Over;
-    public new float MinWidth    => PrefWidth;
-    public new float MinHeight   => PrefHeight;
+    public void Toggle()    => SetChecked( !IsChecked );
+    public bool IsPressed() => ClickListener!.VisualPressed;
+    public bool IsOver()    => ClickListener!.Over;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

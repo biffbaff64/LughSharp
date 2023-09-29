@@ -89,8 +89,8 @@ public interface ILayout
     /// </summary>
     bool LayoutEnabled { get; set; }
 
-    float MinWidth   { get; set; }
-    float MinHeight  { get; set; }
+    float MinWidth   { get; }
+    float MinHeight  { get; }
     float MaxWidth   { get; set; }
     float MaxHeight  { get; set; }
     float PrefWidth  { get; set; }

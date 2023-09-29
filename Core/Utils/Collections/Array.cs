@@ -18,11 +18,14 @@ using System.Text;
 
 namespace LibGDXSharp.Utils.Collections;
 
-[PublicAPI]
+[PublicAPI, Incomplete( "DO NOT USE - Not ready", true )]
 public class Array<T>
 {
+    [Incomplete( "DO NOT USE - Not ready", true )]
     public T[]  Items   { get; private set; }
+    [Incomplete( "DO NOT USE - Not ready", true )]
     public int  Size    { get; private set; }
+    [Incomplete( "DO NOT USE - Not ready", true )]
     public bool Ordered { get; private set; }
 
     private IEnumerable< T >?       _iterable;

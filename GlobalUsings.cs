@@ -20,8 +20,12 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 
 // -----------------------------------------------------------------------
-// Jetbrains
+// Json
+global using System.Text.Json;
+global using System.Text.Json.Serialization;
 
+// -----------------------------------------------------------------------
+// Jetbrains
 global using JetBrains.Annotations;
 
 // -----------------------------------------------------------------------
@@ -29,7 +33,6 @@ global using JetBrains.Annotations;
 
 // -----------------------------------------------------------------------
 // LibGDXSharp
-
 global using LibGDXSharp.Assets;
 global using LibGDXSharp.Assets.Loaders;
 global using LibGDXSharp.Assets.Loaders.Resolvers;

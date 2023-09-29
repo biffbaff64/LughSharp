@@ -25,14 +25,22 @@ namespace LibGDXSharp.Scenes.Scene2D;
 [PublicAPI]
 public class Actor : IActor
 {
-    public    Stage?    Stage      { get; set; }
-    public    Group?    Parent     { get; set; }
-    public    string?   Name       { get; set; }
-    public    object?   UserObject { get; set; }
-    public    Touchable Touchable  { get; set; } = Touchable.Enabled;
-    public    bool      IsVisible  { get; set; } = true;
-    protected float     OriginX    { get; set; }
-    protected float     OriginY    { get; set; }
+    public Stage?    Stage      { get; set; }
+    public Group?    Parent     { get; set; }
+    public string?   Name       { get; set; }
+    public object?   UserObject { get; set; }
+    public Touchable Touchable  { get; set; } = Touchable.Enabled;
+    public bool      IsVisible  { get; set; } = true;
+
+    public virtual float MinWidth   { get; set; } = 0;
+    public virtual float MinHeight  { get; set; } = 0;
+    public virtual float MaxWidth   { get; set; } = 0;
+    public virtual float MaxHeight  { get; set; } = 0;
+    public virtual float PrefWidth  { get; set; } = 0;
+    public virtual float PrefHeight { get; set; } = 0;
+
+    protected float OriginX { get; set; }
+    protected float OriginY { get; set; }
 
     public Color? Color
     {
@@ -116,8 +124,8 @@ public class Actor : IActor
             {
                 throw new SystemException
                     (
-                    $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
-                    ex
+                     $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
+                     ex
                     );
             }
         }
@@ -155,7 +163,7 @@ public class Actor : IActor
         {
             return ev.IsCancelled;
         }
-        
+
         Group? parent = this.Parent;
 
         while ( parent != null )
@@ -266,8 +274,8 @@ public class Actor : IActor
             {
                 throw new SystemException
                     (
-                    $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
-                    ex
+                     $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
+                     ex
                     );
             }
         }
@@ -1167,7 +1175,7 @@ public class Actor : IActor
         {
             return false;
         }
-        
+
         this.Stage.CalculateScissors( tableBounds, scissorBounds );
 
         if ( ScissorStack.PushScissors( scissorBounds ) )
@@ -1375,7 +1383,7 @@ public class Actor : IActor
     /// Draws a rectangle for the bounds of this actor
     /// if <see cref="DebugActive"/> is true.
     /// </summary>
-    protected void DrawDebugBounds( ShapeRenderer shapes )
+    protected virtual void DrawDebugBounds( ShapeRenderer shapes )
     {
         if ( !DebugActive )
         {

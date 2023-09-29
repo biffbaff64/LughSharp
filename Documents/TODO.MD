@@ -63,7 +63,7 @@ ASSETS/LOADERS
     - DONE - AsynchronousAssetLoader        
     - DONE - BitmapFontLoader               
     - DONE - CubemapLoader                  
-    - DONE - I18NBundleLoader               
+    -      - I18NBundleLoader               
     - DONE - ModelLoader                    
     - DONE - MusicLoader                    
     - DONE - ParticleEffectLoader           
@@ -157,6 +157,7 @@ FILES
     - java.io.Reader                        -> 
 
     - Would MemoryStream cover all these?
+
     - java.nio.Buffer                       ->  
     - java.nio.BufferUtils                  ->  
     - java.nio.ByteBuffer                   ->  
@@ -576,7 +577,7 @@ SCENES.SCENE2D/UI
     - DONE - CheckBox                       
     - DONE - Container                      
     - IP   - Dialog                         
-    -      - HorizontalGroup                
+    - IP   - HorizontalGroup                
     - DONE - Image                          
     -      - ImageButton                    
     -      - ImageTextButton                
@@ -636,39 +637,40 @@ UTILS
     - DONE - Align                          
     - DONE - BinaryHeap
     - DONE - Bits                           
-    - DONE - CharHelper                     Might be added to.
+    - DONE - CharHelper
     - DONE - ComparableTimSort              
     - DONE - DataInput                      Check
-    -      - DataOutput                     Check
+    - DONE - DataOutput                     Check
     - DONE - DataUtils                      Added Class
     - DONE - FloatConsts                    Done, but is it needed?
-    -      - GdxNativesLoader               Check
-    -      - I18NBundle                     Check
     - DONE - ICloseable                     
     - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backends.                 
     - DONE - IRunnable                      Done, but is it needed?
-    -      - LittleEndianInputStream        Check
     - DONE - Logger                         
-    -      - PauseableThread
     - DONE - PerformanceCounter             Check
     - DONE - PerformanceCounters            Check
     - DONE - PropertiesUtils                Convert, but check if necessary first
     - DONE - QuadTreeFloat
-    -      - Queue                          Use system.collection.generics.Queue<T>?
     - DONE - QuickSelect
     - DONE - Scaling
-    - DONE - ScreenUtils                    Needs ByteBuffer.Read implementing
-    - DONE - Select                         Renamed Selector
-    -      - SharedLibraryLoader            Check - Remove this??
+    - DONE - ScreenUtils
+    - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
     - DONE - SortUtils
-    - IP   - StreamUtils
     - DONE - StringTokenizer
     - DONE - Timer                          Use System.Timer instead??
     - DONE - TimeUtils
     - DONE - TimSort
     - DONE - Trace                          Addition
 
+    -      - GdxNativesLoader               Check - Remove this??
+    -      - LittleEndianInputStream        Check - Remove this??
+    -      - PauseableThread                Check - Remove this??
+    -      - SharedLibraryLoader            Check - Remove this??
+    -      - StreamUtils                    Check - Remove this??
+
     - **** - Base64Coder                    Use System.Convert classes
+    - **** - I18NBundle                     Remove, look into C# localisation
+    - **** - Queue                          Use system.collection.generics.Queue<T>?
     - **** - SortedIntList                  Use SortedList<int>
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter                  Remove, look into C# localisation
@@ -706,12 +708,12 @@ UTILS/BUFFERS
 UTILS/COLLECTIONS
 -----------------
 
-    - DONE - Array<T>                       Converted, but use List<T> so can be removed
+    - DONE - Array<T>                       Converted, but use List<T>.
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
-    - IP   - SnapshotArray                  Insert the necessary bits from Array<> / remove dependency
+    - DONE - SnapshotArray<T>               Insert the necessary bits from Array<T> / remove dependency
 
     - **** - ArrayMap                       Use Dictionary<K, V>
     - **** - ArrayIterable                  Use IEnumerable?

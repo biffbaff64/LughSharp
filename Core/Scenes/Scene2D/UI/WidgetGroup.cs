@@ -57,23 +57,6 @@ public class WidgetGroup : Group, ILayout
         }
     }
 
-    public float MinWidth
-    {
-        get => PrefWidth;
-        set { }
-    }
-
-    public float MinHeight
-    {
-        get => PrefHeight;
-        set { }
-    }
-
-    public float MaxWidth   { get; set; } = 0;
-    public float MaxHeight  { get; set; } = 0;
-    public float PrefWidth  { get; set; } = 0;
-    public float PrefHeight { get; set; } = 0;
-
     public void SetLayoutEnabled( bool enabled )
     {
         _layoutEnabled = enabled;
@@ -99,7 +82,7 @@ public class WidgetGroup : Group, ILayout
         }
     }
 
-    public void Validate()
+    public virtual void Validate()
     {
         if ( !_layoutEnabled )
         {
@@ -169,12 +152,12 @@ public class WidgetGroup : Group, ILayout
     /// </summary>
     public bool NeedsLayout { get; private set; } = true;
 
-    public void Invalidate()
+    public virtual void Invalidate()
     {
         NeedsLayout = true;
     }
 
-    public void InvalidateHierarchy()
+    public virtual void InvalidateHierarchy()
     {
         Invalidate();
 
@@ -194,7 +177,7 @@ public class WidgetGroup : Group, ILayout
         Invalidate();
     }
 
-    public void Pack()
+    public virtual void Pack()
     {
         SetSize( PrefWidth, PrefHeight );
 
@@ -208,7 +191,7 @@ public class WidgetGroup : Group, ILayout
         Validate();
     }
 
-    public void Layout()
+    public virtual void Layout()
     {
     }
 
@@ -227,11 +210,4 @@ public class WidgetGroup : Group, ILayout
         get => _layoutEnabled;
         set => _layoutEnabled = value;
     }
-
-    public float GetMinWidth()   => MinWidth;
-    public float GetMinHeight()  => MinHeight;
-    public float GetPrefWidth()  => PrefWidth;
-    public float GetPrefHeight() => PrefHeight;
-    public float GetMaxWidth()   => MaxWidth;
-    public float GetMaxHeight()  => MaxHeight;
 }

@@ -45,9 +45,9 @@ public class Window : Table
     private readonly static Vector2 TmpPosition = new();
     private readonly static Vector2 TmpSize     = new();
 
-    private const int MOVE = 1 << 5;
+    private const int MOVE = ( 1 << 5 );
 
-    private WindowStyle _style;
+    private          WindowStyle _style;
     private readonly Table       _titleTable;
 
     protected int edge;
@@ -116,9 +116,9 @@ public class Window : Table
             {
                 SetPosition
                     (
-                    this.Stage.Camera.Position.X + ( parentWidth / 2 / orthographicCamera.Zoom ),
-                    GetY( Align.RIGHT ),
-                    Align.RIGHT
+                     this.Stage.Camera.Position.X + ( parentWidth / 2 / orthographicCamera.Zoom ),
+                     GetY( Align.RIGHT ),
+                     Align.RIGHT
                     );
             }
 
@@ -127,9 +127,9 @@ public class Window : Table
             {
                 SetPosition
                     (
-                    this.Stage.Camera.Position.X - ( parentWidth / 2 / orthographicCamera.Zoom ),
-                    GetY( Align.LEFT ),
-                    Align.LEFT
+                     this.Stage.Camera.Position.X - ( parentWidth / 2 / orthographicCamera.Zoom ),
+                     GetY( Align.LEFT ),
+                     Align.LEFT
                     );
             }
 
@@ -137,9 +137,9 @@ public class Window : Table
             {
                 SetPosition
                     (
-                    GetX( Align.TOP ),
-                    this.Stage.Camera.Position.Y + ( parentHeight / 2 / orthographicCamera.Zoom ),
-                    Align.TOP
+                     GetX( Align.TOP ),
+                     this.Stage.Camera.Position.Y + ( parentHeight / 2 / orthographicCamera.Zoom ),
+                     Align.TOP
                     );
             }
 
@@ -148,9 +148,9 @@ public class Window : Table
             {
                 SetPosition
                     (
-                    GetX( Align.BOTTOM ),
-                    this.Stage.Camera.Position.Y - ( parentHeight / 2 / orthographicCamera.Zoom ),
-                    Align.BOTTOM
+                     GetX( Align.BOTTOM ),
+                     this.Stage.Camera.Position.Y - ( parentHeight / 2 / orthographicCamera.Zoom ),
+                     Align.BOTTOM
                     );
             }
         }
@@ -196,12 +196,12 @@ public class Window : Table
 
                 DrawStageBackground
                     (
-                    batch,
-                    parentAlpha,
-                    ( X + TmpPosition.X ),
-                    ( Y + TmpPosition.Y ),
-                    ( X + TmpSize.X ),
-                    ( Y + TmpSize.Y )
+                     batch,
+                     parentAlpha,
+                     ( X + TmpPosition.X ),
+                     ( Y + TmpPosition.Y ),
+                     ( X + TmpSize.X ),
+                     ( Y + TmpSize.Y )
                     );
             }
         }
@@ -284,7 +284,7 @@ public class Window : Table
 
     public new float GetPrefWidth()
     {
-        return Math.Max( base.GetPrefWidth(), _titleTable.GetPrefWidth() + GetPadLeft() + GetPadRight() );
+        return Math.Max( base.GetPrefWidth(), _titleTable.PrefWidth + GetPadLeft() + GetPadRight() );
     }
 
     // ------------------------------------------------------------------------
@@ -406,7 +406,7 @@ public class Window : Table
             }
         }
 
-        protected override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+        public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
         {
             if ( button == 0 )
             {
@@ -422,12 +422,12 @@ public class Window : Table
             return ( _window.edge != 0 ) || _window.IsModal;
         }
 
-        protected override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+        public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
         {
             _window.Dragging = false;
         }
 
-        protected override void TouchDragged( InputEvent ev, float x, float y, int pointer )
+        public override void TouchDragged( InputEvent ev, float x, float y, int pointer )
         {
             if ( !_window.Dragging )
             {
@@ -532,8 +532,8 @@ public class Window : Table
 
             _window.SetBounds
                 (
-                ( float )Math.Round( windowX ), ( float )Math.Round( windowY ),
-                ( float )Math.Round( width ), ( float )Math.Round( height )
+                 ( float )Math.Round( windowX ), ( float )Math.Round( windowY ),
+                 ( float )Math.Round( width ), ( float )Math.Round( height )
                 );
         }
 
@@ -571,6 +571,7 @@ public class Window : Table
     /// <summary>
     /// The style for a window, see <see cref="Window"/>.
     /// </summary>
+    [PublicAPI]
     public class WindowStyle
     {
         public IDrawable?  Background      { get; set; }

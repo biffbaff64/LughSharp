@@ -70,7 +70,7 @@ public class PolygonRegionLoader
     {
         var texture = manager.Get< Texture >( manager.GetDependencies( fileName! )!.First() );
 
-        return Load( new TextureRegion( texture ), file );
+        return Load( new TextureRegion( texture ), file! );
     }
 
     /// <summary>
@@ -82,9 +82,9 @@ public class PolygonRegionLoader
     /// in <see cref="PolygonRegionParameters.textureExtensions"/>" will be
     /// used. If no suitable file is found, the returned Array will be empty.
     /// </summary>
-    public List< AssetDescriptor > GetDependencies( string fileName,
+    public override List< AssetDescriptor > GetDependencies( string fileName,
                                                     FileInfo file,
-                                                    PolygonRegionParameters? parameters )
+                                                    AssetLoaderParameters? parameters )
     {
         parameters ??= _defaultParameters;
 
@@ -96,9 +96,9 @@ public class PolygonRegionLoader
 
             for ( var line = reader.ReadLine(); line != null; line = reader.ReadLine() )
             {
-                if ( line.StartsWith( parameters.texturePrefix! ) )
+                if ( line.StartsWith( ( ( PolygonRegionParameters )parameters ).texturePrefix! ) )
                 {
-                    image = line.Substring( parameters.texturePrefix!.Length );
+                    image = line.Substring( ( ( PolygonRegionParameters )parameters ).texturePrefix!.Length );
 
                     break;
                 }
@@ -113,70 +113,84 @@ public class PolygonRegionLoader
 
         if ( image == null )
         {
-            foreach ( var extension in parameters.textureExtensions )
-            {
-                FileInfo sibling            = file.sibling( file.nameWithoutExtension().concat( "." + extension ) );
-
-                if ( sibling.exists() )
-                {
-                    image = sibling.name();
-                }
-            }
+//            foreach ( var extension in parameters.textureExtensions )
+//            {
+//                FileInfo sibling = file.sibling( file.nameWithoutExtension().concat( "." + extension ) );
+//
+//                if ( sibling.Exists() )
+//                {
+//                    image = sibling.Name();
+//                }
+//            }
         }
 
         if ( image != null )
         {
-            Array< AssetDescriptor > deps = new Array< AssetDescriptor >( 1 );
-            deps.add( new AssetDescriptor< Texture >( file.sibling( image ), Texture.class));
-
-            return deps;
+//            List< AssetDescriptor > deps = new( 1 )
+//            {
+//                new AssetDescriptor( file.Sibling( image ), typeof( Texture ) )
+//            };
+//
+//            return deps;
         }
 
-        return null;
+        return null!;
     }
 
-    /** Loads a PolygonRegion from a PSH (Polygon SHape) file. The PSH file format defines the polygon vertices before
-     * triangulation:
-     * <p>
-     * s 200.0, 100.0, ...
-     * <p>
-     * Lines not prefixed with "s" are ignored. PSH files can be created with external tools, eg: <br>
-     * https://code.google.com/p/libgdx-polygoneditor/ <br>
-     * http://www.codeandweb.com/physicseditor/
-     * @param file file handle to the shape definition file */
+    /// <summary>
+    /// Loads a PolygonRegion from a PSH (Polygon SHape) file. The PSH file format defines the polygon vertices before
+    /// triangulation:
+    /// <para>s 200.0, 100.0, ...</para>
+    /// <para>
+    /// Lines not prefixed with "s" are ignored. PSH files can be created with external tools, eg:
+    /// </para>
+    /// <para>http://www.codeandweb.com/physicseditor/</para>
+    /// </summary>
+    /// <param name="textureRegion"></param>
+    /// <param name="file"> file handle to the shape definition file </param>
     public PolygonRegion Load( TextureRegion textureRegion, FileInfo file )
     {
-        BufferedReader reader = file.reader( 256 );
+        var reader = new StreamReader( file.Name );
 
         try
         {
             while ( true )
             {
-                String line = reader.readLine();
+                var line = reader.ReadLine();
 
-                if ( line == null ) break;
+                if ( line == null )
+                {
+                    break;
+                }
 
-                if ( line.startsWith( "s" ) )
+                if ( line.StartsWith( "s" ) )
                 {
                     // Read shape.
-                    String[] polygonStrings = line.substring( 1 ).trim().split( "," );
-                    float[]  vertices       = new float[ polygonStrings.length ];
+                    var polygonStrings = line.Substring( 1 ).Trim().Split( "," );
+                    var vertices       = new float[ polygonStrings.Length ];
 
-                    for ( int i = 0, n = vertices.length; i < n; i++ )
-                        vertices[ i ] = Float.parseFloat( polygonStrings[ i ] );
+                    for ( int i = 0, n = vertices.Length; i < n; i++ )
+                    {
+                        vertices[ i ] = float.Parse( polygonStrings[ i ] );
+                    }
 
-                    // It would probably be better if PSH stored the vertices and triangles, then we don't have to triangulate here.
-                    return new PolygonRegion( textureRegion, vertices, triangulator.computeTriangles( vertices ).toArray() );
+                    // It would probably be better if PSH stored the vertices
+                    // and triangles, then we don't have to triangulate here.
+                    return new PolygonRegion
+                        (
+                         textureRegion, vertices,
+                         _triangulator.ComputeTriangles( vertices ).ToArray()
+                        );
                 }
             }
         }
         catch ( IOException ex )
         {
-            throw new GdxRuntimeException( "Error reading polygon shape file: " + file, ex );
+            throw new GdxRuntimeException( $"Error reading polygon shape file: {file}", ex );
         }
         finally
         {
-            StreamUtils.closeQuietly( reader );
+            reader.Close();
         }
 
         throw new GdxRuntimeException( "Polygon shape not found: " + file );
