@@ -25,7 +25,7 @@ namespace LibGDXSharp.Graphics;
 /// Must be disposed when it is no longer used.
 /// </summary>
 [PublicAPI]
-public class Cubemap : GLTexture, IGLTexture
+public class Cubemap : GLTexture
 {
     private readonly static Dictionary< IApplication, List< Cubemap >? > ManagedCubemaps = new();
 

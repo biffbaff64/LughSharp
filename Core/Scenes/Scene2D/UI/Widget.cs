@@ -131,7 +131,7 @@ public class Widget : Actor, ILayout
     /// If this method is overridden, the super method or <see cref="Validate"/>
     /// should be called to ensure the widget is laid out.
     /// </summary>
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
     }

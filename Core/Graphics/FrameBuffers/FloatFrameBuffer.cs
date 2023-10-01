@@ -30,7 +30,7 @@ public class FloatFrameBuffer : FrameBuffer
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder"></param>
-    public FloatFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< IGLTexture > > bufferBuilder )
+    public FloatFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
         : base( bufferBuilder )
     {
     }

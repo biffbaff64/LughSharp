@@ -42,10 +42,7 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder"></param>
-
-    // LibGDXSharp.Graphics.FrameBuffers.GLFrameBufferBuilder<LibGDXSharp.Graphics.FrameBuffers.GLFrameBuffer<LibGDXSharp.Graphics.GLTexture>>
-    // LibGDXSharp.Graphics.FrameBuffers.GLFrameBufferBuilder<LibGDXSharp.Graphics.FrameBuffers.GLFrameBuffer<LibGDXSharp.Graphics.Texture>>
-    public FrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< IGLTexture > > bufferBuilder )
+    public FrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
         : base( bufferBuilder )
     {
     }

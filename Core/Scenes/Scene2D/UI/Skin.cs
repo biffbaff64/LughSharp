@@ -59,12 +59,12 @@ public class Skin : IDisposable
         typeof( TiledDrawable ),                        typeof( Button.ButtonStyle ),
         typeof( TextButton.TextButtonStyle ),           typeof( CheckBox.CheckBoxStyle ),
         typeof( Label.LabelStyle ),                     typeof( ProgressBar.ProgressBarStyle ),
-        typeof( TextField.TextFieldStyle ),             typeof( ImageButton.ImageButtonStyle ),
-        typeof( ImageTextButton.ImageTextButtonStyle ), typeof( List.ListStyle ),                       
-        typeof( ScrollPane.ScrollPaneStyle ),           typeof( SelectBox.SelectBoxStyle ),
-        typeof( Slider.SliderStyle ),                   typeof( SplitPane.SplitPaneStyle ),
-        typeof( TextTooltip.TextTooltipStyle ),         typeof( Touchpad.TouchpadStyle ),
-        typeof( Tree.TreeStyle ),                       typeof( Window.WindowStyle )
+//        typeof( TextField.TextFieldStyle ),             typeof( ImageButton.ImageButtonStyle ),
+//        typeof( ImageTextButton.ImageTextButtonStyle ), typeof( List.ListStyle ),                       
+//        typeof( ScrollPane.ScrollPaneStyle ),           typeof( SelectBox.SelectBoxStyle ),
+//        typeof( Slider.SliderStyle ),                   typeof( SplitPane.SplitPaneStyle ),
+//        typeof( TextTooltip.TextTooltipStyle ),         typeof( Touchpad.TouchpadStyle ),
+//        typeof( Tree.TreeStyle ),                       typeof( Window.WindowStyle )
     };
     //@formatter:on
 
@@ -159,7 +159,7 @@ public class Skin : IDisposable
     {
         try
         {
-            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
+//            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
         }
         catch ( SerializationException ex )
         {

@@ -76,7 +76,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
             frameBufferBuilder.AddBasicStencilRenderBuffer();
         }
 
-        //        this.BufferBuilder = frameBufferBuilder;
+        this.BufferBuilder = frameBufferBuilder;
 
         Build();
     }

@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
 [PublicAPI]
-public class FrameBufferBuilder : GLFrameBufferBuilder< GLFrameBuffer< IGLTexture > >
+public class FrameBufferBuilder : GLFrameBufferBuilder< GLFrameBuffer< GLTexture > >
 {
     public FrameBufferBuilder( int width, int height )
         : base( width, height )

@@ -220,16 +220,16 @@ GRAPHICS
 GRAPHICS/FRAMEBUFFERS
 ---------------------
 
-    - IP   - FloatFrameBuffer
-    - IP   - FloatFrameBufferBuilder
-    - IP   - FrameBuffer
-    - IP   - FrameBufferBuilder
-    - IP   - FrameBufferCubemap
-    - IP   - FrameBufferCubemapBuilder
-    - IP   - FrameBufferRenderBufferAttachmentSpec
-    - IP   - FrameBufferTextureAttachmentSpec
-    - IP   - GLFrameBuffer
-    - IP   - GLFrameBufferBuilder
+    - DONE - FloatFrameBuffer
+    - DONE - FloatFrameBufferBuilder
+    - DONE - FrameBuffer
+    - DONE - FrameBufferBuilder
+    - DONE - FrameBufferCubemap
+    - DONE - FrameBufferCubemapBuilder
+    - DONE - FrameBufferRenderBufferAttachmentSpec
+    - DONE - FrameBufferTextureAttachmentSpec
+    - DONE - GLFrameBuffer
+    - DONE - GLFrameBufferBuilder
 
     ** Restructure GLFrameBuffer.Build(), this method is too long.
 
@@ -570,6 +570,9 @@ SCENES.SCENE2D/ACTIONS
 
 SCENES.SCENE2D/UI
 -----------------
+
+    NOTE: I don't like the way Cell and Value classes are implemented.
+          They seem confusing and are candidates for a rewrite.
 
     - DONE - Button                         
     - DONE - ButtonGroup                    

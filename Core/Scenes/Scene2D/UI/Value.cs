@@ -14,16 +14,18 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Scenes.Scene2D.Utils;
+
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
 /// Value placeholder, allowing the value to be computed on request.
-/// Values can be provided an actor for context to reduce the number of value
+/// Values can be provided to an actor for context to reduce the number of value
 /// instances that need to be created and reduce verbosity in code that specifies
 /// values.
 /// </summary>
 [PublicAPI]
-public abstract partial class Value
+public abstract class Value
 {
     public abstract float Get( Actor? context = null );
 
@@ -103,5 +105,143 @@ public abstract partial class Value
         ArgumentNullException.ThrowIfNull( actor );
         
         return new ValuePercentHeight( percent, actor );
+    }
+
+    /// <summary>
+    /// Returns a value that is a percentage of the actor's width.
+    /// </summary>
+    private class ValuePercentWidth : Value
+    {
+        private readonly float  _percent;
+        private readonly Actor? _actor;
+
+        public ValuePercentWidth( float percent, Actor? actor = null )
+        {
+            this._percent = percent;
+            this._actor   = actor;
+        }
+
+        public override float Get( Actor? actor = null )
+        {
+            return ( this._actor == null ) ? 0 : _actor.Width * _percent;
+        }
+    }
+
+    /// <summary>
+    /// Returns a value that is a percentage of the actor's height.
+    /// </summary>
+    private class ValuePercentHeight : Value
+    {
+        private readonly float  _percent;
+        private readonly Actor? _actor;
+
+        public ValuePercentHeight( float percent, Actor? actor = null )
+        {
+            this._percent = percent;
+            this._actor   = actor;
+        }
+
+        public override float Get( Actor? actor = null )
+        {
+            return ( this._actor == null ) ? 0 : _actor.Height * _percent;
+        }
+    }
+    
+    // ========================================================================
+    
+    /// <summary>
+    /// Value that is the minWidth of the actor in the cell.
+    /// </summary>
+    private class ValueMinWidthInnerClass : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            if ( context is ILayout layout )
+            {
+                return layout.MinWidth;
+            }
+
+            return context?.Width ?? 0;
+        }
+    }
+
+    /// <summary>
+    /// Value that is the minHeight of the actor in the cell.
+    /// </summary>
+    private class ValueMinHeightInnerClass : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            if ( context is ILayout layout )
+            {
+                return layout.MinHeight;
+            }
+
+            return context?.Height ?? 0;
+        }
+    }
+
+    /// <summary>
+    /// Value that is the prefWidth of the actor in the cell.
+    /// </summary>
+    private class ValuePrefWidthInnerClass : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            if ( context is ILayout layout )
+            {
+                return layout.PrefWidth;
+            }
+
+            return context?.Width ?? 0;
+        }
+    }
+
+    /// <summary>
+    /// Value that is the prefHeight of the actor in the cell.
+    /// </summary>
+    private class ValuePrefHeightInnerClass : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            if ( context is ILayout layout )
+            {
+                return layout.PrefHeight;
+            }
+
+            return context?.Height ?? 0;
+        }
+    }
+
+    /// <summary>
+    /// Value that is the maxWidth of the actor in the cell.
+    /// </summary>
+    private class ValueMaxWidthInnerClass : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            if ( context is ILayout layout )
+            {
+                return layout.MaxWidth;
+            }
+
+            return context?.Width ?? 0;
+        }
+    }
+
+    /// <summary>
+    /// Value that is the maxWidth of the actor in the cell.
+    /// </summary>
+    private class ValueMaxHeightInnerClass : Value
+    {
+        public override float Get( Actor? context = null )
+        {
+            if ( context is ILayout layout )
+            {
+                return layout.MaxHeight;
+            }
+
+            return context?.Height ?? 0;
+        }
     }
 }
