@@ -27,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Core\Files\" />
         <Folder Include="Core\Graphics\G3D\Attributes\" />
         <Folder Include="Core\Graphics\G3D\Decals\" />
         <Folder Include="Core\Graphics\G3D\Environment\" />

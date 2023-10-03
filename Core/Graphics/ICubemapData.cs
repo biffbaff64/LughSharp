@@ -39,7 +39,7 @@ public interface ICubemapData
     /// <summary>
     /// whether the TextureData is prepared or not.
     /// </summary>
-    bool Prepared { get; }
+    bool IsPrepared { get; }
 
     /// <summary>
     /// Prepares the TextureData for a call to <see cref="ConsumeCubemapData()"/>.

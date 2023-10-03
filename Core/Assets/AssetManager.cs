@@ -683,7 +683,7 @@ public class AssetManager
     /// </param>
     public T FinishLoadingAsset<T>( string? fileName )
     {
-        Debug.Assert( fileName != null, nameof( fileName ) + " != null" );
+        Debug.Assert( fileName != null, $"{nameof( fileName )} is null" );
 
         Log.Debug( "Waiting for asset to be loaded: " + fileName );
 
@@ -727,7 +727,7 @@ public class AssetManager
 
         foreach ( AssetDescriptor desc in dependendAssetDescs )
         {
-            Debug.Assert( desc.FilePath != null, "desc.FilePath != null" );
+            Debug.Assert( desc.FilePath != null, "desc.FilePath is null" );
 
             if ( this._injected.Contains( desc.FilePath ) )
             {

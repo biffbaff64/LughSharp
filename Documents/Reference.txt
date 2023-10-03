@@ -48,7 +48,15 @@ Reference Types
     - string
     - Object
     - dynamic
+
+Value Types
+-----------
+    - Structs
+    - Enums
+    - Simple Types (int, float, bool, char, ...)
     
+Value Types can't be null. By definition, Value Types must have a value.
+
 Swap via deconstruction
 -----------------------
         ( first, second ) = ( second, first );

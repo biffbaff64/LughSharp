@@ -47,7 +47,10 @@ public class FloatTextureData : ITextureData
 
     public void Prepare()
     {
-        if ( IsPrepared ) throw new GdxRuntimeException( "Already prepared" );
+        if ( IsPrepared )
+        {
+            throw new GdxRuntimeException( "Already prepared" );
+        }
 
         if ( !_isGpuOnly )
         {
@@ -56,16 +59,24 @@ public class FloatTextureData : ITextureData
             if ( Gdx.Graphics.GLVersion.GLtype.Equals( GLVersion.GLType.OpenGL ) )
             {
                 if ( ( _internalFormat == IGL30.GL_RGBA16_F ) || ( _internalFormat == IGL30.GL_RGBA32_F ) )
+                {
                     amountOfFloats = 4;
+                }
 
                 if ( ( _internalFormat == IGL30.GL_RGB16_F ) || ( _internalFormat == IGL30.GL_RGB32_F ) )
+                {
                     amountOfFloats = 3;
+                }
 
                 if ( ( _internalFormat == IGL30.GL_RG16_F ) || ( _internalFormat == IGL30.GL_RG32_F ) )
+                {
                     amountOfFloats = 2;
+                }
 
                 if ( ( _internalFormat == IGL30.GL_R16_F ) || ( _internalFormat == IGL30.GL_R32_F ) )
+                {
                     amountOfFloats = 1;
+                }
             }
 
             this.Buffer = BufferUtils.NewFloatBuffer( Width * Height * amountOfFloats );
@@ -131,7 +142,7 @@ public class FloatTextureData : ITextureData
 
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
-    public bool UseMipMaps() => false;
+    public bool UseMipMaps { get; set; }
 
     public bool IsManaged() => true;
 }

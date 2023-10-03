@@ -184,9 +184,9 @@ public class PooledLinkedList<T>
         Item< T >? n = _curr.Next;
         Item< T >? p = _curr.Prev;
 
-        Debug.Assert( c != null, nameof( c ) + " != null" );
-        Debug.Assert( n != null, nameof( n ) + " != null" );
-        Debug.Assert( p != null, nameof( p ) + " != null" );
+        Debug.Assert( c != null );
+        Debug.Assert( n != null );
+        Debug.Assert( p != null );
 
         _pool.Free( _curr );
         _curr = null;

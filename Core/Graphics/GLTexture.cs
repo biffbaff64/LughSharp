@@ -33,9 +33,9 @@ public abstract class GLTexture : IDisposable
 
     private static float _maxAnisotropicFilterLevel = 0;
 
-    public abstract int Width { get; }
+    public abstract int Width  { get; }
     public abstract int Height { get; }
-    public abstract int Depth { get; }
+    public abstract int Depth  { get; }
 
     protected GLTexture( int glTarget )
         : this( glTarget, Gdx.GL.GLGenTexture() )
@@ -316,9 +316,14 @@ public abstract class GLTexture : IDisposable
             return;
         }
 
-        Pixmap pixmap        = data.ConsumePixmap();
-        var    disposePixmap = data.DisposePixmap();
+        Pixmap? pixmap        = data.ConsumePixmap();
+        var     disposePixmap = data.DisposePixmap();
 
+        if ( pixmap == null )
+        {
+            throw new NullReferenceException();
+        }
+        
         if ( data.GetFormat() != pixmap.GetFormat() )
         {
             var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.GetFormat() );
@@ -337,7 +342,7 @@ public abstract class GLTexture : IDisposable
 
         Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
 
-        if ( data.UseMipMaps() )
+        if ( data.UseMipMaps )
         {
             MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
         }
@@ -367,7 +372,7 @@ public abstract class GLTexture : IDisposable
     /// Convenience method for when 'GLHandle' isn't descriptive enough.
     /// </summary>
     public int GetTextureObjectHandle() => GLHandle;
-    
+
     /// <inheritdoc cref="IDisposable.Dispose"/>>
     public virtual void Dispose()
     {

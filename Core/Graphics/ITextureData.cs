@@ -40,12 +40,14 @@ public interface ITextureData
         Custom
     }
 
-    /// <value> the <see cref="TextureDataType"/>
-    /// </value>
+    /// <returns> the <see cref="TextureDataType"/> </returns>
     public TextureType TextureDataType { get; }
 
     /// <returns> whether the TextureData is prepared or not.</returns>
     public bool IsPrepared { get; set; }
+
+    /// <returns> whether to generate mipmaps or not. </returns>
+    public bool UseMipMaps { get; set; }
 
     /// <summary>
     /// Prepares the TextureData for a call to <see cref="ConsumePixmap()"/> or
@@ -63,7 +65,7 @@ public interface ITextureData
     /// </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
-    public Pixmap ConsumePixmap();
+    public Pixmap? ConsumePixmap();
 
     /// <returns>
     /// whether the caller of <see cref="ConsumePixmap()"/> should dispose the
@@ -80,7 +82,7 @@ public interface ITextureData
     /// disposed of here. 
     /// </para>
     /// </summary>
-    public void ConsumeCustomData(int target);
+    public void ConsumeCustomData( int target );
 
     /// <returns> the width of the pixel data </returns>
     public int Width { get; set; }
@@ -91,15 +93,13 @@ public interface ITextureData
     /// <returns> the <see cref="Pixmap.Format"/> of the pixel data </returns>
     public Pixmap.Format GetFormat();
 
-    /// <returns> whether to generate mipmaps or not. </returns>
-    public bool UseMipMaps();
-
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
     public bool IsManaged();
 
     /// <summary>
     /// Provides static methods to instantiate the right implementation (Pixmap, ETC1, KTX).
     /// </summary>
+    [PublicAPI]
     public static class Factory
     {
         /// <summary>
@@ -120,7 +120,10 @@ public interface ITextureData
         /// <returns></returns>
         public static ITextureData? LoadFromFile( FileInfo? file, Pixmap.Format? format, bool useMipMaps )
         {
-            if ( file == null ) return null;
+            if ( file == null )
+            {
+                return null;
+            }
 
             if ( file.Name.EndsWith( ".cim" ) )
             {

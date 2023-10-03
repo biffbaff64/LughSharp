@@ -130,7 +130,7 @@ public class Cubemap : GLTexture
     /// </summary>
     public void Load( ICubemapData data )
     {
-        if ( !data.Prepared )
+        if ( !data.IsPrepared )
         {
             data.Prepare();
         }

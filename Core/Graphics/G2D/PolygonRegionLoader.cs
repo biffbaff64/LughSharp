@@ -28,18 +28,18 @@ public class PolygonRegionLoader
     {
         /// <summary>
         /// what the line starts with that contains the file name of the
-        /// texture for this <tt>PolygonRegion</tt>
+        /// texture for this <tt>PolygonRegion</tt>.
         /// </summary>
         public string? texturePrefix = "i ";
 
         /// <summary>
         /// what buffer size of the reader should be used to read the
-        /// <tt>texturePrefix</tt> line
+        /// <tt>texturePrefix</tt> line.
         /// </summary>
         public int readerBuffer = 1024;
 
         /// <summary>
-        /// the possible file name extensions of the texture file
+        /// the possible file name extensions of the texture file.
         /// </summary>
         public readonly string[] textureExtensions =
         {

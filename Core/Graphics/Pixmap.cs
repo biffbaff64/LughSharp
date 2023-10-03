@@ -19,6 +19,60 @@ using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics;
 
+[PublicAPI]
+public static class PixmapFormatExtensions
+{
+    public static int ToGLType( this Pixmap.Format format )
+    {
+        return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
+    }
+
+    public static int ToGLFormat( this Pixmap.Format format )
+    {
+        return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
+    }
+
+    public static int ToGdx2DPixmapFormat( this Pixmap.Format format )
+    {
+        if ( format == Pixmap.Format.Alpha )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_ALPHA;
+        }
+
+        if ( format == Pixmap.Format.Intensity )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_ALPHA;
+        }
+
+        if ( format == Pixmap.Format.LuminanceAlpha )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA;
+        }
+
+        if ( format == Pixmap.Format.RGB565 )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_RGB565;
+        }
+
+        if ( format == Pixmap.Format.RGBA4444 )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444;
+        }
+
+        if ( format == Pixmap.Format.RGB888 )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_RGB888;
+        }
+
+        if ( format == Pixmap.Format.RGBA8888 )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888;
+        }
+
+        throw new GdxRuntimeException( "Unknown Format: " + format );
+    }
+}
+
 /// <summary>
 /// A Pixmap represents an image in memory. It has a width and height expressed
 /// in pixels as well as a <see cref="Format"/> specifying the number and order
@@ -47,17 +101,25 @@ public class Pixmap : IDisposable
 
     public enum Blending
     {
-        None, SourceOver
+        None,
+        SourceOver
     }
 
     public enum Filter
     {
-        NearestNeighbour, BiLinear
+        NearestNeighbour,
+        BiLinear
     }
 
     public enum Format
     {
-        Alpha, Intensity, LuminanceAlpha, RGB565, RGBA4444, RGB888, RGBA8888
+        Alpha,
+        Intensity,
+        LuminanceAlpha,
+        RGB565,
+        RGBA4444,
+        RGB888,
+        RGBA8888
     }
 
     #endregion
@@ -98,11 +160,11 @@ public class Pixmap : IDisposable
             this._filter = value;
 
             gdx2DPixmap.Scale =
-            (
+                (
                 _filter == Filter.NearestNeighbour
                     ? Gdx2DPixmap.GDX_2D_SCALE_NEAREST
                     : Gdx2DPixmap.GDX_2D_SCALE_LINEAR
-            );
+                );
         }
     }
 
@@ -202,21 +264,18 @@ public class Pixmap : IDisposable
     /// <param name="g"> The green component. </param>
     /// <param name="b"> The blue component. </param>
     /// <param name="a"> The alpha component.  </param>
-    public void SetColor( float r, float g, float b, float a )
-        => _color = Color.RGBA8888( r, g, b, a );
+    public void SetColor( float r, float g, float b, float a ) => _color = Color.RGBA8888( r, g, b, a );
 
     /// <summary>
     /// Sets the color for drawing operations.
     /// </summary>
     /// <param name="color"> The color.</param>
-    public void SetColor( Color color )
-        => this._color = Color.RGBA8888( color.R, color.G, color.B, color.A );
+    public void SetColor( Color color ) => this._color = Color.RGBA8888( color.R, color.G, color.B, color.A );
 
     /// <summary>
     /// Fills the complete bitmap with the currently set color.
     /// </summary>
-    public void FillWithCurrentColor()
-        => gdx2DPixmap.Clear( _color );
+    public void FillWithCurrentColor() => gdx2DPixmap.Clear( _color );
 
     /// <summary>
     /// Draws a line between the given coordinates using the currently set color.
@@ -286,13 +345,20 @@ public class Pixmap : IDisposable
     /// <param name="dsty"> The target y-coordinate (top left corner) </param>
     /// <param name="dstWidth"> The target width </param>
     /// <param name="dstHeight"> the target height  </param>
-    public void DrawPixmap( Pixmap pixmap, int srcx, int srcy, int srcWidth,
-                            int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight )
+    public void DrawPixmap( Pixmap pixmap,
+                            int srcx,
+                            int srcy,
+                            int srcWidth,
+                            int srcHeight,
+                            int dstx,
+                            int dsty,
+                            int dstWidth,
+                            int dstHeight )
     {
         this.gdx2DPixmap.DrawPixmap
             (
-            pixmap.gdx2DPixmap, srcx, srcy, srcWidth,
-            srcHeight, dstx, dsty, dstWidth, dstHeight
+             pixmap.gdx2DPixmap, srcx, srcy, srcWidth,
+             srcHeight, dstx, dsty, dstWidth, dstHeight
             );
     }
 

@@ -63,7 +63,7 @@ ASSETS/LOADERS
     - DONE - AsynchronousAssetLoader        
     - DONE - BitmapFontLoader               
     - DONE - CubemapLoader                  
-    -      - I18NBundleLoader               
+    - **** - I18NBundleLoader               
     - DONE - ModelLoader                    
     - DONE - MusicLoader                    
     - DONE - ParticleEffectLoader           
@@ -278,8 +278,8 @@ GRAPHICS/GLUTILS
     - IP   - ETC1                                   Find alternative / Has native
     - IP   - ETC1TextureData                        Find alternative / Has native
     - DONE - FacedCubemapData
-    - IP   - FileTextureArrayData
-    - IP   - FileTextureData
+    - DONE - FileTextureArrayData
+    - DONE - FileTextureData
     - DONE - FloatTextureData
     - DONE - GLOnlyTextureData
     - DONE - GLVersion

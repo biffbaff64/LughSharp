@@ -54,7 +54,7 @@ public class TextButton : Button
     /// </summary>
     public Color? GetFontColor()
     {
-        System.Diagnostics.Debug.Assert( Style != null, "Style != null" );
+        Debug.Assert( Style != null, "Style is null" );
 
         if ( IsDisabled && ( Style.DisabledFontColor != null ) )
         {

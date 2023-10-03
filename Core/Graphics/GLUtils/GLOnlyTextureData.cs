@@ -72,7 +72,7 @@ public class GLOnlyTextureData : ITextureData
 
     public Pixmap.Format GetFormat() => Pixmap.Format.RGBA8888;
 
-    public bool UseMipMaps() => false;
+    public bool UseMipMaps { get; set; }
 
     public bool IsManaged() => false;
 }

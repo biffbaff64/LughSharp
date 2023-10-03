@@ -184,8 +184,7 @@ public class Table : WidgetGroup
             return;
         }
 
-        System.Diagnostics.Debug.Assert
-            ( this.Color != null, nameof( this.Color ) + " != null" );
+        Debug.Assert( this.Color != null, nameof( this.Color ) + " is null" );
 
         batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 

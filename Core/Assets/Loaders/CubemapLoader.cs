@@ -94,7 +94,7 @@ public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoa
             _loaderInfo.cubemap     = ( ( CubemapParameter? )parameter )?.cubemap;
         }
 
-        if ( !_loaderInfo.cubemapData!.Prepared )
+        if ( !_loaderInfo.cubemapData!.IsPrepared )
         {
             _loaderInfo.cubemapData.Prepare();
         }

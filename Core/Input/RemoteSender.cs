@@ -70,7 +70,7 @@ public class RemoteSender : IInputProcessor
             }
         }
 
-        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " is null" );
 
         try
         {
@@ -107,7 +107,7 @@ public class RemoteSender : IInputProcessor
             }
         }
 
-        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " is null" );
 
         try
         {
@@ -187,7 +187,7 @@ public class RemoteSender : IInputProcessor
             }
         }
 
-        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " is null" );
 
         try
         {
@@ -217,7 +217,7 @@ public class RemoteSender : IInputProcessor
             }
         }
 
-        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " is null" );
 
         try
         {
@@ -247,7 +247,7 @@ public class RemoteSender : IInputProcessor
             }
         }
 
-        Debug.Assert( _out != null, nameof( _out ) + " != null" );
+        Debug.Assert( _out != null, nameof( _out ) + " is null" );
 
         try
         {

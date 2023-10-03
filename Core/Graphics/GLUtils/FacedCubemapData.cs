@@ -240,7 +240,7 @@ public class FacedCubemapData : ICubemapData
     /// <summary>
     /// whether the ITextureData is prepared or not.
     /// </summary>
-    public bool Prepared => false;
+    public bool IsPrepared => false;
 
     /// <summary>
     /// Prepares the ITextureData for a call to <see cref="ICubemapData.ConsumeCubemapData"/>.

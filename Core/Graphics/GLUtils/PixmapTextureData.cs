@@ -21,7 +21,6 @@ public class PixmapTextureData : ITextureData
 {
     public Pixmap        Pixmap        { get; set; }
     public Pixmap.Format Format        { get; set; }
-    public bool          UseMipMaps    { get; set; }
     public bool          DisposePixmap { get; set; }
     public bool          Managed       { get; set; }
 
@@ -70,7 +69,7 @@ public class PixmapTextureData : ITextureData
     public Pixmap.Format GetFormat() => Format;
 
     /// <returns> whether to generate mipmaps or not. </returns>
-    bool ITextureData.UseMipMaps() => UseMipMaps;
+    public bool UseMipMaps { get; set; }
 
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
     public bool IsManaged() => Managed;

@@ -19,7 +19,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class FileTextureArrayData : ITextureArrayData
 {
-    private readonly ITextureData?[] _textureDatas;
+    private readonly ITextureData?[] _textureData;
 
     private Pixmap.Format _format;
     private int           _depth;
@@ -28,14 +28,14 @@ public class FileTextureArrayData : ITextureArrayData
 
     public FileTextureArrayData( Pixmap.Format format, bool useMipMaps, FileInfo[] files )
     {
-        this._format     = format;
-        this._useMipMaps = useMipMaps;
-        this._depth      = files.Length;
-        _textureDatas    = new ITextureData?[ files.Length ];
+        this._format      = format;
+        this._useMipMaps  = useMipMaps;
+        this._depth       = files.Length;
+        this._textureData = new ITextureData?[ files.Length ];
 
         for ( int i = 0; i < files.Length; i++ )
         {
-            _textureDatas[ i ] = ITextureData.Factory.LoadFromFile( files[ i ], format, useMipMaps );
+            _textureData[ i ] = ITextureData.Factory.LoadFromFile( files[ i ], format, useMipMaps );
         }
     }
 
@@ -43,10 +43,10 @@ public class FileTextureArrayData : ITextureArrayData
     public bool Prepared { get; set; }
 
     /// <returns> the width of this TextureArray </returns>
-    public int Width { get; set; }
+    public int Width => _textureData[ 0 ]!.Width;
 
     /// <returns> the height of this TextureArray </returns>
-    public int Height { get; set; }
+    public int Height => _textureData[ 0 ]!.Height;
 
     /// <returns> the layer count of this TextureArray </returns>
     public int Depth { get; set; }
@@ -55,10 +55,10 @@ public class FileTextureArrayData : ITextureArrayData
     public bool Managed { get; set; }
 
     /// <returns> the internal format of this TextureArray </returns>
-    public int InternalFormat { get; set; }
+    public int InternalFormat => _format.ToGLFormat();
 
     /// <returns> the GL type of this TextureArray </returns>
-    public int GLType { get; set; }
+    public int GLType => _format.ToGLType();
 
     /// <summary>
     /// Prepares the TextureArrayData for a call to <see cref="ITextureArrayData.ConsumeTextureArrayData"/>.
@@ -70,9 +70,12 @@ public class FileTextureArrayData : ITextureArrayData
         int width  = -1;
         int height = -1;
 
-        foreach ( ITextureData? data in _textureDatas )
+        foreach ( ITextureData? data in _textureData )
         {
-            if ( data == null ) continue;
+            if ( data == null )
+            {
+                continue;
+            }
 
             data.Prepare();
 
@@ -89,7 +92,7 @@ public class FileTextureArrayData : ITextureArrayData
                 throw new GdxRuntimeException
                     (
                      "Error whilst preparing TextureArray:"
-                     + "TextureArray Textures must have equal dimensions."
+                   + "TextureArray Textures must have equal dimensions."
                     );
             }
         }
@@ -111,15 +114,15 @@ public class FileTextureArrayData : ITextureArrayData
     /// </summary>
     public void ConsumeTextureArrayData()
     {
-        for ( var i = 0; i < _textureDatas.Length; i++ )
+        for ( var i = 0; i < _textureData.Length; i++ )
         {
-            if ( _textureDatas[ i ]?.TextureDataType == ITextureData.TextureType.Custom )
+            if ( _textureData[ i ]?.TextureDataType == ITextureData.TextureType.Custom )
             {
-                _textureDatas[ i ]?.ConsumeCustomData( IGL30.GL_TEXTURE_2D_ARRAY );
+                _textureData[ i ]?.ConsumeCustomData( IGL30.GL_TEXTURE_2D_ARRAY );
             }
             else
             {
-                ITextureData? texData       = _textureDatas[ i ];
+                ITextureData? texData       = _textureData[ i ];
                 Pixmap?       pixmap        = texData?.ConsumePixmap();
                 var           disposePixmap = texData?.DisposePixmap() ?? false;
 
@@ -162,8 +165,24 @@ public class FileTextureArrayData : ITextureArrayData
                     Gdx.GL20.GLGenerateMipmap( IGL30.GL_TEXTURE_2D_ARRAY );
                 }
 
-                if ( disposePixmap ) pixmap.Dispose();
+                if ( disposePixmap )
+                {
+                    pixmap.Dispose();
+                }
             }
         }
+    }
+
+    public bool IsManaged()
+    {
+        foreach ( ITextureData? data in _textureData )
+        {
+            if ( ( data != null ) && !data.IsManaged() )
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

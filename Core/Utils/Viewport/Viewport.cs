@@ -218,7 +218,7 @@ public abstract class Viewport
 
         Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
-        Debug.Assert( Gdx.Graphics != null, "Gdx.Graphics != null" );
+        Debug.Assert( Gdx.Graphics != null );
 
         _tmp.Y = ( Gdx.Graphics.Height - _tmp.Y );
 
