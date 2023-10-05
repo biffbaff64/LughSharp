@@ -19,9 +19,8 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
-    public float GetRawDeltaTime() => DeltaTime;
-    public float GetDensity()      => GetPpiX() / 160f;
-
+    public float GetRawDeltaTime()    => DeltaTime;
+    public float GetDensity()         => GetPpiX() / 160f;
     public float GetBackBufferScale() => BackBufferWidth / ( float )Width;
 
     public int       BackBufferWidth  { get; protected set; }
@@ -35,7 +34,11 @@ public abstract class AbstractGraphics : IGraphics
 
     // ========================================================================
     // Abstract methods because C# insists this is done to fulfill the contract
-    // between the class and interface.
+    // between the class and interface, which just makes everything annoying tbh.
+
+    public abstract int Width { get; }
+
+    public abstract int Height { get; }
 
     public abstract IGraphics.Monitor GetPrimaryMonitor();
 
@@ -86,10 +89,6 @@ public abstract class AbstractGraphics : IGraphics
     public abstract void SetSystemCursor( ICursor.SystemCursor systemCursor );
 
     public abstract bool IsGL30Available();
-
-    public abstract int Width { get; }
-
-    public abstract int Height { get; }
 
     public abstract int GetSafeInsetLeft();
 

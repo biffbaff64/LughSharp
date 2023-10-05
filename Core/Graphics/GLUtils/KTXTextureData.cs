@@ -16,6 +16,8 @@
 
 using LibGDXSharp.Utils.Buffers;
 
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
@@ -85,23 +87,26 @@ public class KtxTextureData : ITextureData, ICubemapData
         // file with an int length at the beginning (like ETC1).
         if ( _file.Name.EndsWith( ".zktx" ) )
         {
-            var buffer = new byte[ 1024 * 10 ];
-            DataInputStream dataInputStream = null;
+            var          buffer          = new byte[ 1024 * 10 ];
+            BinaryReader dataInputStream = null;
 
             try
             {
-                dataInputStream = new DataInputStream( new BufferedInputStream( new GZIPInputStream( file.read() ) ) );
-                int fileSize = dataInputStream.readInt();
+                dataInputStream = new BinaryReader( new BufferedStream( new GZIPInputStream( _file.Read() ) ) );
+
+                int fileSize = dataInputStream.ReadInt();
+                
                 _compressedData = BufferUtils.NewUnsafeByteBuffer( fileSize );
+                
                 var readBytes = 0;
 
-                while ( ( readBytes = dataInputStream.read( buffer ) ) != -1 )
+                while ( ( readBytes = dataInputStream.Read( buffer ) ) != -1 )
                 {
                     _compressedData.Put( buffer, 0, readBytes );
                 }
-                
-                ( ( Buffer )_compressedData ).position( 0 );
-                ( ( Buffer )_compressedData ).limit( _compressedData.Capacity );
+
+                ( ( Buffer )_compressedData ).Position = 0;
+                ( ( Buffer )_compressedData ).Limit = _compressedData.Capacity;
             }
             catch ( Exception e )
             {
@@ -117,6 +122,7 @@ public class KtxTextureData : ITextureData, ICubemapData
             _compressedData = ByteBuffer.Wrap( _file.ReadBytes() );
         }
 
+        // ReSharper disable EnforceIfStatementBraces
         if ( _compressedData.Get() != 0x0AB ) throw new GdxRuntimeException( "Invalid KTX Header" );
         if ( _compressedData.Get() != 0x04B ) throw new GdxRuntimeException( "Invalid KTX Header" );
         if ( _compressedData.Get() != 0x054 ) throw new GdxRuntimeException( "Invalid KTX Header" );
@@ -129,6 +135,7 @@ public class KtxTextureData : ITextureData, ICubemapData
         if ( _compressedData.Get() != 0x00A ) throw new GdxRuntimeException( "Invalid KTX Header" );
         if ( _compressedData.Get() != 0x01A ) throw new GdxRuntimeException( "Invalid KTX Header" );
         if ( _compressedData.Get() != 0x00A ) throw new GdxRuntimeException( "Invalid KTX Header" );
+        // ReSharper restore EnforceIfStatementBraces
 
         var endianTag = _compressedData.GetInt();
 
@@ -139,49 +146,54 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( endianTag != 0x04030201 )
         {
-            _compressedData.Order( _compressedData.Order() == ByteOrder.BigEndian
-                                       ? ByteOrder.LittleEndian
-                                       : ByteOrder.BigEndian );
+            _compressedData.Order
+                (
+                 _compressedData.Order() == ByteOrder.BigEndian
+                     ? ByteOrder.LittleEndian
+                     : ByteOrder.BigEndian
+                );
         }
 
-        glType                = compressedData.getInt();
-        glTypeSize            = compressedData.getInt();
-        glFormat              = compressedData.getInt();
-        glInternalFormat      = compressedData.getInt();
-        glBaseInternalFormat  = compressedData.getInt();
-        pixelWidth            = compressedData.getInt();
-        pixelHeight           = compressedData.getInt();
-        pixelDepth            = compressedData.getInt();
-        numberOfArrayElements = compressedData.getInt();
-        numberOfFaces         = compressedData.getInt();
-        numberOfMipmapLevels  = compressedData.getInt();
+        _glType                = _compressedData.GetInt();
+        _glTypeSize            = _compressedData.GetInt();
+        _glFormat              = _compressedData.GetInt();
+        _glInternalFormat      = _compressedData.GetInt();
+        _glBaseInternalFormat  = _compressedData.GetInt();
+        _pixelWidth            = _compressedData.GetInt();
+        _pixelHeight           = _compressedData.GetInt();
+        _pixelDepth            = _compressedData.GetInt();
+        _numberOfArrayElements = _compressedData.GetInt();
+        _numberOfFaces         = _compressedData.GetInt();
+        _numberOfMipmapLevels  = _compressedData.GetInt();
 
-        if ( numberOfMipmapLevels == 0 )
+        if ( _numberOfMipmapLevels == 0 )
         {
-            numberOfMipmapLevels = 1;
-            useMipMaps           = true;
+            _numberOfMipmapLevels = 1;
+            UseMipMaps            = true;
         }
 
-        int bytesOfKeyValueData = compressedData.getInt();
-        imagePos = compressedData.position() + bytesOfKeyValueData;
+        int bytesOfKeyValueData = _compressedData.GetInt();
+        _imagePos = _compressedData.Position + bytesOfKeyValueData;
 
-        if ( !compressedData.isDirect() )
+        if ( !_compressedData.IsDirect() )
         {
-            int pos = imagePos;
+            int pos = _imagePos;
 
-            for ( var level = 0; level < numberOfMipmapLevels; level++ )
+            for ( var level = 0; level < _numberOfMipmapLevels; level++ )
             {
-                int faceLodSize        = compressedData.getInt( pos );
+                int faceLodSize        = _compressedData.GetInt( pos );
                 var faceLodSizeRounded = ( faceLodSize + 3 ) & ~3;
-                pos += faceLodSizeRounded * numberOfFaces + 4;
+                pos += faceLodSizeRounded * _numberOfFaces + 4;
             }
 
-            ( ( Buffer )compressedData ).limit( pos );
-            ( ( Buffer )compressedData ).position( 0 );
-            ByteBuffer directBuffer = BufferUtils.newUnsafeByteBuffer( pos );
-            directBuffer.order( compressedData.order() );
-            directBuffer.put( compressedData );
-            compressedData = directBuffer;
+            ( ( Buffer )_compressedData ).Limit    = pos;
+            ( ( Buffer )_compressedData ).Position = 0;
+
+            ByteBuffer directBuffer = BufferUtils.NewUnsafeByteBuffer( pos );
+            directBuffer.Order( _compressedData.Order() );
+            directBuffer.Put( _compressedData );
+
+            _compressedData = directBuffer;
         }
     }
 

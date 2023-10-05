@@ -100,13 +100,13 @@ public class Texture : GLTexture
     public Texture( int width, int height, Pixmap.Format format )
         : this
             (
-            new PixmapTextureData
-                (
-                new Pixmap( width, height, format ),
-                null,
-                false,
-                true
-                )
+             new PixmapTextureData
+                 (
+                  new Pixmap( width, height, format ),
+                  null,
+                  false,
+                  true
+                 )
             )
     {
     }
@@ -135,7 +135,7 @@ public class Texture : GLTexture
     #endregion
 
     // ------------------------------------------------------------------------
-    
+
     public void Load( ITextureData? data )
     {
         if ( ( this.TextureData == null ) || ( data == null ) )
@@ -199,15 +199,15 @@ public class Texture : GLTexture
 
         Gdx.GL.GLTexSubImage2D
             (
-            GLTarget,
-            0,
-            x,
-            y,
-            pixmap.Width,
-            pixmap.Height,
-            pixmap.GLFormat,
-            pixmap.GLType,
-            pixmap.Pixels
+             GLTarget,
+             0,
+             x,
+             y,
+             pixmap.Width,
+             pixmap.Height,
+             pixmap.GLFormat,
+             pixmap.GLType,
+             pixmap.Pixels
             );
     }
 
@@ -298,7 +298,7 @@ public class Texture : GLTexture
                     // handle to zero, otherwise we might accidentially dispose
                     // already reloaded textures.
                     var refCount = AssetManager.GetReferenceCount( fileName );
-                    
+
                     AssetManager.SetReferenceCount( fileName, 0 );
                     texture.GLHandle = 0;
 
@@ -306,13 +306,12 @@ public class Texture : GLTexture
                     // well as a callback that sets the ref count.
                     var parameters = new TextureLoader.TextureParameter
                     {
-                        TextureData = texture.TextureData,
-                        MinFilter   = texture.MinFilter,
-                        MagFilter   = texture.MagFilter,
-                        WrapU       = texture.UWrap,
-                        WrapV       = texture.VWrap,
-                        GenMipMaps = ( texture.TextureData != null )
-                                     && texture.TextureData.UseMipMaps(), // not sure about this?
+                        TextureData    = texture.TextureData,
+                        MinFilter      = texture.MinFilter,
+                        MagFilter      = texture.MagFilter,
+                        WrapU          = texture.UWrap,
+                        WrapV          = texture.VWrap,
+                        GenMipMaps     = texture.TextureData is { UseMipMaps: true },
                         Texture        = texture,
                         LoadedCallback = new LoadedCallbackInnerClass( refCount )
                     };

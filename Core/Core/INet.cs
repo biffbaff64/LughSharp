@@ -63,6 +63,7 @@ public interface INet
         Tcp
     }
 
+    [PublicAPI]
     public class HttpRequest : IPoolable
     {
         public string?       Url                { get; set; }

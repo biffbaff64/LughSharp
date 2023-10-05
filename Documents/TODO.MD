@@ -290,7 +290,7 @@ GRAPHICS/GLUTILS
     - DONE - IInstanceData
     - DONE - ImmediateModeRenderer20
     - DONE - IndexArray
-    -      - IndexBufferObject
+    - DONE - IndexBufferObject
     -      - IndexBufferObjectSubData
     -      - InstanceBufferObject
     -      - InstanceBufferObjectSubData

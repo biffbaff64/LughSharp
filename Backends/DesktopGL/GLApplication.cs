@@ -19,18 +19,23 @@ using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
 using LibGDXSharp.Core.Utils.Collections;
 
+using OpenTK.Windowing.GraphicsLibraryFramework;
+
 namespace LibGDXSharp;
 
 [PublicAPI]
-public class GLApplication : GLApplicationBase
+public class GLApplication : IGLApplicationBase
 {
-    public GLApplicationConfiguration?        Config             { get; set; }
-    public List< GLWindow >                   Windows            { get; set; } = new();
-    public ObjectMap< string, IPreferences >? Preferences        { get; set; }
-    public List< IRunnable >                  Runnables          { get; set; } = new();
-    public List< IRunnable >                  ExecutedRunnables  { get; set; } = new();
-    public List< ILifecycleListener >         LifecycleListeners { get; set; } = new();
-    public GLApplicationLogger                ApplicationLogger  { get; set; }
+    public GLApplicationConfiguration?         Config             { get; set; }
+    public List< GLWindow >                    Windows            { get; set; } = new();
+    public Dictionary< string, IPreferences >? Preferences        { get; set; }
+    public List< IRunnable >                   Runnables          { get; set; } = new();
+    public List< IRunnable >                   ExecutedRunnables  { get; set; } = new();
+    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
+    public GLApplicationLogger                 ApplicationLogger  { get; set; }
+    public int                                 LogLevel           { get; set; }
+    public IApplication.ApplicationType        AppType            { get; set; }
+    public IClipboard?                         Clipboard          { get; set; }
 
     public static GLVersion? GLVersion { get; set; }
 
@@ -40,7 +45,7 @@ public class GLApplication : GLApplicationBase
     private          Sync?                        _sync;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// </summary>
     /// <param name="listener"></param>
@@ -69,7 +74,6 @@ public class GLApplication : GLApplicationBase
         }
     }
 
-    // ----- ----- -----
     private void CreateApplication( IApplicationListener listener, GLApplicationConfiguration config )
     {
         InitialiseGL();
@@ -90,7 +94,7 @@ public class GLApplication : GLApplicationBase
             }
             catch ( Exception e )
             {
-                Log( "Lwjgl3Application", "Couldn't initialize audio, disabling audio", e );
+                Log( "GLApplication", "Couldn't initialize audio, disabling audio", e );
 
                 Gdx.Audio = new MockAudio();
             }
@@ -144,7 +148,7 @@ public class GLApplication : GLApplicationBase
     {
     }
 
-    public override void Debug( string tag, string message )
+    public void Debug( string tag, string message )
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
         {
@@ -152,7 +156,7 @@ public class GLApplication : GLApplicationBase
         }
     }
 
-    public override void Debug( string tag, string message, Exception exception )
+    public void Debug( string tag, string message, Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
         {
@@ -160,7 +164,7 @@ public class GLApplication : GLApplicationBase
         }
     }
 
-    public override void Log( string tag, string message )
+    public void Log( string tag, string message )
     {
         if ( LogLevel >= IApplication.LOG_INFO )
         {
@@ -168,7 +172,7 @@ public class GLApplication : GLApplicationBase
         }
     }
 
-    public override void Log( string tag, string message, Exception exception )
+    public void Log( string tag, string message, Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_INFO )
         {
@@ -176,7 +180,7 @@ public class GLApplication : GLApplicationBase
         }
     }
 
-    public override void Error( string tag, string message )
+    public void Error( string tag, string message )
     {
         if ( LogLevel >= IApplication.LOG_ERROR )
         {
@@ -184,7 +188,7 @@ public class GLApplication : GLApplicationBase
         }
     }
 
-    public override void Error( string tag, string message, Exception exception )
+    public void Error( string tag, string message, Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_ERROR )
         {
@@ -192,7 +196,7 @@ public class GLApplication : GLApplicationBase
         }
     }
 
-    public override IPreferences GetPreferences( string name )
+    public IPreferences GetPreferences( string name )
     {
         if ( Preferences!.ContainsKey( name ) )
         {
@@ -206,11 +210,15 @@ public class GLApplication : GLApplicationBase
         return prefs;
     }
 
-    public void CreateWindow( GLWindow window, GLApplicationConfiguration config, long sharedContext )
+    public void CreateWindow( GLWindow window,
+                              GLApplicationConfiguration config,
+                              long sharedContext )
     {
     }
 
-    public GLWindow CreateWindow( GLApplicationConfiguration config, IApplicationListener listener, long sharedContext )
+    public GLWindow CreateWindow( GLApplicationConfiguration config,
+                                  IApplicationListener listener,
+                                  long sharedContext )
     {
         var window = new GLWindow( listener, config, this );
 
@@ -236,12 +244,12 @@ public class GLApplication : GLApplicationBase
         return window;
     }
 
-    public override IGLAudio CreateAudio( GLApplicationConfiguration config )
+    public IGLAudio CreateAudio( GLApplicationConfiguration config )
     {
         throw new NotImplementedException();
     }
 
-    public override IGLInput CreateInput( GLWindow window )
+    public IGLInput CreateInput( GLWindow window )
     {
         throw new NotImplementedException();
     }
@@ -251,24 +259,24 @@ public class GLApplication : GLApplicationBase
         return new GLFiles();
     }
 
-    public override int GetVersion()
+    public int GetVersion()
     {
         return 0;
     }
 
-    public override void Exit()
+    public void Exit()
     {
     }
 
-    public override void AddLifecycleListener( ILifecycleListener listener )
+    public void AddLifecycleListener( ILifecycleListener listener )
     {
     }
 
-    public override void RemoveLifecycleListener( ILifecycleListener listener )
+    public void RemoveLifecycleListener( ILifecycleListener listener )
     {
     }
 
-    public override void PostRunnable( IRunnable runnable )
+    public void PostRunnable( IRunnable runnable )
     {
     }
 
@@ -289,10 +297,10 @@ public class GLApplication : GLApplicationBase
 
         GLVersion = new GLVersion
             (
-            IApplication.ApplicationType.Desktop,
-            $"{major}.{minor}.{revision}",
-            Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
-            Gdx.GL20.GLGetString( IGL20.GL_RENDERER )
+             IApplication.ApplicationType.Desktop,
+             $"{major}.{minor}.{revision}",
+             Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
+             Gdx.GL20.GLGetString( IGL20.GL_RENDERER )
             );
     }
 }

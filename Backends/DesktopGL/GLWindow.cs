@@ -30,7 +30,7 @@ public class GLWindow : IDisposable
     public        GLApplicationConfiguration Config              { get; set; }
     public        bool                       ListenerInitialised { get; set; } = false;
 
-    private readonly GLApplicationBase _application;
+    private readonly IGLApplicationBase _application;
     private readonly List< IRunnable > _runnables         = new();
     private readonly List< IRunnable > _executedRunnables = new();
     private          IntBuffer         _tmpBuffer;
@@ -42,7 +42,7 @@ public class GLWindow : IDisposable
 
     public GLWindow( IApplicationListener listener,
                      GLApplicationConfiguration config,
-                     GLApplicationBase application )
+                     IGLApplicationBase application )
     {
         this.Listener       = listener;
         this.WindowListener = config.WindowListener;

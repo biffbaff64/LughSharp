@@ -17,6 +17,7 @@
 namespace LibGDXSharp.Core;
 
 /// <summary>
+/// The current LibGDXSharp Library version.
 /// </summary>
 [PublicAPI]
 public class GDXVersion

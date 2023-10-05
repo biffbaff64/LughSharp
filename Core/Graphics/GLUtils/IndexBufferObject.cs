@@ -21,90 +21,191 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class IndexBufferObject : IIndexData
 {
+    private ShortBuffer _buffer;
+    private ByteBuffer  _byteBuffer;
+    private bool        _ownsBuffer;
+    private int         _bufferHandle;
+    private bool        _isDirect;
+    private bool        _isDirty = true;
+    private bool        _isBound = false;
+    private int         _usage;
+    private bool        _empty;
+
+    public IndexBufferObject( int maxIndices )
+        : this( true, maxIndices ) { }
+
     public IndexBufferObject( bool isStatic, int maxIndices )
     {
-        throw new NotImplementedException();
+        _empty = ( maxIndices == 0 );
+
+        if ( _empty )
+        {
+            maxIndices = 1;
+        }
+
+        _byteBuffer = BufferUtils.NewUnsafeByteBuffer( maxIndices * 2 );
+        _isDirect   = true;
+        _buffer     = _byteBuffer.AsShortBuffer();
+        _ownsBuffer = true;
+
+        _buffer.Flip();
+        _byteBuffer.Flip();
+
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
+        _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
     }
 
-    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose()
-    {
-    }
+    /// <inheritdoc />
+    public int NumIndices => _empty ? 0 : _buffer.Limit;
 
-    /// <returns> the number of indices currently stored in this buffer </returns>
-    public int NumIndices { get; set; }
+    /// <inheritdoc />
+    public int NumMaxIndices => _empty ? 0 : _buffer.Capacity;
 
-    /// <returns> the maximum number of indices this IndexBufferObject can store. </returns>
-    public int NumMaxIndices { get; set; }
-
-    /// <summary>
-    /// <para>
-    /// Sets the indices of this IndexBufferObject, discarding the old indices.
-    /// The count must equal the number of indices to be copied to this IndexBufferObject.
-    /// </para>
-    /// <para>
-    /// This can be called in between calls to <see cref="Bind()"/> and
-    /// <see cref="Unbind()"/>. The index data will be updated instantly.
-    /// </para>
-    /// </summary>
-    /// <param name="indices"> the index data </param>
-    /// <param name="offset"> the offset to start copying the data from </param>
-    /// <param name="count"> the number of shorts to copy  </param>
+    /// <inheritdoc />
     public void SetIndices( short[] indices, int offset, int count )
     {
+        _isDirty = true;
+
+        _buffer.Clear();
+        _buffer.Put( indices, offset, count );
+        _buffer.Flip();
+
+        _byteBuffer.Position = 0;
+        _byteBuffer.Limit    = ( count << 1 );
+
+        if ( _isBound )
+        {
+            Gdx.GL20.GLBufferData
+                (
+                 IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                 _byteBuffer.Limit,
+                 _byteBuffer,
+                 _usage
+                );
+
+            _isDirty = false;
+        }
     }
 
-    /// <summary>
-    /// Copies the specified indices to the indices of this IndexBufferObject,
-    /// discarding the old indices. Copying start at the current
-    /// <see cref="ShortBuffer.Position()"/> of the specified buffer and copied
-    /// the <see cref="ShortBuffer.Remaining()"/> amount of indices. This can be
-    /// called in between calls to <see cref="Bind()"/> and <see cref="Unbind()"/>.
-    /// The index data will be updated instantly.
-    /// </summary>
-    /// <param name="indices"> the index data to copy  </param>
+    /// <inheritdoc />
     public void SetIndices( ShortBuffer indices )
     {
+        _isDirty = true;
+
+        int pos = indices.Position;
+
+        _buffer.Clear();
+        _buffer.Put( indices );
+        _buffer.Flip();
+
+        indices.Position     = pos;
+        
+        _byteBuffer.Position = 0;
+        _byteBuffer.Limit    = ( _buffer.Limit << 1 );
+
+        if ( _isBound )
+        {
+            Gdx.GL20.GLBufferData
+                (
+                 IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                 _byteBuffer.Limit,
+                 _byteBuffer,
+                 _usage
+                );
+
+            _isDirty = false;
+        }
     }
 
-    /// <summary>
-    /// Update (a portion of) the indices.
-    /// </summary>
-    /// <param name="targetOffset"> offset in indices buffer </param>
-    /// <param name="indices"> the index data </param>
-    /// <param name="offset"> the offset to start copying the data from </param>
-    /// <param name="count"> the number of shorts to copy  </param>
+    /// <inheritdoc />
     public void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
     {
+        _isDirty = true;
+
+        int pos = _byteBuffer.Position;
+
+        _byteBuffer.Position = ( targetOffset * 2 );
+
+        BufferUtils.Copy( indices, offset, _byteBuffer, count );
+
+        _byteBuffer.Position = pos;
+        _buffer.Position     = 0;
+
+        if ( _isBound )
+        {
+            Gdx.GL20.GLBufferData
+                (
+                 IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                 _byteBuffer.Limit,
+                 _byteBuffer,
+                 _usage
+                );
+
+            _isDirty = false;
+        }
     }
 
-    /// <summary>
-    /// Returns the underlying ShortBuffer. If you modify the buffer contents they
-    /// wil be uploaded on the call to <see cref="Bind()"/>. If you need immediate
-    /// uploading use <see cref="SetIndices(short[], int, int)"/>.
-    /// </summary>
-    /// <returns> the underlying short buffer. </returns>
-    public ShortBuffer Buffer { get; set; }
+    /// <inheritdoc />
+    public ShortBuffer GetBuffer( bool forWriting )
+    {
+        _isDirty = forWriting;
 
-    /// <summary>
-    /// Binds this IndexBufferObject for rendering with glDrawElements.
-    /// </summary>
+        return _buffer;
+    }
+
+    /// <inheritdoc />
     public void Bind()
     {
+        if ( _bufferHandle == 0 )
+        {
+            throw new GdxRuntimeException( "No buffer allocated!" );
+        }
+
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, _bufferHandle );
+
+        if ( _isDirty )
+        {
+            _byteBuffer.Limit = ( _buffer.Limit * 2 );
+
+            Gdx.GL20.GLBufferData
+                (
+                 IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                 _byteBuffer.Limit,
+                 _byteBuffer,
+                 _usage
+                );
+
+            _isDirty = false;
+        }
+
+        _isBound = true;
     }
 
-    /// <summary>
-    /// Unbinds this IndexBufferObject.
-    /// </summary>
+    /// <inheritdoc />
     public void Unbind()
     {
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        _isBound = false;
     }
 
-    /// <summary>
-    /// Invalidates the IndexBufferObject so a new OpenGL buffer handle is created.
-    /// Use this in case of a context loss.
-    /// </summary>
+    /// <inheritdoc />
     public void Invalidate()
     {
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
+        _isDirty      = true;
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
+
+        _bufferHandle = 0;
+
+        if ( _ownsBuffer )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        }
     }
 }

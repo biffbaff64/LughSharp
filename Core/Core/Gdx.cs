@@ -23,6 +23,7 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public static class Gdx
 {
+    //TODO: Perhaps these should check for Non-Debug build and force false if so?
     public static bool DevMode { get; set; } = false;
     public static bool GodMode { get; set; } = false;
 

@@ -32,8 +32,7 @@ public abstract class AbstractInput : IInput
     {
         PressedKeys     = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
         JustPressedKeys = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
-
-        _keysToCatch = new List< int >();
+        _keysToCatch    = new List< int >();
     }
 
     /// <summary>
