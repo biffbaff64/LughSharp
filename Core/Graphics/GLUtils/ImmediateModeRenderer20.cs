@@ -199,7 +199,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
 
     public void TexCoord( float u, float v )
     {
-        int idx = _vertexIdx + _texCoordOffset;
+        var idx = _vertexIdx + _texCoordOffset;
 
         _vertices[ idx + _numSetTexCoords ]     =  u;
         _vertices[ idx + _numSetTexCoords + 1 ] =  v;
@@ -208,7 +208,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
 
     public void Normal( float x, float y, float z )
     {
-        int idx = _vertexIdx + _normalOffset;
+        var idx = _vertexIdx + _normalOffset;
 
         _vertices[ idx ]     = x;
         _vertices[ idx + 1 ] = y;

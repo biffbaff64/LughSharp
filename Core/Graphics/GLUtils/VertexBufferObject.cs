@@ -51,8 +51,8 @@ public class VertexBufferObject : IVertexData
     /// <param name="attributes"> the <seealso cref="VertexAttributes"/>.  </param>
     public VertexBufferObject( bool isStatic, int numVertices, VertexAttributes attributes )
     {
-        _buffer     = default!;
-        Attributes  = default!;
+        _buffer    = default( FloatBuffer? )!;
+        Attributes = default( VertexAttributes )!;
 
         _bufferHandle = Gdx.GL20.GLGenBuffer();
 
@@ -66,8 +66,8 @@ public class VertexBufferObject : IVertexData
 
     public VertexBufferObject( int usage, ByteBuffer data, bool ownsBuffer, VertexAttributes attributes )
     {
-        _buffer     = default!;
-        Attributes  = default!;
+        _buffer    = default( FloatBuffer? )!;
+        Attributes = default( VertexAttributes )!;
 
         _bufferHandle = Gdx.GL20.GLGenBuffer();
 
@@ -86,7 +86,10 @@ public class VertexBufferObject : IVertexData
         get => _usage;
         set
         {
-            if ( _isBound ) throw new GdxRuntimeException( "Cannot change usage while VBO is bound" );
+            if ( _isBound )
+            {
+                throw new GdxRuntimeException( "Cannot change usage while VBO is bound" );
+            }
 
             _usage = value;
         }
@@ -102,16 +105,11 @@ public class VertexBufferObject : IVertexData
     /// *after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer Buffer
+    public FloatBuffer GetBuffer( bool forWriting )
     {
-        get
-        {
-            _isDirty = true;
+        _isDirty |= forWriting;
 
-            return _buffer;
-        }
-        set => throw new GdxRuntimeException
-            ( "DO NOT USE Buffer.Set: Call SetBuffer(Buffer, bool, VertexAtrtributes) instead." );
+        return _buffer;
     }
 
     /// <summary>
@@ -119,7 +117,10 @@ public class VertexBufferObject : IVertexData
     /// </summary>
     public void SetBuffer( Buffer data, bool ownsBuffer, VertexAttributes value )
     {
-        if ( _isBound ) throw new GdxRuntimeException( "Cannot change attributes while VBO is bound" );
+        if ( _isBound )
+        {
+            throw new GdxRuntimeException( "Cannot change attributes while VBO is bound" );
+        }
 
         if ( this._ownsBuffer && ( _byteBuffer != null ) )
         {
@@ -164,8 +165,15 @@ public class VertexBufferObject : IVertexData
     /// <param name="count"> the number of floats to copy  </param>
     public void SetVertices( float[] vertices, int offset, int count )
     {
-        if ( _byteBuffer == null ) throw new GdxRuntimeException( "Byte buffer cannot be null!" );
-        if ( _buffer == null ) throw new GdxRuntimeException( "Buffer cannot be null!" );
+        if ( _byteBuffer == null )
+        {
+            throw new GdxRuntimeException( "Byte buffer cannot be null!" );
+        }
+
+        if ( _buffer == null )
+        {
+            throw new GdxRuntimeException( "Buffer cannot be null!" );
+        }
 
         _isDirty = true;
 
@@ -201,7 +209,7 @@ public class VertexBufferObject : IVertexData
         BufferUtils.Copy( vertices, sourceOffset, count, _byteBuffer );
 
         _byteBuffer.Position = pos;
-        _buffer.Position    = 0;
+        _buffer.Position     = 0;
 
         BufferChanged();
     }
@@ -219,8 +227,15 @@ public class VertexBufferObject : IVertexData
 
         if ( _isDirty )
         {
-            if ( _byteBuffer == null ) throw new NullReferenceException();
-            if ( _buffer == null ) throw new NullReferenceException();
+            if ( _byteBuffer == null )
+            {
+                throw new NullReferenceException();
+            }
+
+            if ( _buffer == null )
+            {
+                throw new NullReferenceException();
+            }
 
             _byteBuffer.Limit = ( _buffer.Limit * 4 );
             gl.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
@@ -237,14 +252,17 @@ public class VertexBufferObject : IVertexData
                 ? shader.GetAttributeLocation( attribute.alias )
                 : locations[ i ];
 
-            if ( location < 0 ) continue;
+            if ( location < 0 )
+            {
+                continue;
+            }
 
             shader.EnableVertexAttribute( location );
 
             shader.SetVertexAttribute
                 (
-                location, attribute.numComponents, attribute.type, attribute.normalized,
-                Attributes.VertexSize, attribute.Offset
+                 location, attribute.numComponents, attribute.type, attribute.normalized,
+                 Attributes.VertexSize, attribute.Offset
                 );
         }
 
@@ -274,7 +292,10 @@ public class VertexBufferObject : IVertexData
             {
                 var location = locations[ i ];
 
-                if ( location >= 0 ) shader.DisableVertexAttribute( location );
+                if ( location >= 0 )
+                {
+                    shader.DisableVertexAttribute( location );
+                }
             }
         }
 
@@ -313,6 +334,9 @@ public class VertexBufferObject : IVertexData
 
         _bufferHandle = 0;
 
-        if ( _ownsBuffer ) BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer! );
+        if ( _ownsBuffer )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer! );
+        }
     }
 }

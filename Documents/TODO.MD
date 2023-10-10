@@ -38,7 +38,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
 - Constantly look for opportunities to improve this code.
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
-- Make more use of <inheritdoc cref=""/>>
+- Make more use of <inheritdoc cref=""/>> or just <inheritdoc />
 - 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -291,7 +291,7 @@ GRAPHICS/GLUTILS
     - DONE - ImmediateModeRenderer20
     - DONE - IndexArray
     - DONE - IndexBufferObject
-    -      - IndexBufferObjectSubData
+    - DONE - IndexBufferObjectSubData
     -      - InstanceBufferObject
     -      - InstanceBufferObjectSubData
     - DONE - IVertexData
@@ -647,7 +647,7 @@ UTILS
     - DONE - DataUtils                      Added Class
     - DONE - FloatConsts                    Done, but is it needed?
     - DONE - ICloseable                     
-    - DONE - IClipboard                     Convert - Interface, actual clipboard handled in backends.                 
+    - DONE - IClipboard                     Convert - Interface, clipboard handled in backends.                 
     - DONE - IRunnable                      Done, but is it needed?
     - DONE - Logger                         
     - DONE - PerformanceCounter             Check

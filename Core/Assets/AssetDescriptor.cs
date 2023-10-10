@@ -19,10 +19,10 @@ namespace LibGDXSharp.Assets;
 [PublicAPI]
 public class AssetDescriptor
 {
-    public Type                   Type       { get; set; }
-    public string?                FilePath   { get; set; }
+    public Type                  Type       { get; set; }
+    public string?               FilePath   { get; set; }
     public AssetLoaderParameters Parameters { get; set; }
-    public FileInfo?              File       { get; set; }
+    public FileInfo?             File       { get; set; }
 
     public AssetDescriptor()
     {

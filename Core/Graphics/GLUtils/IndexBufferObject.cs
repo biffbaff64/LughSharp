@@ -92,7 +92,7 @@ public class IndexBufferObject : IIndexData
     {
         _isDirty = true;
 
-        int pos = indices.Position;
+        var pos = indices.Position;
 
         _buffer.Clear();
         _buffer.Put( indices );
@@ -122,7 +122,7 @@ public class IndexBufferObject : IIndexData
     {
         _isDirty = true;
 
-        int pos = _byteBuffer.Position;
+        var pos = _byteBuffer.Position;
 
         _byteBuffer.Position = ( targetOffset * 2 );
 

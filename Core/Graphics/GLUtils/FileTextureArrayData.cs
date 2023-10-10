@@ -33,7 +33,7 @@ public class FileTextureArrayData : ITextureArrayData
         this._depth       = files.Length;
         this._textureData = new ITextureData?[ files.Length ];
 
-        for ( int i = 0; i < files.Length; i++ )
+        for ( var i = 0; i < files.Length; i++ )
         {
             _textureData[ i ] = ITextureData.Factory.LoadFromFile( files[ i ], format, useMipMaps );
         }
@@ -67,8 +67,8 @@ public class FileTextureArrayData : ITextureArrayData
     /// </summary>
     public void Prepare()
     {
-        int width  = -1;
-        int height = -1;
+        var width  = -1;
+        var height = -1;
 
         foreach ( ITextureData? data in _textureData )
         {

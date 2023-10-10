@@ -173,19 +173,15 @@ public class VertexBufferObjectSubData : IVertexData
     /// <summary>
     /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
     /// contents to be uploaded on the next call to bind. If you need immediate
-    /// uploading use <see cref="IVertexData.SetVertices"/>; Any modifications made to the Buffer
-    /// *after* the call to bind will not automatically be uploaded.
+    /// uploading use <see cref="IVertexData.SetVertices"/>; Any modifications made
+    /// to the Buffer after the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer Buffer
+    public FloatBuffer GetBuffer( bool forWriting )
     {
-        get
-        {
-            _isDirty = true;
+        _isDirty |= forWriting;
 
-            return _buffer;
-        }
-        set => _buffer = value;
+        return _buffer;
     }
 
     /// <summary>
@@ -213,15 +209,18 @@ public class VertexBufferObjectSubData : IVertexData
                 VertexAttribute attribute = Attributes!.Get( i );
                 var             location  = shader.GetAttributeLocation( attribute.alias );
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 shader.EnableVertexAttribute( location );
 
                 shader.SetVertexAttribute
                     (
-                    location, attribute.numComponents,
-                    attribute.type, attribute.normalized,
-                    Attributes!.VertexSize, attribute.Offset
+                     location, attribute.numComponents,
+                     attribute.type, attribute.normalized,
+                     Attributes!.VertexSize, attribute.Offset
                     );
             }
         }
@@ -232,15 +231,18 @@ public class VertexBufferObjectSubData : IVertexData
                 VertexAttribute attribute = Attributes!.Get( i );
                 var             location  = locations[ i ];
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 shader.EnableVertexAttribute( location );
 
                 shader.SetVertexAttribute
                     (
-                    location, attribute.numComponents,
-                    attribute.type, attribute.normalized,
-                    Attributes!.VertexSize, attribute.Offset
+                     location, attribute.numComponents,
+                     attribute.type, attribute.normalized,
+                     Attributes!.VertexSize, attribute.Offset
                     );
             }
         }
@@ -272,7 +274,10 @@ public class VertexBufferObjectSubData : IVertexData
             {
                 var location = locations[ i ];
 
-                if ( location >= 0 ) shader.DisableVertexAttribute( location );
+                if ( location >= 0 )
+                {
+                    shader.DisableVertexAttribute( location );
+                }
             }
         }
 

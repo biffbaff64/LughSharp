@@ -475,11 +475,13 @@ public class Mesh
                 );
         }
 
-        var pos = VerticesBuffer.Position;
+        FloatBuffer verticesBuffer = GetVerticesBuffer( false );
 
-        VerticesBuffer.Position = srcOffset;
-        VerticesBuffer.Get( vertices, destOffset, count );
-        VerticesBuffer.Position = pos;
+        var pos = verticesBuffer.Position;
+
+        verticesBuffer.Position = srcOffset;
+        verticesBuffer.Get( vertices, destOffset, count );
+        verticesBuffer.Position = pos;
 
         return vertices;
     }
@@ -553,13 +555,13 @@ public class Mesh
         if ( ( srcOffset < 0 ) || ( srcOffset >= max ) || ( ( srcOffset + count ) > max ) )
         {
             throw new System.ArgumentException
-                ( "Invalid range specified, offset: " + srcOffset + ", count: " + count + ", max: " + max );
+                ( $"Invalid range specified, offset: {srcOffset}, count: {count}, max: {max}" );
         }
 
         if ( ( indices.Length - destOffset ) < count )
         {
             throw new System.ArgumentException
-                ( "not enough room in indices array, has " + indices.Length + " shorts, needs " + count );
+                ( $"not enough room in indices array, has {indices.Length} shorts, needs {count}" );
         }
 
         var pos = IndicesBuffer.Position;
@@ -588,9 +590,12 @@ public class Mesh
     /// Sets whether to bind the underlying <see cref="VertexArray"/> or
     /// <see cref="VertexBufferObject"/> automatically on a call to one of the
     /// render methods. Usually you want to use autobind. Manual binding is an
-    /// expert functionality. There is a driver 'bug' on the MSM720xa chips that
-    /// will fuck up memory if you manipulate the vertices and indices of a Mesh
-    /// multiple times while it is bound. Keep this in mind.
+    /// expert functionality.
+    /// <para>
+    /// There is a driver bug on the MSM720xa chips that will corrupt memory if
+    /// you manipulate the vertices and indices of a Mesh multiple times while
+    /// it is bound. Keep this in mind.
+    /// </para>
     /// </summary>
     /// <param name="value"> whether to autobind meshes.  </param>
     public bool AutoBind { get; init; } = true;
@@ -645,7 +650,10 @@ public class Mesh
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Unbind( in ShaderProgram? shader, in int[] locations )
     {
-        if ( shader == null ) return;
+        if ( shader == null )
+        {
+            return;
+        }
         
         _vertices.Unbind( shader, locations );
 
@@ -756,15 +764,21 @@ public class Mesh
     {
         ArgumentNullException.ThrowIfNull( shader );
         
-        if ( count == 0 ) return;
+        if ( count == 0 )
+        {
+            return;
+        }
 
-        if ( autoBind ) Bind( shader );
+        if ( autoBind )
+        {
+            Bind( shader );
+        }
 
         if ( _isVertexArray )
         {
             if ( _indices.NumIndices > 0 )
             {
-                ShortBuffer buffer      = _indices.Buffer;
+                ShortBuffer buffer      = _indices.GetBuffer( false );
                 var         oldPosition = buffer.Position;
                 var         oldLimit    = buffer.Limit;
 
@@ -830,7 +844,10 @@ public class Mesh
             }
         }
 
-        if ( autoBind ) Unbind( shader );
+        if ( autoBind )
+        {
+            Unbind( shader );
+        }
     }
 
     /// <summary>
@@ -862,7 +879,7 @@ public class Mesh
     /// the backing FloatBuffer holding the vertices.
     /// Does not have to be a direct buffer on Android!
     /// </returns>
-    public FloatBuffer VerticesBuffer => _vertices.Buffer;
+    public FloatBuffer GetVerticesBuffer( bool forWriting ) => _vertices.GetBuffer( forWriting );
 
     /// <summary>
     /// Calculates the <see cref="BoundingBox"/> of the vertices contained in this mesh.
@@ -892,7 +909,7 @@ public class Mesh
             throw new GdxRuntimeException( "No vertices defined" );
         }
 
-        FloatBuffer verts = _vertices.Buffer;
+        FloatBuffer verts = _vertices.GetBuffer( false );
         bbox.ToInfinity();
         VertexAttribute? posAttrib = GetVertexAttribute( VertexAttributes.Usage.POSITION );
 
@@ -995,8 +1012,8 @@ public class Mesh
                 );
         }
 
-        FloatBuffer      verts      = _vertices.Buffer;
-        ShortBuffer      index      = _indices.Buffer;
+        FloatBuffer      verts      = _vertices.GetBuffer( false );
+        ShortBuffer      index      = _indices.GetBuffer( false );
         VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
         var              posoff     = posAttrib?.Offset / 4;
         var              vertexSize = _vertices.Attributes.VertexSize / 4;
@@ -1135,8 +1152,8 @@ public class Mesh
             throw new GdxRuntimeException( "Not enough indices" );
         }
 
-        FloatBuffer      verts      = _vertices.Buffer;
-        ShortBuffer      index      = _indices.Buffer;
+        FloatBuffer      verts      = _vertices.GetBuffer( false );
+        ShortBuffer      index      = _indices.GetBuffer( false );
         VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
         var              posoff     = posAttrib?.Offset / 4;
         var              vertexSize = _vertices.Attributes.VertexSize / 4;
@@ -1294,7 +1311,7 @@ public class Mesh
     /// the backing shortbuffer holding the _indices.
     /// Does not have to be a direct buffer on Android!
     /// </returns>
-    public ShortBuffer IndicesBuffer => _indices.Buffer;
+    public ShortBuffer IndicesBuffer => _indices.GetBuffer( false );
 
     private static void AddManagedMesh( IApplication app, Mesh mesh )
     {
@@ -1420,8 +1437,7 @@ public class Mesh
 
         var posOffset     = posAttr!.Offset / 4;
         var stride        = VertexSize / 4;
-        var numComponents = posAttr!.numComponents;
-        var numVertices   = NumVertices;
+        var numComponents = posAttr.numComponents;
         var vertices      = new float[ count * stride ];
 
         GetVertices( start * stride, count * stride, vertices );

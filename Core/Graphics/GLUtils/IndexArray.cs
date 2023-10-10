@@ -21,7 +21,8 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class IndexArray : IIndexData
 {
-    public readonly ByteBuffer  byteBuffer;
+    private ByteBuffer  _byteBuffer;
+    private ShortBuffer _buffer;
 
     // used to work around bug: https://android-review.googlesource.com/#/c/73175/
     private readonly bool _empty;
@@ -39,23 +40,23 @@ public class IndexArray : IIndexData
             maxIndices = 1; // avoid allocating a zero-sized buffer because of a bug in Android's ART < Android 5.0
         }
 
-        byteBuffer = BufferUtils.NewUnsafeByteBuffer( maxIndices * 2 );
+        _byteBuffer = BufferUtils.NewUnsafeByteBuffer( maxIndices * 2 );
 
-        Buffer     = byteBuffer.AsShortBuffer();
-        Buffer.Flip();
-        
-        byteBuffer.Flip();
+        _buffer = _byteBuffer.AsShortBuffer();
+        _buffer.Flip();
+
+        _byteBuffer.Flip();
     }
 
     /// <summary>
     /// Returns the number of indices currently stored in this buffer.
     /// </summary>
-    public int NumIndices => _empty ? 0 : Buffer.Limit;
+    public int NumIndices => _empty ? 0 : _buffer.Limit;
 
     /// <summary>
     /// Returns the maximum number of indices this IndexArray can store.
     /// </summary>
-    public int NumMaxIndices => _empty ? 0 : Buffer.Capacity;
+    public int NumMaxIndices => _empty ? 0 : _buffer.Capacity;
 
     /// <summary>
     /// Sets the indices of this IndexArray, discarding the old indices.
@@ -71,39 +72,39 @@ public class IndexArray : IIndexData
     /// <param name="count"> the number of shorts to copy  </param>
     public void SetIndices( short[] indices, int offset, int count )
     {
-        Buffer.Clear();
-        Buffer.Put( indices, offset, count );
-        Buffer.Flip();
+        _buffer.Clear();
+        _buffer.Put( indices, offset, count );
+        _buffer.Flip();
 
-        byteBuffer.Position = 0;
-        byteBuffer.Limit = ( count << 1 );
+        _byteBuffer.Position = 0;
+        _byteBuffer.Limit    = ( count << 1 );
     }
 
     public void SetIndices( ShortBuffer indices )
     {
         var pos = indices.Position;
-        
-        Buffer.Clear();
-        Buffer.Limit = indices.Remaining();
-        
-        Buffer.Put( indices );
-        Buffer.Flip();
-        
+
+        _buffer.Clear();
+        _buffer.Limit = indices.Remaining();
+
+        _buffer.Put( indices );
+        _buffer.Flip();
+
         indices.Position = pos;
-        
-        byteBuffer.Position = 0;
-        byteBuffer.Limit = ( Buffer.Limit << 1 );
+
+        _byteBuffer.Position = 0;
+        _byteBuffer.Limit    = ( _buffer.Limit << 1 );
     }
 
     public void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
     {
-        int pos = byteBuffer.Position;
+        var pos = _byteBuffer.Position;
 
-        byteBuffer.Position = ( targetOffset * 2 );
-        
-        BufferUtils.Copy( indices, offset, byteBuffer, count );
-        
-        byteBuffer.Position = pos;
+        _byteBuffer.Position = ( targetOffset * 2 );
+
+        BufferUtils.Copy( indices, offset, _byteBuffer, count );
+
+        _byteBuffer.Position = pos;
     }
 
     /// <summary>
@@ -112,36 +113,32 @@ public class IndexArray : IIndexData
     /// If you need immediate uploading use <see cref="SetIndices(short[], int, int)"/>.
     /// </summary>
     /// <returns> the underlying short buffer. </returns>
-    public ShortBuffer Buffer { get; set; }
+    public ShortBuffer GetBuffer( bool forWriting )
+    {
+        return _buffer;
+    }
 
     /// <summary>
     /// Binds this IndexArray for rendering with glDrawElements.
     /// </summary>
-    public void Bind()
-    {
-    }
+    public void Bind() { }
 
     /// <summary>
     /// Unbinds this IndexArray.
     /// </summary>
-    public void Unbind()
-    {
-    }
+    public void Unbind() { }
 
     /// <summary>
     /// Invalidates the IndexArray so a new OpenGL buffer handle is
     /// created. Use this in case of a context loss.
     /// </summary>
-    public void Invalidate()
-    {
-    }
+    public void Invalidate() { }
 
     /// <summary>
     /// Disposes this IndexArray and all its associated OpenGL resources.
     /// </summary>
     public void Dispose()
     {
-        BufferUtils.DisposeUnsafeByteBuffer( byteBuffer );
+        BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
     }
 }
-

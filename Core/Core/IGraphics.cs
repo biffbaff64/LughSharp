@@ -155,6 +155,7 @@ public interface IGraphics
     /// <param name="systemCursor">The system cursor to use.</param>
     void SetSystemCursor( ICursor.SystemCursor systemCursor );
     
+    [PublicAPI]
     public class DisplayMode
     {
         public int Width        { get; set; }
@@ -176,6 +177,7 @@ public interface IGraphics
         }
     }
     
+    [PublicAPI]
     public class Monitor
     {
         public int    VirtualX { get; set; }
@@ -194,6 +196,7 @@ public interface IGraphics
     /// Class describing the bits per pixel, depth buffer precision,
     /// stencil precision and number of MSAA samples.
     /// </summary>
+    [PublicAPI]
     public record BufferFormat
     {
         public int  R                { get; set; } // number of bits per color channel.
@@ -204,13 +207,12 @@ public interface IGraphics
         public int  Stencil          { get; set; } // ...
         public int  Samples          { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
         public bool CoverageSampling { get; set; } // whether coverage sampling anti-aliasing is used.
-//                                                 If so, you have to clear the coverage buffer as well!
+                                                   // If so, you have to clear the coverage buffer as well!
 
         public override string ToString()
         {
-            return "r - " + R + ", g - " + G + ", b - " + B + ", a - " + A
-                   + ", depth - " + Depth + ", stencil - " + Stencil
-                   + ", num samples - " + Samples + ", coverage sampling - " + CoverageSampling;
+            return $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
+                 + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
         }
     }
 }

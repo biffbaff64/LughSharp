@@ -21,9 +21,8 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class VertexArray : IVertexData
 {
-//    private readonly VertexAttributes _attributes;
-//    private readonly FloatBuffer      _buffer;
-    private readonly ByteBuffer _byteBuffer;
+    private readonly FloatBuffer _buffer;
+    private readonly ByteBuffer  _byteBuffer;
 
     /// <summary>
     /// Constructs a new interleaved VertexArray
@@ -44,16 +43,16 @@ public class VertexArray : IVertexData
     {
         this.Attributes  = attributes;
         this._byteBuffer = BufferUtils.NewUnsafeByteBuffer( this.Attributes.VertexSize * numVertices );
-        this.Buffer      = _byteBuffer.AsFloatBuffer();
+        this._buffer     = _byteBuffer.AsFloatBuffer();
 
-        Buffer.Flip();
+        _buffer.Flip();
         _byteBuffer.Flip();
     }
 
     /// <summary>
     /// </summary>
     /// <returns> the number of vertices this VertexData stores </returns>
-    public int NumVertices => ( this.Buffer.Limit * 4 ) / Attributes.VertexSize;
+    public int NumVertices => ( this._buffer.Limit * 4 ) / Attributes.VertexSize;
 
     /// <summary>
     /// </summary>
@@ -72,7 +71,10 @@ public class VertexArray : IVertexData
     /// *after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.</returns>
-    public FloatBuffer Buffer { get; set; }
+    public FloatBuffer GetBuffer( bool forWriting )
+    {
+        return _buffer;
+    }
 
     /// <summary>
     /// Sets the vertices of this VertexData, discarding the old vertex data. The
@@ -91,8 +93,8 @@ public class VertexArray : IVertexData
     {
         BufferUtils.Copy( vertices, _byteBuffer, count, offset );
 
-        Buffer.Position = 0;
-        Buffer.Limit    = count;
+        _buffer.Position = 0;
+        _buffer.Limit    = count;
     }
 
     /// <summary>
@@ -119,29 +121,32 @@ public class VertexArray : IVertexData
     /// <param name="locations"> array containing the attribute locations.</param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        int numAttributes = Attributes.Size;
+        var numAttributes = Attributes.Size;
 
-        _byteBuffer.Limit = ( Buffer.Limit * 4 );
+        _byteBuffer.Limit = ( _buffer.Limit * 4 );
 
         if ( locations == null )
         {
-            for ( int i = 0; i < numAttributes; i++ )
+            for ( var i = 0; i < numAttributes; i++ )
             {
                 VertexAttribute attribute = Attributes.Get( i );
-                int             location  = shader.GetAttributeLocation( attribute.alias );
+                var             location  = shader.GetAttributeLocation( attribute.alias );
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 shader.EnableVertexAttribute( location );
 
                 if ( attribute.type == IGL20.GL_FLOAT )
                 {
-                    Buffer.Position = ( attribute.Offset / 4 );
+                    _buffer.Position = ( attribute.Offset / 4 );
 
                     shader.SetVertexAttribute
                         (
-                        location, attribute.numComponents, attribute.type, attribute.normalized,
-                        Attributes.VertexSize, Buffer
+                         location, attribute.numComponents, attribute.type, attribute.normalized,
+                         Attributes.VertexSize, _buffer
                         );
                 }
                 else
@@ -150,31 +155,34 @@ public class VertexArray : IVertexData
 
                     shader.SetVertexAttribute
                         (
-                        location, attribute.numComponents, attribute.type, attribute.normalized,
-                        Attributes.VertexSize, _byteBuffer
+                         location, attribute.numComponents, attribute.type, attribute.normalized,
+                         Attributes.VertexSize, _byteBuffer
                         );
                 }
             }
         }
         else
         {
-            for ( int i = 0; i < numAttributes; i++ )
+            for ( var i = 0; i < numAttributes; i++ )
             {
                 VertexAttribute attribute = Attributes.Get( i );
-                int             location  = locations[ i ];
+                var             location  = locations[ i ];
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 shader.EnableVertexAttribute( location );
 
                 if ( attribute.type == IGL20.GL_FLOAT )
                 {
-                    Buffer.Position = ( attribute.Offset / 4 );
+                    _buffer.Position = ( attribute.Offset / 4 );
 
                     shader.SetVertexAttribute
                         (
-                        location, attribute.numComponents, attribute.type, attribute.normalized,
-                        Attributes.VertexSize, Buffer
+                         location, attribute.numComponents, attribute.type, attribute.normalized,
+                         Attributes.VertexSize, _buffer
                         );
                 }
                 else
@@ -183,8 +191,8 @@ public class VertexArray : IVertexData
 
                     shader.SetVertexAttribute
                         (
-                        location, attribute.numComponents, attribute.type, attribute.normalized,
-                        Attributes.VertexSize, _byteBuffer
+                         location, attribute.numComponents, attribute.type, attribute.normalized,
+                         Attributes.VertexSize, _byteBuffer
                         );
                 }
             }
@@ -198,22 +206,25 @@ public class VertexArray : IVertexData
     /// <param name="locations"> array containing the attribute locations.</param>
     public void Unbind( ShaderProgram? shader, int[]? locations = null )
     {
-        int numAttributes = Attributes.Size;
+        var numAttributes = Attributes.Size;
 
         if ( locations == null )
         {
-            for ( int i = 0; i < numAttributes; i++ )
+            for ( var i = 0; i < numAttributes; i++ )
             {
                 shader?.DisableVertexAttribute( Attributes.Get( i ).alias );
             }
         }
         else
         {
-            for ( int i = 0; i < numAttributes; i++ )
+            for ( var i = 0; i < numAttributes; i++ )
             {
-                int location = locations[ i ];
-                
-                if ( location >= 0 ) shader?.DisableVertexAttribute( location );
+                var location = locations[ i ];
+
+                if ( location >= 0 )
+                {
+                    shader?.DisableVertexAttribute( location );
+                }
             }
         }
     }

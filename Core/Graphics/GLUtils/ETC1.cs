@@ -209,7 +209,7 @@ public class ETC1
     /// <returns> the <see cref="ETC1Data"/> </returns>
     public static ETC1Data EncodeImage( Pixmap pixmap )
     {
-        int         pixelSize      = GetPixelSize( pixmap.GetFormat() );
+        var         pixelSize      = GetPixelSize( pixmap.GetFormat() );
         ByteBuffer? compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
         BufferUtils.NewUnsafeByteBuffer( compressedData );
@@ -226,7 +226,7 @@ public class ETC1
     /// <returns> the <see cref="ETC1Data"/> </returns>
     public static ETC1Data EncodeImagePKM( Pixmap pixmap )
     {
-        int         pixelSize      = GetPixelSize( pixmap.GetFormat() );
+        var         pixelSize      = GetPixelSize( pixmap.GetFormat() );
         ByteBuffer? compressedData = EncodeImagePKM( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
         BufferUtils.NewUnsafeByteBuffer( compressedData );
@@ -244,9 +244,9 @@ public class ETC1
     /// <returns> the Pixmap </returns>
     public static Pixmap DecodeImage( ETC1Data etc1Data, Pixmap.Format format )
     {
-        int dataOffset = 0;
-        int width      = 0;
-        int height     = 0;
+        var dataOffset = 0;
+        var width      = 0;
+        var height     = 0;
 
         if ( etc1Data.HasPKMHeader() )
         {
@@ -261,8 +261,8 @@ public class ETC1
             height     = etc1Data.Height;
         }
 
-        int    pixelSize = GetPixelSize( format );
-        Pixmap pixmap    = new Pixmap( width, height, format );
+        var    pixelSize = GetPixelSize( format );
+        var pixmap    = new Pixmap( width, height, format );
 
         DecodeImage( etc1Data.CompressedData, dataOffset, pixmap.Pixels, 0, width, height, pixelSize );
 

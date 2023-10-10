@@ -23,7 +23,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 {
     private readonly static IntBuffer TmpHandle = BufferUtils.NewIntBuffer( 1 );
 
-    public VertexAttributes? Attributes { get; set; }
+    public VertexAttributes Attributes { get; set; }
 
     private readonly ByteBuffer  _byteBuffer;
     private readonly bool        _ownsBuffer;
@@ -103,12 +103,12 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <summary>
     /// </summary>
     /// <returns> the number of vertices this VertexData stores </returns>
-    public int NumVertices => ( _buffer.Limit * 4 ) / Attributes!.VertexSize;
+    public int NumVertices => ( _buffer.Limit * 4 ) / Attributes.VertexSize;
 
     /// <summary>
     /// </summary>
     /// <returns> the number of vertices this VertedData can store </returns>
-    public int NumMaxVertices => _byteBuffer.Capacity / Attributes!.VertexSize;
+    public int NumMaxVertices => _byteBuffer.Capacity / Attributes.VertexSize;
 
     /// <summary>
     /// Sets the vertices of this VertexData, discarding the old vertex data. The
@@ -163,15 +163,11 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// *after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer Buffer
+    public FloatBuffer GetBuffer( bool forWriting )
     {
-        get
-        {
-            _isDirty = true;
+        _isDirty |= forWriting;
 
-            return _buffer;
-        }
-        set => _buffer = value;
+        return _buffer;
     }
 
     /// <summary>
@@ -236,7 +232,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     private void BindAttributes( ShaderProgram shader, int[]? locations )
     {
         var stillValid    = this._cachedLocations.Count != 0;
-        var numAttributes = Attributes!.Size;
+        var numAttributes = Attributes.Size;
 
         if ( stillValid )
         {
@@ -244,7 +240,7 @@ public class VertexBufferObjectWithVAO : IVertexData
             {
                 for ( var i = 0; stillValid && ( i < numAttributes ); i++ )
                 {
-                    VertexAttribute attribute = Attributes!.Get( i );
+                    VertexAttribute attribute = Attributes.Get( i );
 
                     var location = shader.GetAttributeLocation( attribute.alias );
 
@@ -272,16 +268,11 @@ public class VertexBufferObjectWithVAO : IVertexData
 
             for ( var i = 0; i < numAttributes; i++ )
             {
-                VertexAttribute attribute = Attributes!.Get( i );
+                VertexAttribute attribute = Attributes.Get( i );
 
-                if ( locations == null )
-                {
-                    this._cachedLocations.Add( shader.GetAttributeLocation( attribute.alias ) );
-                }
-                else
-                {
-                    this._cachedLocations.Add( locations[ i ] );
-                }
+                this._cachedLocations.Add( locations == null
+                                               ? shader.GetAttributeLocation( attribute.alias )
+                                               : locations[ i ] );
 
                 var location = this._cachedLocations[ i ];
 
@@ -294,9 +285,9 @@ public class VertexBufferObjectWithVAO : IVertexData
 
                 shader.SetVertexAttribute
                     (
-                    location, attribute.numComponents,
-                    attribute.type, attribute.normalized,
-                    Attributes!.VertexSize, attribute.Offset
+                     location, attribute.numComponents,
+                     attribute.type, attribute.normalized,
+                     Attributes.VertexSize, attribute.Offset
                     );
             }
         }
@@ -309,7 +300,7 @@ public class VertexBufferObjectWithVAO : IVertexData
             return;
         }
 
-        var numAttributes = Attributes!.Size;
+        var numAttributes = Attributes.Size;
 
         for ( var i = 0; i < numAttributes; i++ )
         {

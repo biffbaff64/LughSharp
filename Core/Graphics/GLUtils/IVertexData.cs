@@ -37,7 +37,7 @@ public interface IVertexData : IDisposable
     /// *after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
-    public FloatBuffer Buffer { get; set; }
+    public FloatBuffer GetBuffer( bool forWriting );
 
     /// <summary>
     /// Sets the vertices of this VertexData, discarding the old vertex data. The
