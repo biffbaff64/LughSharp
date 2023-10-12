@@ -16,143 +16,357 @@
 
 using LibGDXSharp.Utils.Buffers;
 
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [PublicAPI]
 public class InstanceBufferObject : IInstanceData
 {
-    public InstanceBufferObject( bool isStatic, int maxInstances, VertexAttribute[] attributes )
+    public VertexAttributes Attributes { get; set; }
+    
+    private FloatBuffer      _buffer;
+    private ByteBuffer?      _byteBuffer;
+    private bool             _ownsBuffer;
+    private int              _bufferHandle;
+    private int              _usage;
+    private bool             _isDirty = false;
+    private bool             _isBound = false;
+
+    public InstanceBufferObject( bool isStatic, int numVertices, params VertexAttribute[] _attributes )
+        : this( isStatic, numVertices, new VertexAttributes( _attributes ) )
     {
-        throw new NotImplementedException();
     }
 
-    /// <returns> the number of vertices this InstanceData stores </returns>
-    public int NumInstances { get; set; }
+    public InstanceBufferObject( bool isStatic, int numVertices, VertexAttributes instanceAttributes )
+    {
+        if ( Gdx.GL30 == null )
+        {
+            throw new GdxRuntimeException( "InstanceBufferObject requires a device running with GLES 3.0 compatibilty" );
+        }
 
-    /// <returns> the number of vertices this InstanceData can store </returns>
-    public int NumMaxInstances { get; set; }
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
 
-    /// <returns> the <seealso cref="VertexAttributes"/> as specified during construction. </returns>
-    public VertexAttributes Attributes { get; set; }
+        ByteBuffer data = BufferUtils.NewUnsafeByteBuffer( instanceAttributes.VertexSize * numVertices );
 
-    /// <summary>
-    /// Sets the vertices of this InstanceData, discarding the old vertex data.
-    /// The count must equal the number of floats per vertex times the number
-    /// of vertices to be copied to this VertexData. The order of the vertex
-    /// attributes must be the same as specified at construction time via
-    /// <see cref="VertexAttributes"/>.
-    /// <para>
-    /// This can be called in between calls to bind and unbind. The vertex data
-    /// will be updated instantly.
-    /// </para>
-    /// </summary>
-    /// <param name="data">   the instance data </param>
-    /// <param name="offset"> the offset to start copying the data from </param>
-    /// <param name="count">  the number of floats to copy </param>
+        data.Limit = 0;
+
+        SetBuffer( data, true, instanceAttributes );
+        SetUsage( isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW );
+    }
+
+    public int NumInstances => ( _buffer.Limit * 4 ) / Attributes.VertexSize;
+
+    public int NumMaxInstances => _byteBuffer!.Capacity / Attributes.VertexSize;
+
+    public FloatBuffer GetBuffer( bool forWriting = true )
+    {
+        _isDirty |= forWriting;
+
+        return _buffer;
+    }
+
+    /** Low level method to reset the _buffer and _attributes to the specified values. Use with care!
+     *
+     * @param data
+     * @param ownsBuffer
+     * @param value */
+    protected void SetBuffer( Buffer data, bool ownsBuffer, VertexAttributes value )
+    {
+        if ( _isBound )
+        {
+            throw new GdxRuntimeException( "Cannot change _attributes while VBO is bound" );
+        }
+
+        if ( this._ownsBuffer && ( _byteBuffer != null ) )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        }
+
+        Attributes = value;
+
+        if ( data is ByteBuffer buffer )
+        {
+            _byteBuffer = buffer;
+        }
+        else
+        {
+            throw new GdxRuntimeException( "Only ByteBuffer is currently supported" );
+        }
+
+        this._ownsBuffer = ownsBuffer;
+
+        var lim = _byteBuffer.Limit;
+
+        _byteBuffer.Limit = _byteBuffer.Capacity;
+
+        _buffer = _byteBuffer.AsFloatBuffer();
+
+        _byteBuffer.Limit = lim;
+        _buffer.Limit     = ( lim / 4 );
+    }
+
+    private void BufferChanged()
+    {
+        if ( _byteBuffer == null )
+        {
+            throw new GdxRuntimeException( "NULL _byteBuffer not allowed" );
+        }
+
+        if ( _isBound )
+        {
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            _isDirty = false;
+        }
+    }
+
     public void SetInstanceData( float[] data, int offset, int count )
     {
+        Debug.Assert( _byteBuffer != null, "SetInstanceData(float[], int, int) fail: _byteBuffer is NULL" );
+
+        _isDirty = true;
+
+        BufferUtils.Copy( data, _byteBuffer, count, offset );
+
+        _buffer.Position = 0;
+        _buffer.Limit    = count;
+
+        BufferChanged();
     }
 
-    /// <summary>
-    /// Update (a portion of) the vertices. Does not resize the backing buffer.
-    /// </summary>
-    /// <param name="targetOffset"></param>
-    /// <param name="data"> the instance data </param>
-    /// <param name="sourceOffset"> the offset to start copying the data from </param>
-    /// <param name="count"> the number of floats to copy </param>
-    public void UpdateInstanceData( int targetOffset, float[] data, int sourceOffset, int count )
-    {
-    }
-
-    /// <summary>
-    /// Sets the vertices of this InstanceData, discarding the old vertex data.
-    /// The count must equal the number of floats per vertex times the number of
-    /// vertices to be copied to this InstanceData. The order of the vertex
-    /// attributes must be the same as specified at construction time via
-    /// <see cref="VertexAttributes"/>.
-    /// <para>
-    /// This can be called in between calls to bind and unbind. The vertex data
-    /// will be updated instantly.
-    /// </para>
-    /// </summary>
-    /// <param name="data">  the instance data </param>
-    /// <param name="count"> the number of floats to copy </param>
     public void SetInstanceData( FloatBuffer data, int count )
     {
+        Debug.Assert( _byteBuffer != null, "SetInstanceData(FloatBuffer, int) fail: _byteBuffer is NULL" );
+
+        _isDirty = true;
+
+        BufferUtils.Copy( data, _byteBuffer, count );
+
+        _buffer.Position = 0;
+        _buffer.Limit    = count;
+
+        BufferChanged();
     }
 
-    /// <summary>
-    /// Update (a portion of) the vertices. Does not resize the backing buffer.
-    /// </summary>
-    ///<param name="targetOffset"></param>
-    /// <param name="data"> the vertex data </param>
-    /// <param name="sourceOffset"> the offset to start copying the data from </param>
-    /// <param name="count">  the number of floats to copy </param>
+    public void UpdateInstanceData( int targetOffset, float[] data, int sourceOffset, int count )
+    {
+        if ( _byteBuffer == null )
+        {
+            throw new GdxRuntimeException( "_byteBuffer cannot be null" );
+        }
+        
+        _isDirty = true;
+
+        var pos = _byteBuffer.Position;
+        
+        _byteBuffer.Position = ( targetOffset * 4 );
+        
+        BufferUtils.Copy( data, sourceOffset, count, _byteBuffer );
+        
+        _byteBuffer.Position = pos;
+        _buffer.Position = 0;
+        
+        BufferChanged();
+    }
+
     public void UpdateInstanceData( int targetOffset, FloatBuffer data, int sourceOffset, int count )
     {
+        if ( _byteBuffer == null )
+        {
+            throw new GdxRuntimeException( "_byteBuffer cannot be null" );
+        }
+
+        _isDirty = true;
+        
+        var pos = _byteBuffer.Position;
+        
+        _byteBuffer.Position = ( targetOffset * 4 );
+        data.Position = ( sourceOffset * 4 );
+        
+        BufferUtils.Copy( data, _byteBuffer, count );
+        
+        _byteBuffer.Position = pos;
+        _buffer.Position = 0;
+        
+        BufferChanged();
     }
 
-    /// <summary>
-    /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
-    /// contents to be uploaded on the next call to bind. If you need immediate
-    /// uploading use <see cref="IInstanceData.SetInstanceData(float[],int,int)"/>;
-    /// Any modifications made to the Buffer *after* the call to bind will not
-    /// automatically be uploaded.
-    /// </summary>
-    /// <returns> the underlying FloatBuffer holding the vertex data. </returns>
-    public FloatBuffer Buffer { get; set; }
-
-    /// <summary>
-    /// Binds this InstanceData for rendering via glDrawArraysInstanced or glDrawElementsInstanced.
-    /// </summary>
-    public void Bind( ShaderProgram shader )
+    /// <returns>
+    /// The GL enum used in the call to <see cref="IGL20.GLBufferData(int, int, Buffer, int)"/>",
+    /// e.g. GL_STATIC_DRAW or GL_DYNAMIC_DRAW
+    /// </returns>
+    protected int GetUsage()
     {
+        return _usage;
     }
 
     /// <summary>
-    /// Binds this InstanceData for rendering via glDrawArraysInstanced or glDrawElementsInstanced.
+    /// Set the GL enum used in the call to <see cref="IGL20.GLBufferData(int, int, Buffer, int)"/>",
+    /// can only be called when the VBO is not bound.
     /// </summary>
-    /// <param name="shader"></param>
-    /// <param name="locations"> array containing the attribute locations. </param>
-    public void Bind( ShaderProgram shader, int[]? locations )
+    protected void SetUsage( int value )
     {
+        if ( _isBound )
+        {
+            throw new GdxRuntimeException( "Cannot change _usage while VBO is bound" );
+        }
+
+        _usage = value;
     }
 
     /// <summary>
-    /// Unbinds this InstanceData.
+    /// Binds this InstanceBufferObject for rendering via
+    ///GLDrawArraysInstanced or GLDrawElementsInstanced
     /// </summary>
-    public void Unbind( ShaderProgram shader )
+    public void Bind( ShaderProgram shader, int[]? locations = null )
     {
+        Debug.Assert( _byteBuffer != null, "Bind(ShaderProgram, int[]) fail: _byteBuffer is NULL" );
+
+        IGL20 gl = Gdx.GL20;
+
+        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+
+        if ( _isDirty )
+        {
+            _byteBuffer.Limit = ( _buffer.Limit * 4 );
+
+            gl.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            
+            _isDirty = false;
+        }
+
+        var numAttributes = Attributes.Size;
+
+        if ( locations == null )
+        {
+            for ( var i = 0; i < numAttributes; i++ )
+            {
+                VertexAttribute attribute = Attributes.Get( i );
+                var             location  = shader.GetAttributeLocation( attribute.alias );
+
+                if ( location < 0 )
+                {
+                    continue;
+                }
+
+                var unitOffset = +attribute.unit;
+                shader.EnableVertexAttribute( location + unitOffset );
+
+                shader.SetVertexAttribute
+                    (
+                     location + unitOffset,
+                     attribute.numComponents,
+                     attribute.type,
+                     attribute.normalized,
+                     this.Attributes.VertexSize,
+                     attribute.Offset
+                    );
+
+                Gdx.GL30.GLVertexAttribDivisor( location + unitOffset, 1 );
+            }
+
+        }
+        else
+        {
+            for ( var i = 0; i < numAttributes; i++ )
+            {
+                VertexAttribute attribute = Attributes.Get( i );
+                var             location  = locations[ i ];
+
+                if ( location < 0 )
+                {
+                    continue;
+                }
+
+                var unitOffset = +attribute.unit;
+                shader.EnableVertexAttribute( location + unitOffset );
+
+                shader.SetVertexAttribute
+                    (
+                     location + unitOffset,
+                     attribute.numComponents,
+                     attribute.type,
+                     attribute.normalized,
+                     this.Attributes.VertexSize,
+                     attribute.Offset
+                    );
+
+                Gdx.GL30.GLVertexAttribDivisor( location + unitOffset, 1 );
+            }
+        }
+
+        _isBound = true;
     }
 
     /// <summary>
-    /// Unbinds this InstanceData.
+    /// Unbinds this InstanceBufferObject.
     /// </summary>
-    /// <param name="shader"></param>
-    /// <param name="locations"> array containing the attribute locations. </param>
-    public void Unbind( ShaderProgram shader, int[] locations )
+    public void Unbind( ShaderProgram shader, int[]? locations = null )
     {
+        IGL20 gl            = Gdx.GL20;
+        var   numAttributes = Attributes.Size;
+
+        if ( locations == null )
+        {
+            for ( var i = 0; i < numAttributes; i++ )
+            {
+                VertexAttribute attribute = Attributes.Get( i );
+                var             location  = shader.GetAttributeLocation( attribute.alias );
+
+                if ( location < 0 )
+                {
+                    continue;
+                }
+
+                var unitOffset = +attribute.unit;
+                shader.DisableVertexAttribute( location + unitOffset );
+            }
+        }
+        else
+        {
+            for ( var i = 0; i < numAttributes; i++ )
+            {
+                VertexAttribute attribute = Attributes.Get( i );
+                var             location  = locations[ i ];
+
+                if ( location < 0 )
+                {
+                    continue;
+                }
+
+                var unitOffset = +attribute.unit;
+                shader.DisableVertexAttribute( location + unitOffset );
+            }
+        }
+
+        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        _isBound = false;
     }
 
     /// <summary>
-    /// Invalidates the InstanceData if applicable. Use this in case of a context loss.
+    /// Invalidates the InstanceBufferObject so a new OpenGL _buffer handle
+    /// is created. Use this in case of a context loss.
     /// </summary>
     public void Invalidate()
     {
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
+        _isDirty      = true;
     }
 
     /// <summary>
-    /// Disposes this InstanceData and all its associated OpenGL resources.
+    /// Disposes of all resources this InstanceBufferObject uses.
     /// </summary>
     public void Dispose()
     {
-    }
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    void IDisposable.Dispose()
-    {
+        _bufferHandle = 0;
+
+        if ( _ownsBuffer )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        }
     }
 }

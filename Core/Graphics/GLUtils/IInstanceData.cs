@@ -93,12 +93,7 @@ public interface IInstanceData : IDisposable
     /// automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data. </returns>
-    FloatBuffer Buffer { get; }
-
-    /// <summary>
-    /// Binds this InstanceData for rendering via glDrawArraysInstanced or glDrawElementsInstanced.
-    /// </summary>
-    void Bind( ShaderProgram shader );
+    FloatBuffer GetBuffer( bool forWriting );
 
     /// <summary>
     /// Binds this InstanceData for rendering via glDrawArraysInstanced or glDrawElementsInstanced.
@@ -106,11 +101,6 @@ public interface IInstanceData : IDisposable
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations. </param>
     void Bind( ShaderProgram shader, int[]? locations );
-
-    /// <summary>
-    /// Unbinds this InstanceData.
-    /// </summary>
-    void Unbind( ShaderProgram shader );
 
     /// <summary>
     /// Unbinds this InstanceData.

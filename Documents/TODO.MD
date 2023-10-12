@@ -199,6 +199,8 @@ GRAPHICS
     - DONE - IDownloadPixmapResponseListener    
     - DONE - IGL20                              
     - DONE - IGL30                              
+    - DONE - IGL31                              
+    - DONE - IGL32                              
     - DONE - ITextureArrayData                  
     - DONE - ITextureData                       
     - DONE - Mesh                               
@@ -275,8 +277,8 @@ GRAPHICS/G2D
 GRAPHICS/GLUTILS
 ----------------
 
-    - IP   - ETC1                                   Find alternative / Has native
-    - IP   - ETC1TextureData                        Find alternative / Has native
+    - **** - ETC1                                   Should I support this format?
+    - **** - ETC1TextureData                        Should I support this format?
     - DONE - FacedCubemapData
     - DONE - FileTextureArrayData
     - DONE - FileTextureData
@@ -292,10 +294,10 @@ GRAPHICS/GLUTILS
     - DONE - IndexArray
     - DONE - IndexBufferObject
     - DONE - IndexBufferObjectSubData
-    -      - InstanceBufferObject
+    - DONE - InstanceBufferObject
     -      - InstanceBufferObjectSubData
     - DONE - IVertexData
-    - IP   - KTXTTextureData
+    - DONE - KTXTTextureData
     -      - MipMapGenerator
     -      - MipMapTextureData
     - DONE - PixmapTextureData
@@ -318,6 +320,8 @@ GRAPHICS/PROFILING
 
     - IP   - GL20Interceptor
     - IP   - GL30Interceptor
+    -      - GL31Interceptor
+    -      - GL32Interceptor
     - DONE - GLInterceptor
     - IP   - GLProfiler
     - IP   - IGLErrorListener

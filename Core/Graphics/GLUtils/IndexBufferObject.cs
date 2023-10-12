@@ -32,7 +32,9 @@ public class IndexBufferObject : IIndexData
     private bool        _empty;
 
     public IndexBufferObject( int maxIndices )
-        : this( true, maxIndices ) { }
+        : this( true, maxIndices )
+    {
+    }
 
     public IndexBufferObject( bool isStatic, int maxIndices )
     {
@@ -98,8 +100,8 @@ public class IndexBufferObject : IIndexData
         _buffer.Put( indices );
         _buffer.Flip();
 
-        indices.Position     = pos;
-        
+        indices.Position = pos;
+
         _byteBuffer.Position = 0;
         _byteBuffer.Limit    = ( _buffer.Limit << 1 );
 

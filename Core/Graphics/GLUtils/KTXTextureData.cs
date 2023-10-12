@@ -226,6 +226,7 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// <returns> the pixmap.</returns>
     public Pixmap ConsumePixmap()
     {
+        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
     }
 
     /// <returns>
@@ -269,11 +270,11 @@ public class KtxTextureData : ITextureData, ICubemapData
         IntBuffer buffer = BufferUtils.NewIntBuffer( 16 );
 
         // Check OpenGL type and format, detect compressed data format (no type & format)
-        bool compressed = false;
+        var compressed = false;
 
-        if ( _glType == 0 || _glFormat == 0 )
+        if ( ( _glType == 0 ) || ( _glFormat == 0 ) )
         {
-            if ( _glType + _glFormat != 0 )
+            if ( ( _glType + _glFormat ) != 0 )
             {
                 throw new GdxRuntimeException( "either both or none of glType, glFormat must be zero" );
             }
@@ -282,8 +283,8 @@ public class KtxTextureData : ITextureData, ICubemapData
         }
 
         // find OpenGL texture target and dimensions
-        int textureDimensions = 1;
-        int glTarget          = GL_TEXTURE_1D;
+        var textureDimensions = 1;
+        var glTarget          = GL_TEXTURE_1D;
 
         if ( _pixelHeight > 0 )
         {
@@ -337,13 +338,13 @@ public class KtxTextureData : ITextureData, ICubemapData
                 ( "Unsupported texture format (only 2D texture are supported in LibGdx for the time being)" );
         }
 
-        int singleFace = -1;
+        var singleFace = -1;
 
-        if ( _numberOfFaces == 6 && target != IGL20.GL_TEXTURE_CUBE_MAP )
+        if ( ( _numberOfFaces == 6 ) && ( target != IGL20.GL_TEXTURE_CUBE_MAP ) )
         {
             // Load a single face of the cube (should be avoided since the data is unloaded afterwards)
-            if ( !( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X <= target
-                 && target <= IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
+            if ( !( target is >= IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X
+                              and <= IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
             {
                 throw new GdxRuntimeException
                     (
@@ -355,7 +356,7 @@ public class KtxTextureData : ITextureData, ICubemapData
             singleFace = target - IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
             target     = IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
         }
-        else if ( _numberOfFaces == 6 && target == IGL20.GL_TEXTURE_CUBE_MAP )
+        else if ( ( _numberOfFaces == 6 ) && ( target == IGL20.GL_TEXTURE_CUBE_MAP ) )
         {
             // Load the 6 faces
             target = IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
@@ -363,10 +364,10 @@ public class KtxTextureData : ITextureData, ICubemapData
         else
         {
             // Load normal texture
-            if ( target != glTarget
-              && !( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X <= target
-                 && target <= IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
-                 && target == IGL20.GL_TEXTURE_2D ) )
+            if ( ( target != glTarget )
+              && !( ( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X <= target )
+                 && ( target <= IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z )
+                 && ( target == IGL20.GL_TEXTURE_2D ) ) )
             {
                 throw new GdxRuntimeException
                     (
@@ -381,43 +382,43 @@ public class KtxTextureData : ITextureData, ICubemapData
         // KTX files require an unpack alignment of 4
         Gdx.GL.GLGetIntegerv( IGL20.GL_UNPACK_ALIGNMENT, buffer );
 
-        int previousUnpackAlignment = buffer.Get( 0 );
+        var previousUnpackAlignment = buffer.Get( 0 );
 
         if ( previousUnpackAlignment != 4 )
         {
             Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 4 );
         }
 
-        int glInternalFormat = this._glInternalFormat;
-        int glFormat         = this._glFormat;
-        int pos              = _imagePos;
+        var glInternalFormat = this._glInternalFormat;
+        var glFormat         = this._glFormat;
+        var pos              = _imagePos;
 
-        for ( int level = 0; level < _numberOfMipmapLevels; level++ )
+        for ( var level = 0; level < _numberOfMipmapLevels; level++ )
         {
-            int pixelWidth  = Math.Max( 1, this._pixelWidth >> level );
-            int pixelHeight = Math.Max( 1, this._pixelHeight >> level );
-            int pixelDepth  = Math.Max( 1, this._pixelDepth >> level );
-            
-            ( ( Buffer )_compressedData ).Position = pos;
-            
-            int faceLodSize        = _compressedData.GetInt();
-            int faceLodSizeRounded = ( faceLodSize + 3 ) & ~3;
-            
+            var pixelWidth  = Math.Max( 1, this._pixelWidth >> level );
+            var pixelHeight = Math.Max( 1, this._pixelHeight >> level );
+            var pixelDepth  = Math.Max( 1, this._pixelDepth >> level );
+
+            _compressedData.Position = pos;
+
+            var faceLodSize        = _compressedData.GetInt();
+            var faceLodSizeRounded = ( faceLodSize + 3 ) & ~3;
+
             pos += 4;
 
-            for ( int face = 0; face < _numberOfFaces; face++ )
+            for ( var face = 0; face < _numberOfFaces; face++ )
             {
-                ( ( Buffer )_compressedData ).Position = pos;
+                _compressedData.Position = pos;
 
                 pos += faceLodSizeRounded;
 
-                if ( singleFace != -1 && singleFace != face )
+                if ( ( singleFace != -1 ) && ( singleFace != face ) )
                 {
                     continue;
                 }
 
-                ByteBuffer data = compressedData.slice();
-                ( ( Buffer )data ).limit( faceLodSizeRounded );
+                ByteBuffer data = _compressedData.Slice();
+                data.Limit = faceLodSizeRounded;
 
                 if ( textureDimensions == 1 )
                 {
@@ -429,24 +430,28 @@ public class KtxTextureData : ITextureData, ICubemapData
                 }
                 else if ( textureDimensions == 2 )
                 {
-                    if ( numberOfArrayElements > 0 )
+                    if ( _numberOfArrayElements > 0 )
                     {
-                        pixelHeight = numberOfArrayElements;
+                        pixelHeight = _numberOfArrayElements;
                     }
 
                     if ( compressed )
                     {
                         if ( glInternalFormat == ETC1.ETC1_RGB8_OES )
                         {
-                            if ( !Gdx.graphics.supportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
+                            if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
                             {
-                                ETC1Data etcData = new ETC1Data( pixelWidth, pixelHeight, data, 0 );
-                                Pixmap   pixmap  = ETC1.decodeImage( etcData, Format.RGB888 );
+                                var    etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0 );
+                                Pixmap pixmap  = ETC1.DecodeImage( etcData, Pixmap.Format.RGB888 );
 
-                                Gdx.gl.glTexImage2D
+                                Gdx.GL.GLTexImage2D
                                     (
-                                     target + face, level, pixmap.getGLInternalFormat(), pixmap.getWidth(),
-                                     pixmap.getHeight(), 0, pixmap.getGLFormat(), pixmap.getGLType(), pixmap.getPixels()
+                                     target + face,
+                                     level,
+                                     pixmap.GLInternalFormat,
+                                     pixmap.Width, pixmap.Height,
+                                     0,
+                                     pixmap.GLFormat, pixmap.GLType, pixmap.Pixels
                                     );
 
                                 pixmap.Dispose();

@@ -209,7 +209,7 @@ public class BufferUtils
         throw new GdxRuntimeException( "Can't copy to a " + dst.GetType().Name + " instance" );
     }
 
-    public static void DisposeUnsafeByteBuffer( Buffer buf )
+    public static void DisposeUnsafeByteBuffer( Buffer? buf )
     {
     }
 

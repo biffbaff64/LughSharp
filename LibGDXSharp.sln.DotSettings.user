@@ -31,6 +31,8 @@
 
 public class $CLASS$ {$END$}
 </s:String>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=LibGDXSharp_002FLocalResources/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
 	
 	
 	</wpf:ResourceDictionary>

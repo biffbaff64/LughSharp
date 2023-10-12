@@ -78,5 +78,14 @@ namespace LibGDXSharp {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ETC1Data warning: non-power-of-two ETC1textures may crash the driver of PowerVR GPUs.
+        /// </summary>
+        internal static string ETC1Data_warning__PowerVR_GPUs {
+            get {
+                return ResourceManager.GetString("ETC1Data_warning__PowerVR_GPUs", resourceCulture);
+            }
+        }
     }
 }
