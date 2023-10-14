@@ -339,7 +339,7 @@ public class GL20 : IGL20
 
     public int GLGetAttribLocation( int program, string name ) => 0;
 
-    public void GLGetboolv( int pname, Buffer parameters )
+    public void GLGetBooleanv( int pname, Buffer parameters )
     {
     }
 

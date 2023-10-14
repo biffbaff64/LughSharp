@@ -179,7 +179,7 @@ public abstract class GLInterceptor : IGL20
     public abstract string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type );
     public abstract void GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders );
     public abstract int GLGetAttribLocation( int program, string name );
-    public abstract void GLGetboolv( int pname, Buffer parameters );
+    public abstract void GLGetBooleanv( int pname, Buffer parameters );
     public abstract void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters );
     public abstract void GLGetFloatv( int pname, FloatBuffer parameters );
     public abstract void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters );

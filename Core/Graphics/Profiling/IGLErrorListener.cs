@@ -40,38 +40,39 @@ public class GLLoggingListener : IGLErrorListener
     {
         string? place = null;
 
-//        try
-//        {
-//            StackTraceElement[] stack = Thread.CurrentThread.GetStackTrace();
-
-//            for ( int i = 0; i < stack.Length; i++ )
-//            {
-//                if ( "check".Equals( stack[ i ].GetMethodName() ) )
-//                {
-//                    if ( ( i + 1 ) < stack.Length )
-//                    {
-//                        StackTraceElement glMethod = stack[ i + 1 ];
-
-//                        place = glMethod.getMethodName();
-//                    }
-
-//                    break;
-//                }
-//            }
-//        }
-//        catch ( Exception ignored )
-//        {
-//        }
-
-        if ( place != null )
+        try
         {
-            Gdx.App.Error( "LoggingListener", "Error " + GLInterceptor.ResolveErrorNumber( error ) + " from " + place );
+            System.Diagnostics.StackTrace   stackTrace = new System.Diagnostics.StackTrace();
+            System.Diagnostics.StackFrame[] frames     = stackTrace.GetFrames();
+
+            for ( var i = 0; i < frames.Length; i++ )
+            {
+                if ( "check".Equals( frames[ i ].GetMethod()?.Name ) )
+                {
+                    if ( ( i + 1 ) < frames.Length )
+                    {
+                        System.Reflection.MethodBase? glMethod = frames[ i + 1 ].GetMethod();
+                        place = glMethod?.Name;
+                    }
+
+                    break;
+                }
+            }
         }
-        else
+        catch ( Exception ex )
         {
-            // This will capture current stack trace for logging, if possible
-            Gdx.App.Error( "LoggingListener", "Error " + GLInterceptor.ResolveErrorNumber( error ) + " at: ", new Exception() );
+            // ignored
         }
+
+        Gdx.App.Error
+            (
+             "LoggingListener",
+             place != null
+                 ? $"Error {GLInterceptor.ResolveErrorNumber( error )} from {place}"
+
+                 // This will capture current stack trace for logging, if possible
+                 : $"Error {GLInterceptor.ResolveErrorNumber( error )} at: {new Exception()}"
+            );
     }
 }
 
@@ -79,10 +80,11 @@ public class GLLoggingListener : IGLErrorListener
 /// Listener that will throw a GdxRuntimeException with error name.
 /// </summary>
 [PublicAPI]
-class ThrowingListener : IGLErrorListener
+public class ThrowingListener : IGLErrorListener
 {
     public void OnError( int error )
     {
-        throw new GdxRuntimeException( "GLProfiler: Got GL error " + GLInterceptor.ResolveErrorNumber( error ) );
+        throw new GdxRuntimeException
+            ( $"GLProfiler: Got GL error {GLInterceptor.ResolveErrorNumber( error )}" );
     }
 }

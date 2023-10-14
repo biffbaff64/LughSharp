@@ -58,7 +58,10 @@ public class GLProfiler
     /// </summary>
     public void Enable()
     {
-        if ( Enabled ) return;
+        if ( Enabled )
+        {
+            return;
+        }
 
         if ( Graphics.IsGL30Available() )
         {
@@ -73,10 +76,15 @@ public class GLProfiler
     }
 
     /// <summary>
-    /// Disables profiling by resetting the {@code GL20} and {@code GL30} instances with the original ones. </summary>
+    /// Disables profiling by resetting the <tt>GL20</tt> and <tt>GL30</tt>
+    /// instances with the original ones.
+    /// </summary>
     public void Disable()
     {
-        if ( !Enabled ) return;
+        if ( !Enabled )
+        {
+            return;
+        }
 
         if ( Graphics.GL30 != null )
         {
@@ -105,8 +113,11 @@ public class GLProfiler
     /// </summary>
     public int DrawCalls => Interceptor.DrawCalls;
 
-    /// 
-    /// <returns> the total amount of shader switches made since the last reset </returns>
+    /// <summary>
+    /// </summary>
+    /// <returns>
+    /// the total amount of shader switches made since the last reset
+    /// </returns>
     public int ShaderSwitches => Interceptor.ShaderSwitches;
 
     /// <summary>
