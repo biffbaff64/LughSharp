@@ -19,14 +19,14 @@ namespace LibGDXSharp.Utils.Buffers;
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
-    protected byte[]? Hb         { get; set; }
-    protected int     Offset     { get; set; }
-    protected bool    BigEndian  { get; set; } = true;
+    protected byte[]? Hb        { get; set; }
+    protected int     Offset    { get; set; }
+    protected bool    BigEndian { get; set; } = true;
 
     private bool _nativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
 
     // ------------------------------------------------------------------------
-    
+
     protected ByteBuffer( int mark, int pos, int lim, int cap, byte[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
@@ -121,184 +121,162 @@ public abstract class ByteBuffer : Buffer
     /// <summary>
     /// Creates a new byte buffer whose content is a shared subsequence of
     /// this buffer's content.
-    /// <p>
+    /// <para>
     /// The content of the new buffer will start at this buffer's current
     /// position.  Changes to this buffer's content will be visible in the new
     /// buffer, and vice versa; the two buffers' position, limit, and mark
     /// values will be independent.
-    /// </p>
-    /// <p>
+    /// </para>
+    /// <para>
     /// The new buffer's position will be zero, its capacity and its limit
     /// will be the number of bytes remaining in this buffer, and its mark
     /// will be undefined.  The new buffer will be direct if, and only if, this
     /// buffer is direct, and it will be read-only if, and only if, this buffer
     /// is read-only.
-    /// </p>
+    /// </para>
     /// </summary>
     /// <returns> The new byte buffer </returns>
     public abstract ByteBuffer Slice();
 
     /// <summary>
     /// Creates a new byte buffer that shares this buffer's content.
-    /// <p>
+    /// <para>
     /// The content of the new buffer will be that of this buffer.  Changes
     /// to this buffer's content will be visible in the new buffer, and vice
     /// versa; the two buffers' position, limit, and mark values will be
     /// independent.
-    /// </p>
-    /// <p>
+    /// </para>
+    /// <para>
     /// The new buffer's capacity, limit, position, and mark values will be
     /// identical to those of this buffer.  The new buffer will be direct if,
     /// and only if, this buffer is direct, and it will be read-only if, and
     /// only if, this buffer is read-only.
-    /// </p>
+    /// </para>
     /// </summary>
     /// <returns> The new byte buffer. </returns>
     public abstract ByteBuffer Duplicate();
 
-    /**
-     * Creates a new, read-only byte buffer that shares this buffer's
-     * content.
-     *
-     * <p> The content of the new buffer will be that of this buffer.  Changes
-     * to this buffer's content will be visible in the new buffer; the new
-     * buffer itself, however, will be read-only and will not allow the shared
-     * content to be modified.  The two buffers' position, limit, and mark
-     * values will be independent.
-     *
-     * <p> The new buffer's capacity, limit, position, and mark values will be
-     * identical to those of this buffer.
-     *
-     * <p> If this buffer is itself read-only then this method behaves in
-     * exactly the same way as the {@link #duplicate duplicate} method.  </p>
-     *
-     * @return  The new, read-only byte buffer
-     */
+    /// <summary>
+    /// Creates a new, read-only byte buffer that shares this buffer's
+    /// content.
+    /// <para>
+    /// The content of the new buffer will be that of this buffer.  Changes
+    /// to this buffer's content will be visible in the new buffer; the new
+    /// buffer itself, however, will be read-only and will not allow the shared
+    /// content to be modified.  The two buffers' position, limit, and mark
+    /// values will be independent.
+    /// </para>
+    /// <para>
+    /// The new buffer's capacity, limit, position, and mark values will be
+    /// identical to those of this buffer.
+    /// </para>
+    /// <para>
+    /// If this buffer is itself read-only then this method behaves in
+    /// exactly the same way as the {@link #duplicate duplicate} method.
+    /// </para>
+    /// </summary>
+    /// <returns> The new, read-only byte buffer </returns>
     public abstract ByteBuffer AsReadOnlyBuffer();
 
 
     // -- Singleton get/put methods --
 
-    /**
-     * Relative <i>get</i> method.  Reads the byte at this buffer's
-     * current position, and then increments the position.
-     *
-     * @return  The byte at the buffer's current position
-     *
-     * @throws  BufferUnderflowException
-     *          If the buffer's current position is not smaller than its limit
-     */
+    /// <summary>
+    /// Relative <tt>get</tt> method.  Reads the byte at this buffer's
+    /// current position, and then increments the position.
+    /// </summary>
+    /// <returns> The byte at the buffer's current position </returns>
+    /// <exception cref="BufferUnderflowException">
+    /// If the buffer's current position is not smaller than its limit
+    /// </exception>
     public abstract byte Get();
 
-    /**
-     * Relative <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> Writes the given byte into this buffer at the current
-     * position, and then increments the position. </p>
-     *
-     * @param  b
-     *         The byte to be written
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If this buffer's current position is not smaller than its limit
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
-    public abstract ByteBuffer Put(byte b);
+    /// <summary>
+    /// Relative <i>put</i> method  <i>(optional operation)</i>.
+    /// <para>
+    /// Writes the given byte into this buffer at the current
+    /// position, and then increments the position.
+    /// </para>
+    /// </summary>
+    /// <param name="b"> The byte to be written </param>
+    /// <returns> This buffer </returns>
+    /// <exception cref="BufferOverflowException">
+    /// If this buffer's current position is not smaller than its limit
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException">
+    /// If this buffer is read-only
+    /// </exception>
+    public abstract ByteBuffer Put( byte b );
 
-    /**
-     * Absolute <i>get</i> method.  Reads the byte at the given
-     * index.
-     *
-     * @param  index
-     *         The index from which the byte will be read
-     *
-     * @return  The byte at the given index
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If <tt>index</tt> is negative
-     *          or not smaller than the buffer's limit
-     */
-    public abstract byte Get(int index);
+    /// <summary>
+    /// Absolute <i>get</i> method.  Reads the byte at the given index.
+    /// </summary>
+    /// <param name="index"> The index from which the byte will be read </param>
+    /// <returns> The byte at the given index </returns>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If <tt>index</tt> is negative or not smaller than the buffer's limit
+    /// </exception>
+    public abstract byte Get( int index );
 
-    /**
-     * Absolute <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> Writes the given byte into this buffer at the given
-     * index. </p>
-     *
-     * @param  index
-     *         The index at which the byte will be written
-     *
-     * @param  b
-     *         The byte value to be written
-     *
-     * @return  This buffer
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If <tt>index</tt> is negative
-     *          or not smaller than the buffer's limit
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
-    public abstract ByteBuffer Put(int index, byte b);
+    /// <summary>
+    /// Absolute <i>put</i> method  <i>(optional operation)</i>.
+    /// <para>
+    /// Writes the given byte into this buffer at the given index.
+    /// </para>
+    /// </summary>
+    /// <param name="index"> The index at which the byte will be written </param>
+    /// <param name="b"> The byte value to be written </param>
+    /// <returns> This buffer </returns>
+    /// <exception cref="IndexOutOfRangeException"> 
+    /// If <tt>index</tt> is negative or not smaller than the buffer's limit
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    public abstract ByteBuffer Put( int index, byte b );
 
     // ------------------------------------------------------------------------
-    
-    /**
-     * Relative bulk <i>get</i> method.
-     *
-     * <p> This method transfers bytes from this buffer into the given
-     * destination array.  If there are fewer bytes remaining in the
-     * buffer than are required to satisfy the request, that is, if
-     * <tt>length</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>, then no
-     * bytes are transferred and a {@link BufferUnderflowException} is
-     * thrown.
-     *
-     * <p> Otherwise, this method copies <tt>length</tt> bytes from this
-     * buffer into the given array, starting at the current position of this
-     * buffer and at the given offset in the array.  The position of this
-     * buffer is then incremented by <tt>length</tt>.
-     *
-     * <p> In other words, an invocation of this method of the form
-     * <tt>src.get(dst,&nbsp;off,&nbsp;len)</tt> has exactly the same effect as
-     * the loop
-     *
-     * <pre>{@code
-     *     for (int i = off; i < off + len; i++)
-     *         dst[i] = src.get():
-     * }</pre>
-     *
-     * except that it first checks that there are sufficient bytes in
-     * this buffer and it is potentially much more efficient.
-     *
-     * @param  dst
-     *         The array into which bytes are to be written
-     *
-     * @param  offset
-     *         The offset within the array of the first byte to be
-     *         written; must be non-negative and no larger than
-     *         <tt>dst.length</tt>
-     *
-     * @param  length
-     *         The maximum number of bytes to be written to the given
-     *         array; must be non-negative and no larger than
-     *         <tt>dst.length - offset</tt>
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferUnderflowException
-     *          If there are fewer than <tt>length</tt> bytes
-     *          remaining in this buffer
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If the preconditions on the <tt>offset</tt> and <tt>length</tt>
-     *          parameters do not hold
-     */
+
+    /// <summary>
+    /// Relative bulk <i>get</i> method.
+    /// <para>
+    /// This method transfers bytes from this buffer into the given destination
+    /// array. If there are fewer bytes remaining in the buffer than are required
+    /// to satisfy the request, that is, if <tt>length &gt; remaining()</tt>, then no
+    /// bytes are transferred and a <see cref="BufferUnderflowException"/> is thrown.
+    /// </para>
+    /// <para>
+    /// Otherwise, this method copies <tt>length</tt> bytes from this buffer into the
+    /// given array, starting at the current position of this buffer and at the given
+    /// offset in the array. The position of this buffer is then incremented by <tt>length</tt>.
+    /// </para>
+    /// <para>
+    /// In other words, an invocation of this method of the form <tt>src.get(dst, off, len)</tt>
+    /// has exactly the same effect as the loop
+    /// <code>
+    ///     for ( int i = off; i &lt; off + len; i++ )
+    ///     {
+    ///         dst[i] = src.get():
+    ///     }
+    /// </code>
+    /// except that it first checks that there are sufficient bytes in
+    /// this buffer and it is potentially much more efficient.
+    /// </para>
+    /// </summary>
+    /// <param name="dst"> The array into which bytes are to be written </param>
+    /// <param name="offset">
+    /// The offset within the array of the first byte to be written; must be
+    /// non-negative and no larger than <tt>dst.length</tt>
+    /// </param>
+    /// <param name="length">
+    /// The maximum number of bytes to be written to the given array; must be
+    /// non-negative and no larger than <tt>dst.length - offset</tt>
+    /// </param>
+    /// <returns> This buffer </returns>
+    /// <exception cref="BufferUnderflowException">
+    /// If there are fewer than <tt>length</tt> bytes remaining in this buffer
+    /// </exception>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold.
+    /// </exception>
     public ByteBuffer Get( byte[] dst, int offset, int length )
     {
         CheckBounds( offset, length, dst.Length );
@@ -318,71 +296,38 @@ public abstract class ByteBuffer : Buffer
         return this;
     }
 
-    /**
-     * Relative bulk <i>get</i> method.
-     *
-     * <p> This method transfers bytes from this buffer into the given
-     * destination array.  An invocation of this method of the form
-     * <tt>src.get(a)</tt> behaves in exactly the same way as the invocation
-     *
-     * <pre>
-     *     src.get(a, 0, a.length) </pre>
-     *
-     * @param   dst
-     *          The destination array
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferUnderflowException
-     *          If there are fewer than <tt>length</tt> bytes
-     *          remaining in this buffer
-     */
+    /// <summary>
+    /// Transfers bytes from this buffer into the given destination array. An
+    /// invocation of this method with the destination array <paramref name="dst"/>
+    /// behaves in exactly the same way as invoking
+    /// <code>
+    /// src.Get(dst, 0, dst.Length);
+    /// </code>.
+    /// </summary>
+    /// <param name="dst">The destination array.</param>
+    /// <returns>This buffer.</returns>
+    /// <exception cref="BufferUnderflowException">
+    /// If there are fewer than <tt> dst.Length </tt> bytes remaining in this buffer.
+    /// </exception>
     public ByteBuffer Get( byte[] dst )
     {
         return Get( dst, 0, dst.Length );
     }
 
-    /**
-     * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> This method transfers the bytes remaining in the given source
-     * buffer into this buffer.  If there are more bytes remaining in the
-     * source buffer than in this buffer, that is, if
-     * <tt>src.remaining()</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>,
-     * then no bytes are transferred and a {@link
-     * BufferOverflowException} is thrown.
-     *
-     * <p> Otherwise, this method copies
-     * <i>n</i>&nbsp;=&nbsp;<tt>src.remaining()</tt> bytes from the given
-     * buffer into this buffer, starting at each buffer's current position.
-     * The positions of both buffers are then incremented by <i>n</i>.
-     *
-     * <p> In other words, an invocation of this method of the form
-     * <tt>dst.put(src)</tt> has exactly the same effect as the loop
-     *
-     * <pre>
-     *     while (src.hasRemaining())
-     *         dst.put(src.get()); </pre>
-     *
-     * except that it first checks that there is sufficient space in this
-     * buffer and it is potentially much more efficient.
-     *
-     * @param  src
-     *         The source buffer from which bytes are to be read;
-     *         must not be this buffer
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If there is insufficient space in this buffer
-     *          for the remaining bytes in the source buffer
-     *
-     * @throws  IllegalArgumentException
-     *          If the source buffer is this buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
+    /// <summary>
+    /// Transfers the bytes remaining in the given source buffer into this buffer.
+    /// If there are more bytes remaining in the source buffer than in this buffer,
+    /// no bytes are transferred, and a <see cref="BufferOverflowException"/> is thrown.
+    /// </summary>
+    /// <param name="src">
+    /// The source buffer from which bytes are to be read; must not be this buffer.
+    /// </param>
+    /// <returns>This buffer.</returns>
+    /// <exception cref="BufferOverflowException">
+    /// If there is insufficient space in this buffer for the remaining bytes in the source buffer.
+    /// </exception>
+    /// <exception cref="ArgumentException">If the source buffer is this buffer.</exception>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
     public ByteBuffer Put( ByteBuffer src )
     {
         if ( src.Equals( this ) )
@@ -410,57 +355,29 @@ public abstract class ByteBuffer : Buffer
         return this;
     }
 
-    /**
-     * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> This method transfers bytes into this buffer from the given
-     * source array.  If there are more bytes to be copied from the array
-     * than remain in this buffer, that is, if
-     * <tt>length</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>, then no
-     * bytes are transferred and a {@link BufferOverflowException} is
-     * thrown.
-     *
-     * <p> Otherwise, this method copies <tt>length</tt> bytes from the
-     * given array into this buffer, starting at the given offset in the array
-     * and at the current position of this buffer.  The position of this buffer
-     * is then incremented by <tt>length</tt>.
-     *
-     * <p> In other words, an invocation of this method of the form
-     * <tt>dst.put(src,&nbsp;off,&nbsp;len)</tt> has exactly the same effect as
-     * the loop
-     *
-     * <pre>{@code
-     *     for (int i = off; i < off + len; i++)
-     *         dst.put(a[i]);
-     * }</pre>
-     *
-     * except that it first checks that there is sufficient space in this
-     * buffer and it is potentially much more efficient.
-     *
-     * @param  src
-     *         The array from which bytes are to be read
-     *
-     * @param  offset
-     *         The offset within the array of the first byte to be read;
-     *         must be non-negative and no larger than <tt>array.length</tt>
-     *
-     * @param  length
-     *         The number of bytes to be read from the given array;
-     *         must be non-negative and no larger than
-     *         <tt>array.length - offset</tt>
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If there is insufficient space in this buffer
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If the preconditions on the <tt>offset</tt> and <tt>length</tt>
-     *          parameters do not hold
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
+    /// <summary>
+    /// Transfers bytes into this buffer from the given source array. If there are
+    /// more bytes to be copied from the array than remain in this buffer, no bytes
+    /// are transferred, and a <see cref="BufferOverflowException"/> is thrown.
+    /// </summary>
+    /// <param name="src">The array from which bytes are to be read.</param>
+    /// <param name="offset">
+    /// The offset within the array of the first byte to be read; must be non-negative
+    /// and no larger than <paramref name="src"/>.Length.
+    /// </param>
+    /// <param name="length">
+    /// The number of bytes to be read from the given array; must be non-negative
+    /// and no larger than <paramref name="src"/>.Length - <paramref name="offset"/>.
+    /// </param>
+    /// <returns>This buffer.</returns>
+    /// <exception cref="BufferOverflowException">
+    /// If there is insufficient space in this buffer.
+    /// </exception>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If the preconditions on the <paramref name="offset"/> and <paramref name="length"/>
+    /// parameters do not hold.
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
     public ByteBuffer Put( byte[] src, int offset, int length )
     {
         CheckBounds( offset, length, src.Length );
@@ -480,35 +397,24 @@ public abstract class ByteBuffer : Buffer
         return this;
     }
 
-    /**
-     * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> This method transfers the entire content of the given source
-     * byte array into this buffer.  An invocation of this method of the
-     * form <tt>dst.put(a)</tt> behaves in exactly the same way as the
-     * invocation
-     *
-     * <pre>
-     *     dst.put(a, 0, a.length) </pre>
-     *
-     * @param   src
-     *          The source array
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If there is insufficient space in this buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
+    /// <summary>
+    /// Transfers the entire content of the given source byte array into this buffer.
+    /// An invocation of this method with the source byte array <paramref name="src"/>
+    /// behaves in exactly the same way as invoking <c>dst.Put(src, 0, src.Length)</c>.
+    /// </summary>
+    /// <param name="src">The source byte array.</param>
+    /// <returns>This buffer.</returns>
+    /// <exception cref="BufferOverflowException">
+    /// If there is insufficient space in this buffer.
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
     public ByteBuffer Put( byte[] src )
     {
         return Put( src, 0, src.Length );
     }
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Tells whether or not this buffer is backed by an accessible byte array.
     /// <para>
@@ -593,53 +499,46 @@ public abstract class ByteBuffer : Buffer
         return Offset;
     }
 
-    /**
-     * Compacts this buffer&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> The bytes between the buffer's current position and its limit,
-     * if any, are copied to the beginning of the buffer.  That is, the
-     * byte at index <i>p</i>&nbsp;=&nbsp;<tt>position()</tt> is copied
-     * to index zero, the byte at index <i>p</i>&nbsp;+&nbsp;1 is copied
-     * to index one, and so forth until the byte at index
-     * <tt>limit()</tt>&nbsp;-&nbsp;1 is copied to index
-     * <i>n</i>&nbsp;=&nbsp;<tt>limit()</tt>&nbsp;-&nbsp;<tt>1</tt>&nbsp;-&nbsp;<i>p</i>.
-     * The buffer's position is then set to <i>n+1</i> and its limit is set to
-     * its capacity.  The mark, if defined, is discarded.
-     *
-     * <p> The buffer's position is set to the number of bytes copied,
-     * rather than to zero, so that an invocation of this method can be
-     * followed immediately by an invocation of another relative <i>put</i>
-     * method. </p>
-     *
-
-     *
-     * <p> Invoke this method after writing data from a buffer in case the
-     * write was incomplete.  The following loop, for example, copies bytes
-     * from one channel to another via the buffer <tt>buf</tt>:
-     *
-     * <blockquote><pre>{@code
-     *   buf.clear();          // Prepare buffer for use
-     *   while (in.read(buf) >= 0 || buf.position != 0) {
-     *       buf.flip();
-     *       out.write(buf);
-     *       buf.compact();    // In case of partial write
-     *   }
-     * }</pre></blockquote>
-     *
-
-     *
-     * @return  This buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
+    /// <summary>
+    /// Compacts this buffer  <i>(optional operation)</i>.
+    /// <para>
+    /// The bytes between the buffer's current position and its limit, if any,
+    /// are copied to the beginning of the buffer. That is, the byte at index
+    /// <tt>p = Position()</tt> is copied to index zero, the byte at index
+    /// <tt>p + 1</tt> is copied to index one, and so forth until the byte at
+    /// index <tt>limit() - 1</tt> is copied to index <tt>n = Limit() - 1 - p</tt>.
+    /// The buffer's position is then set to <i>n+1</i> and its limit is set to
+    /// its capacity. The mark, if defined, is discarded.
+    /// </para>
+    /// <para>
+    /// The buffer's position is set to the number of bytes copied, rather than
+    /// to zero, so that an invocation of this method can be followed immediately
+    /// by an invocation of another relative <tt>put</tt> method.
+    /// </para>
+    /// <para>
+    /// Invoke this method after writing data from a buffer in case the write was
+    /// incomplete. The following loop, for example, copies bytes from one channel
+    /// to another via the buffer <tt>buf</tt>:
+    /// <code>
+    ///   buf.clear();          // Prepare buffer for use
+    ///   while( in.read(buf) >= 0 || buf.position != 0 )
+    ///   {
+    ///       buf.flip();
+    ///       out.write(buf);
+    ///       buf.compact();    // In case of partial write
+    ///   }
+    /// </code>
+    /// </para>
+    /// </summary>
+    /// <returns> This buffer </returns>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only
+    /// </exception>
     public abstract ByteBuffer Compact();
 
-    /**
-     * Returns a string summarizing the state of this buffer.
-     *
-     * @return  A summary string
-     */
+    /// <summary>
+    /// Returns a string summarizing the state of this buffer.
+    /// </summary>
+    /// <returns> A summary string </returns>
     public override string ToString()
     {
         return $"{GetType().Name} [pos={Position} lim={Limit} cap={Capacity}]";
@@ -726,7 +625,8 @@ public abstract class ByteBuffer : Buffer
         return x == y;
     }
 
-    /// <summary>Serves as the default hash function.
+    /// <summary>
+    /// Serves as the default hash function.
     /// </summary>
     /// <returns>A hash code for the current object.</returns>
     public override int GetHashCode() => HashCode();
@@ -767,7 +667,7 @@ public abstract class ByteBuffer : Buffer
     {
         return x - y;
     }
-    
+
     /// <summary>
     /// Retrieves this buffer's byte order.
     /// <para>
@@ -853,108 +753,75 @@ public abstract class ByteBuffer : Buffer
 
     public abstract FloatBuffer AsFloatBuffer();
 
-    /**
-     * Relative <i>get</i> method for reading a double value.
-     *
-     * <p>
-     * Reads the next eight bytes at this buffer's current position,
-     * composing them into a double value according to the current byte order,
-     * and then increments the position by eight.
-     * </p>
-     *
-     * @return  The double value at the buffer's current position
-     *
-     * @throws  BufferUnderflowException
-     *          If there are fewer than eight bytes
-     *          remaining in this buffer
-     */
+    /// <summary>
+    /// Reads the next eight bytes at this buffer's current position, composing them
+    /// into a double value according to the current byte order, and then increments
+    /// the position by eight.
+    /// </summary>
+    /// <returns>The double value at the buffer's current position.</returns>
+    /// <exception cref="BufferUnderflowException">
+    /// If there are fewer than eight bytes remaining in this buffer.
+    /// </exception>
     public abstract double GetDouble();
 
-    /**
-     * Absolute <i>get</i> method for reading a double value.
-     *
-     * <p> Reads eight bytes at the given index, composing them into a
-     * double value according to the current byte order.  </p>
-     *
-     * @param  index
-     *         The index from which the bytes will be read
-     *
-     * @return  The double value at the given index
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If <tt>index</tt> is negative
-     *          or not smaller than the buffer's limit,
-     *          minus seven
-     */
+    /// <summary>
+    /// Reads eight bytes at the given index, composing them into a double value
+    /// according to the current byte order.
+    /// </summary>
+    /// <param name="index">The index from which the bytes will be read.</param>
+    /// <returns>The double value at the given index.</returns>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If <paramref name="index"/> is negative or not smaller than the buffer's limit, minus seven.
+    /// </exception>
     public abstract double GetDouble( int index );
 
-    /**
-     * Relative <i>put</i> method for writing a double
-     * value <i>(optional operation)</i>.
-     * <p>
-     * Writes eight bytes containing the given double value, in the
-     * current byte order, into this buffer at the current position, and then
-     * increments the position by eight.
-     * </p>
-     *
-     * @param  value
-     *         The double value to be written
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If there are fewer than eight bytes
-     *          remaining in this buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
+    /// <summary>
+    /// Absolute <tt>get</tt> method for reading a double value.
+    /// Writes eight bytes containing the given double value, in the current byte
+    /// order, into this buffer at the current position, and then increments the
+    /// position by eight.
+    /// </summary>
+    /// <param name="value">The double value to be written.</param>
+    /// <returns>This buffer.</returns>
+    /// <exception cref="BufferOverflowException">
+    /// If there are fewer than eight bytes remaining in this buffer.
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
     public abstract ByteBuffer PutDouble( double value );
 
-    /**
-     * Absolute <i>put</i> method for writing a double
-     * value <i>(optional operation)</i>.
-     *
-     * <p>
-     * Writes eight bytes containing the given double value, in the
-     * current byte order, into this buffer at the given index.
-     * </p>
-     *
-     * @param  index
-     *         The index at which the bytes will be written
-     *
-     * @param  value
-     *         The double value to be written
-     *
-     * @return  This buffer
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If <tt>index</tt> is negative
-     *          or not smaller than the buffer's limit,
-     *          minus seven
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
+    /// <summary>
+    /// Absolute <tt>put</tt> method for writing a double value <tt>(optional operation)</tt>.
+    /// <para>
+    /// Writes eight bytes containing the given double value, in the current byte order,
+    /// into this buffer at the given index.
+    /// </para>
+    /// </summary>
+    /// <param name="index"> The index at which the bytes will be written </param>
+    /// <param name="value"> The double value to be written </param>
+    /// <returns> This buffer </returns>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus 7
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException">
+    /// if this buffer is read-only
+    /// </exception>
     public abstract ByteBuffer PutDouble( int index, double value );
 
-    /**
-     * Creates a view of this byte buffer as a double buffer.
-     * <p>
-     * The content of the new buffer will start at this buffer's current
-     * position.  Changes to this buffer's content will be visible in the new
-     * buffer, and vice versa; the two buffers' position, limit, and mark
-     * values will be independent.
-     * </p>
-     * <p>
-     * The new buffer's position will be zero, its capacity and its limit
-     * will be the number of bytes remaining in this buffer divided by
-     * eight, and its mark will be undefined.  The new buffer will be direct
-     * if, and only if, this buffer is direct, and it will be read-only if, and
-     * only if, this buffer is read-only.
-     * </p>
-     * @return  A new double buffer
-     */
+    /// <summary>
+    /// Creates a view of this byte buffer as a double buffer.
+    /// <para>
+    /// The content of the new buffer will start at this buffer's current position.
+    /// Changes to this buffer's content will be visible in the new buffer, and vice
+    /// versa; the two buffers' position, limit, and mark values will be independent.
+    /// </para>
+    /// <para>
+    /// The new buffer's position will be zero, its capacity and its limit will be the
+    /// number of bytes remaining in this buffer divided by eight, and its mark will be
+    /// undefined. The new buffer will be direct if, and only if, this buffer is direct,
+    /// and it will be read-only if, and only if, this buffer is read-only.
+    /// </para>
+    /// </summary>
+    /// <returns> A new double buffer. </returns>
     public abstract DoubleBuffer AsDoubleBuffer();
 
     #endregion Abstract Methods, for use by ByteBufferAs-X-Buffer classes

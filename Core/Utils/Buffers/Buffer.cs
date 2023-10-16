@@ -354,10 +354,10 @@ public abstract class Buffer
     /// <para>
     /// For example:
     /// <code>
-    ///     buf.put(magic);    // Prepend header
-    ///     in.read(buf);      // Read data into rest of buffer
-    ///     buf.flip();        // Flip buffer
-    ///     out.write(buf);    // Write header + data to channel
+    ///     buf.Put(magic);    // Prepend header
+    ///     in.Read(buf);      // Read data into rest of buffer
+    ///     buf.Flip();        // Flip buffer
+    ///     out.Write(buf);    // Write header + data to channel
     /// </code>
     /// </para>
     /// <para>

@@ -93,13 +93,13 @@ public class IndexBufferObjectSubData : IIndexData
         return result;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int NumIndices => _buffer.Limit;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int NumMaxIndices => _buffer.Capacity;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void SetIndices( short[] indices, int offset, int count )
     {
         _isDirty = true;
@@ -121,7 +121,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void SetIndices( ShortBuffer indices )
     {
         int pos = indices.Position;
@@ -147,7 +147,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
     {
         _isDirty = true;
@@ -172,7 +172,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public ShortBuffer GetBuffer( bool forWriting )
     {
         _isDirty |= forWriting;
@@ -180,7 +180,7 @@ public class IndexBufferObjectSubData : IIndexData
         return _buffer;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Bind()
     {
         if ( _bufferHandle == 0 )
@@ -206,21 +206,21 @@ public class IndexBufferObjectSubData : IIndexData
         _isBound = true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Unbind()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Invalidate()
     {
         _bufferHandle = CreateBufferObject();
         _isDirty      = true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Dispose()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );

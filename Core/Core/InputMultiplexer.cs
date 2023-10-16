@@ -122,6 +122,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
+    /// <inheritdoc/>
     public bool KeyUp( int keycode )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -144,6 +145,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
+    /// <inheritdoc/>
     public bool KeyTyped( char character )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -166,6 +168,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
+    /// <inheritdoc/>
     public bool TouchDown( int screenX, int screenY, int pointer, int button )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -188,6 +191,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
+    /// <inheritdoc/>
     public bool TouchUp( int screenX, int screenY, int pointer, int button )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -210,6 +214,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
+    /// <inheritdoc/>
     public bool TouchDragged( int screenX, int screenY, int pointer )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -232,6 +237,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
+    /// <inheritdoc/>
     public bool MouseMoved( int screenX, int screenY )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -254,6 +260,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
+    /// <inheritdoc/>
     public bool Scrolled( float amountX, float amountY )
     {
         IInputProcessor?[] items = _processors.Begin();

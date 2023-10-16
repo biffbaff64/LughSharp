@@ -38,9 +38,13 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - Restructure, where necessary, to cut the number of exceptions that can be thrown
 - Constantly look for opportunities to improve this code.
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
-- Make more use of <inheritdoc cref=""/>> or just <inheritdoc />
+- Make more use of <inheritdoc cref=""/>> or just <inheritdoc/>
 - 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- This is to be a DESKTOP/WINDOWS/LINUX? only framework. Leave Mobile3 support to
+- the Java LibGDX Framework for now.
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ASSETS
@@ -108,9 +112,6 @@ AUDIO
 
 CORE
 ----
-
-    Do I need IInput, IInputAdapter, AbstractInput, and InputAdapter?
-    Could they become just one interface and one class?
 
     - DONE - AbstractGraphics               
     - DONE - AbstractInput                  
@@ -295,7 +296,7 @@ GRAPHICS/GLUTILS
     - DONE - IndexBufferObject
     - DONE - IndexBufferObjectSubData
     - DONE - InstanceBufferObject
-    -      - InstanceBufferObjectSubData
+    - DONE - InstanceBufferObjectSubData
     - DONE - IVertexData
     - DONE - KTXTTextureData
     -      - MipMapGenerator
@@ -319,9 +320,9 @@ GRAPHICS/PROFILING
 ------------------
 
     - DONE - GL20Interceptor
-    - IP   - GL30Interceptor
-    -      - GL31Interceptor
-    -      - GL32Interceptor
+    - DONE - GL30Interceptor
+    - **** - GL31Interceptor
+    - **** - GL32Interceptor
     - DONE - GLInterceptor
     - DONE - GLProfiler
     - DONE - IGLErrorListener
@@ -690,13 +691,15 @@ UTILS/BUFFERS
 
     IMPORTANT! - Establish whether or not I actually need these.
 
+    - DONE - Buffer
+    - DONE - ByteBuffer
+    - DONE - CharBuffer
+    - DONE - StringCharBuffer
+
     Does C# have these classes already?
         - Could MemoryStream be used?
 
-    - DONE - Buffer
     - IP   - BufferUtils
-    - DONE - ByteBuffer
-    - DONE - CharBuffer
     - IP   - DirectByteBuffer
     - IP   - DoubleBuffer
     - IP   - FloatBuffer
@@ -707,7 +710,6 @@ UTILS/BUFFERS
     - IP   - LongBuffer
     - IP   - MappedByteBuffer
     - IP   - ShortBuffer
-    - DONE - StringCharBuffer
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

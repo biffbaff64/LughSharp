@@ -36,6 +36,7 @@ public interface IInput
     /// <summary>
     /// Mouse Buttons
     /// </summary>
+    [PublicAPI]
     public static class Buttons
     {
         public const int LEFT    = 0;
@@ -45,6 +46,7 @@ public interface IInput
         public const int FORWARD = 4;
     }
 
+    [PublicAPI]
     public static class Keys
     {
         public const int ANY_KEY             = -1;
@@ -447,6 +449,7 @@ public interface IInput
 
     // --------------------------------------------------------------------
 
+    [PublicAPI]
     public interface ITextInputListener
     {
         void Input( string text );
@@ -456,6 +459,7 @@ public interface IInput
 
     // --------------------------------------------------------------------
 
+    [PublicAPI]
     public enum Peripheral
     {
         HardwareKeyboard,
@@ -471,16 +475,24 @@ public interface IInput
 
     // --------------------------------------------------------------------
 
+    [PublicAPI]
     public enum OnscreenKeyboardType
     {
-        Default, NumberPad, PhonePad, Email, Password, Uri
+        Default,
+        NumberPad,
+        PhonePad,
+        Email,
+        Password,
+        Uri
     }
 
     // --------------------------------------------------------------------
 
+    [PublicAPI]
     public enum Orientation
     {
-        Landscape, Portrait
+        Landscape,
+        Portrait
     }
 
     // --------------------------------------------------------------------

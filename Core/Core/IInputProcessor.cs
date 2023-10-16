@@ -51,7 +51,7 @@ public interface IInputProcessor
     bool TouchDown( int screenX, int screenY, int pointer, int button );
 
     /// <summary>
-    /// 
+    /// Called when a screen touch is lifted or mouse button is released.
     /// </summary>
     /// <param name="screenX"></param>
     /// <param name="screenY"></param>
@@ -61,7 +61,6 @@ public interface IInputProcessor
     bool TouchUp( int screenX, int screenY, int pointer, int button );
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="screenX"></param>
     /// <param name="screenY"></param>
@@ -70,7 +69,6 @@ public interface IInputProcessor
     bool TouchDragged( int screenX, int screenY, int pointer );
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="screenX"></param>
     /// <param name="screenY"></param>
@@ -78,7 +76,6 @@ public interface IInputProcessor
     bool MouseMoved( int screenX, int screenY );
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="amountX"></param>
     /// <param name="amountY"></param>

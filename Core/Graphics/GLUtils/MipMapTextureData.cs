@@ -19,5 +19,4 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class MipMapTextureData
 {
-        
 }
