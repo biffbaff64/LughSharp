@@ -18,50 +18,47 @@ namespace LibGDXSharp.Utils.Buffers;
 
 /// <summary>
 /// A float buffer.
-/// <p>
+/// <para>
 /// This class defines four categories of operations upon float buffers:
-/// <ul>
-///   <li><p>
-///   Absolute and relative <see cref="Get(int)"/> and <see cref="Put(float[],int,int)"/>
-///   methods that read and write single floats;
-///   </p></li>
-///   <li><p>
-///   Relative bulk <see cref="Get(int)"/> methods that transfer contiguous
-///   sequences of floats from this buffer into an array; and
-///   </p></li>
-///   <li><p>
-///   Relative bulk <see cref="Put(float[],int,int)"/> methods that transfer
-///   contiguous sequences of floats from a float array or some other float
-///   buffer into this buffer; and
-///   </p></li>
-///   <li><p>
-///   Methods for <see cref="Compact"/>-ing, <see cref="Duplicate"/>-ing, and
-///   <see cref="Slice"/>-ing a float buffer.
-///   </p></li>
-/// </ul>
-/// </p>
-/// <p>
+/// </para>
+/// <para>
+/// Absolute and relative <see cref="Get(int)"/> and <see cref="Put(float[],int,int)"/>
+/// methods that read and write single floats;
+/// </para>
+/// <para>
+/// Relative bulk <see cref="Get(int)"/> methods that transfer contiguous
+/// sequences of floats from this buffer into an array; and
+/// </para>
+/// <para>
+/// Relative bulk <see cref="Put(float[],int,int)"/> methods that transfer
+/// contiguous sequences of floats from a float array or some other float
+/// buffer into this buffer; and
+/// </para>
+/// <para>
+/// Methods for <see cref="Compact"/>-ing, <see cref="Duplicate"/>-ing, and
+/// <see cref="Slice"/>-ing a float buffer.
+/// </para>
+/// <para>
 /// Float buffers can be created either by <tt>allocation</tt>, which allocates
-/// space for the buffer's content, by <tt>wrapping</tt>} an existing float array
+/// space for the buffer's content, by <tt>wrapping</tt> an existing float array
 /// into a buffer, or by creating a <a href="ByteBuffer.html.Views"> <tt>view</tt></a>
 /// of an existing byte buffer.
-/// </p>
-/// <p>
-/// Like a byte buffer, a float buffer is either <a href="ByteBuffer.html.Direct">
-/// <tt>direct</tt> or <tt>non-direct</tt></a>.
-/// </p>
-/// <p>
+/// </para>
+/// <para>
+/// Like a byte buffer, a float buffer is either <tt>direct</tt> or <tt>non-direct</tt>
+/// </para>
+/// <para>
 /// A float buffer created via the <tt>wrap</tt> methods of this class will
 /// be non-direct.  A float buffer created as a view of a byte buffer will
 /// be direct if, and only if, the byte buffer itself is direct.  Whether or not
-/// a float buffer is direct may be determined by checking the <see cref="IsDirect()"/>
+/// a float buffer is direct may be determined by checking the <see cref="Buffer.IsDirect()"/>
 /// method.
-/// </p>
-/// <p>
+/// </para>
+/// <para>
 /// Methods in this class that do not otherwise have a value to return are specified
 /// to return the buffer upon which they are invoked. This allows method invocations
 /// to be chained.
-/// </p>
+/// </para>
 /// </summary>
 [PublicAPI]
 public abstract class FloatBuffer : Buffer
@@ -81,15 +78,15 @@ public abstract class FloatBuffer : Buffer
     {
         this.Offset = 0;
     }
-    
+
     /// <summary>
     /// Allocates a new float buffer.
-    /// <p>
+    /// <para>
     /// The new buffer's position will be zero, its limit will be its
     /// capacity, its mark will be undefined, and each of its elements will be
     /// initialized to zero. It will have a backing array, and its array offset
     /// will be zero.
-    /// </p>
+    /// </para>
     /// </summary>
     /// <param name="capacity"> The new buffer's capacity, in floats </param>
     /// <returns> The new float buffer </returns>
@@ -100,7 +97,7 @@ public abstract class FloatBuffer : Buffer
     {
         if ( capacity < 0 )
         {
-            throw new ArgumentException();
+            throw new ArgumentException( "Capacity should be >= 0" );
         }
 
         return new HeapFloatBuffer( capacity, capacity );
@@ -108,14 +105,14 @@ public abstract class FloatBuffer : Buffer
 
     /// <summary>
     /// Wraps a float array into a buffer.
-    /// <p>
+    /// <para>
     /// The new buffer will be backed by the given float array;
     /// that is, modifications to the buffer will cause the array to be modified
     /// and vice versa.  The new buffer's capacity will be <tt>array.length</tt>,
     /// its position will be <tt>offset</tt>, its limit will be <tt>offset + length</tt>,
     /// and its mark will be undefined. Its backing array will be the given array, and
     /// its array offset will be zero.
-    /// </p>
+    /// </para>
     /// </summary>
     /// <param name="array"> The array that will back the new buffer </param>
     /// <param name="offset">
@@ -132,723 +129,646 @@ public abstract class FloatBuffer : Buffer
     /// If the preconditions on the <tt>offset</tt> and <tt>length</tt>
     /// parameters do not hold
     /// </exception>
-    public static FloatBuffer wrap( float[] array,
-                                    int offset,
-                                    int length )
+    public static FloatBuffer Wrap( float[] array, int offset, int length )
     {
         try
         {
             return new HeapFloatBuffer( array, offset, length );
         }
-        catch ( IllegalArgumentException x )
+        catch ( ArgumentException )
         {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfRangeException();
         }
     }
 
-    /**
-     * Wraps a float array into a buffer.
-     *
-     * <p> The new buffer will be backed by the given float array;
-     * that is, modifications to the buffer will cause the array to be modified
-     * and vice versa.  The new buffer's capacity and limit will be
-     * <tt>array.length</tt>, its position will be zero, and its mark will be
-     * undefined.  Its {@link #array backing array} will be the
-     * given array, and its {@link #arrayOffset array offset>} will
-     * be zero.  </p>
-     *
-     * @param  array
-     *         The array that will back this buffer
-     *
-     * @return  The new float buffer
-     */
-    public static FloatBuffer wrap( float[] array )
+    /// Wraps a float array into a buffer.
+    /// <para>
+    /// The new buffer will be backed by the given float array; that is,
+    /// modifications to the buffer will cause the array to be modified
+    /// and vice versa.  The new buffer's capacity and limit will be
+    /// <tt>array.length</tt>, its position will be zero, and its mark will be
+    /// undefined.  Its backing array will be the given array, and its array
+    /// offset will be zero.
+    /// </para>
+    /// <param name="array"> The array that will back this buffer </param>
+    /// <returns> The new float buffer </returns>
+    public static FloatBuffer Wrap( float[] array )
     {
-        return wrap( array, 0, array.length );
+        return Wrap( array, 0, array.Length );
     }
 
+    /// <summary>
+    /// Creates a new float buffer whose content is a shared subsequence of
+    /// this buffer's content.
+    /// <para>
+    /// The content of the new buffer will start at this buffer's current
+    /// position. Changes to this buffer's content will be visible in the new
+    /// buffer, and vice versa; the two buffers' position, limit, and mark
+    /// values will be independent.
+    /// </para>
+    /// <para>
+    /// The new buffer's position will be zero, its capacity and its limit
+    /// will be the number of floats remaining in this buffer, and its mark
+    /// will be undefined. The new buffer will be direct if, and only if, this
+    /// buffer is direct, and it will be read-only if, and only if, this buffer
+    /// is read-only.
+    /// </para>
+    /// </summary>
+    /// <returns> The new float buffer </returns>
+    public abstract FloatBuffer Slice();
 
-    /**
-     * Creates a new float buffer whose content is a shared subsequence of
-     * this buffer's content.
-     *
-     * <p> The content of the new buffer will start at this buffer's current
-     * position.  Changes to this buffer's content will be visible in the new
-     * buffer, and vice versa; the two buffers' position, limit, and mark
-     * values will be independent.
-     *
-     * <p> The new buffer's position will be zero, its capacity and its limit
-     * will be the number of floats remaining in this buffer, and its mark
-     * will be undefined.  The new buffer will be direct if, and only if, this
-     * buffer is direct, and it will be read-only if, and only if, this buffer
-     * is read-only.  </p>
-     *
-     * @return  The new float buffer
-     */
-    public abstract FloatBuffer slice();
+    /// <summary>
+    /// Creates a new float buffer that shares this buffer's content.
+    /// <para>
+    /// The content of the new buffer will be that of this buffer.  Changes
+    /// to this buffer's content will be visible in the new buffer, and vice
+    /// versa; the two buffers' position, limit, and mark values will be
+    /// independent.
+    /// </para>
+    /// <para>
+    /// The new buffer's capacity, limit, position, and mark values will be
+    /// identical to those of this buffer.  The new buffer will be direct if,
+    /// and only if, this buffer is direct, and it will be read-only if, and
+    /// only if, this buffer is read-only.
+    /// </para>
+    /// </summary>
+    /// <returns> The new float buffer </returns>
+    public abstract FloatBuffer Duplicate();
 
-    /**
-     * Creates a new float buffer that shares this buffer's content.
-     *
-     * <p> The content of the new buffer will be that of this buffer.  Changes
-     * to this buffer's content will be visible in the new buffer, and vice
-     * versa; the two buffers' position, limit, and mark values will be
-     * independent.
-     *
-     * <p> The new buffer's capacity, limit, position, and mark values will be
-     * identical to those of this buffer.  The new buffer will be direct if,
-     * and only if, this buffer is direct, and it will be read-only if, and
-     * only if, this buffer is read-only.  </p>
-     *
-     * @return  The new float buffer
-     */
-    public abstract FloatBuffer duplicate();
-
-    /**
-     * Creates a new, read-only float buffer that shares this buffer's
-     * content.
-     *
-     * <p> The content of the new buffer will be that of this buffer.  Changes
-     * to this buffer's content will be visible in the new buffer; the new
-     * buffer itself, however, will be read-only and will not allow the shared
-     * content to be modified.  The two buffers' position, limit, and mark
-     * values will be independent.
-     *
-     * <p> The new buffer's capacity, limit, position, and mark values will be
-     * identical to those of this buffer.
-     *
-     * <p> If this buffer is itself read-only then this method behaves in
-     * exactly the same way as the {@link #duplicate duplicate} method.  </p>
-     *
-     * @return  The new, read-only float buffer
-     */
+    /// <summary>
+    /// Creates a new, read-only float buffer that shares this buffer's
+    /// content.
+    /// <para>
+    /// The content of the new buffer will be that of this buffer.  Changes
+    /// to this buffer's content will be visible in the new buffer; the new
+    /// buffer itself, however, will be read-only and will not allow the shared
+    /// content to be modified.  The two buffers' position, limit, and mark
+    /// values will be independent.
+    /// </para>
+    /// <para>
+    /// The new buffer's capacity, limit, position, and mark values will be
+    /// identical to those of this buffer.
+    /// </para>
+    /// <para>
+    /// If this buffer is itself read-only then this method behaves in
+    /// exactly the same way as the {@link #duplicate duplicate} method.
+    /// </para>
+    /// </summary>
+    /// <returns> The new, read-only float buffer </returns>
     public abstract FloatBuffer asReadOnlyBuffer();
 
 
     // -- Singleton get/put methods --
 
-    /**
-     * Relative <i>get</i> method.  Reads the float at this buffer's
-     * current position, and then increments the position.
-     *
-     * @return  The float at the buffer's current position
-     *
-     * @throws  BufferUnderflowException
-     *          If the buffer's current position is not smaller than its limit
-     */
-    public abstract float get();
+    /// <summary>
+    /// Relative <tt>get</tt> method. Reads the float at this buffers
+    /// current position, and then increments the position.
+    /// </summary>
+    /// <returns> The float at the buffer's current position </returns>
+    /// <exception cref="BufferUnderflowException">
+    /// If the buffer's current position is not smaller than its limit
+    /// </exception>
+    public abstract float Get();
 
-    /**
-     * Relative <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> Writes the given float into this buffer at the current
-     * position, and then increments the position. </p>
-     *
-     * @param  f
-     *         The float to be written
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If this buffer's current position is not smaller than its limit
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
-    public abstract FloatBuffer put( float f );
+    /// <summary>
+    /// Relative <tt>put</tt> method; <tt>(optional operation)</tt>.
+    /// <para>
+    /// Writes the given float into this buffer at the current
+    /// position, and then increments the position.
+    /// </para>
+    /// </summary>
+    /// <param name="f"> The float to be written </param>
+    /// <returns> This buffer </returns>
+    /// <exception cref="BufferOverflowException">
+    /// If this buffer's current position is not smaller than its limit
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException">
+    /// If this buffer is read-only
+    /// </exception>
+    public abstract FloatBuffer Put( float f );
 
-    /**
-     * Absolute <i>get</i> method.  Reads the float at the given
-     * index.
-     *
-     * @param  index
-     *         The index from which the float will be read
-     *
-     * @return  The float at the given index
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If <tt>index</tt> is negative
-     *          or not smaller than the buffer's limit
-     */
-    public abstract float get( int index );
+    /// <summary>
+    /// Absolute <tt>get</tt> method. Reads the float at the given index.
+    /// </summary>
+    /// <param name="index"> The index from which the float will be read </param>
+    /// <returns> The float at the given index </returns>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If <tt>index</tt> is negative or not smaller than the buffer's limit
+    /// </exception>
+    public abstract float Get( int index );
 
-
-    /**
-     * Absolute <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> Writes the given float into this buffer at the given
-     * index. </p>
-     *
-     * @param  index
-     *         The index at which the float will be written
-     *
-     * @param  f
-     *         The float value to be written
-     *
-     * @return  This buffer
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If <tt>index</tt> is negative
-     *          or not smaller than the buffer's limit
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
-    public abstract FloatBuffer put( int index, float f );
-
+    /// <summary>
+    /// Absolute <tt>put</tt> method  <tt>(optional operation)</tt>.
+    /// <para>
+    /// Writes the given float into this buffer at the given index.
+    /// </para>
+    /// </summary>
+    /// <param name="index"> The index at which the float will be written </param>
+    /// <param name="f"> The float value to be written </param>
+    /// <returns> This buffer </returns>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If <tt>index</tt> is negative or not smaller than the buffer's limit
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    public abstract FloatBuffer Put( int index, float f );
 
     // -- Bulk get operations --
 
-    /**
-     * Relative bulk <i>get</i> method.
-     *
-     * <p> This method transfers floats from this buffer into the given
-     * destination array.  If there are fewer floats remaining in the
-     * buffer than are required to satisfy the request, that is, if
-     * <tt>length</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>, then no
-     * floats are transferred and a {@link BufferUnderflowException} is
-     * thrown.
-     *
-     * <p> Otherwise, this method copies <tt>length</tt> floats from this
-     * buffer into the given array, starting at the current position of this
-     * buffer and at the given offset in the array.  The position of this
-     * buffer is then incremented by <tt>length</tt>.
-     *
-     * <p> In other words, an invocation of this method of the form
-     * <tt>src.get(dst,&nbsp;off,&nbsp;len)</tt> has exactly the same effect as
-     * the loop
-     *
-     * <pre>{@code
-     *     for (int i = off; i < off + len; i++)
-     *         dst[i] = src.get():
-     * }</pre>
-     *
-     * except that it first checks that there are sufficient floats in
-     * this buffer and it is potentially much more efficient.
-     *
-     * @param  dst
-     *         The array into which floats are to be written
-     *
-     * @param  offset
-     *         The offset within the array of the first float to be
-     *         written; must be non-negative and no larger than
-     *         <tt>dst.length</tt>
-     *
-     * @param  length
-     *         The maximum number of floats to be written to the given
-     *         array; must be non-negative and no larger than
-     *         <tt>dst.length - offset</tt>
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferUnderflowException
-     *          If there are fewer than <tt>length</tt> floats
-     *          remaining in this buffer
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If the preconditions on the <tt>offset</tt> and <tt>length</tt>
-     *          parameters do not hold
-     */
-    public FloatBuffer get( float[] dst, int offset, int length )
+    /// Relative bulk <i>get</i> method.
+    /// <para>
+    /// This method transfers floats from this buffer into the given
+    /// destination array. If there are fewer floats remaining in the
+    /// buffer than are required to satisfy the request, that is, if
+    /// <tt>length &gt; Remaining()</tt>, then no floats are transferred
+    /// and a <see cref="BufferUnderflowException"/> is thrown.
+    /// </para>
+    /// <para>
+    /// Otherwise, this method copies <tt>length</tt> floats from this
+    /// buffer into the given array, starting at the current position of this
+    /// buffer and at the given offset in the array.  The position of this
+    /// buffer is then incremented by <tt>length</tt>.
+    /// </para>
+    /// <para>
+    /// In other words, an invocation of this method of the form
+    /// <tt>src.Get(dst, off, len)</tt> has exactly the same effect as
+    /// the loop:
+    /// <code>
+    ///     for (int i = off; i &lt; off + len; i++)
+    ///     {
+    ///         dst[i] = src.Get():
+    ///     }
+    /// </code>
+    /// </para>
+    /// <para>
+    /// except that it first checks that there are sufficient floats in
+    /// this buffer and it is potentially much more efficient.
+    /// </para>
+    /// <param name="dst">
+    /// The array into which floats are to be written
+    /// </param>
+    /// <param name="offset">
+    /// The offset within the array of the first float to be written; must
+    /// be non-negative and no larger than <tt>dst.Length</tt>
+    /// </param>
+    /// <param name="length">
+    /// The maximum number of floats to be written to the given array; must
+    /// be non-negative and no larger than <tt>dst.Length - offset</tt>
+    /// </param>
+    /// <returns> This buffer </returns>
+    /// <exception cref="BufferUnderflowException">
+    /// If there are fewer than <tt>length</tt> floats remaining in this buffer
+    /// </exception>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold
+    /// </exception>
+    public FloatBuffer Get( float[] dst, int offset, int length )
     {
-        checkBounds( offset, length, dst.length );
+        CheckBounds( offset, length, dst.Length );
 
-        if ( length > remaining() )
+        if ( length > Remaining() )
+        {
             throw new BufferUnderflowException();
+        }
 
-        int end = offset + length;
+        var end = offset + length;
 
-        for ( int i = offset; i < end; i++ )
-            dst[ i ] = get();
+        for ( var i = offset; i < end; i++ )
+        {
+            dst[ i ] = Get();
+        }
 
         return this;
     }
 
-    /**
-     * Relative bulk <i>get</i> method.
-     *
-     * <p> This method transfers floats from this buffer into the given
-     * destination array.  An invocation of this method of the form
-     * <tt>src.get(a)</tt> behaves in exactly the same way as the invocation
-     *
-     * <pre>
-     *     src.get(a, 0, a.length) </pre>
-     *
-     * @param   dst
-     *          The destination array
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferUnderflowException
-     *          If there are fewer than <tt>length</tt> floats
-     *          remaining in this buffer
-     */
-    public FloatBuffer get( float[] dst )
+    /// <summary>
+    /// Relative bulk <tt>get</tt> method.
+    /// <para>
+    /// This method transfers floats from this buffer into the given
+    /// destination array. An invocation of this method of the form
+    /// <tt>src.get(a)</tt> behaves in exactly the same way as the invocation
+    /// </para>
+    /// <code>
+    ///     src.get(a, 0, a.length)
+    /// </code>
+    /// </summary>
+    /// <param name="dst"> The destination array </param>
+    /// <returns> This buffer </returns>
+    /// <exception cref="BufferUnderflowException">
+    /// If there are fewer than <tt>length</tt> floats remaining in this buffer
+    /// </exception>
+    public FloatBuffer Get( float[] dst )
     {
-        return get( dst, 0, dst.length );
+        return Get( dst, 0, dst.Length );
     }
-
 
     // -- Bulk put operations --
 
-    /**
-     * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> This method transfers the floats remaining in the given source
-     * buffer into this buffer.  If there are more floats remaining in the
-     * source buffer than in this buffer, that is, if
-     * <tt>src.remaining()</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>,
-     * then no floats are transferred and a {@link
-     * BufferOverflowException} is thrown.
-     *
-     * <p> Otherwise, this method copies
-     * <i>n</i>&nbsp;=&nbsp;<tt>src.remaining()</tt> floats from the given
-     * buffer into this buffer, starting at each buffer's current position.
-     * The positions of both buffers are then incremented by <i>n</i>.
-     *
-     * <p> In other words, an invocation of this method of the form
-     * <tt>dst.put(src)</tt> has exactly the same effect as the loop
-     *
-     * <pre>
-     *     while (src.hasRemaining())
-     *         dst.put(src.get()); </pre>
-     *
-     * except that it first checks that there is sufficient space in this
-     * buffer and it is potentially much more efficient.
-     *
-     * @param  src
-     *         The source buffer from which floats are to be read;
-     *         must not be this buffer
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If there is insufficient space in this buffer
-     *          for the remaining floats in the source buffer
-     *
-     * @throws  IllegalArgumentException
-     *          If the source buffer is this buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
-    public FloatBuffer put( FloatBuffer src )
+    /// <summary>
+    /// Relative bulk <tt>put</tt> method (optional operation).
+    /// </summary>
+    /// <remarks>
+    /// This method transfers the floats remaining in the given source buffer into
+    /// this buffer. If there are more floats remaining in the source buffer than
+    /// in this buffer, that is, if <tt>src.Remaining()</tt> is greater than
+    /// <tt>Remaining()</tt>, then no floats are transferred, and a
+    /// <see cref="BufferOverflowException"/> is thrown.
+    /// <para>
+    /// Otherwise, this method copies <tt>n = src.Remaining()</tt> floats
+    /// from the given buffer into this buffer, starting at each buffer's current
+    /// position. The positions of both buffers are then incremented by <tt>n</tt>.
+    /// </para>
+    /// <para>
+    /// In other words, an invocation of this method of the form <c>dst.Put(src)</c>
+    /// has exactly the same effect as the loop:
+    /// <code>
+    /// while (src.HasRemaining)
+    /// {
+    ///     dst.Put(src.Get());
+    /// }
+    /// </code>
+    /// except that it first checks that there is sufficient space in this buffer
+    /// and is potentially much more efficient.
+    /// </para>
+    /// </remarks>
+    /// <param name="src">
+    /// The source buffer from which floats are to be read; must not be this buffer.
+    /// </param>
+    /// <returns>This buffer.</returns>
+    /// <exception cref="BufferOverflowException">
+    /// If there is insufficient space in this buffer for the remaining floats
+    /// in the source buffer.
+    /// </exception>
+    /// <exception cref="ArgumentException">If the source buffer is this buffer.</exception>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    public FloatBuffer Put( FloatBuffer src )
     {
-        if ( src == this )
-            throw new IllegalArgumentException();
+        if ( src.Equals( this ) )
+        {
+            throw new ArgumentException( "src cannot be this buffer!" );
+        }
 
-        if ( isReadOnly() )
+        if ( IsReadOnly )
+        {
             throw new ReadOnlyBufferException();
+        }
 
-        int n = src.remaining();
+        var n = src.Remaining();
 
-        if ( n > remaining() )
+        if ( n > Remaining() )
+        {
             throw new BufferOverflowException();
+        }
 
-        for ( int i = 0; i < n; i++ )
-            put( src.get() );
+        for ( var i = 0; i < n; i++ )
+        {
+            Put( src.Get() );
+        }
 
         return this;
     }
 
-    /**
-     * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> This method transfers floats into this buffer from the given
-     * source array.  If there are more floats to be copied from the array
-     * than remain in this buffer, that is, if
-     * <tt>length</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>, then no
-     * floats are transferred and a {@link BufferOverflowException} is
-     * thrown.
-     *
-     * <p> Otherwise, this method copies <tt>length</tt> floats from the
-     * given array into this buffer, starting at the given offset in the array
-     * and at the current position of this buffer.  The position of this buffer
-     * is then incremented by <tt>length</tt>.
-     *
-     * <p> In other words, an invocation of this method of the form
-     * <tt>dst.put(src,&nbsp;off,&nbsp;len)</tt> has exactly the same effect as
-     * the loop
-     *
-     * <pre>{@code
-     *     for (int i = off; i < off + len; i++)
-     *         dst.put(a[i]);
-     * }</pre>
-     *
-     * except that it first checks that there is sufficient space in this
-     * buffer and it is potentially much more efficient.
-     *
-     * @param  src
-     *         The array from which floats are to be read
-     *
-     * @param  offset
-     *         The offset within the array of the first float to be read;
-     *         must be non-negative and no larger than <tt>array.length</tt>
-     *
-     * @param  length
-     *         The number of floats to be read from the given array;
-     *         must be non-negative and no larger than
-     *         <tt>array.length - offset</tt>
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If there is insufficient space in this buffer
-     *
-     * @throws  IndexOutOfBoundsException
-     *          If the preconditions on the <tt>offset</tt> and <tt>length</tt>
-     *          parameters do not hold
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
-    public FloatBuffer put( float[] src, int offset, int length )
+    /// <summary>
+    /// Relative bulk <i>put</i> method (optional operation).
+    /// </summary>
+    /// <remarks>
+    /// This method transfers floats into this buffer from the given source array.
+    /// If there are more floats to be copied from the array than remain in this
+    /// buffer, that is, if <paramref name="length"/> is greater than
+    /// <see cref="Buffer.Remaining()"/>, then no floats are transferred, and a
+    /// <see cref="BufferOverflowException"/> is thrown.
+    /// <para>
+    /// Otherwise, this method copies <paramref name="length"/> floats from the
+    /// given array into this buffer, starting at the given offset in the array
+    /// and at the current position of this buffer. The position of this buffer
+    /// is then incremented by <paramref name="length"/>.
+    /// </para>
+    /// In other words, an invocation of this method of the form <tt>dst.Put(src, off, len)</tt>
+    /// has exactly the same effect as the loop:
+    /// <code>
+    /// for (int i = off; i &lt; off + len; i++)
+    /// {
+    ///     dst.Put(a[i]);
+    /// }
+    /// </code>
+    /// except that it first checks that there is sufficient space in this buffer
+    /// and is potentially much more efficient.
+    /// </remarks>
+    /// <param name="src">The array from which floats are to be read.</param>
+    /// <param name="offset">
+    /// The offset within the array of the first float to be read; must be
+    /// non-negative and no larger than <paramref name="src"/>.Length.
+    /// </param>
+    /// <param name="length">
+    /// The number of floats to be read from the given array; must be non-negative
+    /// and no larger than <paramref name="src"/>.Length - <paramref name="offset"/>.
+    /// </param>
+    /// <returns>This buffer.</returns>
+    /// <exception cref="BufferOverflowException">
+    /// If there is insufficient space in this buffer.
+    /// </exception>
+    /// <exception cref="IndexOutOfRangeException">
+    /// If the preconditions on the <paramref name="offset"/> and <paramref name="length"/>
+    /// parameters do not hold.
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    public FloatBuffer Put( float[] src, int offset, int length )
     {
-        checkBounds( offset, length, src.length );
+        CheckBounds( offset, length, src.Length );
 
-        if ( length > remaining() )
+        if ( length > Remaining() )
+        {
             throw new BufferOverflowException();
+        }
 
-        int end = offset + length;
+        var end = offset + length;
 
-        for ( int i = offset; i < end; i++ )
-            this.put( src[ i ] );
+        for ( var i = offset; i < end; i++ )
+        {
+            this.Put( src[ i ] );
+        }
 
         return this;
     }
 
-    /**
-     * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> This method transfers the entire content of the given source
-     * float array into this buffer.  An invocation of this method of the
-     * form <tt>dst.put(a)</tt> behaves in exactly the same way as the
-     * invocation
-     *
-     * <pre>
-     *     dst.put(a, 0, a.length) </pre>
-     *
-     * @param   src
-     *          The source array
-     *
-     * @return  This buffer
-     *
-     * @throws  BufferOverflowException
-     *          If there is insufficient space in this buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
-    public final FloatBuffer put( float[] src )
+    /// <summary>
+    /// Relative bulk <i>put</i> method (optional operation).
+    /// </summary>
+    /// <remarks>
+    /// This method transfers the entire content of the given source float
+    /// array into this buffer. An invocation of this method with the source
+    /// float array <paramref name="src"/> behaves in exactly the same way as
+    /// invoking <tt>dst.Put(src, 0, src.Length)</tt>.
+    /// </remarks>
+    /// <param name="src">The source array.</param>
+    /// <returns>This buffer.</returns>
+    /// <exception cref="BufferOverflowException">
+    /// If there is insufficient space in this buffer.
+    /// </exception>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    public FloatBuffer Put( float[] src )
     {
-        return put( src, 0, src.length );
+        return Put( src, 0, src.Length );
     }
-
 
     // -- Other stuff --
 
-    /**
-     * Tells whether or not this buffer is backed by an accessible float
-     * array.
-     *
-     * <p> If this method returns <tt>true</tt> then the {@link #array() array}
-     * and {@link #arrayOffset() arrayOffset} methods may safely be invoked.
-     * </p>
-     *
-     * @return  <tt>true</tt> if, and only if, this buffer
-     *          is backed by an array and is not read-only
-     */
-    public final boolean hasArray()
+    /// <summary>
+    /// Tells whether or not this buffer is backed by an accessible float array.
+    /// </summary>
+    /// <remarks>
+    /// If this method returns <tt>true</tt>, then the <see cref="Array"/> and
+    /// <see cref="ArrayOffset"/> methods may safely be invoked.
+    /// </remarks>
+    /// <returns>
+    /// <tt>true</tt> if, and only if, this buffer is backed by an array and is not read-only.
+    /// </returns>
+    public override bool HasArray()
     {
-        return ( hb != null ) && !isReadOnly;
+        return ( Hb != null ) && !IsReadOnly;
     }
 
-    /**
-     * Returns the float array that backs this
-     * buffer&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> Modifications to this buffer's content will cause the returned
-     * array's content to be modified, and vice versa.
-     *
-     * <p> Invoke the {@link #hasArray hasArray} method before invoking this
-     * method in order to ensure that this buffer has an accessible backing
-     * array.  </p>
-     *
-     * @return  The array that backs this buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is backed by an array but is read-only
-     *
-     * @throws  UnsupportedOperationException
-     *          If this buffer is not backed by an accessible array
-     */
-    public final float[] array()
+    /// <summary>
+    /// Returns the float array that backs this buffer (optional operation).
+    /// </summary>
+    /// <remarks>
+    /// Modifications to this buffer's content will cause the returned array's
+    /// content to be modified, and vice versa. Invoke the <see cref="HasArray"/>
+    /// method before invoking this method to ensure that this buffer has an
+    /// accessible backing array.
+    /// </remarks>
+    /// <returns>The array that backs this buffer.</returns>
+    /// <exception cref="ReadOnlyBufferException">
+    /// If this buffer is backed by an array but is read-only.
+    /// </exception>
+    /// <exception cref="NotSupportedException">
+    /// If this buffer is not backed by an accessible array.
+    /// </exception>
+    public float[] Array()
     {
-        if ( hb == null )
+        if ( Hb == null )
+        {
             throw new UnsupportedOperationException();
+        }
 
-        if ( isReadOnly )
+        if ( IsReadOnly )
+        {
             throw new ReadOnlyBufferException();
+        }
 
-        return hb;
+        return Hb;
     }
 
-    /**
-     * Returns the offset within this buffer's backing array of the first
-     * element of the buffer&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> If this buffer is backed by an array then buffer position <i>p</i>
-     * corresponds to array index <i>p</i>&nbsp;+&nbsp;<tt>arrayOffset()</tt>.
-     *
-     * <p> Invoke the {@link #hasArray hasArray} method before invoking this
-     * method in order to ensure that this buffer has an accessible backing
-     * array.  </p>
-     *
-     * @return  The offset within this buffer's array
-     *          of the first element of the buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is backed by an array but is read-only
-     *
-     * @throws  UnsupportedOperationException
-     *          If this buffer is not backed by an accessible array
-     */
-    public final int arrayOffset()
+    /// <summary>
+    /// Returns the offset within this buffer's backing array of the first
+    /// element of the buffer <tt>(optional operation)</tt>.
+    /// <para>
+    /// If this buffer is backed by an array then buffer position <i>p</i>
+    /// corresponds to array index <tt>p + ArrayOffset()</tt>.
+    /// </para>
+    /// <para>
+    /// Invoke the <see cref="HasArray()"/> method before invoking this
+    /// method in order to ensure that this buffer has an accessible backing
+    /// array.
+    /// </para>
+    /// </summary>
+    /// <returns>
+    /// The offset within this buffer's array of the first element of the buffer
+    /// </returns>
+    /// <exception cref="ReadOnlyBufferException">
+    /// If this buffer is backed by an array but is read-only
+    /// </exception>
+    /// <exception cref="UnsupportedOperationException">
+    /// If this buffer is not backed by an accessible array
+    /// </exception>
+    public override int ArrayOffset()
     {
-        if ( hb == null )
+        if ( Hb == null )
+        {
             throw new UnsupportedOperationException();
+        }
 
-        if ( isReadOnly )
+        if ( IsReadOnly )
+        {
             throw new ReadOnlyBufferException();
+        }
 
-        return offset;
+        return Offset;
     }
 
-    /**
-     * Compacts this buffer&nbsp;&nbsp;<i>(optional operation)</i>.
-     *
-     * <p> The floats between the buffer's current position and its limit,
-     * if any, are copied to the beginning of the buffer.  That is, the
-     * float at index <i>p</i>&nbsp;=&nbsp;<tt>position()</tt> is copied
-     * to index zero, the float at index <i>p</i>&nbsp;+&nbsp;1 is copied
-     * to index one, and so forth until the float at index
-     * <tt>limit()</tt>&nbsp;-&nbsp;1 is copied to index
-     * <i>n</i>&nbsp;=&nbsp;<tt>limit()</tt>&nbsp;-&nbsp;<tt>1</tt>&nbsp;-&nbsp;<i>p</i>.
-     * The buffer's position is then set to <i>n+1</i> and its limit is set to
-     * its capacity.  The mark, if defined, is discarded.
-     *
-     * <p> The buffer's position is set to the number of floats copied,
-     * rather than to zero, so that an invocation of this method can be
-     * followed immediately by an invocation of another relative <i>put</i>
-     * method. </p>
-     *
+    /// <summary>
+    /// Compacts this buffer  <i>(optional operation)</i>.
+    /// <para>
+    /// The floats between the buffer's current position and its limit,
+    /// if any, are copied to the beginning of the buffer. That is, the
+    /// float at index <tt>p = Position</tt> is copied to index zero, the
+    /// float at index <tt>p + 1|</tt> is copied to index one, and so forth
+    /// until the float at index <tt>Limit - 1</tt> is copied to index
+    /// <tt>n = Limit - 1 - p</tt>.
+    /// The buffer's position is then set to <i>n+1</i> and its limit is set to
+    /// its capacity.  The mark, if defined, is discarded.
+    /// </para>
+    /// <para>
+    /// The buffer's position is set to the number of floats copied, rather than
+    /// to zero, so that an invocation of this method can be followed immediately
+    /// by an invocation of another relative <tt>put</tt>
+    /// method.
+    /// </para>
+    /// </summary>
+    /// <returns> This buffer </returns>
+    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
+    public abstract FloatBuffer Compact();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     *
-     * @return  This buffer
-     *
-     * @throws  ReadOnlyBufferException
-     *          If this buffer is read-only
-     */
-    public abstract FloatBuffer compact();
-
-    /**
-     * Tells whether or not this float buffer is direct.
-     *
-     * @return  <tt>true</tt> if, and only if, this buffer is direct
-     */
-    public abstract boolean isDirect();
-
-
-    /**
-     * Returns a string summarizing the state of this buffer.
-     *
-     * @return  A summary string
-     */
-    public String toString()
+    /// <summary>
+    /// Returns a string summarizing the state of this buffer.
+    /// </summary>
+    public override string ToString()
     {
-        StringBuffer sb = new StringBuffer();
-        sb.append( getClass().getName() );
-        sb.append( "[pos=" );
-        sb.append( position() );
-        sb.append( " lim=" );
-        sb.append( limit() );
-        sb.append( " cap=" );
-        sb.append( capacity() );
-        sb.append( "]" );
-
-        return sb.toString();
+        return $"{GetType().Name}[pos={Position} lim={Limit} cap={Capacity}]";
     }
 
-
-    /**
-     * Returns the current hash code of this buffer.
-     *
-     * <p> The hash code of a float buffer depends only upon its remaining
-     * elements; that is, upon the elements from <tt>position()</tt> up to, and
-     * including, the element at <tt>limit()</tt>&nbsp;-&nbsp;<tt>1</tt>.
-     *
-     * <p> Because buffer hash codes are content-dependent, it is inadvisable
-     * to use buffers as keys in hash maps or similar data structures unless it
-     * is known that their contents will not change.  </p>
-     *
-     * @return  The current hash code of this buffer
-     */
-    public int hashCode()
+    /// <summary>
+    /// Returns the current hash code of this buffer.
+    /// <para>
+    /// The hash code of a float buffer depends only upon its remaining
+    /// elements; that is, upon the elements from <tt>Position</tt> up to, and
+    /// including, the element at <tt>Limit - 1</tt>.
+    /// </para>
+    /// <para>
+    /// Because buffer hash codes are content-dependent, it is inadvisable
+    /// to use buffers as keys in hash maps or similar data structures unless it
+    /// is known that their contents will not change.
+    /// </para>
+    /// </summary>
+    /// <returns> The current hash code of this buffer </returns>
+    public override int GetHashCode()
     {
-        int h = 1;
-        int p = position();
-
-        for ( int i = limit() - 1; i >= p; i-- )
-
-
-            h = 31 * h + ( int )get( i );
+        var h = 31 + ( int )Get( 0 );
+        h = ( 31 * h ) + ( int )Get( 1 );
+        h = ( 31 * h ) + ( int )Get( 2 );
+        h = ( 31 * h ) + ( int )Get( 3 );
 
         return h;
     }
 
-    /**
-     * Tells whether or not this buffer is equal to another object.
-     *
-     * <p> Two float buffers are equal if, and only if,
-     *
-     * <ol>
-     *
-     *   <li><p> They have the same element type,  </p></li>
-     *
-     *   <li><p> They have the same number of remaining elements, and
-     *   </p></li>
-     *
-     *   <li><p> The two sequences of remaining elements, considered
-     *   independently of their starting positions, are pointwise equal.
-
-     *   This method considers two float elements {@code a} and {@code b}
-     *   to be equal if
-     *   {@code (a == b) || (Float.isNaN(a) && Float.isNaN(b))}.
-     *   The values {@code -0.0} and {@code +0.0} are considered to be
-     *   equal, unlike {@link Float#equals(Object)}.
-
-     *   </p></li>
-     *
-     * </ol>
-     *
-     * <p> A float buffer is not equal to any other type of object.  </p>
-     *
-     * @param  ob  The object to which this buffer is to be compared
-     *
-     * @return  <tt>true</tt> if, and only if, this buffer is equal to the
-     *           given object
-     */
-    public boolean equals( Object ob )
+    /// <summary>
+    /// Tells whether or not this buffer is equal to another object.
+    /// <para>
+    /// Two float buffers are equal if, and only if,
+    /// </para>
+    /// <para>
+    ///   They have the same element type,
+    ///   <para>
+    ///   </para>
+    ///   <para>
+    ///   They have the same number of remaining elements, and,
+    ///   </para>
+    ///   <para>
+    ///   The two sequences of remaining elements, considered independently of their
+    ///   starting positions, are pointwise equal. This method considers two float
+    ///   elements <tt>a</tt> and <tt>b</tt> to be equal if:-
+    ///   <para>
+    ///   <tt>(a == b) || (Float.isNaN(a) &amp;&amp; Float.isNaN(b))</tt>.
+    ///   </para>
+    ///   The values <tt>-0.0</tt> and <tt>+0.0</tt> are considered to be
+    ///   equal, unlike <see cref="float.Equals(object)"/>.
+    ///   </para>
+    /// </para>
+    /// <para>
+    /// A float buffer is not equal to any other type of object.
+    /// </para>
+    /// </summary>
+    /// <param name="ob"> The object to which this buffer is to be compared </param>
+    /// <returns>
+    /// <tt>true</tt> if, and only if, this buffer is equal to the given object
+    /// </returns>
+    public override bool Equals( object? ob )
     {
         if ( this == ob )
+        {
             return true;
+        }
 
-        if ( !( ob instanceof FloatBuffer))
-
-        return false;
-        FloatBuffer that = ( FloatBuffer )ob;
-
-        if ( this.remaining() != that.remaining() )
+        if ( !( ob is FloatBuffer floatBuffer ) )
+        {
             return false;
+        }
 
-        int p = this.position();
+        if ( this.Remaining != floatBuffer.Remaining )
+        {
+            return false;
+        }
 
-        for ( int i = this.limit() - 1, j = that.limit() - 1; i >= p; i--, j-- )
-            if ( !equals( this.get( i ), that.get( j ) ) )
+        var p = this.Position;
+
+        for ( int i = this.Limit - 1, j = floatBuffer.Limit - 1; i >= p; i--, j-- )
+        {
+            if ( !Equals( this.Get( i ), floatBuffer.Get( j ) ) )
+            {
                 return false;
+            }
+        }
 
         return true;
     }
 
-    private static boolean equals( float x, float y )
+    private static bool Equals( float x, float y )
     {
-
-        return ( x == y ) || ( Float.isNaN( x ) && Float.isNaN( y ) );
-
-
+        return ( x.Equals( y ) ) || ( float.IsNaN( x ) && float.IsNaN( y ) );
     }
 
-    /**
-     * Compares this buffer to another.
-     *
-     * <p> Two float buffers are compared by comparing their sequences of
-     * remaining elements lexicographically, without regard to the starting
-     * position of each sequence within its corresponding buffer.
-
-     * Pairs of {@code float} elements are compared as if by invoking
-     * {@link Float#compare(float,float)}, except that
-     * {@code -0.0} and {@code 0.0} are considered to be equal.
-     * {@code Float.NaN} is considered by this method to be equal
-     * to itself and greater than all other {@code float} values
-     * (including {@code Float.POSITIVE_INFINITY}).
-
-
-
-
-     *
-     * <p> A float buffer is not comparable to any other type of object.
-     *
-     * @return  A negative integer, zero, or a positive integer as this buffer
-     *          is less than, equal to, or greater than the given buffer
-     */
-    public int compareTo( FloatBuffer that )
+    /// Compares this buffer to another.
+    /// <para>
+    /// Two float buffers are compared by comparing their sequences of remaining
+    /// elements lexicographically, without regard to the starting position of each
+    /// sequence within its corresponding buffer. Pairs of float elements are compared
+    /// as if by invoking <see cref="float.CompareTo(float)"/>, except that <tt>-0.0</tt>
+    /// and <tt>0.0</tt> are considered to be equal.
+    /// </para>
+    /// <para>
+    /// <tt>Float.NaN</tt> is considered by this method to be equal to itself and greater
+    /// than all other <tt>float</tt> values (including <tt>float.PositiveInfinity</tt>).
+    /// </para>
+    /// <para>
+    /// A float buffer is not comparable to any other type of object.
+    /// </para>
+    /// <returns>
+    /// A negative integer, zero, or a positive integer as this buffer
+    /// is less than, equal to, or greater than the given buffer
+    /// </returns>
+    public int CompareTo( FloatBuffer that )
     {
-        int n = this.position() + Math.min( this.remaining(), that.remaining() );
+        var n = this.Position + Math.Min( this.Remaining(), that.Remaining() );
 
-        for ( int i = this.position(), j = that.position(); i < n; i++, j++ )
+        for ( int i = this.Position, j = that.Position; i < n; i++, j++ )
         {
-            int cmp = compare( this.get( i ), that.get( j ) );
+            var cmp = Compare( this.Get( i ), that.Get( j ) );
 
             if ( cmp != 0 )
+            {
                 return cmp;
+            }
         }
 
-        return this.remaining() - that.remaining();
+        return this.Remaining() - that.Remaining();
     }
 
-    private static int compare( float x, float y )
+    private static int Compare( float x, float y )
     {
-
-        return ( ( x < y )   ? -1 :
-            ( x > y )        ? +1 :
-            ( x == y )       ? 0 :
-            Float.isNaN( x ) ? ( Float.isNaN( y ) ? 0 : +1 ) : -1 );
-
-
+        return ( ( x < y ) ? -1 : ( x > y )
+            ? +1 : ( x.Equals( y ) )
+                ? 0 : float.IsNaN( x )
+                    ? ( float.IsNaN( y )
+                        ? 0 : +1 ) : -1 );
     }
 
-    // -- Other char stuff --
-
-
-    // -- Other byte stuff: Access to binary data --
-
-
-    /**
-     * Retrieves this buffer's byte order.
-     *
-     * <p> The byte order of a float buffer created by allocation or by
-     * wrapping an existing <tt>float</tt> array is the {@link
-     * ByteOrder#nativeOrder native order} of the underlying
-     * hardware.  The byte order of a float buffer created as a <a
-     * href="ByteBuffer.html#views">view</a> of a byte buffer is that of the
-     * byte buffer at the moment that the view is created.  </p>
-     *
-     * @return  This buffer's byte order
-     */
-    public abstract ByteOrder order();
+    /// <summary>
+    /// Retrieves this buffer's byte order.
+    /// <para>
+    /// The byte order of a float buffer created by allocation or by wrapping
+    /// an existing <tt>float</tt> array is the <see cref="ByteOrder.NativeOrder"/>"
+    /// of the underlying hardware.
+    /// </para>
+    /// </summary>
+    /// <returns> This buffer's byte order </returns>
+    public abstract ByteOrder Order();
 }

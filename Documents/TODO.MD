@@ -42,7 +42,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- This is to be a DESKTOP/WINDOWS/LINUX? only framework. Leave Mobile3 support to
+- This is to be a DESKTOP/WINDOWS/LINUX? only framework. Leave Mobile support to
 - the Java LibGDX Framework for now.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -692,17 +692,17 @@ UTILS/BUFFERS
     IMPORTANT! - Establish whether or not I actually need these.
 
     - DONE - Buffer
+    - IP   - BufferUtils
     - DONE - ByteBuffer
     - DONE - CharBuffer
+    - DONE - FloatBuffer
     - DONE - StringCharBuffer
 
     Does C# have these classes already?
         - Could MemoryStream be used?
 
-    - IP   - BufferUtils
     - IP   - DirectByteBuffer
     - IP   - DoubleBuffer
-    - IP   - FloatBuffer
     - IP   - HeapByteBuffer
     - IP   - HeapCharBuffer
     - IP   _ IDirectBuffer

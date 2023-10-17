@@ -14,20 +14,23 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Utils.Collections;
+namespace LibGDXSharp.Utils.Buffers;
 
 [PublicAPI]
-public static class SortedSetExtensions
+public class HeapFloatBuffer : FloatBuffer
 {
-    [Incomplete( "Method not fully implemented" )]
-    public static void Clear<T>( this SortedSet< T > ss, int maximumCapacity )
+    public HeapFloatBuffer( int cap, int lim )
+        : base( -1, 0, lim, cap, new float[cap], 0 )
     {
-        throw new NotImplementedException();
     }
 
-    [Incomplete( "Method not fully implemented" )]
-    public static void AddAll<T>( this SortedSet< T > ss, SortedSet< T > array )
+    public HeapFloatBuffer( float[] buf, int off, int len )
+        : base( -1, off, off + len, buf.Length, buf, 0 )
     {
-        throw new NotImplementedException();
+    }
+
+    protected HeapFloatBuffer( float[] buf, int mark, int pos, int lim, int cap, int off )
+        : base( mark, pos, lim, cap, buf, off )
+    {
     }
 }

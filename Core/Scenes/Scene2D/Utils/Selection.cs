@@ -21,8 +21,11 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// Manages selected objects. Optionally fires a <see cref="ChangeListener.ChangeEvent"/> on an actor.
+/// Manages selected objects. Optionally fires a <see cref="ChangeListener.ChangeEvent"/>
+/// on an actor.
+/// <para>
 /// Selection changes can be vetoed via <see cref="ChangeListener.ChangeEvent.Cancel()"/>.
+/// </para>
 /// </summary>
 /// <seealso cref="SortedSet{T}"/>
 [PublicAPI]
@@ -88,7 +91,8 @@ public class Selection<T> : IDisableable
                     }
 
                     modified = Selected.Count > 0;
-                    Selected.Clear( 8 );
+//                    Selected.Clear( 8 );
+                    Selected.Clear();
                 }
 
                 if ( !Selected.Add( item ) && !modified )
@@ -114,25 +118,12 @@ public class Selection<T> : IDisableable
         }
     }
 
-    /// <summary>
-    /// Java LibGDX has this deprecated method. I have left it here for
-    /// those coming from java LibGDX who may wonder what happened to it. 
-    /// I am, however, tempted to 'un-obsolete' this as I like the clarity
-    /// of the method name.
-    /// </summary>
-    [Obsolete( "Use NotEmpty() instead.", true )]
-    public bool HasItems()
-    {
-        return Selected.Count > 0;
-    }
+    public bool HasItems() => Selected.Count > 0;
 
     /// <summary>
     /// Returns TRUE if this set has items in it.
     /// </summary>
-    public bool NotEmpty()
-    {
-        return !Empty;
-    }
+    public bool NotEmpty() => !Empty;
 
     public bool Empty => Selected.Count == 0;
 
