@@ -21,11 +21,15 @@ namespace LibGDXSharp.Scenes.Listeners;
 [PublicAPI]
 public class ChangeListener : IEventListener
 {
+    public ChangeListener()
+    {
+    }
+    
     public ChangeListener( Action< object > action )
     {
     }
     
-    public bool Handle( Event ev )
+    public virtual bool Handle( Event ev )
     {
         if ( ev is not ChangeEvent changeEvent )
         {
@@ -43,7 +47,7 @@ public class ChangeListener : IEventListener
     /// <param name="actor">
     /// The event target, which is the actor that emitted the change event.
     /// </param>
-    protected void Changed( ChangeEvent ev, Actor? actor )
+    public virtual void Changed( ChangeEvent ev, Actor? actor )
     {
     }
 

@@ -698,7 +698,7 @@ public class Group : Actor, ICullable
         return null;
     }
 
-    public void SetStage( Stage stage )
+    public void SetStage( Stage? stage )
     {
         base.Stage = stage;
 

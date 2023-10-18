@@ -14,6 +14,10 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Runtime.CompilerServices;
+
+using NotNull = System.Diagnostics.CodeAnalysis.NotNullAttribute;
+
 namespace LibGDXSharp.Utils;
 
 /// <summary>
@@ -34,4 +38,17 @@ public class GdxRuntimeException : Exception
         : base( message, exception )
     {
     }
+
+    public static void ThrowIfNull( [NotNull] object? argument,
+                                    [CallerArgumentExpression( "argument" )]
+                                    string? paramName = null )
+    {
+        if ( argument is null )
+        {
+            Throw( paramName );
+        }
+    }
+
+    [DoesNotReturn]
+    internal static void Throw( string? paramName ) => throw new GdxRuntimeException( paramName );
 }

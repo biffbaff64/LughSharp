@@ -16,9 +16,16 @@
 
 namespace LibGDXSharp.Utils.Buffers;
 
+/// <summary>
+/// Class with static helper methods to increase the speed of array/direct
+/// buffer and direct buffer/direct buffer transfers
+/// </summary>
 [PublicAPI]
 public class BufferUtils
 {
+    private static List< ByteBuffer > _unsafeBuffers   = new();
+    private static int                _allocatedUnsafe = 0;
+
     private BufferUtils()
     {
     }
@@ -29,18 +36,6 @@ public class BufferUtils
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer;
-    }
-
-    public static ByteBuffer NewUnsafeByteBuffer( int numBytes )
-    {
-        //TODO:
-        throw new NotImplementedException();
-    }
-
-    public static ByteBuffer NewUnsafeByteBuffer( ByteBuffer? buf )
-    {
-        //TODO:
-        throw new NotImplementedException();
     }
 
     public static CharBuffer NewCharBuffer( int numBytes )
@@ -91,6 +86,18 @@ public class BufferUtils
         return buffer.AsDoubleBuffer();
     }
 
+    public static ByteBuffer NewUnsafeByteBuffer( int numBytes )
+    {
+        //TODO:
+        throw new NotImplementedException();
+    }
+
+    public static ByteBuffer NewUnsafeByteBuffer( ByteBuffer? buf )
+    {
+        //TODO:
+        throw new NotImplementedException();
+    }
+
     public static byte Compare( byte x, byte y )
     {
         return ( byte )( x - y );
@@ -131,6 +138,25 @@ public class BufferUtils
         dst.Limit = ( dst.Position + BytesToElements( dst, numBytes ) );
 
         Copy( src, PositionInBytes( src ), dst, PositionInBytes( dst ), numBytes );
+    }
+
+    /// <summary>
+    /// Copies the contents of src to dst, starting from src[srcOffset],
+    /// copying numElements elements. The <see cref="Buffer"/> instance's
+    /// <see cref="Buffer.Position()"/> is used to define the offset into
+    /// the Buffer itself. The position and limit will stay the same.
+    /// <para>
+    /// The Buffer must be a direct Buffer with native byte order. No error
+    /// checking is performed
+    /// </para>.
+    /// </summary>
+    /// <param name="src"> the source array. </param>
+    /// <param name="srcOffset"> the offset into the source array. </param>
+    /// <param name="numElements"> the number of elements to copy. </param>
+    /// <param name="dst"> the destination Buffer, its position is used as an offset. </param>
+    public static void Copy( float[] src, int srcOffset, int numElements, Buffer dst )
+    {
+        //TODO:
     }
 
     public static void Copy( short[] src, int offset, Buffer dst, int numElements )
@@ -216,11 +242,30 @@ public class BufferUtils
 
     public static void DisposeUnsafeByteBuffer( Buffer? buf )
     {
-        //TODO:
+        ArgumentNullException.ThrowIfNull( buf );
+
+        var size = buf.Capacity;
+
+        lock ( _unsafeBuffers )
+        {
+            if ( !_unsafeBuffers.Remove( ( ByteBuffer )buf ) )
+            {
+                throw new ArgumentException
+                    ( "buffer not allocated with newUnsafeByteBuffer or already disposed" );
+            }
+        }
+
+        _allocatedUnsafe -= size;
+        FreeMemory( ( ByteBuffer )buf );
     }
 
-    public static void Copy( float[] vertices, int sourceOffset, int numElements, Buffer byteBuffer )
+    /// <summary>
+    /// Frees the memory allocated for the ByteBuffer, which MUST have been
+    /// allocated via <see cref="NewUnsafeByteBuffer(ByteBuffer)"/>
+    /// or in native code.
+    /// </summary>
+    private static void FreeMemory( ByteBuffer buffer )
     {
-        //TODO:
+//        free(buffer);
     }
 }

@@ -33,10 +33,10 @@ public class Dialog : Window
     public Table? ButtonTable  { get; private set; }
     public bool   CancelHide   { get; set; }
 
-    private readonly IEventListener _dialogChangeListener = new DialogChangeObserver();
-    private readonly IEventListener _dialogClickListener  = new DialogClickObserver();
-    private readonly IEventListener _dialogFocusListener  = new DialogFocusObserver();
-    private readonly IEventListener _dialogInputListener  = new DialogInputObserver();
+//    private readonly IEventListener _dialogChangeListener = new DialogChangeObserver();
+//    private readonly IEventListener _dialogClickListener  = new DialogClickObserver();
+//    private readonly IEventListener _dialogFocusListener  = new DialogFocusObserver();
+//    private readonly IEventListener _dialogInputListener  = new DialogInputObserver();
     private readonly Skin?          _skin;
 
     private Dictionary< Actor, object >? _values = new();
@@ -45,7 +45,7 @@ public class Dialog : Window
     private Actor? _previousScrollFocus;
 
     // ------------------------------------------------------------------------
-    
+
     public Dialog( string title, Skin skin )
         : base( title, skin.Get< Window.WindowStyle >() )
     {
@@ -86,10 +86,12 @@ public class Dialog : Window
         ContentTable.CellDefaults.Space( 6 );
         ButtonTable.CellDefaults.Space( 6 );
 
-        AddCaptureListener( _dialogChangeListener );
-        AddCaptureListener( _dialogClickListener );
-        AddCaptureListener( _dialogFocusListener );
-        AddCaptureListener( _dialogInputListener );
+//        AddCaptureListener( _dialogChangeListener );
+//        AddCaptureListener( _dialogClickListener );
+//        AddCaptureListener( _dialogFocusListener );
+//        AddCaptureListener( _dialogInputListener );
+
+//        ButtonTable.AddListener( ButtonTableChangeListener );
 
 //        buttonTable.addListener( new ChangeListener()
 //        {
@@ -142,14 +144,14 @@ public class Dialog : Window
     {
         if ( stage == null )
         {
-            AddListener( _dialogFocusListener );
+//            AddListener( _dialogFocusListener );
         }
         else
         {
-            RemoveListener( _dialogFocusListener );
+//            RemoveListener( _dialogFocusListener );
         }
 
-        base.SetStage( stage! );
+        base.SetStage( stage );
     }
 
 //    protected InputListener ignoreTouchDown = new InputListener()
@@ -294,15 +296,14 @@ public class Dialog : Window
     {
         Show
             (
-            stage,
-            SceneActions.Sequence
-                ( SceneActions.Alpha( 0 ), SceneActions.FadeIn( 0.4f, Interpolator.Fade ) )
+             stage, SceneActions.Sequence
+                 ( SceneActions.Alpha( 0 ), SceneActions.FadeIn( 0.4f, Interpolator.Fade ) )
             );
 
         SetPosition
             (
-            ( float )Math.Round( ( stage.Width - Width ) / 2 ),
-            ( float )Math.Round( ( stage.Height - Height ) / 2 )
+             ( float )Math.Round( ( stage.Width - Width ) / 2 ),
+             ( float )Math.Round( ( stage.Height - Height ) / 2 )
             );
 
         return this;
@@ -426,6 +427,47 @@ public class Dialog : Window
     protected void Result( object? obj )
     {
     }
+
+    // ------------------------------------------------------------------------
+
+    internal class ButtonTableChangeListener : ChangeListener
+    {
+        private readonly Dialog _dialog;
+        
+        public ButtonTableChangeListener( Dialog dialog )
+        {
+            this._dialog = dialog;
+        }
+        
+        public override void Changed( ChangeEvent ev, Actor? actor )
+        {
+            if ( ( _dialog._values == null ) || ( actor == null ) )
+            {
+                return;
+            }
+            
+            if ( !_dialog._values.ContainsKey( actor ) )
+            {
+                return;
+            }
+
+            while ( actor?.Parent != _dialog.ButtonTable )
+            {
+                actor = actor?.Parent;
+            }
+
+            _dialog.Result( _dialog._values[ actor! ] );
+
+            if ( !_dialog.CancelHide )
+            {
+                _dialog.Hide();
+            }
+
+            _dialog.CancelHide = false;
+        }
+    }
+
+    // ------------------------------------------------------------------------
 
     protected internal sealed class DialogChangeObserver : IEventListener
     {
