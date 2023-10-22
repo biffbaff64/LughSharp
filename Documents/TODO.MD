@@ -263,7 +263,7 @@ GRAPHICS/G2D
     - IP   - PolygonRegionLoader            
     - DONE - PolygonSprite                  
     - DONE - PolygonSpriteBatch             
-    - IP   - RepeatablePolygonSprite        
+    - DONE - RepeatablePolygonSprite        
     - DONE - Sprite                         
     - DONE - SpriteBatch                    
     - DONE - SpriteCache                    

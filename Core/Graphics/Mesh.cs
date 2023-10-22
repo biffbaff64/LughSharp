@@ -475,7 +475,7 @@ public class Mesh
                 );
         }
 
-        FloatBuffer verticesBuffer = GetVerticesBuffer( false );
+        FloatBuffer verticesBuffer = GetVerticesBuffer();
 
         var pos = verticesBuffer.Position;
 
@@ -879,7 +879,7 @@ public class Mesh
     /// the backing FloatBuffer holding the vertices.
     /// Does not have to be a direct buffer on Android!
     /// </returns>
-    public FloatBuffer GetVerticesBuffer( bool forWriting ) => _vertices.GetBuffer( forWriting );
+    public FloatBuffer GetVerticesBuffer() => _vertices.GetBuffer( false );
 
     /// <summary>
     /// Calculates the <see cref="BoundingBox"/> of the vertices contained in this mesh.
@@ -1015,7 +1015,7 @@ public class Mesh
         FloatBuffer      verts      = _vertices.GetBuffer( false );
         ShortBuffer      index      = _indices.GetBuffer( false );
         VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
-        var              posoff     = posAttrib?.Offset / 4;
+        var              posoff     = posAttrib!.Offset / 4;
         var              vertexSize = _vertices.Attributes.VertexSize / 4;
         var              end        = offset + count;
 
@@ -1027,6 +1027,7 @@ public class Mesh
                     for ( var i = offset; i < end; i++ )
                     {
                         var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
+                        
                         _tmpV.Set( verts.Get( idx ), 0, 0 );
 
                         if ( transform != null )
@@ -1041,7 +1042,8 @@ public class Mesh
                 {
                     for ( var i = offset; i < end; i++ )
                     {
-                        var idx = ( i * vertexSize ) + posoff;
+                        var idx = ( ( i * vertexSize ) + posoff );
+                        
                         _tmpV.Set( verts.Get( idx ), 0, 0 );
 
                         if ( transform != null )
@@ -1061,6 +1063,7 @@ public class Mesh
                     for ( var i = offset; i < end; i++ )
                     {
                         var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
+                        
                         _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
 
                         if ( transform != null )
@@ -1076,6 +1079,7 @@ public class Mesh
                     for ( var i = offset; i < end; i++ )
                     {
                         var idx = ( i * vertexSize ) + posoff;
+                        
                         _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
 
                         if ( transform != null )
@@ -1155,7 +1159,7 @@ public class Mesh
         FloatBuffer      verts      = _vertices.GetBuffer( false );
         ShortBuffer      index      = _indices.GetBuffer( false );
         VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
-        var              posoff     = posAttrib?.Offset / 4;
+        var              posoff     = posAttrib!.Offset / 4;
         var              vertexSize = _vertices.Attributes.VertexSize / 4;
         var              end        = offset + count;
 
@@ -1430,7 +1434,6 @@ public class Mesh
         Transform( matrix, 0, NumVertices );
     }
 
-    // TODO: Protected for now, because transforming a portion works but still copies all vertices
     protected void Transform( in Matrix4 matrix, in int start, in int count )
     {
         VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.POSITION );
@@ -1537,8 +1540,6 @@ public class Mesh
         TransformUV( matrix, 0, NumVertices );
     }
 
-    // TODO: Protected for now, because transforming a portion works but still copies all vertices
-    // NB: Original message from Java LibGDX.
     protected void TransformUV( in Matrix3 matrix, in int start, in int count )
     {
         VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES );

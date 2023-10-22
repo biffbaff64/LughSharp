@@ -15,27 +15,28 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
+using System.Text;
 
 namespace LibGDXSharp.Core.Utils.Collections;
 
 [PublicAPI]
 public class ObjectSet<T> : IEnumerable< T >
 {
-    public int  Size     { get; set; }
-    public T[]? KeyTable { get; set; }
+    public int   Size     { get; set; }
+    public T?[]? KeyTable { get; set; }
 
     private float _loadFactor;
     private int   _threshold;
 
     /// <summary>
-    /// Used by <see cref="Place(Object)"/> to bit shift the upper bits of a
+    /// Used by <see cref="Place"/> to bit shift the upper bits of a
     /// <see cref="long"/> into a usable range (&gt;= 0 and &lt;= <see cref="mask"/>).
     /// The shift can be negative, which is convenient to match the number of
     /// bits in mask: if mask is a 7-bit number, a shift of -7 shifts the upper
     /// 7 bits into the lowest 7 positions.
     /// <para>
     /// <see cref="mask"/> can also be used to mask the low bits of a number,
-    /// which may be faster for some hashcodes, if <see cref="Place(Object)"/>
+    /// which may be faster for some hashcodes, if <see cref="Place"/>
     /// is overridden.
     /// </para>
     /// </summary>
@@ -44,7 +45,7 @@ public class ObjectSet<T> : IEnumerable< T >
     /// <summary>
     /// A bitmask used to confine hashcodes to the size of the table. Must
     /// be all 1 bits in its low positions, ie a power of two minus 1. If
-    /// <see cref="Place(Object)"/>" is overriden, this can be used instead
+    /// <see cref="Place"/>" is overriden, this can be used instead
     /// of <see cref="shift"/>" to isolate usable bits of a hash.
     /// </summary>
     protected int mask;
@@ -61,19 +62,19 @@ public class ObjectSet<T> : IEnumerable< T >
     /// If not a power of two, it is increased to the next nearest power of two.
     /// Default value is 51.
     /// </param>
-    /// <param name="loadFactor">Default value is 0.8f</param>
-    public ObjectSet( int initialCapacity = 51, float loadFactor = 0.8f )
+    /// <param name="_loadFactor">Default value is 0.8f</param>
+    public ObjectSet( int initialCapacity = 51, float _loadFactor = 0.8f )
     {
-        if ( ( loadFactor <= 0f ) || ( loadFactor >= 1f ) )
+        if ( ( _loadFactor <= 0f ) || ( _loadFactor >= 1f ) )
         {
-            throw new ArgumentException( "loadFactor must be > 0 and < 1: " + loadFactor );
+            throw new ArgumentException( "_loadFactor must be > 0 and < 1: " + _loadFactor );
         }
 
-        this._loadFactor = loadFactor;
+        this._loadFactor = _loadFactor;
 
-        int tableSize = TableSize( initialCapacity, loadFactor );
+        int tableSize = TableSize( initialCapacity, _loadFactor );
 
-        _threshold = ( int )( tableSize * loadFactor );
+        _threshold = ( int )( tableSize * _loadFactor );
         mask       = tableSize - 1;
         shift      = ( int )long.LeadingZeroCount( mask );
 
@@ -135,7 +136,7 @@ public class ObjectSet<T> : IEnumerable< T >
     /// differently than <see cref="object.Equals(object)"/>.
     /// </para>
     /// </summary>
-    private int LocateKey( T key )
+    private int LocateKey( T? key )
     {
         ArgumentNullException.ThrowIfNull( key );
 
@@ -143,7 +144,7 @@ public class ObjectSet<T> : IEnumerable< T >
 
         for ( var i = Place( key );; i = ( i + 1 ) & mask )
         {
-            T other = this.KeyTable[ i ];
+            T? other = this.KeyTable[ i ];
 
             if ( other == null )
             {
@@ -182,7 +183,7 @@ public class ObjectSet<T> : IEnumerable< T >
 
         if ( ++Size >= _threshold )
         {
-            resize( KeyTable.Length << 1 );
+            Resize( KeyTable.Length << 1 );
         }
 
         return true;
@@ -211,7 +212,7 @@ public class ObjectSet<T> : IEnumerable< T >
 
     public bool AddAll( T[] array, int offset, int length )
     {
-        ensureCapacity( length );
+        EnsureCapacity( length );
 
         var oldSize = Size;
 
@@ -225,13 +226,13 @@ public class ObjectSet<T> : IEnumerable< T >
 
     public void AddAll( ObjectSet< T > set )
     {
-        ensureCapacity( set.Size );
+        EnsureCapacity( set.Size );
 
         var n = set.KeyTable?.Length;
 
         for ( var i = 0; i < n; i++ )
         {
-            T key = set.KeyTable![ i ];
+            T? key = set.KeyTable![ i ];
 
             if ( key != null )
             {
@@ -259,8 +260,9 @@ public class ObjectSet<T> : IEnumerable< T >
     /// <summary>
     /// Returns true if the key was removed.
     /// </summary>
-    public bool Remove( T key )
+    public bool Remove( T? key )
     {
+        ArgumentNullException.ThrowIfNull( key );
         GdxRuntimeException.ThrowIfNull( KeyTable, "KeyTable cannot be null." );
 
         var i = LocateKey( key );
@@ -304,7 +306,7 @@ public class ObjectSet<T> : IEnumerable< T >
 
     /// <summary>
     /// Reduces the size of the backing arrays to be the specified
-    /// capacity / loadFactor, or less. If the capacity is already less,
+    /// capacity / _loadFactor, or less. If the capacity is already less,
     /// nothing is done.
     /// <para>
     /// If the set contains more items than the specified capacity, the
@@ -322,134 +324,156 @@ public class ObjectSet<T> : IEnumerable< T >
 
         if ( KeyTable?.Length > tableSize )
         {
-            resize( tableSize );
+            Resize( tableSize );
         }
     }
 
-    /** Clears the set and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
-     * The reduction is done by allocating new arrays, though for large arrays this can be faster than clearing the existing
-     * array. */
-    public void clear( int maximumCapacity )
+    /// <summary>
+    /// Clears the set and reduces the size of the backing arrays to be the
+    /// specified capacity / _loadFactor, if they are larger.
+    /// <para>
+    /// The reduction is done by allocating new arrays, though for large arrays
+    /// this can be faster than clearing the existing array.
+    /// </para>
+    /// </summary>
+    public void Clear( int maximumCapacity )
     {
-        int tableSize = tableSize( maximumCapacity, loadFactor );
+        int tableSize = TableSize( maximumCapacity, _loadFactor );
 
-        if ( keyTable.length <= tableSize )
+        if ( KeyTable?.Length <= tableSize )
         {
-            clear();
+            Clear();
 
             return;
         }
 
-        size = 0;
-        resize( tableSize );
+        Size = 0;
+        Resize( tableSize );
     }
 
-    /** Clears the set, leaving the backing arrays at the current capacity. When the capacity is high and the population is low,
-     * iteration can be unnecessarily slow. {@link #clear(int)} can be used to reduce the capacity. */
-    public void clear()
+    /// <summary>
+    /// Clears the set, leaving the backing arrays at the current capacity.
+    /// When the capacity is high and the population is low, iteration can
+    /// be unnecessarily slow.
+    /// <para>
+    /// <see cref="Clear(int)"/> can be used to reduce the capacity.
+    /// </para>
+    /// </summary>
+    public void Clear()
     {
-        if ( size == 0 )
+        if ( Size == 0 )
         {
             return;
         }
 
-        size = 0;
-        Arrays.fill( keyTable, null );
+        Size = 0;
+        Array.Fill( KeyTable!, default( T ) );
     }
 
-    public boolean contains( T key )
+    public bool Contains( T? key )
     {
-        return locateKey( key ) >= 0;
+        return LocateKey( key ) >= 0;
     }
 
-    public @Null T get( T key )
+    public T? Get( T key )
     {
-        int i = locateKey( key );
+        var i = LocateKey( key );
 
-        return i < 0 ? null : keyTable[ i ];
+        return i < 0 ? default( T ) : KeyTable![ i ];
     }
 
-    public T first()
+    public T? First()
     {
-        T[] keyTable = this.keyTable;
+        GdxRuntimeException.ThrowIfNull( this.KeyTable );
 
-        for ( int i = 0, n = keyTable.length; i < n; i++ )
+        for ( int i = 0, n = this.KeyTable.Length; i < n; i++ )
         {
-            if ( keyTable[ i ] != null )
+            if ( this.KeyTable[ i ] != null )
             {
-                return keyTable[ i ];
+                return this.KeyTable[ i ];
             }
         }
 
         throw new IllegalStateException( "ObjectSet is empty." );
     }
 
-    /** Increases the size of the backing array to accommodate the specified number of additional items / loadFactor. Useful before
-     * adding many items to avoid multiple backing array resizes. */
-    public void ensureCapacity( int additionalCapacity )
+    /// <summary>
+    /// Increases the size of the backing array to accommodate the specified
+    /// number of additional items / _loadFactor. Useful before adding many
+    /// items to avoid multiple backing array resizes.
+    /// </summary>
+    public void EnsureCapacity( int additionalCapacity )
     {
-        int tableSize = tableSize( size + additionalCapacity, loadFactor );
-        if ( keyTable.length < tableSize )
+        int tableSize = TableSize( Size + additionalCapacity, _loadFactor );
+
+        if ( KeyTable?.Length < tableSize )
         {
-            resize( tableSize );
+            Resize( tableSize );
         }
     }
 
-    private void resize( int newSize )
+    private void Resize( int newSize )
     {
-        int oldCapacity = keyTable.length;
-        threshold = ( int )( newSize * loadFactor );
-        mask      = newSize - 1;
-        shift     = Long.numberOfLeadingZeros( mask );
-        T[] oldKeyTable = keyTable;
+        var oldCapacity = KeyTable?.Length;
 
-        keyTable = ( T[] )( new Object[ newSize ] );
+        _threshold = ( int )( newSize * _loadFactor );
+        mask       = newSize - 1;
+        shift      = ( int )long.LeadingZeroCount( mask );
 
-        if ( size > 0 )
+        T?[]? oldKeyTable = KeyTable;
+
+        KeyTable = ( new T[ newSize ] );
+
+        if ( Size > 0 )
         {
             for ( var i = 0; i < oldCapacity; i++ )
             {
-                T key = oldKeyTable[ i ];
+                T? key = oldKeyTable![ i ];
+
                 if ( key != null )
                 {
-                    addResize( key );
+                    AddResize( key );
                 }
             }
         }
     }
 
-    public int hashCode()
+    public override int GetHashCode()
     {
-        int h        = size;
-        T[] keyTable = this.keyTable;
+        var h = 0;
 
-        for ( int i = 0, n = keyTable.length; i < n; i++ )
+        var n = KeyTable?.Length;
+
+        for ( var i = 0; i < n; i++ )
         {
-            T key                = keyTable[ i ];
+            T? key = KeyTable![ i ];
+
             if ( key != null )
             {
-                h += key.hashCode();
+                h += key.GetHashCode();
             }
         }
 
         return h;
     }
 
-    public boolean equals( Object obj )
+    public override bool Equals( object? obj )
     {
-        if ( !( obj instanceof ObjectSet)) return false;
-        var                    other = ( ObjectSet )obj;
-
-        if ( other.size != size )
+        if ( obj?.GetType() != typeof( ObjectSet< T > ) )
         {
             return false;
         }
 
-        T[] keyTable = this.keyTable;
+        var other = ( ObjectSet< T > )obj;
 
-        for ( int i = 0, n = keyTable.length; i < n; i++ )
+        if ( other.Size != this.Size )
         {
-            if ( keyTable[ i ] != null && !other.contains( keyTable[ i ] ) )
+            return false;
+        }
+
+        for ( int i = 0, n = this.KeyTable!.Length; i < n; i++ )
+        {
+            if ( ( this.KeyTable[ i ] != null ) && !other.Contains( this.KeyTable[ i ] ) )
             {
                 return false;
             }
@@ -458,50 +482,48 @@ public class ObjectSet<T> : IEnumerable< T >
         return true;
     }
 
-    public String toString()
+    public override string ToString()
     {
-        return '{' + toString( ", " ) + '}';
+        return '{' + ToString( ", " ) + '}';
     }
 
-    public String toString( String separator )
+    public string ToString( string separator )
     {
-        if ( size == 0 )
+        if ( Size == 0 )
         {
             return "";
         }
 
-        java.lang.StringBuilder buffer   = new java.lang.StringBuilder( 32 );
-        T[]                     keyTable = this.keyTable;
-        int                     i        = keyTable.length;
+        var buffer   = new StringBuilder( 32 );
+        var i        = this.KeyTable!.Length;
 
         while ( i-- > 0 )
         {
-            T key = keyTable[ i ];
+            T? key = this.KeyTable[ i ];
 
             if ( key == null )
             {
                 continue;
             }
 
-            buffer.append( key == this ? "(this)" : key );
+            buffer.Append( key );
 
             break;
         }
 
         while ( i-- > 0 )
         {
-            T key = keyTable[ i ];
+            T? key = this.KeyTable[ i ];
 
             if ( key == null )
             {
                 continue;
             }
 
-            buffer.append( separator );
-            buffer.append( key == this ? "(this)" : key );
+            buffer.Append( separator ).Append( key );
         }
 
-        return buffer.toString();
+        return buffer.ToString();
     }
 
     // ------------------------------------------------------------------------

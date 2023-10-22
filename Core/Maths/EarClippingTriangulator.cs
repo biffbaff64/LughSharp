@@ -20,7 +20,7 @@ namespace LibGDXSharp.Maths;
 public class EarClippingTriangulator
 {
 
-    public List< short > ComputeTriangles( float[] vertices )
+    public List< short > ComputeTriangles( float[]? vertices )
     {
         return null!;
     }

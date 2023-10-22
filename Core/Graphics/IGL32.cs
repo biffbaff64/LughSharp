@@ -204,34 +204,34 @@ public interface IGL32 : IGL31
     const int GL_MAX_FRAMEBUFFER_LAYERS                          = 0x9317;
     const int GL_MULTISAMPLE_LINE_WIDTH_RANGE                    = 0x9381;
     const int GL_MULTISAMPLE_LINE_WIDTH_GRANULARITY              = 0x9382;
-    const int GL_COMPRESSED_RGBA_ASTC_4_X4                        = 0x93B0;
-    const int GL_COMPRESSED_RGBA_ASTC_5_X4                        = 0x93B1;
-    const int GL_COMPRESSED_RGBA_ASTC_5_X5                        = 0x93B2;
-    const int GL_COMPRESSED_RGBA_ASTC_6_X5                        = 0x93B3;
-    const int GL_COMPRESSED_RGBA_ASTC_6_X6                        = 0x93B4;
-    const int GL_COMPRESSED_RGBA_ASTC_8_X5                        = 0x93B5;
-    const int GL_COMPRESSED_RGBA_ASTC_8_X6                        = 0x93B6;
-    const int GL_COMPRESSED_RGBA_ASTC_8_X8                        = 0x93B7;
-    const int GL_COMPRESSED_RGBA_ASTC_10_X5                       = 0x93B8;
-    const int GL_COMPRESSED_RGBA_ASTC_10_X6                       = 0x93B9;
-    const int GL_COMPRESSED_RGBA_ASTC_10_X8                       = 0x93BA;
-    const int GL_COMPRESSED_RGBA_ASTC_10_X10                      = 0x93BB;
-    const int GL_COMPRESSED_RGBA_ASTC_12_X10                      = 0x93BC;
-    const int GL_COMPRESSED_RGBA_ASTC_12_X12                      = 0x93BD;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4_X4                = 0x93D0;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5_X4                = 0x93D1;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5_X5                = 0x93D2;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6_X5                = 0x93D3;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6_X6                = 0x93D4;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8_X5                = 0x93D5;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8_X6                = 0x93D6;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8_X8                = 0x93D7;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10_X5               = 0x93D8;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10_X6               = 0x93D9;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10_X8               = 0x93DA;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10_X10              = 0x93DB;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12_X10              = 0x93DC;
-    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12_X12              = 0x93DD;
+    const int GL_COMPRESSED_RGBA_ASTC_4_X4                       = 0x93B0;
+    const int GL_COMPRESSED_RGBA_ASTC_5_X4                       = 0x93B1;
+    const int GL_COMPRESSED_RGBA_ASTC_5_X5                       = 0x93B2;
+    const int GL_COMPRESSED_RGBA_ASTC_6_X5                       = 0x93B3;
+    const int GL_COMPRESSED_RGBA_ASTC_6_X6                       = 0x93B4;
+    const int GL_COMPRESSED_RGBA_ASTC_8_X5                       = 0x93B5;
+    const int GL_COMPRESSED_RGBA_ASTC_8_X6                       = 0x93B6;
+    const int GL_COMPRESSED_RGBA_ASTC_8_X8                       = 0x93B7;
+    const int GL_COMPRESSED_RGBA_ASTC_10_X5                      = 0x93B8;
+    const int GL_COMPRESSED_RGBA_ASTC_10_X6                      = 0x93B9;
+    const int GL_COMPRESSED_RGBA_ASTC_10_X8                      = 0x93BA;
+    const int GL_COMPRESSED_RGBA_ASTC_10_X10                     = 0x93BB;
+    const int GL_COMPRESSED_RGBA_ASTC_12_X10                     = 0x93BC;
+    const int GL_COMPRESSED_RGBA_ASTC_12_X12                     = 0x93BD;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4_X4               = 0x93D0;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5_X4               = 0x93D1;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5_X5               = 0x93D2;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6_X5               = 0x93D3;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6_X6               = 0x93D4;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8_X5               = 0x93D5;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8_X6               = 0x93D6;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8_X8               = 0x93D7;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10_X5              = 0x93D8;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10_X6              = 0x93D9;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10_X8              = 0x93DA;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10_X10             = 0x93DB;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12_X10             = 0x93DC;
+    const int GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12_X12             = 0x93DD;
 
     // C function void glBlendBarrier ( void )
 
@@ -288,7 +288,8 @@ public interface IGL32 : IGL31
                                int type,
                                int id,
                                int severity,
-                                // int length
+
+                               // int length
                                string buf );
 
     // C function void glDebugMessageCallback ( GLDEBUGPROC callback, const void *userParam )
@@ -357,7 +358,8 @@ public interface IGL32 : IGL31
     // C function void glPushDebugGroup ( GLenum source, GLuint id, GLsizei length, const GLchar *message )
 
     void GLPushDebugGroup( int source,
-                           int id, 
+                           int id,
+
                            // int length,
                            string message );
 
@@ -368,7 +370,8 @@ public interface IGL32 : IGL31
     // C function void glObjectLabel ( GLenum identifier, GLuint name, GLsizei length, const GLchar *label )
 
     void GLObjectLabel( int identifier,
-                        int name, 
+                        int name,
+
                         // int length,
                         string label );
 
@@ -490,7 +493,8 @@ public interface IGL32 : IGL31
     // C function void glGetnUniformfv ( GLuint program, GLint location, GLsizei bufSize, GLfloat *parameters )
 
     void GLGetnUniformfv( int program,
-                          int location, 
+                          int location,
+
                           // int bufSize,
                           FloatBuffer parameters );
 
@@ -507,7 +511,8 @@ public interface IGL32 : IGL31
     // C function void glGetnUniformiv ( GLuint program, GLint location, GLsizei bufSize, GLint *parameters )
 
     void GLGetnUniformiv( int program,
-                          int location, 
+                          int location,
+
                           // int bufSize,
                           IntBuffer parameters );
 
@@ -524,7 +529,8 @@ public interface IGL32 : IGL31
     // C function void glGetnUniformuiv ( GLuint program, GLint location, GLsizei bufSize, GLuint *parameters )
 
     void GLGetnUniformuiv( int program,
-                           int location, 
+                           int location,
+
                            // int bufSize,
                            IntBuffer parameters );
 

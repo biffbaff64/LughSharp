@@ -189,6 +189,11 @@ public class Cubemap : GLTexture
         }
     }
 
+    /// <summary>
+    /// Adds a new entry to the list of managed cubemnaps.
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="cubemap"></param>
     private static void AddManagedCubemap( IApplication app, Cubemap cubemap )
     {
         List< Cubemap > managedCubemapArray = ManagedCubemaps[ app ] ?? new List< Cubemap >();
@@ -198,7 +203,7 @@ public class Cubemap : GLTexture
     }
 
     /// <summary>
-    /// Clears all managed cubemaps. This is an internal method. Do not use it!
+    /// Clears all managed cubemaps.
     /// </summary>
     public static void ClearAllCubemaps( IApplication app )
     {
@@ -208,7 +213,7 @@ public class Cubemap : GLTexture
     /// <summary>
     /// Invalidate all managed cubemaps. This is an internal method. Do not use it!
     /// </summary>
-    public static void InvalidateAllCubemaps( IApplication app )
+    internal static void InvalidateAllCubemaps( IApplication app )
     {
         List< Cubemap >? managedCubemapArray = ManagedCubemaps[ app ];
 
@@ -307,7 +312,9 @@ public class Cubemap : GLTexture
     public static int NumManagedCubemaps => ManagedCubemaps[ Gdx.App ]?.Count ?? 0;
 
     /// <summary>
-    /// Enum to identify each side of a Cubemap </summary>
+    /// Enum to identify each side of a Cubemap
+    /// </summary>
+    [PublicAPI]
     public class CubemapSide
     {
         /// <summary>

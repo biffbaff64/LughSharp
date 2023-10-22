@@ -14,10 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Buffers;
-
-using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
-
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
@@ -172,38 +168,47 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     {
         GLApplication.InitialiseGL();
 
-        Monitor*   monitor   = GLFW.GetPrimaryMonitor();
+        Monitor*   monitor   = GLFW.glfwGetPrimaryMonitor().ToInt32();
         VideoMode* videoMode = GLFW.GetVideoMode( monitor );
 
         return new GLGraphics.GLDisplayMode
             (
-            0, //TODO:
-            videoMode -> Width,
-            videoMode -> Height,
-            videoMode -> RefreshRate,
-            videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
+             0, //TODO:
+             videoMode -> Width,
+             videoMode -> Height,
+             videoMode -> RefreshRate,
+             videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
             );
+    }
+
+    public static IGraphics.Monitor[] GetMonitors()
+    {
+        GLApplication.InitialiseGL();
+
+        PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
+        Monitor[]     monitors     = new Monitor[ glfwMonitors.limit() ];
+
+        for ( int i = 0; i < glfwMonitors.limit(); i++ )
+        {
+            monitors[ i ] = toLwjgl3Monitor( glfwMonitors.get( i ) );
+        }
+
+        return monitors;
     }
 
     /// <summary>
     /// </summary>
     /// <param name="glfwMonitor"></param>
     /// <returns></returns>
-    public GLMonitor ToGLMonitor( long glfwMonitor )
+    public static GLGraphics.GLMonitor ToGLMonitor( IntPtr glfwMonitor )
     {
-        unsafe
-        {
-            IntBuffer tmp  = BufferUtils.NewIntBuffer( 1 );
-            IntBuffer tmp2 = BufferUtils.NewIntBuffer( 1 );
+        var virtualX = 0;
+        var virtualY = 0;
 
-            GLFW.GetMonitorPos( glfwMonitor, tmp, tmp2 );
+        GLFW.glfwGetMonitorPos( glfwMonitor, ref virtualX, ref virtualY );
 
-            var virtualX = tmp.Get( 0 );
-            var virtualY = tmp2.Get( 0 );
-            var name     = GLFW.GetMonitorName( glfwMonitor );
+        var name = GLFW.glfwGetMonitorName( glfwMonitor );
 
-            return new GLMonitor( glfwMonitor, virtualX, virtualY, name );
-        }
-
+        return new GLGraphics.GLMonitor( glfwMonitor.ToInt32(), virtualX, virtualY, name );
     }
 }

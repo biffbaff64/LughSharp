@@ -24,7 +24,7 @@ namespace LibGDXSharp.Core.Utils.Collections;
 [PublicAPI]
 public class OrderedSet<T> : ObjectSet< T >
 {
-    public List< T > Items { get; set; } = new();
+    public List< T > Items { get; set; }
 
     private OrderedSetIterator< T >? _iterator1;
     private OrderedSetIterator< T >? _iterator2;
@@ -47,7 +47,7 @@ public class OrderedSet<T> : ObjectSet< T >
         Items = new List< T >( set.Items );
     }
 
-    public bool Add( T key )
+    public new bool Add( T key )
     {
         if ( !base.Add( key ) )
         {
@@ -89,13 +89,13 @@ public class OrderedSet<T> : ObjectSet< T >
 
         T[] keys = set.Items.ToArray();
 
-        for ( int i = 0, n = set.Items.Size; i < n; i++ )
+        for ( int i = 0, n = set.Items.Count; i < n; i++ )
         {
             Add( keys[ i ] );
         }
     }
 
-    public bool Remove( T key )
+    public new bool Remove( T key )
     {
         if ( !base.Remove( key ) )
         {
@@ -149,7 +149,8 @@ public class OrderedSet<T> : ObjectSet< T >
         }
 
         base.Add( after );
-        Items.Set( Items.IndexOf( before ), after );
+
+        Items[ Items.IndexOf( before ) ] = after;
 
         return true;
     }
@@ -181,18 +182,19 @@ public class OrderedSet<T> : ObjectSet< T >
 
         base.Remove( Items[ index ] );
         base.Add( after );
-        Items.Set( index, after );
+
+        Items[ index ] = after;
 
         return true;
     }
 
-    public void Clear( int maximumCapacity )
+    public new void Clear( int maximumCapacity )
     {
         Items.Clear();
         base.Clear( maximumCapacity );
     }
 
-    public void Clear()
+    public new void Clear()
     {
         Items.Clear();
         base.Clear();

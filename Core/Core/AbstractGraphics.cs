@@ -27,6 +27,8 @@ public abstract class AbstractGraphics : IGraphics
     public int       BackBufferHeight { get; protected set; }
     public int       LogicalWidth     { get; set; }
     public int       LogicalHeight    { get; set; }
+    public int       Width            { get; }
+    public int       Height           { get; }
     public IGL20?    GL20             { get; set; }
     public IGL30?    GL30             { get; set; }
     public float     DeltaTime        { get; set; }
@@ -35,10 +37,6 @@ public abstract class AbstractGraphics : IGraphics
     // ========================================================================
     // Abstract methods because C# insists this is done to fulfill the contract
     // between the class and interface, which just makes everything annoying tbh.
-
-    public abstract int Width { get; }
-
-    public abstract int Height { get; }
 
     public abstract IGraphics.Monitor GetPrimaryMonitor();
 

@@ -21,7 +21,7 @@ public class PolygonRegion
 {
     public TextureRegion Region        { get; set; }
     public float[]       TextureCoords { get; set; } // texture coordinates in atlas coordinates
-    public float[]       Vertices      { get; set; } // pixel coordinates relative to source image.
+    public float[]?       Vertices      { get; set; } // pixel coordinates relative to source image.
     public short[]       Triangles     { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ public class PolygonRegion
     /// contains 2D polygon coordinates in pixels relative to source region.
     /// </param>
     /// <param name="triangles"></param>
-    public PolygonRegion( TextureRegion region, float[] vertices, short[] triangles )
+    public PolygonRegion( TextureRegion region, float[]? vertices, short[] triangles )
     {
         this.Region        = region;
         this.Vertices      = vertices;

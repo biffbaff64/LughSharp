@@ -14,6 +14,10 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Scenes.Scene2D.UI;
+
+using Monitor = LibGDXSharp.Core.IGraphics.Monitor;
+
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
@@ -138,7 +142,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     private void InitiateGL()
     {
-        var vendorString   = string.Empty; //TODO: Gdx.GL20.GLGetString( GL11.GL_VENDOR );
+        var vendorString   = Gdx.GL20.GLGetString( GL11.GL_VENDOR );
         var rendererString = string.Empty; //TODO: Gdx.GL20.GLGetString( GL11.GL_RENDERER );
 
         GLVersion = new GLVersion
@@ -160,7 +164,8 @@ public class GLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     public bool SupportsCubeMapSeamless()
     {
-        return GLVersion.IsVersionEqualToOrHigher( 3, 2 ) || SupportsExtension( "GL_ARB_seamless_cube_map" );
+        return GLVersion.IsVersionEqualToOrHigher( 3, 2 )
+            || SupportsExtension( "GL_ARB_seamless_cube_map" );
     }
 
     /// <summary>
@@ -171,16 +176,14 @@ public class GLGraphics : AbstractGraphics, IDisposable
     /// <param name="enable"></param>
     public void EnableCubeMapSeamless( bool enable )
     {
-        //TODO:
-
-//        if ( enable )
-//        {
-//            Gdx.GL20.GLEnable( GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-//        }
-//        else
-//        {
-//            Gdx.GL20.GLDisable( GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-//        }
+        if ( enable )
+        {
+            Gdx.GL20.GLEnable( GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+        }
+        else
+        {
+            Gdx.GL20.GLDisable( GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -191,10 +194,12 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     public override Monitor GetPrimaryMonitor()
     {
-        return GLApplicationConfiguration.Monitor( GLFW.GetPrimaryMonitor() );
+        return GLApplicationConfiguration.ToGLMonitor( GLFW.glfwGetPrimaryMonitor() );
     }
 
-    public override Monitor GetMonitor() => default;
+    public override Monitor GetMonitor()
+    {
+    }
 
     public override Monitor[] GetMonitors()
     {
@@ -208,13 +213,23 @@ public class GLGraphics : AbstractGraphics, IDisposable
     {
     }
 
-    public override IGraphics.DisplayMode GetDisplayMode() => default;
+    public override IGraphics.DisplayMode GetDisplayMode()
+    {
+    }
 
-    public override IGraphics.DisplayMode GetDisplayMode( Monitor monitor ) => default;
+    public override IGraphics.DisplayMode GetDisplayMode( Monitor monitor )
+    {
+    }
 
-    public override bool SetFullscreenMode( IGraphics.DisplayMode displayMode ) => false;
+    public override bool SetFullscreenMode( IGraphics.DisplayMode displayMode )
+    {
+        return false;
+    }
 
-    public override bool SetWindowedMode( int width, int height ) => false;
+    public override bool SetWindowedMode( int width, int height )
+    {
+        return false;
+    }
 
     // ------------------------------------------------------------------------
 
@@ -288,7 +303,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )
     {
-        GLCursor.SetSystemCursor( getWindow().getWindowHandle(), systemCursor );
+        GLCursor.SetSystemCursor( Window.WindowHandle, systemCursor );
     }
 
     /// <summary>
@@ -304,7 +319,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
         return GL30 != null;
     }
 
-    public override int Width
+    public new int Width
     {
         get
         {
@@ -319,7 +334,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    public override int Height
+    public new int Height
     {
         get
         {
@@ -358,14 +373,14 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     public override unsafe float GetPpcX()
     {
-        GLFW.GetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeX );
+        GLFW.glfwGetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeX );
 
         return ( GetDisplayMode().Width / ( float )sizeX ) * 10;
     }
 
     public override unsafe float GetPpcY()
     {
-        GLFW.GetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeY );
+        GLFW.glfwGetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeY );
 
         return ( GetDisplayMode().Height / ( float )sizeY ) * 10;
     }

@@ -30,7 +30,7 @@ public class Polygon : IShape2D
     public float ScaleX   { get; set; } = 1;
     public float ScaleY   { get; set; } = 1;
 
-    private float[]         _localVertices;
+    private float[]?         _localVertices;
     private float[]?        _worldVertices;
     private bool            _dirty = true;
     private RectangleShape? _bounds;
@@ -53,7 +53,7 @@ public class Polygon : IShape2D
     /// <exception cref="ArgumentException">
     /// if less than 6 elements, representing 3 points, are provided
     /// </exception>
-    public Polygon( float[] vertices )
+    public Polygon( float[]? vertices )
     {
         if ( vertices.Length < 6 )
         {
@@ -153,7 +153,7 @@ public class Polygon : IShape2D
     /// <exception cref="ArgumentException">
     /// if less than 6 elements, representing 3 points, are provided
     /// </exception>
-    public float[] Vertices
+    public float[]? Vertices
     {
         get => _localVertices;
         set

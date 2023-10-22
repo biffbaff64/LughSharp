@@ -30,7 +30,7 @@ global using JetBrains.Annotations;
 
 // -----------------------------------------------------------------------
 // OpenGL support
-global using OpenTK;
+global using LughGLFW;
 
 // -----------------------------------------------------------------------
 // LibGDXSharp

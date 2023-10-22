@@ -345,13 +345,29 @@ public class Color
         return this;
     }
 
+    public static bool operator ==( Color c1, object c2 )
+    {
+        return c1.Equals( c2 );
+    }
+
+    public static bool operator !=( Color c1, object c2 )
+    {
+        return !c1.Equals( c2 );
+    }
+
     public new bool Equals( object? o )
     {
-        if ( this == o ) return true;
+        if ( ( o == null ) || ( GetType() != o.GetType() ) )
+        {
+            return false;
+        }
 
-        if ( ( o == null ) || ( GetType() != o.GetType() ) ) return false;
+        if ( this == o )
+        {
+            return true;
+        }
 
-        Color color = ( Color )o;
+        var color = ( Color )o;
 
         return ToIntBits() == color.ToIntBits();
     }
@@ -409,7 +425,7 @@ public class Color
     /// <param name="value"></param>
     public static void Abgr8888ToColor( Color color, float value )
     {
-        int c = NumberUtils.FloatToIntColor( value );
+        var c = NumberUtils.FloatToIntColor( value );
         color.A = ( ( c & 0xff000000 ) >>> 24 ) / 255f;
         color.B = ( ( c & 0x00ff0000 ) >>> 16 ) / 255f;
         color.G = ( ( c & 0x0000ff00 ) >>> 8 ) / 255f;

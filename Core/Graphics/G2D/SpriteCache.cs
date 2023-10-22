@@ -93,6 +93,25 @@ public class SpriteCache
     /// </summary>
     public int TotalRenderCalls { get; set; } = 0;
 
+    public Color Color { get; } = new( 1, 1, 1, 1 );
+
+    /// <summary>
+    /// The color of this sprite cache, expanding the alpha from 0-254 to 0-255.
+    /// </summary>
+    public float PackedColor
+    {
+        get => _colorPacked;
+        set
+        {
+            Graphics.Color.Abgr8888ToColor( Color, value );
+            _colorPacked = value;
+        }
+    }
+
+    public Matrix4 ProjectionMatrix { get; init; } = new();
+    public Matrix4 TransformMatrix  { get; init; } = new();
+    public bool    IsDrawing        => _drawing;
+
     /// <summary>
     /// Creates a cache that uses indexed geometry and can contain up to 1000 images.
     /// </summary>
@@ -134,27 +153,27 @@ public class SpriteCache
 
         _mesh = new Mesh
             (
-            true,
-            size * ( useIndices ? 4 : 6 ),
-            useIndices ? size * 6 : 0,
-            new VertexAttribute
-                (
-                VertexAttributes.Usage.POSITION,
-                2,
-                ShaderProgram.POSITION_ATTRIBUTE
-                ),
-            new VertexAttribute
-                (
-                VertexAttributes.Usage.COLOR_PACKED,
-                4,
-                ShaderProgram.COLOR_ATTRIBUTE
-                ),
-            new VertexAttribute
-                (
-                VertexAttributes.Usage.TEXTURE_COORDINATES,
-                2,
-                ShaderProgram.TEXCOORD_ATTRIBUTE + "0"
-                )
+             true,
+             size * ( useIndices ? 4 : 6 ),
+             useIndices ? size * 6 : 0,
+             new VertexAttribute
+                 (
+                  VertexAttributes.Usage.POSITION,
+                  2,
+                  ShaderProgram.POSITION_ATTRIBUTE
+                 ),
+             new VertexAttribute
+                 (
+                  VertexAttributes.Usage.COLOR_PACKED,
+                  4,
+                  ShaderProgram.COLOR_ATTRIBUTE
+                 ),
+             new VertexAttribute
+                 (
+                  VertexAttributes.Usage.TEXTURE_COORDINATES,
+                  2,
+                  ShaderProgram.TEXCOORD_ATTRIBUTE + "0"
+                 )
             )
             {
                 AutoBind = false
@@ -199,21 +218,6 @@ public class SpriteCache
         PackedColor = Color.ToFloatBits();
     }
 
-    public Color Color { get; } = new( 1, 1, 1, 1 );
-
-    /// <summary>
-    /// The color of this sprite cache, expanding the alpha from 0-254 to 0-255.
-    /// </summary>
-    public float PackedColor
-    {
-        get => _colorPacked;
-        set
-        {
-            Graphics.Color.Abgr8888ToColor( Color, value );
-            _colorPacked = value;
-        }
-    }
-
     /// <summary>
     /// Starts the definition of a new cache, allowing the add and
     /// <see cref="EndCache()"/> methods to be called.
@@ -230,9 +234,9 @@ public class SpriteCache
             throw new IllegalStateException( "endCache must be called before begin." );
         }
 
-        _currentCache = new Cache( _caches.Count, _mesh.VerticesBuffer.Limit );
+        _currentCache = new Cache( _caches.Count, _mesh.GetVerticesBuffer().Limit );
         _caches.Add( _currentCache );
-        _mesh.VerticesBuffer.Compact();
+        _mesh.GetVerticesBuffer().Compact();
     }
 
     /// <summary>
@@ -257,14 +261,14 @@ public class SpriteCache
         if ( cacheID == ( _caches.Count - 1 ) )
         {
             Cache oldCache = _caches.RemoveIndex( cacheID );
-            _mesh.VerticesBuffer.Limit = oldCache.offset;
+            _mesh.GetVerticesBuffer().Limit = oldCache.offset;
             BeginCache();
 
             return;
         }
 
-        _currentCache                 = _caches[ cacheID ];
-        _mesh.VerticesBuffer.Position = _currentCache.offset;
+        _currentCache                      = _caches[ cacheID ];
+        _mesh.GetVerticesBuffer().Position = _currentCache.offset;
     }
 
     /// <summary>
@@ -279,7 +283,7 @@ public class SpriteCache
         }
 
         Cache cache      = _currentCache;
-        var   cacheCount = _mesh.VerticesBuffer.Position - cache.offset;
+        var   cacheCount = _mesh.GetVerticesBuffer().Position - cache.offset;
 
         if ( cache.textures == null )
         {
@@ -294,7 +298,7 @@ public class SpriteCache
                 cache.counts[ i ] = _counts[ i ];
             }
 
-            _mesh.VerticesBuffer.Flip();
+            _mesh.GetVerticesBuffer().Flip();
         }
         else
         {
@@ -303,9 +307,9 @@ public class SpriteCache
             {
                 throw new GdxRuntimeException
                     (
-                    $"If a cache is not the last created, it cannot be redefined"
-                  + $"with more entries than when it was first created: "
-                  + $"{cacheCount} ({cache.maxCount} max)"
+                     $"If a cache is not the last created, it cannot be redefined"
+                   + $"with more entries than when it was first created: "
+                   + $"{cacheCount} ({cache.maxCount} max)"
                     );
             }
 
@@ -334,7 +338,7 @@ public class SpriteCache
                 }
             }
 
-            FloatBuffer vertices = _mesh.VerticesBuffer;
+            FloatBuffer vertices = _mesh.GetVerticesBuffer();
             vertices.Position = 0;
             Cache lastCache = _caches[ _caches.Count - 1 ];
             vertices.Limit = ( lastCache.offset + lastCache.maxCount );
@@ -353,7 +357,7 @@ public class SpriteCache
     public void Clear()
     {
         _caches.Clear();
-        _mesh.VerticesBuffer.Clear().Flip();
+        _mesh.GetVerticesBuffer().Clear().Flip();
     }
 
     /// <summary>
@@ -383,7 +387,7 @@ public class SpriteCache
             _counts[ lastIndex ] += count;
         }
 
-        _mesh.VerticesBuffer.Put( vertices, offset, length );
+        _mesh.GetVerticesBuffer().Put( vertices, offset, length );
     }
 
     /// <summary>
@@ -1078,20 +1082,20 @@ public class SpriteCache
 
         Array.Copy
             (
-            sprite.Vertices,
-            2 * Sprite.VertexSize,
-            TempVertices,
-            3 * Sprite.VertexSize,
-            Sprite.VertexSize
+             sprite.Vertices,
+             2 * Sprite.VertexSize,
+             TempVertices,
+             3 * Sprite.VertexSize,
+             Sprite.VertexSize
             ); // temp3=sprite2
 
         Array.Copy
             (
-            sprite.Vertices,
-            3 * Sprite.VertexSize,
-            TempVertices,
-            4 * Sprite.VertexSize,
-            Sprite.VertexSize
+             sprite.Vertices,
+             3 * Sprite.VertexSize,
+             TempVertices,
+             4 * Sprite.VertexSize,
+             Sprite.VertexSize
             ); // temp4=sprite3
 
         Array.Copy( sprite.Vertices, 0, TempVertices, 5 * Sprite.VertexSize, Sprite.VertexSize ); // temp5=sprite0
@@ -1243,14 +1247,6 @@ public class SpriteCache
         TotalRenderCalls += textureCount;
     }
 
-    public Matrix4 ProjectionMatrix { get; init; } = new();
-    public Matrix4 TransformMatrix  { get; init; } = new();
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public bool IsDrawing => _drawing;
-
     /// <summary>
     /// Releases all resources held by this SpriteCache.
     /// </summary>
@@ -1259,6 +1255,9 @@ public class SpriteCache
         _mesh.Dispose();
         _shader?.Dispose();
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     #region shaders
 

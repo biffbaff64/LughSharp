@@ -18,8 +18,6 @@ using System.IO.Compression;
 
 using LibGDXSharp.Utils.Buffers;
 
-using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
-
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>

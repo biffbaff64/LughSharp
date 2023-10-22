@@ -31,7 +31,7 @@ public class PolygonMapObject : MapObject
     /// <summary>
     /// </summary>
     /// <param name="vertices">polygon defining vertices (at least 3)</param>
-    public PolygonMapObject( float[] vertices )
+    public PolygonMapObject( float[]? vertices )
     {
         this.Polygon = new Polygon(vertices);
     }

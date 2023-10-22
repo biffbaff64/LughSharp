@@ -19,8 +19,6 @@ using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
 using LibGDXSharp.Core.Utils.Collections;
 
-using OpenTK.Windowing.GraphicsLibraryFramework;
-
 namespace LibGDXSharp;
 
 [PublicAPI]
