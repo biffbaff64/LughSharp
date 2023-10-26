@@ -19,7 +19,7 @@ using LibGDXSharp.Utils.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [PublicAPI]
-public class IndexBufferObject : IIndexData
+public class IndexBufferObject : IIndexData, IDisposable
 {
     private ShortBuffer _buffer;
     private ByteBuffer  _byteBuffer;
@@ -45,7 +45,7 @@ public class IndexBufferObject : IIndexData
             maxIndices = 1;
         }
 
-        _byteBuffer = BufferUtils.NewUnsafeByteBuffer( maxIndices * 2 );
+        _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
         _isDirect   = true;
         _buffer     = _byteBuffer.AsShortBuffer();
         _ownsBuffer = true;

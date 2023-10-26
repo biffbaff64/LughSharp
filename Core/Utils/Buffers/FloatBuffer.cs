@@ -141,6 +141,7 @@ public abstract class FloatBuffer : Buffer
         }
     }
 
+    /// <summary>
     /// Wraps a float array into a buffer.
     /// <para>
     /// The new buffer will be backed by the given float array; that is,
@@ -150,6 +151,7 @@ public abstract class FloatBuffer : Buffer
     /// undefined.  Its backing array will be the given array, and its array
     /// offset will be zero.
     /// </para>
+    /// </summary>
     /// <param name="array"> The array that will back this buffer </param>
     /// <returns> The new float buffer </returns>
     public static FloatBuffer Wrap( float[] array )
@@ -217,7 +219,7 @@ public abstract class FloatBuffer : Buffer
     /// <returns> The new, read-only float buffer </returns>
     public abstract FloatBuffer asReadOnlyBuffer();
 
-
+    // ------------------------------------------------------------------------
     // -- Singleton get/put methods --
 
     /// <summary>
@@ -272,8 +274,10 @@ public abstract class FloatBuffer : Buffer
     /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract FloatBuffer Put( int index, float f );
 
+    // ------------------------------------------------------------------------
     // -- Bulk get operations --
 
+    /// <summary>
     /// Relative bulk <i>get</i> method.
     /// <para>
     /// This method transfers floats from this buffer into the given
@@ -303,6 +307,7 @@ public abstract class FloatBuffer : Buffer
     /// except that it first checks that there are sufficient floats in
     /// this buffer and it is potentially much more efficient.
     /// </para>
+    /// </summary>
     /// <param name="dst">
     /// The array into which floats are to be written
     /// </param>
@@ -510,6 +515,7 @@ public abstract class FloatBuffer : Buffer
         return Put( src, 0, src.Length );
     }
 
+    // ------------------------------------------------------------------------
     // -- Other stuff --
 
     /// <summary>
@@ -716,6 +722,7 @@ public abstract class FloatBuffer : Buffer
         return ( x.Equals( y ) ) || ( float.IsNaN( x ) && float.IsNaN( y ) );
     }
 
+    /// <summary>
     /// Compares this buffer to another.
     /// <para>
     /// Two float buffers are compared by comparing their sequences of remaining
@@ -731,6 +738,7 @@ public abstract class FloatBuffer : Buffer
     /// <para>
     /// A float buffer is not comparable to any other type of object.
     /// </para>
+    /// </summary>
     /// <returns>
     /// A negative integer, zero, or a positive integer as this buffer
     /// is less than, equal to, or greater than the given buffer

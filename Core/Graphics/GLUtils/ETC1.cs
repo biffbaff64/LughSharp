@@ -94,7 +94,7 @@ public class ETC1
 
                 int fileSize = input.ReadInt32();
 
-                CompressedData = BufferUtils.NewUnsafeByteBuffer( fileSize );
+                CompressedData = BufferUtils.NewByteBuffer( fileSize );
                 int readBytes;
 
                 while ( ( readBytes = input.Read( buffer ) ) != -1 )
@@ -239,7 +239,7 @@ public class ETC1
         var         pixelSize      = GetPixelSize( pixmap.GetFormat() );
         ByteBuffer? compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
-        BufferUtils.NewUnsafeByteBuffer( compressedData );
+//        BufferUtils.NewByteBuffer( compressedData );
 
         return new ETC1Data( pixmap.Width, pixmap.Height, compressedData, 0 );
     }
@@ -256,7 +256,7 @@ public class ETC1
         var         pixelSize      = GetPixelSize( pixmap.GetFormat() );
         ByteBuffer? compressedData = EncodeImagePKM( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
-        BufferUtils.NewUnsafeByteBuffer( compressedData );
+//        BufferUtils.NewByteBuffer( compressedData );
 
         return new ETC1Data( pixmap.Width, pixmap.Height, compressedData, 16 );
     }

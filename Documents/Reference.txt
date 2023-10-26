@@ -19,6 +19,30 @@ out (method parameters) - Like ref but variable does not need to be initialised.
 in  (method parameters) - pass by reference but disable modification.
                         - parameter CANNOT be modified by the method.
 
+Dispose Pattern
+---------------
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
 Record vs Struct vs Class
 -------------------------
 

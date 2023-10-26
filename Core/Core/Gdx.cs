@@ -23,30 +23,121 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public static class Gdx
 {
-    //TODO: Perhaps these should check for Non-Debug build and force false if so?
-    public static bool DevMode { get; set; } = false;
-    public static bool GodMode { get; set; } = false;
-
-    public static IApplication App      { get; set; }
-    public static IGraphics    Graphics { get; set; }
-    public static IAudio       Audio    { get; set; }
-    public static IInput       Input    { get; set; }
-    public static IFiles       Files    { get; set; }
-    public static INet         Net      { get; set; }
-    public static IGL20        GL       { get; set; }
-    public static IGL20        GL20     { get; set; }
-    public static IGL30        GL30     { get; set; }
+    private static IApplication? _app;
+    private static IAudio?       _audio;
+    private static IInput?       _input;
+    private static IFiles?       _files;
+    private static IGraphics?    _graphics;
+    private static INet?         _net;
+    private static IGL20?        _gl;
+    private static IGL20?        _gl20;
 
     static Gdx()
     {
-        App      = null!;
-        Graphics = null!;
-        Audio    = null!;
-        Input    = null!;
-        Files    = null!;
-        Net      = null!;
-        GL       = null!;
-        GL20     = null!;
-        GL30     = null!;
+        _app      = null;
+        _graphics = null;
+        _audio    = null;
+        _input    = null;
+        _files    = null;
+        _net      = null;
+        _gl       = null;
+        _gl20     = null;
+
+        GL30 = null;
     }
+
+    public static bool GodMode { get; set; } = false;
+    public static bool DevMode { get; set; } = false;
+
+    // ------------------------------------------------------------------------
+
+    public static IApplication App
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _app );
+
+            return _app;
+        }
+        set => _app = value;
+    }
+
+    public static IAudio Audio
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _audio );
+
+            return _audio;
+        }
+        set => _audio = value;
+    }
+
+    public static IInput Input
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _input );
+
+            return _input;
+        }
+        set => _input = value;
+    }
+
+    public static IFiles Files
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _files );
+
+            return _files;
+        }
+        set => _files = value;
+    }
+
+    public static IGraphics Graphics
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _graphics );
+
+            return _graphics;
+        }
+        set => _graphics = value;
+    }
+
+    public static INet Net
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _net );
+
+            return _net;
+        }
+        set => _net = value;
+    }
+
+    public static IGL20 GL
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _gl );
+
+            return _gl;
+        }
+        set => _gl = value;
+    }
+
+    public static IGL20 GL20
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _gl20 );
+
+            return _gl20;
+        }
+        set => _gl20 = value;
+    }
+
+    public static IGL30? GL30 { get; set; }
 }

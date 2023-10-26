@@ -19,7 +19,7 @@ using LibGDXSharp.Utils.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [PublicAPI]
-public class IndexArray : IIndexData
+public class IndexArray : IIndexData, IDisposable
 {
     private ByteBuffer  _byteBuffer;
     private ShortBuffer _buffer;
@@ -40,7 +40,7 @@ public class IndexArray : IIndexData
             maxIndices = 1; // avoid allocating a zero-sized buffer because of a bug in Android's ART < Android 5.0
         }
 
-        _byteBuffer = BufferUtils.NewUnsafeByteBuffer( maxIndices * 2 );
+        _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
 
         _buffer = _byteBuffer.AsShortBuffer();
         _buffer.Flip();
@@ -120,25 +120,49 @@ public class IndexArray : IIndexData
 
     /// <summary>
     /// Binds this IndexArray for rendering with glDrawElements.
+    /// Default method is empty.
     /// </summary>
-    public void Bind() { }
+    public virtual void Bind()
+    {
+    }
 
     /// <summary>
     /// Unbinds this IndexArray.
+    /// Default method is empty.
     /// </summary>
-    public void Unbind() { }
+    public virtual void Unbind()
+    {
+    }
 
     /// <summary>
     /// Invalidates the IndexArray so a new OpenGL buffer handle is
     /// created. Use this in case of a context loss.
+    /// Default method is empty.
     /// </summary>
-    public void Invalidate() { }
+    public virtual void Invalidate()
+    {
+    }
 
     /// <summary>
-    /// Disposes this IndexArray and all its associated OpenGL resources.
+    /// 
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            _byteBuffer = null!;
+            _buffer     = null!;
+        }
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {
-        BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 }

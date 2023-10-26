@@ -42,7 +42,7 @@ public class VertexArray : IVertexData
     public VertexArray( int numVertices, VertexAttributes attributes )
     {
         this.Attributes  = attributes;
-        this._byteBuffer = BufferUtils.NewUnsafeByteBuffer( this.Attributes.VertexSize * numVertices );
+        this._byteBuffer = BufferUtils.NewByteBuffer( this.Attributes.VertexSize * numVertices );
         this._buffer     = _byteBuffer.AsFloatBuffer();
 
         _buffer.Flip();

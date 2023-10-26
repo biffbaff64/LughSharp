@@ -191,15 +191,16 @@ public class HeapCharBuffer : CharBuffer
     /// <summary>
     /// Creates a new character buffer that represents the specified subsequence
     /// of this buffer, relative to the current position.
-    /// 
-    /// <para> The new buffer will share this buffer's content; that is, if the
+    /// <para>
+    /// The new buffer will share this buffer's content; that is, if the
     /// content of this buffer is mutable then modifications to one buffer will
     /// cause the other to be modified.  The new buffer's capacity will be that
     /// of this buffer, its position will be
     /// <tt>position()</tt> + <tt>start</tt>, and its limit will be
     /// <tt>position()</tt> + <tt>end</tt>.  The new buffer will be
     /// direct if, and only if, this buffer is direct, and it will be read-only
-    /// if, and only if, this buffer is read-only.  </para>
+    /// if, and only if, this buffer is read-only.
+    /// </para>
     /// </summary>
     /// <param name="start">
     ///         The index, relative to the current position, of the first

@@ -110,7 +110,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
                 var fileSize = dataInputStream.ReadInt32();
 
-                _compressedData = BufferUtils.NewUnsafeByteBuffer( fileSize );
+                _compressedData = BufferUtils.NewByteBuffer( fileSize );
 
                 int readBytes;
 
@@ -205,7 +205,7 @@ public class KtxTextureData : ITextureData, ICubemapData
             _compressedData.Limit    = pos;
             _compressedData.Position = 0;
 
-            ByteBuffer directBuffer = BufferUtils.NewUnsafeByteBuffer( pos );
+            ByteBuffer directBuffer = BufferUtils.NewByteBuffer( pos );
             directBuffer.Order( _compressedData.Order() );
             directBuffer.Put( _compressedData );
 

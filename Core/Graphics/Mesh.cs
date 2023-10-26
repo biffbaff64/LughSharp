@@ -822,7 +822,7 @@ public class Mesh
 
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL30.GLDrawElementsInstanced( primitiveType, count,
+                    Gdx.GL30?.GLDrawElementsInstanced( primitiveType, count,
                                                       IGL20.GL_UNSIGNED_SHORT,
                                                       offset * 2, numInstances );
                 }
@@ -835,7 +835,7 @@ public class Mesh
             {
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL30.GLDrawArraysInstanced( primitiveType, offset, count, numInstances );
+                    Gdx.GL30?.GLDrawArraysInstanced( primitiveType, offset, count, numInstances );
                 }
                 else
                 {
@@ -1019,7 +1019,7 @@ public class Mesh
         var              vertexSize = _vertices.Attributes.VertexSize / 4;
         var              end        = offset + count;
 
-        switch ( posAttrib?.numComponents )
+        switch ( posAttrib.numComponents )
         {
             case 1:
                 if ( numIndices > 0 )
@@ -1165,7 +1165,7 @@ public class Mesh
 
         float result = 0;
 
-        switch ( posAttrib?.numComponents )
+        switch ( posAttrib.numComponents )
         {
             case 1:
                 for ( var i = offset; i < end; i++ )
@@ -1638,19 +1638,14 @@ public class Mesh
             var size    = 0;
             var asCount = 0;
 
-//            foreach ( var t in usage )
-//            {
-//                if ( GetVertexAttribute( t ) != null )
-//                {
-//                    size += GetVertexAttribute( t )!.numComponents;
-//                    asCount++;
-//                }
-//            }
-
-            foreach ( var t in usage.Where( t => GetVertexAttribute( t ) != null ) )
+            // ReSharper disable once LoopCanBePartlyConvertedToQuery
+            foreach ( var t in usage )
             {
-                size += GetVertexAttribute( t )!.numComponents;
-                asCount++;
+                if ( GetVertexAttribute( t ) != null )
+                {
+                    size += GetVertexAttribute( t )!.numComponents;
+                    asCount++;
+                }
             }
             
             if ( size > 0 )

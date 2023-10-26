@@ -30,46 +30,6 @@ public class BufferUtils
     {
     }
 
-    public static ByteBuffer NewByteBuffer( int numBytes )
-    {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NativeOrder );
-
-        return buffer;
-    }
-
-    public static CharBuffer NewCharBuffer( int numBytes )
-    {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NativeOrder );
-
-        return buffer.AsCharBuffer();
-    }
-
-    public static ShortBuffer NewShortBuffer( int numBytes )
-    {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NativeOrder );
-
-        return buffer.AsShortBuffer();
-    }
-
-    public static IntBuffer NewIntBuffer( int numBytes )
-    {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NativeOrder );
-
-        return buffer.AsIntBuffer();
-    }
-
-    public static LongBuffer NewLongBuffer( int numBytes )
-    {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
-        buffer.Order( ByteOrder.NativeOrder );
-
-        return buffer.AsLongBuffer();
-    }
-
     public static FloatBuffer NewFloatBuffer( int numFloats )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
@@ -86,16 +46,44 @@ public class BufferUtils
         return buffer.AsDoubleBuffer();
     }
 
-    public static ByteBuffer NewUnsafeByteBuffer( int numBytes )
+    public static ByteBuffer NewByteBuffer( int numBytes )
     {
-        //TODO:
-        throw new NotImplementedException();
+        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        buffer.Order( ByteOrder.NativeOrder );
+
+        return buffer;
     }
 
-    public static ByteBuffer NewUnsafeByteBuffer( ByteBuffer? buf )
+    public static ShortBuffer NewShortBuffer( int numBytes )
     {
-        //TODO:
-        throw new NotImplementedException();
+        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        buffer.Order( ByteOrder.NativeOrder );
+
+        return buffer.AsShortBuffer();
+    }
+
+    public static CharBuffer NewCharBuffer( int numBytes )
+    {
+        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        buffer.Order( ByteOrder.NativeOrder );
+
+        return buffer.AsCharBuffer();
+    }
+
+    public static IntBuffer NewIntBuffer( int numBytes )
+    {
+        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        buffer.Order( ByteOrder.NativeOrder );
+
+        return buffer.AsIntBuffer();
+    }
+
+    public static LongBuffer NewLongBuffer( int numBytes )
+    {
+        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        buffer.Order( ByteOrder.NativeOrder );
+
+        return buffer.AsLongBuffer();
     }
 
     public static byte Compare( byte x, byte y )
@@ -174,6 +162,11 @@ public class BufferUtils
         //TODO:
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="dst"></param>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
     private static int PositionInBytes( Buffer dst )
     {
         if ( dst is ByteBuffer )
@@ -193,9 +186,15 @@ public class BufferUtils
             return dst.Position << 3;
         }
 
-        throw new GdxRuntimeException( "Can't get position for " + dst.GetType().Name + " instance" );
+        throw new GdxRuntimeException( $"Can't get position for {dst.GetType().Name} instance" );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="dst"></param>
+    /// <param name="bytes"></param>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
     private static int BytesToElements( Buffer dst, int bytes )
     {
         if ( dst is ByteBuffer )
@@ -215,9 +214,15 @@ public class BufferUtils
             return bytes >>> 3;
         }
 
-        throw new GdxRuntimeException( "Can't copy to a " + dst.GetType().Name + " instance" );
+        throw new GdxRuntimeException( $"Can't copy to a {dst.GetType().Name} instance" );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="dst"></param>
+    /// <param name="elements"></param>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
     private static int ElementsToBytes( Buffer dst, int elements )
     {
         if ( dst is ByteBuffer )
@@ -237,35 +242,11 @@ public class BufferUtils
             return elements << 3;
         }
 
-        throw new GdxRuntimeException( "Can't copy to a " + dst.GetType().Name + " instance" );
+        throw new GdxRuntimeException( $"Can't copy to a {dst.GetType().Name} instance" );
     }
 
-    public static void DisposeUnsafeByteBuffer( Buffer? buf )
+    public static void DisposeUnsafeByteBuffer( ByteBuffer byteBuffer )
     {
-        ArgumentNullException.ThrowIfNull( buf );
-
-        var size = buf.Capacity;
-
-        lock ( _unsafeBuffers )
-        {
-            if ( !_unsafeBuffers.Remove( ( ByteBuffer )buf ) )
-            {
-                throw new ArgumentException
-                    ( "buffer not allocated with newUnsafeByteBuffer or already disposed" );
-            }
-        }
-
-        _allocatedUnsafe -= size;
-        FreeMemory( ( ByteBuffer )buf );
-    }
-
-    /// <summary>
-    /// Frees the memory allocated for the ByteBuffer, which MUST have been
-    /// allocated via <see cref="NewUnsafeByteBuffer(ByteBuffer)"/>
-    /// or in native code.
-    /// </summary>
-    private static void FreeMemory( ByteBuffer buffer )
-    {
-//        free(buffer);
+        // TODO:
     }
 }

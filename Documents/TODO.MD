@@ -42,11 +42,6 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- This is to be a DESKTOP/WINDOWS/LINUX? only framework. Leave Mobile support to
-- the Java LibGDX Framework for now.
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 ASSETS
 ------
 
@@ -299,8 +294,8 @@ GRAPHICS/GLUTILS
     - DONE - InstanceBufferObjectSubData
     - DONE - IVertexData
     - DONE - KTXTTextureData
-    -      - MipMapGenerator
-    -      - MipMapTextureData
+    - DONE - MipMapGenerator
+    - DONE - MipMapTextureData
     - DONE - PixmapTextureData
     - DONE - ShaderProgram
     - DONE - ShapeRenderer
@@ -321,8 +316,6 @@ GRAPHICS/PROFILING
 
     - DONE - GL20Interceptor
     - DONE - GL30Interceptor
-    - **** - GL31Interceptor
-    - **** - GL32Interceptor
     - DONE - GLInterceptor
     - DONE - GLProfiler
     - DONE - IGLErrorListener
@@ -721,7 +714,6 @@ UTILS/COLLECTIONS
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
-    - DONE - ObjectMap                      Use Dictionary< object, object > for most instances.
     - DONE - SnapshotArray<T>               Insert the necessary bits from Array<T> / remove dependency
 
     - **** - ArrayMap                       Use Dictionary<K, V>
@@ -742,6 +734,7 @@ UTILS/COLLECTIONS
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
     - **** - ObjectIntMap                   Use Dictionary< object, int >
     - **** - ObjectLongMap                  Use Dictionary< object, long >
+    - **** - ObjectMap                      Use Dictionary< object, object >
     - **** - ObjectSet<T>                   Use List<T>
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
     - **** - OrderedSet<T>                  Use SortedSet<T>

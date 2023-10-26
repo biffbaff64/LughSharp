@@ -294,7 +294,7 @@ public abstract class GLTexture : IDisposable
     /// <param name="target"></param>
     /// <param name="data"></param>
     /// <param name="miplevel"></param>
-    public void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
+    public static void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
     {
         if ( data == null )
         {

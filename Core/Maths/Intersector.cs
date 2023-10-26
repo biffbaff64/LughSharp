@@ -14,15 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Drawing;
-
 using LibGDXSharp.Core.Utils.Collections;
 using LibGDXSharp.Maths.Collision;
 
 namespace LibGDXSharp.Maths;
 
 /// <summary>
-/// Class offering various static methods for intersection testing between different geometric objects.
+/// Class offering various static methods for intersection testing
+/// between different geometric objects.
 /// </summary>
 [PublicAPI]
 public class Intersector
@@ -177,7 +176,8 @@ public class Intersector
     private static Vector2 _e   = new();
 
     /// <summary>
-    /// Intersects two convex polygons with clockwise vertices and sets the overlap polygon resulting from the intersection.
+    /// Intersects two convex polygons with clockwise vertices and sets the
+    /// overlap polygon resulting from the intersection.
     /// Follows the Sutherland-Hodgman algorithm.
     /// </summary>
     /// @param p1 The polygon that is being clipped
@@ -721,16 +721,16 @@ public class Intersector
      * @param Radius The Radius of the sphere
      * @param intersection The intersection point (optional, can be null)
      * @return Whether an intersection is present. */
-    public static bool intersectRaySphere( Ray ray, Vector3 center, float Radius, Vector3 intersection )
+    public static bool intersectRaySphere( Ray ray, Vector3 center, float radius, Vector3 intersection )
     {
-        var Len = ray.direction.Dot( center.X - ray.origin.X, center.Y - ray.origin.Y, center.z - ray.origin.z );
+        var len = ray.direction.Dot( center.X - ray.origin.X, center.Y - ray.origin.Y, center.z - ray.origin.z );
 
-        if ( Len < 0.f ) // behind the ray
+        if ( len < 0.0f ) // behind the ray
         {
             return false;
         }
 
-        var Dst2 = center.Dst2
+        var dst2 = center.Dst2
             (
              ray.origin.X + ( ray.direction.X * Len ), ray.origin.Y + ( ray.direction.Y * Len ),
              ray.origin.z + ( ray.direction.z * Len )
@@ -1316,7 +1316,7 @@ public class Intersector
      * @param p4 The second point of the second line
      * @param intersection The intersection point. May be null.
      * @return Whether the two lines intersect */
-    public static bool IntersectLines( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 intersection )
+    public static bool IntersectLines( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2? intersection )
     {
         float x1 = p1.X, y1 = p1.Y, x2 = p2.X, y2 = p2.Y, x3 = p3.X, y3 = p3.Y, x4 = p4.X, y4 = p4.Y;
 
@@ -1347,7 +1347,7 @@ public class Intersector
                                        float y3,
                                        float x4,
                                        float y4,
-                                       Vector2 intersection )
+                                       Vector2? intersection )
     {
         var d = ( ( y4 - y3 ) * ( x2 - x1 ) ) - ( ( x4 - x3 ) * ( y2 - y1 ) );
 
@@ -1371,10 +1371,14 @@ public class Intersector
      * @return Whether polygon and line intersects */
     public static bool IntersectLinePolygon( Vector2 p1, Vector2 p2, Polygon polygon )
     {
-        float[] vertices = polygon.getTransformedVertices();
-        float   x1       = p1.X, y1 = p1.Y, x2 = p2.X, y2 = p2.Y;
-        int     n        = vertices.length;
-        float   x3       = vertices[ n - 2 ], y3 = vertices[ n - 1 ];
+        var vertices = polygon.TransformedVertices;
+        var n        = vertices!.Length;
+        var x1       = p1.X;
+        var y1       = p1.Y;
+        var x2       = p2.X;
+        var y2       = p2.Y;
+        var x3       = vertices[ n - 2 ];
+        var y3       = vertices[ n - 1 ];
 
         for ( var i = 0; i < n; i += 2 )
         {
@@ -1387,7 +1391,7 @@ public class Intersector
                 var xd = x1 - x3;
                 var ua = ( ( ( x4 - x3 ) * yd ) - ( ( y4 - y3 ) * xd ) ) / d;
 
-                if ( ( ua >= 0 ) && ( ua <= 1 ) )
+                if ( ua is >= 0 and <= 1 )
                 {
                     return true;
                 }
@@ -1405,12 +1409,12 @@ public class Intersector
      * @return Whether the rectangles intersect */
     public static bool IntersectRectangles( RectangleShape rectangle1, RectangleShape rectangle2, RectangleShape intersection )
     {
-        if ( rectangle1.overlaps( rectangle2 ) )
+        if ( rectangle1.Overlaps( rectangle2 ) )
         {
-            intersection.X      = Math.max( rectangle1.X, rectangle2.X );
-            intersection.width  = Math.min( rectangle1.X + rectangle1.width, rectangle2.X + rectangle2.width ) - intersection.X;
-            intersection.Y      = Math.max( rectangle1.Y, rectangle2.Y );
-            intersection.height = Math.min( rectangle1.Y + rectangle1.height, rectangle2.Y + rectangle2.height ) - intersection.Y;
+            intersection.X      = Math.Max( rectangle1.X, rectangle2.X );
+            intersection.Width  = Math.Min( rectangle1.X + rectangle1.Width, rectangle2.X + rectangle2.Width ) - intersection.X;
+            intersection.Y      = Math.Max( rectangle1.Y, rectangle2.Y );
+            intersection.Height = Math.Min( rectangle1.Y + rectangle1.Height, rectangle2.Y + rectangle2.Height ) - intersection.Y;
 
             return true;
         }
@@ -1425,38 +1429,38 @@ public class Intersector
      * @param endY y-coordinate end of line segment
      * @param rectangle rectangle that is being tested for collision
      * @return whether the rectangle intersects with the line segment */
-    public static bool intersectSegmentRectangle( float startX, float startY, float endX, float endY, RectangleShape rectangle )
+    public static bool IntersectSegmentRectangle( float startX, float startY, float endX, float endY, RectangleShape rectangle )
     {
-        var rectangleEndX = rectangle.X + rectangle.width;
-        var rectangleEndY = rectangle.Y + rectangle.height;
+        var rectangleEndX = rectangle.X + rectangle.Width;
+        var rectangleEndY = rectangle.Y + rectangle.Height;
 
-        if ( intersectSegments( startX, startY, endX, endY, rectangle.X, rectangle.Y, rectangle.X, rectangleEndY, null ) )
+        if ( IntersectSegments( startX, startY, endX, endY, rectangle.X, rectangle.Y, rectangle.X, rectangleEndY, null ) )
         {
             return true;
         }
 
-        if ( intersectSegments( startX, startY, endX, endY, rectangle.X, rectangle.Y, rectangleEndX, rectangle.Y, null ) )
+        if ( IntersectSegments( startX, startY, endX, endY, rectangle.X, rectangle.Y, rectangleEndX, rectangle.Y, null ) )
         {
             return true;
         }
 
-        if ( intersectSegments( startX, startY, endX, endY, rectangleEndX, rectangle.Y, rectangleEndX, rectangleEndY, null ) )
+        if ( IntersectSegments( startX, startY, endX, endY, rectangleEndX, rectangle.Y, rectangleEndX, rectangleEndY, null ) )
         {
             return true;
         }
 
-        if ( intersectSegments( startX, startY, endX, endY, rectangle.X, rectangleEndY, rectangleEndX, rectangleEndY, null ) )
+        if ( IntersectSegments( startX, startY, endX, endY, rectangle.X, rectangleEndY, rectangleEndX, rectangleEndY, null ) )
         {
             return true;
         }
 
-        return rectangle.contains( startX, startY );
+        return rectangle.Contains( startX, startY );
     }
 
     /** {@link #intersectSegmentRectangle(float, float, float, float, RectangleShape)} */
-    public static bool IntersectSegmentRectangle( Vector2 start, Vector2 end, RectangleShape rectangle )
+    public static bool IntersectSegmentRectangle( Vector2 startvec, Vector2 endvec, RectangleShape rectangle )
     {
-        return intersectSegmentRectangle( start.X, start.Y, end.X, end.Y, rectangle );
+        return IntersectSegmentRectangle( startvec.X, startvec.Y, endvec.X, endvec.Y, rectangle );
     }
 
     /// <summary>
@@ -1469,7 +1473,7 @@ public class Intersector
     public static bool IntersectSegmentPolygon( Vector2 p1, Vector2 p2, Polygon? polygon )
     {
         ArgumentNullException.ThrowIfNull( polygon );
-        
+
         var vertices = polygon.TransformedVertices;
         var x1       = p1.X;
         var y1       = p1.Y;
@@ -1521,7 +1525,7 @@ public class Intersector
                                           Vector2 p2,
                                           Vector2 p3,
                                           Vector2 p4,
-                                          Vector2 intersection )
+                                          Vector2? intersection )
     {
         float x1 = p1.X, y1 = p1.Y, x2 = p2.X, y2 = p2.Y, x3 = p3.X, y3 = p3.Y, x4 = p4.X, y4 = p4.Y;
 
@@ -1660,7 +1664,6 @@ public class Intersector
         return OverlapConvexPolygons( p1, p2, ref _dummyMinimumTranslationVector );
     }
 
-    //TODO:
     // This is a temporary fix for a problem caused by the above method.
     // As 'ref null' is not allowed i thought the best option would be to
     // create a dummy MinimumTranslationVector object and test for that as
@@ -1858,26 +1861,22 @@ public class Intersector
                     if ( mtv.depth > o )
                     {
                         mtv.depth = o;
-                        bool condition;
 
                         if ( shapesShifted )
                         {
-                            condition = minA < minB;
-                            axisX     = condition ? axisX : -axisX;
-                            axisY     = condition ? axisY : -axisY;
+                            axisX = minA < minB ? axisX : -axisX;
+                            axisY = minA < minB ? axisY : -axisY;
                         }
                         else
                         {
-                            condition = minA > minB;
-                            axisX     = condition ? axisX : -axisX;
-                            axisY     = condition ? axisY : -axisY;
+                            axisX = minA > minB ? axisX : -axisX;
+                            axisY = minA > minB ? axisY : -axisY;
                         }
 
                         if ( aContainsB || bContainsA )
                         {
-                            condition = mins > maxs;
-                            axisX     = condition ? axisX : -axisX;
-                            axisY     = condition ? axisY : -axisY;
+                            axisX = mins > maxs ? axisX : -axisX;
+                            axisY = mins > maxs ? axisY : -axisY;
                         }
 
                         mtv.normal.Set( axisX, axisY );
@@ -2125,21 +2124,6 @@ public class Intersector
             EdgeSplit = new float[ numAttributes ];
         }
 
-        public override string ToString()
-        {
-            return "SplitTriangle [front="
-                 + Front
-                 + ", back="
-                 + Back
-                 + ", numFront="
-                 + numFront
-                 + ", numBack="
-                 + numBack
-                 + ", total="
-                 + total
-                 + "]";
-        }
-
         public void Add( float[] vertex, int offset, int stride )
         {
             if ( FrontCurrent )
@@ -2162,6 +2146,12 @@ public class Intersector
             numFront     = 0;
             numBack      = 0;
             total        = 0;
+        }
+
+        public override string ToString()
+        {
+            return $"SplitTriangle [front={Front}, back={Back}, "
+                 + $"numFront={numFront}, numBack={{numBack}}, total={{total}}]";
         }
     }
 

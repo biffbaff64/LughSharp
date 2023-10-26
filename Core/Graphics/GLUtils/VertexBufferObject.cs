@@ -56,7 +56,7 @@ public class VertexBufferObject : IVertexData
 
         _bufferHandle = Gdx.GL20.GLGenBuffer();
 
-        ByteBuffer data = BufferUtils.NewUnsafeByteBuffer( attributes.VertexSize * numVertices );
+        ByteBuffer data = BufferUtils.NewByteBuffer( attributes.VertexSize * numVertices );
 
         data.Limit = 0;
 

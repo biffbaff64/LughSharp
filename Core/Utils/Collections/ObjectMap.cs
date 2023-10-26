@@ -752,7 +752,7 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public Entries< TK, TV > GetEntries()
     {
-        if ( CollectionsData.AllocateIterators )
+        if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
         {
             return new Entries< TK, TV >( this );
         }
@@ -792,7 +792,7 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public Values< TV > GetValues()
     {
-        if ( CollectionsData.AllocateIterators )
+        if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
         {
             return new Values< TV >( this );
         }
@@ -833,7 +833,7 @@ public class ObjectMap<TK, TV>
     /// <returns></returns>
     public Keys< TK > GetKeys()
     {
-        if ( CollectionsData.AllocateIterators )
+        if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
         {
             return new Keys< TK >( this );
         }
