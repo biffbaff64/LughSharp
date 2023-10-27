@@ -199,7 +199,7 @@ public class WidgetGroup : Group, ILayout
     /// If this method is overridden, the super method or <see cref="Validate()"/>
     /// should be called to ensure the widget group is laid out.
     /// </summary>
-    protected new void Draw( IBatch batch, float parentAlpha )
+    protected virtual new void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
         base.Draw( batch, parentAlpha );

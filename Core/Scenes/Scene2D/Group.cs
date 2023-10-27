@@ -641,7 +641,7 @@ public class Group : Actor, ICullable
     /// <summary>
     /// Removes all actors from this group.
     /// </summary>
-    public void ClearChildren()
+    public virtual void ClearChildren()
     {
         Actor?[] actors = Children.Begin();
 

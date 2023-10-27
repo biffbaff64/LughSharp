@@ -572,7 +572,7 @@ SCENES.SCENE2D/UI
     NOTE: I don't like the way Cell and Value classes are implemented.
           They seem confusing and are candidates for a rewrite.
 
-    - DONE - Button                         
+    - IP   - Button                         
     - DONE - ButtonGroup                    
     - DONE - Cell                           
     - DONE - CheckBox                       
@@ -623,7 +623,7 @@ SCENES.SCENE2D/UTILS
     - DONE - ITransformDrawable             
     - DONE - NinePatchDrawable              
     - DONE - ScissorStack                   
-    - DONE - Selection                      
+    - IP   - Selection                      
     - DONE - SpriteDrawable                 
     - DONE - TextureRegionDrawable          
     - DONE - TiledDrawable                  

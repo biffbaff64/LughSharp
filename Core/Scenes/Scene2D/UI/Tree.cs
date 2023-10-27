@@ -14,494 +14,317 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.G2D;
+using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+
+using NotImplementedException = System.NotImplementedException;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [PublicAPI]
-public class Tree<TN> : WidgetGroup where TN : Node< TN, object, Actor >
+public class Tree<TN, TV> : WidgetGroup where TN : Tree< TN, TV >.Node< TN, TV, Actor >
 {
-    public class TreeStyle
-    {
-    }
-}
+    private readonly Vector2 _tmp = new();
 
-/// <summary>
-/// A <see cref="Tree{TN}"/> node which has an actor and value.
-/// <para>
-/// A subclass can be used so the generic type parameters don't need
-/// to be specified repeatedly.
-/// </para>
-/// </summary>
-/// <typeparam name="TN"> The type for the node's parent and child nodes. </typeparam>
-/// <typeparam name="TV"> The type for the node's value. </typeparam>
-/// <typeparam name="TA"> The type for the node's actor. </typeparam>
-[PublicAPI]
-public class Node<TN, TV, TA> where TN : Node< TN, TV, TA > where TA : Actor
-{
-    public bool Selectable { get; set; } = true;
-    public bool Expanded   { get; private set; }
-    public TV?  Value      { get; set; }
+    private TreeStyle?      _style;
+    private List< TN >      _rootNodes = new();
+    private Selection< TN > _selection;
+    private float           _ySpacing         = 4;
+    private float           _iconSpacingLeft  = 2;
+    private float           _iconSpacingRight = 2;
+    private float           _paddingLeft;
+    private float           _paddingRight;
+    private float           _indentSpacing;
+    private float           _prefWidth;
+    private float           _prefHeight;
+    private bool            _sizeInvalid = true;
+    private TN?             _foundNode;
+    private TN?             _overNode;
+    private TN?             _rangeStart;
+    private ClickListener   _clickListener;
 
-    /// <summary>
-    /// Sets an icon that will be drawn to the left of the actor.
-    /// </summary>
-    public IDrawable? Icon { get; set; }
-
-    private TN?         _parent;
-    private TA?         _actor;
-    private List< TN >? _children = new( 0 );
-    private float       _height;
-
-    /// <summary>
-    /// Creates a node without an actor. An actor must be set using
-    /// <see cref="SetActor(TA)"/> before this node can be used.
-    /// </summary>
-    public Node()
+    public Tree( Skin skin )
+        : this( skin.Get< TreeStyle >() )
     {
     }
 
-    public Node( TA actor )
+    public Tree( Skin skin, string styleName )
+        : this( skin.Get< TreeStyle >( styleName ) )
     {
-        ArgumentNullException.ThrowIfNull( actor );
-
-        this._actor = actor;
     }
 
-    public void SetExpanded( bool expanded )
+    public Tree( TreeStyle style )
     {
-        Debug.Assert( _actor != null );
-        Debug.Assert( _children != null );
-
-        if ( expanded == this.Expanded )
+        _selection = new Selection< TN >
         {
-            return;
-        }
+            Actor    = this,
+            Multiple = true
+        };
 
-        this.Expanded = expanded;
-
-        if ( _children.Count == 0 )
-        {
-            return;
-        }
-
-        Tree< TN > tree = GetTree();
-
-        if ( tree == null )
-        {
-            return;
-        }
-
-        var actorIndex = _actor?.GetZIndex() + 1;
-
-        if ( expanded )
-        {
-            foreach ( TN child in _children )
-            {
-                actorIndex += child.AddToTree( tree, actorIndex );
-            }
-        }
-        else
-        {
-            foreach ( TN child in _children )
-            {
-                child.RemoveFromTree( tree, actorIndex );
-            }
-        }
+        SetStyle( style );
     }
 
-    /** Called to add the actor to the tree when the node's parent is expanded.
-     * @return The number of node actors added to the tree. */
-    protected int AddToTree( Tree< TN, TV > tree, int actorIndex )
+    private void Initialise()
     {
-        tree.addActorAt( actorIndex, actor );
-
-        if ( !expanded )
-        {
-            return 1;
-        }
-
-        int      childIndex = actorIndex + 1;
-        Object[] children   = this.children.items;
-
-        for ( int i = 0, n = this.children.size; i < n; i++ )
-        {
-            childIndex += ( ( TN )children[ i ] ).addToTree( tree, childIndex );
-        }
-
-        return childIndex - actorIndex;
     }
 
-    /** Called to remove the actor from the tree, eg when the node is removed or the node's parent is collapsed. */
-    protected void RemoveFromTree( Tree< TN, TV > tree, int actorIndex )
+
+    public void SetStyle( TreeStyle style )
     {
-        Actor removeActorAt = tree.removeActorAt( actorIndex, true );
+        this._style = style;
 
-        // assert removeActorAt != actor; // If false, either 1) there's a bug, or 2) the children were modified.
-        if ( !expanded )
+        // Reasonable default.
+        if ( _indentSpacing == 0 )
         {
-            return;
-        }
-
-        Object[] children = this.children.items;
-
-        for ( int i = 0, n = this.children.size; i < n; i++ )
-        {
-            ( ( TN )children[ i ] ).removeFromTree( tree, actorIndex );
+            _indentSpacing = PlusMinusWidth();
         }
     }
 
     public void Add( TN node )
     {
-        Insert( children.size, node );
+        Insert( _rootNodes.Count, node );
     }
 
-    public void AddAll( Array< TN > nodes )
+    public void Insert( int index, TN node )
     {
-        for ( int i = 0, n = nodes.size; i < n; i++ )
-        {
-            Insert( children.size, nodes.get( i ) );
-        }
     }
 
-    public void Insert( int childIndex, TN node )
-    {
-        node.parent = this;
-        children.insert( childIndex, node );
-
-        if ( !expanded )
-        {
-            return;
-        }
-
-        Tree tree = GetTree();
-
-        if ( tree != null )
-        {
-            int actorIndex;
-
-            if ( childIndex == 0 )
-            {
-                actorIndex = actor.getZIndex() + 1;
-            }
-            else if ( childIndex < children.size - 1 )
-            {
-                actorIndex = children.get( childIndex + 1 ).actor.getZIndex();
-            }
-            else
-            {
-                TN before = children.get( childIndex - 1 );
-                actorIndex = before.actor.getZIndex() + before.countActors();
-            }
-
-            node.addToTree( tree, actorIndex );
-        }
-    }
-
-    int CountActors()
-    {
-        if ( !expanded )
-        {
-            return 1;
-        }
-
-        int      count    = 1;
-        Object[] children = this.children.items;
-
-        for ( int i = 0, n = this.children.size; i < n; i++ )
-        {
-            count += ( ( TN )children[ i ] ).countActors();
-        }
-
-        return count;
-    }
-
-    /** Remove this node from its parent. */
-    public void Remove()
-    {
-        Tree tree = GetTree();
-
-        if ( tree != null )
-        {
-            tree.remove( this );
-        }
-        else if ( parent != null ) //
-        {
-            parent.remove( this );
-        }
-    }
-
-    /** Remove the specified child node from this node. Does nothing if the node is not a child of this node. */
     public void Remove( TN node )
     {
-        if ( !children.removeValue( node, true ) )
-        {
-            return;
-        }
-
-        if ( !expanded )
-        {
-            return;
-        }
-
-        Tree tree = GetTree();
-
-        if ( tree != null )
-        {
-            node.removeFromTree( tree, node.actor.getZIndex() );
-        }
     }
 
-    /** Removes all children from this node. */
-    public void ClearChildren()
+    public override void ClearChildren()
     {
-        if ( expanded )
-        {
-            Tree tree = GetTree();
-
-            if ( tree != null )
-            {
-                int      actorIndex = actor.getZIndex() + 1;
-                Object[] children   = this.children.items;
-
-                for ( int i = 0, n = this.children.size; i < n; i++ )
-                {
-                    ( ( TN )children[ i ] ).removeFromTree( tree, actorIndex );
-                }
-            }
-        }
-
-        children.clear();
     }
 
-    /** Returns the tree this node's actor is currently in, or null. The actor is only in the tree when all of its parent nodes
-     * are expanded. */
-    public Tree< TN, TV > GetTree()
+    public override void Invalidate()
     {
-        Group                  parent = actor.getParent();
-        if ( parent instanceof tree) return ( Tree )parent;
+    }
+
+    private float PlusMinusWidth()
+    {
+        return 0f;
+    }
+
+    private void ComputeSize()
+    {
+    }
+
+    private void ComputeSize( List< TN > nodes, float indent, float plusMinusWidth )
+    {
+    }
+
+    public override void Layout()
+    {
+    }
+
+    private float Layout( List< TN > nodes, float indent, float y, float plusMinusWidth )
+    {
+        return 0f;
+    }
+
+    protected override void Draw( IBatch batch, float parentAlpha )
+    {
+    }
+
+    protected void DrawBackground( IBatch batch, float parentAlpha )
+    {
+    }
+
+    private void Draw( IBatch batch, List< TN > nodes, float indent, float plusMinusWidth )
+    {
+    }
+
+    protected void DrawSelection( TN node, IDrawable selection, IBatch batch, float x, float y, float width, float height )
+    {
+    }
+
+    protected void DrawOver( TN node, IDrawable over, IBatch batch, float x, float y, float width, float height )
+    {
+    }
+
+    protected void DrawExpandIcon( TN node, IDrawable expandIcon, IBatch batch, float x, float y )
+    {
+    }
+
+    protected void DrawIcon( TN node, IDrawable icon, IBatch batch, float x, float y )
+    {
+    }
+
+    protected IDrawable? GetExpandIcon( TN node, float iconX )
+    {
         return null;
     }
 
-    public TA? Actor
+    public TN? GetNodeAt( float y )
     {
-        get => _actor;
-        set
-        {
-            if ( _actor != null )
-            {
-                Tree< TN, TV >? tree = GetTree();
-
-                if ( tree != null )
-                {
-                    var index = _actor.GetZIndex();
-
-                    tree.RemoveActorAt( index, true );
-                    tree.AddActorAt( index, value! );
-                }
-            }
-
-            _actor = value;
-        }
+        return null;
     }
 
-    /// <summary>
-    /// If the children order is changed, <see cref="UpdateChildren()"/>" must
-    /// be called to ensure the node's actors are in the correct order. That is
-    /// not necessary if this node is not in the tree or is not expanded, because
-    /// then the child node's actors are not in the tree.
-    /// </summary>
-    public List< TN >? GetChildren()
+    private float GetNodeAt( List< TN > nodes, float y, float rowY )
     {
-        return _children;
+        return 0f;
     }
 
-    public bool HasChildren()
+    private void SelectNodes( List< TN > nodes, float low, float high )
     {
-        return _children?.Count > 0;
     }
 
-    /// <summary>
-    /// Updates the order of the actors in the tree for this node and all child
-    /// nodes. This is useful after changing the order of <see cref="GetChildren()"/>.
-    /// </summary>
-    /// <seealso cref="Tree.UpdateRootNodes()"/>
-    public void UpdateChildren()
+    public Selection< TN >? GetSelection()
     {
-        Debug.Assert( _actor != null );
-        Debug.Assert( _children != null );
-
-        if ( !Expanded )
-        {
-            return;
-        }
-
-        var tree = GetTree();
-
-        if ( tree == null )
-        {
-            return;
-        }
-
-        var actorIndex = _actor.GetZIndex() + 1;
-
-        foreach ( TN child in _children )
-        {
-            child.RemoveFromTree( tree, actorIndex );
-        }
-
-        foreach ( TN child in _children )
-        {
-            actorIndex += child.AddToTree( tree, actorIndex );
-        }
+        return null;
     }
 
-    public TN? GetParent()
+    public TN? GetSelectedNode()
     {
-        return _parent;
+        return null;
     }
 
-    public int GetLevel()
+    public TV? GetSelectedValue()
     {
-        int   level   = 0;
-        Node? current = this;
-
-        do
-        {
-            level++;
-            current = current.GetParent();
-        }
-        while ( current != null );
-
-        return level;
+        return default( TV? );
     }
 
-    /// <summary>
-    /// Returns this node or the child node with the specified value, or null.
-    /// </summary>
-    public TN? FindNode( TV value )
+    public List< TN >? GetRootNodes()
     {
-        ArgumentNullException.ThrowIfNull( value );
-
-        if ( value.Equals( this.Value ) )
-        {
-            return ( TN? )this;
-        }
-
-        return ( TN )Tree.findNode( children, value );
+        return null;
     }
 
-    /// <summary>
-    /// Collapses all nodes under and including this node.
-    /// </summary>
-    public void CollapseAll()
+    public List< TN >? GetNodes()
     {
-        SetExpanded( false );
-        Tree.CollapseAll( _children );
+        return null;
     }
 
-    /// <summary>
-    /// Expands all nodes under and including this node.
-    /// </summary>
-    public void ExpandAll()
+    public void UpdateRootNodes()
     {
-        SetExpanded( true );
-
-        if ( _children?.Count > 0 )
-        {
-            Tree < , >.ExpandAll( _children );
-        }
-    }
-
-    /// <summary>
-    /// Expands all parent nodes of this node.
-    /// </summary>
-    public void ExpandTo()
-    {
-        TN? node = _parent;
-
-        while ( node != null )
-        {
-            node.SetExpanded( true );
-            node = node._parent;
-        }
     }
 
     public void FindExpandedValues( List< TV > values )
     {
-        if ( Expanded && !Tree.FindExpandedValues( _children, values ) )
-        {
-            values.Add( Value );
-        }
     }
 
     public void RestoreExpandedValues( List< TV > values )
     {
-        for ( int i = 0, n = values.size; i < n; i++ )
-        {
-            TN node = FindNode( values.get( i ) );
-
-            if ( node != null )
-            {
-                node.setExpanded( true );
-                node.expandTo();
-            }
-        }
     }
 
-    /// <summary>
-    /// Returns the height of the node as calculated for layout. A subclass
-    /// may override and increase the returned height to create a blank space
-    /// in the tree above the node, eg for a separator.
-    /// </summary>
-    public float GetHeight()
+    private static bool FindExpandedValues( List<? extends Tree< , >.Node< ,, > > nodes, List Values)
     {
-        return _height;
     }
 
-    /// <summary>
-    /// Returns true if the specified node is this node or an ascendant of this node.
-    /// </summary>
-    public bool ISAscendantOf( TN node )
+    public TN? FindNode( TV value )
     {
-        ArgumentNullException.ThrowIfNull( node );
-
-        Node current = node;
-
-        do
-        {
-            if ( current == this )
-            {
-                return true;
-            }
-
-            current = current.parent;
-        }
-        while ( current != null );
-
-        return false;
+        return null;
     }
 
-    /// <summary>
-    /// Returns true if the specified node is this node or an descendant of this node.
-    /// </summary>
-    public bool ISDescendantOf( TN node )
+    private static Node? FindNode( List<? extends Node > nodes, Object Value )
     {
-        ArgumentNullException.ThrowIfNull( node );
+    }
 
-        Node? parent = this;
+    public void CollapseAll()
+    {
+    }
 
-        do
-        {
-            if ( parent == node )
-            {
-                return true;
-            }
+    private static void CollapseAll<T>( List< T > nodes ) where T : Node< TN, TV, Actor >
+    {
+    }
 
-            parent = parent._parent;
-        }
-        while ( parent != null );
+    public void ExpandAll()
+    {
+    }
 
-        return false;
+    private static void ExpandAll<T>( List< T > nodes ) where T : Node< TN, TV, Actor >
+    {
+    }
+
+    // ------------------------------------------------------------------------
+
+    public Tree< TN, TV >.TreeStyle? GetStyle()
+    {
+        return _style;
+    }
+    
+    public TN? GetOverNode()
+    {
+        return null;
+    }
+
+    public TV? GetOverValue()
+    {
+        return default( TV? );
+    }
+
+    public void SetOverNode( TN? overNode )
+    {
+    }
+
+    public void SetPadding( float padding )
+    {
+    }
+
+    public void SetPadding( float left, float right )
+    {
+    }
+
+    public void SetIndentSpacing( float indentSpacing )
+    {
+    }
+
+    public float GetIndentSpacing()
+    {
+        return 0f;
+    }
+
+    public void SetYSpacing( float ySpacing )
+    {
+    }
+
+    public float GetYSpacing()
+    {
+        return 0f;
+    }
+
+    public void SetIconSpacing( float left, float right )
+    {
+    }
+
+    public float GetPrefWidth()
+    {
+        return 0f;
+    }
+
+    public float GetPrefHeight()
+    {
+        return 0f;
+    }
+
+    public ClickListener? GetClickListener()
+    {
+        return _clickListener;
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public class TreeStyle
+    {
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// A <see cref="Tree{TN,TV}"/> node which has an actor and value.
+    /// <para>
+    /// A subclass can be used so the generic type parameters don't need
+    /// to be specified repeatedly.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TNn"> The type for the node's parent and child nodes. </typeparam>
+    /// <typeparam name="TVn"> The type for the node's value. </typeparam>
+    /// <typeparam name="TAn"> The type for the node's actor. </typeparam>
+    [PublicAPI]
+    public class Node<TNn, TVn, TAn> where TNn : Node< TNn, TVn, TAn > where TAn : Actor
+    {
     }
 }

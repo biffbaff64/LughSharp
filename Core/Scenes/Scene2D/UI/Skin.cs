@@ -203,8 +203,8 @@ public class Skin : IDisposable
             typeResources = new Dictionary< string, object >
                 (
                  ( type == typeof( TextureRegion ) )
-                 || ( type == typeof( IDrawable ) )
-                 || ( type == typeof( Sprite ) )
+              || ( type == typeof( IDrawable ) )
+              || ( type == typeof( Sprite ) )
                      ? 256
                      : 64
                 );
@@ -235,11 +235,11 @@ public class Skin : IDisposable
     /// Returns a named resource of the specified type.
     /// </summary>
     /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
-    public object Get<T>( string name )
+    public T Get<T>( string name )
     {
-        return Get( name, typeof( T ) );
+        return ( T )Get( name, typeof( T ) );
     }
-    
+
     /// <summary>
     /// Returns a named resource of the specified type.
     /// </summary>
@@ -281,7 +281,7 @@ public class Skin : IDisposable
         {
             throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
         }
-        
+
         return resource;
     }
 
@@ -469,8 +469,8 @@ public class Skin : IDisposable
             if ( textureRegion is AtlasRegion region )
             {
                 if ( region.Rotate
-                     || ( region.PackedWidth != region.OriginalWidth )
-                     || ( region.PackedHeight != region.OriginalHeight ) )
+                  || ( region.PackedWidth != region.OriginalWidth )
+                  || ( region.PackedHeight != region.OriginalHeight ) )
                 {
                     sprite = new AtlasSprite( region );
                 }
@@ -520,8 +520,8 @@ public class Skin : IDisposable
                     drawable = new NinePatchDrawable( GetPatch( name ) );
                 }
                 else if ( region.Rotate
-                          || ( region.PackedWidth != region.OriginalWidth )
-                          || ( region.PackedHeight != region.OriginalHeight ) )
+                       || ( region.PackedWidth != region.OriginalWidth )
+                       || ( region.PackedHeight != region.OriginalHeight ) )
                 {
                     drawable = new SpriteDrawable( GetSprite( name ) );
                 }
@@ -751,8 +751,8 @@ public class Skin : IDisposable
             return;
         }
 
-        name  = name.Replace( "-disabled", "" ) + ( enabled ? "" : "-disabled" );
-        
+        name = name.Replace( "-disabled", "" ) + ( enabled ? "" : "-disabled" );
+
         style = Get( name, style.GetType() );
 
         // Set new style.
