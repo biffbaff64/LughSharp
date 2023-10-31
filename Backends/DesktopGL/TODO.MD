@@ -9,7 +9,6 @@
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    -      - Callback
     -      - DefaultGLInput
     -      - GL20
     -      - GL30
@@ -21,7 +20,6 @@
     -      - GLFileHandle
     -      - GLFiles
     -      - GLGraphics
-    -      - GLMonitor
     -      - GLNativesLoader
     -      - GLNet
     -      - GLPreferences

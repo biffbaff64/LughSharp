@@ -16,6 +16,8 @@
 
 namespace LibGDXSharp.Core;
 
+using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
+
 [PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
@@ -23,16 +25,17 @@ public abstract class AbstractGraphics : IGraphics
     public float GetDensity()         => GetPpiX() / 160f;
     public float GetBackBufferScale() => BackBufferWidth / ( float )Width;
 
-    public int       BackBufferWidth  { get; protected set; }
-    public int       BackBufferHeight { get; protected set; }
-    public int       LogicalWidth     { get; set; }
-    public int       LogicalHeight    { get; set; }
-    public int       Width            { get; }
-    public int       Height           { get; }
-    public IGL20?    GL20             { get; set; }
-    public IGL30?    GL30             { get; set; }
-    public float     DeltaTime        { get; set; }
-    public GLVersion GLVersion        { get; set; } = null!;
+    public BufferFormatDescriptor BufferFormat     { get; set; } = null!;
+    public int                    BackBufferWidth  { get; protected set; }
+    public int                    BackBufferHeight { get; protected set; }
+    public int                    LogicalWidth     { get; set; }
+    public int                    LogicalHeight    { get; set; }
+    public int                    Width            { get; }
+    public int                    Height           { get; }
+    public IGL20?                 GL20             { get; set; }
+    public IGL30?                 GL30             { get; set; }
+    public float                  DeltaTime        { get; set; }
+    public GLVersion              GLVersion        { get; set; } = null!;
 
     // ========================================================================
     // Abstract methods because C# insists this is done to fulfill the contract
@@ -65,8 +68,6 @@ public abstract class AbstractGraphics : IGraphics
     public abstract void SetVSync( bool vsync );
 
     public abstract void SetForegroundFps( int fps );
-
-    public abstract IGraphics.BufferFormat GetBufferFormat();
 
     public abstract bool SupportsExtension( string extension );
 

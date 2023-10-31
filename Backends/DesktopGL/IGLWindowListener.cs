@@ -25,9 +25,9 @@ public interface IGLWindowListener
     /// </summary>
     ///
     /// For the main window, this is an immediate callback from inside
-    /// <see cref="DesktopApplication(IApplicationListener, GLApplicationConfiguration)"/>
+    /// <see cref="DesktopApplication(IApplicationListener, DesktopGLApplicationConfiguration)"/>
     /// <param name="window">the window instance.</param>
-    /// <see cref="GLApplication"/>
+    /// <see cref="DesktopGLApplication"/>
     void Created( GLWindow window );
 
     /// <summary>
@@ -77,7 +77,7 @@ public interface IGLWindowListener
 
     /// <summary>
     /// Called when the window content is damaged and needs to be refreshed.
-    /// When this occurs, <see cref="GLGraphics.RequestRendering()"/> is automatically called.
+    /// When this occurs, <see cref="DesktopGLGraphics.RequestRendering()"/> is automatically called.
     /// </summary>
     void RefreshRequested();
 }

@@ -22,26 +22,26 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class GLWindow : IDisposable
 {
-    public        IGLWindowListener?         WindowListener      { get; set; }
-    public unsafe Window*                    WindowHandle        { get; set; }
-    public        IApplicationListener       Listener            { get; set; }
-    public        IGLInput                   Input               { get; set; } = null!;
-    public        GLGraphics                 Graphics            { get; set; } = null!;
-    public        GLApplicationConfiguration Config              { get; set; }
-    public        bool                       ListenerInitialised { get; set; } = false;
+    public        IGLWindowListener?                WindowListener      { get; set; }
+    public unsafe Window*                           WindowHandle        { get; set; }
+    public        IApplicationListener              Listener            { get; set; }
+    public        IGLInput                          Input               { get; set; } = null!;
+    public        DesktopGLGraphics                 Graphics            { get; set; } = null!;
+    public        DesktopGLApplicationConfiguration Config              { get; set; }
+    public        bool                              ListenerInitialised { get; set; } = false;
 
     private readonly IGLApplicationBase _application;
-    private readonly List< IRunnable > _runnables         = new();
-    private readonly List< IRunnable > _executedRunnables = new();
-    private          IntBuffer         _tmpBuffer;
-    private          IntBuffer         _tmpBuffer2;
-    private          bool              _iconified        = false;
-    private          bool              _requestRendering = false;
+    private          IntBuffer          _tmpBuffer;
+    private          IntBuffer          _tmpBuffer2;
+    private          bool               _iconified         = false;
+    private          bool               _requestRendering  = false;
+    private readonly List< IRunnable >  _runnables         = new();
+    private readonly List< IRunnable >  _executedRunnables = new();
 
     // ------------------------------------------------------------------------
 
     public GLWindow( IApplicationListener listener,
-                     GLApplicationConfiguration config,
+                     DesktopGLApplicationConfiguration config,
                      IGLApplicationBase application )
     {
         this.Listener       = listener;
@@ -59,7 +59,7 @@ public class GLWindow : IDisposable
     {
         this.WindowHandle = windowHandle;
         this.Input        = _application.CreateInput( this );
-        this.Graphics     = new GLGraphics( this );
+        this.Graphics     = new DesktopGLGraphics( this );
 
         GLFW.SetWindowFocusCallback( windowHandle, FocusCallback );
         GLFW.SetWindowIconifyCallback( windowHandle, IconifyCallback );

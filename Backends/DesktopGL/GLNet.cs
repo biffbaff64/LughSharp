@@ -20,7 +20,7 @@ namespace LibGDXSharp.Backends.Desktop;
 
 public class GLNet : INet
 {
-    public GLNet( GLApplicationConfiguration config )
+    public GLNet( DesktopGLApplicationConfiguration config )
     {
     }
 

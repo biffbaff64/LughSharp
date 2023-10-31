@@ -345,13 +345,23 @@ public class Color
         return this;
     }
 
-    public static bool operator ==( Color c1, object c2 )
+    public static bool operator ==( Color? c1, object? c2 )
     {
+        if ( c1 is null )
+        {
+            return false;
+        }
+
         return c1.Equals( c2 );
     }
 
-    public static bool operator !=( Color c1, object c2 )
+    public static bool operator !=( Color? c1, object? c2 )
     {
+        if ( c1 is null )
+        {
+            return true;
+        }
+        
         return !c1.Equals( c2 );
     }
 

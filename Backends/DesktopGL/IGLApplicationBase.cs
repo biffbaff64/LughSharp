@@ -20,7 +20,7 @@ namespace LibGDXSharp.Backends.Desktop;
 
 public interface IGLApplicationBase : IApplication
 {
-    IGLAudio CreateAudio( GLApplicationConfiguration config );
+    IGLAudio CreateAudio( DesktopGLApplicationConfiguration config );
 
     IGLInput CreateInput( GLWindow window );
 }

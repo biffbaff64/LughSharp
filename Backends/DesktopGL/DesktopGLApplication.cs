@@ -17,20 +17,23 @@
 using LibGDXSharp.Backends.Desktop;
 using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
+using LibGDXSharp.Backends.DesktopGL;
 using LibGDXSharp.Core.Utils.Collections;
+
+using Sync = LibGDXSharp.Backends.Desktop.Sync;
 
 namespace LibGDXSharp;
 
 [PublicAPI]
-public class GLApplication : IGLApplicationBase
+public class DesktopGLApplication : IGLApplicationBase
 {
-    public GLApplicationConfiguration?         Config             { get; set; }
+    public DesktopGLApplicationConfiguration?  Config             { get; set; }
     public List< GLWindow >                    Windows            { get; set; } = new();
     public Dictionary< string, IPreferences >? Preferences        { get; set; }
     public List< IRunnable >                   Runnables          { get; set; } = new();
     public List< IRunnable >                   ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-    public GLApplicationLogger                 ApplicationLogger  { get; set; }
+    public GLApplicationLogger?                ApplicationLogger  { get; set; }
     public int                                 LogLevel           { get; set; }
     public IApplication.ApplicationType        AppType            { get; set; }
     public IClipboard?                         Clipboard          { get; set; }
@@ -40,39 +43,18 @@ public class GLApplication : IGLApplicationBase
     private static   GLFWCallbacks.ErrorCallback? _errorCallback   = null;
     private static   Callback?                    _glDebugCallback = null;
     private volatile GLWindow?                    _currentWindow   = null;
-    private          Sync?                        _sync;
+    private          IGLAudio?                    _audio           = null;
+    private          Sync?                        _sync            = null;
+    private          bool                         _running         = true;
 
     // ------------------------------------------------------------------------
 
-    /// <summary>
-    /// </summary>
-    /// <param name="listener"></param>
-    /// <param name="config"></param>
-    /// <exception cref="SystemException"></exception>
-    /// <exception cref="GdxRuntimeException"></exception>
-    public GLApplication( IApplicationListener listener, GLApplicationConfiguration config )
+    public DesktopGLApplication( IApplicationListener listener, DesktopGLApplicationConfiguration config )
     {
         CreateApplication( listener, config );
     }
 
-    public static void InitialiseGL()
-    {
-        if ( _errorCallback == null )
-        {
-            GLNativesLoader.Load();
-
-            // TODO: Create error callback - See Java LibGDX
-
-            GLFW.InitHint( InitHintBool.JoystickHatButtons, false );
-
-            if ( GLFW.Init() )
-            {
-                throw new GdxRuntimeException( "Unable to initialise Glfw!" );
-            }
-        }
-    }
-
-    private void CreateApplication( IApplicationListener listener, GLApplicationConfiguration config )
+    private void CreateApplication( IApplicationListener listener, DesktopGLApplicationConfiguration config )
     {
         InitialiseGL();
 
@@ -80,7 +62,7 @@ public class GLApplication : IGLApplicationBase
 
         config.Title ??= listener.GetType().Name;
 
-        this.Config = config = GLApplicationConfiguration.Copy( config );
+        this.Config = config = DesktopGLApplicationConfiguration.Copy( config );
 
         Gdx.App = this;
 
@@ -136,6 +118,114 @@ public class GLApplication : IGLApplicationBase
     /// </summary>
     protected void Loop()
     {
+        List< GLWindow > closedWindows = new();
+
+        while ( _running && ( Windows.Count > 0 ) )
+        {
+            // FIXME put it on a separate thread
+            _audio.Update();
+
+            bool haveWindowsRendered = false;
+            
+            closedWindows.Clear();
+            
+            int targetFramerate = -2;
+            
+            foreach ( GLWindow window in Windows )
+            {
+                window.MakeCurrent();
+                _currentWindow = window;
+
+                if ( targetFramerate == -2 )
+                {
+                    targetFramerate = window.Config.ForegroundFPS;
+                }
+
+                lock( LifecycleListeners )
+                {
+                    haveWindowsRendered |= window.Update();
+                }
+
+                if ( window.ShouldClose() )
+                {
+                    closedWindows.Add( window );
+                }
+            }
+
+            GLFW.PollEvents();
+
+            bool shouldRequestRendering;
+
+            lock( Runnables )
+            {
+                shouldRequestRendering = Runnables.Count > 0;
+                
+                ExecutedRunnables.Clear();
+                ExecutedRunnables.AddAll( Runnables );
+                
+                Runnables.Clear();
+            }
+
+            foreach ( IRunnable runnable in ExecutedRunnables )
+            {
+                runnable.Run();
+            }
+
+            if ( shouldRequestRendering )
+            {
+                // Must follow Runnables execution so changes done by Runnables are reflected
+                // in the following render.
+                foreach ( GLWindow window in Windows )
+                {
+                    if ( !window.Graphics.IsContinuousRendering() )
+                    {
+                        window.RequestRendering();
+                    }
+                }
+            }
+
+            foreach ( GLWindow closedWindow in closedWindows )
+            {
+                if ( Windows.Count == 1 )
+                {
+                    // Lifecycle listener methods have to be called before ApplicationListener
+                    // methods. The application will be disposed when _all_ windows have been
+                    // disposed, which is the case, when there is only 1 window left, which is
+                    // in the process of being disposed.
+                    for ( int i = LifecycleListeners.Count - 1; i >= 0; i-- )
+                    {
+                        ILifecycleListener l = LifecycleListeners[ i ];
+                        
+                        l.Pause();
+                        l.Dispose();
+                    }
+
+                    LifecycleListeners.Clear();
+                }
+
+                closedWindow.Dispose();
+
+                Windows.Remove( closedWindow );
+            }
+
+            if ( !haveWindowsRendered )
+            {
+                // Sleep a few milliseconds in case no rendering was requested
+                // with continuous rendering disabled.
+                try
+                {
+                    Thread.Sleep( 1000 / Config!.IdleFPS );
+                }
+                catch ( InterruptedException e )
+                {
+                    // ignore
+                }
+            }
+            else if ( targetFramerate > 0 )
+            {
+                _sync?.SyncFrameRate( targetFramerate ); // sleep as needed to meet the target framerate
+            }
+        }
     }
 
     protected void CleanupWindows()
@@ -150,7 +240,7 @@ public class GLApplication : IGLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
         {
-            ApplicationLogger.Debug( tag, message );
+            ApplicationLogger?.Debug( tag, message );
         }
     }
 
@@ -158,7 +248,7 @@ public class GLApplication : IGLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
         {
-            ApplicationLogger.Debug( tag, message, exception );
+            ApplicationLogger?.Debug( tag, message, exception );
         }
     }
 
@@ -166,7 +256,7 @@ public class GLApplication : IGLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_INFO )
         {
-            ApplicationLogger.Log( tag, message );
+            ApplicationLogger?.Log( tag, message );
         }
     }
 
@@ -174,7 +264,7 @@ public class GLApplication : IGLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_INFO )
         {
-            ApplicationLogger.Log( tag, message, exception );
+            ApplicationLogger?.Log( tag, message, exception );
         }
     }
 
@@ -182,7 +272,7 @@ public class GLApplication : IGLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_ERROR )
         {
-            ApplicationLogger.Error( tag, message );
+            ApplicationLogger?.Error( tag, message );
         }
     }
 
@@ -190,7 +280,7 @@ public class GLApplication : IGLApplicationBase
     {
         if ( LogLevel >= IApplication.LOG_ERROR )
         {
-            ApplicationLogger!.Error( tag, message, exception );
+            ApplicationLogger?.Error( tag, message, exception );
         }
     }
 
@@ -198,7 +288,7 @@ public class GLApplication : IGLApplicationBase
     {
         if ( Preferences!.ContainsKey( name ) )
         {
-            return Preferences.Get( name )!;
+            return Preferences.Get( name );
         }
 
         IPreferences prefs = new GLPreferences( name );
@@ -209,12 +299,12 @@ public class GLApplication : IGLApplicationBase
     }
 
     public void CreateWindow( GLWindow window,
-                              GLApplicationConfiguration config,
+                              DesktopGLApplicationConfiguration config,
                               long sharedContext )
     {
     }
 
-    public GLWindow CreateWindow( GLApplicationConfiguration config,
+    public GLWindow CreateWindow( DesktopGLApplicationConfiguration config,
                                   IApplicationListener listener,
                                   long sharedContext )
     {
@@ -242,7 +332,24 @@ public class GLApplication : IGLApplicationBase
         return window;
     }
 
-    public IGLAudio CreateAudio( GLApplicationConfiguration config )
+    public static void InitialiseGL()
+    {
+        if ( _errorCallback == null )
+        {
+            GLNativesLoader.Load();
+
+            // TODO: Create error callback - See Java LibGDX
+
+            GLFW.InitHint( InitHintBool.JoystickHatButtons, false );
+
+            if ( GLFW.Init() )
+            {
+                throw new GdxRuntimeException( "Unable to initialise Glfw!" );
+            }
+        }
+    }
+
+    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
     {
         throw new NotImplementedException();
     }

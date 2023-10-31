@@ -44,22 +44,15 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Button : Table, IDisableable
 {
-
-    #region private_data
-
     private ButtonStyle? _style;
     private bool         _programmaticChangeEvents = true;
 
-    #endregion private_data
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-
-    #region constructors
 
     public Button( Skin skin ) : base( skin )
     {
-        Initialize();
+        Initialise();
         Style = skin.Get< ButtonStyle >();
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
@@ -67,20 +60,20 @@ public class Button : Table, IDisableable
     public Button( Skin skin, string styleName )
         : base( skin )
     {
-        Initialize();
-        Style = ( ButtonStyle )skin.Get< ButtonStyle >( styleName );
+        Initialise();
+        Style = skin.Get< ButtonStyle >( styleName );
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
     public Button( Actor child, Skin skin, string styleName )
-        : this( child, ( Skin )skin.Get< ButtonStyle >( styleName ) )
+        : this( child, skin.Get< ButtonStyle >( styleName ) )
     {
         base.Skin = skin;
     }
 
     public Button( Actor child, ButtonStyle style )
     {
-        Initialize();
+        Initialise();
         Add( child );
         Style = style;
         SetSize( GetPrefWidth(), GetPrefHeight() );
@@ -88,7 +81,7 @@ public class Button : Table, IDisableable
 
     public Button( ButtonStyle style )
     {
-        Initialize();
+        Initialise();
         Style = style;
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
@@ -99,7 +92,7 @@ public class Button : Table, IDisableable
     /// </summary>
     public Button()
     {
-        Initialize();
+        Initialise();
     }
 
     public Button( IDrawable? up )
@@ -122,12 +115,10 @@ public class Button : Table, IDisableable
     {
     }
 
-    #endregion constructors
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private void Initialize()
+    private void Initialise()
     {
         Touchable = Touchable.Enabled;
 
@@ -157,14 +148,17 @@ public class Button : Table, IDisableable
 
         if ( fireEvent )
         {
-            ChangeListener.ChangeEvent changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
+            ChangeListener.ChangeEvent? changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
 
-            if ( Fire( changeEvent ) )
+            if ( changeEvent is not null )
             {
-                this.IsChecked = !isChecked;
-            }
+                if ( Fire( changeEvent ) )
+                {
+                    this.IsChecked = !isChecked;
+                }
 
-            Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
+                Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
+            }
         }
     }
 
@@ -186,7 +180,6 @@ public class Button : Table, IDisableable
     {
         get => _style;
 
-        // ReSharper disable once PropertyCanBeMadeInitOnly.Global
         set
         {
             this._style = value ?? throw new ArgumentException( "style cannot be null." );
@@ -270,23 +263,25 @@ public class Button : Table, IDisableable
 
         SetBackground( GetBackgroundDrawable() );
 
-        float? offsetX;
-        float? offsetY;
+        float offsetX;
+        float offsetY;
 
+        GdxRuntimeException.ThrowIfNull( Style );
+        
         if ( IsPressed() && !IsDisabled )
         {
-            offsetX = Style?.PressedOffsetX;
-            offsetY = Style?.PressedOffsetY;
+            offsetX = Style.PressedOffsetX;
+            offsetY = Style.PressedOffsetY;
         }
         else if ( IsChecked && !IsDisabled )
         {
-            offsetX = Style?.CheckedOffsetX;
-            offsetY = Style?.CheckedOffsetY;
+            offsetX = Style.CheckedOffsetX;
+            offsetY = Style.CheckedOffsetY;
         }
         else
         {
-            offsetX = Style?.UnpressedOffsetX;
-            offsetY = Style?.UnpressedOffsetY;
+            offsetX = Style.UnpressedOffsetX;
+            offsetY = Style.UnpressedOffsetY;
         }
 
         var offset = ( offsetX != 0 ) || ( offsetY != 0 );
@@ -295,7 +290,7 @@ public class Button : Table, IDisableable
         {
             foreach ( Actor actor in Children )
             {
-                actor.MoveBy( ( float )offsetX!, ( float )offsetY! );
+                actor.MoveBy( offsetX, offsetY );
             }
         }
 
@@ -303,9 +298,9 @@ public class Button : Table, IDisableable
 
         if ( offset )
         {
-            for ( int i = 0; i < Children.Size; i++ )
+            for ( var i = 0; i < Children.Size; i++ )
             {
-                Children.Get( i ).MoveBy( ( float )-offsetX!, ( float )-offsetY! );
+                Children.Get( i ).MoveBy( -offsetX, -offsetY );
             }
         }
 
@@ -374,10 +369,10 @@ public class Button : Table, IDisableable
     public override float MinWidth  => PrefWidth;
     public override float MinHeight => PrefHeight;
 
-    public ButtonClickListener?  ClickListener { get; set; }
-    public bool                  IsChecked     { get; private set; }
-    public bool                  IsDisabled    { get; set; }
-    public ButtonGroup< Button > ButtonGroup   { get; set; }
+    public ButtonClickListener?   ClickListener { get; set; }
+    public bool                   IsChecked     { get; private set; }
+    public bool                   IsDisabled    { get; set; }
+    public ButtonGroup< Button >? ButtonGroup   { get; set; }
 
     #endregion properties
 

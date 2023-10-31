@@ -14,10 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
+
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
-public class GLApplicationConfiguration : GLWindowConfiguration
+public class DesktopGLApplicationConfiguration : GLWindowConfiguration
 {
     public bool DisableAudio           { get; set; } = false;
     public bool UseGL30                { get; set; } = false;
@@ -49,9 +51,9 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// </summary>
     /// <param name="config"></param>
     /// <returns></returns>
-    public static GLApplicationConfiguration Copy( GLApplicationConfiguration config )
+    public static DesktopGLApplicationConfiguration Copy( DesktopGLApplicationConfiguration config )
     {
-        var copy = new GLApplicationConfiguration();
+        var copy = new DesktopGLApplicationConfiguration();
 
         copy.Set( config );
 
@@ -61,7 +63,7 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// <summary>
     /// </summary>
     /// <param name="config"></param>
-    private void Set( GLApplicationConfiguration config )
+    private void Set( DesktopGLApplicationConfiguration config )
     {
         base.SetWindowConfiguration( config );
 
@@ -152,9 +154,13 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     }
 
     /// <summary>
+    /// Enables use of OpenGL debug message callbacks. If not supported by the core GL driver
+    /// (since GL 4.3), this uses the KHR_debug, ARB_debug_output or AMD_debug_output extension
+    /// if available. By default, debug messages with NOTIFICATION severity are disabled to
+    /// avoid log spam.
+    /// Use <see cref="DesktopGLApplication.SetGLDebugMessageControl(DesktopGLApplication.GLDebugMessageSeverity, bool)"/>
+    /// to enable or disable other severity debug levels.
     /// </summary>
-    /// <param name="enable"></param>
-    /// <param name="debugOutputStream"></param>
     public void EnableGLDebugOutput( bool enable, StreamWriter debugOutputStream )
     {
         Debug       = enable;
@@ -164,14 +170,13 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// <summary>
     /// Gets the currently active display mode for the primary monitor.
     /// </summary>
-    public static unsafe GLGraphics.GLDisplayMode GetDisplayMode()
+    public static unsafe IGraphics.DisplayMode GetDisplayMode()
     {
-        GLApplication.InitialiseGL();
+        DesktopGLApplication.InitialiseGL();
 
-        Monitor*   monitor   = GLFW.glfwGetPrimaryMonitor().ToInt32();
-        VideoMode* videoMode = GLFW.GetVideoMode( monitor );
+        VideoMode* videoMode = GLFW.GetVideoMode( GLFW.GetPrimaryMonitor() );
 
-        return new GLGraphics.GLDisplayMode
+        return new DesktopGLGraphics.GLDisplayMode
             (
              0, //TODO:
              videoMode -> Width,
@@ -181,16 +186,31 @@ public class GLApplicationConfiguration : GLWindowConfiguration
             );
     }
 
-    public static IGraphics.Monitor[] GetMonitors()
+    public static unsafe IGraphics.DisplayMode GetDisplayMode( Monitor monitor )
     {
-        GLApplication.InitialiseGL();
+        DesktopGLApplication.InitialiseGL();
 
-        PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
-        Monitor[]     monitors     = new Monitor[ glfwMonitors.limit() ];
+        VideoMode* videoMode = GLFW.GetVideoMode( ( ( DesktopGLGraphics.GLMonitor )monitor ).MonitorHandle );
 
-        for ( int i = 0; i < glfwMonitors.limit(); i++ )
+        return new DesktopGLGraphics.GLDisplayMode
+            (
+             ( ( DesktopGLGraphics.GLMonitor )monitor ).MonitorHandle,
+             videoMode -> Width,
+             videoMode -> Height,
+             videoMode -> RefreshRate,
+             videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
+            );
+    }
+
+    public static unsafe IGraphics.Monitor[] GetMonitors()
+    {
+        DesktopGLApplication.InitialiseGL();
+
+        var monitors = new IGraphics.Monitor[ GLFW.GetMonitors().Length ];
+
+        for ( var i = 0; i < GLFW.GetMonitors().Length; i++ )
         {
-            monitors[ i ] = toLwjgl3Monitor( glfwMonitors.get( i ) );
+            monitors[ i ] = ToGLMonitor( GLFW.GetMonitors()[ i ] );
         }
 
         return monitors;
@@ -200,15 +220,18 @@ public class GLApplicationConfiguration : GLWindowConfiguration
     /// </summary>
     /// <param name="glfwMonitor"></param>
     /// <returns></returns>
-    public static GLGraphics.GLMonitor ToGLMonitor( IntPtr glfwMonitor )
+    public static unsafe DesktopGLGraphics.GLMonitor ToGLMonitor( Monitor* glfwMonitor )
     {
-        var virtualX = 0;
-        var virtualY = 0;
+        GLFW.GetMonitorPos( glfwMonitor, out var virtualX, out var virtualY );
 
-        GLFW.glfwGetMonitorPos( glfwMonitor, ref virtualX, ref virtualY );
+        var name = GLFW.GetMonitorName( glfwMonitor );
 
-        var name = GLFW.glfwGetMonitorName( glfwMonitor );
-
-        return new GLGraphics.GLMonitor( glfwMonitor.ToInt32(), virtualX, virtualY, name );
+        return new DesktopGLGraphics.GLMonitor
+            (
+             0, // TODO:
+             virtualX,
+             virtualY,
+             name
+            );
     }
 }

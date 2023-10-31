@@ -184,9 +184,10 @@ public class Table : WidgetGroup
             return;
         }
 
-        Debug.Assert( this.Color != null, nameof( this.Color ) + " is null" );
-
-        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+        if ( Color != null )
+        {
+            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+        }
 
         _background.Draw( batch, x, y, Width, Height );
     }
@@ -342,6 +343,8 @@ public class Table : WidgetGroup
             // Set the index of the cell above.
             if ( cell.Row > 0 )
             {
+                // TODO: This label is direct from the Java libgdx.
+                //       I don't like using them so this will be refactored at some point. 
                 outer:
 
                 for ( var i = cellCount - 1; i >= 0; i-- )
@@ -422,7 +425,7 @@ public class Table : WidgetGroup
             throw new IllegalStateException( "Table must have a skin set to use this method." );
         }
 
-        return Add( new Label( text, ( Skin )Skin.Get< Label.LabelStyle >( labelStyleName ) ) );
+        return Add( new Label( text, Skin.Get< Label.LabelStyle >( labelStyleName ) ) );
     }
 
     /// <summary>
@@ -682,7 +685,7 @@ public class Table : WidgetGroup
     /// <returns></returns>
     public List< Cell > GetCells() => _cells;
 
-    protected new float GetPrefWidth()
+    protected float GetPrefWidth()
     {
         if ( _sizeInvalid )
         {
@@ -694,7 +697,7 @@ public class Table : WidgetGroup
         return _background != null ? Math.Max( width, _background.MinWidth ) : width;
     }
 
-    protected new float GetPrefHeight()
+    protected float GetPrefHeight()
     {
         if ( _sizeInvalid )
         {
@@ -706,7 +709,7 @@ public class Table : WidgetGroup
         return _background != null ? Math.Max( height, _background.MinHeight ) : height;
     }
 
-    public new float GetMinWidth()
+    public float GetMinWidth()
     {
         if ( _sizeInvalid )
         {
@@ -716,7 +719,7 @@ public class Table : WidgetGroup
         return _tableMinWidth;
     }
 
-    public new float GetMinHeight()
+    public float GetMinHeight()
     {
         if ( _sizeInvalid )
         {

@@ -47,6 +47,8 @@ public interface IGraphics
 
     int Height { get; }
 
+    BufferFormatDescriptor BufferFormat { get; set; }
+
     int BackBufferWidth { get; }
 
     int BackBufferHeight { get; }
@@ -113,8 +115,6 @@ public interface IGraphics
     void SetVSync( bool vsync );
 
     void SetForegroundFps( int fps );
-
-    BufferFormat GetBufferFormat();
 
     bool SupportsExtension( string extension );
 
@@ -197,7 +197,7 @@ public interface IGraphics
     /// stencil precision and number of MSAA samples.
     /// </summary>
     [PublicAPI]
-    public record BufferFormat
+    public record BufferFormatDescriptor
     {
         public int  R                { get; set; } // number of bits per color channel.
         public int  G                { get; set; } // ...

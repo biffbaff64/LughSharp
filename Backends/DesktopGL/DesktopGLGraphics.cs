@@ -14,30 +14,41 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Scenes.Scene2D.UI;
-
-using Monitor = LibGDXSharp.Core.IGraphics.Monitor;
+using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Backends.Desktop;
 
+using Monitor = LibGDXSharp.Core.IGraphics.Monitor;
+using DisplayMode = LibGDXSharp.Core.IGraphics.DisplayMode;
+using BufferFormatDescriptor = LibGDXSharp.Core.IGraphics.BufferFormatDescriptor;
+using Window = OpenTK.Windowing.GraphicsLibraryFramework.Window;
+
 [PublicAPI]
-public class GLGraphics : AbstractGraphics, IDisposable
+public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
-    public GLWindow?              Window       { get; set; }
-    public IGraphics.BufferFormat BufferFormat { get; set; } = null!;
+    public GLWindow?              GLWindow               { get; set; }
+    public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
 
     private volatile bool _isContinuous = true;
 
-    private long                  _lastFrameTime = -1;
-    private long                  _frameId;
-    private long                  _frameCounterStart = 0;
-    private int                   _frames;
-    private int                   _fps;
-    private int                   _windowPosXBeforeFullscreen;
-    private int                   _windowPosYBeforeFullscreen;
-    private int                   _windowWidthBeforeFullscreen;
-    private int                   _windowHeightBeforeFullscreen;
-    private IGraphics.DisplayMode _displayModeBeforeFullscreen = null!;
+    private long        _lastFrameTime = -1;
+    private long        _frameId;
+    private long        _frameCounterStart = 0;
+    private int         _frames;
+    private int         _fps;
+    private int         _windowPosXBeforeFullscreen;
+    private int         _windowPosYBeforeFullscreen;
+    private int         _windowWidthBeforeFullscreen;
+    private int         _windowHeightBeforeFullscreen;
+    private DisplayMode _displayModeBeforeFullscreen = null!;
+
+    private IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
+    private IntBuffer _tmpBuffer2 = BufferUtils.NewIntBuffer( 1 );
+    private IntBuffer _tmpBuffer3 = BufferUtils.NewIntBuffer( 1 );
+    private IntBuffer _tmpBuffer4 = BufferUtils.NewIntBuffer( 1 );
+
+    private int _tmpInt  = 0;
+    private int _tmpInt2 = 0;
 
     // ------------------------------------------------------------------------
 
@@ -45,28 +56,28 @@ public class GLGraphics : AbstractGraphics, IDisposable
     {
         UpdateFramebufferInfo();
 
-        if ( !Window!.ListenerInitialised )
+        if ( !GLWindow!.ListenerInitialised )
         {
             return;
         }
 
-        Window.MakeCurrent();
+        GLWindow.MakeCurrent();
 
         Gdx.GL20.GLViewport( 0, 0, width, height );
 
-        Window.Listener.Resize( Width, Height );
-        Window.Listener.Render();
+        GLWindow.Listener.Resize( Width, Height );
+        GLWindow.Listener.Render();
 
         GLFW.SwapBuffers( windowHandle );
     }
 
     // ------------------------------------------------------------------------
 
-    public GLGraphics( GLWindow window )
+    public DesktopGLGraphics( GLWindow glWindow )
     {
-        this.Window = window;
+        this.GLWindow = glWindow;
 
-        if ( window.Config.UseGL30 )
+        if ( glWindow.Config.UseGL30 )
         {
             this.GL30 = new GL30();
             this.GL20 = this.GL30;
@@ -82,36 +93,36 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
         unsafe
         {
-            GLFW.SetFramebufferSizeCallback( window.WindowHandle, ResizeCallback );
+            GLFW.SetFramebufferSizeCallback( glWindow.WindowHandle, ResizeCallback );
         }
     }
 
     private unsafe void UpdateFramebufferInfo()
     {
-        if ( Window == null )
+        if ( GLWindow == null )
         {
             return;
         }
 
-        GLFW.GetFramebufferSize( Window.WindowHandle, out var tmpWidth, out var tmpHeight );
+        GLFW.GetFramebufferSize( GLWindow.WindowHandle, out var tmpWidth, out var tmpHeight );
 
         this.BackBufferWidth  = tmpWidth;
         this.BackBufferHeight = tmpHeight;
 
-        GLFW.GetWindowSize( Window.WindowHandle, out tmpWidth, out tmpHeight );
+        GLFW.GetWindowSize( GLWindow.WindowHandle, out tmpWidth, out tmpHeight );
 
         this.LogicalWidth  = tmpWidth;
         this.LogicalHeight = tmpHeight;
 
-        BufferFormat = new IGraphics.BufferFormat()
+        BufferFormatDescriptor = new IGraphics.BufferFormatDescriptor()
         {
-            R                = Window.Config.R,
-            G                = Window.Config.G,
-            B                = Window.Config.B,
-            A                = Window.Config.A,
-            Depth            = Window.Config.Depth,
-            Stencil          = Window.Config.Stencil,
-            Samples          = Window.Config.Samples,
+            R                = GLWindow.Config.R,
+            G                = GLWindow.Config.G,
+            B                = GLWindow.Config.B,
+            A                = GLWindow.Config.A,
+            Depth            = GLWindow.Config.Depth,
+            Stencil          = GLWindow.Config.Stencil,
+            Samples          = GLWindow.Config.Samples,
             CoverageSampling = false
         };
 
@@ -142,15 +153,15 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     private void InitiateGL()
     {
-        var vendorString   = Gdx.GL20.GLGetString( GL11.GL_VENDOR );
-        var rendererString = string.Empty; //TODO: Gdx.GL20.GLGetString( GL11.GL_RENDERER );
+        var vendorString   = Gdx.GL20.GLGetString( IGL20.GL_VENDOR );
+        var rendererString = Gdx.GL20.GLGetString( IGL20.GL_RENDERER );
 
         GLVersion = new GLVersion
             (
-            IApplication.ApplicationType.Desktop,
-            GLFW.GetVersionString(),
-            vendorString,
-            rendererString
+             IApplication.ApplicationType.Desktop,
+             GLFW.GetVersionString(),
+             vendorString,
+             rendererString
             );
 
         if ( SupportsCubeMapSeamless() )
@@ -176,13 +187,17 @@ public class GLGraphics : AbstractGraphics, IDisposable
     /// <param name="enable"></param>
     public void EnableCubeMapSeamless( bool enable )
     {
-        if ( enable )
+        if ( SupportsCubeMapSeamless() )
         {
-            Gdx.GL20.GLEnable( GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-        }
-        else
-        {
-            Gdx.GL20.GLDisable( GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+            // TODO:
+//            if ( enable )
+//            {
+//                Gdx.GL20.GLEnable( IGL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+//            }
+//            else
+//            {
+//                Gdx.GL20.GLDisable( IGL32.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+//            }
         }
     }
 
@@ -192,21 +207,70 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    public override Monitor GetPrimaryMonitor()
+    public override unsafe Monitor GetPrimaryMonitor()
     {
-        return GLApplicationConfiguration.ToGLMonitor( GLFW.glfwGetPrimaryMonitor() );
+        return DesktopGLApplicationConfiguration.ToGLMonitor( GLFW.GetPrimaryMonitor() );
     }
 
-    public override Monitor GetMonitor()
+    public override unsafe Monitor GetMonitor()
     {
+        Monitor[] monitors = GetMonitors();
+        Monitor   result   = monitors[ 0 ];
+
+        GLFW.GetWindowPos( GLWindow!.WindowHandle, out _tmpInt, out _tmpInt2 );
+
+        var windowX = _tmpBuffer.Get( 0 );
+        var windowY = _tmpBuffer2.Get( 0 );
+
+        GLFW.GetWindowSize( GLWindow.WindowHandle, out var windowWidth, out var windowHeight );
+
+        var bestOverlap = 0;
+
+        foreach ( Monitor monitor in monitors )
+        {
+            DisplayMode mode = GetDisplayMode( monitor );
+
+            var overlap = Math.Max
+                              (
+                               0,
+                               Math.Min( windowX + windowWidth, monitor.VirtualX + mode.Width )
+                             - Math.Max( windowX, monitor.VirtualX )
+                              )
+                        * Math.Max
+                              (
+                               0,
+                               Math.Min( windowY + windowHeight, monitor.VirtualY + mode.Height )
+                             - Math.Max( windowY, monitor.VirtualY )
+                              );
+
+            if ( bestOverlap < overlap )
+            {
+                bestOverlap = overlap;
+                result      = monitor;
+            }
+        }
+
+        return result;
     }
 
     public override Monitor[] GetMonitors()
     {
+        unsafe
+        {
+            var monitors = new Monitor[ GLFW.GetMonitors().Length ];
+
+            for ( var i = 0; i < GLFW.GetMonitors().Length; i++ )
+            {
+                monitors[ i ] = DesktopGLApplicationConfiguration.ToGLMonitor( GLFW.GetMonitors()[ i ] );
+            }
+
+            return monitors;
+        }
     }
 
     public override IGraphics.DisplayMode[] GetDisplayModes()
     {
+        return DesktopGLApplicationConfiguration.GetDisplayModes( GetMonitor() );
     }
 
     public override IGraphics.DisplayMode[] GetDisplayModes( Monitor monitor )
@@ -292,7 +356,9 @@ public class GLGraphics : AbstractGraphics, IDisposable
     /// Cursor. It is recommended to call this function in the main render thread,
     /// and maximum one time per frame.
     /// </summary>
-    /// <param name="cursor">The mouse cursor as a <see cref="T:LibGDXSharp.Graphics.ICursor" /></param>
+    /// <param name="cursor">
+    /// The mouse cursor as a <see cref="T:LibGDXSharp.Graphics.ICursor"/>
+    /// </param>
     public override void SetCursor( ICursor cursor )
     {
     }
@@ -303,7 +369,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )
     {
-        GLCursor.SetSystemCursor( Window.WindowHandle, systemCursor );
+        GLCursor.SetSystemCursor( GLWindow.WindowHandle, systemCursor );
     }
 
     /// <summary>
@@ -323,7 +389,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
     {
         get
         {
-            if ( Window?.Config.HdpiMode == HdpiMode.Pixels )
+            if ( GLWindow?.Config.HdpiMode == HdpiMode.Pixels )
             {
                 return BackBufferWidth;
             }
@@ -338,7 +404,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
     {
         get
         {
-            if ( Window?.Config.HdpiMode == HdpiMode.Pixels )
+            if ( GLWindow?.Config.HdpiMode == HdpiMode.Pixels )
             {
                 return BackBufferHeight;
             }
@@ -373,14 +439,14 @@ public class GLGraphics : AbstractGraphics, IDisposable
 
     public override unsafe float GetPpcX()
     {
-        GLFW.glfwGetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeX );
+        GLFW.GetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeX );
 
         return ( GetDisplayMode().Width / ( float )sizeX ) * 10;
     }
 
     public override unsafe float GetPpcY()
     {
-        GLFW.glfwGetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeY );
+        GLFW.GetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeY );
 
         return ( GetDisplayMode().Height / ( float )sizeY ) * 10;
     }
@@ -415,6 +481,7 @@ public class GLGraphics : AbstractGraphics, IDisposable
         }
     }
 
+    [PublicAPI]
     public class GLMonitor : Monitor
     {
         public long MonitorHandle { get; set; }

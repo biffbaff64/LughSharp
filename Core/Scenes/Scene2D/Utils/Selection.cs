@@ -376,7 +376,7 @@ public class Selection<T> : IDisableable
     /// <summary>
     /// Called after the selection changes. The default implementation does nothing.
     /// </summary>
-    protected void Changed()
+    protected virtual void Changed()
     {
     }
 
@@ -392,8 +392,13 @@ public class Selection<T> : IDisableable
             return false;
         }
 
-        ChangeListener.ChangeEvent changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
+        ChangeListener.ChangeEvent? changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
 
+        if ( changeEvent == null )
+        {
+            return false;
+        }
+        
         try
         {
             return Actor.Fire( changeEvent );
