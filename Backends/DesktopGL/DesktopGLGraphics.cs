@@ -26,7 +26,7 @@ using Window = OpenTK.Windowing.GraphicsLibraryFramework.Window;
 [PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
-    public GLWindow?              GLWindow               { get; set; }
+    public DesktopGLWindow?              GLWindow               { get; set; }
     public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
 
     private volatile bool _isContinuous = true;
@@ -73,18 +73,18 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    public DesktopGLGraphics( GLWindow glWindow )
+    public DesktopGLGraphics( DesktopGLWindow glWindow )
     {
         this.GLWindow = glWindow;
 
         if ( glWindow.Config.UseGL30 )
         {
-            this.GL30 = new GL30();
+            this.GL30 = new DesktopGL30();
             this.GL20 = this.GL30;
         }
         else
         {
-            this.GL20 = new GL20();
+            this.GL20 = new DesktopGL20();
             this.GL30 = null;
         }
 

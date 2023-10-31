@@ -19,7 +19,7 @@ using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
-public class DesktopGLApplicationConfiguration : GLWindowConfiguration
+public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
     public bool DisableAudio           { get; set; } = false;
     public bool UseGL30                { get; set; } = false;

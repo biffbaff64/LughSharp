@@ -20,7 +20,7 @@ using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-public class GL30 : GL20, IGL30
+public class DesktopGL30 : DesktopGL20, IGL30
 {
 
     public void GLReadBuffer( int mode )

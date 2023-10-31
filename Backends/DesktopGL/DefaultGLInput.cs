@@ -19,7 +19,7 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DefaultGLInput : AbstractInput, IGLInput
 {
-    private GLWindow?        _window;
+    private DesktopGLWindow?        _window;
     private IInputProcessor? _inputProcessor;
     private InputEventQueue  _eventQueue = new();
     private int              _mouseX;

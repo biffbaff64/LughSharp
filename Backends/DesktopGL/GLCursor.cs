@@ -19,7 +19,7 @@ namespace LibGDXSharp.Backends.Desktop;
 public class GLCursor
 {
 
-    public static void Dispose( GLWindow glWindow )
+    public static void Dispose( DesktopGLWindow glWindow )
     {
     }
 }

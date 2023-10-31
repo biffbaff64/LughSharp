@@ -28,7 +28,7 @@ namespace LibGDXSharp;
 public class DesktopGLApplication : IGLApplicationBase
 {
     public DesktopGLApplicationConfiguration?  Config             { get; set; }
-    public List< GLWindow >                    Windows            { get; set; } = new();
+    public List< DesktopGLWindow >                    Windows            { get; set; } = new();
     public Dictionary< string, IPreferences >? Preferences        { get; set; }
     public List< IRunnable >                   Runnables          { get; set; } = new();
     public List< IRunnable >                   ExecutedRunnables  { get; set; } = new();
@@ -42,7 +42,7 @@ public class DesktopGLApplication : IGLApplicationBase
 
     private static   GLFWCallbacks.ErrorCallback? _errorCallback   = null;
     private static   Callback?                    _glDebugCallback = null;
-    private volatile GLWindow?                    _currentWindow   = null;
+    private volatile DesktopGLWindow?                    _currentWindow   = null;
     private          IGLAudio?                    _audio           = null;
     private          Sync?                        _sync            = null;
     private          bool                         _running         = true;
@@ -118,20 +118,20 @@ public class DesktopGLApplication : IGLApplicationBase
     /// </summary>
     protected void Loop()
     {
-        List< GLWindow > closedWindows = new();
+        List< DesktopGLWindow > closedWindows = new();
 
         while ( _running && ( Windows.Count > 0 ) )
         {
             // FIXME put it on a separate thread
-            _audio.Update();
+            _audio?.Update();
 
-            bool haveWindowsRendered = false;
-            
+            var haveWindowsRendered = false;
+
             closedWindows.Clear();
-            
-            int targetFramerate = -2;
-            
-            foreach ( GLWindow window in Windows )
+
+            var targetFramerate = -2;
+
+            foreach ( DesktopGLWindow window in Windows )
             {
                 window.MakeCurrent();
                 _currentWindow = window;
@@ -141,7 +141,7 @@ public class DesktopGLApplication : IGLApplicationBase
                     targetFramerate = window.Config.ForegroundFPS;
                 }
 
-                lock( LifecycleListeners )
+                lock ( LifecycleListeners )
                 {
                     haveWindowsRendered |= window.Update();
                 }
@@ -156,13 +156,13 @@ public class DesktopGLApplication : IGLApplicationBase
 
             bool shouldRequestRendering;
 
-            lock( Runnables )
+            lock ( Runnables )
             {
                 shouldRequestRendering = Runnables.Count > 0;
-                
+
                 ExecutedRunnables.Clear();
                 ExecutedRunnables.AddAll( Runnables );
-                
+
                 Runnables.Clear();
             }
 
@@ -175,7 +175,7 @@ public class DesktopGLApplication : IGLApplicationBase
             {
                 // Must follow Runnables execution so changes done by Runnables are reflected
                 // in the following render.
-                foreach ( GLWindow window in Windows )
+                foreach ( DesktopGLWindow window in Windows )
                 {
                     if ( !window.Graphics.IsContinuousRendering() )
                     {
@@ -184,7 +184,7 @@ public class DesktopGLApplication : IGLApplicationBase
                 }
             }
 
-            foreach ( GLWindow closedWindow in closedWindows )
+            foreach ( DesktopGLWindow closedWindow in closedWindows )
             {
                 if ( Windows.Count == 1 )
                 {
@@ -192,10 +192,10 @@ public class DesktopGLApplication : IGLApplicationBase
                     // methods. The application will be disposed when _all_ windows have been
                     // disposed, which is the case, when there is only 1 window left, which is
                     // in the process of being disposed.
-                    for ( int i = LifecycleListeners.Count - 1; i >= 0; i-- )
+                    for ( var i = LifecycleListeners.Count - 1; i >= 0; i-- )
                     {
                         ILifecycleListener l = LifecycleListeners[ i ];
-                        
+
                         l.Pause();
                         l.Dispose();
                     }
@@ -216,7 +216,7 @@ public class DesktopGLApplication : IGLApplicationBase
                 {
                     Thread.Sleep( 1000 / Config!.IdleFPS );
                 }
-                catch ( InterruptedException e )
+                catch ( ThreadInterruptedException )
                 {
                     // ignore
                 }
@@ -298,17 +298,17 @@ public class DesktopGLApplication : IGLApplicationBase
         return prefs;
     }
 
-    public void CreateWindow( GLWindow window,
+    public void CreateWindow( DesktopGLWindow window,
                               DesktopGLApplicationConfiguration config,
                               long sharedContext )
     {
     }
 
-    public GLWindow CreateWindow( DesktopGLApplicationConfiguration config,
+    public DesktopGLWindow CreateWindow( DesktopGLApplicationConfiguration config,
                                   IApplicationListener listener,
                                   long sharedContext )
     {
-        var window = new GLWindow( listener, config, this );
+        var window = new DesktopGLWindow( listener, config, this );
 
         if ( sharedContext == 0 )
         {
@@ -354,7 +354,7 @@ public class DesktopGLApplication : IGLApplicationBase
         throw new NotImplementedException();
     }
 
-    public IGLInput CreateInput( GLWindow window )
+    public IGLInput CreateInput( DesktopGLWindow window )
     {
         throw new NotImplementedException();
     }

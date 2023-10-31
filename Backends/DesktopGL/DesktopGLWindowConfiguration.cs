@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-public class GLWindowConfiguration
+public class DesktopGLWindowConfiguration
 {
     public int   WindowX                { get; set; } = -1;
     public int   WindowY                { get; set; } = -1;
@@ -44,7 +44,7 @@ public class GLWindowConfiguration
     /// <summary>
     /// </summary>
     /// <param name="config"></param>
-    public void SetWindowConfiguration( GLWindowConfiguration config )
+    public void SetWindowConfiguration( DesktopGLWindowConfiguration config )
     {
         WindowX            = config.WindowX;
         WindowY            = config.WindowY;

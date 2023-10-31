@@ -20,15 +20,16 @@ public interface IGLWindowListener
 {
     /// <summary>
     /// Called after the GLFW window is created. Before this callback is received, it's
-    /// unsafe to use any<see cref="GLWindow"/> member functions which, for their part,
+    /// unsafe to use any<see cref="DesktopGLWindow"/> member functions which, for their part,
     /// involve calling GLFW functions.
-    /// </summary>
-    ///
+    /// <para>
     /// For the main window, this is an immediate callback from inside
-    /// <see cref="DesktopApplication(IApplicationListener, DesktopGLApplicationConfiguration)"/>
+    /// <see cref="DesktopGLApplication(IApplicationListener, DesktopGLApplicationConfiguration)"/>
+    /// </para>
+    /// </summary>
     /// <param name="window">the window instance.</param>
     /// <see cref="DesktopGLApplication"/>
-    void Created( GLWindow window );
+    void Created( DesktopGLWindow window );
 
     /// <summary>
     /// Called when the window is iconified (i.e. its minimize button

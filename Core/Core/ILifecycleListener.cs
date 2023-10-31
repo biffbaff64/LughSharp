@@ -26,7 +26,7 @@ namespace LibGDXSharp.Core;
 /// will be executed before the ApplicationListener methods are executed.
 /// </summary>
 [PublicAPI]
-public interface ILifecycleListener
+public interface ILifecycleListener : IDisposable
 {
     /// <summary>
     /// Called when the <see cref="IApplication"/> is about to be paused.

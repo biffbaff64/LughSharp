@@ -20,7 +20,7 @@ using LibGDXSharp.Utils.Buffers;
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
-public class GLWindow : IDisposable
+public class DesktopGLWindow : IDisposable
 {
     public        IGLWindowListener?                WindowListener      { get; set; }
     public unsafe Window*                           WindowHandle        { get; set; }
@@ -40,7 +40,7 @@ public class GLWindow : IDisposable
 
     // ------------------------------------------------------------------------
 
-    public GLWindow( IApplicationListener listener,
+    public DesktopGLWindow( IApplicationListener listener,
                      DesktopGLApplicationConfiguration config,
                      IGLApplicationBase application )
     {
@@ -148,7 +148,7 @@ public class GLWindow : IDisposable
         GLFW.MakeContextCurrent( WindowHandle );
     }
 
-    private void RequestRendering()
+    public void RequestRendering()
     {
         lock ( this )
         {

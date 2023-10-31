@@ -9,26 +9,26 @@
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    -      - DefaultGLInput
-    -      - GL20
-    -      - GL30
-    -      - GLApplication
-    -      - GLApplicationConfiguration
-    -      - GLApplicationLogger
+    - IP   - DefaultGLInput
+    - IP   - DesktopGL20
+    - IP   - DesktopGL30
+    - IP   - DesktopGLApplication
+    - IP   - DesktopGLApplicationConfiguration
+    - IP   - DesktopGLGraphics
+    - IP   - DesktopGLWindow
+    - DONE - DesktopGLWindowAdapter
+    - IP   - DesktopGLWindowConfiguration
+    - IP   - GLApplicationLogger
     -      - GLClipboard
     -      - GLCursor
     -      - GLFileHandle
     -      - GLFiles
-    -      - GLGraphics
     -      - GLNativesLoader
     -      - GLNet
     -      - GLPreferences
-    -      - GLWindow
-    -      - GLWindowAdapter
-    -      - GLWindowConfiguration
     -      - IGLApplicationBase
     -      - IGLInput
-    -      - IGLWindowListener
+    - DONE - IGLWindowListener
     -      - Sync
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -36,7 +36,8 @@
 
 AUDIO
 -----
-    -      - IGLAudio
+
+    - DONE - IGLAudio
     -      - Mp3
     -      - Ogg
     -      - OggInputStream
@@ -50,8 +51,22 @@ AUDIO
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+AUDIO/JAVAZOOMJL
+----------------
+
+    -      - LayerIDecoder
+    -      - LayerIIDecoder
+    -      - LayerIIIDecoder
+    - IP   - Mp3Decoder
+    -      - OutputBuffer
+    -      - SynthesisFilter
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 AUDIO/MOCK
 ----------
+
     -      - MockAudio
     -      - MockAudioDevice
     -      - MockAudioRecorder

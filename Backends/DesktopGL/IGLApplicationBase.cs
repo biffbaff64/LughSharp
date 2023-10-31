@@ -22,5 +22,5 @@ public interface IGLApplicationBase : IApplication
 {
     IGLAudio CreateAudio( DesktopGLApplicationConfiguration config );
 
-    IGLInput CreateInput( GLWindow window );
+    IGLInput CreateInput( DesktopGLWindow window );
 }

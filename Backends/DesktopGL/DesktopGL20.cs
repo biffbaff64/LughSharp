@@ -20,7 +20,7 @@ using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-public class GL20 : IGL20
+public class DesktopGL20 : IGL20
 {
     public void GLActiveTexture( int texture )
     {

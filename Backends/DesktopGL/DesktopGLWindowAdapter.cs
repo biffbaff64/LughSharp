@@ -20,38 +20,38 @@ namespace LibGDXSharp.Backends.Desktop;
 /// Convenience implementation of <see cref="IGLWindowListener"/>.
 /// Derive from this class and only overwrite the methods you are interested in.
 /// </summary>
-public class GLWindowAdapter : IGLWindowListener
+public class DesktopGLWindowAdapter : IGLWindowListener
 {
-    public void Created( GLWindow window )
+    public virtual void Created( DesktopGLWindow window )
     {
     }
 
-    public void Iconified( bool isIconified )
+    public virtual void Iconified( bool isIconified )
     {
     }
 
-    public void Maximized( bool isMaximized )
+    public virtual void Maximized( bool isMaximized )
     {
     }
 
-    public void FocusLost()
+    public virtual void FocusLost()
     {
     }
 
-    public void FocusGained()
+    public virtual void FocusGained()
     {
     }
 
-    public bool CloseRequested()
+    public virtual bool CloseRequested()
     {
         return false;
     }
 
-    public void FilesDropped( string[] files )
+    public virtual void FilesDropped( string[] files )
     {
     }
 
-    public void RefreshRequested()
+    public virtual void RefreshRequested()
     {
     }
 }
