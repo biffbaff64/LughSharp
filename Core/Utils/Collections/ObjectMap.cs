@@ -16,8 +16,6 @@
 
 using System.Text;
 
-using LibGDXSharp.Utils.Collections;
-
 namespace LibGDXSharp.Core.Utils.Collections;
 
 /// <summary>
@@ -50,12 +48,12 @@ public class ObjectMap<TK, TV>
 
     // ------------------------------------------------------------------------
 
-    [NonSerialized] private Entries< TK, TV >? _entries1;
-    [NonSerialized] private Entries< TK, TV >? _entries2;
-    [NonSerialized] private Values< TV >?      _values1;
-    [NonSerialized] private Values< TV >?      _values2;
-    [NonSerialized] private Keys< TK >?        _keys1;
-    [NonSerialized] private Keys< TK >?        _keys2;
+    private Entries< TK, TV >? _entries1;
+    private Entries< TK, TV >? _entries2;
+    private Values< TV >?      _values1;
+    private Values< TV >?      _values2;
+    private Keys< TK >?        _keys1;
+    private Keys< TK >?        _keys2;
 
     // ------------------------------------------------------------------------
 
@@ -867,6 +865,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <typeparam name="TKe"></typeparam>
     /// <typeparam name="TVe"></typeparam>
+    [PublicAPI]
     public class Entry<TKe, TVe>
     {
         public TKe? key;
@@ -888,6 +887,7 @@ public class ObjectMap<TK, TV>
     /// <typeparam name="TKm"></typeparam>
     /// <typeparam name="TVm"></typeparam>
     /// <typeparam name="TI"></typeparam>
+    [PublicAPI]
     public abstract class MapIterator<TKm, TVm, TI>
     {
         public    bool Valid   { get; set; } = true;
@@ -972,6 +972,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <typeparam name="TKe"></typeparam>
     /// <typeparam name="TVe"></typeparam>
+    [PublicAPI]
     public class Entries<TKe, TVe> : MapIterator< TKe, TVe, Entry< TKe, TVe > >
     {
         private readonly Entry< TKe, TVe > _entry = new();
@@ -1018,6 +1019,7 @@ public class ObjectMap<TK, TV>
     /// <summary>
     /// </summary>
     /// <typeparam name="TVv"></typeparam>
+    [PublicAPI]
     public class Values<TVv> : MapIterator< TK, TVv, TVv >
     {
         /// <summary>
@@ -1079,6 +1081,7 @@ public class ObjectMap<TK, TV>
     /// <summary>
     /// </summary>
     /// <typeparam name="TKk"></typeparam>
+    [PublicAPI]
     public class Keys<TKk> : MapIterator< TKk, TV, TKk >
     {
         public Keys( ObjectMap< TKk, TV > map )

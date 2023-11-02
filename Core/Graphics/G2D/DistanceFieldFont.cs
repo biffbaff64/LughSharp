@@ -176,7 +176,7 @@ public class DistanceFieldFont : BitmapFont
     /// Attention: breaks batching because uniform is needed for smoothing factor,
     /// so a flush is performed before and after every font rendering.
     /// </summary>
-    private sealed class DistanceFieldFontCache : BitmapFontCache
+    private class DistanceFieldFontCache : BitmapFontCache
     {
         public DistanceFieldFontCache( DistanceFieldFont font )
             : base( font, font.UseIntegerPositions )

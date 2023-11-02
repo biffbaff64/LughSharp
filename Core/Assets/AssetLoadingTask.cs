@@ -67,33 +67,31 @@ public class AssetLoadingTask
             return;
         }
 
-        var asyncLoader = _loader as AsynchronousAssetLoader;
-
-        if ( asyncLoader != null )
+        if ( _loader is AsynchronousAssetLoader asyncLoader )
         {
             if ( !DependenciesLoaded )
             {
                 dependencies = asyncLoader.GetDependencies
                     (
                     AssetDesc.FilePath ?? "",
-                    Resolve( asyncLoader, AssetDesc )!,
+                    Resolve( asyncLoader, AssetDesc ),
                     AssetDesc.Parameters
                     );
 
                 if ( dependencies != null )
                 {
                     RemoveDuplicates( dependencies );
-                    _manager.InjectDependencies( AssetDesc.FilePath!, dependencies );
+                    _manager.InjectDependencies( AssetDesc.FilePath, dependencies );
                 }
                 else
                 {
                     // if we have no dependencies, we load the
                     // async part of the task immediately.
-                    asyncLoader?.LoadAsync
+                    asyncLoader.LoadAsync
                         (
                         _manager,
-                        AssetDesc.FilePath!,
-                        Resolve( _loader, AssetDesc )!,
+                        AssetDesc.FilePath,
+                        Resolve( _loader, AssetDesc ),
                         AssetDesc.Parameters
                         );
 
@@ -102,7 +100,7 @@ public class AssetLoadingTask
             }
             else
             {
-                asyncLoader?.LoadAsync
+                asyncLoader.LoadAsync
                     (
                     _manager,
                     AssetDesc.FilePath,
@@ -163,11 +161,11 @@ public class AssetLoadingTask
     /// <returns></returns>
     private FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
     {
-        if ( assetDesc is { File: null } )
+        if ( assetDesc is { File: null } descriptor )
         {
             if ( loader != null )
             {
-                assetDesc.File = loader.Resolve( assetDesc.FilePath! );
+                descriptor.File = loader.Resolve( descriptor.FilePath );
             }
         }
 
@@ -320,7 +318,7 @@ public class AssetLoadingTask
 
             for ( var j = array.Count - 1; j > i; --j )
             {
-                if ( ( type == array[ j ].Type ) && fn!.Equals( array[ j ].FilePath ) )
+                if ( ( type == array[ j ].Type ) && fn.Equals( array[ j ].FilePath ) )
                 {
                     array.RemoveAt( j );
                 }

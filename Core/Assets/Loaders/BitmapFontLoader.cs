@@ -68,7 +68,8 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <summary>
     /// </summary>
     /// <param name="resolver"></param>
-    public BitmapFontLoader( IFileHandleResolver resolver ) : base( resolver )
+    public BitmapFontLoader( IFileHandleResolver resolver )
+        : base( resolver )
     {
     }
 
@@ -139,8 +140,8 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     public override void LoadAsync( AssetManager manager,
-                                    string fileName,
-                                    FileInfo file,
+                                    string? fileName,
+                                    FileInfo? file,
                                     AssetLoaderParameters parameter )
     {
     }
@@ -154,18 +155,17 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
     public override BitmapFont LoadSync( AssetManager manager,
-                                         string fileName,
-                                         FileInfo file,
+                                         string? fileName,
+                                         FileInfo? file,
                                          AssetLoaderParameters parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );
-        
+
         if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
         {
             var atlas = manager.Get< TextureAtlas >( ( ( BitmapFontParameter )parameter ).AtlasName! );
-
-            var name = Path.GetFileNameWithoutExtension( _data?.ImagePaths?[ 0 ] );
+            var name  = Path.GetFileNameWithoutExtension( _data?.ImagePaths?[ 0 ] );
 
             TextureRegion? region = atlas.FindRegion( name );
 
@@ -174,7 +174,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
                 throw new GdxRuntimeException
                     (
                      $"Could not find font region {name} in atlas "
-                     + $"{( ( BitmapFontParameter )parameter ).AtlasName}"
+                   + $"{( ( BitmapFontParameter )parameter ).AtlasName}"
                     );
             }
 

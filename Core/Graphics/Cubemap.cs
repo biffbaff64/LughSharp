@@ -271,7 +271,7 @@ public class Cubemap : GLTexture
                         wrapV       = cubemap.VWrap,
                         // special parameter which will ensure that the references stay the same.
                         cubemap        = cubemap,
-                        LoadedCallback = new DefaultLoadedCallbackInnerClass( refCount )
+                        LoadedCallback = new DefaultLoadedCallback( refCount )
                     };
 
                     // unload the c, create a new gl handle then reload it.

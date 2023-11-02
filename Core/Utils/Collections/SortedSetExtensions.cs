@@ -14,9 +14,10 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Backends.Desktop.Audio;
+namespace LibGDXSharp.Core.Utils.Collections;
 
-public class OutputBuffer
+[PublicAPI]
+public class SortedSetExtensions
 {
     
 }

@@ -25,9 +25,11 @@ namespace LibGDXSharp.Assets.Loaders;
 /// Per default images are loaded from the directory in which the effect file is found. 
 /// </summary>
 [PublicAPI]
-public sealed class ParticleEffectLoader : SynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
+public class ParticleEffectLoader
+    : SynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
 {
-    public ParticleEffectLoader( IFileHandleResolver resolver ) : base( resolver )
+    public ParticleEffectLoader( IFileHandleResolver resolver )
+        : base( resolver )
     {
     }
 

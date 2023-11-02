@@ -14,10 +14,10 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Backends.Desktop.Audio;
+namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 [PublicAPI]
-public class LayerIIIDecoder
+public class DecoderException : Exception
 {
     
 }

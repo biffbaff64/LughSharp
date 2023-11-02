@@ -89,7 +89,6 @@ ASSETS/LOADERS/RESOLVERS
     -      - LocalFileHandleResolver       
     -      - PrefixFileHandleResolver      
     -      - ResolutionFileResolver        
-    -------------------------------------
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -101,6 +100,26 @@ AUDIO
     - DONE - IAudioRecorder                 
     - DONE - IMusic                         
     - DONE - ISound                         
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+AUDIO/JAVAZOOMJL
+----------------
+
+    - IP   - Bitstream
+    - DONE - BitstreamException
+    - DONE - Crc16
+    -      - DecoderException
+    -      - FrameDecoder
+    - DONE - Header
+    -      - LayerIDecoder
+    -      - LayerIIDecoder
+    -      - LayerIIIDecoder
+    - IP   - Mp3Decoder
+    -      - OutputBuffer
+    -      - OutputChannels
+    -      - SynthesisFilter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -138,6 +157,7 @@ FILES
 
     - java.io.BufferedReader                -> 
     - java.io.BufferedInputStream           -> BufferedStream
+    - java.io.ByteArrayInputStream          -> 
     - java.io.ByteArrayOutputStream         -> 
     - java.io.DataInputStream               -> BinaryReader
     - java.io.DataOutputStream              -> BinaryWriter

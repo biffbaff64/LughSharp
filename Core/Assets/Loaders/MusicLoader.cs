@@ -21,7 +21,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// The Music instance is loaded synchronously.
 /// </summary>
 [PublicAPI]
-public class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.MusicParameter >, IDisposable
+public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameters >, IDisposable
 {
     public IMusic LoadedMusic { get; set; }
 
@@ -86,10 +86,6 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, MusicLoader.MusicPar
     /// releasing, or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
-    {
-    }
-
-    public class MusicParameter : AssetLoaderParameters
     {
     }
 }

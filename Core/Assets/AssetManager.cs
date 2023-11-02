@@ -217,7 +217,6 @@ public class AssetManager
     {
         if ( _tasks.First().AssetDesc is { } assetDescriptor
           && ( _tasks.Count > 0 )
-          && ( assetDescriptor.FilePath != null )
           && ( assetDescriptor.FilePath.Equals( fileName ) ) )
         {
             return true;
@@ -225,7 +224,7 @@ public class AssetManager
 
         foreach ( AssetDescriptor t in _loadQueue )
         {
-            if ( ( t.FilePath != null ) && t.FilePath.Equals( fileName ) )
+            if ( t.FilePath.Equals( fileName ) )
             {
                 return true;
             }
@@ -245,7 +244,6 @@ public class AssetManager
         {
             if ( _tasks.First().AssetDesc is { } assetDesc
               && ( assetDesc.Type == type )
-              && ( assetDesc.FilePath != null )
               && assetDesc.FilePath.Equals( fileName ) )
             {
                 return true;
@@ -254,8 +252,7 @@ public class AssetManager
 
         foreach ( AssetDescriptor assetDesc in _loadQueue )
         {
-            if ( ( assetDesc.FilePath != null )
-              && ( assetDesc.Type == type )
+            if ( ( assetDesc.Type == type )
               && assetDesc.FilePath.Equals( fileName ) )
             {
                 return true;
@@ -278,8 +275,7 @@ public class AssetManager
         // stack, thus not a dependency) and cancel if necessary
         if ( _tasks.Count > 0 )
         {
-            if ( ( _tasks.First().AssetDesc.FilePath != null )
-              && ( _tasks.First().AssetDesc.FilePath == fileName ) )
+            if ( _tasks.First().AssetDesc.FilePath == fileName )
             {
                 Log.Info( "Unload (from tasks): " + fileName );
 
@@ -297,7 +293,7 @@ public class AssetManager
 
         for ( var i = 0; i < _loadQueue.Count; i++ )
         {
-            if ( ( _loadQueue[ i ].FilePath != null ) && _loadQueue[ i ].FilePath!.Equals( fileName ) )
+            if ( _loadQueue[ i ].FilePath.Equals( fileName ) )
             {
                 foundIndex = i;
 
@@ -318,7 +314,7 @@ public class AssetManager
             // if the queued asset was already loaded, let the callback know it is available.
             if ( ( type != null ) && desc.Parameters is { LoadedCallback: not null } )
             {
-                desc.Parameters.LoadedCallback?.FinishedLoading( this, desc.FilePath!, desc.Type );
+                desc.Parameters.LoadedCallback?.FinishedLoading( this, desc.FilePath, desc.Type );
             }
 
             return;
@@ -363,7 +359,7 @@ public class AssetManager
                 {
                     if ( IsLoaded( dependency ) )
                     {
-                        //TODO:
+                        //TODO: Refactor to remove recursiveness
                         Unload( dependency );
                     }
                 }
@@ -500,6 +496,8 @@ public class AssetManager
     /// <param name="parameter"></param>
     public void Load( string? fileName, Type? type, AssetLoaderParameters parameter )
     {
+        ArgumentNullException.ThrowIfNull( fileName, "Filename not specified!" );
+        
         AssetLoader? loader = GetLoader( type, fileName );
 
         if ( loader == null )
@@ -549,7 +547,7 @@ public class AssetManager
         }
 
         // check loaded assets
-        Type? otherType = _assetTypes[ fileName! ];
+        Type? otherType = _assetTypes[ fileName ];
 
         if ( ( otherType != null ) && ( otherType != type ) )
         {
@@ -761,10 +759,10 @@ public class AssetManager
             _assetDependencies?.Put( parentAssetFilename, dependencies );
         }
 
-        _assetDependencies?[ parentAssetFilename ].Add( dependendAssetDesc.FilePath! );
+        _assetDependencies?[ parentAssetFilename ].Add( dependendAssetDesc.FilePath );
 
         // if the asset is already loaded, increase its reference count.
-        if ( ( dependendAssetDesc.FilePath != null ) && IsLoaded( dependendAssetDesc.FilePath ) )
+        if ( IsLoaded( dependendAssetDesc.FilePath ) )
         {
             Log.Debug( "Dependency already loaded: " + dependendAssetDesc );
 
@@ -800,7 +798,7 @@ public class AssetManager
 
         // if the asset is not meant to be reloaded and is already
         // loaded, increase its reference count
-        if ( ( assetDesc.FilePath != null ) && IsLoaded( assetDesc.FilePath ) )
+        if ( IsLoaded( assetDesc.FilePath ) )
         {
             Log.Debug( "Already loaded: " + assetDesc );
 
@@ -832,7 +830,6 @@ public class AssetManager
             AddTask( assetDesc );
         }
     }
-
 
     /// <summary>
     /// Adds a <see cref="LibGDXSharp.Assets.AssetLoadingTask"/> to the task stack for the given asset.
@@ -962,6 +959,7 @@ public class AssetManager
 
             _assets[ type ][ dependency ].RefCount++;
 
+            // TODO: Refactor to remove recursiveness
             IncrementRefCountedDependencies( dependency );
         }
     }
@@ -990,10 +988,7 @@ public class AssetManager
         {
             foreach ( AssetDescriptor desc in task.dependencies )
             {
-                if ( desc.FilePath != null )
-                {
-                    Unload( desc.FilePath );
-                }
+                Unload( desc.FilePath );
             }
         }
 

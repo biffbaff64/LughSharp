@@ -29,7 +29,7 @@ internal interface IRefCountedContainer
 /// using it. AssetManager handles this automatically.
 /// </summary>
 [PublicAPI]
-public sealed class RefCountedContainer : IRefCountedContainer
+public class RefCountedContainer : IRefCountedContainer
 {
     public int     RefCount { get; set; } = 1;
     public object? Asset    { get; set; }

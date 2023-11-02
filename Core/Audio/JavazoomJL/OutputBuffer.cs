@@ -14,9 +14,9 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Backends.Desktop.Audio;
+namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
-public class SynthesisFilter
+public class OutputBuffer
 {
     
 }

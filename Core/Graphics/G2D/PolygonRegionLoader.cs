@@ -43,9 +43,8 @@ public class PolygonRegionLoader
         /// </summary>
         public readonly string[] textureExtensions =
         {
-            "png", "PNG", "jpeg", "JPEG",
-            "jpg", "JPG", "cim", "CIM",
-            "etc1", "ETC1", "ktx", "KTX",
+            "png", "PNG", "jpeg", "JPEG", "jpg", "JPG",
+            "cim", "CIM", "etc1", "ETC1", "ktx", "KTX",
             "zktx", "ZKTX"
         };
     }
@@ -68,9 +67,9 @@ public class PolygonRegionLoader
                                         FileInfo? file,
                                         PolygonRegionParameters parameter )
     {
-        var texture = manager.Get< Texture >( manager.GetDependencies( fileName! )!.First() );
+        var texture = manager.Get< Texture >( manager.GetDependencies( fileName ).First() );
 
-        return Load( new TextureRegion( texture ), file! );
+        return Load( new TextureRegion( texture ), file );
     }
 
     /// <summary>

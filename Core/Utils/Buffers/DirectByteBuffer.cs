@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Utils.Buffers;
 
 [PublicAPI]
-public sealed class DirectByteBuffer : ByteBuffer
+public class DirectByteBuffer : ByteBuffer
 {
     public DirectByteBuffer( int capacity )
         : base( -1, 0, capacity, capacity )

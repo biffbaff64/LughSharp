@@ -22,7 +22,8 @@ public abstract class AsynchronousAssetLoader : AssetLoader
     /// <summary>
     /// </summary>
     /// <param name="resolver"></param>
-    protected AsynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
+    protected AsynchronousAssetLoader( IFileHandleResolver resolver )
+        : base( resolver )
     {
         IsSynchronous = false;
     }
@@ -34,8 +35,8 @@ public abstract class AsynchronousAssetLoader : AssetLoader
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     public abstract void LoadAsync( AssetManager manager,
-                                    string fileName,
-                                    FileInfo file,
+                                    string? fileName,
+                                    FileInfo? file,
                                     AssetLoaderParameters parameter );
 
     /// <summary>
@@ -46,8 +47,8 @@ public abstract class AsynchronousAssetLoader : AssetLoader
     /// <param name="parameter"></param>
     /// <returns></returns>
     public abstract object LoadSync( AssetManager manager,
-                                     string fileName,
-                                     FileInfo file,
+                                     string? fileName,
+                                     FileInfo? file,
                                      AssetLoaderParameters parameter );
 
     /// <summary>
@@ -72,12 +73,14 @@ public abstract class AsynchronousAssetLoader : AssetLoader
 /// <typeparam name="T"></typeparam>
 /// <typeparam name="TP"></typeparam>
 [PublicAPI]
-public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader where TP : AssetLoaderParameters
+public abstract class AsynchronousAssetLoader<T, TP>
+    : AssetLoader where TP : AssetLoaderParameters
 {
     /// <summary>
     /// </summary>
     /// <param name="resolver"></param>
-    protected AsynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
+    protected AsynchronousAssetLoader( IFileHandleResolver resolver )
+        : base( resolver )
     {
         IsSynchronous = false;
     }
@@ -123,8 +126,8 @@ public abstract class AsynchronousAssetLoader<T, TP> : AssetLoader where TP : As
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     public virtual void UnloadAsync( AssetManager manager,
-                                     string fileName,
-                                     FileInfo file,
+                                     string? fileName,
+                                     FileInfo? file,
                                      AssetLoaderParameters parameter )
     {
     }

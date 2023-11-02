@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Utils.Buffers;
 
 [PublicAPI]
-public sealed class StringCharBuffer : CharBuffer
+public class StringCharBuffer : CharBuffer
 {
     private readonly string _string;
 

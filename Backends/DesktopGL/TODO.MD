@@ -51,19 +51,6 @@ AUDIO
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-AUDIO/JAVAZOOMJL
-----------------
-
-    -      - LayerIDecoder
-    -      - LayerIIDecoder
-    -      - LayerIIIDecoder
-    - IP   - Mp3Decoder
-    -      - OutputBuffer
-    -      - SynthesisFilter
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 AUDIO/MOCK
 ----------
 

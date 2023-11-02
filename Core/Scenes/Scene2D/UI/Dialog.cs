@@ -469,7 +469,7 @@ public class Dialog : Window
 
     // ------------------------------------------------------------------------
 
-    protected internal sealed class DialogChangeObserver : IEventListener
+    protected internal class DialogChangeObserver : IEventListener
     {
         public bool Handle( Event ev )
         {
@@ -477,7 +477,7 @@ public class Dialog : Window
         }
     }
 
-    protected internal sealed class DialogClickObserver : IEventListener
+    protected internal class DialogClickObserver : IEventListener
     {
         public bool Handle( Event ev )
         {
@@ -485,7 +485,7 @@ public class Dialog : Window
         }
     }
 
-    protected internal sealed class DialogFocusObserver : IEventListener
+    protected internal class DialogFocusObserver : IEventListener
     {
         public bool Handle( Event ev )
         {
@@ -493,7 +493,7 @@ public class Dialog : Window
         }
     }
 
-    protected internal sealed class DialogInputObserver : IEventListener
+    protected internal class DialogInputObserver : IEventListener
     {
         public bool Handle( Event ev )
         {

@@ -14,11 +14,13 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Backends.Desktop.Audio;
+namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 [PublicAPI]
-public class LayerIIDecoder
+public class PushbackInputStream
 {
-    
+    public PushbackInputStream( Stream inStream, int buffer_int_size )
+    {
+    }
 }
 

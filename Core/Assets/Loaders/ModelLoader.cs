@@ -106,7 +106,10 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
         ModelData? data = LoadModelData( file );
 
-        if ( data == null ) return deps;
+        if ( data == null )
+        {
+            return deps;
+        }
 
         var item = new ObjectMap< string, ModelData >.Entry< string, ModelData >
         {
@@ -120,7 +123,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
         }
 
         TextureLoader.TextureParameter textureParameter = ( parameters != null )
-            ? ( (ModelParameters)parameters ).TextureParameter
+            ? ( ( ModelParameters )parameters ).TextureParameter
             : defaultParameters.TextureParameter;
 
         foreach ( ModelMaterial? modelMaterial in data.Materials! )
@@ -179,7 +182,10 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
             }
         }
 
-        if ( data == null ) return null!;
+        if ( data == null )
+        {
+            return null!;
+        }
 
         Model result = new( data, new ITextureProvider.AssetTextureProvider( manager ) );
 

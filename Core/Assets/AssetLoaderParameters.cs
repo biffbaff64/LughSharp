@@ -32,11 +32,11 @@ public class AssetLoaderParameters
 }
 
 [PublicAPI]
-public class DefaultLoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
+public class DefaultLoadedCallback : AssetLoaderParameters.ILoadedCallback
 {
     private readonly int _refCount;
 
-    public DefaultLoadedCallbackInnerClass( int refCount )
+    public DefaultLoadedCallback( int refCount )
     {
         this._refCount = refCount;
     }

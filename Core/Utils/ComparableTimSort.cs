@@ -28,7 +28,7 @@ namespace LibGDXSharp.Utils;
 /// </para>
 /// </summary>
 [PublicAPI]
-public sealed class ComparableTimSort<T>
+public class ComparableTimSort<T>
 {
     /// <summary>
     /// This is the minimum sized sequence that will be merged. Shorter sequences will

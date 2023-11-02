@@ -118,8 +118,6 @@ public class Selection<T> : IDisableable
         }
     }
 
-    public bool HasItems() => Selected.Count > 0;
-
     /// <summary>
     /// Returns TRUE if this set has items in it.
     /// </summary>
@@ -128,6 +126,8 @@ public class Selection<T> : IDisableable
     public bool Empty => Selected.Count == 0;
 
     public int Size() => Selected.Count;
+
+    public bool HasItems() => Selected.Count > 0;
 
     public SortedSet< T > Items()
     {

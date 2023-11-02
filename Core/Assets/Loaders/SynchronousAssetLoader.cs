@@ -19,10 +19,14 @@ namespace LibGDXSharp.Assets.Loaders;
 [PublicAPI]
 public abstract class SynchronousAssetLoader<T, TP> : AssetLoader
 {
-    protected SynchronousAssetLoader( IFileHandleResolver resolver ) : base( resolver )
+    protected SynchronousAssetLoader( IFileHandleResolver resolver )
+        : base( resolver )
     {
         IsSynchronous = true;
     }
 
-    public abstract T? Load( AssetManager assetManager, string? fileName, FileInfo? file, TP parameter );
+    public abstract T? Load( AssetManager assetManager,
+                             string? fileName,
+                             FileInfo? file,
+                             TP parameter );
 }

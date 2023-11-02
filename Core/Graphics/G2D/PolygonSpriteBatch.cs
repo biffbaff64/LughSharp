@@ -52,7 +52,7 @@ namespace LibGDXSharp.G2D;
 /// </p>
 /// </summary>
 [PublicAPI]
-public sealed class PolygonSpriteBatch : IPolygonBatch
+public class PolygonSpriteBatch : IPolygonBatch
 {
     private readonly Mesh           _mesh;
     private readonly float[]        _vertices;

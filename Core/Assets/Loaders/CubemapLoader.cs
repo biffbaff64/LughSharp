@@ -17,8 +17,9 @@
 namespace LibGDXSharp.Assets.Loaders;
 
 [PublicAPI]
-public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
+public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
+    [PublicAPI]
     public struct CubemapLoaderInfo
     {
         public string?       filename;
@@ -150,7 +151,8 @@ public sealed class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoa
     {
     }
 
-    public sealed class CubemapParameter : AssetLoaderParameters
+    [PublicAPI]
+    public class CubemapParameter : AssetLoaderParameters
     {
         // the format of the final Texture. Uses the source images format if null
         public Pixmap.Format? format = null;
