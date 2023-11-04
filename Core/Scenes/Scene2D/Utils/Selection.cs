@@ -39,8 +39,6 @@ public class Selection<T> : IDisableable
     public bool           Toggle                   { get; set; }
     public bool           ProgrammaticChangeEvents { get; set; } = true;
 
-    private readonly SortedSet< T > _old = new();
-
     /// <summary>
     /// <param name="value">
     /// An actor to fire a <see cref="ChangeListener.ChangeEvent"/> on when the
@@ -48,6 +46,8 @@ public class Selection<T> : IDisableable
     /// </param>
     /// </summary>
     public Actor? Actor { get; set; }
+
+    private readonly SortedSet< T > _old = new();
 
     /// <summary>
     /// Selects or deselects the specified item based on how the selection is
@@ -144,19 +144,27 @@ public class Selection<T> : IDisableable
 
     public void Snapshot()
     {
-        _old.Clear( Selected.Count );
-        _old.AddAll( Selected );
+        _old.Clear();
+        
+        foreach ( T item in Selected )
+        {
+            _old.Add( item );
+        }
     }
 
     public void Revert()
     {
-        Selected.Clear( _old.Count );
-        Selected.AddAll( _old );
+        Selected.Clear();
+        
+        foreach ( T item in _old )
+        {
+            Selected.Add( item );
+        }
     }
 
     public void Cleanup()
     {
-        _old.Clear( 32 );
+        _old.Clear();
     }
 
     /// <summary>
@@ -172,7 +180,7 @@ public class Selection<T> : IDisableable
         }
 
         Snapshot();
-        Selected.Clear( 8 );
+        Selected.Clear();
         Selected.Add( item );
 
         if ( ProgrammaticChangeEvents && FireChangeEvent() )
@@ -196,7 +204,7 @@ public class Selection<T> : IDisableable
 
         LastSelected = default( T? );
 
-        Selected.Clear( items.Count );
+        Selected.Clear();
 
         for ( int i = 0, n = items.Count; i < n; i++ )
         {
@@ -358,7 +366,7 @@ public class Selection<T> : IDisableable
 
         Snapshot();
 
-        Selected.Clear( 8 );
+        Selected.Clear();
 
         if ( ProgrammaticChangeEvents && FireChangeEvent() )
         {

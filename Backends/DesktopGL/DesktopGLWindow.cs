@@ -35,14 +35,14 @@ public class DesktopGLWindow : IDisposable
     private          IntBuffer          _tmpBuffer2;
     private          bool               _iconified         = false;
     private          bool               _requestRendering  = false;
-    private readonly List< IRunnable >  _runnables         = new();
-    private readonly List< IRunnable >  _executedRunnables = new();
+    private readonly List< Runnable >   _runnables         = new();
+    private readonly List< Runnable >   _executedRunnables = new();
 
     // ------------------------------------------------------------------------
 
     public DesktopGLWindow( IApplicationListener listener,
-                     DesktopGLApplicationConfiguration config,
-                     IGLApplicationBase application )
+                            DesktopGLApplicationConfiguration config,
+                            IGLApplicationBase application )
     {
         this.Listener       = listener;
         this.WindowListener = config.WindowListener;
@@ -87,9 +87,9 @@ public class DesktopGLWindow : IDisposable
             _runnables.Clear();
         }
 
-        foreach ( IRunnable runnable in _executedRunnables )
+        foreach ( Runnable runnable in _executedRunnables )
         {
-            runnable.Run();
+            runnable();
         }
 
         var shouldRender = ( ( _executedRunnables.Count > 0 ) || ( Graphics.IsContinuousRendering() ) );
@@ -162,7 +162,7 @@ public class DesktopGLWindow : IDisposable
     {
         Listener.Pause();
         Listener.Dispose();
-        GLCursor.Dispose( this );
+        DesktopGLCursor.Dispose( this );
         Graphics.Dispose();
         Input.Dispose();
 

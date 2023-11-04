@@ -110,5 +110,5 @@ public interface IApplication
     void AddLifecycleListener( ILifecycleListener listener );
     void RemoveLifecycleListener( ILifecycleListener listener );
 
-    void PostRunnable( IRunnable runnable );
+    void PostRunnable( Runnable runnable );
 }

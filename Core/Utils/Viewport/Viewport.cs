@@ -28,6 +28,9 @@ namespace LibGDXSharp.Utils.Viewport;
 [PublicAPI]
 public abstract class Viewport
 {
+
+    #region properties
+
     public Camera Camera       { get; set; }
     public float  WorldWidth   { get; set; }
     public float  WorldHeight  { get; set; }
@@ -36,13 +39,15 @@ public abstract class Viewport
     public int    ScreenWidth  { get; set; }
     public int    ScreenHeight { get; set; }
 
+    #endregion properties
+
     private Vector3 _tmp = Vector3.Zero;
 
     protected Viewport( Camera camera )
     {
         this.Camera = camera;
     }
-    
+
     /// <summary>
     /// Applies the viewport to the camera and sets the glViewport.
     /// </summary>
@@ -100,9 +105,9 @@ public abstract class Viewport
 
         _tmp = new Vector3
         {
-                X = screenCoords.X,
-                Y = screenCoords.Y,
-                Z = 1.0f
+            X = screenCoords.X,
+            Y = screenCoords.Y,
+            Z = 1.0f
         };
 
         Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
@@ -176,10 +181,10 @@ public abstract class Viewport
         }
 
         return Camera.GetPickRay
-                (
-                screenX, screenY, this.ScreenX,
-                this.ScreenY, ScreenWidth, ScreenHeight
-                );
+            (
+             screenX, screenY, this.ScreenX,
+             this.ScreenY, ScreenWidth, ScreenHeight
+            );
     }
 
     /// <summary>
@@ -189,16 +194,16 @@ public abstract class Viewport
                                            RectangleShape scissor )
     {
         ScissorStack.CalculateScissors
-                (
-                Camera,
-                ScreenX,
-                ScreenY,
-                ScreenWidth,
-                ScreenHeight,
-                batchTransform,
-                area,
-                scissor
-                );
+            (
+             Camera,
+             ScreenX,
+             ScreenY,
+             ScreenWidth,
+             ScreenHeight,
+             batchTransform,
+             area,
+             scissor
+            );
     }
 
     /// <summary>

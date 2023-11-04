@@ -46,7 +46,7 @@ public class PooledLinkedList<T>
     {
         this._pool = new Pool< Item< T > >( 16, maxPoolSize )
         {
-            newObject = GetNewObject
+            NewObject = GetNewObject
         };
     }
 

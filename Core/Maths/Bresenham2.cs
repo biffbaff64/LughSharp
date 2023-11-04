@@ -34,7 +34,7 @@ public class Bresenham2
 
     public Bresenham2()
     {
-        _pool.newObject = GetNewObject;
+        _pool.NewObject = GetNewObject;
     }
     
     /// <summary>

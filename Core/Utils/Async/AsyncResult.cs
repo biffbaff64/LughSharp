@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Async;
 
+[PublicAPI]
 public class AsyncResult
 {
     public bool IsDone()

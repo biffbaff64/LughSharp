@@ -74,7 +74,7 @@ public class QuadTreeFloat : IPoolable
         this.MaxDepth  = maxDepth;
         this.Values    = new List< float >( this.MaxValues );
 
-        _pool.newObject = GetNewObject;
+        _pool.NewObject = GetNewObject;
     }
 
     public void SetBounds( float x, float y, float width, float height )

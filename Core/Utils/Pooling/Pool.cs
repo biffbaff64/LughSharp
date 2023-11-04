@@ -24,15 +24,11 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class Pool<T>
 {
-    // The maximum number of objects that will be pooled.
-    public int Max { get; set; }
-
-    // The highest number of free objects. Can be reset any time.
-    public int Peak { get; set; }
+    public int              Max       { get; set; } // The maximum number of objects that will be pooled.
+    public int              Peak      { get; set; } // The highest number of free objects. Can be reset any time.
+    public NewObjectHandler NewObject { get; set; }
 
     public delegate T? NewObjectHandler();
-
-    public NewObjectHandler newObject;
 
     private readonly List< T? > _freeObjects;
 
@@ -54,20 +50,20 @@ public class Pool<T>
     {
         _freeObjects = new List< T? >( initialCapacity );
 
-        this.newObject = null!;
+        this.NewObject = null!;
         this.Max       = max;
     }
 
     /// <summary>
     /// Returns an object from this pool.
-    /// The object may be new (from <see cref="newObject"/>) or reused
+    /// The object may be new (from <see cref="NewObject"/>) or reused
     /// (previously <see cref="Free(T)"/> freed).
     /// </summary>
     public virtual T? Obtain()
     {
         if ( _freeObjects.Count == 0 )
         {
-            return newObject();
+            return NewObject();
         }
 
         T? item = _freeObjects[ ^1 ];
@@ -116,7 +112,7 @@ public class Pool<T>
         {
             if ( _freeObjects.Count < Max )
             {
-                _freeObjects.Add( newObject() );
+                _freeObjects.Add( NewObject() );
             }
         }
 

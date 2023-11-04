@@ -369,7 +369,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )
     {
-        GLCursor.SetSystemCursor( GLWindow.WindowHandle, systemCursor );
+        DesktopGLCursor.SetSystemCursor( GLWindow.WindowHandle, systemCursor );
     }
 
     /// <summary>
@@ -482,7 +482,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     [PublicAPI]
-    public class GLMonitor : Monitor
+    public class GLMonitor : IGraphics.Monitor
     {
         public long MonitorHandle { get; set; }
 

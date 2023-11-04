@@ -118,7 +118,7 @@ public class Table : WidgetGroup
         Transform = false;
         Touchable = Touchable.ChildrenOnly;
 
-        this.CellPool.newObject = GetNewObject;
+        this.CellPool.NewObject = GetNewObject;
     }
 
     private Cell ObtainCell()

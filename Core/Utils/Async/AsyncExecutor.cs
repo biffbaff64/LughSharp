@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Async;
 
+[PublicAPI]
 public class AsyncExecutor
 {
     public AsyncExecutor( int i, string assetmanager )
@@ -23,12 +24,12 @@ public class AsyncExecutor
         throw new NotImplementedException();
     }
 
-    public void Dispose()
+    public AsyncResult Submit( AssetLoadingTask p0 )
     {
         throw new NotImplementedException();
     }
 
-    public AsyncResult Submit( AssetLoadingTask p0 )
+    public void Dispose()
     {
         throw new NotImplementedException();
     }

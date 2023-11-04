@@ -4,6 +4,43 @@ LIBGDX CSharp CONVERSION - ROUND 1
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+     - ASSETS                           - DONE
+     - ASSETS/LOADERS                   - DONE
+     - ASSETS/LOADERS/RESOLVERS         - IP
+     - AUDIO                            - DONE
+     - AUDIO/JAVAZOOMJL                 - IP
+     - CORE                             - DONE
+     - FILES                            - IP
+     - GRAPHICS                         - DONE
+     - GRAPHICS/FRAMEBUFFERS            - DONE
+     - GRAPHICS/G2D                     - IP
+     - GRAPHICS/GLUTILS                 - DONE
+     - GRAPHICS/PROFILING               - DONE
+     - INPUT                            - IP
+     - MAPS                             - DONE
+     - MAPS/OBJECTS                     - DONE
+     - MAPS/TILED                       - DONE
+     - MAPS/TILED/LOADERS               - DONE
+     - MAPS/TILED/OBJECTS               - DONE
+     - MAPS/TILED/RENDERERS             - IP
+     - MAPS/TILED/TILES                 - DONE
+     - MATHS                            - IP
+     - MATH/COLLISION                   - DONE
+     - SCENES/LISTENERS                 - IP
+     - SCENES/SCENE2D                   - DONE
+     - SCENES/SCENE2D/ACTIONS           - DONE
+     - SCENES.SCENE2D/UI                - IP
+     - SCENES.SCENE2D/UTILS             - IP
+     - UTILS                            - IP
+     - UTILS/BUFFERS                    - IP
+     - UTILS/COLLECTIONS                - DONE
+     - UTILS/EXCEPTIONS                 - DONE
+     - UTILS/POOLING                    - DONE
+     - UTILS/VIEWPORT                   - DONE
+     - UTILS/XML                        - DONE
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - STEP 1: Complete all conversions so that the code will build.
 - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
 -         Some classes can become structs / records instead.
@@ -62,7 +99,6 @@ ASSETS/LOADERS
     - DONE - AsynchronousAssetLoader        
     - DONE - BitmapFontLoader               
     - DONE - CubemapLoader                  
-    - **** - I18NBundleLoader               
     - DONE - ModelLoader                    
     - DONE - MusicLoader                    
     - DONE - ParticleEffectLoader           
@@ -404,8 +440,6 @@ MAPS/TILED/LOADERS
     - DONE - BaseTmxMapLoader                       Check for nullability issues
     - DONE - TmxMapLoader                           Check for nullability issues
 
-    - **** - TideMapLoader                          Should I support Tide?
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -702,27 +736,26 @@ UTILS
 UTILS/BUFFERS
 -------------
 
-    IMPORTANT! - Establish whether or not I actually need these.
-
     - DONE - Buffer
     - IP   - BufferUtils
     - DONE - ByteBuffer
     - DONE - CharBuffer
     - DONE - FloatBuffer
+    - DONE - ShortBuffer
     - DONE - StringCharBuffer
 
-    Does C# have these classes already?
-        - Could MemoryStream be used?
+    Does C# have these classes already? Could MemoryStream be used?
 
     - IP   - DirectByteBuffer
     - IP   - DoubleBuffer
     - IP   - HeapByteBuffer
     - IP   - HeapCharBuffer
+    - IP   - HeapFloatBuffer
+    - IP   - HeapShortBuffer
     - IP   _ IDirectBuffer
     - IP   - IntBuffer
     - IP   - LongBuffer
     - IP   - MappedByteBuffer
-    - IP   - ShortBuffer
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -818,7 +851,7 @@ UTILS/VIEWPORT
 UTILS/XML
 ---------
 
-    - DONE - XmlReader
+    - IP   - XmlReader
     - DONE - XmlReaderData
     - DONE - XmlWriter
 

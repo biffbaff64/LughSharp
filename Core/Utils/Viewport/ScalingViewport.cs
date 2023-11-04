@@ -44,7 +44,7 @@ public class ScalingViewport : Viewport
     /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
     /// </summary>
     protected ScalingViewport( Scaling scaling, float worldWidth, float worldHeight )
-            : this( scaling, worldWidth, worldHeight, new OrthographicCamera() )
+        : this( scaling, worldWidth, worldHeight, new OrthographicCamera() )
     {
     }
 
@@ -55,11 +55,11 @@ public class ScalingViewport : Viewport
     /// <param name="worldHeight"></param>
     /// <param name="camera"></param>
     public ScalingViewport( Scaling scaling, float worldWidth, float worldHeight, Camera camera )
-            : base( camera )
+        : base( camera )
     {
         this.Scaling = scaling;
 
-        base.WorldWidth = worldWidth;
+        base.WorldWidth  = worldWidth;
         base.WorldHeight = worldHeight;
     }
 
@@ -72,24 +72,24 @@ public class ScalingViewport : Viewport
     public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
         Vector2 scaled = Scaling.Apply
-                (
-                WorldWidth,
-                WorldHeight,
-                screenWidth,
-                screenHeight
-                );
+            (
+             WorldWidth,
+             WorldHeight,
+             screenWidth,
+             screenHeight
+            );
 
         var viewportWidth  = ( int )Math.Round( scaled.X, MidpointRounding.AwayFromZero );
         var viewportHeight = ( int )Math.Round( scaled.Y, MidpointRounding.AwayFromZero );
 
         // Center
         SetScreenBounds
-                (
-                ( screenWidth - viewportWidth ) / 2,
-                ( screenHeight - viewportHeight ) / 2,
-                viewportWidth,
-                viewportHeight
-                );
+            (
+             ( screenWidth - viewportWidth ) / 2,
+             ( screenHeight - viewportHeight ) / 2,
+             viewportWidth,
+             viewportHeight
+            );
 
         Apply( centerCamera );
     }

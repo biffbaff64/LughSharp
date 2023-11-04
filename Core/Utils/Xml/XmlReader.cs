@@ -95,22 +95,6 @@ public partial class XmlReader
         }
     }
 
-//    public Element Parse( StreamReader input )
-//    {
-//        try
-//        {
-//            return Parse( new StreamReader( input.BaseStream, System.Text.Encoding.UTF8 ) );
-//        }
-//        catch ( IOException ex )
-//        {
-//            throw new SerializationException( ex.Message );
-//        }
-//        finally
-//        {
-//            input.Close();
-//        }
-//    }
-
     public Element? Parse( FileInfo file )
     {
         try
@@ -124,15 +108,15 @@ public partial class XmlReader
     }
 
     //TODO: Validate these suppressions!
-    [SuppressMessage( "ReSharper", "UnreachableSwitchCaseDueToIntegerAnalysis" )]
-    [SuppressMessage( "ReSharper", "ConditionIsAlwaysTrueOrFalse" )]
+//    [SuppressMessage( "ReSharper", "UnreachableSwitchCaseDueToIntegerAnalysis" )]
+//    [SuppressMessage( "ReSharper", "ConditionIsAlwaysTrueOrFalse" )]
     private Element? Parse( char[] data, int offset, int length )
     {
-        var cs      = XML_START;
-        var p       = offset;
-        var pe      = length;
-        var s       = 0;
-        var hasBody = false;
+        var cs       = XML_START;
+        var p        = offset;
+        var pe       = length;
+        var s        = 0;
+        var hasBody  = false;
         var gotoTarg = 0;
 
         string? attributeName = null;
@@ -151,7 +135,7 @@ public partial class XmlReader
                         goto _goto;
                     }
 
-                    if ( cs == 0 )
+                    if ( cs == XML_ERROR )
                     {
                         gotoTarg = 5;
 

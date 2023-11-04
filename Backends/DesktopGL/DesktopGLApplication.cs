@@ -14,10 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Runtime.CompilerServices;
+using System.Security.Principal;
+
 using LibGDXSharp.Backends.Desktop;
 using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
-using LibGDXSharp.Backends.DesktopGL;
 using LibGDXSharp.Core.Utils.Collections;
 
 using Sync = LibGDXSharp.Backends.Desktop.Sync;
@@ -27,11 +29,14 @@ namespace LibGDXSharp;
 [PublicAPI]
 public class DesktopGLApplication : IGLApplicationBase
 {
+
+    #region public propeerties
+
     public DesktopGLApplicationConfiguration?  Config             { get; set; }
-    public List< DesktopGLWindow >                    Windows            { get; set; } = new();
+    public List< DesktopGLWindow >             Windows            { get; set; } = new();
     public Dictionary< string, IPreferences >? Preferences        { get; set; }
-    public List< IRunnable >                   Runnables          { get; set; } = new();
-    public List< IRunnable >                   ExecutedRunnables  { get; set; } = new();
+    public List< Runnable >                    Runnables          { get; set; } = new();
+    public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
     public GLApplicationLogger?                ApplicationLogger  { get; set; }
     public int                                 LogLevel           { get; set; }
@@ -40,21 +45,24 @@ public class DesktopGLApplication : IGLApplicationBase
 
     public static GLVersion? GLVersion { get; set; }
 
-    private static   GLFWCallbacks.ErrorCallback? _errorCallback   = null;
-    private static   Callback?                    _glDebugCallback = null;
-    private volatile DesktopGLWindow?                    _currentWindow   = null;
-    private          IGLAudio?                    _audio           = null;
-    private          Sync?                        _sync            = null;
-    private          bool                         _running         = true;
+    #endregion public propeerties
+
+    private static   GLFWCallbacks.ErrorCallback? _errorCallback = null;
+    private volatile DesktopGLWindow?             _currentWindow = null;
+    private          IGLAudio?                    _audio         = null;
+    private          Sync?                        _sync          = null;
+    private          bool                         _running       = true;
 
     // ------------------------------------------------------------------------
 
-    public DesktopGLApplication( IApplicationListener listener, DesktopGLApplicationConfiguration config )
+    public DesktopGLApplication( IApplicationListener listener,
+                                 DesktopGLApplicationConfiguration config )
     {
         CreateApplication( listener, config );
     }
 
-    private void CreateApplication( IApplicationListener listener, DesktopGLApplicationConfiguration config )
+    private void CreateApplication( IApplicationListener listener,
+                                    DesktopGLApplicationConfiguration config )
     {
         InitialiseGL();
 
@@ -122,7 +130,6 @@ public class DesktopGLApplication : IGLApplicationBase
 
         while ( _running && ( Windows.Count > 0 ) )
         {
-            // FIXME put it on a separate thread
             _audio?.Update();
 
             var haveWindowsRendered = false;
@@ -166,15 +173,15 @@ public class DesktopGLApplication : IGLApplicationBase
                 Runnables.Clear();
             }
 
-            foreach ( IRunnable runnable in ExecutedRunnables )
+            foreach ( Runnable runnable in ExecutedRunnables )
             {
-                runnable.Run();
+                runnable();
             }
 
             if ( shouldRequestRendering )
             {
-                // Must follow Runnables execution so changes done by Runnables are reflected
-                // in the following render.
+                // Must follow Runnables execution so changes done by
+                // Runnables are reflected in the following render.
                 foreach ( DesktopGLWindow window in Windows )
                 {
                     if ( !window.Graphics.IsContinuousRendering() )
@@ -230,10 +237,32 @@ public class DesktopGLApplication : IGLApplicationBase
 
     protected void CleanupWindows()
     {
+        lock ( LifecycleListeners )
+        {
+            foreach ( ILifecycleListener lifecycleListener in LifecycleListeners )
+            {
+                lifecycleListener.Pause();
+                lifecycleListener.Dispose();
+            }
+        }
+
+        foreach ( DesktopGLWindow window in Windows )
+        {
+            window.Dispose();
+        }
+
+        Windows.Clear();
     }
 
     protected void Cleanup()
     {
+        DesktopGLCursor.DisposeSystemCursors();
+
+        _audio?.Dispose();
+
+        _errorCallback = null;
+
+        GLFW.Terminate();
     }
 
     public void Debug( string tag, string message )
@@ -298,6 +327,27 @@ public class DesktopGLApplication : IGLApplicationBase
         return prefs;
     }
 
+    /// <summary>
+    /// Creates a new <see cref="DesktopGLWindow"/> using the provided listener and
+    /// <see cref="DesktopGLWindowConfiguration"/>.
+    /// <para>
+    /// This function only just instantiates a <see cref="DesktopGLWindow"/> and
+    /// returns immediately. The actual window creation is postponed with
+    /// <see cref="DesktopGLApplication.PostRunnable(Runnable)"/> until after all
+    /// existing windows are updated.
+    /// </para>
+    /// </summary>
+    public unsafe DesktopGLWindow NewWindow( IApplicationListener listener, DesktopGLWindowConfiguration config )
+    {
+        GdxRuntimeException.ThrowIfNull( Config );
+
+        DesktopGLApplicationConfiguration appConfig = DesktopGLApplicationConfiguration.Copy( this.Config );
+
+        appConfig.SetWindowConfiguration( config );
+
+        return CreateWindow( appConfig, listener, this.Windows[ 0 ].WindowHandle );
+    }
+
     public void CreateWindow( DesktopGLWindow window,
                               DesktopGLApplicationConfiguration config,
                               long sharedContext )
@@ -305,8 +355,8 @@ public class DesktopGLApplication : IGLApplicationBase
     }
 
     public DesktopGLWindow CreateWindow( DesktopGLApplicationConfiguration config,
-                                  IApplicationListener listener,
-                                  long sharedContext )
+                                         IApplicationListener listener,
+                                         long sharedContext )
     {
         var window = new DesktopGLWindow( listener, config, this );
 
@@ -318,18 +368,22 @@ public class DesktopGLApplication : IGLApplicationBase
         else
         {
             // creation of additional windows is deferred to avoid GL context trouble
-//            PostRunnable( new Runnable()
-//            {
-//                public void run ()
-//                {
-//                createWindow( window, config, sharedContext );
-//                windows.add( window );
-//            }
-//            }
-//            );
+            PostRunnable( () =>
+            {
+                CreateWindow( window, config, sharedContext );
+                Windows.Add( window );
+            } );
         }
 
         return window;
+    }
+
+    public void PostRunnable( Runnable runnable )
+    {
+        lock ( Runnables )
+        {
+            Runnables.Add( runnable );
+        }
     }
 
     public static void InitialiseGL()
@@ -338,7 +392,7 @@ public class DesktopGLApplication : IGLApplicationBase
         {
             GLNativesLoader.Load();
 
-            // TODO: Create error callback - See Java LibGDX
+            GLFW.SetErrorCallback( _errorCallback );
 
             GLFW.InitHint( InitHintBool.JoystickHatButtons, false );
 
@@ -381,14 +435,16 @@ public class DesktopGLApplication : IGLApplicationBase
     {
     }
 
-    public void PostRunnable( IRunnable runnable )
-    {
-    }
-
     public enum GLDebugMessageSeverity
     {
     }
 
+    /// <summary>
+    /// Enables or disables GL debug messages for the specified severity level.
+    /// Returns false if the severity level could not be set (e.g. the NOTIFICATION
+    /// level is not supported by the ARB and AMD extensions).
+    /// </summary>
+    /// <seealso cref="DesktopGLApplicationConfiguration.EnableGLDebugOutput(bool, StreamWriter)"/>
     public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
     {
         return false;
@@ -400,12 +456,11 @@ public class DesktopGLApplication : IGLApplicationBase
     {
         GLFW.GetVersion( out var major, out var minor, out var revision );
 
-        GLVersion = new GLVersion
-            (
-             IApplication.ApplicationType.Desktop,
-             $"{major}.{minor}.{revision}",
-             Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
-             Gdx.GL20.GLGetString( IGL20.GL_RENDERER )
+        GLVersion = new GLVersion(
+            IApplication.ApplicationType.Desktop,
+            $"{major}.{minor}.{revision}",
+            Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
+            Gdx.GL20.GLGetString( IGL20.GL_RENDERER )
             );
     }
 }

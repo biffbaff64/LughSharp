@@ -215,8 +215,8 @@ public class Tree<TNode, TValue> : WidgetGroup
         return null;
     }
 
-    private static Node< TNode, TValue, Actor >? FindNode<T>( List< T > nodes, object value )
-        where T : Node< TNode, TValue, Actor >
+    private static Node? FindNode<T>( List< T > nodes, object value )
+        where T : Node
     {
         return null;
     }
@@ -226,7 +226,7 @@ public class Tree<TNode, TValue> : WidgetGroup
     }
 
     private static void CollapseAll<T>( List< T > nodes )
-        where T : Node< TNode, TValue, Actor >
+        where T : Node
     {
     }
 
@@ -235,7 +235,7 @@ public class Tree<TNode, TValue> : WidgetGroup
     }
 
     private static void ExpandAll<T>( List< T > nodes )
-        where T : Node< TNode, TValue, Actor >
+        where T : Node
     {
     }
 
@@ -509,9 +509,14 @@ public class Tree<TNode, TValue> : WidgetGroup
 
         public void Insert( int childIndex, TNode node )
         {
-            node.Parent = this;
-
-            _children?.Insert( childIndex, node );
+            if ( _children == null )
+            {
+                return;
+            }
+            
+            node.Parent = this.Parent;
+            
+            _children.Insert( childIndex, node );
 
             if ( !_expanded )
             {
@@ -530,12 +535,12 @@ public class Tree<TNode, TValue> : WidgetGroup
                 }
                 else if ( childIndex < ( _children?.Count - 1 ) )
                 {
-                    actorIndex = _children[ childIndex + 1 ]._actor.GetZIndex();
+                    actorIndex = _children![ childIndex + 1 ]._actor!.GetZIndex();
                 }
                 else
                 {
-                    N before = children.get( childIndex - 1 );
-                    actorIndex = before.actor.getZIndex() + before.countActors();
+                    TNode before = _children![ childIndex - 1 ];
+                    actorIndex = before.Actor!.GetZIndex() + before.CountActors();
                 }
 
                 node.AddToTree( tree, actorIndex );
@@ -568,15 +573,18 @@ public class Tree<TNode, TValue> : WidgetGroup
 
             if ( tree != null )
             {
-                tree.Remove( this );
+                tree.Remove( this.Parent! );
             }
             else if ( Parent != null )
             {
-                Parent.Remove( this );
+                Parent.Remove( this.Parent! );
             }
         }
 
-        /** Remove the specified child node from this node. Does nothing if the node is not a child of this node. */
+        /// <summary>
+        /// Remove the specified child node from this node. Does nothing if
+        /// the node is not a child of this node.
+        /// </summary>
         public void Remove( TNode? node )
         {
             if ( ( node == null ) || ( _children == null ) )

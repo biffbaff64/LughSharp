@@ -176,29 +176,27 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         VideoMode* videoMode = GLFW.GetVideoMode( GLFW.GetPrimaryMonitor() );
 
-        return new DesktopGLGraphics.GLDisplayMode
-            (
-             0, //TODO:
-             videoMode -> Width,
-             videoMode -> Height,
-             videoMode -> RefreshRate,
-             videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
+        return new DesktopGLGraphics.GLDisplayMode(
+            0, //TODO:
+            videoMode -> Width,
+            videoMode -> Height,
+            videoMode -> RefreshRate,
+            videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
             );
     }
 
-    public static unsafe IGraphics.DisplayMode GetDisplayMode( Monitor monitor )
+    public static unsafe IGraphics.DisplayMode GetDisplayMode( Monitor* monitor )
     {
         DesktopGLApplication.InitialiseGL();
 
-        VideoMode* videoMode = GLFW.GetVideoMode( ( ( DesktopGLGraphics.GLMonitor )monitor ).MonitorHandle );
+        VideoMode* videoMode = GLFW.GetVideoMode( monitor );
 
-        return new DesktopGLGraphics.GLDisplayMode
-            (
-             ( ( DesktopGLGraphics.GLMonitor )monitor ).MonitorHandle,
-             videoMode -> Width,
-             videoMode -> Height,
-             videoMode -> RefreshRate,
-             videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
+        return new DesktopGLGraphics.GLDisplayMode(
+            0, //TODO:
+            videoMode -> Width,
+            videoMode -> Height,
+            videoMode -> RefreshRate,
+            videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
             );
     }
 
@@ -218,20 +216,19 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
     /// <summary>
     /// </summary>
-    /// <param name="glfwMonitor"></param>
+    /// <param name="monitor"></param>
     /// <returns></returns>
-    public static unsafe DesktopGLGraphics.GLMonitor ToGLMonitor( Monitor* glfwMonitor )
+    public static unsafe DesktopGLGraphics.GLMonitor ToGLMonitor( Monitor* monitor )
     {
-        GLFW.GetMonitorPos( glfwMonitor, out var virtualX, out var virtualY );
+        GLFW.GetMonitorPos( monitor, out var virtualX, out var virtualY );
 
-        var name = GLFW.GetMonitorName( glfwMonitor );
+        var name = GLFW.GetMonitorName( monitor );
 
-        return new DesktopGLGraphics.GLMonitor
-            (
-             0, // TODO:
-             virtualX,
-             virtualY,
-             name
+        return new DesktopGLGraphics.GLMonitor(
+            0, // TODO:
+            virtualX,
+            virtualY,
+            name
             );
     }
 }
