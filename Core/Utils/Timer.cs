@@ -24,9 +24,11 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class Timer
 {
-    private readonly static object        ThreadLock = new();
-    private readonly        List< Task? > _tasks     = new( 8 );
-    private static          TimerThread?  _thread;
+    private readonly static object ThreadLock = new();
+
+    protected readonly List< Task? > tasks = new( 8 );
+
+    private static TimerThread? _thread;
 
     public Timer()
     {
@@ -133,7 +135,7 @@ public class Timer
                     task.intervalMillis    = ( long )( intervalSeconds * 1000 );
                     task.repeatCount       = repeatCount;
 
-                    _tasks.Add( task );
+                    tasks.Add( task );
                 }
             }
 
@@ -178,19 +180,19 @@ public class Timer
     /// </summary>
     public void Clear()
     {
-        for ( int i = 0, n = _tasks.Count; i < n; i++ )
+        for ( int i = 0, n = tasks.Count; i < n; i++ )
         {
-            if ( _tasks[ i ] != null )
+            if ( tasks[ i ] != null )
             {
-                lock ( _tasks[ i ]! )
+                lock ( tasks[ i ]! )
                 {
-                    _tasks[ i ]!.executeTimeMillis = 0;
-                    _tasks[ i ]!.timer             = null;
+                    tasks[ i ]!.executeTimeMillis = 0;
+                    tasks[ i ]!.timer             = null;
                 }
             }
         }
 
-        _tasks.Clear();
+        tasks.Clear();
     }
 
     /// <summary>
@@ -203,7 +205,7 @@ public class Timer
     {
         lock ( ThreadLock )
         {
-            return _tasks.Count == 0;
+            return tasks.Count == 0;
         }
     }
 
@@ -216,39 +218,39 @@ public class Timer
     {
         lock ( ThreadLock )
         {
-            for ( int i = 0, n = _tasks.Count; i < n; i++ )
+            for ( int i = 0, n = tasks.Count; i < n; i++ )
             {
-                lock ( _tasks[ i ]! )
+                lock ( tasks[ i ]! )
                 {
-                    if ( _tasks[ i ]!.executeTimeMillis > timeMillis )
+                    if ( tasks[ i ]?.executeTimeMillis > timeMillis )
                     {
-                        waitMillis = Math.Min( waitMillis, _tasks[ i ]!.executeTimeMillis - timeMillis );
+                        waitMillis = Math.Min( waitMillis, tasks[ i ]!.executeTimeMillis - timeMillis );
 
                         continue;
                     }
 
-                    if ( _tasks[ i ]!.repeatCount == 0 )
+                    if ( tasks[ i ]!.repeatCount == 0 )
                     {
-                        _tasks[ i ]!.timer = null;
+                        tasks[ i ]!.timer = null;
 
-                        _tasks.RemoveAt( i );
+                        tasks.RemoveAt( i );
 
                         i--;
                         n--;
                     }
                     else
                     {
-                        _tasks[ i ]!.executeTimeMillis = timeMillis + _tasks[ i ]!.intervalMillis;
+                        tasks[ i ]!.executeTimeMillis = timeMillis + tasks[ i ]!.intervalMillis;
 
-                        waitMillis = Math.Min( waitMillis, _tasks[ i ]!.intervalMillis );
+                        waitMillis = Math.Min( waitMillis, tasks[ i ]!.intervalMillis );
 
-                        if ( _tasks[ i ]!.repeatCount > 0 )
+                        if ( tasks[ i ]!.repeatCount > 0 )
                         {
-                            _tasks[ i ]!.repeatCount--;
+                            tasks[ i ]!.repeatCount--;
                         }
                     }
 
-                    _tasks[ i ]!.app!.PostRunnable( _tasks[ i ]! );
+                    tasks[ i ]!.app!.PostRunnable( tasks[ i ]!.Run );
                 }
             }
 
@@ -264,9 +266,9 @@ public class Timer
     {
         lock ( ThreadLock )
         {
-            for ( int i = 0, n = _tasks.Count; i < n; i++ )
+            for ( int i = 0, n = tasks.Count; i < n; i++ )
             {
-                Task task = _tasks[ i ]!;
+                Task task = tasks[ i ]!;
 
                 lock ( task )
                 {
@@ -313,10 +315,10 @@ public class Timer
     // ================================================================================
 
     /// <summary>
-    /// A <see cref="IRunnable"/> that can be scheduled on a <see cref="Timer"/>
+    /// A <see cref="Runnable"/> that can be scheduled on a <see cref="Timer"/>
     /// </summary>
     [PublicAPI]
-    public abstract class Task : IRunnable
+    public abstract class Task
     {
         internal volatile Timer?        timer;
         internal readonly IApplication? app;
@@ -326,12 +328,12 @@ public class Timer
 
         protected Task()
         {
-            app = Gdx.App;
-
-            if ( app == null )
+            if ( Gdx.App == null )
             {
                 throw new GdxRuntimeException( "Gdx.App not available!" );
             }
+
+            app = Gdx.App;
         }
 
         /// <summary>
@@ -356,7 +358,7 @@ public class Timer
                         executeTimeMillis = 0;
                         this.timer        = null;
 
-                        timer?._tasks.Remove( this );
+                        timer?.tasks.Remove( this );
                     }
                 }
             }
@@ -403,7 +405,7 @@ public class Timer
     }
 
     [PublicAPI]
-    public class TimerThread : IRunnable, ILifecycleListener, IDisposable
+    public class TimerThread : ILifecycleListener, IDisposable
     {
         public readonly List< Timer > instances = new( capacity: 1 );
         public readonly IFiles?       files;
@@ -468,6 +470,7 @@ public class Timer
                 }
                 catch ( ThreadInterruptedException )
                 {
+                    // Ignore
                 }
             }
 

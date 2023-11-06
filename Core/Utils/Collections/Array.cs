@@ -18,14 +18,11 @@ using System.Text;
 
 namespace LibGDXSharp.Utils.Collections;
 
-[PublicAPI, Incomplete( "DO NOT USE - Not ready", true )]
+[PublicAPI]
 public class Array<T>
 {
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T[]  Items   { get; private set; }
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public int  Size    { get; private set; }
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public bool Ordered { get; private set; }
 
     private IEnumerable< T >?       _iterable;
@@ -42,7 +39,6 @@ public class Array<T>
     /// The initial capacity.
     /// Any elements added beyond this will cause the backing array to be grown.
     /// </param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public Array( bool ordered = true, int capacity = 16 )
     {
         Ordered = ordered;
@@ -52,7 +48,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public Array( Array< T > array )
     {
         if ( array == null )
@@ -75,7 +70,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public Array( T[] array ) : this( true, array, 0, array.Length )
     {
     }
@@ -89,7 +83,6 @@ public class Array<T>
     /// <param name="array"></param>
     /// <param name="start"></param>
     /// <param name="count"></param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public Array( bool ordered, T[] array, int start, int count )
     {
         Ordered = ordered;
@@ -102,7 +95,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void Add( T value )
     {
         if ( Size == Items.Length )
@@ -116,7 +108,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void AddAll( Array< T > array )
     {
         AddAll( array, 0, array.Size );
@@ -127,7 +118,6 @@ public class Array<T>
     /// starting from position 0.
     /// </summary>
     /// <param name="array">The array of items to add.</param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void AddAll( params T[] array )
     {
         AddAll( array, 0, array.Length );
@@ -141,7 +131,6 @@ public class Array<T>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void AddAll( Array< T > array, int start, int count )
     {
         if ( ( start + count ) > array.Size )
@@ -160,7 +149,6 @@ public class Array<T>
     /// <param name="array">The array of items to add.</param>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void AddAll( T?[] array, int start, int count )
     {
         var sizeNeeded = Size + count;
@@ -180,7 +168,6 @@ public class Array<T>
     /// <param name="index"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T Get( int index )
     {
         if ( index >= Size )
@@ -196,7 +183,6 @@ public class Array<T>
     /// <param name="index"></param>
     /// <param name="value"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public virtual void Set( int index, T value )
     {
         if ( index >= Size )
@@ -212,7 +198,6 @@ public class Array<T>
     /// <param name="index"></param>
     /// <param name="value"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public virtual void Insert( int index, T value )
     {
         if ( index > Size )
@@ -248,7 +233,6 @@ public class Array<T>
     /// <param name="index"></param>
     /// <param name="count"></param>
     /// <exception cref="IndexOutOfRangeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void InsertRange( int index, int count )
     {
         if ( index > Size )
@@ -278,7 +262,6 @@ public class Array<T>
     /// <param name="first"></param>
     /// <param name="second"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public virtual void Swap( int first, int second )
     {
         if ( first >= Size )
@@ -303,7 +286,6 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public bool Contains( T value )
     {
         var i = Size - 1;
@@ -323,7 +305,6 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public int IndexOf( T? value )
     {
         if ( Items == null )
@@ -359,7 +340,6 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public int LastIndexOf( T? value )
     {
         if ( value != null )
@@ -380,7 +360,6 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public bool RemoveValue( T value )
     {
         for ( int i = 0, n = Size; i < n; i++ )
@@ -401,7 +380,6 @@ public class Array<T>
     /// <param name="index"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T RemoveIndex( int index )
     {
         if ( index >= Size )
@@ -432,7 +410,6 @@ public class Array<T>
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public virtual void RemoveRange( int start, int end )
     {
         if ( end >= Size )
@@ -468,7 +445,6 @@ public class Array<T>
     /// </summary>
     /// <param name="array"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public bool RemoveAll( Array< T > array )
     {
         var size      = this.Size;
@@ -497,7 +473,6 @@ public class Array<T>
     /// Removes and returns the last item.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T Pop()
     {
         if ( Size == 0 )
@@ -518,7 +493,6 @@ public class Array<T>
     /// Returns the last item in the array.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T Peek()
     {
         if ( Size == 0 )
@@ -533,7 +507,6 @@ public class Array<T>
     /// Returns the first item in the array.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T First()
     {
         if ( Size == 0 )
@@ -546,7 +519,6 @@ public class Array<T>
 
     /// <summary>
     /// </summary>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void Clear()
     {
         Array.Clear( Items );
@@ -557,7 +529,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T?[] Shrink()
     {
         if ( Items.Length != Size )
@@ -572,7 +543,6 @@ public class Array<T>
     /// </summary>
     /// <param name="newSize"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T?[] SetSize( int newSize )
     {
         Truncate( newSize );
@@ -591,7 +561,6 @@ public class Array<T>
     /// </summary>
     /// <param name="additionalCapacity"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T?[] EnsureCapacity( int additionalCapacity )
     {
         var sizeNeeded = Size + additionalCapacity;
@@ -608,7 +577,6 @@ public class Array<T>
     /// </summary>
     /// <param name="newSize"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     protected T[] Resize( int newSize )
     {
         var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
@@ -622,7 +590,6 @@ public class Array<T>
 
     /// <summary>
     /// </summary>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void Sort()
     {
         SortUtils.Instance.Sort( ( Items as object[] )!, 0, Size );
@@ -631,7 +598,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="comparator"></param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void Sort( IComparer< object > comparator )
     {
         SortUtils.Instance.Sort( Items, comparator, 0, Size );
@@ -643,7 +609,6 @@ public class Array<T>
     /// <param name="kthLowest"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T SelectRanked( IComparer< T > comparator, int kthLowest )
     {
         if ( kthLowest < 1 )
@@ -660,7 +625,6 @@ public class Array<T>
     /// <param name="kthLowest"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public int SelectRankedIndex( IComparer< T > comparator, int kthLowest )
     {
         if ( kthLowest < 1 )
@@ -674,7 +638,6 @@ public class Array<T>
     /// <summary>
     /// Rearrange this array in reverse order.
     /// </summary>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void Reverse()
     {
         for ( int i = 0, lastIndex = Size - 1, n = Size / 2; i < n; i++ )
@@ -688,7 +651,6 @@ public class Array<T>
     /// <summary>
     /// Shuffle this array.
     /// </summary>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void Shuffle()
     {
         for ( var i = Size - 1; i >= 0; i-- )
@@ -703,7 +665,6 @@ public class Array<T>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public IEnumerable< T > Select( IPredicate< T > predicate )
     {
         if ( Items == null )
@@ -727,7 +688,6 @@ public class Array<T>
     /// 
     /// </summary>
     /// <param name="newSize"></param>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public void Truncate( int newSize )
     {
         if ( Size <= newSize )
@@ -746,7 +706,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T? Random()
     {
         if ( Size == 0 )
@@ -760,7 +719,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T[] ToArray()
     {
         Type? memberInfo = Items.GetType().BaseType;
@@ -774,7 +732,6 @@ public class Array<T>
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public T[] ToArray( Type type )
     {
         var result = ( T[] )Array.CreateInstance( type, Size );
@@ -788,7 +745,6 @@ public class Array<T>
     /// 
     /// </summary>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public new int GetHashCode()
     {
         if ( !Ordered )
@@ -817,7 +773,6 @@ public class Array<T>
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public new bool Equals( object obj )
     {
         if ( obj == this )
@@ -861,7 +816,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public IEnumerator< T > GetEnumerator()
     {
         throw new NotImplementedException();
@@ -870,7 +824,6 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public new string ToString()
     {
         if ( Size == 0 )
@@ -898,7 +851,6 @@ public class Array<T>
     /// </summary>
     /// <param name="separator"></param>
     /// <returns></returns>
-    [Incomplete( "DO NOT USE - Not ready", true )]
     public string ToString( string separator )
     {
         if ( Size == 0 )

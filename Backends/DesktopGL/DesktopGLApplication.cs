@@ -30,7 +30,7 @@ namespace LibGDXSharp;
 public class DesktopGLApplication : IGLApplicationBase
 {
 
-    #region public propeerties
+    #region public properties
 
     public DesktopGLApplicationConfiguration?  Config             { get; set; }
     public List< DesktopGLWindow >             Windows            { get; set; } = new();
@@ -45,7 +45,7 @@ public class DesktopGLApplication : IGLApplicationBase
 
     public static GLVersion? GLVersion { get; set; }
 
-    #endregion public propeerties
+    #endregion public properties
 
     private static   GLFWCallbacks.ErrorCallback? _errorCallback = null;
     private volatile DesktopGLWindow?             _currentWindow = null;

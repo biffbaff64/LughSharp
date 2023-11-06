@@ -48,12 +48,12 @@ public class ObjectMap<TK, TV>
 
     // ------------------------------------------------------------------------
 
-    private Entries< TK, TV >? _entries1;
-    private Entries< TK, TV >? _entries2;
-    private Values< TV >?      _values1;
-    private Values< TV >?      _values2;
-    private Keys< TK >?        _keys1;
-    private Keys< TK >?        _keys2;
+    private Entries? _entries1;
+    private Entries? _entries2;
+    private Values?  _values1;
+    private Values?  _values2;
+    private Keys?    _keys1;
+    private Keys?    _keys2;
 
     // ------------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ public class ObjectMap<TK, TV>
     public int Size { get; set; }
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// </summary>
     /// <param name="initialCapacity"></param>
@@ -126,8 +126,7 @@ public class ObjectMap<TK, TV>
 
         this._loadFactor = map._loadFactor;
 
-        var tableSize = TableSize
-            (
+        var tableSize = TableSize(
             ( int )( map.keyTable.Length * map._loadFactor ),
             _loadFactor
             );
@@ -214,7 +213,7 @@ public class ObjectMap<TK, TV>
     {
         ArgumentNullException.ThrowIfNull( keyTable );
         ArgumentNullException.ThrowIfNull( valueTable );
-        
+
         var i = LocateKey( key );
 
         if ( i >= 0 )
@@ -748,17 +747,17 @@ public class ObjectMap<TK, TV>
     /// </para>
     /// </summary>
     /// <returns></returns>
-    public Entries< TK, TV > GetEntries()
+    public Entries GetEntries()
     {
         if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
         {
-            return new Entries< TK, TV >( this );
+            return new Entries( this );
         }
 
         if ( _entries1 == null )
         {
-            _entries1 = new Entries< TK, TV >( this );
-            _entries2 = new Entries< TK, TV >( this );
+            _entries1 = new Entries( this );
+            _entries2 = new Entries( this );
         }
 
         Debug.Assert( _entries2 != null, nameof( _entries2 ) + " != null" );
@@ -788,17 +787,17 @@ public class ObjectMap<TK, TV>
     /// </para>
     /// </summary>
     /// <returns></returns>
-    public Values< TV > GetValues()
+    public Values GetValues()
     {
         if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
         {
-            return new Values< TV >( this );
+            return new Values( this );
         }
 
         if ( _values1 == null )
         {
-            _values1 = new Values< TV >( this );
-            _values2 = new Values< TV >( this );
+            _values1 = new Values( this );
+            _values2 = new Values( this );
         }
 
         Debug.Assert( _values1 != null, nameof( _values1 ) + " != null" );
@@ -829,17 +828,17 @@ public class ObjectMap<TK, TV>
     /// </para>
     /// </summary>
     /// <returns></returns>
-    public Keys< TK > GetKeys()
+    public Keys GetKeys()
     {
         if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
         {
-            return new Keys< TK >( this );
+            return new Keys( this );
         }
 
         if ( _keys1 == null )
         {
-            _keys1 = new Keys< TK >( this );
-            _keys2 = new Keys< TK >( this );
+            _keys1 = new Keys( this );
+            _keys2 = new Keys( this );
         }
 
         Debug.Assert( _keys1 != null, nameof( _keys1 ) + " != null" );
@@ -863,13 +862,21 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
-    /// <typeparam name="TKe"></typeparam>
-    /// <typeparam name="TVe"></typeparam>
     [PublicAPI]
-    public class Entry<TKe, TVe>
+    public class Entry
     {
-        public TKe? key;
-        public TVe? value;
+        public TK? key;
+        public TV? value;
+
+        public Entry()
+        {
+        }
+
+        public Entry( TK? k, TV? v )
+        {
+            this.key   = k;
+            this.value = v;
+        }
 
         public override string ToString()
         {
@@ -877,28 +884,25 @@ public class ObjectMap<TK, TV>
         }
     }
 
-    protected Entries< TK, TV > GetIterator()
+    protected Entries GetIterator()
     {
         return GetEntries();
     }
 
     /// <summary>
     /// </summary>
-    /// <typeparam name="TKm"></typeparam>
-    /// <typeparam name="TVm"></typeparam>
-    /// <typeparam name="TI"></typeparam>
     [PublicAPI]
-    public abstract class MapIterator<TKm, TVm, TI>
+    public abstract class MapIterator
     {
         public    bool Valid   { get; set; } = true;
         protected bool HasNext { get; set; }
 
-        protected readonly ObjectMap< TKm, TVm > map;
+        protected readonly ObjectMap< TK, TV > map;
 
         protected int currentIndex = -1;
         protected int nextIndex    = -1;
 
-        protected MapIterator( ObjectMap< TKm, TVm > map )
+        protected MapIterator( ObjectMap< TK, TV > map )
         {
             this.map = map;
 
@@ -954,8 +958,8 @@ public class ObjectMap<TK, TV>
                 next = ( next + 1 ) & mask;
             }
 
-            map.keyTable[ i ]   = default( TKm? )!;
-            map.valueTable[ i ] = default( TVm? );
+            map.keyTable[ i ]   = default( TK? )!;
+            map.valueTable[ i ] = default( TV? );
 
             map.Size--;
 
@@ -970,24 +974,22 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
-    /// <typeparam name="TKe"></typeparam>
-    /// <typeparam name="TVe"></typeparam>
     [PublicAPI]
-    public class Entries<TKe, TVe> : MapIterator< TKe, TVe, Entry< TKe, TVe > >
+    public class Entries : MapIterator
     {
-        private readonly Entry< TKe, TVe > _entry = new();
+        private readonly Entry _entry = new();
 
         /// <summary>
         /// </summary>
         /// <param name="map"></param>
-        public Entries( ObjectMap< TKe, TVe > map ) : base( map )
+        public Entries( ObjectMap< TK, TV > map ) : base( map )
         {
         }
 
         /// <summary>
         /// Note the same entry instance is returned each time this method is called.
         /// </summary>
-        public Entry< TKe, TVe > Next()
+        public Entry Next()
         {
             if ( !HasNext )
             {
@@ -999,9 +1001,7 @@ public class ObjectMap<TK, TV>
                 throw new GdxRuntimeException( "#iterator() cannot be used nested." );
             }
 
-            TKe[] keyTable = map.keyTable!;
-
-            _entry.key   = keyTable[ nextIndex ];
+            _entry.key   = map.keyTable[ nextIndex ];
             _entry.value = map.valueTable[ nextIndex ];
             currentIndex = nextIndex;
 
@@ -1010,7 +1010,7 @@ public class ObjectMap<TK, TV>
             return _entry;
         }
 
-        public Entries< TKe, TVe > Iterator()
+        public Entries Iterator()
         {
             return this;
         }
@@ -1018,19 +1018,18 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
-    /// <typeparam name="TVv"></typeparam>
     [PublicAPI]
-    public class Values<TVv> : MapIterator< TK, TVv, TVv >
+    public class Values : MapIterator
     {
         /// <summary>
         /// </summary>
         /// <param name="map"></param>
-        public Values( ObjectMap< TK, TVv > map )
+        public Values( ObjectMap< TK, TV > map )
             : base( map )
         {
         }
 
-        public TVv? Next()
+        public TV? Next()
         {
             if ( !HasNext )
             {
@@ -1042,7 +1041,7 @@ public class ObjectMap<TK, TV>
                 throw new GdxRuntimeException( "#iterator() cannot be used nested." );
             }
 
-            TVv? value = map.valueTable[ nextIndex ];
+            TV? value = map.valueTable[ nextIndex ];
 
             currentIndex = nextIndex;
 
@@ -1051,7 +1050,7 @@ public class ObjectMap<TK, TV>
             return value;
         }
 
-        public Values< TVv > Iterator()
+        public Values Iterator()
         {
             return this;
         }
@@ -1059,15 +1058,15 @@ public class ObjectMap<TK, TV>
         /// <summary>
         /// Returns a new array containing the remaining values.
         /// </summary>
-        public List< TVv > ToArray()
+        public List< TV > ToArray()
         {
-            return ToArray( new List< TVv >( map.Size ) );
+            return ToArray( new List< TV >( map.Size ) );
         }
 
         /// <summary>
         /// Adds the remaining values to the array.
         /// </summary>
-        public List< TVv > ToArray( List< TVv > array )
+        public List< TV > ToArray( List< TV > array )
         {
             while ( HasNext )
             {
@@ -1080,16 +1079,15 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
-    /// <typeparam name="TKk"></typeparam>
     [PublicAPI]
-    public class Keys<TKk> : MapIterator< TKk, TV, TKk >
+    public class Keys : MapIterator
     {
-        public Keys( ObjectMap< TKk, TV > map )
+        public Keys( ObjectMap< TK, TV > map )
             : base( map )
         {
         }
 
-        public TKk Next()
+        public TK Next()
         {
             if ( !HasNext )
             {
@@ -1101,7 +1099,7 @@ public class ObjectMap<TK, TV>
                 throw new GdxRuntimeException( "#iterator() cannot be used nested." );
             }
 
-            TKk key = map.keyTable[ nextIndex ]!;
+            TK key = map.keyTable[ nextIndex ]!;
 
             currentIndex = nextIndex;
 
@@ -1110,7 +1108,7 @@ public class ObjectMap<TK, TV>
             return key;
         }
 
-        public Keys< TKk > Iterator()
+        public Keys Iterator()
         {
             return this;
         }
@@ -1118,15 +1116,15 @@ public class ObjectMap<TK, TV>
         /// <summary>
         /// Returns a new array containing the remaining keys.
         /// </summary>
-        public List< TKk > ToArray()
+        public List< TK > ToArray()
         {
-            return ToArray( new List< TKk >( map.Size ) );
+            return ToArray( new List< TK >( map.Size ) );
         }
 
         /// <summary>
         /// Adds the remaining keys to the array.
         /// </summary>
-        public List< TKk > ToArray( List< TKk > array )
+        public List< TK > ToArray( List< TK > array )
         {
             while ( HasNext )
             {

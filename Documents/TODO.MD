@@ -767,6 +767,9 @@ UTILS/COLLECTIONS
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    - DONE - ObjectMap                      Converted, but use Dictionary< object, object >
+    - DONE - PredicateIterable
+    - DONE - PredicateIterator
     - DONE - SnapshotArray<T>               Insert the necessary bits from Array<T> / remove dependency
 
     - **** - ArrayMap                       Use Dictionary<K, V>
@@ -787,12 +790,9 @@ UTILS/COLLECTIONS
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
     - **** - ObjectIntMap                   Use Dictionary< object, int >
     - **** - ObjectLongMap                  Use Dictionary< object, long >
-    - **** - ObjectMap                      Use Dictionary< object, object >
     - **** - ObjectSet<T>                   Use List<T>
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
     - **** - OrderedSet<T>                  Use SortedSet<T>
-    - **** - PredicateIterable
-    - **** - PredicateIterator
     - **** - ShortArray                     Use List< short >
 
     ----------------------------------------------------------------------------------
@@ -851,7 +851,7 @@ UTILS/VIEWPORT
 UTILS/XML
 ---------
 
-    - IP   - XmlReader
+    - DONE - XmlReader
     - DONE - XmlReaderData
     - DONE - XmlWriter
 

@@ -50,14 +50,14 @@ public partial class XmlReader
     // Code
     // ----------------------------------------------------------
 
-    public Element? Parse( string xml )
+    public virtual Element? Parse( string xml )
     {
         var data = xml.ToCharArray();
 
         return Parse( data, 0, data.Length );
     }
 
-    public Element? Parse( StreamReader reader )
+    public virtual Element? Parse( StreamReader reader )
     {
         try
         {
@@ -95,7 +95,7 @@ public partial class XmlReader
         }
     }
 
-    public Element? Parse( FileInfo file )
+    public virtual Element? Parse( FileInfo file )
     {
         try
         {
@@ -107,11 +107,9 @@ public partial class XmlReader
         }
     }
 
-    //TODO: Validate these suppressions!
-//    [SuppressMessage( "ReSharper", "UnreachableSwitchCaseDueToIntegerAnalysis" )]
-//    [SuppressMessage( "ReSharper", "ConditionIsAlwaysTrueOrFalse" )]
     private Element? Parse( char[] data, int offset, int length )
     {
+        //TODO: establish from Java LibGDX the meanings behind these variable names, then rename.
         var cs       = XML_START;
         var p        = offset;
         var pe       = length;
@@ -447,7 +445,7 @@ public partial class XmlReader
                     break;
 
                 case 2:
-                    if ( cs == 0 )
+                    if ( cs == XML_ERROR )
                     {
                         gotoTarg = 5;
 
@@ -518,7 +516,7 @@ public partial class XmlReader
         _current?.SetAttribute( name, value );
     }
 
-    public string? Entity( string name )
+    public virtual string? Entity( string name )
     {
         if ( name.Equals( "lt" ) )
         {
@@ -564,6 +562,7 @@ public partial class XmlReader
     //
     // --------------------------------------------------------------------
 
+    [PublicAPI]
     public class Element
     {
         private List< Element >? _children;

@@ -53,11 +53,7 @@ public class SnapshotArray<T>
     public SnapshotArray( SnapshotArray< T > array )
     {
         ArgumentNullException.ThrowIfNull( array );
-
-        if ( array.Items == null )
-        {
-            throw new GdxRuntimeException( "array cannot be null!" );
-        }
+        ArgumentNullException.ThrowIfNull( array.Items );
 
         Ordered = array.Ordered;
         Size    = array.Size;
@@ -173,7 +169,7 @@ public class SnapshotArray<T>
         if ( ( start + count ) > array.Size )
         {
             throw new ArgumentOutOfRangeException
-                ( "start + count must be <= size - " + start + " + " + count + " <= " + array.Size );
+                ( $@"start + count must be <= size - {start} + {count} <= {array.Size}" );
         }
 
         Modified();
@@ -208,7 +204,7 @@ public class SnapshotArray<T>
     {
         if ( index >= Size )
         {
-            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+            throw new ArgumentOutOfRangeException( $@"index can't be >= size - {index} >= {Size}" );
         }
 
         return Items[ index ];
@@ -222,7 +218,7 @@ public class SnapshotArray<T>
     {
         if ( index >= Size )
         {
-            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+            throw new ArgumentOutOfRangeException( $@"index can't be >= size - {index} >= {Size}" );
         }
 
         Modified();
@@ -238,7 +234,7 @@ public class SnapshotArray<T>
     {
         if ( index > Size )
         {
-            throw new ArgumentOutOfRangeException( "index can't be > size - " + index + " > " + Size );
+            throw new ArgumentOutOfRangeException( $@"index can't be >= size - {index} >= {Size}" );
         }
 
         if ( Items == null )
@@ -305,7 +301,7 @@ public class SnapshotArray<T>
 
         if ( index >= Size )
         {
-            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+            throw new ArgumentOutOfRangeException( $@"index can't be >= size - {index} >= {Size}" );
         }
 
         T value = Items[ index ];
@@ -337,12 +333,12 @@ public class SnapshotArray<T>
 
         if ( end >= Size )
         {
-            throw new ArgumentOutOfRangeException( "end can't be >= size - " + end + " >= " + Size );
+            throw new ArgumentOutOfRangeException( $@"end can't be >= size - {end} >= {Size}" );
         }
 
         if ( start > end )
         {
-            throw new ArgumentOutOfRangeException( "start can't be > end - " + start + " > " + end );
+            throw new ArgumentOutOfRangeException( $@"start can't be > end - {start} > {end}" );
         }
 
         var count = ( end - start ) + 1;
@@ -546,7 +542,7 @@ public class SnapshotArray<T>
 
     public IEnumerator< T > GetEnumerator()
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(); //TODO:
     }
 
     public override string ToString()
