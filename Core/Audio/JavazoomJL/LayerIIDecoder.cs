@@ -17,8 +17,7 @@
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 [PublicAPI]
-public class LayerIIDecoder
+public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
 {
-    
 }
 

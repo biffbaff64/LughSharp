@@ -33,12 +33,12 @@ public class BitstreamException : Exception
 {
     public int Errorcode { get; private set; } = Bitstream.UNKNOWN_ERROR;
 
-    public BitstreamException( string msg, Exception? t )
+    public BitstreamException( string msg, Exception? t = null )
         : base( msg, t )
     {
     }
 
-    public BitstreamException( int errorcode, Exception? t )
+    public BitstreamException( int errorcode, Exception? t = null )
         : this( GetErrorString( errorcode ), t )
     {
         this.Errorcode = errorcode;

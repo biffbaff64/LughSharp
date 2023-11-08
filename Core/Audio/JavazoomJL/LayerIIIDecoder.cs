@@ -17,8 +17,20 @@
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 [PublicAPI]
-public class LayerIIIDecoder
+public class LayerIIIDecoder : IFrameDecoder
 {
-    
+    public void Create( Bitstream stream,
+                        Header header,
+                        SynthesisFilter? filter1,
+                        SynthesisFilter? filter2,
+                        OutputBuffer? output,
+                        int channel )
+    {
+    }
+
+    /// <inheritdoc/>
+    public void DecodeFrame()
+    {
+    }
 }
 

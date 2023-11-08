@@ -39,14 +39,14 @@ namespace LibGDXSharp.Core.Utils.Collections;
 [PublicAPI]
 public class ObjectMap<TK, TV>
 {
-    protected TK?[] keyTable;
-    protected TV?[] valueTable;
-
-    private readonly object _dummy = new();
-    private readonly float  _loadFactor;
-    private          int    _threshold;
+    protected          TK?[] keyTable;
+    protected          TV?[] valueTable;
+    protected          int   threshold;
+    protected readonly float loadFactor;
 
     // ------------------------------------------------------------------------
+
+    private readonly object _dummy = new();
 
     private Entries? _entries1;
     private Entries? _entries2;
@@ -99,11 +99,11 @@ public class ObjectMap<TK, TV>
             throw new ArgumentException( "loadFactor must be > 0 and < 1: " + loadFactor );
         }
 
-        this._loadFactor = loadFactor;
+        this.loadFactor = loadFactor;
 
         var tableSize = TableSize( initialCapacity, loadFactor );
 
-        _threshold = ( int )( tableSize * loadFactor );
+        threshold  = ( int )( tableSize * loadFactor );
         Mask       = tableSize - 1;
         Shift      = int.LeadingZeroCount( Mask );
         keyTable   = new TK[ tableSize ];
@@ -119,21 +119,16 @@ public class ObjectMap<TK, TV>
     {
         ArgumentNullException.ThrowIfNull( map );
 
-        if ( map.valueTable == null )
-        {
-            throw new ArgumentException( "supplied map._valuetable is null!" );
-        }
-
-        this._loadFactor = map._loadFactor;
+        this.loadFactor = map.loadFactor;
 
         var tableSize = TableSize(
-            ( int )( map.keyTable.Length * map._loadFactor ),
-            _loadFactor
+            ( int )( map.keyTable.Length * map.loadFactor ),
+            loadFactor
             );
 
-        _threshold = ( int )( tableSize * _loadFactor );
-        Mask       = tableSize - 1;
-        Shift      = int.LeadingZeroCount( Mask );
+        threshold = ( int )( tableSize * loadFactor );
+        Mask      = tableSize - 1;
+        Shift     = int.LeadingZeroCount( Mask );
 
         keyTable   = new TK[ tableSize ];
         valueTable = new TV[ tableSize ];
@@ -230,7 +225,7 @@ public class ObjectMap<TK, TV>
         keyTable[ i ]   = key;
         valueTable[ i ] = value;
 
-        if ( ++Size >= _threshold )
+        if ( ++Size >= threshold )
         {
             Resize( keyTable.Length << 1 );
         }
@@ -344,7 +339,7 @@ public class ObjectMap<TK, TV>
             throw new ArgumentException( "maximumCapacity must be >= 0: " + maximumCapacity );
         }
 
-        var tableSize = TableSize( maximumCapacity, _loadFactor );
+        var tableSize = TableSize( maximumCapacity, loadFactor );
 
         if ( keyTable.Length > tableSize )
         {
@@ -357,7 +352,7 @@ public class ObjectMap<TK, TV>
     /// <param name="maximumCapacity"></param>
     public void Clear( int maximumCapacity )
     {
-        var tableSize = TableSize( maximumCapacity, _loadFactor );
+        var tableSize = TableSize( maximumCapacity, loadFactor );
 
         if ( keyTable.Length <= tableSize )
         {
@@ -461,7 +456,7 @@ public class ObjectMap<TK, TV>
     /// </summary>
     public void EnsureCapacity( int additionalCapacity )
     {
-        var tableSize = TableSize( Size + additionalCapacity, _loadFactor );
+        var tableSize = TableSize( Size + additionalCapacity, loadFactor );
 
         if ( keyTable.Length < tableSize )
         {
@@ -641,9 +636,9 @@ public class ObjectMap<TK, TV>
     {
         var oldCapacity = keyTable.Length;
 
-        _threshold = ( int )( newSize * _loadFactor );
-        Mask       = newSize - 1;
-        Shift      = int.LeadingZeroCount( Mask );
+        threshold = ( int )( newSize * loadFactor );
+        Mask      = newSize - 1;
+        Shift     = int.LeadingZeroCount( Mask );
 
         TK?[] oldKeyTable   = keyTable;
         TV?[] oldValueTable = valueTable;

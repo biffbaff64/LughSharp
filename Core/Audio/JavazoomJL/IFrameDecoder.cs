@@ -16,9 +16,25 @@
 
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
-[PublicAPI]
-public class FrameDecoder
-{
-    
-}
+/// <summary>
+/// Implementations of FrameDecoder are responsible for decoding an MPEG audio frame.
+/// </summary>
 
+// REVIEW: the interface currently is too thin. There should be
+// methods to specify the output buffer, the synthesis filters and
+// possibly other objects used by the decoder.
+[PublicAPI]
+public interface IFrameDecoder
+{
+    void Create( Bitstream stream,
+                 Header header,
+                 SynthesisFilter? filter1,
+                 SynthesisFilter? filter2,
+                 OutputBuffer? output,
+                 int channel );
+
+    /// <summary>
+    /// Decodes one frame of MPEG audio.
+    /// </summary>
+    void DecodeFrame();
+}

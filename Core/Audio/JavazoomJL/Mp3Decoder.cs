@@ -22,10 +22,40 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 [PublicAPI]
 public class Mp3Decoder
 {
-    // The OutputBuffer instance that will receive the decoded PCM samples.
-    public OutputBuffer? Output          { get; set; }
-    public int           OutputFrequency { get; set; }
-    public int           OutputChannels  { get; set; }
+    // The first decoder error code.
+    public const int DECODER_ERROR = 0x200;
+    public const int UNKNOWN_ERROR = DECODER_ERROR + 0;
+
+    // Layer not supported by the decoder.
+    public const int UNSUPPORTED_LAYER = DECODER_ERROR + 1;
+
+    // Illegal allocation in subband layer. Indicates a corrupt stream.
+    public const int ILLEGAL_SUBBAND_ALLOCATION = DECODER_ERROR + 2;
+
+    // ------------------------------------------
+
+    /// <summary>
+    /// The OutputBuffer instance that will receive the decoded PCM samples.
+    /// Setting the output buffer will only take effect the next time
+    /// <see cref="DecodeFrame"/> is called.
+    /// </summary>
+    public OutputBuffer? Output { get; set; }
+
+    /// <summary>
+    /// The sample frequency of the PCM samples output by this decoder.
+    /// This typically corresponds to the sample rate encoded in the
+    /// MPEG audio stream.
+    /// </summary>
+    public int OutputFrequency { get; set; }
+
+    /// <summary>
+    /// the number of channels of PCM samples output by this decoder. This
+    /// usually corresponds to the number of channels in the MPEG audio stream,
+    /// although it may differ. 1 channel for mono, 2 for stereo.
+    /// </summary>
+    public int NumOutputChannels { get; set; }
+
+    // ------------------------------------------
 
     // Synthesis filter for the left channel.
     private SynthesisFilter? _filter1;
@@ -38,6 +68,8 @@ public class Mp3Decoder
     private LayerIDecoder?   _l1decoder;
 
     private bool _initialised;
+
+    // ------------------------------------------
 
     /// <summary>
     /// Creates a new <code>Decoder</code> instance with default parameters.
@@ -59,63 +91,26 @@ public class Mp3Decoder
             Initialise( header );
         }
 
-        int layer = header.Layer();
+        var layer = header.HLayer;
 
-        FrameDecoder decoder = RetrieveDecoder( header, stream, layer );
+        IFrameDecoder decoder = RetrieveDecoder( header, stream, layer );
 
         decoder.DecodeFrame();
 
         return Output;
     }
 
-    /// <summary>
-    /// Changes the output buffer. This will take effect the next time decodeFrame() is called.
-    /// </summary>
-    public void SetOutputBuffer( OutputBuffer outbuf )
+    public IFrameDecoder RetrieveDecoder( Header header, Bitstream stream, int layer )
     {
-        Output = outbuf;
-    }
-
-    /// <summary>
-    /// Retrieves the sample frequency of the PCM samples output by this decoder.
-    /// This typically corresponds to the sample rate encoded in the MPEG audio stream.
-    /// </summary>
-    public int GetOutputFrequency()
-    {
-        return OutputFrequency;
-    }
-
-    /**
-      * Retrieves the number of channels of PCM samples output by this decoder. This usually corresponds to the number of channels
-      * in the MPEG audio stream, although it may differ.
-      * @return The number of output channels in the decoded samples: 1 for mono, or 2 for stereo.
-     */
-    public int GetOutputChannels()
-    {
-        return OutputChannels;
-    }
-
-    protected DecoderException NewDecoderException( int errorcode )
-    {
-        return new DecoderException( errorcode, null );
-    }
-
-    protected DecoderException NewDecoderException( int errorcode, Exception throwable )
-    {
-        return new DecoderException( errorcode, throwable );
-    }
-
-    public FrameDecoder RetrieveDecoder( Header header, Bitstream stream, int layer )
-    {
-        FrameDecoder? decoder = null;
+        IFrameDecoder? decoder = null;
 
         // REVIEW: allow channel output selection type
         // (LEFT, RIGHT, BOTH, DOWNMIX)
         switch ( layer )
         {
             case 3:
-                _l3decoder ??= new LayerIIIDecoder
-                    ( stream, header, _filter1, _filter2, Output, JavazoomJL.OutputChannels.BOTH_CHANNELS );
+                _l3decoder ??= new LayerIIIDecoder();
+                _l3decoder.Create( stream, header, _filter1, _filter2, Output, OutputChannels.BOTH_CHANNELS );
 
                 decoder = _l3decoder;
 
@@ -123,7 +118,7 @@ public class Mp3Decoder
 
             case 2:
                 _l2decoder ??= new LayerIIDecoder();
-                _l2decoder.Create( stream, header, _filter1, _filter2, Output, JavazoomJL.OutputChannels.BOTH_CHANNELS );
+                _l2decoder.Create( stream, header, _filter1, _filter2, Output, OutputChannels.BOTH_CHANNELS );
 
                 decoder = _l2decoder;
 
@@ -131,7 +126,7 @@ public class Mp3Decoder
 
             case 1:
                 _l1decoder ??= new LayerIDecoder();
-                _l1decoder.Create( stream, header, _filter1, _filter2, Output, JavazoomJL.OutputChannels.BOTH_CHANNELS );
+                _l1decoder.Create( stream, header, _filter1, _filter2, Output, OutputChannels.BOTH_CHANNELS );
 
                 decoder = _l1decoder;
 
@@ -140,11 +135,10 @@ public class Mp3Decoder
 
         if ( decoder == null )
         {
-            throw NewDecoderException( UNSUPPORTED_LAYER, null );
+            throw new DecoderException( UNSUPPORTED_LAYER );
         }
 
         return decoder;
-
     }
 
     private void Initialise( Header header )
@@ -152,9 +146,7 @@ public class Mp3Decoder
         // REVIEW: allow customizable scale factor
         var scalefactor = 32700.0f;
 
-        int mode = header.Mode();
-
-        header.Layer();
+        int mode = header.HMode;
 
         var channels = mode == Header.SINGLE_CHANNEL ? 1 : 2;
 
@@ -164,28 +156,17 @@ public class Mp3Decoder
             throw new GdxRuntimeException( "Output buffer was not set." );
         }
 
-        _filter1 = new SynthesisFilter( 0, scalefactor, null );
+        _filter1 = new SynthesisFilter( 0, scalefactor );
 
         // REVIEW: allow mono output for stereo
         if ( channels == 2 )
         {
-            _filter2 = new SynthesisFilter( 1, scalefactor, null );
+            _filter2 = new SynthesisFilter( 1, scalefactor );
         }
 
-        OutputChannels  = channels;
-        OutputFrequency = header.Frequency();
+        NumOutputChannels = channels;
+        OutputFrequency   = header.Frequency();
 
         _initialised = true;
     }
-
-    // The first decoder error code.
-    public const int DECODER_ERROR = 0x200;
-    public const int UNKNOWN_ERROR = DECODER_ERROR + 0;
-
-    // Layer not supported by the decoder.
-    public const int UNSUPPORTED_LAYER = DECODER_ERROR + 1;
-
-    // Illegal allocation in subband layer. Indicates a corrupt stream.
-    public const int ILLEGAL_SUBBAND_ALLOCATION = DECODER_ERROR + 2;
-
 }

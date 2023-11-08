@@ -14,10 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Text;
+
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 /// <summary>
-/// The <code>Bistream</code> class is responsible for parsing an MPEG audio bitstream.
+/// The <tt>Bistream</tt> class is responsible for parsing an MPEG audio bitstream.
 /// <para>
 /// <b>REVIEW:</b> much of the parsing currently occurs in the various decoders.
 /// This should be moved into this class and associated inner classes.
@@ -36,7 +38,7 @@ public class Bitstream
     // Maximum size of the frame buffer.
     public const int BUFFER_INT_SIZE = 433;
 
-    // The first bitstream error code. See the {@link DecoderErrors DecoderErrors} interface for other bitstream error codes.
+    // The first bitstream error code. See the DecoderErrors interface for other bitstream error codes.
     public const int BITSTREAM_ERROR = 0x100;
 
     // An undeterminable error occurred.
@@ -88,13 +90,13 @@ public class Bitstream
 
     private PushbackInputStream? _source;
 
-    private Header  _header   = new();
-    private byte[]  _syncbuf  = new byte[ 4 ];
-    private Crc16[] _crc      = new Crc16[ 1 ];
-    private byte[]? _rawid3V2 = null;
-    private bool    _firstframe;
-    private int     _syncword;
-    private bool    _singleChMode;
+    private Header  _header       = new();
+    private byte[]  _syncbuf      = new byte[ 4 ];
+    private Crc16[] _crc          = new Crc16[ 1 ];
+    private byte[]? _rawid3V2     = null;
+    private bool    _firstframe   = false;
+    private int     _syncword     = 0;
+    private bool    _singleChMode = false;
 
     // ------------------------------------------------------------------------
 
@@ -117,12 +119,10 @@ public class Bitstream
         CloseFrame();
     }
 
-
-    /**
-     * Load ID3v2 frames.
-     * @param in MP3 InputStream.
-     * @author JavaZOOM
-     */
+    /// <summary>
+    /// Load ID3v2 frames.
+    /// </summary>
+    /// <param name="inStream"> MP3 InputStream. </param>
     private void LoadID3V2( Stream inStream )
     {
         var size = -1;
@@ -137,6 +137,7 @@ public class Bitstream
         }
         catch ( IOException )
         {
+            // ignored
         }
         finally
         {
@@ -147,6 +148,7 @@ public class Bitstream
             }
             catch ( IOException e )
             {
+                // ignored
             }
         }
 
@@ -165,16 +167,15 @@ public class Bitstream
         }
         catch ( IOException e )
         {
+            // ignored
         }
     }
 
-    /**
-     * Parse ID3v2 tag header to find out size of ID3v2 frames.
-     * @param in MP3 InputStream
-     * @return size of ID3v2 frames + header
-     * @throws IOException
-     * @author JavaZOOM
-     */
+    /// <summary>
+    /// Parse ID3v2 tag header to find out size of ID3v2 frames.
+    /// </summary>
+    /// <param name="inStream"> MP3 InputStream </param>
+    /// <returns> size of ID3v2 frames + header </returns>
     [SuppressMessage( "ReSharper", "MustUseReturnValue" )]
     private int ReadID3V2Header( Stream inStream )
     {
@@ -212,13 +213,11 @@ public class Bitstream
         }
         else
         {
-            ByteArrayInputStream bain = new ByteArrayInputStream( _rawid3V2 );
-
-            return bain;
+            return new ByteArrayInputStream( _rawid3V2 );
         }
     }
 
-    private void ParseID3V2Frames( byte[] bframes )
+    private void ParseID3V2Frames( byte[]? bframes )
     {
         if ( bframes == null )
         {
@@ -239,9 +238,9 @@ public class Bitstream
 
         try
         {
-            float replayGain;
-            float replayGainPeak;
-            int   size;
+            float? replayGain     = 0;
+            float? replayGainPeak = 0;
+            int    size;
 
             for ( var i = 10; ( i < bframes.Length ) && ( bframes[ i ] > 0 ); i += size )
             {
@@ -252,10 +251,10 @@ public class Bitstream
                     // ID3v2.3 & ID3v2.4
                     var code = new string( bframes, i, 4 );
 
-                    size = ( Int32 )( ( ( bframes[ i + 4 ] << 24 ) & 0xFF000000 )
-                                    | ( ( bframes[ i + 5 ] << 16 ) & 0x00FF0000 )
-                                    | ( ( bframes[ i + 6 ] << 8 ) & 0x0000FF00 )
-                                    | ( bframes[ i + 7 ] & 0x000000FF ) );
+                    size = ( Int32 )( ( bframes[ i + 4 ] << 24 ) & 0xFF000000 )
+                         | ( ( bframes[ i + 5 ] << 16 ) & 0x00FF0000 )
+                         | ( ( bframes[ i + 6 ] << 8 ) & 0x0000FF00 )
+                         | ( bframes[ i + 7 ] & 0x000000FF );
 
                     i += 10;
 
@@ -297,7 +296,7 @@ public class Bitstream
                     // ID3v2.2
                     var scode = new string( bframes, i, 3 );
 
-                    size = 0x00000000 + ( bframes[ i + 3 ] << 16 ) + ( bframes[ i + 4 ] << 8 ) + bframes[ i + 5 ];
+                    size = ( bframes[ i + 3 ] << 16 ) + ( bframes[ i + 4 ] << 8 ) + bframes[ i + 5 ];
 
                     i += 6;
 
@@ -337,24 +336,27 @@ public class Bitstream
 
             if ( ( replayGain != null ) && ( replayGainPeak != null ) )
             {
-                ReplayGainScale = ( float )Math.Pow( 10, replayGain / 20f );
+                ReplayGainScale = ( float )Math.Pow( 10, ( double )( replayGain / 20f ) );
 
                 // If scale * peak > 1 then reduce scale (preamp) to prevent clipping.
-                ReplayGainScale = Math.Min( 1 / replayGainPeak, ReplayGainScale );
+                ReplayGainScale = Math.Min( ( float )( 1 / replayGainPeak ), ReplayGainScale );
             }
         }
-        catch ( GdxRuntimeException ignored )
+        catch ( GdxRuntimeException )
         {
+            // ignored
         }
     }
 
-    private string ParseText( byte[] bframes, int offset, int size, int skip )
+    private unsafe string ParseText( byte[] bframes, int offset, int size, int skip )
     {
+        ArgumentNullException.ThrowIfNull( bframes );
+
         var value = string.Empty;
 
         try
         {
-            string[] encTypes =
+            string[] encodingTypes =
             {
                 "ISO-8859-1",
                 "UTF16",
@@ -362,50 +364,64 @@ public class Bitstream
                 "UTF-8"
             };
 
-            value = new string( bframes, offset + skip, size - skip, encTypes[ bframes[ offset ] ] );
+            var encodingType = encodingTypes[ bframes[ offset ] ];
+
+            Encoding encoding = encodingType switch
+                                {
+                                    "ISO-8859-1" => Encoding.GetEncoding( "ISO-8859-1" ),
+                                    "UTF16"      => Encoding.Unicode,
+                                    "UTF-16BE"   => Encoding.BigEndianUnicode,
+                                    "UTF-8"      => Encoding.UTF8,
+                                    _            => throw new ArgumentException( message: @"Invalid encoding type", paramName: nameof( encodingType ) )
+                                };
+
+            fixed ( byte* ptr = &bframes[ 0 ] )
+            {
+                var sptr = ( sbyte* )ptr;
+
+                value = new string( sptr, offset + skip, size - skip, encoding );
+            }
         }
-        catch ( UnsupportedEncodingException e )
+        catch ( UnsupportedEncodingException )
         {
+            // ignored
         }
 
         return value;
     }
 
-    /**
-     * Close the Bitstream.
-     * @throws BitstreamException
-     */
-    public void close()
+    /// <summary>
+    /// Close the Bitstream.
+    /// </summary>
+    public void Close()
     {
         try
         {
-            source.close();
+            _source?.Close();
         }
-        catch
-            ( IOException ex )
+        catch ( IOException )
         {
-            throw newBitstreamException( STREAM_ERROR, ex );
+            throw new BitstreamException( STREAM_ERROR );
         }
-
     }
 
     /**
      * Reads and parses the next frame from the input source.
      * @return the Header describing details of the frame read, or null if the end of the stream has been reached.
      */
-    public Header readFrame()
+    public Header ReadFrame()
     {
-        Header result = null;
+        Header? result = null;
 
         try
         {
             result = readNextFrame();
 
             // E.B, Parse VBR (if any) first frame.
-            if ( firstframe == true )
+            if ( _firstframe == true )
             {
-                result.parseVBR( frame_bytes );
-                firstframe = false;
+                result.ParseVBR( _frameBytes );
+                _firstframe = false;
             }
         }
         catch ( BitstreamException ex )
@@ -424,13 +440,13 @@ public class Bitstream
                 {
                     if ( e.getErrorCode() != STREAM_EOF ) // wrap original exception so stack trace is maintained.
                     {
-                        throw newBitstreamException( e.getErrorCode(), e );
+                        throw new BitstreamException( e.getErrorCode(), e );
                     }
                 }
             }
             else if ( ex.getErrorCode() != STREAM_EOF ) // wrap original exception so stack trace is maintained.
             {
-                throw newBitstreamException( ex.getErrorCode(), ex );
+                throw new BitstreamException( ex.getErrorCode(), ex );
             }
         }
 
@@ -462,30 +478,30 @@ public class Bitstream
         header.read_header( this, crc );
     }
 
-    /**
-     * Unreads the bytes read from the frame.
-     * @throws BitstreamException
-     */
+    /// <summary>
+    /// Unreads the bytes read from the frame.
+    /// </summary>
+    /// <exception cref="BitstreamException"></exception>
 
-// REVIEW: add new error codes for this.
-    public void unreadFrame()
+    // REVIEW: add new error codes for this.
+    public void UnreadFrame()
     {
-        if ( wordpointer == -1 && bitindex == -1 && framesize > 0 )
+        if ( ( _wordpointer == -1 ) && ( _bitindex == -1 ) && ( _framesize > 0 ) )
         {
             try
             {
-                source.unread( frame_bytes, 0, framesize );
+                _source.Unread( _frameBytes, 0, _framesize );
             }
             catch ( IOException ex )
             {
-                throw newBitstreamException( STREAM_ERROR );
+                throw new BitstreamException( STREAM_ERROR );
             }
         }
     }
 
-    /**
-     * Close MP3 frame.
-     */
+    /// <summary>
+    /// Close MP3 frame.
+    /// </summary>
     public void CloseFrame()
     {
         _framesize   = -1;
@@ -493,17 +509,19 @@ public class Bitstream
         _bitindex    = -1;
     }
 
-    /**
-     * Determines if the next 4 bytes of the stream represent a frame header.
-     */
+    /// <summary>
+    /// Determines if the next 4 bytes of the stream represent a frame header.
+    /// </summary>
+    /// <param name="syncmode"></param>
+    /// <returns></returns>
     public bool IsSyncCurrentPosition( int syncmode )
     {
-        int read = readBytes( _syncbuf, 0, 4 );
+        var read = ReadBytes( _syncbuf, 0, 4 );
 
-        int headerstring = _syncbuf[ 0 ] << 24 & 0xFF000000
-                         | _syncbuf[ 1 ] << 16 & 0x00FF0000
-                         | _syncbuf[ 2 ] << 8 & 0x0000FF00
-                         | _syncbuf[ 3 ] << 0 & 0x000000FF;
+        var headerstring = ( int )( ( _syncbuf[ 0 ] << 24 ) & 0xFF000000 )
+                         | ( ( _syncbuf[ 1 ] << 16 ) & 0x00FF0000 )
+                         | ( ( _syncbuf[ 2 ] << 8 ) & 0x0000FF00 )
+                         | ( ( _syncbuf[ 3 ] << 0 ) & 0x000000FF );
 
         try
         {
@@ -513,7 +531,7 @@ public class Bitstream
         {
         }
 
-        bool sync = false;
+        var sync = false;
 
         switch ( read )
         {
@@ -523,7 +541,7 @@ public class Bitstream
                 break;
 
             case 4:
-                sync = isSyncMark( headerstring, syncmode, _syncword );
+                sync = IsSyncMark( headerstring, syncmode, _syncword );
 
                 break;
         }
@@ -531,61 +549,50 @@ public class Bitstream
         return sync;
     }
 
-// REVIEW: this class should provide inner classes to
-// parse the frame contents. Eventually, readBits will
-// be removed.
-    public int readBits( int n )
+    // REVIEW: this class should provide inner classes to
+    // parse the frame contents. Eventually, readBits will
+    // be removed.
+    public int ReadBits( int n )
     {
-        return get_bits( n );
+        return GetBits( n );
     }
 
-    public int readCheckedBits( int n )
+    public int ReadCheckedBits( int n )
     {
         // REVIEW: implement CRC check.
-        return get_bits( n );
-    }
-
-    protected BitstreamException newBitstreamException( int errorcode )
-    {
-        return new BitstreamException( errorcode, null );
-    }
-
-    protected BitstreamException newBitstreamException( int errorcode, Throwable throwable )
-    {
-        return new BitstreamException( errorcode, throwable );
+        return GetBits( n );
     }
 
     /**
      * Get next 32 bits from bitstream. They are stored in the headerstring. syncmod allows Synchro flag ID The returned value is
      * False at the end of stream.
      */
-    int syncHeader( byte syncmode )
+    private int SyncHeader( byte syncmode )
     {
         bool sync;
-        int  headerstring;
 
         // read additional 2 bytes
-        int bytesRead = readBytes( syncbuf, 0, 3 );
+        var bytesRead = ReadBytes( _syncbuf, 0, 3 );
 
         if ( bytesRead != 3 )
         {
-            throw newBitstreamException( STREAM_EOF, null );
+            throw new BitstreamException( STREAM_EOF, null );
         }
 
-        headerstring = syncbuf[ 0 ] << 16 & 0x00FF0000 | syncbuf[ 1 ] << 8 & 0x0000FF00 | syncbuf[ 2 ] << 0 & 0x000000FF;
+        var headerstring = ( ( _syncbuf[ 0 ] << 16 ) & 0x00FF0000 ) | ( ( _syncbuf[ 1 ] << 8 ) & 0x0000FF00 ) | ( ( _syncbuf[ 2 ] << 0 ) & 0x000000FF );
 
         do
         {
             headerstring <<= 8;
 
-            if ( readBytes( syncbuf, 3, 1 ) != 1 )
+            if ( ReadBytes( _syncbuf, 3, 1 ) != 1 )
             {
-                throw newBitstreamException( STREAM_EOF, null );
+                throw new BitstreamException( STREAM_EOF, null );
             }
 
-            headerstring |= syncbuf[ 3 ] & 0x000000FF;
+            headerstring |= _syncbuf[ 3 ] & 0x000000FF;
 
-            sync = isSyncMark( headerstring, syncmode, syncword );
+            sync = IsSyncMark( headerstring, syncmode, _syncword );
         }
         while ( !sync );
 
@@ -595,9 +602,9 @@ public class Bitstream
         return headerstring;
     }
 
-    public bool isSyncMark( int headerstring, int syncmode, int word )
+    public bool IsSyncMark( int headerstring, int syncmode, int word )
     {
-        bool sync = false;
+        var sync = false;
 
         if ( syncmode == INITIAL_SYNC ) // sync = ((headerstring & 0xFFF00000) == 0xFFF00000);
         {
@@ -605,65 +612,59 @@ public class Bitstream
         }
         else
         {
-            sync = ( headerstring & 0xFFF80C00 ) == word && ( headerstring & 0x000000C0 ) == 0x000000C0 == single_ch_mode;
+            sync = ( ( headerstring & 0xFFF80C00 ) == word )
+                && ( ( headerstring & 0x000000C0 ) == 0x000000C0 == _singleChMode );
         }
 
         // filter out invalid sample rate
         if ( sync )
         {
-            sync = ( headerstring >>> 10 & 3 ) != 3;
+            sync = ( ( headerstring >>> 10 ) & 3 ) != 3;
         }
 
         // filter out invalid layer
         if ( sync )
         {
-            sync = ( headerstring >>> 17 & 3 ) != 0;
+            sync = ( ( headerstring >>> 17 ) & 3 ) != 0;
         }
 
         // filter out invalid version
         if ( sync )
         {
-            sync = ( headerstring >>> 19 & 3 ) != 1;
+            sync = ( ( headerstring >>> 19 ) & 3 ) != 1;
         }
 
         return sync;
     }
 
-    /**
-     * Reads the data for the next frame. The frame is not parsed until parse frame is called.
-     */
-    int read_frame_data( int bytesize )
+    /// <summary>
+    /// Reads the data for the next frame. The frame is not parsed
+    /// until parse frame is called.
+    /// </summary>
+    /// <param name="bytesize"></param>
+    /// <returns></returns>
+    private int ReadFrameData( int bytesize )
     {
-        int numread = 0;
-        numread     = readFully( frame_bytes, 0, bytesize );
-        framesize   = bytesize;
-        wordpointer = -1;
-        bitindex    = -1;
+        var numread = ReadFully( _frameBytes, 0, bytesize );
+
+        _framesize   = bytesize;
+        _wordpointer = -1;
+        _bitindex    = -1;
 
         return numread;
     }
 
-    /**
-     * Parses the data previously read with read_frame_data().
-     */
-    void parse_frame()
+    /// <summary>
+    /// Parses the data previously read with ReadFrameData().
+    /// </summary>
+    private void parse_frame()
     {
         // Convert Bytes read to int
-        int    b        = 0;
-        byte[] byteread = frame_bytes;
-        int    bytesize = framesize;
+        var b        = 0;
+        var byteread = _frameBytes;
+        var bytesize = _framesize;
 
-        // Check ID3v1 TAG (True only if last frame).
-        // for (int t=0;t<(byteread.Length)-2;t++)
-        // {
-        // if ((byteread[t]=='T') && (byteread[t+1]=='A') && (byteread[t+2]=='G'))
-        // {
-        // System.out.println("ID3v1 detected at offset "+t);
-        // throw newBitstreamException(INVALIDFRAME, null);
-        // }
-        // }
-
-        for ( int k = 0; k < bytesize; k = k + 4 )
+        for ( var k = 0; k < bytesize; k = k + 4 )
         {
             byte b0 = 0;
             byte b1 = 0;
@@ -671,107 +672,104 @@ public class Bitstream
             byte b3 = 0;
             b0 = byteread[ k ];
 
-            if ( k + 1 < bytesize )
+            if ( ( k + 1 ) < bytesize )
             {
                 b1 = byteread[ k + 1 ];
             }
 
-            if ( k + 2 < bytesize )
+            if ( ( k + 2 ) < bytesize )
             {
                 b2 = byteread[ k + 2 ];
             }
 
-            if ( k + 3 < bytesize )
+            if ( ( k + 3 ) < bytesize )
             {
                 b3 = byteread[ k + 3 ];
             }
 
-            framebuffer[ b++ ] = b0 << 24 & 0xFF000000 | b1 << 16 & 0x00FF0000 | b2 << 8 & 0x0000FF00 | b3 & 0x000000FF;
+            _framebuffer[ b++ ] = ( int )( ( b0 << 24 ) & 0xFF000000 )
+                                | ( ( b1 << 16 ) & 0x00FF0000 )
+                                | ( ( b2 << 8 ) & 0x0000FF00 )
+                                | ( b3 & 0x000000FF );
         }
 
-        wordpointer = 0;
-        bitindex    = 0;
+        _wordpointer = 0;
+        _bitindex    = 0;
     }
 
-    /**
-     * Read bits from buffer into the lower bits of an unsigned int. The LSB contains the latest read bit of the stream. (1 <=
-     * number_of_bits <= 16)
-     */
-    public int get_bits( int number_of_bits )
+    /// <summary>
+    /// Read bits from buffer into the lower bits of an unsigned int. The
+    /// LSB contains the latest read bit of the stream. (1 &lt;= number_of_bits &lt;= 16)
+    /// </summary>
+    /// <param name="numberOfBits"></param>
+    /// <returns></returns>
+    public int GetBits( int numberOfBits )
     {
-        int returnvalue = 0;
-        int sum         = bitindex + number_of_bits;
+        var returnvalue = 0;
+        var sum         = _bitindex + numberOfBits;
 
-        // E.B
-        // There is a problem here, wordpointer could be -1 ?!
-        if ( wordpointer < 0 )
+        if ( _wordpointer < 0 )
         {
-            wordpointer = 0;
+            _wordpointer = 0;
         }
-
-        // E.B : End.
 
         if ( sum <= 32 )
         {
             // all bits contained in *wordpointer
-            returnvalue = framebuffer[ wordpointer ] >>> 32 - sum & bitmask[ number_of_bits ];
+            returnvalue = ( _framebuffer[ _wordpointer ] >>> ( 32 - sum ) ) & _bitmask[ numberOfBits ];
 
-            // returnvalue = (wordpointer[0] >> (32 - sum)) & bitmask[number_of_bits];
-            if ( ( bitindex += number_of_bits ) == 32 )
+            if ( ( _bitindex += numberOfBits ) == 32 )
             {
-                bitindex = 0;
-                wordpointer++; // added by me!
+                _bitindex = 0;
+                _wordpointer++;
             }
 
             return returnvalue;
         }
 
-        // E.B : Check that ?
-        // ((short[])&returnvalue)[0] = ((short[])wordpointer + 1)[0];
-        // wordpointer++; // Added by me!
-        // ((short[])&returnvalue + 1)[0] = ((short[])wordpointer)[0];
-        int Right = framebuffer[ wordpointer ] & 0x0000FFFF;
+        var right = ( int )( _framebuffer[ _wordpointer ] & 0x0000FFFF );
 
-        wordpointer++;
+        _wordpointer++;
 
-        int Left = framebuffer[ wordpointer ] & 0xFFFF0000;
+        var left = ( int )( _framebuffer[ _wordpointer ] & 0xFFFF0000 );
 
-        returnvalue = Right << 16 & 0xFFFF0000 | Left >>> 16 & 0x0000FFFF;
-        returnvalue >>>= 48 - sum; // returnvalue >>= 16 - (number_of_bits - (32 - bitindex))
-        returnvalue &= bitmask[ number_of_bits ];
+        returnvalue = ( int )( ( right << 16 ) & 0xFFFF0000 ) | ( ( left >>> 16 ) & 0x0000FFFF );
+        returnvalue >>>= 48 - sum;
+        returnvalue &= _bitmask[ numberOfBits ];
 
-        bitindex = sum - 32;
+        _bitindex = sum - 32;
 
         return returnvalue;
     }
 
-    /**
-     * Set the word we want to sync the header to. In Big-Endian byte order
-     */
-    void set_syncword( int syncword0 )
+    /// <summary>
+    /// Set the word we want to sync the header to. In Big-Endian byte order
+    /// </summary>
+    /// <param name="syncword"></param>
+    private void SetSyncword( Int32 syncword )
     {
-        syncword       = syncword0 & 0xFFFFFF3F;
-        single_ch_mode = ( syncword0 & 0x000000C0 ) == 0x000000C0;
+        _syncword     = ( Int32 )( syncword & 0xFFFFFF3F );
+        _singleChMode = ( syncword & 0x000000C0 ) == 0x000000C0;
     }
 
-    /**
-     * Reads the exact number of bytes from the source input stream into a byte array.
-     *
-     * @param b The byte array to read the specified number of bytes into.
-     * @param offs The index in the array where the first byte read should be stored.
-     * @param len the number of bytes to read.
-     *
-     * @exception BitstreamException is thrown if the specified number of bytes could not be read from the stream.
-     */
-    private int readFully( byte[] b, int offs, int len )
+    /// <summary>
+    /// Reads the exact number of bytes from the source input stream into a byte array.
+    /// </summary>
+    /// <param name="b"> The byte array to read the specified number of bytes into. </param>
+    /// <param name="offs"> The index in the array where the first byte read should be stored. </param>
+    /// <param name="len"> the number of bytes to read. </param>
+    /// <exception cref="BitstreamException">
+    /// is thrown if the specified number of bytes could not be read from the stream.
+    /// </exception>
+    private int ReadFully( byte[] b, int offs, int len )
     {
-        int nRead = 0;
+        var nRead = 0;
 
         try
         {
             while ( len > 0 )
             {
-                int bytesread = source.read( b, offs, len );
+                int bytesread = _source.Read( b, offs, len );
 
                 if ( bytesread == -1 )
                 {
@@ -782,7 +780,7 @@ public class Bitstream
 
                     break;
 
-                    // throw newBitstreamException(UNEXPECTED_EOF, new EOFException());
+                    // throw new BitstreamException(UNEXPECTED_EOF, new EOFException());
                 }
 
                 nRead =  nRead + bytesread;
@@ -792,24 +790,29 @@ public class Bitstream
         }
         catch ( IOException ex )
         {
-            throw newBitstreamException( STREAM_ERROR, ex );
+            throw new BitstreamException( STREAM_ERROR, ex );
         }
 
         return nRead;
     }
 
-    /**
-     * Simlar to readFully, but doesn't throw exception when EOF is reached.
-     */
-    private int readBytes( byte[] b, int offs, int len )
+    /// <summary>
+    /// Simlar to readFully, but doesn't throw exception when EOF is reached.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <param name="offs"></param>
+    /// <param name="len"></param>
+    /// <returns></returns>
+    /// <exception cref="BitstreamException"></exception>
+    private int ReadBytes( byte[] b, int offs, int len )
     {
-        int totalBytesRead = 0;
+        var totalBytesRead = 0;
 
         try
         {
             while ( len > 0 )
             {
-                int bytesread = source.read( b, offs, len );
+                int bytesread = _source.Read( b, offs, len );
 
                 if ( bytesread == -1 )
                 {
@@ -821,9 +824,9 @@ public class Bitstream
                 len            -= bytesread;
             }
         }
-        catch ( IOException ex )
+        catch ( IOException )
         {
-            throw newBitstreamException( STREAM_ERROR, ex );
+            throw new BitstreamException( STREAM_ERROR );
         }
 
         return totalBytesRead;

@@ -31,7 +31,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
     // Check this declaration.
     // Original Java was Array< ObjectMap.Entry< string, ModelData > > items...
-    protected readonly List< ObjectMap< string, ModelData >.Entry< string, ModelData > > items = new();
+    protected readonly List< ObjectMap< string, ModelData >.Entry > items = new();
 
     protected readonly ModelParameters defaultParameters = new();
 
@@ -111,7 +111,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
             return deps;
         }
 
-        var item = new ObjectMap< string, ModelData >.Entry< string, ModelData >
+        var item = new ObjectMap< string, ModelData >.Entry
         {
             key   = fileName,
             value = data

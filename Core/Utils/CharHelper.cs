@@ -99,7 +99,7 @@ public static class CharHelper
     {
         return x - y;
     }
-
+    
     /// <summary>
     /// The minimum radix available for conversion to and from strings.
     /// The constant value of this field is the smallest value permitted

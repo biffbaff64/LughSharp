@@ -587,7 +587,7 @@ public class Header
     /// </summary>
     /// <param name="streamsize"></param>
     /// <returns> number of frames </returns>
-    public int MaxNumberOfFrames( int streamsize ) // E.B
+    public int MaxNumberOfFrames( int streamsize )
     {
         if ( HVbr )
         {

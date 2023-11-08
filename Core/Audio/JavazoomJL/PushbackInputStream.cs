@@ -22,5 +22,9 @@ public class PushbackInputStream
     public PushbackInputStream( Stream inStream, int buffer_int_size )
     {
     }
+
+    public void Close()
+    {
+    }
 }
 

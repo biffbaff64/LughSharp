@@ -16,8 +16,12 @@
 
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
+[PublicAPI]
 public class SynthesisFilter
 {
-    
+    public SynthesisFilter( int i, float scalefactor, object? o = null )
+    {
+    }
+
 }
 
