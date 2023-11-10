@@ -17,6 +17,6 @@
 namespace LibGDXSharp.Utils;
 
 [PublicAPI]
-public class UnsupportedOperationException : Exception
+public class UnsupportedOperationException : System.Exception
 {
 }

@@ -25,8 +25,8 @@ public class NoSuchElementException : InvalidOperationException
     {
     }
     
-    /// <inheritdoc cref="InvalidOperationException(string?, Exception?)"/>
-    public NoSuchElementException( string? message, Exception? ex )
+    /// <inheritdoc cref="InvalidOperationException(string?, System.Exception?)"/>
+    public NoSuchElementException( string? message, System.Exception? ex )
         : base( message, ex )
     {
     }

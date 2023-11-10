@@ -48,7 +48,7 @@ public class Header
 
     #region public properties
 
-    public short   Checksum              { get; set; }
+    public int     Checksum              { get; set; }
     public int     Framesize             { get; set; }
     public int     NSlots                { get; set; }
     public int     HModeExtension        { get; set; }
@@ -85,7 +85,7 @@ public class Header
     /// <summary>
     /// Read a 32-bit header from the bitstream.
     /// </summary>
-    private void ReadHeader( Bitstream stream, Crc16?[] crcp )
+    public void ReadHeader( Bitstream stream, Crc16?[] crcp )
     {
         int headerString;
         var sync = false;
@@ -107,13 +107,13 @@ public class Header
                     }
                     else
                     {
-                        throw new BitstreamException( Bitstream.UNKNOWN_ERROR, null );
+                        throw new BitstreamException( Bitstream.UNKNOWN_ERROR );
                     }
                 }
 
                 if ( ( HSampleFrequency = ( headerString >>> 10 ) & 3 ) == 3 )
                 {
-                    throw new BitstreamException( Bitstream.UNKNOWN_ERROR, null );
+                    throw new BitstreamException( Bitstream.UNKNOWN_ERROR );
                 }
             }
 
@@ -190,11 +190,11 @@ public class Header
             CalculateFramesize();
 
             // read framedata:
-            int framesizeloaded = stream.ReadFrameData( Framesize );
+            var framesizeloaded = stream.ReadFrameData( Framesize );
 
             if ( ( Framesize >= 0 ) && ( framesizeloaded != Framesize ) )
             {
-                throw new BitstreamException( Bitstream.INVALIDFRAME, null );
+                throw new BitstreamException( Bitstream.INVALIDFRAME );
             }
 
             if ( stream.IsSyncCurrentPosition( _syncmode ) )
@@ -203,7 +203,7 @@ public class Header
                 {
                     _syncmode = Bitstream.STRICT_SYNC;
 
-                    stream.SetSyncword( headerString & 0xFFF80CC0 );
+                    stream.SetSyncword( ( Int32 )( headerString & 0xFFF80CC0 ) );
                 }
 
                 sync = true;
@@ -435,7 +435,7 @@ public class Header
     /// <summary>
     /// Returns Checksum flag. Compares computed Checksum with stream Checksum.
     /// </summary>
-    public bool checksum_ok()
+    public bool ChecksumOk()
     {
         return Checksum == _crc?.Checksum();
     }
@@ -603,11 +603,11 @@ public class Header
         }
     }
 
-    /**
-     * Returns the maximum number of frames in the stream.
-     * @param streamsize
-     * @return number of frames
-     */
+    /// <summary>
+    /// Returns the maximum number of frames in the stream.
+    /// </summary>
+    /// <param name="streamsize"></param>
+    /// <returns> number of frames </returns>
     public int MinNumberOfFrames( int streamsize ) // E.B
     {
         if ( HVbr )

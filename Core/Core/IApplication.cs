@@ -93,13 +93,13 @@ public interface IApplication
     IClipboard? Clipboard { get; set; }
 
     void Log( string tag, string message );
-    void Log( string tag, string message, Exception exception );
+    void Log( string tag, string message, System.Exception exception );
 
     void Error( string tag, string message );
-    void Error( string tag, string message, Exception exception );
+    void Error( string tag, string message, System.Exception exception );
 
     void Debug( string tag, string message );
-    void Debug( string tag, string message, Exception exception );
+    void Debug( string tag, string message, System.Exception exception );
 
     int GetVersion();
 

@@ -14,12 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Buffers;
+namespace LibGDXSharp.Core.Files.Buffers;
 
 [PublicAPI]
-public abstract class DoubleBuffer : Buffer
+public abstract class MappedByteBuffer : ByteBuffer
 {
-    protected DoubleBuffer( int mark, int pos, int lim, int cap, double[]? hb = null, int offset = 0 )
+    protected MappedByteBuffer( int mark, int pos, int lim, int cap, FileInfo? fd = null )
         : base( mark, pos, lim, cap )
     {
     }

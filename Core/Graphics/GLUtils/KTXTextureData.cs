@@ -16,7 +16,7 @@
 
 using System.IO.Compression;
 
-using LibGDXSharp.Utils.Buffers;
+using LibGDXSharp.Core.Files.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
@@ -122,7 +122,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                 _compressedData.Position = 0;
                 _compressedData.Limit    = _compressedData.Capacity;
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 throw new GdxRuntimeException( $"Couldn't load zktx file '{_file}'", e );
             }

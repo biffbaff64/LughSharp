@@ -14,16 +14,27 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Core.Files;
+
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 [PublicAPI]
 public class PushbackInputStream
 {
-    public PushbackInputStream( Stream inStream, int buffer_int_size )
+    public PushbackInputStream( InputStream inStream, int bufferIntSize )
     {
     }
 
     public void Close()
+    {
+    }
+
+    public int Read( byte[] bytes, int offs, int len )
+    {
+        return 0;
+    }
+
+    public void Unread( byte[] syncbuf, int i, int read )
     {
     }
 }

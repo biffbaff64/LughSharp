@@ -608,7 +608,7 @@ public class AssetManager
 
             return UpdateTask() && ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
         }
-        catch ( Exception t )
+        catch ( System.Exception t )
         {
             HandleTaskError( t );
 
@@ -969,7 +969,7 @@ public class AssetManager
     /// invoking the <see cref="IAssetErrorListener"/>.
     /// </summary>
     /// <param name="t"></param>
-    private void HandleTaskError( Exception t )
+    private void HandleTaskError( System.Exception t )
     {
         Log.Error( $"Error loading asset: {t}" );
 

@@ -1113,7 +1113,7 @@ public class BitmapFont
                     XHeight       = overrideXHeight;
                 }
             }
-            catch ( Exception ex )
+            catch ( System.Exception ex )
             {
                 throw new GdxRuntimeException( "Error loading font file: " + file, ex );
             }

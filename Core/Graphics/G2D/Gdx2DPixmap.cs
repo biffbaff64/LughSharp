@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Buffers;
+using LibGDXSharp.Core.Files.Buffers;
 
 namespace LibGDXSharp.G2D;
 

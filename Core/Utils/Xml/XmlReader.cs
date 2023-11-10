@@ -101,7 +101,7 @@ public partial class XmlReader
         {
             return Parse( file.OpenText() );
         }
-        catch ( Exception ex )
+        catch ( System.Exception ex )
         {
             throw new SerializationException( "Error parsing file: " + file, ex );
         }

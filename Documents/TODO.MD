@@ -191,37 +191,26 @@ CORE
 FILES
 -----
 
+    - IP   - BufferedInputStream
+    - IP   - ByteArrayInputStream
+    - IP   - File
+    - IP   - FileHandle
+    - DONE - FilterInputStream
+    - DONE - InputStream
+
+    ------------------------------------------
+
     - java.io.BufferedReader                -> 
-    - java.io.BufferedInputStream           -> BufferedStream
-    - java.io.ByteArrayInputStream          -> 
     - java.io.ByteArrayOutputStream         -> 
     - java.io.DataInputStream               -> BinaryReader
     - java.io.DataOutputStream              -> BinaryWriter
-    - java.io.File                          -> 
-    - java.io.FileHandle                    -> 
     - java.io.FileInputStream               -> 
     - java.io.FileOutputStream              -> 
     - java.io.DataOuput                     -> (Interface)
-    - java.io.InputStream                   -> StreamReader
     - java.io.InputStreamReader             -> StreamReader
     - java.io.IOException                   -> System.IO.IOException
     - java.io.OutputStream                  -> StreamWriter
     - java.io.Reader                        -> 
-
-    - Would MemoryStream cover all these?
-
-    - java.nio.Buffer                       ->  
-    - java.nio.BufferUtils                  ->  
-    - java.nio.ByteBuffer                   ->  
-    - java.nio.ByteBuffer                   -> 
-    - java.nio.CharBuffer                   -> 
-    - java.nio.DataBuffer                   -> 
-    - java.nio.DirectByteBuffer             -> 
-    - java.nio.DoubleBuffer                 -> 
-    - java.nio.FloatBuffer                  -> 
-    - java.nio.HeapLongBuffer               -> 
-    - java.nio.IntBuffer                    -> 
-    - java.nio.LongBuffer                   -> 
 
     ------------------------------------------
 
@@ -232,6 +221,33 @@ FILES
     - java.util.zip.Deflater                -> 
     - java.util.zip.DeflaterOutputStream    -> 
     - java.util.zip.InflaterInputStream     -> 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+FILES/BUFFERS
+-------------
+
+    - DONE - Buffer
+    - IP   - BufferUtils
+    - DONE - ByteBuffer
+    - DONE - CharBuffer
+    - DONE - FloatBuffer
+    - DONE - ShortBuffer
+    - DONE - StringCharBuffer
+
+    Does C# have these classes already? Could MemoryStream be used?
+
+    - IP   - DirectByteBuffer
+    - IP   - DoubleBuffer
+    - IP   - HeapByteBuffer
+    - IP   - HeapCharBuffer
+    - IP   - HeapFloatBuffer
+    - IP   - HeapShortBuffer
+    - IP   _ IDirectBuffer
+    - IP   - IntBuffer
+    - IP   - LongBuffer
+    - IP   - MappedByteBuffer
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -729,33 +745,6 @@ UTILS
     - **** - SortedIntList                  Use SortedList<int>
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter                  Remove, look into C# localisation
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/BUFFERS
--------------
-
-    - DONE - Buffer
-    - IP   - BufferUtils
-    - DONE - ByteBuffer
-    - DONE - CharBuffer
-    - DONE - FloatBuffer
-    - DONE - ShortBuffer
-    - DONE - StringCharBuffer
-
-    Does C# have these classes already? Could MemoryStream be used?
-
-    - IP   - DirectByteBuffer
-    - IP   - DoubleBuffer
-    - IP   - HeapByteBuffer
-    - IP   - HeapCharBuffer
-    - IP   - HeapFloatBuffer
-    - IP   - HeapShortBuffer
-    - IP   _ IDirectBuffer
-    - IP   - IntBuffer
-    - IP   - LongBuffer
-    - IP   - MappedByteBuffer
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

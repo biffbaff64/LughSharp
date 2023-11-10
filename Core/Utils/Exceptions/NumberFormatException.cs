@@ -25,8 +25,8 @@ public class NumberFormatException : FormatException
     {
     }
 
-    /// <inheritdoc cref="FormatException(string?,Exception?)"/>
-    public NumberFormatException( string? message, Exception? innerException )
+    /// <inheritdoc cref="FormatException(string?,System.Exception?)"/>
+    public NumberFormatException( string? message, System.Exception? innerException )
         : base( message, innerException )
     {
     }

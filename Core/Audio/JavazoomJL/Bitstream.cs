@@ -16,6 +16,8 @@
 
 using System.Text;
 
+using LibGDXSharp.Core.Files;
+
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 /// <summary>
@@ -104,11 +106,11 @@ public class Bitstream
     /// Construct a IBitstream that reads data from a given InputStream.  
     /// </summary>
     /// <param name="inStream"> The InputStream to read from. </param>
-    public Bitstream( Stream inStream )
+    public Bitstream( InputStream inStream )
     {
         ArgumentNullException.ThrowIfNull( inStream );
 
-        inStream = new BufferedStream( inStream );
+        inStream = new BufferedInputStream( inStream );
 
         LoadID3V2( inStream );
 
@@ -123,7 +125,7 @@ public class Bitstream
     /// Load ID3v2 frames.
     /// </summary>
     /// <param name="inStream"> MP3 InputStream. </param>
-    private void LoadID3V2( Stream inStream )
+    private void LoadID3V2( InputStream inStream )
     {
         var size = -1;
 
@@ -146,7 +148,7 @@ public class Bitstream
                 // Unread ID3v2 header (10 bytes).
                 inStream.Reset();
             }
-            catch ( IOException e )
+            catch ( IOException )
             {
                 // ignored
             }
@@ -165,7 +167,7 @@ public class Bitstream
                 }
             }
         }
-        catch ( IOException e )
+        catch ( IOException )
         {
             // ignored
         }
@@ -177,7 +179,7 @@ public class Bitstream
     /// <param name="inStream"> MP3 InputStream </param>
     /// <returns> size of ID3v2 frames + header </returns>
     [SuppressMessage( "ReSharper", "MustUseReturnValue" )]
-    private int ReadID3V2Header( Stream inStream )
+    private int ReadID3V2Header( InputStream inStream )
     {
         var id3Header = new byte[ 4 ];
         var size      = -10;
@@ -205,7 +207,7 @@ public class Bitstream
     /// <returns>
     /// ID3v2 InputStream or null if ID3v2 frames are not available.
     /// </returns>
-    public Stream? GetRawID3V2()
+    public InputStream? GetRawID3V2()
     {
         if ( _rawid3V2 == null )
         {
@@ -224,7 +226,7 @@ public class Bitstream
             return;
         }
 
-        if ( !"ID3".Equals( new string( bframes, 0, 3 ) ) )
+        if ( !"ID3".Equals( bframes.ToString()?.Substring( 0, 3 ) ) )
         {
             return;
         }
@@ -249,7 +251,7 @@ public class Bitstream
                 if ( ( v2Version == 3 ) || ( v2Version == 4 ) )
                 {
                     // ID3v2.3 & ID3v2.4
-                    var code = new string( bframes, i, 4 );
+                    var code = new string( bframes.ToString()?.Substring( i, 4 ) );
 
                     size = ( Int32 )( ( bframes[ i + 4 ] << 24 ) & 0xFF000000 )
                          | ( ( bframes[ i + 5 ] << 16 ) & 0x00FF0000 )
@@ -294,7 +296,7 @@ public class Bitstream
                 else
                 {
                     // ID3v2.2
-                    var scode = new string( bframes, i, 3 );
+                    var scode = new string( bframes.ToString()?.Substring( i, 3 ) );
 
                     size = ( bframes[ i + 3 ] << 16 ) + ( bframes[ i + 4 ] << 8 ) + bframes[ i + 5 ];
 
@@ -372,7 +374,7 @@ public class Bitstream
                                     "UTF16"      => Encoding.Unicode,
                                     "UTF-16BE"   => Encoding.BigEndianUnicode,
                                     "UTF-8"      => Encoding.UTF8,
-                                    _            => throw new ArgumentException( message: @"Invalid encoding type", paramName: nameof( encodingType ) )
+                                    _            => throw new ArgumentException( @"Invalid encoding type", nameof( encodingType ) )
                                 };
 
             fixed ( byte* ptr = &bframes[ 0 ] )
@@ -405,77 +407,77 @@ public class Bitstream
         }
     }
 
-    /**
-     * Reads and parses the next frame from the input source.
-     * @return the Header describing details of the frame read, or null if the end of the stream has been reached.
-     */
-    public Header ReadFrame()
+    /// <summary>
+    /// Reads and parses the next frame from the input source.
+    /// </summary>
+    /// <returns>
+    /// the Header describing details of the frame read, or null if the
+    /// end of the stream has been reached.
+    /// </returns>
+    public Header? ReadFrame()
     {
         Header? result = null;
 
         try
         {
-            result = readNextFrame();
+            result = ReadNextFrame();
 
             // E.B, Parse VBR (if any) first frame.
-            if ( _firstframe == true )
+            if ( _firstframe )
             {
-                result.ParseVBR( _frameBytes );
+                result.ParseVbr( _frameBytes );
                 _firstframe = false;
             }
         }
         catch ( BitstreamException ex )
         {
-            if ( ex.getErrorCode() == INVALIDFRAME )
-
-                // Try to skip this frame.
-                // System.out.println("INVALIDFRAME");
+            if ( ex.Errorcode == INVALIDFRAME )
             {
                 try
                 {
                     CloseFrame();
-                    result = readNextFrame();
+                    result = ReadNextFrame();
                 }
                 catch ( BitstreamException e )
                 {
-                    if ( e.getErrorCode() != STREAM_EOF ) // wrap original exception so stack trace is maintained.
+                    // wrap original exception so stack trace is maintained.
+                    if ( e.Errorcode != STREAM_EOF )
                     {
-                        throw new BitstreamException( e.getErrorCode(), e );
+                        throw new BitstreamException( e.Errorcode, e );
                     }
                 }
             }
-            else if ( ex.getErrorCode() != STREAM_EOF ) // wrap original exception so stack trace is maintained.
+            else if ( ex.Errorcode != STREAM_EOF )
             {
-                throw new BitstreamException( ex.getErrorCode(), ex );
+                // wrap original exception so stack trace is maintained.
+                throw new BitstreamException( ex.Errorcode, ex );
             }
         }
 
         return result;
     }
 
-    /**
-     * Read next MP3 frame.
-     * @return MP3 frame header.
-     * @throws BitstreamException
-     */
-    private Header readNextFrame()
+    /// <summary>
+    /// Read next MP3 frame.
+    /// </summary>
+    /// <returns> MP3 frame header. </returns>
+    private Header ReadNextFrame()
     {
-        if ( framesize == -1 )
+        if ( _framesize == -1 )
         {
-            nextFrame();
+            NextFrame();
         }
 
-        return header;
+        return _header;
     }
 
-    /**
-     * Read next MP3 frame.
-     * @throws BitstreamException
-     */
-    private void nextFrame()
+    /// <summary>
+    /// Read next MP3 frame.
+    /// </summary>
+    private void NextFrame()
     {
         // entire frame is read by the header class.
-        header.read_header( this, crc );
+        _header.ReadHeader( this, _crc );
     }
 
     /// <summary>
@@ -490,9 +492,9 @@ public class Bitstream
         {
             try
             {
-                _source.Unread( _frameBytes, 0, _framesize );
+                _source?.Unread( _frameBytes, 0, _framesize );
             }
-            catch ( IOException ex )
+            catch ( IOException )
             {
                 throw new BitstreamException( STREAM_ERROR );
             }
@@ -525,10 +527,11 @@ public class Bitstream
 
         try
         {
-            _source.Unread( _syncbuf, 0, read );
+            _source?.Unread( _syncbuf, 0, read );
         }
-        catch ( IOException ex )
+        catch ( IOException )
         {
+            // ignored
         }
 
         var sync = false;
@@ -563,11 +566,12 @@ public class Bitstream
         return GetBits( n );
     }
 
-    /**
-     * Get next 32 bits from bitstream. They are stored in the headerstring. syncmod allows Synchro flag ID The returned value is
-     * False at the end of stream.
-     */
-    private int SyncHeader( byte syncmode )
+    /// <summary>
+    /// Get next 32 bits from bitstream, which are stored in the headerstring.
+    /// <paramref name="syncmode"/> allows Synchro flag ID. The returned value is
+    /// False at the end of stream.
+    /// </summary>
+    public int SyncHeader( byte syncmode )
     {
         bool sync;
 
@@ -576,7 +580,7 @@ public class Bitstream
 
         if ( bytesRead != 3 )
         {
-            throw new BitstreamException( STREAM_EOF, null );
+            throw new BitstreamException( STREAM_EOF );
         }
 
         var headerstring = ( ( _syncbuf[ 0 ] << 16 ) & 0x00FF0000 ) | ( ( _syncbuf[ 1 ] << 8 ) & 0x0000FF00 ) | ( ( _syncbuf[ 2 ] << 0 ) & 0x000000FF );
@@ -587,7 +591,7 @@ public class Bitstream
 
             if ( ReadBytes( _syncbuf, 3, 1 ) != 1 )
             {
-                throw new BitstreamException( STREAM_EOF, null );
+                throw new BitstreamException( STREAM_EOF );
             }
 
             headerstring |= _syncbuf[ 3 ] & 0x000000FF;
@@ -596,17 +600,14 @@ public class Bitstream
         }
         while ( !sync );
 
-        // current_frame_number++;
-        // if (last_frame_number < current_frame_number) last_frame_number = current_frame_number;
-
         return headerstring;
     }
 
     public bool IsSyncMark( int headerstring, int syncmode, int word )
     {
-        var sync = false;
+        bool sync;
 
-        if ( syncmode == INITIAL_SYNC ) // sync = ((headerstring & 0xFFF00000) == 0xFFF00000);
+        if ( syncmode == INITIAL_SYNC )
         {
             sync = ( headerstring & 0xFFE00000 ) == 0xFFE00000; // SZD: MPEG 2.5
         }
@@ -643,7 +644,7 @@ public class Bitstream
     /// </summary>
     /// <param name="bytesize"></param>
     /// <returns></returns>
-    private int ReadFrameData( int bytesize )
+    public int ReadFrameData( int bytesize )
     {
         var numread = ReadFully( _frameBytes, 0, bytesize );
 
@@ -657,7 +658,7 @@ public class Bitstream
     /// <summary>
     /// Parses the data previously read with ReadFrameData().
     /// </summary>
-    private void parse_frame()
+    public void ParseFrame()
     {
         // Convert Bytes read to int
         var b        = 0;
@@ -666,11 +667,11 @@ public class Bitstream
 
         for ( var k = 0; k < bytesize; k = k + 4 )
         {
-            byte b0 = 0;
+            var b0 = byteread[ k ];
+
             byte b1 = 0;
             byte b2 = 0;
             byte b3 = 0;
-            b0 = byteread[ k ];
 
             if ( ( k + 1 ) < bytesize )
             {
@@ -705,8 +706,8 @@ public class Bitstream
     /// <returns></returns>
     public int GetBits( int numberOfBits )
     {
-        var returnvalue = 0;
-        var sum         = _bitindex + numberOfBits;
+        int returnvalue;
+        var sum = _bitindex + numberOfBits;
 
         if ( _wordpointer < 0 )
         {
@@ -727,7 +728,7 @@ public class Bitstream
             return returnvalue;
         }
 
-        var right = ( int )( _framebuffer[ _wordpointer ] & 0x0000FFFF );
+        var right = ( _framebuffer[ _wordpointer ] & 0x0000FFFF );
 
         _wordpointer++;
 
@@ -746,7 +747,7 @@ public class Bitstream
     /// Set the word we want to sync the header to. In Big-Endian byte order
     /// </summary>
     /// <param name="syncword"></param>
-    private void SetSyncword( Int32 syncword )
+    public void SetSyncword( Int32 syncword )
     {
         _syncword     = ( Int32 )( syncword & 0xFFFFFF3F );
         _singleChMode = ( syncword & 0x000000C0 ) == 0x000000C0;
@@ -769,7 +770,7 @@ public class Bitstream
         {
             while ( len > 0 )
             {
-                int bytesread = _source.Read( b, offs, len );
+                var bytesread = _source?.Read( b, offs, len );
 
                 if ( bytesread == -1 )
                 {
@@ -779,13 +780,11 @@ public class Bitstream
                     }
 
                     break;
-
-                    // throw new BitstreamException(UNEXPECTED_EOF, new EOFException());
                 }
 
-                nRead =  nRead + bytesread;
-                offs  += bytesread;
-                len   -= bytesread;
+                nRead =  ( int )( nRead + bytesread )!;
+                offs  += ( int )bytesread!;
+                len   -= ( int )bytesread;
             }
         }
         catch ( IOException ex )
@@ -797,7 +796,7 @@ public class Bitstream
     }
 
     /// <summary>
-    /// Simlar to readFully, but doesn't throw exception when EOF is reached.
+    /// Simlar to ReadFully, but doesn't throw exception when EOF is reached.
     /// </summary>
     /// <param name="b"></param>
     /// <param name="offs"></param>
@@ -812,16 +811,16 @@ public class Bitstream
         {
             while ( len > 0 )
             {
-                int bytesread = _source.Read( b, offs, len );
+                var bytesread = _source?.Read( b, offs, len );
 
                 if ( bytesread == -1 )
                 {
                     break;
                 }
 
-                totalBytesRead += bytesread;
-                offs           += bytesread;
-                len            -= bytesread;
+                totalBytesRead += ( int )bytesread!;
+                offs           += ( int )bytesread;
+                len            -= ( int )bytesread;
             }
         }
         catch ( IOException )

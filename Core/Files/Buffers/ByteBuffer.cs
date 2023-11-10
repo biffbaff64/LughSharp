@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Buffers;
+namespace LibGDXSharp.Core.Files.Buffers;
 
 [PublicAPI]
 public abstract class ByteBuffer : Buffer

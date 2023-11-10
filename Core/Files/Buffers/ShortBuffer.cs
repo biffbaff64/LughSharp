@@ -14,9 +14,7 @@
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////////
 
-using System.Text;
-
-namespace LibGDXSharp.Utils.Buffers;
+namespace LibGDXSharp.Core.Files.Buffers;
 
 [PublicAPI]
 public abstract class ShortBuffer : Buffer
@@ -96,7 +94,7 @@ public abstract class ShortBuffer : Buffer
         {
             return new HeapShortBuffer( array, offset, length );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             throw new IndexOutOfRangeException();
         }

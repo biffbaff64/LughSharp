@@ -222,7 +222,7 @@ public class GLPreferences : IPreferences
 
             _xDocument.Save( _filePath + _propertiesFile );
         }
-        catch ( Exception e )
+        catch ( System.Exception e )
         {
             throw new GdxRuntimeException( "Error writing preferences!" );
         }

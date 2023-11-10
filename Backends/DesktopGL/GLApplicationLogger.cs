@@ -23,7 +23,7 @@ public class GLApplicationLogger : IApplicationLogger
     {
     }
 
-    public void Log( string tag, string message, Exception exception )
+    public void Log( string tag, string message, System.Exception exception )
     {
     }
 
@@ -31,7 +31,7 @@ public class GLApplicationLogger : IApplicationLogger
     {
     }
 
-    public void Error( string tag, string message, Exception exception )
+    public void Error( string tag, string message, System.Exception exception )
     {
     }
 
@@ -39,7 +39,7 @@ public class GLApplicationLogger : IApplicationLogger
     {
     }
 
-    public void Debug( string tag, string message, Exception exception )
+    public void Debug( string tag, string message, System.Exception exception )
     {
     }
 }

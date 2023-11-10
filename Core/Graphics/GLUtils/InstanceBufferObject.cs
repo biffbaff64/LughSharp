@@ -14,9 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Buffers;
+using LibGDXSharp.Core.Files.Buffers;
 
-using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+using Buffer = LibGDXSharp.Core.Files.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 

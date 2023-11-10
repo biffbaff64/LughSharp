@@ -17,14 +17,14 @@
 namespace LibGDXSharp.Utils;
 
 [PublicAPI]
-public class InvalidMarkException : Exception
+public class InvalidMarkException : System.Exception
 {
     public InvalidMarkException( string invalidMark = "" )
         : base( invalidMark )
     {
     }
 
-    public InvalidMarkException( string invalidMark, Exception exception )
+    public InvalidMarkException( string invalidMark, System.Exception exception )
         : base( invalidMark, exception )
     {
     }

@@ -449,7 +449,7 @@ public class Timer
                         {
                             waitMillis = instances[ i ].Update( timeMillis, waitMillis );
                         }
-                        catch ( Exception ex )
+                        catch ( System.Exception ex )
                         {
                             throw new GdxRuntimeException( "Task failed: " + instances[ i ].GetType().Name, ex );
                         }

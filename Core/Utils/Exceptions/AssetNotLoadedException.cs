@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Utils;
 
 [PublicAPI]
-public class AssetNotLoadedException : Exception
+public class AssetNotLoadedException : System.Exception
 {
     public Type                  Type   { get; private set; }
     public string                Path   { get; private set; }

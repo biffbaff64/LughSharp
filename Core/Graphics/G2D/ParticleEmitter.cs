@@ -1500,7 +1500,7 @@ public class ParticleEmitter
 
             ImagePaths = imagePaths;
         }
-        catch ( Exception ex )
+        catch ( System.Exception ex )
         {
             //TODO: ???
             throw new GdxRuntimeException( "Error parsing emitter: " + Name, ex );

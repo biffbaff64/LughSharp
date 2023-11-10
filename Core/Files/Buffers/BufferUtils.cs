@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Buffers;
+namespace LibGDXSharp.Core.Files.Buffers;
 
 /// <summary>
 /// Class with static helper methods to increase the speed of array/direct

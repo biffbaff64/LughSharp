@@ -27,7 +27,7 @@ public class StreamUtils
             {
                 closeable.Close();
             }
-            catch ( Exception )
+            catch ( System.Exception )
             {
                 throw new GdxRuntimeException( $"Failed to close: {closeable.GetType().Name}" );
             }

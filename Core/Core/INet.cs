@@ -53,7 +53,7 @@ public interface INet
     {
         void HandleHttpResponse( IHttpResponse httpResponse );
 
-        void Failed( Exception t );
+        void Failed( System.Exception t );
 
         void Cancelled();
     }

@@ -250,7 +250,7 @@ public class AssetLoadingTask
                 {
                     _depsFuture.Get();
                 }
-                catch ( Exception e )
+                catch ( System.Exception e )
                 {
                     throw new GdxRuntimeException
                         ( $"Couldn't load dependencies of asset: {AssetDesc.FilePath}", e );
@@ -290,7 +290,7 @@ public class AssetLoadingTask
             {
                 _loadFuture.Get();
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 throw new GdxRuntimeException( $"Couldn't load asset: {AssetDesc.FilePath}", e );
             }

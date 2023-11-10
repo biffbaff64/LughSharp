@@ -21,7 +21,7 @@ namespace LibGDXSharp.Utils;
 /// the target buffer's limit.
 /// </summary>
 [PublicAPI]
-public class BufferOverflowException : Exception
+public class BufferOverflowException : System.Exception
 {
     public BufferOverflowException() : base()
     {
@@ -32,12 +32,12 @@ public class BufferOverflowException : Exception
     {
     }
 
-    public BufferOverflowException( Exception e )
+    public BufferOverflowException( System.Exception e )
         : this( "", e )
     {
     }
 
-    public BufferOverflowException( string message, Exception? exception )
+    public BufferOverflowException( string message, System.Exception? exception )
         : base( message, exception )
     {
     }

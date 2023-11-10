@@ -17,16 +17,16 @@
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 [PublicAPI]
-public class DecoderException : Exception
+public class DecoderException : System.Exception
 {
     public int Errorcode { get; private set; } = Mp3Decoder.UNKNOWN_ERROR;
 
-    public DecoderException( String msg, Exception? ex = null )
+    public DecoderException( String msg, System.Exception? ex = null )
         : base( msg, ex )
     {
     }
 
-    public DecoderException( int errorcode, Exception? ex = null )
+    public DecoderException( int errorcode, System.Exception? ex = null )
         : this( GetErrorString( errorcode ), ex )
     {
     }

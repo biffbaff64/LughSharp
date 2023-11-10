@@ -212,7 +212,7 @@ public partial record TextureAtlasData
                 }
             }
         }
-        catch ( Exception ex )
+        catch ( System.Exception ex )
         {
             throw new GdxRuntimeException( "Error reading texture atlas file: " + packFile, ex );
         }

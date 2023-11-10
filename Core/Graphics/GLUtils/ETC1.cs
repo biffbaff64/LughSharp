@@ -16,7 +16,7 @@
 
 using System.IO.Compression;
 
-using LibGDXSharp.Utils.Buffers;
+using LibGDXSharp.Core.Files.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
@@ -105,7 +105,7 @@ public class ETC1
                 CompressedData.Position = 0;
                 CompressedData.Limit    = CompressedData.Capacity;
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 throw new GdxRuntimeException( "Couldn't load pkm file '" + pkmFile + "'", e );
             }
@@ -163,7 +163,7 @@ public class ETC1
 //                    writtenBytes += bytesToWrite;
 //                }
 //            }
-//            catch ( Exception e )
+//            catch ( System.Exception e )
 //            {
 //                throw new GdxRuntimeException( "Couldn't write PKM file to '" + file + "'", e );
 //            }

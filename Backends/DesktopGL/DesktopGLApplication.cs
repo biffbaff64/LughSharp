@@ -47,11 +47,11 @@ public class DesktopGLApplication : IGLApplicationBase
 
     #endregion public properties
 
-    private static   GLFWCallbacks.ErrorCallback? _errorCallback = null;
-    private volatile DesktopGLWindow?             _currentWindow = null;
-    private          IGLAudio?                    _audio         = null;
-    private          Sync?                        _sync          = null;
-    private          bool                         _running       = true;
+    private static   GLFW.ErrorCallback? _errorCallback = null;
+    private volatile DesktopGLWindow?    _currentWindow = null;
+    private          IGLAudio?           _audio         = null;
+    private          Sync?               _sync          = null;
+    private          bool                _running       = true;
 
     // ------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ public class DesktopGLApplication : IGLApplicationBase
             {
                 Gdx.Audio = CreateAudio( config );
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 Log( "GLApplication", "Couldn't initialize audio, disabling audio", e );
 
@@ -104,7 +104,7 @@ public class DesktopGLApplication : IGLApplicationBase
             Loop();
             CleanupWindows();
         }
-        catch ( Exception e )
+        catch ( System.Exception e )
         {
             if ( e is SystemException exception )
             {
@@ -159,7 +159,7 @@ public class DesktopGLApplication : IGLApplicationBase
                 }
             }
 
-            GLFW.PollEvents();
+            Glfw.PollEvents();
 
             bool shouldRequestRendering;
 
@@ -230,7 +230,8 @@ public class DesktopGLApplication : IGLApplicationBase
             }
             else if ( targetFramerate > 0 )
             {
-                _sync?.SyncFrameRate( targetFramerate ); // sleep as needed to meet the target framerate
+                // sleep as needed to meet the target framerate
+                _sync?.SyncFrameRate( targetFramerate );
             }
         }
     }
@@ -262,7 +263,7 @@ public class DesktopGLApplication : IGLApplicationBase
 
         _errorCallback = null;
 
-        GLFW.Terminate();
+        Glfw.Terminate();
     }
 
     public void Debug( string tag, string message )
@@ -273,7 +274,7 @@ public class DesktopGLApplication : IGLApplicationBase
         }
     }
 
-    public void Debug( string tag, string message, Exception exception )
+    public void Debug( string tag, string message, System.Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
         {
@@ -289,7 +290,7 @@ public class DesktopGLApplication : IGLApplicationBase
         }
     }
 
-    public void Log( string tag, string message, Exception exception )
+    public void Log( string tag, string message, System.Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_INFO )
         {
@@ -305,7 +306,7 @@ public class DesktopGLApplication : IGLApplicationBase
         }
     }
 
-    public void Error( string tag, string message, Exception exception )
+    public void Error( string tag, string message, System.Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_ERROR )
         {
@@ -375,6 +376,9 @@ public class DesktopGLApplication : IGLApplicationBase
             } );
         }
 
+        Gl.Initialize();
+        Glfw.MakeContextCurrent( window );
+        
         return window;
     }
 
@@ -392,11 +396,10 @@ public class DesktopGLApplication : IGLApplicationBase
         {
             GLNativesLoader.Load();
 
-            GLFW.SetErrorCallback( _errorCallback );
-
-            GLFW.InitHint( InitHintBool.JoystickHatButtons, false );
-
-            if ( GLFW.Init() )
+            Glfw.SetErrorCallback( _errorCallback );
+            Glfw.InitHint( Hint.JoystickHatButtons, false );
+            
+            if ( Glfw.Init() )
             {
                 throw new GdxRuntimeException( "Unable to initialise Glfw!" );
             }
@@ -454,7 +457,7 @@ public class DesktopGLApplication : IGLApplicationBase
     /// </summary>
     private void InitiateGL()
     {
-        GLFW.GetVersion( out var major, out var minor, out var revision );
+        Glfw.GetVersion( out var major, out var minor, out var revision );
 
         GLVersion = new GLVersion(
             IApplication.ApplicationType.Desktop,

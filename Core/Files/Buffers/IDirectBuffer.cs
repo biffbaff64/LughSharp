@@ -14,26 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Buffers;
+namespace LibGDXSharp.Core.Files.Buffers;
 
 [PublicAPI]
-public abstract class IntBuffer : Buffer
+public interface IDirectBuffer
 {
-    protected IntBuffer() : base( 0, 0, 0, 0 )
-    {
-    }
+    long Address();
 
-    public int Get( int i )
-    {
-        return 0;
-    }
+    object Attachment();
 
-    public int Get()
-    {
-        return 0;
-    }
-
-    public abstract IntBuffer Put( int i, int i1 );
-
-    public abstract IntBuffer Put( int i );
+//    Cleaner Cleaner();
 }

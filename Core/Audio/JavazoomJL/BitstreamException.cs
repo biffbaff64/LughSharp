@@ -23,22 +23,22 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 /// The exception provides details of the exception condition in two ways:
 /// <li>as an error-code describing the nature of the error</li>
 /// <li>
-/// as the <tt>Exception</tt> instance, if any, that was thrown indicating
+/// as the <tt>System.Exception</tt> instance, if any, that was thrown indicating
 /// that an exceptional condition has occurred.
 /// </li>
 /// </para>
 /// </summary>
 [PublicAPI]
-public class BitstreamException : Exception
+public class BitstreamException : System.Exception
 {
-    public int Errorcode { get; private set; } = Bitstream.UNKNOWN_ERROR;
+    public int Errorcode { get; set; } = Bitstream.UNKNOWN_ERROR;
 
-    public BitstreamException( string msg, Exception? t = null )
+    public BitstreamException( string msg, System.Exception? t = null )
         : base( msg, t )
     {
     }
 
-    public BitstreamException( int errorcode, Exception? t = null )
+    public BitstreamException( int errorcode, System.Exception? t = null )
         : this( GetErrorString( errorcode ), t )
     {
         this.Errorcode = errorcode;

@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Utils;
 
 [PublicAPI]
-public class MissingResourceException : Exception
+public class MissingResourceException : System.Exception
 {
 }
 

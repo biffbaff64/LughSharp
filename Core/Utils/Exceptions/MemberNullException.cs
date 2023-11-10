@@ -19,7 +19,7 @@ using System.Runtime.CompilerServices;
 namespace LibGDXSharp.Utils;
 
 [PublicAPI]
-public class MemberNullException : Exception
+public class MemberNullException : System.Exception
 {
     public MemberNullException() : base()
     {
@@ -29,11 +29,11 @@ public class MemberNullException : Exception
     {
     }
 
-    public MemberNullException( Exception e ) : this( "", e )
+    public MemberNullException( System.Exception e ) : this( "", e )
     {
     }
 
-    public MemberNullException( string message, Exception? exception )
+    public MemberNullException( string message, System.Exception? exception )
         : base( message, exception )
     {
     }

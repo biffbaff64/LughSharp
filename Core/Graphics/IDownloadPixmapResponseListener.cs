@@ -27,5 +27,5 @@ public interface IDownloadPixmapResponseListener
     /// <summary>
     /// Called when image download failed. This might get called on a background thread.
     /// </summary>
-    void DownloadFailed( Exception e );
+    void DownloadFailed( System.Exception e );
 }
