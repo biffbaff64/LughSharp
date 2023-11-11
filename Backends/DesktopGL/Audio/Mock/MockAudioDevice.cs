@@ -16,7 +16,32 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
-public class MockAudioDevice
+[PublicAPI]
+public class MockAudioDevice : IAudioDevice
 {
+    /// <inheritdoc/>
+    public bool IsMono() => false;
 
+    /// <inheritdoc/>
+    public void WriteSamples( int[] samples, int offset, int numSamples )
+    {
+    }
+
+    /// <inheritdoc/>
+    public void WriteSamples( float[] samples, int offset, int numSamples )
+    {
+    }
+
+    /// <inheritdoc/>
+    public int GetLatency() => 0;
+
+    /// <inheritdoc/>
+    public void SetVolume( float volume )
+    {
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+    }
 }

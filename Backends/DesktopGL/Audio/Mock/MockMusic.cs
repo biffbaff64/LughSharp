@@ -16,7 +16,63 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
-public class MockMusic
+[PublicAPI]
+public class MockMusic : IMusic
 {
+    /// <inheritdoc />
+    public void Play()
+    {
+    }
 
+    /// <inheritdoc />
+    public void Pause()
+    {
+    }
+
+    /// <inheritdoc />
+    public void Stop()
+    {
+    }
+
+    /// <inheritdoc />
+    public bool IsPlaying() => false;
+
+    /// <inheritdoc />
+    public void SetLooping( bool isLooping )
+    {
+    }
+
+    /// <inheritdoc />
+    public bool IsLooping() => false;
+
+    /// <inheritdoc />
+    public void SetVolume( float volume )
+    {
+    }
+
+    /// <inheritdoc />
+    public float GetVolume() => 0;
+
+    /// <inheritdoc />
+    public void SetPan( float pan, float volume )
+    {
+    }
+
+    /// <inheritdoc />
+    public void SetPosition( float position )
+    {
+    }
+
+    /// <inheritdoc />
+    public float GetPosition() => 0;
+
+    /// <inheritdoc />
+    public void setOnCompletionListener( IMusic.IOnCompletionListener listener )
+    {
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+    }
 }

@@ -19,18 +19,29 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DefaultGLInput : AbstractInput, IGLInput
 {
-    private DesktopGLWindow?        _window;
+    private DesktopGLWindow? _window;
     private IInputProcessor? _inputProcessor;
     private InputEventQueue  _eventQueue = new();
-    private int              _mouseX;
-    private int              _mouseY;
-    private int              _mousePressed;
-    private int              _deltaX;
-    private int              _deltaY;
-    private bool             _justTouched;
-    private bool[]           _justPressedButtons = new bool[ 5 ];
-    private char             _lastCharacter;
 
+    private int    _mouseX;
+    private int    _mouseY;
+    private int    _mousePressed;
+    private int    _deltaX;
+    private int    _deltaY;
+    private bool   _justTouched;
+    private bool[] _justPressedButtons = new bool[ 5 ];
+    private char   _lastCharacter;
+
+    public DefaultGLInput( DesktopGLWindow? window )
+    {
+        this._window = window;
+
+        unsafe
+        {
+            WindowHandleChanged( _window.WindowHandle );
+        }
+    }
+    
     public override float GetAccelerometerX()
     {
         return 0;
@@ -135,12 +146,16 @@ public class DefaultGLInput : AbstractInput, IGLInput
         return IInput.Orientation.Landscape;
     }
 
-    /// <remarks>Java LibGDX has this method named as SetCursorCatched(bool catched).</remarks>
+    /// <remarks>
+    /// Java LibGDX has this method named as SetCursorCatched(bool catched).
+    /// </remarks>
     public override void SetCursorCaught( bool caught )
     {
     }
 
-    /// <remarks>Java LibGDX has this method named as IsCursorCatched().</remarks>
+    /// <remarks>
+    /// Java LibGDX has this method named as IsCursorCatched().
+    /// </remarks>
     public override bool IsCursorCaught()
     {
         return false;

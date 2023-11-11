@@ -16,7 +16,74 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
-public class MockSound
+[PublicAPI]
+public class MockSound : ISound
 {
+    /// <inheritdoc />
+    public long Play() => 0;
 
+    /// <inheritdoc />
+    public long Play( float volume ) => 0;
+
+    /// <inheritdoc />
+    public long Play( float volume, float pitch, float pan ) => 0;
+
+    /// <inheritdoc />
+    public long Loop() => 0;
+
+    /// <inheritdoc />
+    public long Loop( float volume ) => 0;
+
+    /// <inheritdoc />
+    public long Loop( float volume, float pitch, float pan ) => 0;
+
+    /// <inheritdoc />
+    public void Stop()
+    {
+    }
+
+    /// <inheritdoc />
+    public void Pause()
+    {
+    }
+
+    /// <inheritdoc />
+    public void Resume()
+    {
+    }
+
+    /// <inheritdoc />
+    public void Stop( long soundId )
+    {
+    }
+
+    /// <inheritdoc />
+    public void Pause( long soundId )
+    {
+    }
+
+    /// <inheritdoc />
+    public void Resume( long soundId )
+    {
+    }
+
+    /// <inheritdoc />
+    public void SetLooping( long soundId, bool looping )
+    {
+    }
+
+    /// <inheritdoc />
+    public void SetPitch( long soundId, float pitch )
+    {
+    }
+
+    /// <inheritdoc />
+    public void SetVolume( long soundId, float volume )
+    {
+    }
+
+    /// <inheritdoc />
+    public void SetPan( long soundId, float pan, float volume )
+    {
+    }
 }

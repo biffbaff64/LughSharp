@@ -41,7 +41,7 @@ public class BufferedInputStream : FilterInputStream
     /// because closes can be asynchronous. We use nullness of buf[] as primary
     /// indicator that this stream is closed.
     /// </summary>
-    //TODO: I don't know enough about C#/.Net to know if Atomic Reference classes are needed yet. Needs urgent resolution. 
+    //TODO: I don't know enough about C# / .Net to know if Atomic Reference classes are needed yet. Needs urgent resolution. 
     private static
         AtomicReferenceFieldUpdater< BufferedInputStream, byte[] > bufUpdater =
             AtomicReferenceFieldUpdater.NewUpdater( typeof( BufferedInputStream ), typeof( byte[] ), "buf" );

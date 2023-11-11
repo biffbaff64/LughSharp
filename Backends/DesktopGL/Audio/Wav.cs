@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
+[PublicAPI]
 public class Wav
 {
 

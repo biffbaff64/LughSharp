@@ -11,6 +11,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
      - AUDIO/JAVAZOOMJL                 - IP
      - CORE                             - DONE
      - FILES                            - IP
+     - FILES/BUFFERS                    - IP
      - GRAPHICS                         - DONE
      - GRAPHICS/FRAMEBUFFERS            - DONE
      - GRAPHICS/G2D                     - IP
@@ -32,7 +33,6 @@ LIBGDX CSharp CONVERSION - ROUND 1
      - SCENES.SCENE2D/UI                - IP
      - SCENES.SCENE2D/UTILS             - IP
      - UTILS                            - IP
-     - UTILS/BUFFERS                    - IP
      - UTILS/COLLECTIONS                - DONE
      - UTILS/EXCEPTIONS                 - DONE
      - UTILS/POOLING                    - DONE
@@ -160,6 +160,63 @@ AUDIO/JAVAZOOMJL
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+BACKENDS/DESKTOPGL
+------------------
+
+    - IP   - DefaultGLInput
+    - IP   - DesktopGL20
+    - IP   - DesktopGL30
+    - IP   - DesktopGLApplication
+    - IP   - DesktopGLApplicationConfiguration
+    - IP   - DesktopGLGraphics
+    - IP   - DesktopGLWindow
+    - DONE - DesktopGLWindowAdapter
+    - IP   - DesktopGLWindowConfiguration
+    - IP   - GLApplicationLogger
+    -      - GLClipboard
+    -      - GLCursor
+    -      - GLFileHandle
+    -      - GLFiles
+    -      - GLNativesLoader
+    -      - GLNet
+    -      - GLPreferences
+    -      - IGLApplicationBase
+    -      - IGLInput
+    - DONE - IGLWindowListener
+    -      - Sync
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BACKENDS/DESKTOPGL/AUDIO
+------------------------
+
+    - DONE - IGLAudio
+    -      - Mp3
+    -      - Ogg
+    -      - OggInputStream
+    -      - OpenALAudioDevice
+    -      - OpenALGLAudio
+    -      - OpenALMusic
+    -      - OpenALSound
+    -      - SoundAudioRecorder
+    -      - Wav
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BACKENDS/DESKTOPGL/AUDIO/MOCK
+-----------------------------
+
+    - DONE - MockAudio
+    - DONE - MockAudioDevice
+    - DONE - MockAudioRecorder
+    - DONE - MockMusic
+    - DONE - MockSound
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 CORE
 ----
 
@@ -193,7 +250,6 @@ FILES
 
     - IP   - BufferedInputStream
     - IP   - ByteArrayInputStream
-    - IP   - File
     - IP   - FileHandle
     - DONE - FilterInputStream
     - DONE - InputStream
@@ -204,6 +260,7 @@ FILES
     - java.io.ByteArrayOutputStream         -> 
     - java.io.DataInputStream               -> BinaryReader
     - java.io.DataOutputStream              -> BinaryWriter
+    - java.io.File                          -> 
     - java.io.FileInputStream               -> 
     - java.io.FileOutputStream              -> 
     - java.io.DataOuput                     -> (Interface)
