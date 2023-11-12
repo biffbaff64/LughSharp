@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Core;
 
 [PublicAPI]
-public interface IApplicationListener
+public interface IApplicationListener : IDisposable
 {
     /// <summary>
     /// Called when the <see cref="IApplication"/> is first created.

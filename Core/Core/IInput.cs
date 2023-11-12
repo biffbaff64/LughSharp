@@ -552,7 +552,7 @@ public interface IInput
 
     public void SetInputProcessor( IInputProcessor processor );
 
-    public IInputProcessor GetInputProcessor();
+    public IInputProcessor? GetInputProcessor();
 
     public bool IsPeripheralAvailable( Peripheral peripheral );
 

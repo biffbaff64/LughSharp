@@ -18,7 +18,7 @@ namespace LibGDXSharp.Backends.Desktop;
 
 public interface IGLInput : IInput, IDisposable
 {
-    void WindowHandleChanged( long windowHandle );
+    unsafe void WindowHandleChanged( Window* windowHandle );
 
     void Update();
 

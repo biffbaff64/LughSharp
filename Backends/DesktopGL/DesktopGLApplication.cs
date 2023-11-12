@@ -14,12 +14,10 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.CompilerServices;
-using System.Security.Principal;
-
 using LibGDXSharp.Backends.Desktop;
 using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
+using LibGDXSharp.Core.Files.Buffers;
 using LibGDXSharp.Core.Utils.Collections;
 
 using Sync = LibGDXSharp.Backends.Desktop.Sync;
@@ -40,29 +38,34 @@ public class DesktopGLApplication : IGLApplicationBase
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
     public GLApplicationLogger?                ApplicationLogger  { get; set; }
     public int                                 LogLevel           { get; set; }
-    public IApplication.ApplicationType        AppType            { get; set; }
     public IClipboard?                         Clipboard          { get; set; }
 
     public static GLVersion? GLVersion { get; set; }
 
+    public IApplication.ApplicationType AppType
+    {
+        get => IApplication.ApplicationType.Desktop;
+        set { }
+    }
+
+    public IGraphics?            Graphics            => _currentWindow?.Graphics;
+    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
+    public IInput?               Input               => _currentWindow?.Input;
+    public IGLAudio?             Audio               { get; set; } = null;
+    public INet                  Net                 { get; set; }
+    public IFiles                Files               { get; set; }
+
     #endregion public properties
 
-    private static   GLFW.ErrorCallback? _errorCallback = null;
-    private volatile DesktopGLWindow?    _currentWindow = null;
-    private          IGLAudio?           _audio         = null;
-    private          Sync?               _sync          = null;
-    private          bool                _running       = true;
+    private static   GLFWCallbacks.ErrorCallback? _errorCallback = null;
+    private volatile DesktopGLWindow?             _currentWindow = null;
+    private          Sync?                        _sync          = null;
+    private          bool                         _running       = true;
 
     // ------------------------------------------------------------------------
 
     public DesktopGLApplication( IApplicationListener listener,
                                  DesktopGLApplicationConfiguration config )
-    {
-        CreateApplication( listener, config );
-    }
-
-    private void CreateApplication( IApplicationListener listener,
-                                    DesktopGLApplicationConfiguration config )
     {
         InitialiseGL();
 
@@ -78,24 +81,28 @@ public class DesktopGLApplication : IGLApplicationBase
         {
             try
             {
-                Gdx.Audio = CreateAudio( config );
+                this.Audio = CreateAudio( config );
             }
             catch ( System.Exception e )
             {
                 Log( "GLApplication", "Couldn't initialize audio, disabling audio", e );
 
-                Gdx.Audio = new MockAudio();
+                this.Audio = new MockAudio();
             }
         }
         else
         {
-            Gdx.Audio = new MockAudio();
+            this.Audio = new MockAudio();
         }
 
-        Gdx.Files      = CreateFiles();
-        Gdx.Net        = new GLNet( config );
+        this.Files     = CreateFiles();
+        this.Net       = new GLNet( config );
         this.Clipboard = new GLClipboard();
         this._sync     = new Sync();
+
+        Gdx.Audio = this.Audio;
+        Gdx.Files = this.Files;
+        Gdx.Net   = this.Net;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
 
@@ -130,7 +137,7 @@ public class DesktopGLApplication : IGLApplicationBase
 
         while ( _running && ( Windows.Count > 0 ) )
         {
-            _audio?.Update();
+            Audio?.Update();
 
             var haveWindowsRendered = false;
 
@@ -141,6 +148,7 @@ public class DesktopGLApplication : IGLApplicationBase
             foreach ( DesktopGLWindow window in Windows )
             {
                 window.MakeCurrent();
+
                 _currentWindow = window;
 
                 if ( targetFramerate == -2 )
@@ -159,7 +167,7 @@ public class DesktopGLApplication : IGLApplicationBase
                 }
             }
 
-            Glfw.PollEvents();
+            GLFW.PollEvents();
 
             bool shouldRequestRendering;
 
@@ -259,11 +267,11 @@ public class DesktopGLApplication : IGLApplicationBase
     {
         DesktopGLCursor.DisposeSystemCursors();
 
-        _audio?.Dispose();
+        Audio?.Dispose();
 
         _errorCallback = null;
 
-        Glfw.Terminate();
+        GLFW.Terminate();
     }
 
     public void Debug( string tag, string message )
@@ -338,7 +346,7 @@ public class DesktopGLApplication : IGLApplicationBase
     /// existing windows are updated.
     /// </para>
     /// </summary>
-    public unsafe DesktopGLWindow NewWindow( IApplicationListener listener, DesktopGLWindowConfiguration config )
+    public DesktopGLWindow NewWindow( IApplicationListener listener, DesktopGLWindowConfiguration config )
     {
         GdxRuntimeException.ThrowIfNull( Config );
 
@@ -346,13 +354,7 @@ public class DesktopGLApplication : IGLApplicationBase
 
         appConfig.SetWindowConfiguration( config );
 
-        return CreateWindow( appConfig, listener, this.Windows[ 0 ].WindowHandle );
-    }
-
-    public void CreateWindow( DesktopGLWindow window,
-                              DesktopGLApplicationConfiguration config,
-                              long sharedContext )
-    {
+        return CreateWindow( appConfig, listener, 0 ); //TODO:
     }
 
     public DesktopGLWindow CreateWindow( DesktopGLApplicationConfiguration config,
@@ -376,10 +378,180 @@ public class DesktopGLApplication : IGLApplicationBase
             } );
         }
 
-        Gl.Initialize();
-        Glfw.MakeContextCurrent( window );
-        
+        unsafe
+        {
+            GLFW.MakeContextCurrent( window.WindowHandle );
+        }
+
         return window;
+    }
+
+    public void CreateWindow( DesktopGLWindow window,
+                              DesktopGLApplicationConfiguration config,
+                              long sharedContext )
+    {
+    }
+
+    private long CreateGlfwWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
+    {
+        GLFW.DefaultWindowHints();
+        GLFW.WindowHint( GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE );
+        GLFW.WindowHint( GLFW.GLFW_RESIZABLE, config.windowResizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE );
+        GLFW.WindowHint( GLFW.GLFW_MAXIMIZED, config.windowMaximized ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE );
+        GLFW.WindowHint( GLFW.GLFW_AUTO_ICONIFY, config.autoIconify ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE );
+
+        GLFW.WindowHint( GLFW.GLFW_RED_BITS, config.r );
+        GLFW.WindowHint( GLFW.GLFW_GREEN_BITS, config.g );
+        GLFW.WindowHint( GLFW.GLFW_BLUE_BITS, config.b );
+        GLFW.WindowHint( GLFW.GLFW_ALPHA_BITS, config.a );
+        GLFW.WindowHint( GLFW.GLFW_STENCIL_BITS, config.stencil );
+        GLFW.WindowHint( GLFW.GLFW_DEPTH_BITS, config.depth );
+        GLFW.WindowHint( GLFW.GLFW_SAMPLES, config.samples );
+
+        if ( config.UseGL30 )
+        {
+            GLFW.WindowHint( GLFW.GLFW_CONTEXT_VERSION_MAJOR, config.gles30ContextMajorVersion );
+            GLFW.WindowHint( GLFW.GLFW_CONTEXT_VERSION_MINOR, config.gles30ContextMinorVersion );
+
+            if ( SharedLibraryLoader.IsMac )
+            {
+                // hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
+                // WGL_ARB_create_context extension is not available
+                // see: http://www.glfw.org/docs/latest/compat.html
+                GLFW.WindowHint( GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE );
+                GLFW.WindowHint( GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE );
+            }
+        }
+
+        if ( config.TransparentFramebuffer )
+        {
+            GLFW.WindowHint( GLFW.GLFW_TRANSPARENT_FRAMEBUFFER, GLFW.GLFW_TRUE );
+        }
+
+        if ( config.Debug )
+        {
+            GLFW.WindowHint( GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE );
+        }
+
+        long windowHandle = 0;
+
+        if ( config.FullscreenMode != null )
+        {
+            GLFW.WindowHint( GLFW.GLFW_REFRESH_RATE, config.FullscreenMode.RefreshRate );
+
+            windowHandle = GLFW.CreateWindow( config.FullscreenMode.Width,
+                                              config.FullscreenMode.Height,
+                                              config.Title,
+                                              config.FullscreenMode.MonitorHandle,
+                                              sharedContextWindow );
+        }
+        else
+        {
+            GLFW.WindowHint( GLFW.GLFW_DECORATED, config.WindowDecorated ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE );
+
+            windowHandle = GLFW.CreateWindow( config.WindowWidth,
+                                              config.WindowHeight,
+                                              config.Title,
+                                              0,
+                                              sharedContextWindow );
+        }
+
+        if ( windowHandle == 0 )
+        {
+            throw new GdxRuntimeException( "Couldn't create window" );
+        }
+
+        DesktopGLWindow.SetSizeLimits( windowHandle,
+                                       config.WindowMinWidth,
+                                       config.WindowMinHeight,
+                                       config.WindowMaxWidth,
+                                       config.WindowMaxHeight );
+
+        if ( config.FullscreenMode == null )
+        {
+            if ( config is { WindowX: -1, WindowY: -1 } )
+            {
+                var windowWidth  = Math.Max( config.WindowWidth, config.WindowMinWidth );
+                var windowHeight = Math.Max( config.WindowHeight, config.WindowMinHeight );
+
+                if ( config.WindowMaxWidth > -1 )
+                {
+                    windowWidth = Math.Min( windowWidth, config.WindowMaxWidth );
+                }
+
+                if ( config.WindowMaxHeight > -1 )
+                {
+                    windowHeight = Math.Min( windowHeight, config.WindowMaxHeight );
+                }
+
+                long monitorHandle = GLFW.GetPrimaryMonitor();
+
+                if ( config.WindowMaximized && ( config.MaximizedMonitor != null ) )
+                {
+                    monitorHandle = config.MaximizedMonitor.monitorHandle;
+                }
+
+                IntBuffer areaXPos   = BufferUtils.NewIntBuffer( 1 );
+                IntBuffer areaYPos   = BufferUtils.NewIntBuffer( 1 );
+                IntBuffer areaWidth  = BufferUtils.NewIntBuffer( 1 );
+                IntBuffer areaHeight = BufferUtils.NewIntBuffer( 1 );
+
+                GLFW.GetMonitorWorkarea( monitorHandle,
+                                         areaXPos,
+                                         areaYPos,
+                                         areaWidth,
+                                         areaHeight );
+
+                GLFW.glfwSetWindowPos( windowHandle,
+                                       areaXPos.get( 0 ) + areaWidth.get( 0 ) / 2 - windowWidth / 2,
+                                       areaYPos.get( 0 ) + areaHeight.get( 0 ) / 2 - windowHeight / 2 );
+            }
+            else
+            {
+                GLFW.glfwSetWindowPos( windowHandle, config.windowX, config.windowY );
+            }
+
+            if ( config.windowMaximized )
+            {
+                GLFW.glfwMaximizeWindow( windowHandle );
+            }
+        }
+
+        if ( config.windowIconPaths != null )
+        {
+            DesktopGLWindow.SetIcon( windowHandle, config.windowIconPaths, config.windowIconFileType );
+        }
+
+        GLFW.MakeContextCurrent( windowHandle );
+        GLFW.SwapInterval( config.VSyncEnabled ? 1 : 0 );
+
+        GL.CreateCapabilities();
+
+        InitiateGL();
+
+        if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) )
+        {
+            throw new GdxRuntimeException( "OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
+                                         + GL11.glGetString( GL11.GL_VERSION )
+                                         + "\n"
+                                         + GLVersion?.DebugVersionString() );
+        }
+
+        if ( !SupportsFBO() )
+        {
+//            throw new GdxRuntimeException( "OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
+//                                         + GL.GLGetString( GL11.GL_VERSION )
+//                                         + ", FBO extension: false\n"
+//                                         + GLVersion?.DebugVersionString() );
+        }
+
+        if ( config.Debug )
+        {
+//            glDebugCallback = GLUtil.setupDebugMessageCallback( config.debugStream );
+//            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
+        }
+
+        return windowHandle;
     }
 
     public void PostRunnable( Runnable runnable )
@@ -390,16 +562,27 @@ public class DesktopGLApplication : IGLApplicationBase
         }
     }
 
+    private static bool SupportsFBO()
+    {
+        GdxRuntimeException.ThrowIfNull( GLVersion );
+
+        // FBO is in core since OpenGL 3.0,
+        // see https://www.opengl.org/wiki/Framebuffer_Object
+        return GLVersion.IsVersionEqualToOrHigher( 3, 0 )
+            || GLFW.ExtensionSupported( "GL_EXT_framebuffer_object" )
+            || GLFW.ExtensionSupported( "GL_ARB_framebuffer_object" );
+    }
+
     public static void InitialiseGL()
     {
         if ( _errorCallback == null )
         {
             GLNativesLoader.Load();
 
-            Glfw.SetErrorCallback( _errorCallback );
-            Glfw.InitHint( Hint.JoystickHatButtons, false );
-            
-            if ( Glfw.Init() )
+            GLFW.SetErrorCallback( _errorCallback );
+            GLFW.InitHint( InitHintBool.JoystickHatButtons, false );
+
+            if ( GLFW.Init() )
             {
                 throw new GdxRuntimeException( "Unable to initialise Glfw!" );
             }
@@ -428,18 +611,65 @@ public class DesktopGLApplication : IGLApplicationBase
 
     public void Exit()
     {
+        _running = false;
     }
 
     public void AddLifecycleListener( ILifecycleListener listener )
     {
+        lock ( LifecycleListeners )
+        {
+            LifecycleListeners.Add( listener );
+        }
     }
 
     public void RemoveLifecycleListener( ILifecycleListener listener )
     {
+        lock ( LifecycleListeners )
+        {
+            LifecycleListeners.Remove( listener );
+        }
     }
 
-    public enum GLDebugMessageSeverity
+    [PublicAPI]
+    public struct Gldms
     {
+        public int gl43;
+        public int khr;
+        public int arb;
+        public int amd;
+
+        public Gldms( int gl43, int khr, int arb, int amd )
+        {
+            this.gl43 = gl43;
+            this.khr  = khr;
+            this.arb  = arb;
+            this.amd  = amd;
+        }
+    }
+
+    [PublicAPI]
+    public record GLDebugMessageSeverity
+    {
+//        public Gldms High = new(
+//            GL43.GL_DEBUG_SEVERITY_HIGH,
+//            KHRDebug.GL_DEBUG_SEVERITY_HIGH,
+//            ARBDebugOutput.GL_DEBUG_SEVERITY_HIGH_ARB,
+//            AMDDebugOutput.GL_DEBUG_SEVERITY_HIGH_AMD );
+//        public Gldms Medium = new(
+//            GL43.GL_DEBUG_SEVERITY_MEDIUM,
+//            KHRDebug.GL_DEBUG_SEVERITY_MEDIUM,
+//            ARBDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_ARB,
+//            AMDDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_AMD );
+//        public Gldms Low = new(
+//            GL43.GL_DEBUG_SEVERITY_LOW,
+//            KHRDebug.GL_DEBUG_SEVERITY_LOW,
+//            ARBDebugOutput.GL_DEBUG_SEVERITY_LOW_ARB,
+//            AMDDebugOutput.GL_DEBUG_SEVERITY_LOW_AMD );
+//        public Gldms Notification = new(
+//            GL43.GL_DEBUG_SEVERITY_NOTIFICATION,
+//            KHRDebug.GL_DEBUG_SEVERITY_NOTIFICATION,
+//            -1,
+//            -1 );
     }
 
     /// <summary>
@@ -450,6 +680,37 @@ public class DesktopGLApplication : IGLApplicationBase
     /// <seealso cref="DesktopGLApplicationConfiguration.EnableGLDebugOutput(bool, StreamWriter)"/>
     public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
     {
+//        GLCapabilities caps         = GL.GetCapabilities();
+//        const int      GL_DONT_CARE = 0x1100; // not defined anywhere yet
+//
+//        if ( caps.OpenGL43 )
+//        {
+//            GL43.glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, severity.gl43, ( IntBuffer )null, enabled );
+//
+//            return true;
+//        }
+//
+//        if ( caps.GL_KHR_debug )
+//        {
+//            KHRDebug.glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, severity.khr, ( IntBuffer )null, enabled );
+//
+//            return true;
+//        }
+//
+//        if ( caps.GL_ARB_debug_output && severity.arb != -1 )
+//        {
+//            ARBDebugOutput.glDebugMessageControlARB( GL_DONT_CARE, GL_DONT_CARE, severity.arb, ( IntBuffer )null, enabled );
+//
+//            return true;
+//        }
+//
+//        if ( caps.GL_AMD_debug_output && severity.amd != -1 )
+//        {
+//            AMDDebugOutput.glDebugMessageEnableAMD( GL_DONT_CARE, severity.amd, ( IntBuffer )null, enabled );
+//
+//            return true;
+//        }
+
         return false;
     }
 
@@ -457,7 +718,7 @@ public class DesktopGLApplication : IGLApplicationBase
     /// </summary>
     private void InitiateGL()
     {
-        Glfw.GetVersion( out var major, out var minor, out var revision );
+        GLFW.GetVersion( out var major, out var minor, out var revision );
 
         GLVersion = new GLVersion(
             IApplication.ApplicationType.Desktop,

@@ -220,7 +220,7 @@ public class PixmapPacker : IDisposable
             rect            = new PixmapPackerRectangle( 0, 0, image.Width - 2, image.Height - 2 );
             pixmapToDispose = new Pixmap( image.Width - 2, image.Height - 2, image.GetFormat() );
 
-            pixmapToDispose.Blend = Pixmap.Blending.None;
+            pixmapToDispose.Blending = Pixmap.BlendTypes.None;
 
             rect.Splits = GetSplits( image );
             rect.Pads   = GetPads( image, rect.Splits );
@@ -326,7 +326,7 @@ public class PixmapPacker : IDisposable
                 var newHeight = bottom - top;
 
                 pixmapToDispose       = new Pixmap( newWidth, newHeight, image.GetFormat() );
-                pixmapToDispose.Blend = Pixmap.Blending.None;
+                pixmapToDispose.Blending = Pixmap.BlendTypes.None;
                 pixmapToDispose.DrawPixmap( image, 0, 0, left, top, newWidth, newHeight );
 
                 image = pixmapToDispose;
@@ -796,7 +796,7 @@ public class PixmapPacker : IDisposable
         public Page( PixmapPacker packer )
         {
             Image       = new Pixmap( packer.PageWidth, packer.PageHeight, packer.PageFormat );
-            Image.Blend = Pixmap.Blending.None;
+            Image.Blending = Pixmap.BlendTypes.None;
             Image.SetColor( packer.TransparentColor );
             Image.FillWithCurrentColor();
         }

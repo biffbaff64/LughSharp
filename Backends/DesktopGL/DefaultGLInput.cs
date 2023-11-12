@@ -32,8 +32,11 @@ public class DefaultGLInput : AbstractInput, IGLInput
     private bool[] _justPressedButtons = new bool[ 5 ];
     private char   _lastCharacter;
 
+    /// <inheritdoc />
     public DefaultGLInput( DesktopGLWindow? window )
     {
+        ArgumentNullException.ThrowIfNull( window );
+
         this._window = window;
 
         unsafe
@@ -41,196 +44,106 @@ public class DefaultGLInput : AbstractInput, IGLInput
             WindowHandleChanged( _window.WindowHandle );
         }
     }
-    
-    public override float GetAccelerometerX()
+
+    /// <inheritdoc />
+    public void Update()
     {
-        return 0;
+        _eventQueue.Drain( _inputProcessor );
     }
 
-    public override float GetAccelerometerY()
-    {
-        return 0;
-    }
-
-    public override float GetAccelerometerZ()
-    {
-        return 0;
-    }
-
-    public override float GetGyroscopeX()
-    {
-        return 0;
-    }
-
-    public override float GetGyroscopeY()
-    {
-        return 0;
-    }
-
-    public override float GetGyroscopeZ()
-    {
-        return 0;
-    }
-
-    public override int GetMaxPointers()
-    {
-        return 0;
-    }
-
-    public override int GetX( int pointer = 0 )
-    {
-        return 0;
-    }
-
-    public override int GetDeltaX( int pointer = 0 )
-    {
-        return 0;
-    }
-
-    public override int GetY( int pointer = 0 )
-    {
-        return 0;
-    }
-
-    public override int GetDeltaY( int pointer = 0 )
-    {
-        return 0;
-    }
-
-    public override bool IsTouched( int pointer = 0 )
-    {
-        return false;
-    }
-
-    public override bool JustTouched()
-    {
-        return false;
-    }
-
-    public override float GetPressure( int pointer = 0 )
-    {
-        return 0;
-    }
-
-    public override bool IsButtonPressed( int button )
-    {
-        return false;
-    }
-
-    public override bool IsButtonJustPressed( int button )
-    {
-        return false;
-    }
-
-    public override void SetInputProcessor( IInputProcessor processor )
-    {
-    }
-
-    public override IInputProcessor GetInputProcessor()
-    {
-        return null;
-    }
-
+    /// <inheritdoc />
     public override bool IsPeripheralAvailable( IInput.Peripheral peripheral )
     {
-        return false;
+        return peripheral == IInput.Peripheral.HardwareKeyboard;
     }
 
-    public override int GetRotation()
-    {
-        return 0;
-    }
-
+    /// <inheritdoc />
     public override IInput.Orientation GetNativeOrientation()
     {
         return IInput.Orientation.Landscape;
     }
 
-    /// <remarks>
-    /// Java LibGDX has this method named as SetCursorCatched(bool catched).
-    /// </remarks>
+    /// <inheritdoc />
     public override void SetCursorCaught( bool caught )
     {
+        unsafe
+        {
+            Glfw.SetInputMode( _window!.WindowHandle,
+                               GLFW.GLFW_CURSOR,
+                               caught
+                                   ? GLFW.GLFW_CURSOR_DISABLED
+                                   : GLFW.GLFW_CURSOR_NORMAL );
+        }
     }
 
-    /// <remarks>
-    /// Java LibGDX has this method named as IsCursorCatched().
-    /// </remarks>
+    /// <inheritdoc />
     public override bool IsCursorCaught()
     {
         return false;
     }
 
+    /// <inheritdoc />
     public override void SetCursorPosition( int x, int y )
     {
     }
 
+    /// <inheritdoc />
     public override void GetTextInput( IInput.ITextInputListener listener, string title, string text, string hint )
     {
     }
 
+    /// <inheritdoc />
     public override void GetTextInput( IInput.ITextInputListener listener, string title, string text, string hint, IInput.OnscreenKeyboardType type )
     {
     }
 
-    public override void SetOnscreenKeyboardVisible( bool visible )
-    {
-    }
-
-    public override void SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type )
-    {
-    }
-
-    public override void Vibrate( int milliseconds )
-    {
-    }
-
-    public override void Vibrate( long[] pattern, int repeat )
-    {
-    }
-
-    public override void CancelVibrate()
-    {
-    }
-
-    public override float GetAzimuth()
-    {
-        return 0;
-    }
-
-    public override float GetPitch()
-    {
-        return 0;
-    }
-
-    public override float GetRoll()
-    {
-        return 0;
-    }
-
+    /// <inheritdoc />
     public override void GetRotationMatrix( float[] matrix )
     {
     }
 
+    /// <inheritdoc />
     public override long GetCurrentEventTime()
     {
         return 0;
     }
 
-    public void WindowHandleChanged( long windowHandle )
+    /// <inheritdoc />
+    public unsafe void WindowHandleChanged( Window* windowHandle )
     {
     }
 
-    public void Update()
-    {
-    }
-
+    /// <inheritdoc />
     public void PrepareNext()
     {
+        if ( _justTouched )
+        {
+            _justTouched = false;
+
+            Array.Fill( _justPressedButtons, false );
+        }
+
+        if ( KeyJustPressed )
+        {
+            KeyJustPressed = false;
+
+            Array.Fill( JustPressedKeys, false );
+        }
+
+        _deltaX = 0;
+        _deltaY = 0;
     }
 
+    /// <inheritdoc />
     public void ResetPollingStates()
     {
+        _justTouched   = false;
+        KeyJustPressed = false;
+
+        Array.Fill( JustPressedKeys, false );
+        Array.Fill( _justPressedButtons, false );
+
+        _eventQueue.Drain( null );
     }
 
     /// <summary>
@@ -238,6 +151,188 @@ public class DefaultGLInput : AbstractInput, IGLInput
     /// or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
+    {
+    }
+
+    // ------------------------------------------------------------------------
+    // Callbacks
+    // ------------------------------------------------------------------------
+
+    private GLFW.KeyCallback _keyCallback = KeyCallback;
+
+    private static void KeyCallback( IntPtr window, Keys key, int scancode, InputState state, ModifierKeys mods )
+    {
+    }
+
+    private GLFW.CharCallback _charCallback = CharCallback;
+
+    private static void CharCallback( IntPtr window, uint codepoint )
+    {
+    }
+
+    private GLFW.MouseCallback _mouseCallback = MouseCallback;
+
+    private static void MouseCallback( IntPtr window, double x, double y )
+    {
+    }
+
+    // ------------------------------------------------------------------------
+    // Stubs
+    // ------------------------------------------------------------------------
+
+    /// <inheritdoc />
+    public override float GetAccelerometerX()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override float GetAccelerometerY()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override float GetAccelerometerZ()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override float GetGyroscopeX()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override float GetGyroscopeY()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override float GetGyroscopeZ()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override int GetMaxPointers()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override int GetX( int pointer = 0 )
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override int GetDeltaX( int pointer = 0 )
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override int GetY( int pointer = 0 )
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override int GetDeltaY( int pointer = 0 )
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override bool IsTouched( int pointer = 0 )
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
+    public override bool JustTouched()
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
+    public override float GetPressure( int pointer = 0 )
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override bool IsButtonPressed( int button )
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
+    public override bool IsButtonJustPressed( int button )
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
+    public override void SetInputProcessor( IInputProcessor processor )
+    {
+    }
+
+    /// <inheritdoc />
+    public override IInputProcessor? GetInputProcessor()
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    public override int GetRotation()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override float GetAzimuth()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override float GetPitch()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override float GetRoll()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override void SetOnscreenKeyboardVisible( bool visible )
+    {
+    }
+
+    /// <inheritdoc />
+    public override void SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type )
+    {
+    }
+
+    /// <inheritdoc />
+    public override void Vibrate( int milliseconds )
+    {
+    }
+
+    /// <inheritdoc />
+    public override void Vibrate( long[] pattern, int repeat )
+    {
+    }
+
+    /// <inheritdoc />
+    public override void CancelVibrate()
     {
     }
 }

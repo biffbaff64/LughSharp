@@ -116,7 +116,7 @@ public class MipMapGenerator
         {
             var tmp = new Pixmap( width, height, pixmap.GetFormat() );
 
-            tmp.Blend = Pixmap.Blending.None;
+            tmp.Blending = Pixmap.BlendTypes.None;
             tmp.DrawPixmap( pixmap, 0, 0, pixmap.Width, pixmap.Height, 0, 0, width, height );
 
             if ( level > 1 )

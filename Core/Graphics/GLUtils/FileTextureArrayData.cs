@@ -133,7 +133,7 @@ public class FileTextureArrayData : ITextureArrayData
                 {
                     var temp = new Pixmap( pixmap.Width, pixmap.Height, texData.GetFormat() );
 
-                    temp.Blend = Pixmap.Blending.None;
+                    temp.Blending = Pixmap.BlendTypes.None;
                     temp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
                     if ( texData.DisposePixmap() )

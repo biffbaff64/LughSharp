@@ -30,9 +30,15 @@ global using JetBrains.Annotations;
 
 // -----------------------------------------------------------------------
 // OpenGL support
-global using GLFW;
-global using GLFW.Game;
-global using OpenGL;
+global using OpenTK;
+global using OpenTK.Audio;
+global using OpenTK.Compute;
+global using OpenTK.Core;
+global using OpenTK.Input;
+global using OpenTK.Graphics;
+global using OpenTK.Windowing;
+global using OpenTK.Windowing.GraphicsLibraryFramework;
+global using OpenTK.Platform;
 
 // -----------------------------------------------------------------------
 // LibGDXSharp

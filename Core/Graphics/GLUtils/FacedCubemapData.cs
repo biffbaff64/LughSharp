@@ -132,7 +132,7 @@ public class FacedCubemapData : ICubemapData
                 {
                     var tmp = new Pixmap( pixmap.Width, pixmap.Height, _data[ i ]!.GetFormat() );
 
-                    tmp.Blend = Pixmap.Blending.None;
+                    tmp.Blending = Pixmap.BlendTypes.None;
                     tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
                     if ( _data[ i ]!.DisposePixmap() )

@@ -160,7 +160,7 @@ public abstract class AbstractInput : IInput
 
     public abstract void SetInputProcessor( IInputProcessor processor );
 
-    public abstract IInputProcessor GetInputProcessor();
+    public abstract IInputProcessor? GetInputProcessor();
 
     public abstract bool IsPeripheralAvailable( IInput.Peripheral peripheral );
 

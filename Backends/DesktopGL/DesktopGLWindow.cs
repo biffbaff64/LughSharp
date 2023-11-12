@@ -92,7 +92,8 @@ public class DesktopGLWindow : IDisposable
             runnable();
         }
 
-        var shouldRender = ( ( _executedRunnables.Count > 0 ) || ( Graphics.IsContinuousRendering() ) );
+        var shouldRender = ( ( _executedRunnables.Count > 0 )
+                          || ( Graphics.IsContinuousRendering() ) );
 
         _executedRunnables.Clear();
 
@@ -116,7 +117,6 @@ public class DesktopGLWindow : IDisposable
 
                 GLFW.SwapBuffers( WindowHandle );
             }
-
         }
 
         if ( !_iconified )
@@ -125,6 +125,119 @@ public class DesktopGLWindow : IDisposable
         }
 
         return shouldRender;
+    }
+
+    private unsafe void WindowHandleChanged( Window* windowHandle )
+    {
+        this.WindowHandle = windowHandle;
+
+        this.Input.WindowHandleChanged( windowHandle );
+    }
+
+    public unsafe void SetTitle( string title )
+    {
+        GLFW.SetWindowTitle( WindowHandle, title );
+    }
+
+    /// <summary>
+    /// Sets minimum and maximum size limits for the window. If the window
+    /// is full screen or not resizable, these limits are ignored. Use -1
+    /// to indicate an unrestricted dimension.
+    /// </summary>
+    public unsafe void SetSizeLimits( int minWidth, int minHeight, int maxWidth, int maxHeight )
+    {
+        SetSizeLimits( WindowHandle, minWidth, minHeight, maxWidth, maxHeight );
+    }
+
+    private unsafe void SetSizeLimits( Window* windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight )
+    {
+        GLFW.SetWindowSizeLimits( windowHandle,
+                                  minWidth > -1 ? minWidth : GLFW.GLFW_DONT_CARE,
+                                  minHeight > -1 ? minHeight : GLFW.GLFW_DONT_CARE,
+                                  maxWidth > -1 ? maxWidth : GLFW.GLFW_DONT_CARE,
+                                  maxHeight > -1 ? maxHeight : GLFW.GLFW_DONT_CARE );
+    }
+
+    /**
+     * Sets the icon that will be used in the window's title bar. Has no effect in macOS, which doesn't use window icons.
+     * @param image One or more images. The one closest to the system's desired size will be scaled. Good sizes include
+     * 16x16, 32x32 and 48x48. Pixmap format {@link com.badlogic.gdx.graphics.Pixmap.Format#RGBA8888 RGBA8888} is preferred
+     * so the images will not have to be copied and converted. The chosen image is copied, and the provided Pixmaps are not
+     * disposed.
+     */
+    public void SetIcon( params Pixmap[] images )
+    {
+        SetIcon( WindowHandle, images );
+    }
+
+    private void SetIcon( long windowHandle, String[] imagePaths, Files.FileType imageFileType )
+    {
+        if ( SharedLibraryLoader.IsMac )
+        {
+            return;
+        }
+
+        var pixmaps = new Pixmap[ imagePaths.Length ];
+
+        for ( var i = 0; i < imagePaths.Length; i++ )
+        {
+            pixmaps[ i ] = new Pixmap( Gdx.Files.GetFileHandle( imagePaths[ i ], imageFileType ) );
+        }
+
+        SetIcon( windowHandle, pixmaps );
+
+        foreach ( Pixmap pixmap in pixmaps )
+        {
+            pixmap.Dispose();
+        }
+    }
+
+    private unsafe void SetIcon( Window* windowHandle, Pixmap[] images )
+    {
+        if ( SharedLibraryLoader.IsMac )
+        {
+            return;
+        }
+
+        GLFWImage.Buffer buffer     = GLFWImage.malloc( images.Length );
+        Pixmap?[]        tmpPixmaps = new Pixmap[ images.Length ];
+
+        for ( int i = 0; i < images.Length; i++ )
+        {
+            Pixmap pixmap = images[ i ];
+
+            if ( pixmap.GetFormat() != Pixmap.Format.RGBA8888 )
+            {
+                var rgba = new Pixmap( pixmap.Width, pixmap.Height, Pixmap.Format.RGBA8888 );
+
+                rgba.Blending = Pixmap.BlendTypes.None;
+                rgba.DrawPixmap( pixmap, 0, 0 );
+
+                tmpPixmaps[ i ] = rgba;
+                pixmap          = rgba;
+            }
+
+            GLFWImage icon = GLFWImage.malloc();
+
+            icon.set( pixmap.Width, pixmap.Height, pixmap.Pixels );
+            buffer.put( icon );
+
+            icon.free();
+        }
+
+        buffer.position( 0 );
+
+        GLFW.SetWindowIcon( windowHandle, buffer );
+
+        buffer.free();
+
+        foreach ( Pixmap? pixmap in tmpPixmaps )
+        {
+            if ( pixmap != null )
+            {
+                pixmap.Dispose();
+            }
+        }
     }
 
     private void InitialiseListener()
@@ -141,7 +254,7 @@ public class DesktopGLWindow : IDisposable
     {
         Gdx.Graphics = this.Graphics;
         Gdx.GL30     = this.Graphics.GL30;
-        Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30 : Graphics.GL20;
+        Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30! : Graphics.GL20!;
         Gdx.GL       = Gdx.GL30 != null ? Gdx.GL30 : Gdx.GL20;
         Gdx.Input    = this.Input;
 

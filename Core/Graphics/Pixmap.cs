@@ -84,7 +84,7 @@ public static class PixmapFormatExtensions
 /// </para>
 /// <para>
 /// By default all methods use blending. You can disable blending by setting it
-/// to <see cref="Pixmap.Blending.None"/>, which may reduce blitting time by ~30%.
+/// to <see cref="BlendTypes.None"/>, which may reduce blitting time by ~30%.
 /// </para>
 /// <para>
 /// The <see cref="DrawPixmap(Pixmap, int, int, int, int, int, int, int, int)"/> method
@@ -99,7 +99,7 @@ public class Pixmap : IDisposable
 
     #region PixmapEnums
 
-    public enum Blending
+    public enum BlendTypes
     {
         None,
         SourceOver
@@ -131,25 +131,25 @@ public class Pixmap : IDisposable
 
     #region PublicProperties
 
-    private Blending _blend  = Blending.SourceOver;
+    private BlendTypes _blend  = BlendTypes.SourceOver;
     private Filter   _filter = Filter.BiLinear;
 
     /// <summary>
-    /// Sets the type of <see cref="Pixmap.Blending"/> to be used for all operations.
-    /// Default is <see cref="Pixmap.Blending.SourceOver"/>.
+    /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
+    /// Default is <see cref="BlendTypes.SourceOver"/>.
     /// </summary>
-    public Blending Blend
+    public BlendTypes Blending
     {
         get => _blend;
         set
         {
             this._blend       = value;
-            gdx2DPixmap.Blend = _blend == Blending.None ? 0 : 1;
+            gdx2DPixmap.Blend = _blend == BlendTypes.None ? 0 : 1;
         }
     }
 
     /// <summary>
-    /// Sets the type of interpolation <see cref="Pixmap.Blending"/> to be used in
+    /// Sets the type of interpolation <see cref="BlendTypes"/> to be used in
     /// conjunction with <see cref="DrawPixmap(Pixmap, int, int, int, int, int, int, int, int)"/>.
     /// </summary>
     public Filter FilterValue
