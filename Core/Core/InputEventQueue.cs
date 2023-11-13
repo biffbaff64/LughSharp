@@ -132,7 +132,10 @@ public class InputEventQueue
             {
                 var type = q[ i ];
 
-                if ( type == nextType ) return i;
+                if ( type == nextType )
+                {
+                    return i;
+                }
 
                 i += 3;
 
@@ -144,25 +147,13 @@ public class InputEventQueue
                         break;
 
                     case KEY_DOWN:
-                        i++;
-
-                        break;
-
                     case KEY_UP:
-                        i++;
-
-                        break;
-
                     case KEY_TYPED:
                         i++;
 
                         break;
 
                     case TOUCH_DOWN:
-                        i += 4;
-
-                        break;
-
                     case TOUCH_UP:
                         i += 4;
 
@@ -174,10 +165,6 @@ public class InputEventQueue
                         break;
 
                     case MOUSE_MOVED:
-                        i += 2;
-
-                        break;
-
                     case MOUSE_SCROLLED:
                         i += 2;
 
@@ -228,9 +215,7 @@ public class InputEventQueue
         lock ( this )
         {
             _queue.Add( KEY_UP );
-
             QueueTime( time );
-
             _queue.Add( keycode );
         }
 

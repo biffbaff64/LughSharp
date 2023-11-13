@@ -74,6 +74,14 @@ public static class ListExtensions
         }
     }
 
+    public static void AddAll<T>( this List< T > ts, params T[] items )
+    {
+        foreach ( T item in items )
+        {
+            ts.Add( item );
+        }
+    }
+    
     /// <summary>
     /// Shuffles the element order of the specified list.
     /// </summary>

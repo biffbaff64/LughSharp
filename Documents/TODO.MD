@@ -558,7 +558,7 @@ MATHS
     - DONE - Circle
     - DONE - ConvexHull
     - DONE - CumulativeDistribution
-    -      - DelaunayTriangulator
+    - DONE - DelaunayTriangulator
     -      - EarClippingTriangulator
     - DONE - Ellipse
     - DONE - FloatCounter
