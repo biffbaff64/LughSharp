@@ -149,9 +149,9 @@ public interface INet
 
     public bool OpenUri( string uri );
 
-    public IServerSocket NewServerSocket( Protocol protocol, string hostname, int port, ServerSocketHints hints );
+    public IServerSocket? NewServerSocket( Protocol protocol, string hostname, int port, ServerSocketHints hints );
 
-    public IServerSocket NewServerSocket( Protocol protocol, int port, ServerSocketHints hints );
+    public IServerSocket? NewServerSocket( Protocol protocol, int port, ServerSocketHints hints );
 
-    public ISocket NewClientSocket( Protocol protocol, string host, int port, SocketHints hints );
+    public ISocket? NewClientSocket( Protocol protocol, string host, int port, SocketHints hints );
 }

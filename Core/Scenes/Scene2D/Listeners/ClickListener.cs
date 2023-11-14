@@ -70,7 +70,10 @@ public class ClickListener : InputListener
 
     public new bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
     {
-        if ( Pressed ) return false;
+        if ( Pressed )
+        {
+            return false;
+        }
 
         if ( ( pointer == 0 ) && ( this.Button != -1 ) && ( button != this.Button ) )
         {
@@ -89,7 +92,10 @@ public class ClickListener : InputListener
 
     public new void TouchDragged( InputEvent ev, float x, float y, int pointer )
     {
-        if ( ( pointer != PressedPointer ) || _cancelled ) return;
+        if ( ( pointer != PressedPointer ) || _cancelled )
+        {
+            return;
+        }
 
         Pressed = IsOver( ev.ListenerActor, x, y );
 
@@ -116,7 +122,7 @@ public class ClickListener : InputListener
 
                 if ( touchUpOver )
                 {
-                    long time = TimeUtils.NanoTime();
+                    var time = TimeUtils.NanoTime();
 
                     if ( ( time - _lastTapTime ) > TapCountInterval )
                     {
@@ -159,7 +165,10 @@ public class ClickListener : InputListener
     /// </summary>
     public virtual void Cancel()
     {
-        if ( PressedPointer == -1 ) return;
+        if ( PressedPointer == -1 )
+        {
+            return;
+        }
 
         _cancelled = true;
         Pressed    = false;
@@ -222,11 +231,20 @@ public class ClickListener : InputListener
     {
         get
         {
-            if ( Pressed ) return true;
+            if ( Pressed )
+            {
+                return true;
+            }
 
-            if ( _visualPressedTime <= 0 ) return false;
+            if ( _visualPressedTime <= 0 )
+            {
+                return false;
+            }
 
-            if ( _visualPressedTime > TimeUtils.Millis() ) return true;
+            if ( _visualPressedTime > TimeUtils.Millis() )
+            {
+                return true;
+            }
 
             _visualPressedTime = 0;
 

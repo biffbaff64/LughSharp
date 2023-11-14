@@ -7,17 +7,23 @@ LIBGDX CSharp CONVERSION - ROUND 1
      - ASSETS                           - DONE
      - ASSETS/LOADERS                   - DONE
      - ASSETS/LOADERS/RESOLVERS         - IP
+    - - - - - - - - - - - - - - - - - - - - - -
      - AUDIO                            - DONE
      - AUDIO/JAVAZOOMJL                 - IP
+    - - - - - - - - - - - - - - - - - - - - - -
      - CORE                             - DONE
+    - - - - - - - - - - - - - - - - - - - - - -
      - FILES                            - IP
      - FILES/BUFFERS                    - IP
+    - - - - - - - - - - - - - - - - - - - - - -
      - GRAPHICS                         - DONE
      - GRAPHICS/FRAMEBUFFERS            - DONE
      - GRAPHICS/G2D                     - IP
      - GRAPHICS/GLUTILS                 - DONE
      - GRAPHICS/PROFILING               - DONE
+    - - - - - - - - - - - - - - - - - - - - - -
      - INPUT                            - IP
+    - - - - - - - - - - - - - - - - - - - - - -
      - MAPS                             - DONE
      - MAPS/OBJECTS                     - DONE
      - MAPS/TILED                       - DONE
@@ -25,14 +31,17 @@ LIBGDX CSharp CONVERSION - ROUND 1
      - MAPS/TILED/OBJECTS               - DONE
      - MAPS/TILED/RENDERERS             - IP
      - MAPS/TILED/TILES                 - DONE
+    - - - - - - - - - - - - - - - - - - - - - -
      - MATHS                            - IP
      - MATH/COLLISION                   - DONE
-     - SCENES/LISTENERS                 - IP
+    - - - - - - - - - - - - - - - - - - - - - -
      - SCENES/SCENE2D                   - DONE
      - SCENES/SCENE2D/ACTIONS           - DONE
+     - SCENES/SCENE2D/LISTENERS         - IP
      - SCENES.SCENE2D/UI                - IP
      - SCENES.SCENE2D/UTILS             - IP
-     - UTILS                            - IP
+    - - - - - - - - - - - - - - - - - - - - - -
+     - UTILS                            - DONE
      - UTILS/COLLECTIONS                - DONE
      - UTILS/EXCEPTIONS                 - DONE
      - UTILS/POOLING                    - DONE
@@ -48,7 +57,6 @@ LIBGDX CSharp CONVERSION - ROUND 1
 -         switch expressions instead of switch statements where appropriate.
 -         Check methods to see if they can be virtual.
 -         Use [PublicApi] where necessary.
--         Use [UsedImplicitly] where necessary.
 -         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
@@ -167,23 +175,25 @@ BACKENDS/DESKTOPGL
     - IP   - DesktopGL20
     - IP   - DesktopGL30
     - IP   - DesktopGLApplication
-    - IP   - DesktopGLApplicationConfiguration
+    - DONE - DesktopGLApplicationConfiguration
+    - IP   - DesktopGLFileHandle
     - IP   - DesktopGLGraphics
     - IP   - DesktopGLWindow
     - DONE - DesktopGLWindowAdapter
     - IP   - DesktopGLWindowConfiguration
-    - IP   - GLApplicationLogger
-    -      - GLClipboard
+    - DONE - GLApplicationLogger
+    - DONE - GLClipboard
     -      - GLCursor
-    -      - GLFileHandle
-    -      - GLFiles
-    -      - GLNativesLoader
-    -      - GLNet
-    -      - GLPreferences
-    -      - IGLApplicationBase
-    -      - IGLInput
+    - DONE - GLFiles
+    - IP   - GLNet
+    - DONE - GLPreferences
+    - DONE - IGLApplicationBase
+    - DONE - IGLInput
     - DONE - IGLWindowListener
-    -      - Sync
+    - IP   - Sync
+
+    Look into removing this, just keeping anything essential
+    - IP   - GLNativesLoader
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -559,14 +569,14 @@ MATHS
     - DONE - ConvexHull
     - DONE - CumulativeDistribution
     - DONE - DelaunayTriangulator
-    -      - EarClippingTriangulator
+    - DONE - EarClippingTriangulator
     - DONE - Ellipse
     - DONE - FloatCounter
     - DONE - Frustrum
     - DONE - GeometryUtils
     - DONE - GridPoint2
     - DONE - GridPoint3
-    - DONE - Interpolation
+    - IP   - Interpolation
     - DONE - Intersector
     - DONE - IPath
     - DONE - IShape2D
@@ -617,23 +627,6 @@ NETWORK - DELETE CANDIDATE
     - **** - NetJavaSocketImpl
     - **** - ServerSocketHints
     - **** - SocketHints
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-SCENES/LISTENERS
-----------------
-
-    The Java Listeners implemented in LibGDX need replacing by C# Observers
-
-    -      - ActorGestureListener           
-    -      - ChangeListener                 
-    -      - ClickListener                  
-    -      - DragListener                   
-    -      - DragScrollListener             
-    -      - FocusListener                  
-    -      - IEventListener                 
-    -      - InputListener                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -689,6 +682,21 @@ SCENES.SCENE2D/ACTIONS
     - DONE - TimeScaleAction                
     - DONE - TouchableAction                
     - DONE - VisibleAction                  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SCENES/SCENE2D/LISTENERS
+------------------------
+
+    - IP   - ActorGestureListener           
+    - DONE - ChangeListener                 
+    - DONE - ClickListener                  
+    - DONE - DragListener                   
+    - IP   - DragScrollListener             
+    - DONE - FocusListener                  
+    - DONE - IEventListener                 
+    - DONE - InputListener                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -785,23 +793,22 @@ UTILS
     - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
     - DONE - SortUtils
     - DONE - StringTokenizer
-    - DONE - Timer                          Use System.Timer instead??
+    - DONE - Timer                          
     - DONE - TimeUtils
     - DONE - TimSort
     - DONE - Trace                          Addition
 
-    -      - GdxNativesLoader               Check - Remove this??
-    -      - LittleEndianInputStream        Check - Remove this??
-    -      - PauseableThread                Check - Remove this??
-    -      - SharedLibraryLoader            Check - Remove this??
-    -      - StreamUtils                    Check - Remove this??
-
     - **** - Base64Coder                    Use System.Convert classes
-    - **** - I18NBundle                     Remove, look into C# localisation
+    - **** - GdxNativesLoader               Removed
+    - **** - I18NBundle                     Removed
+    - **** - LittleEndianInputStream        Removed
+    - **** - PauseableThread                Removed
     - **** - Queue                          Use system.collection.generics.Queue<T>?
+    - **** - SharedLibraryLoader            Removed
     - **** - SortedIntList                  Use SortedList<int>
+    - **** - StreamUtils                    Removed
     - **** - StringBuilder                  Use System.Text.StringBuilder
-    - **** - TextFormatter                  Remove, look into C# localisation
+    - **** - TextFormatter                  Removed
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

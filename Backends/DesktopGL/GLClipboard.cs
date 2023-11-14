@@ -19,7 +19,6 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class GLClipboard : IClipboard
 {
-
     /// <summary>
     /// Check if the clipboard has contents.
     /// </summary>

@@ -141,6 +141,14 @@ public class MathUtils
     }
 
     /// <summary>
+    /// Returns the next random number as a long.
+    /// </summary>
+    public static long RandomLong()
+    {
+        return ( long )( Rand.NextDouble() );
+    }
+    
+    /// <summary>
     /// Returns a random bool value.
     /// </summary>
     public static bool RandomBool()

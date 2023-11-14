@@ -18,13 +18,24 @@ using LibGDXSharp.Scenes.Scene2D;
 
 namespace LibGDXSharp.Scenes.Listeners;
 
+/// <summary>
+/// Fired when an actor gains or loses keyboard or scroll focus. Can be
+/// cancelled to prevent losing or gaining focus.
+/// </summary>
 [PublicAPI]
 public class FocusListener : IEventListener
 {
+    [PublicAPI]
     public class FocusEvent : Event
     {
         public bool    Focused      { get; set; }
         public FeType? Type         { get; set; }
+
+        /// <summary>
+        /// The actor related to the event. When focus is lost, this is the new
+        /// actor being focused, or null. When focus is gained, this is the
+        /// previous actor that was focused, or null.
+        /// </summary>
         public Actor?  RelatedActor { get; set; }
 
         public new void Reset()
@@ -48,7 +59,10 @@ public class FocusListener : IEventListener
     /// </returns>
     public bool Handle( Event e )
     {
-        if ( !( e is FocusEvent focusEvent ) ) return false;
+        if ( !( e is FocusEvent focusEvent ) )
+        {
+            return false;
+        }
 
         switch ( focusEvent.Type )
         {
@@ -71,7 +85,7 @@ public class FocusListener : IEventListener
     /// The event target, which is the actor that emitted the focus event.
     /// </param>
     /// <param name="focused"></param>
-    public void KeyboardFocusChanged( FocusEvent ev, Actor? actor, bool focused)
+    public virtual void KeyboardFocusChanged( FocusEvent ev, Actor? actor, bool focused)
     {
     }
 
@@ -80,7 +94,7 @@ public class FocusListener : IEventListener
     /// The event target, which is the actor that emitted the focus event.
     /// </param>
     /// <param name="focused"></param>
-    public void ScrollFocusChanged( FocusEvent ev, Actor? actor, bool focused)
+    public virtual void ScrollFocusChanged( FocusEvent ev, Actor? actor, bool focused)
     {
     }
 }

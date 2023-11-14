@@ -69,7 +69,7 @@ public class GLPreferences : IPreferences
     /// <returns></returns>
     public IPreferences PutAll( Dictionary< string, object > vals )
     {
-        foreach ( var entry in vals )
+        foreach ( KeyValuePair< string, object > entry in vals )
         {
             PutEntry( entry.Key, entry.Value );
         }
@@ -213,7 +213,7 @@ public class GLPreferences : IPreferences
             var rootElement = new XElement( "properties" );
             _xDocument!.Add( rootElement );
 
-            foreach ( var entry in _properties! )
+            foreach ( KeyValuePair< string, object > entry in _properties! )
             {
                 _xDocument.Add( new XElement( "entry" ) );
                 _xDocument.Add( new XAttribute( "key", entry.Key ) );
@@ -222,7 +222,7 @@ public class GLPreferences : IPreferences
 
             _xDocument.Save( _filePath + _propertiesFile );
         }
-        catch ( System.Exception e )
+        catch ( System.Exception )
         {
             throw new GdxRuntimeException( "Error writing preferences!" );
         }

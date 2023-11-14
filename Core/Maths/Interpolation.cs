@@ -1,4 +1,4 @@
-﻿// ///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 // Copyright [2023] [Richard Ikin]
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,186 +12,153 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 namespace LibGDXSharp.Maths;
 
-/// <summary>
-/// Takes a linear value in the range of 0-1 and outputs a (usually)
-/// non-linear, interpolated value.
-/// </summary>
+public delegate float InterpolateDelegate( float a );
+
 [PublicAPI]
-public class Interpolation
+public interface IInterpolate
 {
-    protected Interpolation()
-    {
-    }
+    float Apply( float a );
 
-    public Interpolation( Action< object > action )
-    {
-    }
+    float Apply( float start, float end, float a );
+}
 
-    // ------------------------------------------------------------------------
+[PublicAPI]
+public class Interpolator
+{
+    public virtual float Apply( float a ) => a;
 
-    public float Apply( float a )
-    {
-        return a;
-    }
-
-    public float Apply( float start, float end, float a )
+    public virtual float Apply( float start, float end, float a )
     {
         return start + ( ( end - start ) * Apply( a ) );
     }
-
-    // ------------------------------------------------------------------------
 }
 
-//@formatter:off
+public delegate float Apply( float a );
 
 [PublicAPI]
-public abstract class Interpolator
+[SuppressMessage( "ReSharper", "ConvertToLambdaExpression" )]
+public class Interpolation
 {
-    public readonly static Interpolation Linear = new( _ =>
+    public InterpolateDelegate linear = delegate( float a )
+    {
+        return a;
+    };
+
+    public InterpolateDelegate smooth = delegate( float f )
+    {
+        return f * f * ( 3 - ( 2 * f ) );
+    };
+
+    public InterpolateDelegate smooth2 = delegate( float a )
+    {
+        a = a * a * ( 3 - ( 2 * a ) );
+
+        return a * a * ( 3 - ( 2 * a ) );
+    };
+
+// ------------------------------------------------------------------------
+    
+    public static float Linear( float a ) => a;
+
+    public static float Smooth( float a ) => a * a * ( 3 - ( 2 * a ) );
+    
+    public static float Smooth2( float a )
+    {
+        a = a * a * ( 3 - ( 2 * a ) );
+
+        return a * a * ( 3 - ( 2 * a ) );
+    }
+
+    public static float Smoother( float a )
+    {
+        return a * a * a * ( ( a * ( ( a * 6 ) - 15 ) ) + 10 );
+    }
+
+    public static float Fade( float a ) => Smoother( a );
+
+    public static float Pow2InInverse( float a ) => a;
+
+    public static float Pow2OutInverse( float a )
+    {
+        if ( a < MathUtils.FLOAT_ROUNDING_ERROR )
         {
-            float Apply( float a ) => a;
-        });
+            return 0;
+        }
 
-    public readonly static Interpolation Smooth = new( _ =>
+        return 1 - ( float )Math.Sqrt( -( a - 1 ) );
+    }
+
+    public static float Pow3InInverse( float a ) => ( float )Math.Cbrt( a );
+
+    public static float Pow3OutInverse( float a ) => 1 - ( float )Math.Cbrt( -( a - 1 ) );
+
+    public static float Sine( float a ) => ( 1 - MathUtils.Cos( a * MathUtils.PI ) ) / 2;
+
+    public static float SineIn( float a ) => 1 - MathUtils.Cos( a * ( MathUtils.PI / 2 ) );
+
+    public static float SineOut( float a ) => MathUtils.Sin( a * ( MathUtils.PI / 2 ) );
+
+    public static float Circle( float a )
+    {
+        if ( a <= 0.5f )
         {
-            float Apply( float a ) => a * a * ( 3 - ( 2 * a ) );
-        });
+            a *= 2;
 
-    public readonly static Interpolation Smooth2 = new( _ =>
-        {
-            float Apply( float a )
-            {
-                a = a * a * ( 3 - ( 2 * a ) );
+            return ( 1 - ( float )Math.Sqrt( 1 - ( a * a ) ) ) / 2;
+        }
 
-                return a * a * ( 3 - ( 2 * a ) );
-            }
-        });
+        a--;
+        a *= 2;
 
-    public readonly static Interpolation Smoother = new( _ =>
-        {
-            float Apply( float a ) => a * a * a * ( ( a * ( ( a * 6 ) - 15 ) ) + 10 );
-        });
+        return ( ( float )Math.Sqrt( 1 - ( a * a ) ) + 1 ) / 2;
+    }
 
-    public readonly static Interpolation Fade = Smoother;
+    public static float CircleIn( float a ) => 1 - ( float )Math.Sqrt( 1 - ( a * a ) );
 
-    public readonly static Pow    Pow2    = new( 2 );
-    public readonly static PowIn  Pow2In  = new( 2 );
-    public readonly static PowOut Pow2Out = new( 2 );
+    public static float CircleOut( float a )
+    {
+        a--;
 
-    public readonly static Interpolation Pow2InInverse = new( _ =>
-        {
-            float Apply( float a ) => a;
-        });
+        return ( float )Math.Sqrt( 1 - ( a * a ) );
+    }
 
-    public readonly static Interpolation Pow2OutInverse = new( _ =>
-        {
-            float Apply( float a )
-            {
-                if ( a < MathUtils.FLOAT_ROUNDING_ERROR ) return 0;
-
-                return 1 - ( float )Math.Sqrt( -( a - 1 ) );
-            }
-        });
-
-    public readonly static Pow    Pow3    = new( 3 );
-    public readonly static PowIn  Pow3In  = new( 3 );
-    public readonly static PowOut Pow3Out = new( 3 );
-
-    public readonly static Interpolation Pow3InInverse = new( _ =>
-        {
-            float Apply( float a ) => ( float )Math.Cbrt( a );
-        });
-
-    public readonly static Interpolation Pow3OutInverse = new( _ =>
-        {
-            float Apply( float a ) => 1 - ( float )Math.Cbrt( -( a - 1 ) );
-        });
-
-    public readonly static Pow    Pow4    = new( 4 );
-    public readonly static PowIn  Pow4In  = new( 4 );
-    public readonly static PowOut Pow4Out = new( 4 );
-
-    public readonly static Pow    Pow5    = new( 5 );
-    public readonly static PowIn  Pow5In  = new( 5 );
-    public readonly static PowOut Pow5Out = new( 5 );
-
-    public readonly static Interpolation Sine = new( _ =>
-        {
-            float Apply( float a ) => ( 1 - MathUtils.Cos( a * MathUtils.PI ) ) / 2;
-        });
-
-    public readonly static Interpolation SineIn = new( _ =>
-        {
-            float Apply( float a ) => 1 - MathUtils.Cos( a * ( MathUtils.PI / 2 ) );
-        });
-
-    public readonly static Interpolation SineOut = new( _ =>
-        {
-            float Apply( float a ) => MathUtils.Sin( a * ( MathUtils.PI / 2 ) );
-        });
-
-    public readonly static Exp    Exp10    = new( 2, 10 );
-    public readonly static ExpIn  Exp10In  = new( 2, 10 );
-    public readonly static ExpOut Exp10Out = new( 2, 10 );
-    public readonly static Exp    Exp5     = new( 2, 5 );
-    public readonly static ExpIn  Exp5In   = new( 2, 5 );
-    public readonly static ExpOut Exp5Out  = new( 2, 5 );
-
-    public readonly static Interpolation Circle = new( _ =>
-        {
-            float Apply( float a )
-            {
-                if ( a <= 0.5f )
-                {
-                    a *= 2;
-
-                    return ( 1 - ( float )Math.Sqrt( 1 - ( a * a ) ) ) / 2;
-                }
-
-                a--;
-                a *= 2;
-
-                return ( ( float )Math.Sqrt( 1 - ( a * a ) ) + 1 ) / 2;
-            }
-        });
-
-    public readonly static Interpolation CircleIn = new( _ =>
-        {
-            float Apply( float a ) => 1 - ( float )Math.Sqrt( 1 - ( a * a ) );
-        });
-
-    public readonly static Interpolation CircleOut = new( _ =>
-        {
-            float Apply( float a )
-            {
-                a--;
-
-                return ( float )Math.Sqrt( 1 - ( a * a ) );
-            }
-        });
-
+    public readonly static Pow            Pow2       = new( 2 );
+    public readonly static PowIn          Pow2In     = new( 2 );
+    public readonly static PowOut         Pow2Out    = new( 2 );
+    public readonly static Pow            Pow3       = new( 3 );
+    public readonly static PowIn          Pow3In     = new( 3 );
+    public readonly static PowOut         Pow3Out    = new( 3 );
+    public readonly static Pow            Pow4       = new( 4 );
+    public readonly static PowIn          Pow4In     = new( 4 );
+    public readonly static PowOut         Pow4Out    = new( 4 );
+    public readonly static Pow            Pow5       = new( 5 );
+    public readonly static PowIn          Pow5In     = new( 5 );
+    public readonly static PowOut         Pow5Out    = new( 5 );
+    public readonly static Exp            Exp10      = new( 2, 10 );
+    public readonly static ExpIn          Exp10In    = new( 2, 10 );
+    public readonly static ExpOut         Exp10Out   = new( 2, 10 );
+    public readonly static Exp            Exp5       = new( 2, 5 );
+    public readonly static ExpIn          Exp5In     = new( 2, 5 );
+    public readonly static ExpOut         Exp5Out    = new( 2, 5 );
     public readonly static ElasticImpl    Elastic    = new( 2, 10, 7, 1 );
     public readonly static ElasticInImpl  ElasticIn  = new( 2, 10, 6, 1 );
     public readonly static ElasticOutImpl ElasticOut = new( 2, 10, 7, 1 );
-
-    public readonly static SwingImpl    Swing    = new( 1.5f );
-    public readonly static SwingInImpl  SwingIn  = new( 2f );
-    public readonly static SwingOutImpl SwingOut = new( 2f );
-
-    public readonly static BounceImpl    Bounce    = new( 4 );
-    public readonly static BounceInImpl  BounceIn  = new( 4 );
-    public readonly static BounceOutImpl BounceOut = new( 4 );
-
-    //@formatter:on
+    public readonly static SwingImpl      Swing      = new( 1.5f );
+    public readonly static SwingInImpl    SwingIn    = new( 2f );
+    public readonly static SwingOutImpl   SwingOut   = new( 2f );
+    public readonly static BounceImpl     Bounce     = new( 4 );
+    public readonly static BounceInImpl   BounceIn   = new( 4 );
+    public readonly static BounceOutImpl  BounceOut  = new( 4 );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public class Pow : Interpolation
+    [PublicAPI]
+    public class Pow
     {
         protected readonly int power;
 
@@ -200,30 +167,35 @@ public abstract class Interpolator
             this.power = p;
         }
 
-        public new float Apply( float start, float end, float a )
+        public float Apply( float start, float end, float a )
         {
-            if ( a <= 0.5f ) return ( float )Math.Pow( a * 2, power ) / 2;
+            if ( a <= 0.5f )
+            {
+                return ( float )Math.Pow( a * 2, power ) / 2;
+            }
 
             return ( ( float )Math.Pow( ( a - 1 ) * 2, power ) / ( ( power % 2 ) == 0 ? -2 : 2 ) ) + 1;
         }
     }
 
+    [PublicAPI]
     public class PowIn : Pow
     {
         public PowIn( int power ) : base( power )
         {
         }
 
-        public new float Apply( float a ) => ( float )Math.Pow( a, power );
+        public float Apply( float a ) => ( float )Math.Pow( a, power );
     }
 
+    [PublicAPI]
     public class PowOut : Pow
     {
         public PowOut( int power ) : base( power )
         {
         }
 
-        public new float Apply( float a )
+        public float Apply( float a )
         {
             return ( ( float )Math.Pow( a - 1, power ) * ( ( power % 2 ) == 0 ? -1 : 1 ) ) + 1;
         }
@@ -232,7 +204,8 @@ public abstract class Interpolator
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public class Exp : Interpolation
+    [PublicAPI]
+    public class Exp
     {
         protected readonly float value;
         protected readonly float power;
@@ -247,7 +220,7 @@ public abstract class Interpolator
             scale      = 1 / ( 1 - min );
         }
 
-        public new float Apply( float a )
+        public float Apply( float a )
         {
             if ( a <= 0.5f )
             {
@@ -258,6 +231,7 @@ public abstract class Interpolator
         }
     };
 
+    [PublicAPI]
     public class ExpIn : Exp
     {
         public ExpIn( float value, float power )
@@ -271,6 +245,7 @@ public abstract class Interpolator
         }
     }
 
+    [PublicAPI]
     public class ExpOut : Exp
     {
         public ExpOut( float value, float power )
@@ -284,7 +259,8 @@ public abstract class Interpolator
         }
     }
 
-    public class ElasticImpl : Interpolation
+    [PublicAPI]
+    public class ElasticImpl
     {
         protected readonly float value;
         protected readonly float power;
@@ -299,7 +275,7 @@ public abstract class Interpolator
             this.bounces = bounces * MathUtils.PI * ( ( bounces % 2 ) == 0 ? 1 : -1 );
         }
 
-        public new float Apply( float a )
+        public float Apply( float a )
         {
             if ( a <= 0.5f )
             {
@@ -315,6 +291,7 @@ public abstract class Interpolator
         }
     }
 
+    [PublicAPI]
     public class ElasticInImpl : ElasticImpl
     {
         public ElasticInImpl( float value, float power, int bounces, float scale )
@@ -324,12 +301,16 @@ public abstract class Interpolator
 
         public new float Apply( float a )
         {
-            if ( a >= 0.99 ) return 1;
+            if ( a >= 0.99 )
+            {
+                return 1;
+            }
 
             return ( float )Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale;
         }
     }
 
+    [PublicAPI]
     public class ElasticOutImpl : ElasticImpl
     {
         public ElasticOutImpl( float value, float power, int bounces, float scale )
@@ -339,7 +320,10 @@ public abstract class Interpolator
 
         public new float Apply( float a )
         {
-            if ( a == 0 ) return 0;
+            if ( a == 0 )
+            {
+                return 0;
+            }
 
             a = 1 - a;
 
@@ -347,6 +331,7 @@ public abstract class Interpolator
         }
     }
 
+    [PublicAPI]
     public class BounceImpl : BounceOutImpl
     {
         public BounceImpl( float[] widths, float[] heights )
@@ -363,20 +348,27 @@ public abstract class Interpolator
         {
             var test = a + ( widths[ 0 ] / 2 );
 
-            if ( test < widths[ 0 ] ) return ( test / ( widths[ 0 ] / 2 ) ) - 1;
+            if ( test < widths[ 0 ] )
+            {
+                return ( test / ( widths[ 0 ] / 2 ) ) - 1;
+            }
 
             return base.Apply( a );
         }
 
         public new float Apply( float a )
         {
-            if ( a <= 0.5f ) return ( 1 - Out( 1 - ( a * 2 ) ) ) / 2;
+            if ( a <= 0.5f )
+            {
+                return ( 1 - Out( 1 - ( a * 2 ) ) ) / 2;
+            }
 
             return ( Out( ( a * 2 ) - 1 ) / 2 ) + 0.5f;
         }
     }
 
-    public class BounceOutImpl : Interpolation
+    [PublicAPI]
+    public class BounceOutImpl
     {
         protected readonly float[] widths;
         protected readonly float[] heights;
@@ -449,9 +441,12 @@ public abstract class Interpolator
             widths[ 0 ] *= 2;
         }
 
-        protected new float Apply( float a )
+        protected float Apply( float a )
         {
-            if ( a is 1.0f ) return 1;
+            if ( a is 1.0f )
+            {
+                return 1;
+            }
 
             a += widths[ 0 ] / 2;
 
@@ -479,6 +474,7 @@ public abstract class Interpolator
         }
     }
 
+    [PublicAPI]
     public class BounceInImpl : BounceOutImpl
     {
         public BounceInImpl( float[] widths, float[] heights )
@@ -494,7 +490,8 @@ public abstract class Interpolator
         public new float Apply( float a ) => 1 - base.Apply( 1 - a );
     }
 
-    public class SwingImpl : Interpolation
+    [PublicAPI]
+    public class SwingImpl
     {
         protected readonly float scale;
 
@@ -503,7 +500,7 @@ public abstract class Interpolator
             this.scale = scale * 2;
         }
 
-        public new float Apply( float a )
+        public float Apply( float a )
         {
             if ( a <= 0.5f )
             {
@@ -519,7 +516,8 @@ public abstract class Interpolator
         }
     }
 
-    public class SwingOutImpl : Interpolation
+    [PublicAPI]
+    public class SwingOutImpl
     {
         private readonly float _scale;
 
@@ -528,7 +526,7 @@ public abstract class Interpolator
             this._scale = scale;
         }
 
-        public new float Apply( float a )
+        public float Apply( float a )
         {
             a--;
 
@@ -536,7 +534,8 @@ public abstract class Interpolator
         }
     }
 
-    public class SwingInImpl : Interpolation
+    [PublicAPI]
+    public class SwingInImpl
     {
         private readonly float _scale;
 
@@ -545,6 +544,6 @@ public abstract class Interpolator
             this._scale = scale;
         }
 
-        public new float Apply( float a ) => a * a * ( ( ( _scale + 1 ) * a ) - _scale );
+        public float Apply( float a ) => a * a * ( ( ( _scale + 1 ) * a ) - _scale );
     }
 }

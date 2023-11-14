@@ -16,9 +16,11 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
+[PublicAPI]
 public class GLNativesLoader
 {
     public static void Load()
     {
+        GdxNativesLoader.Load();
     }
 }
