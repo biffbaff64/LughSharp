@@ -14,6 +14,8 @@
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.DeleteCandidates;
+
 using IndexOutOfRangeException = System.IndexOutOfRangeException;
 
 namespace LibGDXSharp.Core.Files;
@@ -41,10 +43,11 @@ public class BufferedInputStream : FilterInputStream
     /// because closes can be asynchronous. We use nullness of buf[] as primary
     /// indicator that this stream is closed.
     /// </summary>
-    //TODO: I don't know enough about C# / .Net to know if Atomic Reference classes are needed yet. Needs urgent resolution. 
+
+    //TODO: 
     private static
-        AtomicReferenceFieldUpdater< BufferedInputStream, byte[] > bufUpdater =
-            AtomicReferenceFieldUpdater.NewUpdater( typeof( BufferedInputStream ), typeof( byte[] ), "buf" );
+        AtomicReferenceFieldUpdater< BufferedInputStream, byte[] > _bufUpdater =
+            AtomicReferenceFieldUpdater< BufferedInputStream, byte[] >.NewUpdater( typeof( BufferedInputStream ), typeof( byte[] ), "buf" );
 
     /// <summary>
     /// The index one greater than the index of the last valid byte in the buffer.
@@ -163,7 +166,8 @@ public class BufferedInputStream : FilterInputStream
 
                 Array.Copy( buffer, 0, nbuf, 0, pos );
 
-                if ( !bufUpdater.CompareAndSet( this, buffer, nbuf ) )
+                //TODO: Dummy class implemented, needs correcting
+                if ( !_bufUpdater.CompareAndSet( this, buffer, nbuf ) )
                 {
                     // Can't replace buf if there was an async close.
                     // Note: This would need to be changed if fill()
@@ -222,7 +226,7 @@ public class BufferedInputStream : FilterInputStream
             }
 
             Fill();
-            
+
             avail = count - pos;
 
             if ( avail <= 0 )
@@ -234,7 +238,7 @@ public class BufferedInputStream : FilterInputStream
         var cnt = ( avail < len ) ? avail : len;
 
         Array.Copy( GetBufferIfOpen(), pos, b!, off, cnt );
-        
+
         pos += cnt;
 
         return cnt;
@@ -455,7 +459,8 @@ public class BufferedInputStream : FilterInputStream
     {
         while ( buf is { } buffer )
         {
-            if ( bufUpdater.CompareAndSet( this, buffer, null ) )
+            //TODO: Dummy class implemented, needs correcting
+            if ( _bufUpdater.CompareAndSet( this, buffer, null ) )
             {
                 InputStream? input = inputStream;
                 inputStream = null;

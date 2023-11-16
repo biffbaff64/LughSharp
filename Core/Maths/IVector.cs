@@ -157,7 +157,7 @@ public interface IVector<T> where T : IVector< T >
     /// <param name="alpha"> The interpolation coefficient </param>
     /// <param name="interpolator"> An Interpolation object describing the used interpolation method </param>
     /// <returns> This vector for chaining.  </returns>
-    T Interpolate( T target, float alpha, Interpolation interpolator );
+    T Interpolate( T target, float alpha, IInterpolation interpolator );
 
     /// <summary>
     /// Sets this vector to the unit vector with a random direction

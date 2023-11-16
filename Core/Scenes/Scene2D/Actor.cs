@@ -149,8 +149,10 @@ public class Actor : IActor
     /// </summary>
     /// <param name="ev">The <see cref="Event"/></param>
     /// <returns>True if the event was cancelled.</returns>
-    public virtual bool Fire( Event ev )
+    public virtual bool Fire( Event? ev )
     {
+        ArgumentNullException.ThrowIfNull( ev );
+        
         ev.Stage ??= this.Stage;
 
         ev.TargetActor = this;

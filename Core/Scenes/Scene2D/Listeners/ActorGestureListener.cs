@@ -34,15 +34,17 @@ public class ActorGestureListener : IEventListener
     private InputEvent? _ev;
     private Actor?      _actor;
 
-    /** @see GestureDetector#GestureDetector(com.badlogic.gdx.input.GestureDetector.GestureListener) */
-    public ActorGestureListener()
-        : this( 20, 0.4f, 1.1f, int.MaxValue )
+    public ActorGestureListener() : this( 20, 0.4f, 1.1f, int.MaxValue )
     {
     }
 
-    /** @see GestureDetector#GestureDetector(float, float, float, float, com.badlogic.gdx.input.GestureDetector.GestureListener) */
-    public ActorGestureListener( float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay )
+    public ActorGestureListener( float halfTapSquareSize,
+                                 float tapCountInterval,
+                                 float longPressDuration,
+                                 float maxFlingDelay )
     {
+        
+        
 //        Detector = new GestureDetector( halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, new GestureAdapter()
 //        {
 //            private Vector2 _initialPointer1 = new();

@@ -22,7 +22,7 @@ public abstract class TemporalAction : Action
     public bool            Reverse       { get; set; }
     public float           Duration      { get; set; }
     public float           Time          { get; set; }
-    public Interpolation? Interpolation { get; set; }
+    public IInterpolation? Interpolation { get; set; }
 
     private bool _began;
     private bool _complete;
@@ -36,7 +36,7 @@ public abstract class TemporalAction : Action
         this.Duration = duration;
     }
 
-    protected TemporalAction( float duration, Interpolation? interpolation )
+    protected TemporalAction( float duration, IInterpolation? interpolation )
     {
         this.Duration      = duration;
         this.Interpolation = interpolation;

@@ -64,7 +64,7 @@ public class Pools<T>
 
     /// <summary>
     /// </summary>
-    public static void Free( T obj )
+    public static void Free( T? obj )
     {
         ArgumentNullException.ThrowIfNull( obj );
 

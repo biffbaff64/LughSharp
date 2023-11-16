@@ -37,7 +37,7 @@ public class Dialog : Window
 //    private readonly IEventListener _dialogClickListener  = new DialogClickObserver();
 //    private readonly IEventListener _dialogFocusListener  = new DialogFocusObserver();
 //    private readonly IEventListener _dialogInputListener  = new DialogInputObserver();
-    private readonly Skin?          _skin;
+    private readonly Skin? _skin;
 
     private Dictionary< Actor, object >? _values = new();
 
@@ -290,20 +290,21 @@ public class Dialog : Window
 
     /// <summary>
     /// Centers the dialog in the stage and calls <see cref="Show(Stage, Action)"/>
-    /// with a <see cref="SceneActions.FadeIn(float, Interpolation)"/> action.
+    /// with a <see cref="SceneActions.FadeIn(float, IInterpolation)"/> action.
     /// </summary>
     public Dialog Show( Stage stage )
     {
-        Show
-            (
-             stage, SceneActions.Sequence
-                 ( SceneActions.Alpha( 0 ), SceneActions.FadeIn( 0.4f, Interpolator.Fade ) )
+        Show(
+            stage,
+            SceneActions.Sequence(
+                SceneActions.Alpha( 0 ),
+                SceneActions.FadeIn( 0.4f,
+                                     Interpolation.fade ) )
             );
 
-        SetPosition
-            (
-             ( float )Math.Round( ( stage.Width - Width ) / 2 ),
-             ( float )Math.Round( ( stage.Height - Height ) / 2 )
+        SetPosition(
+            ( float )Math.Round( ( stage.Width - Width ) / 2 ),
+            ( float )Math.Round( ( stage.Height - Height ) / 2 )
             );
 
         return this;
@@ -364,7 +365,7 @@ public class Dialog : Window
     /// </summary>
     public void Hide()
     {
-        Hide( SceneActions.FadeOut( 0.4f, Interpolator.Fade ) );
+        Hide( SceneActions.FadeOut( 0.4f, Interpolation.fade ) );
     }
 
     public void SetObject( Actor actor, object obj )
@@ -433,19 +434,19 @@ public class Dialog : Window
     internal class ButtonTableChangeListener : ChangeListener
     {
         private readonly Dialog _dialog;
-        
+
         public ButtonTableChangeListener( Dialog dialog )
         {
             this._dialog = dialog;
         }
-        
+
         public override void Changed( ChangeEvent ev, Actor? actor )
         {
             if ( ( _dialog._values == null ) || ( actor == null ) )
             {
                 return;
             }
-            
+
             if ( !_dialog._values.ContainsKey( actor ) )
             {
                 return;

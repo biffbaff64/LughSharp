@@ -21,7 +21,7 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 [PublicAPI]
 public class PushbackInputStream
 {
-    public PushbackInputStream( InputStream inStream, int bufferIntSize )
+    public PushbackInputStream( BufferedStream inStream, int bufferIntSize )
     {
     }
 

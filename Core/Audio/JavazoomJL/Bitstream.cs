@@ -106,11 +106,9 @@ public class Bitstream
     /// Construct a IBitstream that reads data from a given InputStream.  
     /// </summary>
     /// <param name="inStream"> The InputStream to read from. </param>
-    public Bitstream( InputStream inStream )
+    public Bitstream( BufferedStream inStream )
     {
         ArgumentNullException.ThrowIfNull( inStream );
-
-        inStream = new BufferedInputStream( inStream );
 
         LoadID3V2( inStream );
 
@@ -125,7 +123,7 @@ public class Bitstream
     /// Load ID3v2 frames.
     /// </summary>
     /// <param name="inStream"> MP3 InputStream. </param>
-    private void LoadID3V2( InputStream inStream )
+    private void LoadID3V2( BufferedStream inStream )
     {
         var size = -1;
 
@@ -179,7 +177,7 @@ public class Bitstream
     /// <param name="inStream"> MP3 InputStream </param>
     /// <returns> size of ID3v2 frames + header </returns>
     [SuppressMessage( "ReSharper", "MustUseReturnValue" )]
-    private int ReadID3V2Header( InputStream inStream )
+    private int ReadID3V2Header( BufferedStream inStream )
     {
         var id3Header = new byte[ 4 ];
         var size      = -10;
@@ -240,8 +238,8 @@ public class Bitstream
 
         try
         {
-            float? replayGain     = 0;
-            float? replayGainPeak = 0;
+            float? replayGain     = 0f;
+            float? replayGainPeak = 0f;
             int    size;
 
             for ( var i = 10; ( i < bframes.Length ) && ( bframes[ i ] > 0 ); i += size )

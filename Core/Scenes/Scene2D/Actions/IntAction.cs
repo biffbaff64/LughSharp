@@ -56,7 +56,7 @@ public class IntAction : TemporalAction
     /// <summary>
     /// Creates a IntAction that transitions from start to end.
     /// </summary>
-    public IntAction( int start, int end, float duration, Interpolation interpolation )
+    public IntAction( int start, int end, float duration, IInterpolation interpolation )
         : base( duration, interpolation )
     {
         this.Start    = start;

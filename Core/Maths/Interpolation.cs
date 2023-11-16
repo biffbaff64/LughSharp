@@ -16,115 +16,125 @@
 
 namespace LibGDXSharp.Maths;
 
-public delegate float InterpolateDelegate( float a );
-
 [PublicAPI]
-public interface IInterpolate
+public interface IInterpolation
 {
-    float Apply( float a );
+    Func< float, float > Interp { get; set; }
+
+    float Apply( float x );
 
     float Apply( float start, float end, float a );
 }
 
 [PublicAPI]
-public class Interpolator
+public class Interpolator : IInterpolation
 {
-    public virtual float Apply( float a ) => a;
+    public Func< float, float > Interp { get; set; } = null!;
 
-    public virtual float Apply( float start, float end, float a )
+    public float Apply( float x ) => Interp( x );
+
+    public float Apply( float start, float end, float a )
     {
         return start + ( ( end - start ) * Apply( a ) );
     }
 }
 
-public delegate float Apply( float a );
-
 [PublicAPI]
-[SuppressMessage( "ReSharper", "ConvertToLambdaExpression" )]
 public class Interpolation
 {
-    public InterpolateDelegate linear = delegate( float a )
+    public static Interpolator linear = new() { Interp = a => a };
+
+    public static Interpolator smooth = new() { Interp = a => a * a * ( 3 - ( 2 * a ) ) };
+
+    public static Interpolator smooth2 = new()
     {
-        return a;
-    };
-
-    public InterpolateDelegate smooth = delegate( float f )
-    {
-        return f * f * ( 3 - ( 2 * f ) );
-    };
-
-    public InterpolateDelegate smooth2 = delegate( float a )
-    {
-        a = a * a * ( 3 - ( 2 * a ) );
-
-        return a * a * ( 3 - ( 2 * a ) );
-    };
-
-// ------------------------------------------------------------------------
-    
-    public static float Linear( float a ) => a;
-
-    public static float Smooth( float a ) => a * a * ( 3 - ( 2 * a ) );
-    
-    public static float Smooth2( float a )
-    {
-        a = a * a * ( 3 - ( 2 * a ) );
-
-        return a * a * ( 3 - ( 2 * a ) );
-    }
-
-    public static float Smoother( float a )
-    {
-        return a * a * a * ( ( a * ( ( a * 6 ) - 15 ) ) + 10 );
-    }
-
-    public static float Fade( float a ) => Smoother( a );
-
-    public static float Pow2InInverse( float a ) => a;
-
-    public static float Pow2OutInverse( float a )
-    {
-        if ( a < MathUtils.FLOAT_ROUNDING_ERROR )
+        Interp = a =>
         {
-            return 0;
+            a = a * a * ( 3 - ( 2 * a ) );
+
+            return a * a * ( 3 - ( 2 * a ) );
         }
+    };
 
-        return 1 - ( float )Math.Sqrt( -( a - 1 ) );
-    }
-
-    public static float Pow3InInverse( float a ) => ( float )Math.Cbrt( a );
-
-    public static float Pow3OutInverse( float a ) => 1 - ( float )Math.Cbrt( -( a - 1 ) );
-
-    public static float Sine( float a ) => ( 1 - MathUtils.Cos( a * MathUtils.PI ) ) / 2;
-
-    public static float SineIn( float a ) => 1 - MathUtils.Cos( a * ( MathUtils.PI / 2 ) );
-
-    public static float SineOut( float a ) => MathUtils.Sin( a * ( MathUtils.PI / 2 ) );
-
-    public static float Circle( float a )
+    public static Interpolator smoother = new()
     {
-        if ( a <= 0.5f )
+        Interp = a => a * a * a * ( ( a * ( ( a * 6 ) - 15 ) ) + 10 )
+    };
+
+    public static Interpolator fade = smoother;
+
+    public static Interpolator pow2InInverse = new() { Interp = a => a };
+
+    public static Interpolator pow2OutInverse = new()
+    {
+        Interp = a =>
         {
+            if ( a < MathUtils.FLOAT_ROUNDING_ERROR )
+            {
+                return 0;
+            }
+
+            return 1 - ( float )Math.Sqrt( -( a - 1 ) );
+        }
+    };
+
+    public static Interpolator pow3InInverse = new()
+    {
+        Interp = a => ( float )Math.Cbrt( a )
+    };
+
+    public static Interpolator pow3OutInverse = new()
+    {
+        Interp = a => 1 - ( float )Math.Cbrt( -( a - 1 ) )
+    };
+
+    public static Interpolator sine = new()
+    {
+        Interp = a => ( 1 - MathUtils.Cos( a * MathUtils.PI ) ) / 2
+    };
+
+    public static Interpolator sineIn = new()
+    {
+        Interp = a => 1 - MathUtils.Cos( a * ( MathUtils.PI / 2 ) )
+    };
+
+    public static Interpolator sineOut = new()
+    {
+        Interp = a => MathUtils.Sin( a * ( MathUtils.PI / 2 ) )
+    };
+
+    public static Interpolator circle = new()
+    {
+        Interp = a =>
+        {
+            if ( a <= 0.5f )
+            {
+                a *= 2;
+
+                return ( 1 - ( float )Math.Sqrt( 1 - ( a * a ) ) ) / 2;
+            }
+
+            a--;
             a *= 2;
 
-            return ( 1 - ( float )Math.Sqrt( 1 - ( a * a ) ) ) / 2;
+            return ( ( float )Math.Sqrt( 1 - ( a * a ) ) + 1 ) / 2;
         }
+    };
 
-        a--;
-        a *= 2;
-
-        return ( ( float )Math.Sqrt( 1 - ( a * a ) ) + 1 ) / 2;
-    }
-
-    public static float CircleIn( float a ) => 1 - ( float )Math.Sqrt( 1 - ( a * a ) );
-
-    public static float CircleOut( float a )
+    public static Interpolator circleIn = new()
     {
-        a--;
+        Interp = a => 1 - ( float )Math.Sqrt( 1 - ( a * a ) )
+    };
 
-        return ( float )Math.Sqrt( 1 - ( a * a ) );
-    }
+    public static Interpolator circleOut = new()
+    {
+        Interp = a =>
+        {
+            a--;
+
+            return ( float )Math.Sqrt( 1 - ( a * a ) );
+        }
+    };
 
     public readonly static Pow            Pow2       = new( 2 );
     public readonly static PowIn          Pow2In     = new( 2 );
@@ -185,7 +195,10 @@ public class Interpolation
         {
         }
 
-        public float Apply( float a ) => ( float )Math.Pow( a, power );
+        public float Apply( float a )
+        {
+            return ( float )Math.Pow( a, power );
+        }
     }
 
     [PublicAPI]
@@ -487,7 +500,10 @@ public class Interpolation
         {
         }
 
-        public new float Apply( float a ) => 1 - base.Apply( 1 - a );
+        public new float Apply( float a )
+        {
+            return 1 - base.Apply( 1 - a );
+        }
     }
 
     [PublicAPI]
@@ -544,6 +560,9 @@ public class Interpolation
             this._scale = scale;
         }
 
-        public float Apply( float a ) => a * a * ( ( ( _scale + 1 ) * a ) - _scale );
+        public float Apply( float a )
+        {
+            return a * a * ( ( ( _scale + 1 ) * a ) - _scale );
+        }
     }
 }

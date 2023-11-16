@@ -32,9 +32,9 @@ public class SceneActions
     {
         Pool< T > pool = Pools< T >.Get();
 
-        T action = pool.Obtain();
+        T? action = pool.Obtain();
 
-        action.Pool = pool as Pool< object >;
+        action!.Pool = pool as Pool< object >;
 
         return action;
     }
@@ -79,7 +79,7 @@ public class SceneActions
     public static MoveToAction MoveTo( float x,
                                        float y,
                                        float duration = 0,
-                                       Interpolation? interpolation = null )
+                                       IInterpolation? interpolation = null )
     {
         var action = Action< MoveToAction >();
 
@@ -94,7 +94,7 @@ public class SceneActions
                                               float y,
                                               int alignment,
                                               float duration = 0,
-                                              Interpolation? interpolation = null )
+                                              IInterpolation? interpolation = null )
     {
         var action = Action< MoveToAction >();
 
@@ -111,7 +111,7 @@ public class SceneActions
     public static MoveByAction MoveBy( float amountX,
                                        float amountY,
                                        float duration = 0,
-                                       Interpolation? interpolation = null )
+                                       IInterpolation? interpolation = null )
     {
         var action = Action< MoveByAction >();
 
@@ -128,7 +128,7 @@ public class SceneActions
     public static SizeToAction SizeTo( float x,
                                        float y,
                                        float duration = 0,
-                                       Interpolation? interpolation = null )
+                                       IInterpolation? interpolation = null )
     {
         var action = Action< SizeToAction >();
 
@@ -145,7 +145,7 @@ public class SceneActions
     public static SizeByAction SizeBy( float amountX,
                                        float amountY,
                                        float duration = 0,
-                                       Interpolation? interpolation = null )
+                                       IInterpolation? interpolation = null )
     {
         var action = Action< SizeByAction >();
 
@@ -157,7 +157,7 @@ public class SceneActions
     }
 
     /** Scales the actor instantly. */
-    public static ScaleToAction ScaleTo( float x, float y, float duration = 0, Interpolation? interpolation = null )
+    public static ScaleToAction ScaleTo( float x, float y, float duration = 0, IInterpolation? interpolation = null )
     {
         var action = Action< ScaleToAction >();
 
@@ -172,7 +172,7 @@ public class SceneActions
     public static ScaleByAction ScaleBy( float amountX,
                                          float amountY,
                                          float duration = 0,
-                                         Interpolation? interpolation = null )
+                                         IInterpolation? interpolation = null )
     {
         var action = Action< ScaleByAction >();
 
@@ -184,7 +184,7 @@ public class SceneActions
     }
 
     /** Rotates the actor instantly. */
-    public static RotateToAction RotateTo( float rotation, float duration = 0, Interpolation? interpolation = null )
+    public static RotateToAction RotateTo( float rotation, float duration = 0, IInterpolation? interpolation = null )
     {
         var action = Action< RotateToAction >();
 
@@ -198,7 +198,7 @@ public class SceneActions
     /** Rotates the actor instantly. */
     public static RotateByAction RotateBy( float rotationAmount,
                                            float duration = 0,
-                                           Interpolation? interpolation = null )
+                                           IInterpolation? interpolation = null )
     {
         var action = Action< RotateByAction >();
 
@@ -211,7 +211,7 @@ public class SceneActions
 
     /// Sets the actor's color instantly.
     /// Transitions from the color at the time this action starts to the specified color.
-    public static ColorAction Color( Color color, float duration = 0, Interpolation? interpolation = null )
+    public static ColorAction Color( Color color, float duration = 0, IInterpolation? interpolation = null )
     {
         var action = Action< ColorAction >();
 
@@ -224,7 +224,7 @@ public class SceneActions
 
     /** Sets the actor's alpha instantly. */
     /** Transitions from the alpha at the time this action starts to the specified alpha. */
-    public static AlphaAction Alpha( float a, float duration = 0, Interpolation? interpolation = null )
+    public static AlphaAction Alpha( float a, float duration = 0, IInterpolation? interpolation = null )
     {
         var action = Action< AlphaAction >();
 
@@ -242,7 +242,7 @@ public class SceneActions
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 0. */
-    public static AlphaAction FadeOut( float duration, Interpolation? interpolation )
+    public static AlphaAction FadeOut( float duration, IInterpolation? interpolation )
     {
         var action = Action< AlphaAction >();
 
@@ -260,7 +260,7 @@ public class SceneActions
     }
 
     /** Transitions from the alpha at the time this action starts to an alpha of 1. */
-    public static AlphaAction FadeIn( float duration, Interpolation? interpolation )
+    public static AlphaAction FadeIn( float duration, IInterpolation? interpolation )
     {
         var action = Action< AlphaAction >();
 

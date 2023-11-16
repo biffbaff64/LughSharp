@@ -24,33 +24,33 @@ namespace LibGDXSharp.Scenes.Listeners;
 [PublicAPI]
 public class DragScrollListener : DragListener
 {
-    static final Vector2 tmpCoords = new Vector2();
+    private readonly static Vector2 TmpCoords = new Vector2();
 
-    private ScrollPane    _scroll;
-    private Task          _scrollUp;
-    private Task          _scrollDown;
-    private Interpolation _interpolation = Interpolation.Exp5In;
-    private float         _minSpeed      = 15;
-    private float         _maxSpeed      = 75;
-    private float         _tickSecs      = 0.05f;
-    private long          _startTime;
-    private long          _rampTime = 1750;
-    private float         _padTop;
-    private float         _padBottom;
+    private ScrollPane          _scroll;
+    private Task                _scrollUp;
+    private Task                _scrollDown;
+    private Interpolation.ExpIn _interpolation = Interpolation.Exp5In;
+    private float               _minSpeed      = 15;
+    private float               _maxSpeed      = 75;
+    private float               _tickSecs      = 0.05f;
+    private long                _startTime;
+    private long                _rampTime = 1750;
+    private float               _padTop;
+    private float               _padBottom;
 
     public DragScrollListener( ScrollPane scroll )
     {
-        this.scroll = scroll;
+        this._scroll = scroll;
 
+        scrollUp = new Task(  )
+        
+        
         scrollUp = new Task()
         {
- 
-
-
-            public void run () {
-            scroll(scroll.getScrollY() - getScrollPixels());
-        }
-
+            public void run ()
+            {
+                scroll(scroll.getScrollY() - getScrollPixels());
+            }
         };
 
         scrollDown = new Task()
@@ -79,9 +79,9 @@ public class DragScrollListener : DragListener
     }
 
     public void drag( InputEvent event, float x, float y, int pointer) {
-        event.getListenerActor().localToActorCoordinates( scroll, tmpCoords.set( x, y ) );
+        event.getListenerActor().localToActorCoordinates( scroll, TmpCoords.set( x, y ) );
 
-        if ( isAbove( tmpCoords.y ) )
+        if ( isAbove( TmpCoords.y ) )
         {
             scrollDown.cancel();
 
@@ -93,7 +93,7 @@ public class DragScrollListener : DragListener
 
             return;
         }
-        else if ( isBelow( tmpCoords.y ) )
+        else if ( isBelow( TmpCoords.y ) )
         {
             scrollUp.cancel();
 

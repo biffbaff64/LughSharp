@@ -23,5 +23,12 @@ public class SynthesisFilter
     {
     }
 
+    public void CalculatePcmSamples( OutputBuffer? buffer )
+    {
+    }
+
+    public void InputSample( float scaledSample, int subbandnumber )
+    {
+    }
 }
 

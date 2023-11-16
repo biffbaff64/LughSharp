@@ -16,8 +16,11 @@
 
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
+/// <summary>
+/// Implements decoding of MPEG Audio Layer II frames.
+/// </summary>
 [PublicAPI]
-public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
+public class LayerIIDecoder : LayerIDecoder
 {
 }
 

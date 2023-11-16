@@ -44,7 +44,6 @@
         <Folder Include="Core\Graphics\G3D\Loader\" />
         <Folder Include="Core\Graphics\G3D\Shaders\" />
         <Folder Include="Core\Utils\Async\" />
-        <Folder Include="DeleteCandidates\" />
         <Folder Include="Extensions\OpenGL.Bindings\" />
         <Folder Include="Extensions\OpenGL\" />
         <Folder Include="packages\" />

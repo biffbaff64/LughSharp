@@ -130,7 +130,6 @@ public class Header
             }
             else
             {
-                // should never be used
                 HIntensityStereoBound = 0;
             }
 

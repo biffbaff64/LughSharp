@@ -14,16 +14,20 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Files;
+using LibGDXSharp.Core.Files;
+
+namespace LibGDXSharp.DeleteCandidates;
 
 [PublicAPI]
-public class ByteArrayInputStream : InputStream
+public class AtomicReferenceFieldUpdater<T, TV>
 {
-    public ByteArrayInputStream( byte[]? byteStream )
+    public static AtomicReferenceFieldUpdater< BufferedInputStream, byte[] > NewUpdater( Type type, Type type1, string buf )
     {
+        return null!;
     }
 
-    /// <inheritdoc />
-    public override int Read() => 0;
+    public bool CompareAndSet( BufferedInputStream bufferedInputStream, byte[] buffer, byte[]? nbuf )
+    {
+        return false;
+    }
 }
-

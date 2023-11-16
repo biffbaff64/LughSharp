@@ -292,7 +292,10 @@ public class Vector3 : IVector< Vector3 >
     {
         var len2 = this.Len2();
 
-        if ( ( len2 == 0f ) || MathUtils.IsEqual( len2, 1f ) ) return this;
+        if ( ( len2 == 0f ) || MathUtils.IsEqual( len2, 1f ) )
+        {
+            return this;
+        }
 
         return this.Scl( 1f / ( float )Math.Sqrt( len2 ) );
     }
@@ -580,7 +583,7 @@ public class Vector3 : IVector< Vector3 >
         return this;
     }
 
-    public Vector3 Interpolate( Vector3 target, float alpha, Interpolation interpolator )
+    public Vector3 Interpolate( Vector3 target, float alpha, IInterpolation interpolator )
     {
         return Lerp( target, interpolator.Apply( 0f, 1f, alpha ) );
     }
@@ -590,7 +593,10 @@ public class Vector3 : IVector< Vector3 >
         var dot = Dot( target );
 
         // If the inputs are too close for comfort, simply linearly interpolate.
-        if ( ( dot > 0.9995 ) || ( dot < -0.9995 ) ) return Lerp( target, alpha );
+        if ( ( dot > 0.9995 ) || ( dot < -0.9995 ) )
+        {
+            return Lerp( target, alpha );
+        }
 
         // theta0 = angle between input vectors
         var theta0 = ( float )Math.Acos( dot );
@@ -646,11 +652,17 @@ public class Vector3 : IVector< Vector3 >
     {
         var len2 = Len2();
 
-        if ( len2 == 0f ) return this;
+        if ( len2 == 0f )
+        {
+            return this;
+        }
 
         var max2 = max * max;
 
-        if ( len2 > max2 ) return Scl( ( float )Math.Sqrt( max2 / len2 ) );
+        if ( len2 > max2 )
+        {
+            return Scl( ( float )Math.Sqrt( max2 / len2 ) );
+        }
 
         var min2 = min * min;
 
@@ -662,7 +674,7 @@ public class Vector3 : IVector< Vector3 >
     /// <returns></returns>
     public new int GetHashCode()
     {
-        const int prime = 31;
+        var prime = 31;
 
         var result = prime + NumberUtils.FloatToIntBits( X );
         result = ( prime * result ) + NumberUtils.FloatToIntBits( Y );
@@ -677,14 +689,32 @@ public class Vector3 : IVector< Vector3 >
     /// <returns></returns>
     public new bool Equals( object? obj )
     {
-        if ( this == obj ) return true;
-        if ( obj == null ) return false;
-        if ( GetType() != obj.GetType() ) return false;
+        if ( this == obj )
+        {
+            return true;
+        }
+
+        if ( obj == null )
+        {
+            return false;
+        }
+
+        if ( GetType() != obj.GetType() )
+        {
+            return false;
+        }
 
         var other = ( Vector3 )obj;
 
-        if ( NumberUtils.FloatToIntBits( X ) != NumberUtils.FloatToIntBits( other.X ) ) return false;
-        if ( NumberUtils.FloatToIntBits( Y ) != NumberUtils.FloatToIntBits( other.Y ) ) return false;
+        if ( NumberUtils.FloatToIntBits( X ) != NumberUtils.FloatToIntBits( other.X ) )
+        {
+            return false;
+        }
+
+        if ( NumberUtils.FloatToIntBits( Y ) != NumberUtils.FloatToIntBits( other.Y ) )
+        {
+            return false;
+        }
 
         return NumberUtils.FloatToIntBits( Z ) == NumberUtils.FloatToIntBits( other.Z );
     }
@@ -696,10 +726,25 @@ public class Vector3 : IVector< Vector3 >
     /// <returns></returns>
     public bool EpsilonEquals( Vector3? other, float epsilon = MathUtils.FLOAT_ROUNDING_ERROR )
     {
-        if ( other == null ) return false;
-        if ( Math.Abs( other.X - X ) > epsilon ) return false;
-        if ( Math.Abs( other.Y - Y ) > epsilon ) return false;
-        if ( Math.Abs( other.Z - Z ) > epsilon ) return false;
+        if ( other == null )
+        {
+            return false;
+        }
+
+        if ( Math.Abs( other.X - X ) > epsilon )
+        {
+            return false;
+        }
+
+        if ( Math.Abs( other.Y - Y ) > epsilon )
+        {
+            return false;
+        }
+
+        if ( Math.Abs( other.Z - Z ) > epsilon )
+        {
+            return false;
+        }
 
         return true;
     }
@@ -713,9 +758,20 @@ public class Vector3 : IVector< Vector3 >
     /// <returns></returns>
     public bool EpsilonEquals( float x, float y, float z, float epsilon = MathUtils.FLOAT_ROUNDING_ERROR )
     {
-        if ( Math.Abs( x - this.X ) > epsilon ) return false;
-        if ( Math.Abs( y - this.Y ) > epsilon ) return false;
-        if ( Math.Abs( z - this.Z ) > epsilon ) return false;
+        if ( Math.Abs( x - this.X ) > epsilon )
+        {
+            return false;
+        }
+
+        if ( Math.Abs( y - this.Y ) > epsilon )
+        {
+            return false;
+        }
+
+        if ( Math.Abs( z - this.Z ) > epsilon )
+        {
+            return false;
+        }
 
         return true;
     }

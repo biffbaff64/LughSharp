@@ -4,52 +4,6 @@ LIBGDX CSharp CONVERSION - ROUND 1
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-     - ASSETS                           - DONE
-     - ASSETS/LOADERS                   - DONE
-     - ASSETS/LOADERS/RESOLVERS         - IP
-    - - - - - - - - - - - - - - - - - - - - - -
-     - AUDIO                            - DONE
-     - AUDIO/JAVAZOOMJL                 - IP
-    - - - - - - - - - - - - - - - - - - - - - -
-     - CORE                             - DONE
-    - - - - - - - - - - - - - - - - - - - - - -
-     - FILES                            - IP
-     - FILES/BUFFERS                    - IP
-    - - - - - - - - - - - - - - - - - - - - - -
-     - GRAPHICS                         - DONE
-     - GRAPHICS/FRAMEBUFFERS            - DONE
-     - GRAPHICS/G2D                     - IP
-     - GRAPHICS/GLUTILS                 - DONE
-     - GRAPHICS/PROFILING               - DONE
-    - - - - - - - - - - - - - - - - - - - - - -
-     - INPUT                            - IP
-    - - - - - - - - - - - - - - - - - - - - - -
-     - MAPS                             - DONE
-     - MAPS/OBJECTS                     - DONE
-     - MAPS/TILED                       - DONE
-     - MAPS/TILED/LOADERS               - DONE
-     - MAPS/TILED/OBJECTS               - DONE
-     - MAPS/TILED/RENDERERS             - IP
-     - MAPS/TILED/TILES                 - DONE
-    - - - - - - - - - - - - - - - - - - - - - -
-     - MATHS                            - IP
-     - MATH/COLLISION                   - DONE
-    - - - - - - - - - - - - - - - - - - - - - -
-     - SCENES/SCENE2D                   - DONE
-     - SCENES/SCENE2D/ACTIONS           - DONE
-     - SCENES/SCENE2D/LISTENERS         - IP
-     - SCENES.SCENE2D/UI                - IP
-     - SCENES.SCENE2D/UTILS             - IP
-    - - - - - - - - - - - - - - - - - - - - - -
-     - UTILS                            - DONE
-     - UTILS/COLLECTIONS                - DONE
-     - UTILS/EXCEPTIONS                 - DONE
-     - UTILS/POOLING                    - DONE
-     - UTILS/VIEWPORT                   - DONE
-     - UTILS/XML                        - DONE
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 - STEP 1: Complete all conversions so that the code will build.
 - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
 -         Some classes can become structs / records instead.
@@ -154,10 +108,10 @@ AUDIO/JAVAZOOMJL
     - IP   - Bitstream
     - DONE - BitstreamException
     - DONE - Crc16
-    -      - DecoderException
-    -      - FrameDecoder
+    - DONE - DecoderException
     - DONE - Header
-    -      - LayerIDecoder
+    - DONE - IFrameDecoder
+    - DONE - LayerIDecoder
     -      - LayerIIDecoder
     -      - LayerIIIDecoder
     - IP   - Mp3Decoder
@@ -265,15 +219,18 @@ FILES
     - DONE - InputStream
 
     ------------------------------------------
-
     - java.io.BufferedReader                -> 
+    - java.io.BufferedInputStream           -> BufferedStream
+    - java.io.ByteArrayInputStream          -> 
     - java.io.ByteArrayOutputStream         -> 
     - java.io.DataInputStream               -> BinaryReader
     - java.io.DataOutputStream              -> BinaryWriter
     - java.io.File                          -> 
+    - java.io.FileHandle                    -> 
     - java.io.FileInputStream               -> 
     - java.io.FileOutputStream              -> 
     - java.io.DataOuput                     -> (Interface)
+    - java.io.InputStream                   -> StreamReader
     - java.io.InputStreamReader             -> StreamReader
     - java.io.IOException                   -> System.IO.IOException
     - java.io.OutputStream                  -> StreamWriter
@@ -576,7 +533,7 @@ MATHS
     - DONE - GeometryUtils
     - DONE - GridPoint2
     - DONE - GridPoint3
-    - IP   - Interpolation
+    - DONE - Interpolation
     - DONE - Intersector
     - DONE - IPath
     - DONE - IShape2D
@@ -689,14 +646,14 @@ SCENES.SCENE2D/ACTIONS
 SCENES/SCENE2D/LISTENERS
 ------------------------
 
-    - IP   - ActorGestureListener           
-    - DONE - ChangeListener                 
-    - DONE - ClickListener                  
-    - DONE - DragListener                   
-    - IP   - DragScrollListener             
-    - DONE - FocusListener                  
-    - DONE - IEventListener                 
-    - DONE - InputListener                  
+    -      - ActorGestureListener           
+    -      - ChangeListener                 
+    -      - ClickListener                  
+    -      - DragListener                   
+    -      - DragScrollListener             
+    -      - FocusListener                  
+    -      - IEventListener                 
+    -      - InputListener                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
