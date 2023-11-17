@@ -18,6 +18,9 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 public class OutputBuffer
 {
-    
+
+    public void AppendSamples( int channel, float[] tmpOut )
+    {
+    }
 }
 

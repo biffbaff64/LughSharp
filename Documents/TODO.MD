@@ -105,19 +105,22 @@ AUDIO
 AUDIO/JAVAZOOMJL
 ----------------
 
+    - IP   - BitReserve
     - IP   - Bitstream
     - DONE - BitstreamException
     - DONE - Crc16
     - DONE - DecoderException
     - DONE - Header
+    - DONE - HuffCodeTab
     - DONE - IFrameDecoder
     - DONE - LayerIDecoder
-    -      - LayerIIDecoder
-    -      - LayerIIIDecoder
+    - DONE - LayerIIDecoder
+    - IP   - LayerIIIDecoder
     - IP   - Mp3Decoder
     -      - OutputBuffer
-    -      - OutputChannels
-    -      - SynthesisFilter
+    - DONE - OutputChannels
+    - IP   - PushbackInputStream
+    - IP   - SynthesisFilter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

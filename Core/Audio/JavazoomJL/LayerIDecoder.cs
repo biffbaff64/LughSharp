@@ -160,7 +160,7 @@ public class LayerIDecoder : IFrameDecoder
     }
 
     // Scalefactors for layer I and II, Annex 3-B.1 in ISO/IEC DIS 11172:
-    private readonly static float[] Scalefactors =
+    protected readonly static float[] ScaleFactors =
     {
         2.00000000000000f, 1.58740105196820f, 1.25992104989487f, 1.00000000000000f,
         0.79370052598410f, 0.62996052494744f, 0.50000000000000f, 0.39685026299205f,
@@ -230,7 +230,7 @@ public class LayerIDecoder : IFrameDecoder
             ( ( ( 1.0f / 8192.0f ) - 1.0f ) * 16384.0f ) / 16383.0f, ( ( ( 1.0f / 16384.0f ) - 1.0f ) * 32768.0f ) / 32767.0f
         };
 
-        public int   subbandnumber;
+        public int   subbandNumber;
         public int   samplenumber;
         public int   allocation;
         public float scalefactor;
@@ -239,9 +239,9 @@ public class LayerIDecoder : IFrameDecoder
         public float factor;
         public float offset;
 
-        public SubbandLayer1( int subbandnumber )
+        public SubbandLayer1( int subbandNumber )
         {
-            this.subbandnumber = subbandnumber;
+            this.subbandNumber = subbandNumber;
             samplenumber       = 0;
         }
 
@@ -273,7 +273,7 @@ public class LayerIDecoder : IFrameDecoder
             {
                 Debug.Assert( stream != null );
 
-                scalefactor = Scalefactors[ stream.GetBits( 6 ) ];
+                scalefactor = ScaleFactors[ stream.GetBits( 6 ) ];
             }
         }
 
@@ -302,7 +302,7 @@ public class LayerIDecoder : IFrameDecoder
             {
                 var scaledSample = ( ( sample * factor ) + offset ) * scalefactor;
 
-                filter1?.InputSample( scaledSample, subbandnumber );
+                filter1?.InputSample( scaledSample, subbandNumber );
             }
 
             return true;
@@ -317,8 +317,8 @@ public class LayerIDecoder : IFrameDecoder
     {
         protected float channel2ScaleFactor;
 
-        public SubbandLayer1IntensityStereo( int subbandnumber )
-            : base( subbandnumber )
+        public SubbandLayer1IntensityStereo( int subbandNumber )
+            : base( subbandNumber )
         {
         }
 
@@ -328,8 +328,8 @@ public class LayerIDecoder : IFrameDecoder
             {
                 Debug.Assert( stream != null );
 
-                scalefactor         = Scalefactors[ stream.GetBits( 6 ) ];
-                channel2ScaleFactor = Scalefactors[ stream.GetBits( 6 ) ];
+                scalefactor         = ScaleFactors[ stream.GetBits( 6 ) ];
+                channel2ScaleFactor = ScaleFactors[ stream.GetBits( 6 ) ];
             }
         }
 
@@ -342,18 +342,18 @@ public class LayerIDecoder : IFrameDecoder
                 if ( channels == OutputChannels.BOTH_CHANNELS )
                 {
                     float sample1 = sample * scalefactor, sample2 = sample * channel2ScaleFactor;
-                    filter1?.InputSample( sample1, subbandnumber );
-                    filter2?.InputSample( sample2, subbandnumber );
+                    filter1?.InputSample( sample1, subbandNumber );
+                    filter2?.InputSample( sample2, subbandNumber );
                 }
                 else if ( channels == OutputChannels.LEFT_CHANNEL )
                 {
                     var sample1 = sample * scalefactor;
-                    filter1?.InputSample( sample1, subbandnumber );
+                    filter1?.InputSample( sample1, subbandNumber );
                 }
                 else
                 {
                     var sample2 = sample * channel2ScaleFactor;
-                    filter1?.InputSample( sample2, subbandnumber );
+                    filter1?.InputSample( sample2, subbandNumber );
                 }
             }
 
@@ -413,12 +413,12 @@ public class LayerIDecoder : IFrameDecoder
 
             if ( allocation != 0 )
             {
-                scalefactor = Scalefactors[ stream.GetBits( 6 ) ];
+                scalefactor = ScaleFactors[ stream.GetBits( 6 ) ];
             }
 
             if ( channel2Allocation != 0 )
             {
-                channel2ScaleFactor = Scalefactors[ stream.GetBits( 6 ) ];
+                channel2ScaleFactor = ScaleFactors[ stream.GetBits( 6 ) ];
             }
         }
 
@@ -446,11 +446,11 @@ public class LayerIDecoder : IFrameDecoder
 
                 if ( channels == OutputChannels.BOTH_CHANNELS )
                 {
-                    filter2?.InputSample( sample2, subbandnumber );
+                    filter2?.InputSample( sample2, subbandNumber );
                 }
                 else
                 {
-                    filter1?.InputSample( sample2, subbandnumber );
+                    filter1?.InputSample( sample2, subbandNumber );
                 }
             }
 
