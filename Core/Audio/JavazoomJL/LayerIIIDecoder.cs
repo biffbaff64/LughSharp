@@ -22,13 +22,13 @@ public class LayerIIIDecoder : IFrameDecoder
     private const int SSLIMIT = 18;
     private const int SBLIMIT = 32;
 
-    public int[]? ScalefacBuffer { get; set; }
+    public int[] ScalefacBuffer { get; set; }
 
     private readonly double _d43 = 4.0 / 3.0;
 
     private int   _counter      = 0;
     private int   _checkSumHuff = 0;
-    private int[] _is1D;
+    private int[] _is1D         = null!;
 
     private float[ ,, ] _ro;
     private float[ ,, ] _lr;
@@ -38,13 +38,13 @@ public class LayerIIIDecoder : IFrameDecoder
     private int[]       _nonzero;
     private int         _whichChannels;
 
-    private Bitstream?       _stream;
-    private Header?          _header;
-    private SynthesisFilter? _filter1;
-    private SynthesisFilter? _filter2;
-    private OutputBuffer?    _buffer;
-    private BitReserve?      _br;
-    private IIISideInfoT?    _si;
+    private Bitstream       _stream;
+    private Header          _header;
+    private SynthesisFilter _filter1;
+    private SynthesisFilter _filter2;
+    private OutputBuffer    _buffer;
+    private BitReserve      _br;
+    private IIISideInfoT    _si;
 
     private Temporary2[] _iiiScalefactor;
     private Temporary2[] _scalefac;
@@ -57,12 +57,16 @@ public class LayerIIIDecoder : IFrameDecoder
     private int _lastChannel;
     private int _sfreq;
 
-    public LayerIIIDecoder( Bitstream stream0,
-                            Header header0,
-                            SynthesisFilter filtera,
-                            SynthesisFilter filterb,
-                            OutputBuffer buffer0,
-                            int which_ch0 )
+    public LayerIIIDecoder()
+    {
+    }
+
+    public void Create( Bitstream stream0,
+                        Header header0,
+                        SynthesisFilter? filtera,
+                        SynthesisFilter? filterb,
+                        OutputBuffer? buffer0,
+                        int which_ch0 )
     {
         HuffCodeTab.InitHuff();
 
@@ -200,7 +204,7 @@ public class LayerIIIDecoder : IFrameDecoder
     /// <summary>
     /// Notify decoder that a seek is being made.
     /// </summary>
-    public void seek_notify()
+    public void SeekNotify()
     {
         _frameStart = 0;
 
@@ -241,9 +245,9 @@ public class LayerIIIDecoder : IFrameDecoder
             _br.HPutbuf( _stream.GetBits( 8 ) );
         }
 
-        var mainDataEnd = _br.HSstell() >>> 3; // of previous frame
+        var mainDataEnd = _br.TotBit >>> 3; // of previous frame
 
-        if ( ( flushMain = _br.HSstell() & 7 ) != 0 )
+        if ( ( flushMain = _br.TotBit & 7 ) != 0 )
         {
             _br.HGetBits( 8 - flushMain );
             mainDataEnd++;
@@ -273,7 +277,7 @@ public class LayerIIIDecoder : IFrameDecoder
         {
             for ( var ch = 0; ch < _channels; ch++ )
             {
-                _part2Start = _br.HSstell();
+                _part2Start = _br.TotBit;
 
                 if ( _header.HVersion == Header.MPEG1 )
                 {
@@ -288,7 +292,7 @@ public class LayerIIIDecoder : IFrameDecoder
                 HuffmanDecode( ch, gr );
 
                 // System.out.println("CheckSum HuffMan = " + _checkSumHuff);
-                dequantize_sample( _ro[ ch ], ch, gr );
+                DequantizeSample( _ro, ch, gr );
             }
 
             Stereo( gr );
@@ -300,7 +304,7 @@ public class LayerIIIDecoder : IFrameDecoder
 
             for ( var ch = _firstChannel; ch <= _lastChannel; ch++ )
             {
-                Reorder( _lr[ ch ], ch, gr );
+                Reorder( _lr, ch, gr );
                 Antialias( ch, gr );
 
                 Hybrid( ch, gr );
@@ -327,12 +331,11 @@ public class LayerIIIDecoder : IFrameDecoder
                         {
                             _samples1[ sb ] = _out1D[ sb18 + ss ];
 
-                            // filter1.input_sample(_out1D[sb18+ss], sb);
                             sb++;
                         }
 
                         _filter1.InputSamples( _samples1 );
-                        _filter1.CalculatePcmSamples( _buffer );
+                        _filter1.CalculatePcmSamples( out _buffer! );
                     }
                 }
                 else
@@ -345,13 +348,11 @@ public class LayerIIIDecoder : IFrameDecoder
                         for ( var sb18 = 0; sb18 < 576; sb18 += 18 )
                         {
                             _samples2[ sb ] = _out1D[ sb18 + ss ];
-
-                            // filter2.input_sample(_out1D[sb18+ss], sb);
                             sb++;
                         }
 
                         _filter2.InputSamples( _samples2 );
-                        _filter2.CalculatePcmSamples( _buffer );
+                        _filter2.CalculatePcmSamples( out _buffer! );
                     }
                 }
             }
@@ -373,17 +374,8 @@ public class LayerIIIDecoder : IFrameDecoder
 
         if ( _header.HVersion == Header.MPEG1 )
         {
-
             _si.mainDataBegin = _stream.GetBits( 9 );
-
-            if ( _channels == 1 )
-            {
-                _si.privateBits = _stream.GetBits( 5 );
-            }
-            else
-            {
-                _si.privateBits = _stream.GetBits( 3 );
-            }
+            _si.privateBits   = _stream.GetBits( _channels == 1 ? 5 : 3 );
 
             for ( ch = 0; ch < _channels; ch++ )
             {
@@ -418,12 +410,11 @@ public class LayerIIIDecoder : IFrameDecoder
                         // Set region_count parameters since they are implicit in this case.
 
                         if ( _si.ch[ ch ].gr[ gr ].blockType == 0 )
-
-                            // Side info bad: blockType == 0 in split block
                         {
+                            // Side info bad: blockType == 0 in split block
                             return false;
                         }
-                        else if ( _si.ch[ ch ].gr[ gr ].blockType == 2 && _si.ch[ ch ].gr[ gr ].mixedBlockFlag == 0 )
+                        else if ( ( _si.ch[ ch ].gr[ gr ].blockType == 2 ) && ( _si.ch[ ch ].gr[ gr ].mixedBlockFlag == 0 ) )
                         {
                             _si.ch[ ch ].gr[ gr ].region0Count = 8;
                         }
@@ -449,26 +440,16 @@ public class LayerIIIDecoder : IFrameDecoder
                     _si.ch[ ch ].gr[ gr ].count1TableSelect = _stream.GetBits( 1 );
                 }
             }
-
         }
         else
         {
             // MPEG-2 LSF, SZD: MPEG-2.5 LSF
 
             _si.mainDataBegin = _stream.GetBits( 8 );
-
-            if ( _channels == 1 )
-            {
-                _si.privateBits = _stream.GetBits( 1 );
-            }
-            else
-            {
-                _si.privateBits = _stream.GetBits( 2 );
-            }
+            _si.privateBits   = _stream.GetBits( _channels == 1 ? 1 : 2 );
 
             for ( ch = 0; ch < _channels; ch++ )
             {
-
                 _si.ch[ ch ].gr[ 0 ].part23Length        = _stream.GetBits( 12 );
                 _si.ch[ ch ].gr[ 0 ].bigValues           = _stream.GetBits( 9 );
                 _si.ch[ ch ].gr[ 0 ].globalGain          = _stream.GetBits( 8 );
@@ -477,7 +458,6 @@ public class LayerIIIDecoder : IFrameDecoder
 
                 if ( _si.ch[ ch ].gr[ 0 ].windowSwitchingFlag != 0 )
                 {
-
                     _si.ch[ ch ].gr[ 0 ].blockType        = _stream.GetBits( 2 );
                     _si.ch[ ch ].gr[ 0 ].mixedBlockFlag   = _stream.GetBits( 1 );
                     _si.ch[ ch ].gr[ 0 ].tableSelect[ 0 ] = _stream.GetBits( 5 );
@@ -490,12 +470,11 @@ public class LayerIIIDecoder : IFrameDecoder
                     // Set region_count parameters since they are implicit in this case.
 
                     if ( _si.ch[ ch ].gr[ 0 ].blockType == 0 )
-
-                        // Side info bad: blockType == 0 in split block
                     {
+                        // Side info bad: blockType == 0 in split block
                         return false;
                     }
-                    else if ( _si.ch[ ch ].gr[ 0 ].blockType == 2 && _si.ch[ ch ].gr[ 0 ].mixedBlockFlag == 0 )
+                    else if ( ( _si.ch[ ch ].gr[ 0 ].blockType == 2 ) && ( _si.ch[ ch ].gr[ 0 ].mixedBlockFlag == 0 ) )
                     {
                         _si.ch[ ch ].gr[ 0 ].region0Count = 8;
                     }
@@ -504,7 +483,6 @@ public class LayerIIIDecoder : IFrameDecoder
                         _si.ch[ ch ].gr[ 0 ].region0Count = 7;
                         _si.ch[ ch ].gr[ 0 ].region1Count = 20 - _si.ch[ ch ].gr[ 0 ].region0Count;
                     }
-
                 }
                 else
                 {
@@ -613,7 +591,7 @@ public class LayerIIIDecoder : IFrameDecoder
         {
             // LONG types 0,1,3
 
-            if ( ( _si?.ch[ ch ].scfsi[ 0 ] == 0 ) || ( gr == 0 ) )
+            if ( ( _si.ch[ ch ].scfsi[ 0 ] == 0 ) || ( gr == 0 ) )
             {
                 _scalefac[ ch ].l[ 0 ] = _br.HGetBits( length0 );
                 _scalefac[ ch ].l[ 1 ] = _br.HGetBits( length0 );
@@ -701,9 +679,9 @@ public class LayerIIIDecoder : IFrameDecoder
             }
             else if ( scalefacComp < 500 )
             {
-                _newSlen[ 0 ]                 = ( scalefacComp - 400 >>> 2 ) / 5;
-                _newSlen[ 1 ]                 = ( scalefacComp - 400 >>> 2 ) % 5;
-                _newSlen[ 2 ]                 = scalefacComp - 400 & 3;
+                _newSlen[ 0 ]                 = ( ( scalefacComp - 400 ) >>> 2 ) / 5;
+                _newSlen[ 1 ]                 = ( ( scalefacComp - 400 ) >>> 2 ) % 5;
+                _newSlen[ 2 ]                 = ( scalefacComp - 400 ) & 3;
                 _newSlen[ 3 ]                 = 0;
                 _si.ch[ ch ].gr[ gr ].preflag = 0;
                 blocknumber                   = 1;
@@ -726,7 +704,7 @@ public class LayerIIIDecoder : IFrameDecoder
             if ( intScalefacComp < 180 )
             {
                 _newSlen[ 0 ]                 = intScalefacComp / 36;
-                _newSlen[ 1 ]                 = intScalefacComp % 36 / 6;
+                _newSlen[ 1 ]                 = ( intScalefacComp % 36 ) / 6;
                 _newSlen[ 2 ]                 = intScalefacComp % 36 % 6;
                 _newSlen[ 3 ]                 = 0;
                 _si.ch[ ch ].gr[ gr ].preflag = 0;
@@ -734,9 +712,9 @@ public class LayerIIIDecoder : IFrameDecoder
             }
             else if ( intScalefacComp < 244 )
             {
-                _newSlen[ 0 ]                 = ( intScalefacComp - 180 & 0x3F ) >>> 4;
-                _newSlen[ 1 ]                 = ( intScalefacComp - 180 & 0xF ) >>> 2;
-                _newSlen[ 2 ]                 = intScalefacComp - 180 & 3;
+                _newSlen[ 0 ]                 = ( ( intScalefacComp - 180 ) & 0x3F ) >>> 4;
+                _newSlen[ 1 ]                 = ( ( intScalefacComp - 180 ) & 0xF ) >>> 2;
+                _newSlen[ 2 ]                 = ( intScalefacComp - 180 ) & 3;
                 _newSlen[ 3 ]                 = 0;
                 _si.ch[ ch ].gr[ gr ].preflag = 0;
                 blocknumber                   = 4;
@@ -752,7 +730,7 @@ public class LayerIIIDecoder : IFrameDecoder
             }
         }
 
-        //TODO: why 45, not 54?
+        //TODO: why 45, not 54? (This comment from original Java)
         for ( var x = 0; x < 45; x++ )
         {
             ScalefacBuffer[ x ] = 0;
@@ -778,7 +756,7 @@ public class LayerIIIDecoder : IFrameDecoder
 
         GetLsfScaleData( ch, gr );
 
-        if ( grInfo.windowSwitchingFlag != 0 && grInfo.blockType == 2 )
+        if ( ( grInfo.windowSwitchingFlag != 0 ) && ( grInfo.blockType == 2 ) )
         {
             int window;
 
@@ -851,10 +829,6 @@ public class LayerIIIDecoder : IFrameDecoder
         var part23End = _part2Start + _si.ch[ ch ].gr[ gr ].part23Length;
         int region1Start;
         int region2Start;
-        int index;
-
-        int buf;
-        int buf1;
 
         HuffCodeTab h;
 
@@ -871,10 +845,10 @@ public class LayerIIIDecoder : IFrameDecoder
         {
             // Find region boundary for long block case
 
-            buf  = _si.ch[ ch ].gr[ gr ].region0Count + 1;
-            buf1 = buf + _si.ch[ ch ].gr[ gr ].region1Count + 1;
+            int buf  = _si.ch[ ch ].gr[ gr ].region0Count + 1;
+            int buf1 = buf + _si.ch[ ch ].gr[ gr ].region1Count + 1;
 
-            if ( buf1 > _sfBandIndex[ _sfreq ].l.Length - 1 )
+            if ( buf1 > ( _sfBandIndex[ _sfreq ].l.Length - 1 ) )
             {
                 buf1 = _sfBandIndex[ _sfreq ].l.Length - 1;
             }
@@ -883,10 +857,12 @@ public class LayerIIIDecoder : IFrameDecoder
             region2Start = _sfBandIndex[ _sfreq ].l[ buf1 ]; /* MI */
         }
 
-        index = 0;
+        var index = 0;
+
+        GdxRuntimeException.ThrowIfNull( HuffCodeTab.ht );
 
         // Read bigvalues area
-        for ( var i = 0; i < _si.ch[ ch ].gr[ gr ].bigValues << 1; i += 2 )
+        for ( var i = 0; i < ( _si.ch[ ch ].gr[ gr ].bigValues << 1 ); i += 2 )
         {
             if ( i < region1Start )
             {
@@ -903,22 +879,17 @@ public class LayerIIIDecoder : IFrameDecoder
 
             HuffCodeTab.HuffmanDecoder( h, _x, _y, _v, _w, _br );
 
-            // if (index >= is_1d.Length)
-            // System.out.println("i0="+i+"/"+(_si.ch[ch].gr[gr].bigValues<<1)+" Index="+index+" is_1d="+is_1d.Length);
-
             _is1D[ index++ ] = _x[ 0 ];
             _is1D[ index++ ] = _y[ 0 ];
 
             _checkSumHuff = _checkSumHuff + _x[ 0 ] + _y[ 0 ];
-
-            // System.out.println("x = "+x[0]+" y = "+y[0]);
         }
 
         // Read count1 area
-        h       = HuffCodeTab.ht[ _si.ch[ ch ].gr[ gr ].count1TableSelect + 32 ];
-        var numBits = _br.HSstell();
+        h = HuffCodeTab.ht[ _si.ch[ ch ].gr[ gr ].count1TableSelect + 32 ];
+        var numBits = _br.TotBit;
 
-        while ( numBits < part23End && index < 576 )
+        while ( ( numBits < part23End ) && ( index < 576 ) )
         {
             HuffCodeTab.HuffmanDecoder( h, _x, _y, _v, _w, _br );
 
@@ -929,7 +900,7 @@ public class LayerIIIDecoder : IFrameDecoder
 
             _checkSumHuff = _checkSumHuff + _v[ 0 ] + _w[ 0 ] + _x[ 0 ] + _y[ 0 ];
 
-            numBits = _br.HSstell();
+            numBits = _br.TotBit;
         }
 
         if ( numBits > part23End )
@@ -938,7 +909,7 @@ public class LayerIIIDecoder : IFrameDecoder
             index -= 4;
         }
 
-        numBits = _br.HSstell();
+        numBits = _br.TotBit;
 
         // Dismiss stuffing bits
         if ( numBits < part23End )
@@ -978,7 +949,7 @@ public class LayerIIIDecoder : IFrameDecoder
         }
         else if ( ( ispos & 1 ) != 0 )
         {
-            _k[ 0, i ] = io[ io_type, ispos + 1 >>> 1 ];
+            _k[ 0, i ] = io[ io_type, ( ispos + 1 ) >>> 1 ];
             _k[ 1, i ] = 1.0f;
         }
         else
@@ -988,7 +959,7 @@ public class LayerIIIDecoder : IFrameDecoder
         }
     }
 
-    private void dequantize_sample( float[ , ] xr, int ch, int gr )
+    private void DequantizeSample( float[ ,, ] xr, int ch, int gr )
     {
         GrInfoS grInfo = _si.ch[ ch ].gr[ gr ];
         var     cb     = 0;
@@ -997,12 +968,11 @@ public class LayerIIIDecoder : IFrameDecoder
         var     cbWidth = 0;
         var     index   = 0;
         int     j;
-        float   gGain;
         var     xr1D = xr;
 
         // choose correct scalefactor band per block type, initalize boundary
 
-        if ( grInfo.windowSwitchingFlag != 0 && grInfo.blockType == 2 )
+        if ( ( grInfo.windowSwitchingFlag != 0 ) && ( grInfo.blockType == 2 ) )
         {
             if ( grInfo.mixedBlockFlag != 0 )
             {
@@ -1021,44 +991,43 @@ public class LayerIIIDecoder : IFrameDecoder
         }
 
         // Compute overall (global) scaling.
-        gGain = ( float )Math.Pow( 2.0, ( 0.25 * ( grInfo.globalGain - 210.0 ) ) );
+        var gGain = ( float )Math.Pow( 2.0, ( 0.25 * ( grInfo.globalGain - 210.0 ) ) );
 
         for ( j = 0; j < _nonzero[ ch ]; j++ )
         {
-            // Modif E.B 02/22/99
             var reste   = j % SSLIMIT;
             var quotien = ( ( j - reste ) / SSLIMIT );
 
-            if ( is_1d[ j ] == 0 )
+            if ( _is1D[ j ] == 0 )
             {
-                xr1D[ quotien ][ reste ] = 0.0f;
+                xr1D[ quotien, reste, 0 ] = 0.0f;
             }
             else
             {
-                int abv = is_1d[ j ];
+                var abv = _is1D[ j ];
 
-                if ( abv < t_43.Length )
+                if ( abv < _t43.Length )
                 {
-                    if ( is_1d[ j ] > 0 )
+                    if ( _is1D[ j ] > 0 )
                     {
-                        xr1D[ quotien ][ reste ] = gGain * t_43[ abv ];
+                        xr1D[ quotien, reste, 0 ] = gGain * _t43[ abv ];
                     }
-                    else if ( -abv < t_43.Length )
+                    else if ( -abv < _t43.Length )
                     {
-                        xr1D[ quotien ][ reste ] = -gGain * t_43[ -abv ];
+                        xr1D[ quotien, reste, 0 ] = -gGain * _t43[ -abv ];
                     }
                     else
                     {
-                        xr1D[ quotien ][ reste ] = -gGain * ( float )Math.pow( -abv, d43 );
+                        xr1D[ quotien, reste, 0 ] = -gGain * ( float )Math.Pow( -abv, _d43 );
                     }
                 }
-                else if ( is_1d[ j ] > 0 )
+                else if ( _is1D[ j ] > 0 )
                 {
-                    xr1D[ quotien, reste ] = gGain * ( float )Math.pow( abv, d43 );
+                    xr1D[ quotien, reste, 0 ] = gGain * ( float )Math.Pow( abv, _d43 );
                 }
                 else
                 {
-                    xr1D[ quotien, reste ] = -gGain * ( float )Math.pow( -abv, d43 );
+                    xr1D[ quotien, reste, 0 ] = -gGain * ( float )Math.Pow( -abv, _d43 );
                 }
             }
         }
@@ -1071,7 +1040,7 @@ public class LayerIIIDecoder : IFrameDecoder
 
             if ( index == nextCbBoundary )
             {
-                if ( grInfo.windowSwitchingFlag != 0 && grInfo.blockType == 2 )
+                if ( ( grInfo.windowSwitchingFlag != 0 ) && ( grInfo.blockType == 2 ) )
                 {
                     if ( grInfo.mixedBlockFlag != 0 )
                     {
@@ -1128,7 +1097,7 @@ public class LayerIIIDecoder : IFrameDecoder
 
                 idx += grInfo.subblockGain[ tIndex ] << 2;
 
-                xr1D[ quotien, reste ] *= twoToNegativeHalfPow[ idx ];
+                xr1D[ quotien, reste, 0 ] *= twoToNegativeHalfPow[ idx ];
             }
             else
             {
@@ -1140,8 +1109,8 @@ public class LayerIIIDecoder : IFrameDecoder
                     idx += pretab[ cb ];
                 }
 
-                idx                    =  idx << grInfo.scalefacScale;
-                xr1D[ quotien, reste ] *= twoToNegativeHalfPow[ idx ];
+                idx                       =  idx << grInfo.scalefacScale;
+                xr1D[ quotien, reste, 0 ] *= twoToNegativeHalfPow[ idx ];
             }
 
             index++;
@@ -1162,11 +1131,11 @@ public class LayerIIIDecoder : IFrameDecoder
                 quotien = 0;
             }
 
-            xr1D[ quotien, reste ] = 0.0f;
+            xr1D[ quotien, reste, 0 ] = 0.0f;
         }
     }
 
-    private void Reorder( float[ , ] xr, int ch, int gr )
+    private void Reorder( float[ ,, ] xr, int ch, int gr )
     {
         GrInfoS grInfo = _si.ch[ ch ].gr[ gr ];
         int     index;
@@ -1188,7 +1157,7 @@ public class LayerIIIDecoder : IFrameDecoder
                     var reste   = index % SSLIMIT;
                     var quotien = ( ( index - reste ) / SSLIMIT );
 
-                    _out1D[ index ] = xr1D[ quotien, reste ];
+                    _out1D[ index ] = xr1D[ quotien, reste, 0 ];
                 }
 
                 // reordering for rest switched short
@@ -1207,21 +1176,21 @@ public class LayerIIIDecoder : IFrameDecoder
                         var reste   = srcLine % SSLIMIT;
                         var quotien = ( ( srcLine - reste ) / SSLIMIT );
 
-                        _out1D[ desLine ] =  xr1D[ quotien, reste ];
+                        _out1D[ desLine ] =  xr1D[ quotien, reste, 0 ];
                         srcLine           += sfbLines;
                         desLine++;
 
                         reste   = srcLine % SSLIMIT;
                         quotien = ( ( srcLine - reste ) / SSLIMIT );
 
-                        _out1D[ desLine ] =  xr1D[ quotien, reste ];
+                        _out1D[ desLine ] =  xr1D[ quotien, reste, 0 ];
                         srcLine           += sfbLines;
                         desLine++;
 
                         reste   = srcLine % SSLIMIT;
                         quotien = ( ( srcLine - reste ) / SSLIMIT );
 
-                        _out1D[ desLine ] = xr1D[ quotien, reste ];
+                        _out1D[ desLine ] = xr1D[ quotien, reste, 0 ];
                     }
                 }
             }
@@ -1233,7 +1202,7 @@ public class LayerIIIDecoder : IFrameDecoder
                     var reste   = j % SSLIMIT;
                     var quotien = ( ( j - reste ) / SSLIMIT );
 
-                    _out1D[ index ] = xr1D[ ( int )quotien!, ( int )reste! ];
+                    _out1D[ index ] = xr1D[ ( int )quotien!, ( int )reste!, 0 ];
                 }
             }
         }
@@ -1244,7 +1213,7 @@ public class LayerIIIDecoder : IFrameDecoder
                 var reste   = index % SSLIMIT;
                 var quotien = ( ( index - reste ) / SSLIMIT );
 
-                _out1D[ index ] = xr1D[ quotien, reste ];
+                _out1D[ index ] = xr1D[ quotien, reste, 0 ];
             }
         }
     }
@@ -1271,8 +1240,8 @@ public class LayerIIIDecoder : IFrameDecoder
         else
         {
 
-            GrInfoS grInfo  = _si!.ch[ 0 ].gr[ gr ];
-            var     modeExt = _header!.HModeExtension;
+            GrInfoS grInfo  = _si.ch[ 0 ].gr[ gr ];
+            var     modeExt = _header.HModeExtension;
             int     i;
 
             var msStereo = ( _header.HMode == Header.JOINT_STEREO ) && ( ( modeExt & 0x2 ) != 0 );
@@ -1652,7 +1621,7 @@ public class LayerIIIDecoder : IFrameDecoder
     {
         int      sb18;
         int      sb18Lim;
-        GrInfoS? grInfo = _si?.ch[ ch ].gr[ gr ];
+        GrInfoS? grInfo = _si.ch[ ch ].gr[ gr ];
 
         Debug.Assert( grInfo != null );
 
@@ -1697,7 +1666,7 @@ public class LayerIIIDecoder : IFrameDecoder
     private void Hybrid( int ch, int gr )
     {
         int      sb18;
-        GrInfoS? grInfo = _si?.ch[ ch ].gr[ gr ];
+        GrInfoS? grInfo = _si.ch[ ch ].gr[ gr ];
 
         for ( sb18 = 0; sb18 < 576; sb18 += 18 )
         {

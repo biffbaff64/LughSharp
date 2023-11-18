@@ -146,9 +146,8 @@ public class Mp3Decoder
         // REVIEW: allow customizable scale factor
         var scalefactor = 32700.0f;
 
-        int mode = header.HMode;
-
-        var channels = mode == Header.SINGLE_CHANNEL ? 1 : 2;
+        var mode     = header.HMode;
+        var channels = ( mode == Header.SINGLE_CHANNEL ? 1 : 2 );
 
         // set up output buffer if not set up by client.
         if ( Output == null )

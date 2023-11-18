@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files;
-
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
 [PublicAPI]
