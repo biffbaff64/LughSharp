@@ -14,9 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files;
-
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
+
+//TODO: The ComputePcmSamplesX methods all take an 'out OutputBuffer buffer' as a
+// parameter, but it is never used. This is a direct conversion from the Java, and
+// can probably be removed later.
+// Confirm this is ok first.
 
 /// <summary>
 /// A class for the synthesis filter bank. This class does a fast downsampling
@@ -519,7 +522,7 @@ public class SynthesisFilter
 
     private float[] _tmpOut = new float[ 32 ];
 
-    private void ComputePcmSamples0( ref OutputBuffer buffer )
+    private void ComputePcmSamples0( out OutputBuffer buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -528,28 +531,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 0 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 0 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
             
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples1( out OutputBuffer buffer )
@@ -561,28 +566,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 1 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 1 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples2( out OutputBuffer buffer )
@@ -594,28 +601,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 2 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 2 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples3( out OutputBuffer buffer )
@@ -627,28 +636,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 3 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 3 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples4( out OutputBuffer buffer )
@@ -660,28 +671,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 4 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 4 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples5( out OutputBuffer buffer )
@@ -693,28 +706,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 5 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 5 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples6( out OutputBuffer buffer )
@@ -726,28 +741,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 6 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 6 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples7( out OutputBuffer buffer )
@@ -759,28 +776,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 7 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 7 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples8( out OutputBuffer buffer )
@@ -792,28 +811,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 8 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 8 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples9( out OutputBuffer buffer )
@@ -825,28 +846,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 9 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 9 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples10( out OutputBuffer buffer )
@@ -858,28 +881,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 10 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 10 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples11( out OutputBuffer buffer )
@@ -891,28 +916,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 11 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 11 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples12( out OutputBuffer buffer )
@@ -924,28 +951,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 12 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 12 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples13( out OutputBuffer buffer )
@@ -957,28 +986,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 13 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 13 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples14( out OutputBuffer buffer )
@@ -990,28 +1021,30 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 14 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 15 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 14 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 15 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] = pcmSample;
 
             dvp += 16;
         }
+
+        buffer = null!;
     }
 
     private void ComputePcmSamples15( out OutputBuffer buffer )
@@ -1023,27 +1056,29 @@ public class SynthesisFilter
         // fat chance of having this loop unroll
         for ( var i = 0; i < 32; i++ )
         {
-            var pcmSample = ( ( ( vp[ 15 + dvp ] * _d16[ i, 0 ] )
-                              + ( vp[ 14 + dvp ] * _d16[ i, 1 ] )
-                              + ( vp[ 13 + dvp ] * _d16[ i, 2 ] )
-                              + ( vp[ 12 + dvp ] * _d16[ i, 3 ] )
-                              + ( vp[ 11 + dvp ] * _d16[ i, 4 ] )
-                              + ( vp[ 10 + dvp ] * _d16[ i, 5 ] )
-                              + ( vp[ 9 + dvp ] * _d16[ i, 6 ] )
-                              + ( vp[ 8 + dvp ] * _d16[ i, 7 ] )
-                              + ( vp[ 7 + dvp ] * _d16[ i, 8 ] )
-                              + ( vp[ 6 + dvp ] * _d16[ i, 9 ] )
-                              + ( vp[ 5 + dvp ] * _d16[ i, 10 ] )
-                              + ( vp[ 4 + dvp ] * _d16[ i, 11 ] )
-                              + ( vp[ 3 + dvp ] * _d16[ i, 12 ] )
-                              + ( vp[ 2 + dvp ] * _d16[ i, 13 ] )
-                              + ( vp[ 1 + dvp ] * _d16[ i, 14 ] )
-                              + ( vp[ 0 + dvp ] * _d16[ i, 15 ] ) )
+            var pcmSample = ( ( ( vp[ 15 + dvp ] * _d16[ i ][ 0 ] )
+                              + ( vp[ 14 + dvp ] * _d16[ i ][ 1 ] )
+                              + ( vp[ 13 + dvp ] * _d16[ i ][ 2 ] )
+                              + ( vp[ 12 + dvp ] * _d16[ i ][ 3 ] )
+                              + ( vp[ 11 + dvp ] * _d16[ i ][ 4 ] )
+                              + ( vp[ 10 + dvp ] * _d16[ i ][ 5 ] )
+                              + ( vp[ 9 + dvp ] * _d16[ i ][ 6 ] )
+                              + ( vp[ 8 + dvp ] * _d16[ i ][ 7 ] )
+                              + ( vp[ 7 + dvp ] * _d16[ i ][ 8 ] )
+                              + ( vp[ 6 + dvp ] * _d16[ i ][ 9 ] )
+                              + ( vp[ 5 + dvp ] * _d16[ i ][ 10 ] )
+                              + ( vp[ 4 + dvp ] * _d16[ i ][ 11 ] )
+                              + ( vp[ 3 + dvp ] * _d16[ i ][ 12 ] )
+                              + ( vp[ 2 + dvp ] * _d16[ i ][ 13 ] )
+                              + ( vp[ 1 + dvp ] * _d16[ i ][ 14 ] )
+                              + ( vp[ 0 + dvp ] * _d16[ i ][ 15 ] ) )
                             * _scalefactor );
 
             tmpOut[ i ] =  pcmSample;
             dvp         += 16;
         }
+
+        buffer = null!;
     }
 
     private readonly static double MyPI = 3.14159265358979323846;
@@ -1088,7 +1123,7 @@ public class SynthesisFilter
 
     // d[] split into subarrays of length 16. This provides for more faster
     // access by allowing a block of 16 to be addressed with constant offset.
-    private static float[ , ] _d16 = null!;
+    private static float[][] _d16 = null!;
 
     /// <summary>
     /// Loads the data for the d[] from the resource SFd.ser.
@@ -1098,7 +1133,7 @@ public class SynthesisFilter
     {
         try
         {
-            var o = DeserializeArray( GetResourceAsStream( "/sfd.ser" ), typeof( float ), 512 );
+            var o = DeserializeArray( File.OpenRead( "/sfd.ser" ), typeof( float ), 512 );
 
             return ( float[] )o;
         }
@@ -1108,15 +1143,13 @@ public class SynthesisFilter
         }
     }
 
-    /**
-     * Deserializes an array from a given <code>InputStream</code>.
-     *
-     * @param in The <code>InputStream</code> to deserialize an object from.
-     *
-     * @param elemType The class denoting the type of the array elements.
-     * @param length The expected length of the array, or -1 if any length is expected.
-     */
-    private Object DeserializeArray( InputStream inStream, Type elemType, int length )
+    /// <summary>
+    /// Deserializes an array from a given <tt>InputStream</tt>.
+    /// </summary>
+    /// <param name="inStream"> The <tt>InputStream</tt> to deserialize an object from. </param>
+    /// <param name="elemType"> The class denoting the type of the array elements. </param>
+    /// <param name="length"> The expected length of the array, or -1 if any length is expected. </param>
+    private object DeserializeArray( FileStream inStream, Type elemType, int length )
     {
         ArgumentNullException.ThrowIfNull( inStream );
         ArgumentNullException.ThrowIfNull( elemType );
@@ -1128,41 +1161,37 @@ public class SynthesisFilter
 
         var obj = Deserialize( inStream );
 
-        Type cls = obj.GetType();
-
-        if ( !cls.IsArray )
+        if ( !obj.GetType().IsArray )
         {
             throw new InvalidTypeException( "object is not an array" );
         }
 
-        Type arrayElemType = cls.GetComponentType();
-
-        if ( arrayElemType != elemType )
+        if ( obj.GetType().GetElementType() != elemType )
         {
             throw new InvalidTypeException( "unexpected array component type" );
         }
 
         if ( length != -1 )
         {
-            var arrayLength = Array.GetLength( obj );
+            var arrayLength = ( ( Array )obj ).Cast< object >().ToArray().Length;
 
             if ( arrayLength != length )
             {
-                throw new InvalidTypeException( "array length mismatch" );
+                throw new GdxRuntimeException( "array length mismatch" );
             }
         }
 
         return obj;
     }
 
-    public object Deserialize( InputStream inStream )
+    public object Deserialize( FileStream inStream )
     {
         ArgumentNullException.ThrowIfNull( inStream );
 
         ObjectInputStream objIn = new ObjectInputStream( inStream );
 
-        Object obj;
-
+        object obj;
+        
         try
         {
             obj = objIn.ReadObject();
@@ -1190,7 +1219,7 @@ public class SynthesisFilter
     /// An array of arrays in which each element in the returned array will
     /// be of length <tt>blockSize</tt>.
     /// </returns>
-    private float[ , ] SplitArray( float[] array, int blockSize )
+    private float[][] SplitArray( float[] array, int blockSize )
     {
         var size  = array.Length / blockSize;
         var split = new float[ size ][];

@@ -101,7 +101,7 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract int GetFramesPerSecond();
 
-    public abstract GraphicsType GetGraphicsType();
+    public abstract GLVersion.GLType GetGraphicsType();
 
     public abstract float GetPpiX();
 

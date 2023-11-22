@@ -31,6 +31,7 @@ public static class Gdx
     private static INet?         _net;
     private static IGL20?        _gl;
     private static IGL20?        _gl20;
+    private static IGL30?        _gl30;
 
     static Gdx()
     {
@@ -42,8 +43,7 @@ public static class Gdx
         _net      = null;
         _gl       = null;
         _gl20     = null;
-
-        GL30 = null;
+        _gl30     = null;
     }
 
     public static bool GodMode { get; set; } = false;
@@ -139,5 +139,14 @@ public static class Gdx
         set => _gl20 = value;
     }
 
-    public static IGL30? GL30 { get; set; }
+    public static IGL30? GL30
+    {
+        get
+        {
+            ArgumentNullException.ThrowIfNull( _gl30 );
+            
+            return _gl30;
+        }
+        set => _gl30 = value;
+    }
 }

@@ -24,6 +24,7 @@
   &lt;Assembly Path="C:\Users\richi\.nuget\packages\opentk.windowing.graphicslibraryframework\4.8.0\lib\netcoreapp3.1\OpenTK.Windowing.GraphicsLibraryFramework.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\richi\.nuget\packages\opentk.graphics\4.8.0\lib\netcoreapp3.1\OpenTK.Graphics.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\7.0.13\ref\net7.0\System.Runtime.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\7.0.14\System.Private.CoreLib.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpKeepExistingMigration/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpPlaceEmbeddedOnSameLineMigration/@EntryIndexedValue">True</s:Boolean>

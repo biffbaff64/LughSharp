@@ -216,6 +216,7 @@ FILES
 -----
 
     - IP   - BufferedInputStream
+    - IP   - BufferedStreamExtensions
     - IP   - ByteArrayInputStream
     - IP   - FileHandle
     - DONE - FilterInputStream
@@ -259,14 +260,9 @@ FILES/BUFFERS
     - IP   - BufferUtils
     - DONE - ByteBuffer
     - DONE - CharBuffer
-    - DONE - FloatBuffer
-    - DONE - ShortBuffer
-    - DONE - StringCharBuffer
-
-    Does C# have these classes already? Could MemoryStream be used?
-
     - IP   - DirectByteBuffer
     - IP   - DoubleBuffer
+    - DONE - FloatBuffer
     - IP   - HeapByteBuffer
     - IP   - HeapCharBuffer
     - IP   - HeapFloatBuffer
@@ -275,6 +271,8 @@ FILES/BUFFERS
     - IP   - IntBuffer
     - IP   - LongBuffer
     - IP   - MappedByteBuffer
+    - DONE - ShortBuffer
+    - DONE - StringCharBuffer
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

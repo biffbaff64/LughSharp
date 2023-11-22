@@ -747,7 +747,7 @@ public class AssetManager
     /// <param name="parentAssetFilename"></param>
     /// <param name="dependendAssetDesc"></param>
     /// <exception cref="GdxRuntimeException"></exception>
-    private void InjectDependency( string parentAssetFilename, AssetDescriptor dependendAssetDesc )
+    public void InjectDependency( string parentAssetFilename, AssetDescriptor dependendAssetDesc )
     {
         // add the asset as a dependency of the parent asset
         List< string >? dependencies = _assetDependencies?[ parentAssetFilename ];
@@ -792,7 +792,7 @@ public class AssetManager
     /// dependency of a previously loaded asset) its reference count will
     /// be increased. 
     /// </summary>
-    private void NextTask()
+    public void NextTask()
     {
         AssetDescriptor assetDesc = _loadQueue.RemoveIndex( 0 );
 
@@ -834,7 +834,7 @@ public class AssetManager
     /// <summary>
     /// Adds a <see cref="LibGDXSharp.Assets.AssetLoadingTask"/> to the task stack for the given asset.
     /// </summary>
-    private void AddTask( AssetDescriptor assetDesc )
+    public void AddTask( AssetDescriptor assetDesc )
     {
         AssetLoader? loader = GetLoader( assetDesc.Type, assetDesc.FilePath );
 
@@ -855,7 +855,7 @@ public class AssetManager
     /// <param name="type"></param>
     /// <param name="asset"></param>
     /// <typeparam name="T"></typeparam>
-    private void AddAsset<T>( string fileName, Type type, T asset )
+    public void AddAsset<T>( string fileName, Type type, T asset )
     {
         if ( asset == null )
         {
@@ -871,7 +871,7 @@ public class AssetManager
     /// Updates the current task on the top of the task stack.
     /// </summary>
     /// <returns>true if the asset is loaded or the task was cancelled.</returns>
-    private bool UpdateTask()
+    public bool UpdateTask()
     {
         AssetLoadingTask task = _tasks.Peek();
 
@@ -932,7 +932,7 @@ public class AssetManager
     /// A subclass may supress the default implementation when loading assets where loading
     /// failure is recoverable.
     /// </summary>
-    protected virtual void TaskFailed( AssetDescriptor assetDesc, System.Exception ex )
+    public virtual void TaskFailed( AssetDescriptor assetDesc, System.Exception ex )
     {
         throw ex;
     }
@@ -941,7 +941,7 @@ public class AssetManager
     /// 
     /// </summary>
     /// <param name="parent"></param>
-    private void IncrementRefCountedDependencies( string parent )
+    public void IncrementRefCountedDependencies( string parent )
     {
         if ( _assetDependencies?[ parent ] == null )
         {
@@ -969,7 +969,7 @@ public class AssetManager
     /// invoking the <see cref="IAssetErrorListener"/>.
     /// </summary>
     /// <param name="t"></param>
-    private void HandleTaskError( System.Exception t )
+    public void HandleTaskError( System.Exception t )
     {
         Log.Error( $"Error loading asset: {t}" );
 

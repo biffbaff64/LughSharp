@@ -429,7 +429,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public override int GetFramesPerSecond() => 0;
 
-    public override GraphicsType GetGraphicsType() => GraphicsType.GL2;
+    public override GLVersion.GLType GetGraphicsType() => GLVersion.GLType.GL20;
 
     // ------------------------------------------------------------------------
 

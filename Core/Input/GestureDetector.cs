@@ -14,11 +14,15 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Timer = LibGDXSharp.Utils.Timer;
+
 namespace LibGDXSharp.Input;
 
-/** {@link InputProcessor} implementation that detects gestures (tap, long press, fling, pan, zoom, pinch) and hands them to a
- * {@link GestureListener}.
- * @author mzechner */
+/// <summary>
+/// <see cref="IInputProcessor"/>" implementation that detects gestures
+/// (tap, long press, fling, pan, zoom, pinch) and hands them to a
+/// <see cref="IGestureListener"/>.
+/// </summary>
 [PublicAPI]
 public class GestureDetector : InputAdapter
 {
@@ -41,23 +45,15 @@ public class GestureDetector : InputAdapter
     private float _tapRectangleCenterY;
     private long  _touchDownTime;
 
-    private IGestureListener? _listener        = null;
-    private VelocityTracker   _tracker         = new();
-    private Vector2           _pointer1        = new();
-    private Vector2           _pointer2        = new();
-    private Vector2           _initialPointer1 = new();
-    private Vector2           _initialPointer2 = new();
-
-//private Task longPressTask = new Task()
-//{
-//    public void run()
-//    {
-//        if ( !longPressFired )
-//        {
-//            longPressFired = listener.longPress( pointer1.x, pointer1.y );
-//        }
-//    }
-//};
+    private IGestureListener?       _listener        = null;
+    private VelocityTracker         _tracker         = new();
+    private Vector2                 _pointer1        = new();
+    private Vector2                 _pointer2        = new();
+    private Vector2                 _initialPointer1 = new();
+    private Vector2                 _initialPointer2 = new();
+    private Task                    _longPressTask;
+    private CancellationTokenSource _tokenSource;
+    private CancellationToken       _cancellationToken;
 
     /// <summary>
     /// Creates a new GestureDetector with default values: halfTapSquareSize=20,
@@ -87,6 +83,7 @@ public class GestureDetector : InputAdapter
     /// no fling event is fired when the time in seconds the finger was dragged is
     /// larger than this, see <see cref="IGestureListener.Fling(float, float, int)"/>
     /// </param>
+    /// <param name="listener"></param>
     public GestureDetector( float halfTapSquareSize,
                             float tapCountInterval,
                             float longPressDuration,
@@ -115,9 +112,11 @@ public class GestureDetector : InputAdapter
     /// time in seconds that must pass for the detector to fire a
     /// <see cref="IGestureListener.LongPress(float, float)"/> event.
     /// </param>
-    /// @param maxFlingDelay no fling event is fired when the time in seconds the finger was dragged is larger than this, see
-    ///           {@link GestureListener#fling(float, float, int)}
+    /// <param name="maxFlingDelay">
+    /// no fling event is fired when the time in seconds the finger was dragged
+    /// is larger than this, see <see cref="IGestureListener.Fling(float, float, int)"/>
     /// </param>
+    /// <param name="listener"></param>
     public GestureDetector( float halfTapRectangleWidth,
                             float halfTapRectangleHeight,
                             float tapCountInterval,
@@ -131,14 +130,50 @@ public class GestureDetector : InputAdapter
         this._longPressSeconds   = longPressDuration;
         this._maxFlingDelay      = ( long )( maxFlingDelay * 1000000000l );
         this._listener           = listener ?? throw new ArgumentException( "listener cannot be null." );
-    }
 
-    public bool touchDown( int x, int y, int pointer, int button )
+        SetLongPressTask();
+    }
+    
+    private async Task SetLongPressTask()
     {
-        return touchDown( ( float )x, ( float )y, pointer, button );
+        _tokenSource       = new CancellationTokenSource();
+        _cancellationToken = _tokenSource.Token;
+
+        this._longPressTask = Task.Run( () =>
+        {
+            if ( !_longPressFired )
+            {
+                _longPressFired = ( bool )_listener?.LongPress( _pointer1.X, _pointer1.Y );
+            }
+
+            if ( _cancellationToken.IsCancellationRequested )
+            {
+                _cancellationToken.ThrowIfCancellationRequested();
+            }
+        }, _cancellationToken );
+
+        _tokenSource.Cancel();
+
+        try
+        {
+            await _longPressTask;
+        }
+        catch ( OperationCanceledException )
+        {
+            // Ignore
+        }
+        finally
+        {
+            _tokenSource.Dispose();
+        }
     }
 
-    public bool touchDown( float x, float y, int pointer, int button )
+    public override bool TouchDown( int x, int y, int pointer, int button )
+    {
+        return TouchDown( ( float )x, ( float )y, pointer, button );
+    }
+
+    public bool TouchDown( float x, float y, int pointer, int button )
     {
         if ( pointer > 1 )
         {
@@ -147,114 +182,118 @@ public class GestureDetector : InputAdapter
 
         if ( pointer == 0 )
         {
-            pointer1.set( x, y );
-            touchDownTime = Gdx.input.getCurrentEventTime();
-            tracker.start( x, y, touchDownTime );
+            _pointer1.Set( x, y );
+            _touchDownTime = Gdx.Input.GetCurrentEventTime();
+            _tracker.Start( x, y, _touchDownTime );
 
-            if ( Gdx.input.isTouched( 1 ) )
+            if ( Gdx.Input.IsTouched( 1 ) )
             {
                 // Start pinch.
-                inTapRectangle = false;
-                pinching       = true;
-                initialPointer1.set( pointer1 );
-                initialPointer2.set( pointer2 );
-                longPressTask.cancel();
+                _inTapRectangle = false;
+                _pinching       = true;
+                _initialPointer1.Set( _pointer1 );
+                _initialPointer2.Set( _pointer2 );
+
+                _longPressTask.Cancel();
             }
             else
             {
                 // Normal touch down.
-                inTapRectangle      = true;
-                pinching            = false;
-                longPressFired      = false;
-                tapRectangleCenterX = x;
-                tapRectangleCenterY = y;
+                _inTapRectangle      = true;
+                _pinching            = false;
+                _longPressFired      = false;
+                _tapRectangleCenterX = x;
+                _tapRectangleCenterY = y;
 
-                if ( !longPressTask.isScheduled() )
+                if ( !_longPressTask.IsScheduled() )
                 {
-                    Timer.schedule( longPressTask, longPressSeconds );
+                    Timer.Schedule( _longPressTask, _longPressSeconds );
                 }
             }
         }
         else
         {
             // Start pinch.
-            pointer2.set( x, y );
-            inTapRectangle = false;
-            pinching       = true;
-            initialPointer1.set( pointer1 );
-            initialPointer2.set( pointer2 );
-            longPressTask.cancel();
+            _pointer2.Set( x, y );
+            _inTapRectangle = false;
+            _pinching       = true;
+            _initialPointer1.Set( _pointer1 );
+            _initialPointer2.Set( _pointer2 );
+
+            _longPressTask.cancel();
         }
 
-        return listener.touchDown( x, y, pointer, button );
+        return ( bool )_listener?.TouchDown( x, y, pointer, button );
     }
 
-    public bool touchDragged( int x, int y, int pointer )
+    public override bool TouchDragged( int x, int y, int pointer )
     {
-        return touchDragged( ( float )x, ( float )y, pointer );
+        return TouchDragged( ( float )x, ( float )y, pointer );
     }
 
-    public bool touchDragged( float x, float y, int pointer )
+    public bool TouchDragged( float x, float y, int pointer )
     {
         if ( pointer > 1 )
         {
             return false;
         }
 
-        if ( longPressFired )
+        if ( _longPressFired )
         {
             return false;
         }
 
         if ( pointer == 0 )
         {
-            pointer1.set( x, y );
+            _pointer1.Set( x, y );
         }
         else
         {
-            pointer2.set( x, y );
+            _pointer2.Set( x, y );
         }
 
         // handle pinch zoom
-        if ( pinching )
+        if ( _pinching )
         {
-            if ( listener != null )
+            if ( _listener != null )
             {
-                bool result = listener.pinch( initialPointer1, initialPointer2, pointer1, pointer2 );
+                var result = _listener.Pinch( _initialPointer1, _initialPointer2, _pointer1, _pointer2 );
 
-                return listener.zoom( initialPointer1.dst( initialPointer2 ), pointer1.dst( pointer2 ) ) || result;
+                return _listener.Zoom( _initialPointer1.Dst( _initialPointer2 ),
+                                       _pointer1.Dst( _pointer2 ) )
+                    || result;
             }
 
             return false;
         }
 
         // update tracker
-        tracker.update( x, y, Gdx.input.getCurrentEventTime() );
+        _tracker.Update( x, y, Gdx.Input.GetCurrentEventTime() );
 
         // check if we are still tapping.
-        if ( inTapRectangle && !isWithinTapRectangle( x, y, tapRectangleCenterX, tapRectangleCenterY ) )
+        if ( _inTapRectangle && !IsWithinTapRectangle( x, y, _tapRectangleCenterX, _tapRectangleCenterY ) )
         {
-            longPressTask.cancel();
-            inTapRectangle = false;
+            _longPressTask.Cancel();
+            _inTapRectangle = false;
         }
 
         // if we have left the tap square, we are panning
-        if ( !inTapRectangle )
+        if ( !_inTapRectangle )
         {
-            panning = true;
+            _panning = true;
 
-            return listener.pan( x, y, tracker.deltaX, tracker.deltaY );
+            return _listener?.Pan( x, y, _tracker.DeltaX, _tracker.DeltaY );
         }
 
         return false;
     }
 
-    public bool touchUp( int x, int y, int pointer, int button )
+    public override bool TouchUp( int x, int y, int pointer, int button )
     {
-        return touchUp( ( float )x, ( float )y, pointer, button );
+        return TouchUp( ( float )x, ( float )y, pointer, button );
     }
 
-    public bool touchUp( float x, float y, int pointer, int button )
+    public bool TouchUp( float x, float y, int pointer, int button )
     {
         if ( pointer > 1 )
         {
@@ -262,208 +301,242 @@ public class GestureDetector : InputAdapter
         }
 
         // check if we are still tapping.
-        if ( inTapRectangle && !isWithinTapRectangle( x, y, tapRectangleCenterX, tapRectangleCenterY ) )
+        if ( _inTapRectangle && !IsWithinTapRectangle( x, y, _tapRectangleCenterX, _tapRectangleCenterY ) )
         {
-            inTapRectangle = false;
+            _inTapRectangle = false;
         }
 
-        bool wasPanning = panning;
-        panning = false;
+        var wasPanning = _panning;
+        _panning = false;
 
-        longPressTask.cancel();
+        _longPressTask.Cancel();
 
-        if ( longPressFired )
+        if ( _longPressFired )
         {
             return false;
         }
 
-        if ( inTapRectangle )
+        if ( _inTapRectangle )
         {
             // handle taps
-            if ( lastTapButton != button
-              || lastTapPointer != pointer
-              || TimeUtils.nanoTime() - lastTapTime > tapCountInterval
-              || !isWithinTapRectangle( x, y, lastTapX, lastTapY ) )
+            if ( ( _lastTapButton != button )
+              || ( _lastTapPointer != pointer )
+              || TimeUtils.NanoTime() - _lastTapTime > _tapCountInterval
+              || !IsWithinTapRectangle( x, y, _lastTapX, _lastTapY ) )
             {
-                tapCount = 0;
+                _tapCount = 0;
             }
 
-            tapCount++;
-            lastTapTime    = TimeUtils.nanoTime();
-            lastTapX       = x;
-            lastTapY       = y;
-            lastTapButton  = button;
-            lastTapPointer = pointer;
-            touchDownTime  = 0;
+            _tapCount++;
+            _lastTapTime    = TimeUtils.NanoTime();
+            _lastTapX       = x;
+            _lastTapY       = y;
+            _lastTapButton  = button;
+            _lastTapPointer = pointer;
+            _touchDownTime  = 0;
 
-            return listener.tap( x, y, tapCount, button );
+            return ( bool )_listener?.Tap( x, y, _tapCount, button );
         }
 
-        if ( pinching )
+        if ( _pinching )
         {
             // handle pinch end
-            pinching = false;
-            listener.pinchStop();
-            panning = true;
+            _pinching = false;
+            _listener?.PinchStop();
+            _panning = true;
 
             // we are in pan mode again, reset velocity tracker
             if ( pointer == 0 )
             {
                 // first pointer has lifted off, set up panning to use the second pointer...
-                tracker.start( pointer2.x, pointer2.y, Gdx.input.getCurrentEventTime() );
+                _tracker.Start( _pointer2.X, _pointer2.Y, Gdx.Input.GetCurrentEventTime() );
             }
             else
             {
                 // second pointer has lifted off, set up panning to use the first pointer...
-                tracker.start( pointer1.x, pointer1.y, Gdx.input.getCurrentEventTime() );
+                _tracker.Start( _pointer1.X, _pointer1.Y, Gdx.Input.GetCurrentEventTime() );
             }
 
             return false;
         }
 
         // handle no longer panning
-        bool handled = false;
+        var handled = false;
 
-        if ( wasPanning && !panning )
+        if ( wasPanning && !_panning )
         {
-            handled = listener.panStop( x, y, pointer, button );
+            handled = ( bool )_listener?.PanStop( x, y, pointer, button );
         }
 
         // handle fling
-        long time = Gdx.input.getCurrentEventTime();
+        var time = Gdx.Input.GetCurrentEventTime();
 
-        if ( time - touchDownTime <= maxFlingDelay )
+        if ( ( time - _touchDownTime ) <= _maxFlingDelay )
         {
-            tracker.update( x, y, time );
-            handled = listener.fling( tracker.getVelocityX(), tracker.getVelocityY(), button ) || handled;
+            _tracker.Update( x, y, time );
+
+            handled = ( bool )_listener?.Fling( _tracker.GetVelocityX(), _tracker.GetVelocityY(), button )
+                   || handled;
         }
 
-        touchDownTime = 0;
+        _touchDownTime = 0;
 
         return handled;
     }
 
-    /** No further gesture events will be triggered for the current touch, if any. */
-    public void cancel()
+    /// <summary>
+    /// No further gesture events will be triggered for the
+    /// current touch, if any.
+    /// </summary>
+    public void Cancel()
     {
-        longPressTask.cancel();
-        longPressFired = true;
+        _longPressTask.Cancel();
+
+        _longPressFired = true;
     }
 
-    /** @return whether the user touched the screen long enough to trigger a long press event. */
-    public bool isLongPressed()
+    /// <summary>
+    /// Returns whether the user touched the screen long enough
+    /// to trigger a long press event.
+    /// </summary>
+    public bool IsLongPressed()
     {
-        return isLongPressed( longPressSeconds );
+        return IsLongPressed( _longPressSeconds );
     }
 
-    /** @param duration
-     * @return whether the user touched the screen for as much or more than the given duration. */
-    public bool isLongPressed( float duration )
+    /// <summary>
+    /// returns whether the user touched the screen for as much
+    /// or more than the given duration.
+    /// </summary>
+    public bool IsLongPressed( float duration )
     {
-        if ( touchDownTime == 0 )
+        if ( _touchDownTime == 0 )
         {
             return false;
         }
 
-        return TimeUtils.nanoTime() - touchDownTime > ( long )( duration * 1000000000l );
+        return ( TimeUtils.NanoTime() - _touchDownTime ) > ( long )( duration * 1000000000l );
     }
 
-    public bool isPanning()
+    public bool IsPanning()
     {
-        return panning;
+        return _panning;
     }
 
-    public void reset()
+    public void Reset()
     {
-        touchDownTime    = 0;
-        panning          = false;
-        inTapRectangle   = false;
-        tracker.lastTime = 0;
+        _touchDownTime    = 0;
+        _panning          = false;
+        _inTapRectangle   = false;
+        _tracker.LastTime = 0;
     }
 
-    private bool isWithinTapRectangle( float x, float y, float centerX, float centerY )
+    private bool IsWithinTapRectangle( float x, float y, float centerX, float centerY )
     {
-        return Math.abs( x - centerX ) < tapRectangleWidth && Math.abs( y - centerY ) < tapRectangleHeight;
+        return ( Math.Abs( x - centerX ) < _tapRectangleWidth )
+            && ( Math.Abs( y - centerY ) < _tapRectangleHeight );
     }
 
-    /** The tap square will no longer be used for the current touch. */
-    public void invalidateTapSquare()
+    /// <summary>
+    /// The tap square will no longer be used for the current touch.
+    /// </summary>
+    public void InvalidateTapSquare()
     {
-        inTapRectangle = false;
+        _inTapRectangle = false;
     }
 
-    public void setTapSquareSize( float halfTapSquareSize )
+    public void SetTapSquareSize( float halfTapSquareSize )
     {
-        setTapRectangleSize( halfTapSquareSize, halfTapSquareSize );
+        SetTapRectangleSize( halfTapSquareSize, halfTapSquareSize );
     }
 
-    public void setTapRectangleSize( float halfTapRectangleWidth, float halfTapRectangleHeight )
+    public void SetTapRectangleSize( float halfTapRectangleWidth, float halfTapRectangleHeight )
     {
-        this.tapRectangleWidth  = halfTapRectangleWidth;
-        this.tapRectangleHeight = halfTapRectangleHeight;
+        this._tapRectangleWidth  = halfTapRectangleWidth;
+        this._tapRectangleHeight = halfTapRectangleHeight;
     }
 
-    /** @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive
-     *           taps. */
-    public void setTapCountInterval( float tapCountInterval )
+    public void SetTapCountInterval( float tapCountInterval )
     {
-        this.tapCountInterval = ( long )( tapCountInterval * 1000000000l );
+        this._tapCountInterval = ( long )( tapCountInterval * 1000000000l );
     }
 
-    public void setLongPressSeconds( float longPressSeconds )
+    public void SetLongPressSeconds( float longPressSeconds )
     {
-        this.longPressSeconds = longPressSeconds;
+        this._longPressSeconds = longPressSeconds;
     }
 
-    public void setMaxFlingDelay( long maxFlingDelay )
+    public void SetMaxFlingDelay( long maxFlingDelay )
     {
-        this.maxFlingDelay = maxFlingDelay;
+        this._maxFlingDelay = maxFlingDelay;
     }
 
-    /** Register an instance of this class with a {@link GestureDetector} to receive gestures such as taps, long presses, flings,
-     * panning or pinch zooming. Each method returns a bool indicating if the event should be handed to the next listener (false
-     * to hand it to the next listener, true otherwise).
-     * @author mzechner */
+    /// <summary>
+    /// Register an instance of this class with a <see cref="GestureDetector"/> to
+    /// receive gestures such as taps, long presses, flings, panning or pinch zooming.
+    /// Each method returns a bool indicating if the event should be handed to the
+    /// next listener (false to hand it to the next listener, true otherwise).
+    /// </summary>
     [PublicAPI]
     public interface IGestureListener
     {
-        /** @see InputProcessor#touchDown(int, int, int, int) */
         bool TouchDown( float x, float y, int pointer, int button );
 
-        /** Called when a tap occured. A tap happens if a touch went down on the screen and was lifted again without moving outside
-         * of the tap square. The tap square is a rectangular area around the initial touch position as specified on construction
-         * time of the {@link GestureDetector}.
-         * @param count the number of taps. */
+        /// <summary>
+        /// Called when a tap occured. A tap happens if a touch went down on the
+        /// screen and was lifted again without moving outside of the tap square.
+        /// The tap square is a rectangular area around the initial touch position
+        /// as specified on construction time of the <see cref="GestureDetector"/>.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="count"> the number of taps. </param>
+        /// <param name="button"></param>
         bool Tap( float x, float y, int count, int button );
 
         bool LongPress( float x, float y );
 
-        /** Called when the user dragged a finger over the screen and lifted it. Reports the last known velocity of the finger in
-         * pixels per second.
-         * @param velocityX velocity on x in seconds
-         * @param velocityY velocity on y in seconds */
+        /// <summary>
+        /// Called when the user dragged a finger over the screen and lifted it.
+        /// Reports the last known velocity of the finger in pixels per second.
+        /// </summary>
+        /// <param name="velocityX"> velocity on x in seconds </param>
+        /// <param name="velocityY"> velocity on y in seconds </param>
+        /// <param name="button"></param>
         bool Fling( float velocityX, float velocityY, int button );
 
-        /** Called when the user drags a finger over the screen.
-         * @param deltaX the difference in pixels to the last drag event on x.
-         * @param deltaY the difference in pixels to the last drag event on y. */
+        /// <summary>
+        /// Called when the user drags a finger over the screen.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="deltaX"> the difference in pixels to the last drag event on x. </param>
+        /// <param name="deltaY"> the difference in pixels to the last drag event on y. </param>
         bool Pan( float x, float y, float deltaX, float deltaY );
 
-        /** Called when no longer panning. */
+        /// <summary>
+        /// Called when no longer panning.
+        /// </summary>
         bool PanStop( float x, float y, int pointer, int button );
 
-        /** Called when the user performs a pinch zoom gesture. The original distance is the distance in pixels when the gesture
-         * started.
-         * @param initialDistance distance between fingers when the gesture started.
-         * @param distance current distance between fingers. */
+        /// <summary>
+        /// Called when the user performs a pinch zoom gesture. The original
+        /// distance is the distance in pixels when the gesture started.
+        /// </summary>
+        /// <param name="initialDistance">
+        /// distance between fingers when the gesture started.
+        /// </param>
+        /// <param name="distance"> current distance between fingers. </param>
         bool Zoom( float initialDistance, float distance );
 
-        /** Called when a user performs a pinch zoom gesture. Reports the initial positions of the two involved fingers and their
-         * current positions.
-         * @param initialPointer1
-         * @param initialPointer2
-         * @param pointer1
-         * @param pointer2 */
+        /// <summary>
+        /// Called when a user performs a pinch zoom gesture. Reports the initial
+        /// positions of the two involved fingers and their current positions.
+        /// </summary>
+        /// <param name="initialPointer1"> </param>
+        /// <param name="initialPointer2"> </param>
+        /// <param name="pointer1"> </param>
+        /// <param name="pointer2">  </param>
         bool Pinch( Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2 );
 
         /// <summary>
@@ -514,7 +587,10 @@ public class GestureDetector : InputAdapter
             return false;
         }
 
-        public bool Pinch( Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2 )
+        public bool Pinch( Vector2 initialPointer1,
+                           Vector2 initialPointer2,
+                           Vector2 pointer1,
+                           Vector2 pointer2 )
         {
             return false;
         }
@@ -527,52 +603,67 @@ public class GestureDetector : InputAdapter
     [PublicAPI]
     public class VelocityTracker
     {
-        int     sampleSize = 10;
-        float   lastX,  lastY;
-        float   deltaX, deltaY;
-        long    lastTime;
-        int     numSamples;
-        float[] meanX    = new float[ sampleSize ];
-        float[] meanY    = new float[ sampleSize ];
-        long[]  meanTime = new long[ sampleSize ];
+        private int     _sampleSize;
+        private float   _lastX;
+        private float   _lastY;
+        private float   _deltaX;
+        private float   _deltaY;
+        private long    _lastTime;
+        private int     _numSamples;
+        private float[] _meanX;
+        private float[] _meanY;
+        private long[]  _meanTime;
 
-        public void start( float x, float y, long timeStamp )
+        public VelocityTracker()
         {
-            lastX      = x;
-            lastY      = y;
-            deltaX     = 0;
-            deltaY     = 0;
-            numSamples = 0;
+            this._sampleSize = 10;
 
-            for ( int i = 0; i < sampleSize; i++ )
+            this._meanX    = new float[ _sampleSize ];
+            this._meanY    = new float[ _sampleSize ];
+            this._meanTime = new long[ _sampleSize ];
+        }
+
+        public void Start( float x, float y, long timeStamp )
+        {
+            _lastX      = x;
+            _lastY      = y;
+            _deltaX     = 0;
+            _deltaY     = 0;
+            _numSamples = 0;
+
+            for ( var i = 0; i < _sampleSize; i++ )
             {
-                meanX[ i ]    = 0;
-                meanY[ i ]    = 0;
-                meanTime[ i ] = 0;
+                _meanX[ i ]    = 0;
+                _meanY[ i ]    = 0;
+                _meanTime[ i ] = 0;
             }
 
-            lastTime = timeStamp;
+            _lastTime = timeStamp;
         }
 
-        public void update( float x, float y, long currTime )
+        public void Update( float x, float y, long currTime )
         {
-            deltaX = x - lastX;
-            deltaY = y - lastY;
-            lastX  = x;
-            lastY  = y;
-            long deltaTime = currTime - lastTime;
-            lastTime = currTime;
-            int index = numSamples % sampleSize;
-            meanX[ index ]    = deltaX;
-            meanY[ index ]    = deltaY;
-            meanTime[ index ] = deltaTime;
-            numSamples++;
+            _deltaX = x - _lastX;
+            _deltaY = y - _lastY;
+            _lastX  = x;
+            _lastY  = y;
+
+            var deltaTime = currTime - _lastTime;
+
+            _lastTime = currTime;
+
+            var index = _numSamples % _sampleSize;
+
+            _meanX[ index ]    = _deltaX;
+            _meanY[ index ]    = _deltaY;
+            _meanTime[ index ] = deltaTime;
+            _numSamples++;
         }
 
-        public float getVelocityX()
+        public float GetVelocityX()
         {
-            float meanX    = getAverage( this.meanX, numSamples );
-            float meanTime = getAverage( this.meanTime, numSamples ) / 1000000000.0f;
+            var meanX    = GetAverage( this._meanX, _numSamples );
+            var meanTime = GetAverage( this._meanTime, _numSamples ) / 1000000000.0f;
 
             if ( meanTime == 0 )
             {
@@ -582,10 +673,10 @@ public class GestureDetector : InputAdapter
             return meanX / meanTime;
         }
 
-        public float getVelocityY()
+        public float GetVelocityY()
         {
-            float meanY    = getAverage( this.meanY, numSamples );
-            float meanTime = getAverage( this.meanTime, numSamples ) / 1000000000.0f;
+            var meanY    = GetAverage( this._meanY, _numSamples );
+            var meanTime = GetAverage( this._meanTime, _numSamples ) / 1000000000.0f;
 
             if ( meanTime == 0 )
             {
@@ -595,12 +686,12 @@ public class GestureDetector : InputAdapter
             return meanY / meanTime;
         }
 
-        private float getAverage( float[] values, int numSamples )
+        private float GetAverage( float[] values, int numSamples )
         {
-            numSamples = Math.Min( sampleSize, numSamples );
+            numSamples = Math.Min( _sampleSize, numSamples );
             float sum = 0;
 
-            for ( int i = 0; i < numSamples; i++ )
+            for ( var i = 0; i < numSamples; i++ )
             {
                 sum += values[ i ];
             }
@@ -608,12 +699,12 @@ public class GestureDetector : InputAdapter
             return sum / numSamples;
         }
 
-        private long getAverage( long[] values, int numSamples )
+        private long GetAverage( long[] values, int numSamples )
         {
-            numSamples = Math.Min( sampleSize, numSamples );
+            numSamples = Math.Min( _sampleSize, numSamples );
             long sum = 0;
 
-            for ( int i = 0; i < numSamples; i++ )
+            for ( var i = 0; i < numSamples; i++ )
             {
                 sum += values[ i ];
             }
@@ -626,12 +717,12 @@ public class GestureDetector : InputAdapter
             return sum / numSamples;
         }
 
-        private float getSum( float[] values, int numSamples )
+        private float GetSum( float[] values, int numSamples )
         {
-            numSamples = Math.Min( sampleSize, numSamples );
+            numSamples = Math.Min( _sampleSize, numSamples );
             float sum = 0;
 
-            for ( int i = 0; i < numSamples; i++ )
+            for ( var i = 0; i < numSamples; i++ )
             {
                 sum += values[ i ];
             }

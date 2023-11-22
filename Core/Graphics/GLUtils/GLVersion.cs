@@ -29,6 +29,13 @@ public class GLVersion : GDXVersion
         OpenGL,
         GLES,
         WebGL,
+        
+        // --------------------------------------
+        // Sub-Categories for OpenGL
+        GL10,
+        GL20,
+        GL30,
+        GL40,
     }
 
     public string? VendorString   { get; set; }

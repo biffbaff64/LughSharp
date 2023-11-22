@@ -67,7 +67,7 @@ public interface IGraphics
 
     int GetFramesPerSecond();
 
-    GraphicsType GetGraphicsType();
+    GLVersion.GLType GetGraphicsType();
 
     float GetPpiX();
 
