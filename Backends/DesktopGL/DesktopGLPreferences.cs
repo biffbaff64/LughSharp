@@ -19,7 +19,7 @@ using System.Xml.Linq;
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
-public class GLPreferences : IPreferences
+public class DesktopGLPreferences : IPreferences
 {
     private readonly string     _filePath;
     private readonly string     _propertiesFile;
@@ -30,7 +30,7 @@ public class GLPreferences : IPreferences
     /// <summary>
     /// </summary>
     /// <param name="filename"></param>
-    public GLPreferences( string filename )
+    public DesktopGLPreferences( string filename )
     {
         _filePath       = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + "//.prefs//";
         _propertiesFile = filename;

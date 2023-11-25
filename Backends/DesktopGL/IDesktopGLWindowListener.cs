@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-public interface IGLWindowListener
+public interface IDesktopGLWindowListener
 {
     /// <summary>
     /// Called after the GLFW window is created. Before this callback is received, it's
@@ -24,7 +24,7 @@ public interface IGLWindowListener
     /// involve calling GLFW functions.
     /// <para>
     /// For the main window, this is an immediate callback from inside
-    /// <see cref="DesktopGLApplication(IApplicationListener, DesktopGLApplicationConfiguration)"/>
+    /// <see cref="DesktopGLApplication(LibGDXSharp.Core.IApplicationListener,LibGDXSharp.Backends.Desktop.DesktopGLApplicationConfiguration)"/>
     /// </para>
     /// </summary>
     /// <param name="window">the window instance.</param>

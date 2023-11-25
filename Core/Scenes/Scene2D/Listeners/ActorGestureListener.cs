@@ -43,8 +43,6 @@ public class ActorGestureListener : IEventListener
                                  float longPressDuration,
                                  float maxFlingDelay )
     {
-        
-        
 //        Detector = new GestureDetector( halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, new GestureAdapter()
 //        {
 //            private Vector2 _initialPointer1 = new();
@@ -139,7 +137,7 @@ public class ActorGestureListener : IEventListener
                 _actor          = ev.ListenerActor;
                 TouchDownTarget = ev.TargetActor;
 
-                Detector.TouchDown( ev.StageX, ev.StageY, ev.Pointer, ev.Button );
+                Detector?.TouchDown( ev.StageX, ev.StageY, ev.Pointer, ev.Button );
                 _actor?.StageToLocalCoordinates( _tmpCoords.Set( ev.StageX, ev.StageY ) );
                 TouchDown( ev, _tmpCoords.X, _tmpCoords.Y, ev.Pointer, ev.Button );
 
@@ -157,7 +155,7 @@ public class ActorGestureListener : IEventListener
             case InputEvent.EventType.TouchUp:
                 if ( ev.TouchFocusCancel )
                 {
-                    Detector.Reset();
+                    Detector?.Reset();
 
                     return false;
                 }
@@ -165,7 +163,7 @@ public class ActorGestureListener : IEventListener
                 this._ev = ev;
                 _actor   = ev.ListenerActor;
 
-                Detector.TouchUp( ev.StageX, ev.StageY, ev.Pointer, ev.Button );
+                Detector?.TouchUp( ev.StageX, ev.StageY, ev.Pointer, ev.Button );
                 _actor?.StageToLocalCoordinates( _tmpCoords.Set( ev.StageX, ev.StageY ) );
                 TouchUp( ev, _tmpCoords.X, _tmpCoords.Y, ev.Pointer, ev.Button );
 
@@ -174,7 +172,7 @@ public class ActorGestureListener : IEventListener
             case InputEvent.EventType.TouchDragged:
                 this._ev = ev;
                 _actor   = ev.ListenerActor;
-                Detector.TouchDragged( ev.StageX, ev.StageY, ev.Pointer );
+                Detector?.TouchDragged( ev.StageX, ev.StageY, ev.Pointer );
 
                 return true;
         }

@@ -25,7 +25,7 @@ using Sync = LibGDXSharp.Backends.Desktop.Sync;
 namespace LibGDXSharp;
 
 [PublicAPI]
-public class DesktopGLApplication : IGLApplicationBase
+public class DesktopGLApplication : IDesktopGLApplicationBase
 {
 
     #region public properties
@@ -36,7 +36,7 @@ public class DesktopGLApplication : IGLApplicationBase
     public List< Runnable >                    Runnables          { get; set; } = new();
     public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-    public GLApplicationLogger?                ApplicationLogger  { get; set; }
+    public DesktopGLApplicationLogger?                ApplicationLogger  { get; set; }
     public int                                 LogLevel           { get; set; }
     public IClipboard?                         Clipboard          { get; set; }
 
@@ -69,7 +69,7 @@ public class DesktopGLApplication : IGLApplicationBase
     {
         InitialiseGL();
 
-        ApplicationLogger = new GLApplicationLogger();
+        ApplicationLogger = new DesktopGLApplicationLogger();
 
         config.Title ??= listener.GetType().Name;
 
@@ -96,8 +96,8 @@ public class DesktopGLApplication : IGLApplicationBase
         }
 
         this.Files     = CreateFiles();
-        this.Net       = new GLNet( config );
-        this.Clipboard = new GLClipboard();
+        this.Net       = new DesktopGLNet( config );
+        this.Clipboard = new DesktopGLClipboard();
         this._sync     = new Sync();
 
         Gdx.Audio = this.Audio;
@@ -329,7 +329,7 @@ public class DesktopGLApplication : IGLApplicationBase
             return Preferences.Get( name );
         }
 
-        IPreferences prefs = new GLPreferences( name );
+        IPreferences prefs = new DesktopGLPreferences( name );
 
         Preferences.Put( name, prefs );
 
@@ -577,7 +577,7 @@ public class DesktopGLApplication : IGLApplicationBase
     {
         if ( _errorCallback == null )
         {
-            GLNativesLoader.Load();
+            DesktopGLNativesLoader.Load();
 
             GLFW.SetErrorCallback( _errorCallback );
             GLFW.InitHint( InitHintBool.JoystickHatButtons, false );
@@ -594,14 +594,14 @@ public class DesktopGLApplication : IGLApplicationBase
         throw new NotImplementedException();
     }
 
-    public IGLInput CreateInput( DesktopGLWindow window )
+    public IDesktopGLInput CreateInput( DesktopGLWindow window )
     {
         throw new NotImplementedException();
     }
 
     protected IFiles CreateFiles()
     {
-        return new GLFiles();
+        return new DesktopGLFiles();
     }
 
     public int GetVersion()

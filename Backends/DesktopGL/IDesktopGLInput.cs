@@ -16,18 +16,13 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
-public class GLClipboard : IClipboard
+public interface IDesktopGLInput : IInput, IDisposable
 {
-    /// <summary>
-    /// Check if the clipboard has contents.
-    /// </summary>
-    /// <returns> true, if the clipboard has contents</returns>
-    public bool HasContents() => false;
+    unsafe void WindowHandleChanged( Window* windowHandle );
 
-    /// <summary>
-    /// The current content of the clipboard if it contains text
-    /// </summary>
-    /// <returns> the clipboard content or null  </returns>
-    public string Contents { get; set; } = "";
+    void Update();
+
+    void PrepareNext();
+
+    void ResetPollingStates();
 }

@@ -14,13 +14,20 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Backends.Desktop.Audio;
-
 namespace LibGDXSharp.Backends.Desktop;
 
-public interface IGLApplicationBase : IApplication
+[PublicAPI]
+public class DesktopGLClipboard : IClipboard
 {
-    IGLAudio CreateAudio( DesktopGLApplicationConfiguration config );
+    /// <summary>
+    /// Check if the clipboard has contents.
+    /// </summary>
+    /// <returns> true, if the clipboard has contents</returns>
+    public bool HasContents() => false;
 
-    IGLInput CreateInput( DesktopGLWindow window );
+    /// <summary>
+    /// The current content of the clipboard if it contains text
+    /// </summary>
+    /// <returns> the clipboard content or null  </returns>
+    public string Contents { get; set; } = "";
 }

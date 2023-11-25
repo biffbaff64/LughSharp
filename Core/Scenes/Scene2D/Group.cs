@@ -44,7 +44,7 @@ public class Group : Actor, ICullable
     /// <summary>
     /// </summary>
     /// <param name="delta"></param>
-    public new void Act( float delta )
+    public virtual new void Act( float delta )
     {
         base.Act( delta );
 
@@ -245,7 +245,7 @@ public class Group : Actor, ICullable
     /// true and, regardless of <see cref="Actor.DebugActive"/>, calls
     /// <see cref="Actor.DrawDebug(ShapeRenderer)"/> on each child. 
     /// </summary>
-    public new void DrawDebug( ShapeRenderer shapes )
+    public virtual new void DrawDebug( ShapeRenderer shapes )
     {
         DrawDebugBounds( shapes );
 
@@ -435,7 +435,7 @@ public class Group : Actor, ICullable
         shapes.TransformMatrix = _oldTransform;
     }
 
-    protected new Actor? Hit( float x, float y, bool touchable )
+    public virtual new Actor? Hit( float x, float y, bool touchable )
     {
         if ( touchable && ( Touchable == Touchable.Disabled ) )
         {
@@ -596,7 +596,7 @@ public class Group : Actor, ICullable
     /// <param name="actor"></param>
     /// <param name="unfocus">Unfocuses the actor if true.</param>
     /// </summary>
-    public bool RemoveActor( Actor actor, bool unfocus = true )
+    public virtual bool RemoveActor( Actor actor, bool unfocus = true )
     {
         var index = Children.IndexOf( actor );
 

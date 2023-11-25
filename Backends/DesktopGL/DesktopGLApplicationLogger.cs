@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
-public class GLApplicationLogger : IApplicationLogger
+public class DesktopGLApplicationLogger : IApplicationLogger
 {
     public void Log( string tag, string message )
     {

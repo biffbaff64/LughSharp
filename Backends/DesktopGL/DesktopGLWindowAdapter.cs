@@ -17,10 +17,10 @@
 namespace LibGDXSharp.Backends.Desktop;
 
 /// <summary>
-/// Convenience implementation of <see cref="IGLWindowListener"/>.
+/// Convenience implementation of <see cref="IDesktopGLWindowListener"/>.
 /// Derive from this class and only overwrite the methods you are interested in.
 /// </summary>
-public class DesktopGLWindowAdapter : IGLWindowListener
+public class DesktopGLWindowAdapter : IDesktopGLWindowListener
 {
     public virtual void Created( DesktopGLWindow window )
     {

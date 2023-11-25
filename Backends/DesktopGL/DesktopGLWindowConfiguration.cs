@@ -19,28 +19,16 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DesktopGLWindowConfiguration
 {
-    public int   WindowX                { get; private set; } = -1;
-    public int   WindowY                { get; private set; } = -1;
-    public int   WindowWidth            { get; private set; } = 640;
-    public int   WindowHeight           { get; private set; } = 480;
-    public int   WindowMinWidth         { get; private set; } = -1;
-    public int   WindowMinHeight        { get; private set; } = -1;
-    public int   WindowMaxWidth         { get; private set; } = -1;
-    public int   WindowMaxHeight        { get; private set; } = -1;
-    public bool  WindowResizable        { get; set; }         = true;
-    public bool  WindowDecorated        { get; private set; } = true;
-    public bool  WindowMaximized        { get; private set; } = false;
-    public bool  AutoIconify            { get; set; }         = false;
-    public Color InitialBackgroundColor { get; set; }         = Color.Black;
-    public bool  InitialVisible         { get; set; }         = true;
-    public bool  VSyncEnabled           { get; private set; } = true;
-
-    public DesktopGLGraphics.GLMonitor?     MaximizedMonitor   { get; set; }
-    public FileType                         WindowIconFileType { get; set; }
-    public string[]?                        WindowIconPaths    { get; set; }
-    public IGLWindowListener?               WindowListener     { get; set; }
-    public DesktopGLGraphics.GLDisplayMode? FullscreenMode     { get; set; }
-    public string?                          Title              { get; set; }
+    public int       WindowX            { get; private set; } = -1;
+    public int       WindowY            { get; private set; } = -1;
+    public int       WindowWidth        { get; private set; } = 640;
+    public int       WindowHeight       { get; private set; } = 480;
+    public int       WindowMinWidth     { get; private set; } = -1;
+    public int       WindowMinHeight    { get; private set; } = -1;
+    public int       WindowMaxWidth     { get; private set; } = -1;
+    public int       WindowMaxHeight    { get; private set; } = -1;
+    public FileType  WindowIconFileType { get; set; }
+    public string[]? WindowIconPaths    { get; set; }
 
     /// <summary>
     /// </summary>
@@ -79,22 +67,16 @@ public class DesktopGLWindowConfiguration
 
     /// <summary>
     /// </summary>
-    /// <param name="visibility">
+    /// <param name="value">
     /// whether the window will be visible on creation. (default true)
     /// </param>
-    public void SetInitialVisible( bool visibility )
-    {
-        this.InitialVisible = visibility;
-    }
+    public bool InitialVisible { get; set; } = true;
 
-    ///
+    /// <summary>
     /// Sets the app to use windowed mode.
-    /// 
-    /// @param width
-    ///            the width of the window (default 640)
-    /// @param height
-    ///            the height of the window (default 480)
-    ///
+    /// </summary>
+    /// <param name="width"> the width of the window (default 640) </param>
+    /// <param name="height"> the height of the window (default 480) </param>
     public void SetWindowedMode( int width, int height )
     {
         this.WindowWidth  = width;
@@ -103,53 +85,40 @@ public class DesktopGLWindowConfiguration
 
     /// <summary>
     /// </summary>
-    /// <param name="resizable">
+    /// <param name="value">
     /// whether the windowed mode window is resizable (default true)
     /// </param>
-    public void SetResizable( bool resizable )
-    {
-        this.WindowResizable = resizable;
-    }
+    public bool WindowResizable { get; set; } = true;
 
     /// <summary>
     /// </summary>
-    /// <param name="decorated">
-    /// whether the windowed mode window is decorated, i.e. displaying the title bars (default true)
+    /// <param name="value">
+    /// whether the windowed mode window is decorated, i.e. displaying
+    /// the title bars (default true)
     /// </param>
-    public void SetDecorated( bool decorated )
-    {
-        this.WindowDecorated = decorated;
-    }
+    public bool WindowDecorated { get; set; } = true;
 
     /// <summary>
     /// </summary>
-    /// <param name="maximized">
-    /// whether the window starts maximized. Ignored if the window is full screen. (default false)
+    /// <param name="value">
+    /// whether the window starts maximized.
+    /// Ignored if the window is full screen. (default false)
     /// </param>
-    public void SetMaximized( bool maximized )
-    {
-        this.WindowMaximized = maximized;
-    }
+    public bool WindowMaximized { get; set; } = false;
 
     /// <summary>
     /// </summary>
-    /// <param name="monitor"> what monitor the window should maximize to. </param>
-    public void SetMaximizedMonitor( DesktopGLGraphics.GLMonitor monitor )
-    {
-        this.MaximizedMonitor = monitor;
-    }
+    /// <param name="value"> what monitor the window should maximize to. </param>
+    public DesktopGLGraphics.GLMonitor? MaximizedMonitor { get; set; }
 
     /// <summary>
     /// </summary>
-    /// <param name="autoIconify">
+    /// <param name="value">
     /// whether the window should automatically iconify and restore previous
     /// video mode on input focus loss. (default false).
     /// Does nothing in windowed mode.
     /// </param>
-    public void SetAutoIconify( bool autoIconify )
-    {
-        this.AutoIconify = autoIconify;
-    }
+    public bool AutoIconify { get; set; } = false;
 
     /// <summary>
     /// Sets the position of the window in windowed mode.
@@ -205,39 +174,27 @@ public class DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Sets the {@link GLWindowListener} which will be informed about
+    /// Sets the <see cref="IDesktopGLWindowListener"/>" which will be informed about
     /// iconficiation, focus loss and window close events.
     /// </summary>
-    public void SetWindowListener( IGLWindowListener windowListener )
-    {
-        this.WindowListener = windowListener;
-    }
+    public IDesktopGLWindowListener? WindowListener { get; set; }
 
     /// <summary>
     /// Sets the app to use fullscreen mode. Use the static methods like
-    /// {@link GLApplicationConfiguration#getDisplayMode()} on this class to enumerate connected monitors
-    /// and their fullscreen display modes.
+    /// <see cref="DesktopGLApplicationConfiguration.GetDisplayMode()"/> on this
+    /// class to enumerate connected monitors and their fullscreen display modes.
     /// </summary>
-    public void SetFullscreenMode( DesktopGLGraphics.GLDisplayMode mode )
-    {
-        this.FullscreenMode = mode;
-    }
+    public DesktopGLGraphics.GLDisplayMode? FullscreenMode { get; set; }
 
     /// <summary>
     /// Sets the window title. Defaults to empty string.
     /// </summary>
-    public void SetTitle( string title )
-    {
-        this.Title = title;
-    }
+    public string? Title { get; set; }
 
     /// <summary>
     /// Sets the initial background color. Defaults to black.
     /// </summary>
-    public void SetInitialBackgroundColor( Color color )
-    {
-        InitialBackgroundColor = color;
-    }
+    public Color InitialBackgroundColor { get; set; } = Color.Black;
 
     /// <summary>
     /// Sets whether to use vsync. This setting can be changed anytime at runtime
@@ -248,8 +205,5 @@ public class DesktopGLWindowConfiguration
     /// effectively cutting the frame rate to (refreshRate / numberOfWindows).
     /// </para>
     /// </summary>
-    public void UseVsync( bool vsync )
-    {
-        this.VSyncEnabled = vsync;
-    }
+    public bool VSyncEnabled { get; set; } = true;
 }

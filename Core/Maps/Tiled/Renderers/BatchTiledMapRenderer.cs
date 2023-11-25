@@ -212,7 +212,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
              batchColor.A * layer.Opacity
             );
 
-        TextureRegion? region = layer.Region;
+        TextureRegion? region = layer.TextureRegion;
 
         if ( region == null )
         {
