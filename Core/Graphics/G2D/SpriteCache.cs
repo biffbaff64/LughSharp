@@ -108,8 +108,8 @@ public class SpriteCache
         }
     }
 
-    public Matrix4 ProjectionMatrix { get; init; } = new();
-    public Matrix4 TransformMatrix  { get; init; } = new();
+    public Matrix4 ProjectionMatrix { get; set; } = new();
+    public Matrix4 TransformMatrix  { get; set; } = new();
     public bool    IsDrawing        => _drawing;
 
     /// <summary>

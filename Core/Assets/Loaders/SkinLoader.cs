@@ -43,18 +43,16 @@ public class SkinLoader : AsynchronousAssetLoader
         {
             var path = Path.ChangeExtension( file?.FullName, ".atlas" );
 
-            deps.Add( new AssetDescriptor( path, typeof( TextureAtlas ), new SkinParameter() ) );
+            deps.Add( new AssetDescriptor( typeof( TextureAtlas ), new SkinParameter(), path, null ) );
         }
         else if ( ( ( SkinParameter )parameter ).textureAtlasPath != null )
         {
             deps.Add
                 (
-                 new AssetDescriptor
-                     (
-                      ( ( SkinParameter )parameter ).textureAtlasPath,
-                      typeof( TextureAtlas ),
-                      parameter
-                     )
+                new AssetDescriptor( typeof( TextureAtlas ),
+                                     parameter,
+                                     ( ( SkinParameter )parameter ).textureAtlasPath,
+                                     null )
                 );
         }
 

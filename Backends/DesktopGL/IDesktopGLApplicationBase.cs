@@ -14,15 +14,13 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Backends.Desktop.Audio;
+
 namespace LibGDXSharp.Backends.Desktop;
 
-public interface IGLInput : IInput, IDisposable
+public interface IDesktopGLApplicationBase : IApplication
 {
-    unsafe void WindowHandleChanged( Window* windowHandle );
+    IGLAudio CreateAudio( DesktopGLApplicationConfiguration config );
 
-    void Update();
-
-    void PrepareNext();
-
-    void ResetPollingStates();
+    IDesktopGLInput CreateInput( DesktopGLWindow window );
 }

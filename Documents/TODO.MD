@@ -128,29 +128,29 @@ AUDIO/JAVAZOOMJL
 BACKENDS/DESKTOPGL
 ------------------
 
-    - IP   - DefaultGLInput
+    - IP   - DesktopDefaultGLInput
     - IP   - DesktopGL20
     - IP   - DesktopGL30
     - IP   - DesktopGLApplication
     - DONE - DesktopGLApplicationConfiguration
+    - DONE - DesktopGLApplicationLogger
+    - DONE - DesktopGLClipboard
+    -      - DesktopGLCursor
     - IP   - DesktopGLFileHandle
+    - DONE - DesktopGLFiles
     - IP   - DesktopGLGraphics
+    - IP   - DesktopGLNet
+    - DONE - DesktopGLPreferences
     - IP   - DesktopGLWindow
     - DONE - DesktopGLWindowAdapter
-    - IP   - DesktopGLWindowConfiguration
-    - DONE - GLApplicationLogger
-    - DONE - GLClipboard
-    -      - GLCursor
-    - DONE - GLFiles
-    - IP   - GLNet
-    - DONE - GLPreferences
-    - DONE - IGLApplicationBase
-    - DONE - IGLInput
-    - DONE - IGLWindowListener
+    - DONE - DesktopGLWindowConfiguration
+    - DONE - IDesktopGLApplicationBase
+    - DONE - IDesktopGLInput
+    - DONE - IDesktopGLWindowListener
     - IP   - Sync
-
+ 
     Look into removing this, just keeping anything essential
-    - IP   - GLNativesLoader
+    - IP   - DesktopGLNativesLoader
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -427,7 +427,7 @@ INPUT
 
     -      - GestureDetector
     -      - RemoteInput
-    -      - RemoteSender       Needs rework for compatibility with system.io.sockets.
+    -      - RemoteSender
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -497,10 +497,10 @@ MAPS/TILED/RENDERERS
 
     - DONE - BatchTiledMapRenderer                  
     - DONE - HexagonalTiledMapRenderer              
-    -      - IsometricStaggeredTiledMapRenderer     
+    - DONE - IsometricStaggeredTiledMapRenderer     
     - DONE - IsometricTiledMapRenderer              
     - DONE - ITiledMapRenderer                      
-    -      - OrthoCachedTiledMapRenderer            
+    - DONE - OrthoCachedTiledMapRenderer            
     - DONE - OrthogonalTiledMapRenderer             
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -529,6 +529,7 @@ MATHS
     - DONE - DelaunayTriangulator
     - DONE - EarClippingTriangulator
     - DONE - Ellipse
+    - DONE - FloatConsts
     - DONE - FloatCounter
     - DONE - Frustrum
     - DONE - GeometryUtils
@@ -729,6 +730,7 @@ UTILS
 -----
 
     - DONE - Align                          
+    - **** - Base64Coder                    Use System.Convert classes
     - DONE - BinaryHeap
     - DONE - Bits                           
     - DONE - CharHelper
@@ -736,37 +738,34 @@ UTILS
     - DONE - DataInput                      Check
     - DONE - DataOutput                     Check
     - DONE - DataUtils                      Added Class
-    - DONE - FloatConsts                    Done, but is it needed?
+    - **** - GdxNativesLoader               Removed
+    - **** - I18NBundle                     Removed
     - DONE - ICloseable                     
     - DONE - IClipboard                     Convert - Interface, clipboard handled in backends.                 
     - DONE - IRunnable                      Done, but is it needed?
+    - **** - LittleEndianInputStream        Removed
     - DONE - Logger                         
+    - **** - PauseableThread                Removed
     - DONE - PerformanceCounter             Check
     - DONE - PerformanceCounters            Check
     - DONE - PropertiesUtils                Convert, but check if necessary first
     - DONE - QuadTreeFloat
+    - **** - Queue                          Use system.collection.generics.Queue<T>?
     - DONE - QuickSelect
     - DONE - Scaling
     - DONE - ScreenUtils
     - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
+    - IP   - SharedLibraryLoader            
+    - **** - SortedIntList                  Use SortedList<int>
     - DONE - SortUtils
+    - **** - StreamUtils                    Removed
+    - **** - StringBuilder                  Use System.Text.StringBuilder
     - DONE - StringTokenizer
+    - **** - TextFormatter                  Removed
     - DONE - Timer                          
     - DONE - TimeUtils
     - DONE - TimSort
     - DONE - Trace                          Addition
-
-    - **** - Base64Coder                    Use System.Convert classes
-    - **** - GdxNativesLoader               Removed
-    - **** - I18NBundle                     Removed
-    - **** - LittleEndianInputStream        Removed
-    - **** - PauseableThread                Removed
-    - **** - Queue                          Use system.collection.generics.Queue<T>?
-    - **** - SharedLibraryLoader            Removed
-    - **** - SortedIntList                  Use SortedList<int>
-    - **** - StreamUtils                    Removed
-    - **** - StringBuilder                  Use System.Text.StringBuilder
-    - **** - TextFormatter                  Removed
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

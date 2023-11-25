@@ -81,7 +81,7 @@ public class AssetManager
 
 //                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
 //                SetLoader( typeof(I18NBundle),      new I18NBundleLoader( resolver ) );
-                //@formatter:on
+            //@formatter:on
         }
 
         this.FileHandleResolver = resolver;
@@ -497,7 +497,7 @@ public class AssetManager
     public void Load( string? fileName, Type? type, AssetLoaderParameters parameter )
     {
         ArgumentNullException.ThrowIfNull( fileName, "Filename not specified!" );
-        
+
         AssetLoader? loader = GetLoader( type, fileName );
 
         if ( loader == null )
@@ -560,12 +560,7 @@ public class AssetManager
 
         _toLoad++;
 
-        var assetDesc = new AssetDescriptor
-        {
-            FilePath   = fileName,
-            Type       = type!,
-            Parameters = parameter
-        };
+        var assetDesc = new AssetDescriptor( type, parameter, fileName );
 
         _loadQueue.Add( assetDesc );
 
@@ -813,8 +808,7 @@ public class AssetManager
 
             IncrementRefCountedDependencies( assetDesc.FilePath );
 
-            assetDesc.Parameters.LoadedCallback?.FinishedLoading
-                (
+            assetDesc.Parameters.LoadedCallback?.FinishedLoading(
                 this,
                 assetDesc.FilePath,
                 assetDesc.Type
@@ -913,8 +907,7 @@ public class AssetManager
             AddAsset( task.AssetDesc.FilePath, task.AssetDesc.Type, task.Asset );
 
             // otherwise, if a listener was found in the parameter invoke it
-            task.AssetDesc.Parameters.LoadedCallback?.FinishedLoading
-                (
+            task.AssetDesc.Parameters.LoadedCallback?.FinishedLoading(
                 this,
                 task.AssetDesc.FilePath,
                 task.AssetDesc.Type
@@ -936,7 +929,7 @@ public class AssetManager
     {
         throw ex;
     }
- 
+
     /// <summary>
     /// 
     /// </summary>

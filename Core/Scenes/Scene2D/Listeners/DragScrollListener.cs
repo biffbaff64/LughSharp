@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Runtime.InteropServices.JavaScript;
+
 using LibGDXSharp.Scenes.Scene2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -42,97 +44,89 @@ public class DragScrollListener : DragListener
     {
         this._scroll = scroll;
 
-        scrollUp = new Task(  )
-        
-        
-        scrollUp = new Task()
+        _scrollUp = Task.Run( () =>
         {
-            public void run ()
-            {
-                scroll(scroll.getScrollY() - getScrollPixels());
-            }
-        };
+            Scroll( _scroll.getScrollY() - getScrollPixels());
+        } );
 
-        scrollDown = new Task()
+        _scrollDown = Task.Run( () =>
         {
- 
-
-
-            public void run () {
-            scroll(scroll.getScrollY() + getScrollPixels());
-        }
-
-        };
+            Scroll( _scroll.GetScrollY() + GetScrollPixels() );
+        } );
     }
 
-    public void setup( float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs )
+    public void Setup( float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs )
     {
-        this.minSpeed = minSpeedPixels;
-        this.maxSpeed = maxSpeedPixels;
-        this.tickSecs = tickSecs;
-        rampTime      = ( long )( rampSecs * 1000 );
+        this._minSpeed = minSpeedPixels;
+        this._maxSpeed = maxSpeedPixels;
+        this._tickSecs = tickSecs;
+        this._rampTime = ( long )( rampSecs * 1000 );
     }
 
     private float GetScrollPixels()
     {
-        return interpolation.apply( minSpeed, maxSpeed, Math.min( 1, ( System.currentTimeMillis() - startTime ) / ( float )rampTime ) );
+        return _interpolation.Apply( _minSpeed,
+                                     _maxSpeed,
+                                     Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float )_rampTime ) );
     }
 
-    public void drag( InputEvent event, float x, float y, int pointer) {
-        event.getListenerActor().localToActorCoordinates( scroll, TmpCoords.set( x, y ) );
+    public void Drag( InputEvent ev, float x, float y, int pointer )
+    {
+        ev.ListenerActor?.LocalToActorCoordinates( _scroll, TmpCoords.Set( x, y ) );
 
-        if ( isAbove( TmpCoords.y ) )
+        if ( IsAbove( TmpCoords.Y ) )
         {
-            scrollDown.cancel();
+            _scrollDown.Cancel();
 
-            if ( !scrollUp.isScheduled() )
+            if ( !_scrollUp.IsScheduled() )
             {
-                startTime = System.currentTimeMillis();
-                Timer.schedule( scrollUp, tickSecs, tickSecs );
+                _startTime = TimeUtils.Millis();
+                Timer.Schedule( _scrollUp, _tickSecs, _tickSecs );
             }
 
             return;
         }
-        else if ( isBelow( TmpCoords.y ) )
+        else if ( IsBelow( TmpCoords.y ) )
         {
-            scrollUp.cancel();
+            _scrollUp.Cancel();
 
-            if ( !scrollDown.isScheduled() )
+            if ( !_scrollDown.IsScheduled() )
             {
-                startTime = System.currentTimeMillis();
+                _startTime = System.currentTimeMillis();
                 Timer.schedule( scrollDown, tickSecs, tickSecs );
             }
 
             return;
         }
 
-        scrollUp.cancel();
-        scrollDown.cancel();
+        _scrollUp.cancel();
+        _scrollDown.cancel();
     }
 
-    public void dragStop( InputEvent event, float x, float y, int pointer) {
-        scrollUp.cancel();
-        scrollDown.cancel();
-    }
-
-    protected boolean isAbove( float y )
+    public void DragStop( InputEvent ev, float x, float y, int pointer )
     {
-        return y >= scroll.getHeight() - padTop;
+        _scrollUp.Cancel();
+        _scrollDown.Cancel();
+    }
+
+    protected bool IsAbove( float y )
+    {
+        return y >= _scroll.GetHeight() - _padTop;
     }
 
     protected bool IsBelow( float y )
     {
-        return y < padBottom;
+        return y < _padBottom;
     }
 
     protected void Scroll( float y )
     {
-        scroll.setScrollY( y );
+        _scroll.SetScrollY( y );
     }
 
     public void SetPadding( float padtop, float padbottom )
     {
-        this.padTop    = padtop;
-        this.padBottom = padbottom;
+        this._padTop    = padtop;
+        this._padBottom = padbottom;
     }
 }

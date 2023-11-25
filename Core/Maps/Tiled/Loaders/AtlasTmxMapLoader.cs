@@ -114,8 +114,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return map;
     }
 
-    public override void LoadAsync( AssetManager? manager, string? fileName,
-                                    FileInfo? tmxFile, AssetLoaderParameters parameter )
+    public override void LoadAsync( AssetManager? manager,
+                                    string? fileName,
+                                    FileInfo? tmxFile,
+                                    AssetLoaderParameters parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( tmxFile );
@@ -123,21 +125,21 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         FileInfo? atlasHandle = GetAtlasFileHandle( tmxFile );
         this.atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle!.Name );
 
-        this.Map = LoadTiledMap
-            (
+        this.Map = LoadTiledMap(
             tmxFile,
             ( AtlasTiledMapLoaderParameters )parameter,
             atlasResolver
             );
     }
 
-    public override TiledMap LoadSync( AssetManager? manager, string? fileName,
-                                       FileInfo? file, AssetLoaderParameters? parameter )
+    public override TiledMap LoadSync( AssetManager? manager,
+                                       string? fileName,
+                                       FileInfo? file,
+                                       AssetLoaderParameters? parameter )
     {
         if ( parameter != null )
         {
-            SetTextureFilters
-                (
+            SetTextureFilters(
                 ( ( AtlasTiledMapLoaderParameters )parameter ).TextureMinFilter,
                 ( ( AtlasTiledMapLoaderParameters )parameter ).TextureMagFilter
                 );
@@ -157,23 +159,32 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
 
         if ( atlasFileHandle != null )
         {
-            descriptors.Add( new AssetDescriptor( atlasFileHandle, typeof( TextureAtlas ), textureParameter ) );
+            descriptors.Add( new AssetDescriptor( typeof( TextureAtlas ),
+                                                  textureParameter,
+                                                  null,
+                                                  atlasFileHandle ) );
         }
 
         return descriptors;
     }
 
-    protected override void AddStaticTiles( FileInfo tmxFile, IImageResolver imageResolver,
+    protected override void AddStaticTiles( FileInfo tmxFile,
+                                            IImageResolver imageResolver,
                                             TiledMapTileSet tileSet,
                                             XmlReader.Element element,
                                             List< XmlReader.Element > tileElements,
                                             string? name,
-                                            int firstgid, int tilewidth, int tileheight,
-                                            int spacing, int margin,
+                                            int firstgid,
+                                            int tilewidth,
+                                            int tileheight,
+                                            int spacing,
+                                            int margin,
                                             string? source,
-                                            int offsetX, int offsetY,
+                                            int offsetX,
+                                            int offsetY,
                                             string imageSource,
-                                            int imageWidth, int imageHeight,
+                                            int imageWidth,
+                                            int imageHeight,
                                             FileInfo? image )
     {
 
@@ -296,7 +307,8 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
-    public override List< AssetDescriptor > GetDependencies( string? fileName, FileInfo? file,
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
                                                              AssetLoaderParameters parameter )
     {
         return null!;

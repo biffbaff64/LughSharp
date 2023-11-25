@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
-public class GLFiles : IFiles
+public class DesktopGLFiles : IFiles
 {
     /// <summary>
     /// Returns a handle representing a file or directory.

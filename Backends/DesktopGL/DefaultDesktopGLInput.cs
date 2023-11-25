@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
-public class DefaultGLInput : AbstractInput, IGLInput
+public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 {
     private DesktopGLWindow? _window;
     private IInputProcessor? _inputProcessor;
@@ -33,7 +33,7 @@ public class DefaultGLInput : AbstractInput, IGLInput
     private char   _lastCharacter;
 
     /// <inheritdoc />
-    public DefaultGLInput( DesktopGLWindow? window )
+    public DefaultDesktopGLInput( DesktopGLWindow? window )
     {
         ArgumentNullException.ThrowIfNull( window );
 
@@ -68,7 +68,7 @@ public class DefaultGLInput : AbstractInput, IGLInput
     {
         unsafe
         {
-            Glfw.SetInputMode( _window!.WindowHandle,
+            GLFW.SetInputMode( _window!.WindowHandle,
                                GLFW.GLFW_CURSOR,
                                caught
                                    ? GLFW.GLFW_CURSOR_DISABLED

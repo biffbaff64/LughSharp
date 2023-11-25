@@ -43,8 +43,11 @@ public class ActorGestureListener : IEventListener
                                  float longPressDuration,
                                  float maxFlingDelay )
     {
-        
-        
+        Detector = new GestureDetector( () =>
+        {
+
+        } );
+
 //        Detector = new GestureDetector( halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, new GestureAdapter()
 //        {
 //            private Vector2 _initialPointer1 = new();

@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [PublicAPI]
-public class ScrollPane
+public class ScrollPane : WidgetGroup
 {
         
 }

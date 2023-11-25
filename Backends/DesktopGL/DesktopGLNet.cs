@@ -19,9 +19,9 @@ using LibGDXSharp.Network;
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
-public class GLNet : INet
+public class DesktopGLNet : INet
 {
-    public GLNet( DesktopGLApplicationConfiguration config )
+    public DesktopGLNet( DesktopGLApplicationConfiguration config )
     {
     }
 

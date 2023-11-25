@@ -94,8 +94,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                                     FileInfo? tmxFile,
                                     AssetLoaderParameters parameter )
     {
-        this.Map = LoadTiledMap
-            (
+        this.Map = LoadTiledMap(
             tmxFile!,
             ( ( Parameters )parameter ),
             new IImageResolver.AssetManagerImageResolver( manager! )
@@ -119,7 +118,10 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 
         foreach ( FileInfo handle in fileHandles )
         {
-            descriptors.Add( new AssetDescriptor( handle, typeof( Texture ), textureParameter ) );
+            descriptors.Add( new AssetDescriptor( typeof( Texture ),
+                                                  textureParameter,
+                                                  null,
+                                                  handle ) );
         }
 
         return descriptors;
@@ -130,7 +132,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
         var fileHandles = new List< FileInfo >();
 
         // TileSet descriptors
-        foreach ( XmlReader.Element tileset in root.GetChildrenByName( "tileset" ) )
+        foreach ( XmlReader.Element tileset in root!.GetChildrenByName( "tileset" ) )
         {
             var source = tileset.GetAttribute( "source", null );
 
@@ -143,7 +145,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 
                 if ( imageElement != null )
                 {
-                    var      imageSource = imageElement.GetAttribute( "source" );
+                    var       imageSource = imageElement.GetAttribute( "source" );
                     FileInfo? image       = GetRelativeFileHandle( tsxFile, imageSource );
 
                     fileHandles.Add( image! );
@@ -152,7 +154,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                 {
                     foreach ( XmlReader.Element tile in tset.GetChildrenByName( "tile" ) )
                     {
-                        var      imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
+                        var       imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
                         FileInfo? image       = GetRelativeFileHandle( tsxFile, imageSource );
 
                         fileHandles.Add( image! );
@@ -165,7 +167,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 
                 if ( imageElement != null )
                 {
-                    var      imageSource = imageElement.GetAttribute( "source" );
+                    var       imageSource = imageElement.GetAttribute( "source" );
                     FileInfo? image       = GetRelativeFileHandle( tmxFile, imageSource );
                     fileHandles.Add( image! );
                 }
@@ -173,7 +175,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                 {
                     foreach ( XmlReader.Element tile in tileset.GetChildrenByName( "tile" ) )
                     {
-                        var      imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
+                        var       imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
                         FileInfo? image       = GetRelativeFileHandle( tmxFile, imageSource );
                         fileHandles.Add( image! );
                     }
@@ -205,7 +207,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
-    public override List< AssetDescriptor > GetDependencies( string? fileName, FileInfo? file,
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
                                                              AssetLoaderParameters parameter )
     {
         return null!;
@@ -295,8 +298,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                 {
                     imageSource = imageElement.GetAttribute( "source" );
 
-                    image = GetRelativeFileHandle
-                        ( source != null ? GetRelativeFileHandle( tmxFile, source ) : tmxFile, imageSource );
+                    image = GetRelativeFileHandle( source != null ? GetRelativeFileHandle( tmxFile, source ) : tmxFile, imageSource );
                 }
 
                 TextureRegion? texture = imageResolver.GetImage( Path.GetFullPath( image?.Name! ) );
