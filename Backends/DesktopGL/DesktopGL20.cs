@@ -22,685 +22,619 @@ namespace LibGDXSharp.Backends.Desktop;
 
 public class DesktopGL20 : IGL20
 {
-    void IGL20.GLActiveTexture( int texture )
+    public void GLActiveTexture( int texture )
     {
     }
 
-    void IGL20.GLBindTexture( int target, int texture )
+    public void GLBindTexture( int target, int texture )
     {
     }
 
-    void IGL20.GLBlendFunc( int sfactor, int dfactor )
+    public void GLBlendFunc( int sfactor, int dfactor )
     {
     }
 
-    void IGL20.GLClear( int mask )
+    public void GLClear( int mask )
     {
     }
 
-    void IGL20.GLClearColor( float red, float green, float blue, float alpha )
+    public void GLClearColor( float red, float green, float blue, float alpha )
     {
     }
 
-    void IGL20.GLClearDepthf( float depth )
+    public void GLClearDepthf( float depth )
     {
     }
 
-    void IGL20.GLClearStencil( int s )
+    public void GLClearStencil( int s )
     {
     }
 
-    void IGL20.GLColorMask( bool red, bool green, bool blue, bool alpha )
+    public void GLColorMask( bool red, bool green, bool blue, bool alpha )
     {
     }
 
-    void IGL20.GLCompressedTexImage2D( int target, int level, int internalformat, int width, int height, int border,
-                                       int imageSize, Buffer data )
+    public void GLCompressedTexImage2D( int target, int level, int internalformat, int width, int height, int border,
+                                        int imageSize, Buffer data )
     {
     }
 
-    void IGL20.GLCompressedTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height,
-                                          int format,
-                                          int imageSize, Buffer data )
+    public void GLCompressedTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height,
+                                           int format,
+                                           int imageSize, Buffer data )
     {
     }
 
-    void IGL20.GLCopyTexImage2D( int target, int level, int internalformat, int x, int y, int width, int height,
-                                 int border )
+    public void GLCopyTexImage2D( int target, int level, int internalformat, int x, int y, int width, int height,
+                                  int border )
     {
     }
 
-    void IGL20.GLCopyTexSubImage2D( int target, int level, int xoffset, int yoffset, int x, int y, int width,
-                                    int height )
+    public void GLCopyTexSubImage2D( int target, int level, int xoffset, int yoffset, int x, int y, int width,
+                                     int height )
     {
     }
 
-    void IGL20.GLCullFace( int mode )
+    public void GLCullFace( int mode )
     {
     }
 
-    void IGL20.GLDeleteTextures( int n, IntBuffer textures )
+    public void GLDeleteTextures( int n, IntBuffer textures )
     {
     }
 
-    void IGL20.GLDeleteTexture( int texture )
+    public void GLDeleteTexture( int texture )
     {
     }
 
-    void IGL20.GLDepthFunc( int func )
+    public void GLDepthFunc( int func )
     {
     }
 
-    void IGL20.GLDepthMask( bool flag )
+    public void GLDepthMask( bool flag )
     {
     }
 
-    void IGL20.GLDepthRangef( float zNear, float zFar )
+    public void GLDepthRangef( float zNear, float zFar )
     {
     }
 
-    void IGL20.GLDisable( int cap )
+    public void GLDisable( int cap )
     {
     }
 
-    void IGL20.GLDrawArrays( int mode, int first, int count )
+    public void GLDrawArrays( int mode, int first, int count )
     {
     }
 
-    void IGL20.GLDrawElements( int mode, int count, int type, Buffer indices )
+    public void GLDrawElements( int mode, int count, int type, Buffer indices )
     {
     }
 
-    void IGL20.GLEnable( int cap )
+    public void GLEnable( int cap )
     {
     }
 
-    void IGL20.GLFinish()
+    public void GLFinish()
     {
     }
 
-    void IGL20.GLFlush()
+    public void GLFlush()
     {
     }
 
-    void IGL20.GLFrontFace( int mode )
+    public void GLFrontFace( int mode )
     {
     }
 
-    void IGL20.GLGenTextures( int n, IntBuffer textures )
+    public void GLGenTextures( int n, IntBuffer textures )
     {
     }
 
-    int IGL20.GLGenTexture()
-    {
-        return 0;
-    }
+    public int GLGenTexture() => 0;
 
-    int IGL20.GLGetError()
-    {
-        return 0;
-    }
+    public int GLGetError() => 0;
 
-    void IGL20.GLGetIntegerv( int pname, IntBuffer parameters )
+    public void GLGetIntegerv( int pname, IntBuffer parameters )
     {
     }
 
-    string IGL20.GLGetString( int name )
-    {
-        return null!;
-    }
+    public string GLGetString( int name ) => null;
 
-    void IGL20.GLHint( int target, int mode )
+    public void GLHint( int target, int mode )
     {
     }
 
-    void IGL20.GLLineWidth( float width )
+    public void GLLineWidth( float width )
     {
     }
 
-    void IGL20.GLPixelStorei( int pname, int param )
+    public void GLPixelStorei( int pname, int param )
     {
     }
 
-    void IGL20.GLPolygonOffset( float factor, float units )
+    public void GLPolygonOffset( float factor, float units )
     {
     }
 
-    void IGL20.GLReadPixels( int x, int y, int width, int height, int format, int type, Buffer pixels )
+    public void GLReadPixels( int x, int y, int width, int height, int format, int type, Buffer pixels )
     {
     }
 
-    void IGL20.GLScissor( int x, int y, int width, int height )
+    public void GLScissor( int x, int y, int width, int height )
     {
     }
 
-    void IGL20.GLStencilFunc( int func, int reference, int mask )
+    public void GLStencilFunc( int func, int reference, int mask )
     {
     }
 
-    void IGL20.GLStencilMask( int mask )
+    public void GLStencilMask( int mask )
     {
     }
 
-    void IGL20.GLStencilOp( int fail, int zfail, int zpass )
+    public void GLStencilOp( int fail, int zfail, int zpass )
     {
     }
 
-    void IGL20.GLTexImage2D( int target, int level, int internalformat, int width, int height, int border, int format,
-                             int type,
-                             Buffer pixels )
+    public void GLTexImage2D( int target, int level, int internalformat, int width, int height, int border, int format,
+                              int type,
+                              Buffer pixels )
     {
     }
 
-    void IGL20.GLTexParameterf( int target, int pname, float param )
+    public void GLTexParameterf( int target, int pname, float param )
     {
     }
 
-    void IGL20.GLTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format,
-                                int type,
-                                Buffer pixels )
+    public void GLTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format,
+                                 int type,
+                                 Buffer pixels )
     {
     }
 
-    void IGL20.GLViewport( int x, int y, int width, int height )
+    public void GLViewport( int x, int y, int width, int height )
     {
     }
 
-    void IGL20.GLAttachShader( int program, int shader )
+    public void GLAttachShader( int program, int shader )
     {
     }
 
-    void IGL20.GLBindAttribLocation( int program, int index, string name )
+    public void GLBindAttribLocation( int program, int index, string name )
     {
     }
 
-    void IGL20.GLBindBuffer( int target, int buffer )
+    public void GLBindBuffer( int target, int buffer )
     {
     }
 
-    void IGL20.GLBindFramebuffer( int target, int framebuffer )
+    public void GLBindFramebuffer( int target, int framebuffer )
     {
     }
 
-    void IGL20.GLBindRenderbuffer( int target, int renderbuffer )
+    public void GLBindRenderbuffer( int target, int renderbuffer )
     {
     }
 
-    void IGL20.GLBlendColor( float red, float green, float blue, float alpha )
+    public void GLBlendColor( float red, float green, float blue, float alpha )
     {
     }
 
-    void IGL20.GLBlendEquation( int mode )
+    public void GLBlendEquation( int mode )
     {
     }
 
-    void IGL20.GLBlendEquationSeparate( int modeRgb, int modeAlpha )
+    public void GLBlendEquationSeparate( int modeRgb, int modeAlpha )
     {
     }
 
-    void IGL20.GLBlendFuncSeparate( int srcRgb, int dstRgb, int srcAlpha, int dstAlpha )
+    public void GLBlendFuncSeparate( int srcRgb, int dstRgb, int srcAlpha, int dstAlpha )
     {
     }
 
-    void IGL20.GLBufferData( int target, int size, Buffer data, int usage )
+    public void GLBufferData( int target, int size, Buffer data, int usage )
     {
     }
 
-    void IGL20.GLBufferSubData( int target, int offset, int size, Buffer data )
+    public void GLBufferSubData( int target, int offset, int size, Buffer data )
     {
     }
 
-    int IGL20.GLCheckFramebufferStatus( int target )
-    {
-        return 0;
-    }
+    public int GLCheckFramebufferStatus( int target ) => 0;
 
-    void IGL20.GLCompileShader( int shader )
+    public void GLCompileShader( int shader )
     {
     }
 
-    int IGL20.GLCreateProgram()
-    {
-        return 0;
-    }
+    public int GLCreateProgram() => 0;
 
-    int IGL20.GLCreateShader( int type )
-    {
-        return 0;
-    }
+    public int GLCreateShader( int type ) => 0;
 
-    void IGL20.GLDeleteBuffer( int buffer )
+    public void GLDeleteBuffer( int buffer )
     {
     }
 
-    void IGL20.GLDeleteBuffers( int n, IntBuffer buffers )
+    public void GLDeleteBuffers( int n, IntBuffer buffers )
     {
     }
 
-    void IGL20.GLDeleteFramebuffer( int framebuffer )
+    public void GLDeleteFramebuffer( int framebuffer )
     {
     }
 
-    void IGL20.GLDeleteFramebuffers( int n, IntBuffer framebuffers )
+    public void GLDeleteFramebuffers( int n, IntBuffer framebuffers )
     {
     }
 
-    void IGL20.GLDeleteProgram( int program )
+    public void GLDeleteProgram( int program )
     {
     }
 
-    void IGL20.GLDeleteRenderbuffer( int renderbuffer )
+    public void GLDeleteRenderbuffer( int renderbuffer )
     {
     }
 
-    void IGL20.GLDeleteRenderbuffers( int n, IntBuffer renderbuffers )
+    public void GLDeleteRenderbuffers( int n, IntBuffer renderbuffers )
     {
     }
 
-    void IGL20.GLDeleteShader( int shader )
+    public void GLDeleteShader( int shader )
     {
     }
 
-    void IGL20.GLDetachShader( int program, int shader )
+    public void GLDetachShader( int program, int shader )
     {
     }
 
-    void IGL20.GLDisableVertexAttribArray( int index )
+    public void GLDisableVertexAttribArray( int index )
     {
     }
 
-    void IGL20.GLDrawElements( int mode, int count, int type, int indices )
+    public void GLDrawElements( int mode, int count, int type, int indices )
     {
     }
 
-    void IGL20.GLEnableVertexAttribArray( int index )
+    public void GLEnableVertexAttribArray( int index )
     {
     }
 
-    void IGL20.GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer )
+    public void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer )
     {
     }
 
-    void IGL20.GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level )
+    public void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level )
     {
     }
 
-    int IGL20.GLGenBuffer()
-    {
-        return 0;
-    }
+    public int GLGenBuffer() => 0;
 
-    void IGL20.GLGenBuffers( int n, IntBuffer buffers )
+    public void GLGenBuffers( int n, IntBuffer buffers )
     {
     }
 
-    void IGL20.GLGenerateMipmap( int target )
+    public void GLGenerateMipmap( int target )
     {
     }
 
-    int IGL20.GLGenFramebuffer()
-    {
-        return 0;
-    }
+    public int GLGenFramebuffer() => 0;
 
-    void IGL20.GLGenFramebuffers( int n, IntBuffer framebuffers )
+    public void GLGenFramebuffers( int n, IntBuffer framebuffers )
     {
     }
 
-    int IGL20.GLGenRenderbuffer()
-    {
-        return 0;
-    }
+    public int GLGenRenderbuffer() => 0;
 
-    void IGL20.GLGenRenderbuffers( int n, IntBuffer renderbuffers )
+    public void GLGenRenderbuffers( int n, IntBuffer renderbuffers )
     {
     }
 
-    string IGL20.GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type )
-    {
-        return null!;
-    }
+    public string GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type ) => null;
 
-    string IGL20.GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type )
-    {
-        return null!;
-    }
+    public string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type ) => null;
 
-    void IGL20.GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders )
+    public void GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders )
     {
     }
 
-    int IGL20.GLGetAttribLocation( int program, string name )
-    {
-        return 0;
-    }
+    public int GLGetAttribLocation( int program, string name ) => 0;
 
-    void IGL20.GLGetBooleanv( int pname, Buffer parameters )
+    public void GLGetBooleanv( int pname, Buffer parameters )
     {
     }
 
-    void IGL20.GLGetBufferParameteriv( int target, int pname, IntBuffer parameters )
+    public void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters )
     {
     }
 
-    void IGL20.GLGetFloatv( int pname, FloatBuffer parameters )
+    public void GLGetFloatv( int pname, FloatBuffer parameters )
     {
     }
 
-    void IGL20.GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters )
+    public void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters )
     {
     }
 
-    void IGL20.GLGetProgramiv( int program, int pname, IntBuffer parameters )
+    public void GLGetProgramiv( int program, int pname, IntBuffer parameters )
     {
     }
 
-    string IGL20.GLGetProgramInfoLog( int program )
-    {
-        return null!;
-    }
+    public string GLGetProgramInfoLog( int program ) => null;
 
-    void IGL20.GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters )
+    public void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters )
     {
     }
 
-    void IGL20.GLGetShaderiv( int shader, int pname, IntBuffer parameters )
+    public void GLGetShaderiv( int shader, int pname, IntBuffer parameters )
     {
     }
 
-    string IGL20.GLGetShaderInfoLog( int shader )
-    {
-        return null!;
-    }
+    public string GLGetShaderInfoLog( int shader ) => null;
 
-    void IGL20.GLGetShaderPrecisionFormat( int shadertype, int precisiontype, IntBuffer range, IntBuffer precision )
+    public void GLGetShaderPrecisionFormat( int shadertype, int precisiontype, IntBuffer range, IntBuffer precision )
     {
     }
 
-    void IGL20.GLGetTexParameterfv( int target, int pname, FloatBuffer parameters )
+    public void GLGetTexParameterfv( int target, int pname, FloatBuffer parameters )
     {
     }
 
-    void IGL20.GLGetTexParameteriv( int target, int pname, IntBuffer parameters )
+    public void GLGetTexParameteriv( int target, int pname, IntBuffer parameters )
     {
     }
 
-    void IGL20.GLGetUniformfv( int program, int location, FloatBuffer parameters )
+    public void GLGetUniformfv( int program, int location, FloatBuffer parameters )
     {
     }
 
-    void IGL20.GLGetUniformiv( int program, int location, IntBuffer parameters )
+    public void GLGetUniformiv( int program, int location, IntBuffer parameters )
     {
     }
 
-    int IGL20.GLGetUniformLocation( int program, string name )
-    {
-        return 0;
-    }
+    public int GLGetUniformLocation( int program, string name ) => 0;
 
-    void IGL20.GLGetVertexAttribfv( int index, int pname, FloatBuffer parameters )
+    public void GLGetVertexAttribfv( int index, int pname, FloatBuffer parameters )
     {
     }
 
-    void IGL20.GLGetVertexAttribiv( int index, int pname, IntBuffer parameters )
+    public void GLGetVertexAttribiv( int index, int pname, IntBuffer parameters )
     {
     }
 
-    void IGL20.GLGetVertexAttribPointerv( int index, int pname, Buffer pointer )
+    public void GLGetVertexAttribPointerv( int index, int pname, Buffer pointer )
     {
     }
 
-    bool IGL20.GLIsBuffer( int buffer )
-    {
-        return false;
-    }
+    public bool GLIsBuffer( int buffer ) => false;
 
-    bool IGL20.GLIsEnabled( int cap )
-    {
-        return false;
-    }
+    public bool GLIsEnabled( int cap ) => false;
 
-    bool IGL20.GLIsFramebuffer( int framebuffer )
-    {
-        return false;
-    }
+    public bool GLIsFramebuffer( int framebuffer ) => false;
 
-    bool IGL20.GLIsProgram( int program )
-    {
-        return false;
-    }
+    public bool GLIsProgram( int program ) => false;
 
-    bool IGL20.GLIsRenderbuffer( int renderbuffer )
-    {
-        return false;
-    }
+    public bool GLIsRenderbuffer( int renderbuffer ) => false;
 
-    bool IGL20.GLIsShader( int shader )
-    {
-        return false;
-    }
+    public bool GLIsShader( int shader ) => false;
 
-    bool IGL20.GLIsTexture( int texture )
-    {
-        return false;
-    }
+    public bool GLIsTexture( int texture ) => false;
 
-    void IGL20.GLLinkProgram( int program )
+    public void GLLinkProgram( int program )
     {
     }
 
-    void IGL20.GLReleaseShaderCompiler()
+    public void GLReleaseShaderCompiler()
     {
     }
 
-    void IGL20.GLRenderbufferStorage( int target, int internalformat, int width, int height )
+    public void GLRenderbufferStorage( int target, int internalformat, int width, int height )
     {
     }
 
-    void IGL20.GLSampleCoverage( float value, bool invert )
+    public void GLSampleCoverage( float value, bool invert )
     {
     }
 
-    void IGL20.GLShaderBinary( int n, IntBuffer shaders, int binaryformat, Buffer binary, int length )
+    public void GLShaderBinary( int n, IntBuffer shaders, int binaryformat, Buffer binary, int length )
     {
     }
 
-    void IGL20.GLShaderSource( int shader, string str )
+    public void GLShaderSource( int shader, string str )
     {
     }
 
-    void IGL20.GLStencilFuncSeparate( int face, int func, int reference, int mask )
+    public void GLStencilFuncSeparate( int face, int func, int reference, int mask )
     {
     }
 
-    void IGL20.GLStencilMaskSeparate( int face, int mask )
+    public void GLStencilMaskSeparate( int face, int mask )
     {
     }
 
-    void IGL20.GLStencilOpSeparate( int face, int fail, int zfail, int zpass )
+    public void GLStencilOpSeparate( int face, int fail, int zfail, int zpass )
     {
     }
 
-    void IGL20.GLTexParameterfv( int target, int pname, FloatBuffer parameters )
+    public void GLTexParameterfv( int target, int pname, FloatBuffer parameters )
     {
     }
 
-    void IGL20.GLTexParameteri( int target, int pname, int param )
+    public void GLTexParameteri( int target, int pname, int param )
     {
     }
 
-    void IGL20.GLTexParameteriv( int target, int pname, IntBuffer parameters )
+    public void GLTexParameteriv( int target, int pname, IntBuffer parameters )
     {
     }
 
-    void IGL20.GLUniform1F( int location, float x )
+    public void GLUniform1F( int location, float x )
     {
     }
 
-    void IGL20.GLUniform1Fv( int location, int count, FloatBuffer v )
+    public void GLUniform1Fv( int location, int count, FloatBuffer v )
     {
     }
 
-    void IGL20.GLUniform1Fv( int location, int count, float[] v, int offset )
+    public void GLUniform1Fv( int location, int count, float[] v, int offset )
     {
     }
 
-    void IGL20.GLUniform1I( int location, int x )
+    public void GLUniform1I( int location, int x )
     {
     }
 
-    void IGL20.GLUniform1Iv( int location, int count, IntBuffer v )
+    public void GLUniform1Iv( int location, int count, IntBuffer v )
     {
     }
 
-    void IGL20.GLUniform1Iv( int location, int count, int[] v, int offset )
+    public void GLUniform1Iv( int location, int count, int[] v, int offset )
     {
     }
 
-    void IGL20.GLUniform2F( int location, float x, float y )
+    public void GLUniform2F( int location, float x, float y )
     {
     }
 
-    void IGL20.GLUniform2Fv( int location, int count, FloatBuffer v )
+    public void GLUniform2Fv( int location, int count, FloatBuffer v )
     {
     }
 
-    void IGL20.GLUniform2Fv( int location, int count, float[] v, int offset )
+    public void GLUniform2Fv( int location, int count, float[] v, int offset )
     {
     }
 
-    void IGL20.GLUniform2I( int location, int x, int y )
+    public void GLUniform2I( int location, int x, int y )
     {
     }
 
-    void IGL20.GLUniform2Iv( int location, int count, IntBuffer v )
+    public void GLUniform2Iv( int location, int count, IntBuffer v )
     {
     }
 
-    void IGL20.GLUniform2Iv( int location, int count, int[] v, int offset )
+    public void GLUniform2Iv( int location, int count, int[] v, int offset )
     {
     }
 
-    void IGL20.GLUniform3F( int location, float x, float y, float z )
+    public void GLUniform3F( int location, float x, float y, float z )
     {
     }
 
-    void IGL20.GLUniform3Fv( int location, int count, FloatBuffer v )
+    public void GLUniform3Fv( int location, int count, FloatBuffer v )
     {
     }
 
-    void IGL20.GLUniform3Fv( int location, int count, float[] v, int offset )
+    public void GLUniform3Fv( int location, int count, float[] v, int offset )
     {
     }
 
-    void IGL20.GLUniform3I( int location, int x, int y, int z )
+    public void GLUniform3I( int location, int x, int y, int z )
     {
     }
 
-    void IGL20.GLUniform3Iv( int location, int count, IntBuffer v )
+    public void GLUniform3Iv( int location, int count, IntBuffer v )
     {
     }
 
-    void IGL20.GLUniform3Iv( int location, int count, int[] v, int offset )
+    public void GLUniform3Iv( int location, int count, int[] v, int offset )
     {
     }
 
-    void IGL20.GLUniform4F( int location, float x, float y, float z, float w )
+    public void GLUniform4F( int location, float x, float y, float z, float w )
     {
     }
 
-    void IGL20.GLUniform4Fv( int location, int count, FloatBuffer v )
+    public void GLUniform4Fv( int location, int count, FloatBuffer v )
     {
     }
 
-    void IGL20.GLUniform4Fv( int location, int count, float[] v, int offset )
+    public void GLUniform4Fv( int location, int count, float[] v, int offset )
     {
     }
 
-    void IGL20.GLUniform4I( int location, int x, int y, int z, int w )
+    public void GLUniform4I( int location, int x, int y, int z, int w )
     {
     }
 
-    void IGL20.GLUniform4Iv( int location, int count, IntBuffer v )
+    public void GLUniform4Iv( int location, int count, IntBuffer v )
     {
     }
 
-    void IGL20.GLUniform4Iv( int location, int count, int[] v, int offset )
+    public void GLUniform4Iv( int location, int count, int[] v, int offset )
     {
     }
 
-    void IGL20.GLUniformMatrix2Fv( int location, int count, bool transpose, FloatBuffer value )
+    public void GLUniformMatrix2Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    void IGL20.GLUniformMatrix2Fv( int location, int count, bool transpose, float[] value, int offset )
+    public void GLUniformMatrix2Fv( int location, int count, bool transpose, float[] value, int offset )
     {
     }
 
-    void IGL20.GLUniformMatrix3Fv( int location, int count, bool transpose, FloatBuffer value )
+    public void GLUniformMatrix3Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    void IGL20.GLUniformMatrix3Fv( int location, int count, bool transpose, float[] value, int offset )
+    public void GLUniformMatrix3Fv( int location, int count, bool transpose, float[] value, int offset )
     {
     }
 
-    void IGL20.GLUniformMatrix4Fv( int location, int count, bool transpose, FloatBuffer value )
+    public void GLUniformMatrix4Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    void IGL20.GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset )
+    public void GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset )
     {
     }
 
-    void IGL20.GLUseProgram( int program )
+    public void GLUseProgram( int program )
     {
     }
 
-    void IGL20.GLValidateProgram( int program )
+    public void GLValidateProgram( int program )
     {
     }
 
-    void IGL20.GLVertexAttrib1F( int indx, float x )
+    public void GLVertexAttrib1F( int indx, float x )
     {
     }
 
-    void IGL20.GLVertexAttrib1Fv( int indx, FloatBuffer values )
+    public void GLVertexAttrib1Fv( int indx, FloatBuffer values )
     {
     }
 
-    void IGL20.GLVertexAttrib2F( int indx, float x, float y )
+    public void GLVertexAttrib2F( int indx, float x, float y )
     {
     }
 
-    void IGL20.GLVertexAttrib2Fv( int indx, FloatBuffer values )
+    public void GLVertexAttrib2Fv( int indx, FloatBuffer values )
     {
     }
 
-    void IGL20.GLVertexAttrib3F( int indx, float x, float y, float z )
+    public void GLVertexAttrib3F( int indx, float x, float y, float z )
     {
     }
 
-    void IGL20.GLVertexAttrib3Fv( int indx, FloatBuffer values )
+    public void GLVertexAttrib3Fv( int indx, FloatBuffer values )
     {
     }
 
-    void IGL20.GLVertexAttrib4F( int indx, float x, float y, float z, float w )
+    public void GLVertexAttrib4F( int indx, float x, float y, float z, float w )
     {
     }
 
-    void IGL20.GLVertexAttrib4Fv( int indx, FloatBuffer values )
+    public void GLVertexAttrib4Fv( int indx, FloatBuffer values )
     {
     }
 
     /// In OpenGl core profiles (3.1+), passing a pointer to client memory is not valid.
     /// In 3.0 and later, use the other version of this function instead, pass a zero-based
     /// offset which references the buffer currently bound to GL_ARRAY_BUFFER.
-    void IGL20.GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Buffer ptr )
+    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Buffer ptr )
     {
     }
 
-    void IGL20.GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, int ptr )
+    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, int ptr )
     {
     }
 }

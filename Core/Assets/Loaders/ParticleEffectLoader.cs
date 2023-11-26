@@ -116,9 +116,12 @@ public class ParticleEffectLoader
         {
             deps = new List< AssetDescriptor >
             {
-                new( typeof( TextureAtlas ),
-                     ( ParticleEffectParameter )param,
-                     ( ( ParticleEffectParameter )param ).AtlasFile! )
+                new
+                    (
+                    ( ( ParticleEffectParameter )param ).AtlasFile!,
+                    typeof( TextureAtlas ),
+                    ( ParticleEffectParameter )param
+                    )
             };
         }
 

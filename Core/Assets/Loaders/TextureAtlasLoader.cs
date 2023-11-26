@@ -47,7 +47,7 @@ public class TextureAtlasLoader
                                        TextureAtlasParameter parameter )
     {
         if ( _data == null ) throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
-
+        
         foreach ( TextureAtlasData.Page page in _data.Pages )
         {
             if ( page.textureFile != null )
@@ -95,10 +95,7 @@ public class TextureAtlasLoader
 
             if ( page.textureFile != null )
             {
-                dependencies.Add( new AssetDescriptor( typeof( Texture ),
-                                                       tparams,
-                                                       null,
-                                                       page.textureFile ) );
+                dependencies.Add( new AssetDescriptor( page.textureFile, typeof( Texture ), tparams ) );
             }
         }
 

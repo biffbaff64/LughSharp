@@ -158,7 +158,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// (since GL 4.3), this uses the KHR_debug, ARB_debug_output or AMD_debug_output extension
     /// if available. By default, debug messages with NOTIFICATION severity are disabled to
     /// avoid log spam.
-    /// Use <see cref="DesktopGLApplication.SetGLDebugMessageControl(DesktopDesktopDesktopGLApplicationgMessageSeverity, bool)"/>
+    /// Use <see cref="DesktopGLApplication.SetGLDebugMessageControl(DesktopGLApplication.GLDebugMessageSeverity, bool)"/>
     /// to enable or disable other severity debug levels.
     /// </summary>
     public void EnableGLDebugOutput( bool enable, StreamWriter debugOutputStream )

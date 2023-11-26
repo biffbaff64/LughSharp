@@ -36,7 +36,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public List< Runnable >                    Runnables          { get; set; } = new();
     public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-    public DesktopGLApplicationLogger?                ApplicationLogger  { get; set; }
+    public GLApplicationLogger?                ApplicationLogger  { get; set; }
     public int                                 LogLevel           { get; set; }
     public IClipboard?                         Clipboard          { get; set; }
 
@@ -69,7 +69,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         InitialiseGL();
 
-        ApplicationLogger = new DesktopGLApplicationLogger();
+        ApplicationLogger = new GLApplicationLogger();
 
         config.Title ??= listener.GetType().Name;
 

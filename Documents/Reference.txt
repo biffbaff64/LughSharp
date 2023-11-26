@@ -70,7 +70,7 @@ Reference Types
     - delegates
     - records
     - string
-    - object
+    - Object
     - dynamic
 
 Value Types

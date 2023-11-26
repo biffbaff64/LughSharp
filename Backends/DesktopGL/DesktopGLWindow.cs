@@ -22,21 +22,21 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DesktopGLWindow : IDisposable
 {
-    public        IDesktopGLWindowListener?         WindowListener      { get; set; }
+    public        IDesktopGLWindowListener?                WindowListener      { get; set; }
     public unsafe Window*                           WindowHandle        { get; set; }
     public        IApplicationListener              Listener            { get; set; }
-    public        IDesktopGLInput                   Input               { get; set; } = null!;
+    public        IDesktopGLInput                          Input               { get; set; } = null!;
     public        DesktopGLGraphics                 Graphics            { get; set; } = null!;
     public        DesktopGLApplicationConfiguration Config              { get; set; }
     public        bool                              ListenerInitialised { get; set; } = false;
 
     private readonly IDesktopGLApplicationBase _application;
-    private          IntBuffer                 _tmpBuffer;
-    private          IntBuffer                 _tmpBuffer2;
-    private          bool                      _iconified         = false;
-    private          bool                      _requestRendering  = false;
-    private readonly List< Runnable >          _runnables         = new();
-    private readonly List< Runnable >          _executedRunnables = new();
+    private          IntBuffer          _tmpBuffer;
+    private          IntBuffer          _tmpBuffer2;
+    private          bool               _iconified         = false;
+    private          bool               _requestRendering  = false;
+    private readonly List< Runnable >   _runnables         = new();
+    private readonly List< Runnable >   _executedRunnables = new();
 
     // ------------------------------------------------------------------------
 
@@ -152,28 +152,25 @@ public class DesktopGLWindow : IDisposable
     private unsafe void SetSizeLimits( Window* windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         GLFW.SetWindowSizeLimits( windowHandle,
-                                  minWidth > -1 ? minWidth : GLFW.DontCare,
-                                  minHeight > -1 ? minHeight : GLFW.DontCare,
-                                  maxWidth > -1 ? maxWidth : GLFW.DontCare,
-                                  maxHeight > -1 ? maxHeight : GLFW.DontCare );
+                                  minWidth > -1 ? minWidth : GLFW.GLFW_DONT_CARE,
+                                  minHeight > -1 ? minHeight : GLFW.GLFW_DONT_CARE,
+                                  maxWidth > -1 ? maxWidth : GLFW.GLFW_DONT_CARE,
+                                  maxHeight > -1 ? maxHeight : GLFW.GLFW_DONT_CARE );
     }
 
-    /// <summary>
-    /// Sets the icon that will be used in the window's title bar. Has no effect in
-    /// macOS, which doesn't use window icons.
-    /// </summary>
-    /// <param name="images"> One or more images. The one closest to the system's
-    /// desired size will be scaled. Good sizes include 16x16, 32x32 and 48x48.
-    /// Pixmap format <see cref="Pixmap.Format.RGBA8888"/>" is preferred so the
-    /// images will not have to be copied and converted. The chosen image is copied,
-    /// and the provided Pixmaps are not disposed.
-    /// </param>
-    public unsafe void SetIcon( params Pixmap[] images )
+    /**
+     * Sets the icon that will be used in the window's title bar. Has no effect in macOS, which doesn't use window icons.
+     * @param image One or more images. The one closest to the system's desired size will be scaled. Good sizes include
+     * 16x16, 32x32 and 48x48. Pixmap format {@link com.badlogic.gdx.graphics.Pixmap.Format#RGBA8888 RGBA8888} is preferred
+     * so the images will not have to be copied and converted. The chosen image is copied, and the provided Pixmaps are not
+     * disposed.
+     */
+    public void SetIcon( params Pixmap[] images )
     {
         SetIcon( WindowHandle, images );
     }
 
-    private void SetIcon( long windowHandle, String[] imagePaths, FileType imageFileType )
+    private void SetIcon( long windowHandle, String[] imagePaths, Files.FileType imageFileType )
     {
         if ( SharedLibraryLoader.IsMac )
         {
@@ -187,10 +184,7 @@ public class DesktopGLWindow : IDisposable
             pixmaps[ i ] = new Pixmap( Gdx.Files.GetFileHandle( imagePaths[ i ], imageFileType ) );
         }
 
-        unsafe
-        {
-            SetIcon( WindowHandle, pixmaps );
-        }
+        SetIcon( windowHandle, pixmaps );
 
         foreach ( Pixmap pixmap in pixmaps )
         {

@@ -132,9 +132,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
             {
                 foreach ( ModelTexture modelTexture in modelMaterial.Textures )
                 {
-                    deps.Add( new AssetDescriptor( typeof( Texture ),
-                                                   textureParameter,
-                                                   modelTexture.FileName ) );
+                    deps.Add( new AssetDescriptor( modelTexture.FileName, typeof( Texture ), textureParameter ) );
                 }
             }
         }

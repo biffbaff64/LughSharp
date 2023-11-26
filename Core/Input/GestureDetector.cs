@@ -89,7 +89,12 @@ public class GestureDetector : InputAdapter
                             float longPressDuration,
                             float maxFlingDelay,
                             IGestureListener listener )
-        : this( halfTapSquareSize, halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, listener )
+        : this( halfTapSquareSize,
+                halfTapSquareSize,
+                tapCountInterval,
+                longPressDuration,
+                maxFlingDelay,
+                listener )
     {
     }
 
@@ -126,31 +131,35 @@ public class GestureDetector : InputAdapter
     {
         this._tapRectangleWidth  = halfTapRectangleWidth;
         this._tapRectangleHeight = halfTapRectangleHeight;
-        this._tapCountInterval   = ( long )( tapCountInterval * 1000000000l );
+        this._tapCountInterval   = ( long )( tapCountInterval * 1000000000L );
         this._longPressSeconds   = longPressDuration;
-        this._maxFlingDelay      = ( long )( maxFlingDelay * 1000000000l );
+        this._maxFlingDelay      = ( long )( maxFlingDelay * 1000000000L );
         this._listener           = listener ?? throw new ArgumentException( "listener cannot be null." );
 
-        SetLongPressTask();
+        _longPressTask = null!;
+        _tokenSource   = null!;
+
+        SetLongPressTask().ConfigureAwait( false );
     }
-    
+
     private async Task SetLongPressTask()
     {
         _tokenSource       = new CancellationTokenSource();
         _cancellationToken = _tokenSource.Token;
 
         this._longPressTask = Task.Run( () =>
-        {
-            if ( !_longPressFired )
-            {
-                _longPressFired = ( bool )_listener?.LongPress( _pointer1.X, _pointer1.Y );
-            }
+                                        {
+                                            if ( !_longPressFired )
+                                            {
+                                                _longPressFired = ( bool )_listener?.LongPress( _pointer1.X, _pointer1.Y );
+                                            }
 
-            if ( _cancellationToken.IsCancellationRequested )
-            {
-                _cancellationToken.ThrowIfCancellationRequested();
-            }
-        }, _cancellationToken );
+                                            if ( _cancellationToken.IsCancellationRequested )
+                                            {
+                                                _cancellationToken.ThrowIfCancellationRequested();
+                                            }
+                                        },
+                                        _cancellationToken );
 
         _tokenSource.Cancel();
 

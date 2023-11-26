@@ -101,9 +101,12 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
         {
             deps.Add
                 (
-                new AssetDescriptor( typeof( TextureAtlas ),
-                                     ( ( BitmapFontParameter )parameter ),
-                                     ( ( BitmapFontParameter )parameter ).AtlasName )
+                 new AssetDescriptor
+                     (
+                      ( ( BitmapFontParameter )parameter ).AtlasName,
+                      typeof( TextureAtlas ),
+                      ( ( BitmapFontParameter )parameter )
+                     )
                 );
         }
         else
@@ -123,7 +126,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
                     textureParams.MagFilter  = ( ( BitmapFontParameter )parameter ).MagFilter;
                 }
 
-                deps.Add( new AssetDescriptor( typeof( Texture ), textureParams, null, resolved ) );
+                deps.Add( new AssetDescriptor( resolved, typeof( Texture ), textureParams ) );
             }
         }
 
@@ -170,8 +173,8 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
             {
                 throw new GdxRuntimeException
                     (
-                    $"Could not find font region {name} in atlas "
-                  + $"{( ( BitmapFontParameter )parameter ).AtlasName}"
+                     $"Could not find font region {name} in atlas "
+                   + $"{( ( BitmapFontParameter )parameter ).AtlasName}"
                     );
             }
 

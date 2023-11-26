@@ -28,10 +28,10 @@ public class ActorGestureListener : IEventListener
     private static Vector2 _tmpCoords  = new();
     private static Vector2 _tmpCoords2 = new();
 
-    public GestureDetector? Detector        { get; set; }
-    public Actor?           TouchDownTarget { get; set; }
+    public ActorGestureDetector Detector        { get; set; }
+    public Actor?               TouchDownTarget { get; set; }
 
-    private InputEvent? _ev;
+    private InputEvent? _inputEvent;
     private Actor?      _actor;
 
     public ActorGestureListener() : this( 20, 0.4f, 1.1f, int.MaxValue )
@@ -43,93 +43,14 @@ public class ActorGestureListener : IEventListener
                                  float longPressDuration,
                                  float maxFlingDelay )
     {
-        Detector = new GestureDetector( () =>
-        {
-
-        } );
-
-//        Detector = new GestureDetector( halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, new GestureAdapter()
-//        {
-//            private Vector2 _initialPointer1 = new();
-//            private Vector2 _initialPointer2 = new();
-//            private Vector2 _pointer1        = new();
-//            private Vector2 _pointer2        = new();
-//
-//            public bool Tap( float stageX, float stageY, int count, int button )
-//            {
-//                _actor.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
-//                ActorGestureListener.Tap( _ev, _tmpCoords.X, _tmpCoords.Y, count, button );
-//
-//                return true;
-//            }
-//
-//            public bool LongPress( float stageX, float stageY )
-//            {
-//                _actor.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
-//
-//                return ActorGestureListener.this.LongPress( _actor, _tmpCoords.x, _tmpCoords.y );
-//            }
-//
-//            public bool Fling( float velocityX, float velocityY, int button )
-//            {
-//                StageToLocalAmount( _tmpCoords.Set( velocityX, velocityY ) );
-//                ActorGestureListener.Fling( _ev, _tmpCoords.X, _tmpCoords.Y, button );
-//
-//                return true;
-//            }
-//
-//            public bool Pan( float stageX, float stageY, float deltaX, float deltaY )
-//            {
-//                StageToLocalAmount( _tmpCoords.Set( deltaX, deltaY ) );
-//
-//                deltaX = _tmpCoords.X;
-//                deltaY = _tmpCoords.Y;
-//                
-//                _actor.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
-//                ActorGestureListener.Pan( _ev, _tmpCoords.X, _tmpCoords.Y, deltaX, deltaY );
-//
-//                return true;
-//            }
-//
-//            public bool PanStop( float stageX, float stageY, int pointer, int button )
-//            {
-//                _actor.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
-//                ActorGestureListener.PanStop( _ev, _tmpCoords.X, _tmpCoords.Y, pointer, button );
-//
-//                return true;
-//            }
-//
-//            public bool Zoom( float initialDistance, float distance )
-//            {
-//                ActorGestureListener.Zoom( _ev, initialDistance, distance );
-//
-//                return true;
-//            }
-//
-//            public bool Pinch( Vector2 stageInitialPointer1,
-//                               Vector2 stageInitialPointer2,
-//                               Vector2 stagePointer1,
-//                               Vector2 stagePointer2 )
-//            {
-//                _actor.StageToLocalCoordinates( _initialPointer1.Set( stageInitialPointer1 ) );
-//                _actor.StageToLocalCoordinates( _initialPointer2.Set( stageInitialPointer2 ) );
-//                _actor.StageToLocalCoordinates( _pointer1.Set( stagePointer1 ) );
-//                _actor.StageToLocalCoordinates( _pointer2.Set( stagePointer2 ) );
-//
-//                ActorGestureListener.Pinch( _ev, _initialPointer1, _initialPointer2, _pointer1, _pointer2 );
-//
-//                return true;
-//            }
-//
-//            private void StageToLocalAmount( Vector2 amount )
-//            {
-//                _actor.StageToLocalCoordinates( amount );
-//                amount.Sub( _actor.StageToLocalCoordinates( _tmpCoords2.Set( 0, 0 ) ) );
-//            }
-//        });
+        Detector = new ActorGestureDetector( halfTapSquareSize,
+                                             tapCountInterval,
+                                             longPressDuration,
+                                             maxFlingDelay,
+                                             this );
     }
 
-    public bool Handle( Event e )
+    public virtual bool Handle( Event e )
     {
         if ( !( e is InputEvent ev ) )
         {
@@ -165,7 +86,7 @@ public class ActorGestureListener : IEventListener
                     return false;
                 }
 
-                this._ev = ev;
+                this._inputEvent = ev;
                 _actor   = ev.ListenerActor;
 
                 Detector.TouchUp( ev.StageX, ev.StageY, ev.Pointer, ev.Button );
@@ -175,7 +96,7 @@ public class ActorGestureListener : IEventListener
                 return true;
 
             case InputEvent.EventType.TouchDragged:
-                this._ev = ev;
+                this._inputEvent = ev;
                 _actor   = ev.ListenerActor;
                 Detector.TouchDragged( ev.StageX, ev.StageY, ev.Pointer );
 
@@ -185,15 +106,15 @@ public class ActorGestureListener : IEventListener
         return false;
     }
 
-    public void TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+    public virtual void TouchDown( InputEvent ev, float x, float y, int pointer, int button )
     {
     }
 
-    public void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+    public virtual void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
     {
     }
 
-    public void Tap( InputEvent ev, float x, float y, int count, int button )
+    public virtual void Tap( InputEvent ev, float x, float y, int count, int button )
     {
     }
 
@@ -201,35 +122,131 @@ public class ActorGestureListener : IEventListener
     /// If true is returned, additional gestures will not be triggered. No ev is
     /// provided because this ev is triggered by time passing, not by an InputEvent.
     /// </summary>
-    public bool LongPress( Actor actor, float x, float y )
+    public virtual bool LongPress( Actor actor, float x, float y )
     {
         return false;
     }
 
-    public void Fling( InputEvent ev, float velocityX, float velocityY, int button )
+    public virtual void Fling( InputEvent ev, float velocityX, float velocityY, int button )
     {
     }
 
     /// <summary>
     /// The delta is the difference in stage coordinates since the last pan.
     /// </summary>
-    public void Pan( InputEvent ev, float x, float y, float deltaX, float deltaY )
+    public virtual void Pan( InputEvent ev, float x, float y, float deltaX, float deltaY )
     {
     }
 
-    public void PanStop( InputEvent ev, float x, float y, int pointer, int button )
+    public virtual void PanStop( InputEvent ev, float x, float y, int pointer, int button )
     {
     }
 
-    public void Zoom( InputEvent ev, float initialDistance, float distance )
+    public virtual void Zoom( InputEvent ev, float initialDistance, float distance )
     {
     }
 
-    public void Pinch( InputEvent ev,
-                       Vector2 initialPointer1,
-                       Vector2 initialPointer2,
-                       Vector2 pointer1,
-                       Vector2 pointer2 )
+    public virtual void Pinch( InputEvent ev,
+                               Vector2 initialPointer1,
+                               Vector2 initialPointer2,
+                               Vector2 pointer1,
+                               Vector2 pointer2 )
     {
+    }
+
+    public class ActorGestureDetector : GestureDetector
+    {
+        private readonly ActorGestureListener _parent;
+        private readonly Vector2              _initialPointer1 = new();
+        private readonly Vector2              _initialPointer2 = new();
+        private readonly Vector2              _pointer1        = new();
+        private readonly Vector2              _pointer2        = new();
+
+        public ActorGestureDetector( float halfTapSquareSize,
+                                     float tapCountInterval,
+                                     float longPressDuration,
+                                     float maxFlingDelay,
+                                     ActorGestureListener parent )
+            : base( halfTapSquareSize,
+                    tapCountInterval,
+                    longPressDuration,
+                    maxFlingDelay,
+                    new GestureAdapter() )
+        {
+            this._parent = parent;
+        }
+
+        public bool Tap( float stageX, float stageY, int count, int button )
+        {
+            _parent._actor?.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
+            
+            _parent.Tap( _parent._inputEvent!, _tmpCoords.X, _tmpCoords.Y, count, button );
+
+            return true;
+        }
+
+        public bool LongPress( float stageX, float stageY )
+        {
+            _parent._actor?.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
+
+            return _parent.LongPress( _parent._actor!, _tmpCoords.X, _tmpCoords.Y );
+        }
+
+        public bool Fling( float velocityX, float velocityY, int button )
+        {
+            StageToLocalAmount( _tmpCoords.Set( velocityX, velocityY ) );
+            _parent.Fling( _parent._inputEvent!, _tmpCoords.X, _tmpCoords.Y, button );
+
+            return true;
+        }
+
+        public bool Pan( float stageX, float stageY, float deltaX, float deltaY )
+        {
+            StageToLocalAmount( _tmpCoords.Set( deltaX, deltaY ) );
+
+            deltaX = _tmpCoords.X;
+            deltaY = _tmpCoords.Y;
+
+            _parent._actor!.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
+            _parent.Pan( _parent._inputEvent!, _tmpCoords.X, _tmpCoords.Y, deltaX, deltaY );
+
+            return true;
+        }
+
+        public bool PanStop( float stageX, float stageY, int pointer, int button )
+        {
+            _parent._actor!.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
+            _parent.PanStop( _parent._inputEvent!, _tmpCoords.X, _tmpCoords.Y, pointer, button );
+
+            return true;
+        }
+
+        public bool Zoom( float initialDistance, float distance )
+        {
+            _parent.Zoom( _parent._inputEvent!, initialDistance, distance );
+
+            return true;
+        }
+
+        public bool Pinch( Vector2 stageInitialPointer1,
+                           Vector2 stageInitialPointer2,
+                           Vector2 stagePointer1,
+                           Vector2 stagePointer2 )
+        {
+            _parent._actor!.StageToLocalCoordinates( _initialPointer1.Set( stageInitialPointer1 ) );
+            _parent._actor!.StageToLocalCoordinates( _initialPointer2.Set( stageInitialPointer2 ) );
+            _parent._actor!.StageToLocalCoordinates( _pointer1.Set( stagePointer1 ) );
+            _parent._actor!.StageToLocalCoordinates( _pointer2.Set( stagePointer2 ) );
+
+            _parent.Pinch( _parent._inputEvent!, _initialPointer1, _initialPointer2, _pointer1, _pointer2 );
+
+            return true;
+        }
+
+        private void StageToLocalAmount( Vector2 amount )
+        {
+            _parent._actor!.StageToLocalCoordinates( amount );
+            amount.Sub( _parent._actor.StageToLocalCoordinates( _tmpCoords2.Set( 0, 0 ) ) );
+        }
     }
 }

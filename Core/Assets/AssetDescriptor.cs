@@ -19,10 +19,10 @@ namespace LibGDXSharp.Assets;
 [PublicAPI]
 public class AssetDescriptor
 {
-    public string                FilePath   { get; set; }
-    public FileInfo              File       { get; set; }
     public Type                  Type       { get; set; }
+    public string                FilePath   { get; set; }
     public AssetLoaderParameters Parameters { get; set; }
+    public FileInfo              File       { get; set; }
 
     public AssetDescriptor()
     {
@@ -32,37 +32,37 @@ public class AssetDescriptor
         File       = null!;
     }
 
-    public AssetDescriptor( Type? assetType,
-                            AssetLoaderParameters? parameters,
-                            string? filePath = null,
-                            FileInfo? file = null )
+    /// <summary>
+    /// </summary>
+    /// <param name="filepath"></param>
+    /// <param name="assetType"></param>
+    /// <param name="parameters"></param>
+    public AssetDescriptor( string? filepath, Type assetType, AssetLoaderParameters parameters )
     {
-        if ( ( file == null ) && ( filePath == null ) )
-        {
-            throw new ArgumentException
-                ( "no file or filepath supplied. At least one is required." );
-        }
+        ArgumentNullException.ThrowIfNull( filepath );
 
-        ArgumentNullException.ThrowIfNull( assetType );
-        ArgumentNullException.ThrowIfNull( parameters );
-
-        this.Type       = assetType;
-        this.Parameters = parameters;
-
-        if ( filePath == null )
-        {
-            // filePath is null, file is not.
-            this.FilePath = file!.FullName.Replace( '\\', '/' );
-            this.File     = file;
-        }
-        else
-        {
-            // file may be null, filePath is not.
-            this.FilePath = filePath.Replace( '\\', '/' );
-            this.File     = file ?? new FileInfo( Path.GetFileName( filePath ) );
-        }
+        Type       = assetType;
+        FilePath   = filepath.Replace( '\\', '/' );
+        Parameters = parameters;
+        File       = new FileInfo( Path.GetFileName( filepath ) );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="file"></param>
+    /// <param name="assetType"></param>
+    /// <param name="parameters"></param>
+    public AssetDescriptor( FileInfo file, Type assetType, AssetLoaderParameters parameters )
+    {
+        Type       = assetType;
+        FilePath   = file.FullName.Replace( '\\', '/' );
+        Parameters = parameters;
+        File       = file;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
         return $"{FilePath}, {Type.FullName}";

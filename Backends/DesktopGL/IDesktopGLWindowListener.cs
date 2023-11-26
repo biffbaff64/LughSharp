@@ -24,7 +24,7 @@ public interface IDesktopGLWindowListener
     /// involve calling GLFW functions.
     /// <para>
     /// For the main window, this is an immediate callback from inside
-    /// <see cref="DesktopGLApplication(LibGDXSharp.Core.IApplicationListener,LibGDXSharp.Backends.Desktop.DesktopGLApplicationConfiguration)"/>
+    /// <see cref="DesktopGLApplication(IApplicationListener, DesktopGLApplicationConfiguration)"/>
     /// </para>
     /// </summary>
     /// <param name="window">the window instance.</param>

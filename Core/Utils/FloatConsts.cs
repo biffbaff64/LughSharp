@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Maths;
+namespace LibGDXSharp.Utils;
 
 [PublicAPI]
 public record FloatConsts

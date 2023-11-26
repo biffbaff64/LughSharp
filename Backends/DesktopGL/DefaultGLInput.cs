@@ -68,7 +68,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     {
         unsafe
         {
-            GLFW.SetInputMode( _window!.WindowHandle,
+            Glfw.SetInputMode( _window!.WindowHandle,
                                GLFW.GLFW_CURSOR,
                                caught
                                    ? GLFW.GLFW_CURSOR_DISABLED
