@@ -46,7 +46,7 @@ public class DragScrollListener : DragListener
 
         _scrollUp = Task.Run( () =>
         {
-            Scroll( _scroll.GetScrollY() - getScrollPixels());
+            Scroll( _scroll.getScrollY() - getScrollPixels());
         } );
 
         _scrollDown = Task.Run( () =>
