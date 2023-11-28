@@ -447,6 +447,8 @@ public interface IInput
         }
     }
 
+    IInputProcessor InputProcessor { get; set; }
+    
     // --------------------------------------------------------------------
 
     [PublicAPI]
@@ -521,8 +523,6 @@ public interface IInput
     public bool IsKeyPressed( int key );
     public bool IsKeyJustPressed( int key );
 
-    public void GetTextInput( ITextInputListener listener, string title, string text, string hint );
-
     public void GetTextInput( ITextInputListener listener,
                               string title,
                               string text,
@@ -549,10 +549,6 @@ public interface IInput
     public void SetCatchKey( int keycode, bool catchKey );
 
     public bool IsCatchKey( int keycode );
-
-    public void SetInputProcessor( IInputProcessor processor );
-
-    public IInputProcessor? GetInputProcessor();
 
     public bool IsPeripheralAvailable( Peripheral peripheral );
 

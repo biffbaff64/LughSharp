@@ -45,15 +45,15 @@ public class GestureDetector : InputAdapter
     private float _tapRectangleCenterY;
     private long  _touchDownTime;
 
-    private IGestureListener?       _listener        = null;
-    private VelocityTracker         _tracker         = new();
-    private Vector2                 _pointer1        = new();
-    private Vector2                 _pointer2        = new();
-    private Vector2                 _initialPointer1 = new();
-    private Vector2                 _initialPointer2 = new();
-    private Task                    _longPressTask;
-    private CancellationTokenSource _tokenSource;
-    private CancellationToken       _cancellationToken;
+    private IGestureListener?        _listener        = null;
+    private VelocityTracker          _tracker         = new();
+    private Vector2                  _pointer1        = new();
+    private Vector2                  _pointer2        = new();
+    private Vector2                  _initialPointer1 = new();
+    private Vector2                  _initialPointer2 = new();
+    private Task?                    _longPressTask;
+    private CancellationTokenSource? _longPressTokenSource;
+    private CancellationToken        _longPressCancellationToken;
 
     /// <summary>
     /// Creates a new GestureDetector with default values: halfTapSquareSize=20,
@@ -136,32 +136,30 @@ public class GestureDetector : InputAdapter
         this._maxFlingDelay      = ( long )( maxFlingDelay * 1000000000L );
         this._listener           = listener ?? throw new ArgumentException( "listener cannot be null." );
 
-        _longPressTask = null!;
-        _tokenSource   = null!;
-
-        SetLongPressTask().ConfigureAwait( false );
+        _longPressTask        = null!;
+        _longPressTokenSource = null!;
     }
 
     private async Task SetLongPressTask()
     {
-        _tokenSource       = new CancellationTokenSource();
-        _cancellationToken = _tokenSource.Token;
+        _longPressTokenSource       ??= new CancellationTokenSource();
+        _longPressCancellationToken =   _longPressTokenSource.Token;
 
-        this._longPressTask = Task.Run( () =>
-                                        {
-                                            if ( !_longPressFired )
-                                            {
-                                                _longPressFired = ( bool )_listener?.LongPress( _pointer1.X, _pointer1.Y );
-                                            }
+        //TODO: AARGH!! Formatting! Sort it out!
+        //@formatter:off
+        this._longPressTask= Task.Run( () =>
+        {
+            if ( !_longPressFired )
+            {
+                _longPressFired = ( bool )_listener?.LongPress( _pointer1.X, _pointer1.Y );
+            }
 
-                                            if ( _cancellationToken.IsCancellationRequested )
-                                            {
-                                                _cancellationToken.ThrowIfCancellationRequested();
-                                            }
-                                        },
-                                        _cancellationToken );
-
-        _tokenSource.Cancel();
+            if ( _longPressCancellationToken.IsCancellationRequested )
+            {
+                _longPressCancellationToken.ThrowIfCancellationRequested();
+            }
+        }, _longPressCancellationToken );
+        //@formatter:on
 
         try
         {
@@ -173,13 +171,25 @@ public class GestureDetector : InputAdapter
         }
         finally
         {
-            _tokenSource.Dispose();
+            _longPressTokenSource.Dispose();
+            _longPressTokenSource = null;
+        }
+    }
+
+    /// <summary>
+    /// If _longPressTask is not null and is running, cancel it.
+    /// </summary>
+    private void CancelLongPressTask()
+    {
+        if ( _longPressTask is { Status: TaskStatus.Running } )
+        {
+            this._longPressTokenSource?.Cancel();
         }
     }
 
     public override bool TouchDown( int x, int y, int pointer, int button )
     {
-        return TouchDown( ( float )x, ( float )y, pointer, button );
+        return TouchDown( x, y, pointer, button );
     }
 
     public bool TouchDown( float x, float y, int pointer, int button )
@@ -203,7 +213,7 @@ public class GestureDetector : InputAdapter
                 _initialPointer1.Set( _pointer1 );
                 _initialPointer2.Set( _pointer2 );
 
-                _longPressTask.Cancel();
+                CancelLongPressTask();
             }
             else
             {
@@ -214,9 +224,10 @@ public class GestureDetector : InputAdapter
                 _tapRectangleCenterX = x;
                 _tapRectangleCenterY = y;
 
-                if ( !_longPressTask.IsScheduled() )
+                if ( _longPressTask?.Status != TaskStatus.Running ) //.IsScheduled() )
                 {
-                    Timer.Schedule( _longPressTask, _longPressSeconds );
+//                    Timer.Schedule( _longPressTask, _longPressSeconds );
+                    SetLongPressTask().ConfigureAwait( false );
                 }
             }
         }
@@ -229,7 +240,7 @@ public class GestureDetector : InputAdapter
             _initialPointer1.Set( _pointer1 );
             _initialPointer2.Set( _pointer2 );
 
-            _longPressTask.cancel();
+            CancelLongPressTask();
         }
 
         return ( bool )_listener?.TouchDown( x, y, pointer, button );
@@ -237,7 +248,7 @@ public class GestureDetector : InputAdapter
 
     public override bool TouchDragged( int x, int y, int pointer )
     {
-        return TouchDragged( ( float )x, ( float )y, pointer );
+        return TouchDragged( x, y, pointer );
     }
 
     public bool TouchDragged( float x, float y, int pointer )
@@ -282,7 +293,7 @@ public class GestureDetector : InputAdapter
         // check if we are still tapping.
         if ( _inTapRectangle && !IsWithinTapRectangle( x, y, _tapRectangleCenterX, _tapRectangleCenterY ) )
         {
-            _longPressTask.Cancel();
+            CancelLongPressTask();
             _inTapRectangle = false;
         }
 
@@ -291,7 +302,7 @@ public class GestureDetector : InputAdapter
         {
             _panning = true;
 
-            return _listener?.Pan( x, y, _tracker.DeltaX, _tracker.DeltaY );
+            return ( bool )_listener?.Pan( x, y, _tracker.deltaX, _tracker.deltaY );
         }
 
         return false;
@@ -299,7 +310,7 @@ public class GestureDetector : InputAdapter
 
     public override bool TouchUp( int x, int y, int pointer, int button )
     {
-        return TouchUp( ( float )x, ( float )y, pointer, button );
+        return TouchUp( x, y, pointer, button );
     }
 
     public bool TouchUp( float x, float y, int pointer, int button )
@@ -318,7 +329,7 @@ public class GestureDetector : InputAdapter
         var wasPanning = _panning;
         _panning = false;
 
-        _longPressTask.Cancel();
+        CancelLongPressTask();
 
         if ( _longPressFired )
         {
@@ -330,7 +341,7 @@ public class GestureDetector : InputAdapter
             // handle taps
             if ( ( _lastTapButton != button )
               || ( _lastTapPointer != pointer )
-              || TimeUtils.NanoTime() - _lastTapTime > _tapCountInterval
+              || ( ( TimeUtils.NanoTime() - _lastTapTime ) > _tapCountInterval )
               || !IsWithinTapRectangle( x, y, _lastTapX, _lastTapY ) )
             {
                 _tapCount = 0;
@@ -399,7 +410,7 @@ public class GestureDetector : InputAdapter
     /// </summary>
     public void Cancel()
     {
-        _longPressTask.Cancel();
+        CancelLongPressTask();
 
         _longPressFired = true;
     }
@@ -424,7 +435,7 @@ public class GestureDetector : InputAdapter
             return false;
         }
 
-        return ( TimeUtils.NanoTime() - _touchDownTime ) > ( long )( duration * 1000000000l );
+        return ( TimeUtils.NanoTime() - _touchDownTime ) > ( long )( duration * 1000000000L );
     }
 
     public bool IsPanning()
@@ -434,10 +445,10 @@ public class GestureDetector : InputAdapter
 
     public void Reset()
     {
-        _touchDownTime    = 0;
-        _panning          = false;
-        _inTapRectangle   = false;
-        _tracker.LastTime = 0;
+        _touchDownTime     = 0;
+        _panning           = false;
+        _inTapRectangle    = false;
+        _tracker.lastTime = 0;
     }
 
     private bool IsWithinTapRectangle( float x, float y, float centerX, float centerY )
@@ -467,7 +478,7 @@ public class GestureDetector : InputAdapter
 
     public void SetTapCountInterval( float tapCountInterval )
     {
-        this._tapCountInterval = ( long )( tapCountInterval * 1000000000l );
+        this._tapCountInterval = ( long )( tapCountInterval * 1000000000L );
     }
 
     public void SetLongPressSeconds( float longPressSeconds )
@@ -612,12 +623,13 @@ public class GestureDetector : InputAdapter
     [PublicAPI]
     public class VelocityTracker
     {
+        public float deltaX;
+        public float deltaY;
+        public long  lastTime;
+
         private int     _sampleSize;
         private float   _lastX;
         private float   _lastY;
-        private float   _deltaX;
-        private float   _deltaY;
-        private long    _lastTime;
         private int     _numSamples;
         private float[] _meanX;
         private float[] _meanY;
@@ -636,8 +648,8 @@ public class GestureDetector : InputAdapter
         {
             _lastX      = x;
             _lastY      = y;
-            _deltaX     = 0;
-            _deltaY     = 0;
+            deltaX     = 0;
+            deltaY     = 0;
             _numSamples = 0;
 
             for ( var i = 0; i < _sampleSize; i++ )
@@ -647,24 +659,24 @@ public class GestureDetector : InputAdapter
                 _meanTime[ i ] = 0;
             }
 
-            _lastTime = timeStamp;
+            lastTime = timeStamp;
         }
 
         public void Update( float x, float y, long currTime )
         {
-            _deltaX = x - _lastX;
-            _deltaY = y - _lastY;
+            deltaX = x - _lastX;
+            deltaY = y - _lastY;
             _lastX  = x;
             _lastY  = y;
 
-            var deltaTime = currTime - _lastTime;
+            var deltaTime = currTime - lastTime;
 
-            _lastTime = currTime;
+            lastTime = currTime;
 
             var index = _numSamples % _sampleSize;
 
-            _meanX[ index ]    = _deltaX;
-            _meanY[ index ]    = _deltaY;
+            _meanX[ index ]    = deltaX;
+            _meanY[ index ]    = deltaY;
             _meanTime[ index ] = deltaTime;
             _numSamples++;
         }

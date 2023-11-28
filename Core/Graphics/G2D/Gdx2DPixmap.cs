@@ -298,6 +298,7 @@ public class Gdx2DPixmap : IDisposable
         }
     }
 
+    //TODO: Why?
     public int    GLInternalFormat => ToGLFormat( format );
     public int    GLFormat         => GLInternalFormat;
     public int    GLType           => ToGLType( format );

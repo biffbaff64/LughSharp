@@ -19,6 +19,8 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public abstract class AbstractInput : IInput
 {
+    public IInputProcessor InputProcessor { get; set; }
+    
     protected bool[] PressedKeys     { get; set; }
     protected bool[] JustPressedKeys { get; set; }
     protected bool   KeyJustPressed  { get; set; }
@@ -158,10 +160,6 @@ public abstract class AbstractInput : IInput
 
     public abstract bool IsButtonJustPressed( int button );
 
-    public abstract void SetInputProcessor( IInputProcessor processor );
-
-    public abstract IInputProcessor? GetInputProcessor();
-
     public abstract bool IsPeripheralAvailable( IInput.Peripheral peripheral );
 
     public abstract int GetRotation();
@@ -177,13 +175,8 @@ public abstract class AbstractInput : IInput
     public abstract void GetTextInput( IInput.ITextInputListener listener,
                                        string title,
                                        string text,
-                                       string hint );
-
-    public abstract void GetTextInput( IInput.ITextInputListener listener,
-                                       string title,
-                                       string text,
                                        string hint,
-                                       IInput.OnscreenKeyboardType type );
+                                       IInput.OnscreenKeyboardType type = IInput.OnscreenKeyboardType.Default );
 
     public abstract void SetOnscreenKeyboardVisible( bool visible );
 

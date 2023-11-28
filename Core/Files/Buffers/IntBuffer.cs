@@ -33,6 +33,8 @@ public abstract class IntBuffer : Buffer
         return 0;
     }
 
+    public abstract IntBuffer Put( int[] i, int i1, int i2 );
+
     public abstract IntBuffer Put( int i, int i1 );
 
     public abstract IntBuffer Put( int i );
