@@ -19,6 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Arqan.Windows" Version="2.2.2" />
         <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
         <PackageReference Include="OpenTK" Version="4.8.1" />
         <PackageReference Include="OpenTK.Audio.OpenAL" Version="4.8.1" />

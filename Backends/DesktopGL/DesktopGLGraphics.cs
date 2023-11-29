@@ -18,15 +18,13 @@ using LibGDXSharp.Core.Files.Buffers;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-using Monitor = LibGDXSharp.Core.IGraphics.Monitor;
-using DisplayMode = LibGDXSharp.Core.IGraphics.DisplayMode;
 using BufferFormatDescriptor = LibGDXSharp.Core.IGraphics.BufferFormatDescriptor;
 using Window = OpenTK.Windowing.GraphicsLibraryFramework.Window;
 
 [PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
-    public DesktopGLWindow?              GLWindow               { get; set; }
+    public DesktopGLWindow?       GLWindow               { get; set; }
     public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
 
     private volatile bool _isContinuous = true;
@@ -40,7 +38,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     private int         _windowPosYBeforeFullscreen;
     private int         _windowWidthBeforeFullscreen;
     private int         _windowHeightBeforeFullscreen;
-    private DisplayMode _displayModeBeforeFullscreen = null!;
+    private IGraphics.DisplayModeDescriptor _displayModeBeforeFullscreen = null!;
 
     private IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
     private IntBuffer _tmpBuffer2 = BufferUtils.NewIntBuffer( 1 );
@@ -156,13 +154,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         var vendorString   = Gdx.GL20.GLGetString( IGL20.GL_VENDOR );
         var rendererString = Gdx.GL20.GLGetString( IGL20.GL_RENDERER );
 
-        GLVersion = new GLVersion
-            (
-             IApplication.ApplicationType.Desktop,
-             GLFW.GetVersionString(),
-             vendorString,
-             rendererString
-            );
+        GLVersion = new GLVersion( IApplication.ApplicationType.Desktop,
+                                   GLFW.GetVersionString(),
+                                   vendorString,
+                                   rendererString );
 
         if ( SupportsCubeMapSeamless() )
         {
@@ -175,8 +170,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     public bool SupportsCubeMapSeamless()
     {
-        return GLVersion.IsVersionEqualToOrHigher( 3, 2 )
-            || SupportsExtension( "GL_ARB_seamless_cube_map" );
+        return GLVersion.IsVersionEqualToOrHigher( 3, 2 ) || SupportsExtension( "GL_ARB_seamless_cube_map" );
     }
 
     /// <summary>
@@ -207,15 +201,15 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    public override unsafe Monitor GetPrimaryMonitor()
+    public override unsafe DesktopGLMonitor GetPrimaryMonitor()
     {
         return DesktopGLApplicationConfiguration.ToGLMonitor( GLFW.GetPrimaryMonitor() );
     }
 
-    public override unsafe Monitor GetMonitor()
+    public override unsafe DesktopGLMonitor GetMonitor()
     {
-        Monitor[] monitors = GetMonitors();
-        Monitor   result   = monitors[ 0 ];
+        IGraphics.MonitorDescriptor[] monitors = GetMonitors();
+        IGraphics.MonitorDescriptor   result   = monitors[ 0 ];
 
         GLFW.GetWindowPos( GLWindow!.WindowHandle, out _tmpInt, out _tmpInt2 );
 
@@ -226,22 +220,16 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         var bestOverlap = 0;
 
-        foreach ( Monitor monitor in monitors )
+        foreach ( IGraphics.MonitorDescriptor monitor in monitors )
         {
-            DisplayMode mode = GetDisplayMode( monitor );
+            IGraphics.DisplayModeDescriptor mode = GetDisplayMode( monitor );
 
-            var overlap = Math.Max
-                              (
-                               0,
-                               Math.Min( windowX + windowWidth, monitor.VirtualX + mode.Width )
-                             - Math.Max( windowX, monitor.VirtualX )
-                              )
-                        * Math.Max
-                              (
-                               0,
-                               Math.Min( windowY + windowHeight, monitor.VirtualY + mode.Height )
-                             - Math.Max( windowY, monitor.VirtualY )
-                              );
+            var overlap = Math.Max( 0,
+                                    Math.Min( windowX + windowWidth, monitor.VirtualX + mode.Width )
+                                  - Math.Max( windowX, monitor.VirtualX ) )
+                        * Math.Max( 0,
+                                    Math.Min( windowY + windowHeight, monitor.VirtualY + mode.Height )
+                                  - Math.Max( windowY, monitor.VirtualY ) );
 
             if ( bestOverlap < overlap )
             {
@@ -253,11 +241,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         return result;
     }
 
-    public override Monitor[] GetMonitors()
+    public override IGraphics.MonitorDescriptor[] GetMonitors()
     {
         unsafe
         {
-            var monitors = new Monitor[ GLFW.GetMonitors().Length ];
+            var monitors = new IGraphics.MonitorDescriptor[ GLFW.GetMonitors().Length ];
 
             for ( var i = 0; i < GLFW.GetMonitors().Length; i++ )
             {
@@ -268,24 +256,24 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    public override IGraphics.DisplayMode[] GetDisplayModes()
+    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes()
     {
         return DesktopGLApplicationConfiguration.GetDisplayModes( GetMonitor() );
     }
 
-    public override IGraphics.DisplayMode[] GetDisplayModes( Monitor monitor )
+    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor )
     {
     }
 
-    public override IGraphics.DisplayMode GetDisplayMode()
+    public override IGraphics.DisplayModeDescriptor GetDisplayMode()
     {
     }
 
-    public override IGraphics.DisplayMode GetDisplayMode( Monitor monitor )
+    public override IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor )
     {
     }
 
-    public override bool SetFullscreenMode( IGraphics.DisplayMode displayMode )
+    public override bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode )
     {
         return false;
     }
@@ -439,14 +427,14 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public override unsafe float GetPpcX()
     {
-        GLFW.GetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeX );
+        GLFW.GetMonitorPhysicalSize( GetMonitor(), out var sizeX, out var sizeY );
 
         return ( GetDisplayMode().Width / ( float )sizeX ) * 10;
     }
 
     public override unsafe float GetPpcY()
     {
-        GLFW.GetMonitorPhysicalSize( GetMonitor(), out var tmp1, out var sizeY );
+        GLFW.GetMonitorPhysicalSize( GetMonitor(), out var sizeX, out var sizeY );
 
         return ( GetDisplayMode().Height / ( float )sizeY ) * 10;
     }
@@ -470,11 +458,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     [PublicAPI]
-    public class GLDisplayMode : IGraphics.DisplayMode
+    public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
     {
         public long MonitorHandle { get; set; }
 
-        public GLDisplayMode( long monitor, int width, int height, int refreshRate, int bitsPerPixel )
+        public DesktopGLDisplayMode( long monitor, int width, int height, int refreshRate, int bitsPerPixel )
             : base( width, height, refreshRate, bitsPerPixel )
         {
             this.MonitorHandle = monitor;
@@ -482,11 +470,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     [PublicAPI]
-    public class GLMonitor : IGraphics.Monitor
+    public class DesktopGLMonitor : IGraphics.MonitorDescriptor
     {
         public long MonitorHandle { get; set; }
 
-        public GLMonitor( long monitor, int virtualX, int virtualY, string name )
+        public DesktopGLMonitor( long monitor, int virtualX, int virtualY, string name )
             : base( virtualX, virtualY, name )
         {
             this.MonitorHandle = monitor;

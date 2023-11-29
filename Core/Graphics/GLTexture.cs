@@ -59,7 +59,7 @@ public abstract class GLTexture : IDisposable
 
     /// <summary>
     /// Binds this texture. The texture will be bound to the currently active
-    /// texture unit specified via <see cref="IGL20.GLActiveTexture(int)"/>. 
+    /// texture unit specified via <see cref="IGL20.GLActiveTexture"/>. 
     /// </summary>
     public void Bind()
     {
@@ -69,7 +69,7 @@ public abstract class GLTexture : IDisposable
     /// <summary>
     /// Binds the texture to the given texture unit.
     /// <para>
-    /// Sets the currently active texture unit via <see cref="IGL20.GLActiveTexture(int)"/>.
+    /// Sets the currently active texture unit via <see cref="IGL20.GLActiveTexture"/>.
     /// </para>
     /// </summary>
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>

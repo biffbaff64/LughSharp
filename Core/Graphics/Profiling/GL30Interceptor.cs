@@ -42,7 +42,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         }
     }
 
-    public override void GLActiveTexture( int texture )
+    public override void GLActiveTexture( uint texture )
     {
         Calls++;
         GL30.GLActiveTexture( texture );
@@ -383,7 +383,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLAttachShader( int program, int shader )
+    public override void GLAttachShader( uint program, uint shader )
     {
         Calls++;
         GL30.GLAttachShader( program, shader );

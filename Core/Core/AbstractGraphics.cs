@@ -41,21 +41,21 @@ public abstract class AbstractGraphics : IGraphics
     // Abstract methods because C# insists this is done to fulfill the contract
     // between the class and interface, which just makes everything annoying tbh.
 
-    public abstract IGraphics.Monitor GetPrimaryMonitor();
+    public abstract IGraphics.MonitorDescriptor GetPrimaryMonitor();
 
-    public abstract IGraphics.Monitor GetMonitor();
+    public abstract IGraphics.MonitorDescriptor GetMonitor();
 
-    public abstract IGraphics.Monitor[] GetMonitors();
+    public abstract IGraphics.MonitorDescriptor[] GetMonitors();
 
-    public abstract IGraphics.DisplayMode[] GetDisplayModes();
+    public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes();
 
-    public abstract IGraphics.DisplayMode[] GetDisplayModes( IGraphics.Monitor monitor );
+    public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor );
 
-    public abstract IGraphics.DisplayMode GetDisplayMode();
+    public abstract IGraphics.DisplayModeDescriptor GetDisplayMode();
 
-    public abstract IGraphics.DisplayMode GetDisplayMode( IGraphics.Monitor monitor );
+    public abstract IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor );
 
-    public abstract bool SetFullscreenMode( IGraphics.DisplayMode displayMode );
+    public abstract bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode );
 
     public abstract bool SetWindowedMode( int width, int height );
 

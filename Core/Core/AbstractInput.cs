@@ -19,7 +19,7 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public abstract class AbstractInput : IInput
 {
-    public IInputProcessor InputProcessor { get; set; }
+    public IInputProcessor? InputProcessor { get; set; }
     
     protected bool[] PressedKeys     { get; set; }
     protected bool[] JustPressedKeys { get; set; }

@@ -35,11 +35,11 @@ public class DesktopGLWindowConfiguration
     public bool  InitialVisible         { get; set; }         = true;
     public bool  VSyncEnabled           { get; private set; } = true;
 
-    public DesktopGLGraphics.GLMonitor?     MaximizedMonitor   { get; set; }
+    public DesktopGLGraphics.DesktopGLMonitor?     MaximizedMonitor   { get; set; }
     public FileType                         WindowIconFileType { get; set; }
     public string[]?                        WindowIconPaths    { get; set; }
-    public IDesktopGLWindowListener?               WindowListener     { get; set; }
-    public DesktopGLGraphics.GLDisplayMode? FullscreenMode     { get; set; }
+    public IDesktopGLWindowListener?        WindowListener     { get; set; }
+    public DesktopGLGraphics.DesktopGLDisplayMode? FullscreenMode     { get; set; }
     public string?                          Title              { get; set; }
 
     /// <summary>
@@ -134,7 +134,7 @@ public class DesktopGLWindowConfiguration
     /// <summary>
     /// </summary>
     /// <param name="monitor"> what monitor the window should maximize to. </param>
-    public void SetMaximizedMonitor( DesktopGLGraphics.GLMonitor monitor )
+    public void SetMaximizedMonitor( DesktopGLGraphics.DesktopGLMonitor monitor )
     {
         this.MaximizedMonitor = monitor;
     }
@@ -218,7 +218,7 @@ public class DesktopGLWindowConfiguration
     /// {@link GLApplicationConfiguration#getDisplayMode()} on this class to enumerate connected monitors
     /// and their fullscreen display modes.
     /// </summary>
-    public void SetFullscreenMode( DesktopGLGraphics.GLDisplayMode mode )
+    public void SetFullscreenMode( DesktopGLGraphics.DesktopGLDisplayMode mode )
     {
         this.FullscreenMode = mode;
     }

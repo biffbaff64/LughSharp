@@ -337,7 +337,7 @@ public interface IGL20
 
     // ------------------------------------------------
 
-    public void GLActiveTexture( int texture );
+    public void GLActiveTexture( uint texture );
 
     public void GLBindTexture( int target, int texture );
 
@@ -468,7 +468,7 @@ public interface IGL20
 
     public void GLViewport( int x, int y, int width, int height );
 
-    public void GLAttachShader( int program, int shader );
+    public void GLAttachShader( uint program, uint shader );
 
     public void GLBindAttribLocation( int program, int index, string name );
 

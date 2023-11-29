@@ -35,6 +35,7 @@ global using OpenTK.Audio;
 global using OpenTK.Compute;
 global using OpenTK.Core;
 global using OpenTK.Graphics;
+global using OpenTK.Graphics.OpenGL;
 global using OpenTK.Input;
 global using OpenTK.Mathematics;
 global using OpenTK.Platform;

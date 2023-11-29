@@ -19,6 +19,101 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public interface IGraphics
 {
+
+    #region nested classes
+
+    /// <summary>
+    /// Describes a fullscreen display mode.
+    /// </summary>
+    [PublicAPI]
+    public class DisplayModeDescriptor
+    {
+        public int Width        { get; set; }
+        public int Height       { get; set; }
+        public int RefreshRate  { get; set; }
+        public int BitsPerPixel { get; set; }
+
+        public DisplayModeDescriptor( int width, int height, int refreshRate, int bitsPerPixel )
+        {
+            this.Width        = width;
+            this.Height       = height;
+            this.RefreshRate  = refreshRate;
+            this.BitsPerPixel = bitsPerPixel;
+        }
+
+        public override string ToString()
+        {
+            return $"{Width}x{Height}, bpp: {BitsPerPixel}, hz: {RefreshRate}";
+        }
+    }
+
+    /// <summary>
+    /// Describes a monitor, with X, Y, and Name properties.
+    /// </summary>
+    [PublicAPI]
+    public class MonitorDescriptor
+    {
+        public int    VirtualX { get; set; }
+        public int    VirtualY { get; set; }
+        public string Name     { get; set; }
+
+        public MonitorDescriptor( int virtualX, int virtualY, string name )
+        {
+            this.VirtualX = virtualX;
+            this.VirtualY = virtualY;
+            this.Name     = name;
+        }
+
+        public override string ToString()
+        {
+            return $"X:{VirtualX}, Y:{VirtualY} : Name: {Name}";
+        }
+    }
+
+    /// <summary>
+    /// Class describing the bits per pixel, depth buffer precision,
+    /// stencil precision and number of MSAA samples.
+    /// </summary>
+    [PublicAPI]
+    public record BufferFormatDescriptor
+    {
+        public int R       { get; set; } // number of bits per color channel.
+        public int G       { get; set; } // ...
+        public int B       { get; set; } // ...
+        public int A       { get; set; } // ...
+        public int Depth   { get; set; } // number of bits for depth and stencil buffer.
+        public int Stencil { get; set; } // ...
+        public int Samples { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
+
+        // whether coverage sampling anti-aliasing is used.
+        // If so, you have to clear the coverage buffer as well!
+        public bool CoverageSampling { get; set; }
+
+        public override string ToString()
+        {
+            return $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
+                 + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
+        }
+    }
+
+    #endregion nested classes
+
+    #region properties
+
+    IGL20?                 GL20             { get; set; }
+    IGL30?                 GL30             { get; set; }
+    float                  DeltaTime        { get; set; }
+    GLVersion              GLVersion        { get; set; }
+    int                    Width            { get; }
+    int                    Height           { get; }
+    BufferFormatDescriptor BufferFormat     { get; set; }
+    int                    BackBufferWidth  { get; }
+    int                    BackBufferHeight { get; }
+
+    #endregion properties
+
+    #region methods
+
     /// <summary>
     /// Returns whether OpenGL ES 3.0 is available.
     /// If it is you can get an instance of GL30 via GetGL30() to access
@@ -28,30 +123,6 @@ public interface IGraphics
     /// </summary>
     /// <returns>TRUE if available.</returns>
     bool IsGL30Available();
-
-    /// <summary>
-    /// Returns the <see cref="IGL20"/> instance.
-    /// </summary>
-    IGL20? GL20 { get; set; }
-
-    /// <summary>
-    /// Returns the <see cref="IGL30"/> instance or null if unsupported.
-    /// </summary>
-    IGL30? GL30 { get; set; }
-
-    float DeltaTime { get; set; }
-    
-    GLVersion GLVersion { get; set; }
-    
-    int Width { get; }
-
-    int Height { get; }
-
-    BufferFormatDescriptor BufferFormat { get; set; }
-
-    int BackBufferWidth { get; }
-
-    int BackBufferHeight { get; }
 
     float GetBackBufferScale();
 
@@ -88,21 +159,21 @@ public interface IGraphics
 
     bool SupportsDisplayModeChange();
 
-    Monitor GetPrimaryMonitor();
+    MonitorDescriptor GetPrimaryMonitor();
 
-    Monitor GetMonitor();
+    MonitorDescriptor GetMonitor();
 
-    Monitor[] GetMonitors();
+    MonitorDescriptor[] GetMonitors();
 
-    DisplayMode[] GetDisplayModes();
+    DisplayModeDescriptor[] GetDisplayModes();
 
-    DisplayMode[] GetDisplayModes( Monitor monitor );
+    DisplayModeDescriptor[] GetDisplayModes( MonitorDescriptor monitor );
 
-    DisplayMode GetDisplayMode();
+    DisplayModeDescriptor GetDisplayMode();
 
-    DisplayMode GetDisplayMode( Monitor monitor );
+    DisplayModeDescriptor GetDisplayMode( MonitorDescriptor monitor );
 
-    bool SetFullscreenMode( DisplayMode displayMode );
+    bool SetFullscreenMode( DisplayModeDescriptor displayMode );
 
     bool SetWindowedMode( int width, int height );
 
@@ -154,65 +225,7 @@ public interface IGraphics
     /// </summary>
     /// <param name="systemCursor">The system cursor to use.</param>
     void SetSystemCursor( ICursor.SystemCursor systemCursor );
-    
-    [PublicAPI]
-    public class DisplayMode
-    {
-        public int Width        { get; set; }
-        public int Height       { get; set; }
-        public int RefreshRate  { get; set; }
-        public int BitsPerPixel { get; set; }
 
-        public DisplayMode( int width, int height, int refreshRate, int bitsPerPixel )
-        {
-            this.Width        = width;
-            this.Height       = height;
-            this.RefreshRate  = refreshRate;
-            this.BitsPerPixel = bitsPerPixel;
-        }
+    #endregion methods
 
-        public override string ToString()
-        {
-            return Width + "x" + Height + ", bpp: " + BitsPerPixel + ", hz: " + RefreshRate;
-        }
-    }
-    
-    [PublicAPI]
-    public class Monitor
-    {
-        public int    VirtualX { get; set; }
-        public int    VirtualY { get; set; }
-        public string Name     { get; set; }
-
-        public Monitor( int virtualX, int virtualY, string name )
-        {
-            this.VirtualX = virtualX;
-            this.VirtualY = virtualY;
-            this.Name     = name;
-        }
-    }
-    
-    /// <summary>
-    /// Class describing the bits per pixel, depth buffer precision,
-    /// stencil precision and number of MSAA samples.
-    /// </summary>
-    [PublicAPI]
-    public record BufferFormatDescriptor
-    {
-        public int  R                { get; set; } // number of bits per color channel.
-        public int  G                { get; set; } // ...
-        public int  B                { get; set; } // ...
-        public int  A                { get; set; } // ...
-        public int  Depth            { get; set; } // number of bits for depth and stencil buffer.
-        public int  Stencil          { get; set; } // ...
-        public int  Samples          { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
-        public bool CoverageSampling { get; set; } // whether coverage sampling anti-aliasing is used.
-                                                   // If so, you have to clear the coverage buffer as well!
-
-        public override string ToString()
-        {
-            return $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
-                 + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
-        }
-    }
 }

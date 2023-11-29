@@ -30,7 +30,7 @@ namespace LibGDXSharp.Graphics;
 /// <para>
 /// A Texture has to be bound via the <see cref="Texture.Bind()"/> method in order
 /// for it to be applied to geometry. The texture will be bound to the currently
-/// active texture unit specified via <see cref="IGL20.GLActiveTexture(int)"/>.
+/// active texture unit specified via <see cref="IGL20.GLActiveTexture"/>.
 /// </para>
 /// <para>
 /// You can draw <see cref="Pixmap"/>s to a texture at any time. The changes will

@@ -36,7 +36,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public List< Runnable >                    Runnables          { get; set; } = new();
     public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-    public GLApplicationLogger?                ApplicationLogger  { get; set; }
+    public DesktopGLApplicationLogger?         ApplicationLogger  { get; set; }
     public int                                 LogLevel           { get; set; }
     public IClipboard?                         Clipboard          { get; set; }
 
@@ -69,7 +69,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         InitialiseGL();
 
-        ApplicationLogger = new GLApplicationLogger();
+        ApplicationLogger = new DesktopGLApplicationLogger();
 
         config.Title ??= listener.GetType().Name;
 
@@ -392,58 +392,62 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
     }
 
-    private long CreateGlfwWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
+    private long CreateGLFWWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
     {
         GLFW.DefaultWindowHints();
-        GLFW.WindowHint( GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE );
-        GLFW.WindowHint( GLFW.GLFW_RESIZABLE, config.windowResizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE );
-        GLFW.WindowHint( GLFW.GLFW_MAXIMIZED, config.windowMaximized ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE );
-        GLFW.WindowHint( GLFW.GLFW_AUTO_ICONIFY, config.autoIconify ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE );
+        GLFW.WindowHint( WindowHintBool.Visible, false );
+        GLFW.WindowHint( WindowHintBool.Resizable, config.WindowResizable );
+        GLFW.WindowHint( WindowHintBool.Maximized, config.WindowMaximized );
+        GLFW.WindowHint( WindowHintBool.AutoIconify, config.AutoIconify );
 
-        GLFW.WindowHint( GLFW.GLFW_RED_BITS, config.r );
-        GLFW.WindowHint( GLFW.GLFW_GREEN_BITS, config.g );
-        GLFW.WindowHint( GLFW.GLFW_BLUE_BITS, config.b );
-        GLFW.WindowHint( GLFW.GLFW_ALPHA_BITS, config.a );
-        GLFW.WindowHint( GLFW.GLFW_STENCIL_BITS, config.stencil );
-        GLFW.WindowHint( GLFW.GLFW_DEPTH_BITS, config.depth );
-        GLFW.WindowHint( GLFW.GLFW_SAMPLES, config.samples );
+        GLFW.WindowHint( WindowHintInt.RedBits, config.R );
+        GLFW.WindowHint( WindowHintInt.GreenBits, config.G );
+        GLFW.WindowHint( WindowHintInt.BlueBits, config.B );
+        GLFW.WindowHint( WindowHintInt.AlphaBits, config.A );
+        GLFW.WindowHint( WindowHintInt.StencilBits, config.Stencil );
+        GLFW.WindowHint( WindowHintInt.DepthBits, config.Depth );
+        GLFW.WindowHint( WindowHintInt.Samples, config.Samples );
 
         if ( config.UseGL30 )
         {
-            GLFW.WindowHint( GLFW.GLFW_CONTEXT_VERSION_MAJOR, config.gles30ContextMajorVersion );
-            GLFW.WindowHint( GLFW.GLFW_CONTEXT_VERSION_MINOR, config.gles30ContextMinorVersion );
+            GLFW.WindowHint( WindowHintInt.ContextVersionMajor, config.Gles30ContextMajorVersion );
+            GLFW.WindowHint( WindowHintInt.ContextVersionMinor, config.Gles30ContextMinorVersion );
 
             if ( SharedLibraryLoader.IsMac )
             {
                 // hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
                 // WGL_ARB_create_context extension is not available
                 // see: http://www.glfw.org/docs/latest/compat.html
-                GLFW.WindowHint( GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE );
-                GLFW.WindowHint( GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE );
+
+                GLFW.WindowHint( WindowHintBool.OpenGLForwardCompat, true );
+                GLFW.WindowHint( WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Core );
             }
         }
 
         if ( config.TransparentFramebuffer )
         {
-            GLFW.WindowHint( GLFW.GLFW_TRANSPARENT_FRAMEBUFFER, GLFW.GLFW_TRUE );
+            GLFW.WindowHint( WindowHintBool.TransparentFramebuffer, true );
         }
 
         if ( config.Debug )
         {
-            GLFW.WindowHint( GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE );
+            GLFW.WindowHint( WindowHintBool.OpenGLDebugContext, true );
         }
 
-        long windowHandle = 0;
+        long windowHandle;
 
         if ( config.FullscreenMode != null )
         {
-            GLFW.WindowHint( GLFW.GLFW_REFRESH_RATE, config.FullscreenMode.RefreshRate );
+            GLFW.WindowHint( WindowHintInt.RefreshRate, config.FullscreenMode.RefreshRate );
 
-            windowHandle = GLFW.CreateWindow( config.FullscreenMode.Width,
-                                              config.FullscreenMode.Height,
-                                              config.Title,
-                                              config.FullscreenMode.MonitorHandle,
-                                              sharedContextWindow );
+            unsafe
+            {
+                windowHandle = GLFW.CreateWindow( config.FullscreenMode.Width,
+                                                  config.FullscreenMode.Height,
+                                                  config.Title,
+                                                  config.FullscreenMode.MonitorHandle,
+                                                  sharedContextWindow );
+            }
         }
         else
         {

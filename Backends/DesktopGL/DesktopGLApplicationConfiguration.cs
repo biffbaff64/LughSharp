@@ -170,13 +170,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <summary>
     /// Gets the currently active display mode for the primary monitor.
     /// </summary>
-    public static unsafe IGraphics.DisplayMode GetDisplayMode()
+    public static unsafe IGraphics.DisplayModeDescriptor GetDisplayMode()
     {
         DesktopGLApplication.InitialiseGL();
 
         VideoMode* videoMode = GLFW.GetVideoMode( GLFW.GetPrimaryMonitor() );
 
-        return new DesktopGLGraphics.GLDisplayMode(
+        return new DesktopGLGraphics.DesktopGLDisplayMode(
             0, //TODO:
             videoMode -> Width,
             videoMode -> Height,
@@ -185,13 +185,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
             );
     }
 
-    public static unsafe IGraphics.DisplayMode GetDisplayMode( Monitor* monitor )
+    public static unsafe IGraphics.DisplayModeDescriptor GetDisplayMode( Monitor* monitor )
     {
         DesktopGLApplication.InitialiseGL();
 
         VideoMode* videoMode = GLFW.GetVideoMode( monitor );
 
-        return new DesktopGLGraphics.GLDisplayMode(
+        return new DesktopGLGraphics.DesktopGLDisplayMode(
             0, //TODO:
             videoMode -> Width,
             videoMode -> Height,
@@ -200,11 +200,70 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
             );
     }
 
-    public static unsafe IGraphics.Monitor[] GetMonitors()
+    /// <summary>
+    /// Return the available <see cref="IGraphics.DisplayModeDescriptor"/>s of the primary monitor
+    /// </summary>
+    public static unsafe IGraphics.DisplayModeDescriptor[] GetDisplayModes()
     {
         DesktopGLApplication.InitialiseGL();
 
-        var monitors = new IGraphics.Monitor[ GLFW.GetMonitors().Length ];
+        VideoMode[] videoModes = GLFW.GetVideoModes( GLFW.GetPrimaryMonitor() );
+
+        var result = new IGraphics.DisplayModeDescriptor[ videoModes.Length ];
+
+        for ( var i = 0; i < result.Length; i++ )
+        {
+            VideoMode videoMode = videoModes[ i ];
+
+            result[ i ] = new DesktopGLGraphics.DesktopGLDisplayMode(
+                0,  //TODO:
+                videoMode.Width,
+                videoMode.Height,
+                videoMode.RefreshRate,
+                videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Return the available <see cref="IGraphics.DisplayModeDescriptor"/>"s of the given <see cref="Monitor"/>
+    /// </summary>
+    public static unsafe IGraphics.DisplayModeDescriptor[] GetDisplayModes( Monitor* monitor )
+    {
+        DesktopGLApplication.InitialiseGL();
+
+        VideoMode[] videoModes = GLFW.GetVideoModes( monitor );
+
+        var result = new IGraphics.DisplayModeDescriptor[ videoModes.Length ];
+
+        for ( var i = 0; i < result.Length; i++ )
+        {
+            VideoMode videoMode = videoModes[ i ];
+
+            result[ i ] = new DesktopGLGraphics.DesktopGLDisplayMode(
+                0, // TODO
+                videoMode.Width,
+                videoMode.Height,
+                videoMode.RefreshRate,
+                videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
+        }
+
+        return result;
+    }
+
+    public static unsafe Monitor* GetPrimaryMonitor()
+    {
+        DesktopGLApplication.InitialiseGL();
+
+        return ToGLMonitor( GLFW.GetPrimaryMonitor() );
+    }
+
+    public static unsafe IGraphics.MonitorDescriptor[] GetMonitors()
+    {
+        DesktopGLApplication.InitialiseGL();
+
+        var monitors = new IGraphics.MonitorDescriptor[ GLFW.GetMonitors().Length ];
 
         for ( var i = 0; i < GLFW.GetMonitors().Length; i++ )
         {
@@ -218,13 +277,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     /// <param name="monitor"></param>
     /// <returns></returns>
-    public static unsafe DesktopGLGraphics.GLMonitor ToGLMonitor( Monitor* monitor )
+    public static unsafe DesktopGLGraphics.DesktopGLMonitor ToGLMonitor( Monitor* monitor )
     {
         GLFW.GetMonitorPos( monitor, out var virtualX, out var virtualY );
 
         var name = GLFW.GetMonitorName( monitor );
 
-        return new DesktopGLGraphics.GLMonitor(
+        return new DesktopGLGraphics.DesktopGLMonitor(
             0, // TODO:
             virtualX,
             virtualY,

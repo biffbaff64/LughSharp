@@ -22,21 +22,21 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DesktopGLWindow : IDisposable
 {
-    public        IDesktopGLWindowListener?                WindowListener      { get; set; }
+    public        IDesktopGLWindowListener?         WindowListener      { get; set; }
     public unsafe Window*                           WindowHandle        { get; set; }
     public        IApplicationListener              Listener            { get; set; }
-    public        IDesktopGLInput                          Input               { get; set; } = null!;
+    public        IDesktopGLInput                   Input               { get; set; } = null!;
     public        DesktopGLGraphics                 Graphics            { get; set; } = null!;
     public        DesktopGLApplicationConfiguration Config              { get; set; }
     public        bool                              ListenerInitialised { get; set; } = false;
 
     private readonly IDesktopGLApplicationBase _application;
-    private          IntBuffer          _tmpBuffer;
-    private          IntBuffer          _tmpBuffer2;
-    private          bool               _iconified         = false;
-    private          bool               _requestRendering  = false;
-    private readonly List< Runnable >   _runnables         = new();
-    private readonly List< Runnable >   _executedRunnables = new();
+    private          IntBuffer                 _tmpBuffer;
+    private          IntBuffer                 _tmpBuffer2;
+    private          bool                      _iconified         = false;
+    private          bool                      _requestRendering  = false;
+    private readonly List< Runnable >          _runnables         = new();
+    private readonly List< Runnable >          _executedRunnables = new();
 
     // ------------------------------------------------------------------------
 

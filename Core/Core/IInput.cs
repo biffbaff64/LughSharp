@@ -447,7 +447,7 @@ public interface IInput
         }
     }
 
-    IInputProcessor InputProcessor { get; set; }
+    IInputProcessor? InputProcessor { get; set; }
     
     // --------------------------------------------------------------------
 

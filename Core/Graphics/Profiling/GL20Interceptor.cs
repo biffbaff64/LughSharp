@@ -42,7 +42,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         }
     }
 
-    public override void GLActiveTexture( int texture )
+    public override void GLActiveTexture( uint texture )
     {
         Calls++;
         GL20.GLActiveTexture( texture );
@@ -380,7 +380,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLAttachShader( int program, int shader )
+    public override void GLAttachShader( uint program, uint shader )
     {
         Calls++;
         GL20.GLAttachShader( program, shader );
