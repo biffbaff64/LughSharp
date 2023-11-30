@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using Trace = LibGDXSharp.Utils.Trace;
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
 using LibGDXSharp.G2D;
 
@@ -33,25 +34,25 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
     private readonly Vector2 _bottomRight = new();
 
     public IsometricTiledMapRenderer( TiledMap map )
-            : base( map )
+        : base( map )
     {
         Init();
     }
 
     public IsometricTiledMapRenderer( TiledMap map, IBatch batch )
-            : base( map, batch )
+        : base( map, batch )
     {
         Init();
     }
 
     public IsometricTiledMapRenderer( TiledMap map, float unitScale )
-            : base( map, unitScale )
+        : base( map, unitScale )
     {
         Init();
     }
 
     public IsometricTiledMapRenderer( TiledMap map, float unitScale, IBatch batch )
-            : base( map, unitScale, batch )
+        : base( map, unitScale, batch )
     {
         Init();
     }
@@ -63,12 +64,11 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
         _isoTransform.Idt();
 
         // isoTransform.translate(0, 32, 0);
-        _isoTransform.Scale
-                (
-                ( float )( Math.Sqrt( 2.0 ) / 2.0 ),
-                ( float )( Math.Sqrt( 2.0 ) / 4.0 ),
-                1.0f
-                );
+        _isoTransform.Scale(
+            ( float )( Math.Sqrt( 2.0 ) / 2.0 ),
+            ( float )( Math.Sqrt( 2.0 ) / 4.0 ),
+            1.0f
+            );
 
         _isoTransform.Rotate( 0.0f, 0.0f, 1.0f, -45 );
 
@@ -97,16 +97,15 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
     {
         Color batchColor = Batch.Color;
 
-        var color = Color.ToFloatBits
-                (
-                batchColor.R, batchColor.G, batchColor.B,
-                batchColor.A * layer.Opacity
-                );
+        var color = Color.ToFloatBits( batchColor.R,
+                                       batchColor.G,
+                                       batchColor.B,
+                                       batchColor.A * layer.Opacity );
 
-        var tileWidth  = layer.TileWidth * UnitScale;
-        var tileHeight = layer.TileHeight * UnitScale;
-
+        var tileWidth    = layer.TileWidth * UnitScale;
+        var tileHeight   = layer.TileHeight * UnitScale;
         var layerOffsetX = layer.RenderOffsetX * UnitScale;
+
         // offset in tiled is y down, so we flip it
         var layerOffsetY = -layer.RenderOffsetY * UnitScale;
 
@@ -116,8 +115,10 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
         // setting up the screen points
         // COL1
         _topRight.Set( ( ViewBounds.X + ViewBounds.Width ) - layerOffsetX, ViewBounds.Y - layerOffsetY );
+
         // COL2
         _bottomLeft.Set( ViewBounds.X - layerOffsetX, ( ViewBounds.Y + ViewBounds.Height ) - layerOffsetY );
+
         // ROW1
         _topLeft.Set( ViewBounds.X - layerOffsetX, ViewBounds.Y - layerOffsetY );
 

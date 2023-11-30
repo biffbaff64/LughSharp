@@ -18,6 +18,8 @@ using System.Drawing;
 
 using LibGDXSharp.Core.Utils.Collections;
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
@@ -58,7 +60,7 @@ public class ScissorStack
             {
                 return false;
             }
-            
+
             Gdx.GL.GLEnable( IGL20.GL_SCISSOR_TEST );
         }
         else
@@ -89,8 +91,11 @@ public class ScissorStack
         }
 
         Scissors.Add( scissor );
-        HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y,
-                             ( int )scissor.Width, ( int )scissor.Height );
+
+        HdpiUtils.GLScissor( ( int )scissor.X,
+                             ( int )scissor.Y,
+                             ( int )scissor.Width,
+                             ( int )scissor.Height );
 
         return true;
     }
@@ -114,8 +119,11 @@ public class ScissorStack
         else
         {
             RectangleShape scissor = Scissors.Peek();
-            HdpiUtils.GLScissor( ( int )scissor.X, ( int )scissor.Y,
-                                 ( int )scissor.Width, ( int )scissor.Height );
+
+            HdpiUtils.GLScissor( ( int )scissor.X,
+                                 ( int )scissor.Y,
+                                 ( int )scissor.Width,
+                                 ( int )scissor.Height );
         }
 
         return old;
@@ -128,10 +136,10 @@ public class ScissorStack
 
     private static void Fix( RectangleShape rect )
     {
-        rect.X      = (float)Math.Round( rect.X );
-        rect.Y      = (float)Math.Round( rect.Y );
-        rect.Width  = (float)Math.Round( rect.Width );
-        rect.Height = (float)Math.Round( rect.Height );
+        rect.X      = ( float )Math.Round( rect.X );
+        rect.Y      = ( float )Math.Round( rect.Y );
+        rect.Width  = ( float )Math.Round( rect.Width );
+        rect.Height = ( float )Math.Round( rect.Height );
 
         if ( rect.Width < 0 )
         {
@@ -185,15 +193,15 @@ public class ScissorStack
     {
         Tmp.Set( area.X, area.Y, 0 );
         Tmp.Mul( batchTransform );
-        
+
         camera.Project( Tmp, viewportX, viewportY, viewportWidth, viewportHeight );
-        
+
         scissor.X = Tmp.X;
         scissor.Y = Tmp.Y;
 
         Tmp.Set( area.X + area.Width, area.Y + area.Height, 0 );
         Tmp.Mul( batchTransform );
-        
+
         camera.Project( Tmp, viewportX, viewportY, viewportWidth, viewportHeight );
         scissor.Width  = Tmp.X - scissor.X;
         scissor.Height = Tmp.Y - scissor.Y;

@@ -19,23 +19,49 @@ using LibGDXSharp.Core.Files.Buffers;
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
-/// Class representing an OpenGL texture by its target and handle.
-/// Keeps track of its state like the TextureFilter and TextureWrap.
-/// Also provides some (protected) static methods to create TextureData
-/// and upload image data.
+/// Class representing an OpenGL texture by its target and handle. Keeps track of
+/// its state like the TextureFilter and TextureWrap. Also provides some static
+/// methods to create TextureData and upload image data.
 /// </summary>
 [PublicAPI]
 public abstract class GLTexture : IDisposable
 {
+    #region properties
+
     public int   GLHandle               { get; set; }
     public int   GLTarget               { get; set; }
     public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
-    private static float _maxAnisotropicFilterLevel = 0;
+    /// <returns> The <see cref="TextureFilter"/> used for minification. </returns>
+    public TextureFilter MinFilter { get; private set; } = TextureFilter.Nearest;
 
+    /// <returns> The <see cref="TextureFilter"/> used for magnification. </returns>
+    public TextureFilter MagFilter { get; private set; } = TextureFilter.Nearest;
+
+    /// <returns>
+    /// The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
+    /// </returns>
+    public TextureWrap UWrap { get; set; } = TextureWrap.ClampToEdge;
+
+    /// <returns>
+    /// The <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
+    /// </returns>
+    public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
+
+    #endregion properties
+
+    #region abstract properties
+    
+    // These are abstract because implementations differ between inheriting classes
     public abstract int Width  { get; }
     public abstract int Height { get; }
     public abstract int Depth  { get; }
+
+    #endregion abstract properties
+
+    private static float _maxAnisotropicFilterLevel = 0;
+
+    #region constructors
 
     protected GLTexture( int glTarget )
         : this( glTarget, Gdx.GL.GLGenTexture() )
@@ -48,6 +74,10 @@ public abstract class GLTexture : IDisposable
         this.GLHandle = glHandle;
     }
 
+    #endregion constructors
+
+    #region abstract methods
+    
     /// <returns>whether this texture is managed or not.</returns>
     public abstract bool IsManaged();
 
@@ -56,6 +86,8 @@ public abstract class GLTexture : IDisposable
     /// calls <see cref="Texture.Load"/>.
     /// </summary>
     public abstract void Reload();
+
+    #endregion abstract methods
 
     /// <summary>
     /// Binds this texture. The texture will be bound to the currently active
@@ -75,25 +107,9 @@ public abstract class GLTexture : IDisposable
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        Gdx.GL.GLActiveTexture( IGL20.GL_TEXTURE0 + unit );
+        Gdx.GL.GLActiveTexture( ( uint )( IGL20.GL_TEXTURE0 + unit ) );
         Gdx.GL.GLBindTexture( GLTarget, GLHandle );
     }
-
-    /// <returns> The <see cref="TextureFilter"/> used for minification. </returns>
-    public TextureFilter MinFilter { get; private set; } = TextureFilter.Nearest;
-
-    /// <returns> The <see cref="TextureFilter"/> used for magnification. </returns>
-    public TextureFilter MagFilter { get; private set; } = TextureFilter.Nearest;
-
-    /// <returns>
-    /// The <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
-    /// </returns>
-    public TextureWrap UWrap { get; set; } = TextureWrap.ClampToEdge;
-
-    /// <returns>
-    /// The <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
-    /// </returns>
-    public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
 
     /// <summary>
     /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.
@@ -207,11 +223,10 @@ public abstract class GLTexture : IDisposable
             return AnisotropicFilterLevel;
         }
 
-        Gdx.GL20.GLTexParameterf
-            (
-             IGL20.GL_TEXTURE_2D,
-             IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-             level
+        Gdx.GL20.GLTexParameterf(
+            IGL20.GL_TEXTURE_2D,
+            IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+            level
             );
 
         return AnisotropicFilterLevel = level;
@@ -240,11 +255,10 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL20.GLTexParameterf
-            (
-             IGL20.GL_TEXTURE_2D,
-             IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-             level
+        Gdx.GL20.GLTexParameterf(
+            IGL20.GL_TEXTURE_2D,
+            IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+            level
             );
 
         return AnisotropicFilterLevel = level;
@@ -298,7 +312,7 @@ public abstract class GLTexture : IDisposable
     {
         if ( data == null )
         {
-            // FIXME: remove texture on target?
+            // TODO: remove texture on target?
             return;
         }
 
@@ -321,9 +335,9 @@ public abstract class GLTexture : IDisposable
 
         if ( pixmap == null )
         {
-            throw new NullReferenceException();
+            throw new GdxRuntimeException( "ConsumePixmap() resulted in a null Pixmap!" );
         }
-        
+
         if ( data.GetFormat() != pixmap.GetFormat() )
         {
             var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.GetFormat() );
@@ -348,17 +362,16 @@ public abstract class GLTexture : IDisposable
         }
         else
         {
-            Gdx.GL.GLTexImage2D
-                (
-                 target,
-                 miplevel,
-                 pixmap.GLInternalFormat,
-                 pixmap.Width,
-                 pixmap.Height,
-                 0,
-                 pixmap.GLFormat,
-                 pixmap.GLType,
-                 pixmap.Pixels
+            Gdx.GL.GLTexImage2D(
+                target,
+                miplevel,
+                pixmap.GLInternalFormat,
+                pixmap.Width,
+                pixmap.Height,
+                0,
+                pixmap.GLFormat,
+                pixmap.GLType,
+                pixmap.Pixels
                 );
         }
 

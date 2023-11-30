@@ -380,7 +380,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLAttachShader( uint program, uint shader )
+    public override void GLAttachShader( int program, int shader )
     {
         Calls++;
         GL20.GLAttachShader( program, shader );

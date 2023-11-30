@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [PublicAPI]
@@ -195,7 +197,10 @@ public class ShapeRenderer : IDisposable
 
     public void Set( ShapeTypes type )
     {
-        if ( this.ShapeType == type ) return;
+        if ( this.ShapeType == type )
+        {
+            return;
+        }
 
         if ( this.ShapeType == null )
         {
@@ -1008,7 +1013,10 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void Arc( float x, float y, float radius, float start, float degrees, int segments )
     {
-        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+        if ( segments <= 0 )
+        {
+            throw new ArgumentException( "segments must be > 0." );
+        }
 
         var colorBits = _color.ToFloatBits();
         var theta     = ( 2 * MathUtils.PI * ( degrees / 360.0f ) ) / segments;
@@ -1093,7 +1101,10 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void Circle( float x, float y, float radius, int segments )
     {
-        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+        if ( segments <= 0 )
+        {
+            throw new ArgumentException( "segments must be > 0." );
+        }
 
         var colorBits = _color.ToFloatBits();
         var angle     = ( 2 * MathUtils.PI ) / segments;
@@ -1182,7 +1193,10 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void Ellipse( float x, float y, float width, float height, int segments )
     {
-        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+        if ( segments <= 0 )
+        {
+            throw new ArgumentException( "segments must be > 0." );
+        }
 
         Check( ShapeTypes.Line, ShapeTypes.Filled, segments * 3 );
 
@@ -1262,7 +1276,10 @@ public class ShapeRenderer : IDisposable
     /** Draws an ellipse using {@link ShapeType#Line} or {@link ShapeType#Filled}. */
     public void Ellipse( float x, float y, float width, float height, float rotation, int segments )
     {
-        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+        if ( segments <= 0 )
+        {
+            throw new ArgumentException( "segments must be > 0." );
+        }
 
         Check( ShapeTypes.Line, ShapeTypes.Filled, segments * 3 );
 
@@ -1325,7 +1342,10 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void Cone( float x, float y, float z, float radius, float height, int segments )
     {
-        if ( segments <= 0 ) throw new ArgumentException( "segments must be > 0." );
+        if ( segments <= 0 )
+        {
+            throw new ArgumentException( "segments must be > 0." );
+        }
 
         Check( ShapeTypes.Line, ShapeTypes.Filled, ( segments * 4 ) + 2 );
 
@@ -1423,8 +1443,15 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void Polygon( float[] vertices, int offset, int count )
     {
-        if ( count < 6 ) throw new ArgumentException( "Polygons must contain at least 3 points." );
-        if ( ( count % 2 ) != 0 ) throw new ArgumentException( "Polygons must have an even number of vertices." );
+        if ( count < 6 )
+        {
+            throw new ArgumentException( "Polygons must contain at least 3 points." );
+        }
+
+        if ( ( count % 2 ) != 0 )
+        {
+            throw new ArgumentException( "Polygons must have an even number of vertices." );
+        }
 
         Check( ShapeTypes.Line, null, count );
 
@@ -1469,8 +1496,15 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void Polyline( float[] vertices, int offset, int count )
     {
-        if ( count < 4 ) throw new ArgumentException( "Polylines must contain at least 2 points." );
-        if ( ( count % 2 ) != 0 ) throw new ArgumentException( "Polylines must have an even number of vertices." );
+        if ( count < 4 )
+        {
+            throw new ArgumentException( "Polylines must contain at least 2 points." );
+        }
+
+        if ( ( count % 2 ) != 0 )
+        {
+            throw new ArgumentException( "Polylines must have an even number of vertices." );
+        }
 
         Check( ShapeTypes.Line, null, count );
 
@@ -1503,7 +1537,10 @@ public class ShapeRenderer : IDisposable
     /// <exception cref="IllegalStateException"></exception>
     private void Check( ShapeTypes preferred, ShapeTypes? other, int newVertices )
     {
-        if ( this.ShapeType == null ) throw new IllegalStateException( "begin must be called first." );
+        if ( this.ShapeType == null )
+        {
+            throw new IllegalStateException( "begin must be called first." );
+        }
 
         if ( ( this.ShapeType != preferred ) && ( this.ShapeType != other ) )
         {
@@ -1542,7 +1579,10 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void Flush()
     {
-        if ( this.ShapeType == null ) return;
+        if ( this.ShapeType == null )
+        {
+            return;
+        }
 
         End();
         Begin( this.ShapeType );

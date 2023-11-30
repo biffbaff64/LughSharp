@@ -131,7 +131,7 @@ public class Tree<TNode, TValue> : WidgetGroup
         return 0f;
     }
 
-    protected override void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
     }
 

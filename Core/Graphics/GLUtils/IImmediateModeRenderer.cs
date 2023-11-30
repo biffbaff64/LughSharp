@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [PublicAPI]

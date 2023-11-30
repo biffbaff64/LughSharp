@@ -63,9 +63,9 @@ public class LayerIIIDecoder : IFrameDecoder
 
     public void Create( Bitstream stream0,
                         Header header0,
-                        SynthesisFilter? filtera,
-                        SynthesisFilter? filterb,
-                        OutputBuffer? buffer0,
+                        SynthesisFilter filtera,
+                        SynthesisFilter filterb,
+                        OutputBuffer buffer0,
                         int which_ch0 )
     {
         HuffCodeTab.InitHuff();
@@ -335,7 +335,7 @@ public class LayerIIIDecoder : IFrameDecoder
                         }
 
                         _filter1.InputSamples( _samples1 );
-                        _filter1.CalculatePcmSamples( out _buffer! );
+                        _filter1.CalculatePcmSamples( _buffer );
                     }
                 }
                 else
@@ -352,7 +352,7 @@ public class LayerIIIDecoder : IFrameDecoder
                         }
 
                         _filter2.InputSamples( _samples2 );
-                        _filter2.CalculatePcmSamples( out _buffer! );
+                        _filter2.CalculatePcmSamples( _buffer );
                     }
                 }
             }

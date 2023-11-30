@@ -17,6 +17,8 @@
 using LibGDXSharp.Core.Files.Buffers;
 using LibGDXSharp.Core.Utils.Collections;
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.G2D;
 
 /// <summary>

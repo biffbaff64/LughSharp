@@ -17,6 +17,8 @@
 using LibGDXSharp.Maths.Collision;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Utils.Viewport;
 
 /// <summary>

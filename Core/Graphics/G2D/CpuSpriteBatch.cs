@@ -16,6 +16,8 @@
 
 using LibGDXSharp.Scenes.Scene2D;
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.G2D;
 
 /// <summary>
@@ -83,7 +85,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    public new Matrix4 GetTransformMatrix()
+    public Matrix4 GetTransformMatrix()
     {
         return ( _adjustNeeded ? _virtualMatrix : base.TransformMatrix );
     }

@@ -383,7 +383,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLAttachShader( uint program, uint shader )
+    public override void GLAttachShader( int program, int shader )
     {
         Calls++;
         GL30.GLAttachShader( program, shader );

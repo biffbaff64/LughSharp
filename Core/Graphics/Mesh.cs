@@ -19,6 +19,9 @@ using System.Text;
 using LibGDXSharp.Core.Files.Buffers;
 using LibGDXSharp.Maths.Collision;
 
+using Matrix3 = LibGDXSharp.Maths.Matrix3;
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Graphics;
 
 [PublicAPI]
@@ -32,18 +35,80 @@ public class Mesh
         VertexBufferObjectWithVAO
     }
 
+    #region properties
+
     public bool IsInstanced { get; set; } = false;
+
+    /// <returns> the number of defined indices </returns>
+    public int NumIndices => _indices.NumIndices;
+
+    /// <returns> the number of defined vertices </returns>
+    public int NumVertices => _vertices.NumVertices;
+
+    /// <returns> the maximum number of vertices this mesh can hold </returns>
+    public int MaxVertices => _vertices.NumMaxVertices;
+
+    /// <returns> the maximum number of indices this mesh can hold </returns>
+    public int MaxIndices => _indices.NumMaxIndices;
+
+    /// <returns> the size of a single vertex in bytes </returns>
+    public int VertexSize => _vertices.Attributes.VertexSize;
+
+    /// <returns>
+    /// the backing shortbuffer holding the _indices.
+    /// Does not have to be a direct buffer on Android!
+    /// </returns>
+    public ShortBuffer IndicesBuffer => _indices.GetBuffer( false );
+
+    public string ManagedStatus
+    {
+        get
+        {
+            var builder = new StringBuilder();
+            builder.Append( "Managed meshes/app: { " );
+
+            foreach ( IApplication app in Meshes.Keys )
+            {
+                builder.Append( Meshes[ app ]?.Count );
+                builder.Append( ' ' );
+            }
+
+            builder.Append( '}' );
+
+            return builder.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Sets whether to bind the underlying <see cref="VertexArray"/> or
+    /// <see cref="VertexBufferObject"/> automatically on a call to one of the
+    /// render methods. Usually you want to use autobind. Manual binding is an
+    /// expert functionality.
+    /// <para>
+    /// There is a driver bug on the MSM720xa chips that will corrupt memory if
+    /// you manipulate the vertices and indices of a Mesh multiple times while
+    /// it is bound. Keep this in mind.
+    /// </para>
+    /// </summary>
+    /// <param name="value"> whether to autobind meshes.  </param>
+    public bool AutoBind { get; init; } = true;
+
+    #endregion properties
+
+    #region private variables
 
     private readonly static Dictionary< IApplication, List< Mesh >? > Meshes = new();
 
-    private readonly ShortBuffer _shortBuffer = BufferUtils.NewShortBuffer( 100 );
-    private readonly Vector3     _tmpV        = new();
+    private readonly ShortBuffer    _shortBuffer = BufferUtils.NewShortBuffer( 100 );
+    private readonly Vector3        _tmpV        = new();
+    private readonly IVertexData    _vertices;
+    private readonly IIndexData     _indices;
+    private readonly bool           _isVertexArray;
+    private          IInstanceData? _instances;
 
-    private readonly IVertexData _vertices;
-    private readonly IIndexData  _indices;
-    private readonly bool        _isVertexArray;
+    #endregion private variables
 
-    private IInstanceData? _instances;
+    #region constructors
 
     /// <summary>
     /// Creates a new mesh with the given attrributes.
@@ -198,6 +263,8 @@ public class Mesh
         AddManagedMesh( Gdx.App, this );
     }
 
+    #endregion constructors
+
     private IVertexData MakeVertexBuffer( bool isStatic, int maxVertices, VertexAttributes vertexAttributes )
     {
         if ( Gdx.GL30 != null! )
@@ -221,8 +288,8 @@ public class Mesh
         {
             throw new GdxRuntimeException
                 (
-                 "Trying to enable InstancedRendering on same Mesh instance twice."
-                 + " Use disableInstancedRendering to clean up old InstanceData first"
+                "Trying to enable InstancedRendering on same Mesh instance twice."
+              + " Use disableInstancedRendering to clean up old InstanceData first"
                 );
         }
 
@@ -456,10 +523,10 @@ public class Mesh
         }
 
         if ( ( srcOffset < 0 )
-             || ( count <= 0 )
-             || ( ( srcOffset + count ) > max )
-             || ( destOffset < 0 )
-             || ( destOffset >= vertices.Length ) )
+          || ( count <= 0 )
+          || ( ( srcOffset + count ) > max )
+          || ( destOffset < 0 )
+          || ( destOffset >= vertices.Length ) )
         {
             throw new System.IndexOutOfRangeException();
         }
@@ -468,10 +535,10 @@ public class Mesh
         {
             throw new System.ArgumentException
                 (
-                 "not enough room in vertices array, has "
-                 + vertices.Length
-                 + " floats, needs "
-                 + count
+                "not enough room in vertices array, has "
+              + vertices.Length
+              + " floats, needs "
+              + count
                 );
         }
 
@@ -571,35 +638,6 @@ public class Mesh
         IndicesBuffer.Position = pos;
     }
 
-    /// <returns> the number of defined indices </returns>
-    public int NumIndices => _indices.NumIndices;
-
-    /// <returns> the number of defined vertices </returns>
-    public int NumVertices => _vertices.NumVertices;
-
-    /// <returns> the maximum number of vertices this mesh can hold </returns>
-    public int MaxVertices => _vertices.NumMaxVertices;
-
-    /// <returns> the maximum number of indices this mesh can hold </returns>
-    public int MaxIndices => _indices.NumMaxIndices;
-
-    /// <returns> the size of a single vertex in bytes </returns>
-    public int VertexSize => _vertices.Attributes.VertexSize;
-
-    /// <summary>
-    /// Sets whether to bind the underlying <see cref="VertexArray"/> or
-    /// <see cref="VertexBufferObject"/> automatically on a call to one of the
-    /// render methods. Usually you want to use autobind. Manual binding is an
-    /// expert functionality.
-    /// <para>
-    /// There is a driver bug on the MSM720xa chips that will corrupt memory if
-    /// you manipulate the vertices and indices of a Mesh multiple times while
-    /// it is bound. Keep this in mind.
-    /// </para>
-    /// </summary>
-    /// <param name="value"> whether to autobind meshes.  </param>
-    public bool AutoBind { get; init; } = true;
-
     /// <summary>
     /// Binds the underlying <see cref="VertexBufferObject"/> and
     /// <see cref="IndexBufferObject"/> if indices where given.
@@ -654,7 +692,7 @@ public class Mesh
         {
             return;
         }
-        
+
         _vertices.Unbind( shader, locations );
 
         if ( _instances is { NumInstances: > 0 } )
@@ -692,15 +730,14 @@ public class Mesh
     /// <param name="primitiveType"> the primitive type  </param>
     public void Render( ShaderProgram shader, int primitiveType )
     {
-        Render
-            (
-             shader,
-             primitiveType,
-             0,
-             _indices.NumMaxIndices > 0
-                 ? NumIndices
-                 : NumVertices,
-             AutoBind
+        Render(
+            shader,
+            primitiveType,
+            0,
+            _indices.NumMaxIndices > 0
+                ? NumIndices
+                : NumVertices,
+            AutoBind
             );
     }
 
@@ -763,7 +800,7 @@ public class Mesh
     public void Render( ShaderProgram? shader, int primitiveType, int offset, int count, bool autoBind )
     {
         ArgumentNullException.ThrowIfNull( shader );
-        
+
         if ( count == 0 )
         {
             return;
@@ -783,12 +820,12 @@ public class Mesh
                 var         oldLimit    = buffer.Limit;
 
                 buffer.Position = offset;
-                buffer.Limit = ( offset + count );
-                
+                buffer.Limit    = ( offset + count );
+
                 Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
-                
+
                 buffer.Position = oldPosition;
-                buffer.Limit = oldLimit;
+                buffer.Limit    = oldLimit;
             }
             else
             {
@@ -810,21 +847,23 @@ public class Mesh
                 {
                     throw new GdxRuntimeException
                         (
-                         "Mesh attempting to access memory outside of the index buffer (count: "
-                         + count
-                         + ", offset: "
-                         + offset
-                         + ", max: "
-                         + _indices.NumMaxIndices
-                         + ")"
+                        "Mesh attempting to access memory outside of the index buffer (count: "
+                      + count
+                      + ", offset: "
+                      + offset
+                      + ", max: "
+                      + _indices.NumMaxIndices
+                      + ")"
                         );
                 }
 
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL30?.GLDrawElementsInstanced( primitiveType, count,
-                                                      IGL20.GL_UNSIGNED_SHORT,
-                                                      offset * 2, numInstances );
+                    Gdx.GL30?.GLDrawElementsInstanced( primitiveType,
+                                                       count,
+                                                       IGL20.GL_UNSIGNED_SHORT,
+                                                       offset * 2,
+                                                       numInstances );
                 }
                 else
                 {
@@ -910,7 +949,9 @@ public class Mesh
         }
 
         FloatBuffer verts = _vertices.GetBuffer( false );
+
         bbox.ToInfinity();
+
         VertexAttribute? posAttrib = GetVertexAttribute( VertexAttributes.Usage.POSITION );
 
         var offset     = posAttrib!.Offset / 4;
@@ -920,6 +961,7 @@ public class Mesh
         switch ( posAttrib.numComponents )
         {
             case 1:
+            {
                 for ( var i = 0; i < numVertices; i++ )
                 {
                     bbox.Extend( verts.Get( idx ), 0, 0 );
@@ -927,8 +969,10 @@ public class Mesh
                 }
 
                 break;
+            }
 
             case 2:
+            {
                 for ( var i = 0; i < numVertices; i++ )
                 {
                     bbox.Extend( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
@@ -936,8 +980,10 @@ public class Mesh
                 }
 
                 break;
+            }
 
             case 3:
+            {
                 for ( var i = 0; i < numVertices; i++ )
                 {
                     bbox.Extend( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
@@ -945,6 +991,7 @@ public class Mesh
                 }
 
                 break;
+            }
         }
     }
 
@@ -1002,13 +1049,13 @@ public class Mesh
         {
             throw new GdxRuntimeException
                 (
-                 "Invalid part specified ( offset="
-                 + offset
-                 + ", count="
-                 + count
-                 + ", max="
-                 + max
-                 + " )"
+                "Invalid part specified ( offset="
+              + offset
+              + ", count="
+              + count
+              + ", max="
+              + max
+              + " )"
                 );
         }
 
@@ -1027,7 +1074,7 @@ public class Mesh
                     for ( var i = offset; i < end; i++ )
                     {
                         var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
-                        
+
                         _tmpV.Set( verts.Get( idx ), 0, 0 );
 
                         if ( transform != null )
@@ -1043,7 +1090,7 @@ public class Mesh
                     for ( var i = offset; i < end; i++ )
                     {
                         var idx = ( ( i * vertexSize ) + posoff );
-                        
+
                         _tmpV.Set( verts.Get( idx ), 0, 0 );
 
                         if ( transform != null )
@@ -1063,7 +1110,7 @@ public class Mesh
                     for ( var i = offset; i < end; i++ )
                     {
                         var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
-                        
+
                         _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
 
                         if ( transform != null )
@@ -1079,7 +1126,7 @@ public class Mesh
                     for ( var i = offset; i < end; i++ )
                     {
                         var idx = ( i * vertexSize ) + posoff;
-                        
+
                         _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
 
                         if ( transform != null )
@@ -1303,19 +1350,15 @@ public class Mesh
     }
 
     /// <summary>
-    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part. </summary>
+    /// Calculates the squared radius of the bounding sphere around the specified
+    /// center for the specified part.
+    /// </summary>
     /// <param name="center"> The center of the bounding sphere </param>
     /// <returns> the squared radius of the bounding sphere.  </returns>
     public float CalculateRadius( in Vector3 center )
     {
         return CalculateRadius( center.X, center.Y, center.Z, 0, NumIndices, null );
     }
-
-    /// <returns>
-    /// the backing shortbuffer holding the _indices.
-    /// Does not have to be a direct buffer on Android!
-    /// </returns>
-    public ShortBuffer IndicesBuffer => _indices.GetBuffer( false );
 
     private static void AddManagedMesh( IApplication app, Mesh mesh )
     {
@@ -1345,25 +1388,6 @@ public class Mesh
     public static void ClearAllMeshes( IApplication app )
     {
         Meshes.Remove( app );
-    }
-
-    public static string ManagedStatus
-    {
-        get
-        {
-            var builder = new StringBuilder();
-            builder.Append( "Managed meshes/app: { " );
-
-            foreach ( IApplication app in Meshes.Keys )
-            {
-                builder.Append( Meshes[ app ]?.Count );
-                builder.Append( ' ' );
-            }
-
-            builder.Append( '}' );
-
-            return builder.ToString();
-        }
     }
 
     /// <summary>
@@ -1444,8 +1468,10 @@ public class Mesh
         var vertices      = new float[ count * stride ];
 
         GetVertices( start * stride, count * stride, vertices );
+
         // GetVertices(0, vertices.length, vertices);
         Transform( matrix, vertices, stride, posOffset, numComponents, 0, count );
+
         // SetVertices(vertices, 0, vertices.length);
         UpdateVertices( start * stride, vertices );
     }
@@ -1478,14 +1504,14 @@ public class Mesh
         {
             throw new System.IndexOutOfRangeException
                 (
-                 "start = "
-                 + start
-                 + ", count = "
-                 + count
-                 + ", vertexSize = "
-                 + vertexSize
-                 + ", length = "
-                 + vertices.Length
+                "start = "
+              + start
+              + ", count = "
+              + count
+              + ", vertexSize = "
+              + vertexSize
+              + ", length = "
+              + vertices.Length
                 );
         }
 
@@ -1573,14 +1599,14 @@ public class Mesh
         {
             throw new System.IndexOutOfRangeException
                 (
-                 "start = "
-                 + start
-                 + ", count = "
-                 + count
-                 + ", vertexSize = "
-                 + vertexSize
-                 + ", length = "
-                 + vertices.Length
+                "start = "
+              + start
+              + ", count = "
+              + count
+              + ", vertexSize = "
+              + vertexSize
+              + ", length = "
+              + vertices.Length
                 );
         }
 
@@ -1647,7 +1673,7 @@ public class Mesh
                     asCount++;
                 }
             }
-            
+
             if ( size > 0 )
             {
                 attrs  = new VertexAttribute[ asCount ];

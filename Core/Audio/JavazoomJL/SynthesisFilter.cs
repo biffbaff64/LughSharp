@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Core.Audio.JavazoomJL;
 
-//TODO: The ComputePcmSamplesX methods all take an 'out OutputBuffer buffer' as a
+//TODO: The ComputePcmSamplesX methods all take an 'OutputBuffer? buffer' as a
 // parameter, but it is never used. This is a direct conversion from the Java, and
 // can probably be removed later.
 // Confirm this is ok first.
@@ -27,7 +27,7 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 /// are removed by ignoring higher subbands.
 /// </summary>
 [PublicAPI]
-public class SynthesisFilter
+public partial class SynthesisFilter
 {
     private float[] _v1;
     private float[] _v2;
@@ -45,7 +45,7 @@ public class SynthesisFilter
     {
         if ( _d == null )
         {
-            _d   = LoadD();
+            _d   = DData;
             _d16 = SplitArray( _d, 16 );
         }
 
@@ -411,10 +411,10 @@ public class SynthesisFilter
     /// <summary>
     /// Calculate 32 PCM samples and put them into the OutputBuffer object.
     /// </summary>
-    public void CalculatePcmSamples( out OutputBuffer? buffer )
+    public void CalculatePcmSamples( OutputBuffer? buffer )
     {
         ComputeNewV();
-        ComputePcmSamples( out buffer );
+        ComputePcmSamples( buffer );
 
         _actualWritepos = ( _actualWritepos + 1 ) & 0xf;
         _actualV        = _actualV == _v1 ? _v2 : _v1;
@@ -424,87 +424,87 @@ public class SynthesisFilter
         Array.Fill( _samples, 0.0f );
     }
 
-    public void ComputePcmSamples( out OutputBuffer? buffer )
+    public void ComputePcmSamples( OutputBuffer? buffer )
     {
         switch ( _actualWritepos )
         {
             case 0:
-                ComputePcmSamples0( out buffer );
+                ComputePcmSamples0( buffer );
 
                 break;
 
             case 1:
-                ComputePcmSamples1( out buffer );
+                ComputePcmSamples1( buffer );
 
                 break;
 
             case 2:
-                ComputePcmSamples2( out buffer );
+                ComputePcmSamples2( buffer );
 
                 break;
 
             case 3:
-                ComputePcmSamples3( out buffer );
+                ComputePcmSamples3( buffer );
 
                 break;
 
             case 4:
-                ComputePcmSamples4( out buffer );
+                ComputePcmSamples4( buffer );
 
                 break;
 
             case 5:
-                ComputePcmSamples5( out buffer );
+                ComputePcmSamples5( buffer );
 
                 break;
 
             case 6:
-                ComputePcmSamples6( out buffer );
+                ComputePcmSamples6( buffer );
 
                 break;
 
             case 7:
-                ComputePcmSamples7( out buffer );
+                ComputePcmSamples7( buffer );
 
                 break;
 
             case 8:
-                ComputePcmSamples8( out buffer );
+                ComputePcmSamples8( buffer );
 
                 break;
 
             case 9:
-                ComputePcmSamples9( out buffer );
+                ComputePcmSamples9( buffer );
 
                 break;
 
             case 10:
-                ComputePcmSamples10( out buffer );
+                ComputePcmSamples10( buffer );
 
                 break;
 
             case 11:
-                ComputePcmSamples11( out buffer );
+                ComputePcmSamples11( buffer );
 
                 break;
 
             case 12:
-                ComputePcmSamples12( out buffer );
+                ComputePcmSamples12( buffer );
 
                 break;
 
             case 13:
-                ComputePcmSamples13( out buffer );
+                ComputePcmSamples13( buffer );
 
                 break;
 
             case 14:
-                ComputePcmSamples14( out buffer );
+                ComputePcmSamples14( buffer );
 
                 break;
 
             case 15:
-                ComputePcmSamples15( out buffer );
+                ComputePcmSamples15( buffer );
 
                 break;
 
@@ -522,7 +522,7 @@ public class SynthesisFilter
 
     private float[] _tmpOut = new float[ 32 ];
 
-    private void ComputePcmSamples0( out OutputBuffer buffer )
+    private void ComputePcmSamples0( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -553,11 +553,9 @@ public class SynthesisFilter
             
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples1( out OutputBuffer buffer )
+    private void ComputePcmSamples1( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -588,11 +586,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples2( out OutputBuffer buffer )
+    private void ComputePcmSamples2( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -623,11 +619,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples3( out OutputBuffer buffer )
+    private void ComputePcmSamples3( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -658,11 +652,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples4( out OutputBuffer buffer )
+    private void ComputePcmSamples4( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -693,11 +685,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples5( out OutputBuffer buffer )
+    private void ComputePcmSamples5( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -728,11 +718,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples6( out OutputBuffer buffer )
+    private void ComputePcmSamples6( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -763,11 +751,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples7( out OutputBuffer buffer )
+    private void ComputePcmSamples7( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -798,11 +784,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples8( out OutputBuffer buffer )
+    private void ComputePcmSamples8( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -833,11 +817,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples9( out OutputBuffer buffer )
+    private void ComputePcmSamples9( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -868,11 +850,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples10( out OutputBuffer buffer )
+    private void ComputePcmSamples10( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -903,11 +883,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples11( out OutputBuffer buffer )
+    private void ComputePcmSamples11( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -938,11 +916,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples12( out OutputBuffer buffer )
+    private void ComputePcmSamples12( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -973,11 +949,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples13( out OutputBuffer buffer )
+    private void ComputePcmSamples13( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -1008,11 +982,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples14( out OutputBuffer buffer )
+    private void ComputePcmSamples14( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -1043,11 +1015,9 @@ public class SynthesisFilter
 
             dvp += 16;
         }
-
-        buffer = null!;
     }
 
-    private void ComputePcmSamples15( out OutputBuffer buffer )
+    private void ComputePcmSamples15( OutputBuffer? buffer )
     {
         var vp     = _actualV;
         var tmpOut = _tmpOut;
@@ -1077,8 +1047,6 @@ public class SynthesisFilter
             tmpOut[ i ] =  pcmSample;
             dvp         += 16;
         }
-
-        buffer = null!;
     }
 
     private readonly static double MyPI = 3.14159265358979323846;
@@ -1124,85 +1092,6 @@ public class SynthesisFilter
     // d[] split into subarrays of length 16. This provides for more faster
     // access by allowing a block of 16 to be addressed with constant offset.
     private static float[][] _d16 = null!;
-
-    /// <summary>
-    /// Loads the data for the d[] from the resource SFd.ser.
-    /// </summary>
-    /// <returns>the loaded values for d[]</returns>
-    private float[] LoadD()
-    {
-        try
-        {
-            var o = DeserializeArray( File.OpenRead( "/sfd.ser" ), typeof( float ), 512 );
-
-            return ( float[] )o;
-        }
-        catch ( IOException ex )
-        {
-            throw new ExceptionInitialiserError( ex );
-        }
-    }
-
-    /// <summary>
-    /// Deserializes an array from a given <tt>InputStream</tt>.
-    /// </summary>
-    /// <param name="inStream"> The <tt>InputStream</tt> to deserialize an object from. </param>
-    /// <param name="elemType"> The class denoting the type of the array elements. </param>
-    /// <param name="length"> The expected length of the array, or -1 if any length is expected. </param>
-    private object DeserializeArray( FileStream inStream, Type elemType, int length )
-    {
-        ArgumentNullException.ThrowIfNull( inStream );
-        ArgumentNullException.ThrowIfNull( elemType );
-
-        if ( length < -1 )
-        {
-            throw new ArgumentException( $@"length should not be < -1 [Actual value: {length}" );
-        }
-
-        var obj = Deserialize( inStream );
-
-        if ( !obj.GetType().IsArray )
-        {
-            throw new InvalidTypeException( "object is not an array" );
-        }
-
-        if ( obj.GetType().GetElementType() != elemType )
-        {
-            throw new InvalidTypeException( "unexpected array component type" );
-        }
-
-        if ( length != -1 )
-        {
-            var arrayLength = ( ( Array )obj ).Cast< object >().ToArray().Length;
-
-            if ( arrayLength != length )
-            {
-                throw new GdxRuntimeException( "array length mismatch" );
-            }
-        }
-
-        return obj;
-    }
-
-    public object Deserialize( FileStream inStream )
-    {
-        ArgumentNullException.ThrowIfNull( inStream );
-
-        ObjectInputStream objIn = new ObjectInputStream( inStream );
-
-        object obj;
-        
-        try
-        {
-            obj = objIn.ReadObject();
-        }
-        catch ( ClassNotFoundException ex )
-        {
-            throw new InvalidClassException( ex.toString() );
-        }
-
-        return obj;
-    }
 
     /// <summary>
     /// Converts a 1D array into a number of smaller arrays. This is used to

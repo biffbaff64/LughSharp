@@ -17,6 +17,7 @@
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maths.Collision;
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
 using Quaternion = LibGDXSharp.Maths.Quaternion;
 
 namespace LibGDXSharp.Graphics;
@@ -27,16 +28,17 @@ namespace LibGDXSharp.Graphics;
 [PublicAPI]
 public abstract class Camera
 {
+
     #region Properties
 
     // the position of the camera
     public Vector3 Position { get; set; } = new();
 
     // the unit length direction vector of the camera
-    protected Vector3 Direction { get; set; } = new(0, 0, -1);
+    protected Vector3 Direction { get; set; } = new( 0, 0, -1 );
 
     // the unit length up vector of the camera
-    public Vector3 Up { get; set; } = new(0, 1, 0);
+    public Vector3 Up { get; set; } = new( 0, 1, 0 );
 
     protected Matrix4 Projection        { get; set; } = new();
     protected Matrix4 View              { get; set; } = new();
@@ -58,7 +60,7 @@ public abstract class Camera
     #region PrivateMembers
 
     private readonly Vector3 _tmpVec = new();
-    private readonly Ray     _ray    = new(new Vector3(), new Vector3());
+    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
 
     #endregion
 
@@ -242,10 +244,10 @@ public abstract class Camera
     /// <param name="viewportHeight">The height of the viewport in pixels </param>
     /// <returns> the mutated and unprojected screenCoords <see cref="Vector3"/>  </returns>
     public Vector3 Unproject( Vector3 screenCoords,
-                                      float viewportX,
-                                      float viewportY,
-                                      float viewportWidth,
-                                      float viewportHeight )
+                              float viewportX,
+                              float viewportY,
+                              float viewportWidth,
+                              float viewportHeight )
     {
         var x = screenCoords.X;
         var y = screenCoords.Y;
@@ -319,10 +321,10 @@ public abstract class Camera
     /// <param name="viewportHeight"> the height of the viewport in pixels.</param>
     /// <returns> the mutated and projected worldCoords <see cref="Vector3"/>.</returns>
     public Vector3 Project( Vector3? worldCoords,
-                                    float viewportX,
-                                    float viewportY,
-                                    float viewportWidth,
-                                    float viewportHeight )
+                            float viewportX,
+                            float viewportY,
+                            float viewportWidth,
+                            float viewportHeight )
     {
         if ( worldCoords == null ) throw new NullReferenceException();
 
@@ -353,28 +355,26 @@ public abstract class Camera
     /// <param name="viewportHeight">The height of the viewport in pixels</param>
     /// <returns>The picking Ray.</returns>
     public Ray GetPickRay( float screenX,
-                                   float screenY,
-                                   float viewportX,
-                                   float viewportY,
-                                   float viewportWidth,
-                                   float viewportHeight )
+                           float screenY,
+                           float viewportX,
+                           float viewportY,
+                           float viewportWidth,
+                           float viewportHeight )
     {
-        Unproject
-            (
-             _ray.origin.Set( screenX, screenY, 0 ),
-             viewportX,
-             viewportY,
-             viewportWidth,
-             viewportHeight
+        Unproject(
+            _ray.origin.Set( screenX, screenY, 0 ),
+            viewportX,
+            viewportY,
+            viewportWidth,
+            viewportHeight
             );
 
-        Unproject
-            (
-             _ray.direction.Set( screenX, screenY, 1 ),
-             viewportX,
-             viewportY,
-             viewportWidth,
-             viewportHeight
+        Unproject(
+            _ray.direction.Set( screenX, screenY, 1 ),
+            viewportX,
+            viewportY,
+            viewportWidth,
+            viewportHeight
             );
 
         _ray.direction.Sub( _ray.origin ).Nor();
@@ -392,14 +392,13 @@ public abstract class Camera
     /// <returns>The picking Ray.</returns>
     public Ray GetPickRay( float screenX, float screenY )
     {
-        return GetPickRay
-            (
-             screenX,
-             screenY,
-             0,
-             0,
-             Gdx.Graphics.Width,
-             Gdx.Graphics.Height
+        return GetPickRay(
+            screenX,
+            screenY,
+            0,
+            0,
+            Gdx.Graphics.Width,
+            Gdx.Graphics.Height
             );
     }
 }

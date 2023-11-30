@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.G2D;
 
 /// <summary>
@@ -257,7 +259,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             SwitchTexture( region.Region.Texture );
         }
         else if ( ( ( _triangleIndex + region.Triangles.Length ) > this._triangles.Length )
-               || ( ( _vertexIndex + ( ( region.Vertices.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
+               || ( ( _vertexIndex + ( ( region.Vertices?.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
         {
             Flush();
         }
@@ -268,7 +270,7 @@ public class PolygonSpriteBatch : IPolygonBatch
                 = ( short )( t + ( this._vertexIndex / Sprite.VertexSize ) );
         }
 
-        for ( var i = 0; i < region.Vertices.Length; i += 2 )
+        for ( var i = 0; i < region.Vertices?.Length; i += 2 )
         {
             this._vertices[ this._vertexIndex++ ] = region.Vertices[ i ] + x;
             this._vertices[ this._vertexIndex++ ] = region.Vertices[ i + 1 ] + y;
@@ -290,7 +292,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             SwitchTexture( region.Region.Texture );
         }
         else if ( ( ( _triangleIndex + region.Triangles.Length ) > _triangles.Length )
-               || ( ( _vertexIndex + ( ( region.Vertices.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
+               || ( ( _vertexIndex + ( ( region.Vertices?.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
         {
             Flush();
         }
@@ -305,7 +307,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         var sX = width / region.Region.RegionWidth;
         var sY = height / region.Region.RegionHeight;
 
-        for ( var i = 0; i < region.Vertices.Length; i += 2 )
+        for ( var i = 0; i < region.Vertices?.Length; i += 2 )
         {
             _vertices[ _vertexIndex++ ] = ( region.Vertices[ i ] * sX ) + x;
             _vertices[ _vertexIndex++ ] = ( region.Vertices[ i + 1 ] * sY ) + y;
@@ -336,7 +338,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             SwitchTexture( region.Region.Texture );
         }
         else if ( ( ( _triangleIndex + region.Triangles.Length ) > _triangles.Length )
-               || ( ( _vertexIndex + ( ( region.Vertices.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
+               || ( ( _vertexIndex + ( ( region.Vertices?.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
         {
             Flush();
         }
@@ -355,7 +357,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         var cos          = MathUtils.CosDeg( rotation );
         var sin          = MathUtils.SinDeg( rotation );
 
-        for ( var i = 0; i < region.Vertices.Length; i += 2 )
+        for ( var i = 0; i < region.Vertices?.Length; i += 2 )
         {
             var fx = ( ( region.Vertices[ i ] * sX ) - originX ) * scaleX;
             var fy = ( ( region.Vertices[ i + 1 ] * sY ) - originY ) * scaleY;

@@ -17,6 +17,8 @@
 using LibGDXSharp.G2D;
 using LibGDXSharp.Maps.Tiled.Tiles;
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
 [PublicAPI]
@@ -33,7 +35,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     protected float          UnitScale  { get; set; }
     protected float[]        Vertices   { get; set; } = new float[ NUM_VERTICES ];
 
-    public BatchTileMapRenderer() : this( new TiledMap(), 1.0f )
+    public BatchTileMapRenderer() : this( new TiledMap() )
     {
     }
 

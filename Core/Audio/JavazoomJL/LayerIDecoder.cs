@@ -147,11 +147,11 @@ public class LayerIDecoder : IFrameDecoder
                     writeReady = subbands![ i ].PutNextSample( whichChannels, filter1, filter2 );
                 }
 
-                filter1?.CalculatePcmSamples( out buffer );
+                filter1?.CalculatePcmSamples( buffer );
 
                 if ( ( whichChannels == OutputChannels.BOTH_CHANNELS ) && ( hMode != Header.SINGLE_CHANNEL ) )
                 {
-                    filter2?.CalculatePcmSamples( out buffer );
+                    filter2?.CalculatePcmSamples( buffer );
                 }
             }
             while ( !writeReady );

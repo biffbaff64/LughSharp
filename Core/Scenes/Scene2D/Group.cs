@@ -20,6 +20,8 @@ using LibGDXSharp.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils.Collections;
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Scenes.Scene2D;
 
 /// <summary>

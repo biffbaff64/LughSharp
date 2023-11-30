@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
@@ -235,7 +237,10 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     /// </summary>
     public void Flush()
     {
-        if ( NumVertices == 0 ) return;
+        if ( NumVertices == 0 )
+        {
+            return;
+        }
 
         _shader?.Bind();
         _shader?.SetUniformMatrix( "u_projModelView", _projModelView );
@@ -246,7 +251,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         _mesh.SetVertices( _vertices, 0, _vertexIdx );
-        _mesh.Render( _shader, _primitiveType );
+        _mesh.Render( _shader!, _primitiveType );
 
         _numSetTexCoords = 0;
         _vertexIdx       = 0;
@@ -327,7 +332,10 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     {
         var shader = "#ifdef GL_ES\n" + "precision mediump float;\n" + "#endif\n";
 
-        if ( hasColors ) shader += "varying vec4 v_col;\n";
+        if ( hasColors )
+        {
+            shader += "varying vec4 v_col;\n";
+        }
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
@@ -339,7 +347,10 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
                   + "   gl_FragColor = "
                   + ( hasColors ? "v_col" : "vec4(1, 1, 1, 1)" );
 
-        if ( numTexCoords > 0 ) shader += " * ";
+        if ( numTexCoords > 0 )
+        {
+            shader += " * ";
+        }
 
         for ( var i = 0; i < numTexCoords; i++ )
         {

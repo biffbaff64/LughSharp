@@ -23,6 +23,8 @@ using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Pooling;
 using LibGDXSharp.Utils.Viewport;
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Scenes.Scene2D;
 
 /// <summary>

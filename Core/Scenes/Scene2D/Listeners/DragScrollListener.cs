@@ -14,45 +14,34 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.InteropServices.JavaScript;
-
 using LibGDXSharp.Scenes.Scene2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
-
-using Timer = System.Timers.Timer;
 
 namespace LibGDXSharp.Scenes.Listeners;
 
 [PublicAPI]
 public class DragScrollListener : DragListener
 {
+
+    #region private variables
+
     private readonly static Vector2 TmpCoords = new Vector2();
 
     private ScrollPane          _scroll;
-    private Task                _scrollUp;
-    private Task                _scrollDown;
     private Interpolation.ExpIn _interpolation = Interpolation.Exp5In;
     private float               _minSpeed      = 15;
     private float               _maxSpeed      = 75;
     private float               _tickSecs      = 0.05f;
+    private long                _rampTime      = 1750;
     private long                _startTime;
-    private long                _rampTime = 1750;
     private float               _padTop;
     private float               _padBottom;
+
+    #endregion private variables
 
     public DragScrollListener( ScrollPane scroll )
     {
         this._scroll = scroll;
-
-        _scrollUp = Task.Run( () =>
-        {
-            Scroll( _scroll.getScrollY() - getScrollPixels());
-        } );
-
-        _scrollDown = Task.Run( () =>
-        {
-            Scroll( _scroll.GetScrollY() + GetScrollPixels() );
-        } );
     }
 
     public void Setup( float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs )
@@ -70,59 +59,29 @@ public class DragScrollListener : DragListener
                                      Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float )_rampTime ) );
     }
 
-    public void Drag( InputEvent ev, float x, float y, int pointer )
+    public override void Drag( InputEvent ev, float x, float y, int pointer )
     {
         ev.ListenerActor?.LocalToActorCoordinates( _scroll, TmpCoords.Set( x, y ) );
 
         if ( IsAbove( TmpCoords.Y ) )
         {
-            _scrollDown.Cancel();
-
-            if ( !_scrollUp.IsScheduled() )
-            {
-                _startTime = TimeUtils.Millis();
-                Timer.Schedule( _scrollUp, _tickSecs, _tickSecs );
-            }
-
-            return;
+            // TODO: Add code for moving the scrollbar UP
         }
-        else if ( IsBelow( TmpCoords.y ) )
+        else if ( IsBelow( TmpCoords.Y ) )
         {
-            _scrollUp.Cancel();
-
-            if ( !_scrollDown.IsScheduled() )
-            {
-                _startTime = System.currentTimeMillis();
-                Timer.schedule( scrollDown, tickSecs, tickSecs );
-            }
-
-            return;
+            // TODO: Add code for moving the scrollbar DOWN
         }
-
-        _scrollUp.cancel();
-        _scrollDown.cancel();
     }
 
-    public void DragStop( InputEvent ev, float x, float y, int pointer )
+    public override void DragStop( InputEvent ev, float x, float y, int pointer )
     {
-        _scrollUp.Cancel();
-        _scrollDown.Cancel();
     }
 
-    protected bool IsAbove( float y )
-    {
-        return y >= _scroll.GetHeight() - _padTop;
-    }
+    protected bool IsAbove( float y ) => y >= ( _scroll.Height - _padTop );
 
-    protected bool IsBelow( float y )
-    {
-        return y < _padBottom;
-    }
+    protected bool IsBelow( float y ) => y < _padBottom;
 
-    protected void Scroll( float y )
-    {
-        _scroll.SetScrollY( y );
-    }
+    protected void Scroll( float y ) => _scroll.SetScrollY( y );
 
     public void SetPadding( float padtop, float padbottom )
     {

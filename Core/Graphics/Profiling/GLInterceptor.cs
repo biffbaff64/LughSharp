@@ -139,7 +139,7 @@ public abstract class GLInterceptor : IGL20
                                           Buffer pixels );
 
     public abstract void GLViewport( int x, int y, int width, int height );
-    public abstract void GLAttachShader( uint program, uint shader );
+    public abstract void GLAttachShader( int program, int shader );
     public abstract void GLBindAttribLocation( int program, int index, string name );
     public abstract void GLBindBuffer( int target, int buffer );
     public abstract void GLBindFramebuffer( int target, int framebuffer );

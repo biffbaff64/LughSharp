@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
+
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
@@ -22,20 +24,24 @@ namespace LibGDXSharp.Graphics;
 [PublicAPI]
 public class OrthographicCamera : Camera
 {
-    public float Zoom { get; set; } = 1;
+    public float Zoom { get; set; }
 
     private readonly Vector3 _tmp = new();
 
     public OrthographicCamera()
     {
         this.Near = 0;
+        this.Zoom = 1;
     }
 
     /// <summary>
     /// Constructs a new OrthographicCamera, using the given viewport width and height.
     /// For pixel perfect 2D rendering just supply the screen size, for other unit scales
     /// (e.g. meters for box2d) proceed accordingly. The camera will show the region
-    /// [-viewportWidth/2, -(viewportHeight/2-1)] - [(viewportWidth/2-1), viewportHeight/2]
+    /// [-viewportWidth/2, -(viewportHeight/2-1)] - [(viewportWidth/2-1), viewportHeight/2].
+    /// <para>
+    /// IMPORTANT: <see cref="Update"/> MUST be called after the call to this constructor.
+    /// </para>
     /// </summary>
     /// <param name="viewportWidth"></param>
     /// <param name="viewportHeight"></param>
@@ -44,8 +50,7 @@ public class OrthographicCamera : Camera
         this.ViewportWidth  = viewportWidth;
         this.ViewportHeight = viewportHeight;
         this.Near           = 0;
-
-        Update();
+        this.Zoom           = 1;
     }
 
     /// <summary>
@@ -53,14 +58,13 @@ public class OrthographicCamera : Camera
     /// <param name="updateFrustrum"></param>
     public override void Update( bool updateFrustrum = true )
     {
-        Projection.SetToOrtho
-            (
-             ( Zoom * -ViewportWidth ) / 2,
-             Zoom * ( ViewportWidth / 2 ),
-             Zoom * -( ViewportHeight / 2 ),
-             ( Zoom * ViewportHeight ) / 2,
-             Near,
-             Far
+        Projection.SetToOrtho(
+            ( Zoom * -ViewportWidth ) / 2,
+            Zoom * ( ViewportWidth / 2 ),
+            Zoom * -( ViewportHeight / 2 ),
+            ( Zoom * ViewportHeight ) / 2,
+            Near,
+            Far
             );
 
         View.SetToLookAt( Position, _tmp.Set( Position ).Add( Direction ), Up );
@@ -82,7 +86,7 @@ public class OrthographicCamera : Camera
     /// the screen resolution, centered at:-
     /// <para>
     /// <tt>(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2)</tt>
-      /// </para>
+    /// </para>
     /// with the y-axis pointing up or down.
     /// </summary>
     /// <param name="yDown">whether y should be pointing down.</param>
@@ -114,7 +118,7 @@ public class OrthographicCamera : Camera
         Position.Set( ( Zoom * viewportWidth ) / 2.0f, ( Zoom * viewportHeight ) / 2.0f, 0 );
         ViewportWidth  = viewportWidth;
         ViewportHeight = viewportHeight;
-        
+
         Update();
     }
 
@@ -131,8 +135,8 @@ public class OrthographicCamera : Camera
     /// <summary>
     /// Moves the camera by the given amount on each axis.
     /// </summary>
-	/// <param name="x"/> the displacement on the x-axis
-	/// <param name="y"/> the displacement on the y-axis
+    /// <param name="x"/> the displacement on the x-axis
+    /// <param name="y"/> the displacement on the y-axis
     public void Translate( float x, float y )
     {
         Translate( x, y, 0 );

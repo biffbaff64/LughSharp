@@ -21,9 +21,16 @@ using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 [PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
+
+    #region implemented methods
+
     public float GetRawDeltaTime()    => DeltaTime;
     public float GetDensity()         => GetPpiX() / 160f;
     public float GetBackBufferScale() => BackBufferWidth / ( float )Width;
+
+    #endregion implemented methods
+
+    #region propeerties
 
     public BufferFormatDescriptor BufferFormat     { get; set; } = null!;
     public int                    BackBufferWidth  { get; protected set; }
@@ -36,6 +43,10 @@ public abstract class AbstractGraphics : IGraphics
     public IGL30?                 GL30             { get; set; }
     public float                  DeltaTime        { get; set; }
     public GLVersion              GLVersion        { get; set; } = null!;
+
+    #endregion properties
+
+    #region abstract methods
 
     // ========================================================================
     // Abstract methods because C# insists this is done to fulfill the contract
@@ -110,4 +121,7 @@ public abstract class AbstractGraphics : IGraphics
     public abstract float GetPpcX();
 
     public abstract float GetPpcY();
+
+    #endregion abstract methods
+
 }

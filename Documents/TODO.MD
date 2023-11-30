@@ -115,12 +115,13 @@ AUDIO/JAVAZOOMJL
     - DONE - IFrameDecoder
     - DONE - LayerIDecoder
     - DONE - LayerIIDecoder
-    - DONE - LayerIIIDecoder
+    - IP   - LayerIIIDecoder        - Nullability related issue with constructor
     - DONE - Mp3Decoder
     - DONE - OutputBuffer
     - DONE - OutputChannels
     - IP   - PushbackInputStream
-    - IP   - SynthesisFilter
+    - DONE - SynthesisFilter
+    - DONE - SynthesisFilterData ( partial of SynthesisFilter )
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -139,6 +140,7 @@ BACKENDS/DESKTOPGL
     - IP   - DesktopGLFileHandle
     - DONE - DesktopGLFiles
     - IP   - DesktopGLGraphics
+    - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet
     - DONE - DesktopGLPreferences
     - IP   - DesktopGLWindow
@@ -148,9 +150,6 @@ BACKENDS/DESKTOPGL
     - DONE - IDesktopGLInput
     - DONE - IDesktopGLWindowListener
     - IP   - Sync
- 
-    Look into removing this, just keeping anything essential
-    - IP   - DesktopGLNativesLoader
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -215,7 +214,7 @@ CORE
 FILES
 -----
 
-    TODO: Remove allthis and properly integrate the C# file handling classes
+    TODO: Remove all this and properly integrate the C# file handling classes
 
     - IP   - BufferedInputStream
     - IP   - BufferedStreamExtensions
@@ -424,8 +423,6 @@ GRAPHICS/PROFILING
 
 INPUT
 -----
-
-    Are these needed? Probably not as I'm not supporting mobile.
 
     -      - GestureDetector
     -      - RemoteInput

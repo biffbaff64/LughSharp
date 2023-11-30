@@ -20,6 +20,8 @@ using LibGDXSharp.Core.Files.Buffers;
 using LibGDXSharp.Core.Utils.Collections;
 
 using Buffer = LibGDXSharp.Core.Files.Buffers.Buffer;
+using Matrix3 = LibGDXSharp.Maths.Matrix3;
+using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 

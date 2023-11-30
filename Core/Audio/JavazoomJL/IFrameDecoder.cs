@@ -28,9 +28,9 @@ public interface IFrameDecoder
 {
     void Create( Bitstream stream,
                  Header header,
-                 SynthesisFilter? filter1,
-                 SynthesisFilter? filter2,
-                 OutputBuffer? output,
+                 SynthesisFilter filter1,
+                 SynthesisFilter filter2,
+                 OutputBuffer output,
                  int channel );
 
     /// <summary>
