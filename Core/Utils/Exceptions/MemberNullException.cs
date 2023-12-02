@@ -25,11 +25,13 @@ public class MemberNullException : System.Exception
     {
     }
     
-    public MemberNullException( string message ) : base( message )
+    public MemberNullException( string? message = "" )
+        : base( message )
     {
     }
 
-    public MemberNullException( System.Exception e ) : this( "", e )
+    public MemberNullException( System.Exception? innerException )
+        : this( "", innerException )
     {
     }
 

@@ -20,7 +20,7 @@ namespace LibGDXSharp.Utils;
 public class NoSuchElementException : InvalidOperationException
 {
     /// <inheritdoc cref="InvalidOperationException(string?)"/>
-    public NoSuchElementException( string? message )
+    public NoSuchElementException( string? message = "" )
         : base( message )
     {
     }

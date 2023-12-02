@@ -33,20 +33,17 @@ public class Pool<T>
     private readonly List< T? > _freeObjects;
 
     /// <summary>
-    /// Creates a pool with an initial capacity of 16 and no maximum.
-    /// </summary>
-    public Pool() : this( 16 )
-    {
-    }
-
-    /// <summary>
     /// Creates a new pool with a specified initial capacity,
     /// </summary>
     /// <param name="initialCapacity">
     /// The initial size of the array supporting the pool. No objects are created/pre-allocated.
+    /// Default value is 16.
     /// </param>
-    /// <param name="max">The maximum number of free objects to store in this pool.</param>
-    public Pool( int initialCapacity, int max = int.MaxValue )
+    /// <param name="max">
+    /// The maximum number of free objects to store in this pool.
+    /// Default is int.MaxValue, ie NO max.
+    /// </param>
+    public Pool( int initialCapacity = 16, int max = int.MaxValue )
     {
         _freeObjects = new List< T? >( initialCapacity );
 

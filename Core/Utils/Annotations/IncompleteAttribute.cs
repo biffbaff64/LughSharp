@@ -25,11 +25,17 @@ namespace LibGDXSharp.Utils.Annotations;
 // UrlFormat.The URL that should be used by an IDE for navigating to corresponding documentation. Instead of taking the URL directly,
 //   the API takes a format string. This allows having a generic URL that includes the diagnostic ID.
 //
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum |
-                AttributeTargets.Interface | AttributeTargets.Constructor | AttributeTargets.Method
-                | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event
-                | AttributeTargets.Delegate,
-                Inherited = false)]
+[AttributeUsage( AttributeTargets.Class
+               | AttributeTargets.Struct
+               | AttributeTargets.Enum
+               | AttributeTargets.Interface
+               | AttributeTargets.Constructor
+               | AttributeTargets.Method
+               | AttributeTargets.Property
+               | AttributeTargets.Field
+               | AttributeTargets.Event
+               | AttributeTargets.Delegate,
+                 Inherited = false )]
 [PublicAPI]
 public class IncompleteAttribute : Attribute
 {
@@ -37,23 +43,24 @@ public class IncompleteAttribute : Attribute
     {
     }
 
-    public IncompleteAttribute(string? message)
+    public IncompleteAttribute( string? message = "" )
     {
         Message = message;
     }
 
-    public IncompleteAttribute(string? message, bool error)
+    public IncompleteAttribute( string? message, bool error )
     {
         Message = message;
         IsError = error;
     }
 
-    public string? Message { get; }
-
-    public bool IsError { get; }
-
+    #region properties
+    
+    public string? Message      { get; }
+    public bool    IsError      { get; }
     public string? DiagnosticId { get; set; }
-
-    public string? UrlFormat { get; set; }
+    public string? UrlFormat    { get; set; }
+    
+    #endregion propeerties
+    
 }
-

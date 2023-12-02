@@ -40,7 +40,21 @@ public record BinaryHeapNode
 [PublicAPI]
 public class BinaryHeap<T> where T : BinaryHeapNode
 {
+    #region properties
+    
     public int Size { get; set; }
+
+    /// <summary>
+    /// Returns true if the heap has one or more items.
+    /// </summary>
+    public bool NotEmpty => Size > 0;
+
+    /// <summary>
+    /// Returns true if the heap is empty.
+    /// </summary>
+    public bool IsEmpty => Size == 0;
+
+    #endregion properties
 
     private const int DEFAULT_CAPACITY = 16;
 
@@ -104,12 +118,12 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// </param>
     public bool Contains( T node, bool identity )
     {
+        ArgumentNullException.ThrowIfNull( node );
+
         if ( _nodes == null )
         {
             return false;
         }
-
-        ArgumentNullException.ThrowIfNull( node );
 
         foreach ( BinaryHeapNode n in _nodes )
         {
@@ -129,14 +143,11 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// </summary>
     public virtual T Peek()
     {
+        MemberNullException.ThrowIfNull( _nodes );
+
         if ( Size == 0 )
         {
             throw new InvalidOperationException( "The heap is empty." );
-        }
-
-        if ( _nodes == null )
-        {
-            MemberNullException.ThrowIfNull( _nodes );
         }
 
         return ( T )_nodes[ 0 ];
@@ -194,22 +205,6 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         }
 
         return node;
-    }
-
-    /// <summary>
-    /// Returns true if the heap has one or more items.
-    /// </summary>
-    public bool NotEmpty()
-    {
-        return Size > 0;
-    }
-
-    /// <summary>
-    /// Returns true if the heap is empty.
-    /// </summary>
-    public bool IsEmpty()
-    {
-        return Size == 0;
     }
 
     public void Clear()

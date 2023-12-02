@@ -112,7 +112,7 @@ public class PolygonRegionLoader
             throw new GdxRuntimeException( "Error reading " + fileName, e );
         }
 
-        string siblingFilePath = string.Empty;
+        var siblingFilePath = string.Empty;
         
         if ( image == null )
         {

@@ -20,7 +20,7 @@ namespace LibGDXSharp.Utils;
 public class NumberFormatException : FormatException
 {
     /// <inheritdoc cref="FormatException(string?)"/>
-    public NumberFormatException( string? message )
+    public NumberFormatException( string? message = "" )
         : base( message )
     {
     }

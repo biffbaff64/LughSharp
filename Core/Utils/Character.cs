@@ -17,33 +17,29 @@
 namespace LibGDXSharp.Utils;
 
 [PublicAPI]
-public static class CharHelper
+public static class Character
 {
     /// <summary>
-    /// The maximum value of a Unicode high-surrogate code unit in
-    /// the UTF-16 encoding, constant '\uDBFF'.
-    /// A high-surrogate is also known as a leading-surrogate.
+    /// The maximum value of a Unicode high-surrogate code unit in the UTF-16 encoding,
+    /// constant '\uDBFF'. A high-surrogate is also known as a leading-surrogate.
     /// </summary>
     public const char MAX_HIGH_SURROGATE = '\uDBFF';
 
     /// <summary>
-    /// The minimum value of a Unicode high-surrogate code unit in
-    /// the UTF-16 encoding, constant '\uD800'.
-    /// A high-surrogate is also known as a leading-surrogate.
+    /// The minimum value of a Unicode high-surrogate code unit in the UTF-16 encoding,
+    /// constant '\uD800'. A high-surrogate is also known as a leading-surrogate.
     /// </summary>
     public const char MIN_HIGH_SURROGATE = '\uD800';
 
     /// <summary>
-    /// The maximum value of a Unicode low-surrogate code unit in
-    /// the UTF-16 encoding, constant '\uDFFF'.
-    /// A low-surrogate is also known as a trailing-surrogate.
+    /// The maximum value of a Unicode low-surrogate code unit in the UTF-16 encoding,
+    /// constant '\uDFFF'. A low-surrogate is also known as a trailing-surrogate.
     /// </summary>
     public const char MAX_LOW_SURROGATE = '\uDFFF';
 
     /// <summary>
-    /// The minimum value of a Unicode low-surrogate code unit in
-    /// the UTF-16 encoding, constant '\uDC00'.
-    /// A low-surrogate is also known as a trailing-surrogate.
+    /// The minimum value of a Unicode low-surrogate code unit in the UTF-16 encoding,
+    /// constant '\uDC00'. A low-surrogate is also known as a trailing-surrogate.
     /// </summary>
     public const char MIN_LOW_SURROGATE = '\uDC00';
 
@@ -53,14 +49,12 @@ public static class CharHelper
     public const int MIN_SUPPLEMENTARY_CODE_POINT = 0x010000;
 
     /// <summary>
-    /// Determines the number of char values needed to represent the specified
-    /// character (Unicode code point). If the specified character is equal to
-    /// or greater than 0x10000, then the method returns 2. Otherwise, the
-    /// method returns 1.
+    /// Determines the number of char values needed to represent the specified character
+    /// (Unicode code point). If the specified character is equal to or greater than 0x10000,
+    /// then the method returns 2. Otherwise, the method returns 1.
     /// <para>
-    /// This method doesn't validate the specified character to be a valid
-    /// Unicode code point. The caller must validate the character value using
-    /// IsValidCodePoint if necessary.
+    /// This method doesn't validate the specified character to be a valid Unicode code point.
+    /// The caller must validate the character value using IsValidCodePoint if necessary.
     /// </para>
     /// </summary>
     /// <param name="codePoint"></param>
@@ -69,64 +63,30 @@ public static class CharHelper
     {
         return codePoint >= 0x010000 ? 2 : 1;
     }
-
-    /// <summary>
-    /// Returns the code point at the given index in the supplied string.
-    /// </summary>
-    /// <param name="str">The string.</param>
-    /// <param name="position">The position.</param>
-    /// <returns></returns>
-    public static int CodePointAt( string str, int position )
-    {
-        return char.ConvertToUtf32( str, position );
-    }
-
-    /// <summary>
-    /// Compares two <tt>char</tt> values numerically.
-    /// The value returned is identical to what would be returned by:
-    /// <code>
-    ///    CharHelper.ValueOf(x).CompareTo(CharHelper.ValueOf(y))
-    /// </code>
-    ///
-    /// </summary>
-    /// <param name="x"> the first <tt>char</tt> to compare </param>
-    /// <param name="y"> the second <tt>char</tt> to compare </param>
-    /// <returns>
-    /// the value <tt>0</tt> if <tt>x == y</tt>; a value less than <tt>0</tt> if <tt>x &lt; y</tt>;
-    /// and a value greater than <tt>0</tt> if <tt>x > y</tt>
-    /// </returns>
-    public static int Compare( char x, char y )
-    {
-        return x - y;
-    }
     
     /// <summary>
-    /// The minimum radix available for conversion to and from strings.
-    /// The constant value of this field is the smallest value permitted
-    /// for the radix argument in radix-conversion methods such as the
-    /// <tt>digit</tt> method, the <tt>forDigit</tt> method, and the
+    /// The minimum radix available for conversion to and from strings. The constant value
+    /// of this field is the smallest value permitted for the radix argument in radix-conversion
+    /// methods such as the <tt>digit</tt> method, the <tt>forDigit</tt> method, and the
     /// <tt>toString</tt> method of class <tt>Integer</tt>.
     /// </summary>
     public const int MIN_RADIX = 2;
 
     /// <summary>
-    /// The maximum radix available for conversion to and from strings.
-    /// The constant value of this field is the largest value permitted
-    /// for the radix argument in radix-conversion methods such as the
-    /// <tt>digit</tt> method, the <tt>forDigit</tt> method, and the
+    /// The maximum radix available for conversion to and from strings. The constant value of
+    /// this field is the largest value permitted for the radix argument in radix-conversion
+    /// methods such as the <tt>digit</tt> method, the <tt>forDigit</tt> method, and the
     /// <tt>toString</tt> method of class <tt>Integer</tt>.
     /// </summary>
     public const int MAX_RADIX = 36;
 
     /// <summary>
-    /// The constant value of this field is the smallest value of type
-    /// <tt>char</tt>, <tt>'\u005Cu0000'</tt>.
+    /// The constant value of this field is the smallest value of type char, <tt>'\u005Cu0000'</tt>.
     /// </summary>
     public const char MIN_VALUE = '\u0000';
 
     /// <summary>
-    /// The constant value of this field is the largest value of type
-    /// <tt>char</tt>, <tt>'\u005CuFFFF'</tt>.
+    /// The constant value of this field is the largest value of type char, <tt>'\u005CuFFFF'</tt>.
     /// </summary>
     public const char MAX_VALUE = '\uFFFF';
 
@@ -387,16 +347,44 @@ public static class CharHelper
     public const sbyte DIRECTIONALITY_POP_DIRECTIONAL_FORMAT = 18;
 
     /// <summary>
-    /// The minimum value of a
-    /// <a href="http://www.unicode.org/glossary/#code_point">
+    /// The minimum value of a <a href="http://www.unicode.org/glossary/#code_point">
     /// Unicode code point</a>, constant {@code U+0000}.
     /// </summary>
     public const int MIN_CODE_POINT = 0x000000;
 
     /// <summary>
-    /// The maximum value of a
-    /// <a href="http://www.unicode.org/glossary/#code_point">
+    /// The maximum value of a <a href="http://www.unicode.org/glossary/#code_point">
     /// Unicode code point</a>, constant {@code U+10FFFF}.
     /// </summary>
     public const int MAX_CODE_POINT = 0X10FFFF;
+
+    /// <summary>
+    /// Returns the code point at the given index in the supplied string.
+    /// </summary>
+    /// <param name="str">The string.</param>
+    /// <param name="position">The position.</param>
+    /// <returns></returns>
+    public static int CodePointAt( string str, int position )
+    {
+        return char.ConvertToUtf32( str, position );
+    }
+
+    /// <summary>
+    /// Compares two <tt>char</tt> values numerically.
+    /// The value returned is identical to what would be returned by:
+    /// <code>
+    ///    CharHelper.ValueOf(x).CompareTo(CharHelper.ValueOf(y))
+    /// </code>
+    ///
+    /// </summary>
+    /// <param name="x"> the first <tt>char</tt> to compare </param>
+    /// <param name="y"> the second <tt>char</tt> to compare </param>
+    /// <returns>
+    /// the value <tt>0</tt> if <tt>x == y</tt>; a value less than <tt>0</tt> if <tt>x &lt; y</tt>;
+    /// and a value greater than <tt>0</tt> if <tt>x > y</tt>
+    /// </returns>
+    public static int Compare( char x, char y )
+    {
+        return x - y;
+    }
 }

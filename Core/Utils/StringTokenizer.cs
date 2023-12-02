@@ -185,7 +185,7 @@ public class StringTokenizer
         {
             c = _delimiters[ i ];
 
-            if ( c is >= CharHelper.MIN_HIGH_SURROGATE and <= CharHelper.MAX_LOW_SURROGATE )
+            if ( c is >= Character.MIN_HIGH_SURROGATE and <= Character.MAX_LOW_SURROGATE )
             {
                 c = char.ConvertToUtf32( _delimiters, i );
 
@@ -251,7 +251,7 @@ public class StringTokenizer
                     break;
                 }
 
-                position += CharHelper.CharCount( c );
+                position += Character.CharCount( c );
             }
         }
 
@@ -288,7 +288,7 @@ public class StringTokenizer
                     break;
                 }
 
-                position += CharHelper.CharCount( c );
+                position += Character.CharCount( c );
             }
         }
 
@@ -309,7 +309,7 @@ public class StringTokenizer
 
                 if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) )
                 {
-                    position += CharHelper.CharCount( c );
+                    position += Character.CharCount( c );
                 }
             }
         }

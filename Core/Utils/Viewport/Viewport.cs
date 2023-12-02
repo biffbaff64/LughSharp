@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.ComponentModel.DataAnnotations;
+
 using LibGDXSharp.Maths.Collision;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 

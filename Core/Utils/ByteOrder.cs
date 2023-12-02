@@ -45,23 +45,18 @@ public class ByteOrder
     public readonly static ByteOrder BigEndian = new( "BigEndian" );
 
     /// <summary>
-    /// Constant denoting little-endian byte order.  In this order, the bytes of
-    /// a multibyte value are ordered from least significant to most
-    /// significant.
+    /// Constant denoting little-endian byte order. In this order, the bytes of
+    /// a multibyte value are ordered from least significant to most significant.
     /// </summary>
     public readonly static ByteOrder LittleEndian = new( "LittleEndian" );
 
     /// <summary>
     /// Constructs a string describing this object.
-    /// 
     /// <para>
     /// This method returns the string <tt>"BigEndian"</tt> for <see cref="BigEndian"/>
     /// and <tt>"LittleEndian"</tt> for <see cref="LittleEndian"/>.
     /// </para>
     /// </summary>
     /// <returns>The specified string</returns>
-    public override string ToString()
-    {
-        return _name;
-    }
+    public override string ToString() => _name;
 }

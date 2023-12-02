@@ -155,10 +155,7 @@ public class Bits
     /// <summary>
     /// </summary>
     /// <returns> the number of bits currently stored, <b>not</b> the highset set bit!</returns>
-    public int NumBits()
-    {
-        return _bits.Length << 6;
-    }
+    public int NumBits() => _bits.Length << 6;
 
     /// <summary>
     /// Returns the "logical size" of this bitset: the index of the highest set bit in the bitset plus one. Returns zero if the
@@ -188,11 +185,8 @@ public class Bits
 
     /// <summary>
     /// </summary>
-    /// <returns> true if this bitset contains at least one bit set to true </returns>
-    public bool NotEmpty()
-    {
-        return !Empty;
-    }
+    /// <value> true if this bitset contains at least one bit set to true </value>
+    public bool NotEmpty => !Empty;
 
     /// <summary>
     /// </summary>

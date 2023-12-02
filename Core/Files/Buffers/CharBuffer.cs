@@ -862,7 +862,7 @@ public abstract class CharBuffer : Buffer
     /// Two char buffers are compared by comparing their sequences of remaining
     /// elements lexicographically, without regard to the starting position of
     /// each sequence within its corresponding buffer. Pairs of <tt>char</tt>
-    /// elements are compared as if by invoking <see cref="CharHelper.Compare(char,char)"/>.
+    /// elements are compared as if by invoking <see cref="Character.Compare(char,char)"/>.
     /// </para>
     /// <para>
     /// A char buffer is not comparable to any other type of object.
@@ -914,7 +914,7 @@ public abstract class CharBuffer : Buffer
     /// remaining elements lexicographically, without regard to the starting
     /// position of each sequence within its corresponding buffer.
     /// Pairs of {@code char} elements are compared as if by invoking
-    /// <see cref="CharHelper.Compare(char,char)"/>.
+    /// <see cref="Character.Compare(char,char)"/>.
     /// </para>
     /// <para> A char buffer is not comparable to any other type of object. </para>
     /// </summary>

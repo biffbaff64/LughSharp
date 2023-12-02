@@ -398,7 +398,7 @@ GRAPHICS/G2D
     - DONE - PixmapPacker                   
     - DONE - PixmapPacker10                 
     - DONE - PolygonRegion                  
-    - IP   - PolygonRegionLoader            
+    - DONE - PolygonRegionLoader            
     - DONE - PolygonSprite                  
     - DONE - PolygonSpriteBatch             
     - DONE - RepeatablePolygonSprite        
@@ -416,8 +416,6 @@ GRAPHICS/G2D
 GRAPHICS/GLUTILS
 ----------------
 
-    - **** - ETC1                                   Should I support this format?
-    - **** - ETC1TextureData                        Should I support this format?
     - DONE - FacedCubemapData
     - DONE - FileTextureArrayData
     - DONE - FileTextureData
@@ -450,6 +448,11 @@ GRAPHICS/GLUTILS
     - DONE - VertexBufferObject
     - DONE - VertexBufferObjectSubData
     - DONE - VertexBufferObjectWithVAO
+
+    - The following do not need converting
+
+    - **** - ETC1
+    - **** - ETC1TextureData
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -777,7 +780,7 @@ UTILS
     - DONE - Align                          
     - DONE - BinaryHeap
     - DONE - Bits                           
-    - DONE - CharHelper
+    - DONE - Character
     - DONE - ComparableTimSort              
     - DONE - DataInput                      Check
     - DONE - DataOutput                     Check
@@ -814,6 +817,25 @@ UTILS
     - **** - StreamUtils
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UTILS/ANNOTATIONS - DELETE CANDIDATE
+-----------------
+
+    - DONE - IncompleteAttribute
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+UTILS/ASYNC - DELETE CANDIDATE
+-----------
+
+    - IP   - AsyncExecutor
+    - IP   - ASyncResult
+    - IP   - IAsyncTask
+    - IP   - ThreadUtils
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -872,7 +894,9 @@ UTILS/EXCEPTIONS
     - DONE - GdxRuntimeException            
     - DONE - IllegalStateException          
     - DONE - InvalidMarkException       
-    - DONE _ MemberNullException
+    - DONE - InvalidTypeException       
+    - DONE - MemberNullException
+    - DONE - MissingResourceException
     - DONE - NoSuchElementException         
     - DONE - NumberFormatException          
     - DONE - ReadOnlyBufferException        

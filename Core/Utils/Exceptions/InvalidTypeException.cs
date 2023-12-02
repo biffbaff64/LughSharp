@@ -21,7 +21,7 @@ public class InvalidTypeException : System.Exception
 {
     public string? TypeName { get; set; } = string.Empty;
     
-    public InvalidTypeException( string message )
+    public InvalidTypeException( string? message = "" )
         : base( message )
     {
     }

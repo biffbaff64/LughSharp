@@ -26,11 +26,13 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class GdxRuntimeException : System.Exception
 {
-    public GdxRuntimeException( string message ) : base( message )
+    public GdxRuntimeException( string? message = "" )
+        : base( message )
     {
     }
 
-    public GdxRuntimeException( System.Exception e ) : this( "", e )
+    public GdxRuntimeException( System.Exception e )
+        : this( "", e )
     {
     }
 

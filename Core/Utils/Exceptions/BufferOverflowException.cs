@@ -27,7 +27,7 @@ public class BufferOverflowException : System.Exception
     {
     }
 
-    public BufferOverflowException( string message )
+    public BufferOverflowException( string? message = "" )
         : base( message )
     {
     }

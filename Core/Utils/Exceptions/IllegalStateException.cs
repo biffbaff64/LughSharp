@@ -19,13 +19,13 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class IllegalStateException : System.Exception
 {
-    public IllegalStateException( string invalidVersion )
-        : base( invalidVersion )
+    public IllegalStateException( string? message = "" )
+        : base( message )
     {
     }
 
-    public IllegalStateException( string invalidVersion, System.Exception exception )
-        : base( invalidVersion, exception )
+    public IllegalStateException( string message, System.Exception exception )
+        : base( message, exception )
     {
     }
 }

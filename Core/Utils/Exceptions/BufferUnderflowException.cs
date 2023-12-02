@@ -27,7 +27,7 @@ public class BufferUnderflowException : System.Exception
     {
     }
         
-    public BufferUnderflowException( string message )
+    public BufferUnderflowException( string? message = "" )
         : base( message )
     {
     }
