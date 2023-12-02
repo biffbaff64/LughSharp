@@ -33,9 +33,20 @@ public class LayerIDecoder : IFrameDecoder
     protected int        numSubbands;
     protected Subband[]? subbands;
     protected Crc16?     crc = new(); // = new Crc16[1] to enable CRC checking.
-
-    public LayerIDecoder()
+    
+    public LayerIDecoder( Bitstream stream0,
+                                Header header0,
+                                SynthesisFilter? filterA,
+                                SynthesisFilter? filterB,
+                                OutputBuffer? output,
+                                int channel )
     {
+        this.stream        = stream0;
+        this.header        = header0;
+        this.filter1       = filterA;
+        this.filter2       = filterB;
+        this.buffer        = output;
+        this.whichChannels = channel;
     }
 
     /// <inheritdoc/>
@@ -57,21 +68,6 @@ public class LayerIDecoder : IFrameDecoder
             ReadScaleFactors();
             ReadSampleData();
         }
-    }
-
-    public virtual void Create( Bitstream stream0,
-                                Header header0,
-                                SynthesisFilter? filterA,
-                                SynthesisFilter? filterB,
-                                OutputBuffer? output,
-                                int channel )
-    {
-        this.stream        = stream0;
-        this.header        = header0;
-        this.filter1       = filterA;
-        this.filter2       = filterB;
-        this.buffer        = output;
-        this.whichChannels = channel;
     }
 
     protected virtual void CreateSubbands()

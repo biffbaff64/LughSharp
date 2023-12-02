@@ -14,7 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Text;
+using System.Collections;
+
+using LibGDXSharp.Scenes.Scene2D;
 
 namespace LibGDXSharp.Utils.Collections;
 
@@ -33,12 +35,8 @@ namespace LibGDXSharp.Utils.Collections;
 /// </para>
 /// </summary>
 [PublicAPI]
-public class SnapshotArray<T>
+public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 {
-    public T[]  Items   { get; private set; }
-    public int  Size    { get; private set; }
-    public bool Ordered { get; private set; }
-
     private T[]? _snapshot;
     private T[]? _recycled;
     private int  _snapshotCount;
@@ -144,7 +142,7 @@ public class SnapshotArray<T>
         }
     }
 
-    public void Add( T value )
+    public override void Add( T value )
     {
         Modified();
 
@@ -184,7 +182,7 @@ public class SnapshotArray<T>
     /// <param name="array">The array of items to add.</param>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
-    public void AddAll( T?[] array, int start, int count )
+    public override void AddAll( T?[] array, int start, int count )
     {
         Modified();
 
@@ -200,7 +198,7 @@ public class SnapshotArray<T>
         Size += count;
     }
 
-    public T Get( int index )
+    public override T Get( int index )
     {
         if ( index >= Size )
         {
@@ -214,7 +212,7 @@ public class SnapshotArray<T>
     /// </summary>
     /// <param name="index"></param>
     /// <param name="value"></param>
-    public void Set( int index, T value )
+    public override void Set( int index, T value )
     {
         if ( index >= Size )
         {
@@ -230,7 +228,7 @@ public class SnapshotArray<T>
     /// </summary>
     /// <param name="index"></param>
     /// <param name="value"></param>
-    public void Insert( int index, T value )
+    public override void Insert( int index, T value )
     {
         if ( index > Size )
         {
@@ -262,7 +260,7 @@ public class SnapshotArray<T>
         Items[ index ] = value;
     }
 
-    public void Swap( int first, int second )
+    public override void Swap( int first, int second )
     {
         Modified();
 
@@ -327,7 +325,7 @@ public class SnapshotArray<T>
     /// </summary>
     /// <param name="start">The zero-based starting index of the range of elements to remove.</param>
     /// <param name="end">The ending index of the range.</param>
-    public void RemoveRange( int start, int end )
+    public override void RemoveRange( int start, int end )
     {
         Modified();
 
@@ -400,7 +398,7 @@ public class SnapshotArray<T>
     /// <returns>
     /// An index of first occurrence of value in array or -1 if no such value exists
     /// </returns>
-    public int IndexOf( T? value )
+    public override int IndexOf( T? value )
     {
         for ( int i = 0, n = Size; i < n; i++ )
         {
@@ -413,7 +411,7 @@ public class SnapshotArray<T>
         return -1;
     }
 
-    public bool Contains( T value )
+    public override bool Contains( T value )
     {
         var i = Size - 1;
 
@@ -428,7 +426,7 @@ public class SnapshotArray<T>
         return false;
     }
 
-    public T Peek()
+    public override T Peek()
     {
         if ( Size == 0 )
         {
@@ -438,7 +436,7 @@ public class SnapshotArray<T>
         return Items[ Size - 1 ];
     }
 
-    public T Pop()
+    public override T Pop()
     {
         Modified();
 
@@ -456,14 +454,14 @@ public class SnapshotArray<T>
         return item;
     }
 
-    public void Clear()
+    public override void Clear()
     {
         Array.Clear( Items );
 
         Size = 0;
     }
 
-    protected T[] Resize( int newSize )
+    protected override T[] Resize( int newSize )
     {
         var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
 
@@ -474,7 +472,7 @@ public class SnapshotArray<T>
         return newItems;
     }
 
-    public T[] ToArray()
+    public override T[] ToArray()
     {
         Type? memberInfo = Items.GetType().BaseType;
 
@@ -483,7 +481,7 @@ public class SnapshotArray<T>
             : ( T[] )Array.CreateInstance( Items.GetType(), Size );
     }
 
-    public T[] ToArray( Type type )
+    public override T[] ToArray( Type type )
     {
         var result = ( T[] )Array.CreateInstance( type, Size );
 
@@ -492,13 +490,8 @@ public class SnapshotArray<T>
         return result;
     }
 
-    public override int GetHashCode()
-    {
-        var h = 31 * GetType().GetHashCode();
-        h *= 67 + 689696484;
-
-        return h;
-    }
+    /// <inheritdoc />
+    public override int GetHashCode() => base.GetHashCode();
 
     public override bool Equals( object? obj )
     {
@@ -540,51 +533,67 @@ public class SnapshotArray<T>
         return true;
     }
 
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    /// <inheritdoc />
     public IEnumerator< T > GetEnumerator()
     {
-        throw new NotImplementedException(); //TODO:
+        return new SnapshotEnumerator< T >( Items );
+    }
+}
+
+[PublicAPI]
+public class SnapshotEnumerator<T> : IEnumerator< T >
+{
+    private int _position = -1;
+    private T[] _array;
+
+    public SnapshotEnumerator( T[] array )
+    {
+        this._array = array;
     }
 
-    public override string ToString()
+    /// <inheritdoc />
+    public bool MoveNext()
     {
-        if ( Size == 0 )
-        {
-            return "[]";
-        }
+        _position++;
 
-        var buffer = new StringBuilder( 32 );
-
-        buffer.Append( '[' );
-        buffer.Append( Items[ 0 ] );
-
-        for ( var i = 1; i < Size; i++ )
-        {
-            buffer.Append( ", " );
-            buffer.Append( Items[ i ] );
-        }
-
-        buffer.Append( ']' );
-
-        return buffer.ToString();
+        return _position < _array.Length;
     }
 
-    public string ToString( string separator )
+    /// <inheritdoc />
+    public void Reset()
     {
-        if ( Size == 0 )
+    }
+
+    /// <inheritdoc />
+    public T Current
+    {
+        get
         {
-            return "";
+            try
+            {
+                return _array[ _position ];
+            }
+            catch ( IndexOutOfRangeException )
+            {
+                throw new InvalidOperationException();
+            }
+            catch ( NullReferenceException )
+            {
+                Gdx.App.Error( "SnapshotArrayEnumerator", "NullReference encountered!" );
+
+                throw;
+            }
         }
+    }
 
-        var buffer = new StringBuilder( 32 );
+    /// <inheritdoc />
+    object IEnumerator.Current => Current!;
 
-        buffer.Append( Items[ 0 ] );
-
-        for ( var i = 1; i < Size; i++ )
-        {
-            buffer.Append( separator );
-            buffer.Append( Items[ i ] );
-        }
-
-        return buffer.ToString();
+    /// <inheritdoc />
+    public void Dispose()
+    {
     }
 }

@@ -43,9 +43,8 @@ public class PolygonRegionLoader
         /// </summary>
         public readonly string[] textureExtensions =
         {
-            "png", "PNG", "jpeg", "JPEG", "jpg", "JPG",
-            "cim", "CIM", "etc1", "ETC1", "ktx", "KTX",
-            "zktx", "ZKTX"
+            "png", "PNG", "jpeg", "JPEG", "jpg", "JPG", "cim", "CIM",
+            "etc1", "ETC1", "ktx", "KTX", "zktx", "ZKTX"
         };
     }
 
@@ -67,24 +66,27 @@ public class PolygonRegionLoader
                                         FileInfo? file,
                                         PolygonRegionParameters parameter )
     {
-        var texture = manager.Get< Texture >( manager.GetDependencies( fileName ).First() );
+        ArgumentNullException.ThrowIfNull( fileName );
 
-        return Load( new TextureRegion( texture ), file );
+        var texture = manager.Get< Texture >( manager.GetDependencies( fileName )!.First() );
+
+        return Load( new TextureRegion( texture ), file! );
     }
 
     /// <summary>
-    /// If the PSH file contains a line starting with
-    /// <see cref="PolygonRegionParameters.texturePrefix"/>, an
-    /// <see cref="AssetDescriptor"/> for the file referenced on that
-    /// line will be added to the returned Array. Otherwise a sibling
-    /// of the given file with the same name and the first found extension
-    /// in <see cref="PolygonRegionParameters.textureExtensions"/>" will be
-    /// used. If no suitable file is found, the returned Array will be empty.
+    /// If the PSH file contains a line starting with <see cref="PolygonRegionParameters.texturePrefix"/>,
+    /// an <see cref="AssetDescriptor"/> for the file referenced on that line will be added to the returned
+    /// Array. Otherwise a sibling of the given file with the same name and the first found extension
+    /// in <see cref="PolygonRegionParameters.textureExtensions"/>" will be used. If no suitable file is
+    ///
+    /// found, the returned Array will be empty.
     /// </summary>
-    public override List< AssetDescriptor > GetDependencies( string fileName,
-                                                    FileInfo file,
-                                                    AssetLoaderParameters? parameters )
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
+                                                             AssetLoaderParameters? parameters )
     {
+        ArgumentNullException.ThrowIfNull( file );
+
         parameters ??= _defaultParameters;
 
         string? image = null;
@@ -110,27 +112,32 @@ public class PolygonRegionLoader
             throw new GdxRuntimeException( "Error reading " + fileName, e );
         }
 
+        string siblingFilePath = string.Empty;
+        
         if ( image == null )
         {
-//            foreach ( var extension in parameters.textureExtensions )
-//            {
-//                FileInfo sibling = file.sibling( file.nameWithoutExtension().concat( "." + extension ) );
-//
-//                if ( sibling.Exists() )
-//                {
-//                    image = sibling.Name();
-//                }
-//            }
+            var directory = Path.GetDirectoryName( fileName );
+            var fileNoExt = Path.GetFileNameWithoutExtension( fileName );
+            
+            foreach ( var extension in ( ( PolygonRegionParameters )parameters ).textureExtensions )
+            {
+                siblingFilePath = Path.Combine( directory!, fileNoExt + extension );
+
+                if ( File.Exists( siblingFilePath ) )
+                {
+                    image = siblingFilePath;
+                }
+            }
         }
 
         if ( image != null )
         {
-//            List< AssetDescriptor > deps = new( 1 )
-//            {
-//                new AssetDescriptor( file.Sibling( image ), typeof( Texture ) )
-//            };
-//
-//            return deps;
+            List< AssetDescriptor > deps = new( 1 )
+            {
+                new AssetDescriptor( new FileInfo( siblingFilePath ), typeof( Texture ) )
+            };
+
+            return deps;
         }
 
         return null!;
@@ -175,10 +182,10 @@ public class PolygonRegionLoader
 
                     // It would probably be better if PSH stored the vertices
                     // and triangles, then we don't have to triangulate here.
-                    return new PolygonRegion
-                        (
-                         textureRegion, vertices,
-                         _triangulator.ComputeTriangles( vertices ).ToArray()
+                    return new PolygonRegion(
+                        textureRegion,
+                        vertices,
+                        _triangulator.ComputeTriangles( vertices ).ToArray()
                         );
                 }
             }

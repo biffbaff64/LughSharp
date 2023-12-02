@@ -21,9 +21,9 @@ namespace LibGDXSharp.Utils.Collections;
 [PublicAPI]
 public class Array<T>
 {
-    public T[]  Items   { get; private set; }
-    public int  Size    { get; private set; }
-    public bool Ordered { get; private set; }
+    public T[]  Items   { get; set; }
+    public int  Size    { get; set; }
+    public bool Ordered { get; set; }
 
     private IEnumerable< T >?       _iterable;
     private PredicateIterable< T >? _predicateIEnumerable;
@@ -95,7 +95,7 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
-    public void Add( T value )
+    public virtual void Add( T value )
     {
         if ( Size == Items.Length )
         {
@@ -131,7 +131,7 @@ public class Array<T>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public void AddAll( Array< T > array, int start, int count )
+    public virtual void AddAll( Array< T > array, int start, int count )
     {
         if ( ( start + count ) > array.Size )
         {
@@ -149,7 +149,7 @@ public class Array<T>
     /// <param name="array">The array of items to add.</param>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
-    public void AddAll( T?[] array, int start, int count )
+    public virtual void AddAll( T?[] array, int start, int count )
     {
         var sizeNeeded = Size + count;
 
@@ -168,7 +168,7 @@ public class Array<T>
     /// <param name="index"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public T Get( int index )
+    public virtual T Get( int index )
     {
         if ( index >= Size )
         {
@@ -286,7 +286,7 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public bool Contains( T value )
+    public virtual bool Contains( T value )
     {
         var i = Size - 1;
 
@@ -305,7 +305,7 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public int IndexOf( T? value )
+    public virtual int IndexOf( T? value )
     {
         if ( Items == null )
         {
@@ -473,7 +473,7 @@ public class Array<T>
     /// Removes and returns the last item.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-    public T Pop()
+    public virtual T Pop()
     {
         if ( Size == 0 )
         {
@@ -493,7 +493,7 @@ public class Array<T>
     /// Returns the last item in the array.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
-    public T Peek()
+    public virtual T Peek()
     {
         if ( Size == 0 )
         {
@@ -519,7 +519,7 @@ public class Array<T>
 
     /// <summary>
     /// </summary>
-    public void Clear()
+    public virtual void Clear()
     {
         Array.Clear( Items );
 
@@ -577,7 +577,7 @@ public class Array<T>
     /// </summary>
     /// <param name="newSize"></param>
     /// <returns></returns>
-    protected T[] Resize( int newSize )
+    protected virtual T[] Resize( int newSize )
     {
         var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
 
@@ -719,7 +719,7 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public T[] ToArray()
+    public virtual T[] ToArray()
     {
         Type? memberInfo = Items.GetType().BaseType;
 
@@ -732,7 +732,7 @@ public class Array<T>
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public T[] ToArray( Type type )
+    public virtual T[] ToArray( Type type )
     {
         var result = ( T[] )Array.CreateInstance( type, Size );
 
@@ -745,26 +745,10 @@ public class Array<T>
     /// 
     /// </summary>
     /// <returns></returns>
-    public new int GetHashCode()
+    public override int GetHashCode()
     {
-        if ( !Ordered )
-        {
-            return base.GetHashCode();
-        }
-
-        var h = 1;
-
-        for ( int i = 0, n = Size; i < n; i++ )
-        {
-            h *= 31;
-
-            T item = Items[ i ];
-
-            if ( item != null )
-            {
-                h += item.GetHashCode();
-            }
-        }
+        var h = 31 * GetType().GetHashCode();
+        h *= 67 + 689696484;
 
         return h;
     }
@@ -773,7 +757,7 @@ public class Array<T>
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public new bool Equals( object obj )
+    public override bool Equals( object? obj )
     {
         if ( obj == this )
         {
@@ -785,7 +769,7 @@ public class Array<T>
             return false;
         }
 
-        var array = ( Array< T > )obj;
+        var array = ( Array< T > )obj!;
 
         if ( !array.Ordered )
         {
@@ -812,19 +796,11 @@ public class Array<T>
 
         return true;
     }
-
+    
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public IEnumerator< T > GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public new string ToString()
+    public override string ToString()
     {
         if ( Size == 0 )
         {
@@ -851,7 +827,7 @@ public class Array<T>
     /// </summary>
     /// <param name="separator"></param>
     /// <returns></returns>
-    public string ToString( string separator )
+    public virtual string ToString( string separator )
     {
         if ( Size == 0 )
         {

@@ -22,6 +22,16 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 [PublicAPI]
 public class LayerIIDecoder : LayerIDecoder
 {
+    public LayerIIDecoder( Bitstream stream0,
+                          Header header0,
+                          SynthesisFilter? filterA,
+                          SynthesisFilter? filterB,
+                          OutputBuffer? output,
+                          int channel )
+        : base( stream0, header0, filterA, filterB, output, channel )
+    {
+    }
+
     protected override void CreateSubbands()
     {
         int i;
@@ -73,14 +83,17 @@ public class LayerIIDecoder : LayerIDecoder
         public static float[] grouping5Bits =
         {
             -2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, 0.0f, -2.0f / 3.0f,
-            -2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, 0.0f, -2.0f / 3.0f, 0.0f, 0.0f, -2.0f / 3.0f,
-            2.0f / 3.0f, 0.0f, -2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, 0.0f, 2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f,
-            2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, 0.0f, 0.0f, -2.0f / 3.0f, 0.0f, 2.0f / 3.0f, -2.0f / 3.0f, 0.0f,
-            -2.0f / 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f / 3.0f, 0.0f, 0.0f, -2.0f / 3.0f, 2.0f / 3.0f, 0.0f, 0.0f, 2.0f / 3.0f,
-            0.0f, 2.0f / 3.0f, 2.0f / 3.0f, 0.0f, -2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f, 0.0f, -2.0f / 3.0f, 2.0f / 3.0f,
-            2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, 0.0f, 2.0f / 3.0f, 0.0f, 0.0f, 2.0f / 3.0f, 2.0f / 3.0f, 0.0f,
-            2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, 0.0f, 2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f,
-            2.0f / 3.0f
+            -2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f,
+            0.0f, -2.0f / 3.0f, 0.0f, 0.0f, -2.0f / 3.0f, 2.0f / 3.0f, 0.0f, -2.0f / 3.0f,
+            -2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, 0.0f, 2.0f / 3.0f, -2.0f / 3.0f,
+            2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, 0.0f, 0.0f,
+            -2.0f / 3.0f, 0.0f, 2.0f / 3.0f, -2.0f / 3.0f, 0.0f, -2.0f / 3.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 2.0f / 3.0f, 0.0f, 0.0f, -2.0f / 3.0f, 2.0f / 3.0f, 0.0f, 0.0f,
+            2.0f / 3.0f, 0.0f, 2.0f / 3.0f, 2.0f / 3.0f, 0.0f, -2.0f / 3.0f, -2.0f / 3.0f,
+            2.0f / 3.0f, 0.0f, -2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f,
+            -2.0f / 3.0f, 0.0f, 2.0f / 3.0f, 0.0f, 0.0f, 2.0f / 3.0f, 2.0f / 3.0f, 0.0f, 2.0f / 3.0f,
+            -2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, 0.0f, 2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f,
+            2.0f / 3.0f, 2.0f / 3.0f
         };
 
         // this table contains 3 requantized samples for each legal codeword
@@ -1075,7 +1088,7 @@ public class LayerIIDecoder : LayerIDecoder
         public override void ReadScaleFactor( Bitstream? stream, Header? header )
         {
             ArgumentNullException.ThrowIfNull( stream );
-            
+
             base.ReadScaleFactor( stream, header );
 
             if ( channel2Allocation != 0 )
@@ -1154,9 +1167,14 @@ public class LayerIIDecoder : LayerIDecoder
                 }
                 else
                 {
-                    channel2Samples[ 0 ] = ( float )( ( stream.GetBits( channel2Codelength[ 0 ] ) * channel2Factor[ 0 ] ) - 1.0 );
-                    channel2Samples[ 1 ] = ( float )( ( stream.GetBits( channel2Codelength[ 0 ] ) * channel2Factor[ 0 ] ) - 1.0 );
-                    channel2Samples[ 2 ] = ( float )( ( stream.GetBits( channel2Codelength[ 0 ] ) * channel2Factor[ 0 ] ) - 1.0 );
+                    channel2Samples[ 0 ]
+                        = ( float )( ( stream.GetBits( channel2Codelength[ 0 ] ) * channel2Factor[ 0 ] ) - 1.0 );
+
+                    channel2Samples[ 1 ]
+                        = ( float )( ( stream.GetBits( channel2Codelength[ 0 ] ) * channel2Factor[ 0 ] ) - 1.0 );
+
+                    channel2Samples[ 2 ]
+                        = ( float )( ( stream.GetBits( channel2Codelength[ 0 ] ) * channel2Factor[ 0 ] ) - 1.0 );
                 }
             }
 

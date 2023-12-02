@@ -126,7 +126,7 @@ public abstract class InputStream : ICloseable
     /// to provide a more efficient implementation of this method.
     /// </para>
     /// <param name="b"> the buffer into which the data is read. </param>
-    /// <param name="off">
+    /// <param name="offset">
     /// the start offset in array <tt>b</tt> at which the data is written.
     /// </param>
     /// <param name="len"> the maximum number of bytes to read. </param>
@@ -144,11 +144,11 @@ public abstract class InputStream : ICloseable
     /// If <tt>off</tt> is negative, <tt>len</tt> is negative, or <tt>len</tt> is
     /// greater than <tt>b.length - off</tt>
     /// </exception>
-    public virtual int Read( byte[]? b, int off, int len )
+    public virtual int Read( byte[]? b, int offset, int len )
     {
         ArgumentNullException.ThrowIfNull( b );
 
-        if ( off < 0 || len < 0 || len > b.Length - off )
+        if ( ( offset < 0 ) || ( len < 0 ) || ( len > ( b.Length - offset ) ) )
         {
             throw new IndexOutOfRangeException();
         }
@@ -164,7 +164,7 @@ public abstract class InputStream : ICloseable
             return -1;
         }
 
-        b[ off ] = ( byte )c;
+        b[ offset ] = ( byte )c;
 
         var i = 1;
 
@@ -179,7 +179,7 @@ public abstract class InputStream : ICloseable
                     break;
                 }
 
-                b[ off + i ] = ( byte )c;
+                b[ offset + i ] = ( byte )c;
             }
         }
         catch ( IOException )
@@ -213,7 +213,7 @@ public abstract class InputStream : ICloseable
     /// <exception cref="IOException">
     /// if the stream does not support seek, or if some other I/O error occurs.
     /// </exception>
-    public virtual long Skip( long n )
+    public virtual int Skip( int n )
     {
         var remaining = n;
 
@@ -222,12 +222,12 @@ public abstract class InputStream : ICloseable
             return 0;
         }
 
-        var    size       = ( int )Math.Min( MAX_SKIP_BUFFER_SIZE, remaining );
+        var    size       = Math.Min( MAX_SKIP_BUFFER_SIZE, remaining );
         var skipBuffer = new byte[ size ];
 
         while ( remaining > 0 )
         {
-            var nr = Read( skipBuffer, 0, ( int )Math.Min( size, remaining ) );
+            var nr = Read( skipBuffer, 0, Math.Min( size, remaining ) );
 
             if ( nr < 0 )
             {

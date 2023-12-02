@@ -14,6 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 using LibGDXSharp.Core.Utils.Collections;

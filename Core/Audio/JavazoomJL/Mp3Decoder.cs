@@ -109,28 +109,44 @@ public class Mp3Decoder
         switch ( layer )
         {
             case 3:
-                _l3decoder ??= new LayerIIIDecoder();
-                _l3decoder.Create( stream, header, _filter1, _filter2, Output, OutputChannels.BOTH_CHANNELS );
+            {
+                _l3decoder ??= new LayerIIIDecoder( stream,
+                                                    header,
+                                                    _filter1,
+                                                    _filter2,
+                                                    Output,
+                                                    OutputChannels.BOTH_CHANNELS );
 
                 decoder = _l3decoder;
 
                 break;
-
+            }
             case 2:
-                _l2decoder ??= new LayerIIDecoder();
-                _l2decoder.Create( stream, header, _filter1, _filter2, Output, OutputChannels.BOTH_CHANNELS );
+            {
+                _l2decoder ??= new LayerIIDecoder( stream,
+                                                   header,
+                                                   _filter1,
+                                                   _filter2,
+                                                   Output,
+                                                   OutputChannels.BOTH_CHANNELS );
 
                 decoder = _l2decoder;
 
                 break;
-
+            }
             case 1:
-                _l1decoder ??= new LayerIDecoder();
-                _l1decoder.Create( stream, header, _filter1, _filter2, Output, OutputChannels.BOTH_CHANNELS );
+            {
+                _l1decoder ??= new LayerIDecoder( stream,
+                                                  header,
+                                                  _filter1,
+                                                  _filter2,
+                                                  Output,
+                                                  OutputChannels.BOTH_CHANNELS );
 
                 decoder = _l1decoder;
 
                 break;
+            }
         }
 
         if ( decoder == null )

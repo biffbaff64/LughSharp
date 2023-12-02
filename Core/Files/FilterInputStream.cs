@@ -30,7 +30,7 @@ public class FilterInputStream : InputStream
     /// <summary>
     /// The input stream to be filtered.
     /// </summary>
-    public InputStream? inputStream;
+    public InputStream? InputStream { get; set; }
 
     /// <summary>
     /// Creates a <tt>FilterInputStream</tt> by assigning the  argument <tt>in</tt>
@@ -45,13 +45,13 @@ public class FilterInputStream : InputStream
         ArgumentNullException.ThrowIfNull
             ( inStream, "Can't create a FilterInputSTream with a null In[putStream!" );
 
-        this.inputStream = inStream;
+        this.InputStream = inStream;
     }
 
     /// <inheritdoc/>
     public override int Read()
     {
-        return inputStream!.Read();
+        return InputStream!.Read();
     }
     
     /// <summary>

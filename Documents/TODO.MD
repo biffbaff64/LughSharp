@@ -115,11 +115,11 @@ AUDIO/JAVAZOOMJL
     - DONE - IFrameDecoder
     - DONE - LayerIDecoder
     - DONE - LayerIIDecoder
-    - IP   - LayerIIIDecoder        - Nullability related issue with constructor
+    - DONE - LayerIIIDecoder
     - DONE - Mp3Decoder
     - DONE - OutputBuffer
     - DONE - OutputChannels
-    - IP   - PushbackInputStream
+    - DONE - PushbackInputStream
     - DONE - SynthesisFilter
     - DONE - SynthesisFilterData ( partial of SynthesisFilter )
 
@@ -211,6 +211,51 @@ CORE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+EXTENSIONS/BOX2D
+----------------
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/TOOLS
+----------------
+
+    - IP   - FileProcessor
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/TOOLS/GDX-TOOLS
+--------------------------
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/TOOLS/GDX-TOOLS/TEXTUREPACKER
+----------------------------------------
+
+    -      - ColorBleedEffect
+    -      - TexturePacker
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/TOOLS/IMAGEPACKER
+----------------------------
+
+    - IP   - ImagePacker
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/TOOLS/TILEDMAPPACKER
+-------------------------------
+
+    - IP   - TileMapPacker
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 FILES
 -----
 
@@ -258,7 +303,7 @@ FILES/BUFFERS
 -------------
 
     - DONE - Buffer
-    - IP   - BufferUtils
+    - DONE - BufferUtils
     - DONE - ByteBuffer
     - DONE - CharBuffer
     - IP   - DirectByteBuffer
@@ -709,7 +754,7 @@ SCENES.SCENE2D/UTILS
 
     - DONE - ArraySelection                 
     - DONE - BaseDrawable                   
-    - IP   - DragAndDrop                    
+    - DONE - DragAndDrop                    
     - DONE - ICullable                      
     - DONE - IDisableable                   
     - DONE - IDrawable                      
@@ -717,7 +762,7 @@ SCENES.SCENE2D/UTILS
     - DONE - ITransformDrawable             
     - DONE - NinePatchDrawable              
     - DONE - ScissorStack                   
-    - IP   - Selection                      
+    - DONE - Selection                      
     - DONE - SpriteDrawable                 
     - DONE - TextureRegionDrawable          
     - DONE - TiledDrawable                  
@@ -730,7 +775,6 @@ UTILS
 -----
 
     - DONE - Align                          
-    - **** - Base64Coder                    Use System.Convert classes
     - DONE - BinaryHeap
     - DONE - Bits                           
     - DONE - CharHelper
@@ -738,34 +782,38 @@ UTILS
     - DONE - DataInput                      Check
     - DONE - DataOutput                     Check
     - DONE - DataUtils                      Added Class
-    - **** - GdxNativesLoader               Removed
-    - **** - I18NBundle                     Removed
+    - IP   - GdxNativesLoader
     - DONE - ICloseable                     
     - DONE - IClipboard                     Convert - Interface, clipboard handled in backends.                 
     - DONE - IRunnable                      Done, but is it needed?
-    - **** - LittleEndianInputStream        Removed
     - DONE - Logger                         
-    - **** - PauseableThread                Removed
     - DONE - PerformanceCounter             Check
     - DONE - PerformanceCounters            Check
     - DONE - PropertiesUtils                Convert, but check if necessary first
     - DONE - QuadTreeFloat
-    - **** - Queue                          Use system.collection.generics.Queue<T>?
     - DONE - QuickSelect
     - DONE - Scaling
     - DONE - ScreenUtils
     - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
     - IP   - SharedLibraryLoader            
-    - **** - SortedIntList                  Use SortedList<int>
     - DONE - SortUtils
-    - **** - StreamUtils                    Removed
-    - **** - StringBuilder                  Use System.Text.StringBuilder
     - DONE - StringTokenizer
-    - **** - TextFormatter                  Removed
     - DONE - Timer                          
     - DONE - TimeUtils
     - DONE - TimSort
     - DONE - Trace                          Addition
+
+    - The following do not need converting
+
+    - **** - Base64Coder                    Use System.Convert classes
+    - **** - I18NBundle
+    - **** - LittleEndianInputStream
+    - **** - PauseableThread
+    - **** - Queue                          Use system.collection.generics.Queue<T>?
+    - **** - SortedIntList                  Use SortedList<int>
+    - **** - StreamUtils
+    - **** - StringBuilder                  Use System.Text.StringBuilder
+    - **** - TextFormatter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -780,7 +828,9 @@ UTILS/COLLECTIONS
     - DONE - ObjectMap                      Converted, but use Dictionary< object, object >
     - DONE - PredicateIterable
     - DONE - PredicateIterator
-    - DONE - SnapshotArray<T>               Insert the necessary bits from Array<T> / remove dependency
+    - DONE - SnapshotArray<T>
+
+    - The following do not need converting
 
     - **** - ArrayMap                       Use Dictionary<K, V>
     - **** - ArrayIterable                  Use IEnumerable?

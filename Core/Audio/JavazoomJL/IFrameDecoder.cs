@@ -26,13 +26,6 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 [PublicAPI]
 public interface IFrameDecoder
 {
-    void Create( Bitstream stream,
-                 Header header,
-                 SynthesisFilter filter1,
-                 SynthesisFilter filter2,
-                 OutputBuffer output,
-                 int channel );
-
     /// <summary>
     /// Decodes one frame of MPEG audio.
     /// </summary>

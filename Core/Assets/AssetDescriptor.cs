@@ -21,6 +21,7 @@ public class AssetDescriptor
 {
     public Type                  Type       { get; set; }
     public string                FilePath   { get; set; }
+    [AllowNull]
     public AssetLoaderParameters Parameters { get; set; }
     public FileInfo              File       { get; set; }
 
@@ -51,8 +52,10 @@ public class AssetDescriptor
     /// </summary>
     /// <param name="file"></param>
     /// <param name="assetType"></param>
-    /// <param name="parameters"></param>
-    public AssetDescriptor( FileInfo file, Type assetType, AssetLoaderParameters parameters )
+    /// <param name="parameters">The loader parameters to use. Can be null.</param>
+    public AssetDescriptor( FileInfo file,
+                            Type assetType,
+                            [AllowNull] AssetLoaderParameters parameters = null )
     {
         Type       = assetType;
         FilePath   = file.FullName.Replace( '\\', '/' );

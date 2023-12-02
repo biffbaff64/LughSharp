@@ -277,7 +277,7 @@ public class BufferedInputStream : FilterInputStream
     /// </para>
     /// </summary>
     /// <param name="b"> destination buffer. </param>
-    /// <param name="off"> offset at which to start storing bytes. </param>
+    /// <param name="offset"> offset at which to start storing bytes. </param>
     /// <param name="len"> maximum number of bytes to read. </param>
     /// <returns>
     /// the number of bytes read, or <tt>-1</tt> if the end of the stream has been reached.
@@ -286,11 +286,11 @@ public class BufferedInputStream : FilterInputStream
     /// if this input stream has been closed by invoking its {@link #close()} method,
     /// or an I/O error occurs.
     /// </exception>
-    public override int Read( byte[]? b, int off, int len )
+    public override int Read( byte[]? b, int offset, int len )
     {
         GetBufferIfOpen(); // Check for closed stream
 
-        if ( ( off | len | ( off + len ) | ( b?.Length - ( off + len ) ) ) < 0 )
+        if ( ( offset | len | ( offset + len ) | ( b?.Length - ( offset + len ) ) ) < 0 )
         {
             throw new IndexOutOfRangeException();
         }
@@ -303,7 +303,7 @@ public class BufferedInputStream : FilterInputStream
 
         for ( ;; )
         {
-            var nread = Read1( b, off + n, len - n );
+            var nread = Read1( b, offset + n, len - n );
 
             if ( nread <= 0 )
             {
@@ -318,7 +318,7 @@ public class BufferedInputStream : FilterInputStream
             }
 
             // if not closed but no bytes available, return
-            if ( ( inputStream != null ) && ( inputStream.Available() <= 0 ) )
+            if ( ( InputStream != null ) && ( InputStream.Available() <= 0 ) )
             {
                 return n;
             }
@@ -462,8 +462,8 @@ public class BufferedInputStream : FilterInputStream
             //TODO: Dummy class implemented, needs correcting
             if ( _bufUpdater.CompareAndSet( this, buffer, null ) )
             {
-                InputStream? input = inputStream;
-                inputStream = null;
+                InputStream? input = InputStream;
+                InputStream = null;
 
                 if ( input != null )
                 {
@@ -481,7 +481,7 @@ public class BufferedInputStream : FilterInputStream
     /// </summary>
     private InputStream GetInputStreamIfOpen()
     {
-        InputStream? input = inputStream;
+        InputStream? input = InputStream;
 
         if ( input == null )
         {

@@ -30,7 +30,7 @@ public abstract class AbstractGraphics : IGraphics
 
     #endregion implemented methods
 
-    #region propeerties
+    #region properties
 
     public BufferFormatDescriptor BufferFormat     { get; set; } = null!;
     public int                    BackBufferWidth  { get; protected set; }
