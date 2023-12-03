@@ -42,17 +42,31 @@ internal struct CallerID
 [PublicAPI]
 public static class Trace
 {
-    public const int LOG_NONE  = 0;
-    public const int LOG_DEBUG = 1;
-    public const int LOG_INFO  = 2;
-    public const int LOG_ERROR = 3;
+    // ------------------------------------------------------------------------
 
-    public static bool EnableWriteToFile { get; set; } = false;
-    public static int  TraceLevel        { get; set; } = LOG_NONE;
+    #region constants
+
+    public const int LOG_NONE   = 0;
+    public const int LOG_DEBUG  = 1;
+    public const int LOG_INFO   = 2;
+    public const int LOG_ERROR  = 4;
+    public const int LOG_ASSERT = 8;
 
     private const string DEBUG_TAG = "[Debug] ";
     private const string INFO_TAG  = "[Info ] ";
     private const string ERROR_TAG = "[ERROR] ";
+
+    #endregion constants
+
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    public static bool EnableWriteToFile { get; set; } = false;
+    public static bool AllowAsserts      { get; set; } = false;
+    public static int  TraceLevel        { get; set; } = LOG_NONE;
+
+    #endregion properties
 
     private static string _debugFilePath = "";
     private static string _debugFileName = "";
@@ -77,7 +91,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Write a debug string to logcat or console.
+    /// Write a debug string to console and logfile, if enabled.
     /// The string can contain format options.
     /// </summary>
     /// <param name="callerFilePath"></param>
@@ -91,7 +105,7 @@ public static class Trace
                             string message = "",
                             params object[] args )
     {
-        if ( TraceLevel != LOG_DEBUG )
+        if ( !IsEnabled( LOG_DEBUG ) )
         {
             return;
         }
@@ -110,6 +124,38 @@ public static class Trace
         Console.WriteLine( str );
 
         WriteToFile( str );
+    }
+
+    /// <summary>
+    /// Calls <see cref="Debug.Assert(bool, string?)"/> with the given message
+    /// if LOG_ASSERT is enabled and the supplied condition is true.
+    /// The supplied message will have the calling fgile, method and line details
+    /// prepended to it.
+    /// </summary>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
+    /// <param name="condition"></param>
+    /// <param name="message"></param>
+    public static void Assert( [CallerFilePath] string callerFilePath = "",
+                               [CallerMemberName] string callerMethod = "",
+                               [CallerLineNumber] int callerLine = 0,
+                               bool condition = false,
+                               string message = "" )
+    {
+        if ( IsEnabled( LOG_ASSERT ) && condition )
+        {
+            message = string.Join( DEBUG_TAG, message );
+
+            var callerID = new CallerID
+            {
+                fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+                methodName = callerMethod,
+                lineNumber = callerLine
+            };
+
+            Debug.Assert( false, CreateMessage( message, callerID ) );
+        }
     }
 
     /// <summary>
@@ -126,7 +172,7 @@ public static class Trace
                                  string message = "",
                                  params object[] args )
     {
-        if ( TraceLevel == LOG_DEBUG )
+        if ( !IsEnabled( LOG_DEBUG ) )
         {
             return;
         }
@@ -152,7 +198,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Write an error string to logcat or console.
+    /// Write an error string to console and logfile, if enabled.
     /// </summary>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
@@ -165,7 +211,7 @@ public static class Trace
                             string message = "",
                             params object[] args )
     {
-        if ( TraceLevel != LOG_DEBUG )
+        if ( !IsEnabled( LOG_ERROR ) )
         {
             return;
         }
@@ -195,14 +241,14 @@ public static class Trace
     /// <param name="condition">The condition to evaluate.</param>
     /// <param name="message">The string to write.</param>
     /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    public static void Assert( [CallerFilePath] string callerFilePath = "",
-                               [CallerMemberName] string callerMethod = "",
-                               [CallerLineNumber] int callerLine = 0,
-                               bool condition = false,
-                               string message = "",
-                               params object[] args )
+    public static void OnCondition( [CallerFilePath] string callerFilePath = "",
+                                    [CallerMemberName] string callerMethod = "",
+                                    [CallerLineNumber] int callerLine = 0,
+                                    bool condition = false,
+                                    string message = "",
+                                    params object[] args )
     {
-        if ( ( TraceLevel == LOG_DEBUG ) && condition )
+        if ( ( IsEnabled( LOG_DEBUG ) ) && condition )
         {
             message = string.Join( DEBUG_TAG, message );
 
@@ -233,7 +279,7 @@ public static class Trace
                                    [CallerMemberName] string callerMethod = "",
                                    [CallerLineNumber] int callerLine = 0 )
     {
-        if ( TraceLevel != LOG_DEBUG )
+        if ( !IsEnabled( LOG_DEBUG ) )
         {
             return;
         }
@@ -264,7 +310,7 @@ public static class Trace
     /// <param name="args"></param>
     public static void Info( string message, params object[] args )
     {
-        if ( TraceLevel != LOG_DEBUG )
+        if ( !IsEnabled( LOG_DEBUG ) )
         {
             return;
         }
@@ -288,7 +334,7 @@ public static class Trace
 
         WriteToFile( message );
     }
-
+    
     /// <summary>
     /// Creates a debug/error/info message ready for dumping.
     /// </summary>
@@ -319,36 +365,6 @@ public static class Trace
                 sb.Append( arg );
             }
         }
-
-        return sb.ToString();
-    }
-
-    /// <summary>
-    /// Returns a string holding the current time.
-    /// </summary>
-    private static string GetTimeStampInfo()
-    {
-        var c  = new GregorianCalendar();
-        var sb = new StringBuilder();
-
-        sb.Append( c.GetHour( DateTime.Now ) ).Append( ':' );
-        sb.Append( c.GetMinute( DateTime.Now ) ).Append( ':' );
-        sb.Append( c.GetSecond( DateTime.Now ) ).Append( ':' );
-        sb.Append( c.GetMilliseconds( DateTime.Now ) );
-
-        return sb.ToString();
-    }
-
-    /// <summary>
-    /// Returns a string holding the calling filename, method and line number.
-    /// </summary>
-    private static string GetCallerInfo( CallerID cid )
-    {
-        var sb = new StringBuilder();
-
-        sb.Append( cid.fileName ).Append( "::" );
-        sb.Append( cid.methodName ).Append( "::" );
-        sb.Append( cid.lineNumber );
 
         return sb.ToString();
     }
@@ -409,9 +425,8 @@ public static class Trace
 
         DateTime dateTime = DateTime.Now;
 
-        var divider =
-            new UTF8Encoding( true )
-               .GetBytes( "-----------------------------------------------------" );
+        var divider = new UTF8Encoding( true )
+           .GetBytes( "-----------------------------------------------------" );
 
         var time = new UTF8Encoding( true ).GetBytes( dateTime.ToShortTimeString() );
 
@@ -420,6 +435,41 @@ public static class Trace
         fs.Write( divider, 0, divider.Length );
 
         fs.Close();
+    }
+
+    /// <summary>
+    /// Returns a string holding the current time.
+    /// </summary>
+    private static string GetTimeStampInfo()
+    {
+        var c  = new GregorianCalendar();
+        var sb = new StringBuilder();
+
+        sb.Append( c.GetHour( DateTime.Now ) )
+          .Append( ':' )
+          .Append( c.GetMinute( DateTime.Now ) )
+          .Append( ':' )
+          .Append( c.GetSecond( DateTime.Now ) )
+          .Append( ':' )
+          .Append( c.GetMilliseconds( DateTime.Now ) );
+
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Returns a string holding the calling filename, method and line number.
+    /// </summary>
+    private static string GetCallerInfo( CallerID cid )
+    {
+        var sb = new StringBuilder();
+
+        sb.Append( cid.fileName )
+          .Append( "::" )
+          .Append( cid.methodName )
+          .Append( "::" )
+          .Append( cid.lineNumber );
+
+        return sb.ToString();
     }
 
     /// <summary>
@@ -433,9 +483,29 @@ public static class Trace
             using FileStream fs = File.Open( _debugFilePath + _debugFileName, FileMode.Append );
 
             var debugLine = new UTF8Encoding( true ).GetBytes( text + "\n" );
-            fs.Write( debugLine, 0, debugLine.Length );
 
+            fs.Write( debugLine, 0, debugLine.Length );
             fs.Close();
         }
+    }
+
+    /// <summary>
+    /// Returns whether the requested trace level is enabled or not.
+    /// </summary>
+    /// <param name="traceLevel">
+    /// The trace level to check, either LOG_DEBUG, LOG_INFO, LOG_ERROR or LOG_ASSERT
+    /// </param>
+    /// <returns> True if the level is enabled. </returns>
+    private static bool IsEnabled( int traceLevel )
+    {
+        if ( ( traceLevel == LOG_DEBUG )
+          || ( traceLevel == LOG_INFO )
+          || ( traceLevel == LOG_ERROR )
+          || ( traceLevel == LOG_ASSERT ) )
+        {
+            return ( TraceLevel & traceLevel ) != 0;
+        }
+
+        return false;
     }
 }

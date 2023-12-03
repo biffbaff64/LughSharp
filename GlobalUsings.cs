@@ -60,7 +60,6 @@ global using LibGDXSharp.Maps;
 global using LibGDXSharp.Maths;
 global using LibGDXSharp.Scenes;
 global using LibGDXSharp.Utils;
-global using LibGDXSharp.Utils.Annotations;
 
 global using Vector2 = LibGDXSharp.Maths.Vector2;
 global using Vector3 = LibGDXSharp.Maths.Vector3;

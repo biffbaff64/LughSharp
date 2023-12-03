@@ -14,17 +14,20 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Annotations;
+namespace LibGDXSharp.Utils;
 
-// This attribute is attached to members that are still in development and must be used with care.
-// Message is some human readable explanation of what to use
-// Error indicates if the compiler should treat usage of such a method as an
-//   error. (this would be used if the actual implementation of the obsolete
-//   method's implementation had changed).
-// DiagnosticId. Represents the ID the compiler will use when reporting a use of the API.
-// UrlFormat.The URL that should be used by an IDE for navigating to corresponding documentation. Instead of taking the URL directly,
-//   the API takes a format string. This allows having a generic URL that includes the diagnostic ID.
-//
+/// <summary>
+/// This attribute is attached to members that are still in development and must be used with care.
+/// <para>
+/// Message -  is some human readable explanation of what to use.
+/// IsError - indicates if the compiler should treat usage of such a method as an error. (this would
+/// be used if the actual implementation of the obsolete method's implementation had changed).
+/// DiagnosticId - Represents the ID the compiler will use when reporting a use of the API.
+/// UrlFormat - The URL that should be used by an IDE for navigating to corresponding documentation.
+/// Instead of taking the URL directly, the API takes a format string. This allows having a generic
+/// URL that includes the diagnostic ID.
+/// </para>
+/// </summary>
 [AttributeUsage( AttributeTargets.Class
                | AttributeTargets.Struct
                | AttributeTargets.Enum
@@ -39,6 +42,16 @@ namespace LibGDXSharp.Utils.Annotations;
 [PublicAPI]
 public class IncompleteAttribute : Attribute
 {
+
+    #region properties
+    
+    public string? Message      { get; }
+    public bool    IsError      { get; }
+    public string? DiagnosticId { get; set; }
+    public string? UrlFormat    { get; set; }
+    
+    #endregion propeerties
+    
     public IncompleteAttribute()
     {
     }
@@ -53,14 +66,4 @@ public class IncompleteAttribute : Attribute
         Message = message;
         IsError = error;
     }
-
-    #region properties
-    
-    public string? Message      { get; }
-    public bool    IsError      { get; }
-    public string? DiagnosticId { get; set; }
-    public string? UrlFormat    { get; set; }
-    
-    #endregion propeerties
-    
 }

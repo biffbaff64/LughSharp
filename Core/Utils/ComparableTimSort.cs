@@ -150,18 +150,12 @@ public class ComparableTimSort<T>
         }
         while ( nRemaining != 0 );
 
-        // Merge all remaining runs to complete sort
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( lo == hi );
-        }
+        DebugAssert( lo == hi );
 
+        // Merge all remaining runs to complete sort
         MergeForceCollapse();
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( _stackSize == 1 );
-        }
+        DebugAssert( _stackSize == 1 );
 
         this._a = null;
 
@@ -250,18 +244,12 @@ public class ComparableTimSort<T>
         }
         while ( nRemaining != 0 );
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( lo == hi );
-        }
+        DebugAssert( lo == hi );
 
         // Merge all remaining runs to complete sort
         ts.MergeForceCollapse();
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ts._stackSize == 1 );
-        }
+        DebugAssert( ts._stackSize == 1 );
     }
 
     /// <summary>
@@ -282,10 +270,7 @@ public class ComparableTimSort<T>
     /// </param>
     private static void BinarySort( T[] a, int lo, int hi, int start )
     {
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( lo <= start ) && ( start <= hi ) );
-        }
+        DebugAssert( ( lo <= start ) && ( start <= hi ) );
 
         if ( start == lo )
         {
@@ -300,10 +285,7 @@ public class ComparableTimSort<T>
             var left  = lo;
             var right = start;
 
-            if ( ALLOW_ASSERTS )
-            {
-                Debug.Assert( left <= right );
-            }
+            DebugAssert( left <= right );
 
             // Invariants: pivot >= all in [lo, left). pivot < all in [right, start).
             while ( left < right )
@@ -320,10 +302,7 @@ public class ComparableTimSort<T>
                 }
             }
 
-            if ( ALLOW_ASSERTS )
-            {
-                Debug.Assert( left == right );
-            }
+            DebugAssert( left == right );
 
             // The invariants still hold: pivot >= all in [lo, left) and pivot < all in
             // [left, start), so pivot belongs at left. Note that if there are elements
@@ -383,10 +362,7 @@ public class ComparableTimSort<T>
     {
         ArgumentNullException.ThrowIfNull( a );
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( lo < hi );
-        }
+        DebugAssert( lo < hi );
 
         var runHi = lo + 1;
 
@@ -455,10 +431,7 @@ public class ComparableTimSort<T>
     /// <returns> the length of the minimum run to be merged  </returns>
     private static int MinRunLength( int n )
     {
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( n >= 0 );
-        }
+        DebugAssert( n >= 0 );
 
         var r = 0; // Becomes 1 if any 1 bits are shifted off
 
@@ -548,35 +521,17 @@ public class ComparableTimSort<T>
     /// <param name="i"> stack index of the first of the two runs to merge  </param>
     private void MergeAt( int i )
     {
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( _stackSize >= 2 );
-        }
-
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( i >= 0 );
-        }
-
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( i == ( _stackSize - 2 ) ) || ( i == ( _stackSize - 3 ) ) );
-        }
+        DebugAssert( _stackSize >= 2 );
+        DebugAssert( i >= 0 );
+        DebugAssert( ( i == ( _stackSize - 2 ) ) || ( i == ( _stackSize - 3 ) ) );
 
         var base1 = _runBase[ i ];
         var len1  = _runLen[ i ];
         var base2 = _runBase[ i + 1 ];
         var len2  = _runLen[ i + 1 ];
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( len1 > 0 ) && ( len2 > 0 ) );
-        }
-
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( base1 + len1 ) == base2 );
-        }
+        DebugAssert( ( len1 > 0 ) && ( len2 > 0 ) );
+        DebugAssert( ( base1 + len1 ) == base2 );
 
         // Record the length of the combined runs; if i is the 3rd-last run now, also
         // slide over the last run (which isn't involved in this merge). The current
@@ -591,16 +546,13 @@ public class ComparableTimSort<T>
 
         _stackSize--;
 
-        Debug.Assert( _a != null, nameof( _a ) + " != null" );
+        DebugAssert( _a != null, nameof( _a ) + " != null" );
 
         // Find where the first element of run2 goes in run1. Prior elements
         // in run1 can be ignored (because they're already in place).
-        var k = GallopRight( ( ( IComparable< T > )_a[ base2 ]! ), _a, base1, len1, 0 );
+        var k = GallopRight( ( ( IComparable< T > )_a![ base2 ]! ), _a, base1, len1, 0 );
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( k >= 0 );
-        }
+        DebugAssert( k >= 0 );
 
         base1 += k;
         len1  -= k;
@@ -614,10 +566,7 @@ public class ComparableTimSort<T>
         // can be ignored (because they're already in place).
         len2 = GallopLeft( ( IComparable< T > )_a[ ( base1 + len1 ) - 1 ]!, _a, base2, len2, len2 - 1 );
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( len2 >= 0 );
-        }
+        DebugAssert( len2 >= 0 );
 
         if ( len2 == 0 )
         {
@@ -636,24 +585,27 @@ public class ComparableTimSort<T>
     }
 
     /// <summary>
-    /// Locates the position at which to insert the specified key into the specified sorted range; if the range contains an element
-    /// equal to key, returns the index of the leftmost equal element.
+    /// Locates the position at which to insert the specified key into the specified
+    /// sorted range; if the range contains an element equal to key, returns the index
+    /// of the leftmost equal element.
     /// </summary>
     /// <param name="key"> the key whose insertion point to search for </param>
     /// <param name="a"> the array in which to search </param>
     /// <param name="first"> the index of the first element in the range </param>
     /// <param name="len"> the length of the range; must be > 0 </param>
-    /// <param name="hint"> the index at which to begin the search, 0 <= hint < n. The closer hint is to the result, the faster this method
-    ///           will run. </param>
-    /// <returns> the int k, 0 &lt;= k &lt;= n such that a[b + k - 1] &lt; key &lt;= a[b + k], pretending that a[b - 1] is minus infinity and a[b
-    ///         + n] is infinity. In other words, key belongs at index b + k; or in other words, the first k elements of a should
-    ///         precede key, and the last n - k should follow it.  </returns>
+    /// <param name="hint">
+    /// the index at which to begin the search, 0 &lt;= hint &amp;lt; n. The closer hint
+    /// is to the result, the faster this method will run.
+    /// </param>
+    /// <returns>
+    /// the int k, 0 &lt;= k &lt;= n such that a[b + k - 1] &lt; key &lt;= a[b + k],
+    /// pretending that a[b - 1] is minus infinity and a[b + n] is infinity. In other words,
+    /// key belongs at index b + k; or in other words, the first k elements of a should
+    /// precede key, and the last n - k should follow it.
+    /// </returns>
     private static int GallopLeft( IComparable< T > key, T[] a, int first, int len, int hint )
     {
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( len > 0 ) && ( hint >= 0 ) && ( hint < len ) );
-        }
+        DebugAssert( ( len > 0 ) && ( hint >= 0 ) && ( hint < len ) );
 
         var lastOfs = 0;
         var ofs     = 1;
@@ -712,10 +664,7 @@ public class ComparableTimSort<T>
             ofs     = hint - tmp;
         }
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( -1 <= lastOfs ) && ( lastOfs < ofs ) && ( ofs <= len ) );
-        }
+        DebugAssert( ( -1 <= lastOfs ) && ( lastOfs < ofs ) && ( ofs <= len ) );
 
         // Now a[first+lastOfs] < key <= a[first+ofs], so key belongs somewhere to the right
         // of lastOfs but no farther right than ofs. Do a binary search, with invariant
@@ -736,10 +685,7 @@ public class ComparableTimSort<T>
             }
         }
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( lastOfs == ofs ); // so a[first + ofs - 1] < key <= a[first + ofs]
-        }
+        DebugAssert( lastOfs == ofs ); // so a[first + ofs - 1] < key <= a[first + ofs]
 
         return ofs;
     }
@@ -761,15 +707,12 @@ public class ComparableTimSort<T>
     {
         ArgumentNullException.ThrowIfNull( a );
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( len > 0 ) && ( hint >= 0 ) && ( hint < len ) );
-        }
+        DebugAssert( ( len > 0 ) && ( hint >= 0 ) && ( hint < len ) );
 
         var ofs     = 1;
         var lastOfs = 0;
 
-        if ( key?.CompareTo( a[ first + hint ] ) < 0 )
+        if ( key.CompareTo( a[ first + hint ] ) < 0 )
         {
             // Gallop left until a[b+hint - ofs] <= key < a[b+hint - lastOfs]
             var maxOfs = hint + 1;
@@ -801,7 +744,7 @@ public class ComparableTimSort<T>
             // Gallop right until a[b+hint + lastOfs] <= key < a[b+hint + ofs]
             var maxOfs = len - hint;
 
-            while ( ( ofs < maxOfs ) && ( key?.CompareTo( a[ first + hint + ofs ] ) >= 0 ) )
+            while ( ( ofs < maxOfs ) && ( key.CompareTo( a[ first + hint + ofs ] ) >= 0 ) )
             {
                 lastOfs = ofs;
                 ofs     = ( ofs << 1 ) + 1;
@@ -822,10 +765,7 @@ public class ComparableTimSort<T>
             ofs     += hint;
         }
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( -1 <= lastOfs ) && ( lastOfs < ofs ) && ( ofs <= len ) );
-        }
+        DebugAssert( ( -1 <= lastOfs ) && ( lastOfs < ofs ) && ( ofs <= len ) );
 
         // Now a[b + lastOfs] <= key < a[b + ofs], so key belongs somewhere to the right of lastOfs but no farther right than ofs.
         // Do a binary search, with invariant a[b + lastOfs - 1] <= key < a[b + ofs].
@@ -845,10 +785,7 @@ public class ComparableTimSort<T>
             }
         }
 
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( lastOfs == ofs ); // so a[b + ofs - 1] <= key < a[b + ofs]
-        }
+        DebugAssert( lastOfs == ofs ); // so a[b + ofs - 1] <= key < a[b + ofs]
 
         return ofs;
     }
@@ -869,10 +806,7 @@ public class ComparableTimSort<T>
     /// <param name="len2"> length of second run to be merged (must be > 0)  </param>
     private void MergeLo( int base1, int len1, int base2, int len2 )
     {
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( len1 > 0 ) && ( len2 > 0 ) && ( ( base1 + len1 ) == base2 ) );
-        }
+        DebugAssert( ( len1 > 0 ) && ( len2 > 0 ) && ( ( base1 + len1 ) == base2 ) );
 
         // Copy first run into temp array
         T[]  a   = this._a!; // For performance
@@ -904,7 +838,6 @@ public class ComparableTimSort<T>
         }
 
         var minGallop = this._minGallop; // Use local variable for performance
-        outer:
 
         while ( true )
         {
@@ -914,10 +847,7 @@ public class ComparableTimSort<T>
             // Do the straightforward thing until (if ever) one run starts winning consistently.
             do
             {
-                if ( ALLOW_ASSERTS )
-                {
-                    Debug.Assert( ( len1 > 1 ) && ( len2 > 0 ) );
-                }
+                DebugAssert( ( len1 > 1 ) && ( len2 > 0 ) );
 
                 if ( ( ( IComparable< T > )a[ cursor2 ]! ).CompareTo( tmp[ cursor1 ] ) < 0 )
                 {
@@ -949,10 +879,7 @@ public class ComparableTimSort<T>
             // be winning consistently anymore.
             do
             {
-                if ( ALLOW_ASSERTS )
-                {
-                    Debug.Assert( ( len1 > 1 ) && ( len2 > 0 ) );
-                }
+                DebugAssert( ( len1 > 1 ) && ( len2 > 0 ) );
 
                 count1 = GallopRight( ( IComparable< T > )a[ cursor2 ]!, tmp!, cursor1, len1, 0 );
 
@@ -977,7 +904,7 @@ public class ComparableTimSort<T>
                     goto outer;
                 }
 
-                count2 = GallopLeft( ( IComparable< T > )tmp[ cursor1 ], a, cursor2, len2, 0 );
+                count2 = GallopLeft( ( IComparable< T > )tmp[ cursor1 ]!, a, cursor2, len2, 0 );
 
                 if ( count2 != 0 )
                 {
@@ -992,7 +919,7 @@ public class ComparableTimSort<T>
                     }
                 }
 
-                a[ dest++ ] = tmp[ cursor1++ ];
+                a[ dest++ ] = tmp[ cursor1++ ]!;
 
                 if ( --len1 == 1 )
                 {
@@ -1011,18 +938,17 @@ public class ComparableTimSort<T>
             minGallop += 2; // Penalize for leaving gallop mode
         }                   // End of "outer" loop
 
+        outer:
+
         this._minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
 
         if ( len1 == 1 )
         {
-            if ( ALLOW_ASSERTS )
-            {
-                Debug.Assert( len2 > 0 );
-            }
+            DebugAssert( len2 > 0 );
 
             Array.Copy( a, cursor2, a, dest, len2 );
 
-            a[ dest + len2 ] = tmp[ cursor1 ]; // Last elt of run 1 to end of merge
+            a[ dest + len2 ] = tmp[ cursor1 ]!; // Last elt of run 1 to end of merge
         }
         else if ( len1 == 0 )
         {
@@ -1030,15 +956,8 @@ public class ComparableTimSort<T>
         }
         else
         {
-            if ( ALLOW_ASSERTS )
-            {
-                Debug.Assert( len2 == 0 );
-            }
-
-            if ( ALLOW_ASSERTS )
-            {
-                Debug.Assert( len1 > 1 );
-            }
+            DebugAssert( len2 == 0 );
+            DebugAssert( len1 > 1 );
 
             Array.Copy( tmp, cursor1, a, dest, len1 );
         }
@@ -1054,10 +973,7 @@ public class ComparableTimSort<T>
     /// <param name="len2"> length of second run to be merged (must be > 0)  </param>
     private void MergeHi( int base1, int len1, int base2, int len2 )
     {
-        if ( ALLOW_ASSERTS )
-        {
-            Debug.Assert( ( len1 > 0 ) && ( len2 > 0 ) && ( ( base1 + len1 ) == base2 ) );
-        }
+        DebugAssert( ( len1 > 0 ) && ( len2 > 0 ) && ( ( base1 + len1 ) == base2 ) );
 
         // Copy second run into temp array
         T[]? a   = this._a; // For performance
@@ -1101,10 +1017,7 @@ public class ComparableTimSort<T>
             // Do the straightforward thing until (if ever) one run appears to win consistently.
             do
             {
-                if ( ALLOW_ASSERTS )
-                {
-                    Debug.Assert( ( len1 > 0 ) && ( len2 > 1 ) );
-                }
+                DebugAssert( ( len1 > 0 ) && ( len2 > 1 ) );
 
                 if ( ( ( IComparable< T >? )tmp[ cursor2 ] )!.CompareTo( a[ cursor1 ] ) < 0 )
                 {
@@ -1136,10 +1049,7 @@ public class ComparableTimSort<T>
             // be winning consistently anymore.
             do
             {
-                if ( ALLOW_ASSERTS )
-                {
-                    Debug.Assert( ( len1 > 0 ) && ( len2 > 1 ) );
-                }
+                DebugAssert( ( len1 > 0 ) && ( len2 > 1 ) );
 
                 count1 = len1 - GallopRight( ( IComparable< T >? )tmp[ cursor2 ]!, a, base1, len1, len1 - 1 );
 
@@ -1203,10 +1113,7 @@ public class ComparableTimSort<T>
 
         if ( len2 == 1 )
         {
-            if ( ALLOW_ASSERTS )
-            {
-                Debug.Assert( len1 > 0 );
-            }
+            DebugAssert( len1 > 0 );
 
             dest    -= len1;
             cursor1 -= len1;
@@ -1221,15 +1128,8 @@ public class ComparableTimSort<T>
         }
         else
         {
-            if ( ALLOW_ASSERTS )
-            {
-                Debug.Assert( len1 == 0 );
-            }
-
-            if ( ALLOW_ASSERTS )
-            {
-                Debug.Assert( len2 > 0 );
-            }
+            DebugAssert( len1 == 0 );
+            DebugAssert( len2 > 0 );
 
             Array.Copy( tmp, 0, a, dest - ( len2 - 1 ), len2 );
         }
@@ -1291,5 +1191,11 @@ public class ComparableTimSort<T>
         {
             throw new IndexOutOfRangeException( toIndex.ToString() );
         }
+    }
+
+    [Conditional( "ALLOW_ASSERTS == true" )]
+    private static void DebugAssert( bool condition, string message = "" )
+    {
+        Debug.Assert( condition, message );
     }
 }

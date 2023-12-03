@@ -40,10 +40,12 @@ public class DesktopGL20 : IGL20
     {
         EnsureBufferCapacity( count << 2 );
 
-        _floatBuffer?.Clear();
-        _floatBuffer!.Limit = count;
-        _floatBuffer!.Put( v, offset, count );
-        _floatBuffer!.Position = 0;
+        MemberNullException.ThrowIfNull( _floatBuffer );
+        
+        _floatBuffer.Clear();
+        _floatBuffer.Limit = count;
+        _floatBuffer.Put( v, offset, count );
+        _floatBuffer.Position = 0;
 
         return _floatBuffer;
     }
@@ -51,40 +53,43 @@ public class DesktopGL20 : IGL20
     private IntBuffer ToIntBuffer( int[] v, int offset, int count )
     {
         EnsureBufferCapacity( count << 2 );
-        _intBuffer?.Clear();
-        _intBuffer!.Limit = count;
+
+        MemberNullException.ThrowIfNull( _intBuffer );
+        
+        _intBuffer.Clear();
+        _intBuffer.Limit = count;
         _intBuffer.Put( v, offset, count );
-        _intBuffer!.Position = 0;
+        _intBuffer.Position = 0;
 
         return _intBuffer;
     }
 
     public void GLActiveTexture( int texture )
     {
-        GL13.glActiveTexture( texture );
+        GL.ActiveTexture( texture );
     }
 
-    public void glAttachShader( int program, int shader )
+    public void GLAttachShader( int program, int shader )
     {
-        GL20.glAttachShader( program, shader );
+        GL20.AttachShader( program, shader );
     }
 
-    public void glBindAttribLocation( int program, int index, String name )
+    public void GLBindAttribLocation( int program, int index, String name )
     {
         GL20.glBindAttribLocation( program, index, name );
     }
 
-    public void glBindBuffer( int target, int buffer )
+    public void GLBindBuffer( int target, int buffer )
     {
         GL15.glBindBuffer( target, buffer );
     }
 
-    public void glBindFramebuffer( int target, int framebuffer )
+    public void GLBindFramebuffer( int target, int framebuffer )
     {
         EXTFramebufferObject.glBindFramebufferEXT( target, framebuffer );
     }
 
-    public void glBindRenderbuffer( int target, int renderbuffer )
+    public void GLBindRenderbuffer( int target, int renderbuffer )
     {
         EXTFramebufferObject.glBindRenderbufferEXT( target, renderbuffer );
     }

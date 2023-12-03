@@ -140,10 +140,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Audio?.Update();
 
             var haveWindowsRendered = false;
+            var targetFramerate     = -2;
 
             closedWindows.Clear();
-
-            var targetFramerate = -2;
 
             foreach ( DesktopGLWindow window in Windows )
             {
@@ -244,6 +243,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    /// <summary>
+    /// Cleans up, and disposes of, any windows that have been closed. 
+    /// </summary>
     protected void CleanupWindows()
     {
         lock ( LifecycleListeners )

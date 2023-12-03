@@ -36,11 +36,11 @@ public class DesktopGLWindowConfiguration
     public bool  VSyncEnabled           { get; private set; } = true;
 
     public DesktopGLGraphics.DesktopGLMonitor?     MaximizedMonitor   { get; set; }
-    public FileType                         WindowIconFileType { get; set; }
-    public string[]?                        WindowIconPaths    { get; set; }
-    public IDesktopGLWindowListener?        WindowListener     { get; set; }
+    public FileType                                WindowIconFileType { get; set; }
+    public string[]?                               WindowIconPaths    { get; set; }
+    public IDesktopGLWindowListener?               WindowListener     { get; set; }
     public DesktopGLGraphics.DesktopGLDisplayMode? FullscreenMode     { get; set; }
-    public string?                          Title              { get; set; }
+    public string?                                 Title              { get; set; }
 
     /// <summary>
     /// </summary>

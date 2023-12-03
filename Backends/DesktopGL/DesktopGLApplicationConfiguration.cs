@@ -227,7 +227,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Return the available <see cref="IGraphics.DisplayModeDescriptor"/>"s of the given <see cref="Monitor"/>
+    /// Return the available <see cref="IGraphics.DisplayModeDescriptor"/>"s
+    /// of the given <see cref="Monitor"/>
     /// </summary>
     public static unsafe IGraphics.DisplayModeDescriptor[] GetDisplayModes( Monitor* monitor )
     {
@@ -256,7 +257,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     {
         DesktopGLApplication.InitialiseGL();
 
-        return ToGLMonitor( GLFW.GetPrimaryMonitor() );
+        return GLFW.GetPrimaryMonitor();
     }
 
     public static unsafe IGraphics.MonitorDescriptor[] GetMonitors()

@@ -15,6 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 
 namespace LibGDXSharp.Utils;
 
@@ -41,5 +42,10 @@ public static class SystemHelpers
                    System.Runtime.InteropServices.Architecture.Arm64 => true,
                    _                                                 => false
                };
+    }
+
+    public static String RandomUUID()
+    {
+        return Guid.NewGuid().ToString();
     }
 }

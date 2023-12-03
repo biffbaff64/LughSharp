@@ -785,8 +785,8 @@ UTILS
     - DONE - DataInput                      Check
     - DONE - DataOutput                     Check
     - DONE - DataUtils                      Added Class
-    - IP   - GdxNativesLoader
     - DONE - ICloseable                     
+    - IP   - IncompleteAttribute
     - DONE - IClipboard                     Convert - Interface, clipboard handled in backends.                 
     - DONE - IRunnable                      Done, but is it needed?
     - DONE - Logger                         
@@ -809,6 +809,7 @@ UTILS
     - The following do not need converting
 
     - **** - Base64Coder                    Use System.Convert classes
+    - **** - GdxNativesLoader
     - **** - I18NBundle
     - **** - LittleEndianInputStream
     - **** - PauseableThread
@@ -821,21 +822,13 @@ UTILS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/ANNOTATIONS - DELETE CANDIDATE
------------------
-
-    - DONE - IncompleteAttribute
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 UTILS/ASYNC - DELETE CANDIDATE
 -----------
 
-    - IP   - AsyncExecutor
-    - IP   - ASyncResult
-    - IP   - IAsyncTask
-    - IP   - ThreadUtils
+    - **** - AsyncExecutor
+    - **** - ASyncResult
+    - **** - IAsyncTask
+    - **** - ThreadUtils
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
