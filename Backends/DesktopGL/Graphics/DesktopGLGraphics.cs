@@ -24,20 +24,20 @@ using Window = OpenTK.Windowing.GraphicsLibraryFramework.Window;
 [PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
-    public DesktopGLWindow?       GLWindow               { get; set; }
+    public GameWindow?            GLWindow               { get; set; }
     public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
 
     private volatile bool _isContinuous = true;
 
-    private long        _lastFrameTime = -1;
-    private long        _frameId;
-    private long        _frameCounterStart = 0;
-    private int         _frames;
-    private int         _fps;
-    private int         _windowPosXBeforeFullscreen;
-    private int         _windowPosYBeforeFullscreen;
-    private int         _windowWidthBeforeFullscreen;
-    private int         _windowHeightBeforeFullscreen;
+    private long                            _lastFrameTime = -1;
+    private long                            _frameId;
+    private long                            _frameCounterStart = 0;
+    private int                             _frames;
+    private int                             _fps;
+    private int                             _windowPosXBeforeFullscreen;
+    private int                             _windowPosYBeforeFullscreen;
+    private int                             _windowWidthBeforeFullscreen;
+    private int                             _windowHeightBeforeFullscreen;
     private IGraphics.DisplayModeDescriptor _displayModeBeforeFullscreen = null!;
 
     private IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
@@ -201,12 +201,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    public override unsafe DesktopGLMonitor GetPrimaryMonitor()
+    public override unsafe GLMonitorHandle GetPrimaryMonitor()
     {
         return DesktopGLApplicationConfiguration.ToGLMonitor( GLFW.GetPrimaryMonitor() );
     }
 
-    public override unsafe DesktopGLMonitor GetMonitor()
+    public override unsafe GLMonitorHandle GetMonitor()
     {
         IGraphics.MonitorDescriptor[] monitors = GetMonitors();
         IGraphics.MonitorDescriptor   result   = monitors[ 0 ];
@@ -239,48 +239,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
 
         return result;
-    }
-
-    public override IGraphics.MonitorDescriptor[] GetMonitors()
-    {
-        unsafe
-        {
-            var monitors = new IGraphics.MonitorDescriptor[ GLFW.GetMonitors().Length ];
-
-            for ( var i = 0; i < GLFW.GetMonitors().Length; i++ )
-            {
-                monitors[ i ] = DesktopGLApplicationConfiguration.ToGLMonitor( GLFW.GetMonitors()[ i ] );
-            }
-
-            return monitors;
-        }
-    }
-
-    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes()
-    {
-        return DesktopGLApplicationConfiguration.GetDisplayModes( GetMonitor() );
-    }
-
-    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor )
-    {
-    }
-
-    public override IGraphics.DisplayModeDescriptor GetDisplayMode()
-    {
-    }
-
-    public override IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor )
-    {
-    }
-
-    public override bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode )
-    {
-        return false;
-    }
-
-    public override bool SetWindowedMode( int width, int height )
-    {
-        return false;
     }
 
     // ------------------------------------------------------------------------
@@ -452,32 +410,5 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         Dispose( true );
         GC.SuppressFinalize( this );
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    [PublicAPI]
-    public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
-    {
-        public long MonitorHandle { get; set; }
-
-        public DesktopGLDisplayMode( long monitor, int width, int height, int refreshRate, int bitsPerPixel )
-            : base( width, height, refreshRate, bitsPerPixel )
-        {
-            this.MonitorHandle = monitor;
-        }
-    }
-
-    [PublicAPI]
-    public class DesktopGLMonitor : IGraphics.MonitorDescriptor
-    {
-        public long MonitorHandle { get; set; }
-
-        public DesktopGLMonitor( long monitor, int virtualX, int virtualY, string name )
-            : base( virtualX, virtualY, name )
-        {
-            this.MonitorHandle = monitor;
-        }
     }
 }

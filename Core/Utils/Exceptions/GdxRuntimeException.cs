@@ -43,14 +43,14 @@ public class GdxRuntimeException : System.Exception
 
     public static void ThrowIfNull( [NotNull] object? argument,
                                     [CallerArgumentExpression( "argument" )]
-                                    string? paramName = null )
+                                    string? message = null )
     {
         if ( argument is null )
         {
-            Throw( paramName );
+            Throw( message );
         }
     }
 
     [DoesNotReturn]
-    internal static void Throw( string? paramName ) => throw new GdxRuntimeException( paramName );
+    internal static void Throw( string? message ) => throw new GdxRuntimeException( message );
 }

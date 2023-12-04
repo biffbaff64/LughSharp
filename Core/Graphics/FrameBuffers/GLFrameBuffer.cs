@@ -53,7 +53,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
     // the default framebuffer handle, a.k.a screen.
     public int DefaultFramebufferHandle { get; set; }
 
-    /** true if we have polled for the default handle already. */
+    // true if we have polled for the default handle already.
     public bool DefaultFramebufferHandleInitialized { get; set; } = false;
 
     public int  FramebufferHandle              { get; set; }

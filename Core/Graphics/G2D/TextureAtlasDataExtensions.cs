@@ -56,7 +56,7 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
 
 public partial record TextureAtlasData
 {
-    public class PageFieldParseClass : IField< Page >
+    public class PageFieldParse : IField< Page >
     {
         public void Parse( Page page, params string[] entry )
         {
@@ -65,7 +65,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class PageFieldFormatClass : IField< Page >
+    public class PageFieldFormat : IField< Page >
     {
         public void Parse( Page page, params string[] entry )
         {
@@ -73,7 +73,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class PageFieldFilterClass : IField< Page >
+    public class PageFieldFilter : IField< Page >
     {
         public void Parse( Page page, params string[] entry )
         {
@@ -83,7 +83,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class PageFieldRepeatClass : IField< Page >
+    public class PageFieldRepeat : IField< Page >
     {
         public void Parse( Page page, params string[] entry )
         {
@@ -99,7 +99,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class PageFieldPmaClass : IField< Page >
+    public class PageFieldPma : IField< Page >
     {
         public void Parse( Page page, params string[] entry )
         {
@@ -110,7 +110,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldXYClass : IField< TextureAtlasData.Region >
+    public class RegionFieldXY : IField< TextureAtlasData.Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -119,7 +119,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldSizeClass : IField< TextureAtlasData.Region >
+    public class RegionFieldSize : IField< TextureAtlasData.Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -128,7 +128,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldBoundsClass : IField< TextureAtlasData.Region >
+    public class RegionFieldBounds : IField< TextureAtlasData.Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -139,7 +139,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldOffsetClass : IField< TextureAtlasData.Region >
+    public class RegionFieldOffset : IField< TextureAtlasData.Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -148,7 +148,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldOrigClass : IField< TextureAtlasData.Region >
+    public class RegionFieldOrig : IField< TextureAtlasData.Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -157,7 +157,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldOffsetsClass : IField< TextureAtlasData.Region >
+    public class RegionFieldOffsets : IField< TextureAtlasData.Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -168,7 +168,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldRotateClass : IField< TextureAtlasData.Region >
+    public class RegionFieldRotate : IField< TextureAtlasData.Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -187,7 +187,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldIndexClass : IField< TextureAtlasData.Region >
+    public class RegionFieldIndex : IField< TextureAtlasData.Region >
     {
         public void Parse( Region region, params string[] entry )
         {

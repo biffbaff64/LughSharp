@@ -26,6 +26,7 @@ namespace LibGDXSharp.Graphics;
 [PublicAPI]
 public abstract class GLTexture : IDisposable
 {
+
     #region properties
 
     public int   GLHandle               { get; set; }
@@ -51,7 +52,7 @@ public abstract class GLTexture : IDisposable
     #endregion properties
 
     #region abstract properties
-    
+
     // These are abstract because implementations differ between inheriting classes
     public abstract int Width  { get; }
     public abstract int Height { get; }
@@ -77,7 +78,7 @@ public abstract class GLTexture : IDisposable
     #endregion constructors
 
     #region abstract methods
-    
+
     /// <returns>whether this texture is managed or not.</returns>
     public abstract bool IsManaged();
 
@@ -362,17 +363,15 @@ public abstract class GLTexture : IDisposable
         }
         else
         {
-            Gdx.GL.GLTexImage2D(
-                target,
-                miplevel,
-                pixmap.GLInternalFormat,
-                pixmap.Width,
-                pixmap.Height,
-                0,
-                pixmap.GLFormat,
-                pixmap.GLType,
-                pixmap.Pixels
-                );
+            Gdx.GL.GLTexImage2D( target,
+                                 miplevel,
+                                 pixmap.GLInternalFormat,
+                                 pixmap.Width,
+                                 pixmap.Height,
+                                 0,
+                                 pixmap.GLFormat,
+                                 pixmap.GLType,
+                                 pixmap.Pixels );
         }
 
         if ( disposePixmap )

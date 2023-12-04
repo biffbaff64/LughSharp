@@ -23,8 +23,8 @@ namespace LibGDXSharp.G2D;
 [PublicAPI]
 public class BitmapFont
 {
-    private const string REGEX_PATTERN   = ".*id=(\\d+)";
-    private const string FONT_NAME       = "Resources/arial-15.fnt";
+    private const string REGEX_PATTERN  = ".*id=(\\d+)";
+    private const string FONT_NAME      = "Resources/arial-15.fnt";
     private const int    LOG2_PAGE_SIZE = 9;
     private const int    PAGE_SIZE      = 1 << LOG2_PAGE_SIZE;
     private const int    PAGES          = 0x10000 / PAGE_SIZE;
@@ -45,8 +45,7 @@ public class BitmapFont
     /// a bitmap font yourself.
     /// </summary>
     public BitmapFont()
-        : this
-            (
+        : this(
             Gdx.Files.Internal( FONT_NAME ),
             Gdx.Files.Internal( FONT_NAME ),
             false
@@ -122,8 +121,7 @@ public class BitmapFont
     /// </param>
     /// <param name="integer"></param>
     public BitmapFont( FileInfo fontFile, FileInfo imageFile, bool flip, bool integer = true )
-        : this
-            (
+        : this(
             new BitmapFontData( fontFile, flip ),
             new TextureRegion( new Texture( imageFile, false ) ),
             integer
@@ -233,8 +231,7 @@ public class BitmapFont
 
         if ( data.MissingGlyph != null )
         {
-            data.MissingGlyph = data.SetGlyphRegion
-                (
+            data.MissingGlyph = data.SetGlyphRegion(
                 data.MissingGlyph,
                 _regions[ data.MissingGlyph.Page ]
                 );
@@ -289,8 +286,7 @@ public class BitmapFont
     {
         _cache.Clear();
 
-        GlyphLayout layout = _cache.AddText
-            (
+        GlyphLayout layout = _cache.AddText(
             str,
             x,
             y,
@@ -309,8 +305,16 @@ public class BitmapFont
     /// <summary>
     /// Draws text at the specified position.
     /// </summary>
-    public GlyphLayout Draw( IBatch batch, string str, float x, float y, int start, int end,
-                             float targetWidth, int halign, bool wrap, string truncate )
+    public GlyphLayout Draw( IBatch batch,
+                             string str,
+                             float x,
+                             float y,
+                             int start,
+                             int end,
+                             float targetWidth,
+                             int halign,
+                             bool wrap,
+                             string truncate )
     {
         _cache.Clear();
 
@@ -504,29 +508,31 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Represents a single character in a font page. </summary>
+    /// Represents a single character in a font page.
+    /// </summary>
     public class Glyph
     {
-        public int        id;
-        public int        srcX;
-        public int        srcY;
-        public int        width;
-        public int        height;
-        public float      u;
-        public float      v;
-        public float      u2;
-        public float      v2;
-        public int        xoffset, yoffset;
-        public int        xadvance;
-        public byte[]?[]? kerning;
-        public bool       fixedWidth;
+        internal int        id;
+        internal int        srcX;
+        internal int        srcY;
+        internal int        width;
+        internal int        height;
+        internal float      u;
+        internal float      v;
+        internal float      u2;
+        internal float      v2;
+        internal int        xoffset;
+        internal int        yoffset;
+        internal int        xadvance;
+        internal byte[]?[]? kerning;
+        internal bool       fixedWidth;
 
         /// <summary>
         /// The index to the texture page that holds this glyph.
         /// </summary>
-        public int Page { get; set; } = 0;
+        internal int Page { get; set; } = 0;
 
-        public int GetKerning( char ch )
+        internal int GetKerning( char ch )
         {
             var page = kerning?[ ch >>> LOG2_PAGE_SIZE ];
 
@@ -534,7 +540,7 @@ public class BitmapFont
 
         }
 
-        public void SetKerning( int ch, int value )
+        internal void SetKerning( int ch, int value )
         {
             kerning ??= new byte[ PAGES ][];
 
@@ -572,25 +578,26 @@ public class BitmapFont
     /// <summary>
     /// Backing data for a <see cref="BitmapFont"/>.
     /// </summary>
+    [PublicAPI]
     public class BitmapFontData
     {
         // The name of the font, or null.
-        public string? Name { get; private set; }
+        internal string? Name { get; private set; }
 
         // An array of the image paths, for multiple texture pages.
-        public string[]? ImagePaths { get; private set; }
+        internal string[]? ImagePaths { get; private set; }
 
-        public FileInfo FontFile  { get; set; }
-        public bool     Flipped   { get; set; }
-        public float    PadTop    { get; set; }
-        public float    PadRight  { get; set; }
-        public float    PadBottom { get; set; }
-        public float    PadLeft   { get; set; }
+        internal FileInfo FontFile  { get; set; }
+        internal bool     Flipped   { get; set; }
+        internal float    PadTop    { get; set; }
+        internal float    PadRight  { get; set; }
+        internal float    PadBottom { get; set; }
+        internal float    PadLeft   { get; set; }
 
         /// <summary>
         /// The distance from one line of text to the next.
         /// </summary>
-        public float LineHeight { get; private set; }
+        internal float LineHeight { get; private set; }
 
         /// <summary>
         /// The distance from the top of most uppercase characters to the
@@ -598,72 +605,73 @@ public class BitmapFont
         /// first line, the cap height can be used to get the location of
         /// the baseline. 
         /// </summary>
-        public float CapHeight { get; private set; } = 1;
+        internal float CapHeight { get; private set; } = 1;
 
         /// <summary>
         /// The distance from the cap height to the top of the tallest glyph.
         /// </summary>
-        public float Ascent { get; private set; }
+        internal float Ascent { get; private set; }
 
         /// <summary>
         /// The distance from the bottom of the glyph that extends the lowest
         /// to the baseline. This number is negative.
         /// </summary>
-        public float Descent { get; private set; }
+        internal float Descent { get; private set; }
 
         /// <summary>
         /// The distance to move down when \n is encountered.
         /// </summary>
-        public float Down { get; set; }
+        internal float Down { get; set; }
 
         /// <summary>
         /// Multiplier for the line height of blank lines. down * blankLineHeight is
         /// used as the distance to move down for a blank line. 
         /// </summary>
-        public float BlankLineScale { get; set; } = 1;
+        internal float BlankLineScale { get; set; } = 1;
 
-        public float ScaleX        { get; private set; } = 1;
-        public float ScaleY        { get; private set; } = 1;
-        public bool  MarkupEnabled { get; set; }
+        internal float ScaleX        { get; private set; } = 1;
+        internal float ScaleY        { get; private set; } = 1;
+        internal bool  MarkupEnabled { get; set; }
 
         /// <summary>
         /// The amount to add to the glyph X position when drawing a cursor between
         /// glyphs. This field is not set by the BMFont file, it needs to be set
         /// manually depending on how the glyphs are rendered on the backing textures. 
         /// </summary>
-        public float CursorX { get; set; }
+        internal float CursorX { get; set; }
 
-        public Glyph?[]?[] Glyphs { get; set; } = new Glyph[ PAGES ][];
+        internal Glyph?[]?[] Glyphs { get; set; } = new Glyph[ PAGES ][];
 
         /// <summary>
         /// The glyph to display for characters not in the font. May be null.
         /// </summary>
-        public Glyph? MissingGlyph { get; set; }
+        internal Glyph? MissingGlyph { get; set; }
 
         /// <summary>
         /// The width of the space character.
         /// </summary>
-        public float SpaceXadvance { get; set; }
+        internal float SpaceXadvance { get; set; }
 
         /// <summary>
         /// The x-height, which is the distance from the top of most lowercase
         /// characters to the baseline.
         /// </summary>
-        public float XHeight { get; set; } = 1;
+        internal float XHeight { get; set; } = 1;
 
         /// <summary>
         /// Additional characters besides whitespace where text is wrapped.
         /// Eg, a hypen (-).
         /// </summary>
-        // ReSharper disable once UnassignedField.Global
-        public char[]? breakChars;
 
-        public readonly char[] xChars =
+        // ReSharper disable once UnassignedField.Global
+        internal char[]? breakChars;
+
+        internal readonly char[] xChars =
         {
             'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z'
         };
 
-        public readonly char[] capChars =
+        internal readonly char[] capChars =
         {
             'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J',
             'L', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -765,8 +773,8 @@ public class BitmapFont
 
                 var pageCount = 1;
 
-                if ( common is [var _, var _, var _, var _, var _, not null, ..]
-                     && common[ 5 ].StartsWith( "pages=" ) )
+                if ( common is [ var _, var _, var _, var _, var _, not null, .. ]
+                  && common[ 5 ].StartsWith( "pages=" ) )
                 {
                     try
                     {
@@ -958,9 +966,9 @@ public class BitmapFont
                     var second = int.Parse( tokens.NextToken() );
 
                     if ( ( first < 0 )
-                         || ( first > Character.MAX_VALUE )
-                         || ( second < 0 )
-                         || ( second > Character.MAX_VALUE ) )
+                      || ( first > Character.MAX_VALUE )
+                      || ( second < 0 )
+                      || ( second > Character.MAX_VALUE ) )
                     {
                         continue;
                     }
@@ -1076,8 +1084,8 @@ public class BitmapFont
                         foreach ( Glyph? glyph in page )
                         {
                             if ( ( glyph == null )
-                                 || ( glyph.height == 0 )
-                                 || ( glyph.width == 0 ) )
+                              || ( glyph.height == 0 )
+                              || ( glyph.width == 0 ) )
                             {
                                 continue;
                             }
@@ -1147,8 +1155,8 @@ public class BitmapFont
                 offsetX = ( int )atlasRegion.OffsetX;
 
                 offsetY = ( int )( atlasRegion.OriginalHeight
-                                   - atlasRegion.PackedHeight
-                                   - atlasRegion.OffsetY );
+                                 - atlasRegion.PackedHeight
+                                 - atlasRegion.OffsetY );
             }
 
             var x  = glyph.srcX;
@@ -1315,7 +1323,7 @@ public class BitmapFont
         /// The glyph immediately before this run, or null if this is run is the
         /// first on a line of text.
         /// </param>
-        public void GetGlyphs( GlyphLayout.GlyphRun run, string str, int start, int end, Glyph? lastGlyph )
+        public void GetGlyphs( GlyphLayout.GlyphRun? run, string str, int start, int end, Glyph? lastGlyph )
         {
             var max = end - start;
 
@@ -1368,9 +1376,9 @@ public class BitmapFont
 
                 // "[[" is an escaped left square bracket, skip second character.
                 if ( markupEnabled
-                     && ( ch == '[' )
-                     && ( start < end )
-                     && ( str[ start ] == '[' ) )
+                  && ( ch == '[' )
+                  && ( start < end )
+                  && ( str[ start ] == '[' ) )
                 {
                     start++;
                 }

@@ -19,19 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Arqan.Windows" Version="2.2.2" />
         <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
-        <PackageReference Include="OpenTK" Version="4.8.1" />
-        <PackageReference Include="OpenTK.Audio.OpenAL" Version="4.8.1" />
-        <PackageReference Include="OpenTK.Compute" Version="4.8.1" />
-        <PackageReference Include="OpenTK.Core" Version="4.8.1" />
-        <PackageReference Include="OpenTK.Graphics" Version="4.8.1" />
-        <PackageReference Include="OpenTK.Input" Version="4.8.1" />
-        <PackageReference Include="OpenTK.Mathematics" Version="4.8.1" />
-        <PackageReference Include="OpenTK.redist.glfw" Version="3.3.8.39" />
-        <PackageReference Include="OpenTK.Windowing.Common" Version="4.8.1" />
-        <PackageReference Include="OpenTK.Windowing.Desktop" Version="4.8.1" />
-        <PackageReference Include="OpenTK.Windowing.GraphicsLibraryFramework" Version="4.8.1" />
         <PackageReference Include="RestSharp" Version="110.2.0" />
         <PackageReference Include="SharpZipLib" Version="1.4.2" />
         <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
@@ -39,11 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Core\Graphics\G3D\Attributes\" />
-        <Folder Include="Core\Graphics\G3D\Decals\" />
-        <Folder Include="Core\Graphics\G3D\Environment\" />
-        <Folder Include="Core\Graphics\G3D\Loader\" />
-        <Folder Include="Core\Graphics\G3D\Shaders\" />
         <Folder Include="Core\Utils\Async\" />
         <Folder Include="packages\" />
     </ItemGroup>

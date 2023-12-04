@@ -278,13 +278,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     /// <param name="monitor"></param>
     /// <returns></returns>
-    public static unsafe DesktopGLGraphics.DesktopGLMonitor ToGLMonitor( Monitor* monitor )
+    public static unsafe DesktopGLGraphics.GLMonitorHandle ToGLMonitor( Monitor* monitor )
     {
         GLFW.GetMonitorPos( monitor, out var virtualX, out var virtualY );
 
         var name = GLFW.GetMonitorName( monitor );
 
-        return new DesktopGLGraphics.DesktopGLMonitor(
+        return new DesktopGLGraphics.GLMonitorHandle(
             0, // TODO:
             virtualX,
             virtualY,

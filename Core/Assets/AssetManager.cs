@@ -78,8 +78,7 @@ public class AssetManager
                 SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
                 SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
                 SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
-
-//                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
+                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
 //                SetLoader( typeof(I18NBundle),      new I18NBundleLoader( resolver ) );
                 //@formatter:on
         }

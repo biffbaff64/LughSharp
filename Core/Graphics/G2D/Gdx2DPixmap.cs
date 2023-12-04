@@ -21,18 +21,49 @@ namespace LibGDXSharp.G2D;
 [PublicAPI]
 public class Gdx2DPixmap : IDisposable
 {
+    // ------------------------------------------------------------------------
+
+    #region constants
+
     public const int GDX_2D_FORMAT_ALPHA           = 1;
     public const int GDX_2D_FORMAT_LUMINANCE_ALPHA = 2;
     public const int GDX_2D_FORMAT_RGB888          = 3;
     public const int GDX_2D_FORMAT_RGBA8888        = 4;
     public const int GDX_2D_FORMAT_RGB565          = 5;
     public const int GDX_2D_FORMAT_RGBA4444        = 6;
+    public const int GDX_2D_SCALE_NEAREST          = 0;
+    public const int GDX_2D_SCALE_LINEAR           = 1;
+    public const int GDX_2D_BLEND_NONE             = 0;
+    public const int GDX_2D_BLEND_SRC_OVER         = 1;
 
-    public const int GDX_2D_SCALE_NEAREST = 0;
-    public const int GDX_2D_SCALE_LINEAR  = 1;
+    #endregion constants
 
-    public const int GDX_2D_BLEND_NONE     = 0;
-    public const int GDX_2D_BLEND_SRC_OVER = 1;
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    public int Blend
+    {
+        set => SetBlend( basePtr, value );
+    }
+
+    public int Scale
+    {
+        set => SetScale( basePtr, value );
+    }
+
+    public int Width  { get; set; }
+    public int Height { get; set; }
+
+    //TODO: Why?
+    public int    GLInternalFormat => ToGLFormat( format );
+    public int    GLFormat         => GLInternalFormat;
+    public int    GLType           => ToGLType( format );
+    public string FormatString     => GetFormatString( format );
+
+    #endregion properties
+
+    // ------------------------------------------------------------------------
 
     public long       basePtr;
     public int        format;
@@ -257,19 +288,6 @@ public class Gdx2DPixmap : IDisposable
         DrawPixmap( src.basePtr, basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
     }
 
-    public int Blend
-    {
-        set => SetBlend( basePtr, value );
-    }
-
-    public int Scale
-    {
-        set => SetScale( basePtr, value );
-    }
-
-    public int Width  { get; set; }
-    public int Height { get; set; }
-
     public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
     {
         try
@@ -297,12 +315,6 @@ public class Gdx2DPixmap : IDisposable
             return null;
         }
     }
-
-    //TODO: Why?
-    public int    GLInternalFormat => ToGLFormat( format );
-    public int    GLFormat         => GLInternalFormat;
-    public int    GLType           => ToGLType( format );
-    public string FormatString     => GetFormatString( format );
 
     /// <summary>
     /// </summary>

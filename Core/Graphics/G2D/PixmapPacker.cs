@@ -783,7 +783,7 @@ public class PixmapPacker : IDisposable
     public class Page
     {
         public Dictionary< string, PixmapPackerRectangle? > Rects { get; set; } = new();
-
+            
         public Pixmap         Image      { get; set; }
         public Texture?       Texture    { get; set; }
         public List< string > AddedRects { get; set; } = new();

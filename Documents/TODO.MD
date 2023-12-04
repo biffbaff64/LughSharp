@@ -65,6 +65,7 @@ ASSETS/LOADERS
     - DONE - MusicLoader
     - DONE - ParticleEffectLoader
     - DONE - PixmapLoader
+    -      - PolygonRegionLoader
     - DONE - ShaderProgramLoader
     - DONE - SkinLoader
     - DONE - SoundLoader
@@ -129,27 +130,47 @@ AUDIO/JAVAZOOMJL
 BACKENDS/DESKTOPGL
 ------------------
 
-    - DONE - DesktopDefaultGLInput
-    - IP   - DesktopGL20
-    - IP   - DesktopGL30
     - IP   - DesktopGLApplication
     - DONE - DesktopGLApplicationConfiguration
-    - DONE - DesktopGLApplicationLogger
-    - DONE - DesktopGLClipboard
-    -      - DesktopGLCursor
-    - IP   - DesktopGLFileHandle
-    - DONE - DesktopGLFiles
-    - IP   - DesktopGLGraphics
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet
-    - DONE - DesktopGLPreferences
-    - IP   - DesktopGLWindow
-    - DONE - DesktopGLWindowAdapter
-    - DONE - DesktopGLWindowConfiguration
     - DONE - IDesktopGLApplicationBase
-    - DONE - IDesktopGLInput
-    - DONE - IDesktopGLWindowListener
     - IP   - Sync
+
+    Files
+    -----
+
+    - IP   - DesktopGLFileHandle
+    - DONE - DesktopGLFiles
+
+    Graphics
+    --------
+
+    - IP   - DesktopGL20
+    - IP   - DesktopGL30
+    - IP   - DesktopGLGraphics
+
+    Input
+    -----
+
+    - DONE - DefaultGLInput
+    - DONE - IDesktopGLInput
+
+    Utils
+    -----
+
+    - **** - DesktopGLApplicationLogger
+    - **** - DesktopGLClipboard
+    - **** - DesktopGLCursor                    Use OpenTK Cursor
+    - **** - DesktopGLPreferences
+
+    Window
+    ------
+
+    - **** - DesktopGLWindow                    Use OpenTK GameWindow
+    - **** - DesktopGLWindowConfiguration       Use OpenTK GameWindowSettings
+    - **** - DesktopGLWindowAdapter             Not Needed
+    - **** - IDesktopGLWindowListener           Not Needed
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -198,10 +219,20 @@ CORE
     - DONE - IAudio
     - DONE - IFile
     - DONE - IGraphics
-    - DONE - IInput                         
+            - DONE - DisplayModeDescriptor
+            - DONE - MonitorDescriptor
+            - DONE - BufferFormatDescriptor
+    - DONE - IInput
+            - DONE - Buttons
+            - DONE - Keys
+            - DONE - ITextInputListener
     - DONE - IInputProcessor                
     - DONE - ILifecycleListener             
-    - DONE - INet                           
+    - DONE - INet
+            - DONE - IHttpResponse
+            - DONE - IHttpMethods
+            - DONE - IHttpResponseListener
+            - DONE - HttpRequest
     - DONE - InputAdapter                   
     - DONE - InputEventQueue                
     - DONE - IPreferences                   
@@ -327,9 +358,10 @@ GRAPHICS
 --------
 
     - DONE - Camera                             
-    - DONE - Color                              
+    - IP   - Color                              
     - DONE - Colors                             
-    - DONE - Cubemap                            
+    - DONE - Cubemap
+            - DONE - CubemapSide
     - DONE - FPSLogger                          
     - DONE - GLTexture                          
     - DONE - GraphicsType                       
@@ -340,20 +372,27 @@ GRAPHICS
     - DONE - IGL30                              
     - DONE - IGL31                              
     - DONE - IGL32                              
-    - DONE - ITextureArrayData                  
-    - DONE - ITextureData                       
+    - DONE - ITextureArrayData        
+            - DONE - TextureArrayDataFactory
+    - DONE - ITextureData             
+            - DONE - Factory
     - DONE - Mesh                               
     - DONE - OrthographicCamera                 
     - DONE - PerspectiveCamera                  
-    - DONE - Pixmap                             
+    - DONE - Pixmap              
+            - DONE - PixmapFormatExtensions
     - DONE - PixmapFormat                             
-    - DONE - PixmapIO                           
+    - DONE - PixmapIO
+            - DONE - CIM
+            - DONE - PNG
+                    - DONE - ChunkBuffer
     - DONE - Texture                            
     - DONE - TextureArray                       
     - DONE - TextureFilter                      
     - DONE - TextureWrap                        
     - DONE - VertexAttribute                    
-    - DONE - VertexAttributes                   
+    - DONE - VertexAttributes
+            - DONE - Usage
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -383,7 +422,9 @@ GRAPHICS/G2D
     - DONE - Animation                      
     - DONE - AtlasRegion                    
     - DONE - AtlasSprite                    
-    - DONE - BitmapFont                     
+    - DONE - BitmapFont 
+            - DONE - Glyph
+            - DONE - BitmapFontData
     - DONE - BitmapFontCache                
     - DONE - CpuSpriteBatch                 
     - DONE - DistanceFieldFont              
@@ -393,22 +434,309 @@ GRAPHICS/G2D
     - DONE - IPolygonBatch                  
     - DONE - NinePatch                      
     - DONE - ParticleEffect                 
-    - DONE - ParticleEffectPool             
-    - DONE - ParticleEmitter                
-    - DONE - PixmapPacker                   
-    - DONE - PixmapPacker10                 
+    - DONE - ParticleEffectPool        
+            - DONE - PooledEffect
+    - DONE - ParticleEmitter           
+            - DONE - Particle
+            - DONE - ParticleValue
+            - DONE - NumericValue
+            - DONE - RangedNumericValue
+            - DONE - ScaledNumericValue
+            - DONE - IndependentScaledNumericValue
+            - DONE - GradientColorValue
+            - DONE - ParticleSpawnShapeValue
+    - DONE - PixmapPacker
+            - DONE - Page
+            - DONE - GuillotineStrategy
+            - DONE - SkylineStrategy
+            - DONE - PixmapPackerRectangle
+            - DONE - IPackStrategy
+    - DONE - PixmapPacker10       
+            - DONE - ImageFormat
+            - DONE - SaveParameters
     - DONE - PolygonRegion                  
-    - DONE - PolygonRegionLoader            
+    - DONE - PolygonRegionLoader
+            - DONE - PolygonRegionParameters
     - DONE - PolygonSprite                  
     - DONE - PolygonSpriteBatch             
     - DONE - RepeatablePolygonSprite        
     - DONE - Sprite                         
     - DONE - SpriteBatch                    
-    - DONE - SpriteCache                    
+    - DONE - SpriteCache
+            - DONE - Cache
     - DONE - TextureAtlas                   
-    - DONE - TextureAtlasData               
-    - DONE - TextureAtlasDataExtensions     
+    - DONE - TextureAtlasData   
+            - DONE - IField
+            - DONE - Page
+            - DONE - Region
+    - DONE - TextureAtlasDataExtensions
+            - DONE - ComparatorAnonymousInner
+            - DONE - PageFieldParse
+            - DONE - PageFieldFormat
+            - DONE - PageFieldFilter
+            - DONE - PageFieldRepeat
+            - DONE - PageFieldPma
+            - DONE - RegionFieldXY
+            - DONE - RegionFieldSize
+            - DONE - RegionFieldBounds
+            - DONE - RegionFieldOffset
+            - DONE - RegionFieldOrig
+            - DONE - RegionFieldOffsets
+            - DONE - RegionFieldRotate
+            - DONE - RegionFieldIndex
     - DONE - TextureRegion                  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D
+------------
+
+    -      - Attribute
+    -      - AttributesGroup
+    -      - Environment
+    -      - Material
+    -      - Model
+    -      - ModelBatch
+    -      - ModelCache
+    -      - ModelInstance
+    -      - Renderable
+    -      - RenderableProvider
+    -      - Shader
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/ATTRIBUTES
+-----------------------
+
+    -      - BlendingAttribute
+    -      - ColorAttribute
+    -      - CubemapAttribute
+    -      - DepthTestAttribute
+    -      - DirectionalLightsAttribute
+    -      - FloatAttribute
+    -      - IntAttribute
+    -      - PointLightsAttribute
+    -      - SpotLightsAttribute
+    -      - TextureAttribute
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/DECALS
+-------------------
+
+    -      - CameraGroupStrategy
+    -      - Decal
+    -      - DecalBatch
+    -      - DecalMaterial
+    -      - IGroupPlug
+    -      - IGroupStrategy
+    -      - PluggableGroupStrategy
+    -      - SimpleOrthoGroupStrategy
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/ENV
+----------------
+
+    -      - AmbientCubemap
+    -      - BaseLight
+    -      - DirectionalLight
+    -      - DirectionalShadowLight
+    -      - IShadowMap
+    -      - PointLight
+    -      - SpericalHarmonics
+    -      - SpotLight
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/LOADER
+-------------------
+
+    -      - G3ModelLoader
+    -      - ObjLoader
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/MODELS
+-------------------
+
+    -      - Attribute
+    -      - MeshPart
+    -      - Node
+    -      - NodeAnimation
+    -      - NodeKeyframe
+    -      - NodePart
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/MODELS/DATA
+------------------------
+
+    -      - ModelAnimation
+    -      - ModelData
+    -      - ModelMaterial
+    -      - ModelMesh
+    -      - ModelMeshPart
+    -      - ModelNode
+    -      - ModelNodeAnimation
+    -      - ModelNodeKeyframe
+    -      - ModelNodePart
+    -      - ModelTexture
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/PARTICLES
+----------------------
+
+    -      - ParallelArray
+    -      - ParticleChannels
+    -      - ParticleController
+    -      - ParticleControllerComponent
+    -      - ParticleEffect
+    -      - ParticleEffectLoader
+    -      - ParticleShader
+    -      - ParticleSorter
+    -      - ParticleSystem
+    -      - ResourceData
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/PARTICLES/BATCHES
+------------------------------
+
+    -      - BillboardParticleBatch
+    -      - BufferedParticleBatch
+    -      - IParticleBatch
+    -      - ModelInstanceParticleBatch
+    -      - PointSpriteParticleBatch
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/PARTICLES/EMITTERS
+-------------------------------
+
+    -      - Emitter
+    -      - RegulatEmitter
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/PARTICLES/INFLUENCERS
+----------------------------------
+
+    -      - ColorInfluencer
+    -      - DynamicsInfluencer
+    -      - DynamicsModifier
+    -      - Influencer
+    -      - ModelInfluencer
+    -      - ParticleControllerFinalizerInfluencer
+    -      - ParticleControllerInfluencer
+    -      - RegionInfluencer
+    -      - ScaleInfluencer
+    -      - SimpleInfluencer
+    -      - SpawnInfluencer
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/PARTICLES/RENDERERS
+--------------------------------
+
+    -      - BillboardControllerRenderData
+    -      - BillboardRenderer
+    -      - ModelInstanceControllerRenderData
+    -      - ModelInstanceRenderer
+    -      - ParticleControllerControllerRenderer
+    -      - ParticleControllerRenderData
+    -      - ParticleControllerRenderer
+    -      - PointSpriteControllerRenderData
+    -      - PointSpriteRenderer
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/PARTICLES/VALUES
+-----------------------------
+
+    -      - CylinderSpawnShapeValue
+    -      - EllipseSpawnShapeValue
+    -      - GradientColorValue
+    -      - LineSpawnShapeValue
+    -      - MeshSpawnShapeValue
+    -      - NumericValue
+    -      - ParticleValue
+    -      - PointSpawnShapeValue
+    -      - PrimitiveSpawnShapeValue
+    -      - RangedNumericValue
+    -      - RectangleSpawnShapeValue
+    -      - ScaledNumericValue
+    -      - SpawnShapeValue
+    -      - UnweightedMeshSpawnShapeValue
+    -      - WeightMeshSpawnShapeValue
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/SHADERS
+--------------------
+
+    -      - BaseShader
+    -      - DefaultShader
+    -      - DepthShader
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/UTILS
+------------------
+
+    -      - AnimationController
+    -      - BaseAnimationController
+    -      - BaseShaderProvider
+    -      - CameraInputController
+    -      - DefaultRenderableSorter
+    -      - DefaultShaderProvider
+    -      - DefaultTextureBinder
+    -      - DepthShaderProvider
+    -      - F|irstPersonCameraController
+    -      - IMeshPartBuilder
+    -      - IRenderableSorter
+    -      - IShaderProvider
+    -      - ITextureBinder
+    -      - ITextureProvider
+    -      - MeshBuilder
+    -      - ModelBuilder
+    -      - RenderContext
+    -      - ShapeCache
+    -      - TextureDescriptor
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+GRAPHICS/G3D/UTILS/SHAPEBUILDERS
+--------------------------------
+
+    -      - ArrowShapeBuilder
+    -      - BaseShapeBuilder
+    -      - BoxShapeBuilder
+    -      - CapsuleShapeBuilder
+    -      - ConeShapeBuilder
+    -      - CylinderShapeBuilder
+    -      - EllipseShapeBuilder
+    -      - FrustrumShapeBuilder
+    -      - PatchShapeBuilder
+    -      - RenderableShapeBuilder
+    -      - SphereShapeBuilder
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -741,7 +1069,7 @@ SCENES.SCENE2D/UI
     -      - TextTooltip                    
     -      - TooltipManager                 
     -      - Touchpad                       
-    - IP   - Tree                           Genewrics have become confused, come back later
+    - IP   - Tree                           Generics have become confused, come back later
     - DONE - Value                          
     - DONE - ValueExtensions                New Class
     - DONE - VerticalGroup                  
@@ -786,7 +1114,6 @@ UTILS
     - DONE - DataOutput                     Check
     - DONE - DataUtils                      Added Class
     - DONE - ICloseable                     
-    - IP   - IncompleteAttribute
     - DONE - IClipboard                     Convert - Interface, clipboard handled in backends.                 
     - DONE - IRunnable                      Done, but is it needed?
     - DONE - Logger                         
@@ -798,7 +1125,8 @@ UTILS
     - DONE - Scaling
     - DONE - ScreenUtils
     - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
-    - IP   - SharedLibraryLoader            
+    - IP   - SharedLibraryLoader
+            - IP   - SystemHelpers
     - DONE - SortUtils
     - DONE - StringTokenizer
     - DONE - Timer                          

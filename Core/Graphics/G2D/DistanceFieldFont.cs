@@ -97,11 +97,9 @@ public class DistanceFieldFont : BitmapFont
     }
 
     /// <summary>
-    /// </summary>
-    /// <param name="distanceFieldSmoothing">
     /// Set the distance field smoothing factor for this font. SpriteBatch needs
     /// to have this shader set for rendering distance field fonts.
-    /// </param>
+    /// </summary>
     public void SetDistanceFieldSmoothing( float distanceFieldSmoothing )
     {
         this._distanceFieldSmoothing = distanceFieldSmoothing;
@@ -122,16 +120,16 @@ public class DistanceFieldFont : BitmapFont
                            + ";\n" //
                            + "attribute vec2 "
                            + ShaderProgram.TEXCOORD_ATTRIBUTE
-                           + "0;\n"                        //
-                           + "uniform mat4 u_projTrans;\n" //
-                           + "varying vec4 v_color;\n"     //
-                           + "varying vec2 v_texCoords;\n" //
-                           + "\n"                          //
-                           + "void main() {\n"             //
+                           + "0;\n"
+                           + "uniform mat4 u_projTrans;\n"
+                           + "varying vec4 v_color;\n"
+                           + "varying vec2 v_texCoords;\n"
+                           + "\n"
+                           + "void main() {\n"
                            + "	v_color = "
                            + ShaderProgram.COLOR_ATTRIBUTE
-                           + ";\n"                                       //
-                           + "	v_color.a = v_color.a * (255.0/254.0);\n" //
+                           + ";\n"
+                           + "	v_color.a = v_color.a * (255.0/254.0);\n"
                            + "	v_texCoords = "
                            + ShaderProgram.TEXCOORD_ATTRIBUTE
                            + "0;\n" //
@@ -140,25 +138,25 @@ public class DistanceFieldFont : BitmapFont
                            + ";\n" //
                            + "}\n";
 
-        var fragmentShader = "#ifdef GL_ES\n"                                                              //
-                             + "	precision mediump float;\n"                                               //
-                             + "	precision mediump int;\n"                                                 //
-                             + "#endif\n"                                                                  //
-                             + "\n"                                                                        //
-                             + "uniform sampler2D u_texture;\n"                                            //
-                             + "uniform float u_smoothing;\n"                                              //
-                             + "varying vec4 v_color;\n"                                                   //
-                             + "varying vec2 v_texCoords;\n"                                               //
-                             + "\n"                                                                        //
-                             + "void main() {\n"                                                           //
-                             + "	if (u_smoothing > 0.0) {\n"                                               //
-                             + "		float smoothing = 0.25 / u_smoothing;\n"                                 //
-                             + "		float distance = texture2D(u_texture, v_texCoords).a;\n"                 //
-                             + "		float alpha = smoothstep(0.5 - smoothing, 0.5 + smoothing, distance);\n" //
-                             + "		gl_FragColor = vec4(v_color.rgb, alpha * v_color.a);\n"                  //
-                             + "	} else {\n"                                                               //
-                             + "		gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"           //
-                             + "	}\n"                                                                      //
+        var fragmentShader = "#ifdef GL_ES\n"
+                             + "	precision mediump float;\n"
+                             + "	precision mediump int;\n"
+                             + "#endif\n"
+                             + "\n"
+                             + "uniform sampler2D u_texture;\n"
+                             + "uniform float u_smoothing;\n"
+                             + "varying vec4 v_color;\n"
+                             + "varying vec2 v_texCoords;\n"
+                             + "\n"
+                             + "void main() {\n"
+                             + "	if (u_smoothing > 0.0) {\n"
+                             + "		float smoothing = 0.25 / u_smoothing;\n"
+                             + "		float distance = texture2D(u_texture, v_texCoords).a;\n"
+                             + "		float alpha = smoothstep(0.5 - smoothing, 0.5 + smoothing, distance);\n"
+                             + "		gl_FragColor = vec4(v_color.rgb, alpha * v_color.a);\n"
+                             + "	} else {\n"
+                             + "		gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
+                             + "	}\n"
                              + "}\n";
 
         var shader = new ShaderProgram( vertexShader, fragmentShader );

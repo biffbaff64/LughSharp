@@ -23,9 +23,14 @@ namespace LibGDXSharp.G2D;
 [PublicAPI]
 public class AtlasSprite : Sprite
 {
+
+    #region properties
+
     public AtlasRegion Region          { get; set; }
     public float       OriginalOffsetX { get; set; }
     public float       OriginalOffsetY { get; set; }
+
+    #endregion properties
 
     public AtlasSprite( AtlasSprite sprite )
     {
@@ -42,7 +47,7 @@ public class AtlasSprite : Sprite
 
         Init( region );
     }
-    
+
     private void Init( AtlasRegion region )
     {
         OriginalOffsetX = region.OffsetX;
@@ -68,15 +73,8 @@ public class AtlasSprite : Sprite
         SetColor( 1, 1, 1, 1 );
     }
 
-    public void SetX( float x )
-    {
-        base.X = x + Region.OffsetX;
-    }
-
-    public void SetY( float y )
-    {
-        base.Y = y + Region.OffsetY;
-    }
+    public void SetX( float x ) => base.X = x + Region.OffsetX;
+    public void SetY( float y ) => base.Y = y + Region.OffsetY;
 
     public override void SetBounds( float x, float y, float width, float height )
     {
@@ -89,12 +87,11 @@ public class AtlasSprite : Sprite
         var packedWidth  = Region.Rotate ? Region.PackedHeight : Region.PackedWidth;
         var packedHeight = Region.Rotate ? Region.PackedWidth : Region.PackedHeight;
 
-        base.SetBounds
-            (
-             x + Region.OffsetX,
-             y + Region.OffsetY,
-             packedWidth * widthRatio,
-             packedHeight * heightRatio
+        base.SetBounds(
+            x + Region.OffsetX,
+            y + Region.OffsetY,
+            packedWidth * widthRatio,
+            packedHeight * heightRatio
             );
     }
 
@@ -135,7 +132,9 @@ public class AtlasSprite : Sprite
 
         Region.OffsetX = OriginalOffsetX;
         Region.OffsetY = OriginalOffsetY;
+        
         Region.Flip( x, y ); // Updates x and y offsets.
+        
         OriginalOffsetX =  Region.OffsetX;
         OriginalOffsetY =  Region.OffsetY;
         Region.OffsetX  *= widthRatio;
@@ -164,16 +163,16 @@ public class AtlasSprite : Sprite
             Region.OffsetX = oldOffsetY;
 
             Region.OffsetY = ( Region.OriginalHeight * heightRatio )
-                             - oldOffsetX
-                             - ( Region.PackedWidth * widthRatio );
+                           - oldOffsetX
+                           - ( Region.PackedWidth * widthRatio );
         }
         else
         {
             Region.OffsetY = oldOffsetX;
 
             Region.OffsetX = ( Region.OriginalWidth * widthRatio )
-                             - oldOffsetY
-                             - ( Region.PackedHeight * heightRatio );
+                           - oldOffsetY
+                           - ( Region.PackedHeight * heightRatio );
         }
 
         // Update position and origin with new offsets.
@@ -181,25 +180,13 @@ public class AtlasSprite : Sprite
         SetOrigin( oldOriginX, oldOriginY );
     }
 
-    public float GetX()
-    {
-        return base.X - Region.OffsetX;
-    }
+    public float GetX() => base.X - Region.OffsetX;
 
-    public float GetY()
-    {
-        return base.Y - Region.OffsetY;
-    }
+    public float GetY() => base.Y - Region.OffsetY;
 
-    public float GetOriginX()
-    {
-        return base.OriginX + Region.OffsetX;
-    }
+    public float GetOriginX() => base.OriginX + Region.OffsetX;
 
-    public float GetOriginY()
-    {
-        return base.OriginY + Region.OffsetY;
-    }
+    public float GetOriginY() => base.OriginY + Region.OffsetY;
 
     public float GetWidth()
     {
@@ -221,8 +208,5 @@ public class AtlasSprite : Sprite
         return base.Height / Region.RotatedPackedHeight;
     }
 
-    public override string? ToString()
-    {
-        return Region.ToString();
-    }
+    public override string? ToString() => Region.ToString();
 }

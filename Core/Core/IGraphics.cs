@@ -51,23 +51,12 @@ public interface IGraphics
     /// Describes a monitor, with X, Y, and Name properties.
     /// </summary>
     [PublicAPI]
-    public class MonitorDescriptor
+    public struct MonitorDescriptor
     {
-        public int    VirtualX { get; set; }
-        public int    VirtualY { get; set; }
-        public string Name     { get; set; }
-
-        public MonitorDescriptor( int virtualX, int virtualY, string name )
-        {
-            this.VirtualX = virtualX;
-            this.VirtualY = virtualY;
-            this.Name     = name;
-        }
-
-        public override string ToString()
-        {
-            return $"X:{VirtualX}, Y:{VirtualY} : Name: {Name}";
-        }
+        public int    VirtualX      { get; set; }
+        public int    VirtualY      { get; set; }
+        public string Name          { get; set; }
+        public long   MonitorHandle { get; set; }
     }
 
     /// <summary>

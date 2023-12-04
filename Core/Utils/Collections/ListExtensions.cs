@@ -66,7 +66,7 @@ public static class ListExtensions
         }
     }
 
-    public static void AddAll<T>( this List< T > ts, List< T > array )
+    public static void AddAll<T>( this List< T > ts, List< T >? array )
     {
         foreach ( T tex in array )
         {

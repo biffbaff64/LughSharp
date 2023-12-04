@@ -17,20 +17,19 @@
 namespace LibGDXSharp.Core.Files;
 
 /// <summary>
-/// A contains some other input stream, which it uses as its basic source of
-/// data, possibly transforming the data along the way or providing additional
-/// functionality. The class itself simply overrides all methods of with versions
-/// that pass all requests to the contained input stream. Subclasses of may
-/// further override some of these methods and may also provide additional
-/// methods and fields.
+/// A contains some other input stream, which it uses as its basic source of data,
+/// possibly transforming the data along the way or providing additional functionality.
+/// The class itself simply overrides all methods of with versions that pass all requests
+/// to the contained input stream. Subclasses of may further override some of these methods
+/// and may also provide additional methods and fields.
 /// </summary>
 [PublicAPI]
-public class FilterInputStream : InputStream
+public class FilterInputStream : StreamReader
 {
     /// <summary>
     /// The input stream to be filtered.
     /// </summary>
-    public InputStream? InputStream { get; set; }
+    public Stream Stream { get; set; }
 
     /// <summary>
     /// Creates a <tt>FilterInputStream</tt> by assigning the  argument <tt>in</tt>
@@ -40,18 +39,19 @@ public class FilterInputStream : InputStream
     /// created without an underlying stream.
     /// </param>
     /// </summary>
-    protected FilterInputStream( InputStream? inStream )
+    protected FilterInputStream( Stream inStream )
+        : base( inStream )
     {
         ArgumentNullException.ThrowIfNull
             ( inStream, "Can't create a FilterInputSTream with a null In[putStream!" );
 
-        this.InputStream = inStream;
+        this.Stream = inStream;
     }
 
     /// <inheritdoc/>
     public override int Read()
     {
-        return InputStream!.Read();
+        return Stream.Read();
     }
     
     /// <summary>

@@ -35,7 +35,7 @@ public class DesktopGLWindowConfiguration
     public bool  InitialVisible         { get; set; }         = true;
     public bool  VSyncEnabled           { get; private set; } = true;
 
-    public DesktopGLGraphics.DesktopGLMonitor?     MaximizedMonitor   { get; set; }
+    public DesktopGLGraphics.GLMonitorHandle?      MaximizedMonitor   { get; set; }
     public FileType                                WindowIconFileType { get; set; }
     public string[]?                               WindowIconPaths    { get; set; }
     public IDesktopGLWindowListener?               WindowListener     { get; set; }
@@ -133,10 +133,10 @@ public class DesktopGLWindowConfiguration
 
     /// <summary>
     /// </summary>
-    /// <param name="monitor"> what monitor the window should maximize to. </param>
-    public void SetMaximizedMonitor( DesktopGLGraphics.DesktopGLMonitor monitor )
+    /// <param name="monitorHandle"> what monitor the window should maximize to. </param>
+    public void SetMaximizedMonitor( DesktopGLGraphics.GLMonitorHandle monitorHandle )
     {
-        this.MaximizedMonitor = monitor;
+        this.MaximizedMonitor = monitorHandle;
     }
 
     /// <summary>

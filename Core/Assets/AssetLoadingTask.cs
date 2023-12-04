@@ -71,12 +71,9 @@ public class AssetLoadingTask
         {
             if ( !DependenciesLoaded )
             {
-                dependencies = asyncLoader.GetDependencies
-                    (
-                    AssetDesc.FilePath ?? "",
-                    Resolve( asyncLoader, AssetDesc ),
-                    AssetDesc.Parameters
-                    );
+                dependencies = asyncLoader.GetDependencies( AssetDesc.FilePath ?? "",
+                                                            Resolve( asyncLoader, AssetDesc ),
+                                                            AssetDesc.Parameters );
 
                 if ( dependencies != null )
                 {
@@ -87,26 +84,20 @@ public class AssetLoadingTask
                 {
                     // if we have no dependencies, we load the
                     // async part of the task immediately.
-                    asyncLoader.LoadAsync
-                        (
-                        _manager,
-                        AssetDesc.FilePath,
-                        Resolve( _loader, AssetDesc ),
-                        AssetDesc.Parameters
-                        );
+                    asyncLoader.LoadAsync( _manager,
+                                           AssetDesc.FilePath,
+                                           Resolve( _loader, AssetDesc ),
+                                           AssetDesc.Parameters );
 
                     _asyncDone = true;
                 }
             }
             else
             {
-                asyncLoader.LoadAsync
-                    (
-                    _manager,
-                    AssetDesc.FilePath,
-                    Resolve( _loader, AssetDesc ),
-                    AssetDesc.Parameters
-                    );
+                asyncLoader.LoadAsync( _manager,
+                                       AssetDesc.FilePath,
+                                       Resolve( _loader, AssetDesc ),
+                                       AssetDesc.Parameters );
 
                 _asyncDone = true;
             }
@@ -145,12 +136,10 @@ public class AssetLoadingTask
         if ( !_loader.IsSynchronous )
         {
             ( ( AsynchronousAssetLoader< Type, AssetLoaderParameters > )_loader ).UnloadAsync
-                (
-                _manager,
-                AssetDesc.FilePath,
-                Resolve( _loader, AssetDesc ),
-                AssetDesc.Parameters
-                );
+                ( _manager,
+                  AssetDesc.FilePath,
+                  Resolve( _loader, AssetDesc ),
+                  AssetDesc.Parameters );
         }
     }
 
@@ -187,22 +176,16 @@ public class AssetLoadingTask
         {
             DependenciesLoaded = true;
 
-            dependencies = syncLoader.GetDependencies
-                (
-                AssetDesc.FilePath,
-                Resolve( _loader, AssetDesc ),
-                AssetDesc.Parameters
-                );
+            dependencies = syncLoader.GetDependencies( AssetDesc.FilePath,
+                                                       Resolve( _loader, AssetDesc ),
+                                                       AssetDesc.Parameters );
 
             if ( dependencies == null )
             {
-                Asset = syncLoader.Load
-                    (
-                    _manager,
-                    AssetDesc.FilePath,
-                    Resolve( _loader, AssetDesc ),
-                    AssetDesc.Parameters
-                    );
+                Asset = syncLoader.Load( _manager,
+                                         AssetDesc.FilePath,
+                                         Resolve( _loader, AssetDesc ),
+                                         AssetDesc.Parameters );
 
                 return;
             }
@@ -212,13 +195,10 @@ public class AssetLoadingTask
         }
         else
         {
-            Asset = syncLoader.Load
-                (
-                _manager,
-                AssetDesc.FilePath,
-                Resolve( _loader, AssetDesc ),
-                AssetDesc.Parameters
-                );
+            Asset = syncLoader.Load( _manager,
+                                     AssetDesc.FilePath,
+                                     Resolve( _loader, AssetDesc ),
+                                     AssetDesc.Parameters );
         }
     }
 
@@ -260,13 +240,10 @@ public class AssetLoadingTask
 
                 if ( _asyncDone )
                 {
-                    Asset = asyncLoader.LoadSync
-                        (
-                        _manager,
-                        AssetDesc.FilePath,
-                        Resolve( _loader, AssetDesc ),
-                        AssetDesc.Parameters
-                        );
+                    Asset = asyncLoader.LoadSync( _manager,
+                                                  AssetDesc.FilePath,
+                                                  Resolve( _loader, AssetDesc ),
+                                                  AssetDesc.Parameters );
                 }
             }
         }
@@ -276,13 +253,10 @@ public class AssetLoadingTask
         }
         else if ( _asyncDone )
         {
-            Asset = asyncLoader.LoadSync
-                (
-                _manager,
-                AssetDesc.FilePath,
-                Resolve( _loader, AssetDesc ),
-                AssetDesc.Parameters
-                );
+            Asset = asyncLoader.LoadSync( _manager,
+                                          AssetDesc.FilePath,
+                                          Resolve( _loader, AssetDesc ),
+                                          AssetDesc.Parameters );
         }
         else if ( ( _loadFuture != null ) && _loadFuture.IsDone() )
         {
@@ -295,13 +269,10 @@ public class AssetLoadingTask
                 throw new GdxRuntimeException( $"Couldn't load asset: {AssetDesc.FilePath}", e );
             }
 
-            Asset = asyncLoader.LoadSync
-                (
-                _manager,
-                AssetDesc.FilePath,
-                Resolve( _loader, AssetDesc ),
-                AssetDesc.Parameters
-                );
+            Asset = asyncLoader.LoadSync( _manager,
+                                          AssetDesc.FilePath,
+                                          Resolve( _loader, AssetDesc ),
+                                          AssetDesc.Parameters );
         }
     }
 

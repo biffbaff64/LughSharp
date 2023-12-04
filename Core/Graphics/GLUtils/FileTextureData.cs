@@ -25,10 +25,7 @@ public class FileTextureData : ITextureData
     private int            _height     = 0;
     private bool           _isPrepared = false;
 
-    public FileTextureData( FileInfo file,
-                            Pixmap preloadedPixmap,
-                            Pixmap.Format? format,
-                            bool useMipMaps )
+    public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.Format? format, bool useMipMaps )
     {
         this.File       = file;
         this._pixmap    = preloadedPixmap;
@@ -89,7 +86,7 @@ public class FileTextureData : ITextureData
     {
         if ( !IsPrepared )
         {
-            throw new GdxRuntimeException( "Call prepare() before calling getPixmap()" );
+            throw new GdxRuntimeException( "Call prepare() before calling ConsumePixmap()" );
         }
 
         IsPrepared = false;

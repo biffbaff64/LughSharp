@@ -27,7 +27,7 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
         this._effect = effect;
     }
 
-    protected PooledEffect NewObject()
+    protected new PooledEffect NewObject()
     {
         var pooledEffect = new PooledEffect( _effect, this );
         pooledEffect.Start();
@@ -63,6 +63,7 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
         }
     }
 
+    [PublicAPI]
     public class PooledEffect : ParticleEffect
     {
         private readonly ParticleEffectPool _effectPool;

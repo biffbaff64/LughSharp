@@ -35,7 +35,7 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 /// </para>
 /// </summary>
 [PublicAPI]
-public class PushbackInputStream : FilterInputStream
+public class PushbackStream
 {
     protected byte[]? pushbackBuffer;
 
@@ -51,7 +51,7 @@ public class PushbackInputStream : FilterInputStream
     /// <param name="inStream"> the input stream from which bytes will be read. </param>
     /// <param name="size"> the size of the pushback buffer. </param>
     /// <exception cref="ArgumentException"> if <tt>size &lt;= 0</tt> </exception>
-    public PushbackInputStream( InputStream inStream, int size = 1 )
+    public PushbackStream( StreamReader inStream, int size = 1 )
         : base( inStream )
     {
         if ( size <= 0 )
@@ -344,13 +344,13 @@ public class PushbackInputStream : FilterInputStream
     /// <exception cref="IOException"> if an I/O error occurs. </exception>
     public override void Close()
     {
-        if ( InputStream == null )
+        if ( Stream == null )
         {
             return;
         }
 
-        InputStream.Close();
-        InputStream    = null;
+        Stream.Close();
+        Stream    = null;
         pushbackBuffer = null;
     }
 
@@ -359,7 +359,7 @@ public class PushbackInputStream : FilterInputStream
     /// </summary>
     private void EnsureOpen()
     {
-        if ( InputStream == null )
+        if ( Stream == null )
         {
             throw new IOException( "Stream closed" );
         }

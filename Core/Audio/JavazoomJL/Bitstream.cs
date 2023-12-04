@@ -30,6 +30,9 @@ namespace LibGDXSharp.Core.Audio.JavazoomJL;
 [PublicAPI]
 public class Bitstream
 {
+
+    #region constants
+
     // Synchronization control constant for the initial synchronization to the start of a frame.
     public const byte INITIAL_SYNC = 0;
 
@@ -63,35 +66,34 @@ public class Bitstream
 
     public const int BITSTREAM_LAST = 0x1ff;
 
+    #endregion constants
+
+    #region properties
+
     public int   HeaderPos       { get; set; } = 0;
     public float ReplayGainScale { get; set; }
 
-    // The frame buffer that holds the data for the current frame.
-    private int[] _framebuffer = new int[ BUFFER_INT_SIZE ];
+    #endregion properties
 
-    // Number of valid bytes in the frame buffer.
-    private int _framesize;
+    #region private readonly
 
-    // The bytes read from the stream.
-    private byte[] _frameBytes = new byte[ BUFFER_INT_SIZE * 4 ];
-
-    // Index into framebuffer where the next bits are retrieved.
-    private int _wordpointer;
-
-    // Number (0-31, from MSB to LSB) of next bit for get_bits()
-    private int _bitindex;
-
-    private int[] _bitmask =
+    private readonly int[] _bitmask =
     {
         0, // dummy
-        0x00000001, 0x00000003, 0x00000007, 0x0000000F, 0x0000001F,
-        0x0000003F, 0x0000007F, 0x000000FF, 0x000001FF, 0x000003FF,
-        0x000007FF, 0x00000FFF, 0x00001FFF, 0x00003FFF, 0x00007FFF,
-        0x0000FFFF, 0x0001FFFF
+        0x00000001, 0x00000003, 0x00000007, 0x0000000F, 0x0000001F, 0x0000003F, 0x0000007F, 0x000000FF,
+        0x000001FF, 0x000003FF, 0x000007FF, 0x00000FFF, 0x00001FFF, 0x00003FFF, 0x00007FFF, 0x0000FFFF,
+        0x0001FFFF
     };
 
-    private PushbackInputStream? _source;
+    private readonly PushbackStream? _source;
 
+    #endregion private readonly
+
+    private int     _wordpointer;                                    // Index into framebuffer where the next bits are retrieved.
+    private int     _bitindex;                                       // Number (0-31, from MSB to LSB) of next bit for get_bits()
+    private int     _framesize;                                      // Number of valid bytes in the frame buffer.
+    private byte[]  _frameBytes   = new byte[ BUFFER_INT_SIZE * 4 ]; // The bytes read from the stream.
+    private int[]   _framebuffer  = new int[ BUFFER_INT_SIZE ];      // The frame buffer that holds the data for the current frame.
     private Header  _header       = new();
     private byte[]  _syncbuf      = new byte[ 4 ];
     private Crc16[] _crc          = new Crc16[ 1 ];
@@ -106,246 +108,21 @@ public class Bitstream
     /// Construct a IBitstream that reads data from a given InputStream.  
     /// </summary>
     /// <param name="inStream"> The InputStream to read from. </param>
-    public Bitstream( BufferedStream inStream )
+    public Bitstream( PushbackStream inStream )
     {
         ArgumentNullException.ThrowIfNull( inStream );
 
-        LoadID3V2( inStream );
+        _crc         = new Crc16[ 1 ];
+        _syncbuf     = new byte[ 4 ];
+        _frameBytes  = new byte[ BUFFER_INT_SIZE * 4 ];
+        _framebuffer = new int[ BUFFER_INT_SIZE ];
+        _header      = new Header();
 
         _firstframe = true;
 
-        _source = new PushbackInputStream( inStream, BUFFER_INT_SIZE * 4 );
+        _source = new PushbackStream( inStream, BUFFER_INT_SIZE * 4 );
 
         CloseFrame();
-    }
-
-    /// <summary>
-    /// Load ID3v2 frames.
-    /// </summary>
-    /// <param name="inStream"> MP3 InputStream. </param>
-    private void LoadID3V2( BufferedStream inStream )
-    {
-        var size = -1;
-
-        try
-        {
-            // Read ID3v2 header (10 bytes).
-            inStream.Mark( 10 );
-
-            size      = ReadID3V2Header( inStream );
-            HeaderPos = size;
-        }
-        catch ( IOException )
-        {
-            // ignored
-        }
-        finally
-        {
-            try
-            {
-                // Unread ID3v2 header (10 bytes).
-                inStream.Reset();
-            }
-            catch ( IOException )
-            {
-                // ignored
-            }
-        }
-
-        // Load ID3v2 tags.
-        try
-        {
-            if ( size > 0 )
-            {
-                _rawid3V2 = new byte[ size ];
-
-                if ( inStream.Read( _rawid3V2, 0, _rawid3V2.Length ) > 0 )
-                {
-                    ParseID3V2Frames( _rawid3V2 );
-                }
-            }
-        }
-        catch ( IOException )
-        {
-            // ignored
-        }
-    }
-
-    /// <summary>
-    /// Parse ID3v2 tag header to find out size of ID3v2 frames.
-    /// </summary>
-    /// <param name="inStream"> MP3 InputStream </param>
-    /// <returns> size of ID3v2 frames + header </returns>
-    [SuppressMessage( "ReSharper", "MustUseReturnValue" )]
-    private int ReadID3V2Header( BufferedStream inStream )
-    {
-        var id3Header = new byte[ 4 ];
-        var size      = -10;
-
-        inStream.Read( id3Header, 0, 3 );
-
-        // Look for ID3v2
-        if ( ( id3Header[ 0 ] == 'I' ) && ( id3Header[ 1 ] == 'D' ) && ( id3Header[ 2 ] == '3' ) )
-        {
-            inStream.Read( id3Header, 0, 3 );
-            inStream.Read( id3Header, 0, 4 );
-
-            size = ( id3Header[ 0 ] << 21 )
-                 + ( id3Header[ 1 ] << 14 )
-                 + ( id3Header[ 2 ] << 7 )
-                 + id3Header[ 3 ];
-        }
-
-        return size + 10;
-    }
-
-    /// <summary>
-    /// Return raw ID3v2 frames + header.
-    /// </summary>
-    /// <returns>
-    /// ID3v2 InputStream or null if ID3v2 frames are not available.
-    /// </returns>
-    public InputStream? GetRawID3V2()
-    {
-        if ( _rawid3V2 == null )
-        {
-            return null;
-        }
-        else
-        {
-            return new ByteArrayInputStream( _rawid3V2 );
-        }
-    }
-
-    private void ParseID3V2Frames( byte[]? bframes )
-    {
-        if ( bframes == null )
-        {
-            return;
-        }
-
-        if ( !"ID3".Equals( bframes.ToString()?.Substring( 0, 3 ) ) )
-        {
-            return;
-        }
-
-        var v2Version = ( bframes[ 3 ] & 0xFF );
-
-        if ( ( v2Version < 2 ) || ( v2Version > 4 ) )
-        {
-            return;
-        }
-
-        try
-        {
-            float? replayGain     = 0f;
-            float? replayGainPeak = 0f;
-            int    size;
-
-            for ( var i = 10; ( i < bframes.Length ) && ( bframes[ i ] > 0 ); i += size )
-            {
-                string? value;
-
-                if ( ( v2Version == 3 ) || ( v2Version == 4 ) )
-                {
-                    // ID3v2.3 & ID3v2.4
-                    var code = new string( bframes.ToString()?.Substring( i, 4 ) );
-
-                    size = ( Int32 )( ( bframes[ i + 4 ] << 24 ) & 0xFF000000 )
-                         | ( ( bframes[ i + 5 ] << 16 ) & 0x00FF0000 )
-                         | ( ( bframes[ i + 6 ] << 8 ) & 0x0000FF00 )
-                         | ( bframes[ i + 7 ] & 0x000000FF );
-
-                    i += 10;
-
-                    if ( code.Equals( "TXXX" ) )
-                    {
-                        value = ParseText( bframes, i, size, 1 );
-
-                        var values = value.Split( "\0" );
-
-                        if ( values.Length == 2 )
-                        {
-                            var name = values[ 0 ];
-
-                            value = values[ 1 ];
-
-                            if ( name.Equals( "replaygain_track_peak" ) )
-                            {
-                                replayGainPeak = float.Parse( value );
-
-                                if ( replayGain != null )
-                                {
-                                    break;
-                                }
-                            }
-                            else if ( name.Equals( "replaygain_track_gain" ) )
-                            {
-                                replayGain = float.Parse( value.Replace( " dB", "" ) ) + 3;
-
-                                if ( replayGainPeak != null )
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // ID3v2.2
-                    var scode = new string( bframes.ToString()?.Substring( i, 3 ) );
-
-                    size = ( bframes[ i + 3 ] << 16 ) + ( bframes[ i + 4 ] << 8 ) + bframes[ i + 5 ];
-
-                    i += 6;
-
-                    if ( scode.Equals( "TXXX" ) )
-                    {
-                        value = ParseText( bframes, i, size, 1 );
-
-                        var values = value.Split( "\0" );
-
-                        if ( values.Length == 2 )
-                        {
-                            var name = values[ 0 ];
-                            value = values[ 1 ];
-
-                            if ( name.Equals( "replaygain_track_peak" ) )
-                            {
-                                replayGainPeak = float.Parse( value );
-
-                                if ( replayGain != null )
-                                {
-                                    break;
-                                }
-                            }
-                            else if ( name.Equals( "replaygain_track_gain" ) )
-                            {
-                                replayGain = float.Parse( value.Replace( " dB", "" ) ) + 3;
-
-                                if ( replayGainPeak != null )
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ( ( replayGain != null ) && ( replayGainPeak != null ) )
-            {
-                ReplayGainScale = ( float )Math.Pow( 10, ( double )( replayGain / 20f ) );
-
-                // If scale * peak > 1 then reduce scale (preamp) to prevent clipping.
-                ReplayGainScale = Math.Min( ( float )( 1 / replayGainPeak ), ReplayGainScale );
-            }
-        }
-        catch ( GdxRuntimeException )
-        {
-            // ignored
-        }
     }
 
     private unsafe string ParseText( byte[] bframes, int offset, int size, int skip )
@@ -581,7 +358,9 @@ public class Bitstream
             throw new BitstreamException( STREAM_EOF );
         }
 
-        var headerstring = ( ( _syncbuf[ 0 ] << 16 ) & 0x00FF0000 ) | ( ( _syncbuf[ 1 ] << 8 ) & 0x0000FF00 ) | ( ( _syncbuf[ 2 ] << 0 ) & 0x000000FF );
+        var headerstring = ( ( _syncbuf[ 0 ] << 16 ) & 0x00FF0000 )
+                         | ( ( _syncbuf[ 1 ] << 8 ) & 0x0000FF00 )
+                         | ( ( _syncbuf[ 2 ] << 0 ) & 0x000000FF );
 
         do
         {
@@ -827,5 +606,236 @@ public class Bitstream
         }
 
         return totalBytesRead;
+    }
+    
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// Load ID3v2 frames.
+    /// </summary>
+    /// <param name="inStream"> MP3 InputStream. </param>
+    private void LoadID3V2( PushbackStream inStream )
+    {
+        var size = -1;
+
+        try
+        {
+            // Read ID3v2 header (10 bytes).
+            inStream.Mark( 10 );
+
+            size      = ReadID3V2Header( inStream );
+            HeaderPos = size;
+        }
+        catch ( IOException )
+        {
+            // ignored
+        }
+        finally
+        {
+            try
+            {
+                // Unread ID3v2 header (10 bytes).
+                inStream.Reset();
+            }
+            catch ( IOException )
+            {
+                // ignored
+            }
+        }
+
+        // Load ID3v2 tags.
+        try
+        {
+            if ( size > 0 )
+            {
+                _rawid3V2 = new byte[ size ];
+
+                if ( inStream.Read( _rawid3V2, 0, _rawid3V2.Length ) > 0 )
+                {
+                    ParseID3V2Frames( _rawid3V2 );
+                }
+            }
+        }
+        catch ( IOException )
+        {
+            // ignored
+        }
+    }
+
+    /// <summary>
+    /// Parse ID3v2 tag header to find out size of ID3v2 frames.
+    /// </summary>
+    /// <param name="inStream"> MP3 InputStream </param>
+    /// <returns> size of ID3v2 frames + header </returns>
+    [SuppressMessage( "ReSharper", "MustUseReturnValue" )]
+    private int ReadID3V2Header( PushbackStream inStream )
+    {
+        var id3Header = new byte[ 4 ];
+        var size      = -10;
+
+        inStream.Read( id3Header, 0, 3 );
+
+        // Look for ID3v2
+        if ( ( id3Header[ 0 ] == 'I' ) && ( id3Header[ 1 ] == 'D' ) && ( id3Header[ 2 ] == '3' ) )
+        {
+            inStream.Read( id3Header, 0, 3 );
+            inStream.Read( id3Header, 0, 4 );
+
+            size = ( id3Header[ 0 ] << 21 )
+                 + ( id3Header[ 1 ] << 14 )
+                 + ( id3Header[ 2 ] << 7 )
+                 + id3Header[ 3 ];
+        }
+
+        return size + 10;
+    }
+
+    /// <summary>
+    /// Return raw ID3v2 frames + header.
+    /// </summary>
+    /// <returns>
+    /// ID3v2 InputStream or null if ID3v2 frames are not available.
+    /// </returns>
+    public InputStream? GetRawID3V2()
+    {
+        if ( _rawid3V2 == null )
+        {
+            return null;
+        }
+        else
+        {
+            return new ByteArrayInputStream( _rawid3V2 );
+        }
+    }
+
+    private void ParseID3V2Frames( byte[]? bframes )
+    {
+        if ( bframes == null )
+        {
+            return;
+        }
+
+        if ( !"ID3".Equals( bframes.ToString()?.Substring( 0, 3 ) ) )
+        {
+            return;
+        }
+
+        var v2Version = ( bframes[ 3 ] & 0xFF );
+
+        if ( ( v2Version < 2 ) || ( v2Version > 4 ) )
+        {
+            return;
+        }
+
+        try
+        {
+            float? replayGain     = 0f;
+            float? replayGainPeak = 0f;
+            int    size;
+
+            for ( var i = 10; ( i < bframes.Length ) && ( bframes[ i ] > 0 ); i += size )
+            {
+                string? value;
+
+                if ( ( v2Version == 3 ) || ( v2Version == 4 ) )
+                {
+                    // ID3v2.3 & ID3v2.4
+                    var code = new string( bframes.ToString()?.Substring( i, 4 ) );
+
+                    size = ( Int32 )( ( bframes[ i + 4 ] << 24 ) & 0xFF000000 )
+                         | ( ( bframes[ i + 5 ] << 16 ) & 0x00FF0000 )
+                         | ( ( bframes[ i + 6 ] << 8 ) & 0x0000FF00 )
+                         | ( bframes[ i + 7 ] & 0x000000FF );
+
+                    i += 10;
+
+                    if ( code.Equals( "TXXX" ) )
+                    {
+                        value = ParseText( bframes, i, size, 1 );
+
+                        var values = value.Split( "\0" );
+
+                        if ( values.Length == 2 )
+                        {
+                            var name = values[ 0 ];
+
+                            value = values[ 1 ];
+
+                            if ( name.Equals( "replaygain_track_peak" ) )
+                            {
+                                replayGainPeak = float.Parse( value );
+
+                                if ( replayGain != null )
+                                {
+                                    break;
+                                }
+                            }
+                            else if ( name.Equals( "replaygain_track_gain" ) )
+                            {
+                                replayGain = float.Parse( value.Replace( " dB", "" ) ) + 3;
+
+                                if ( replayGainPeak != null )
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // ID3v2.2
+                    var scode = new string( bframes.ToString()?.Substring( i, 3 ) );
+
+                    size = ( bframes[ i + 3 ] << 16 ) + ( bframes[ i + 4 ] << 8 ) + bframes[ i + 5 ];
+
+                    i += 6;
+
+                    if ( scode.Equals( "TXXX" ) )
+                    {
+                        value = ParseText( bframes, i, size, 1 );
+
+                        var values = value.Split( "\0" );
+
+                        if ( values.Length == 2 )
+                        {
+                            var name = values[ 0 ];
+                            value = values[ 1 ];
+
+                            if ( name.Equals( "replaygain_track_peak" ) )
+                            {
+                                replayGainPeak = float.Parse( value );
+
+                                if ( replayGain != null )
+                                {
+                                    break;
+                                }
+                            }
+                            else if ( name.Equals( "replaygain_track_gain" ) )
+                            {
+                                replayGain = float.Parse( value.Replace( " dB", "" ) ) + 3;
+
+                                if ( replayGainPeak != null )
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ( ( replayGain != null ) && ( replayGainPeak != null ) )
+            {
+                ReplayGainScale = ( float )Math.Pow( 10, ( double )( replayGain / 20f ) );
+
+                // If scale * peak > 1 then reduce scale (preamp) to prevent clipping.
+                ReplayGainScale = Math.Min( ( float )( 1 / replayGainPeak ), ReplayGainScale );
+            }
+        }
+        catch ( GdxRuntimeException )
+        {
+            // ignored
+        }
     }
 }

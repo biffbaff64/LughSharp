@@ -19,7 +19,7 @@ namespace LibGDXSharp.G2D;
 [PublicAPI]
 public partial record TextureAtlasData
 {
-    protected interface IField<T>
+    protected interface IField<in T>
     {
         void Parse( T obj, params string[] entry );
     }
@@ -54,23 +54,23 @@ public partial record TextureAtlasData
         //@formatter:off
         Dictionary< string, IField< Page > > pageFields = new( 15 )
         {
-            { "pma",        new PageFieldPmaClass()    },
-            { "size",       new PageFieldParseClass()  },
-            { "format",     new PageFieldFormatClass() },
-            { "filter",     new PageFieldFilterClass() },
-            { "repeat",     new PageFieldRepeatClass() },
+            { "pma",        new PageFieldPma()    },
+            { "size",       new PageFieldParse()  },
+            { "format",     new PageFieldFormat() },
+            { "filter",     new PageFieldFilter() },
+            { "repeat",     new PageFieldRepeat() },
         };
 
         Dictionary< string, IField< Region > > regionFields = new( 127 )
         {
-            { "rotate",     new RegionFieldRotateClass()  },
-            { "xy",         new RegionFieldXYClass()      },
-            { "size",       new RegionFieldSizeClass()    },
-            { "bounds",     new RegionFieldBoundsClass()  },
-            { "orig",       new RegionFieldOrigClass()    },
-            { "offset",     new RegionFieldOffsetClass()  },
-            { "offsets",    new RegionFieldOffsetsClass() },
-            { "index",      new RegionFieldIndexClass()   },
+            { "rotate",     new RegionFieldRotate()  },
+            { "xy",         new RegionFieldXY()      },
+            { "size",       new RegionFieldSize()    },
+            { "bounds",     new RegionFieldBounds()  },
+            { "orig",       new RegionFieldOrig()    },
+            { "offset",     new RegionFieldOffset()  },
+            { "offsets",    new RegionFieldOffsets() },
+            { "index",      new RegionFieldIndex()   },
         };
         //@formatter:on
 
@@ -233,15 +233,24 @@ public partial record TextureAtlasData
     /// <returns></returns>
     private int ReadEntry( string? line )
     {
-        if ( line == null ) return 0;
+        if ( line == null )
+        {
+            return 0;
+        }
 
         line = line.Trim();
 
-        if ( line.Length == 0 ) return 0;
+        if ( line.Length == 0 )
+        {
+            return 0;
+        }
 
         var colon = line.IndexOf( ':' );
 
-        if ( colon == -1 ) return 0;
+        if ( colon == -1 )
+        {
+            return 0;
+        }
 
         Entry[ 0 ] = line.Substring( 0, colon ).Trim();
 
@@ -260,7 +269,10 @@ public partial record TextureAtlasData
 
             lastMatch = comma + 1;
 
-            if ( i == 4 ) return 4;
+            if ( i == 4 )
+            {
+                return 4;
+            }
         }
     }
 

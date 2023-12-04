@@ -98,16 +98,10 @@ public class Texture : GLTexture
     /// <param name="height">The Height in pixels.</param>
     /// <param name="format">The pixmap <see cref="Pixmap.Format"/></param>
     public Texture( int width, int height, Pixmap.Format format )
-        : this
-            (
-             new PixmapTextureData
-                 (
-                  new Pixmap( width, height, format ),
-                  null,
-                  false,
-                  true
-                 )
-            )
+        : this( new PixmapTextureData( new Pixmap( width, height, format ),
+                                       null,
+                                       false,
+                                       true ) )
     {
     }
 
@@ -197,17 +191,16 @@ public class Texture : GLTexture
 
         Bind();
 
-        Gdx.GL.GLTexSubImage2D
-            (
-             GLTarget,
-             0,
-             x,
-             y,
-             pixmap.Width,
-             pixmap.Height,
-             pixmap.GLFormat,
-             pixmap.GLType,
-             pixmap.Pixels
+        Gdx.GL.GLTexSubImage2D(
+            GLTarget,
+            0,
+            x,
+            y,
+            pixmap.Width,
+            pixmap.Height,
+            pixmap.GLFormat,
+            pixmap.GLType,
+            pixmap.Pixels
             );
     }
 

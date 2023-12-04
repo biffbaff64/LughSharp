@@ -120,10 +120,7 @@ public interface ITextureData
         /// <returns></returns>
         public static ITextureData? LoadFromFile( FileInfo? file, Pixmap.Format? format, bool useMipMaps )
         {
-            if ( file == null )
-            {
-                return null;
-            }
+            ArgumentNullException.ThrowIfNull( file );
 
             if ( file.Name.EndsWith( ".cim" ) )
             {

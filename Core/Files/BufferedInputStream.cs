@@ -318,7 +318,7 @@ public class BufferedInputStream : FilterInputStream
             }
 
             // if not closed but no bytes available, return
-            if ( ( InputStream != null ) && ( InputStream.Available() <= 0 ) )
+            if ( ( Stream != null ) && ( Stream.Available() <= 0 ) )
             {
                 return n;
             }
@@ -462,8 +462,8 @@ public class BufferedInputStream : FilterInputStream
             //TODO: Dummy class implemented, needs correcting
             if ( _bufUpdater.CompareAndSet( this, buffer, null ) )
             {
-                InputStream? input = InputStream;
-                InputStream = null;
+                InputStream? input = Stream;
+                Stream = null;
 
                 if ( input != null )
                 {
@@ -481,7 +481,7 @@ public class BufferedInputStream : FilterInputStream
     /// </summary>
     private InputStream GetInputStreamIfOpen()
     {
-        InputStream? input = InputStream;
+        InputStream? input = Stream;
 
         if ( input == null )
         {

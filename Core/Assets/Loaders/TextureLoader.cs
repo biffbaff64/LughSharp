@@ -27,6 +27,7 @@ namespace LibGDXSharp.Assets.Loaders;
 [PublicAPI]
 public class TextureLoader : AsynchronousAssetLoader, IDisposable
 {
+    [PublicAPI]
     public class TextureLoaderInfo
     {
         public string?       Filename { get; set; }
@@ -105,17 +106,11 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
             texture = new Texture( _loaderInfo.Data );
         }
 
-        texture.SetFilter
-            (
-             ( ( TextureParameter )parameter ).MinFilter,
-             ( ( TextureParameter )parameter ).MagFilter
-            );
+        texture.SetFilter( ( ( TextureParameter )parameter ).MinFilter,
+                           ( ( TextureParameter )parameter ).MagFilter );
 
-        texture.SetWrap
-            (
-             ( ( TextureParameter )parameter ).WrapU,
-             ( ( TextureParameter )parameter ).WrapV
-            );
+        texture.SetWrap( ( ( TextureParameter )parameter ).WrapU,
+                         ( ( TextureParameter )parameter ).WrapV );
 
         return texture;
     }
