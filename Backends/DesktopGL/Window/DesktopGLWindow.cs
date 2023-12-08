@@ -14,7 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files.Buffers;
+using System.Runtime.InteropServices;
+
+using LibGDXSharp.Backends.DesktopGL;
 using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Backends.Desktop;
@@ -23,15 +25,13 @@ namespace LibGDXSharp.Backends.Desktop;
 public class DesktopGLWindow : IDisposable
 {
     public IDesktopGLWindowListener?         WindowListener      { get; set; }
-    public GLFW.Window                       GlfwWindow        { get; set; }
+    public GLFW.Window                       GlfwWindow          { get; set; }
     public IApplicationListener              Listener            { get; set; }
     public IDesktopGLInput                   Input               { get; set; } = null!;
     public DesktopGLGraphics                 Graphics            { get; set; } = null!;
     public DesktopGLApplicationConfiguration Config              { get; set; }
     public bool                              ListenerInitialised { get; set; } = false;
 
-    private          IntBuffer                 _tmpBuffer;
-    private          IntBuffer                 _tmpBuffer2;
     private          bool                      _iconified         = false;
     private          bool                      _requestRendering  = false;
     private readonly List< Runnable >          _runnables         = new();
@@ -48,28 +48,42 @@ public class DesktopGLWindow : IDisposable
         this.WindowListener = config.WindowListener;
         this.Config         = config;
         this._application   = application;
-        this._tmpBuffer     = BufferUtils.NewIntBuffer( 1 );
-        this._tmpBuffer2    = BufferUtils.NewIntBuffer( 1 );
     }
 
     /// <summary>
+    /// Creates a new Window and sets up the various related callbacks.
     /// </summary>
-    /// <param name="windowHandle"></param>
-    public void Create( GLFW.Window windowHandle )
+    public void Create( GLFW.Window window )
     {
-        this.GlfwWindow = windowHandle;
-        this.Input        = _application.CreateInput( this );
-        this.Graphics     = new DesktopGLGraphics( this );
+        this.GlfwWindow = window;
+        this.Input      = _application.CreateInput( this );
+        this.Graphics   = new DesktopGLGraphics( this );
 
-        Glfw.SetWindowFocusCallback( windowHandle, FocusCallback );
-        Glfw.SetWindowIconifyCallback( windowHandle, IconifyCallback );
-        Glfw.SetWindowMaximizeCallback( windowHandle, MaximizeCallback );
-        Glfw.SetDropCallback( windowHandle, DropCallback );
-        Glfw.SetWindowRefreshCallback( windowHandle, RefreshCallback );
+        //@formatter:off
+        Glfw.SetWindowFocusCallback     ( window, DesktopWindowCallbacks.GdxFocusCallback );
+        Glfw.SetWindowIconifyCallback   ( window, DesktopWindowCallbacks.GdxIconifyCallback );
+        Glfw.SetWindowMaximizeCallback  ( window, DesktopWindowCallbacks.GdxMaximizeCallback );
+        Glfw.SetCloseCallback           ( window, DesktopWindowCallbacks.GdxWindowCloseCallback );
+        Glfw.SetDropCallback            ( window, DesktopWindowCallbacks.GdxDropCallback );
+        Glfw.SetWindowRefreshCallback   ( window, DesktopWindowCallbacks.GdxRefreshCallback );
+        //@formatter:on
 
         if ( WindowListener != null )
         {
             WindowListener.Created( this );
+        }
+    }
+
+    /// <summary>
+    /// Post a <see cref="Runnable"/> to this window's event queue. Use this if
+    /// you access statics like <see cref="Gdx.Graphics"/> in your runnable instead
+    /// of <see cref="DesktopGLApplication.PostRunnable(Runnable)"/>".
+    /// </summary>
+    public void PostRunnable( Runnable runnable )
+    {
+        lock ( _runnables )
+        {
+            _runnables.Add( runnable );
         }
     }
 
@@ -145,6 +159,11 @@ public class DesktopGLWindow : IDisposable
         SetSizeLimits( GlfwWindow, minWidth, minHeight, maxWidth, maxHeight );
     }
 
+    /// <summary>
+    /// Sets minimum and maximum size limits for the window. If the window
+    /// is full screen or not resizable, these limits are ignored. Use -1
+    /// to indicate an unrestricted dimension.
+    /// </summary>
     public void SetSizeLimits( GLFW.Window windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         Glfw.SetWindowSizeLimits( windowHandle,
@@ -169,7 +188,7 @@ public class DesktopGLWindow : IDisposable
         SetIcon( GlfwWindow, images );
     }
 
-    private void SetIcon( GLFW.Window window, String[] imagePaths, FileType imageFileType )
+    public void SetIcon( GLFW.Window window, String[] imagePaths, FileType imageFileType )
     {
         if ( SharedLibraryLoader.IsMac )
         {
@@ -177,8 +196,6 @@ public class DesktopGLWindow : IDisposable
         }
 
         var pixmaps = new Pixmap[ imagePaths.Length ];
-
-        
 
         for ( var i = 0; i < imagePaths.Length; i++ )
         {
@@ -193,47 +210,55 @@ public class DesktopGLWindow : IDisposable
         }
     }
 
+    //TODO:
     private void SetIcon( GLFW.Window window, Pixmap[] images )
     {
-        if ( SharedLibraryLoader.IsMac )
-        {
-            return;
-        }
-
-        GLFWImage.Buffer buffer     = GLFWImage.malloc( images.length );
-        Pixmap?[]         tmpPixmaps = new Pixmap[ images.length ];
-
-        for ( int i = 0; i < images.length; i++ )
-        {
-            Pixmap pixmap = images[ i ];
-
-            if ( pixmap.getFormat() != Pixmap.Format.RGBA8888 )
-            {
-                Pixmap rgba = new Pixmap( pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888 );
-                rgba.setBlending( Pixmap.Blending.None );
-                rgba.drawPixmap( pixmap, 0, 0 );
-                tmpPixmaps[ i ] = rgba;
-                pixmap          = rgba;
-            }
-
-            GLFWImage icon = GLFWImage.malloc();
-            icon.set( pixmap.getWidth(), pixmap.getHeight(), pixmap.getPixels() );
-            buffer.put( icon );
-
-            icon.free();
-        }
-
-        buffer.position( 0 );
-        Glfw.SetWindowIcon( windowHandle, buffer );
-
-        buffer.free();
-        foreach ( Pixmap? pixmap in tmpPixmaps )
-        {
-            if ( pixmap != null )
-            {
-                pixmap.Dispose();
-            }
-        }
+//        if ( SharedLibraryLoader.IsMac )
+//        {
+//            return;
+//        }
+//
+//        GLFW.Image Buffer buffer = GLFWImage.malloc( images.length );
+//
+//        Pixmap?[] tmpPixmaps = new Pixmap[ images.Length ];
+//
+//        for ( int i = 0; i < images.Length; i++ )
+//        {
+//            Pixmap pixmap = images[ i ];
+//
+//            if ( pixmap.GetFormat() != Pixmap.Format.RGBA8888 )
+//            {
+//                var rgba = new Pixmap( pixmap.Width, pixmap.Height, Pixmap.Format.RGBA8888 );
+//
+//                rgba.Blending = Pixmap.BlendTypes.None;
+//                rgba.DrawPixmap( pixmap, 0, 0 );
+//
+//                tmpPixmaps[ i ] = rgba;
+//                pixmap          = rgba;
+//            }
+//
+//            GLFW.Image icon = new( pixmap.Width,
+//                                   pixmap.Height,
+//                                   pixmap.
+//                );
+//
+//            buffer.put( icon );
+//
+//            icon.free();
+//        }
+//
+//        buffer.position( 0 );
+//        Glfw.SetWindowIcon( window, buffer );
+//
+//        buffer.free();
+//
+//        foreach ( Pixmap? pixmap in tmpPixmaps )
+//        {
+//            if ( pixmap != null )
+//            {
+//                pixmap.Dispose();
+//            }
+//        }
     }
 
     private void InitialiseListener()
@@ -250,7 +275,7 @@ public class DesktopGLWindow : IDisposable
     {
         Gdx.Graphics = this.Graphics;
         Gdx.GL30     = this.Graphics.GL30;
-        Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30! : Graphics.GL20!;
+        Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30 : Graphics.GL20!;
         Gdx.GL       = Gdx.GL30 != null ? Gdx.GL30 : Gdx.GL20;
         Gdx.Input    = this.Input;
 
@@ -267,6 +292,93 @@ public class DesktopGLWindow : IDisposable
 
     public bool ShouldClose() => false;
 
+    public void SetPosition( int x, int y )
+    {
+        Glfw.SetWindowPosition( GlfwWindow, x, y );
+    }
+
+    /// <summary>
+    /// Return the window X position in logical coordinates. All monitors span a virtual
+    /// surface together. The coordinates are relative to the first monitor in the
+    /// virtual surface.
+    /// </summary>
+    public int GetPositionX()
+    {
+        Glfw.GetWindowPosition( GlfwWindow, out var xPos, out var yPos );
+
+        return xPos;
+    }
+
+    /// <summary>
+    /// Return the window Y position in logical coordinates. All monitors span a virtual
+    /// surface together. The coordinates are relative to the first monitor in the
+    /// virtual surface.
+    /// </summary>
+    public int GetPositionY()
+    {
+        Glfw.GetWindowPosition( GlfwWindow, out var xPos, out var yPos );
+
+        return yPos;
+    }
+
+    /// <summary>
+    /// Sets the visibility of the window.
+    /// Invisible windows will still call their <see cref="IApplicationListener"/>
+    /// </summary>
+    public void SetVisible( bool visible )
+    {
+        if ( visible )
+        {
+            Glfw.ShowWindow( GlfwWindow );
+        }
+        else
+        {
+            Glfw.HideWindow( GlfwWindow );
+        }
+    }
+
+    /// <summary>
+    /// Closes this window and pauses and disposes the associated <see cref="IApplicationListener"/>.
+    /// </summary>
+    public void CloseWindow()
+    {
+        Glfw.SetWindowShouldClose( GlfwWindow, true );
+    }
+
+    /// <summary>
+    /// Minimizes (iconifies) the window. Iconified windows do not call
+    /// their <see cref="IApplicationListener"/> until the window is restored.
+    /// </summary>
+    public void IconifyWindow()
+    {
+        Glfw.IconifyWindow( GlfwWindow );
+    }
+
+    /// <summary>
+    /// De-minimizes (de-iconifies) and de-maximizes the window.
+    /// </summary>
+    public void RestoreWindow()
+    {
+        Glfw.RestoreWindow( GlfwWindow );
+    }
+
+    /// <summary>
+    /// Maximizes the window.
+    /// </summary>
+    public void MaximizeWindow()
+    {
+        Glfw.MaximizeWindow( GlfwWindow );
+    }
+
+    /// <summary>
+    /// Brings the window to front and sets input focus. The window should
+    /// already be visible and not iconified.
+    /// </summary>
+    public void FocusWindow()
+    {
+        Glfw.FocusWindow( GlfwWindow );
+    }
+
     public void Dispose()
     {
         Listener.Pause();
@@ -275,17 +387,10 @@ public class DesktopGLWindow : IDisposable
         Graphics.Dispose();
         Input.Dispose();
 
-        GLFW.SetWindowFocusCallback( GlfwWindow, null );
-        GLFW.SetWindowIconifyCallback( GlfwWindow, null );
-        GLFW.SetWindowCloseCallback( GlfwWindow, null );
-        GLFW.SetDropCallback( GlfwWindow, null );
-        GLFW.DestroyWindow( GlfwWindow );
-
-        focusCallback.free();
-        iconifyCallback.free();
-        maximizeCallback.free();
-        closeCallback.free();
-        dropCallback.free();
-        refreshCallback.free();
+        Glfw.SetWindowFocusCallback( GlfwWindow, null );
+        Glfw.SetWindowIconifyCallback( GlfwWindow, null );
+        Glfw.SetCloseCallback( GlfwWindow, null );
+        Glfw.SetDropCallback( GlfwWindow, null );
+        Glfw.DestroyWindow( GlfwWindow );
     }
 }

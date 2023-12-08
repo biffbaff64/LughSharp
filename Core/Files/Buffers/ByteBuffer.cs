@@ -118,6 +118,8 @@ public abstract class ByteBuffer : Buffer
 
     // ------------------------------------------------------------------------
 
+    #region abstract methods
+    
     /// <summary>
     /// Creates a new byte buffer whose content is a shared subsequence of
     /// this buffer's content.
@@ -232,6 +234,8 @@ public abstract class ByteBuffer : Buffer
     /// </exception>
     /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract ByteBuffer Put( int index, byte b );
+
+    #endregion abstract methods
 
     // ------------------------------------------------------------------------
 

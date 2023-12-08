@@ -53,10 +53,10 @@ public interface IGraphics
     [PublicAPI]
     public class MonitorDescriptor
     {
-        public int     VirtualX      { get; set; }
-        public int     VirtualY      { get; set; }
-        public string? Name          { get; set; }
-        public long    MonitorHandle { get; set; }
+        public int          VirtualX      { get; set; }
+        public int          VirtualY      { get; set; }
+        public string?      Name          { get; set; }
+        public GLFW.Monitor MonitorHandle { get; set; }
 
         public MonitorDescriptor( int x, int y, string name )
         {

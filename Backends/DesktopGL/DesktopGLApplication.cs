@@ -17,9 +17,9 @@
 using LibGDXSharp.Backends.Desktop;
 using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
-using LibGDXSharp.Core.Files.Buffers;
 using LibGDXSharp.Core.Utils.Collections;
 
+using Monitor = GLFW.Monitor;
 using Sync = LibGDXSharp.Backends.Desktop.Sync;
 
 namespace LibGDXSharp;
@@ -389,12 +389,27 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                               DesktopGLApplicationConfiguration config,
                               long sharedContext )
     {
+        Window windowHandle = CreateGLFWWindow( config, window.GlfwWindow );
+
+        window.Create( windowHandle );
+        window.SetVisible( config.InitialVisible );
+
+        for ( int i = 0; i < 2; i++ )
+        {
+            GL11.glClearColor( config.initialBackgroundColor.r,
+                               config.initialBackgroundColor.g,
+                               config.initialBackgroundColor.b,
+                               config.initialBackgroundColor.a );
+
+            GL11.glClear( GL11.GL_COLOR_BUFFER_BIT );
+            GLFW.glfwSwapBuffers( windowHandle );
+        }
     }
 
-    private long CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig, Window sharedContextWindow )
+    private GLFW.Window CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig, Window sharedContextWindow )
     {
         Glfw.DefaultWindowHints();
-        
+
         Glfw.WindowHint( Hint.Visible, false );
         Glfw.WindowHint( Hint.Resizable, appConfig.WindowResizable );
         Glfw.WindowHint( Hint.Maximized, appConfig.WindowMaximized );
@@ -434,7 +449,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Glfw.WindowHint( Hint.OpenglDebugContext, true );
         }
 
-        long windowHandle;
+        GLFW.Window windowHandle;
 
         if ( appConfig.FullscreenMode != null )
         {
@@ -452,12 +467,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
             windowHandle = Glfw.CreateWindow( appConfig.WindowWidth,
                                               appConfig.WindowHeight,
-                                              appConfig.Title,
-                                              0,
-                                              sharedContextWindow );
+                                              appConfig.Title ?? "",
+                                              Monitor.None,
+                                              Window.None );
         }
 
-        if ( windowHandle == 0 )
+        if ( windowHandle == 0 ) //TODO: Window.None ??
         {
             throw new GdxRuntimeException( "Couldn't create window" );
         }
@@ -484,48 +499,43 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                     windowHeight = Math.Min( windowHeight, appConfig.WindowMaxHeight );
                 }
 
-                long monitorHandle = GLFW.GetPrimaryMonitor();
+                GLFW.Monitor monitorHandle = Glfw.PrimaryMonitor;
 
-                if ( appConfig.WindowMaximized && ( appConfig.MaximizedMonitor != null ) )
+                if ( appConfig is { WindowMaximized: true, MaximizedMonitor: not null } )
                 {
-                    monitorHandle = appConfig.MaximizedMonitor.monitorHandle;
+                    monitorHandle = appConfig.MaximizedMonitor.MonitorHandle;
                 }
+                
+                Glfw.GetMonitorWorkArea( monitorHandle.UserPointer,
+                                         out var areaXPos,
+                                         out var areaYPos,
+                                         out var areaWidth,
+                                         out var areaHeight );
 
-                IntBuffer areaXPos   = BufferUtils.NewIntBuffer( 1 );
-                IntBuffer areaYPos   = BufferUtils.NewIntBuffer( 1 );
-                IntBuffer areaWidth  = BufferUtils.NewIntBuffer( 1 );
-                IntBuffer areaHeight = BufferUtils.NewIntBuffer( 1 );
-
-                GLFW.GetMonitorWorkarea( monitorHandle,
-                                         areaXPos,
-                                         areaYPos,
-                                         areaWidth,
-                                         areaHeight );
-
-                GLFW.glfwSetWindowPos( windowHandle,
-                                       areaXPos.get( 0 ) + areaWidth.get( 0 ) / 2 - windowWidth / 2,
-                                       areaYPos.get( 0 ) + areaHeight.get( 0 ) / 2 - windowHeight / 2 );
+                Glfw.SetWindowPosition( windowHandle,
+                                        ( areaXPos + ( areaWidth / 2 ) ) - ( windowWidth / 2 ),
+                                        ( areaYPos + ( areaHeight / 2 ) ) - ( windowHeight / 2 ) );
             }
             else
             {
-                GLFW.glfwSetWindowPos( windowHandle, appConfig.windowX, appConfig.windowY );
+                Glfw.SetWindowPosition( windowHandle, appConfig.WindowX, appConfig.WindowY );
             }
 
-            if ( appConfig.windowMaximized )
+            if ( appConfig.WindowMaximized )
             {
-                GLFW.glfwMaximizeWindow( windowHandle );
+                Glfw.MaximizeWindow( windowHandle );
             }
         }
 
-        if ( appConfig.windowIconPaths != null )
+        if ( appConfig.WindowIconPaths != null )
         {
-            DesktopGLWindow.SetIcon( windowHandle, appConfig.windowIconPaths, appConfig.windowIconFileType );
+            _currentWindow?.SetIcon( windowHandle, appConfig.WindowIconPaths, appConfig.WindowIconFileType );
         }
 
         Glfw.MakeContextCurrent( windowHandle );
         Glfw.SwapInterval( appConfig.VSyncEnabled ? 1 : 0 );
-
-        GL.CreateCapabilities();
+        
+        Glfw.CreateCapabilities();
 
         InitiateGL();
 
@@ -629,7 +639,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             LifecycleListeners.Remove( listener );
         }
     }
-                             
+
     //TODO: Unfinished, see GLDebugMessageSeverity below
     [PublicAPI]
     public struct Gldms

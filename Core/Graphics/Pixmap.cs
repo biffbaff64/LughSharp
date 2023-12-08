@@ -19,60 +19,6 @@ using LibGDXSharp.G2D;
 
 namespace LibGDXSharp.Graphics;
 
-[PublicAPI]
-public static class PixmapFormatExtensions
-{
-    public static int ToGLType( this Pixmap.Format format )
-    {
-        return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
-    }
-
-    public static int ToGLFormat( this Pixmap.Format format )
-    {
-        return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
-    }
-
-    public static int ToGdx2DPixmapFormat( this Pixmap.Format format )
-    {
-        if ( format == Pixmap.Format.Alpha )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_ALPHA;
-        }
-
-        if ( format == Pixmap.Format.Intensity )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_ALPHA;
-        }
-
-        if ( format == Pixmap.Format.LuminanceAlpha )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA;
-        }
-
-        if ( format == Pixmap.Format.RGB565 )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_RGB565;
-        }
-
-        if ( format == Pixmap.Format.RGBA4444 )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444;
-        }
-
-        if ( format == Pixmap.Format.RGB888 )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_RGB888;
-        }
-
-        if ( format == Pixmap.Format.RGBA8888 )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888;
-        }
-
-        throw new GdxRuntimeException( "Unknown Format: " + format );
-    }
-}
-
 /// <summary>
 /// A Pixmap represents an image in memory. It has a width and height expressed
 /// in pixels as well as a <see cref="Format"/> specifying the number and order
@@ -132,7 +78,7 @@ public class Pixmap : IDisposable
     #region PublicProperties
 
     private BlendTypes _blend  = BlendTypes.SourceOver;
-    private Filter   _filter = Filter.BiLinear;
+    private Filter     _filter = Filter.BiLinear;
 
     /// <summary>
     /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
@@ -248,6 +194,7 @@ public class Pixmap : IDisposable
     /// <param name="responseListener">the listener to call once the image is available as a Pixmap</param>
     public static void DownloadFromUrl( string url, IDownloadPixmapResponseListener responseListener )
     {
+        //TODO:
         throw new NotImplementedException();
     }
 
@@ -355,10 +302,16 @@ public class Pixmap : IDisposable
                             int dstWidth,
                             int dstHeight )
     {
-        this.gdx2DPixmap.DrawPixmap
-            (
-             pixmap.gdx2DPixmap, srcx, srcy, srcWidth,
-             srcHeight, dstx, dsty, dstWidth, dstHeight
+        this.gdx2DPixmap.DrawPixmap(
+            pixmap.gdx2DPixmap,
+            srcx,
+            srcy,
+            srcWidth,
+            srcHeight,
+            dstx,
+            dsty,
+            dstWidth,
+            dstHeight
             );
     }
 
@@ -527,7 +480,7 @@ public class Pixmap : IDisposable
 
         return pixmap;
     }
-
+    
     public static Pixmap.Format FormatFromString( string str )
     {
         str = str.ToLower();
@@ -562,5 +515,59 @@ public class Pixmap : IDisposable
     {
         Dispose( !isDisposed );
         GC.SuppressFinalize( this );
+    }
+}
+
+[PublicAPI]
+public static class PixmapFormatExtensions
+{
+    public static int ToGLType( this Pixmap.Format format )
+    {
+        return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
+    }
+
+    public static int ToGLFormat( this Pixmap.Format format )
+    {
+        return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
+    }
+
+    public static int ToGdx2DPixmapFormat( this Pixmap.Format format )
+    {
+        if ( format == Pixmap.Format.Alpha )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_ALPHA;
+        }
+
+        if ( format == Pixmap.Format.Intensity )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_ALPHA;
+        }
+
+        if ( format == Pixmap.Format.LuminanceAlpha )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA;
+        }
+
+        if ( format == Pixmap.Format.RGB565 )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_RGB565;
+        }
+
+        if ( format == Pixmap.Format.RGBA4444 )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444;
+        }
+
+        if ( format == Pixmap.Format.RGB888 )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_RGB888;
+        }
+
+        if ( format == Pixmap.Format.RGBA8888 )
+        {
+            return Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888;
+        }
+
+        throw new GdxRuntimeException( "Unknown Format: " + format );
     }
 }

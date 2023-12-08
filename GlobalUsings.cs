@@ -33,6 +33,7 @@ global using JetBrains.Annotations;
 
 global using GLFW;
 global using GLFW.Game;
+global using OpenGL;
 
 //global using OpenTK;
 //global using OpenTK.Audio;

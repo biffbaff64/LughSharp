@@ -134,6 +134,7 @@ BACKENDS/DESKTOPGL
     - DONE - DesktopGLApplicationConfiguration
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet
+    - IP   - DesktopWindowCallbacks
     - DONE - IDesktopGLApplicationBase
     - IP   - Sync
 

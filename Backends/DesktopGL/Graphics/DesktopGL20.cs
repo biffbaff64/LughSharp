@@ -64,74 +64,79 @@ public class DesktopGL20 : IGL20
         return _intBuffer;
     }
 
-    public void GLActiveTexture( int texture )
-    {
-        GL.ActiveTexture( texture );
-    }
+//    public void GLActiveTexture( int texture )
+//    {
+//        OpenGL.Gl.ActiveTexture( texture );
+//    }
 
-    public void GLAttachShader( int program, int shader )
-    {
-        GL20.AttachShader( program, shader );
-    }
+//    public void GLAttachShader( int program, int shader )
+//    {
+//        GL20.AttachShader( program, shader );
+//    }
 
-    public void GLBindAttribLocation( int program, int index, String name )
-    {
-        GL20.glBindAttribLocation( program, index, name );
-    }
+//    public void GLBindAttribLocation( int program, int index, String name )
+//    {
+//        GL20.glBindAttribLocation( program, index, name );
+//    }
 
-    public void GLBindBuffer( int target, int buffer )
-    {
-        GL15.glBindBuffer( target, buffer );
-    }
+//    public void GLBindBuffer( int target, int buffer )
+//    {
+//        GL15.glBindBuffer( target, buffer );
+//    }
 
-    public void GLBindFramebuffer( int target, int framebuffer )
-    {
-        EXTFramebufferObject.glBindFramebufferEXT( target, framebuffer );
-    }
+//    public void GLBindFramebuffer( int target, int framebuffer )
+//    {
+//        EXTFramebufferObject.glBindFramebufferEXT( target, framebuffer );
+//    }
 
-    public void GLBindRenderbuffer( int target, int renderbuffer )
-    {
-        EXTFramebufferObject.glBindRenderbufferEXT( target, renderbuffer );
-    }
+//    public void GLBindRenderbuffer( int target, int renderbuffer )
+//    {
+//        EXTFramebufferObject.glBindRenderbufferEXT( target, renderbuffer );
+//    }
 
-    public void glBindTexture( int target, int texture )
-    {
-        GL11.glBindTexture( target, texture );
-    }
+//    public void glBindTexture( int target, int texture )
+//    {
+//        GL11.glBindTexture( target, texture );
+//    }
 
-    public void glBlendColor( float red, float green, float blue, float alpha )
-    {
-        GL14.glBlendColor( red, green, blue, alpha );
-    }
+//    public void glBlendColor( float red, float green, float blue, float alpha )
+//    {
+//        GL14.glBlendColor( red, green, blue, alpha );
+//    }
 
-    public void glBlendEquation( int mode )
-    {
-        GL14.glBlendEquation( mode );
-    }
+//    public void glBlendEquation( int mode )
+//    {
+//        GL14.glBlendEquation( mode );
+//    }
 
-    public void glBlendEquationSeparate( int modeRGB, int modeAlpha )
-    {
-        GL20.glBlendEquationSeparate( modeRGB, modeAlpha );
-    }
+//    public void glBlendEquationSeparate( int modeRGB, int modeAlpha )
+//    {
+//        GL20.glBlendEquationSeparate( modeRGB, modeAlpha );
+//    }
 
-    public void glBlendFunc( int sfactor, int dfactor )
-    {
-        GL11.glBlendFunc( sfactor, dfactor );
-    }
+//    public void glBlendFunc( int sfactor, int dfactor )
+//    {
+//        GL11.glBlendFunc( sfactor, dfactor );
+//    }
 
-    public void glBlendFuncSeparate( int srcRGB, int dstRGB, int srcAlpha, int dstAlpha )
-    {
-        GL14.glBlendFuncSeparate( srcRGB, dstRGB, srcAlpha, dstAlpha );
-    }
+//    public void glBlendFuncSeparate( int srcRGB, int dstRGB, int srcAlpha, int dstAlpha )
+//    {
+//        GL14.glBlendFuncSeparate( srcRGB, dstRGB, srcAlpha, dstAlpha );
+//    }
 
-    public void glBufferData( int target, int size, Buffer data, int usage )
+    public void GLBufferData( OpenGL.BufferTarget target,
+                              uint size,
+                              Buffer? data,
+                              OpenGL.BufferUsage usage )
     {
         if ( data == null )
-            GL15.glBufferData( target, size, usage );
-        else if ( data
-
-        instanceof ByteBuffer)
-        GL15.glBufferData( target, ( ByteBuffer )data, usage );
+        {
+            Gl.BufferData( target, size, data, usage );
+        }
+        else if ( data is ByteBuffer byteBuffer )
+        {
+            GL15.glBufferData( target, byteBuffer, usage );
+        }
         else if ( data instanceof IntBuffer)
         GL15.glBufferData( target, ( IntBuffer )data, usage );
         else if ( data instanceof FloatBuffer)

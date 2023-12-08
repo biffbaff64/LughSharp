@@ -320,6 +320,9 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </param>
     public override void SetCursor( ICursor cursor )
     {
+        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+
+        Glfw.SetCursor( GLWindow.GlfwWindow, ( (DesktopGLCursor )cursor ).GLFWCursor );
     }
 
     /// <summary>
@@ -328,6 +331,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )
     {
+        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+
         DesktopGLCursor.SetSystemCursor( GLWindow.GlfwWindow, systemCursor );
     }
 
@@ -398,20 +403,22 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public override float GetPpcX()
     {
-        Glfw.GetMonitorPhysicalSize( GetMonitor(), out var sizeX, out var sizeY );
+        Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY );
 
         return ( GetDisplayMode().Width / ( float )sizeX ) * 10;
     }
 
     public override float GetPpcY()
     {
-        Glfw.GetMonitorPhysicalSize( GetMonitor(), out var sizeX, out var sizeY );
+        Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY );
 
         return ( GetDisplayMode().Height / ( float )sizeY ) * 10;
     }
 
     // ------------------------------------------------------------------------
 
+    #region IDisposable implementation
+    
     protected void Dispose( bool disposing )
     {
         if ( disposing )
@@ -424,6 +431,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Dispose( true );
         GC.SuppressFinalize( this );
     }
+
+    #endregion IDisposable implementation
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -449,7 +458,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     [PublicAPI]
     public class DesktopGLMonitor : IGraphics.MonitorDescriptor
     {
-        public DesktopGLMonitor( GLFW.Window monitor,
+        public DesktopGLMonitor( GLFW.Monitor monitor,
                                  int virtualX,
                                  int virtualY,
                                  string name )

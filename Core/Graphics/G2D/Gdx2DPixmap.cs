@@ -42,6 +42,14 @@ public class Gdx2DPixmap : IDisposable
 
     #region properties
 
+    public int Width  { get; set; }
+    public int Height { get; set; }
+
+    public int    GLInternalFormat => ToGLFormat( this.format );
+    public int    GLFormat         => ToGLFormat( this.format );
+    public int    GLType           => ToGLType( this.format );
+    public string FormatString     => GetFormatString( this.format );
+
     public int Blend
     {
         set => SetBlend( basePtr, value );
@@ -52,23 +60,20 @@ public class Gdx2DPixmap : IDisposable
         set => SetScale( basePtr, value );
     }
 
-    public int Width  { get; set; }
-    public int Height { get; set; }
-
-    //TODO: Why?
-    public int    GLInternalFormat => ToGLFormat( format );
-    public int    GLFormat         => GLInternalFormat;
-    public int    GLType           => ToGLType( format );
-    public string FormatString     => GetFormatString( format );
-
     #endregion properties
 
     // ------------------------------------------------------------------------
 
-    public long       basePtr;
-    public int        format;
-    public ByteBuffer pixelPtr;
-    public long[]     nativeData = new long[ 4 ];
+    #region data
+    
+    public long       basePtr;                    // 
+    public int        format;                     // The actual pixmap format.
+    public ByteBuffer pixelPtr;                   //
+    public long[]     nativeData = new long[ 4 ]; //
+
+    #endregion data
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>
