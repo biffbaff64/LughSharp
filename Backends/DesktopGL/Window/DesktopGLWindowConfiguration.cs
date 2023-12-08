@@ -19,23 +19,23 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DesktopGLWindowConfiguration
 {
-    public int   WindowX                { get; private set; } = -1;
-    public int   WindowY                { get; private set; } = -1;
-    public int   WindowWidth            { get; private set; } = 640;
-    public int   WindowHeight           { get; private set; } = 480;
-    public int   WindowMinWidth         { get; private set; } = -1;
-    public int   WindowMinHeight        { get; private set; } = -1;
-    public int   WindowMaxWidth         { get; private set; } = -1;
-    public int   WindowMaxHeight        { get; private set; } = -1;
-    public bool  WindowResizable        { get; set; }         = true;
-    public bool  WindowDecorated        { get; private set; } = true;
-    public bool  WindowMaximized        { get; private set; } = false;
-    public bool  AutoIconify            { get; set; }         = false;
-    public Color InitialBackgroundColor { get; set; }         = Color.Black;
-    public bool  InitialVisible         { get; set; }         = true;
-    public bool  VSyncEnabled           { get; private set; } = true;
+    public int   WindowX                { get; set; } = -1;
+    public int   WindowY                { get; set; } = -1;
+    public int   WindowWidth            { get; set; } = 640;
+    public int   WindowHeight           { get; set; } = 480;
+    public int   WindowMinWidth         { get; set; } = -1;
+    public int   WindowMinHeight        { get; set; } = -1;
+    public int   WindowMaxWidth         { get; set; } = -1;
+    public int   WindowMaxHeight        { get; set; } = -1;
+    public bool  WindowResizable        { get; set; } = true;
+    public bool  WindowDecorated        { get; set; } = true;
+    public bool  WindowMaximized        { get; set; } = false;
+    public bool  AutoIconify            { get; set; } = false;
+    public Color InitialBackgroundColor { get; set; } = Color.Black;
+    public bool  InitialVisible         { get; set; } = true;
+    public bool  VSyncEnabled           { get; set; } = true;
 
-    public DesktopGLGraphics.GLMonitorHandle?      MaximizedMonitor   { get; set; }
+    public DesktopGLGraphics.DesktopGLMonitor?     MaximizedMonitor   { get; set; }
     public FileType                                WindowIconFileType { get; set; }
     public string[]?                               WindowIconPaths    { get; set; }
     public IDesktopGLWindowListener?               WindowListener     { get; set; }
@@ -44,7 +44,9 @@ public class DesktopGLWindowConfiguration
 
     /// <summary>
     /// </summary>
-    /// <param name="config"></param>
+    /// <param name="config">
+    /// The window configuration data from which to initialise this window config.
+    /// </param>
     public void SetWindowConfiguration( DesktopGLWindowConfiguration config )
     {
         WindowX            = config.WindowX;
@@ -133,8 +135,8 @@ public class DesktopGLWindowConfiguration
 
     /// <summary>
     /// </summary>
-    /// <param name="monitorHandle"> what monitor the window should maximize to. </param>
-    public void SetMaximizedMonitor( DesktopGLGraphics.GLMonitorHandle monitorHandle )
+    /// <param name="monitorHandle"> which monitor the window should maximize to. </param>
+    public void SetMaximizedMonitor( DesktopGLGraphics.DesktopGLMonitor monitorHandle )
     {
         this.MaximizedMonitor = monitorHandle;
     }

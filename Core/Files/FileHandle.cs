@@ -21,20 +21,14 @@ namespace LibGDXSharp.Core.Files;
 [PublicAPI]
 public class FileHandle
 {
-    #region properties
-    
-    public FileInfo File { get; set; }
-    public FileType Type { get; set; }
+    public FileType Type     { get; set; }
+    public FileInfo FileInfo { get; set; }
 
-    #endregion properties
-    
-    #region constructors
-    
     /// <summary>
     /// </summary>
     protected FileHandle()
     {
-        this.File = default( FileInfo )!;
+        this.FileInfo = default( FileInfo )!;
         this.Type = default( FileType );
     }
 
@@ -43,7 +37,7 @@ public class FileHandle
     /// <param name="fileName"></param>
     public FileHandle( string fileName )
     {
-        this.File = new FileInfo( fileName );
+        this.FileInfo = new FileInfo( fileName );
         this.Type = FileType.Absolute;
     }
 
@@ -54,7 +48,7 @@ public class FileHandle
     {
         ArgumentNullException.ThrowIfNull( file );
 
-        this.File = file;
+        this.FileInfo = file;
         this.Type = FileType.Absolute;
     }
 
@@ -64,42 +58,31 @@ public class FileHandle
     /// <param name="type"></param>
     public FileHandle( string fileName, FileType type )
     {
-        this.File = new FileInfo( fileName );
+        this.FileInfo = new FileInfo( fileName );
         this.Type = type;
     }
 
-    #endregion constructors
-    
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public virtual string Path() => this.File.FullName;
+    public virtual string Path() => this.FileInfo.FullName;
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public virtual string Name() => this.File.Name;
+    public virtual string Name() => this.FileInfo.Name;
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public virtual string Extension() => this.File.Extension;
+    public virtual string Extension() => this.FileInfo.Extension;
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
     public virtual string NameWithoutExtension()
     {
-        var fileName = this.File.Name;
-
-        var dotIndex = fileName.LastIndexOf( ".", StringComparison.Ordinal );
-
-        if ( dotIndex == -1 )
-        {
-            return fileName;
-        }
-
-        return fileName.Substring( 0, dotIndex );
+        return System.IO.Path.GetFileNameWithoutExtension( FileInfo.Name );
     }
 
     /// <summary>
@@ -107,7 +90,7 @@ public class FileHandle
     /// <returns></returns>
     public virtual string PathWithoutExtension()
     {
-        var filePath = this.File.FullName;
+        var filePath = this.FileInfo.FullName;
 
         var dotIndex = filePath.LastIndexOf( ".", StringComparison.Ordinal );
 
@@ -126,22 +109,22 @@ public class FileHandle
     public virtual FileStream Read()
     {
         if ( ( this.Type == FileType.Classpath )
-          || ( ( this.Type == FileType.Internal ) && !this.File.Exists )
-          || ( ( this.Type == FileType.Local ) && !this.File.Exists ) )
+          || ( ( this.Type == FileType.Internal ) && !this.FileInfo.Exists )
+          || ( ( this.Type == FileType.Local ) && !this.FileInfo.Exists ) )
         {
             try
             {
-                FileStream input = File.OpenRead();
+                FileStream input = File.OpenRead( FileInfo.FullName );
 
                 return input;
             }
             catch ( System.Exception ex )
             {
-                throw new GdxRuntimeException( "File not found: " + File.Name + " (" + Type + ")", ex );
+                throw new GdxRuntimeException( $"File not found: {FileInfo.Name} ({Type})", ex );
             }
         }
 
-        return File.OpenRead();
+        return File.OpenRead( FileInfo.FullName );
     }
 
     /// <summary>
@@ -150,7 +133,7 @@ public class FileHandle
     /// <returns></returns>
     public virtual BufferedStream Read( int bufferSize )
     {
-        return new BufferedStream( File.OpenRead(), bufferSize );
+        return new BufferedStream( File.OpenRead( FileInfo.FullName ), bufferSize );
     }
 
     /// <summary>
@@ -175,7 +158,7 @@ public class FileHandle
         {
             stream.Close();
 
-            throw new GdxRuntimeException( "Error reading file: " + this, ex );
+            throw new GdxRuntimeException( $"Error reading file: {this}", ex );
         }
     }
 
@@ -218,7 +201,7 @@ public class FileHandle
         }
         catch ( System.Exception ex )
         {
-            throw new GdxRuntimeException( "Error reading layout file - " + this, ex );
+            throw new GdxRuntimeException( $"Error reading layout file - {this}", ex );
         }
         finally
         {
@@ -250,11 +233,10 @@ public class FileHandle
             }
 
             return ms.ToArray();
-
         }
         catch ( System.Exception ex )
         {
-            throw new GdxRuntimeException( "Error reading file: " + this, ex );
+            throw new GdxRuntimeException( $"Error reading file: {this}", ex );
         }
         finally
         {
@@ -269,17 +251,18 @@ public class FileHandle
     /// <returns></returns>
     public virtual long Length()
     {
-        if ( ( Type == FileType.Classpath ) || ( ( Type == FileType.Internal ) && !File.Exists ) )
+        if ( ( Type == FileType.Classpath )
+          || ( ( Type == FileType.Internal ) && !FileInfo.Exists ) )
         {
             FileStream input  = Read();
-            var length = input.Length;
+            var        length = input.Length;
 
             input.Close();
 
             return length;
         }
 
-        return File.Length;
+        return FileInfo.Length;
     }
 
     /// <summary>
@@ -292,7 +275,7 @@ public class FileHandle
     public virtual int ReadBytes( byte[] bytes, int offset, int size )
     {
         FileStream input    = Read();
-        var position = 0;
+        var        position = 0;
 
         try
         {
@@ -310,7 +293,7 @@ public class FileHandle
         }
         catch ( System.Exception ex )
         {
-            throw new GdxRuntimeException( "Error Reading File: " + this, ex );
+            throw new GdxRuntimeException( $"Error Reading File: {this}", ex );
         }
         finally
         {
@@ -329,21 +312,21 @@ public class FileHandle
     {
         if ( Type == FileType.Classpath )
         {
-            throw new GdxRuntimeException( "Cannot write to a classpath file: " + File, null );
+            throw new GdxRuntimeException( $"Cannot write to a classpath file: {FileInfo.Name}", null );
         }
 
         if ( Type == FileType.Internal )
         {
-            throw new GdxRuntimeException( "Cannot write to an internal file: " + File, null );
+            throw new GdxRuntimeException( $"Cannot write to an internal file: {FileInfo.Name}", null );
         }
 
         try
         {
-            return System.IO.File.OpenWrite( File.FullName );
+            return System.IO.File.OpenWrite( FileInfo.FullName );
         }
         catch ( System.Exception ex )
         {
-            throw new GdxRuntimeException( "Error Writing File: " + File + " (" + Type + ")", ex );
+            throw new GdxRuntimeException( $"Error Writing File: {FileInfo.Name} ({Type})", ex );
         }
     }
 
@@ -366,7 +349,7 @@ public class FileHandle
         }
         catch ( System.Exception ex )
         {
-            throw new GdxRuntimeException( "Error stream writing to file: " + File + " (" + Type + ")", ex );
+            throw new GdxRuntimeException( $"Error stream writing to file: {FileInfo.Name} ({Type})", ex );
         }
         finally
         {

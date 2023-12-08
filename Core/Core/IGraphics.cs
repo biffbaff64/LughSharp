@@ -51,12 +51,19 @@ public interface IGraphics
     /// Describes a monitor, with X, Y, and Name properties.
     /// </summary>
     [PublicAPI]
-    public struct MonitorDescriptor
+    public class MonitorDescriptor
     {
-        public int    VirtualX      { get; set; }
-        public int    VirtualY      { get; set; }
-        public string Name          { get; set; }
-        public long   MonitorHandle { get; set; }
+        public int     VirtualX      { get; set; }
+        public int     VirtualY      { get; set; }
+        public string? Name          { get; set; }
+        public long    MonitorHandle { get; set; }
+
+        public MonitorDescriptor( int x, int y, string name )
+        {
+            this.VirtualX = x;
+            this.VirtualY = y;
+            this.Name     = name;
+        }
     }
 
     /// <summary>
@@ -180,7 +187,7 @@ public interface IGraphics
 
     void SetContinuousRendering( bool isContinuous );
 
-    bool IsContinuousRendering();
+    bool ContinuousRendering { get; }
 
     void RequestRendering();
 

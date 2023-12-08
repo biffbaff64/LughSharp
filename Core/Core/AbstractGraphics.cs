@@ -32,17 +32,18 @@ public abstract class AbstractGraphics : IGraphics
 
     #region properties
 
-    public BufferFormatDescriptor BufferFormat     { get; set; } = null!;
-    public int                    BackBufferWidth  { get; protected set; }
-    public int                    BackBufferHeight { get; protected set; }
-    public int                    LogicalWidth     { get; set; }
-    public int                    LogicalHeight    { get; set; }
-    public int                    Width            { get; }
-    public int                    Height           { get; }
-    public IGL20?                 GL20             { get; set; }
-    public IGL30?                 GL30             { get; set; }
-    public float                  DeltaTime        { get; set; }
-    public GLVersion              GLVersion        { get; set; } = null!;
+    public BufferFormatDescriptor BufferFormat        { get; set; } = null!;
+    public int                    BackBufferWidth     { get; protected set; }
+    public int                    BackBufferHeight    { get; protected set; }
+    public int                    LogicalWidth        { get; set; }
+    public int                    LogicalHeight       { get; set; }
+    public int                    Width               { get; }
+    public int                    Height              { get; }
+    public IGL20?                 GL20                { get; set; }
+    public IGL30?                 GL30                { get; set; }
+    public float                  DeltaTime           { get; set; }
+    public GLVersion              GLVersion           { get; set; } = null!;
+    public bool                   ContinuousRendering { get; set; } = true;
 
     #endregion properties
 
@@ -83,10 +84,6 @@ public abstract class AbstractGraphics : IGraphics
     public abstract bool SupportsExtension( string extension );
 
     public abstract bool SupportsDisplayModeChange();
-
-    public abstract void SetContinuousRendering( bool isContinuous );
-
-    public abstract bool IsContinuousRendering();
 
     public abstract void RequestRendering();
 

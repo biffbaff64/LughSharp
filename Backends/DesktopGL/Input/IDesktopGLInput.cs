@@ -19,7 +19,7 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public interface IDesktopGLInput : IInput, IDisposable
 {
-    unsafe void WindowHandleChanged( Window* windowHandle );
+    void WindowHandleChanged( GLFW.Window windowHandle );
 
     void Update();
 

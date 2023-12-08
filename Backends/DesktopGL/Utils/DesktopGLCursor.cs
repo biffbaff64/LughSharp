@@ -16,7 +16,8 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-public class DesktopGLCursor
+[PublicAPI]
+public class DesktopGLCursor : ICursor
 {
     public static void Dispose( DesktopGLWindow glWindow )
     {

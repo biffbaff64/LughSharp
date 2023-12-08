@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
-
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]
@@ -170,44 +168,44 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <summary>
     /// Gets the currently active display mode for the primary monitor.
     /// </summary>
-    public static unsafe IGraphics.DisplayModeDescriptor GetDisplayMode()
+    public static IGraphics.DisplayModeDescriptor GetDisplayMode()
     {
         DesktopGLApplication.InitialiseGL();
 
-        VideoMode* videoMode = GLFW.GetVideoMode( GLFW.GetPrimaryMonitor() );
+        VideoMode videoMode = Glfw.GetVideoMode( Glfw.PrimaryMonitor );
 
         return new DesktopGLGraphics.DesktopGLDisplayMode(
             0, //TODO:
-            videoMode -> Width,
-            videoMode -> Height,
-            videoMode -> RefreshRate,
-            videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
+            videoMode.Width,
+            videoMode.Height,
+            videoMode.RefreshRate,
+            videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits
             );
     }
 
-    public static unsafe IGraphics.DisplayModeDescriptor GetDisplayMode( Monitor* monitor )
+    public static IGraphics.DisplayModeDescriptor GetDisplayMode( GLFW.Monitor monitor )
     {
         DesktopGLApplication.InitialiseGL();
 
-        VideoMode* videoMode = GLFW.GetVideoMode( monitor );
+        VideoMode videoMode = Glfw.GetVideoMode( monitor );
 
         return new DesktopGLGraphics.DesktopGLDisplayMode(
             0, //TODO:
-            videoMode -> Width,
-            videoMode -> Height,
-            videoMode -> RefreshRate,
-            videoMode -> RedBits + videoMode -> GreenBits + videoMode -> BlueBits
+            videoMode.Width,
+            videoMode.Height,
+            videoMode.RefreshRate,
+            videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits
             );
     }
 
     /// <summary>
     /// Return the available <see cref="IGraphics.DisplayModeDescriptor"/>s of the primary monitor
     /// </summary>
-    public static unsafe IGraphics.DisplayModeDescriptor[] GetDisplayModes()
+    public static IGraphics.DisplayModeDescriptor[] GetDisplayModes()
     {
         DesktopGLApplication.InitialiseGL();
 
-        VideoMode[] videoModes = GLFW.GetVideoModes( GLFW.GetPrimaryMonitor() );
+        VideoMode[] videoModes = Glfw.GetVideoModes( Glfw.PrimaryMonitor );
 
         var result = new IGraphics.DisplayModeDescriptor[ videoModes.Length ];
 
@@ -228,13 +226,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
     /// <summary>
     /// Return the available <see cref="IGraphics.DisplayModeDescriptor"/>"s
-    /// of the given <see cref="Monitor"/>
+    /// of the given <see cref="GLFW.Monitor"/>
     /// </summary>
-    public static unsafe IGraphics.DisplayModeDescriptor[] GetDisplayModes( Monitor* monitor )
+    public static IGraphics.DisplayModeDescriptor[] GetDisplayModes( GLFW.Monitor monitor )
     {
         DesktopGLApplication.InitialiseGL();
 
-        VideoMode[] videoModes = GLFW.GetVideoModes( monitor );
+        VideoMode[] videoModes = Glfw.GetVideoModes( monitor );
 
         var result = new IGraphics.DisplayModeDescriptor[ videoModes.Length ];
 
@@ -253,22 +251,22 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         return result;
     }
 
-    public static unsafe Monitor* GetPrimaryMonitor()
+    public static GLFW.Monitor GetPrimaryMonitor()
     {
         DesktopGLApplication.InitialiseGL();
 
-        return GLFW.GetPrimaryMonitor();
+        return Glfw.PrimaryMonitor;
     }
 
-    public static unsafe IGraphics.MonitorDescriptor[] GetMonitors()
+    public static IGraphics.MonitorDescriptor[] GetMonitors()
     {
         DesktopGLApplication.InitialiseGL();
 
-        var monitors = new IGraphics.MonitorDescriptor[ GLFW.GetMonitors().Length ];
+        var monitors = new IGraphics.MonitorDescriptor[ Glfw.Monitors.Length ];
 
-        for ( var i = 0; i < GLFW.GetMonitors().Length; i++ )
+        for ( var i = 0; i < Glfw.Monitors.Length; i++ )
         {
-            monitors[ i ] = ToGLMonitor( GLFW.GetMonitors()[ i ] );
+            monitors[ i ] = ToGLMonitor( Glfw.Monitors[ i ] );
         }
 
         return monitors;
@@ -278,14 +276,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     /// <param name="monitor"></param>
     /// <returns></returns>
-    public static unsafe DesktopGLGraphics.GLMonitorHandle ToGLMonitor( Monitor* monitor )
+    public static IGraphics.MonitorDescriptor ToGLMonitor( GLFW.Monitor monitor )
     {
-        GLFW.GetMonitorPos( monitor, out var virtualX, out var virtualY );
+        Glfw.GetMonitorPosition( monitor, out var virtualX, out var virtualY );
 
-        var name = GLFW.GetMonitorName( monitor );
+        var name = Glfw.GetMonitorName( monitor );
 
-        return new DesktopGLGraphics.GLMonitorHandle(
-            0, // TODO:
+        return new IGraphics.MonitorDescriptor(
             virtualX,
             virtualY,
             name

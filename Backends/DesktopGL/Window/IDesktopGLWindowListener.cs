@@ -20,7 +20,7 @@ public interface IDesktopGLWindowListener
 {
     /// <summary>
     /// Called after the GLFW window is created. Before this callback is received, it's
-    /// unsafe to use any<see cref="DesktopGLWindow"/> member functions which, for their part,
+    /// to use any<see cref="DesktopGLWindow"/> member functions which, for their part,
     /// involve calling GLFW functions.
     /// <para>
     /// For the main window, this is an immediate callback from inside

@@ -65,7 +65,6 @@ ASSETS/LOADERS
     - DONE - MusicLoader
     - DONE - ParticleEffectLoader
     - DONE - PixmapLoader
-    -      - PolygonRegionLoader
     - DONE - ShaderProgramLoader
     - DONE - SkinLoader
     - DONE - SoundLoader
@@ -80,14 +79,13 @@ ASSETS/LOADERS/RESOLVERS
 ------------------------
 
     - DONE - AbsoluteFileHandleResolver
+    - DONE - ClasspathFileHandleResolver
+    - DONE - ExternalFileHandleResolver
     - DONE - IFileHandleResolver
     - DONE - InternalFileHandleResolver
-    -------------------------------------
-    -      - ClasspathFileHandleResolver
-    -      - ExternalFileHandleResolver
-    -      - LocalFileHandleResolver
-    -      - PrefixFileHandleResolver
-    -      - ResolutionFileResolver
+    - DONE - LocalFileHandleResolver
+    - DONE - PrefixFileHandleResolver
+    - DONE - ResolutionFileResolver
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -106,23 +104,25 @@ AUDIO
 AUDIO/JAVAZOOMJL
 ----------------
 
+    Could this be scrapped and MP3Sharp be used instead?
+
     - DONE - BitReserve
-    - DONE - Bitstream
-    - DONE - BitstreamException
-    - DONE - Crc16
-    - DONE - DecoderException
+    - IP   - Bitstream
+    - IP   - BitstreamException
+    - IP   - Crc16
+    - IP   - DecoderException
     - DONE - Header
-    - DONE - HuffCodeTab
-    - DONE - IFrameDecoder
-    - DONE - LayerIDecoder
-    - DONE - LayerIIDecoder
-    - DONE - LayerIIIDecoder
-    - DONE - Mp3Decoder
-    - DONE - OutputBuffer
-    - DONE - OutputChannels
-    - DONE - PushbackInputStream
-    - DONE - SynthesisFilter
-    - DONE - SynthesisFilterData ( partial of SynthesisFilter )
+    - IP   - HuffCodeTab
+    - IP   - IFrameDecoder
+    - IP   - LayerIDecoder
+    - IP   - LayerIIDecoder
+    - IP   - LayerIIIDecoder
+    - IP   - Mp3Decoder
+    - IP   - OutputBuffer
+    - IP   - OutputChannels
+    - IP   - PushbackInputStream
+    - IP   - SynthesisFilter
+    - IP   - SynthesisFilterData ( partial of SynthesisFilter )
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -159,18 +159,18 @@ BACKENDS/DESKTOPGL
     Utils
     -----
 
-    - **** - DesktopGLApplicationLogger
-    - **** - DesktopGLClipboard
-    - **** - DesktopGLCursor                    Use OpenTK Cursor
-    - **** - DesktopGLPreferences
+    - IP   - DesktopGLApplicationLogger
+    - IP   - DesktopGLClipboard
+    - IP   - DesktopGLCursor
+    - IP   - DesktopGLPreferences
 
     Window
     ------
 
-    - **** - DesktopGLWindow                    Use OpenTK GameWindow
-    - **** - DesktopGLWindowConfiguration       Use OpenTK GameWindowSettings
-    - **** - DesktopGLWindowAdapter             Not Needed
-    - **** - IDesktopGLWindowListener           Not Needed
+    - IP   - DesktopGLWindow
+    - IP   - DesktopGLWindowConfiguration
+    - IP   - DesktopGLWindowAdapter
+    - IP   - IDesktopGLWindowListener
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -292,11 +292,9 @@ FILES
 
     TODO: Remove all this and properly integrate the C# file handling classes
 
-    - IP   - BufferedInputStream
     - IP   - BufferedStreamExtensions
     - IP   - ByteArrayInputStream
-    - IP   - FileHandle
-    - DONE - FilterInputStream
+    - DONE - FileHandle
     - DONE - InputStream
 
     ------------------------------------------
@@ -307,9 +305,11 @@ FILES
     - java.io.DataInputStream               -> BinaryReader
     - java.io.DataOutputStream              -> BinaryWriter
     - java.io.File                          -> 
-    - java.io.FileHandle                    -> 
+    - java.io.FileHandle                    -> FileInfo ?
     - java.io.FileInputStream               -> 
     - java.io.FileOutputStream              -> 
+    - java.io.FilterInputStream             -> 
+    - java.io.FilterOutputStream            -> 
     - java.io.DataOuput                     -> (Interface)
     - java.io.InputStream                   -> StreamReader
     - java.io.InputStreamReader             -> StreamReader
