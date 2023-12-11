@@ -17,6 +17,7 @@
 using LibGDXSharp.Core.Files.Buffers;
 
 using Buffer = LibGDXSharp.Core.Files.Buffers.Buffer;
+using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Graphics;
 
@@ -381,7 +382,7 @@ public interface IGL20
                            int height,
                            int border );
 
-    void GLCopyTexSubImage2D( int target,
+    void GLCopyTexSubImage2D( TextureTarget target,
                               int level,
                               int xoffset,
                               int yoffset,
@@ -390,37 +391,37 @@ public interface IGL20
                               int width,
                               int height );
 
-    void GLCullFace( int mode );
+    void GLCullFace( CullFaceMode mode );
 
-    void GLDeleteTextures( int n, IntBuffer textures );
+    void GLDeleteTextures( int n, uint textures );
 
-    void GLDeleteTexture( int texture );
+    void GLDeleteTexture( uint texture );
 
-    void GLDepthFunc( int func );
+    void GLDepthFunc( DepthFunction func );
 
     void GLDepthMask( bool flag );
 
     void GLDepthRangef( float zNear, float zFar );
 
-    void GLDisable( int cap );
+    void GLDisable( EnableCap cap );
 
-    void GLDrawArrays( int mode, int first, int count );
+    void GLDrawArrays( PrimitiveType mode, int first, int count );
 
-    void GLDrawElements( int mode, int count, int type, Buffer indices );
+    void GLDrawElements( int mode, int count, DrawElementsType type, Buffer indices );
 
-    void GLEnable( int cap );
+    void GLEnable( EnableCap cap );
 
     void GLFinish();
 
     void GLFlush();
 
-    void GLFrontFace( int mode );
+    void GLFrontFace( FrontFaceDirection mode );
 
-    void GLGenTextures( int n, IntBuffer textures );
+    void GLGenTextures( int n, uint[] textures );
 
-    int GLGenTexture();
+    uint GLGenTexture();
 
-    int GLGetError();
+    ErrorCode GLGetError();
 
     void GLGetIntegerv( int pname, IntBuffer parameters );
 
@@ -494,41 +495,41 @@ public interface IGL20
 
     void GLCompileShader( int shader );
 
-    int GLCreateProgram();
+    uint GLCreateProgram();
 
-    int GLCreateShader( int type );
+    uint GLCreateShader( ShaderType type );
 
-    void GLDeleteBuffer( int buffer );
+    void GLDeleteBuffer( uint buffer );
 
-    void GLDeleteBuffers( int n, IntBuffer buffers );
+    void GLDeleteBuffers( int n, uint buffers );
 
     void GLDeleteFramebuffer( int framebuffer );
 
     void GLDeleteFramebuffers( int n, IntBuffer framebuffers );
 
-    void GLDeleteProgram( int program );
+    void GLDeleteProgram( uint program );
 
     void GLDeleteRenderbuffer( int renderbuffer );
 
     void GLDeleteRenderbuffers( int n, IntBuffer renderbuffers );
 
-    void GLDeleteShader( int shader );
+    void GLDeleteShader( uint shader );
 
-    void GLDetachShader( int program, int shader );
+    void GLDetachShader( uint program, uint shader );
 
-    void GLDisableVertexAttribArray( int index );
+    void GLDisableVertexAttribArray( uint index );
 
-    void GLDrawElements( int mode, int count, int type, int indices );
+    void GLDrawElements( int mode, int count, DrawElementsType type, int indices );
 
-    void GLEnableVertexAttribArray( int index );
+    void GLEnableVertexAttribArray( uint index );
 
     void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer );
 
     void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level );
 
-    int GLGenBuffer();
+    uint GLGenBuffer();
 
-    void GLGenBuffers( int n, IntBuffer buffers );
+    void GLGenBuffers( int n, uint[] buffers );
 
     void GLGenerateMipmap( int target );
 
@@ -684,30 +685,30 @@ public interface IGL20
 
     void GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset );
 
-    void GLUseProgram( int program );
+    void GLUseProgram( uint program );
 
-    void GLValidateProgram( int program );
+    void GLValidateProgram( uint program );
 
-    void GLVertexAttrib1F( int indx, float x );
+    void GLVertexAttrib1F( uint indx, float x );
 
-    void GLVertexAttrib1Fv( int indx, FloatBuffer values );
+    void GLVertexAttrib1Fv( uint indx, FloatBuffer values );
 
     void GLVertexAttrib2F( int indx, float x, float y );
 
-    void GLVertexAttrib2Fv( int indx, FloatBuffer values );
+    void GLVertexAttrib2Fv( uint indx, FloatBuffer values );
 
     void GLVertexAttrib3F( int indx, float x, float y, float z );
 
-    void GLVertexAttrib3Fv( int indx, FloatBuffer values );
+    void GLVertexAttrib3Fv( uint indx, FloatBuffer values );
 
     void GLVertexAttrib4F( int indx, float x, float y, float z, float w );
 
-    void GLVertexAttrib4Fv( int indx, FloatBuffer values );
+    void GLVertexAttrib4Fv( uint indx, FloatBuffer values );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
     
-    void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Buffer ptr );
+    void GLVertexAttribPointer( uint indx, int size, VertexAttribType type, bool normalized, int stride, Buffer ptr );
 
-    void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, int ptr );
+    void GLVertexAttribPointer( uint indx, int size, VertexAttribType type, bool normalized, int stride, int ptr );
 }

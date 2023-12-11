@@ -19,6 +19,9 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DesktopGLFiles : IFiles
 {
+    public readonly static string UserHomePath = Environment.GetEnvironmentVariable( "user.home" ) + Path.PathSeparator;
+    public readonly static string LocalPath    = Path.GetFullPath( "" ) + Path.PathSeparator;
+
     /// <summary>
     /// Returns a handle representing a file or directory.
     /// </summary>

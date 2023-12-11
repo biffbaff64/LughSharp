@@ -17,6 +17,7 @@
 using LibGDXSharp.Core.Files.Buffers;
 
 using Buffer = LibGDXSharp.Core.Files.Buffers.Buffer;
+using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
@@ -135,35 +136,35 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLCopyTexSubImage2D( int target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
+    public override void GLCopyTexSubImage2D( TextureTarget target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
     {
         Calls++;
         GL20.GLCopyTexSubImage2D( target, level, xoffset, yoffset, x, y, width, height );
         Check();
     }
 
-    public override void GLCullFace( int mode )
+    public override void GLCullFace( CullFaceMode mode )
     {
         Calls++;
         GL20.GLCullFace( mode );
         Check();
     }
 
-    public override void GLDeleteTextures( int n, IntBuffer textures )
+    public override void GLDeleteTextures( int n, uint textures )
     {
         Calls++;
         GL20.GLDeleteTextures( n, textures );
         Check();
     }
 
-    public override void GLDeleteTexture( int texture )
+    public override void GLDeleteTexture( uint texture )
     {
         Calls++;
         GL20.GLDeleteTexture( texture );
         Check();
     }
 
-    public override void GLDepthFunc( int func )
+    public override void GLDepthFunc( DepthFunction func )
     {
         Calls++;
         GL20.GLDepthFunc( func );
@@ -184,14 +185,14 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLDisable( int cap )
+    public override void GLDisable( EnableCap cap )
     {
         Calls++;
         GL20.GLDisable( cap );
         Check();
     }
 
-    public override void GLDrawArrays( int mode, int first, int count )
+    public override void GLDrawArrays( PrimitiveType mode, int first, int count )
     {
         VertexCount.Put( count );
         DrawCalls++;
@@ -209,7 +210,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLEnable( int cap )
+    public override void GLEnable( EnableCap cap )
     {
         Calls++;
         GL20.GLEnable( cap );
@@ -230,21 +231,21 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLFrontFace( int mode )
+    public override void GLFrontFace( FrontFaceDirection mode )
     {
         Calls++;
         GL20.GLFrontFace( mode );
         Check();
     }
 
-    public override void GLGenTextures( int n, IntBuffer textures )
+    public override void GLGenTextures( int n, uint[] textures )
     {
         Calls++;
         GL20.GLGenTextures( n, textures );
         Check();
     }
 
-    public override int GLGenTexture()
+    public override uint GLGenTexture()
     {
         Calls++;
         var result = GL20.GLGenTexture();
@@ -253,7 +254,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         return result;
     }
 
-    public override int GLGetError()
+    public override ErrorCode GLGetError()
     {
         Calls++;
 
@@ -473,7 +474,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override int GLCreateProgram()
+    public override uint GLCreateProgram()
     {
         Calls++;
         var result = GL20.GLCreateProgram();
@@ -482,7 +483,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         return result;
     }
 
-    public override int GLCreateShader( int type )
+    public override uint GLCreateShader( ShaderType type )
     {
         Calls++;
         var result = GL20.GLCreateShader( type );
@@ -491,14 +492,14 @@ public class GL20Interceptor : GLInterceptor, IGL20
         return result;
     }
 
-    public override void GLDeleteBuffer( int buffer )
+    public override void GLDeleteBuffer( uint buffer )
     {
         Calls++;
         GL20.GLDeleteBuffer( buffer );
         Check();
     }
 
-    public override void GLDeleteBuffers( int n, IntBuffer buffers )
+    public override void GLDeleteBuffers( int n, uint buffers )
     {
         Calls++;
         GL20.GLDeleteBuffers( n, buffers );
@@ -519,7 +520,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLDeleteProgram( int program )
+    public override void GLDeleteProgram( uint program )
     {
         Calls++;
         GL20.GLDeleteProgram( program );
@@ -540,21 +541,21 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLDeleteShader( int shader )
+    public override void GLDeleteShader( uint shader )
     {
         Calls++;
         GL20.GLDeleteShader( shader );
         Check();
     }
 
-    public override void GLDetachShader( int program, int shader )
+    public override void GLDetachShader( uint program, uint shader )
     {
         Calls++;
         GL20.GLDetachShader( program, shader );
         Check();
     }
 
-    public override void GLDisableVertexAttribArray( int index )
+    public override void GLDisableVertexAttribArray( uint index )
     {
         Calls++;
         GL20.GLDisableVertexAttribArray( index );
@@ -570,7 +571,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLEnableVertexAttribArray( int index )
+    public override void GLEnableVertexAttribArray( uint index )
     {
         Calls++;
         GL20.GLEnableVertexAttribArray( index );
@@ -591,7 +592,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override int GLGenBuffer()
+    public override uint GLGenBuffer()
     {
         Calls++;
         var result = GL20.GLGenBuffer();
@@ -600,7 +601,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         return result;
     }
 
-    public override void GLGenBuffers( int n, IntBuffer buffers )
+    public override void GLGenBuffers( int n, uint[] buffers )
     {
         Calls++;
         GL20.GLGenBuffers( n, buffers );
@@ -1169,28 +1170,28 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLUseProgram( int program )
+    public override void GLUseProgram( uint program )
     {
         Calls++;
         GL20.GLUseProgram( program );
         Check();
     }
 
-    public override void GLValidateProgram( int program )
+    public override void GLValidateProgram( uint program )
     {
         Calls++;
         GL20.GLValidateProgram( program );
         Check();
     }
 
-    public override void GLVertexAttrib1F( int indx, float x )
+    public override void GLVertexAttrib1F( uint indx, float x )
     {
         Calls++;
         GL20.GLVertexAttrib1F( indx, x );
         Check();
     }
 
-    public override void GLVertexAttrib1Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib1Fv( uint indx, FloatBuffer values )
     {
         Calls++;
         GL20.GLVertexAttrib1Fv( indx, values );
@@ -1204,7 +1205,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLVertexAttrib2Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib2Fv( uint indx, FloatBuffer values )
     {
         Calls++;
         GL20.GLVertexAttrib2Fv( indx, values );
@@ -1218,7 +1219,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
         Check();
     }
 
-    public override void GLVertexAttrib3Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib3Fv( uint indx, FloatBuffer values )
     {
         Calls++;
         GL20.GLVertexAttrib3Fv( indx, values );

@@ -32,10 +32,10 @@ public interface IDesktopGLWindowListener
     void Created( DesktopGLWindow window );
 
     /// <summary>
-    /// Called when the window is iconified (i.e. its minimize button
-    /// was clicked), or when restored from the iconified state. When a window becomes
-    /// iconified, its <see cref="IApplicationListener"/> will be paused, and when restored
-    /// it will be resumed.
+    /// Called when the window is iconified (i.e. its minimize button was clicked),
+    /// or when restored from the iconified state. When a window becomes iconified, its
+    /// <see cref="IApplicationListener"/> will be paused, and when restored it will
+    /// be resumed.
     /// </summary>
     /// <param name="isIconified">
     /// True if window is iconified, false if it leaves the iconified state

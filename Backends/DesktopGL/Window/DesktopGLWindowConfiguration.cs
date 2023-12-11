@@ -19,28 +19,83 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DesktopGLWindowConfiguration
 {
-    public int   WindowX                { get; set; } = -1;
-    public int   WindowY                { get; set; } = -1;
-    public int   WindowWidth            { get; set; } = 640;
-    public int   WindowHeight           { get; set; } = 480;
-    public int   WindowMinWidth         { get; set; } = -1;
-    public int   WindowMinHeight        { get; set; } = -1;
-    public int   WindowMaxWidth         { get; set; } = -1;
-    public int   WindowMaxHeight        { get; set; } = -1;
-    public bool  WindowResizable        { get; set; } = true;
-    public bool  WindowDecorated        { get; set; } = true;
-    public bool  WindowMaximized        { get; set; } = false;
-    public bool  AutoIconify            { get; set; } = false;
-    public Color InitialBackgroundColor { get; set; } = Color.Black;
-    public bool  InitialVisible         { get; set; } = true;
-    public bool  VSyncEnabled           { get; set; } = true;
+    public int       WindowX            { get; set; } = -1;
+    public int       WindowY            { get; set; } = -1;
+    public int       WindowWidth        { get; set; } = 640;
+    public int       WindowHeight       { get; set; } = 480;
+    public int       WindowMinWidth     { get; set; } = -1;
+    public int       WindowMinHeight    { get; set; } = -1;
+    public int       WindowMaxWidth     { get; set; } = -1;
+    public int       WindowMaxHeight    { get; set; } = -1;
+    public FileType  WindowIconFileType { get; set; }
+    public string[]? WindowIconPaths    { get; set; }
 
-    public DesktopGLGraphics.DesktopGLMonitor?     MaximizedMonitor   { get; set; }
-    public FileType                                WindowIconFileType { get; set; }
-    public string[]?                               WindowIconPaths    { get; set; }
-    public IDesktopGLWindowListener?               WindowListener     { get; set; }
-    public DesktopGLGraphics.DesktopGLDisplayMode? FullscreenMode     { get; set; }
-    public string?                                 Title              { get; set; }
+    public DesktopGLGraphics.DesktopGLMonitor? MaximizedMonitor { get; set; }
+    
+    /// <summary>
+    /// whether the window will be visible on creation. (default true)
+    /// </summary>
+    public bool InitialVisible { get; set; } = true;
+
+    /// <summary>
+    /// Sets the <see cref="IDesktopGLWindowListener"/> which will be informed about
+    /// iconficiation, focus loss and window close events.
+    /// </summary>
+    public IDesktopGLWindowListener? WindowListener { get; set; }
+
+    /// <summary>
+    /// Sets the app to use fullscreen mode.
+    /// Use the static methods like <see cref="DesktopGLApplicationConfiguration.GetDisplayMode()"/>
+    /// on this class to enumerate connected monitors and their fullscreen display modes.
+    /// </summary>
+    public DesktopGLGraphics.DesktopGLDisplayMode? FullscreenMode { get; set; }
+
+    /// <summary>
+    /// Sets whether to use vsync.
+    /// <para>
+    /// This setting can be changed anytime at runtime via <see cref="IGraphics.SetVSync(bool)"/>.
+    /// </para>
+    /// <para>
+    /// For multi-window applications, only one (the main) window should enable vsync. Otherwise,
+    /// every window will wait for the vertical blank on swap individually, effectively cutting
+    /// the frame rate to (refreshRate / numberOfWindows).
+    /// </para>
+    /// </summary>
+    public bool VSyncEnabled { get; set; } = true;
+
+    /// <summary>
+    /// whether the windowed mode window is resizable (default true)
+    /// </summary>
+    public bool WindowResizable { get; set; } = true;
+
+    /// <summary>
+    /// whether the windowed mode window is decorated, i.e. displaying the title bars.
+    /// (default true)
+    /// </summary>
+    public bool WindowDecorated { get; set; } = true;
+
+    /// <summary>
+    /// whether the window starts maximized. Ignored if the window is full screen.
+    /// (default false)
+    /// </summary>
+    public bool WindowMaximized { get; set; } = false;
+
+    /// <summary>
+    /// whether the window should automatically iconify and restore previous video mode
+    /// on input focus loss. (default false). Does nothing in windowed mode.
+    /// (default false)
+    /// </summary>
+    public bool AutoIconify { get; set; } = false;
+
+    /// <summary>
+    /// Sets the initial background color. Defaults to black.
+    /// </summary>
+    public Color InitialBackgroundColor { get; set; } = Color.Black;
+
+    /// <summary>
+    /// Sets the window title. Defaults to empty string.
+    /// </summary>
+    public string? Title { get; set; } = "";
 
     /// <summary>
     /// </summary>
@@ -80,77 +135,28 @@ public class DesktopGLWindowConfiguration
     }
 
     /// <summary>
+    /// Sets the icon that will be used in the window's title bar. Has no effect in
+    /// macOS, which doesn't use window icons.
     /// </summary>
-    /// <param name="visibility">
-    /// whether the window will be visible on creation. (default true)
+    /// <param name="filePaths">
+    /// One or more internal image paths. Must be JPEG, PNG, or BMP format.
+    /// The one closest to the system's desired size will be scaled. Good
+    /// sizes include 16x16, 32x32 and 48x48.
     /// </param>
-    public void SetInitialVisible( bool visibility )
+    public void SetWindowIcon( params string[] filePaths )
     {
-        this.InitialVisible = visibility;
+        SetWindowIcon( FileType.Internal, filePaths );
     }
 
-    ///
+    /// <summary>
     /// Sets the app to use windowed mode.
-    /// 
-    /// @param width
-    ///            the width of the window (default 640)
-    /// @param height
-    ///            the height of the window (default 480)
-    ///
+    /// </summary>
+    /// <param name="width"> the width of the window (default 640) </param>
+    /// <param name="height">the height of the window (default 480) </param>
     public void SetWindowedMode( int width, int height )
     {
         this.WindowWidth  = width;
         this.WindowHeight = height;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="resizable">
-    /// whether the windowed mode window is resizable (default true)
-    /// </param>
-    public void SetResizable( bool resizable )
-    {
-        this.WindowResizable = resizable;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="decorated">
-    /// whether the windowed mode window is decorated, i.e. displaying the title bars (default true)
-    /// </param>
-    public void SetDecorated( bool decorated )
-    {
-        this.WindowDecorated = decorated;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="maximized">
-    /// whether the window starts maximized. Ignored if the window is full screen. (default false)
-    /// </param>
-    public void SetMaximized( bool maximized )
-    {
-        this.WindowMaximized = maximized;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="monitorHandle"> which monitor the window should maximize to. </param>
-    public void SetMaximizedMonitor( DesktopGLGraphics.DesktopGLMonitor monitorHandle )
-    {
-        this.MaximizedMonitor = monitorHandle;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="autoIconify">
-    /// whether the window should automatically iconify and restore previous
-    /// video mode on input focus loss. (default false).
-    /// Does nothing in windowed mode.
-    /// </param>
-    public void SetAutoIconify( bool autoIconify )
-    {
-        this.AutoIconify = autoIconify;
     }
 
     /// <summary>
@@ -177,26 +183,12 @@ public class DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Sets the icon that will be used in the window's title bar. Has no effect in
-    /// macOS, which doesn't use window icons.
-    /// </summary>
-    /// <param name="filePaths">
-    /// One or more internal image paths. Must be JPEG, PNG, or BMP format.
-    /// The one closest to the system's desired size will be scaled. Good
-    /// sizes include 16x16, 32x32 and 48x48.
-    /// </param>
-    public void SetWindowIcon( params string[] filePaths )
-    {
-        SetWindowIcon( FileType.Internal, filePaths );
-    }
-
-    /// <summary>
-    /// Sets the icon that will be used in the window's title bar. Has no effect in macOS,
+    /// Sets the icon that will be used in the window's title bar.Has no effect in macOS,
     /// which doesn't use window icons.
     /// </summary>
     /// <param name="fileType"> The type of file handle the paths are relative to. </param>
     /// <param name="filePaths">
-    /// One or more image paths, relative to the given {@linkplain FileType}. Must be JPEG,
+    /// One or more image paths, relative to the given <see cref="FileType"/>. Must be JPEG,
     /// PNG, or BMP format. The one closest to the system's desired size will be scaled.
     /// Good sizes include 16x16, 32x32 and 48x48.
     /// </param>
@@ -204,54 +196,5 @@ public class DesktopGLWindowConfiguration
     {
         WindowIconFileType = fileType;
         WindowIconPaths    = filePaths;
-    }
-
-    /// <summary>
-    /// Sets the {@link GLWindowListener} which will be informed about
-    /// iconficiation, focus loss and window close events.
-    /// </summary>
-    public void SetWindowListener( IDesktopGLWindowListener windowListener )
-    {
-        this.WindowListener = windowListener;
-    }
-
-    /// <summary>
-    /// Sets the app to use fullscreen mode. Use the static methods like
-    /// {@link GLApplicationConfiguration#getDisplayMode()} on this class to enumerate connected monitors
-    /// and their fullscreen display modes.
-    /// </summary>
-    public void SetFullscreenMode( DesktopGLGraphics.DesktopGLDisplayMode mode )
-    {
-        this.FullscreenMode = mode;
-    }
-
-    /// <summary>
-    /// Sets the window title. Defaults to empty string.
-    /// </summary>
-    public void SetTitle( string title )
-    {
-        this.Title = title;
-    }
-
-    /// <summary>
-    /// Sets the initial background color. Defaults to black.
-    /// </summary>
-    public void SetInitialBackgroundColor( Color color )
-    {
-        InitialBackgroundColor = color;
-    }
-
-    /// <summary>
-    /// Sets whether to use vsync. This setting can be changed anytime at runtime
-    /// via <see cref="IGraphics.SetVSync(bool)"/>.
-    /// <para>
-    /// For multi-window applications, only one (the main) window should enable vsync.
-    /// Otherwise, every window will wait for the vertical blank on swap individually,
-    /// effectively cutting the frame rate to (refreshRate / numberOfWindows).
-    /// </para>
-    /// </summary>
-    public void UseVsync( bool vsync )
-    {
-        this.VSyncEnabled = vsync;
     }
 }

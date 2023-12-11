@@ -396,13 +396,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         for ( int i = 0; i < 2; i++ )
         {
-            GL11.glClearColor( config.initialBackgroundColor.r,
-                               config.initialBackgroundColor.g,
-                               config.initialBackgroundColor.b,
-                               config.initialBackgroundColor.a );
+            Gl.ClearColor( config.InitialBackgroundColor.R,
+                           config.InitialBackgroundColor.G,
+                           config.InitialBackgroundColor.B,
+                           config.InitialBackgroundColor.A );
 
-            GL11.glClear( GL11.GL_COLOR_BUFFER_BIT );
-            GLFW.glfwSwapBuffers( windowHandle );
+            Gl.Clear( ClearBufferMask.ColorBufferBit );
+            Glfw.SwapBuffers( windowHandle );
         }
     }
 
@@ -472,7 +472,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                               Window.None );
         }
 
-        if ( windowHandle == 0 ) //TODO: Window.None ??
+        if ( windowHandle == Window.None )
         {
             throw new GdxRuntimeException( "Couldn't create window" );
         }
@@ -505,7 +505,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 {
                     monitorHandle = appConfig.MaximizedMonitor.MonitorHandle;
                 }
-                
+
                 Glfw.GetMonitorWorkArea( monitorHandle.UserPointer,
                                          out var areaXPos,
                                          out var areaYPos,
@@ -534,32 +534,31 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         Glfw.MakeContextCurrent( windowHandle );
         Glfw.SwapInterval( appConfig.VSyncEnabled ? 1 : 0 );
-        
+
+        //TODO: What do I do here????
         Glfw.CreateCapabilities();
 
         InitiateGL();
 
         if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) )
         {
-            throw new GdxRuntimeException( "OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
-                                         + GL.glGetString( GL.GL_VERSION )
-                                         + "\n"
-                                         + GLVersion?.DebugVersionString() );
+            throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is "
+                                         + $"required. OpenGL version: {GL.glGetString( GL.GL_VERSION )}"
+                                         + $"\n{GLVersion?.DebugVersionString()}" );
         }
 
         if ( !SupportsFBO() )
         {
-//            throw new GdxRuntimeException( "OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
-//                                         + GL.GLGetString( GL11.GL_VERSION )
-//                                         + ", FBO extension: false\n"
-//                                         + GLVersion?.DebugVersionString() );
+            throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is "
+                                         + $"required. OpenGL version: {Gl.GetString( StringName.Version )}, "
+                                         + $"FBO extension: false\n{GLVersion?.DebugVersionString()}" );
         }
 
-        if ( appConfig.Debug )
-        {
-//            glDebugCallback = GLUtil.setupDebugMessageCallback( config.debugStream );
+//        if ( appConfig.Debug )
+//        {
+//            GlDebugCallback = GLFW.DebugMessageCallback( config.debugStream );
 //            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
-        }
+//        }
 
         return windowHandle;
     }
@@ -601,7 +600,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
     {
-        throw new NotImplementedException();
+        return new OpenALGLAudio( config.AudioDeviceSimultaneousSources,
+                                  config.AudioDeviceBufferCount,
+                                  config.AudioDeviceBufferSize );
     }
 
     public IDesktopGLInput CreateInput( DesktopGLWindow window )
@@ -609,15 +610,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return new DefaultDesktopGLInput( window );
     }
 
-    protected IFiles CreateFiles()
-    {
-        return new DesktopGLFiles();
-    }
+    protected IFiles CreateFiles() => new DesktopGLFiles();
 
-    public int GetVersion()
-    {
-        return 0;
-    }
+    public int GetVersion() => 0;
 
     public void Exit()
     {
@@ -640,6 +635,23 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    /// <summary>
+    /// </summary>
+    private void InitiateGL()
+    {
+        Glfw.GetVersion( out var major, out var minor, out var revision );
+
+        GLVersion = new GLVersion( IApplication.ApplicationType.Desktop,
+                                   $"{major}.{minor}.{revision}",
+                                   Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
+                                   Gdx.GL20.GLGetString( IGL20.GL_RENDERER ) );
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region GLDebug specific
+    
     //TODO: Unfinished, see GLDebugMessageSeverity below
     [PublicAPI]
     public struct Gldms
@@ -725,17 +737,5 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return false;
     }
 
-    /// <summary>
-    /// </summary>
-    private void InitiateGL()
-    {
-        GLFW.GetVersion( out var major, out var minor, out var revision );
-
-        GLVersion = new GLVersion(
-            IApplication.ApplicationType.Desktop,
-            $"{major}.{minor}.{revision}",
-            Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
-            Gdx.GL20.GLGetString( IGL20.GL_RENDERER )
-            );
-    }
+    #endregion GLDebug specific
 }

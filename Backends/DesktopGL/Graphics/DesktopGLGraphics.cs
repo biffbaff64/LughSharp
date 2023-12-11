@@ -247,7 +247,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        GLWindow.Config.SetDecorated( !undecorated );
+        GLWindow.Config.WindowDecorated = !undecorated;
 
         Glfw.SetWindowAttribute( GLWindow.GlfwWindow, GLFW.WindowAttribute.Decorated, undecorated );
     }
@@ -256,7 +256,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        GLWindow.Config.SetResizable( resizable );
+        GLWindow.Config.WindowResizable = resizable;
         
         Glfw.SetWindowAttribute( GLWindow.GlfwWindow, GLFW.WindowAttribute.Resizable, resizable );
     }

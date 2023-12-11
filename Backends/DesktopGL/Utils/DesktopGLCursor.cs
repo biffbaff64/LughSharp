@@ -19,8 +19,8 @@ namespace LibGDXSharp.Backends.Desktop;
 [PublicAPI]
 public class DesktopGLCursor : ICursor
 {
-    public List< DesktopGLCursor >                         cursors       = new();
-    public Dictionary< ICursor.SystemCursor, GLFW.Cursor > systemCursors = new();
+    public static List< DesktopGLCursor >                         cursors       = new();
+    public static Dictionary< ICursor.SystemCursor, GLFW.Cursor > systemCursors = new();
 
     public DesktopGLWindow Window     { get; set; }
     public Pixmap          PixmapCopy { get; set; }
@@ -103,20 +103,20 @@ public class DesktopGLCursor : ICursor
         Glfw.DestroyCursor( GLFWCursor );
     }
 
-    public void Dispose( DesktopGLWindow glWindow )
+    public static void Dispose( DesktopGLWindow glWindow )
     {
         for ( var i = cursors.Count - 1; i >= 0; i-- )
         {
             DesktopGLCursor cursor = cursors[ i ];
 
-            if ( cursor.Window.Equals( Window ) )
+            if ( cursor.Window.Equals( glWindow ) )
             {
                 cursors.RemoveAt( i );
             }
         }
     }
 
-    public void DisposeSystemCursors()
+    public static void DisposeSystemCursors()
     {
         foreach ( Cursor systemCursor in systemCursors.Values )
         {

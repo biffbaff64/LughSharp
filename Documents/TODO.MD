@@ -131,6 +131,7 @@ BACKENDS/DESKTOPGL
 ------------------
 
     - IP   - DesktopGLApplication
+            - IP   - GLDebugMessageSeverity
     - DONE - DesktopGLApplicationConfiguration
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet
@@ -141,7 +142,7 @@ BACKENDS/DESKTOPGL
     Files
     -----
 
-    - IP   - DesktopGLFileHandle
+    - DONE - DesktopGLFileHandle
     - DONE - DesktopGLFiles
 
     Graphics
@@ -150,6 +151,8 @@ BACKENDS/DESKTOPGL
     - IP   - DesktopGL20
     - IP   - DesktopGL30
     - IP   - DesktopGLGraphics
+            - IP   - DesktopGLDisplayMode   Delete candidate
+            - IP   - DesktopGLMonitor       Delete candidate
 
     Input
     -----
@@ -162,16 +165,16 @@ BACKENDS/DESKTOPGL
 
     - IP   - DesktopGLApplicationLogger
     - IP   - DesktopGLClipboard
-    - IP   - DesktopGLCursor
+    - DONE - DesktopGLCursor
     - IP   - DesktopGLPreferences
 
     Window
     ------
 
     - IP   - DesktopGLWindow
-    - IP   - DesktopGLWindowConfiguration
-    - IP   - DesktopGLWindowAdapter
-    - IP   - IDesktopGLWindowListener
+    - DONE - DesktopGLWindowConfiguration
+    - DONE - DesktopGLWindowAdapter
+    - DONE - IDesktopGLWindowListener
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -184,7 +187,7 @@ BACKENDS/DESKTOPGL/AUDIO
     -      - Ogg
     -      - OggInputStream
     -      - OpenALAudioDevice
-    -      - OpenALGLAudio
+    - IP   - OpenALGLAudio
     -      - OpenALMusic
     -      - OpenALSound
     -      - SoundAudioRecorder
@@ -220,20 +223,20 @@ CORE
     - DONE - IAudio
     - DONE - IFile
     - DONE - IGraphics
-            - DONE - DisplayModeDescriptor
-            - DONE - MonitorDescriptor
-            - DONE - BufferFormatDescriptor
+    - DONE - IGraphics.DisplayModeDescriptor
+    - DONE - IGraphics.MonitorDescriptor
+    - DONE - IGraphics.BufferFormatDescriptor
     - DONE - IInput
-            - DONE - Buttons
-            - DONE - Keys
-            - DONE - ITextInputListener
+    - DONE - IInput.Buttons
+    - DONE - IInput.Keys
+    - DONE - IInput.ITextInputListener
     - DONE - IInputProcessor                
     - DONE - ILifecycleListener             
     - DONE - INet
-            - DONE - IHttpResponse
-            - DONE - IHttpMethods
-            - DONE - IHttpResponseListener
-            - DONE - HttpRequest
+    - DONE - INet.IHttpResponse
+    - DONE - INet.IHttpMethods
+    - DONE - INet.IHttpResponseListener
+    - DONE - INet.HttpRequest
     - DONE - InputAdapter                   
     - DONE - InputEventQueue                
     - DONE - IPreferences                   

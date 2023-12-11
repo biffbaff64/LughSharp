@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.InteropServices;
-
 using LibGDXSharp.Backends.DesktopGL;
 using LibGDXSharp.Core.Utils.Collections;
 
@@ -34,6 +32,7 @@ public class DesktopGLWindow : IDisposable
 
     private          bool                      _iconified         = false;
     private          bool                      _requestRendering  = false;
+    private readonly Vector2                   _tmpV2             = new();
     private readonly List< Runnable >          _runnables         = new();
     private readonly List< Runnable >          _executedRunnables = new();
     private readonly IDesktopGLApplicationBase _application;
@@ -213,11 +212,11 @@ public class DesktopGLWindow : IDisposable
     //TODO:
     private void SetIcon( GLFW.Window window, Pixmap[] images )
     {
-//        if ( SharedLibraryLoader.IsMac )
-//        {
-//            return;
-//        }
-//
+        if ( SharedLibraryLoader.IsMac )
+        {
+            return;
+        }
+
 //        GLFW.Image Buffer buffer = GLFWImage.malloc( images.length );
 //
 //        Pixmap?[] tmpPixmaps = new Pixmap[ images.Length ];
@@ -298,28 +297,31 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
+    /// Gets the current window position in logical coordinates. All monitors span a
+    /// virtual surface together. The coordinates are relative to the first monitor
+    /// in the virtual surface.
+    /// </summary>
+    /// <returns>A Vector2 holding the window X and Y.</returns>
+    public Vector2 GetPosition()
+    {
+        Glfw.GetWindowPosition( GlfwWindow, out var xPos, out var yPos );
+
+        return _tmpV2.Set( xPos, yPos );
+    }
+
+    /// <summary>
     /// Return the window X position in logical coordinates. All monitors span a virtual
     /// surface together. The coordinates are relative to the first monitor in the
     /// virtual surface.
     /// </summary>
-    public int GetPositionX()
-    {
-        Glfw.GetWindowPosition( GlfwWindow, out var xPos, out var yPos );
-
-        return xPos;
-    }
+    public int GetPositionX() => ( int )GetPosition().X;
 
     /// <summary>
     /// Return the window Y position in logical coordinates. All monitors span a virtual
     /// surface together. The coordinates are relative to the first monitor in the
     /// virtual surface.
     /// </summary>
-    public int GetPositionY()
-    {
-        Glfw.GetWindowPosition( GlfwWindow, out var xPos, out var yPos );
-
-        return yPos;
-    }
+    public int GetPositionY() => ( int )GetPosition().Y;
 
     /// <summary>
     /// Sets the visibility of the window.

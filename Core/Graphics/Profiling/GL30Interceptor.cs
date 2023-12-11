@@ -17,6 +17,7 @@
 using LibGDXSharp.Core.Files.Buffers;
 
 using Buffer = LibGDXSharp.Core.Files.Buffers.Buffer;
+using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
@@ -135,35 +136,35 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLCopyTexSubImage2D( int target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
+    public override void GLCopyTexSubImage2D( TextureTarget target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
     {
         Calls++;
         GL30.GLCopyTexSubImage2D( target, level, xoffset, yoffset, x, y, width, height );
         Check();
     }
 
-    public override void GLCullFace( int mode )
+    public override void GLCullFace( CullFaceMode mode )
     {
         Calls++;
         GL30.GLCullFace( mode );
         Check();
     }
 
-    public override void GLDeleteTextures( int n, IntBuffer textures )
+    public override void GLDeleteTextures( int n, uint textures )
     {
         Calls++;
         GL30.GLDeleteTextures( n, textures );
         Check();
     }
 
-    public override void GLDeleteTexture( int texture )
+    public override void GLDeleteTexture( uint texture )
     {
         Calls++;
         GL30.GLDeleteTexture( texture );
         Check();
     }
 
-    public override void GLDepthFunc( int func )
+    public override void GLDepthFunc( DepthFunction func )
     {
         Calls++;
         GL30.GLDepthFunc( func );
@@ -184,14 +185,14 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLDisable( int cap )
+    public override void GLDisable( EnableCap cap )
     {
         Calls++;
         GL30.GLDisable( cap );
         Check();
     }
 
-    public override void GLDrawArrays( int mode, int first, int count )
+    public override void GLDrawArrays( PrimitiveType mode, int first, int count )
     {
         VertexCount.Put( count );
         DrawCalls++;
@@ -209,7 +210,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLEnable( int cap )
+    public override void GLEnable( EnableCap cap )
     {
         Calls++;
         GL30.GLEnable( cap );
@@ -230,21 +231,21 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLFrontFace( int mode )
+    public override void GLFrontFace( FrontFaceDirection mode )
     {
         Calls++;
         GL30.GLFrontFace( mode );
         Check();
     }
 
-    public override void GLGenTextures( int n, IntBuffer textures )
+    public override void GLGenTextures( int n, uint[] textures )
     {
         Calls++;
         GL30.GLGenTextures( n, textures );
         Check();
     }
 
-    public override int GLGenTexture()
+    public override uint GLGenTexture()
     {
         Calls++;
         var result = GL30.GLGenTexture();
@@ -253,7 +254,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         return result;
     }
 
-    public override int GLGetError()
+    public override ErrorCode GLGetError()
     {
         Calls++;
 
@@ -476,7 +477,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override int GLCreateProgram()
+    public override uint GLCreateProgram()
     {
         Calls++;
         var result = GL30.GLCreateProgram();
@@ -485,7 +486,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         return result;
     }
 
-    public override int GLCreateShader( int type )
+    public override uint GLCreateShader( ShaderType type )
     {
         Calls++;
         var result = GL30.GLCreateShader( type );
@@ -494,14 +495,14 @@ public class GL30Interceptor : GLInterceptor, IGL30
         return result;
     }
 
-    public override void GLDeleteBuffer( int buffer )
+    public override void GLDeleteBuffer( uint buffer )
     {
         Calls++;
         GL30.GLDeleteBuffer( buffer );
         Check();
     }
 
-    public override void GLDeleteBuffers( int n, IntBuffer buffers )
+    public override void GLDeleteBuffers( int n, uint buffers )
     {
         Calls++;
         GL30.GLDeleteBuffers( n, buffers );
@@ -522,7 +523,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLDeleteProgram( int program )
+    public override void GLDeleteProgram( uint program )
     {
         Calls++;
         GL30.GLDeleteProgram( program );
@@ -543,21 +544,21 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLDeleteShader( int shader )
+    public override void GLDeleteShader( uint shader )
     {
         Calls++;
         GL30.GLDeleteShader( shader );
         Check();
     }
 
-    public override void GLDetachShader( int program, int shader )
+    public override void GLDetachShader( uint program, uint shader )
     {
         Calls++;
         GL30.GLDetachShader( program, shader );
         Check();
     }
 
-    public override void GLDisableVertexAttribArray( int index )
+    public override void GLDisableVertexAttribArray( uint index )
     {
         Calls++;
         GL30.GLDisableVertexAttribArray( index );
@@ -573,7 +574,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLEnableVertexAttribArray( int index )
+    public override void GLEnableVertexAttribArray( uint index )
     {
         Calls++;
         GL30.GLEnableVertexAttribArray( index );
@@ -594,7 +595,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override int GLGenBuffer()
+    public override uint GLGenBuffer()
     {
         Calls++;
         var result = GL30.GLGenBuffer();
@@ -603,7 +604,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         return result;
     }
 
-    public override void GLGenBuffers( int n, IntBuffer buffers )
+    public override void GLGenBuffers( int n, uint[] buffers )
     {
         Calls++;
         GL30.GLGenBuffers( n, buffers );
@@ -1176,7 +1177,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLUseProgram( int program )
+    public override void GLUseProgram( uint program )
     {
         ShaderSwitches++;
         Calls++;
@@ -1184,21 +1185,21 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLValidateProgram( int program )
+    public override void GLValidateProgram( uint program )
     {
         Calls++;
         GL30.GLValidateProgram( program );
         Check();
     }
 
-    public override void GLVertexAttrib1F( int indx, float x )
+    public override void GLVertexAttrib1F( uint indx, float x )
     {
         Calls++;
         GL30.GLVertexAttrib1F( indx, x );
         Check();
     }
 
-    public override void GLVertexAttrib1Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib1Fv( uint indx, FloatBuffer values )
     {
         Calls++;
         GL30.GLVertexAttrib1Fv( indx, values );
@@ -1212,7 +1213,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLVertexAttrib2Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib2Fv( uint indx, FloatBuffer values )
     {
         Calls++;
         GL30.GLVertexAttrib2Fv( indx, values );
@@ -1226,7 +1227,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLVertexAttrib3Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib3Fv( uint indx, FloatBuffer values )
     {
         Calls++;
         GL30.GLVertexAttrib3Fv( indx, values );

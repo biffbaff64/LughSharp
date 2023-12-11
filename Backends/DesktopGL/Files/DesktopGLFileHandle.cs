@@ -22,102 +22,94 @@ namespace LibGDXSharp.Backends.Desktop;
 /// </summary>
 public class DesktopGLFileHandle : FileHandle
 {
-    /// <summary>
-    /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="type"></param>
     public DesktopGLFileHandle( string fileName, FileType type )
         : base( fileName, type )
     {
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="file"></param>
-    /// <param name="type"></param>
-    public DesktopGLFileHandle( FileHandle file, FileType type )
-        : base( file, type )
+    public DesktopGLFileHandle( FileInfo file, FileType type )
+        : base( file.Name, type )
     {
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //TODO: Updates to Child(string) and Sibling(string) needed. I'm not sure either are correct.
+
     /// <summary>
+    /// Returns a handle to the child with the specified name.
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
     public FileHandle Child( string name )
     {
-//        if ( base.File != null )
-//        {
-//            if ( base.File.FullName.Length == 0 )
-//            {
-//                return new GLFileHandle( new FileHandle( name ), Type );
-//            }
-//        }
+        if ( System.IO.Path.GetFullPath( base.FileInfo.Name ).Length == 0 )
+        {
+            return new DesktopGLFileHandle( new FileInfo( base.FileInfo.Name ), base.FileType );
+        }
 
-//        return new GLFileHandle( new FileHandle( name ), Type );
-
-        throw new NotImplementedException();
+        return new DesktopGLFileHandle( new FileInfo( System.IO.Path.GetDirectoryName( base.FileInfo.Name ) + name ),
+                                        base.FileType );
     }
 
     /// <summary>
+    /// Returns a handle to the sibling with the specified name.
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    /// <exception cref="GdxRuntimeException"></exception>
     public FileHandle Sibling( string name )
     {
-//            if ( FileInfo != null )
-//            {
-//                if ( FileInfo.FullName.Length == 0 )
-//                {
-//                    throw new GdxRuntimeException( "Cannot get the sibling of the root." );
-//                }
-//            }
+        if ( System.IO.Path.GetFullPath( name ).Length == 0 )
+        {
+            throw new GdxRuntimeException( "Cannot get the sibling of the root." );
+        }
 
-//            return new GLFileHandle( new File( file.getParent(), name ), type );
-        throw new NotImplementedException();
+        return new FileHandle( name, base.FileType );
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Returns the abstract pathname of this abstract pathname's parent, or null if this pathname
+    /// does not name a parent directory.
+    /// <para>
+    /// The parent of an abstract pathname consists of the pathname's prefix, if any, and each name
+    /// in the pathname's name sequence except for the last. If the name sequence is empty then the
+    /// pathname does not name a parent directory.
+    /// </para>
+    /// </summary>
+    public DirectoryInfo ParentFolder()
+    {
+        DirectoryInfo directoryInfo;
+
+        if ( !System.IO.Directory.Exists( base.Path() ) )
+        {
+            directoryInfo = base.FileType == FileType.Absolute
+                ? new DirectoryInfo( "/" )
+                : new DirectoryInfo( "" );
+        }
+        else
+        {
+            directoryInfo = new DirectoryInfo( System.IO.Path.GetFullPath( base.Name() ) );
+        }
+
+        return directoryInfo;
     }
 
     /// <summary>
+    /// Returns a FileInfo that represents this file handle. Note the returned file will
+    /// only be usable for <see cref="FileType.Absolute"/> and <see cref="FileType.External"/>
+    /// file handles.
     /// </summary>
-    /// <returns></returns>
-    public FileHandle Parent()
+    public FileInfo File()
     {
-//            File parent = file.getParentFile();
-//
-//            if ( parent == null )
-//            {
-//                if ( type == IFile.FileType.Absolute )
-//                {
-//                    parent = new File( "/" );
-//                }
-//                else
-//                {
-//                    parent = new File( "" );
-//                }
-//            }
-//
-//            return new GLFileHandle( parent, type );
-        throw new NotImplementedException();
-    }
+        if ( base.FileType == FileType.External )
+        {
+            return new FileInfo( DesktopGLFiles.UserHomePath + base.Name() );
+        }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public FileHandle? GetFile()
-    {
-//            if ( Type == IFile.FileType.External )
-//            {
-//                return new FileInfo( GLFiles.ExternalPath + FileInfo!.FullName );
-//            }
+        if ( base.FileType == FileType.Local )
+        {
+            return new FileInfo( DesktopGLFiles.LocalPath + base.Name() );
+        }
 
-//            if ( Type == IFile.FileType.Local )
-//            {
-//                return new FileInfo( GLFiles.LocalPath + FileInfo!.FullName );
-//            }
-
-//        return base.File;
-
-        throw new NotImplementedException();
+        return FileInfo;
     }
 }
