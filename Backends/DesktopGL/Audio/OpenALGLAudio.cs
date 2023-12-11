@@ -14,6 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Collections;
+
+using LibGDXSharp.Core.Files;
 using LibGDXSharp.Core.Files.Buffers;
 using LibGDXSharp.Core.Utils.Collections;
 
@@ -22,123 +25,532 @@ namespace LibGDXSharp.Backends.Desktop.Audio;
 [PublicAPI]
 public class OpenALGLAudio : IGLAudio
 {
-    private int                     deviceBufferSize;
-    private int                     deviceBufferCount;
-    private List< int >             idleSources;
-    private List< int >             allSources;
-    private Dictionary< long, int > soundIdToSource;
-    private Dictionary< int, long > sourceToSoundId;
-    private long                    nextSoundId = 0;
-    private OpenALSound[]           recentSounds;
-    private int                     mostRecetSound = -1;
+    private int                      _deviceBufferSize;
+    private int                      _deviceBufferCount;
+    private List< uint >?            _idleSources;
+    private List< uint >?            _allSources;
+    private Dictionary< long, int >? _soundIdToSource;
+    private Dictionary< int, long >? _sourceToSoundId;
+    private long                     _nextSoundId = 0;
+    private OpenALSound?[]?          _recentSounds;
+    private int                      _mostRecentSound = -1;
 
-    private ObjectMap< string, OpenALSound > extensionToSoundClass = new();
-    private ObjectMap< string, OpenALMusic > extensionToMusicClass = new();
+    private ObjectMap< string, Type > _extensionToSoundClass = new();
+    private ObjectMap< string, Type > _extensionToMusicClass = new();
 
-    private List< OpenALMusic > music    = new( 1 );
-    private bool                noDevice = false;
-    private long                device;
-    private long                context;
+    private List< OpenALMusic > _music    = new( 1 );
+    private bool                _noDevice = false;
+    private IntPtr              _device;
+    private IntPtr              _context;
 
     public OpenALGLAudio( int simultaneousSources = 16,
                           int deviceBufferCount = 9,
                           int deviceBufferSize = 512 )
     {
-        this.deviceBufferSize  = deviceBufferSize;
-        this.deviceBufferCount = deviceBufferCount;
+        this._deviceBufferSize  = deviceBufferSize;
+        this._deviceBufferCount = deviceBufferCount;
 
-        registerSound( "ogg", Ogg.Sound.class);
-        registerMusic( "ogg", Ogg.Music.class);
-        registerSound( "wav", Wav.Sound.class);
-        registerMusic( "wav", Wav.Music.class);
-        registerSound( "mp3", Mp3.Sound.class);
-        registerMusic( "mp3", Mp3.Music.class);
-
-        device = alcOpenDevice( ( ByteBuffer )null );
-
-        if ( device == 0L )
+        unsafe
         {
-            noDevice = true;
+            RegisterSound( "ogg", typeof( Ogg.Sound ) );
+            RegisterMusic( "ogg", typeof( Ogg.Music ) );
+            RegisterSound( "wav", typeof( Wav.Sound ) );
+            RegisterMusic( "wav", typeof( Wav.Music ) );
+            RegisterSound( "mp3", typeof( Mp3.Sound ) );
+            RegisterMusic( "mp3", typeof( Mp3.Music ) );
+        }
+
+        _device = Alc.OpenDevice( null );
+
+        if ( _device == 0L )
+        {
+            _noDevice = true;
 
             return;
         }
 
-        ALCCapabilities deviceCapabilities = ALC.createCapabilities( device );
-        context = alcCreateContext( device, ( IntBuffer )null );
+        ALCCapabilities deviceCapabilities = Alc.CreateCapabilities( _device );
 
-        if ( context == 0L )
+        _context = Alc.CreateContext( _device, null );
+
+        if ( _context == 0L )
         {
-            alcCloseDevice( device );
-            noDevice = true;
+            Alc.CloseDevice( _device );
+            _noDevice = true;
 
             return;
         }
 
-        if ( !alcMakeContextCurrent( context ) )
+        if ( !Alc.MakeContextCurrent( _context ) )
         {
-            noDevice = true;
+            _noDevice = true;
 
             return;
         }
 
-        AL.createCapabilities( deviceCapabilities );
+        Al.CreateCapabilities( deviceCapabilities );
 
-        allSources = new IntArray( false, simultaneousSources );
+        _allSources = new List< uint >( simultaneousSources );
 
-        for ( int i = 0; i < simultaneousSources; i++ )
+        for ( var i = 0; i < simultaneousSources; i++ )
         {
-            int sourceID = alGenSources();
+            uint sourceID = Al.GenSources();
 
-            if ( alGetError() != AL_NO_ERROR ) break;
-            allSources.add( sourceID );
+            if ( Al.GetError() != Al.NoError )
+            {
+                break;
+            }
+
+            _allSources.Add( sourceID );
         }
 
-        idleSources     = new IntArray( allSources );
-        soundIdToSource = new LongMap< Integer >();
-        sourceToSoundId = new IntMap< Long >();
+        _idleSources     = new List< uint >( _allSources );
+        _soundIdToSource = new Dictionary< long, int >();
+        _sourceToSoundId = new Dictionary< int, long >();
 
-        FloatBuffer orientation = ( FloatBuffer )BufferUtils.createFloatBuffer( 6 )
-                                                            .put( new float[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f } );
+        FloatBuffer orientation = BufferUtils.NewFloatBuffer( 6 )
+                                             .Put( new[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f } );
 
-        ( ( Buffer )orientation ).flip();
-        alListenerfv( AL_ORIENTATION, orientation );
-        FloatBuffer velocity = ( FloatBuffer )BufferUtils.createFloatBuffer( 3 ).put( new float[] { 0.0f, 0.0f, 0.0f } );
-        ( ( Buffer )velocity ).flip();
-        alListenerfv( AL_VELOCITY, velocity );
-        FloatBuffer position = ( FloatBuffer )BufferUtils.createFloatBuffer( 3 ).put( new float[] { 0.0f, 0.0f, 0.0f } );
-        ( ( Buffer )position ).flip();
-        alListenerfv( AL_POSITION, position );
+        orientation.Flip();
 
-        recentSounds = new OpenALSound[ simultaneousSources ];
+        Al.Listenerfv( Al.Orientation, orientation );
+        
+        FloatBuffer velocity = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
+        
+        velocity.Flip();
+        
+        Al.Listenerfv( Al.Velocity, velocity );
+        
+        FloatBuffer position = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
+        
+        position.Flip();
+        
+        Al.Listenerfv( Al.Position, position );
+
+        _recentSounds = new OpenALSound[ simultaneousSources ];
     }
 
-    /// <inheritdoc />
+    public void RegisterSound( String extension, Type soundClass )
+    {
+        ArgumentNullException.ThrowIfNull( extension );
+        ArgumentNullException.ThrowIfNull( soundClass );
+
+        _extensionToSoundClass.Put( extension, soundClass );
+    }
+
+    public void RegisterMusic( String extension, Type musicClass )
+    {
+        ArgumentNullException.ThrowIfNull( extension );
+        ArgumentNullException.ThrowIfNull( musicClass );
+
+        _extensionToMusicClass.Put( extension, musicClass );
+    }
+
+    public OpenALSound NewSound( FileHandle file )
+    {
+        if ( file == null )
+        {
+            throw new ArgumentException( "file cannot be null." );
+        }
+
+        Type? soundClass = _extensionToSoundClass.Get( file.Extension().ToLower() );
+
+        if ( soundClass == null )
+        {
+            throw new GdxRuntimeException( $"Unknown file extension for sound: {file}" );
+        }
+
+        try
+        {
+            return soundClass.GetConstructor( new[] { typeof( OpenALGLAudio ), typeof( FileHandle ) } ).NewInstance( this, file );
+        }
+        catch ( System.Exception ex )
+        {
+            throw new GdxRuntimeException( $"Error creating sound {soundClass.Name} for file: {file}", ex );
+        }
+    }
+
+    public OpenALMusic NewMusic( FileHandle file )
+    {
+        if ( file == null )
+        {
+            throw new ArgumentException( "file cannot be null." );
+        }
+
+        Class < ? extends OpenALMusic > musicClass = _extensionToMusicClass.get( file.extension().toLowerCase() );
+
+        if ( musicClass == null )
+        {
+            throw new GdxRuntimeException( "Unknown file extension for music: " + file );
+        }
+
+        try
+        {
+            return musicClass.getConstructor( new Class[] { OpenALLwjgl3Audio.class, FileHandle.class } ).newInstance( this, file );
+        }
+        catch ( Exception ex )
+        {
+            throw new GdxRuntimeException( "Error creating music " + musicClass.getName() + " for file: " + file, ex );
+        }
+    }
+
+    private int ObtainSource( bool isMusic )
+    {
+        if ( _noDevice )
+        {
+            return 0;
+        }
+
+        for ( int i = 0, n = _idleSources.Count; i < n; i++ )
+        {
+            int sourceId = _idleSources.get( i );
+            int state    = alGetSourcei( sourceId, AL_SOURCE_STATE );
+
+            if ( state != AL_PLAYING && state != AL_PAUSED )
+            {
+                if ( isMusic )
+                {
+                    _idleSources.removeIndex( i );
+                }
+                else
+                {
+                    Long oldSoundId = _sourceToSoundId.remove( sourceId );
+
+                    if ( oldSoundId != null )
+                    {
+                        _soundIdToSource.remove( oldSoundId );
+                    }
+
+                    long soundId = _nextSoundId++;
+                    _sourceToSoundId.put( sourceId, soundId );
+                    _soundIdToSource.put( soundId, sourceId );
+                }
+
+                alSourceStop( sourceId );
+                alSourcei( sourceId, AL_BUFFER, 0 );
+                AL10.alSourcef( sourceId, AL10.AL_GAIN, 1 );
+                AL10.alSourcef( sourceId, AL10.AL_PITCH, 1 );
+                AL10.alSource3f( sourceId, AL10.AL_POSITION, 0, 0, 1f );
+
+                return sourceId;
+            }
+        }
+
+        return -1;
+    }
+
+    private void FreeSource( int sourceID )
+    {
+        if ( _noDevice )
+        {
+            return;
+        }
+
+        alSourceStop( sourceID );
+        alSourcei( sourceID, AL_BUFFER, 0 );
+        Long soundId = _sourceToSoundId.remove( sourceID );
+
+        if ( soundId != null )
+        {
+            _soundIdToSource.remove( soundId );
+        }
+
+        _idleSources.add( sourceID );
+    }
+
+    private void FreeBuffer( int bufferID )
+    {
+        if ( _noDevice )
+        {
+            return;
+        }
+
+        for ( int i = 0, n = _idleSources.size; i < n; i++ )
+        {
+            int sourceID = _idleSources.get( i );
+
+            if ( alGetSourcei( sourceID, AL_BUFFER ) == bufferID )
+            {
+                Long soundId = _sourceToSoundId.remove( sourceID );
+
+                if ( soundId != null )
+                {
+                    _soundIdToSource.remove( soundId );
+                }
+
+                alSourceStop( sourceID );
+                alSourcei( sourceID, AL_BUFFER, 0 );
+            }
+        }
+    }
+
+    private void StopSourcesWithBuffer( int bufferID )
+    {
+        if ( _noDevice )
+        {
+            return;
+        }
+
+        for ( int i = 0, n = _idleSources.size; i < n; i++ )
+        {
+            int sourceID = _idleSources.get( i );
+
+            if ( alGetSourcei( sourceID, AL_BUFFER ) == bufferID )
+            {
+                Long soundId = _sourceToSoundId.remove( sourceID );
+
+                if ( soundId != null )
+                {
+                    _soundIdToSource.remove( soundId );
+                }
+
+                alSourceStop( sourceID );
+            }
+        }
+    }
+
+    private void PauseSourcesWithBuffer( int bufferID )
+    {
+        if ( _noDevice )
+        {
+            return;
+        }
+
+        for ( int i = 0, n = _idleSources.size; i < n; i++ )
+        {
+            int sourceID = _idleSources.get( i );
+
+            if ( alGetSourcei( sourceID, AL_BUFFER ) == bufferID )
+            {
+                alSourcePause( sourceID );
+            }
+        }
+    }
+
+    private void ResumeSourcesWithBuffer( int bufferID )
+    {
+        if ( _noDevice )
+        {
+            return;
+        }
+
+        for ( int i = 0, n = _idleSources.size; i < n; i++ )
+        {
+            int sourceID = _idleSources.get( i );
+
+            if ( alGetSourcei( sourceID, AL_BUFFER ) == bufferID )
+            {
+                if ( alGetSourcei( sourceID, AL_SOURCE_STATE ) == AL_PAUSED )
+                {
+                    alSourcePlay( sourceID );
+                }
+            }
+        }
+    }
+
     public void Update()
     {
+        if ( _noDevice )
+        {
+            return;
+        }
+
+        for ( int i = 0; i < _music.size; i++ )
+        {
+            _music.items[ i ].update();
+        }
     }
 
-    /// <inheritdoc />
-    public IAudioDevice NewAudioDevice( int samplingRate, bool isMono )
+    public long GetSoundId( int sourceId )
     {
-        return null;
+        Long soundId = _sourceToSoundId.get( sourceId );
+
+        return soundId != null ? soundId : -1;
     }
 
-    /// <inheritdoc />
+    public int GetSourceId( long soundId )
+    {
+        Integer sourceId = _soundIdToSource.get( soundId );
+
+        return sourceId != null ? sourceId : -1;
+    }
+
+    public void StopSound( long soundId )
+    {
+        Integer sourceId = _soundIdToSource.get( soundId );
+
+        if ( sourceId != null )
+        {
+            alSourceStop( sourceId );
+        }
+    }
+
+    public void PauseSound( long soundId )
+    {
+        Integer sourceId = _soundIdToSource.get( soundId );
+
+        if ( sourceId != null )
+        {
+            alSourcePause( sourceId );
+        }
+    }
+
+    public void ResumeSound( long soundId )
+    {
+        int sourceId = _soundIdToSource.get( soundId, -1 );
+
+        if ( sourceId != -1 && alGetSourcei( sourceId, AL_SOURCE_STATE ) == AL_PAUSED )
+        {
+            alSourcePlay( sourceId );
+        }
+    }
+
+    public void SetSoundGain( long soundId, float volume )
+    {
+        Integer sourceId = _soundIdToSource.get( soundId );
+
+        if ( sourceId != null )
+        {
+            AL10.alSourcef( sourceId, AL10.AL_GAIN, volume );
+        }
+    }
+
+    public void SetSoundLooping( long soundId, bool looping )
+    {
+        Integer sourceId = _soundIdToSource.get( soundId );
+
+        if ( sourceId != null )
+        {
+            alSourcei( sourceId, AL10.AL_LOOPING, looping ? AL10.AL_TRUE : AL10.AL_FALSE );
+        }
+    }
+
+    public void SetSoundPitch( long soundId, float pitch )
+    {
+        Integer sourceId = _soundIdToSource.get( soundId );
+
+        if ( sourceId != null )
+        {
+            AL10.alSourcef( sourceId, AL10.AL_PITCH, pitch );
+        }
+    }
+
+    public void SetSoundPan( long soundId, float pan, float volume )
+    {
+        var sourceId = ( uint )_soundIdToSource!.Get( soundId, -1 );
+
+        if ( sourceId != -1 )
+        {
+            Al.Source3f( sourceId,
+                         Al.Position,
+                         MathUtils.Cos( ( pan - 1 ) * MathUtils.HALF_PI ),
+                         0,
+                         MathUtils.Sin( ( pan + 1 ) * MathUtils.HALF_PI ) );
+
+            AL10.alSourcef( sourceId, AL10.AL_GAIN, volume );
+        }
+    }
+
+    /// <summary>
+    /// Retains a list of the most recently played sounds and stops the sound played
+    /// least recently if necessary for a new sound to play.
+    /// </summary>
+    protected void Retain( OpenALSound sound, bool stop )
+    {
+        if ( _recentSounds == null )
+        {
+            return;
+        }
+
+        // Move the pointer ahead and wrap
+        _mostRecentSound++;
+        _mostRecentSound %= _recentSounds.Length;
+
+        if ( stop )
+        {
+            // Stop the least recent sound (the one we are about to bump off the buffer)
+            if ( _recentSounds[ _mostRecentSound ] != null )
+            {
+                _recentSounds?[ _mostRecentSound ]?.Stop();
+            }
+        }
+
+        _recentSounds![ _mostRecentSound ] = sound;
+    }
+
+    /// <summary>
+    /// Removes the disposed sound from the least recently played list.
+    /// </summary>
+    public void Forget( OpenALSound sound )
+    {
+        for ( int i = 0; i < _recentSounds?.Length; i++ )
+        {
+            if ( _recentSounds[ i ] == sound )
+            {
+                _recentSounds[ i ] = null!;
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    public IAudioDevice NewAudioDevice( int sampleRate, final bool isMono )
+    {
+        if ( _noDevice )
+        {
+            return new IAudioDevice()
+            {
+ 
+                public void writeSamples (float[] samples, int offset, int numSamples)
+                {
+            }
+
+            }
+
+            public void WriteSamples( short[] samples, int offset, int numSamples )
+            {
+            }
+
+            public void SetVolume( float volume )
+            {
+            }
+
+            public bool ISMono()
+            {
+                return ISMono;
+            }
+
+            public int GetLatency()
+            {
+                return 0;
+            }
+
+            public void Dispose()
+            {
+            }
+        }
+
+        return new OpenALAudioDevice( this, sampleRate, isMono, _deviceBufferSize, _deviceBufferCount );
+    }
+
     public IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono )
     {
-        return null;
-    }
+        if ( _noDevice )
+        {
+            return new IAudioRecorder()
+            {
+ 
+                public void read (short[] samples, int offset, int numSamples) {
+            }
 
-    /// <inheritdoc />
-    public ISound NewSound( FileInfo? fileHandle )
-    {
-        return null;
-    }
+            }
 
-    /// <inheritdoc />
-    public IMusic NewMusic( FileInfo? file )
-    {
-        return null;
+            public void Dispose()
+            {
+            }
+        }
+
+        return new JavaSoundAudioRecorder( samplingRate, isMono );
     }
 
     // ------------------------------------------------------------------------
@@ -149,6 +561,33 @@ public class OpenALGLAudio : IGLAudio
     {
         if ( disposing )
         {
+            if ( _noDevice )
+            {
+                return;
+            }
+
+            if ( _allSources != null )
+            {
+                for ( int i = 0, n = _allSources.Count; i < n; i++ )
+                {
+                    var sourceID = _allSources[ i ];
+
+                    Al.GetSourcei( sourceID, Al.SourceState, out var state );
+
+                    if ( state != Al.Stopped )
+                    {
+                        Al.SourceStop( sourceID );
+                    }
+
+                    Al.DeleteSources( ( int )sourceID, _allSources.ToArray() );
+                }
+            }
+
+            _sourceToSoundId?.Clear();
+            _soundIdToSource?.Clear();
+
+            Alc.DestroyContext( _context );
+            Alc.CloseDevice( _device );
         }
     }
 

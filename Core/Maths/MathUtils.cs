@@ -19,25 +19,26 @@ namespace LibGDXSharp.Maths;
 [PublicAPI]
 public class MathUtils
 {
-    public const float NANO_TO_SEC            = 1 / 1000000000f;
+    public const float NANO_TO_SEC          = 1 / 1000000000f;
     public const float FLOAT_ROUNDING_ERROR = 0.000001f; // 32 bits
     public const float PI                   = 3.1415927f;
+    public const float HALF_PI              = PI / 2;
     public const float PI2                  = PI * 2;
     public const float E                    = 2.7182818f;
 
     // multiply by this to convert from radians to degrees.
     public const float RADIANS_TO_DEGREES = 180f / PI;
-    public const float RAD_DEG           = RADIANS_TO_DEGREES;
+    public const float RAD_DEG            = RADIANS_TO_DEGREES;
 
     // multiply by this to convert from degrees to radians.
     public const float DEGREES_TO_RADIANS = PI / 180;
-    public const float DEG_RAD           = DEGREES_TO_RADIANS;
+    public const float DEG_RAD            = DEGREES_TO_RADIANS;
 
-    private const int   SIN_BITS   = 14; // 16KB. Adjust for accuracy.
-    private const int   SIN_MASK   = ~( -1 << SIN_BITS );
-    private const int   SIN_COUNT  = SIN_MASK + 1;
-    private const float RAD_FULL    = PI * 2;
-    private const float DEG_FULL    = 360;
+    private const int   SIN_BITS     = 14; // 16KB. Adjust for accuracy.
+    private const int   SIN_MASK     = ~( -1 << SIN_BITS );
+    private const int   SIN_COUNT    = SIN_MASK + 1;
+    private const float RAD_FULL     = PI * 2;
+    private const float DEG_FULL     = 360;
     private const float RAD_TO_INDEX = SIN_COUNT / RAD_FULL;
     private const float DEG_TO_INDEX = SIN_COUNT / DEG_FULL;
 
@@ -147,7 +148,7 @@ public class MathUtils
     {
         return ( long )( Rand.NextDouble() );
     }
-    
+
     /// <summary>
     /// Returns a random bool value.
     /// </summary>
@@ -282,6 +283,7 @@ public class MathUtils
     public static short Clamp( short value, short min, short max )
     {
         if ( value < min ) return min;
+
         return value > max ? max : value;
     }
 
@@ -294,6 +296,7 @@ public class MathUtils
     public static int Clamp( int value, int min, int max )
     {
         if ( value < min ) return min;
+
         return value > max ? max : value;
     }
 
@@ -306,6 +309,7 @@ public class MathUtils
     public static long Clamp( long value, long min, long max )
     {
         if ( value < min ) return min;
+
         return value > max ? max : value;
     }
 
@@ -318,6 +322,7 @@ public class MathUtils
     public static float Clamp( float value, float min, float max )
     {
         if ( value < min ) return min;
+
         return value > max ? max : value;
     }
 
@@ -330,6 +335,7 @@ public class MathUtils
     public static double Clamp( double value, double min, double max )
     {
         if ( value < min ) return min;
+
         return value > max ? max : value;
     }
 
@@ -460,7 +466,7 @@ public class MathUtils
     {
         return !IsEqual( a, b, tolerance );
     }
-        
+
     /// <summary>
     /// Returns true if a is nearly equal to b.
     /// The function uses the default floating error tolerance.

@@ -20,4 +20,7 @@ namespace LibGDXSharp.Backends.Desktop.Audio;
 public class OpenALSound
 {
 
+    public void Stop()
+    {
+    }
 }

@@ -19,5 +19,11 @@ namespace LibGDXSharp.Backends.Desktop.Audio;
 [PublicAPI]
 public class Mp3 : OpenALMusic
 {
-
+    public class Music : OpenALMusic
+    {
+    }
+    
+    public class Sound : OpenALSound
+    {
+    }
 }
