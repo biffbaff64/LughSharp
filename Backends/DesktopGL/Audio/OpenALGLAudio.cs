@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Collections;
-
 using LibGDXSharp.Core.Files;
 using LibGDXSharp.Core.Files.Buffers;
 using LibGDXSharp.Core.Utils.Collections;
@@ -25,6 +23,8 @@ namespace LibGDXSharp.Backends.Desktop.Audio;
 [PublicAPI]
 public class OpenALGLAudio : IGLAudio
 {
+    public bool NoDevice { get; set; } = false;
+
     private int                      _deviceBufferSize;
     private int                      _deviceBufferCount;
     private List< uint >?            _idleSources;
@@ -39,7 +39,6 @@ public class OpenALGLAudio : IGLAudio
     private ObjectMap< string, Type > _extensionToMusicClass = new();
 
     private List< OpenALMusic > _music    = new( 1 );
-    private bool                _noDevice = false;
     private IntPtr              _device;
     private IntPtr              _context;
 
@@ -64,7 +63,7 @@ public class OpenALGLAudio : IGLAudio
 
         if ( _device == 0L )
         {
-            _noDevice = true;
+            NoDevice = true;
 
             return;
         }
@@ -76,14 +75,14 @@ public class OpenALGLAudio : IGLAudio
         if ( _context == 0L )
         {
             Alc.CloseDevice( _device );
-            _noDevice = true;
+            NoDevice = true;
 
             return;
         }
 
         if ( !Alc.MakeContextCurrent( _context ) )
         {
-            _noDevice = true;
+            NoDevice = true;
 
             return;
         }
@@ -148,10 +147,7 @@ public class OpenALGLAudio : IGLAudio
 
     public OpenALSound NewSound( FileHandle file )
     {
-        if ( file == null )
-        {
-            throw new ArgumentException( "file cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( file );
 
         Type? soundClass = _extensionToSoundClass.Get( file.Extension().ToLower() );
 
@@ -162,6 +158,9 @@ public class OpenALGLAudio : IGLAudio
 
         try
         {
+            return Activator.CreateInstance(  )
+            
+            
             return soundClass.GetConstructor( new[] { typeof( OpenALGLAudio ), typeof( FileHandle ) } ).NewInstance( this, file );
         }
         catch ( System.Exception ex )
@@ -194,9 +193,9 @@ public class OpenALGLAudio : IGLAudio
         }
     }
 
-    private int ObtainSource( bool isMusic )
+    public int ObtainSource( bool isMusic )
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return 0;
         }
@@ -210,15 +209,15 @@ public class OpenALGLAudio : IGLAudio
             {
                 if ( isMusic )
                 {
-                    _idleSources.removeIndex( i );
+                    _idleSources.RemoveAt( i );
                 }
                 else
                 {
-                    Long oldSoundId = _sourceToSoundId.remove( sourceId );
+                    long? oldSoundId = _sourceToSoundId?.Remove( sourceId );
 
                     if ( oldSoundId != null )
                     {
-                        _soundIdToSource.remove( oldSoundId );
+                        _soundIdToSource.Remove( oldSoundId );
                     }
 
                     long soundId = _nextSoundId++;
@@ -241,7 +240,7 @@ public class OpenALGLAudio : IGLAudio
 
     private void FreeSource( int sourceID )
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return;
         }
@@ -258,9 +257,9 @@ public class OpenALGLAudio : IGLAudio
         _idleSources.add( sourceID );
     }
 
-    private void FreeBuffer( int bufferID )
+    public void FreeBuffer( int bufferID )
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return;
         }
@@ -284,9 +283,9 @@ public class OpenALGLAudio : IGLAudio
         }
     }
 
-    private void StopSourcesWithBuffer( int bufferID )
+    public void StopSourcesWithBuffer( int bufferID )
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return;
         }
@@ -309,9 +308,9 @@ public class OpenALGLAudio : IGLAudio
         }
     }
 
-    private void PauseSourcesWithBuffer( int bufferID )
+    public void PauseSourcesWithBuffer( int bufferID )
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return;
         }
@@ -327,9 +326,9 @@ public class OpenALGLAudio : IGLAudio
         }
     }
 
-    private void ResumeSourcesWithBuffer( int bufferID )
+    public void ResumeSourcesWithBuffer( int bufferID )
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return;
         }
@@ -350,7 +349,7 @@ public class OpenALGLAudio : IGLAudio
 
     public void Update()
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return;
         }
@@ -455,7 +454,7 @@ public class OpenALGLAudio : IGLAudio
     /// Retains a list of the most recently played sounds and stops the sound played
     /// least recently if necessary for a new sound to play.
     /// </summary>
-    protected void Retain( OpenALSound sound, bool stop )
+    public void Retain( OpenALSound sound, bool stop )
     {
         if ( _recentSounds == null )
         {
@@ -496,7 +495,7 @@ public class OpenALGLAudio : IGLAudio
 
     public IAudioDevice NewAudioDevice( int sampleRate, final bool isMono )
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return new IAudioDevice()
             {
@@ -535,7 +534,7 @@ public class OpenALGLAudio : IGLAudio
 
     public IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono )
     {
-        if ( _noDevice )
+        if ( NoDevice )
         {
             return new IAudioRecorder()
             {
@@ -561,7 +560,7 @@ public class OpenALGLAudio : IGLAudio
     {
         if ( disposing )
         {
-            if ( _noDevice )
+            if ( NoDevice )
             {
                 return;
             }

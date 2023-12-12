@@ -101,28 +101,81 @@ AUDIO
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-AUDIO/JAVAZOOMJL
-----------------
+AUDIO/MP3SHARP
+--------------
 
-    Could this be scrapped and MP3Sharp be used instead?
+    - DONE - Buffer16BitSterso
+    - DONE - MP3SharpException
+    - DONE - MP3Stream
+    - DONE - SoundFormat
 
-    - DONE - BitReserve
+    Decoding
+    --------
+
+    - IP   - ABuffer
+    - IP   - BitReserve
     - IP   - Bitstream
+    - IP   - BitstreamErrors
     - IP   - BitstreamException
+    - IP   - CircularByteBuffer
     - IP   - Crc16
+    - IP   - Decoder
+    - IP   - DecoderErrors
     - IP   - DecoderException
-    - DONE - Header
-    - IP   - HuffCodeTab
+    - IP   - Equalizer
+    - IP   - Header
+    - IP   - Huffman
+    - IP   - OuputChannels
+    - IP   - OutputChannelsEnum
+    - IP   - PushbackStream
+    - IP   - SampleBuffer
+    - IP   - SynthesisFilter
+
+    Decoders
+    --------
+
+    - IP   - ASubband
     - IP   - IFrameDecoder
     - IP   - LayerIDecoder
     - IP   - LayerIIDecoder
     - IP   - LayerIIIDecoder
-    - IP   - Mp3Decoder
-    - IP   - OutputBuffer
-    - IP   - OutputChannels
-    - IP   - PushbackInputStream
-    - IP   - SynthesisFilter
-    - IP   - SynthesisFilterData ( partial of SynthesisFilter )
+
+    Decoders/LayerI
+    ---------------
+
+    - DONE - SubbandLayer1
+    - DONE - SubbandLayer1IntensityStereo
+    - DONE - SubbandLayer1Stereo
+
+    Decoders/LayerII
+    ----------------
+
+    - DONE - SubbandLayer2
+    - DONE - SubbandLayer2IntensityStereo
+    - DONE - SubbandLayer2Stereo
+
+    Decoders/LayerIII
+    -----------------
+
+    - DONE - ChannelData
+    - DONE - GranuleInfo
+    - DONE - Layer3SideInfo
+    - DONE - SBI
+    - DONE - ScaleFactorData
+    - DONE - ScaleFactorTable
+
+    IO
+    --
+
+    - IP   - RandomAccessFileStream
+    - IP   - RiffFile
+    - IP   - WaveFile
+    - IP   - WaveFileBuffer
+
+    Support
+    -------
+
+    - DONE - SupportClass
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -160,7 +160,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
     /// contents to be uploaded on the next call to bind. If you need immediate
     /// uploading use <see cref="IVertexData.SetVertices"/>; Any modifications made to the Buffer
-    /// *after* the call to bind will not automatically be uploaded.
+    /// after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
     public FloatBuffer GetBuffer( bool forWriting )

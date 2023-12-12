@@ -209,7 +209,7 @@ public class Ellipse : ISerializable, IShape2D
 
     /// <returns>
     /// The area of this <see cref="Ellipse"/> as <see cref="MathUtils.PI"/>
-    /// * <see cref="Ellipse.Width"/> * <seealso cref="Ellipse.Height"/>
+    ///  <see cref="Ellipse.Width"/> * <seealso cref="Ellipse.Height"/>
     /// </returns>
     public float Area()
     {
