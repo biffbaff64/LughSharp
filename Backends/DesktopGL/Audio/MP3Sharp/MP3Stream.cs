@@ -14,8 +14,6 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using MP3Sharp.Decoding;
-
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
 /// <summary>
@@ -88,7 +86,7 @@ public class Mp3Stream : Stream
 
             default:
             {
-                throw new MP3SharpException( $"Unhandled channel count rep: {_channelCountRep} "
+                throw new Mp3SharpException( $"Unhandled channel count rep: {_channelCountRep} "
                                            + $"(allowed values are 1-mono and 2-stereo)." );
             }
         }

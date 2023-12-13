@@ -1,4 +1,4 @@
-﻿// ///////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////
 // // Copyright [2023] [Richard Ikin]
 // //
 // // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,26 +16,20 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
+/// <summary>
+/// This struct describes all error codes that can be thrown
+/// in BistreamExceptions.
+/// </summary>
 [PublicAPI]
-public class RandomAccessFileStream
+public struct BitstreamErrors
 {
-    public static FileStream CreateRandomAccessFile( string fileName, string mode )
-    {
-        FileStream newFile;
+    public const int UNKNOWN_ERROR       = BITSTREAM_ERROR + 0;
+    public const int UNKNOWN_SAMPLE_RATE = BITSTREAM_ERROR + 1;
+    public const int STREA_ERROR         = BITSTREAM_ERROR + 2;
+    public const int UNEXPECTED_EOF      = BITSTREAM_ERROR + 3;
+    public const int STREAM_EOF          = BITSTREAM_ERROR + 4;
+    public const int BITSTREAM_LAST      = 0x1ff;
 
-        if ( string.Compare( mode, "rw", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
-        }
-        else if ( string.Compare( mode, "r", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.Open, FileAccess.Read );
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
-
-        return newFile;
-    }
+    public const int BITSTREAM_ERROR = 0x100;
+    public const int DECODER_ERROR   = 0x200;
 }

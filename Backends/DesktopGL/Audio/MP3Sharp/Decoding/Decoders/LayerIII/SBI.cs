@@ -17,25 +17,20 @@
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
 [PublicAPI]
-public class RandomAccessFileStream
+public class SBI
 {
-    public static FileStream CreateRandomAccessFile( string fileName, string mode )
+    public int[] L { get; set; }
+    public int[] S { get; set; }
+
+    public SBI()
     {
-        FileStream newFile;
+        L = new int[ 23 ];
+        S = new int[ 14 ];
+    }
 
-        if ( string.Compare( mode, "rw", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
-        }
-        else if ( string.Compare( mode, "r", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.Open, FileAccess.Read );
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
-
-        return newFile;
+    public SBI( int[] thel, int[] thes )
+    {
+        L = thel;
+        S = thes;
     }
 }

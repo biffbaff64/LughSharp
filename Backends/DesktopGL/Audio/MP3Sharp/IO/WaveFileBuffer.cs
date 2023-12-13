@@ -14,47 +14,46 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using MP3Sharp.Decoding;
-
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
 /// <summary> Implements an Obuffer by writing the data to a file in RIFF WAVE format.</summary>
 public class WaveFileBuffer : ABuffer
 {
-    private readonly short[]  _Buffer;
-    private readonly short[]  _Bufferp;
-    private readonly int      _Channels;
-    private readonly WaveFile _OutWave;
+    private readonly short[]  _buffer;
+    private readonly short[]  _bufferp;
+    private readonly int      _channels;
+    private readonly WaveFile _outWave;
 
     public WaveFileBuffer( int numberOfChannels, int freq, string fileName )
     {
-        if ( fileName == null )
-            throw new NullReferenceException( "FileName" );
+        ArgumentNullException.ThrowIfNull( fileName );
 
-        _Buffer   = new short[ OBUFFERSIZE ];
-        _Bufferp  = new short[ MAXCHANNELS ];
-        _Channels = numberOfChannels;
+        _buffer   = new short[ OBUFFERSIZE ];
+        _bufferp  = new short[ MAXCHANNELS ];
+        _channels = numberOfChannels;
 
-        for ( int i = 0; i < numberOfChannels; ++i )
-            _Bufferp[ i ] = ( short )i;
+        for ( var i = 0; i < numberOfChannels; ++i )
+        {
+            _bufferp[ i ] = ( short )i;
+        }
 
-        _OutWave = new WaveFile();
-
-        int rc = _OutWave.OpenForWrite( fileName, null, freq, 16, ( short )_Channels );
+        _outWave = new WaveFile();
+        _outWave.OpenForWrite( fileName, null, freq, 16, ( short )_channels );
     }
 
     public WaveFileBuffer( int numberOfChannels, int freq, Stream stream )
     {
-        _Buffer   = new short[ OBUFFERSIZE ];
-        _Bufferp  = new short[ MAXCHANNELS ];
-        _Channels = numberOfChannels;
+        _buffer   = new short[ OBUFFERSIZE ];
+        _bufferp  = new short[ MAXCHANNELS ];
+        _channels = numberOfChannels;
 
-        for ( int i = 0; i < numberOfChannels; ++i )
-            _Bufferp[ i ] = ( short )i;
+        for ( var i = 0; i < numberOfChannels; ++i )
+        {
+            _bufferp[ i ] = ( short )i;
+        }
 
-        _OutWave = new WaveFile();
-
-        int rc = _OutWave.OpenForWrite( null, stream, freq, 16, ( short )_Channels );
+        _outWave = new WaveFile();
+        _outWave.OpenForWrite( null!, stream, freq, 16, ( short )_channels );
     }
 
     /// <summary>
@@ -62,26 +61,28 @@ public class WaveFileBuffer : ABuffer
     /// </summary>
     protected override void Append( int channel, short valueRenamed )
     {
-        _Buffer[ _Bufferp[ channel ] ] = valueRenamed;
-        _Bufferp[ channel ]            = ( short )( _Bufferp[ channel ] + _Channels );
+        _buffer[ _bufferp[ channel ] ] = valueRenamed;
+        _bufferp[ channel ]            = ( short )( _bufferp[ channel ] + _channels );
     }
 
     public override void WriteBuffer( int val )
     {
-        int rc = _OutWave.WriteData( _Buffer, _Bufferp[ 0 ] );
+        _outWave.WriteData( _buffer, _bufferp[ 0 ] );
 
-        for ( int i = 0; i < _Channels; ++i )
-            _Bufferp[ i ] = ( short )i;
+        for ( var i = 0; i < _channels; ++i )
+        {
+            _bufferp[ i ] = ( short )i;
+        }
     }
 
     public void Close( bool justWriteLengthBytes )
     {
-        _OutWave.Close( justWriteLengthBytes );
+        _outWave.Close( justWriteLengthBytes );
     }
 
     public override void Close()
     {
-        _OutWave.Close();
+        _outWave.Close();
     }
 
     /// <summary>

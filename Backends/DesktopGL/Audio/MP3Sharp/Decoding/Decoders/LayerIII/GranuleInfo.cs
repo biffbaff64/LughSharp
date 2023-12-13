@@ -17,25 +17,20 @@
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
 [PublicAPI]
-public class RandomAccessFileStream
+public class GranuleInfo
 {
-    public static FileStream CreateRandomAccessFile( string fileName, string mode )
-    {
-        FileStream newFile;
-
-        if ( string.Compare( mode, "rw", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
-        }
-        else if ( string.Compare( mode, "r", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.Open, FileAccess.Read );
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
-
-        return newFile;
-    }
+    public int   BigValues           { get; set; }
+    public int   BlockType           { get; set; }
+    public int   Count1TableSelect   { get; set; }
+    public int   GlobalGain          { get; set; }
+    public int   MixedBlockFlag      { get; set; }
+    public int   Part23Length        { get; set; }
+    public int   Preflag             { get; set; }
+    public int   Region0Count        { get; set; }
+    public int   Region1Count        { get; set; }
+    public int   ScaleFacCompress    { get; set; }
+    public int   ScaleFacScale       { get; set; }
+    public int[] SubblockGain        { get; set; } = new int[ 3 ];
+    public int[] TableSelect         { get; set; } = new int[ 3 ];
+    public int   WindowSwitchingFlag { get; set; }
 }

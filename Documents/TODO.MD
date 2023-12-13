@@ -112,19 +112,20 @@ AUDIO/MP3SHARP
     Decoding
     --------
 
-    - IP   - ABuffer
-    - IP   - BitReserve
-    - IP   - Bitstream
-    - IP   - BitstreamErrors
-    - IP   - BitstreamException
-    - IP   - CircularByteBuffer
-    - IP   - Crc16
-    - IP   - Decoder
-    - IP   - DecoderErrors
-    - IP   - DecoderException
-    - IP   - Equalizer
-    - IP   - Header
-    - IP   - Huffman
+    - DONE - ABuffer
+    - DONE - BitReserve
+    - DONE - Bitstream
+    - DONE - BitstreamErrors
+    - DONE - BitstreamException
+    - DONE - CircularByteBuffer
+    - DONE - Crc16
+    - DONE - Decoder
+            - DONE - Params
+    - DONE - DecoderErrors
+    - DONE - DecoderException
+    - DONE - Equalizer
+    - DONE - Header
+    - DONE - Huffman
     - IP   - OuputChannels
     - IP   - OutputChannelsEnum
     - IP   - PushbackStream
@@ -134,11 +135,11 @@ AUDIO/MP3SHARP
     Decoders
     --------
 
-    - IP   - ASubband
-    - IP   - IFrameDecoder
-    - IP   - LayerIDecoder
-    - IP   - LayerIIDecoder
-    - IP   - LayerIIIDecoder
+    - DONE - ASubband
+    - DONE - IFrameDecoder
+    - DONE - LayerIDecoder
+    - DONE - LayerIIDecoder
+    - DONE - LayerIIIDecoder
 
     Decoders/LayerI
     ---------------
@@ -167,10 +168,10 @@ AUDIO/MP3SHARP
     IO
     --
 
-    - IP   - RandomAccessFileStream
-    - IP   - RiffFile
-    - IP   - WaveFile
-    - IP   - WaveFileBuffer
+    - DONE - RandomAccessFileStream
+    - DONE - RiffFile
+    - DONE - WaveFile
+    - DONE - WaveFileBuffer
 
     Support
     -------

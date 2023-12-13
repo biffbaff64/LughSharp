@@ -14,8 +14,6 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using MP3Sharp.Decoding;
-
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
 /// <summary>

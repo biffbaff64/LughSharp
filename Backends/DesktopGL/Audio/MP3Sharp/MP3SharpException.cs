@@ -27,23 +27,23 @@ namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 /// can delegate some functionality to a contained Throwable instance.
 /// </summary>
 [PublicAPI, Serializable]
-public class MP3SharpException : System.Exception
+public class Mp3SharpException : System.Exception
 {
-    public MP3SharpException()
+    public Mp3SharpException()
     {
     }
 
-    public MP3SharpException( string message )
+    public Mp3SharpException( string message )
         : base( message )
     {
     }
 
-    public MP3SharpException( string message, System.Exception inner )
+    public Mp3SharpException( string message, System.Exception? inner )
         : base( message, inner )
     {
     }
 
-    protected MP3SharpException( SerializationInfo info, StreamingContext context )
+    protected Mp3SharpException( SerializationInfo info, StreamingContext context )
         : base( info, context )
     {
     }

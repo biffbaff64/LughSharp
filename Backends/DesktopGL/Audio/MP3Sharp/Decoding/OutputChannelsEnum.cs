@@ -1,4 +1,4 @@
-﻿// ///////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////
 // // Copyright [2023] [Richard Ikin]
 // //
 // // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,26 +16,10 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
-[PublicAPI]
-public class RandomAccessFileStream
-{
-    public static FileStream CreateRandomAccessFile( string fileName, string mode )
-    {
-        FileStream newFile;
 
-        if ( string.Compare( mode, "rw", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
-        }
-        else if ( string.Compare( mode, "r", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.Open, FileAccess.Read );
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
-
-        return newFile;
-    }
+public enum OutputChannelsEnum {
+    BothChannels    = 0,
+    LeftChannel     = 1,
+    RightChannel    = 2,
+    DownmixChannels = 3
 }

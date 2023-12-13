@@ -17,25 +17,16 @@
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
 [PublicAPI]
-public class RandomAccessFileStream
+public class ChannelData
 {
-    public static FileStream CreateRandomAccessFile( string fileName, string mode )
+    public GranuleInfo[] granules;
+    public int[]         scaleFactorBits;
+
+    public ChannelData()
     {
-        FileStream newFile;
-
-        if ( string.Compare( mode, "rw", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
-        }
-        else if ( string.Compare( mode, "r", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.Open, FileAccess.Read );
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
-
-        return newFile;
+        scaleFactorBits = new int[ 4 ];
+        granules        = new GranuleInfo[ 2 ];
+        granules[ 0 ]   = new GranuleInfo();
+        granules[ 1 ]   = new GranuleInfo();
     }
 }

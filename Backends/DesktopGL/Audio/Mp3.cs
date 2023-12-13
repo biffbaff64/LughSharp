@@ -14,9 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 using LibGDXSharp.Core.Files;
-
-using MP3Sharp.Decoding;
 
 using Exception = System.Exception;
 

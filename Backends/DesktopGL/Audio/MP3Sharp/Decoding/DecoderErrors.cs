@@ -1,4 +1,4 @@
-﻿// ///////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////
 // // Copyright [2023] [Richard Ikin]
 // //
 // // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,26 +16,13 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
+/// <summary>
+/// This interface provides constants describing the error
+/// codes used by the Decoder to indicate errors.
+/// </summary>
 [PublicAPI]
-public class RandomAccessFileStream
+public struct DecoderErrors
 {
-    public static FileStream CreateRandomAccessFile( string fileName, string mode )
-    {
-        FileStream newFile;
-
-        if ( string.Compare( mode, "rw", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
-        }
-        else if ( string.Compare( mode, "r", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.Open, FileAccess.Read );
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
-
-        return newFile;
-    }
+    public const int UNKNOWN_ERROR     = BitstreamErrors.DECODER_ERROR + 0;
+    public const int UNSUPPORTED_LAYER = BitstreamErrors.DECODER_ERROR + 1;
 }

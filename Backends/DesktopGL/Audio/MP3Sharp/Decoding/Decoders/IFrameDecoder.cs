@@ -1,4 +1,4 @@
-﻿// ///////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////
 // // Copyright [2023] [Richard Ikin]
 // //
 // // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,26 +16,19 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
-[PublicAPI]
-public class RandomAccessFileStream
+
+/// <summary>
+/// Implementations of FrameDecoder are responsible for decoding
+/// an MPEG audio frame.
+/// </summary>
+
+//TODO: the interface currently is too thin. There should be
+// methods to specify the output buffer, the synthesis filters and
+// possibly other objects used by the decoder. 
+public interface IFrameDecoder
 {
-    public static FileStream CreateRandomAccessFile( string fileName, string mode )
-    {
-        FileStream newFile;
-
-        if ( string.Compare( mode, "rw", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
-        }
-        else if ( string.Compare( mode, "r", StringComparison.Ordinal ) == 0 )
-        {
-            newFile = new FileStream( fileName, FileMode.Open, FileAccess.Read );
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
-
-        return newFile;
-    }
+    /// <summary>
+    /// Decodes one frame of MPEG audio.
+    /// </summary>
+    void DecodeFrame();
 }
