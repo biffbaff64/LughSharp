@@ -14,19 +14,15 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System;
-
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
-
 /// <summary>
-/// A Type-safe representation of the the supported output channel
-/// constants. This class is immutable and, hence, is thread safe.
+/// A Type-safe representation of the the supported output channel constants.
+/// This class is immutable and, hence, is thread safe.
 /// </summary>
-/// <author>
-/// Mat McGowan
-/// </author>
-public class OutputChannels {
+[PublicAPI]
+public class OutputChannels
+{
     /// <summary>
     /// Flag to indicate output should include both channels.
     /// </summary>
@@ -47,83 +43,83 @@ public class OutputChannels {
     /// </summary>
     public const int DOWNMIX_CHANNELS = 3;
 
-    public static readonly OutputChannels Left    = new OutputChannels(LEFT_CHANNEL);
-    public static readonly OutputChannels Right   = new OutputChannels(RIGHT_CHANNEL);
-    public static readonly OutputChannels Both    = new OutputChannels(BOTH_CHANNELS);
-    public static readonly OutputChannels DownMix = new OutputChannels(DOWNMIX_CHANNELS);
-    private readonly       int            _OutputChannels;
+    public readonly static OutputChannels Left    = new OutputChannels( LEFT_CHANNEL );
+    public readonly static OutputChannels Right   = new OutputChannels( RIGHT_CHANNEL );
+    public readonly static OutputChannels Both    = new OutputChannels( BOTH_CHANNELS );
+    public readonly static OutputChannels DownMix = new OutputChannels( DOWNMIX_CHANNELS );
 
-    private OutputChannels(int channels) {
-        _OutputChannels = channels;
+    private readonly int _outputChannels;
 
-        if (channels < 0 || channels > 3) {
-            throw new ArgumentException("channels");
+    private OutputChannels( int channels )
+    {
+        _outputChannels = channels;
+
+        if ( ( channels < 0 ) || ( channels > 3 ) )
+        {
+            throw new ArgumentException( "channels" );
         }
     }
 
     /// <summary>
-    /// Retrieves the code representing the desired output channels.
-    /// Will be one of LEFT_CHANNEL, RIGHT_CHANNEL, BOTH_CHANNELS
-    /// or DOWNMIX_CHANNELS.
+    /// Retrieves the code representing the desired output channels. Will be one of LEFT_CHANNEL,
+    /// RIGHT_CHANNEL, BOTH_CHANNELS or DOWNMIX_CHANNELS.
     /// </summary>
     /// <returns>
     /// the channel code represented by this instance.
     /// </returns>
-    public virtual int ChannelsOutputCode => _OutputChannels;
+    public virtual int ChannelsOutputCode => _outputChannels;
 
     /// <summary>
-    /// Retrieves the number of output channels represented
-    /// by this channel output type.
+    /// Retrieves the number of output channels for this channel output
+    /// type. This will be 2 for BOTH_CHANNELS only, and 1 for all other types.
     /// </summary>
-    /// <returns>
-    /// The number of output channels for this channel output
-    /// type. This will be 2 for BOTH_CHANNELS only, and 1
-    /// for all other types.
-    /// </returns>
-    public virtual int ChannelCount {
-        get {
-            int count = _OutputChannels == BOTH_CHANNELS ? 2 : 1;
+    public virtual int ChannelCount
+    {
+        get
+        {
+            var count = _outputChannels == BOTH_CHANNELS ? 2 : 1;
+
             return count;
         }
     }
 
     /// <summary>
-    /// Creates an OutputChannels instance
-    /// corresponding to the given channel code.
+    /// Creates an OutputChannels instance corresponding to the given channel code.
     /// </summary>
-    /// <param name="code">
-    /// one of the OutputChannels channel code constants.
-    /// @throws IllegalArgumentException if code is not a valid
-    /// channel code.
-    /// </param>
-    public static OutputChannels FromInt(int code) {
-        switch (code) {
-            case (int)OutputChannelsEnum.LeftChannel:
+    /// <param name="code"> one of the OutputChannels channel code constants. </param>
+    /// <exception cref="ArgumentException"> if code is not a valid channel code.</exception>
+    public static OutputChannels FromInt( int code )
+    {
+        switch ( code )
+        {
+            case ( int )OutputChannelsEnum.LeftChannel:
                 return Left;
 
-            case (int)OutputChannelsEnum.RightChannel:
+            case ( int )OutputChannelsEnum.RightChannel:
                 return Right;
 
-            case (int)OutputChannelsEnum.BothChannels:
+            case ( int )OutputChannelsEnum.BothChannels:
                 return Both;
 
-            case (int)OutputChannelsEnum.DownmixChannels:
+            case ( int )OutputChannelsEnum.DownmixChannels:
                 return DownMix;
 
             default:
-                throw new ArgumentException("Invalid channel code: " + code);
+                throw new ArgumentException( "Invalid channel code: " + code );
         }
     }
 
-    public override bool Equals(object obj) {
-        bool equals = false;
+    public override bool Equals( object? obj )
+    {
+        var equals = false;
 
-        if (obj is OutputChannels oc) {
-            equals = oc._OutputChannels == _OutputChannels;
+        if ( obj is OutputChannels oc )
+        {
+            equals = oc._outputChannels == _outputChannels;
         }
 
         return equals;
     }
 
-    public override int GetHashCode() => _OutputChannels;
+    public override int GetHashCode() => _outputChannels;
 }

@@ -126,11 +126,11 @@ AUDIO/MP3SHARP
     - DONE - Equalizer
     - DONE - Header
     - DONE - Huffman
-    - IP   - OuputChannels
-    - IP   - OutputChannelsEnum
-    - IP   - PushbackStream
-    - IP   - SampleBuffer
-    - IP   - SynthesisFilter
+    - DONE - OuputChannels
+    - DONE - OutputChannelsEnum
+    - DONE - PushbackStream
+    - DONE - SampleBuffer
+    - DONE - SynthesisFilter
 
     Decoders
     --------

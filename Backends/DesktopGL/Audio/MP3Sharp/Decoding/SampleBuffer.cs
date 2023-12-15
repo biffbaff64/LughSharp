@@ -16,81 +16,99 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
-
 /// <summary>
-/// The SampleBuffer class implements an output buffer
-/// that provides storage for a fixed size block of samples.
+/// The SampleBuffer class implements an output buffer that provides storage for a
+/// fixed size block of samples.
 /// </summary>
-public class SampleBuffer : ABuffer {
-    private readonly short[] _Buffer;
-    private readonly int[]   _Bufferp;
-    private readonly int     _Channels;
-    private readonly int     _Frequency;
+[PublicAPI]
+public class SampleBuffer : ABuffer
+{
+    public virtual int SampleFrequency { get; set; }
 
-    public SampleBuffer(int sampleFrequency, int numberOfChannels) {
-        _Buffer    = new short[OBUFFERSIZE];
-        _Bufferp   = new int[MAXCHANNELS];
-        _Channels  = numberOfChannels;
-        _Frequency = sampleFrequency;
+    private readonly short[] _buffer;
+    private readonly int[]   _bufferp;
+    private readonly int     _channels;
 
-        for (int i = 0; i < numberOfChannels; ++i)
-            _Bufferp[i] = (short)i;
+    public SampleBuffer( int sampleFrequency, int numberOfChannels )
+    {
+        _buffer         = new short[ OBUFFERSIZE ];
+        _bufferp        = new int[ MAXCHANNELS ];
+        _channels       = numberOfChannels;
+
+        Init( sampleFrequency );
+
+        for ( var i = 0; i < numberOfChannels; ++i )
+        {
+            _bufferp[ i ] = ( short )i;
+        }
     }
 
-    public virtual int ChannelCount => _Channels;
+    private void Init( int sampleFrequency )
+    {
+        SampleFrequency = sampleFrequency;
+    }
 
-    public virtual int SampleFrequency => _Frequency;
-
-    public virtual short[] Buffer => _Buffer;
-
-    public virtual int BufferLength => _Bufferp[0];
+    public virtual int     ChannelCount => _channels;
+    public virtual short[] Buffer       => _buffer;
+    public virtual int     BufferLength => _bufferp[ 0 ];
 
     /// <summary>
     /// Takes a 16 Bit PCM sample.
     /// </summary>
-    protected override void Append(int channel, short valueRenamed) {
-        _Buffer[_Bufferp[channel]] =  valueRenamed;
-        _Bufferp[channel]          += _Channels;
+    protected override void Append( int channel, short valueRenamed )
+    {
+        _buffer[ _bufferp[ channel ] ] =  valueRenamed;
+        _bufferp[ channel ]            += _channels;
     }
 
-    public override void AppendSamples(int channel, float[] samples) {
-        int pos = _Bufferp[channel];
+    public override void AppendSamples( int channel, float[] samples )
+    {
+        var pos = _bufferp[ channel ];
 
-        short s;
-        float fs;
-        for (int i = 0; i < 32;) {
-            fs = samples[i++];
+        for ( var i = 0; i < 32; )
+        {
+            var fs = samples[ i++ ];
             fs = fs > 32767.0f ? 32767.0f : fs < -32767.0f ? -32767.0f : fs;
 
-            //UPGRADE_WARNING: Narrowing conversions may produce unexpected results in C#. 'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="jlca1042"'
-            s            =  (short)fs;
-            _Buffer[pos] =  s;
-            pos          += _Channels;
+            //UPGRADE_WARNING: Narrowing conversions may produce unexpected results in C#.
+            //'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="jlca1042"'
+            var s = ( short )fs;
+            
+            _buffer[ pos ] =  s;
+            pos            += _channels;
         }
 
-        _Bufferp[channel] = pos;
+        _bufferp[ channel ] = pos;
     }
 
     /// <summary>
     /// Write the samples to the file (Random Acces).
     /// </summary>
-    public override void WriteBuffer(int val) {
+    public override void WriteBuffer( int val )
+    {
         // for (int i = 0; i < channels; ++i) 
         // bufferp[i] = (short)i;
     }
 
-    public override void Close() { }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public override void ClearBuffer() {
-        for (int i = 0; i < _Channels; ++i)
-            _Bufferp[i] = (short)i;
+    public override void Close()
+    {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public override void SetStopFlag() { }
+    public override void ClearBuffer()
+    {
+        for ( var i = 0; i < _channels; ++i )
+        {
+            _bufferp[ i ] = ( short )i;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public override void SetStopFlag()
+    {
+    }
 }

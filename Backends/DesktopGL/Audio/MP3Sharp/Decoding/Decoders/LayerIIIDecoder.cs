@@ -393,7 +393,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         _channels   = _header.Mode() == Header.SINGLE_CHANNEL ? 1 : 2;
         _maxGr      = _header.Version() == Header.MPEG1 ? 2 : 1;
 
-        _sfreq = _header.sample_frequency() + ( _header.Version() == Header.MPEG1 ? 3 : _header.Version() == Header.MPEG25_LSF ? 6 : 0 ); // SZD
+        _sfreq = _header.GetSampleFrequency() + ( _header.Version() == Header.MPEG1 ? 3 : _header.Version() == Header.MPEG25_LSF ? 6 : 0 ); // SZD
 
         if ( _channels == 2 )
         {
@@ -589,7 +589,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                         //buffer.appendSamples(0, samples1);
                         //Console.WriteLine("Adding samples right into output buffer");
                         _filter1?.AddSamples( _samples1 );
-                        _filter1?.calculate_pc_samples( _buffer );
+                        _filter1?.CalculatePcSamples( _buffer );
                     }
                 }
                 else
@@ -610,7 +610,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                         //buffer.appendSamples(1, samples2);
                         //Console.WriteLine("Adding samples right into output buffer");
                         _filter2?.AddSamples( _samples2 );
-                        _filter2?.calculate_pc_samples( _buffer );
+                        _filter2?.CalculatePcSamples( _buffer );
                     }
                 }
             }
@@ -904,7 +904,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
     private void GetLsfScaleData( int ch, int gr )
     {
-        var modeExt = _header.mode_extension();
+        var modeExt = _header.ModeExtension();
         int blocktypenumber;
         var blocknumber = 0;
 
@@ -1541,7 +1541,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         else
         {
             GranuleInfo grInfo  = _sideInfo.Channels[ 0 ].granules[ gr ];
-            var         modeExt = _header.mode_extension();
+            var         modeExt = _header.ModeExtension();
             int         i;
 
             var msStereo = ( _header.Mode() == Header.JOINT_STEREO ) && ( ( modeExt & 0x2 ) != 0 );

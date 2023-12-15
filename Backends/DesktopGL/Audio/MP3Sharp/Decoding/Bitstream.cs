@@ -123,9 +123,9 @@ public sealed class Bitstream
     /// The Header describing details of the frame read,
     /// or null if the end of the stream has been reached.
     /// </returns>
-    public Header ReadFrame()
+    public Header? ReadFrame()
     {
-        Header result = null!;
+        Header? result = null;
 
         try
         {

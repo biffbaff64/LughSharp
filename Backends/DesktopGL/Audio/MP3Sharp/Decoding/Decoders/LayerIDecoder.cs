@@ -147,11 +147,11 @@ public class LayerIDecoder : IFrameDecoder
                     writeReady = subbands[ i ].PutNextSample( whichChannels, filter1, filter2 );
                 }
 
-                filter1?.calculate_pc_samples( buffer );
+                filter1?.CalculatePcSamples( buffer );
 
                 if ( ( whichChannels == OutputChannels.BOTH_CHANNELS ) && ( hdrMode != Header.SINGLE_CHANNEL ) )
                 {
-                    filter2?.calculate_pc_samples( buffer );
+                    filter2?.CalculatePcSamples( buffer );
                 }
             }
             while ( !writeReady );

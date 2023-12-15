@@ -27,17 +27,9 @@ namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 [PublicAPI]
 public class Header
 {
-    /// <summary>
-    /// Constant for MPEG-2 LSF version
-    /// </summary>
-    public const int MPEG2_LSF = 0;
-
-    public const int MPEG25_LSF = 2; // SZD
-
-    /// <summary>
-    /// Constant for MPEG-1 version
-    /// </summary>
-    public const int MPEG1 = 1;
+    public const int MPEG2_LSF  = 0;
+    public const int MPEG25_LSF = 2;
+    public const int MPEG1      = 1;
 
     public const int STEREO               = 0;
     public const int JOINT_STEREO         = 1;
@@ -186,23 +178,23 @@ public class Header
     public short Checksum { get; set; }
     public int   NSlots   { get; set; }
 
-    private Crc16? _crc;
+    public int framesize;
 
-    public  int   framesize;
-    private bool  _copyright;
-    private bool  _original;
-    private int   _layer;
-    private int   _protectionBit;
-    private int   _bitrateIndex;
-    private int   _paddingBit;
-    private int   _modeExtension;
-    private int   _mode;
-    private int   _numberOfSubbands;
-    private int   _intensityStereoBound;
-    private int   _sampleFrequency;
-    private int   _version;
-    private sbyte _syncmode = Bitstream.INITIAL_SYNC;
-    private int   _headerstring = -1;
+    private Crc16? _crc;
+    private bool   _copyright;
+    private bool   _original;
+    private int    _layer;
+    private int    _protectionBit;
+    private int    _bitrateIndex;
+    private int    _paddingBit;
+    private int    _modeExtension;
+    private int    _mode;
+    private int    _numberOfSubbands;
+    private int    _intensityStereoBound;
+    private int    _sampleFrequency;
+    private int    _version;
+    private sbyte  _syncmode     = Bitstream.INITIAL_SYNC;
+    private int    _headerstring = -1;
 
     /// <summary>
     /// Returns synchronized header.
@@ -212,7 +204,7 @@ public class Header
     public override string ToString()
     {
         var buffer = new StringBuilder( 200 );
-        
+
         buffer.Append( "Layer " );
         buffer.Append( LayerAsString() );
         buffer.Append( " frame " );
@@ -417,7 +409,7 @@ public class Header
     /// <summary>
     /// Returns Sample Frequency.
     /// </summary>
-    public int sample_frequency() => _sampleFrequency;
+    public int GetSampleFrequency() => _sampleFrequency;
 
     /// <summary>
     /// Returns Frequency.
@@ -479,7 +471,7 @@ public class Header
     /// <summary>
     /// Returns Mode Extension.
     /// </summary>
-    public int mode_extension() => _modeExtension;
+    public int ModeExtension() => _modeExtension;
 
     /// <summary>
     /// Calculate Frame size.
@@ -554,7 +546,7 @@ public class Header
     /// <summary>
     /// Returns the maximum number of frames in the stream.
     /// </summary>
-    public int min_number_of_frames( int streamsize )
+    public int MinNumberOfFrames( int streamsize )
     {
         if ( ( ( framesize + 5 ) - _paddingBit ) == 0 )
         {

@@ -23,7 +23,8 @@ namespace LibGDXSharp.Backends.Desktop.Audio;
 [PublicAPI]
 public class OpenALGLAudio : IGLAudio
 {
-    public bool NoDevice { get; set; } = false;
+    public bool                NoDevice { get; set; } = false;
+    public List< OpenALMusic > Music    { get; set; } = new( 1 );
 
     private int                      _deviceBufferSize;
     private int                      _deviceBufferCount;
@@ -38,9 +39,8 @@ public class OpenALGLAudio : IGLAudio
     private ObjectMap< string, Type > _extensionToSoundClass = new();
     private ObjectMap< string, Type > _extensionToMusicClass = new();
 
-    private List< OpenALMusic > _music    = new( 1 );
-    private IntPtr              _device;
-    private IntPtr              _context;
+    private IntPtr _device;
+    private IntPtr _context;
 
     public OpenALGLAudio( int simultaneousSources = 16,
                           int deviceBufferCount = 9,
@@ -59,7 +59,7 @@ public class OpenALGLAudio : IGLAudio
             RegisterMusic( "mp3", typeof( Mp3.Music ) );
         }
 
-        _device = Alc.OpenDevice( null );
+        _device = ALC.OpenDevice( null );
 
         if ( _device == 0L )
         {
@@ -68,34 +68,34 @@ public class OpenALGLAudio : IGLAudio
             return;
         }
 
-        ALCCapabilities deviceCapabilities = Alc.CreateCapabilities( _device );
+        ALCCapabilities deviceCapabilities = ALC.CreateCapabilities( _device );
 
-        _context = Alc.CreateContext( _device, null );
+        _context = ALC.CreateContext( _device, null );
 
         if ( _context == 0L )
         {
-            Alc.CloseDevice( _device );
+            ALC.CloseDevice( _device );
             NoDevice = true;
 
             return;
         }
 
-        if ( !Alc.MakeContextCurrent( _context ) )
+        if ( !ALC.MakeContextCurrent( _context ) )
         {
             NoDevice = true;
 
             return;
         }
 
-        Al.CreateCapabilities( deviceCapabilities );
+        AL.CreateCapabilities( deviceCapabilities );
 
         _allSources = new List< uint >( simultaneousSources );
 
         for ( var i = 0; i < simultaneousSources; i++ )
         {
-            uint sourceID = Al.GenSources();
+            uint sourceID = AL.GenSources();
 
-            if ( Al.GetError() != Al.NoError )
+            if ( AL.GetError() != AL.NO_ERROR )
             {
                 break;
             }
@@ -112,19 +112,19 @@ public class OpenALGLAudio : IGLAudio
 
         orientation.Flip();
 
-        Al.Listenerfv( Al.Orientation, orientation );
-        
+        AL.Listenerfv( AL.ORIENTATION, orientation );
+
         FloatBuffer velocity = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
-        
+
         velocity.Flip();
-        
-        Al.Listenerfv( Al.Velocity, velocity );
-        
+
+        AL.Listenerfv( AL.VELOCITY, velocity );
+
         FloatBuffer position = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
-        
+
         position.Flip();
-        
-        Al.Listenerfv( Al.Position, position );
+
+        AL.Listenerfv( AL.POSITION, position );
 
         _recentSounds = new OpenALSound[ simultaneousSources ];
     }
@@ -158,9 +158,9 @@ public class OpenALGLAudio : IGLAudio
 
         try
         {
-            return Activator.CreateInstance(  )
-            
-            
+            return Activator.CreateInstance()
+
+
             return soundClass.GetConstructor( new[] { typeof( OpenALGLAudio ), typeof( FileHandle ) } ).NewInstance( this, file );
         }
         catch ( System.Exception ex )
@@ -202,8 +202,8 @@ public class OpenALGLAudio : IGLAudio
 
         for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
-            int sourceId = _idleSources.get( i );
-            int state    = alGetSourcei( sourceId, AL_SOURCE_STATE );
+            int sourceId = _idleSources[ i ];
+            int state    = AL.GetSourcei( sourceId, AL_SOURCE_STATE );
 
             if ( state != AL_PLAYING && state != AL_PAUSED )
             {
@@ -245,16 +245,16 @@ public class OpenALGLAudio : IGLAudio
             return;
         }
 
-        alSourceStop( sourceID );
-        alSourcei( sourceID, AL_BUFFER, 0 );
-        Long soundId = _sourceToSoundId.remove( sourceID );
+        AL.SourceStop( sourceID );
+        AL.Sourcei( sourceID, AL.BUFFER, 0 );
+        var soundId = _sourceToSoundId?.Remove( sourceID );
 
         if ( soundId != null )
         {
-            _soundIdToSource.remove( soundId );
+            _soundIdToSource.Remove( soundId );
         }
 
-        _idleSources.add( sourceID );
+        _idleSources.Add( sourceID );
     }
 
     public void FreeBuffer( int bufferID )
@@ -264,21 +264,21 @@ public class OpenALGLAudio : IGLAudio
             return;
         }
 
-        for ( int i = 0, n = _idleSources.size; i < n; i++ )
+        for ( int i = 0, n = _idleSources!.Count; i < n; i++ )
         {
-            int sourceID = _idleSources.get( i );
+            var sourceID = _idleSources?[ i ];
 
-            if ( alGetSourcei( sourceID, AL_BUFFER ) == bufferID )
+            if ( AL.GetSourcei( sourceID, AL.BUFFER ) == bufferID )
             {
-                Long soundId = _sourceToSoundId.remove( sourceID );
+                var soundId = _sourceToSoundId?.Remove( sourceID );
 
                 if ( soundId != null )
                 {
-                    _soundIdToSource.remove( soundId );
+                    _soundIdToSource.Remove( soundId );
                 }
 
-                alSourceStop( sourceID );
-                alSourcei( sourceID, AL_BUFFER, 0 );
+                AL.SourceStop( sourceID );
+                AL.Sourcei( sourceID, AL.BUFFER, 0 );
             }
         }
     }
@@ -290,20 +290,20 @@ public class OpenALGLAudio : IGLAudio
             return;
         }
 
-        for ( int i = 0, n = _idleSources.size; i < n; i++ )
+        for ( int i = 0, n = _idleSources!.Count; i < n; i++ )
         {
-            int sourceID = _idleSources.get( i );
+            var sourceID = _idleSources[ i ];
 
-            if ( alGetSourcei( sourceID, AL_BUFFER ) == bufferID )
+            if ( AL.GetSourcei( sourceID, AL.BUFFER ) == bufferID )
             {
-                Long soundId = _sourceToSoundId.remove( sourceID );
+                var soundId = _sourceToSoundId?.Remove( sourceID );
 
                 if ( soundId != null )
                 {
-                    _soundIdToSource.remove( soundId );
+                    _soundIdToSource.Remove( soundId );
                 }
 
-                alSourceStop( sourceID );
+                AL.SourceStop( sourceID );
             }
         }
     }
@@ -315,13 +315,13 @@ public class OpenALGLAudio : IGLAudio
             return;
         }
 
-        for ( int i = 0, n = _idleSources.size; i < n; i++ )
+        for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
-            int sourceID = _idleSources.get( i );
+            var sourceID = _idleSources[ i ];
 
-            if ( alGetSourcei( sourceID, AL_BUFFER ) == bufferID )
+            if ( AL.GetSourcei( sourceID, AL.BUFFER ) == bufferID )
             {
-                alSourcePause( sourceID );
+                AL.SourcePause( sourceID );
             }
         }
     }
@@ -333,15 +333,15 @@ public class OpenALGLAudio : IGLAudio
             return;
         }
 
-        for ( int i = 0, n = _idleSources.size; i < n; i++ )
+        for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
-            int sourceID = _idleSources.get( i );
+            var sourceID = _idleSources[ i ];
 
-            if ( alGetSourcei( sourceID, AL_BUFFER ) == bufferID )
+            if ( AL.GetSourcei( sourceID, AL.BUFFER ) == bufferID )
             {
-                if ( alGetSourcei( sourceID, AL_SOURCE_STATE ) == AL_PAUSED )
+                if ( AL.GetSourcei( sourceID, AL.SOURCE_STATE ) == AL.PAUSED )
                 {
-                    alSourcePlay( sourceID );
+                    AL.SourcePlay( sourceID );
                 }
             }
         }
@@ -354,15 +354,15 @@ public class OpenALGLAudio : IGLAudio
             return;
         }
 
-        for ( int i = 0; i < _music.size; i++ )
+        foreach ( OpenALMusic alm in Music )
         {
-            _music.items[ i ].update();
+            alm.Update();
         }
     }
 
     public long GetSoundId( int sourceId )
     {
-        Long soundId = _sourceToSoundId.get( sourceId );
+        var soundId = _sourceToSoundId?[ sourceId ];
 
         return soundId != null ? soundId : -1;
     }
@@ -398,9 +398,9 @@ public class OpenALGLAudio : IGLAudio
     {
         int sourceId = _soundIdToSource.get( soundId, -1 );
 
-        if ( sourceId != -1 && alGetSourcei( sourceId, AL_SOURCE_STATE ) == AL_PAUSED )
+        if ( sourceId != -1 && AL.GetSourcei( sourceId, AL_SOURCE_STATE ) == AL_PAUSED )
         {
-            alSourcePlay( sourceId );
+            AL.SourcePlay( sourceId );
         }
     }
 
@@ -440,8 +440,8 @@ public class OpenALGLAudio : IGLAudio
 
         if ( sourceId != -1 )
         {
-            Al.Source3f( sourceId,
-                         Al.Position,
+            AL.Source3f( sourceId,
+                         AL.POSITION,
                          MathUtils.Cos( ( pan - 1 ) * MathUtils.HALF_PI ),
                          0,
                          MathUtils.Sin( ( pan + 1 ) * MathUtils.HALF_PI ) );
@@ -500,6 +500,7 @@ public class OpenALGLAudio : IGLAudio
             return new IAudioDevice()
             {
  
+
                 public void writeSamples (float[] samples, int offset, int numSamples)
                 {
             }
@@ -539,6 +540,7 @@ public class OpenALGLAudio : IGLAudio
             return new IAudioRecorder()
             {
  
+
                 public void read (short[] samples, int offset, int numSamples) {
             }
 
@@ -571,22 +573,22 @@ public class OpenALGLAudio : IGLAudio
                 {
                     var sourceID = _allSources[ i ];
 
-                    Al.GetSourcei( sourceID, Al.SourceState, out var state );
+                    AL.GetSourcei( sourceID, AL.SOURCE_STATE, out var state );
 
-                    if ( state != Al.Stopped )
+                    if ( state != AL.STOPPED )
                     {
-                        Al.SourceStop( sourceID );
+                        AL.SourceStop( sourceID );
                     }
 
-                    Al.DeleteSources( ( int )sourceID, _allSources.ToArray() );
+                    AL.DeleteSources( ( int )sourceID, _allSources.ToArray() );
                 }
             }
 
             _sourceToSoundId?.Clear();
             _soundIdToSource?.Clear();
 
-            Alc.DestroyContext( _context );
-            Alc.CloseDevice( _device );
+            ALC.DestroyContext( _context );
+            ALC.CloseDevice( _device );
         }
     }
 

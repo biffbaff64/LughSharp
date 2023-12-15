@@ -17,8 +17,6 @@
 using LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 using LibGDXSharp.Core.Files;
 
-using Exception = System.Exception;
-
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
 [PublicAPI]
@@ -26,9 +24,9 @@ public class Mp3 : OpenALMusic
 {
     public class Music : OpenALMusic
     {
-        private Bitstream    bitstream;
-        private OutputBuffer outputBuffer;
-        private MP3Decoder   decoder;
+        private Bitstream?    _bitstream;
+        private SampleBuffer? _outputBuffer;
+        private Decoder?      _decoder;
 
         public Music( OpenALGLAudio audio, FileHandle file )
             : base( audio, file )
@@ -38,12 +36,12 @@ public class Mp3 : OpenALMusic
                 return;
             }
 
-            bitstream = new Bitstream( file.read() );
-            decoder   = new MP3Decoder();
+            _bitstream = new Bitstream( file.read() );
+            _decoder   = new MP3Decoder();
 
             try
             {
-                Header header = bitstream.readFrame();
+                Header header = _bitstream.readFrame();
 
                 if ( header == null )
                 {
@@ -51,9 +49,9 @@ public class Mp3 : OpenALMusic
                 }
 
                 int channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
-                outputBuffer = new OutputBuffer( channels, false );
-                decoder.setOutputBuffer( outputBuffer );
-                setup( channels, header.getSampleRate() );
+                _outputBuffer = new OutputBuffer( channels, false );
+                _decoder.setOutputBuffer( _outputBuffer );
+                Setup( channels, header.getSampleRate() );
             }
             catch ( BitstreamException e )
             {
@@ -62,16 +60,16 @@ public class Mp3 : OpenALMusic
 
         }
 
-        public int read( byte[] buffer )
+        public int Read( byte[] buffer )
         {
             try
             {
-                boolean setup = bitstream == null;
+                boolean setup = _bitstream == null;
 
                 if ( setup )
                 {
-                    bitstream = new Bitstream( file.read() );
-                    decoder   = new MP3Decoder();
+                    _bitstream = new Bitstream( file.read() );
+                    _decoder   = new MP3Decoder();
                 }
 
                 int totalLength       = 0;
@@ -79,7 +77,7 @@ public class Mp3 : OpenALMusic
 
                 while ( totalLength <= minRequiredLength )
                 {
-                    Header header = bitstream.readFrame();
+                    Header header = _bitstream.readFrame();
 
                     if ( header == null )
                     {
@@ -89,25 +87,25 @@ public class Mp3 : OpenALMusic
                     if ( setup )
                     {
                         int channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
-                        outputBuffer = new OutputBuffer( channels, false );
-                        decoder.setOutputBuffer( outputBuffer );
+                        _outputBuffer = new OutputBuffer( channels, false );
+                        _decoder.setOutputBuffer( _outputBuffer );
                         setup( channels, header.getSampleRate() );
                         setup = false;
                     }
 
                     try
                     {
-                        decoder.decodeFrame( header, bitstream );
+                        _decoder.decodeFrame( header, _bitstream );
                     }
-                    catch ( Exception ignored )
+                    catch ( System.Exception ignored )
                     {
                         // JLayer's decoder throws ArrayIndexOutOfBoundsException sometimes!?
                     }
 
-                    bitstream.closeFrame();
+                    _bitstream.closeFrame();
 
-                    int length = outputBuffer.reset();
-                    System.arraycopy( outputBuffer.getBuffer(), 0, buffer, totalLength, length );
+                    int length = _outputBuffer.reset();
+                    System.arraycopy( _outputBuffer.getBuffer(), 0, buffer, totalLength, length );
                     totalLength += length;
                 }
 
@@ -115,28 +113,28 @@ public class Mp3 : OpenALMusic
             }
             catch ( Throwable ex )
             {
-                reset();
+                Reset();
 
                 throw new GdxRuntimeException( "Error reading audio data.", ex );
             }
         }
 
-        public void reset()
+        public void Reset()
         {
-            if ( bitstream == null )
+            if ( _bitstream == null )
             {
                 return;
             }
 
             try
             {
-                bitstream.close();
+                _bitstream.close();
             }
             catch ( BitstreamException ignored )
             {
             }
 
-            bitstream = null;
+            _bitstream = null;
         }
     }
 
@@ -156,13 +154,13 @@ public class Mp3 : OpenALMusic
 
             try
             {
-                OutputBuffer outputBuffer = null;
+                SampleBuffer outputBuffer = null;
 
                 int sampleRate = -1, channels = -1;
 
                 while ( true )
                 {
-                    Header header = bitstream.readFrame();
+                    Header? header = bitstream.ReadFrame();
 
                     if ( header == null )
                     {
@@ -171,27 +169,29 @@ public class Mp3 : OpenALMusic
 
                     if ( outputBuffer == null )
                     {
-                        channels     = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
-                        outputBuffer = new OutputBuffer( channels, false );
+                        channels     = header.Mode() == Header.SINGLE_CHANNEL ? 1 : 2;
+                        sampleRate   = header.GetSampleFrequency();
+                        outputBuffer = new SampleBuffer( sampleRate, channels );
+
                         decoder.setOutputBuffer( outputBuffer );
-                        sampleRate = header.getSampleRate();
                     }
 
                     try
                     {
                         decoder.decodeFrame( header, bitstream );
                     }
-                    catch ( Exception )
+                    catch ( System.Exception )
                     {
                         // Ignored
                     }
 
-                    bitstream.closeFrame();
-                    output.write( outputBuffer.getBuffer(), 0, outputBuffer.reset() );
+                    bitstream.CloseFrame();
+                    output.Write( outputBuffer.Buffer, 0, outputBuffer.Reset() );
                 }
 
-                bitstream.close();
-                setup( output.toByteArray(), channels, sampleRate );
+                bitstream.Close();
+
+                Setup( output.toByteArray(), channels, sampleRate );
             }
             catch ( System.Exception ex )
             {

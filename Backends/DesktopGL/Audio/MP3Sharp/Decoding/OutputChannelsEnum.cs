@@ -16,8 +16,9 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.MP3Sharp;
 
-
-public enum OutputChannelsEnum {
+[PublicAPI]
+public enum OutputChannelsEnum
+{
     BothChannels    = 0,
     LeftChannel     = 1,
     RightChannel    = 2,
