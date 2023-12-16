@@ -35,15 +35,15 @@ public class MockMusic : IMusic
     }
 
     /// <inheritdoc />
-    public bool IsPlaying() => false;
-
-    /// <inheritdoc />
     public void SetLooping( bool isLooping )
     {
     }
 
     /// <inheritdoc />
-    public bool IsLooping() => false;
+    public bool IsPlaying { get; set; } = false;
+
+    /// <inheritdoc />
+    public bool IsLooping { get; set; } = false;
 
     /// <inheritdoc />
     public void SetVolume( float volume )

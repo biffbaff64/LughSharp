@@ -38,9 +38,6 @@ public interface IMusic
     /// </summary>
     public void Stop();
 
-    /// <returns> whether this music stream is playing </returns>
-    public bool IsPlaying();
-
     /// <summary>
     /// Sets whether the music stream is looping. This can be called at
     /// any time, whether the stream is playing.
@@ -48,8 +45,11 @@ public interface IMusic
     /// <param name="isLooping"> whether to loop the stream</param>
     public void SetLooping( bool isLooping );
 
+    /// <returns> whether this music stream is playing </returns>
+    public bool IsPlaying { get; set; }
+
     /// <returns> whether the music stream is set to loop. </returns>
-    public bool IsLooping();
+    public bool IsLooping { get; set; }
 
     /// <summary>
     /// Sets the volume of this music stream. The volume must be given in the

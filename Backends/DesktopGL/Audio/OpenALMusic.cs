@@ -25,8 +25,31 @@ public abstract class OpenALMusic : IMusic
 {
     public const int INVALID_SOURCE_ID = -1;
 
+    #region properties
+
     public IMusic.IOnCompletionListener? OnCompletionListener { get; set; }
     public bool                          IsLooping            { get; set; }
+
+    public bool IsPlaying
+    {
+        get
+        {
+            if ( _audio.NoDevice )
+            {
+                return false;
+            }
+
+            if ( _sourceID == INVALID_SOURCE_ID )
+            {
+                return false;
+            }
+
+            return _isPlaying;
+        }
+        set => _isPlaying = value;
+    }
+
+    #endregion properties
 
     private static int        _bufferSize     = 4096 * 10;
     private static int        _bufferCount    = 3;
@@ -35,7 +58,7 @@ public abstract class OpenALMusic : IMusic
     private static ByteBuffer _tempBuffer     = BufferUtils.NewByteBuffer( _bufferSize );
 
     private List< float > _renderedSecondsQueue = new( _bufferCount );
-    private OpenALGLAudio _audio;
+    private OpenALAudio   _audio;
     private uint[]?       _buffers;
     private int           _sourceID = INVALID_SOURCE_ID;
     private float         _volume   = 1;
@@ -48,7 +71,7 @@ public abstract class OpenALMusic : IMusic
 
     protected FileHandle file;
 
-    protected OpenALMusic( OpenALGLAudio audio, FileHandle file )
+    protected OpenALMusic( OpenALAudio audio, FileHandle file )
     {
         this._audio               = audio;
         this.file                 = file;
@@ -99,25 +122,29 @@ public abstract class OpenALMusic : IMusic
 
             SetPan( _pan, _volume );
 
-            var filled = false; // Check if there's anything to actually play.
+            AL.SourceQueueBuffers( ( uint )_sourceID, _bufferCount, _buffers );
 
-            for ( var i = 0; i < _bufferCount; i++ )
-            {
-                var bufferID = ( int )_buffers[ i ];
-
-                if ( !Fill( bufferID ) )
-                {
-                    break;
-                }
-
-                filled = true;
-                AL.SourceQueueBuffers( _sourceID, 1, bufferID );
-            }
-
-            if ( !filled && ( OnCompletionListener != null ) )
-            {
-                OnCompletionListener.OnCompletion( this );
-            }
+            //TODO: 
+//            var filled = false; // Check if there's anything to actually play.
+//
+//            for ( var i = 0; i < _bufferCount; i++ )
+//            {
+//                var bufferID = ( int )_buffers[ i ];
+//
+//                if ( !Fill( bufferID ) )
+//                {
+//                    break;
+//                }
+//
+//                filled = true;
+//                
+//                AL.SourceQueueBuffers( ( uint )_sourceID, 1, bufferID );
+//            }
+//
+//            if ( !filled && ( OnCompletionListener != null ) )
+//            {
+//                OnCompletionListener.OnCompletion( this );
+//            }
 
             if ( AL.GetError() != AL.NO_ERROR )
             {
@@ -127,9 +154,9 @@ public abstract class OpenALMusic : IMusic
             }
         }
 
-        if ( !IsPlaying() )
+        if ( !IsPlaying )
         {
-            AL.SourcePlay( _sourceID );
+            AL.SourcePlay( ( uint )_sourceID );
             _isPlaying = true;
         }
     }
@@ -151,12 +178,12 @@ public abstract class OpenALMusic : IMusic
         Reset();
 
         _audio.FreeSource( _sourceID );
-        
+
         _sourceID        = INVALID_SOURCE_ID;
         _renderedSeconds = 0;
-        
+
         _renderedSecondsQueue.Clear();
-        
+
         _isPlaying = false;
     }
 
@@ -173,21 +200,6 @@ public abstract class OpenALMusic : IMusic
         }
 
         _isPlaying = false;
-    }
-
-    public bool IsPlaying()
-    {
-        if ( _audio.NoDevice )
-        {
-            return false;
-        }
-
-        if ( _sourceID == INVALID_SOURCE_ID )
-        {
-            return false;
-        }
-
-        return _isPlaying;
     }
 
     public void SetVolume( float volume )

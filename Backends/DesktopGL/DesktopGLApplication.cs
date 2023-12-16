@@ -600,7 +600,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
     {
-        return new OpenALGLAudio( config.AudioDeviceSimultaneousSources,
+        return new OpenALAudio( config.AudioDeviceSimultaneousSources,
                                   config.AudioDeviceBufferCount,
                                   config.AudioDeviceBufferSize );
     }

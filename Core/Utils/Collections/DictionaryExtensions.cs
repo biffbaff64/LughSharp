@@ -64,7 +64,7 @@ public static class DictionaryExtension
             throw new GdxRuntimeException( "key is null" );
         }
 
-        return self.TryGetValue( key, out TV? value ) ? value : defaultValue;
+        return self.GetValueOrDefault( key, defaultValue );
     }
 
     /// <summary>
@@ -100,4 +100,6 @@ public static class DictionaryExtension
         self.Remove( key );
         self.Add( key, value );
     }
+    
+//    public static TV 
 }

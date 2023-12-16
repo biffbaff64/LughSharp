@@ -236,16 +236,16 @@ BACKENDS/DESKTOPGL
 BACKENDS/DESKTOPGL/AUDIO
 ------------------------
 
+    - IP   - GdxSoundAudioRecorder
     - DONE - IGLAudio
-    -      - Mp3
-    -      - Ogg
-    -      - OggInputStream
-    -      - OpenALAudioDevice
-    - IP   - OpenALGLAudio
-    -      - OpenALMusic
-    -      - OpenALSound
-    -      - SoundAudioRecorder
-    -      - Wav
+    - IP   - Mp3
+    - IP   - Ogg
+    - IP   - OggInputStream
+    - IP   - OpenALAudio
+    - IP   - OpenALAudioDevice
+    - IP   - OpenALMusic
+    - IP   - OpenALSound
+    - IP   - Wav
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1226,6 +1226,8 @@ UTILS/COLLECTIONS
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    -      - LinkedHashMap<K, V>
+    -      - Map<K, V>
     - DONE - ObjectMap                      Converted, but use Dictionary< object, object >
     - DONE - PredicateIterable
     - DONE - PredicateIterator

@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
 [PublicAPI]
-public class OpenALAudioDevice
+public class OpenALAudioDevice : IAudioDevice
 {
 
 }

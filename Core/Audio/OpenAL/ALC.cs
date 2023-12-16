@@ -61,6 +61,15 @@ public class ALC
 
     #endregion
 
+    public readonly static int[] AttrList =
+    {
+        FREQUENCY,
+        REFRESH,
+        SYNC,
+        MONO_SOURCES,
+        STEREO_SOURCES,
+    };
+    
     #region Enum
 
     public const int FALSE                            = 0;
