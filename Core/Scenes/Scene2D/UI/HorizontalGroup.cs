@@ -854,22 +854,19 @@ public class HorizontalGroup : WidgetGroup
             return;
         }
 
-        shapes.Set( ShapeRenderer.ShapeTypes.Line );
+        shapes.Set( PrimitiveType.Lines );
 
         if ( Stage != null )
         {
             shapes.Color = Stage.DebugColor;
         }
 
-        shapes.Rect
-            (
-             X + PadLeft, Y + PadBottom,
-             OriginX, OriginY,
-             Width - PadLeft - PadRight,
-             Height - PadBottom - PadTop,
-             ScaleX, ScaleY,
-             Rotation
-            );
+        shapes.Rect( X + PadLeft, Y + PadBottom,
+                     OriginX, OriginY,
+                     Width - PadLeft - PadRight,
+                     Height - PadBottom - PadTop,
+                     ScaleX, ScaleY,
+                     Rotation );
     }
 
     public override float PrefWidth

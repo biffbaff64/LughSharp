@@ -53,40 +53,20 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class ShaderProgram
 {
-    /// <summary>
-    /// default name for position attributes.
-    /// </summary>
-    public const string POSITION_ATTRIBUTE = "a_position";
+    private const int CACHED_NOT_FOUND = -1;
+    private const int NOT_CACHED       = -2;
 
-    /// <summary>
-    /// default name for normal attributes.
-    /// </summary>
-    public const string NORMAL_ATTRIBUTE = "a_normal";
+    #region default attribute names
 
-    /// <summary>
-    /// default name for color attributes.
-    /// </summary>
-    public const string COLOR_ATTRIBUTE = "a_color";
-
-    /// <summary>
-    /// default name for texcoords attributes, append texture unit number.
-    /// </summary>
-    public const string TEXCOORD_ATTRIBUTE = "a_texCoord";
-
-    /// <summary>
-    /// default name for tangent attribute
-    /// </summary>
-    public const string TANGENT_ATTRIBUTE = "a_tangent";
-
-    /// <summary>
-    /// default name for binormal attribute
-    /// </summary>
-    public const string BINORMAL_ATTRIBUTE = "a_binormal";
-
-    /// <summary>
-    /// default name for boneweight attribute
-    /// </summary>
+    public const string POSITION_ATTRIBUTE   = "a_position";
+    public const string NORMAL_ATTRIBUTE     = "a_normal";
+    public const string COLOR_ATTRIBUTE      = "a_color";
+    public const string TEXCOORD_ATTRIBUTE   = "a_texCoord";
+    public const string TANGENT_ATTRIBUTE    = "a_tangent";
+    public const string BINORMAL_ATTRIBUTE   = "a_binormal";
     public const string BONEWEIGHT_ATTRIBUTE = "a_boneWeight";
+
+    #endregion default attribute names
 
     /// <summary>
     /// flag indicating whether attributes & uniforms must be present
@@ -134,18 +114,14 @@ public class ShaderProgram
     private readonly Dictionary< string, int > _attributeSizes = new();
     private          string[]                  _attributeNames = null!;
 
-    private int _programHandle;
-    private int _vertexShaderHandle;
-    private int _fragmentShaderHandle;
-
     private readonly FloatBuffer _matrix;
     private readonly string      _vertexShaderSource;
     private readonly string      _fragmentShaderSource;
 
-    private const int CACHED_NOT_FOUND = -1;
-    private const int NOT_CACHED       = -2;
-
-    public bool invalidated;
+    private int  _programHandle;
+    private int  _vertexShaderHandle;
+    private int  _fragmentShaderHandle;
+    private bool _invalidated;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -170,21 +146,15 @@ public class ShaderProgram
         }
     }
 
-    /// <summary>whether this program compiled successfully</summary>
     public bool IsCompiled { get; set; }
 
-    /// <returns> the number of managed shader programs currently loaded </returns>
     public static int NumManagedShaderPrograms => Shaders[ Gdx.App ].Count;
 
-    public string[] Attributes => _attributeNames;
-
-    public string[] Uniforms => _uniformNames;
-
-    public string VertexShaderSource => _vertexShaderSource;
-
-    public string FragmentShaderSource => _fragmentShaderSource;
-
-    public int Handle => _programHandle;
+    public string[] Attributes           => _attributeNames;
+    public string[] Uniforms             => _uniformNames;
+    public string   VertexShaderSource   => _vertexShaderSource;
+    public string   FragmentShaderSource => _fragmentShaderSource;
+    public int      Handle               => _programHandle;
 
     #endregion properties
 
@@ -198,15 +168,8 @@ public class ShaderProgram
     /// <exception cref="ArgumentException"></exception>
     public ShaderProgram( string vertexShader, string fragmentShader )
     {
-        if ( string.ReferenceEquals( vertexShader, null ) )
-        {
-            throw new System.ArgumentException( "vertex shader must not be null" );
-        }
-
-        if ( string.ReferenceEquals( fragmentShader, null ) )
-        {
-            throw new System.ArgumentException( "fragment shader must not be null" );
-        }
+        ArgumentNullException.ThrowIfNull( vertexShader );
+        ArgumentNullException.ThrowIfNull( fragmentShader );
 
         if ( !string.IsNullOrEmpty( PrependVertexCode ) )
         {
@@ -238,11 +201,7 @@ public class ShaderProgram
     /// <param name="vertexShader"></param>
     /// <param name="fragmentShader"></param>
     public ShaderProgram( FileInfo vertexShader, FileInfo fragmentShader )
-        : this
-            (
-             File.ReadAllText( vertexShader.Name ),
-             File.ReadAllText( fragmentShader.Name )
-            )
+        : this( File.ReadAllText( vertexShader.Name ), File.ReadAllText( fragmentShader.Name ) )
     {
     }
 
@@ -253,8 +212,8 @@ public class ShaderProgram
     /// <param name="fragmentShader">  </param>
     private void CompileShaders( string vertexShader, string fragmentShader )
     {
-        _vertexShaderHandle   = LoadShader( IGL20.GL_VERTEX_SHADER, vertexShader );
-        _fragmentShaderHandle = LoadShader( IGL20.GL_FRAGMENT_SHADER, fragmentShader );
+        _vertexShaderHandle   = LoadShader( ShaderType.VertexShader, vertexShader );
+        _fragmentShaderHandle = LoadShader( ShaderType.FragmentShader, fragmentShader );
 
         if ( ( _vertexShaderHandle == -1 ) || ( _fragmentShaderHandle == -1 ) )
         {
@@ -275,11 +234,11 @@ public class ShaderProgram
         IsCompiled = true;
     }
 
-    private int LoadShader( int type, string source )
+    private int LoadShader( ShaderType type, string source )
     {
         IntBuffer intbuf = BufferUtils.NewIntBuffer( 1 );
 
-        var shader = Gdx.GL20.GLCreateShader( type );
+        var shader = ( int )Gdx.GL20.GLCreateShader( type );
 
         if ( shader == 0 )
         {
@@ -298,7 +257,7 @@ public class ShaderProgram
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
             var infoLog = Gdx.GL20.GLGetShaderInfoLog( shader );
-            _log += type == IGL20.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
+            _log += type == ShaderType.VertexShader ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
 
 // }
@@ -314,7 +273,7 @@ public class ShaderProgram
     /// <returns></returns>
     protected int CreateProgram()
     {
-        var program = Gdx.GL20.GLCreateProgram();
+        var program = ( int )Gdx.GL20.GLCreateProgram();
 
         return program != 0 ? program : -1;
     }
@@ -797,7 +756,7 @@ public class ShaderProgram
     /// </param>
     /// <param name="stride">The stride in bytes between successive attributes.</param>
     /// <param name="buffer">The buffer containing the vertex attributes.</param>
-    public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, Buffer buffer )
+    public void SetVertexAttribute( string name, int size, VertexAttribType type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
 
@@ -811,7 +770,7 @@ public class ShaderProgram
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
     }
 
-    public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, Buffer buffer )
+    public void SetVertexAttribute( int location, int size, VertexAttribType type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
@@ -835,7 +794,7 @@ public class ShaderProgram
     /// <param name="offset">
     /// Byte offset into the vertex buffer object bound to IGL20.GL_Array_Buffer.
     /// </param>
-    public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, int offset )
+    public void SetVertexAttribute( string name, int size, VertexAttribType type, bool normalize, int stride, int offset )
     {
         CheckManaged();
 
@@ -849,27 +808,16 @@ public class ShaderProgram
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, offset );
     }
 
-    public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, int offset )
+    public void SetVertexAttribute( int location, int size, VertexAttribType type, bool normalize, int stride, int offset )
     {
         CheckManaged();
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, offset );
     }
 
-    [Obsolete( "use <see cref=\"bind()\"/> instead, this method will be remove in future version" )]
-    public void Begin()
-    {
-        Bind();
-    }
-
     public void Bind()
     {
         CheckManaged();
-        Gdx.GL20.GLUseProgram( _programHandle );
-    }
-
-    [Obsolete( "no longer necessary, this method will be remove in future version" )]
-    public void End()
-    {
+        Gdx.GL20.GLUseProgram( ( int )_programHandle );
     }
 
     /// <summary>
@@ -879,9 +827,9 @@ public class ShaderProgram
     public void Dispose()
     {
         Gdx.GL20.GLUseProgram( 0 );
-        Gdx.GL20.GLDeleteShader( _vertexShaderHandle );
-        Gdx.GL20.GLDeleteShader( _fragmentShaderHandle );
-        Gdx.GL20.GLDeleteProgram( _programHandle );
+        Gdx.GL20.GLDeleteShader( ( int )_vertexShaderHandle );
+        Gdx.GL20.GLDeleteShader( ( int )_fragmentShaderHandle );
+        Gdx.GL20.GLDeleteProgram( ( int )_programHandle );
 
         Shaders.Get( Gdx.App ).Remove( this );
     }
@@ -936,10 +884,10 @@ public class ShaderProgram
 
     private void CheckManaged()
     {
-        if ( invalidated )
+        if ( _invalidated )
         {
             CompileShaders( _vertexShaderSource, _fragmentShaderSource );
-            invalidated = false;
+            _invalidated = false;
         }
     }
 
@@ -962,7 +910,7 @@ public class ShaderProgram
 
         foreach ( ShaderProgram sp in shaderArray )
         {
-            sp.invalidated = true;
+            sp._invalidated = true;
             sp.CheckManaged();
         }
     }
@@ -982,14 +930,7 @@ public class ShaderProgram
     /// <param name="value4"> the fourth value  </param>
     public void SetAttributef( string name, float value1, float value2, float value3, float value4 )
     {
-        Gdx.GL20.GLVertexAttrib4F
-            (
-             FetchAttributeLocation( name ),
-             value1,
-             value2,
-             value3,
-             value4
-            );
+        Gdx.GL20.GLVertexAttrib4F( FetchAttributeLocation( name ), value1, value2, value3, value4 );
     }
 
     private readonly IntBuffer _parameters = BufferUtils.NewIntBuffer( 1 );
@@ -1068,21 +1009,21 @@ public class ShaderProgram
     /// </returns>
     public int GetAttributeType( string name )
     {
-        return _attributeTypes.TryGetValue( name, out var type ) ? type : 0;
+        return _attributeTypes.GetValueOrDefault( name, 0 );
     }
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns> the location of the attribute or -1.  </returns>
     public int GetAttributeLocation( string name )
     {
-        return _attributes.TryGetValue( name, out var location ) ? location : 0;
+        return _attributes.GetValueOrDefault( name, 0 );
     }
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns> the size of the attribute or 0.</returns>
     public int GetAttributeSize( string name )
     {
-        return _attributeSizes.TryGetValue( name, out var size ) ? size : 0;
+        return _attributeSizes.GetValueOrDefault( name, 0 );
     }
 
     /// <param name="name"> the name of the uniform.</param>
@@ -1099,20 +1040,20 @@ public class ShaderProgram
     /// </returns>
     public int GetUniformType( string name )
     {
-        return _uniformTypes.TryGetValue( name, out var type ) ? type : 0;
+        return _uniformTypes.GetValueOrDefault( name, 0 );
     }
 
     /// <param name="name"> the name of the uniform </param>
     /// <returns> the location of the uniform or -1.</returns>
     public int GetUniformLocation( string name )
     {
-        return _uniforms.TryGetValue( name, out var location ) ? location : -1;
+        return _uniforms.GetValueOrDefault( name, -1 );
     }
 
     /// <param name="name">The name of the uniform</param>
     /// <returns> the size of the uniform or 0.</returns>
     public int GetUniformSize( string name )
     {
-        return _uniformSizes.TryGetValue( name, out var size ) ? size : 0;
+        return _uniformSizes.GetValueOrDefault( name, 0 );
     }
 }

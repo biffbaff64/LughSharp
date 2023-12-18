@@ -1189,7 +1189,7 @@ public class SpriteCache
         {
             textures?[ i ].Bind();
 
-            _mesh.Render( CustomShader ?? _shader, IGL20.GL_TRIANGLES, offset, counts![ i ] );
+            _mesh.Render( CustomShader ?? _shader, PrimitiveType.Triangles, offset, counts![ i ] );
 
             offset += counts[ i ];
         }
@@ -1240,7 +1240,7 @@ public class SpriteCache
                 length -= count;
             }
 
-            _mesh.Render( CustomShader ?? _shader, IGL20.GL_TRIANGLES, offset, count );
+            _mesh.Render( CustomShader ?? _shader, PrimitiveType.Triangles, offset, count );
 
             offset += count;
         }

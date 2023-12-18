@@ -338,7 +338,7 @@ public interface IGL20
 
     // ------------------------------------------------
 
-    void GLActiveTexture( uint texture );
+    void GLActiveTexture( int texture );
 
     void GLBindTexture( int target, int texture );
 
@@ -393,9 +393,9 @@ public interface IGL20
 
     void GLCullFace( CullFaceMode mode );
 
-    void GLDeleteTextures( int n, uint textures );
+    void GLDeleteTextures( int n, int textures );
 
-    void GLDeleteTexture( uint texture );
+    void GLDeleteTexture( int texture );
 
     void GLDepthFunc( DepthFunction func );
 
@@ -407,7 +407,7 @@ public interface IGL20
 
     void GLDrawArrays( PrimitiveType mode, int first, int count );
 
-    void GLDrawElements( int mode, int count, DrawElementsType type, Buffer indices );
+    void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, Buffer indices );
 
     void GLEnable( EnableCap cap );
 
@@ -417,9 +417,9 @@ public interface IGL20
 
     void GLFrontFace( FrontFaceDirection mode );
 
-    void GLGenTextures( int n, uint[] textures );
+    void GLGenTextures( int n, int[] textures );
 
-    uint GLGenTexture();
+    int GLGenTexture();
 
     ErrorCode GLGetError();
 
@@ -495,41 +495,41 @@ public interface IGL20
 
     void GLCompileShader( int shader );
 
-    uint GLCreateProgram();
+    int GLCreateProgram();
 
-    uint GLCreateShader( ShaderType type );
+    int GLCreateShader( ShaderType type );
 
-    void GLDeleteBuffer( uint buffer );
+    void GLDeleteBuffer( int buffer );
 
-    void GLDeleteBuffers( int n, uint buffers );
+    void GLDeleteBuffers( int n, int buffers );
 
     void GLDeleteFramebuffer( int framebuffer );
 
     void GLDeleteFramebuffers( int n, IntBuffer framebuffers );
 
-    void GLDeleteProgram( uint program );
+    void GLDeleteProgram( int program );
 
     void GLDeleteRenderbuffer( int renderbuffer );
 
     void GLDeleteRenderbuffers( int n, IntBuffer renderbuffers );
 
-    void GLDeleteShader( uint shader );
+    void GLDeleteShader( int shader );
 
-    void GLDetachShader( uint program, uint shader );
+    void GLDetachShader( int program, int shader );
 
-    void GLDisableVertexAttribArray( uint index );
+    void GLDisableVertexAttribArray( int index );
 
-    void GLDrawElements( int mode, int count, DrawElementsType type, int indices );
+    void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, int indices );
 
-    void GLEnableVertexAttribArray( uint index );
+    void GLEnableVertexAttribArray( int index );
 
     void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer );
 
     void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level );
 
-    uint GLGenBuffer();
+    int GLGenBuffer();
 
-    void GLGenBuffers( int n, uint[] buffers );
+    void GLGenBuffers( int n, int[] buffers );
 
     void GLGenerateMipmap( int target );
 
@@ -685,30 +685,30 @@ public interface IGL20
 
     void GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset );
 
-    void GLUseProgram( uint program );
+    void GLUseProgram( int program );
 
-    void GLValidateProgram( uint program );
+    void GLValidateProgram( int program );
 
-    void GLVertexAttrib1F( uint indx, float x );
+    void GLVertexAttrib1F( int indx, float x );
 
-    void GLVertexAttrib1Fv( uint indx, FloatBuffer values );
+    void GLVertexAttrib1Fv( int indx, FloatBuffer values );
 
     void GLVertexAttrib2F( int indx, float x, float y );
 
-    void GLVertexAttrib2Fv( uint indx, FloatBuffer values );
+    void GLVertexAttrib2Fv( int indx, FloatBuffer values );
 
     void GLVertexAttrib3F( int indx, float x, float y, float z );
 
-    void GLVertexAttrib3Fv( uint indx, FloatBuffer values );
+    void GLVertexAttrib3Fv( int indx, FloatBuffer values );
 
     void GLVertexAttrib4F( int indx, float x, float y, float z, float w );
 
-    void GLVertexAttrib4Fv( uint indx, FloatBuffer values );
+    void GLVertexAttrib4Fv( int indx, FloatBuffer values );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
-    void GLVertexAttribPointer( uint indx, int size, VertexAttribType type, bool normalized, int stride, Buffer ptr );
 
-    void GLVertexAttribPointer( uint indx, int size, VertexAttribType type, bool normalized, int stride, int ptr );
+    // 'indx' parameters must be signed
+    void GLVertexAttribPointer( int indx, int size, VertexAttribType type, bool normalized, int stride, Buffer ptr );
+    void GLVertexAttribPointer( int indx, int size, VertexAttribType type, bool normalized, int stride, int ptr );
 }

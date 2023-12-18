@@ -181,87 +181,6 @@ AUDIO/MP3SHARP
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-BACKENDS/DESKTOPGL
-------------------
-
-    - IP   - DesktopGLApplication
-            - IP   - GLDebugMessageSeverity
-    - DONE - DesktopGLApplicationConfiguration
-    - IP   - DesktopGLNativesLoader
-    - IP   - DesktopGLNet
-    - IP   - DesktopWindowCallbacks
-    - DONE - IDesktopGLApplicationBase
-    - IP   - Sync
-
-    Files
-    -----
-
-    - DONE - DesktopGLFileHandle
-    - DONE - DesktopGLFiles
-
-    Graphics
-    --------
-
-    - IP   - DesktopGL20
-    - IP   - DesktopGL30
-    - IP   - DesktopGLGraphics
-            - IP   - DesktopGLDisplayMode   Delete candidate
-            - IP   - DesktopGLMonitor       Delete candidate
-
-    Input
-    -----
-
-    - DONE - DefaultGLInput
-    - DONE - IDesktopGLInput
-
-    Utils
-    -----
-
-    - IP   - DesktopGLApplicationLogger
-    - IP   - DesktopGLClipboard
-    - DONE - DesktopGLCursor
-    - IP   - DesktopGLPreferences
-
-    Window
-    ------
-
-    - IP   - DesktopGLWindow
-    - DONE - DesktopGLWindowConfiguration
-    - DONE - DesktopGLWindowAdapter
-    - DONE - IDesktopGLWindowListener
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-BACKENDS/DESKTOPGL/AUDIO
-------------------------
-
-    - IP   - GdxSoundAudioRecorder
-    - DONE - IGLAudio
-    - IP   - Mp3
-    - IP   - Ogg
-    - IP   - OggInputStream
-    - IP   - OpenALAudio
-    - IP   - OpenALAudioDevice
-    - IP   - OpenALMusic
-    - IP   - OpenALSound
-    - IP   - Wav
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-BACKENDS/DESKTOPGL/AUDIO/MOCK
------------------------------
-
-    - DONE - MockAudio
-    - DONE - MockAudioDevice
-    - DONE - MockAudioRecorder
-    - DONE - MockMusic
-    - DONE - MockSound
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 CORE
 ----
 
@@ -1099,7 +1018,7 @@ SCENES.SCENE2D/UI
     TODO: I don't like the way Cell and Value classes are implemented.
           They seem confusing and are candidates for a rewrite.
 
-    - IP   - Button                         
+    - DONE - Button                         
     - DONE - ButtonGroup                    
     - DONE - Cell                           
     - DONE - CheckBox                       
@@ -1226,8 +1145,6 @@ UTILS/COLLECTIONS
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
-    -      - LinkedHashMap<K, V>
-    -      - Map<K, V>
     - DONE - ObjectMap                      Converted, but use Dictionary< object, object >
     - DONE - PredicateIterable
     - DONE - PredicateIterator
@@ -1319,6 +1236,87 @@ UTILS/XML
     - DONE - XmlReader
     - DONE - XmlReaderData
     - DONE - XmlWriter
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BACKENDS/DESKTOPGL
+------------------
+
+    - IP   - DesktopGLApplication
+            - IP   - GLDebugMessageSeverity
+    - DONE - DesktopGLApplicationConfiguration
+    - IP   - DesktopGLNativesLoader
+    - IP   - DesktopGLNet
+    - IP   - DesktopWindowCallbacks
+    - DONE - IDesktopGLApplicationBase
+    - IP   - Sync
+
+    Files
+    -----
+
+    - DONE - DesktopGLFileHandle
+    - DONE - DesktopGLFiles
+
+    Graphics
+    --------
+
+    - IP   - DesktopGL20
+    - IP   - DesktopGL30
+    - IP   - DesktopGLGraphics
+            - IP   - DesktopGLDisplayMode   Delete candidate
+            - IP   - DesktopGLMonitor       Delete candidate
+
+    Input
+    -----
+
+    - DONE - DefaultGLInput
+    - DONE - IDesktopGLInput
+
+    Utils
+    -----
+
+    - IP   - DesktopGLApplicationLogger
+    - IP   - DesktopGLClipboard
+    - DONE - DesktopGLCursor
+    - IP   - DesktopGLPreferences
+
+    Window
+    ------
+
+    - IP   - DesktopGLWindow
+    - DONE - DesktopGLWindowConfiguration
+    - DONE - DesktopGLWindowAdapter
+    - DONE - IDesktopGLWindowListener
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BACKENDS/DESKTOPGL/AUDIO
+------------------------
+
+    - IP   - GdxSoundAudioRecorder
+    - DONE - IGLAudio
+    - IP   - Mp3
+    - IP   - Ogg
+    - IP   - OggInputStream
+    - IP   - OpenALAudio
+    - IP   - OpenALAudioDevice
+    - IP   - OpenALMusic
+    - IP   - OpenALSound
+    - IP   - Wav
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+BACKENDS/DESKTOPGL/AUDIO/MOCK
+-----------------------------
+
+    - DONE - MockAudio
+    - DONE - MockAudioDevice
+    - DONE - MockAudioRecorder
+    - DONE - MockMusic
+    - DONE - MockSound
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

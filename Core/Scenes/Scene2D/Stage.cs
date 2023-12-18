@@ -46,6 +46,8 @@ namespace LibGDXSharp.Scenes.Scene2D;
 [PublicAPI]
 public class Stage : InputAdapter
 {
+    public readonly SnapshotArray< TouchFocus > touchFocuses = new( true, 4 );
+
     // True if any actor has ever had debug enabled.
     public bool debug;
 
@@ -54,19 +56,14 @@ public class Stage : InputAdapter
     private readonly bool[]   _pointerTouched    = new bool[ 20 ];
     private readonly int[]    _pointerScreenX    = new int[ 20 ];
     private readonly int[]    _pointerScreenY    = new int[ 20 ];
+    private readonly bool     _ownsBatch;
+    private readonly Group    _root = null!;
 
-    public readonly SnapshotArray< TouchFocus > touchFocuses = new( true, 4 );
-
-    private readonly bool  _ownsBatch;
-    private readonly Group _root = null!;
-
-    private int _mouseScreenX;
-    private int _mouseScreenY;
-
-    private Actor? _mouseOverActor;
-    private Actor? _keyboardFocus;
-    private Actor? _scrollFocus;
-
+    private int             _mouseScreenX;
+    private int             _mouseScreenY;
+    private Actor?          _mouseOverActor;
+    private Actor?          _keyboardFocus;
+    private Actor?          _scrollFocus;
     private ShapeRenderer?  _debugShapes;
     private bool            _debugAll;
     private bool            _debugUnderMouse;
@@ -78,17 +75,11 @@ public class Stage : InputAdapter
     /// <see cref="Scaling.Stretch"/>. The stage will use its own <see cref="IBatch"/>
     /// which will be disposed when the stage is disposed. 
     /// </summary>
-    public Stage() : this
-        (
-         new ScalingViewport
-             (
-              Scaling.Stretch,
-              Gdx.Graphics.Width,
-              Gdx.Graphics.Height,
-              new OrthographicCamera()
-             ),
-         new SpriteBatch()
-        )
+    public Stage() : this( new ScalingViewport( Scaling.Stretch,
+                                                Gdx.Graphics.Width,
+                                                Gdx.Graphics.Height,
+                                                new OrthographicCamera() ),
+                           new SpriteBatch() )
     {
         _ownsBatch = true;
     }
@@ -97,7 +88,8 @@ public class Stage : InputAdapter
     /// Creates a stage with the specified viewport. The stage will use its own
     /// <see cref="IBatch"/> which will be disposed when the stage is disposed. 
     /// </summary>
-    public Stage( Viewport viewport ) : this( viewport, new SpriteBatch() )
+    public Stage( Viewport viewport )
+        : this( viewport, new SpriteBatch() )
     {
         _ownsBatch = true;
     }
@@ -146,112 +138,11 @@ public class Stage : InputAdapter
         }
     }
 
-    private void DrawDebug()
-    {
-        if ( _debugShapes == null )
-        {
-            _debugShapes = new ShapeRenderer();
-            _debugShapes.SetAutoShapeType( true );
-        }
-
-        if ( _debugUnderMouse
-          || _debugParentUnderMouse
-          || ( _debugTableUnderMouse != Table.DebugType.None ) )
-        {
-            ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input.GetX(), Gdx.Input.GetY() ) );
-
-            Actor? actor = Hit( _tempCoords.X, _tempCoords.Y, true );
-
-            if ( actor == null )
-            {
-                return;
-            }
-
-            if ( _debugParentUnderMouse && ( actor.Parent != null ) )
-            {
-                actor = actor.Parent;
-            }
-
-            if ( _debugTableUnderMouse == Table.DebugType.None )
-            {
-                actor.DebugActive = true;
-            }
-            else
-            {
-                while ( actor != null )
-                {
-                    if ( actor is Table )
-                    {
-                        break;
-                    }
-
-                    actor = actor.Parent;
-                }
-
-                if ( actor == null )
-                {
-                    return;
-                }
-
-                ( ( Table )actor ).DebugLines( _debugTableUnderMouse );
-            }
-
-            if ( _debugAll && actor is Group group )
-            {
-                group.DebugAll();
-            }
-
-            DisableDebug( Root, actor );
-        }
-        else
-        {
-            if ( _debugAll )
-            {
-                Root.DebugAll();
-            }
-        }
-
-        Gdx.GL.GLEnable( IGL20.GL_BLEND );
-
-        _debugShapes.ProjectionMatrix = Camera.Combined;
-        _debugShapes.Begin();
-
-        Root.DrawDebug( _debugShapes );
-
-        _debugShapes.End();
-
-        Gdx.GL.GLDisable( IGL20.GL_BLEND );
-    }
-
-    /// <summary>
-    /// Disables debug on all actors recursively except the specified
-    /// actor and any children.
-    /// </summary>
-
-    // TODO: Refactor this to remove the recursiveness
-    private void DisableDebug( Actor actor, Actor except )
-    {
-        if ( actor == except )
-        {
-            return;
-        }
-
-        actor.DebugActive = false;
-
-        if ( actor is Group group )
-        {
-            for ( int i = 0, n = group.Children.Size; i < n; i++ )
-            {
-                DisableDebug( group.Children.Get( i ), except );
-            }
-        }
-    }
-
     /// <summary>
     /// Calls <see cref="Act(float)"/> with Gdx.Graphics.GetDeltaTime(),
     /// limited to a minimum of 30fps.
     /// </summary>
-    public void Act()
+    public virtual void Act()
     {
         Act( Math.Min( Gdx.Graphics.DeltaTime, 1 / 30f ) );
     }
@@ -262,7 +153,7 @@ public class Stage : InputAdapter
     /// events.
     /// </summary>
     /// <param name="delta"> Time in seconds since the last frame.</param>
-    public void Act( float delta )
+    public virtual void Act( float delta )
     {
         // Update over actors. Done in act() because actors may change position,
         // which can fire enter/exit without an input event.
@@ -277,14 +168,8 @@ public class Stage : InputAdapter
                 {
                     _pointerOverActors[ pointer ] = null;
 
-                    ScreenToStageCoordinates
-                        (
-                         _tempCoords.Set
-                             (
-                              _pointerScreenX[ pointer ],
-                              _pointerScreenY[ pointer ]
-                             )
-                        );
+                    ScreenToStageCoordinates( _tempCoords.Set( _pointerScreenX[ pointer ],
+                                                               _pointerScreenY[ pointer ] ) );
 
                     // Exit over last.
                     InputEvent? inputEvent = Pools< InputEvent >.Obtain();
@@ -293,7 +178,7 @@ public class Stage : InputAdapter
                     {
                         continue;
                     }
-                    
+
                     inputEvent.Type         = InputEvent.EventType.Exit;
                     inputEvent.Stage        = this;
                     inputEvent.StageX       = _tempCoords.X;
@@ -310,13 +195,10 @@ public class Stage : InputAdapter
             }
 
             // Update over actor for the pointer.
-            _pointerOverActors[ pointer ] = FireEnterAndExit
-                (
-                 overLast,
-                 _pointerScreenX[ pointer ],
-                 _pointerScreenY[ pointer ],
-                 pointer
-                );
+            _pointerOverActors[ pointer ] = FireEnterAndExit( overLast,
+                                                              _pointerScreenX[ pointer ],
+                                                              _pointerScreenY[ pointer ],
+                                                              pointer );
         }
 
         // Update over actor for the mouse on the desktop.
@@ -395,7 +277,7 @@ public class Stage : InputAdapter
     /// Applies a touch down event to the stage and returns true if an actor in
     /// the scene <see cref="Handle"/> the event. 
     /// </summary>
-    public new bool TouchDown( int screenX, int screenY, int pointer, int button )
+    public override bool TouchDown( int screenX, int screenY, int pointer, int button )
     {
         if ( !IsInsideViewport( screenX, screenY ) )
         {
@@ -449,7 +331,7 @@ public class Stage : InputAdapter
     /// Only <see cref="InputListener"/> listeners that returned true for
     /// touchDown will receive this event. 
     /// </summary>
-    public new bool TouchDragged( int screenX, int screenY, int pointer )
+    public override bool TouchDragged( int screenX, int screenY, int pointer )
     {
         _pointerScreenX[ pointer ] = screenX;
         _pointerScreenY[ pointer ] = screenY;
@@ -517,7 +399,7 @@ public class Stage : InputAdapter
     /// Only <see cref="InputListener"/> listeners that returned true for
     /// touchDown will receive this event. 
     /// </summary>
-    public new bool TouchUp( int screenX, int screenY, int pointer, int button )
+    public override bool TouchUp( int screenX, int screenY, int pointer, int button )
     {
         _pointerTouched[ pointer ] = false;
         _pointerScreenX[ pointer ] = screenX;
@@ -585,7 +467,7 @@ public class Stage : InputAdapter
     /// in the scene <see cref="Event.Handle()"/> the event. This event only
     /// occurs on the desktop. 
     /// </summary>
-    public new bool MouseMoved( int screenX, int screenY )
+    public override bool MouseMoved( int screenX, int screenY )
     {
         _mouseScreenX = screenX;
         _mouseScreenY = screenY;
@@ -629,7 +511,7 @@ public class Stage : InputAdapter
     /// in the scene <see cref="Event.Handle()"/> the event. This event only
     /// occurs on the desktop. 
     /// </summary>
-    public new bool Scrolled( float amountX, float amountY )
+    public override bool Scrolled( float amountX, float amountY )
     {
         Actor target = ScrollFocus ?? Root;
 
@@ -661,7 +543,7 @@ public class Stage : InputAdapter
     /// <see cref="Stage.KeyboardFocus"/>, if any, and returns
     /// true if the event was handled in <see cref="Event.Handle()"/>. 
     /// </summary>
-    public new bool KeyDown( int keyCode )
+    public override bool KeyDown( int keyCode )
     {
         Actor       target     = _keyboardFocus ?? Root;
         InputEvent? inputEvent = Pools< InputEvent >.Obtain();
@@ -686,7 +568,7 @@ public class Stage : InputAdapter
     /// Applies a key up event to the actor that has <see cref="Stage.KeyboardFocus"/>,
     /// if any, and returns true if the event was <see cref="Event.Handle()"/>. 
     /// </summary>
-    public new bool KeyUp( int keyCode )
+    public override bool KeyUp( int keyCode )
     {
         Actor       target     = _keyboardFocus ?? Root;
         InputEvent? inputEvent = Pools< InputEvent >.Obtain();
@@ -711,7 +593,7 @@ public class Stage : InputAdapter
     /// Applies a key typed event to the actor that has <see cref="Stage.KeyboardFocus"/>,
     /// if any, and returns true if the event was <see cref="Event.Handle()"/>. 
     /// </summary>
-    public new bool KeyTyped( char character )
+    public override bool KeyTyped( char character )
     {
         Actor       target     = _keyboardFocus ?? Root;
         InputEvent? inputEvent = Pools< InputEvent >.Obtain();
@@ -918,7 +800,7 @@ public class Stage : InputAdapter
     /// Adds an actor to the root of the stage.
     /// </summary>
     /// <see cref="Group.AddActor "/>
-    public void AddActor( Actor actor )
+    public virtual void AddActor( Actor actor )
     {
         Root.AddActor( actor );
     }
@@ -927,7 +809,7 @@ public class Stage : InputAdapter
     /// Adds an action to the root of the stage.
     /// </summary>
     /// <see cref="Group.AddAction(Action) "/>
-    public void AddAction( Action action )
+    public virtual void AddAction( Action action )
     {
         Root.AddAction( action );
     }
@@ -971,7 +853,7 @@ public class Stage : InputAdapter
     /// <summary>
     /// Removes the root's children, actions, and listeners.
     /// </summary>
-    public void Clear()
+    public virtual void Clear()
     {
         UnfocusAll();
         Root.Clear();
@@ -980,7 +862,7 @@ public class Stage : InputAdapter
     /// <summary>
     /// Removes the touch, keyboard, and scroll focused actors.
     /// </summary>
-    public void UnfocusAll()
+    public virtual void UnfocusAll()
     {
         ScrollFocus   = null;
         KeyboardFocus = null;
@@ -991,7 +873,7 @@ public class Stage : InputAdapter
     /// Removes the touch, keyboard, and scroll focus for the specified
     /// actor and any descendants.
     /// </summary>
-    public void Unfocus( Actor actor )
+    public virtual void Unfocus( Actor actor )
     {
         CancelTouchFocus( actor );
 
@@ -1018,7 +900,7 @@ public class Stage : InputAdapter
     /// If true, the hit detection will respect the <see cref="Actor.Touchable"/>.
     /// </param>
     /// <returns> May be null if no actor was hit.  </returns>
-    public Actor? Hit( float stageX, float stageY, bool touchable )
+    public virtual Actor? Hit( float stageX, float stageY, bool touchable )
     {
         Root.ParentToLocalCoordinates( _tempCoords.Set( stageX, stageY ) );
 
@@ -1031,7 +913,7 @@ public class Stage : InputAdapter
     /// <param name="screenCoords">
     /// Input screen coordinates and output for resulting stage coordinates.
     /// </param>
-    public Vector2 ScreenToStageCoordinates( Vector2 screenCoords )
+    public virtual Vector2 ScreenToStageCoordinates( Vector2 screenCoords )
     {
         Viewport.Unproject( screenCoords );
 
@@ -1044,7 +926,7 @@ public class Stage : InputAdapter
     /// <param name="stageCoords">
     /// Input stage coordinates and output for resulting screen coordinates.
     /// </param>
-    public Vector2 StageToScreenCoordinates( Vector2 stageCoords )
+    public virtual Vector2 StageToScreenCoordinates( Vector2 stageCoords )
     {
         Viewport.Project( stageCoords );
         stageCoords.Y = Gdx.Graphics.Height - stageCoords.Y;
@@ -1060,7 +942,7 @@ public class Stage : InputAdapter
     /// during <see cref="Actor.Draw(IBatch, float)"/>.
     /// </summary>
     /// <see cref="Actor.LocalToStageCoordinates(Vector2)"/>
-    public Vector2 ToScreenCoordinates( Vector2 coords, Matrix4 transformMatrix )
+    public virtual Vector2 ToScreenCoordinates( Vector2 coords, Matrix4 transformMatrix )
     {
         return Viewport.ToScreenCoordinates( coords, transformMatrix );
     }
@@ -1069,7 +951,7 @@ public class Stage : InputAdapter
     /// Calculates window scissor coordinates from local coordinates using the
     /// batch's current transformation matrix.
     /// </summary>
-    public void CalculateScissors( RectangleShape localRect, RectangleShape scissorRect )
+    public virtual void CalculateScissors( RectangleShape localRect, RectangleShape scissorRect )
     {
         Matrix4 transformMatrix;
 
@@ -1171,7 +1053,7 @@ public class Stage : InputAdapter
             {
                 return;
             }
-            
+
             focusEvent.Stage = this;
             focusEvent.Type  = FocusListener.FocusEvent.FeType.Scroll;
 
@@ -1354,7 +1236,7 @@ public class Stage : InputAdapter
     /// Can be combined with <see cref="DebugAll"/>.
     /// </summary>
     /// <param name="debugTableUnderMouse">May be null for <see cref="Table.DebugType.None"/>.</param>
-    public void SetDebugTableUnderMouse( Table.DebugType debugTableUnderMouse )
+    public virtual void SetDebugTableUnderMouse( Table.DebugType debugTableUnderMouse )
     {
         if ( Enum.IsDefined( typeof( Table.DebugType ), debugTableUnderMouse ) )
         {
@@ -1383,9 +1265,109 @@ public class Stage : InputAdapter
     /// under the mouse that is a table.
     /// Can be combined with <see cref="DebugAll"/>. 
     /// </summary>
-    public void SetDebugTableUnderMouse( bool debugTableUnderMouse )
+    public virtual void SetDebugTableUnderMouse( bool debugTableUnderMouse )
     {
         SetDebugTableUnderMouse( debugTableUnderMouse ? Table.DebugType.All : Table.DebugType.None );
+    }
+
+    private void DrawDebug()
+    {
+        if ( _debugShapes == null )
+        {
+            _debugShapes = new ShapeRenderer();
+            _debugShapes.SetAutoShapeType( true );
+        }
+
+        if ( _debugUnderMouse
+          || _debugParentUnderMouse
+          || ( _debugTableUnderMouse != Table.DebugType.None ) )
+        {
+            ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input.GetX(), Gdx.Input.GetY() ) );
+
+            Actor? actor = Hit( _tempCoords.X, _tempCoords.Y, true );
+
+            if ( actor == null )
+            {
+                return;
+            }
+
+            if ( _debugParentUnderMouse && ( actor.Parent != null ) )
+            {
+                actor = actor.Parent;
+            }
+
+            if ( _debugTableUnderMouse == Table.DebugType.None )
+            {
+                actor.DebugActive = true;
+            }
+            else
+            {
+                while ( actor != null )
+                {
+                    if ( actor is Table )
+                    {
+                        break;
+                    }
+
+                    actor = actor.Parent;
+                }
+
+                if ( actor == null )
+                {
+                    return;
+                }
+
+                ( ( Table )actor ).DebugLines( _debugTableUnderMouse );
+            }
+
+            if ( _debugAll && actor is Group group )
+            {
+                group.DebugAll();
+            }
+
+            DisableDebug( Root, actor );
+        }
+        else
+        {
+            if ( _debugAll )
+            {
+                Root.DebugAll();
+            }
+        }
+
+        Gdx.GL.GLEnable( EnableCap.Blend );
+
+        _debugShapes.ProjectionMatrix = Camera.Combined;
+        _debugShapes.Begin();
+
+        Root.DrawDebug( _debugShapes );
+
+        _debugShapes.End();
+
+        Gdx.GL.GLDisable( EnableCap.Blend );
+    }
+
+    /// <summary>
+    /// Disables debug on all actors recursively except the specified
+    /// actor and any children.
+    /// </summary>
+    // TODO: Refactor this to remove the recursiveness
+    private void DisableDebug( Actor actor, Actor except )
+    {
+        if ( actor == except )
+        {
+            return;
+        }
+
+        actor.DebugActive = false;
+
+        if ( actor is Group group )
+        {
+            for ( int i = 0, n = group.Children.Size; i < n; i++ )
+            {
+                DisableDebug( group.Children.Get( i ), except );
+            }
+        }
     }
 
     /// <summary>
@@ -1405,7 +1387,7 @@ public class Stage : InputAdapter
     /// <summary>
     /// Check if screen coordinates are inside the viewport's screen area.
     /// </summary>
-    public bool IsInsideViewport( int screenX, int screenY )
+    public virtual bool IsInsideViewport( int screenX, int screenY )
     {
         var x0 = Viewport.ScreenX;
         var x1 = x0 + Viewport.ScreenWidth;

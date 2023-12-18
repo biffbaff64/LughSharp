@@ -19,12 +19,12 @@ using LibGDXSharp.Core.Files.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 [PublicAPI]
-public class IndexBufferObject : IIndexData, IDisposable
+public class IndexBufferObject : IIndexData
 {
     private ShortBuffer _buffer;
     private ByteBuffer  _byteBuffer;
     private bool        _ownsBuffer;
-    private int         _bufferHandle;
+    private int        _bufferHandle;
     private bool        _isDirect;
     private bool        _isDirty = true;
     private bool        _isBound = false;
@@ -163,7 +163,7 @@ public class IndexBufferObject : IIndexData, IDisposable
             throw new GdxRuntimeException( "No buffer allocated!" );
         }
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, ( int )_bufferHandle );
 
         if ( _isDirty )
         {

@@ -144,24 +144,15 @@ public class Dialog : Window
     {
         if ( stage == null )
         {
-//            AddListener( _dialogFocusListener );
+            AddListener( _dialogFocusListener );
         }
         else
         {
-//            RemoveListener( _dialogFocusListener );
+            RemoveListener( _dialogFocusListener );
         }
 
         base.SetStage( stage );
     }
-
-//    protected InputListener ignoreTouchDown = new InputListener()
-//    {
-//        public bool touchDown (InputEvent event, float x, float y, int pointer, int button)
-//        {
-//            event.cancel();
-//            return false;
-//        }
-//    };
 
     /// <summary>
     /// Adds a label to the content table. The dialog must have
@@ -430,6 +421,7 @@ public class Dialog : Window
     }
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     internal class ButtonTableChangeListener : ChangeListener
     {
@@ -469,6 +461,7 @@ public class Dialog : Window
     }
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     protected internal class DialogChangeObserver : IEventListener
     {
@@ -501,4 +494,13 @@ public class Dialog : Window
             return false;
         }
     }
+
+//    protected InputListener ignoreTouchDown = new InputListener()
+//    {
+//        public bool touchDown (InputEvent event, float x, float y, int pointer, int button)
+//        {
+//            event.cancel();
+//            return false;
+//        }
+//    }
 }

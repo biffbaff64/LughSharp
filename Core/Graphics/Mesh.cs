@@ -64,8 +64,7 @@ public class Mesh
     {
         get
         {
-            var builder = new StringBuilder();
-            builder.Append( "Managed meshes/app: { " );
+            var builder = new StringBuilder( "Managed meshes/app: { " );
 
             foreach ( IApplication app in Meshes.Keys )
             {
@@ -173,12 +172,8 @@ public class Mesh
     /// <param name="staticIndices">
     /// whether indices of this mesh are static or not. Allows for internal optimizations.
     /// </param>
-    /// <param name="maxVertices">
-    /// the maximum number of vertices this mesh can hold
-    /// </param>
-    /// <param name="maxIndices">
-    /// the maximum number of indices this mesh can hold
-    /// </param>
+    /// <param name="maxVertices"> the maximum number of vertices this mesh can hold </param>
+    /// <param name="maxIndices"> the maximum number of indices this mesh can hold </param>
     /// <param name="attributes">
     /// the <see cref="VertexAttributes"/>. Each vertex attribute defines one property
     /// of a vertex such as position, normal or texture coordinate
@@ -286,11 +281,8 @@ public class Mesh
         }
         else
         {
-            throw new GdxRuntimeException
-                (
-                "Trying to enable InstancedRendering on same Mesh instance twice."
-              + " Use disableInstancedRendering to clean up old InstanceData first"
-                );
+            throw new GdxRuntimeException( "Trying to enable InstancedRendering on same Mesh instance twice."
+                                         + " Use disableInstancedRendering to clean up old InstanceData first" );
         }
 
         return this;
@@ -383,21 +375,21 @@ public class Mesh
     /// Update (a portion of) the instance data. Does not resize the backing buffer.
     /// </summary>
     /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
-    /// <param name="source"> the instance data to update the mesh part with  </param>
-    public Mesh UpdateInstanceData( int targetOffset, float[] source )
-    {
-        return UpdateInstanceData( targetOffset, source, 0, source.Length );
-    }
-
-    /// <summary>
-    /// Update (a portion of) the instance data. Does not resize the backing buffer.
-    /// </summary>
-    /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
     /// <param name="source"> the instance data to update the mesh part with </param>
-    /// <param name="sourceOffset"> the offset in number of floats within the source array </param>
-    /// <param name="count"> the number of floats to update  </param>
-    public Mesh UpdateInstanceData( int targetOffset, float[] source, int sourceOffset, int count )
+    /// <param name="sourceOffset">
+    /// the offset in number of floats within the source array. Default is zero.
+    /// </param>
+    /// <param name="count">
+    /// the number of floats to update. Default is zero which dictates that count will be
+    /// overridden with the value of <paramref name="source"/>.Length.
+    /// </param>
+    public Mesh UpdateInstanceData( int targetOffset, float[] source, int sourceOffset = 0, int count = 0 )
     {
+        if ( count == 0 )
+        {
+            count = source.Length;
+        }
+        
         this._instances?.UpdateInstanceData( targetOffset, source, sourceOffset, count );
 
         return this;
@@ -407,21 +399,21 @@ public class Mesh
     /// Update (a portion of) the instance data. Does not resize the backing buffer.
     /// </summary>
     /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
-    /// <param name="source"> the instance data to update the mesh part with  </param>
-    public Mesh UpdateInstanceData( int targetOffset, FloatBuffer source )
-    {
-        return UpdateInstanceData( targetOffset, source, 0, source.Limit );
-    }
-
-    /// <summary>
-    /// Update (a portion of) the instance data. Does not resize the backing buffer.
-    /// </summary>
-    /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
     /// <param name="source"> the instance data to update the mesh part with </param>
-    /// <param name="sourceOffset"> the offset in number of floats within the source array </param>
-    /// <param name="count"> the number of floats to update  </param>
-    public Mesh UpdateInstanceData( int targetOffset, FloatBuffer source, int sourceOffset, int count )
+    /// <param name="sourceOffset">
+    /// the offset in number of floats within the source array. Default is zero.
+    /// </param>
+    /// <param name="count">
+    /// the number of floats to update. Default is zero which dictates that count will be
+    /// overridden with the value of <paramref name="source"/>.Limit.
+    /// </param>
+    public Mesh UpdateInstanceData( int targetOffset, FloatBuffer source, int sourceOffset = 0, int count = 0 )
     {
+        if ( count == 0 )
+        {
+            count = source.Limit;
+        }
+        
         this._instances?.UpdateInstanceData( targetOffset, source, sourceOffset, count );
 
         return this;
@@ -534,12 +526,7 @@ public class Mesh
         if ( ( vertices.Length - destOffset ) < count )
         {
             throw new System.ArgumentException
-                (
-                "not enough room in vertices array, has "
-              + vertices.Length
-              + " floats, needs "
-              + count
-                );
+                ( $"not enough room in vertices array, has {vertices.Length} floats, needs {count}" );
         }
 
         FloatBuffer verticesBuffer = GetVerticesBuffer();
@@ -728,17 +715,15 @@ public class Mesh
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="primitiveType"> the primitive type  </param>
-    public void Render( ShaderProgram shader, int primitiveType )
+    public void Render( ShaderProgram shader, PrimitiveType primitiveType )
     {
-        Render(
-            shader,
-            primitiveType,
-            0,
-            _indices.NumMaxIndices > 0
-                ? NumIndices
-                : NumVertices,
-            AutoBind
-            );
+        Render( shader,
+                primitiveType,
+                0,
+                _indices.NumMaxIndices > 0
+                    ? NumIndices
+                    : NumVertices,
+                AutoBind );
     }
 
     /// <summary>
@@ -766,7 +751,7 @@ public class Mesh
     /// <param name="primitiveType"> the primitive type </param>
     /// <param name="offset"> the offset into the vertex or index buffer </param>
     /// <param name="count"> number of vertices or indices to use  </param>
-    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count )
+    public void Render( ShaderProgram? shader, PrimitiveType primitiveType, int offset, int count )
     {
         Render( shader, primitiveType, offset, count, AutoBind );
     }
@@ -797,7 +782,7 @@ public class Mesh
     /// <param name="offset"> the offset into the vertex or index buffer </param>
     /// <param name="count"> number of vertices or indices to use </param>
     /// <param name="autoBind"> overrides the autoBind member of this Mesh  </param>
-    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count, bool autoBind )
+    public void Render( ShaderProgram? shader, PrimitiveType primitiveType, int offset, int count, bool autoBind )
     {
         ArgumentNullException.ThrowIfNull( shader );
 
@@ -822,7 +807,7 @@ public class Mesh
                 buffer.Position = offset;
                 buffer.Limit    = ( offset + count );
 
-                Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
+                Gdx.GL20.GLDrawElements( primitiveType, count, DrawElementsType.UnsignedShort, buffer );
 
                 buffer.Position = oldPosition;
                 buffer.Limit    = oldLimit;
@@ -845,16 +830,9 @@ public class Mesh
             {
                 if ( ( count + offset ) > _indices.NumMaxIndices )
                 {
-                    throw new GdxRuntimeException
-                        (
-                        "Mesh attempting to access memory outside of the index buffer (count: "
-                      + count
-                      + ", offset: "
-                      + offset
-                      + ", max: "
-                      + _indices.NumMaxIndices
-                      + ")"
-                        );
+                    throw new GdxRuntimeException( $"Mesh attempting to access memory outside of the "
+                                                 + $"index buffer (count: {count}, offset: {offset}, "
+                                                 + $"max: {_indices.NumMaxIndices})" );
                 }
 
                 if ( IsInstanced && ( numInstances > 0 ) )
@@ -867,7 +845,7 @@ public class Mesh
                 }
                 else
                 {
-                    Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
+                    Gdx.GL20.GLDrawElements( primitiveType, count, DrawElementsType.UnsignedShort, offset * 2 );
                 }
             }
             else

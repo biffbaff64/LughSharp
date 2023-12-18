@@ -139,25 +139,27 @@ public class VertexArray : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                if ( attribute.type == IGL20.GL_FLOAT )
+                if ( attribute.type == VertexAttribType.Float )
                 {
                     _buffer.Position = ( attribute.Offset / 4 );
 
-                    shader.SetVertexAttribute
-                        (
-                         location, attribute.numComponents, attribute.type, attribute.normalized,
-                         Attributes.VertexSize, _buffer
-                        );
+                    shader.SetVertexAttribute( location,
+                                               attribute.numComponents,
+                                               attribute.type,
+                                               attribute.normalized,
+                                               Attributes.VertexSize,
+                                               _buffer );
                 }
                 else
                 {
                     _byteBuffer.Position = attribute.Offset;
 
-                    shader.SetVertexAttribute
-                        (
-                         location, attribute.numComponents, attribute.type, attribute.normalized,
-                         Attributes.VertexSize, _byteBuffer
-                        );
+                    shader.SetVertexAttribute( location,
+                                               attribute.numComponents,
+                                               attribute.type,
+                                               attribute.normalized,
+                                               Attributes.VertexSize,
+                                               _byteBuffer );
                 }
             }
         }
@@ -175,25 +177,27 @@ public class VertexArray : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                if ( attribute.type == IGL20.GL_FLOAT )
+                if ( attribute.type == VertexAttribType.Float )
                 {
                     _buffer.Position = ( attribute.Offset / 4 );
 
-                    shader.SetVertexAttribute
-                        (
-                         location, attribute.numComponents, attribute.type, attribute.normalized,
-                         Attributes.VertexSize, _buffer
-                        );
+                    shader.SetVertexAttribute( location,
+                                               attribute.numComponents,
+                                               attribute.type,
+                                               attribute.normalized,
+                                               Attributes.VertexSize,
+                                               _buffer );
                 }
                 else
                 {
                     _byteBuffer.Position = attribute.Offset;
 
-                    shader.SetVertexAttribute
-                        (
-                         location, attribute.numComponents, attribute.type, attribute.normalized,
-                         Attributes.VertexSize, _byteBuffer
-                        );
+                    shader.SetVertexAttribute( location,
+                                               attribute.numComponents,
+                                               attribute.type,
+                                               attribute.normalized,
+                                               Attributes.VertexSize,
+                                               _byteBuffer );
                 }
             }
         }

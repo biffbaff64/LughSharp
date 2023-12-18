@@ -223,7 +223,7 @@ public class VertexBufferObject : IVertexData
     {
         IGL20 gl = Gdx.GL20;
 
-        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, ( int )_bufferHandle );
 
         if ( _isDirty )
         {
@@ -259,10 +259,13 @@ public class VertexBufferObject : IVertexData
 
             shader.EnableVertexAttribute( location );
 
-            shader.SetVertexAttribute
-                (
-                 location, attribute.numComponents, attribute.type, attribute.normalized,
-                 Attributes.VertexSize, attribute.Offset
+            shader.SetVertexAttribute(
+                location,
+                attribute.numComponents,
+                attribute.type,
+                attribute.normalized,
+                Attributes.VertexSize,
+                attribute.Offset
                 );
         }
 

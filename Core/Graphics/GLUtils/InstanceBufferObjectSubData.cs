@@ -26,75 +26,71 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class InstanceBufferObjectSubData : IInstanceData
 {
-    public VertexAttributes Attributes { get; set; }
-    
-    private FloatBuffer      _buffer;
-    private ByteBuffer       _byteBuffer;
+    public VertexAttributes Attributes   { get; set; }
+    public int             BufferHandle { get; set; }
 
-    private int  _bufferHandle;
+    private FloatBuffer _buffer;
+    private ByteBuffer  _byteBuffer;
+
     private int  _usage;
     private bool _isDirect;
     private bool _isStatic;
     private bool _isDirty = false;
     private bool _isBound = false;
 
-    /**
-     * Constructs a new interleaved InstanceBufferObject.
-     *
-     * @param isStatic           whether the vertex data is static.
-     * @param numInstances       the maximum number of vertices
-     * @param instanceAttributes the {@link VertexAttributes}.
-     */
-    public InstanceBufferObjectSubData( bool isStatic, int numInstances, params VertexAttribute[] instanceAttributes )
+    /// <summary>
+    /// Constructs a new interleaved InstanceBufferObject.
+    /// </summary>
+    /// <param name="isStatic"> whether the vertex data is static. </param>
+    /// <param name="numInstances"> the maximum number of vertices. </param>
+    /// <param name="instanceAttributes"> the <see cref="VertexAttributes"/>". </param>
+    public InstanceBufferObjectSubData( bool isStatic,
+                                        int numInstances,
+                                        params VertexAttribute[] instanceAttributes )
         : this( isStatic, numInstances, new VertexAttributes( instanceAttributes ) )
     {
     }
 
-    /**
-     * Constructs a new interleaved InstanceBufferObject.
-     *
-     * @param isStatic           whether the vertex data is static.
-     * @param numInstances       the maximum number of vertices
-     * @param instanceAttributes the {@link VertexAttribute}s.
-     */
+    /// <summary>
+    /// Constructs a new interleaved InstanceBufferObject.
+    /// </summary>
+    /// <param name="isStatic"> whether the vertex data is static. </param>
+    /// <param name="numInstances"> the maximum number of vertices. </param>
+    /// <param name="instanceAttributes"> the <see cref="VertexAttributes"/>". </param>
     public InstanceBufferObjectSubData( bool isStatic, int numInstances, VertexAttributes instanceAttributes )
     {
-        this._isStatic   = isStatic;
+        this._isStatic  = isStatic;
         this.Attributes = instanceAttributes;
-        _byteBuffer      = BufferUtils.NewByteBuffer( this.Attributes.VertexSize * numInstances );
-        _isDirect        = true;
+        _byteBuffer     = BufferUtils.NewByteBuffer( this.Attributes.VertexSize * numInstances );
+        _isDirect       = true;
 
-        _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
-        _buffer       = _byteBuffer.AsFloatBuffer();
-        _bufferHandle = CreateBufferObject();
-        
+        _usage       = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
+        _buffer      = _byteBuffer.AsFloatBuffer();
+        BufferHandle = CreateBufferObject();
+
         _buffer.Flip();
         _byteBuffer.Flip();
     }
 
     private int CreateBufferObject()
     {
-        int result = Gdx.GL20.GLGenBuffer();
-        
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
+        var result = Gdx.GL20.GLGenBuffer();
+
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, ( int )result );
         Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
         Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
 
         return result;
     }
 
-    /**
-     * Effectively returns {@link #getNumInstances()}.
-     *
-     * @return number of instances in this buffer
-     */
+    /// <summary>
+    /// Returns the number of instances in this buffer.
+    /// </summary>
     public int NumInstances => ( _buffer.Limit * 4 ) / Attributes.VertexSize;
 
-    /**
-     * Effectively returns {@link #getNumMaxInstances()}.
-     *
-     * @return maximum number of instances in this buffer
-     */
+    /// <summary>
+    /// Returns the max number of instances in this buffer.
+    /// </summary>
     public int NumMaxInstances => _byteBuffer.Capacity / Attributes.VertexSize;
 
     public FloatBuffer GetBuffer( bool forWriting )
@@ -123,17 +119,17 @@ public class InstanceBufferObjectSubData : IInstanceData
             BufferUtils.Copy( data, _byteBuffer, count, offset );
 
             _buffer.Position = 0;
-            _buffer.Limit = count;
+            _buffer.Limit    = count;
         }
         else
         {
             _buffer.Clear();
-            
+
             _buffer.Put( data, offset, count );
-            
+
             _buffer.Flip();
             _byteBuffer.Position = 0;
-            _byteBuffer.Limit = ( _buffer.Limit << 2 );
+            _byteBuffer.Limit    = ( _buffer.Limit << 2 );
         }
 
         BufferChanged();
@@ -148,17 +144,17 @@ public class InstanceBufferObjectSubData : IInstanceData
             BufferUtils.Copy( data, _byteBuffer, count );
 
             _buffer.Position = 0;
-            _buffer.Limit = count;
+            _buffer.Limit    = count;
         }
         else
         {
             _buffer.Clear();
-            
+
             _buffer.Put( data );
-            
+
             _buffer.Flip();
             _byteBuffer.Position = 0;
-            _byteBuffer.Limit = ( _buffer.Limit << 2 );
+            _byteBuffer.Limit    = ( _buffer.Limit << 2 );
         }
 
         BufferChanged();
@@ -219,7 +215,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     {
         IGL20 gl = Gdx.GL20;
 
-        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, ( int )BufferHandle );
 
         if ( _isDirty )
         {
@@ -245,17 +241,14 @@ public class InstanceBufferObjectSubData : IInstanceData
                 var unitOffset = +attribute.unit;
                 shader.EnableVertexAttribute( location + unitOffset );
 
-                shader.SetVertexAttribute
-                    (
-                     location + unitOffset,
-                     attribute.numComponents,
-                     attribute.type,
-                     attribute.normalized,
-                     Attributes.VertexSize,
-                     attribute.Offset
-                    );
+                shader.SetVertexAttribute( location + unitOffset,
+                                           attribute.numComponents,
+                                           attribute.type,
+                                           attribute.normalized,
+                                           Attributes.VertexSize,
+                                           attribute.Offset );
 
-                Gdx.GL30.GLVertexAttribDivisor( location + unitOffset, 1 );
+                Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
             }
         }
         else
@@ -273,17 +266,14 @@ public class InstanceBufferObjectSubData : IInstanceData
                 var unitOffset = +attribute.unit;
                 shader.EnableVertexAttribute( location + unitOffset );
 
-                shader.SetVertexAttribute
-                    (
-                     location + unitOffset,
-                     attribute.numComponents,
-                     attribute.type,
-                     attribute.normalized,
-                     Attributes.VertexSize,
-                     attribute.Offset
-                    );
+                shader.SetVertexAttribute( location + unitOffset,
+                                           attribute.numComponents,
+                                           attribute.type,
+                                           attribute.normalized,
+                                           Attributes.VertexSize,
+                                           attribute.Offset );
 
-                Gdx.GL30.GLVertexAttribDivisor( location + unitOffset, 1 );
+                Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
             }
         }
 
@@ -342,8 +332,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = CreateBufferObject();
-        _isDirty      = true;
+        BufferHandle = CreateBufferObject();
+        _isDirty     = true;
     }
 
     /// <summary>
@@ -352,12 +342,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     public void Dispose()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
-        _bufferHandle = 0;
-    }
-
-    public int GetBufferHandle()
-    {
-        return _bufferHandle;
+        Gdx.GL20.GLDeleteBuffer( BufferHandle );
+        BufferHandle = 0;
     }
 }

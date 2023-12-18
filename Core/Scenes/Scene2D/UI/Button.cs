@@ -395,7 +395,7 @@ public class Button : Table, IDisableable
             this._button = button;
         }
 
-        public new void Clicked( InputEvent inputEvent, float x, float y )
+        public override void Clicked( InputEvent inputEvent, float x, float y )
         {
             if ( _button.IsDisabled )
             {
@@ -462,20 +462,4 @@ public class Button : Table, IDisableable
             CheckedOffsetY   = style.CheckedOffsetY;
         }
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-//    ( clickListener = new ClickListener()
-//            {
-
-
-//                public void clicked( InputEvent event, float x, float y )
-//                {
-//                if ( isDisabled() ) return;
-//                setChecked( !isChecked, true );
-//            }
-
-//        });
-//    }
 }

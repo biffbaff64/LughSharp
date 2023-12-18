@@ -21,15 +21,20 @@ namespace LibGDXSharp.Utils.Collections;
 [PublicAPI]
 public class Array<T>
 {
+
+    #region properties
+
     public T[]  Items   { get; set; }
     public int  Size    { get; set; }
     public bool Ordered { get; set; }
+
+    #endregion properties
 
     private IEnumerable< T >?       _iterable;
     private PredicateIterable< T >? _predicateIEnumerable;
 
     /// <summary>
-    /// Creates a new Array with the specified initial capacity.
+    /// Creates a new Array with the specified initial capacity. Default is 16.
     /// </summary>
     /// <param name="ordered">
     /// If false, methods that remove elements may change the order of other
@@ -50,15 +55,8 @@ public class Array<T>
     /// <param name="array"></param>
     public Array( Array< T > array )
     {
-        if ( array == null )
-        {
-            throw new GdxRuntimeException( "array cannot be null!" );
-        }
-
-        if ( array.Items == null )
-        {
-            throw new GdxRuntimeException( "array cannot be null!" );
-        }
+        ArgumentNullException.ThrowIfNull( array );
+        ArgumentNullException.ThrowIfNull( array.Items );
 
         Ordered = array.Ordered;
         Size    = array.Size;
@@ -70,7 +68,8 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public Array( T[] array ) : this( true, array, 0, array.Length )
+    public Array( T[] array )
+        : this( true, array, 0, array.Length )
     {
     }
 
@@ -85,6 +84,8 @@ public class Array<T>
     /// <param name="count"></param>
     public Array( bool ordered, T[] array, int start, int count )
     {
+        ArgumentNullException.ThrowIfNull( array );
+        
         Ordered = ordered;
         Size    = count;
         Items   = new T[ Size ];
@@ -93,6 +94,7 @@ public class Array<T>
     }
 
     /// <summary>
+    /// Adds the specified value to this array.
     /// </summary>
     /// <param name="value"></param>
     public virtual void Add( T value )
@@ -106,6 +108,7 @@ public class Array<T>
     }
 
     /// <summary>
+    /// Adds all items in the supplied array to this array.
     /// </summary>
     /// <param name="array"></param>
     public void AddAll( Array< T > array )
@@ -133,6 +136,8 @@ public class Array<T>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public virtual void AddAll( Array< T > array, int start, int count )
     {
+        ArgumentNullException.ThrowIfNull( array );
+        
         if ( ( start + count ) > array.Size )
         {
             throw new ArgumentOutOfRangeException
@@ -164,15 +169,21 @@ public class Array<T>
     }
 
     /// <summary>
+    /// Gets the array item at the specified index.
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index"> The index into the array. Must be in the range 0 - Size-1. </param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public virtual T Get( int index )
     {
         if ( index >= Size )
         {
-            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+            throw new ArgumentOutOfRangeException( nameof( index ), $@"index can't be >= size - {index} >= {Size}" );
+        }
+
+        if ( index < 0 )
+        {
+            throw new ArgumentOutOfRangeException( nameof( index ), @"index cannot be less than 0." );
         }
 
         return Items[ index ];
@@ -286,19 +297,9 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public virtual bool Contains( T value )
+    public virtual bool Contains( T? value )
     {
-        var i = Size - 1;
-
-        while ( i >= 0 )
-        {
-            if ( Items[ i-- ]!.Equals( value ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return ( ( Size != 0 ) && ( IndexOf( value ) >= 0 ) );
     }
 
     /// <summary>
@@ -312,28 +313,7 @@ public class Array<T>
             throw new GdxRuntimeException( "Items cannot be null!" );
         }
 
-        if ( value == null )
-        {
-            for ( int i = 0, n = Size; i < n; i++ )
-            {
-                if ( Items[ i ]!.Equals( value ) )
-                {
-                    return i;
-                }
-            }
-        }
-        else
-        {
-            for ( int i = 0, n = Size; i < n; i++ )
-            {
-                if ( value.Equals( Items[ i ] ) )
-                {
-                    return i;
-                }
-            }
-        }
-
-        return -1;
+        return Array.IndexOf( Items, value, 0, Size );
     }
 
     /// <summary>
@@ -342,18 +322,7 @@ public class Array<T>
     /// <returns></returns>
     public int LastIndexOf( T? value )
     {
-        if ( value != null )
-        {
-            for ( var i = Size - 1; i >= 0; i-- )
-            {
-                if ( value.Equals( Items[ i ] ) )
-                {
-                    return i;
-                }
-            }
-        }
-
-        return -1;
+        return Array.LastIndexOf( Items, value );
     }
 
     /// <summary>

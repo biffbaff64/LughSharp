@@ -169,7 +169,7 @@ public class FileProcessor
 
         outputFiles.clear();
 
-        LinkedHashMap< File, List< Entry > > dirToEntries = new LinkedHashMap();
+        Dictionary< File, List< Entry > > dirToEntries = new();
         process( files, outputRoot, outputRoot, dirToEntries, 0 );
 
         List< Entry > allEntries = new();

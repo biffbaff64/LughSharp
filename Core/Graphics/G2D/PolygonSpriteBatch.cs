@@ -210,7 +210,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( ISBlendingEnabled() )
         {
-            Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            Gdx.GL.GLDisable( EnableCap.Blend );
         }
     }
 
@@ -1345,11 +1345,11 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( _blendingDisabled )
         {
-            Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            Gdx.GL.GLDisable( EnableCap.Blend );
         }
         else
         {
-            Gdx.GL.GLEnable( IGL20.GL_BLEND );
+            Gdx.GL.GLEnable( EnableCap.Blend );
 
             if ( BlendSrcFunc != -1 )
             {
@@ -1357,7 +1357,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             }
         }
 
-        mesh.Render( _customShader ?? _shader, IGL20.GL_TRIANGLES, 0, trianglesInBatch );
+        mesh.Render( _customShader ?? _shader, PrimitiveType.Triangles, 0, trianglesInBatch );
 
         _vertexIndex   = 0;
         _triangleIndex = 0;

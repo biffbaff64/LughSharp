@@ -61,15 +61,12 @@ public class Cubemap : GLTexture
                     FileInfo positiveZ,
                     FileInfo negativeZ,
                     bool useMipMaps = false )
-        : this
-            (
-             ITextureData.Factory.LoadFromFile( positiveX, useMipMaps ),
-             ITextureData.Factory.LoadFromFile( negativeX, useMipMaps ),
-             ITextureData.Factory.LoadFromFile( positiveY, useMipMaps ),
-             ITextureData.Factory.LoadFromFile( negativeY, useMipMaps ),
-             ITextureData.Factory.LoadFromFile( positiveZ, useMipMaps ),
-             ITextureData.Factory.LoadFromFile( negativeZ, useMipMaps )
-            )
+        : this( ITextureData.Factory.LoadFromFile( positiveX, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( negativeX, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( positiveY, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( negativeY, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( positiveZ, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( negativeZ, useMipMaps ) )
     {
     }
 
@@ -84,15 +81,12 @@ public class Cubemap : GLTexture
                     Pixmap? positiveZ,
                     Pixmap? negativeZ,
                     bool useMipMaps = false )
-        : this
-            (
-             positiveX == null ? null : new PixmapTextureData( positiveX, null, useMipMaps, false ),
-             negativeX == null ? null : new PixmapTextureData( negativeX, null, useMipMaps, false ),
-             positiveY == null ? null : new PixmapTextureData( positiveY, null, useMipMaps, false ),
-             negativeY == null ? null : new PixmapTextureData( negativeY, null, useMipMaps, false ),
-             positiveZ == null ? null : new PixmapTextureData( positiveZ, null, useMipMaps, false ),
-             negativeZ == null ? null : new PixmapTextureData( negativeZ, null, useMipMaps, false )
-            )
+        : this( positiveX == null ? null : new PixmapTextureData( positiveX, null, useMipMaps, false ),
+                negativeX == null ? null : new PixmapTextureData( negativeX, null, useMipMaps, false ),
+                positiveY == null ? null : new PixmapTextureData( positiveY, null, useMipMaps, false ),
+                negativeY == null ? null : new PixmapTextureData( negativeY, null, useMipMaps, false ),
+                positiveZ == null ? null : new PixmapTextureData( positiveZ, null, useMipMaps, false ),
+                negativeZ == null ? null : new PixmapTextureData( negativeZ, null, useMipMaps, false ) )
     {
     }
 
@@ -100,15 +94,12 @@ public class Cubemap : GLTexture
     /// Construct a Cubemap with <see cref="Pixmap"/>s for each side of the specified size.
     /// </summary>
     public Cubemap( int width, int height, int depth, Pixmap.Format format )
-        : this
-            (
-             new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
-             new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
-             new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
-             new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
-             new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ),
-             new PixmapTextureData( new Pixmap( width, height, format ), null, false, true )
-            )
+        : this( new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
     }
 
@@ -146,16 +137,16 @@ public class Cubemap : GLTexture
         Gdx.GL.GLBindTexture( GLTarget, 0 );
     }
 
-    public override bool IsManaged() => Data.Managed;
+    public override bool IsManaged => Data.Managed;
 
-    public override void Reload()
+    protected override void Reload()
     {
-        if ( !IsManaged() )
+        if ( !IsManaged )
         {
             throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
         }
 
-        GLHandle = Gdx.GL.GLGenTexture();
+        GLTextureHandle = ( int )Gdx.GL.GLGenTexture();
 
         Load( Data );
     }
@@ -173,7 +164,7 @@ public class Cubemap : GLTexture
         // reloaded through the asset manager as we first remove (and thus dispose) the texture
         // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
         // removal from the asset manager.
-        if ( GLHandle == 0 )
+        if ( GLTextureHandle == 0 )
         {
             return;
         }
@@ -258,7 +249,7 @@ public class Cubemap : GLTexture
 
                     AssetManager.SetReferenceCount( fileName, 0 );
 
-                    cubemap.GLHandle = 0;
+                    cubemap.GLTextureHandle = 0;
 
                     // create the parameters, passing the reference to the cubemap as
                     // well as a callback that sets the ref count.
@@ -276,7 +267,7 @@ public class Cubemap : GLTexture
 
                     // unload the c, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    cubemap.GLHandle = Gdx.GL.GLGenTexture();
+                    cubemap.GLTextureHandle = ( int )Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof( Cubemap ), parameter );
                 }
             }
@@ -291,9 +282,7 @@ public class Cubemap : GLTexture
     /// <returns></returns>
     public static string GetManagedStatus()
     {
-        var builder = new StringBuilder();
-
-        builder.Append( "Managed cubemap/app: { " );
+        var builder = new StringBuilder( "Managed cubemap/app: { " );
 
         foreach ( IApplication app in ManagedCubemaps.Keys )
         {

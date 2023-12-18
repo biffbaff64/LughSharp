@@ -1392,7 +1392,7 @@ public class Actor : IActor
             return;
         }
 
-        shapes.Set( ShapeRenderer.ShapeTypes.Line );
+        shapes.Set( PrimitiveType.Lines );
 
         if ( Stage != null )
         {

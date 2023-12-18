@@ -61,7 +61,7 @@ public class ScissorStack
                 return false;
             }
 
-            Gdx.GL.GLEnable( IGL20.GL_SCISSOR_TEST );
+            Gdx.GL.GLEnable( EnableCap.ScissorTest );
         }
         else
         {
@@ -114,7 +114,7 @@ public class ScissorStack
 
         if ( Scissors.Count == 0 )
         {
-            Gdx.GL.GLDisable( IGL20.GL_SCISSOR_TEST );
+            Gdx.GL.GLDisable( EnableCap.ScissorTest );
         }
         else
         {

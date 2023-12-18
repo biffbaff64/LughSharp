@@ -46,20 +46,14 @@ public class Texture : GLTexture
 {
     // ------------------------------------------------------------------------
 
-    #region Properties
-
     public AssetManager? AssetManager { get; set; } = null;
     public ITextureData? TextureData  { get; set; } = null;
-
-    #endregion
 
     // ------------------------------------------------------------------------
 
     private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
 
     // ------------------------------------------------------------------------
-
-    #region Constructors
 
     public Texture( string internalPath )
         : this( Gdx.Files.Internal( internalPath ) )
@@ -71,7 +65,7 @@ public class Texture : GLTexture
     {
     }
 
-    public Texture( FileInfo? file, Pixmap.Format format = default, bool useMipMaps = false )
+    public Texture( FileInfo? file, Pixmap.Format format = default( Pixmap.Format ), bool useMipMaps = false )
         : this( ITextureData.Factory.LoadFromFile( file, format, useMipMaps ) )
     {
     }
@@ -98,25 +92,19 @@ public class Texture : GLTexture
     /// <param name="height">The Height in pixels.</param>
     /// <param name="format">The pixmap <see cref="Pixmap.Format"/></param>
     public Texture( int width, int height, Pixmap.Format format )
-        : this( new PixmapTextureData( new Pixmap( width, height, format ),
-                                       null,
-                                       false,
-                                       true ) )
+        : this( new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
     }
 
     public Texture( ITextureData? data )
-        : this( IGL20.GL_TEXTURE_2D, Gdx.GL.GLGenTexture(), data )
+        : this( IGL20.GL_TEXTURE_2D, ( int )Gdx.GL.GLGenTexture(), data )
     {
     }
 
-    protected Texture( int glTarget, int glHandle, ITextureData? data )
-        : base( glTarget, glHandle )
+    protected Texture( int glTarget, int glTextureHandle, ITextureData? data )
+        : base( glTarget, glTextureHandle )
     {
-        if ( data == null )
-        {
-            throw new GdxRuntimeException( "data cannot be null!" );
-        }
+        ArgumentNullException.ThrowIfNull( data );
 
         Load( data );
 
@@ -125,8 +113,6 @@ public class Texture : GLTexture
             AddManagedTexture( Gdx.App, this );
         }
     }
-
-    #endregion
 
     // ------------------------------------------------------------------------
 
@@ -164,20 +150,21 @@ public class Texture : GLTexture
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Load(ITextureData)"/>.
     /// </summary>
-    public override void Reload()
+    protected override void Reload()
     {
-        if ( !IsManaged() )
+        if ( !IsManaged )
         {
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        GLHandle = Gdx.GL.GLGenTexture();
+        GLTextureHandle = ( int )Gdx.GL.GLGenTexture();
         Load( TextureData );
     }
 
     /// <summary>
-    /// Draws the given <seealso cref="Pixmap"/> to the texture at position x, y. No clipping is performed so you have to make sure that you
-    /// draw only inside the texture region. Note that this will only draw to mipmap level 0!
+    /// Draws the given <seealso cref="Pixmap"/> to the texture at position x, y.
+    /// No clipping is performed so you have to make sure that you draw only inside
+    /// the texture region. Note that this will only draw to mipmap level 0!
     /// </summary>
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>
@@ -191,26 +178,23 @@ public class Texture : GLTexture
 
         Bind();
 
-        Gdx.GL.GLTexSubImage2D(
-            GLTarget,
-            0,
-            x,
-            y,
-            pixmap.Width,
-            pixmap.Height,
-            pixmap.GLFormat,
-            pixmap.GLType,
-            pixmap.Pixels
-            );
+        Gdx.GL.GLTexSubImage2D( GLTarget,
+                                0,
+                                x,
+                                y,
+                                pixmap.Width,
+                                pixmap.Height,
+                                pixmap.GLFormat,
+                                pixmap.GLType,
+                                pixmap.Pixels );
     }
 
-    public override int Width  => TextureData?.Width ?? 0;
-    public override int Height => TextureData?.Height ?? 0;
-    public override int Depth  => 0;
+    public override int  Width     => TextureData?.Width ?? 0;
+    public override int  Height    => TextureData?.Height ?? 0;
+    public override int  Depth     => 0;
+    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
 
     public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
-
-    public override bool IsManaged() => ( TextureData != null ) && TextureData.IsManaged();
 
     /// <summary>
     /// Disposes all resources associated with the texture.
@@ -221,7 +205,7 @@ public class Texture : GLTexture
         // reloaded through the asset manager as we first remove (and thus dispose) the texture
         // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
         // removal from the asset manager.
-        if ( GLHandle == 0 )
+        if ( GLTextureHandle == 0 )
         {
             return;
         }
@@ -293,7 +277,7 @@ public class Texture : GLTexture
                     var refCount = AssetManager.GetReferenceCount( fileName );
 
                     AssetManager.SetReferenceCount( fileName, 0 );
-                    texture.GLHandle = 0;
+                    texture.GLTextureHandle = 0;
 
                     // create the parameters, passing the reference to the texture as
                     // well as a callback that sets the ref count.
@@ -311,7 +295,7 @@ public class Texture : GLTexture
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.GLHandle = Gdx.GL.GLGenTexture();
+                    texture.GLTextureHandle = ( int )Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof( Texture ), parameters );
                 }
             }
@@ -338,9 +322,7 @@ public class Texture : GLTexture
 
     public string GetManagedStatus()
     {
-        var builder = new StringBuilder();
-
-        builder.Append( "Managed textures/app: { " );
+        var builder = new StringBuilder( "Managed textures/app: { " );
 
         foreach ( IApplication app in _managedTextures.Keys )
         {

@@ -26,10 +26,11 @@ namespace LibGDXSharp.Graphics;
 [PublicAPI]
 public abstract class GLTexture : IDisposable
 {
+    public virtual int Width  { get; }
+    public virtual int Height { get; }
+    public virtual int Depth  { get; }
 
-    #region properties
-
-    public int   GLHandle               { get; set; }
+    public int   GLTextureHandle        { get; set; }
     public int   GLTarget               { get; set; }
     public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
@@ -49,46 +50,28 @@ public abstract class GLTexture : IDisposable
     /// </returns>
     public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
 
-    #endregion properties
-
-    #region abstract properties
-
-    // These are abstract because implementations differ between inheriting classes
-    public abstract int Width  { get; }
-    public abstract int Height { get; }
-    public abstract int Depth  { get; }
-
-    #endregion abstract properties
-
     private static float _maxAnisotropicFilterLevel = 0;
 
-    #region constructors
+    // ------------------------------------------------------------------------
 
     protected GLTexture( int glTarget )
         : this( glTarget, Gdx.GL.GLGenTexture() )
     {
     }
 
-    protected GLTexture( int glTarget, int glHandle )
+    protected GLTexture( int glTarget, int glTextureHandle )
     {
-        this.GLTarget = glTarget;
-        this.GLHandle = glHandle;
+        this.GLTarget        = glTarget;
+        this.GLTextureHandle = glTextureHandle;
     }
 
-    #endregion constructors
-
-    #region abstract methods
-
-    /// <returns>whether this texture is managed or not.</returns>
-    public abstract bool IsManaged();
+    public virtual bool IsManaged => false;
 
     /// <summary>
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Texture.Load"/>.
     /// </summary>
-    public abstract void Reload();
-
-    #endregion abstract methods
+    protected abstract void Reload();
 
     /// <summary>
     /// Binds this texture. The texture will be bound to the currently active
@@ -96,7 +79,7 @@ public abstract class GLTexture : IDisposable
     /// </summary>
     public void Bind()
     {
-        Gdx.GL.GLBindTexture( GLTarget, GLHandle );
+        Gdx.GL.GLBindTexture( GLTarget, GLTextureHandle );
     }
 
     /// <summary>
@@ -108,8 +91,8 @@ public abstract class GLTexture : IDisposable
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        Gdx.GL.GLActiveTexture( ( uint )( IGL20.GL_TEXTURE0 + unit ) );
-        Gdx.GL.GLBindTexture( GLTarget, GLHandle );
+        Gdx.GL.GLActiveTexture( IGL20.GL_TEXTURE0 + unit );
+        Gdx.GL.GLBindTexture( GLTarget, GLTextureHandle );
     }
 
     /// <summary>
@@ -224,11 +207,9 @@ public abstract class GLTexture : IDisposable
             return AnisotropicFilterLevel;
         }
 
-        Gdx.GL20.GLTexParameterf(
-            IGL20.GL_TEXTURE_2D,
-            IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-            level
-            );
+        Gdx.GL20.GLTexParameterf( IGL20.GL_TEXTURE_2D,
+                                  IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+                                  level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -256,11 +237,9 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL20.GLTexParameterf(
-            IGL20.GL_TEXTURE_2D,
-            IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-            level
-            );
+        Gdx.GL20.GLTexParameterf( IGL20.GL_TEXTURE_2D,
+                                  IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+                                  level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -296,10 +275,10 @@ public abstract class GLTexture : IDisposable
     /// </summary>
     public void Delete()
     {
-        if ( GLHandle != 0 )
+        if ( GLTextureHandle != 0 )
         {
-            Gdx.GL.GLDeleteTexture( GLHandle );
-            GLHandle = 0;
+            Gdx.GL.GLDeleteTexture( GLTextureHandle );
+            GLTextureHandle = 0;
         }
     }
 
@@ -383,7 +362,7 @@ public abstract class GLTexture : IDisposable
     /// <summary>
     /// Convenience method for when 'GLHandle' isn't descriptive enough.
     /// </summary>
-    public int GetTextureObjectHandle() => GLHandle;
+    public int GetTextureObjectHandle() => GLTextureHandle;
 
     /// <inheritdoc cref="IDisposable.Dispose"/>>
     public virtual void Dispose()

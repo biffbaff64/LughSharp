@@ -30,7 +30,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// <para>
 /// The preferred width is the largest preferred width of any child. The preferred height
 /// is the sum of the children's preferred heights plus spacing. The preferred size is
-/// slightly different when <see cref="Wrap()"/> is enabled. The min size is the
+/// slightly different when <see cref="Wrapping"/> is enabled. The min size is the
 /// preferred size and the max size is 0.
 /// </para>
 /// <para>
@@ -487,7 +487,7 @@ public class VerticalGroup : WidgetGroup
         }
     }
 
-    public new float GetPrefWidth()
+    public float GetPrefWidth()
     {
         if ( _sizeInvalid )
         {
@@ -497,7 +497,7 @@ public class VerticalGroup : WidgetGroup
         return _prefWidth;
     }
 
-    public new float GetPrefHeight()
+    public float GetPrefHeight()
     {
         if ( Wrapping )
         {
@@ -763,7 +763,7 @@ public class VerticalGroup : WidgetGroup
             return;
         }
 
-        shapes.Set( ShapeRenderer.ShapeTypes.Line );
+        shapes.Set( PrimitiveType.Lines );
 
         if ( Stage != null )
         {

@@ -68,7 +68,7 @@ public class ClickListener : InputListener
         this.Button = button;
     }
 
-    public new bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+    public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
     {
         if ( Pressed )
         {
@@ -90,7 +90,7 @@ public class ClickListener : InputListener
         return true;
     }
 
-    public new void TouchDragged( InputEvent ev, float x, float y, int pointer )
+    public override void TouchDragged( InputEvent ev, float x, float y, int pointer )
     {
         if ( ( pointer != PressedPointer ) || _cancelled )
         {
@@ -106,7 +106,7 @@ public class ClickListener : InputListener
         }
     }
 
-    public new void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+    public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
     {
         if ( pointer == PressedPointer )
         {
@@ -143,7 +143,7 @@ public class ClickListener : InputListener
         }
     }
 
-    public new void Enter( InputEvent ev, float x, float y, int pointer, Actor fromActor )
+    public override void Enter( InputEvent ev, float x, float y, int pointer, Actor? fromActor )
     {
         if ( ( pointer == -1 ) && !_cancelled )
         {
@@ -151,7 +151,7 @@ public class ClickListener : InputListener
         }
     }
 
-    public new void Exit( InputEvent ev, float x, float y, int pointer, Actor toActor )
+    public override void Exit( InputEvent ev, float x, float y, int pointer, Actor? toActor )
     {
         if ( ( pointer == -1 ) && !_cancelled )
         {
@@ -174,7 +174,7 @@ public class ClickListener : InputListener
         Pressed    = false;
     }
 
-    public void Clicked( InputEvent ev, float x, float y )
+    public virtual void Clicked( InputEvent ev, float x, float y )
     {
     }
 

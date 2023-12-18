@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using ErrorCode = OpenGL.ErrorCode;
+
 namespace LibGDXSharp.Graphics.Profiling;
 
 /// <summary>
@@ -27,7 +29,7 @@ public interface IGLErrorListener
     /// Put your error logging code here.
     /// </summary>
     /// <seealso cref="GLInterceptor.ResolveErrorNumber(int) "/>
-    void OnError( int error );
+    void OnError( ErrorCode error );
 }
 
 /// <summary>
@@ -36,7 +38,7 @@ public interface IGLErrorListener
 [PublicAPI]
 public class GLLoggingListener : IGLErrorListener
 {
-    public void OnError( int error )
+    public void OnError( ErrorCode error )
     {
         string? place = null;
 
@@ -64,14 +66,12 @@ public class GLLoggingListener : IGLErrorListener
             // ignored
         }
 
-        Gdx.App.Error
-            (
-             "LoggingListener",
-             place != null
-                 ? $"Error {GLInterceptor.ResolveErrorNumber( error )} from {place}"
+        Gdx.App.Error( "LoggingListener",
+                       place != null
+                           ? $"Error {GLInterceptor.ResolveErrorNumber( error )} from {place}"
 
-                 // This will capture current stack trace for logging, if possible
-                 : $"Error {GLInterceptor.ResolveErrorNumber( error )} at: {new System.Exception()}"
+                           // This will capture current stack trace for logging, if possible
+                           : $"Error {GLInterceptor.ResolveErrorNumber( error )} at: {new System.Exception()}"
             );
     }
 }
@@ -82,7 +82,7 @@ public class GLLoggingListener : IGLErrorListener
 [PublicAPI]
 public class ThrowingListener : IGLErrorListener
 {
-    public void OnError( int error )
+    public void OnError( ErrorCode error )
     {
         throw new GdxRuntimeException
             ( $"GLProfiler: Got GL error {GLInterceptor.ResolveErrorNumber( error )}" );

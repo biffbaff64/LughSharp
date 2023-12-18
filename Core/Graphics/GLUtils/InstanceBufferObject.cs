@@ -32,7 +32,7 @@ public class InstanceBufferObject : IInstanceData
     private ByteBuffer? _byteBuffer;
     private int         _usage;
     private bool        _ownsBuffer;
-    private int         _bufferHandle;
+    private int        _bufferHandle;
     private bool        _isDirty = false;
     private bool        _isBound = false;
 
@@ -213,7 +213,7 @@ public class InstanceBufferObject : IInstanceData
     {
         Debug.Assert( _byteBuffer != null, "Bind(ShaderProgram, int[]) fail: _byteBuffer is NULL" );
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, ( int )_bufferHandle );
 
         if ( _isDirty )
         {
@@ -241,15 +241,12 @@ public class InstanceBufferObject : IInstanceData
                 var unitOffset = +attribute.unit;
                 shader.EnableVertexAttribute( location + unitOffset );
 
-                shader.SetVertexAttribute
-                    (
-                     location + unitOffset,
-                     attribute.numComponents,
-                     attribute.type,
-                     attribute.normalized,
-                     this.Attributes.VertexSize,
-                     attribute.Offset
-                    );
+                shader.SetVertexAttribute( location + unitOffset,
+                                           attribute.numComponents,
+                                           attribute.type,
+                                           attribute.normalized,
+                                           this.Attributes.VertexSize,
+                                           attribute.Offset );
 
                 Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
             }
@@ -269,15 +266,12 @@ public class InstanceBufferObject : IInstanceData
                 var unitOffset = +attribute.unit;
                 shader.EnableVertexAttribute( location + unitOffset );
 
-                shader.SetVertexAttribute
-                    (
-                     location + unitOffset,
-                     attribute.numComponents,
-                     attribute.type,
-                     attribute.normalized,
-                     this.Attributes.VertexSize,
-                     attribute.Offset
-                    );
+                shader.SetVertexAttribute( location + unitOffset,
+                                           attribute.numComponents,
+                                           attribute.type,
+                                           attribute.normalized,
+                                           this.Attributes.VertexSize,
+                                           attribute.Offset );
 
                 Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
             }

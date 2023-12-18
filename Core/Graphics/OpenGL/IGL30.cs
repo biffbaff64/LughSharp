@@ -540,9 +540,9 @@ public interface IGL30 : IGL20
 
     public void GLUniformBlockBinding( int program, int uniformBlockIndex, int uniformBlockBinding );
 
-    public void GLDrawArraysInstanced( int mode, int first, int count, int instanceCount );
+    public void GLDrawArraysInstanced( PrimitiveType mode, int first, int count, int instanceCount );
 
-    public void GLDrawElementsInstanced( int mode,
+    public void GLDrawElementsInstanced( PrimitiveType mode,
                                          int count,
                                          int type,
                                          int indicesOffset,
@@ -605,11 +605,4 @@ public interface IGL30 : IGL20
                                             int y,
                                             int width,
                                             int height );
-
-    public new void GLVertexAttribPointer( int indx,
-                                           int size,
-                                           int type,
-                                           bool normalized,
-                                           int stride,
-                                           Buffer ptr );
 }

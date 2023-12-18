@@ -22,9 +22,6 @@ namespace LibGDXSharp.Scenes.Listeners;
 [PublicAPI]
 public class DragScrollListener : DragListener
 {
-
-    #region private variables
-
     private readonly static Vector2 TmpCoords = new Vector2();
 
     private ScrollPane          _scroll;
@@ -36,8 +33,6 @@ public class DragScrollListener : DragListener
     private long                _startTime;
     private float               _padTop;
     private float               _padBottom;
-
-    #endregion private variables
 
     public DragScrollListener( ScrollPane scroll )
     {

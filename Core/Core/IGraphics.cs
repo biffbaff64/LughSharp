@@ -185,8 +185,6 @@ public interface IGraphics
 
     bool SupportsExtension( string extension );
 
-    void SetContinuousRendering( bool isContinuous );
-
     bool ContinuousRendering { get; }
 
     void RequestRendering();

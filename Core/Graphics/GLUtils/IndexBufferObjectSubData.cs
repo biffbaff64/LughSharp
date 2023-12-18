@@ -39,7 +39,7 @@ public class IndexBufferObjectSubData : IIndexData
 {
     private ShortBuffer _buffer;
     private ByteBuffer  _byteBuffer;
-    private int         _bufferHandle;
+    private int        _bufferHandle;
     private bool        _isDirect;
     private bool        _isDirty = true;
     private bool        _isBound = false;
@@ -86,7 +86,7 @@ public class IndexBufferObjectSubData : IIndexData
     {
         var result = Gdx.GL20.GLGenBuffer();
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, result );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, ( int )result );
         Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
         Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
 
@@ -124,7 +124,7 @@ public class IndexBufferObjectSubData : IIndexData
     /// <inheritdoc/>
     public void SetIndices( ShortBuffer indices )
     {
-        int pos = indices.Position;
+        var pos = indices.Position;
         
         _isDirty = true;
         
@@ -189,7 +189,7 @@ public class IndexBufferObjectSubData : IIndexData
                 ( "IndexBufferObject cannot be used after it has been disposed." );
         }
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, ( int )_bufferHandle );
 
         if ( _isDirty )
         {

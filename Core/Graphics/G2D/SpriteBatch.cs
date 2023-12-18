@@ -257,7 +257,7 @@ public class SpriteBatch : IBatch
 
         if ( !BlendingDisabled )
         {
-            Gdx.GL20.GLDisable( IGL20.GL_BLEND );
+            Gdx.GL20.GLDisable( EnableCap.Blend );
         }
     }
 
@@ -1182,11 +1182,11 @@ public class SpriteBatch : IBatch
 
         if ( BlendingDisabled )
         {
-            Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            Gdx.GL.GLDisable( EnableCap.Blend );
         }
         else
         {
-            Gdx.GL.GLEnable( IGL20.GL_BLEND );
+            Gdx.GL.GLEnable( EnableCap.Blend );
 
             if ( _blendSrcFunc != -1 )
             {
@@ -1200,7 +1200,7 @@ public class SpriteBatch : IBatch
             }
         }
 
-        _mesh.Render( _customShader ?? _shader, IGL20.GL_TRIANGLES, 0, count );
+        _mesh.Render( _customShader ?? _shader, PrimitiveType.Triangles, 0, count );
 
         idx = 0;
     }

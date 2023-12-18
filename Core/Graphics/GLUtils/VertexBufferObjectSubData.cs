@@ -31,8 +31,8 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class VertexBufferObjectSubData : IVertexData
 {
-    public VertexAttributes? Attributes { get; set; }
-    public ByteBuffer        ByteBuffer { get; set; }
+    public VertexAttributes Attributes { get; set; }
+    public ByteBuffer       ByteBuffer { get; set; }
 
     private          FloatBuffer _buffer;
     private readonly bool        _isDirect;
@@ -216,11 +216,13 @@ public class VertexBufferObjectSubData : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                shader.SetVertexAttribute
-                    (
-                     location, attribute.numComponents,
-                     attribute.type, attribute.normalized,
-                     Attributes!.VertexSize, attribute.Offset
+                shader.SetVertexAttribute(
+                    location,
+                    attribute.numComponents,
+                    attribute.type,
+                    attribute.normalized,
+                    Attributes!.VertexSize,
+                    attribute.Offset
                     );
             }
         }
@@ -238,11 +240,13 @@ public class VertexBufferObjectSubData : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                shader.SetVertexAttribute
-                    (
-                     location, attribute.numComponents,
-                     attribute.type, attribute.normalized,
-                     Attributes!.VertexSize, attribute.Offset
+                shader.SetVertexAttribute(
+                    location,
+                    attribute.numComponents,
+                    attribute.type,
+                    attribute.normalized,
+                    Attributes!.VertexSize,
+                    attribute.Offset
                     );
             }
         }
