@@ -36,22 +36,6 @@ global using GLFW.Game;
 global using LibGDXSharp.Audio.OpenAL;
 global using OpenGL;
 
-//global using OpenTK;
-//global using OpenTK.Audio;
-//global using OpenTK.Compute;
-//global using OpenTK.Core;
-//global using OpenTK.Graphics;
-//global using OpenTK.Graphics.OpenGL;
-//global using OpenTK.Input;
-//global using OpenTK.Mathematics;
-//global using OpenTK.Platform;
-//global using OpenTK.Platform.Windows;
-//global using OpenTK.Windowing;
-//global using OpenTK.Windowing.Common;
-//global using OpenTK.Windowing.Common.Input;
-//global using OpenTK.Windowing.Desktop;
-//global using OpenTK.Windowing.GraphicsLibraryFramework;
-
 // -----------------------------------------------------------------------
 // LibGDXSharp
 global using LibGDXSharp.Assets;

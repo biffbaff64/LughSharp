@@ -24,7 +24,7 @@ public abstract class Action : IPoolable
     /// <summary>
     /// 
     /// </summary>
-    public Pool< object >? Pool { get; set; }
+    public Pool< Action >? Pool { get; set; }
 
     /// <summary>
     /// The actor this action targets, or null if a target has not been set.
@@ -35,6 +35,17 @@ public abstract class Action : IPoolable
     /// The actor this action is attached to, or null if it is not attached.
     /// </summary>
     private Actor? _actor;
+
+    /// <summary>
+    /// Updates the action based on time.
+    /// Typically this is called each frame by <see cref="Actor"/>.
+    /// </summary>
+    /// <param name="delta">Time in seconds since the last frame.</param>
+    /// <returns>
+    /// true if the action is done. This method may continue to be called after
+    /// the action is done.
+    /// </returns>
+    public abstract bool Act( float delta );
 
     /// <summary>
     /// Resets the optional state of this action to as if it were
@@ -55,17 +66,6 @@ public abstract class Action : IPoolable
 
         Restart();
     }
-
-    /// <summary>
-    /// Updates the action based on time.
-    /// Typically this is called each frame by <see cref="Actor"/>.
-    /// </summary>
-    /// <param name="delta">Time in seconds since the last frame.</param>
-    /// <returns>
-    /// true if the action is done. This method may continue to be called after
-    /// the action is done.
-    /// </returns>
-    public abstract bool Act( float delta );
 
     /// <summary>
     /// Sets the state of the action so it can be run again.

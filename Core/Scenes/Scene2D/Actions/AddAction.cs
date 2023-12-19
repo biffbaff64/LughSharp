@@ -24,21 +24,21 @@ public class AddAction : Action
 {
     public Action? Action { get; set; }
 
-    public override bool Act(float delta)
+    public override bool Act( float delta )
     {
         Target?.AddAction( Action );
+
         return true;
     }
 
-    public new void Restart()
+    public override void Restart()
     {
         Action?.Restart();
     }
 
-    public new void Reset()
+    public override void Reset()
     {
         base.Reset();
         Action = null;
     }
 }
-

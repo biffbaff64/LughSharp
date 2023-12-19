@@ -37,7 +37,7 @@ public class RemoveAction : Action
         return true;
     }
 
-    public new void Reset()
+    public override void Reset()
     {
         base.Reset();
         Action = null;

@@ -21,7 +21,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 [PublicAPI]
 public class AfterAction : DelegateAction
 {
-    private readonly List< Action > _waitForActions = new(4);
+    private readonly List< Action > _waitForActions = new( 4 );
 
     public void SetTarget( Actor? target )
     {

@@ -20,29 +20,29 @@ using LibGDXSharp.Scenes.Scene2D.Actions;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// Displays a dialog, which is a window with a title, a content table, and a
-/// button table. Methods are provided to add a label to the content table and
-/// buttons to the button table, but any widgets can be added. When a button
-/// is clicked, <see cref="Result(object)"/> is called and the dialog is
-/// removed from the stage.
+/// Displays a dialog, which is a window with a title, a content table, and a button table.
+/// Methods are provided to add a label to the content table and buttons to the button table,
+/// but any widgets can be added. When a button is clicked, <see cref="Result(object)"/> is
+/// called and the dialog is removed from the stage.
 /// </summary>
 [PublicAPI]
 public class Dialog : Window
 {
-    public Table? ContentTable { get; private set; }
-    public Table? ButtonTable  { get; private set; }
-    public bool   CancelHide   { get; set; }
+    public Actor? PreviousKeyboardFocus { get; set; }
+    public Actor? PreviousScrollFocus   { get; set; }
+    public Table? ContentTable          { get; private set; }
+    public Table? ButtonTable           { get; private set; }
+    public bool   CancelHide            { get; set; }
 
-//    private readonly IEventListener _dialogChangeListener = new DialogChangeObserver();
-//    private readonly IEventListener _dialogClickListener  = new DialogClickObserver();
-//    private readonly IEventListener _dialogFocusListener  = new DialogFocusObserver();
-//    private readonly IEventListener _dialogInputListener  = new DialogInputObserver();
+    private IEventListener  _dialogChangeListener = null!;
+    private IEventListener  _dialogClickListener  = null!;
+    private IEventListener  _dialogFocusListener  = null!;
+    private IEventListener  _dialogInputListener  = null!;
+    private IgnoreTouchDown _ignoreTouchDown      = null!;
+
     private readonly Skin? _skin;
 
     private Dictionary< Actor, object >? _values = new();
-
-    private Actor? _previousKeyboardFocus;
-    private Actor? _previousScrollFocus;
 
     // ------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ public class Dialog : Window
     }
 
     public Dialog( string title, Skin skin, string windowStyleName )
-        : base( title, ( Window.WindowStyle )skin.Get< Window.WindowStyle >( windowStyleName ) )
+        : base( title, skin.Get< Window.WindowStyle >( windowStyleName ) )
     {
         base.Skin  = skin;
         this._skin = skin;
@@ -86,58 +86,17 @@ public class Dialog : Window
         ContentTable.CellDefaults.Space( 6 );
         ButtonTable.CellDefaults.Space( 6 );
 
-//        AddCaptureListener( _dialogChangeListener );
-//        AddCaptureListener( _dialogClickListener );
-//        AddCaptureListener( _dialogFocusListener );
-//        AddCaptureListener( _dialogInputListener );
+        this._dialogFocusListener  = new DialogFocusObserver( this );
+        this._dialogChangeListener = new DialogChangeObserver( this );
+        this._dialogClickListener  = new DialogClickObserver( this );
+        this._dialogInputListener  = new DialogInputObserver( this );
 
-//        ButtonTable.AddListener( ButtonTableChangeListener );
+        ButtonTable.AddListener( new ButtonTableChangeListener( this ) );
 
-//        buttonTable.addListener( new ChangeListener()
-//        {
-//            public void changed (ChangeEvent event, Actor actor)
-//            {
-//                if (!values.containsKey(actor)) return;
-//                while (actor.getParent() != buttonTable)
-//                actor = actor.getParent();
-//                result(values.get(actor));
-//                if (!CancelHide) hide();
-//                CancelHide = false;
-//            }
-//        });
-
-//        focusListener = new FocusListener()
-//        {
-//            public void keyboardFocusChanged (FocusEvent event, Actor actor, bool focused)
-//            {
-//                if (!focused) focusChanged(event);
-//            }
-
-//            public void scrollFocusChanged( FocusListener.FocusEvent event, Actor actor, bool focused )
-//            {
-//                if ( !focused ) focusChanged( event );
-//            }
-
-//            private void focusChanged( FocusListener.FocusEvent event )
-//            {
-//                Stage stage = getStage();
-
-//                if ( isModal
-//                     && stage != null
-//                     && stage.getRoot().getChildren().size > 0
-//                     && stage.getRoot().getChildren().peek() == Dialog.this) {
-        // Dialog is top most actor.
-//                    Actor newFocusedActor =  event.getRelatedActor();
-
-//                    if ( newFocusedActor != null
-//                         && !newFocusedActor.isDescendantOf( Dialog.this )
-//                         && !( newFocusedActor.equals
-//                                   ( _previousKeyboardFocus )
-//                               || newFocusedActor.equals( _previousScrollFocus ) ) )
-//                        event.cancel();
-//                }
-//            }
-//        };
+        AddCaptureListener( _dialogChangeListener );
+        AddCaptureListener( _dialogClickListener );
+        AddCaptureListener( _dialogFocusListener );
+        AddCaptureListener( _dialogInputListener );
     }
 
     protected new void SetStage( Stage? stage )
@@ -247,20 +206,20 @@ public class Dialog : Window
     {
         ClearActions();
 
-//        RemoveCaptureListener( ignoreTouchDown );
+        RemoveCaptureListener( _ignoreTouchDown );
 
-        _previousKeyboardFocus = null;
+        PreviousKeyboardFocus = null;
 
         if ( ( stage.KeyboardFocus != null ) && !stage.KeyboardFocus.IsDescendantOf( this ) )
         {
-            _previousKeyboardFocus = stage.KeyboardFocus;
+            PreviousKeyboardFocus = stage.KeyboardFocus;
         }
 
-        _previousScrollFocus = null;
+        PreviousScrollFocus = null;
 
         if ( ( stage.ScrollFocus != null ) && !stage.ScrollFocus.IsDescendantOf( this ) )
         {
-            _previousScrollFocus = stage.ScrollFocus;
+            PreviousScrollFocus = stage.ScrollFocus;
         }
 
         stage.AddActor( this );
@@ -285,30 +244,23 @@ public class Dialog : Window
     /// </summary>
     public Dialog Show( Stage stage )
     {
-        Show(
-            stage,
-            SceneActions.Sequence(
-                SceneActions.Alpha( 0 ),
-                SceneActions.FadeIn( 0.4f,
-                                     Interpolation.fade ) )
-            );
+        Show( stage,
+              SceneActions.Sequence( SceneActions.Alpha( 0 ),
+                                     SceneActions.FadeIn( 0.4f, Interpolation.fade ) ) );
 
-        SetPosition(
-            ( float )Math.Round( ( stage.Width - Width ) / 2 ),
-            ( float )Math.Round( ( stage.Height - Height ) / 2 )
-            );
+        SetPosition( ( float )Math.Round( ( stage.Width - Width ) / 2 ),
+                     ( float )Math.Round( ( stage.Height - Height ) / 2 ) );
 
         return this;
     }
 
     /// <summary>
-    /// Removes the dialog from the stage, restoring the previous keyboard and
-    /// scroll focus, and adds the specified action to the dialog.
+    /// Removes the dialog from the stage, restoring the previous keyboard and scroll focus,
+    /// and adds the specified action to the dialog.
     /// </summary>
     /// <param name="action">
-    /// If null, the dialog is removed immediately. Otherwise, the dialog is
-    /// removed when the action completes. The dialog will not respond to touch
-    /// down events during the action.
+    /// If null, the dialog is removed immediately. Otherwise, the dialog is removed when the
+    /// action completes. The dialog will not respond to touch down events during the action.
     /// </param>
     public void Hide( Action? action )
     {
@@ -316,33 +268,35 @@ public class Dialog : Window
 
         if ( stage != null )
         {
-//            RemoveListener( _focusListener );
+            RemoveListener( _dialogFocusListener );
 
-            if ( _previousKeyboardFocus is { Stage: null } )
+            if ( PreviousKeyboardFocus is { Stage: null } )
             {
-                _previousKeyboardFocus = null;
+                PreviousKeyboardFocus = null;
             }
 
             if ( ( stage.KeyboardFocus == null ) || stage.KeyboardFocus.IsDescendantOf( this ) )
             {
-                stage.KeyboardFocus = _previousKeyboardFocus;
+                stage.KeyboardFocus = PreviousKeyboardFocus;
             }
 
-            if ( _previousScrollFocus is { Stage: null } )
+            if ( PreviousScrollFocus is { Stage: null } )
             {
-                _previousScrollFocus = null;
+                PreviousScrollFocus = null;
             }
 
             if ( ( stage.ScrollFocus == null ) || stage.ScrollFocus.IsDescendantOf( this ) )
             {
-                stage.ScrollFocus = _previousScrollFocus;
+                stage.ScrollFocus = PreviousScrollFocus;
             }
         }
 
         if ( action != null )
         {
-//            AddCaptureListener( ignoreTouchDown );
-//            AddAction( sequence( action, Actions.RemoveListener( ignoreTouchDown, true ), Actions.RemoveActor() ) );
+            AddCaptureListener( _ignoreTouchDown );
+            AddAction( Actions.Sequence( action,
+                                         Actions.RemoveListener( _ignoreTouchDown, true ),
+                                         Actions.RemoveActor() ) );
         }
         else
         {
@@ -460,47 +414,13 @@ public class Dialog : Window
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    protected internal class DialogChangeObserver : IEventListener
+    public class IgnoreTouchDown : InputListener
     {
-        public bool Handle( Event ev )
+        public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
         {
+            ev.Cancel();
+
             return false;
         }
     }
-
-    protected internal class DialogClickObserver : IEventListener
-    {
-        public bool Handle( Event ev )
-        {
-            return false;
-        }
-    }
-
-    protected internal class DialogFocusObserver : IEventListener
-    {
-        public bool Handle( Event ev )
-        {
-            return false;
-        }
-    }
-
-    protected internal class DialogInputObserver : IEventListener
-    {
-        public bool Handle( Event ev )
-        {
-            return false;
-        }
-    }
-
-//    protected InputListener ignoreTouchDown = new InputListener()
-//    {
-//        public bool touchDown (InputEvent event, float x, float y, int pointer, int button)
-//        {
-//            event.cancel();
-//            return false;
-//        }
-//    }
 }

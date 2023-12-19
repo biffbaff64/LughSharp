@@ -75,11 +75,12 @@ public class Stage : InputAdapter
     /// <see cref="Scaling.Stretch"/>. The stage will use its own <see cref="IBatch"/>
     /// which will be disposed when the stage is disposed. 
     /// </summary>
-    public Stage() : this( new ScalingViewport( Scaling.Stretch,
-                                                Gdx.Graphics.Width,
-                                                Gdx.Graphics.Height,
-                                                new OrthographicCamera() ),
-                           new SpriteBatch() )
+    public Stage()
+        : this( new ScalingViewport( Scaling.Stretch,
+                                     Gdx.Graphics.Width,
+                                     Gdx.Graphics.Height,
+                                     new OrthographicCamera() ),
+                new SpriteBatch() )
     {
         _ownsBatch = true;
     }
@@ -1351,6 +1352,7 @@ public class Stage : InputAdapter
     /// Disables debug on all actors recursively except the specified
     /// actor and any children.
     /// </summary>
+
     // TODO: Refactor this to remove the recursiveness
     private void DisableDebug( Actor actor, Actor except )
     {

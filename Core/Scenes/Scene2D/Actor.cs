@@ -122,11 +122,7 @@ public class Actor : IActor
 
             if ( context != null )
             {
-                throw new SystemException
-                    (
-                     $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
-                     ex
-                    );
+                throw new SystemException( $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}", ex );
             }
         }
     }
@@ -152,10 +148,9 @@ public class Actor : IActor
     public virtual bool Fire( Event? ev )
     {
         ArgumentNullException.ThrowIfNull( ev );
-        
-        ev.Stage ??= this.Stage;
 
-        ev.TargetActor = this;
+        ev.Stage       ??= this.Stage;
+        ev.TargetActor =   this;
 
         // Collect ascendants so event propagation is unaffected by
         // hierarchy changes.
@@ -274,10 +269,9 @@ public class Actor : IActor
 
             if ( context != null )
             {
-                throw new SystemException
-                    (
-                     $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
-                     ex
+                throw new SystemException(
+                    $"Actor - {context.AsSpan( 0, System.Math.Min( context.Length, 128 ) )}",
+                    ex
                     );
             }
         }

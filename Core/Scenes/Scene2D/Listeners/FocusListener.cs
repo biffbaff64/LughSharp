@@ -28,15 +28,15 @@ public class FocusListener : IEventListener
     [PublicAPI]
     public class FocusEvent : Event
     {
-        public bool    Focused      { get; set; }
-        public FeType? Type         { get; set; }
+        public bool    Focused { get; set; }
+        public FeType? Type    { get; set; }
 
         /// <summary>
         /// The actor related to the event. When focus is lost, this is the new
         /// actor being focused, or null. When focus is gained, this is the
         /// previous actor that was focused, or null.
         /// </summary>
-        public Actor?  RelatedActor { get; set; }
+        public Actor? RelatedActor { get; set; }
 
         public new void Reset()
         {
@@ -57,7 +57,7 @@ public class FocusListener : IEventListener
     /// <returns>
     /// True if the event should be considered as handled by scene2d.
     /// </returns>
-    public bool Handle( Event e )
+    public virtual bool Handle( Event e )
     {
         if ( !( e is FocusEvent focusEvent ) )
         {
@@ -67,12 +67,12 @@ public class FocusListener : IEventListener
         switch ( focusEvent.Type )
         {
             case FocusEvent.FeType.Keyboard:
-                KeyboardFocusChanged( focusEvent,  e.TargetActor, focusEvent.Focused );
+                KeyboardFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
 
                 break;
 
             case FocusEvent.FeType.Scroll:
-                ScrollFocusChanged( focusEvent,  e.TargetActor, focusEvent.Focused );
+                ScrollFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
 
                 break;
         }
@@ -85,7 +85,7 @@ public class FocusListener : IEventListener
     /// The event target, which is the actor that emitted the focus event.
     /// </param>
     /// <param name="focused"></param>
-    public virtual void KeyboardFocusChanged( FocusEvent ev, Actor? actor, bool focused)
+    public virtual void KeyboardFocusChanged( FocusEvent ev, Actor? actor, bool focused )
     {
     }
 
@@ -94,7 +94,7 @@ public class FocusListener : IEventListener
     /// The event target, which is the actor that emitted the focus event.
     /// </param>
     /// <param name="focused"></param>
-    public virtual void ScrollFocusChanged( FocusEvent ev, Actor? actor, bool focused)
+    public virtual void ScrollFocusChanged( FocusEvent ev, Actor? actor, bool focused )
     {
     }
 }
