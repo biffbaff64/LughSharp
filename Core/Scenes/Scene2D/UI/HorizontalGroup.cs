@@ -52,24 +52,44 @@ public class HorizontalGroup : WidgetGroup
     public float PadBottom { get; set; }
     public float PadRight  { get; set; }
 
+    /// <summary>
+    /// If true, the children will be displayed last to first.
+    /// </summary>
+    public bool Reverse { get; set; }
+
+    /// <summary>
+    /// If true, rows will wrap above the previous rows.
+    /// </summary>
+    public bool WrapReverse { get; set; }
+
+    /// <summary>
+    /// The horizontal space between children.
+    /// </summary>
+    public float Space { get; set; }
+
+    /// <summary>
+    /// The vertical space between rows when wrap is enabled.
+    /// </summary>
+    public float WrapSpace { get; set; }
+
+    /// <summary>
+    /// If true (the default), positions and sizes are rounded to integers.
+    /// </summary>
+    public bool Round { get; set; } = true;
+
     private float          _prefWidth;
     private float          _prefHeight;
     private float          _lastPrefHeight;
     private bool           _sizeInvalid = true;
     private List< float >? _rowSizes; // row width, row height, ...
-
-    private int   _rowAlign;
-    private bool  _reverse;
-    private bool  _round = true;
-    private bool  _wrapReverse;
-    private float _space;
-    private float _wrapSpace;
+    private int            _rowAlign;
 
     public HorizontalGroup()
     {
         Touchable = Touchable.ChildrenOnly;
     }
 
+    /// <inheritdoc />
     public override void Invalidate()
     {
         base.Invalidate();
@@ -100,8 +120,8 @@ public class HorizontalGroup : WidgetGroup
 
             List< float > rowSizes = this._rowSizes;
 
-            var space      = this._space;
-            var wrapSpace  = this._wrapSpace;
+            var space      = this.Space;
+            var wrapSpace  = this.WrapSpace;
             var pad        = PadLeft + PadRight;
             var groupWidth = Width - pad;
             var x          = 0f;
@@ -110,7 +130,7 @@ public class HorizontalGroup : WidgetGroup
             var i          = 0;
             var incr       = 1;
 
-            if ( _reverse )
+            if ( Reverse )
             {
                 i    = n - 1;
                 n    = -1;
@@ -179,7 +199,7 @@ public class HorizontalGroup : WidgetGroup
         }
         else
         {
-            _prefWidth = PadLeft + PadRight + ( _space * ( n - 1 ) );
+            _prefWidth = PadLeft + PadRight + ( Space * ( n - 1 ) );
 
             for ( var i = 0; i < n; i++ )
             {
@@ -203,13 +223,14 @@ public class HorizontalGroup : WidgetGroup
 
         _prefHeight += PadTop + PadBottom;
 
-        if ( _round )
+        if ( Round )
         {
             _prefWidth  = MathF.Round( _prefWidth );
             _prefHeight = MathF.Round( _prefHeight );
         }
     }
 
+    /// <inheritdoc />
     public override void Layout()
     {
         if ( _sizeInvalid )
@@ -224,30 +245,30 @@ public class HorizontalGroup : WidgetGroup
             return;
         }
 
-        var round     = this._round;
+        var round     = this.Round;
         var align     = this.Alignment;
-        var space     = this._space;
+        var space     = this.Space;
         var padBottom = this.PadBottom;
         var fill      = this.Fill;
         var rowHeight = ( Expand ? Height : _prefHeight ) - PadTop - padBottom;
         var x         = PadLeft;
 
-        if ( ( align & LibGDXSharp.Utils.Align.RIGHT ) != 0 )
+        if ( ( align & Align.RIGHT ) != 0 )
         {
             x += Width - _prefWidth;
         }
-        else if ( ( align & LibGDXSharp.Utils.Align.LEFT ) == 0 ) // center
+        else if ( ( align & Align.LEFT ) == 0 ) // center
         {
             x += ( Width - _prefWidth ) / 2;
         }
 
         float startY;
 
-        if ( ( align & LibGDXSharp.Utils.Align.BOTTOM ) != 0 )
+        if ( ( align & Align.BOTTOM ) != 0 )
         {
             startY = padBottom;
         }
-        else if ( ( align & LibGDXSharp.Utils.Align.TOP ) != 0 )
+        else if ( ( align & Align.TOP ) != 0 )
         {
             startY = Height - PadTop - rowHeight;
         }
@@ -264,7 +285,7 @@ public class HorizontalGroup : WidgetGroup
         var n    = children.Size;
         var incr = 1;
 
-        if ( _reverse )
+        if ( Reverse )
         {
             i    = n - 1;
             n    = -1;
@@ -311,23 +332,22 @@ public class HorizontalGroup : WidgetGroup
 
             var y = startY;
 
-            if ( ( align & LibGDXSharp.Utils.Align.TOP ) != 0 )
+            if ( ( align & Align.TOP ) != 0 )
             {
                 y += rowHeight - height;
             }
-            else if ( ( align & LibGDXSharp.Utils.Align.BOTTOM ) == 0 ) // center
+            else if ( ( align & Align.BOTTOM ) == 0 ) // center
             {
                 y += ( rowHeight - height ) / 2;
             }
 
             if ( round )
             {
-                child.SetBounds
-                    (
-                     MathF.Round( x ),
-                     MathF.Round( y ),
-                     MathF.Round( width ),
-                     MathF.Round( height )
+                child.SetBounds(
+                    MathF.Round( x ),
+                    MathF.Round( y ),
+                    MathF.Round( width ),
+                    MathF.Round( height )
                     );
             }
             else
@@ -355,10 +375,10 @@ public class HorizontalGroup : WidgetGroup
         }
 
         var   align      = this.Alignment;
-        var   round      = this._round;
-        var   space      = this._space;
+        var   round      = this.Round;
+        var   space      = this.Space;
         var   fill       = this.Fill;
-        var   wrapSpace  = this._wrapSpace;
+        var   wrapSpace  = this.WrapSpace;
         var   maxWidth   = _prefWidth - PadLeft - PadRight;
         var   rowY       = prefHeight - PadTop;
         var   groupWidth = Width;
@@ -372,26 +392,26 @@ public class HorizontalGroup : WidgetGroup
             throw new GdxRuntimeException( "_rowSizes cannot be null!" );
         }
 
-        if ( ( align & LibGDXSharp.Utils.Align.TOP ) != 0 )
+        if ( ( align & Align.TOP ) != 0 )
         {
             rowY += Height - prefHeight;
         }
-        else if ( ( align & LibGDXSharp.Utils.Align.BOTTOM ) == 0 ) // center
+        else if ( ( align & Align.BOTTOM ) == 0 ) // center
         {
             rowY += ( Height - prefHeight ) / 2;
         }
 
-        if ( _wrapReverse )
+        if ( WrapReverse )
         {
             rowY   -= prefHeight + _rowSizes[ 1 ];
             rowDir =  1;
         }
 
-        if ( ( align & LibGDXSharp.Utils.Align.RIGHT ) != 0 )
+        if ( ( align & Align.RIGHT ) != 0 )
         {
             xStart += groupWidth - _prefWidth;
         }
-        else if ( ( align & LibGDXSharp.Utils.Align.LEFT ) == 0 ) // center
+        else if ( ( align & Align.LEFT ) == 0 ) // center
         {
             xStart += ( groupWidth - _prefWidth ) / 2;
         }
@@ -406,7 +426,7 @@ public class HorizontalGroup : WidgetGroup
         var n    = children.Size;
         var incr = 1;
 
-        if ( _reverse )
+        if ( Reverse )
         {
             i    = n - 1;
             n    = -1;
@@ -445,11 +465,11 @@ public class HorizontalGroup : WidgetGroup
                 r = Math.Min( r, rowSizes.Count - 2 ); // In case an actor changed size without invalidating this layout.
                 x = xStart;
 
-                if ( ( align & LibGDXSharp.Utils.Align.RIGHT ) != 0 )
+                if ( ( align & Align.RIGHT ) != 0 )
                 {
                     x += maxWidth - rowSizes[ r ];
                 }
-                else if ( ( align & LibGDXSharp.Utils.Align.LEFT ) == 0 ) // center
+                else if ( ( align & Align.LEFT ) == 0 ) // center
                 {
                     x += ( maxWidth - rowSizes[ r ] ) / 2;
                 }
@@ -484,23 +504,22 @@ public class HorizontalGroup : WidgetGroup
 
             var y = rowY;
 
-            if ( ( align & LibGDXSharp.Utils.Align.TOP ) != 0 )
+            if ( ( align & Align.TOP ) != 0 )
             {
                 y += rowHeight - height;
             }
-            else if ( ( align & LibGDXSharp.Utils.Align.BOTTOM ) == 0 ) // center
+            else if ( ( align & Align.BOTTOM ) == 0 ) // center
             {
                 y += ( rowHeight - height ) / 2;
             }
 
             if ( round )
             {
-                child.SetBounds
-                    (
-                     MathF.Round( x ),
-                     MathF.Round( y ),
-                     MathF.Round( width ),
-                     MathF.Round( height )
+                child.SetBounds(
+                    MathF.Round( x ),
+                    MathF.Round( y ),
+                    MathF.Round( width ),
+                    MathF.Round( height )
                     );
             }
             else
@@ -517,77 +536,36 @@ public class HorizontalGroup : WidgetGroup
         }
     }
 
-    /** If true (the default), positions and sizes are rounded to integers. */
-    public void SetRound( bool round )
-    {
-        this._round = round;
-    }
-
-    /** The children will be displayed last to first. */
-    public HorizontalGroup Reverse()
-    {
-        _reverse = true;
-
-        return this;
-    }
-
-    /** If true, the children will be displayed last to first. */
-    public HorizontalGroup Reverse( bool reverse )
-    {
-        this._reverse = reverse;
-
-        return this;
-    }
-
-    public bool GetReverse()
-    {
-        return _reverse;
-    }
-
     /// <summary>
-    /// If true, rows will wrap above the previous rows.
+    /// If false, the widgets are arranged in a single row and the preferred
+    /// width is the widget widths plus spacing.
+    /// <para>
+    /// If true, the widgets will wrap using the width of the horizontal group.
+    /// The preferred width of the group will be 0 as it is expected that something
+    /// external will set the width of the group. Widgets are sized to their
+    /// preferred width unless it is larger than the group's width, in which case
+    /// they are sized to the group's width but not less than their minimum width.
+    /// </para>
+    /// <para>
+    /// Default is false.
+    /// </para>
+    /// <para>
+    /// When wrap is enabled, the group's preferred height depends on the width of
+    /// the group. In some cases the parent of the group will need to layout twice:
+    /// once to set the width of the group and a second time to adjust to the group's
+    /// new preferred height.
+    /// </para>
     /// </summary>
-    public HorizontalGroup WrapReverse( bool wrapReverse = true )
+    public HorizontalGroup SetWrap( bool wrap = true )
     {
-        this._wrapReverse = wrapReverse;
+        this.Wrap = wrap;
 
         return this;
     }
 
-    public bool GetWrapReverse()
-    {
-        return _wrapReverse;
-    }
+    // ------------------------------------------------------------------------
 
-    /// <summary>
-    /// Sets the horizontal space between children. 
-    /// </summary>
-    public HorizontalGroup Space( float space )
-    {
-        this._space = space;
-
-        return this;
-    }
-
-    public float GetSpace()
-    {
-        return _space;
-    }
-
-    /// <summary>
-    /// Sets the vertical space between rows when wrap is enabled.
-    /// </summary>
-    public HorizontalGroup WrapSpace( float wrapSpace )
-    {
-        this._wrapSpace = wrapSpace;
-
-        return this;
-    }
-
-    public float GetWrapSpace()
-    {
-        return _wrapSpace;
-    }
+    #region padding
 
     /// <summary>
     /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
@@ -640,6 +618,12 @@ public class HorizontalGroup : WidgetGroup
         return this;
     }
 
+    #endregion padding
+
+    // ------------------------------------------------------------------------
+
+    #region alignment
+
     /// <summary>
     /// Sets the alignment of all widgets within the horizontal group.
     /// <para>
@@ -661,7 +645,7 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup AlignCenter()
     {
-        Alignment = LibGDXSharp.Utils.Align.CENTER;
+        Alignment = Align.CENTER;
 
         return this;
     }
@@ -672,8 +656,8 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup AlignTop()
     {
-        Alignment |= LibGDXSharp.Utils.Align.TOP;
-        Alignment &= ~LibGDXSharp.Utils.Align.BOTTOM;
+        Alignment |= Align.TOP;
+        Alignment &= ~Align.BOTTOM;
 
         return this;
     }
@@ -684,8 +668,8 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup AlignBottom()
     {
-        Alignment |= LibGDXSharp.Utils.Align.BOTTOM;
-        Alignment &= ~LibGDXSharp.Utils.Align.TOP;
+        Alignment |= Align.BOTTOM;
+        Alignment &= ~Align.TOP;
 
         return this;
     }
@@ -696,8 +680,8 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup AlignLeft()
     {
-        Alignment |= LibGDXSharp.Utils.Align.LEFT;
-        Alignment &= ~LibGDXSharp.Utils.Align.RIGHT;
+        Alignment |= Align.LEFT;
+        Alignment &= ~Align.RIGHT;
 
         return this;
     }
@@ -708,64 +692,8 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup AlignRight()
     {
-        Alignment |= LibGDXSharp.Utils.Align.RIGHT;
-        Alignment &= ~LibGDXSharp.Utils.Align.LEFT;
-
-        return this;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="fill"> 0 will use preferred width </param>.
-    public HorizontalGroup SetFill( float fill = 1f )
-    {
-        this.Fill = fill;
-
-        return this;
-    }
-
-    /// <summary>
-    /// When true and wrap is false, the rows will take up the
-    /// entire horizontal group height.
-    /// </summary>
-    public HorizontalGroup SetExpand( bool expand = true )
-    {
-        this.Expand = expand;
-
-        return this;
-    }
-
-    public HorizontalGroup Grow()
-    {
-        Expand = true;
-        Fill   = 1;
-
-        return this;
-    }
-
-    /// <summary>
-    /// If false, the widgets are arranged in a single row and the preferred
-    /// width is the widget widths plus spacing.
-    /// <para>
-    /// If true, the widgets will wrap using the width of the horizontal group.
-    /// The preferred width of the group will be 0 as it is expected that something
-    /// external will set the width of the group. Widgets are sized to their
-    /// preferred width unless it is larger than the group's width, in which case
-    /// they are sized to the group's width but not less than their minimum width.
-    /// </para>
-    /// <para>
-    /// Default is false.
-    /// </para>
-    /// <para>
-    /// When wrap is enabled, the group's preferred height depends on the width of
-    /// the group. In some cases the parent of the group will need to layout twice:
-    /// once to set the width of the group and a second time to adjust to the group's
-    /// new preferred height.
-    /// </para>
-    /// </summary>
-    public HorizontalGroup SetWrap( bool wrap = true )
-    {
-        this.Wrap = wrap;
+        Alignment |= Align.RIGHT;
+        Alignment &= ~Align.LEFT;
 
         return this;
     }
@@ -792,7 +720,7 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup RowCenter()
     {
-        _rowAlign = LibGDXSharp.Utils.Align.CENTER;
+        _rowAlign = Align.CENTER;
 
         return this;
     }
@@ -803,8 +731,8 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup RowTop()
     {
-        _rowAlign |= LibGDXSharp.Utils.Align.TOP;
-        _rowAlign &= ~LibGDXSharp.Utils.Align.BOTTOM;
+        _rowAlign |= Align.TOP;
+        _rowAlign &= ~Align.BOTTOM;
 
         return this;
     }
@@ -815,8 +743,8 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup RowLeft()
     {
-        _rowAlign |= LibGDXSharp.Utils.Align.LEFT;
-        _rowAlign &= ~LibGDXSharp.Utils.Align.RIGHT;
+        _rowAlign |= Align.LEFT;
+        _rowAlign &= ~Align.RIGHT;
 
         return this;
     }
@@ -827,8 +755,8 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup RowBottom()
     {
-        _rowAlign |= LibGDXSharp.Utils.Align.BOTTOM;
-        _rowAlign &= ~LibGDXSharp.Utils.Align.TOP;
+        _rowAlign |= Align.BOTTOM;
+        _rowAlign &= ~Align.TOP;
 
         return this;
     }
@@ -839,8 +767,41 @@ public class HorizontalGroup : WidgetGroup
     /// </summary>
     public HorizontalGroup RowRight()
     {
-        _rowAlign |= LibGDXSharp.Utils.Align.RIGHT;
-        _rowAlign &= ~LibGDXSharp.Utils.Align.LEFT;
+        _rowAlign |= Align.RIGHT;
+        _rowAlign &= ~Align.LEFT;
+
+        return this;
+    }
+
+    #endregion alignment
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// </summary>
+    /// <param name="fill"> 0f will use preferred width </param>.
+    public HorizontalGroup SetFill( float fill = 1f )
+    {
+        this.Fill = fill;
+
+        return this;
+    }
+
+    /// <summary>
+    /// When true and wrap is false, the rows will take up the
+    /// entire horizontal group height.
+    /// </summary>
+    public HorizontalGroup SetExpand( bool expand = true )
+    {
+        this.Expand = expand;
+
+        return this;
+    }
+
+    public HorizontalGroup Grow()
+    {
+        Expand = true;
+        Fill   = 1;
 
         return this;
     }
@@ -854,18 +815,21 @@ public class HorizontalGroup : WidgetGroup
             return;
         }
 
-        shapes.Set( PrimitiveType.Lines );
+        shapes.Set( OpenGL.PrimitiveType.Lines );
 
         if ( Stage != null )
         {
             shapes.Color = Stage.DebugColor;
         }
 
-        shapes.Rect( X + PadLeft, Y + PadBottom,
-                     OriginX, OriginY,
+        shapes.Rect( X + PadLeft,
+                     Y + PadBottom,
+                     OriginX,
+                     OriginY,
                      Width - PadLeft - PadRight,
                      Height - PadBottom - PadTop,
-                     ScaleX, ScaleY,
+                     ScaleX,
+                     ScaleY,
                      Rotation );
     }
 

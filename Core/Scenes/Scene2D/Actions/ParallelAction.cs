@@ -22,7 +22,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 public class ParallelAction : Action
 {
     private readonly List< Action > _actions = new( 4 );
-    private bool _complete;
+    private          bool           _complete;
 
     protected ParallelAction()
     {
@@ -71,9 +71,9 @@ public class ParallelAction : Action
         }
 
         _complete = true;
-        
-        Pool<object>? pool = base.Pool;
-        
+
+        Pool< Action >? pool = base.Pool;
+
         // Ensure this action can't be returned to the pool while executing.
         base.Pool = null;
 
@@ -121,7 +121,7 @@ public class ParallelAction : Action
     public void AddAction( Action action )
     {
         _actions.Add( action );
-        
+
         if ( Actor != null )
         {
             action.Actor = Actor;
@@ -146,10 +146,10 @@ public class ParallelAction : Action
     public new string ToString()
     {
         var buffer = new StringBuilder( 64 );
-        
+
         buffer.Append( base.ToString() );
         buffer.Append( '(' );
-        
+
         for ( int i = 0, n = this._actions.Count; i < n; i++ )
         {
             if ( i > 0 )

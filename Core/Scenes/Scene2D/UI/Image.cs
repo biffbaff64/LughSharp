@@ -37,7 +37,7 @@ public class Image : Widget
     private int        _alignment;      // Backing value for property Alignment
     private IDrawable? _drawable;
 
-    public Image() : this( null as IDrawable )
+    public Image() : this( ( IDrawable )null! )
     {
     }
 
@@ -67,8 +67,6 @@ public class Image : Widget
 
     public Image( IDrawable? drawable, Scaling scaling, int align = Align.CENTER )
     {
-        ArgumentNullException.ThrowIfNull( drawable );
-
         SetDrawable( drawable );
 
         this._scaling  = scaling;

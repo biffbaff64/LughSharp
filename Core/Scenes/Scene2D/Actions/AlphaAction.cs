@@ -28,7 +28,7 @@ public class AlphaAction : TemporalAction
 
     private float _start;
 
-    protected new void Begin()
+    protected override void Begin()
     {
         if ( Target == null )
         {

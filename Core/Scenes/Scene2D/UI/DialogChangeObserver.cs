@@ -19,7 +19,7 @@ using LibGDXSharp.Scenes.Listeners;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [PublicAPI]
-public class DialogChangeObserver : IEventListener
+public class DialogChangeObserver : ChangeListener
 {
     private readonly Dialog _dialog;
 
@@ -28,7 +28,7 @@ public class DialogChangeObserver : IEventListener
         this._dialog = d;
     }
 
-    public bool Handle( Event ev )
+    public override bool Handle( Event ev )
     {
         return false;
     }

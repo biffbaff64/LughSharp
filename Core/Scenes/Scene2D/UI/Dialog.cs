@@ -34,13 +34,12 @@ public class Dialog : Window
     public Table? ButtonTable           { get; private set; }
     public bool   CancelHide            { get; set; }
 
-    private IEventListener  _dialogChangeListener = null!;
-    private IEventListener  _dialogClickListener  = null!;
-    private IEventListener  _dialogFocusListener  = null!;
-    private IEventListener  _dialogInputListener  = null!;
+    private ChangeListener  _dialogChangeListener = null!;
+    private FocusListener   _dialogFocusListener  = null!;
+    private InputListener   _dialogInputListener  = null!;
     private IgnoreTouchDown _ignoreTouchDown      = null!;
 
-    private readonly Skin? _skin;
+    private Skin? _skin;
 
     private Dictionary< Actor, object >? _values = new();
 
@@ -88,17 +87,18 @@ public class Dialog : Window
 
         this._dialogFocusListener  = new DialogFocusObserver( this );
         this._dialogChangeListener = new DialogChangeObserver( this );
-        this._dialogClickListener  = new DialogClickObserver( this );
         this._dialogInputListener  = new DialogInputObserver( this );
 
         ButtonTable.AddListener( new ButtonTableChangeListener( this ) );
 
         AddCaptureListener( _dialogChangeListener );
-        AddCaptureListener( _dialogClickListener );
         AddCaptureListener( _dialogFocusListener );
         AddCaptureListener( _dialogInputListener );
     }
 
+    /// <summary>
+    /// Sets the <see cref="Stage"/> which this Dialog will act on.
+    /// </summary>
     protected new void SetStage( Stage? stage )
     {
         if ( stage == null )
@@ -114,15 +114,17 @@ public class Dialog : Window
     }
 
     /// <summary>
-    /// Adds a label to the content table. The dialog must have
-    /// been constructed with a skin to use this method. 
+    /// Adds a label to the content table. The dialog needs to have been constructed
+    /// with a <see cref="Skin"/> to use this method. If it hasn't, a default Skin
+    /// will be created which may need further adjustments.
     /// </summary>
     public Dialog Text( string? text )
     {
         if ( _skin == null )
         {
-            throw new IllegalStateException
-                ( "This method may only be used if the dialog was constructed with a Skin." );
+            this._skin = new Skin();
+
+            DefaultSkinProvided();
         }
 
         return Text( text, _skin.Get< Label.LabelStyle >() );
@@ -147,16 +149,17 @@ public class Dialog : Window
     }
 
     /// <summary>
-    /// Adds a text button to the button table. Null will be passed to
-    /// <see cref="Result(object)"/> if this button is clicked. The
-    /// dialog must have been constructed with a skin to use this method.
+    /// Adds a text button to the button table. Null will be passed to <see cref="Result(object)"/>
+    /// if this button is clicked. The dialog must have been constructed with a skin to use this
+    /// method. If it hasn't, a default Skin will be created which may need further adjustments.
     /// </summary>
     public Dialog Button( string text, object? obj = null )
     {
         if ( _skin == null )
         {
-            throw new IllegalStateException
-                ( "This method may only be used if the dialog was constructed with a Skin." );
+            this._skin = new Skin();
+
+            DefaultSkinProvided();
         }
 
         return Button( text, obj, _skin.Get< TextButton.TextButtonStyle >() );
@@ -294,9 +297,10 @@ public class Dialog : Window
         if ( action != null )
         {
             AddCaptureListener( _ignoreTouchDown );
-            AddAction( Actions.Sequence( action,
-                                         Actions.RemoveListener( _ignoreTouchDown, true ),
-                                         Actions.RemoveActor() ) );
+
+            AddAction( SceneActions.Sequence( action,
+                                              SceneActions.RemoveListener( _ignoreTouchDown, true ),
+                                              SceneActions.RemoveActor() ) );
         }
         else
         {
@@ -374,6 +378,13 @@ public class Dialog : Window
     {
     }
 
+    private void DefaultSkinProvided()
+    {
+        Gdx.App.Debug( "Dialog",
+                       "This method may only be used if the dialog was constructed "
+                     + "with a Skin, a default Skin has been provided." );
+    }
+    
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

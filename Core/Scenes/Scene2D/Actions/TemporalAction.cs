@@ -49,7 +49,7 @@ public abstract class TemporalAction : Action
             return true;
         }
 
-        Pool< object >? pool = base.Pool;
+        Pool< Action >? pool = base.Pool;
 
         // Ensure this action can't be returned to the pool while executing.
         base.Pool = null;

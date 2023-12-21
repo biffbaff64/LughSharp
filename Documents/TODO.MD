@@ -1024,7 +1024,7 @@ SCENES.SCENE2D/UI
     - DONE - CheckBox                       
     - DONE - Container                      
     - IP   - Dialog                         
-    - IP   - HorizontalGroup                
+    - DONE - HorizontalGroup                
     - DONE - Image                          
     -      - ImageButton                    
     -      - ImageTextButton                

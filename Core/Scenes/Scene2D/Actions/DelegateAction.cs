@@ -34,7 +34,7 @@ public abstract class DelegateAction : Action
     /// </returns>
     public override bool Act( float delta )
     {
-        Pool< object >? pool = base.Pool;
+        Pool< Action >? pool = base.Pool;
         
         // Ensure this action can't be returned to the pool inside the delegate action.
         base.Pool = null;
@@ -49,18 +49,18 @@ public abstract class DelegateAction : Action
         }
     }
 
-    public new void Restart()
+    public override void Restart()
     {
         this.Action?.Restart();
     }
 
-    public new void Reset()
+    public override void Reset()
     {
         base.Reset();
         this.Action = null;
     }
 
-    public new Actor? Actor
+    public override Actor? Actor
     {
         get => base.Actor;
         set
@@ -74,7 +74,7 @@ public abstract class DelegateAction : Action
         }
     }
 
-    public new Actor? Target
+    public override Actor? Target
     {
         get => base.Target;
         set

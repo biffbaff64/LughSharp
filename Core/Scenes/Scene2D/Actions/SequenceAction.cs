@@ -71,7 +71,7 @@ public class SequenceAction : ParallelAction
             return true;
         }
 
-        Pool< object >? pool = base.Pool;
+        Pool< Action >? pool = base.Pool;
 
         // Ensure this action can't be returned to the pool while executings.
         base.Pool = null;

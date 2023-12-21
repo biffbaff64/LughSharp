@@ -29,7 +29,7 @@ public abstract class Action : IPoolable
     /// <summary>
     /// The actor this action targets, or null if a target has not been set.
     /// </summary>
-    public Actor? Target { get; set; }
+    public virtual Actor? Target { get; set; }
 
     /// <summary>
     /// The actor this action is attached to, or null if it is not attached.
@@ -77,7 +77,7 @@ public abstract class Action : IPoolable
     /// <summary>
     /// The <see cref="Actor"/> this Action is attached to.
     /// </summary>
-    public Actor? Actor
+    public virtual Actor? Actor
     {
         // Returns null if the action is not attached to an actor.
         get => _actor;

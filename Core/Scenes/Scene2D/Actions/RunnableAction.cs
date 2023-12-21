@@ -16,8 +16,6 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-using System.Threading;
-
 [PublicAPI]
 public class RunnableAction : Action
 {
@@ -44,20 +42,20 @@ public class RunnableAction : Action
             throw new GdxRuntimeException( "Runnable is not initialised!" );
         }
 
-        Pool< object >? pool = base.Pool;
+//        Pool< object >? pool = base.Pool;
 
         // Ensure this action can't be returned to the pool inside the runnable.
         base.Pool = null;
 
-        try
-        {
-            var thread = new Thread( Runnable! );
-            thread.Start();
-        }
-        finally
-        {
-            base.Pool = pool;
-        }
+//        try
+//        {
+//            var thread = new Thread( Runnable! );
+//            thread.Start();
+//        }
+//        finally
+//        {
+//            base.Pool = pool;
+//        }
     }
 
     public new void Restart()
@@ -71,5 +69,5 @@ public class RunnableAction : Action
         Runnable = null;
     }
 
-    public ThreadStart? Runnable { get; set; }
+    public Runnable? Runnable { get; set; }
 }

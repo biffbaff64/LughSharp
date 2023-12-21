@@ -26,19 +26,16 @@ public class AddAction : Action
 
     public override bool Act( float delta )
     {
-        Target?.AddAction( Action );
+        Target?.AddAction( this.Action );
 
         return true;
     }
 
-    public override void Restart()
-    {
-        Action?.Restart();
-    }
+    public override void Restart() => this.Action?.Restart();
 
     public override void Reset()
     {
         base.Reset();
-        Action = null;
+        this.Action = null;
     }
 }
