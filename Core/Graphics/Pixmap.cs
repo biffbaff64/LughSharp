@@ -118,6 +118,9 @@ public class Pixmap : IDisposable
 
     private int _color = 0;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Creates a new Pixmap instance with the given width, height and format.
     /// </summary>

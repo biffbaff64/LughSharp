@@ -176,7 +176,7 @@ public class Button : Table, IDisableable
     /// Returns the button's style. Modifying the returned style may not have an
     /// effect until <see cref="Style"/> set() is called.
     /// </summary>
-    public ButtonStyle? Style
+    public virtual ButtonStyle? Style
     {
         get => _style;
 
@@ -257,7 +257,7 @@ public class Button : Table, IDisableable
         return Style?.Up;
     }
 
-    public new void Draw( IBatch batch, float parentAlpha )
+    public virtual new void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 

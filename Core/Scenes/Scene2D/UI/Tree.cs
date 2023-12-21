@@ -28,8 +28,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// <typeparam name="TNode"> The type of nodes in the tree. </typeparam>
 /// <typeparam name="TValue"> The type of values for each node. </typeparam>
 [PublicAPI]
-public class Tree<TNode, TValue> : WidgetGroup
-    where TNode : Tree< TNode, TValue >.Node
+public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue >.Node
 {
     private readonly Vector2 _tmp = new();
 
@@ -42,20 +41,27 @@ public class Tree<TNode, TValue> : WidgetGroup
     public TNode?         OverNode      { get; set; }
 
     private TreeSelection _selection;
+    private bool          _sizeInvalid      = true;
     private float         _iconSpacingLeft  = 2;
     private float         _iconSpacingRight = 2;
     private float         _paddingLeft;
     private float         _paddingRight;
     private float         _prefWidth;
     private float         _prefHeight;
-    private bool          _sizeInvalid = true;
     private TNode?        _foundNode;
 
+    /// <summary>
+    /// Construct a new Tree using the supplied <see cref="Skin"/>
+    /// and a default <see cref="TreeStyle"/> from that skin.
+    /// </summary>
     public Tree( Skin skin )
         : this( skin.Get< TreeStyle >() )
     {
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Tree( Skin skin, string styleName )
         : this( skin.Get< TreeStyle >( styleName ) )
     {
@@ -95,143 +101,468 @@ public class Tree<TNode, TValue> : WidgetGroup
 
     public void Insert( int index, TNode node )
     {
+        int actorIndex;
+
+        if ( node.Parent != null )
+        {
+            node.Parent.Remove( node );
+            node.Parent = null;
+        }
+        else
+        {
+            var existingIndex = RootNodes.IndexOf( node );
+
+            if ( existingIndex != -1 )
+            {
+                if ( existingIndex == index )
+                {
+                    return;
+                }
+
+                if ( existingIndex < index )
+                {
+                    index--;
+                }
+
+                RootNodes.RemoveAt( existingIndex );
+
+                actorIndex = node.Actor!.GetZIndex();
+
+                if ( actorIndex != -1 )
+                {
+                    node.RemoveFromTree( this, actorIndex );
+                }
+            }
+        }
+
+        RootNodes.Insert( index, node );
+
+        if ( index == 0 )
+        {
+            actorIndex = 0;
+        }
+        else if ( index < ( RootNodes.Count - 1 ) )
+        {
+            actorIndex = RootNodes[ index + 1 ].Actor!.GetZIndex();
+        }
+        else
+        {
+            TNode before = RootNodes[ index - 1 ];
+
+            actorIndex = before.Actor!.GetZIndex() + before.CountActors();
+        }
+
+        node.AddToTree( this, actorIndex );
     }
 
     public void Remove( TNode node )
     {
+        if ( node.Parent != null )
+        {
+            node.Parent.Remove( node );
+
+            return;
+        }
+
+        if ( !RootNodes.Remove( node ) )
+        {
+            return;
+        }
+
+        var actorIndex = node.Actor!.GetZIndex();
+
+        if ( actorIndex != -1 )
+        {
+            node.RemoveFromTree( this, actorIndex );
+        }
     }
 
     public override void ClearChildren()
     {
+        base.ClearChildren();
+
+        OverNode = null;
+        RootNodes.Clear();
+        _selection.Clear();
     }
 
     public override void Invalidate()
     {
+        base.Invalidate();
+
+        _sizeInvalid = true;
     }
 
     private float PlusMinusWidth()
     {
-        return 0f;
+        if ( Style == null )
+        {
+            throw new GdxRuntimeException( "Style should not be null!" );
+        }
+
+        var width = Math.Max( Style.Plus.MinWidth, Style.Minus.MinWidth );
+
+        if ( Style.PlusOver != null )
+        {
+            width = Math.Max( width, Style.PlusOver.MinWidth );
+        }
+
+        if ( Style.MinusOver != null )
+        {
+            width = Math.Max( width, Style.MinusOver.MinWidth );
+        }
+
+        return width;
     }
 
     private void ComputeSize()
     {
+        _sizeInvalid = false;
+        _prefWidth   = PlusMinusWidth();
+        _prefHeight  = 0;
+
+        ComputeSize( RootNodes, 0, _prefWidth );
+
+        _prefWidth += ( _paddingLeft + _paddingRight );
     }
 
     private void ComputeSize( List< TNode > nodes, float indent, float plusMinusWidth )
     {
+        var ySpacing = this.YSpacing;
+        var spacing  = ( _iconSpacingLeft + _iconSpacingRight );
+
+        for ( int i = 0, n = nodes.Count; i < n; i++ )
+        {
+            TNode  node     = nodes[ i ];
+            var    rowWidth = indent + plusMinusWidth;
+            Actor? actor    = node.Actor;
+
+            if ( actor != null )
+            {
+                if ( actor is ILayout layout )
+                {
+                    rowWidth    += layout.PrefWidth;
+                    node.Height =  layout.PrefHeight;
+                }
+                else
+                {
+                    rowWidth    += actor.Width;
+                    node.Height =  actor.Height;
+                }
+
+                if ( node.Icon != null )
+                {
+                    rowWidth    += spacing + node.Icon.MinWidth;
+                    node.Height =  Math.Max( node.Height, node.Icon.MinHeight );
+                }
+
+                _prefWidth  =  Math.Max( _prefWidth, rowWidth );
+                _prefHeight += node.Height + ySpacing;
+
+                if ( node.IsExpanded )
+                {
+                    ComputeSize( node.NodeChildren!, indent + IndentSpacing, plusMinusWidth );
+                }
+            }
+        }
     }
+
 
     public override void Layout()
     {
+        if ( sizeInvalid ) computeSize();
+        layout( rootNodes, paddingLeft, getHeight() - ySpacing / 2, plusMinusWidth() );
     }
 
     private float Layout( List< TNode > nodes, float indent, float y, float plusMinusWidth )
     {
-        return 0f;
+        float ySpacing        = this.ySpacing;
+        float iconSpacingLeft = this.iconSpacingLeft;
+        float spacing         = iconSpacingLeft + iconSpacingRight;
+
+        for ( int i = 0, n = nodes.size; i < n; i++ )
+        {
+            N     node = nodes.get( i );
+            float x    = indent + plusMinusWidth;
+
+            if ( node.icon != null )
+                x += spacing + node.icon.getMinWidth();
+            else
+                x += iconSpacingLeft;
+
+            if ( node.actor instanceof Layout) ( ( Layout )node.actor ).pack();
+            y -= node.getHeight();
+            node.actor.setPosition( x, y );
+            y -= ySpacing;
+            if ( node.expanded ) y = layout( node.children, indent + indentSpacing, y, plusMinusWidth );
+        }
+
+        return y;
     }
 
     public override void Draw( IBatch batch, float parentAlpha )
     {
+        drawBackground( batch, parentAlpha );
+        Color color = getColor();
+        batch.setColor( color.r, color.g, color.b, color.a * parentAlpha );
+        draw( batch, rootNodes, paddingLeft, plusMinusWidth() );
+        super.draw( batch, parentAlpha ); // Draw node actors.
     }
 
+    /// <summary>
+    /// Called to draw the background.
+    /// Default implementation draws the style background drawable.
+    /// </summary>
     protected void DrawBackground( IBatch batch, float parentAlpha )
     {
+        if ( style.background != null )
+        {
+            Color color = getColor();
+            batch.setColor( color.r, color.g, color.b, color.a * parentAlpha );
+            style.background.draw( batch, getX(), getY(), getWidth(), getHeight() );
+        }
     }
 
     private void Draw( IBatch batch, List< TNode > nodes, float indent, float plusMinusWidth )
     {
+        Rectangle cullingArea = getCullingArea();
+        float     cullBottom  = 0, cullTop = 0;
+
+        if ( cullingArea != null )
+        {
+            cullBottom = cullingArea.y;
+            cullTop    = cullBottom + cullingArea.height;
+        }
+
+        TreeStyle style = this.style;
+        float     x     = getX(), y = getY(), expandX = x + indent, iconX = expandX + plusMinusWidth + iconSpacingLeft;
+
+        for ( int i = 0, n = nodes.size; i < n; i++ )
+        {
+            N     node   = nodes.get( i );
+            Actor actor  = node.actor;
+            float actorY = actor.getY(), height = node.height;
+
+            if ( cullingArea == null || ( actorY + height >= cullBottom && actorY <= cullTop ) )
+            {
+                if ( selection.contains( node ) && style.selection != null )
+                {
+                    drawSelection( node, style.selection, batch, x, y + actorY - ySpacing / 2, getWidth(), height + ySpacing );
+                }
+                else if ( node == overNode && style.over != null )
+                {
+                    drawOver( node, style.over, batch, x, y + actorY - ySpacing / 2, getWidth(), height + ySpacing );
+                }
+
+                if ( node.icon != null )
+                {
+                    float iconY = y + actorY + Math.round( ( height - node.icon.getMinHeight() ) / 2 );
+                    batch.setColor( actor.getColor() );
+                    drawIcon( node, node.icon, batch, iconX, iconY );
+                    batch.setColor( 1, 1, 1, 1 );
+                }
+
+                if ( node.children.size > 0 )
+                {
+                    Drawable expandIcon = getExpandIcon( node, iconX );
+                    float    iconY      = y + actorY + Math.round( ( height - expandIcon.getMinHeight() ) / 2 );
+                    drawExpandIcon( node, expandIcon, batch, expandX, iconY );
+                }
+            }
+            else if ( actorY < cullBottom )
+            {
+                return;
+            }
+
+            if ( node.expanded && node.children.size > 0 ) draw( batch, node.children, indent + indentSpacing, plusMinusWidth );
+        }
     }
 
     protected void DrawSelection( TNode node, IDrawable selection, IBatch batch, float x, float y, float width, float height )
     {
+        selection.draw(batch, x, y, width, height);
     }
 
     protected void DrawOver( TNode node, IDrawable over, IBatch batch, float x, float y, float width, float height )
     {
+        over.draw(batch, x, y, width, height);
     }
 
     protected void DrawExpandIcon( TNode node, IDrawable expandIcon, IBatch batch, float x, float y )
     {
+        expandIcon.draw(batch, x, y, expandIcon.getMinWidth(), expandIcon.getMinHeight());
     }
 
     protected void DrawIcon( TNode node, IDrawable icon, IBatch batch, float x, float y )
     {
+        icon.draw(batch, x, y, icon.getMinWidth(), icon.getMinHeight());
     }
 
+    /// <summary>
+    /// Returns the drawable for the expand icon. The default implementation returns
+    /// <see cref="Tree{T,V}.TreeStyle.PlusOver"/> or <see cref="Tree{T,V}.TreeStyle.MinusOver"/>
+    /// on the desktop if the node is the over node, the mouse is left of iconX, and
+    /// clicking would expand the node.
+    /// </summary>
     protected IDrawable? GetExpandIcon( TNode node, float iconX )
     {
-        return null;
+        boolean over = false;
+        if (node == overNode                                                    //
+         && Gdx.app.getType() == ApplicationType.Desktop                        //
+         && (!selection.getMultiple() || (!UIUtils.ctrl() && !UIUtils.shift())) //
+           ) {
+            float mouseX                            = screenToLocalCoordinates(tmp.set(Gdx.input.getX(), 0)).x;
+            if (mouseX >= 0 && mouseX < iconX) over = true;
+        }
+        if (over) {
+            Drawable icon = node.expanded ? style.minusOver : style.plusOver;
+            if (icon != null) return icon;
+        }
+        return node.expanded ? style.minus : style.plus;
     }
 
     public TNode? GetNodeAt( float y )
     {
-        return null;
+        foundNode = null;
+        getNodeAt(rootNodes, y, getHeight());
+        return foundNode;
     }
 
     private float GetNodeAt( List< TNode > nodes, float y, float rowY )
     {
-        return 0f;
+        for (int i = 0, n = nodes.size; i < n; i++) {
+            N     node   = nodes.get(i);
+            float height = node.height;
+            rowY -= node.getHeight() - height; // Node subclass may increase getHeight.
+            if (y >= rowY - height - ySpacing && y < rowY) {
+                foundNode = node;
+                return -1;
+            }
+            rowY -= height + ySpacing;
+            if (node.expanded) {
+                rowY = getNodeAt(node.children, y, rowY);
+                if (rowY == -1) return -1;
+            }
+        }
+        return rowY;
     }
 
     private void SelectNodes( List< TNode > nodes, float low, float high )
     {
+        for (int i = 0, n = nodes.size; i < n; i++) {
+            N node = nodes.get(i);
+            if (node.actor.getY() < low) break;
+            if (!node.isSelectable()) continue;
+            if (node.actor.getY() <= high) selection.add(node);
+            if (node.expanded) selectNodes(node.children, low, high);
+        }
     }
 
     public Selection< TNode >? GetSelection()
     {
-        return null;
+        return _selection;
     }
 
+    /// <summary>
+    /// Returns the first selected node, or null.
+    /// </summary>
     public TNode? GetSelectedNode()
     {
-        return null;
+        return _selection.First();
     }
 
+    /// <summary>
+    /// Returns the first selected value, or null.
+    /// </summary>
     public TValue? GetSelectedValue()
     {
         return default( TValue? );
     }
 
+    /// <summary>
+    /// Updates the order of the actors in the tree for all root nodes and all
+    /// child nodes.
+    /// This is useful after changing the order of <see cref="RootNodes"/>.
+    /// </summary>
     public void UpdateRootNodes()
     {
+        for (int i = 0, n = rootNodes.size; i < n; i++) {
+            N   node       = rootNodes.get(i);
+            int actorIndex = node.actor.getZIndex();
+            if (actorIndex != -1) node.removeFromTree(this, actorIndex);
+        }
+        for (int i = 0, n = rootNodes.size, actorIndex = 0; i < n; i++)
+            actorIndex += rootNodes.get(i).addToTree(this, actorIndex);
     }
 
     public void FindExpandedValues( List< TValue > values )
     {
+        findExpandedValues(rootNodes, values);
     }
 
     private static bool FindExpandedValues( List< TNode > nodes, List< TValue > values )
     {
-        return false;
+        boolean expanded = false;
+        for (int i = 0, n = nodes.size; i < n; i++) {
+            Node node = nodes.get(i);
+            if (node.expanded && !findExpandedValues(node.children, values)) values.add(node.value);
+        }
+        return expanded;
     }
 
     public void RestoreExpandedValues( List< TValue > values )
     {
+        for (int i = 0, n = values.size; i < n; i++) {
+            N node = findNode(values.get(i));
+            if (node != null) {
+                node.setExpanded(true);
+                node.expandTo();
+            }
+        }
     }
 
+    /// <summary>
+    /// Returns the node with the specified value, or null.
+    /// </summary>
     public TNode? FindNode( TValue value )
     {
-        return null;
+        if (value == null) throw new IllegalArgumentException("value cannot be null.");
+        return (N)findNode(rootNodes, value);
     }
 
     private static Node? FindNode<T>( List< T > nodes, object value )
         where T : Node
     {
+        for (int i = 0, n = nodes.size; i < n; i++) {
+            Node node = nodes.get(i);
+            if (value.equals(node.value)) return node;
+        }
+        for (int i = 0, n = nodes.size; i < n; i++) {
+            Node node  = nodes.get(i);
+            Node found = findNode(node.children, value);
+            if (found != null) return found;
+        }
         return null;
     }
 
     public void CollapseAll()
     {
+        collapseAll(rootNodes);
     }
 
     private static void CollapseAll<T>( List< T > nodes )
         where T : Node
     {
+        for (int i = 0, n = nodes.size; i < n; i++) {
+            Node node = nodes.get(i);
+            node.setExpanded(false);
+            collapseAll(node.children);
+        }
     }
 
     public void ExpandAll()
     {
+        ExpandAll( RootNodes );
     }
 
     private static void ExpandAll<T>( List< T > nodes )
@@ -367,16 +698,12 @@ public class Tree<TNode, TValue> : WidgetGroup
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// A <see cref="Tree{TN,TV}"/> node which has an actor and value.
+    /// A <see cref="Tree{TNode,TValue}"/> node which has an actor and value.
     /// <para>
     /// A subclass can be used so the generic type parameters don't need
     /// to be specified repeatedly.
     /// </para>
     /// </summary>
-
-//    /// <typeparam name="TNode"> The type for the node's parent and child nodes. </typeparam>
-//    /// <typeparam name="TValue"> The type for the node's value. </typeparam>
-//    /// <typeparam name="TNodeActor"> The type for the node's actor. </typeparam>
     [PublicAPI]
     public class Node
     {
@@ -384,11 +711,10 @@ public class Tree<TNode, TValue> : WidgetGroup
         public TNode?     Parent     { get; set; }
         public IDrawable? Icon       { get; set; }
         public bool       Selectable { get; set; } = true;
+        public float      Height     { get; set; }
+        public bool       IsExpanded { get; private set; }
 
-        private Actor?         _actor;
-        private List< TNode >? _children = new();
-        private bool           _expanded;
-        private float          _height;
+        private Actor? _actor;
 
         /// <summary>
         /// Creates a node without an actor. An actor must be
@@ -407,39 +733,38 @@ public class Tree<TNode, TValue> : WidgetGroup
 
         public void SetExpanded( bool expanded )
         {
-            if ( expanded == this._expanded )
+            if ( expanded == this.IsExpanded )
             {
                 return;
             }
 
-            this._expanded = expanded;
+            this.IsExpanded = expanded;
 
             Tree< TNode, TValue >? tree = GetTree();
 
-            if ( ( tree == null ) || ( this._children == null ) || ( this._actor == null ) )
-
+            if ( ( tree == null ) || ( this.NodeChildren == null ) || ( this._actor == null ) )
             {
                 return;
             }
 
-            if ( this._children.Count == 0 )
+            if ( this.NodeChildren.Count == 0 )
             {
                 return;
             }
 
-            TNode[] children   = this._children.ToArray();
+            TNode[] children   = this.NodeChildren.ToArray();
             var     actorIndex = this._actor.GetZIndex() + 1;
 
             if ( expanded )
             {
-                for ( int i = 0, n = this._children!.Count; i < n; i++ )
+                for ( int i = 0, n = this.NodeChildren!.Count; i < n; i++ )
                 {
                     actorIndex += children[ i ].AddToTree( tree, actorIndex );
                 }
             }
             else
             {
-                for ( int i = 0, n = this._children!.Count; i < n; i++ )
+                for ( int i = 0, n = this.NodeChildren!.Count; i < n; i++ )
                 {
                     children?[ i ].RemoveFromTree( tree, actorIndex );
                 }
@@ -450,19 +775,19 @@ public class Tree<TNode, TValue> : WidgetGroup
         /// Called to add the actor to the tree when the node's parent is expanded.
         /// </summary>
         /// <returns> The number of node actors added to the tree. </returns>
-        protected int AddToTree( Tree< TNode, TValue > tree, int actorIndex )
+        public int AddToTree( Tree< TNode, TValue > tree, int actorIndex )
         {
             tree.AddActorAt( actorIndex, _actor! );
 
-            if ( !_expanded )
+            if ( !IsExpanded )
             {
                 return 1;
             }
 
             var      childIndex = actorIndex + 1;
-            TNode[]? children   = this._children?.ToArray();
+            TNode[]? children   = this.NodeChildren?.ToArray();
 
-            for ( int i = 0, n = this._children!.Count; i < n; i++ )
+            for ( int i = 0, n = this.NodeChildren!.Count; i < n; i++ )
             {
                 childIndex += children![ i ].AddToTree( tree, childIndex );
             }
@@ -474,21 +799,21 @@ public class Tree<TNode, TValue> : WidgetGroup
         /// Called to remove the actor from the tree, eg when the node is
         /// removed or the node's parent is collapsed.
         /// </summary>
-        protected void RemoveFromTree( Tree< TNode, TValue > tree, int actorIndex )
+        public void RemoveFromTree( Tree< TNode, TValue > tree, int actorIndex )
         {
-            if ( !_expanded )
+            if ( !IsExpanded )
             {
                 return;
             }
 
-            TNode[]? children = this._children?.ToArray();
+            TNode[]? children = this.NodeChildren?.ToArray();
 
             if ( children is null )
             {
                 return;
             }
 
-            for ( int i = 0, n = this._children!.Count; i < n; i++ )
+            for ( int i = 0, n = this.NodeChildren!.Count; i < n; i++ )
             {
                 children[ i ].RemoveFromTree( tree, actorIndex );
             }
@@ -496,29 +821,29 @@ public class Tree<TNode, TValue> : WidgetGroup
 
         public void Add( TNode node )
         {
-            Insert( this._children!.Count, node );
+            Insert( this.NodeChildren!.Count, node );
         }
 
         public void AddAll( List< TNode > nodes )
         {
             for ( int i = 0, n = nodes.Count; i < n; i++ )
             {
-                Insert( this._children!.Count, nodes[ i ] );
+                Insert( this.NodeChildren!.Count, nodes[ i ] );
             }
         }
 
         public void Insert( int childIndex, TNode node )
         {
-            if ( _children == null )
+            if ( NodeChildren == null )
             {
                 return;
             }
-            
-            node.Parent = this.Parent;
-            
-            _children.Insert( childIndex, node );
 
-            if ( !_expanded )
+            node.Parent = this.Parent;
+
+            NodeChildren.Insert( childIndex, node );
+
+            if ( !IsExpanded )
             {
                 return;
             }
@@ -533,13 +858,13 @@ public class Tree<TNode, TValue> : WidgetGroup
                 {
                     actorIndex = _actor!.GetZIndex() + 1;
                 }
-                else if ( childIndex < ( _children?.Count - 1 ) )
+                else if ( childIndex < ( NodeChildren?.Count - 1 ) )
                 {
-                    actorIndex = _children![ childIndex + 1 ]._actor!.GetZIndex();
+                    actorIndex = NodeChildren![ childIndex + 1 ]._actor!.GetZIndex();
                 }
                 else
                 {
-                    TNode before = _children![ childIndex - 1 ];
+                    TNode before = NodeChildren![ childIndex - 1 ];
                     actorIndex = before.Actor!.GetZIndex() + before.CountActors();
                 }
 
@@ -547,18 +872,18 @@ public class Tree<TNode, TValue> : WidgetGroup
             }
         }
 
-        protected int CountActors()
+        public int CountActors()
         {
-            if ( !_expanded )
+            if ( !IsExpanded )
             {
                 return 1;
             }
 
             var count = 1;
 
-            for ( int i = 0, n = this._children!.Count; i < n; i++ )
+            for ( int i = 0, n = this.NodeChildren!.Count; i < n; i++ )
             {
-                count += this._children[ i ].CountActors();
+                count += this.NodeChildren[ i ].CountActors();
             }
 
             return count;
@@ -582,22 +907,22 @@ public class Tree<TNode, TValue> : WidgetGroup
         }
 
         /// <summary>
-        /// Remove the specified child node from this node. Does nothing if
-        /// the node is not a child of this node.
+        /// Remove the specified child node from this node.
+        /// Does nothing if the node is not a child of this node.
         /// </summary>
         public void Remove( TNode? node )
         {
-            if ( ( node == null ) || ( _children == null ) )
+            if ( ( node == null ) || ( NodeChildren == null ) )
             {
                 return;
             }
 
-            if ( !_children.Remove( node ) )
+            if ( !NodeChildren.Remove( node ) )
             {
                 return;
             }
 
-            if ( !_expanded )
+            if ( !IsExpanded )
             {
                 return;
             }
@@ -610,22 +935,22 @@ public class Tree<TNode, TValue> : WidgetGroup
         /// </summary>
         public void ClearChildren()
         {
-            if ( _expanded )
+            if ( IsExpanded )
             {
                 Tree< TNode, TValue >? tree = GetTree();
 
-                if ( ( tree != null ) && ( this._children != null ) )
+                if ( ( tree != null ) && ( this.NodeChildren != null ) )
                 {
                     var actorIndex = _actor!.GetZIndex() + 1;
 
-                    for ( int i = 0, n = this._children.Count; i < n; i++ )
+                    for ( int i = 0, n = this.NodeChildren.Count; i < n; i++ )
                     {
-                        this._children[ i ].RemoveFromTree( tree, actorIndex );
+                        this.NodeChildren[ i ].RemoveFromTree( tree, actorIndex );
                     }
                 }
             }
 
-            _children?.Clear();
+            NodeChildren?.Clear();
         }
 
         /// <summary>
@@ -667,36 +992,24 @@ public class Tree<TNode, TValue> : WidgetGroup
             }
         }
 
-        public bool IsExpanded()
-        {
-            return _expanded;
-        }
-
         /// <summary>
         /// If the children order is changed, <see cref="UpdateChildren()"/> must
         /// be called to ensure the node's actors are in the correct order. That
         /// is not necessary if this node is not in the tree or is not expanded,
         /// because then the child node's actors are not in the tree.
         /// </summary>
-        public List< TNode >? GetChildren()
-        {
-            return _children;
-        }
+        public List< TNode >? NodeChildren { get; set; } = new();
 
-        public bool HasChildren()
-        {
-            return _children?.Count > 0;
-        }
+        public bool HasChildren() => NodeChildren?.Count > 0;
 
         /// <summary>
-        /// Updates the order of the actors in the tree for this node and all
-        /// child nodes. This is useful after changing the order.
-        /// of <see cref="GetChildren()"/>.
+        /// Updates the order of the actors in the tree for this node and all child nodes.
+        /// This is useful after changing the order. of <see cref="NodeChildren"/>.
         /// </summary>
         /// <seealso cref="Tree{TNode,TValue}.UpdateRootNodes()"/>
         public void UpdateChildren()
         {
-            if ( !_expanded )
+            if ( !IsExpanded )
             {
                 return;
             }
@@ -708,8 +1021,8 @@ public class Tree<TNode, TValue> : WidgetGroup
                 return;
             }
 
-            TNode[]? children   = this._children?.ToArray();
-            var      n          = this._children!.Count;
+            TNode[]? children   = this.NodeChildren?.ToArray();
+            var      n          = this.NodeChildren!.Count;
             var      actorIndex = _actor!.GetZIndex() + 1;
 
             for ( var i = 0; i < n; i++ )
@@ -750,7 +1063,7 @@ public class Tree<TNode, TValue> : WidgetGroup
                 return ( TNode )this;
             }
 
-            return ( TNode? )Tree< TNode, TValue >.FindNode( this._children!, value );
+            return ( TNode? )Tree< TNode, TValue >.FindNode( this.NodeChildren!, value );
         }
 
         /// <summary>
@@ -759,7 +1072,7 @@ public class Tree<TNode, TValue> : WidgetGroup
         public void CollapseAll()
         {
             SetExpanded( false );
-            Tree< TNode, TValue >.CollapseAll( this._children! );
+            Tree< TNode, TValue >.CollapseAll( this.NodeChildren! );
         }
 
         /// <summary>
@@ -769,9 +1082,9 @@ public class Tree<TNode, TValue> : WidgetGroup
         {
             SetExpanded( true );
 
-            if ( _children?.Count > 0 )
+            if ( NodeChildren?.Count > 0 )
             {
-                Tree< TNode, TValue >.ExpandAll( _children );
+                Tree< TNode, TValue >.ExpandAll( NodeChildren );
             }
         }
 
@@ -791,8 +1104,8 @@ public class Tree<TNode, TValue> : WidgetGroup
 
         public void FindExpandedValues( List< TValue > values )
         {
-            if ( _expanded
-              && !Tree< TNode, TValue >.FindExpandedValues( this._children!, values ) )
+            if ( IsExpanded
+              && !Tree< TNode, TValue >.FindExpandedValues( this.NodeChildren!, values ) )
             {
                 values.Add( Value! );
             }
@@ -819,7 +1132,7 @@ public class Tree<TNode, TValue> : WidgetGroup
         /// </summary>
         public virtual float GetHeight()
         {
-            return _height;
+            return Height;
         }
 
         /// <summary>

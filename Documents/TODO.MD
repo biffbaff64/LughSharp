@@ -1018,16 +1018,19 @@ SCENES.SCENE2D/UI
     TODO: I don't like the way Cell and Value classes are implemented.
           They seem confusing and are candidates for a rewrite.
 
-    - DONE - Button                         
-    - DONE - ButtonGroup                    
-    - DONE - Cell                           
-    - DONE - CheckBox                       
-    - DONE - Container                      
-    - IP   - Dialog                         
-    - DONE - HorizontalGroup                
-    - DONE - Image                          
-    -      - ImageButton                    
-    -      - ImageTextButton                
+    - DONE - Button
+    - DONE - ButtonGroup
+    - DONE - Cell
+    - DONE - CheckBox
+    - DONE - Container
+    - DONE - Dialog
+            - IP   - DialogChangeObserver
+            - IP   - DialogFocusObserver
+            - IP   - DialogInputObserver
+    - DONE - HorizontalGroup
+    - DONE - Image
+    - DONE - ImageButton
+    - IP   - ImageTextButton                
     - DONE - Label                          
     -      - List                           
     -      - ParticleEffectActor            

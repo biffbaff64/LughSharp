@@ -336,7 +336,7 @@ public class Color
     /// Multiplies the RGB values by the alpha.
     /// </summary>
     /// <returns>This color for chaining.</returns>
-    public Color PremultiplayAlpha()
+    public Color PremultiplyAlpha()
     {
         R *= A;
         G *= A;

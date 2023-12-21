@@ -45,6 +45,11 @@ public class Dialog : Window
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a new Dialog, using the supplied title and <see cref="Skin"/>
+    /// </summary>
+    /// <param name="title"> A string holding the dialog name to display. </param>
+    /// <param name="skin"></param>
     public Dialog( string title, Skin skin )
         : base( title, skin.Get< Window.WindowStyle >() )
     {
@@ -54,8 +59,14 @@ public class Dialog : Window
         Initialise();
     }
 
-    public Dialog( string title, Skin skin, string windowStyleName )
-        : base( title, skin.Get< Window.WindowStyle >( windowStyleName ) )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="title"> A string holding the dialog name to display. </param>
+    /// <param name="skin"></param>
+    /// <param name="windowStyle"> The <see cref="Window.WindowStyle"/> to use. </param>
+    public Dialog( string title, Skin skin, string windowStyle )
+        : base( title, skin.Get< Window.WindowStyle >( windowStyle ) )
     {
         base.Skin  = skin;
         this._skin = skin;
@@ -63,12 +74,21 @@ public class Dialog : Window
         Initialise();
     }
 
+    /// <summary>
+    /// Creates a new Dialog window, using the supplied name and <see cref="Window.WindowStyle"/>.
+    /// </summary>
+    /// <param name="title"> A string holding the dialog name to display. </param>
+    /// <param name="windowStyle"> The <see cref="Window.WindowStyle"/> to use. </param>
     public Dialog( string title, Window.WindowStyle windowStyle )
         : base( title, windowStyle )
     {
         Initialise();
     }
 
+    /// <summary>
+    /// Initialises the basic elements of this dialog, including the
+    /// necessary listeners.
+    /// </summary>
     private void Initialise()
     {
         base.IsModal = true;

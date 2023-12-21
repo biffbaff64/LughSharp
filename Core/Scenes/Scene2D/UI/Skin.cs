@@ -228,7 +228,7 @@ public class Skin : IDisposable
     /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
     public T Get<T>()
     {
-        return ( T )Get< T >( "default" );
+        return Get< T >( "default" );
     }
 
     /// <summary>
@@ -309,9 +309,9 @@ public class Skin : IDisposable
     /// </summary>
     public Dictionary< string, object >? GetAll( Type type ) => Resources[ type ];
 
-    public Color GetColor( string name ) => ( Color )Get< Color >( name );
+    public Color GetColor( string name ) => Get< Color >( name );
 
-    public BitmapFont GetFont( string name ) => ( BitmapFont )Get< BitmapFont >( name );
+    public BitmapFont GetFont( string name ) => Get< BitmapFont >( name );
 
     /// <summary>
     /// Returns a registered texture region. If no region is found but a
