@@ -80,7 +80,7 @@ public class DataOutput : BinaryWriter
     /// <param name="value"> May be null.  </param>
     public void WriteString( string? value )
     {
-        if ( string.ReferenceEquals( value, null ) )
+        if ( value == null )
         {
             Write( 0 );
 
@@ -125,20 +125,25 @@ public class DataOutput : BinaryWriter
         {
             int c = value[ charIndex ];
 
-            if ( c <= 0x007F )
+            switch ( c )
             {
-                Write( ( sbyte )c );
-            }
-            else if ( c > 0x07FF )
-            {
-                Write( unchecked( ( sbyte )( 0xE0 | ( ( c >> 12 ) & 0x0F ) ) ) );
-                Write( unchecked( ( sbyte )( 0x80 | ( ( c >> 6 ) & 0x3F ) ) ) );
-                Write( unchecked( ( sbyte )( 0x80 | ( c & 0x3F ) ) ) );
-            }
-            else
-            {
-                Write( unchecked( ( sbyte )( 0xC0 | ( ( c >> 6 ) & 0x1F ) ) ) );
-                Write( unchecked( ( sbyte )( 0x80 | ( c & 0x3F ) ) ) );
+                case <= 0x007F:
+                    Write( ( sbyte )c );
+
+                    break;
+
+                case > 0x07FF:
+                    Write( unchecked( ( sbyte )( 0xE0 | ( ( c >> 12 ) & 0x0F ) ) ) );
+                    Write( unchecked( ( sbyte )( 0x80 | ( ( c >> 6 ) & 0x3F ) ) ) );
+                    Write( unchecked( ( sbyte )( 0x80 | ( c & 0x3F ) ) ) );
+
+                    break;
+
+                default:
+                    Write( unchecked( ( sbyte )( 0xC0 | ( ( c >> 6 ) & 0x1F ) ) ) );
+                    Write( unchecked( ( sbyte )( 0x80 | ( c & 0x3F ) ) ) );
+
+                    break;
             }
         }
     }

@@ -81,7 +81,7 @@ public partial record TextureAtlasData
             var line = reader.ReadLine();
 
             // Ignore empty lines before first entry.
-            while ( !string.ReferenceEquals( line, null ) && ( line.Trim().Length == 0 ) )
+            while ( ( line != null ) && ( line.Trim().Length == 0 ) )
             {
                 line = reader.ReadLine();
             }
@@ -89,7 +89,7 @@ public partial record TextureAtlasData
             // Header entries.
             while ( true )
             {
-                if ( string.ReferenceEquals( line, null ) || ( line.Trim().Length == 0 ) )
+                if ( ( line == null ) || ( line.Trim().Length == 0 ) )
                 {
                     break;
                 }
@@ -110,7 +110,7 @@ public partial record TextureAtlasData
 
             while ( true )
             {
-                if ( string.ReferenceEquals( line, null ) )
+                if ( line == null )
                 {
                     break;
                 }

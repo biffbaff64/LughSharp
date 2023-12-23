@@ -58,18 +58,18 @@ public class SubbandLayer2Stereo : SubbandLayer2
     /// <summary>
     /// 
     /// </summary>
-    public override void ReadScaleFactorSelection( Bitstream stream, Crc16 crc )
+    public override void ReadScaleFactorSelection( Bitstream stream, Crc16? crc )
     {
         if ( allocation != 0 )
         {
             scfsi = stream.GetBitsFromBuffer( 2 );
-            crc.AddBits( scfsi, 2 );
+            crc?.AddBits( scfsi, 2 );
         }
 
         if ( channel2Allocation != 0 )
         {
             channel2Scfsi = stream.GetBitsFromBuffer( 2 );
-            crc.AddBits( channel2Scfsi, 2 );
+            crc?.AddBits( channel2Scfsi, 2 );
         }
     }
 
@@ -179,7 +179,7 @@ public class SubbandLayer2Stereo : SubbandLayer2
     /// <summary>
     /// 
     /// </summary>
-    public override bool PutNextSample( int channels, SynthesisFilter filter1, SynthesisFilter filter2 )
+    public override bool PutNextSample( int channels, SynthesisFilter? filter1, SynthesisFilter? filter2 )
     {
         var returnvalue = base.PutNextSample( channels, filter1, filter2 );
 
@@ -192,26 +192,20 @@ public class SubbandLayer2Stereo : SubbandLayer2
                 sample = ( sample + channel2D[ 0 ] ) * channel2C[ 0 ];
             }
 
-            if ( groupnumber <= 4 )
-            {
-                sample *= channel2Scalefactor1;
-            }
-            else if ( groupnumber <= 8 )
-            {
-                sample *= channel2Scalefactor2;
-            }
-            else
-            {
-                sample *= channel2Scalefactor3;
-            }
+            sample *= groupnumber switch
+                      {
+                          <= 4 => channel2Scalefactor1,
+                          <= 8 => channel2Scalefactor2,
+                          _    => channel2Scalefactor3
+                      };
 
             if ( channels == OutputChannels.BOTH_CHANNELS )
             {
-                filter2.AddSample( sample, subbandnumber );
+                filter2?.AddSample( sample, subbandnumber );
             }
             else
             {
-                filter1.AddSample( sample, subbandnumber );
+                filter1?.AddSample( sample, subbandnumber );
             }
         }
 

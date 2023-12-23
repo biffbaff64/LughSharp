@@ -98,7 +98,7 @@ public interface ISound
     void Stop( long soundId );
 
     /// <summary>
-    /// Pauses the sound instance with the given id as returned by <see cref="play()"/>
+    /// Pauses the sound instance with the given id as returned by <see cref="Play()"/>
     /// or <see cref="Play(float)"/>. If the sound is no longer playing, this has no effect.
     /// </summary>
     /// <param name="soundId"> the sound id  </param>
@@ -121,7 +121,7 @@ public interface ISound
 
     /// <summary>
     /// Changes the pitch multiplier of the sound instance with the given id as returned
-    /// by <see cref="play()"/> or <see cref="play(float)"/>.
+    /// by <see cref="Play()"/> or <see cref="Play(float)"/>.
     /// If the sound is no longer playing, this has no effect.
     /// </summary>
     /// <param name="soundId"> the sound id </param>

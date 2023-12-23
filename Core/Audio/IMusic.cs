@@ -97,6 +97,6 @@ public interface IMusic
         /// Called when the end of a media source is reached during playback.
         /// </summary>
         /// <param name="music"> the Music that reached the end of the file</param>
-        public abstract void OnCompletion( IMusic music );
+        public void OnCompletion( IMusic music );
     }
 }

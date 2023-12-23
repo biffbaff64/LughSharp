@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Async;
 
+[PublicAPI]
 public class ThreadUtils
 {
     //TODO: Rename to avoid confusion

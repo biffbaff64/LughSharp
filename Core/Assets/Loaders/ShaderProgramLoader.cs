@@ -79,36 +79,29 @@ public class ShaderProgramLoader
 
         if ( parameter != null )
         {
-            if ( !string.ReferenceEquals( ( ( ShaderProgramParameter )parameter ).VertexFile, null ) )
+            if ( ( ( ( ShaderProgramParameter )parameter ).VertexFile != null ) )
             {
                 vertFileName = ( ( ShaderProgramParameter )parameter ).VertexFile;
             }
 
-            if ( !string.ReferenceEquals( ( ( ShaderProgramParameter )parameter ).FragmentFile, null ) )
+            if ( ( ( ( ShaderProgramParameter )parameter ).FragmentFile != null ) )
             {
                 fragFileName = ( ( ShaderProgramParameter )parameter ).FragmentFile;
             }
         }
 
-        if ( string.ReferenceEquals( vertFileName, null )
-             && fileName.EndsWith( _fragmentFileSuffix, StringComparison.Ordinal ) )
+        if ( ( vertFileName == null ) && fileName.EndsWith( _fragmentFileSuffix, StringComparison.Ordinal ) )
         {
-//            vertFileName = fileName.Substring( 0, fileName.Length - _fragmentFileSuffix.Length ) + _vertexFileSuffix;
             vertFileName = fileName[ ..^_fragmentFileSuffix.Length ] + _vertexFileSuffix;
         }
 
-        if ( string.ReferenceEquals( fragFileName, null )
-             && fileName.EndsWith( _vertexFileSuffix, StringComparison.Ordinal ) )
+        if ( ( fragFileName == null ) && fileName.EndsWith( _vertexFileSuffix, StringComparison.Ordinal ) )
         {
-//            fragFileName = fileName.Substring( 0, fileName.Length - _vertexFileSuffix.Length ) + _fragmentFileSuffix;
             fragFileName = fileName[ ..^_vertexFileSuffix.Length ] + _fragmentFileSuffix;
         }
 
-        FileInfo? vertexFile   = string.ReferenceEquals( vertFileName, null ) ? file : Resolve( vertFileName );
-        FileInfo? fragmentFile = string.ReferenceEquals( fragFileName, null ) ? file : Resolve( fragFileName );
-
-//        var vertexCode   = vertexFile!.ReadString();
-//        var fragmentCode = vertexFile!.Equals( fragmentFile ) ? vertexCode : fragmentFile.ReadString();
+        FileInfo? vertexFile   = ( vertFileName == null ) ? file : Resolve( vertFileName );
+        FileInfo? fragmentFile = ( fragFileName == null ) ? file : Resolve( fragFileName );
 
         var vertexCode = File.ReadAllText( Path.GetFullPath( vertexFile!.Name ) );
 
@@ -118,12 +111,12 @@ public class ShaderProgramLoader
 
         if ( parameter != null )
         {
-            if ( !string.ReferenceEquals( ( ( ShaderProgramParameter )parameter ).PrependVertexCode, null ) )
+            if ( ( ( ( ShaderProgramParameter )parameter ).PrependVertexCode != null ) )
             {
                 vertexCode = ( ( ShaderProgramParameter )parameter ).PrependVertexCode + vertexCode;
             }
 
-            if ( !string.ReferenceEquals( ( ( ShaderProgramParameter )parameter ).PrependFragmentCode, null ) )
+            if ( ( ( ( ShaderProgramParameter )parameter ).PrependFragmentCode != null ) )
             {
                 fragmentCode = ( ( ShaderProgramParameter )parameter ).PrependFragmentCode + fragmentCode;
             }
@@ -140,6 +133,7 @@ public class ShaderProgramLoader
         return shaderProgram;
     }
 
+    [PublicAPI]
     public class ShaderProgramParameter : AssetLoaderParameters
     {
         /// <summary>

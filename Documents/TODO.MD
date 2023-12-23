@@ -66,7 +66,7 @@ ASSETS/LOADERS
     - DONE - PixmapLoader
     - DONE - ShaderProgramLoader
     - DONE - SkinLoader
-    - DONE - SoundLoader
+    - IP   - SoundLoader
     - DONE - SynchronousAssetLoader
     - DONE - TextureAtlasLoader
     - DONE - TextureLoader
@@ -1245,7 +1245,7 @@ UTILS/VIEWPORT
 UTILS/XML
 ---------
 
-    - DONE - XmlReader
+    - IP   - XmlReader          Some 'unreachable code' fixes needed
     - DONE - XmlReaderData
     - DONE - XmlWriter
 

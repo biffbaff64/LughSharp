@@ -16,8 +16,6 @@
 
 using System.Collections;
 
-using LibGDXSharp.Scenes.Scene2D;
-
 namespace LibGDXSharp.Utils.Collections;
 
 /// <summary>
@@ -411,7 +409,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         return -1;
     }
 
-    public override bool Contains( T value )
+    public override bool Contains( T? value )
     {
         var i = Size - 1;
 
@@ -507,7 +505,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 
         var array = ( SnapshotArray< T >? )obj;
 
-        if ( ( array == null ) || !array.Ordered )
+        if ( array is not { Ordered: true } )
         {
             return false;
         }

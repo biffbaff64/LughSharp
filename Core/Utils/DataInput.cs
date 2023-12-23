@@ -84,8 +84,8 @@ public class DataInput : BinaryReader
         }
 
         // Try to read 7 bit ASCII chars.
-        int charIndex = 0;
-        int b         = 0;
+        var charIndex = 0;
+        var b         = 0;
 
         while ( charIndex < charCount )
         {
@@ -114,30 +114,27 @@ public class DataInput : BinaryReader
         {
             switch ( b >> 4 )
             {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
+                case >= 0 and <= 7:
+                {
                     _chars[ charIndex ] = ( char )b;
 
                     break;
-
-                case 12:
-                case 13:
-                    _chars[ charIndex ] = ( char )( ( ( b & 0x1F ) << 6 ) | ( Read() & 0x3F ) );
+                }
+                case 12 or 13:
+                {
+                    _chars[ charIndex ] = ( char )( ( ( b & 0x1F ) << 6 )
+                                                  | ( Read() & 0x3F ) );
 
                     break;
-
+                }
                 case 14:
-                    _chars[ charIndex ] = ( char )( ( ( b & 0x0F ) << 12 ) 
-                                                    | ( ( Read() & 0x3F ) << 6 ) 
-                                                    | ( Read() & 0x3F ) );
+                {
+                    _chars[ charIndex ] = ( char )( ( ( b & 0x0F ) << 12 )
+                                                  | ( ( Read() & 0x3F ) << 6 )
+                                                  | ( Read() & 0x3F ) );
 
                     break;
+                }
             }
 
             if ( ++charIndex >= charCount )

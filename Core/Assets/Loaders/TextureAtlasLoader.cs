@@ -25,7 +25,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </summary>
 [PublicAPI]
 public class TextureAtlasLoader
-    : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >
+    : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >, IDisposable
 {
     private TextureAtlasData? _data;
 
@@ -46,7 +46,10 @@ public class TextureAtlasLoader
                                        FileInfo? file,
                                        TextureAtlasParameter parameter )
     {
-        if ( _data == null ) throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
+        if ( _data == null )
+        {
+            throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
+        }
         
         foreach ( TextureAtlasData.Page page in _data.Pages )
         {
@@ -70,10 +73,7 @@ public class TextureAtlasLoader
                                                              FileInfo? atlasFile,
                                                              AssetLoaderParameters? parameter )
     {
-        if ( atlasFile == null )
-        {
-            throw new GdxRuntimeException( "Atlas File cannot be null!" );
-        }
+        ArgumentNullException.ThrowIfNull( atlasFile );
 
         DirectoryInfo? imgDir = atlasFile.Directory;
 
@@ -103,13 +103,27 @@ public class TextureAtlasLoader
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
+    }
+
+    /// <summary>
     /// Performs application-defined tasks associated with freeing,
     /// releasing, or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
+    [PublicAPI]
     public class TextureAtlasParameter : AssetLoaderParameters
     {
         public bool FlipVertically { get; private set; }

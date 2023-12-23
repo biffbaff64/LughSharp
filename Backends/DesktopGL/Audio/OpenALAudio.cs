@@ -14,7 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files;
 using LibGDXSharp.Core.Utils.Collections;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
@@ -259,7 +258,7 @@ public class OpenALAudio : IGLAudio
                 AL.Sourcei( sourceId, AL.BUFFER, 0 );
                 AL.Sourcef( sourceId, AL.GAIN, 1 );
                 AL.Sourcef( sourceId, AL.PITCH, 1 );
-                AL.Source3f( sourceId, AL.POSITION, 0, 0, 1f );
+                AL.Source3F( sourceId, AL.POSITION, 0, 0, 1f );
 
                 return ( int )sourceId;
             }
@@ -538,7 +537,7 @@ public class OpenALAudio : IGLAudio
 
         if ( ( sourceId != null ) && ( sourceId != -1 ) )
         {
-            AL.Source3f( ( uint )sourceId,
+            AL.Source3F( ( uint )sourceId,
                          AL.POSITION,
                          MathUtils.Cos( ( pan - 1 ) * MathUtils.HALF_PI ),
                          0,

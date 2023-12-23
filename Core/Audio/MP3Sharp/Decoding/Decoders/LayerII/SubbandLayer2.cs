@@ -486,16 +486,14 @@ public class SubbandLayer2 : ASubband
             }
 
             // table 3-B.2c or 3-B.2d
-            if ( ( channelBitrate == 1 ) || ( channelBitrate == 2 ) )
+            if ( channelBitrate is 1 or 2 )
             {
                 if ( subbandnumber <= 1 )
                 {
                     return 4;
                 }
-                else
-                {
-                    return 3;
-                }
+
+                return 3;
             }
 
             // tables 3-B.2a or 3-B.2b
@@ -554,7 +552,7 @@ public class SubbandLayer2 : ASubband
             }
         }
 
-        if ( ( channelBitrate == 1 ) || ( channelBitrate == 2 ) )
+        if ( channelBitrate is 1 or 2 )
         {
             // table 3-B.2c or 3-B.2d
             groupingtable[ channel ] = TableCdGroupingtables[ allocation ];
@@ -578,26 +576,31 @@ public class SubbandLayer2 : ASubband
             {
                 groupingtable[ channel ] = TableAb234Groupingtables[ allocation ];
 
-                if ( subbandnumber <= 10 )
+                switch ( subbandnumber )
                 {
-                    factor[ 0 ]     = TableAb2Factor[ allocation ];
-                    codelength[ 0 ] = TableAb2Codelength[ allocation ];
-                    c[ 0 ]          = TableAb2C[ allocation ];
-                    fd[ 0 ]         = TableAb2D[ allocation ];
-                }
-                else if ( subbandnumber <= 22 )
-                {
-                    factor[ 0 ]     = TableAb3Factor[ allocation ];
-                    codelength[ 0 ] = TableAb3Codelength[ allocation ];
-                    c[ 0 ]          = TableAb3C[ allocation ];
-                    fd[ 0 ]         = TableAb3D[ allocation ];
-                }
-                else
-                {
-                    factor[ 0 ]     = TableAb4Factor[ allocation ];
-                    codelength[ 0 ] = TableAb4Codelength[ allocation ];
-                    c[ 0 ]          = TableAb4C[ allocation ];
-                    fd[ 0 ]         = TableAb4D[ allocation ];
+                    case <= 10:
+                        factor[ 0 ]     = TableAb2Factor[ allocation ];
+                        codelength[ 0 ] = TableAb2Codelength[ allocation ];
+                        c[ 0 ]          = TableAb2C[ allocation ];
+                        fd[ 0 ]         = TableAb2D[ allocation ];
+
+                        break;
+
+                    case <= 22:
+                        factor[ 0 ]     = TableAb3Factor[ allocation ];
+                        codelength[ 0 ] = TableAb3Codelength[ allocation ];
+                        c[ 0 ]          = TableAb3C[ allocation ];
+                        fd[ 0 ]         = TableAb3D[ allocation ];
+
+                        break;
+
+                    default:
+                        factor[ 0 ]     = TableAb4Factor[ allocation ];
+                        codelength[ 0 ] = TableAb4Codelength[ allocation ];
+                        c[ 0 ]          = TableAb4C[ allocation ];
+                        fd[ 0 ]         = TableAb4D[ allocation ];
+
+                        break;
                 }
             }
         }
@@ -606,8 +609,10 @@ public class SubbandLayer2 : ASubband
     /// <summary>
     /// 
     /// </summary>
-    public override void ReadAllocation( Bitstream stream, Header header, Crc16 crc )
+    public override void ReadAllocation( Bitstream stream, Header? header, Crc16 crc )
     {
+        ArgumentNullException.ThrowIfNull( header );
+        
         var length = GetAllocationLength( header );
         allocation = stream.GetBitsFromBuffer( length );
         crc.AddBits( allocation, length );
@@ -628,8 +633,10 @@ public class SubbandLayer2 : ASubband
     /// <summary>
     /// 
     /// </summary>
-    public override void ReadScaleFactor( Bitstream stream, Header header )
+    public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
+        ArgumentNullException.ThrowIfNull( header );
+        
         if ( allocation != 0 )
         {
             switch ( scfsi )
@@ -716,12 +723,7 @@ public class SubbandLayer2 : ASubband
 
         samplenumber = 0;
 
-        if ( ++groupnumber == 12 )
-        {
-            return true;
-        }
-
-        return false;
+        return ( ++groupnumber == 12 );
     }
 
     /// <summary>
@@ -738,27 +740,16 @@ public class SubbandLayer2 : ASubband
                 sample = ( sample + d[ 0 ] ) * cFactor[ 0 ];
             }
 
-            if ( groupnumber <= 4 )
-            {
-                sample *= scalefactor1;
-            }
-            else if ( groupnumber <= 8 )
-            {
-                sample *= scalefactor2;
-            }
-            else
-            {
-                sample *= scalefactor3;
-            }
+            sample *= groupnumber switch
+                      {
+                          <= 4 => scalefactor1,
+                          <= 8 => scalefactor2,
+                          _    => scalefactor3
+                      };
 
             filter1?.AddSample( sample, subbandnumber );
         }
 
-        if ( ++samplenumber == 3 )
-        {
-            return true;
-        }
-
-        return false;
+        return ( ++samplenumber == 3 );
     }
 }

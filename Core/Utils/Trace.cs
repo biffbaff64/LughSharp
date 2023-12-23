@@ -143,19 +143,21 @@ public static class Trace
                                bool condition = false,
                                string message = "" )
     {
-        if ( IsEnabled( LOG_ASSERT ) && condition )
+        if ( !IsEnabled( LOG_ASSERT ) || !condition )
         {
-            message = string.Join( DEBUG_TAG, message );
-
-            var callerID = new CallerID
-            {
-                fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-                methodName = callerMethod,
-                lineNumber = callerLine
-            };
-
-            Debug.Assert( false, CreateMessage( message, callerID ) );
+            return;
         }
+
+        message = string.Join( DEBUG_TAG, message );
+
+        var callerID = new CallerID
+        {
+            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+            methodName = callerMethod,
+            lineNumber = callerLine
+        };
+
+        Debug.Assert( false, CreateMessage( message, callerID ) );
     }
 
     /// <summary>
@@ -248,23 +250,25 @@ public static class Trace
                                     string message = "",
                                     params object[] args )
     {
-        if ( ( IsEnabled( LOG_DEBUG ) ) && condition )
+        if ( ( !IsEnabled( LOG_DEBUG ) ) || !condition )
         {
-            message = string.Join( DEBUG_TAG, message );
-
-            var callerID = new CallerID
-            {
-                fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-                methodName = callerMethod,
-                lineNumber = callerLine
-            };
-
-            var str = CreateMessage( message, callerID, args );
-
-            Console.WriteLine( str );
-
-            WriteToFile( str );
+            return;
         }
+
+        message = string.Join( DEBUG_TAG, message );
+
+        var callerID = new CallerID
+        {
+            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+            methodName = callerMethod,
+            lineNumber = callerLine
+        };
+
+        var str = CreateMessage( message, callerID, args );
+
+        Console.WriteLine( str );
+
+        WriteToFile( str );
     }
 
     /// <summary>
@@ -334,7 +338,7 @@ public static class Trace
 
         WriteToFile( message );
     }
-    
+
     /// <summary>
     /// Creates a debug/error/info message ready for dumping.
     /// </summary>
@@ -357,13 +361,10 @@ public static class Trace
             sb.Append( formatString );
         }
 
-        if ( args.Length > 0 )
+        foreach ( var arg in args )
         {
-            foreach ( var arg in args )
-            {
-                sb.Append( ' ' );
-                sb.Append( arg );
-            }
+            sb.Append( ' ' );
+            sb.Append( arg );
         }
 
         return sb.ToString();
@@ -421,7 +422,7 @@ public static class Trace
 
         _debugFileName = fileName;
 
-        using FileStream fs = File.Create( _debugFilePath + _debugFileName );
+        using System.IO.FileStream fs = File.Create( _debugFilePath + _debugFileName );
 
         DateTime dateTime = DateTime.Now;
 
@@ -478,15 +479,17 @@ public static class Trace
     /// <param name="text">String holding the text to write.</param>
     private static void WriteToFile( string text )
     {
-        if ( File.Exists( _debugFilePath + _debugFileName ) )
+        if ( !File.Exists( _debugFilePath + _debugFileName ) )
         {
-            using FileStream fs = File.Open( _debugFilePath + _debugFileName, FileMode.Append );
-
-            var debugLine = new UTF8Encoding( true ).GetBytes( text + "\n" );
-
-            fs.Write( debugLine, 0, debugLine.Length );
-            fs.Close();
+            return;
         }
+
+        using FileStream fs = File.Open( _debugFilePath + _debugFileName, FileMode.Append );
+
+        var debugLine = new UTF8Encoding( true ).GetBytes( text + "\n" );
+
+        fs.Write( debugLine, 0, debugLine.Length );
+        fs.Close();
     }
 
     /// <summary>
@@ -498,14 +501,13 @@ public static class Trace
     /// <returns> True if the level is enabled. </returns>
     private static bool IsEnabled( int traceLevel )
     {
-        if ( ( traceLevel == LOG_DEBUG )
-          || ( traceLevel == LOG_INFO )
-          || ( traceLevel == LOG_ERROR )
-          || ( traceLevel == LOG_ASSERT ) )
-        {
-            return ( TraceLevel & traceLevel ) != 0;
-        }
-
-        return false;
+        return traceLevel switch
+               {
+                   LOG_DEBUG
+                       or LOG_INFO
+                       or LOG_ERROR
+                       or LOG_ASSERT => ( TraceLevel & traceLevel ) != 0,
+                   _ => false
+               };
     }
 }

@@ -83,7 +83,7 @@ public class Selector<T>
     /// <summary>
     /// Faster than quickselect for n = min
     /// </summary>
-    private int FastMin( T[] items, IComparer< T > comp, int size )
+    private static int FastMin( T[] items, IComparer< T > comp, int size )
     {
         var lowestIdx = 0;
 
@@ -103,7 +103,7 @@ public class Selector<T>
     /// <summary>
     /// Faster than quickselect for n = max
     /// </summary>
-    private int FastMax( T[] items, IComparer< T > comp, int size )
+    private static int FastMax( T[] items, IComparer< T > comp, int size )
     {
         var highestIdx = 0;
 

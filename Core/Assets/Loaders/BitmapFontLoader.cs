@@ -95,7 +95,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
             return deps;
         }
 
-        _data = new BitmapFont.BitmapFontData( file, ( ( BitmapFontParameter )parameter! ).Flip );
+        _data = new BitmapFont.BitmapFontData( file, ( ( BitmapFontParameter )parameter ).Flip );
 
         if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
         {
@@ -192,11 +192,18 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
         return new BitmapFont( _data, regs, true );
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            this._data = null;
+        }
+    }
+
+    /// <inheritdoc/>
     public void Dispose()
     {
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 }

@@ -63,12 +63,13 @@ public class Timer
     {
         lock ( ThreadLock )
         {
-            if ( ( _thread == null ) || ( _thread.files != Gdx.Files ) )
+            if ( ( _thread != null ) && ( _thread.files == Gdx.Files ) )
             {
-                _thread?.Dispose();
-
-                _thread = new TimerThread();
+                return _thread;
             }
+
+            _thread?.Dispose();
+            _thread = new TimerThread();
 
             return _thread;
         }
@@ -182,13 +183,15 @@ public class Timer
     {
         for ( int i = 0, n = tasks.Count; i < n; i++ )
         {
-            if ( tasks[ i ] != null )
+            if ( tasks[ i ] == null )
             {
-                lock ( tasks[ i ]! )
-                {
-                    tasks[ i ]!.executeTimeMillis = 0;
-                    tasks[ i ]!.timer             = null;
-                }
+                continue;
+            }
+
+            lock ( tasks[ i ]! )
+            {
+                tasks[ i ]!.executeTimeMillis = 0;
+                tasks[ i ]!.timer             = null;
             }
         }
 
@@ -405,7 +408,7 @@ public class Timer
     }
 
     [PublicAPI]
-    public class TimerThread : ILifecycleListener, IDisposable
+    public class TimerThread : ILifecycleListener
     {
         public readonly List< Timer > instances = new( capacity: 1 );
         public readonly IFiles?       files;
@@ -506,21 +509,30 @@ public class Timer
             }
         }
 
-        public void Dispose()
+        private void Dispose( bool disposing )
         {
-            lock ( ThreadLock )
+            if ( disposing )
             {
-                if ( _thread == this )
+                lock ( ThreadLock )
                 {
-                    _thread = null;
+                    if ( _thread == this )
+                    {
+                        _thread = null;
+                    }
+
+                    instances.Clear();
+
+                    Monitor.PulseAll( ThreadLock );
                 }
 
-                instances.Clear();
-
-                Monitor.PulseAll( ThreadLock );
+                Gdx.App.RemoveLifecycleListener( this );
             }
+        }
 
-            Gdx.App.RemoveLifecycleListener( this );
+        public void Dispose()
+        {
+            Dispose( true );
+            GC.SuppressFinalize( this );
         }
     }
 }

@@ -23,7 +23,7 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class BufferOverflowException : System.Exception
 {
-    public BufferOverflowException() : base()
+    public BufferOverflowException()
     {
     }
 

@@ -20,7 +20,7 @@ namespace LibGDXSharp.Assets.Loaders;
 /// <see cref="AssetLoader"/> to load <see cref="ISound"/> instances.
 /// </summary>
 [PublicAPI]
-public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundParameter >
+public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundParameter >, IDisposable
 {
     /// <summary>
     /// The <see cref="ISound"/> instance currently loaded by this <see cref="SoundLoader"/>.
@@ -82,12 +82,18 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundPar
         return sound;
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <inheritdoc/>
     public void Dispose()
     {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
     }
 
     public class SoundParameter : AssetLoaderParameters

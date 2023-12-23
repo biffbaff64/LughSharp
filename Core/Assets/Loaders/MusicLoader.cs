@@ -81,11 +81,17 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
         return music;
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <inheritdoc/>
     public void Dispose()
     {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
     }
 }

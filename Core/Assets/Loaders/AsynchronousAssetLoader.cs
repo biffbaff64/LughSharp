@@ -57,7 +57,7 @@ public abstract class AsynchronousAssetLoader : AssetLoader
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public void UnloadAsync( AssetManager manager,
+    public static void UnloadAsync( AssetManager manager,
                              string fileName,
                              FileInfo file,
                              AssetLoaderParameters parameter )

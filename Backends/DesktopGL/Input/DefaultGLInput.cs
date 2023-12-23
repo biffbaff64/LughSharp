@@ -642,7 +642,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     /// Performs application-defined tasks associated with freeing, releasing,
     /// or resetting unmanaged resources.
     /// </summary>
-    public void Dispose( bool disposing )
+    private void Dispose( bool disposing )
     {
         if ( disposing )
         {

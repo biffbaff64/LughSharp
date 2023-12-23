@@ -483,7 +483,7 @@ public partial class XmlReader
 
             throw new SerializationException
                 (
-                 $"Error parsing XML on line {lineNumber} near: {new string( data, p, Math.Min( 32, pe - p ) )}"
+                $"Error parsing XML on line {lineNumber} near: {new string( data, p, Math.Min( 32, pe - p ) )}"
                 );
         }
 
@@ -599,7 +599,7 @@ public partial class XmlReader
 
             var value = Attributes.Get( name );
 
-            if ( ReferenceEquals( value, null ) )
+            if ( ( value == null ) )
             {
                 throw new GdxRuntimeException( $"Element {Name} doesn't have attribute: {name}" );
             }
@@ -888,12 +888,7 @@ public partial class XmlReader
         {
             var value = GetAttribute( name, null );
 
-            if ( ReferenceEquals( value, null ) )
-            {
-                return defaultValue;
-            }
-
-            return float.Parse( value );
+            return ( value == null ) ? defaultValue : float.Parse( value );
         }
 
         /// <summary>
@@ -911,12 +906,7 @@ public partial class XmlReader
         {
             var value = GetAttribute( name, null );
 
-            if ( ReferenceEquals( value, null ) )
-            {
-                return defaultValue;
-            }
-
-            return int.Parse( value );
+            return ( value == null ) ? defaultValue : int.Parse( value );
         }
 
         /// <summary>
@@ -934,12 +924,7 @@ public partial class XmlReader
         {
             var value = GetAttribute( name, null );
 
-            if ( ReferenceEquals( value, null ) )
-            {
-                return defaultValue;
-            }
-
-            return bool.Parse( value );
+            return ( value == null ) ? defaultValue : bool.Parse( value );
         }
 
         /// <summary>
@@ -951,12 +936,7 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            if ( ReferenceEquals( value, null ) )
-            {
-                throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" );
-            }
-
-            return value;
+            return value ?? throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" );
         }
 
         /// <summary>
@@ -972,7 +952,7 @@ public partial class XmlReader
             {
                 str = Attributes.Get( name );
 
-                if ( !ReferenceEquals( str, null ) )
+                if ( str == null )
                 {
                     return str;
                 }
@@ -980,14 +960,9 @@ public partial class XmlReader
 
             Element? child = GetChildByName( name );
 
-            if ( child == null )
-            {
-                return defaultValue;
-            }
-
-            str = child.Text;
-
-            return str ?? defaultValue;
+            return ( child == null )
+                ? defaultValue
+                : child.Text ?? defaultValue;
         }
 
         /// <summary>
@@ -999,13 +974,9 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            if ( ReferenceEquals( value, null ) )
-            {
-                throw new GdxRuntimeException
-                    ( $"Element {Name} doesn't have attribute or child: {name}" );
-            }
-
-            return int.Parse( value );
+            return ( value == null )
+                ? throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" )
+                : int.Parse( value );
         }
 
         /// <summary>
@@ -1017,7 +988,7 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            return ReferenceEquals( value, null ) ? defaultValue : int.Parse( value );
+            return ( value == null ) ? defaultValue : int.Parse( value );
         }
 
         /// <summary>
@@ -1029,13 +1000,9 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            if ( ReferenceEquals( value, null ) )
-            {
-                throw new GdxRuntimeException
-                    ( $"Element {Name} doesn't have attribute or child: {name}" );
-            }
-
-            return float.Parse( value );
+            return ( value == null )
+                ? throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" )
+                : float.Parse( value );
         }
 
         /// <summary>
@@ -1047,7 +1014,7 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            return ReferenceEquals( value, null ) ? defaultValue : float.Parse( value );
+            return ( value == null ) ? defaultValue : float.Parse( value );
         }
 
         /// <summary>
@@ -1059,13 +1026,9 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            if ( ReferenceEquals( value, null ) )
-            {
-                throw new GdxRuntimeException
-                    ( $"Element {Name} doesn't have attribute or child: {name}" );
-            }
-
-            return bool.Parse( value );
+            return ( value == null )
+                ? throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" )
+                : bool.Parse( value );
         }
 
         /// <summary>
@@ -1077,7 +1040,7 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            return ReferenceEquals( value, null ) ? defaultValue : bool.Parse( value );
+            return ( value == null ) ? defaultValue : bool.Parse( value );
         }
     }
 }

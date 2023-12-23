@@ -71,7 +71,7 @@ public class AssetLoadingTask
         {
             if ( !DependenciesLoaded )
             {
-                dependencies = asyncLoader.GetDependencies( AssetDesc.FilePath ?? "",
+                dependencies = asyncLoader.GetDependencies( AssetDesc.FilePath,
                                                             Resolve( asyncLoader, AssetDesc ),
                                                             AssetDesc.Parameters );
 
@@ -148,7 +148,7 @@ public class AssetLoadingTask
     /// <param name="loader"></param>
     /// <param name="assetDesc"></param>
     /// <returns></returns>
-    private FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
+    private static FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
     {
         if ( assetDesc is { File: null } descriptor )
         {

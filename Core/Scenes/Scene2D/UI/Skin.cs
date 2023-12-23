@@ -746,7 +746,7 @@ public class Skin : IDisposable
         // Determine new style.
         var name = Find( style );
 
-        if ( string.ReferenceEquals( name, null ) )
+        if ( name == null )
         {
             return;
         }

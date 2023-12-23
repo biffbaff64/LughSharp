@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Async;
 
+[PublicAPI]
 public interface IAsyncTask
 {
     void Call();

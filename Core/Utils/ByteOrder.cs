@@ -23,12 +23,6 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class ByteOrder
 {
-    public enum Endians
-    {
-        Big_Endian,
-        Little_Endian
-    }
-
     private readonly string _name;
 
     private ByteOrder( string name )

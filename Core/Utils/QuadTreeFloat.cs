@@ -105,7 +105,7 @@ public class QuadTreeFloat : IPoolable
                 return;
             }
         }
-        else if ( count == Values.Count() )
+        else if ( count == Values.Count )
         {
             Values.EnsureCapacity( GrowValues() );
         }
@@ -408,7 +408,7 @@ public class QuadTreeFloat : IPoolable
         }
     }
 
-    public QuadTreeFloat GetNewObject()
+    public static QuadTreeFloat GetNewObject()
     {
         return new QuadTreeFloat();
     }

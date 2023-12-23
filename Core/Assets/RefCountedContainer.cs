@@ -18,7 +18,7 @@ namespace LibGDXSharp.Assets;
 
 internal interface IRefCountedContainer
 {
-    object? Asset    { get; set; }
+    object? Asset    { get; }
     int     RefCount { get; set; }
 }
 

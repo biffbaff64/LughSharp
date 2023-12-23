@@ -37,7 +37,7 @@ public class SubbandLayer1Stereo : SubbandLayer1
     /// <summary>
     /// 
     /// </summary>
-    public override void ReadAllocation( Bitstream stream, Header header, Crc16? crc )
+    public override void ReadAllocation( Bitstream stream, Header? header, Crc16? crc )
     {
         allocation = stream.GetBitsFromBuffer( 4 );
 
@@ -72,7 +72,7 @@ public class SubbandLayer1Stereo : SubbandLayer1
     /// <summary>
     /// 
     /// </summary>
-    public override void ReadScaleFactor( Bitstream stream, Header header )
+    public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
         if ( allocation != 0 )
         {
@@ -90,7 +90,7 @@ public class SubbandLayer1Stereo : SubbandLayer1
     /// </summary>
     public override bool ReadSampleData( Bitstream stream )
     {
-        bool returnvalue = base.ReadSampleData( stream );
+        var returnvalue = base.ReadSampleData( stream );
 
         if ( channel2Allocation != 0 )
         {
@@ -103,13 +103,13 @@ public class SubbandLayer1Stereo : SubbandLayer1
     /// <summary>
     /// 
     /// </summary>
-    public override bool PutNextSample( int channels, SynthesisFilter filter1, SynthesisFilter filter2 )
+    public override bool PutNextSample( int channels, SynthesisFilter? filter1, SynthesisFilter? filter2 )
     {
         base.PutNextSample( channels, filter1, filter2 );
 
         if ( ( channel2Allocation != 0 ) && ( channels != OutputChannels.LEFT_CHANNEL ) )
         {
-            float sample2 = ( ( channel2Sample * channel2Factor ) + channel2Offset ) * channel2Scalefactor;
+            var sample2 = ( ( channel2Sample * channel2Factor ) + channel2Offset ) * channel2Scalefactor;
 
             if ( channels == OutputChannels.BOTH_CHANNELS )
             {

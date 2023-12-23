@@ -91,17 +91,6 @@ Swap via deconstruction
                         
     -------------------------------------------------------------------------------------------
 
-GLFrameBuffer<T : GLTexture>
-        -> FrameBufferCubemap< GLFrameBuffer< Cubemap > (Cubemap extends GLTexture)
-
-GLFrameBuffer<T : GLTexture>
-        -> FrameBuffer< GLFrameBuffer< Texture > (Texture extends GLTexture)
-                -> FloatFrameBuffer
-
-GLFrameBufferBuilder<T : GLFrameBuffer< GLTexture> >
-
-    -------------------------------------------------------------------------------------------
-    
 ArgumentException           - Raised when a non-null argument that is passed to a method is invalid.
 ArgumentNullException	    - Raised when null argument is passed to a method.
 ArgumentOutOfRangeException	- Raised when the value of an argument is outside the range of valid values.

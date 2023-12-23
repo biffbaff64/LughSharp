@@ -69,14 +69,14 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
     {
         var axis = map.Properties.Get< string >( "staggeraxis" );
 
-        if ( !string.ReferenceEquals( axis, null ) )
+        if ( axis != null )
         {
             _staggerAxisX = axis.Equals( "x" );
         }
 
         var index = map.Properties.Get< string >( "staggerindex" );
 
-        if ( !string.ReferenceEquals( index, null ) )
+        if ( index != null )
         {
             _staggerIndexEven = index.Equals( "even" );
         }

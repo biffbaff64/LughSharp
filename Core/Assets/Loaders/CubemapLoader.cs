@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Assets.Loaders;
 
 [PublicAPI]
-public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
+public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >, IDisposable
 {
     [PublicAPI]
     public struct CubemapLoaderInfo
@@ -25,7 +25,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         public string?       filename;
         public Cubemap?      cubemap;
         public ICubemapData? cubemapData;
-    };
+    }
 
     private CubemapLoaderInfo _loaderInfo = new()
     {
@@ -68,12 +68,12 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
                                     FileInfo? file,
                                     AssetLoaderParameters? parameter )
     {
+        const bool GEN_MIP_MAPS = false;
+
         _loaderInfo.filename = fileName!;
 
         if ( ( ( CubemapParameter? )parameter )?.cubemapData == null )
         {
-            var genMipMaps = false;
-
             _loaderInfo.cubemap = null;
 
             if ( parameter != null )
@@ -85,7 +85,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
             {
                 if ( fileName.Contains( ".ktx" ) || fileName.Contains( ".zktx" ) )
                 {
-                    _loaderInfo.cubemapData = new KtxTextureData( file, genMipMaps );
+                    _loaderInfo.cubemapData = new KtxTextureData( file, GEN_MIP_MAPS );
                 }
             }
         }
@@ -143,14 +143,20 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         return cubemap;
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <inheritdoc/>
     public void Dispose()
     {
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
+    }
+    
     [PublicAPI]
     public class CubemapParameter : AssetLoaderParameters
     {

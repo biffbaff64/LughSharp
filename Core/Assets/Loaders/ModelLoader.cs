@@ -172,7 +172,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
         lock ( items )
         {
-            for ( int i = 0; i < items.Count; i++ )
+            for ( var i = 0; i < items.Count; i++ )
             {
                 if ( items[ i ].key!.Equals( fileName ) )
                 {
@@ -191,7 +191,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
         // need to remove the textures from the managed disposables,
         // or ref counting won't work!
-        using IEnumerator< IDisposable > disposables = result.GetManagedDisposables().GetEnumerator();
+        IEnumerator< IDisposable > disposables = result.GetManagedDisposables().GetEnumerator();
 
         while ( disposables.MoveNext() )
         {

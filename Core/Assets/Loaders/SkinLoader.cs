@@ -20,7 +20,7 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 namespace LibGDXSharp.Assets.Loaders;
 
 [PublicAPI]
-public class SkinLoader : AsynchronousAssetLoader
+public class SkinLoader : AsynchronousAssetLoader, IDisposable
 {
     public SkinLoader( IFileHandleResolver resolver ) : base( resolver )
     {
@@ -73,7 +73,10 @@ public class SkinLoader : AsynchronousAssetLoader
                                      FileInfo? file,
                                      AssetLoaderParameters? parameter )
     {
-        var textureAtlasPath = Path.ChangeExtension( file?.FullName, ".atlas" );
+        ArgumentNullException.ThrowIfNull( manager );
+        ArgumentNullException.ThrowIfNull( file );
+        
+        var textureAtlasPath = Path.ChangeExtension( file.FullName, ".atlas" );
 
         Dictionary< string, object >? resources = null;
 
@@ -84,15 +87,10 @@ public class SkinLoader : AsynchronousAssetLoader
                 textureAtlasPath = ( ( SkinParameter )parameter ).textureAtlasPath;
             }
 
-            if ( ( ( SkinParameter )parameter! ).resources != null )
+            if ( ( ( SkinParameter )parameter ).resources != null )
             {
                 resources = ( ( SkinParameter )parameter ).resources;
             }
-        }
-
-        if ( manager == null )
-        {
-            throw new GdxRuntimeException( "manager cannot be NULL!" );
         }
 
         var  atlas = manager.Get< TextureAtlas >( textureAtlasPath! );
@@ -111,19 +109,26 @@ public class SkinLoader : AsynchronousAssetLoader
         return skin;
     }
 
-    private Skin NewSkin( TextureAtlas atlas )
+    private static Skin NewSkin( TextureAtlas atlas )
     {
         return new Skin( atlas );
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <inheritdoc/>
     public void Dispose()
     {
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
+    }
+
+    [PublicAPI]
     public class SkinParameter : AssetLoaderParameters
     {
         public readonly string?                       textureAtlasPath;

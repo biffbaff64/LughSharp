@@ -50,21 +50,32 @@ public class SubbandLayer1IntensityStereo : SubbandLayer1
         {
             sample = ( sample * factor ) + offset; // requantization
 
-            if ( channels == OutputChannels.BOTH_CHANNELS )
+            switch ( channels )
             {
-                float sample1 = sample * scalefactor, sample2 = sample * channel2Scalefactor;
-                filter1?.AddSample( sample1, subbandnumber );
-                filter2?.AddSample( sample2, subbandnumber );
-            }
-            else if ( channels == OutputChannels.LEFT_CHANNEL )
-            {
-                var sample1 = sample * scalefactor;
-                filter1?.AddSample( sample1, subbandnumber );
-            }
-            else
-            {
-                var sample2 = sample * channel2Scalefactor;
-                filter1?.AddSample( sample2, subbandnumber );
+                case OutputChannels.BOTH_CHANNELS:
+                {
+                    float sample1 = sample * scalefactor, sample2 = sample * channel2Scalefactor;
+                    filter1?.AddSample( sample1, subbandnumber );
+                    filter2?.AddSample( sample2, subbandnumber );
+
+                    break;
+                }
+
+                case OutputChannels.LEFT_CHANNEL:
+                {
+                    var sample1 = sample * scalefactor;
+                    filter1?.AddSample( sample1, subbandnumber );
+
+                    break;
+                }
+
+                default:
+                {
+                    var sample2 = sample * channel2Scalefactor;
+                    filter1?.AddSample( sample2, subbandnumber );
+
+                    break;
+                }
             }
         }
 

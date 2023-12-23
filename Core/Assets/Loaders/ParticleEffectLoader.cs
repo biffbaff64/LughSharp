@@ -65,22 +65,27 @@ public class ParticleEffectLoader
         
         var effect = new ParticleEffect();
 
-        if ( param is { AtlasFile: not null } )
+        switch ( param )
         {
-            effect.Load
-                (
-                file,
-                am.Get< TextureAtlas >( param.AtlasFile, typeof( TextureAtlas ) ),
-                param.AtlasPrefix
-                );
-        }
-        else if ( param is { ImagesDir: not null } )
-        {
-            effect.Load( file, param.ImagesDir );
-        }
-        else
-        {
-            effect.Load( file, file.Directory! );
+            case { AtlasFile: not null }:
+                effect.Load
+                    (
+                    file,
+                    am.Get< TextureAtlas >( param.AtlasFile, typeof( TextureAtlas ) ),
+                    param.AtlasPrefix
+                    );
+
+                break;
+
+            case { ImagesDir: not null }:
+                effect.Load( file, param.ImagesDir );
+
+                break;
+
+            default:
+                effect.Load( file, file.Directory! );
+
+                break;
         }
 
         return effect;
@@ -111,17 +116,13 @@ public class ParticleEffectLoader
     {
         List< AssetDescriptor >? deps = null;
 
-        if ( ( param != null )
-          && !string.ReferenceEquals( ( ( ParticleEffectParameter )param ).AtlasFile, null ) )
+        if ( ( param != null ) && ( ( ( ParticleEffectParameter )param ).AtlasFile != null ) )
         {
             deps = new List< AssetDescriptor >
             {
-                new
-                    (
-                    ( ( ParticleEffectParameter )param ).AtlasFile!,
-                    typeof( TextureAtlas ),
-                    ( ParticleEffectParameter )param
-                    )
+                new( ( ( ParticleEffectParameter )param ).AtlasFile!,
+                     typeof( TextureAtlas ),
+                     ( ParticleEffectParameter )param )
             };
         }
 
@@ -132,6 +133,7 @@ public class ParticleEffectLoader
     /// Parameter to be passed to <see cref="AssetManager.Load(string, Type, AssetLoaderParameters)"/>
     /// if additional configuration is necessary for the <see cref="ParticleEffect"/>. 
     /// </summary>
+    [PublicAPI]
     public class ParticleEffectParameter : AssetLoaderParameters
     {
         /// <summary>

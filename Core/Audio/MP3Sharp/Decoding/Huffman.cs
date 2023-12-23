@@ -671,7 +671,7 @@ public class Huffman
         new[] { 0, 12 }, new[] { 0, 13 }, new[] { 2, 1 }, new[] { 0, 14 }, new[] { 0, 15 }
     };
 
-    public static Huffman[]? huffmanTable; //Simulate extern struct
+    public static Huffman[] huffmanTable = null!; //Simulate extern struct
 
     private readonly int     _linbits;    //number of linbits
     private readonly char    _tablename0; //string, containing table_description
@@ -694,7 +694,7 @@ public class Huffman
                      int ylen,
                      int linbits,
                      int linmax,
-                     int @ref,
+                     int refi,
                      int[] table,
                      int[] hlen,
                      int[][] val,
@@ -707,7 +707,7 @@ public class Huffman
         _ylen       = ylen;
         _linbits    = linbits;
         _linmax     = linmax;
-        _refRenamed = @ref;
+        _refRenamed = refi;
         _table      = table;
         _hlen       = hlen;
         _val        = val;
@@ -890,7 +890,7 @@ public class Huffman
 
     public static void Initialize()
     {
-        if ( huffmanTable != null )
+        if ( huffmanTable != null! )
         {
             return;
         }

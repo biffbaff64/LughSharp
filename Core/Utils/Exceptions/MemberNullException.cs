@@ -21,7 +21,7 @@ namespace LibGDXSharp.Utils;
 [PublicAPI]
 public class MemberNullException : System.Exception
 {
-    public MemberNullException() : base()
+    public MemberNullException()
     {
     }
     

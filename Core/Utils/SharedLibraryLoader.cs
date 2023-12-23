@@ -15,7 +15,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 
 namespace LibGDXSharp.Utils;
 

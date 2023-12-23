@@ -53,38 +53,17 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
     /// <summary>
     /// 
     /// </summary>
-    public override void ReadScaleFactor( Bitstream stream, Header header )
+    public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
         if ( allocation != 0 )
         {
             base.ReadScaleFactor( stream, header );
 
-            switch ( channel2Scfsi )
+            if ( channel2Scfsi is >= 0 and <= 3 )
             {
-                case 0:
-                    channel2Scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-                    channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-
-                    break;
-
-                case 1:
-                    channel2Scalefactor1 = channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-
-                    break;
-
-                case 2:
-                    channel2Scalefactor1 =
-                        channel2Scalefactor2 = channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-
-                    break;
-
-                case 3:
-                    channel2Scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-                    channel2Scalefactor2 = channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-
-                    break;
+                channel2Scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
             }
         }
     }
@@ -92,7 +71,7 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
     /// <summary>
     /// 
     /// </summary>
-    public override bool PutNextSample( int channels, SynthesisFilter filter1, SynthesisFilter filter2 )
+    public override bool PutNextSample( int channels, SynthesisFilter? filter1, SynthesisFilter? filter2 )
     {
         if ( allocation != 0 )
         {
@@ -107,24 +86,29 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
             {
                 var sample2 = sample;
 
-                if ( groupnumber <= 4 )
+                switch ( groupnumber )
                 {
-                    sample  *= scalefactor1;
-                    sample2 *= channel2Scalefactor1;
-                }
-                else if ( groupnumber <= 8 )
-                {
-                    sample  *= scalefactor2;
-                    sample2 *= channel2Scalefactor2;
-                }
-                else
-                {
-                    sample  *= scalefactor3;
-                    sample2 *= channel2Scalefactor3;
+                    case <= 4:
+                        sample  *= scalefactor1;
+                        sample2 *= channel2Scalefactor1;
+
+                        break;
+
+                    case <= 8:
+                        sample  *= scalefactor2;
+                        sample2 *= channel2Scalefactor2;
+
+                        break;
+
+                    default:
+                        sample  *= scalefactor3;
+                        sample2 *= channel2Scalefactor3;
+
+                        break;
                 }
 
-                filter1.AddSample( sample, subbandnumber );
-                filter2.AddSample( sample2, subbandnumber );
+                filter1?.AddSample( sample, subbandnumber );
+                filter2?.AddSample( sample2, subbandnumber );
             }
             else if ( channels == OutputChannels.LEFT_CHANNEL )
             {
@@ -141,7 +125,7 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
                     sample *= scalefactor3;
                 }
 
-                filter1.AddSample( sample, subbandnumber );
+                filter1?.AddSample( sample, subbandnumber );
             }
             else
             {
@@ -158,15 +142,10 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
                     sample *= channel2Scalefactor3;
                 }
 
-                filter1.AddSample( sample, subbandnumber );
+                filter1?.AddSample( sample, subbandnumber );
             }
         }
 
-        if ( ++samplenumber == 3 )
-        {
-            return true;
-        }
-
-        return false;
+        return ( ++samplenumber == 3 );
     }
 }

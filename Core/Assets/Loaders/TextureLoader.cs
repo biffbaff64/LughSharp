@@ -51,11 +51,11 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    AssetLoaderParameters parameter )
+                                    AssetLoaderParameters? parameter )
     {
         _loaderInfo.Filename = fileName;
 
-        if ( ( ( TextureParameter )parameter ).TextureData == null )
+        if ( ( parameter == null ) || ( ( ( TextureParameter )parameter ).TextureData == null ) )
         {
             Pixmap.Format? format     = null;
             var            genMipMaps = false;
@@ -160,10 +160,23 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
+    }
+
+    /// <summary>
     /// Performs application-defined tasks associated with freeing,
     /// releasing, or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 }

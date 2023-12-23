@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Timer = LibGDXSharp.Utils.Timer;
-
 namespace LibGDXSharp.Input;
 
 /// <summary>

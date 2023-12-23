@@ -293,7 +293,7 @@ public interface IGL32 : IGL31
                                string buf );
 
     // C function void glDebugMessageCallback ( GLDEBUGPROC callback, const void *userParam )
-
+    [PublicAPI]
     public interface IDebugProc
     {
         void OnMessage( int source, int type, int id, int severity, string message );

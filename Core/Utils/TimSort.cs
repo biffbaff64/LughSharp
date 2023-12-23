@@ -161,20 +161,22 @@ public class TimSort<T>
 
         var remaining = hi - lo;
 
-        // Arrays of size 0 and 1 are always sorted
-        if ( remaining < 2 )
+
+        switch ( remaining )
         {
-            return;
-        }
+            // Arrays of size 0 and 1 are always sorted
+            case < 2:
+                return;
 
-        // If array is small, do a "mini-TimSort" with no merges
-        if ( remaining < MIN_MERGE )
-        {
-            var initRunLen = CountRunAndMakeAscending( a, lo, hi, c );
+            // If array is small, do a "mini-TimSort" with no merges
+            case < MIN_MERGE:
+            {
+                var initRunLen = CountRunAndMakeAscending( a, lo, hi, c );
 
-            BinarySort( a, lo, hi, lo + initRunLen, c );
+                BinarySort( a, lo, hi, lo + initRunLen, c );
 
-            return;
+                return;
+            }
         }
 
         this._sortingArray   = a;
@@ -269,20 +271,21 @@ public class TimSort<T>
 
         var nRemaining = hi - lo;
 
-        if ( nRemaining < 2 )
+        switch ( nRemaining )
         {
             // Arrays of size 0 and 1 are always sorted
-            return;
-        }
+            case < 2:
+                return;
 
-        // If array is small, do a "mini-TimSort" with no merges
-        if ( nRemaining < MIN_MERGE )
-        {
-            var initRunLen = CountRunAndMakeAscending( a, lo, hi, c );
+            // If array is small, do a "mini-TimSort" with no merges
+            case < MIN_MERGE:
+            {
+                var initRunLen = CountRunAndMakeAscending( a, lo, hi, c );
 
-            BinarySort( a, lo, hi, lo + initRunLen, c );
+                BinarySort( a, lo, hi, lo + initRunLen, c );
 
-            return;
+                return;
+            }
         }
 
         // March over the array once, left to right, finding natural runs,
@@ -657,10 +660,12 @@ public class TimSort<T>
 
         // Find where the last element of run1 goes in run2. Subsequent elements in run2
         // can be ignored (because they're already in place).
-        len2 = GallopLeft
-            (
+        len2 = GallopLeft(
             _sortingArray[ ( base1 + len1 ) - 1 ],
-            _sortingArray, base2, len2, len2 - 1,
+            _sortingArray,
+            base2,
+            len2,
+            len2 - 1,
             _sortComparator
             );
 
@@ -1076,31 +1081,31 @@ public class TimSort<T>
 
         this._minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
 
-        if ( len1 == 1 )
+        switch ( len1 )
         {
-            #if ALLOW_ASSERTS
-            Debug.Assert( len2 > 0 );
-            #endif
+            case 1:
+                #if ALLOW_ASSERTS
+                Debug.Assert( len2 > 0 );
+                #endif
 
-            Array.Copy( a, cursor2, a, dest, len2 );
+                Array.Copy( a, cursor2, a, dest, len2 );
 
-            a[ dest + len2 ] = tmp[ cursor1 ]; // Last element of run 1 to end of merge
-        }
-        else if ( len1 == 0 )
-        {
-            throw new ArgumentException( "Comparison method violates its general contract!" );
-        }
-        else
-        {
-            #if ALLOW_ASSERTS
-            Debug.Assert( len2 == 0 );
-            #endif
+                a[ dest + len2 ] = tmp[ cursor1 ]; // Last element of run 1 to end of merge
 
-            #if ALLOW_ASSERTS
-            Debug.Assert( len1 > 1 );
-            #endif
+                break;
 
-            Array.Copy( tmp, cursor1, a, dest, len1 );
+            case 0:
+                throw new ArgumentException( "Comparison method violates its general contract!" );
+
+            default:
+                #if ALLOW_ASSERTS
+                Debug.Assert( len2 == 0 );
+                Debug.Assert( len1 > 1 );
+                #endif
+
+                Array.Copy( tmp, cursor1, a, dest, len1 );
+
+                break;
         }
     }
 
@@ -1270,34 +1275,35 @@ public class TimSort<T>
 
         this._minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
 
-        if ( len2 == 1 )
+        switch ( len2 )
         {
-            #if ALLOW_ASSERTS
-            Debug.Assert( len1 > 0 );
-            #endif
+            case 1:
+                #if ALLOW_ASSERTS
+                Debug.Assert( len1 > 0 );
+                #endif
 
-            dest    -= len1;
-            cursor1 -= len1;
+                dest    -= len1;
+                cursor1 -= len1;
 
-            Array.Copy( a, cursor1 + 1, a, dest + 1, len1 );
+                Array.Copy( a, cursor1 + 1, a, dest + 1, len1 );
 
-            a[ dest ] = tmp[ cursor2 ]; // Move first element of run2 to front of merge
-        }
-        else if ( len2 == 0 )
-        {
-            throw new ArgumentException( "Comparison method violates its general contract!" );
-        }
-        else
-        {
-            #if ALLOW_ASSERTS
-            Debug.Assert( len1 == 0 );
-            #endif
+                // Move first element of run2 to front of merge
+                a[ dest ] = tmp[ cursor2 ];
 
-            #if ALLOW_ASSERTS
-            Debug.Assert( len2 > 0 );
-            #endif
+                break;
 
-            Array.Copy( tmp, 0, a, dest - ( len2 - 1 ), len2 );
+            case 0:
+                throw new ArgumentException( "Comparison method violates its general contract!" );
+
+            default:
+                #if ALLOW_ASSERTS
+                Debug.Assert( len1 == 0 );
+                Debug.Assert( len2 > 0 );
+                #endif
+
+                Array.Copy( tmp, 0, a, dest - ( len2 - 1 ), len2 );
+
+                break;
         }
     }
 
@@ -1312,22 +1318,24 @@ public class TimSort<T>
     {
         _tmpCount = Math.Max( _tmpCount, minCapacity );
 
-        if ( _tmp.Length < minCapacity )
+        if ( _tmp.Length >= minCapacity )
         {
-            // Compute smallest power of 2 > minCapacity
-            var newSize = minCapacity;
-
-            newSize |= newSize >> 1;
-            newSize |= newSize >> 2;
-            newSize |= newSize >> 4;
-            newSize |= newSize >> 8;
-            newSize |= newSize >> 16;
-            newSize++;
-
-            newSize = newSize < 0 ? minCapacity : Math.Min( newSize, _sortingArray.Length >>> 1 );
-
-            _tmp = new T[ newSize ];
+            return _tmp;
         }
+
+        // Compute smallest power of 2 > minCapacity
+        var newSize = minCapacity;
+
+        newSize |= newSize >> 1;
+        newSize |= newSize >> 2;
+        newSize |= newSize >> 4;
+        newSize |= newSize >> 8;
+        newSize |= newSize >> 16;
+        newSize++;
+
+        newSize = newSize < 0 ? minCapacity : Math.Min( newSize, _sortingArray.Length >>> 1 );
+
+        _tmp = new T[ newSize ];
 
         return _tmp;
     }

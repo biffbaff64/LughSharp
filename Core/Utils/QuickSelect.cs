@@ -106,28 +106,16 @@ public class QuickSelect<T>
             {
                 return midIdx;
             }
-            else if ( _comp.Compare( left, right ) > 0 )
-            {
-                return rightIdx;
-            }
-            else
-            {
-                return leftIdx;
-            }
+
+            return ( _comp.Compare( left, right ) > 0 ) ? rightIdx : leftIdx;
         }
 
         if ( _comp.Compare( left, right ) > 0 )
         {
             return leftIdx;
         }
-        else if ( _comp.Compare( mid, right ) > 0 )
-        {
-            return rightIdx;
-        }
-        else
-        {
-            return midIdx;
-        }
+        
+        return ( _comp.Compare( mid, right ) > 0 ) ? rightIdx : midIdx;
     }
 
     private void Swap( int left, int right )

@@ -14,7 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 using LibGDXSharp.Core.Utils.Collections;
@@ -87,141 +86,169 @@ public class PropertiesUtils
                 buf = newBuf;
             }
 
-            if ( mode == UNICODE )
+            switch ( mode )
             {
-                var num = char.GetNumericValue( nextChar.ToString(), 16 );
-                var digit = ( int )num;
-                
-                if ( digit >= 0 )
+                case UNICODE:
                 {
-                    unicode = ( unicode << 4 ) + digit;
+                    var num   = char.GetNumericValue( nextChar.ToString(), 16 );
+                    var digit = ( int )num;
 
-                    if ( ++count < 4 )
+                    switch ( digit )
+                    {
+                        case >= 0:
+                        {
+                            unicode = ( unicode << 4 ) + digit;
+
+                            if ( ++count < 4 )
+                            {
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        default:
+                        {
+                            switch ( count )
+                            {
+                                case <= 4:
+                                    throw new ArgumentException( "Invalid Unicode sequence: illegal character" );
+                            }
+
+                            break;
+                        }
+                    }
+
+                    mode            = NONE;
+                    buf[ offset++ ] = ( char )unicode;
+
+                    if ( nextChar != '\n' )
                     {
                         continue;
                     }
-                }
-                else if ( count <= 4 )
-                {
-                    throw new ArgumentException( "Invalid Unicode sequence: illegal character" );
-                }
 
-                mode            = NONE;
-                buf[ offset++ ] = ( char )unicode;
-
-                if ( nextChar != '\n' )
-                {
-                    continue;
+                    break;
                 }
             }
 
-            if ( mode == SLASH )
+            switch ( mode )
             {
-                mode = NONE;
+                case SLASH:
+                    mode = NONE;
 
-                switch ( nextChar )
-                {
-                    case '\r':
-                        mode = CONTINUE; // Look for a following \n
-
-                        continue;
-
-                    case '\n':
-                        mode = IGNORE; // Ignore whitespace on the next line
-
-                        continue;
-
-                    case 'b':
-                        nextChar = '\b';
-
-                        break;
-
-                    case 'f':
-                        nextChar = '\f';
-
-                        break;
-
-                    case 'n':
-                        nextChar = '\n';
-
-                        break;
-
-                    case 'r':
-                        nextChar = '\r';
-
-                        break;
-
-                    case 't':
-                        nextChar = '\t';
-
-                        break;
-
-                    case 'u':
-                        mode    = UNICODE;
-                        unicode = count = 0;
-
-                        continue;
-                }
-            }
-            else
-            {
-                switch ( nextChar )
-                {
-                    case '#':
-                    case '!':
-                        if ( firstChar )
-                        {
-                            while ( true )
-                            {
-                                intVal = reader.Read();
-
-                                if ( intVal == -1 )
-                                {
-                                    break;
-                                }
-
-                                nextChar = ( char )intVal;
-
-                                if ( ( nextChar == '\r' ) || ( nextChar == '\n' ) )
-                                {
-                                    break;
-                                }
-                            }
+                    switch ( nextChar )
+                    {
+                        case '\r':
+                            mode = CONTINUE; // Look for a following \n
 
                             continue;
-                        }
 
-                        break;
+                        case '\n':
+                            mode = IGNORE; // Ignore whitespace on the next line
 
-                    case '\n':
-                    case '\r':
-                        if ( nextChar == '\n' )
-                        {
-                            if ( mode == CONTINUE )
+                            continue;
+
+                        case 'b':
+                            nextChar = '\b';
+
+                            break;
+
+                        case 'f':
+                            nextChar = '\f';
+
+                            break;
+
+                        case 'n':
+                            nextChar = '\n';
+
+                            break;
+
+                        case 'r':
+                            nextChar = '\r';
+
+                            break;
+
+                        case 't':
+                            nextChar = '\t';
+
+                            break;
+
+                        case 'u':
+                            mode    = UNICODE;
+                            unicode = count = 0;
+
+                            continue;
+                    }
+
+                    break;
+
+                default:
+                {
+                    switch ( nextChar )
+                    {
+                        case '#':
+                        case '!':
+                            switch ( firstChar )
                             {
-                                // Part of a \r\n sequence
-                                // Ignore whitespace on the next line
-                                mode = IGNORE;
-
-                                continue;
-                            }
-                        }
-
-                        mode      = NONE;
-                        firstChar = true;
-
-                        // 'r'
-                        {
-                            if ( ( offset > 0 ) || ( ( offset == 0 ) && ( keyLength == 0 ) ) )
-                            {
-                                if ( keyLength == -1 )
+                                case true:
                                 {
-                                    keyLength = offset;
+                                    while ( true )
+                                    {
+                                        intVal = reader.Read();
+
+                                        if ( intVal == -1 )
+                                        {
+                                            break;
+                                        }
+
+                                        nextChar = ( char )intVal;
+
+                                        if ( nextChar is '\r' or '\n' )
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                    continue;
                                 }
+                            }
 
-                                var temp = new string( buf, 0, offset );
+                            break;
 
-                                properties.Put( temp.Substring( 0, keyLength ), temp.Substring( keyLength ) );
+                        case '\n':
+                        case '\r':
+                            switch ( nextChar )
+                            {
+                                case '\n' when mode == CONTINUE:
+                                    // Part of a \r\n sequence
+                                    // Ignore whitespace on the next line
+                                    mode = IGNORE;
+
+                                    continue;
+                            }
+
+                            mode      = NONE;
+                            firstChar = true;
+
+                            // 'r'
+                        {
+                            switch ( offset )
+                            {
+                                case > 0:
+                                case 0 when ( keyLength == 0 ):
+                                {
+                                    keyLength = keyLength switch
+                                                {
+                                                    -1 => offset,
+                                                    _  => keyLength
+                                                };
+
+                                    var temp = new string( buf, 0, offset );
+
+                                    properties.Put( temp.Substring( 0, keyLength ), temp.Substring( keyLength ) );
+
+                                    break;
+                                }
                             }
 
                             keyLength = -1;
@@ -230,91 +257,114 @@ public class PropertiesUtils
                             continue;
                         }
 
-                    case '\\':
-                        if ( mode == KEY_DONE )
+                        case '\\':
+                            keyLength = mode switch
+                                        {
+                                            KEY_DONE => offset,
+                                            _        => keyLength
+                                        };
+
+                            mode = SLASH;
+
+                            continue;
+
+                        case ':':
+                        case '=':
+                            switch ( keyLength )
+                            {
+                                case -1:
+                                    // if parsing the key
+                                    mode      = NONE;
+                                    keyLength = offset;
+
+                                    continue;
+                            }
+
+                            break;
+                    }
+
+                    if ( char.IsWhiteSpace( nextChar ) )
+                    {
+                        mode = mode switch
+                               {
+                                   CONTINUE => IGNORE,
+                                   _        => mode
+                               };
+
+                        if ( ( offset == 0 ) || ( offset == keyLength ) || ( mode == IGNORE ) )
                         {
-                            keyLength = offset;
-                        }
-
-                        mode = SLASH;
-
-                        continue;
-
-                    case ':':
-                    case '=':
-                        if ( keyLength == -1 )
-                        {
-                            // if parsing the key
-                            mode      = NONE;
-                            keyLength = offset;
-
                             continue;
                         }
 
-                        break;
-                }
+                        switch ( keyLength )
+                        {
+                            case -1:
+                                // if parsing the key
+                                mode = KEY_DONE;
 
-                if ( char.IsWhiteSpace( nextChar ) )
-                {
-                    if ( mode == CONTINUE )
-                    {
-                        mode = IGNORE;
+                                continue;
+                        }
                     }
 
-                    // if key length == 0 or value length == 0
-                    if ( ( offset == 0 ) || ( offset == keyLength ) || ( mode == IGNORE ) )
+                    switch ( mode )
                     {
-                        continue;
+                        case IGNORE:
+                        case CONTINUE:
+                            mode = NONE;
+
+                            break;
                     }
 
-                    if ( keyLength == -1 )
-                    {
-                        // if parsing the key
-                        mode = KEY_DONE;
-
-                        continue;
-                    }
-                }
-
-                if ( ( mode == IGNORE ) || ( mode == CONTINUE ) )
-                {
-                    mode = NONE;
+                    break;
                 }
             }
 
             firstChar = false;
 
-            if ( mode == KEY_DONE )
+            switch ( mode )
             {
-                keyLength = offset;
-                mode      = NONE;
+                case KEY_DONE:
+                    keyLength = offset;
+                    mode      = NONE;
+
+                    break;
             }
 
             buf[ offset++ ] = nextChar;
         }
 
-        if ( ( mode == UNICODE ) && ( count <= 4 ) )
+        switch ( mode )
         {
-            throw new ArgumentException( "Invalid Unicode sequence: expected format \\uxxxx" );
+            case UNICODE when ( count <= 4 ):
+                throw new ArgumentException( "Invalid Unicode sequence: expected format \\uxxxx" );
         }
 
-        if ( ( keyLength == -1 ) && ( offset > 0 ) )
-        {
-            keyLength = offset;
-        }
+        keyLength = keyLength switch
+                    {
+                        -1 when ( offset > 0 ) => offset,
+                        _                      => keyLength
+                    };
 
-        if ( keyLength >= 0 )
+        switch ( keyLength )
         {
-            var temp  = new string( buf, 0, offset );
-            var key   = temp.Substring( 0, keyLength );
-            var value = temp.Substring( keyLength );
-
-            if ( mode == SLASH )
+            case >= 0:
             {
-                value += "\u0000";
-            }
+                var temp  = new string( buf, 0, offset );
+                var key   = temp.Substring( 0, keyLength );
+                var value = temp.Substring( keyLength );
 
-            properties.Put( key, value );
+                switch ( mode )
+                {
+                    case SLASH:
+                        value += "\u0000";
+
+                        break;
+                }
+
+                properties.Put( key, value );
+
+                break;
+            }
         }
     }
 
@@ -348,8 +398,10 @@ public class PropertiesUtils
         StoreImpl( properties, writer, comment, false );
     }
 
-    private static void StoreImpl( Dictionary< string, string > properties, StreamWriter writer,
-                                   string? comment, bool escapeUnicode )
+    private static void StoreImpl( Dictionary< string, string > properties,
+                                   StreamWriter writer,
+                                   string? comment,
+                                   bool escapeUnicode )
     {
         if ( comment != null )
         {
@@ -434,22 +486,28 @@ public class PropertiesUtils
                     break;
 
                 default:
-                    if ( ( ( ch < 0x0020 ) || ( ch > 0x007e ) ) & escapeUnicode )
+                    switch ( ( ( ch < 0x0020 ) || ( ch > 0x007e ) ) & escapeUnicode )
                     {
-                        var hex = ( ( int )ch ).ToString( "X" );
-
-                        outBuffer.Append( "\\u" );
-
-                        for ( var j = 0; j < ( 4 - hex.Length ); j++ )
+                        case true:
                         {
-                            outBuffer.Append( '0' );
+                            var hex = ( ( int )ch ).ToString( "X" );
+
+                            outBuffer.Append( "\\u" );
+
+                            for ( var j = 0; j < ( 4 - hex.Length ); j++ )
+                            {
+                                outBuffer.Append( '0' );
+                            }
+
+                            outBuffer.Append( hex );
+
+                            break;
                         }
 
-                        outBuffer.Append( hex );
-                    }
-                    else
-                    {
-                        outBuffer.Append( ch );
+                        default:
+                            outBuffer.Append( ch );
+
+                            break;
                     }
 
                     break;
@@ -469,43 +527,61 @@ public class PropertiesUtils
         {
             var c = comment[ curIndex ];
 
-            if ( ( c > '\u00ff' ) || ( c == '\n' ) || ( c == '\r' ) )
+            switch ( c )
             {
-                if ( lastIndex != curIndex )
+                case > '\u00ff':
+                case '\n':
+                case '\r':
                 {
-                    writer.Write( comment.Substring( lastIndex, curIndex ) );
-                }
-
-                if ( c > '\u00ff' )
-                {
-                    var hex = ( ( int )c ).ToString( "X" );
-
-                    writer.Write( "\\u" );
-
-                    for ( var j = 0; j < ( 4 - hex.Length ); j++ )
+                    if ( lastIndex != curIndex )
                     {
-                        writer.Write( '0' );
+                        writer.Write( comment.Substring( lastIndex, curIndex ) );
                     }
 
-                    writer.Write( hex );
-                }
-                else
-                {
-                    writer.Write( LINE_SEPARATOR );
-
-                    if ( ( c == '\r' ) && ( curIndex != ( len - 1 ) ) && ( comment[ curIndex + 1 ] == '\n' ) )
+                    switch ( c )
                     {
-                        curIndex++;
+                        case > '\u00ff':
+                        {
+                            var hex = ( ( int )c ).ToString( "X" );
+
+                            writer.Write( "\\u" );
+
+                            for ( var j = 0; j < ( 4 - hex.Length ); j++ )
+                            {
+                                writer.Write( '0' );
+                            }
+
+                            writer.Write( hex );
+
+                            break;
+                        }
+
+                        default:
+                        {
+                            writer.Write( LINE_SEPARATOR );
+
+                            switch ( c )
+                            {
+                                case '\r' when ( curIndex != ( len - 1 ) ) && ( comment[ curIndex + 1 ] == '\n' ):
+                                    curIndex++;
+
+                                    break;
+                            }
+
+                            if ( ( curIndex == ( len - 1 ) )
+                              || ( ( comment[ curIndex + 1 ] != '#' ) && ( comment[ curIndex + 1 ] != '!' ) ) )
+                            {
+                                writer.Write( "#" );
+                            }
+
+                            break;
+                        }
                     }
 
-                    if ( ( curIndex == ( len - 1 ) )
-                         || ( ( comment[ curIndex + 1 ] != '#' ) && ( comment[ curIndex + 1 ] != '!' ) ) )
-                    {
-                        writer.Write( "#" );
-                    }
-                }
+                    lastIndex = curIndex + 1;
 
-                lastIndex = curIndex + 1;
+                    break;
+                }
             }
 
             curIndex++;

@@ -75,30 +75,41 @@ public class LayerIDecoder : IFrameDecoder
     {
         int i;
 
-        if ( mode == Header.SINGLE_CHANNEL )
+        switch ( mode )
         {
-            for ( i = 0; i < nuSubbands; ++i )
+            case Header.SINGLE_CHANNEL:
             {
-                subbands[ i ] = new SubbandLayer1( i );
-            }
-        }
-        else if ( mode == Header.JOINT_STEREO )
-        {
-            for ( i = 0; i < header?.IntensityStereoBound(); ++i )
-            {
-                subbands[ i ] = new SubbandLayer1Stereo( i );
+                for ( i = 0; i < nuSubbands; ++i )
+                {
+                    subbands[ i ] = new SubbandLayer1( i );
+                }
+
+                break;
             }
 
-            for ( ; i < nuSubbands; ++i )
+            case Header.JOINT_STEREO:
             {
-                subbands[ i ] = new SubbandLayer1IntensityStereo( i );
+                for ( i = 0; i < header?.IntensityStereoBound(); ++i )
+                {
+                    subbands[ i ] = new SubbandLayer1Stereo( i );
+                }
+
+                for ( ; i < nuSubbands; ++i )
+                {
+                    subbands[ i ] = new SubbandLayer1IntensityStereo( i );
+                }
+
+                break;
             }
-        }
-        else
-        {
-            for ( i = 0; i < nuSubbands; ++i )
+
+            default:
             {
-                subbands[ i ] = new SubbandLayer1Stereo( i );
+                for ( i = 0; i < nuSubbands; ++i )
+                {
+                    subbands[ i ] = new SubbandLayer1Stereo( i );
+                }
+
+                break;
             }
         }
     }

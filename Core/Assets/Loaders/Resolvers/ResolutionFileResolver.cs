@@ -107,7 +107,7 @@ public class ResolutionFileResolver : IFileHandleResolver
         return handle;
     }
 
-    protected string Resolve( FileInfo originalHandle, string suffix )
+    protected static string Resolve( FileInfo originalHandle, string suffix )
     {
         var            parentstring = "";
         DirectoryInfo? parent       = originalHandle.Directory;
@@ -120,7 +120,7 @@ public class ResolutionFileResolver : IFileHandleResolver
         return parentstring + suffix + "/" + originalHandle.Name;
     }
 
-    public Resolution Choose( params Resolution[] descs )
+    public static Resolution Choose( params Resolution[] descs )
     {
         var w = Gdx.Graphics.BackBufferWidth;
         var h = Gdx.Graphics.BackBufferHeight;

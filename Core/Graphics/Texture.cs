@@ -264,7 +264,7 @@ public class Texture : GLTexture
             {
                 var fileName = AssetManager.GetAssetFileName( texture );
 
-                if ( string.ReferenceEquals( fileName, null ) )
+                if ( fileName == null )
                 {
                     texture.Reload();
                 }
