@@ -45,7 +45,6 @@ global using LibGDXSharp.Audio;
 global using LibGDXSharp.Core;
 global using LibGDXSharp.Graphics;
 global using LibGDXSharp.Graphics.GLUtils;
-global using LibGDXSharp.Graphics.OpenGL;
 global using LibGDXSharp.Input;
 global using LibGDXSharp.Maps;
 global using LibGDXSharp.Maths;

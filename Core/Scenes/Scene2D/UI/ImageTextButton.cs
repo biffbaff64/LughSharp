@@ -22,101 +22,138 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 [PublicAPI]
 public class ImageTextButton : Button
 {
-    private Image                _image;
-    private Label                _label;
-    private ImageTextButtonStyle style;
+    private Image?                _image;
+    private Label?                _label;
+    private ImageTextButtonStyle? _style;
 
     public ImageTextButton( string text, Skin skin )
         : this( text, skin.Get< ImageTextButtonStyle >() )
     {
-        setSkin( skin );
+        Skin = skin;
     }
 
-    public ImageTextButton( @Null String text, Skin skin, String styleName) {
-        this( text, skin.get( styleName, ImageTextButtonStyle.class));
-        setSkin( skin );
+    public ImageTextButton( string text, Skin skin, string styleName )
+        : this( text, skin.Get< ImageTextButtonStyle >( styleName ) )
+    {
+        Skin = skin;
     }
 
-    public ImageTextButton( @Null String text, ImageTextButtonStyle style) {
-        super( style );
-        this.style = style;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="style"></param>
+    public ImageTextButton( string text, ImageTextButtonStyle style )
+        : base( style )
+    {
+        this._style = style;
 
-        defaults().space( 3 );
+        CellDefaults.Space( 3 );
 
         _image = new Image();
-        _image.setScaling( Scaling.fit );
+        _image.SetScaling( Scaling.Fit );
 
-        _label = new Label( text, new Label.LabelStyle( style.font, style.fontColor ) );
-        _label.setAlignment( Align.center );
+        _label = new Label( text, new Label.LabelStyle( style.Font!, style.FontColor! ) );
+        _label.SetAlignment( Align.CENTER );
 
-        add( _image );
-        add( _label );
+        Add( _image );
+        Add( _label );
 
-        setStyle( style );
+        SetStyle( style );
 
-        setSize( getPrefWidth(), getPrefHeight() );
+        SetSize( PrefWidth, PrefHeight );
     }
 
-    public void setStyle( ButtonStyle style )
+    public void SetStyle( ButtonStyle style )
     {
-        if ( !( style instanceof ImageTextButtonStyle)) throw new IllegalArgumentException( "style must be a ImageTextButtonStyle." );
-        this.style = ( ImageTextButtonStyle )style;
-        super.setStyle( style );
+        if ( !( style is ImageTextButtonStyle textButtonStyle ) )
+        {
+            throw new ArgumentException( "style must be a ImageTextButtonStyle." );
+        }
 
-        if ( _image != null ) updateImage();
+        this._style = textButtonStyle;
+        base.Style  = textButtonStyle;
+
+        if ( _image != null )
+        {
+            UpdateImage();
+        }
 
         if ( _label != null )
         {
-            ImageTextButtonStyle textButtonStyle = ( ImageTextButtonStyle )style;
-            Label.LabelStyle     labelStyle      = _label.getStyle();
-            labelStyle.font      = textButtonStyle.font;
-            labelStyle.fontColor = getFontColor();
-            _label.setStyle( labelStyle );
+            Label.LabelStyle labelStyle = _label.Style;
+
+            labelStyle.Font      = textButtonStyle.Font!;
+            labelStyle.FontColor = GetFontColor();
+            _label.Style         = labelStyle;
         }
     }
 
-    public ImageTextButtonStyle getStyle()
+    /// <summary>
+    /// Returns the appropriate image drawable from the style based on the
+    /// current button state.
+    /// </summary>
+    protected IDrawable? GetImageDrawable()
     {
-        return style;
-    }
-
-    /** Returns the appropriate image drawable from the style based on the current button state. */
-    protected IDrawable? getImageDrawable()
-    {
-        if ( isDisabled() && style.imageDisabled != null ) return style.imageDisabled;
-
-        if ( isPressed() )
+        if ( IsDisabled && ( _style?.ImageDisabled != null ) )
         {
-            if ( isChecked() && style.imageCheckedDown != null ) return style.imageCheckedDown;
-            if ( style.imageDown != null ) return style.imageDown;
+            return _style.ImageDisabled;
         }
 
-        if ( isOver() )
+        if ( IsPressed() )
         {
-            if ( isChecked() )
+            if ( IsChecked && ( _style?.ImageCheckedDown != null ) )
             {
-                if ( style.imageCheckedOver != null ) return style.imageCheckedOver;
+                return _style.ImageCheckedDown;
+            }
+
+            if ( _style?.ImageDown != null )
+            {
+                return _style.ImageDown;
+            }
+        }
+
+        if ( IsOver() )
+        {
+            if ( IsChecked )
+            {
+                if ( _style?.ImageCheckedOver != null )
+                {
+                    return _style.ImageCheckedOver;
+                }
             }
             else
             {
-                if ( style.imageOver != null ) return style.imageOver;
+                if ( _style?.ImageOver != null )
+                {
+                    return _style.ImageOver;
+                }
             }
         }
 
-        if ( isChecked() )
+        if ( IsChecked )
         {
-            if ( style.imageChecked != null ) return style.imageChecked;
-            if ( isOver() && style.imageOver != null ) return style.imageOver;
+            if ( _style?.ImageChecked != null )
+            {
+                return _style.ImageChecked;
+            }
+
+            if ( IsOver() && ( _style?.ImageOver != null ) )
+            {
+                return _style.ImageOver;
+            }
         }
 
-        return style.imageUp;
+        return _style?.ImageUp;
     }
 
-    /** Sets the image drawable based on the current button state. The default implementation sets the image drawable using
-     * {@link #getImageDrawable()}. */
-    protected void updateImage()
+    /// <summary>
+    /// Sets the image drawable based on the current button state. The default
+    /// implementation sets the image drawable using <see cref="GetImageDrawable()"/>.
+    /// </summary>
+    protected void UpdateImage()
     {
-        _image.setDrawable( getImageDrawable() );
+        _image?.SetDrawable( GetImageDrawable() );
     }
 
     /// <summary>
@@ -124,70 +161,106 @@ public class ImageTextButton : Button
     /// </summary>
     protected Color? GetFontColor()
     {
-        if ( isDisabled() && style.disabledFontColor != null )
+        if ( IsDisabled && ( _style?.DisabledFontColor != null ) )
         {
-            return style.disabledFontColor;
+            return _style.DisabledFontColor;
         }
 
-        if ( isPressed() )
+        if ( IsPressed() )
         {
-            if ( isChecked() && style.checkedDownFontColor != null ) return style.checkedDownFontColor;
-            if ( style.downFontColor != null ) return style.downFontColor;
-        }
-
-        if ( isOver() )
-        {
-            if ( isChecked() )
+            if ( IsChecked && ( _style?.CheckedDownFontColor != null ) )
             {
-                if ( style.checkedOverFontColor != null ) return style.checkedOverFontColor;
+                return _style.CheckedDownFontColor;
+            }
+
+            if ( _style?.DownFontColor != null )
+            {
+                return _style.DownFontColor;
+            }
+        }
+
+        if ( IsOver() )
+        {
+            if ( IsChecked )
+            {
+                if ( _style?.CheckedOverFontColor != null )
+                {
+                    return _style.CheckedOverFontColor;
+                }
             }
             else
             {
-                if ( style.overFontColor != null ) return style.overFontColor;
+                if ( _style?.OverFontColor != null )
+                {
+                    return _style.OverFontColor;
+                }
             }
         }
 
-        boolean focused = hasKeyboardFocus();
+        var focused = HasKeyboardFocus();
 
-        if ( isChecked() )
+        if ( IsChecked )
         {
-            if ( focused && style.checkedFocusedFontColor != null ) return style.checkedFocusedFontColor;
-            if ( style.checkedFontColor != null ) return style.checkedFontColor;
-            if ( isOver() && style.overFontColor != null ) return style.overFontColor;
+            if ( focused && ( _style?.CheckedFocusedFontColor != null ) )
+            {
+                return _style.CheckedFocusedFontColor;
+            }
+
+            if ( _style?.CheckedFontColor != null )
+            {
+                return _style.CheckedFontColor;
+            }
+
+            if ( IsOver() && ( _style?.OverFontColor != null ) )
+            {
+                return _style.OverFontColor;
+            }
         }
 
-        if ( focused && style.focusedFontColor != null ) return style.focusedFontColor;
+        if ( focused && ( _style?.FocusedFontColor != null ) )
+        {
+            return _style.FocusedFontColor;
+        }
 
-        return style.fontColor;
+        return _style?.FontColor;
     }
 
     public override void Draw( IBatch batch, float parentAlpha )
     {
-        updateImage();
-        _label.Style.FontColor = GetFontColor();
+        UpdateImage();
+
+        if ( _label != null )
+        {
+            _label.Style.FontColor = GetFontColor();
+        }
+
         base.Draw( batch, parentAlpha );
     }
 
-    public Image GetImage() => _image;
+    public Image? GetImage() => _image;
+    public Label? GetLabel() => _label;
 
-    public Cell? GetImageCell() => GetCell( _image );
+    public Cell? GetImageCell() => GetCell( _image! );
+    public Cell? GetLabelCell() => GetCell( _label! );
 
     public void SetLabel( Label label )
     {
         GetLabelCell()!.Actor = label;
-        this._label = label;
+        this._label           = label;
     }
 
-    public Label GetLabel() => _label;
-
-    public Cell? GetLabelCell() => GetCell( _label );
-
-    public string GetText() => _label.Text.ToString();
+    public string GetText()
+    {
+        return _label?.Text.ToString() ?? "";
+    }
 
     public void SetText( string text )
     {
-        _label.Text.Clear();
-        _label.Text.Append( text );
+        if ( _label != null )
+        {
+            _label.Text.Clear();
+            _label.Text.Append( text );
+        }
     }
 
     public new String ToString()
@@ -207,13 +280,12 @@ public class ImageTextButton : Button
 
         return ( className.IndexOf( '$' ) != -1 ? "ImageTextButton " : "" )
              + className
-             + ": "
-             + _image.GetDrawable()
-             + " "
-             + _label.Text;
+             + $":  {_image?.GetDrawable()}  {_label?.Text}";
     }
 
-    /// The style for an image text button, see {@link ImageTextButton}.
+    /// <summary>
+    /// The style for an image text button, see <see cref="ImageTextButton"/>.
+    /// </summary>
     [PublicAPI]
     public class ImageTextButtonStyle : TextButton.TextButtonStyle
     {

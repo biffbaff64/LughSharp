@@ -29,9 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Backends\DesktopGL\Audio\MP3Sharp\Decoding\Decoders\LayerIII\" />
-        <Folder Include="Backends\DesktopGL\Audio\MP3Sharp\Decoding\Decoders\LayerII\" />
-        <Folder Include="Backends\DesktopGL\Audio\MP3Sharp\Decoding\Decoders\LayerI\" />
         <Folder Include="Core\Utils\Async\" />
         <Folder Include="DeleteCandidates\" />
         <Folder Include="packages\" />

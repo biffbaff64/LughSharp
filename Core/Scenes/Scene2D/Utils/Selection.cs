@@ -47,7 +47,7 @@ public class Selection<T> : IDisableable
     /// </summary>
     public Actor? Actor { get; set; }
 
-    public bool Empty => Selected.Count == 0;
+    public bool IsEmpty => Selected.Count == 0;
 
     private readonly SortedSet< T > _old = new();
 
@@ -93,7 +93,6 @@ public class Selection<T> : IDisableable
                     }
 
                     modified = Selected.Count > 0;
-//                    Selected.Clear( 8 );
                     Selected.Clear();
                 }
 
@@ -123,7 +122,7 @@ public class Selection<T> : IDisableable
     /// <summary>
     /// Returns TRUE if this set has items in it.
     /// </summary>
-    public bool NotEmpty() => !Empty;
+    public bool NotEmpty() => !IsEmpty;
 
     public int Size() => Selected.Count;
 

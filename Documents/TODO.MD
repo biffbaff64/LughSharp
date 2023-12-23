@@ -34,7 +34,6 @@ LIBGDX CSharp CONVERSION - ROUND 1
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- Restructure, where necessary, to cut the number of exceptions that can be thrown
 - Constantly look for opportunities to improve this code.
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
 - Make more use of <inheritdoc cref=""/>> or just <inheritdoc/>
@@ -120,7 +119,7 @@ AUDIO/MP3SHARP
     - DONE - CircularByteBuffer
     - DONE - Crc16
     - DONE - Decoder
-            - DONE - Params
+    - DONE - Decode.Parameters
     - DONE - DecoderErrors
     - DONE - DecoderException
     - DONE - Equalizer
@@ -177,6 +176,15 @@ AUDIO/MP3SHARP
     -------
 
     - DONE - SupportClass
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+AUDIO/OPENAL
+------------
+
+    - DONE - AL
+    - DONE - ALC
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -338,7 +346,7 @@ GRAPHICS
     - IP   - Color                              
     - DONE - Colors                             
     - DONE - Cubemap
-            - DONE - CubemapSide
+    - DONE - Cubemap.CubemapSide
     - DONE - FPSLogger                          
     - DONE - GLTexture                          
     - DONE - GraphicsType                       
@@ -350,26 +358,26 @@ GRAPHICS
     - DONE - IGL31                              
     - DONE - IGL32                              
     - DONE - ITextureArrayData        
-            - DONE - TextureArrayDataFactory
+    - DONE - ITextureArrayData.TextureArrayDataFactory
     - DONE - ITextureData             
-            - DONE - Factory
+    - DONE - ITextureData.Factory
     - DONE - Mesh                               
     - DONE - OrthographicCamera                 
     - DONE - PerspectiveCamera                  
     - DONE - Pixmap              
-            - DONE - PixmapFormatExtensions
+    - DONE - Pixmap.PixmapFormatExtensions
     - DONE - PixmapFormat                             
     - DONE - PixmapIO
-            - DONE - CIM
-            - DONE - PNG
-                    - DONE - ChunkBuffer
+    - DONE - PixmapIO.CIM
+    - DONE - PixmapIO.PNG
+    - DONE - PixmapIO.PNG.ChunkBuffer
     - DONE - Texture                            
     - DONE - TextureArray                       
     - DONE - TextureFilter                      
     - DONE - TextureWrap                        
     - DONE - VertexAttribute                    
     - DONE - VertexAttributes
-            - DONE - Usage
+    - DONE - VertexAttributes.Usage
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -400,8 +408,8 @@ GRAPHICS/G2D
     - DONE - AtlasRegion                    
     - DONE - AtlasSprite                    
     - DONE - BitmapFont 
-            - DONE - Glyph
-            - DONE - BitmapFontData
+    - DONE - BitmapFont.Glyph
+    - DONE - BitmapFont.BitmapFontData
     - DONE - BitmapFontCache                
     - DONE - CpuSpriteBatch                 
     - DONE - DistanceFieldFont              
@@ -412,55 +420,55 @@ GRAPHICS/G2D
     - DONE - NinePatch                      
     - DONE - ParticleEffect                 
     - DONE - ParticleEffectPool        
-            - DONE - PooledEffect
+    - DONE - ParticleEffectPool.PooledEffect
     - DONE - ParticleEmitter           
-            - DONE - Particle
-            - DONE - ParticleValue
-            - DONE - NumericValue
-            - DONE - RangedNumericValue
-            - DONE - ScaledNumericValue
-            - DONE - IndependentScaledNumericValue
-            - DONE - GradientColorValue
-            - DONE - ParticleSpawnShapeValue
+    - DONE - ParticleEmitter.Particle
+    - DONE - ParticleEmitter.ParticleValue
+    - DONE - ParticleEmitter.NumericValue
+    - DONE - ParticleEmitter.RangedNumericValue
+    - DONE - ParticleEmitter.ScaledNumericValue
+    - DONE - ParticleEmitter.IndependentScaledNumericValue
+    - DONE - ParticleEmitter.GradientColorValue
+    - DONE - ParticleEmitter.ParticleSpawnShapeValue
     - DONE - PixmapPacker
-            - DONE - Page
-            - DONE - GuillotineStrategy
-            - DONE - SkylineStrategy
-            - DONE - PixmapPackerRectangle
-            - DONE - IPackStrategy
+    - DONE - PixmapPacker.Page
+    - DONE - PixmapPacker.GuillotineStrategy
+    - DONE - PixmapPacker.SkylineStrategy
+    - DONE - PixmapPacker.PixmapPackerRectangle
+    - DONE - PixmapPacker.IPackStrategy
     - DONE - PixmapPacker10       
-            - DONE - ImageFormat
-            - DONE - SaveParameters
+    - DONE - PixmapPacker10.ImageFormat
+    - DONE - PixmapPacker10.SaveParameters
     - DONE - PolygonRegion                  
     - DONE - PolygonRegionLoader
-            - DONE - PolygonRegionParameters
+    - DONE - PolygonRegionLoader.PolygonRegionParameters
     - DONE - PolygonSprite                  
     - DONE - PolygonSpriteBatch             
     - DONE - RepeatablePolygonSprite        
     - DONE - Sprite                         
     - DONE - SpriteBatch                    
     - DONE - SpriteCache
-            - DONE - Cache
+    - DONE - SpriteCache.Cache
     - DONE - TextureAtlas                   
     - DONE - TextureAtlasData   
-            - DONE - IField
-            - DONE - Page
-            - DONE - Region
+    - DONE - TextureAtlasData.IField
+    - DONE - TextureAtlasData.Page
+    - DONE - TextureAtlasData.Region
     - DONE - TextureAtlasDataExtensions
-            - DONE - ComparatorAnonymousInner
-            - DONE - PageFieldParse
-            - DONE - PageFieldFormat
-            - DONE - PageFieldFilter
-            - DONE - PageFieldRepeat
-            - DONE - PageFieldPma
-            - DONE - RegionFieldXY
-            - DONE - RegionFieldSize
-            - DONE - RegionFieldBounds
-            - DONE - RegionFieldOffset
-            - DONE - RegionFieldOrig
-            - DONE - RegionFieldOffsets
-            - DONE - RegionFieldRotate
-            - DONE - RegionFieldIndex
+    - DONE - TextureAtlasDataExtensions.ComparatorAnonymousInner
+    - DONE - TextureAtlasDataExtensions.PageFieldParse
+    - DONE - TextureAtlasDataExtensions.PageFieldFormat
+    - DONE - TextureAtlasDataExtensions.PageFieldFilter
+    - DONE - TextureAtlasDataExtensions.PageFieldRepeat
+    - DONE - TextureAtlasDataExtensions.PageFieldPma
+    - DONE - TextureAtlasDataExtensions.RegionFieldXY
+    - DONE - TextureAtlasDataExtensions.RegionFieldSize
+    - DONE - TextureAtlasDataExtensions.RegionFieldBounds
+    - DONE - TextureAtlasDataExtensions.RegionFieldOffset
+    - DONE - TextureAtlasDataExtensions.RegionFieldOrig
+    - DONE - TextureAtlasDataExtensions.RegionFieldOffsets
+    - DONE - TextureAtlasDataExtensions.RegionFieldRotate
+    - DONE - TextureAtlasDataExtensions.RegionFieldIndex
     - DONE - TextureRegion                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1024,13 +1032,13 @@ SCENES.SCENE2D/UI
     - DONE - CheckBox
     - DONE - Container
     - DONE - Dialog
-            - IP   - DialogChangeObserver
-            - IP   - DialogFocusObserver
-            - IP   - DialogInputObserver
+    - IP   - DialogChangeObserver
+    - IP   - DialogFocusObserver
+    - IP   - DialogInputObserver
     - DONE - HorizontalGroup
     - DONE - Image
     - DONE - ImageButton
-    - IP   - ImageTextButton                
+    - DONE - ImageTextButton                
     - DONE - Label                          
     -      - List                           
     -      - ParticleEffectActor            
@@ -1049,9 +1057,10 @@ SCENES.SCENE2D/UI
     -      - TextTooltip                    
     -      - TooltipManager                 
     -      - Touchpad                       
-    - IP   - Tree                           Generics have become confused, come back later
+    - DONE - Tree
+    - DONE - Tree.TreeClickListener
     - DONE - Value                          
-    - DONE - ValueExtensions                New Class
+    - DONE - ValueExtensions
     - DONE - VerticalGroup                  
     - DONE - Widget                         
     - DONE - WidgetGroup                    
@@ -1106,7 +1115,7 @@ UTILS
     - DONE - ScreenUtils
     - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
     - IP   - SharedLibraryLoader
-            - IP   - SystemHelpers
+    - IP   - SharedLibraryLoader.SystemHelpers
     - DONE - SortUtils
     - DONE - StringTokenizer
     - DONE - Timer                          
@@ -1247,7 +1256,7 @@ BACKENDS/DESKTOPGL
 ------------------
 
     - IP   - DesktopGLApplication
-            - IP   - GLDebugMessageSeverity
+    - IP   - DesktopGLApplication.GLDebugMessageSeverity
     - DONE - DesktopGLApplicationConfiguration
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet
@@ -1267,8 +1276,8 @@ BACKENDS/DESKTOPGL
     - IP   - DesktopGL20
     - IP   - DesktopGL30
     - IP   - DesktopGLGraphics
-            - IP   - DesktopGLDisplayMode   Delete candidate
-            - IP   - DesktopGLMonitor       Delete candidate
+    - IP   - DesktopGLGraphics.DesktopGLDisplayMode   Delete candidate
+    - IP   - DesktopGLGraphics.DesktopGLMonitor       Delete candidate
 
     Input
     -----
