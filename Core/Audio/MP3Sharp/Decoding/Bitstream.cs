@@ -112,7 +112,7 @@ public sealed class Bitstream
         }
         catch ( IOException ex )
         {
-            throw NewBitstreamException( BitstreamErrors.STREA_ERROR, ex );
+            throw new BitstreamException( BitstreamErrors.STREA_ERROR, ex );
         }
     }
 
@@ -136,7 +136,7 @@ public sealed class Bitstream
             if ( ex.ErrorCode != BitstreamErrors.STREAM_EOF )
             {
                 // wrap original exception so stack trace is maintained.
-                throw NewBitstreamException( ex.ErrorCode, ex );
+                throw new BitstreamException( ex.ErrorCode, ex );
             }
         }
 
@@ -169,7 +169,7 @@ public sealed class Bitstream
             }
             catch
             {
-                throw NewBitstreamException( BitstreamErrors.STREA_ERROR );
+                throw new BitstreamException( BitstreamErrors.STREA_ERROR );
             }
         }
     }
@@ -224,19 +224,6 @@ public sealed class Bitstream
         return sync;
     }
 
-    // TODO: this class should provide inner classes to parse the frame contents. Eventually, readBits will be removed.
-    public int ReadBits( int n ) => GetBitsFromBuffer( n );
-
-    // TODO: implement CRC check.
-    public int ReadCheckedBits( int n ) => GetBitsFromBuffer( n );
-
-    public BitstreamException NewBitstreamException( int errorcode ) => new( errorcode, null );
-
-    public BitstreamException NewBitstreamException( int errorcode, System.Exception? throwable )
-    {
-        return new BitstreamException( errorcode, throwable );
-    }
-
     /// <summary>
     /// Get next 32 bits from bitstream.
     /// They are stored in the headerstring.
@@ -252,7 +239,7 @@ public sealed class Bitstream
 
         if ( bytesRead != 3 )
         {
-            throw NewBitstreamException( BitstreamErrors.STREAM_EOF, null );
+            throw new BitstreamException( BitstreamErrors.STREAM_EOF );
         }
 
         var headerstring = ( ( _syncBuffer[ 0 ] << 16 ) & 0x00FF0000 )
@@ -265,7 +252,7 @@ public sealed class Bitstream
 
             if ( ReadBytes( _syncBuffer, 3, 1 ) != 1 )
             {
-                throw NewBitstreamException( BitstreamErrors.STREAM_EOF, null );
+                throw new BitstreamException( BitstreamErrors.STREAM_EOF );
             }
 
             headerstring |= _syncBuffer[ 3 ] & 0x000000FF;
@@ -276,7 +263,7 @@ public sealed class Bitstream
 
                 if ( bytesRead != 3 )
                 {
-                    throw NewBitstreamException( BitstreamErrors.STREAM_EOF, null );
+                    throw new BitstreamException( BitstreamErrors.STREAM_EOF );
                 }
 
                 headerstring = ( ( _syncBuffer[ 0 ] << 16 ) & 0x00FF0000 )
@@ -310,7 +297,7 @@ public sealed class Bitstream
 
             if ( ReadBytes( id3Header, 0, 6 ) != 6 )
             {
-                throw NewBitstreamException( BitstreamErrors.STREAM_EOF, null );
+                throw new BitstreamException( BitstreamErrors.STREAM_EOF );
             }
 
             // id3 header uses 4 bytes to store the size of all tags,
@@ -329,7 +316,7 @@ public sealed class Bitstream
 
             if ( ReadBytes( id3Tag, 0, id3TagSize ) != id3TagSize )
             {
-                throw NewBitstreamException( BitstreamErrors.STREAM_EOF, null );
+                throw new BitstreamException( BitstreamErrors.STREAM_EOF );
             }
         }
 
@@ -404,7 +391,7 @@ public sealed class Bitstream
         var byteread = _frameBytes;
         var bytesize = _frameSize;
 
-        for ( var k = 0; k < bytesize; k = k + 4 )
+        for ( var k = 0; k < bytesize; k += 4 )
         {
             var   b0 = byteread[ k ];
             sbyte b1 = 0;
@@ -502,7 +489,7 @@ public sealed class Bitstream
             {
                 var bytesread = _sourceStream.Read( b, offs, len );
 
-                if ( ( bytesread == -1 ) || ( bytesread == 0 ) ) // t/DD -- .NET returns 0 at end-of-stream!
+                if ( bytesread is -1 or 0 ) // t/DD -- .NET returns 0 at end-of-stream!
                 {
                     // t/DD: this really SHOULD throw an exception here...
                     // Trace.WriteLine("readFully -- returning success at EOF? (" + bytesread + ")", "Bitstream");
@@ -522,7 +509,7 @@ public sealed class Bitstream
         }
         catch ( IOException ex )
         {
-            throw NewBitstreamException( BitstreamErrors.STREA_ERROR, ex );
+            throw new BitstreamException( BitstreamErrors.STREA_ERROR, ex );
         }
     }
 
@@ -540,7 +527,7 @@ public sealed class Bitstream
                 var bytesread = _sourceStream.Read( b, offs, len );
 
                 // for (int i = 0; i < len; i++) b[i] = (sbyte)Temp[i];
-                if ( ( bytesread == -1 ) || ( bytesread == 0 ) )
+                if ( bytesread is -1 or 0 )
                 {
                     break;
                 }
@@ -552,7 +539,7 @@ public sealed class Bitstream
         }
         catch ( IOException ex )
         {
-            throw NewBitstreamException( BitstreamErrors.STREA_ERROR, ex );
+            throw new BitstreamException( BitstreamErrors.STREA_ERROR, ex );
         }
 
         return totalBytesRead;

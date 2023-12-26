@@ -25,10 +25,10 @@ public class ArraySelection<T> : Selection< T >
 {
     public bool RangeSelect { get; set; } = true;
 
-    private readonly List< T > _array;
+    private readonly List< T >? _array;
     private          T?        _rangeStart;
 
-    public ArraySelection( List< T > array )
+    public ArraySelection( List< T >? array )
     {
         this._array      = array;
         this._rangeStart = default( T? );

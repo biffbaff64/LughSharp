@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Immutable;
+
 namespace LibGDXSharp.Backends.Desktop;
 
 [PublicAPI]

@@ -65,13 +65,14 @@ public interface IApplication
 {
     /// <summary>
     /// </summary>
+    [PublicAPI]
     enum ApplicationType
     {
         IOS,
         Android,
         Desktop,
         HeadlessDesktop,
-        WebGL,
+        WebGL
     }
 
     const int LOG_NONE  = 0;

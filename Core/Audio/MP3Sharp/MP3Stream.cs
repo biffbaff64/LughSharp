@@ -31,10 +31,6 @@ public class Mp3Stream : Stream
     private readonly Decoder           _decoder = new( Decoder.DefaultParams );
     private readonly Buffer16BitStereo _buffer;
     private readonly Stream            _sourceStream;
-    private readonly SoundFormat       _formatRep;
-
-    private short _channelCountRep = -1;
-    private int   _frequencyRep    = -1;
 
     /// <summary>
     /// Creates a new stream instance using the provided filename, and the default chunk size of 4096 bytes.
@@ -68,30 +64,16 @@ public class Mp3Stream : Stream
         // read the first frame. This will fill the initial buffer with data, and get our frequency!
         IsEof |= !ReadFrame();
 
-        switch ( _channelCountRep )
-        {
-            case 1:
-            {
-                _formatRep = SoundFormat.Pcm16BitMono;
+        Format = ChannelCount switch
+                     {
+                         1 => SoundFormat.Pcm16BitMono,
+                         2 => SoundFormat.Pcm16BitStereo,
+                         _ => throw new Mp3SharpException
+                             ( $"Unhandled channel count rep: {ChannelCount} "
+                             + $"(allowed values are 1-mono and 2-stereo)." )
+                     };
 
-                break;
-            }
-
-            case 2:
-            {
-                _formatRep = SoundFormat.Pcm16BitStereo;
-
-                break;
-            }
-
-            default:
-            {
-                throw new Mp3SharpException( $"Unhandled channel count rep: {_channelCountRep} "
-                                           + $"(allowed values are 1-mono and 2-stereo)." );
-            }
-        }
-
-        if ( _formatRep == SoundFormat.Pcm16BitMono )
+        if ( Format == SoundFormat.Pcm16BitMono )
         {
             _buffer.DoubleMonoToStereo = true;
         }
@@ -100,7 +82,7 @@ public class Mp3Stream : Stream
     /// <summary>
     /// Gets the chunk size.
     /// </summary>
-    public int ChunkSize => BACK_STREAM_BYTE_COUNT_REP;
+    public static int ChunkSize => BACK_STREAM_BYTE_COUNT_REP;
 
     /// <summary>
     /// Gets a value indicating whether the current stream supports reading.
@@ -151,18 +133,19 @@ public class Mp3Stream : Stream
     /// Gets the frequency of the audio being decoded. Updated every call to Read() or DecodeFrames(),
     /// to reflect the most recent header information from the MP3 Stream.
     /// </summary>
-    public int Frequency => _frequencyRep;
+    public int Frequency { get; private set; } = -1;
 
     /// <summary>
-    /// Gets the number of channels available in the audio being decoded. Updated every call to Read() or DecodeFrames(),
-    /// to reflect the most recent header information from the MP3 Stream.
+    /// Gets the number of channels available in the audio being decoded.
+    /// Updated every call to Read() or DecodeFrames(), to reflect the most
+    /// recent header information from the MP3 Stream.
     /// </summary>
-    public short ChannelCount => _channelCountRep;
+    public short ChannelCount { get; private set; } = -1;
 
     /// <summary>
     /// Gets the PCM output format of this stream.
     /// </summary>
-    public SoundFormat Format => _formatRep;
+    public SoundFormat Format { get; private set; }
 
     /// <summary>
     /// Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
@@ -287,11 +270,11 @@ public class Mp3Stream : Stream
         try
         {
             // Set the channel count and frequency values for the stream.
-            _channelCountRep = header.Mode() == Header.SINGLE_CHANNEL ? ( short )1 : ( short )2;
-            _frequencyRep    = header.Frequency();
+            ChannelCount = header.Mode() == Header.SINGLE_CHANNEL ? ( short )1 : ( short )2;
+            Frequency    = header.Frequency();
 
             // Decode the frame.
-            ABuffer decoderOutput = _decoder.DecodeFrame( header, _bitStream );
+            ABuffer? decoderOutput = _decoder.DecodeFrame( header, _bitStream );
 
             if ( decoderOutput != _buffer )
             {

@@ -1008,6 +1008,8 @@ SCENES.SCENE2D/ACTIONS
 SCENES/SCENE2D/LISTENERS
 ------------------------
 
+    - Base classes to be used and extended as r4equired
+
     - IP   - ActorGestureListener           
     - IP   - ChangeListener                 
     - IP   - ClickListener                  
@@ -1153,7 +1155,7 @@ UTILS/ASYNC - DELETE CANDIDATE
 UTILS/COLLECTIONS
 -----------------
 
-    - DONE - Array<T>                       Converted, but use List<T>.
+    - DONE - Array<T>                       Converted, but use List<T> for most cases.
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
@@ -1197,6 +1199,8 @@ UTILS/COLLECTIONS
 
 UTILS/EXCEPTIONS
 ----------------
+
+    These need more documentation!
 
     - DONE - AssetNotLoadedException        
     - DONE - BufferOverflowException        

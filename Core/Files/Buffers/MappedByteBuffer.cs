@@ -16,6 +16,9 @@
 
 namespace LibGDXSharp.Core.Files.Buffers;
 
+/// <summary>
+/// 
+/// </summary>
 [PublicAPI]
 public abstract class MappedByteBuffer : ByteBuffer
 {

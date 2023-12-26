@@ -66,6 +66,42 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
                 channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
             }
         }
+
+        if ( allocation != 0 )
+        {
+            base.ReadScaleFactor( stream, header );
+
+            switch ( channel2Scfsi )
+            {
+                case 0:
+                    channel2Scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
+                    break;
+
+                case 1:
+                    channel2Scalefactor1 =
+                    channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
+                    break;
+
+                case 2:
+                    channel2Scalefactor1 =
+                    channel2Scalefactor2 =
+                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
+                    break;
+
+                case 3:
+                    channel2Scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    channel2Scalefactor2 =
+                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
+                    break;
+            }
+        }
     }
 
     /// <summary>
@@ -82,67 +118,62 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
                 sample = ( sample + d[ 0 ] ) * cFactor[ 0 ];
             }
 
-            if ( channels == OutputChannels.BOTH_CHANNELS )
+            switch ( channels )
             {
-                var sample2 = sample;
-
-                switch ( groupnumber )
+                case OutputChannels.BOTH_CHANNELS:
                 {
-                    case <= 4:
-                        sample  *= scalefactor1;
-                        sample2 *= channel2Scalefactor1;
+                    var sample2 = sample;
 
-                        break;
+                    switch ( groupnumber )
+                    {
+                        case <= 4:
+                            sample  *= scalefactor1;
+                            sample2 *= channel2Scalefactor1;
 
-                    case <= 8:
-                        sample  *= scalefactor2;
-                        sample2 *= channel2Scalefactor2;
+                            break;
 
-                        break;
+                        case <= 8:
+                            sample  *= scalefactor2;
+                            sample2 *= channel2Scalefactor2;
 
-                    default:
-                        sample  *= scalefactor3;
-                        sample2 *= channel2Scalefactor3;
+                            break;
 
-                        break;
+                        default:
+                            sample  *= scalefactor3;
+                            sample2 *= channel2Scalefactor3;
+
+                            break;
+                    }
+
+                    filter1?.AddSample( sample, subbandnumber );
+                    filter2?.AddSample( sample2, subbandnumber );
+
+                    break;
                 }
 
-                filter1?.AddSample( sample, subbandnumber );
-                filter2?.AddSample( sample2, subbandnumber );
-            }
-            else if ( channels == OutputChannels.LEFT_CHANNEL )
-            {
-                if ( groupnumber <= 4 )
-                {
-                    sample *= scalefactor1;
-                }
-                else if ( groupnumber <= 8 )
-                {
-                    sample *= scalefactor2;
-                }
-                else
-                {
-                    sample *= scalefactor3;
-                }
+                case OutputChannels.LEFT_CHANNEL:
+                    sample *= groupnumber switch
+                              {
+                                  <= 4 => scalefactor1,
+                                  <= 8 => scalefactor2,
+                                  _    => scalefactor3
+                              };
 
-                filter1?.AddSample( sample, subbandnumber );
-            }
-            else
-            {
-                if ( groupnumber <= 4 )
-                {
-                    sample *= channel2Scalefactor1;
-                }
-                else if ( groupnumber <= 8 )
-                {
-                    sample *= channel2Scalefactor2;
-                }
-                else
-                {
-                    sample *= channel2Scalefactor3;
-                }
+                    filter1?.AddSample( sample, subbandnumber );
 
-                filter1?.AddSample( sample, subbandnumber );
+                    break;
+
+                default:
+                    sample *= groupnumber switch
+                              {
+                                  <= 4 => channel2Scalefactor1,
+                                  <= 8 => channel2Scalefactor2,
+                                  _    => channel2Scalefactor3
+                              };
+
+                    filter1?.AddSample( sample, subbandnumber );
+
+                    break;
             }
         }
 

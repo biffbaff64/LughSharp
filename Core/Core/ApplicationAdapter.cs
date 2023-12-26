@@ -21,7 +21,7 @@ namespace LibGDXSharp.Core;
 /// Derive from this and only override what you need.
 /// </summary>
 [PublicAPI]
-public class ApplicationAdapter : IApplicationListener, IDisposable
+public class ApplicationAdapter : IApplicationListener
 {
     /// <summary>
     /// Called when the <see cref="IApplication"/> is first created.
@@ -71,5 +71,6 @@ public class ApplicationAdapter : IApplicationListener, IDisposable
     /// </summary>
     public virtual void Dispose()
     {
+        GC.SuppressFinalize( this );
     }
 }

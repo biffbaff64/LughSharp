@@ -48,12 +48,7 @@ public abstract class AbstractInput : IInput
             return PressedKeyCount > 0;
         }
 
-        if ( key is < 0 or > IInput.Keys.MAX_KEYCODE )
-        {
-            return false;
-        }
-
-        return PressedKeys[ key ];
+        return ( key is >= 0 and <= IInput.Keys.MAX_KEYCODE ) && PressedKeys[ key ];
     }
 
     /// <summary>
@@ -68,12 +63,7 @@ public abstract class AbstractInput : IInput
             return KeyJustPressed;
         }
 
-        if ( key is < 0 or > IInput.Keys.MAX_KEYCODE )
-        {
-            return false;
-        }
-
-        return JustPressedKeys[ key ];
+        return ( key is >= 0 and <= IInput.Keys.MAX_KEYCODE ) && JustPressedKeys[ key ];
     }
 
     /// <summary>

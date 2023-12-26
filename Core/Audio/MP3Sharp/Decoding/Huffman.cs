@@ -671,7 +671,7 @@ public class Huffman
         new[] { 0, 12 }, new[] { 0, 13 }, new[] { 2, 1 }, new[] { 0, 14 }, new[] { 0, 15 }
     };
 
-    public static Huffman[] huffmanTable = null!; //Simulate extern struct
+    private static Huffman[] _huffmanTable = null!; //Simulate extern struct
 
     private readonly int     _linbits;    //number of linbits
     private readonly char    _tablename0; //string, containing table_description
@@ -724,10 +724,11 @@ public class Huffman
         // 0..31 Huffman code table 0..31
         // 32,33 count1-tables
 
-        var dmask = 1 << ( ( 4 * 8 ) - 1 );
+        const int DMASK = 1 << ( ( 4 * 8 ) - 1 );
+
         var point = 0;
         var error = 1;
-        var level = dmask;
+        var level = DMASK;
 
         if ( h._val == null )
         {
@@ -804,12 +805,12 @@ public class Huffman
         */
         /* Process sign encodings for quadruples tables. */
         // System.out.println(h.tablename);
-        if ( ( h._tablename0 == '3' ) && ( ( h._tablename1 == '2' ) || ( h._tablename1 == '3' ) ) )
+        if ( h is { _tablename0: '3', _tablename1: '1' or '3' } )
         {
             v[ 0 ] = ( y[ 0 ] >> 3 ) & 1;
             w[ 0 ] = ( y[ 0 ] >> 2 ) & 1;
             x[ 0 ] = ( y[ 0 ] >> 1 ) & 1;
-            y[ 0 ] = y[ 0 ] & 1;
+            y[ 0 ] &= 1;
 
             /* v, w, x and y are reversed in the bitstream.
             switch them around to make test bistream work. */
@@ -890,45 +891,47 @@ public class Huffman
 
     public static void Initialize()
     {
-        if ( huffmanTable != null! )
+        if ( _huffmanTable != null! )
         {
             return;
         }
 
-        huffmanTable       = new Huffman[ HTN ];
-        huffmanTable[ 0 ]  = new Huffman( "0  ", 0, 0, 0, 0, -1, null!, null!, ValTab0, 0 );
-        huffmanTable[ 1 ]  = new Huffman( "1  ", 2, 2, 0, 0, -1, null!, null!, ValTab1, 7 );
-        huffmanTable[ 2 ]  = new Huffman( "2  ", 3, 3, 0, 0, -1, null!, null!, ValTab2, 17 );
-        huffmanTable[ 3 ]  = new Huffman( "3  ", 3, 3, 0, 0, -1, null!, null!, ValTab3, 17 );
-        huffmanTable[ 4 ]  = new Huffman( "4  ", 0, 0, 0, 0, -1, null!, null!, ValTab4, 0 );
-        huffmanTable[ 5 ]  = new Huffman( "5  ", 4, 4, 0, 0, -1, null!, null!, ValTab5, 31 );
-        huffmanTable[ 6 ]  = new Huffman( "6  ", 4, 4, 0, 0, -1, null!, null!, ValTab6, 31 );
-        huffmanTable[ 7 ]  = new Huffman( "7  ", 6, 6, 0, 0, -1, null!, null!, ValTab7, 71 );
-        huffmanTable[ 8 ]  = new Huffman( "8  ", 6, 6, 0, 0, -1, null!, null!, ValTab8, 71 );
-        huffmanTable[ 9 ]  = new Huffman( "9  ", 6, 6, 0, 0, -1, null!, null!, ValTab9, 71 );
-        huffmanTable[ 10 ] = new Huffman( "10 ", 8, 8, 0, 0, -1, null!, null!, ValTab10, 127 );
-        huffmanTable[ 11 ] = new Huffman( "11 ", 8, 8, 0, 0, -1, null!, null!, ValTab11, 127 );
-        huffmanTable[ 12 ] = new Huffman( "12 ", 8, 8, 0, 0, -1, null!, null!, ValTab12, 127 );
-        huffmanTable[ 13 ] = new Huffman( "13 ", 16, 16, 0, 0, -1, null!, null!, ValTab13, 511 );
-        huffmanTable[ 14 ] = new Huffman( "14 ", 0, 0, 0, 0, -1, null!, null!, ValTab14, 0 );
-        huffmanTable[ 15 ] = new Huffman( "15 ", 16, 16, 0, 0, -1, null!, null!, ValTab15, 511 );
-        huffmanTable[ 16 ] = new Huffman( "16 ", 16, 16, 1, 1, -1, null!, null!, ValTab16, 511 );
-        huffmanTable[ 17 ] = new Huffman( "17 ", 16, 16, 2, 3, 16, null!, null!, ValTab16, 511 );
-        huffmanTable[ 18 ] = new Huffman( "18 ", 16, 16, 3, 7, 16, null!, null!, ValTab16, 511 );
-        huffmanTable[ 19 ] = new Huffman( "19 ", 16, 16, 4, 15, 16, null!, null!, ValTab16, 511 );
-        huffmanTable[ 20 ] = new Huffman( "20 ", 16, 16, 6, 63, 16, null!, null!, ValTab16, 511 );
-        huffmanTable[ 21 ] = new Huffman( "21 ", 16, 16, 8, 255, 16, null!, null!, ValTab16, 511 );
-        huffmanTable[ 22 ] = new Huffman( "22 ", 16, 16, 10, 1023, 16, null!, null!, ValTab16, 511 );
-        huffmanTable[ 23 ] = new Huffman( "23 ", 16, 16, 13, 8191, 16, null!, null!, ValTab16, 511 );
-        huffmanTable[ 24 ] = new Huffman( "24 ", 16, 16, 4, 15, -1, null!, null!, ValTab24, 512 );
-        huffmanTable[ 25 ] = new Huffman( "25 ", 16, 16, 5, 31, 24, null!, null!, ValTab24, 512 );
-        huffmanTable[ 26 ] = new Huffman( "26 ", 16, 16, 6, 63, 24, null!, null!, ValTab24, 512 );
-        huffmanTable[ 27 ] = new Huffman( "27 ", 16, 16, 7, 127, 24, null!, null!, ValTab24, 512 );
-        huffmanTable[ 28 ] = new Huffman( "28 ", 16, 16, 8, 255, 24, null!, null!, ValTab24, 512 );
-        huffmanTable[ 29 ] = new Huffman( "29 ", 16, 16, 9, 511, 24, null!, null!, ValTab24, 512 );
-        huffmanTable[ 30 ] = new Huffman( "30 ", 16, 16, 11, 2047, 24, null!, null!, ValTab24, 512 );
-        huffmanTable[ 31 ] = new Huffman( "31 ", 16, 16, 13, 8191, 24, null!, null!, ValTab24, 512 );
-        huffmanTable[ 32 ] = new Huffman( "32 ", 1, 16, 0, 0, -1, null!, null!, ValTab32, 31 );
-        huffmanTable[ 33 ] = new Huffman( "33 ", 1, 16, 0, 0, -1, null!, null!, ValTab33, 31 );
+        _huffmanTable       = new Huffman[ HTN ];
+        _huffmanTable[ 0 ]  = new Huffman( "0  ", 0, 0, 0, 0, -1, null!, null!, ValTab0, 0 );
+        _huffmanTable[ 1 ]  = new Huffman( "1  ", 2, 2, 0, 0, -1, null!, null!, ValTab1, 7 );
+        _huffmanTable[ 2 ]  = new Huffman( "2  ", 3, 3, 0, 0, -1, null!, null!, ValTab2, 17 );
+        _huffmanTable[ 3 ]  = new Huffman( "3  ", 3, 3, 0, 0, -1, null!, null!, ValTab3, 17 );
+        _huffmanTable[ 4 ]  = new Huffman( "4  ", 0, 0, 0, 0, -1, null!, null!, ValTab4, 0 );
+        _huffmanTable[ 5 ]  = new Huffman( "5  ", 4, 4, 0, 0, -1, null!, null!, ValTab5, 31 );
+        _huffmanTable[ 6 ]  = new Huffman( "6  ", 4, 4, 0, 0, -1, null!, null!, ValTab6, 31 );
+        _huffmanTable[ 7 ]  = new Huffman( "7  ", 6, 6, 0, 0, -1, null!, null!, ValTab7, 71 );
+        _huffmanTable[ 8 ]  = new Huffman( "8  ", 6, 6, 0, 0, -1, null!, null!, ValTab8, 71 );
+        _huffmanTable[ 9 ]  = new Huffman( "9  ", 6, 6, 0, 0, -1, null!, null!, ValTab9, 71 );
+        _huffmanTable[ 10 ] = new Huffman( "10 ", 8, 8, 0, 0, -1, null!, null!, ValTab10, 127 );
+        _huffmanTable[ 11 ] = new Huffman( "11 ", 8, 8, 0, 0, -1, null!, null!, ValTab11, 127 );
+        _huffmanTable[ 12 ] = new Huffman( "12 ", 8, 8, 0, 0, -1, null!, null!, ValTab12, 127 );
+        _huffmanTable[ 13 ] = new Huffman( "13 ", 16, 16, 0, 0, -1, null!, null!, ValTab13, 511 );
+        _huffmanTable[ 14 ] = new Huffman( "14 ", 0, 0, 0, 0, -1, null!, null!, ValTab14, 0 );
+        _huffmanTable[ 15 ] = new Huffman( "15 ", 16, 16, 0, 0, -1, null!, null!, ValTab15, 511 );
+        _huffmanTable[ 16 ] = new Huffman( "16 ", 16, 16, 1, 1, -1, null!, null!, ValTab16, 511 );
+        _huffmanTable[ 17 ] = new Huffman( "17 ", 16, 16, 2, 3, 16, null!, null!, ValTab16, 511 );
+        _huffmanTable[ 18 ] = new Huffman( "18 ", 16, 16, 3, 7, 16, null!, null!, ValTab16, 511 );
+        _huffmanTable[ 19 ] = new Huffman( "19 ", 16, 16, 4, 15, 16, null!, null!, ValTab16, 511 );
+        _huffmanTable[ 20 ] = new Huffman( "20 ", 16, 16, 6, 63, 16, null!, null!, ValTab16, 511 );
+        _huffmanTable[ 21 ] = new Huffman( "21 ", 16, 16, 8, 255, 16, null!, null!, ValTab16, 511 );
+        _huffmanTable[ 22 ] = new Huffman( "22 ", 16, 16, 10, 1023, 16, null!, null!, ValTab16, 511 );
+        _huffmanTable[ 23 ] = new Huffman( "23 ", 16, 16, 13, 8191, 16, null!, null!, ValTab16, 511 );
+        _huffmanTable[ 24 ] = new Huffman( "24 ", 16, 16, 4, 15, -1, null!, null!, ValTab24, 512 );
+        _huffmanTable[ 25 ] = new Huffman( "25 ", 16, 16, 5, 31, 24, null!, null!, ValTab24, 512 );
+        _huffmanTable[ 26 ] = new Huffman( "26 ", 16, 16, 6, 63, 24, null!, null!, ValTab24, 512 );
+        _huffmanTable[ 27 ] = new Huffman( "27 ", 16, 16, 7, 127, 24, null!, null!, ValTab24, 512 );
+        _huffmanTable[ 28 ] = new Huffman( "28 ", 16, 16, 8, 255, 24, null!, null!, ValTab24, 512 );
+        _huffmanTable[ 29 ] = new Huffman( "29 ", 16, 16, 9, 511, 24, null!, null!, ValTab24, 512 );
+        _huffmanTable[ 30 ] = new Huffman( "30 ", 16, 16, 11, 2047, 24, null!, null!, ValTab24, 512 );
+        _huffmanTable[ 31 ] = new Huffman( "31 ", 16, 16, 13, 8191, 24, null!, null!, ValTab24, 512 );
+        _huffmanTable[ 32 ] = new Huffman( "32 ", 1, 16, 0, 0, -1, null!, null!, ValTab32, 31 );
+        _huffmanTable[ 33 ] = new Huffman( "33 ", 1, 16, 0, 0, -1, null!, null!, ValTab33, 31 );
     }
+
+    public static Huffman[] GetHuffmanTable() => _huffmanTable;
 }

@@ -174,24 +174,15 @@ public class Equalizer
         return eq;
     }
 
-    private float Limit( float eq )
+    private static float Limit( float eq )
     {
-        if ( eq.Equals( BAND_NOT_PRESENT ) )
-        {
-            return eq;
-        }
-
-        if ( eq > 1.0f )
-        {
-            return 1.0f;
-        }
-
-        if ( eq < -1.0f )
-        {
-            return -1.0f;
-        }
-
-        return eq;
+        return eq switch
+               {
+                   BAND_NOT_PRESENT => eq,
+                   > 1.0f           => 1.0f,
+                   < -1.0f          => -1.0f,
+                   _                => eq
+               };
     }
 
     /// <summary>
@@ -199,7 +190,7 @@ public class Equalizer
     /// The factor is determined by the function f = 2^n where
     /// n is the equalizer band setting in the range [-1.0,1.0].
     /// </summary>
-    public float GetBandFactor( float eq )
+    public static float GetBandFactor( float eq )
     {
         if ( eq.Equals( BAND_NOT_PRESENT ) )
         {

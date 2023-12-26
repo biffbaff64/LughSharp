@@ -41,13 +41,13 @@ public class BitstreamException : Mp3SharpException
 {
     public int ErrorCode { get; set; }
 
-    public BitstreamException( string message, System.Exception? inner )
+    public BitstreamException( string message, System.Exception? inner = null )
         : base( message, inner )
     {
         ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
     }
 
-    public BitstreamException( int errorcode, System.Exception? inner )
+    public BitstreamException( int errorcode, System.Exception? inner = null )
         : this( GetErrorString( errorcode ), inner )
     {
         ErrorCode = BitstreamErrors.UNKNOWN_ERROR;

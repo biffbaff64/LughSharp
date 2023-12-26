@@ -41,7 +41,7 @@ public class MemberNullException : System.Exception
     }
 
     /// <summary>
-    /// Throws an <see cref="ArgumentNullException"/> if <paramref name="argument"/> is null.
+    /// Throws an <see cref="MemberNullException"/> if <paramref name="argument"/> is null.
     /// </summary>
     /// <param name="argument">
     /// The reference type argument to validate as non-null.
@@ -60,5 +60,5 @@ public class MemberNullException : System.Exception
     }
 
     [DoesNotReturn]
-    internal static void Throw( string? paramName ) => throw new ArgumentNullException( paramName );
+    internal static void Throw( string? paramName ) => throw new MemberNullException( paramName );
 }

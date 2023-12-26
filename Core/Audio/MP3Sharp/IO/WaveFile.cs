@@ -107,7 +107,7 @@ public class WaveFile : RiffFile
     /// </summary>
     public virtual int WriteData( short[] data, int numData )
     {
-        int extraBytes = numData * 2;
+        var extraBytes = numData * 2;
         _pcmData.CkSize += extraBytes;
 
         return Write( data, extraBytes );
@@ -226,7 +226,7 @@ public class WaveFile : RiffFile
         public virtual int VerifyValidity()
         {
             var ret = ( Header.CkId == FourCC( "fmt " ) )
-                   && ( ( Data.NumChannels == 1 ) || ( Data.NumChannels == 2 ) )
+                   && ( Data.NumChannels is 1 or 2 )
                    && ( Data.NumAvgBytesPerSec == ( ( Data.NumChannels * Data.NumSamplesPerSec * Data.NumBitsPerSample ) / 8 ) )
                    && ( Data.NumBlockAlign == ( ( Data.NumChannels * Data.NumBitsPerSample ) / 8 ) );
 

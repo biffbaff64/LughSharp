@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Assets.Loaders;
 
 [PublicAPI]
-public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >, IDisposable
+public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
     [PublicAPI]
     public struct CubemapLoaderInfo
@@ -141,20 +141,6 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         }
 
         return cubemap;
-    }
-
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
-    }
-
-    private void Dispose( bool disposing )
-    {
-        if ( disposing )
-        {
-        }
     }
     
     [PublicAPI]

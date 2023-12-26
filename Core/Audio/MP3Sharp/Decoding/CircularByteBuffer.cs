@@ -99,7 +99,7 @@ public class CircularByteBuffer
         }
     }
 
-    public CircularByteBuffer Copy() => new CircularByteBuffer( this );
+    public CircularByteBuffer Copy() => new( this );
 
     public void Reset()
     {
@@ -170,10 +170,12 @@ public class CircularByteBuffer
         // Do thin modulo (should just drop through)
         for ( ; ind >= _length; ind -= _length )
         {
+            // Intentionally empty
         }
 
         for ( ; ind < 0; ind += _length )
         {
+            // Intentionally empty
         }
 
         // Set value
@@ -187,10 +189,12 @@ public class CircularByteBuffer
         // Do thin modulo (should just drop through)
         for ( ; ind > _length; ind -= _length )
         {
+            // Intentionally empty
         }
 
         for ( ; ind < 0; ind += _length )
         {
+            // Intentionally empty
         }
 
         // Set value

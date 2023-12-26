@@ -19,12 +19,15 @@ namespace LibGDXSharp.Assets;
 [PublicAPI]
 public class AssetDescriptor
 {
-    public Type                  Type       { get; set; }
-    public string                FilePath   { get; set; }
-    [AllowNull]
-    public AssetLoaderParameters Parameters { get; set; }
-    public FileInfo              File       { get; set; }
+    public Type                   Type       { get; set; }
+    public string                 FilePath   { get; set; }
+    public AssetLoaderParameters? Parameters { get; set; }
+    public FileInfo               File       { get; set; }
 
+    /// <summary>
+    /// Creates an empty AssetDescriptor object.
+    /// Information will need providing before this object can be used.
+    /// </summary>
     public AssetDescriptor()
     {
         Type       = null!;
@@ -34,6 +37,7 @@ public class AssetDescriptor
     }
 
     /// <summary>
+    /// Creates a new AssetDescriptor object.
     /// </summary>
     /// <param name="filepath"></param>
     /// <param name="assetType"></param>
@@ -49,6 +53,7 @@ public class AssetDescriptor
     }
 
     /// <summary>
+    /// Creates a new AssetDescriptor object.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="assetType"></param>

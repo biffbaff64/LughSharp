@@ -304,7 +304,7 @@ public class RiffFile
         var theData = new sbyte[ numBytes ];
         var yc      = 0;
 
-        for ( var y = 0; y < numBytes; y = y + 2 )
+        for ( var y = 0; y < numBytes; y += 2 )
         {
             theData[ y ]     = ( sbyte )( data[ yc ] & 0x00FF );
             theData[ y + 1 ] = ( sbyte )( ( SupportClass.URShift( data[ yc++ ], 8 ) ) & 0x00FF );
@@ -377,8 +377,6 @@ public class RiffFile
     /// </summary>
     public virtual int Write( short data, int numBytes )
     {
-        var theData = data; //(short) (((SupportClass.URShift(data, 8)) & 0x00FF) | ((Data << 8) & 0xFF00));
-
         if ( _fmode != RF_WRITE )
         {
             return DDC_INVALID_CALL;
@@ -387,7 +385,7 @@ public class RiffFile
         try
         {
             var tempBinaryWriter = new BinaryWriter( _file! );
-            tempBinaryWriter.Write( theData );
+            tempBinaryWriter.Write( data );
             _fmode = RF_WRITE;
         }
         catch
@@ -405,8 +403,6 @@ public class RiffFile
     /// </summary>
     public virtual int Write( int data, int numBytes )
     {
-        var theData = data;
-
         if ( _fmode != RF_WRITE )
         {
             return DDC_INVALID_CALL;
@@ -416,7 +412,7 @@ public class RiffFile
         {
             var tempBinaryWriter = new BinaryWriter( _file! );
 
-            tempBinaryWriter.Write( theData );
+            tempBinaryWriter.Write( data );
             _fmode = RF_WRITE;
         }
         catch
@@ -643,19 +639,17 @@ public class RiffFile
         public int CkId   { get; set; } // Four-character chunk ID
         public int CkSize { get; set; }
 
-        private RiffFile _enclosingInstance = null!;
-
         // Length of data in chunk
         public RiffChunkHeader( RiffFile enclosingInstance )
         {
             InitBlock( enclosingInstance );
         }
 
-        public RiffFile EnclosingInstance => _enclosingInstance;
+        public RiffFile EnclosingInstance { get; private set; } = null!;
 
-        private void InitBlock( RiffFile enclosingInstance )
+        private void InitBlock( RiffFile instance )
         {
-            _enclosingInstance = enclosingInstance;
+            EnclosingInstance = instance;
         }
     }
 }

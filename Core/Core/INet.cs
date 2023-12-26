@@ -22,6 +22,7 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public interface INet
 {
+    [PublicAPI]
     public interface IHttpResponse
     {
         byte[] GetResult();
@@ -39,6 +40,7 @@ public interface INet
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public interface IHttpMethods
     {
         public const string HEAD   = "HEAD";
@@ -49,6 +51,7 @@ public interface INet
         public const string DELETE = "DELETE";
     }
 
+    [PublicAPI]
     public interface IHttpResponseListener
     {
         void HandleHttpResponse( IHttpResponse httpResponse );
@@ -58,6 +61,7 @@ public interface INet
         void Cancelled();
     }
 
+    [PublicAPI]
     public enum Protocol
     {
         Tcp

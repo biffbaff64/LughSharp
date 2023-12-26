@@ -94,7 +94,7 @@ public class ParticleEffectLoader
     /// <summary>
     /// Retrieves a list of asset dependencies required for loading a particle effect.
     /// <para>
-    /// This method checks if the provided <paramref name="param"/> is not null and if the associated
+    /// This method checks if the provided <paramref name="parameters"/> is not null and if the associated
     /// <see cref="ParticleEffectParameter.AtlasFile"/> is not null. If both conditions are met, the
     /// method creates a list of asset descriptors containing a single <see cref="AssetDescriptor"/>
     /// representing the dependency on a <see cref="TextureAtlas"/> loaded from the specified
@@ -103,7 +103,7 @@ public class ParticleEffectLoader
     /// </summary>
     /// <param name="fileName">The name of the file associated with the asset.</param>
     /// <param name="file">The file information associated with the asset.</param>
-    /// <param name="param">The parameters used for loading the asset.</param>
+    /// <param name="parameters">The parameters used for loading the asset.</param>
     /// <seealso cref="ParticleEffectParameter"/>
     /// <seealso cref="AssetDescriptor"/>
     /// <seealso cref="TextureAtlas"/>
@@ -112,17 +112,17 @@ public class ParticleEffectLoader
     /// </returns>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters? param )
+                                                             AssetLoaderParameters? parameters )
     {
         List< AssetDescriptor >? deps = null;
 
-        if ( ( param != null ) && ( ( ( ParticleEffectParameter )param ).AtlasFile != null ) )
+        if ( ( parameters != null ) && ( ( ( ParticleEffectParameter )parameters ).AtlasFile != null ) )
         {
             deps = new List< AssetDescriptor >
             {
-                new( ( ( ParticleEffectParameter )param ).AtlasFile!,
+                new( ( ( ParticleEffectParameter )parameters ).AtlasFile!,
                      typeof( TextureAtlas ),
-                     ( ParticleEffectParameter )param )
+                     ( ParticleEffectParameter )parameters )
             };
         }
 

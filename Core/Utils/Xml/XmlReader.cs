@@ -95,11 +95,11 @@ public partial class XmlReader
         }
     }
 
-    public virtual Element? Parse( FileInfo file )
+    public virtual Element? Parse( FileInfo? file )
     {
         try
         {
-            return Parse( file.OpenText() );
+            return Parse( file?.OpenText() );
         }
         catch ( System.Exception ex )
         {
@@ -111,8 +111,8 @@ public partial class XmlReader
     {
         //TODO: establish from Java LibGDX the meanings behind these variable names, then rename.
         var cs       = XML_START;
-        var p        = offset;
-        var pe       = length;
+        var p        = offset;          // position ??
+        var pe       = length;          // position end ??
         var s        = 0;
         var hasBody  = false;
         var gotoTarg = 0;
@@ -319,8 +319,6 @@ public partial class XmlReader
                                     {
                                         goto _goto;
                                     }
-
-                                    break;
                                 }
 
                                 case 3:
@@ -334,8 +332,6 @@ public partial class XmlReader
                                     {
                                         goto _goto;
                                     }
-
-                                    break;
                                 }
 
                                 case 4:
@@ -482,9 +478,7 @@ public partial class XmlReader
             }
 
             throw new SerializationException
-                (
-                $"Error parsing XML on line {lineNumber} near: {new string( data, p, Math.Min( 32, pe - p ) )}"
-                );
+                ( $"Error parsing XML on line {lineNumber} near: {new string( data, p, Math.Min( 32, pe - p ) )}" );
         }
 
         if ( _elements.Count != 0 )
@@ -518,32 +512,16 @@ public partial class XmlReader
 
     public virtual string? Entity( string name )
     {
-        if ( name.Equals( "lt" ) )
-        {
-            return "<";
-        }
+        return name switch
+               {
+                   "lt"   => "<",
+                   "gt"   => ">",
+                   "amp"  => "&",
+                   "apos" => "'",
+                   "quot" => "\"",
+                   _      => name.StartsWith( "#x" ) ? char.Parse( name[ 2.. ] ).ToString() : null
+               };
 
-        if ( name.Equals( "gt" ) )
-        {
-            return ">";
-        }
-
-        if ( name.Equals( "amp" ) )
-        {
-            return "&";
-        }
-
-        if ( name.Equals( "apos" ) )
-        {
-            return "'";
-        }
-
-        if ( name.Equals( "quot" ) )
-        {
-            return "\"";
-        }
-
-        return name.StartsWith( "#x" ) ? char.Parse( name[ 2.. ] ).ToString() : null;
     }
 
     private void Text( string text )
@@ -622,7 +600,6 @@ public partial class XmlReader
             var value = Attributes.Get( name );
 
             return value ?? defaultValue;
-
         }
 
         /// <summary>
@@ -738,7 +715,6 @@ public partial class XmlReader
                 return null;
             }
 
-            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach ( Element? element in _children )
             {
                 if ( ( element.Name != null ) && ( element.Name.Equals( name ) ) )
@@ -913,7 +889,10 @@ public partial class XmlReader
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool GetboolAttribute( string name ) => bool.Parse( GetAttribute( name ) );
+        public bool GetboolAttribute( string name )
+        {
+            return bool.Parse( GetAttribute( name ) );
+        }
 
         /// <summary>
         /// </summary>
@@ -946,11 +925,9 @@ public partial class XmlReader
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
         public string? Get( string name, string? defaultValue )
         {
-            string? str;
-
             if ( Attributes != null )
             {
-                str = Attributes.Get( name );
+                var str = Attributes.Get( name );
 
                 if ( str == null )
                 {

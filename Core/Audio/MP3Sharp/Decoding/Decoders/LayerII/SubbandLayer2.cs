@@ -466,9 +466,9 @@ public class SubbandLayer2 : ASubband
     /// <summary>
     /// 
     /// </summary>
-    protected virtual int GetAllocationLength( Header header )
+    protected virtual int GetAllocationLength( Header? header )
     {
-        if ( header.Version() == Header.MPEG1 )
+        if ( header?.Version() == Header.MPEG1 )
         {
             var channelBitrate = header.bitrate_index();
 
@@ -488,29 +488,14 @@ public class SubbandLayer2 : ASubband
             // table 3-B.2c or 3-B.2d
             if ( channelBitrate is 1 or 2 )
             {
-                if ( subbandnumber <= 1 )
-                {
-                    return 4;
-                }
-
-                return 3;
+                return ( subbandnumber <= 1 ) ? 4 : 3;
             }
 
             // tables 3-B.2a or 3-B.2b
-            if ( subbandnumber <= 10 )
-            {
-                return 4;
-            }
-
-            if ( subbandnumber <= 22 )
-            {
-                return 3;
-            }
-
-            return 2;
+            return subbandnumber <= 10 ? 4 : subbandnumber <= 22 ? 3 : 2;
         }
 
-        // MPEG-2 LSF -- Jeff
+        // MPEG-2 LSF
 
         // table B.1 of ISO/IEC 13818-3
         if ( subbandnumber <= 3 )
@@ -518,18 +503,13 @@ public class SubbandLayer2 : ASubband
             return 4;
         }
 
-        if ( subbandnumber <= 10 )
-        {
-            return 3;
-        }
-
-        return 2;
+        return subbandnumber <= 10 ? 3 : 2;
     }
 
     /// <summary>
     /// 
     /// </summary>
-    protected virtual void PrepareForSampleRead( Header header,
+    protected virtual void PrepareForSampleRead( Header? header,
                                                  int alloc,
                                                  int channel,
                                                  float[] f,
@@ -537,10 +517,10 @@ public class SubbandLayer2 : ASubband
                                                  float[] c,
                                                  float[] fd )
     {
-        var channelBitrate = header.bitrate_index();
+        var channelBitrate = header?.bitrate_index();
 
         // calculate bitrate per channel:
-        if ( header.Mode() != Header.SINGLE_CHANNEL )
+        if ( header?.Mode() != Header.SINGLE_CHANNEL )
         {
             if ( channelBitrate == 4 )
             {
@@ -649,19 +629,23 @@ public class SubbandLayer2 : ASubband
                     break;
 
                 case 1:
-                    scalefactor1 = scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    scalefactor1 =
+                    scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
                     scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 2:
-                    scalefactor1 = scalefactor2 = scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    scalefactor1 =
+                    scalefactor2 =
+                    scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 3:
                     scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-                    scalefactor2 = scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    scalefactor2 =
+                    scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
             }

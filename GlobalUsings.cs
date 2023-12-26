@@ -25,6 +25,16 @@ global using System.Text.Json;
 global using System.Text.Json.Serialization;
 
 // -----------------------------------------------------------------------
+// XML
+global using System.Xml;
+global using System.Xml.Linq;
+global using System.Xml.Resolvers;
+global using System.Xml.Schema;
+global using System.Xml.Serialization;
+global using System.Xml.XPath;
+global using System.Xml.Xsl;
+
+// -----------------------------------------------------------------------
 // Jetbrains
 global using JetBrains.Annotations;
 

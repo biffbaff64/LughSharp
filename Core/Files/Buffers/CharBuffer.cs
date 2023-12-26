@@ -98,7 +98,7 @@ public abstract class CharBuffer : Buffer
     {
         if ( capacity < 0 )
         {
-            throw new ArgumentException();
+            throw new ArgumentException( "capacity should not be less than 0!" );
         }
 
         return new HeapCharBuffer( capacity, capacity );
@@ -391,7 +391,7 @@ public abstract class CharBuffer : Buffer
     {
         if ( src == this )
         {
-            throw new ArgumentException();
+            throw new ArgumentException( "Source buffer should not be this buffer!" );
         }
 
         if ( IsReadOnly )
@@ -879,7 +879,7 @@ public abstract class CharBuffer : Buffer
             return true;
         }
 
-        if ( !( ob is CharBuffer that ) )
+        if ( ob is not CharBuffer that )
         {
             return false;
         }
@@ -1056,12 +1056,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
     public CharBuffer Append( string? csq )
     {
-        if ( csq == null )
-        {
-            return Put( "null" );
-        }
-
-        return Put( csq );
+        return ( csq == null ) ? Put( "null" ) : Put( csq );
     }
 
     /// <summary>

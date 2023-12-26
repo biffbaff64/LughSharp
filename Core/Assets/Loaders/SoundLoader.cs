@@ -40,8 +40,8 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundPar
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter )
+                                                              FileInfo? file,
+                                                              AssetLoaderParameters parameter )
     {
         return null!;
     }
@@ -93,6 +93,7 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundPar
     {
         if ( disposing )
         {
+            LoadedSound = null!;
         }
     }
 

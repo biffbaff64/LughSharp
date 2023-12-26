@@ -113,11 +113,11 @@ public class SubbandLayer1Stereo : SubbandLayer1
 
             if ( channels == OutputChannels.BOTH_CHANNELS )
             {
-                filter2.AddSample( sample2, subbandnumber );
+                filter2?.AddSample( sample2, subbandnumber );
             }
             else
             {
-                filter1.AddSample( sample2, subbandnumber );
+                filter1?.AddSample( sample2, subbandnumber );
             }
         }
 

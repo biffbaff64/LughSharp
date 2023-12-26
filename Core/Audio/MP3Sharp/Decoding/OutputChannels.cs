@@ -43,10 +43,10 @@ public class OutputChannels
     /// </summary>
     public const int DOWNMIX_CHANNELS = 3;
 
-    public readonly static OutputChannels Left    = new OutputChannels( LEFT_CHANNEL );
-    public readonly static OutputChannels Right   = new OutputChannels( RIGHT_CHANNEL );
-    public readonly static OutputChannels Both    = new OutputChannels( BOTH_CHANNELS );
-    public readonly static OutputChannels DownMix = new OutputChannels( DOWNMIX_CHANNELS );
+    public readonly static OutputChannels Left    = new( LEFT_CHANNEL );
+    public readonly static OutputChannels Right   = new( RIGHT_CHANNEL );
+    public readonly static OutputChannels Both    = new( BOTH_CHANNELS );
+    public readonly static OutputChannels DownMix = new( DOWNMIX_CHANNELS );
 
     private readonly int _outputChannels;
 
@@ -54,9 +54,9 @@ public class OutputChannels
     {
         _outputChannels = channels;
 
-        if ( ( channels < 0 ) || ( channels > 3 ) )
+        if ( channels is < 0 or > 3 )
         {
-            throw new ArgumentException( "channels" );
+            throw new ArgumentException( $"channels is wrong: {channels}" );
         }
     }
 
@@ -90,23 +90,14 @@ public class OutputChannels
     /// <exception cref="ArgumentException"> if code is not a valid channel code.</exception>
     public static OutputChannels FromInt( int code )
     {
-        switch ( code )
-        {
-            case ( int )OutputChannelsEnum.LeftChannel:
-                return Left;
-
-            case ( int )OutputChannelsEnum.RightChannel:
-                return Right;
-
-            case ( int )OutputChannelsEnum.BothChannels:
-                return Both;
-
-            case ( int )OutputChannelsEnum.DownmixChannels:
-                return DownMix;
-
-            default:
-                throw new ArgumentException( "Invalid channel code: " + code );
-        }
+        return code switch
+               {
+                   ( int )OutputChannelsEnum.LeftChannel     => Left,
+                   ( int )OutputChannelsEnum.RightChannel    => Right,
+                   ( int )OutputChannelsEnum.BothChannels    => Both,
+                   ( int )OutputChannelsEnum.DownmixChannels => DownMix,
+                   _                                         => throw new ArgumentException( "Invalid channel code: " + code )
+               };
     }
 
     public override bool Equals( object? obj )

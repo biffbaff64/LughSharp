@@ -645,7 +645,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 _sideInfo.Channels[ ch ].scaleFactorBits[ 3 ] = _stream.GetBitsFromBuffer( 1 );
             }
 
-            for ( int gr = 0; gr < 2; gr++ )
+            for ( var gr = 0; gr < 2; gr++ )
             {
                 for ( ch = 0; ch < _channels; ch++ )
                 {
@@ -914,83 +914,83 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         if ( grInfo.BlockType == 2 )
         {
-            if ( grInfo.MixedBlockFlag == 0 )
-            {
-                blocktypenumber = 1;
-            }
-            else if ( grInfo.MixedBlockFlag == 1 )
-            {
-                blocktypenumber = 2;
-            }
-            else
-            {
-                blocktypenumber = 0;
-            }
+            blocktypenumber = grInfo.MixedBlockFlag switch
+                              {
+                                  0 => 1,
+                                  1 => 2,
+                                  _ => 0
+                              };
         }
         else
         {
             blocktypenumber = 0;
         }
 
-        if ( !( ( ( modeExt == 1 ) || ( modeExt == 3 ) ) && ( ch == 1 ) ) )
+        if ( !( ( modeExt is 1 or 3 ) && ( ch == 1 ) ) )
         {
             if ( scalefacComp < 400 )
             {
-                _newSlen[ 0 ]                                   = SupportClass.URShift( scalefacComp, 4 ) / 5;
-                _newSlen[ 1 ]                                   = SupportClass.URShift( scalefacComp, 4 ) % 5;
-                _newSlen[ 2 ]                                   = SupportClass.URShift( scalefacComp & 0xF, 2 );
-                _newSlen[ 3 ]                                   = scalefacComp & 3;
+                _newSlen[ 0 ] = SupportClass.URShift( scalefacComp, 4 ) / 5;
+                _newSlen[ 1 ] = SupportClass.URShift( scalefacComp, 4 ) % 5;
+                _newSlen[ 2 ] = SupportClass.URShift( scalefacComp & 0xF, 2 );
+                _newSlen[ 3 ] = scalefacComp & 3;
+
                 _sideInfo.Channels[ ch ].granules[ gr ].Preflag = 0;
                 blocknumber                                     = 0;
             }
             else if ( scalefacComp < 500 )
             {
-                _newSlen[ 0 ]                                   = SupportClass.URShift( scalefacComp - 400, 2 ) / 5;
-                _newSlen[ 1 ]                                   = SupportClass.URShift( scalefacComp - 400, 2 ) % 5;
-                _newSlen[ 2 ]                                   = ( scalefacComp - 400 ) & 3;
-                _newSlen[ 3 ]                                   = 0;
+                _newSlen[ 0 ] = SupportClass.URShift( scalefacComp - 400, 2 ) / 5;
+                _newSlen[ 1 ] = SupportClass.URShift( scalefacComp - 400, 2 ) % 5;
+                _newSlen[ 2 ] = ( scalefacComp - 400 ) & 3;
+                _newSlen[ 3 ] = 0;
+
                 _sideInfo.Channels[ ch ].granules[ gr ].Preflag = 0;
                 blocknumber                                     = 1;
             }
             else if ( scalefacComp < 512 )
             {
-                _newSlen[ 0 ]                                   = ( scalefacComp - 500 ) / 3;
-                _newSlen[ 1 ]                                   = ( scalefacComp - 500 ) % 3;
-                _newSlen[ 2 ]                                   = 0;
-                _newSlen[ 3 ]                                   = 0;
+                _newSlen[ 0 ] = ( scalefacComp - 500 ) / 3;
+                _newSlen[ 1 ] = ( scalefacComp - 500 ) % 3;
+                _newSlen[ 2 ] = 0;
+                _newSlen[ 3 ] = 0;
+
                 _sideInfo.Channels[ ch ].granules[ gr ].Preflag = 1;
                 blocknumber                                     = 2;
             }
         }
 
-        if ( ( ( modeExt == 1 ) || ( modeExt == 3 ) ) && ( ch == 1 ) )
+        if ( ( modeExt is 1 or 3 ) && ( ch == 1 ) )
         {
             var intScalefacComp = SupportClass.URShift( scalefacComp, 1 );
 
             if ( intScalefacComp < 180 )
             {
-                _newSlen[ 0 ]                                   = intScalefacComp / 36;
-                _newSlen[ 1 ]                                   = ( intScalefacComp % 36 ) / 6;
-                _newSlen[ 2 ]                                   = intScalefacComp % 36 % 6;
-                _newSlen[ 3 ]                                   = 0;
+                _newSlen[ 0 ] = intScalefacComp / 36;
+                _newSlen[ 1 ] = ( intScalefacComp % 36 ) / 6;
+                _newSlen[ 2 ] = intScalefacComp % 36 % 6;
+                _newSlen[ 3 ] = 0;
+
                 _sideInfo.Channels[ ch ].granules[ gr ].Preflag = 0;
                 blocknumber                                     = 3;
             }
             else if ( intScalefacComp < 244 )
             {
-                _newSlen[ 0 ]                                   = SupportClass.URShift( ( intScalefacComp - 180 ) & 0x3F, 4 );
-                _newSlen[ 1 ]                                   = SupportClass.URShift( ( intScalefacComp - 180 ) & 0xF, 2 );
-                _newSlen[ 2 ]                                   = ( intScalefacComp - 180 ) & 3;
-                _newSlen[ 3 ]                                   = 0;
+                _newSlen[ 0 ] = SupportClass.URShift( ( intScalefacComp - 180 ) & 0x3F, 4 );
+                _newSlen[ 1 ] = SupportClass.URShift( ( intScalefacComp - 180 ) & 0xF, 2 );
+                _newSlen[ 2 ] = ( intScalefacComp - 180 ) & 3;
+                _newSlen[ 3 ] = 0;
+
                 _sideInfo.Channels[ ch ].granules[ gr ].Preflag = 0;
                 blocknumber                                     = 4;
             }
             else if ( intScalefacComp < 255 )
             {
-                _newSlen[ 0 ]                                   = ( intScalefacComp - 244 ) / 3;
-                _newSlen[ 1 ]                                   = ( intScalefacComp - 244 ) % 3;
-                _newSlen[ 2 ]                                   = 0;
-                _newSlen[ 3 ]                                   = 0;
+                _newSlen[ 0 ] = ( intScalefacComp - 244 ) / 3;
+                _newSlen[ 1 ] = ( intScalefacComp - 244 ) % 3;
+                _newSlen[ 2 ] = 0;
+                _newSlen[ 3 ] = 0;
+
                 _sideInfo.Channels[ ch ].granules[ gr ].Preflag = 0;
                 blocknumber                                     = 5;
             }
@@ -1117,8 +1117,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         {
             // Find region boundary for long block case
 
-            int buf  = _sideInfo.Channels[ ch ].granules[ gr ].Region0Count + 1;
-            int buf1 = buf + _sideInfo.Channels[ ch ].granules[ gr ].Region1Count + 1;
+            var buf  = _sideInfo.Channels[ ch ].granules[ gr ].Region0Count + 1;
+            var buf1 = buf + _sideInfo.Channels[ ch ].granules[ gr ].Region1Count + 1;
 
             if ( buf1 > ( _sfBandIndex[ _sfreq ].L.Length - 1 ) )
             {
@@ -1136,15 +1136,15 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         {
             if ( i < region1Start )
             {
-                h = Huffman.huffmanTable[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 0 ] ];
+                h = Huffman.GetHuffmanTable()[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 0 ] ];
             }
             else if ( i < region2Start )
             {
-                h = Huffman.huffmanTable[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 1 ] ];
+                h = Huffman.GetHuffmanTable()[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 1 ] ];
             }
             else
             {
-                h = Huffman.huffmanTable[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 2 ] ];
+                h = Huffman.GetHuffmanTable()[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 2 ] ];
             }
 
             Huffman.Decode( h, x, y, v, w, _bitReserve );
@@ -1157,7 +1157,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         }
 
         // Read count1 area
-        h = Huffman.huffmanTable[ _sideInfo.Channels[ ch ].granules[ gr ].Count1TableSelect + 32 ];
+        h = Huffman.GetHuffmanTable()[ _sideInfo.Channels[ ch ].granules[ gr ].Count1TableSelect + 32 ];
         var nuBits = _bitReserve.HssTell();
 
         while ( ( nuBits < part23End ) && ( index < 576 ) )
@@ -1246,7 +1246,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         var         cbWidth = 0;
         var         index   = 0;
         int         j;
-        var         xr1D = xr;
 
         // choose correct scalefactor band per block type, initalize boundary
 
@@ -1256,7 +1255,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             {
                 nextCbBoundary = _sfBandIndex[ _sfreq ].L[ 1 ];
             }
-
             // LONG blocks: 0,1,3
             else
             {
@@ -1281,7 +1279,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             if ( _is1D[ j ] == 0 )
             {
-                xr1D[ quotien ][ reste ] = 0.0f;
+                xr[ quotien ][ reste ] = 0.0f;
             }
             else
             {
@@ -1300,24 +1298,24 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 {
                     if ( _is1D[ j ] > 0 )
                     {
-                        xr1D[ quotien ][ reste ] = gGain * PowerTable[ abv ];
+                        xr[ quotien ][ reste ] = gGain * PowerTable[ abv ];
                     }
                     else if ( -abv < PowerTable.Length )
                     {
-                        xr1D[ quotien ][ reste ] = -gGain * PowerTable[ -abv ];
+                        xr[ quotien ][ reste ] = -gGain * PowerTable[ -abv ];
                     }
                     else
                     {
-                        xr1D[ quotien ][ reste ] = -gGain * ( float )Math.Pow( -abv, D43 );
+                        xr[ quotien ][ reste ] = -gGain * ( float )Math.Pow( -abv, D43 );
                     }
                 }
                 else if ( _is1D[ j ] > 0 )
                 {
-                    xr1D[ quotien ][ reste ] = gGain * ( float )Math.Pow( abv, D43 );
+                    xr[ quotien ][ reste ] = gGain * ( float )Math.Pow( abv, D43 );
                 }
                 else
                 {
-                    xr1D[ quotien ][ reste ] = -gGain * ( float )Math.Pow( -abv, D43 );
+                    xr[ quotien ][ reste ] = -gGain * ( float )Math.Pow( -abv, D43 );
                 }
 
                 // End Patch
@@ -1393,7 +1391,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 var idx = _scalefac[ ch ].S[ tIndex ][ cb ] << grInfo.ScaleFacScale;
                 idx += grInfo.SubblockGain[ tIndex ] << 2;
 
-                xr1D[ quotien ][ reste ] *= TwoToNegativeHalfPow[ idx ];
+                xr[ quotien ][ reste ] *= TwoToNegativeHalfPow[ idx ];
             }
             else
             {
@@ -1408,8 +1406,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     idx += Pretab[ cb ];
                 }
 
-                idx                      =  idx << grInfo.ScaleFacScale;
-                xr1D[ quotien ][ reste ] *= TwoToNegativeHalfPow[ idx ];
+                idx <<= grInfo.ScaleFacScale;
+                
+                xr[ quotien ][ reste ] *= TwoToNegativeHalfPow[ idx ];
             }
 
             index++;
@@ -1430,7 +1429,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 quotien = 0;
             }
 
-            xr1D[ quotien ][ reste ] = 0.0f;
+            xr[ quotien ][ reste ] = 0.0f;
         }
     }
 
@@ -1440,8 +1439,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private void Reorder( float[][] xr, int ch, int gr )
     {
         GranuleInfo grInfo = _sideInfo.Channels[ ch ].granules[ gr ];
-
-        var xr1D = xr;
 
         if ( ( grInfo.WindowSwitchingFlag != 0 ) && ( grInfo.BlockType == 2 ) )
         {
@@ -1458,7 +1455,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     var reste   = index % SSLIMIT;
                     var quotien = ( index - reste ) / SSLIMIT;
 
-                    _out1D[ index ] = xr1D[ quotien ][ reste ];
+                    _out1D[ index ] = xr[ quotien ][ reste ];
                 }
 
                 // REORDERING FOR REST SWITCHED SHORT
@@ -1476,21 +1473,21 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                         var reste   = srcLine % SSLIMIT;
                         var quotien = ( srcLine - reste ) / SSLIMIT;
 
-                        _out1D[ desLine ] =  xr1D[ quotien ][ reste ];
+                        _out1D[ desLine ] =  xr[ quotien ][ reste ];
                         srcLine           += sfbLines;
                         desLine++;
 
                         reste   = srcLine % SSLIMIT;
                         quotien = ( srcLine - reste ) / SSLIMIT;
 
-                        _out1D[ desLine ] =  xr1D[ quotien ][ reste ];
+                        _out1D[ desLine ] =  xr[ quotien ][ reste ];
                         srcLine           += sfbLines;
                         desLine++;
 
                         reste   = srcLine % SSLIMIT;
                         quotien = ( srcLine - reste ) / SSLIMIT;
 
-                        _out1D[ desLine ] = xr1D[ quotien ][ reste ];
+                        _out1D[ desLine ] = xr[ quotien ][ reste ];
                     }
                 }
             }
@@ -1503,7 +1500,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     var reste   = j % SSLIMIT;
                     var quotien = ( j - reste ) / SSLIMIT;
 
-                    _out1D[ index ] = xr1D[ quotien ][ reste ];
+                    _out1D[ index ] = xr[ quotien ][ reste ];
                 }
             }
         }
@@ -1515,7 +1512,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 var reste   = index % SSLIMIT;
                 var quotien = ( index - reste ) / SSLIMIT;
 
-                _out1D[ index ] = xr1D[ quotien ][ reste ];
+                _out1D[ index ] = xr[ quotien ][ reste ];
             }
         }
     }
@@ -2087,7 +2084,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     /// <summary>
     /// Fast Inverse Modified discrete cosine transform.
     /// </summary>
-    public void InverseMdct( float[] inValues, float[] outValues, int blockType )
+    public static void InverseMdct( float[] inValues, float[] outValues, int blockType )
     {
         float tmpf0, tmpf1, tmpf2, tmpf3, tmpf4,  tmpf5;
         float tmpf6, tmpf7, tmpf8, tmpf9, tmpf10, tmpf11;
@@ -2426,12 +2423,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
     private static float[] CreatePowerTable()
     {
+        const float D43 = 4.0f / 3.0f;
+
         var powerTable = new float[ 8192 ];
-        var d43        = 4.0 / 3.0;
 
         for ( var i = 0; i < 8192; i++ )
         {
-            powerTable[ i ] = ( float )Math.Pow( i, d43 );
+            powerTable[ i ] = ( float )Math.Pow( i, D43 );
         }
 
         return powerTable;

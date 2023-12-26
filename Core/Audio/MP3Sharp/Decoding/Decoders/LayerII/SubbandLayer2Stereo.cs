@@ -22,7 +22,6 @@ namespace LibGDXSharp.Audio.MP3Sharp;
 [PublicAPI]
 public class SubbandLayer2Stereo : SubbandLayer2
 {
-    protected          int     channel2Allocation;
     protected readonly float[] channel2C          = { 0 };
     protected readonly int[]   channel2Codelength = { 0 };
     protected readonly float[] channel2D          = { 0 };
@@ -32,6 +31,7 @@ public class SubbandLayer2Stereo : SubbandLayer2
     protected          float   channel2Scalefactor2;
     protected          float   channel2Scalefactor3;
     protected          int     channel2Scfsi;
+    protected          int     channel2Allocation;
 
     public SubbandLayer2Stereo( int subbandnumber )
         : base( subbandnumber )
@@ -42,7 +42,7 @@ public class SubbandLayer2Stereo : SubbandLayer2
     /// <summary>
     /// 
     /// </summary>
-    public override void ReadAllocation( Bitstream stream, Header header, Crc16? crc )
+    public override void ReadAllocation( Bitstream stream, Header? header, Crc16? crc )
     {
         var length = GetAllocationLength( header );
         allocation         = stream.GetBitsFromBuffer( length );
@@ -76,7 +76,7 @@ public class SubbandLayer2Stereo : SubbandLayer2
     /// <summary>
     /// 
     /// </summary>
-    public override void ReadScaleFactor( Bitstream stream, Header header )
+    public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
         base.ReadScaleFactor( stream, header );
 
@@ -92,20 +92,23 @@ public class SubbandLayer2Stereo : SubbandLayer2
                     break;
 
                 case 1:
-                    channel2Scalefactor1 = channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    channel2Scalefactor1 =
+                    channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
                     channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 2:
                     channel2Scalefactor1 =
-                        channel2Scalefactor2 = channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    channel2Scalefactor2 =
+                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 3:
                     channel2Scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-                    channel2Scalefactor2 = channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                    channel2Scalefactor2 =
+                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
             }

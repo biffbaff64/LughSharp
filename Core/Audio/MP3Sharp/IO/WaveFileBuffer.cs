@@ -16,7 +16,10 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
-/// <summary> Implements an Obuffer by writing the data to a file in RIFF WAVE format.</summary>
+/// <summary>
+/// Implements an Obuffer by writing the data to a file in RIFF WAVE format.
+/// </summary>
+[PublicAPI]
 public class WaveFileBuffer : ABuffer
 {
     private readonly short[]  _buffer;

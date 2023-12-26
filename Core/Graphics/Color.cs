@@ -70,32 +70,38 @@ public class Color
     public float A { get; set; }
 
     /// <summary>
+    /// Constructor, sets all the components to 0.
     /// </summary>
     public Color() : this( 0, 0, 0, 0 )
     {
     }
 
     /// <summary>
+    /// Constructor, sets the Color components using the specified integer value in
+    /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
-    /// <param name="rgba8888"></param>
+    /// <param name="rgba8888"> An integer color value in RGBA8888 format. </param>
     public Color( int rgba8888 ) : this( ( uint )rgba8888 )
     {
     }
 
     /// <summary>
+    /// Constructor, sets the Color components using the specified integer value in
+    /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
-    /// <param name="rgba8888"></param>
+    /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
     public Color( uint rgba8888 )
     {
         Rgba8888ToColor( this, rgba8888 );
     }
 
     /// <summary>
+    /// Constructor, sets the components of the color.
     /// </summary>
-    /// <param name="r"></param>
-    /// <param name="g"></param>
-    /// <param name="b"></param>
-    /// <param name="a"></param>
+    /// <param name="r"> The red component. </param>
+    /// <param name="g"> The green component. </param>
+    /// <param name="b"> The blue component. </param>
+    /// <param name="a"> The alpha component. </param>
     public Color( float r, float g, float b, float a )
     {
         R = r;
@@ -107,17 +113,17 @@ public class Color
     }
 
     /// <summary>
+    /// Constructs a new color using the components from the supplied color.
     /// </summary>
-    /// <param name="color"></param>
     public Color( Color color )
     {
         Set( color );
     }
 
     /// <summary>
+    /// Sets this colors components using the components from the supplied colot.
     /// </summary>
-    /// <param name="color"></param>
-    /// <returns></returns>
+    /// <returns> This Color for chaining. </returns>
     public Color Set( Color color )
     {
         R = color.R;
@@ -363,23 +369,6 @@ public class Color
         }
         
         return !c1.Equals( c2 );
-    }
-
-    public new bool Equals( object? o )
-    {
-        if ( ( o == null ) || ( GetType() != o.GetType() ) )
-        {
-            return false;
-        }
-
-        if ( this == o )
-        {
-            return true;
-        }
-
-        var color = ( Color )o;
-
-        return ToIntBits() == color.ToIntBits();
     }
 
     /// <summary>
@@ -750,16 +739,32 @@ public class Color
         return new Color( this );
     }
         
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public new int GetHashCode()
+    /// <inheritdoc/>
+    public override bool Equals( object? o )
     {
-        var result = ( R != 0F ? NumberUtils.FloatToIntBits( R ) : 0 );
+        if ( ( o == null ) || ( GetType() != o.GetType() ) )
+        {
+            return false;
+        }
 
-        result = ( 31 * result ) + ( G != 0F ? NumberUtils.FloatToIntBits( G ) : 0 );
-        result = ( 31 * result ) + ( B != 0F ? NumberUtils.FloatToIntBits( B ) : 0 );
-        result = ( 31 * result ) + ( A != 0F ? NumberUtils.FloatToIntBits( A ) : 0 );
+        if ( this == o )
+        {
+            return true;
+        }
+
+        var color = ( Color )o;
+
+        return ToIntBits() == color.ToIntBits();
+    }
+    
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        var result = ( White != 0F ? NumberUtils.FloatToIntBits( White.ToFloatBits() ) : 0 );
+
+        result = ( 31 * result ) + ( LightGray != 0F ? NumberUtils.FloatToIntBits( LightGray.ToFloatBits() ) : 0 );
+        result = ( 31 * result ) + ( Gray != 0F ? NumberUtils.FloatToIntBits( Gray.ToFloatBits() ) : 0 );
+        result = ( 31 * result ) + ( DarkGray != 0F ? NumberUtils.FloatToIntBits( DarkGray.ToFloatBits() ) : 0 );
 
         return result;
     }

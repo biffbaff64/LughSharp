@@ -17,6 +17,8 @@
 using LibGDXSharp.G2D;
 using LibGDXSharp.Utils.Xml;
 
+using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
+
 namespace LibGDXSharp.Maps.Tiled;
 
 /// <summary>
@@ -32,12 +34,14 @@ namespace LibGDXSharp.Maps.Tiled;
 [PublicAPI]
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
+    [PublicAPI]
     public class AtlasTiledMapLoaderParameters
         : BaseTmxMapLoader< AtlasTiledMapLoaderParameters >.Parameters
     {
         public bool ForceTextureFilters { get; set; } = false;
     }
 
+    [PublicAPI]
     protected interface IAtlasResolver : IImageResolver
     {
         public TextureAtlas GetAtlas();
@@ -99,13 +103,14 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
         FileInfo tmxFile = Resolve( fileName );
 
-        this.root = xml.Parse( tmxFile );
+        this.root = xml?.Parse( tmxFile );
 
         FileInfo? atlasFileHandle = GetAtlasFileHandle( tmxFile );
 
         var atlas = new TextureAtlas( atlasFileHandle! );
 
         this.atlasResolver = new IAtlasResolver.DirectAtlasResolver( atlas );
+
         TiledMap map = LoadTiledMap( tmxFile, parameter, atlasResolver );
         map.OwnedResources = new List< object >( new[] { atlas } );
 
@@ -114,8 +119,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return map;
     }
 
-    public override void LoadAsync( AssetManager? manager, string? fileName,
-                                    FileInfo? tmxFile, AssetLoaderParameters parameter )
+    public override void LoadAsync( AssetManager? manager,
+                                    string? fileName,
+                                    FileInfo? tmxFile,
+                                    AssetLoaderParameters parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( tmxFile );
@@ -123,32 +130,29 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         FileInfo? atlasHandle = GetAtlasFileHandle( tmxFile );
         this.atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle!.Name );
 
-        this.Map = LoadTiledMap
-            (
+        this.Map = LoadTiledMap(
             tmxFile,
             ( AtlasTiledMapLoaderParameters )parameter,
             atlasResolver
             );
     }
 
-    public override TiledMap LoadSync( AssetManager? manager, string? fileName,
-                                       FileInfo? file, AssetLoaderParameters? parameter )
+    public override TiledMap LoadSync( AssetManager? manager,
+                                       string? fileName,
+                                       FileInfo? file,
+                                       AssetLoaderParameters? parameter )
     {
         if ( parameter != null )
         {
-            SetTextureFilters
-                (
-                ( ( AtlasTiledMapLoaderParameters )parameter ).TextureMinFilter,
-                ( ( AtlasTiledMapLoaderParameters )parameter ).TextureMagFilter
-                );
+            SetTextureFilters( ( ( AtlasTiledMapLoaderParameters )parameter ).TextureMinFilter,
+                               ( ( AtlasTiledMapLoaderParameters )parameter ).TextureMagFilter );
         }
 
         return Map;
     }
 
-    protected new List< AssetDescriptor > GetDependencyAssetDescriptors(
-        FileInfo tmxFile,
-        TextureLoader.TextureParameter textureParameter )
+    protected new List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile,
+                                                                         TextureLoader.TextureParameter textureParameter )
     {
         var descriptors = new List< AssetDescriptor >();
 
@@ -163,20 +167,25 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return descriptors;
     }
 
-    protected override void AddStaticTiles( FileInfo tmxFile, IImageResolver imageResolver,
+    protected override void AddStaticTiles( FileInfo tmxFile,
+                                            IImageResolver imageResolver,
                                             TiledMapTileSet tileSet,
                                             XmlReader.Element element,
                                             List< XmlReader.Element > tileElements,
                                             string? name,
-                                            int firstgid, int tilewidth, int tileheight,
-                                            int spacing, int margin,
+                                            int firstgid,
+                                            int tilewidth,
+                                            int tileheight,
+                                            int spacing,
+                                            int margin,
                                             string? source,
-                                            int offsetX, int offsetY,
+                                            int offsetX,
+                                            int offsetY,
                                             string imageSource,
-                                            int imageWidth, int imageHeight,
+                                            int imageWidth,
+                                            int imageHeight,
                                             FileInfo? image )
     {
-
         TextureAtlas atlas       = atlasResolver!.GetAtlas();
         var          regionsName = name;
 
@@ -233,7 +242,9 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
                     AtlasRegion? region = atlas.FindRegion( regionName );
 
                     if ( region == null )
+                    {
                         throw new GdxRuntimeException( $"Tileset atlasRegion not found: {regionName}" );
+                    }
 
                     AddStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
                 }
@@ -243,7 +254,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
 
     protected FileInfo? GetAtlasFileHandle( FileInfo tmxFile )
     {
-        XmlReader.Element? properties = root.GetChildByName( "properties" );
+        XmlReader.Element? properties = root?.GetChildByName( "properties" );
 
         string? atlasFilePath = null;
 
@@ -296,7 +307,8 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
-    public override List< AssetDescriptor > GetDependencies( string? fileName, FileInfo? file,
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
                                                              AssetLoaderParameters parameter )
     {
         return null!;

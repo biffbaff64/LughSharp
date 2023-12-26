@@ -92,6 +92,7 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     {
         if ( disposing )
         {
+            LoadedMusic = null!;
         }
     }
 }

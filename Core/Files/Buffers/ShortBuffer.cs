@@ -541,10 +541,9 @@ public abstract class ShortBuffer : Buffer
     /// <summary>
     /// Compacts this buffer  <i>(optional operation)</i>.
     /// <para>
-    /// The shorts between the buffer's current position and its limit,
-    /// if any, are copied to the beginning of the buffer. That is, the
-    /// short at index <tt><i>p</i> = position()</tt> is copied to index
-    /// zero, the short at index <i>p</i> + 1 is copied to index one, and
+    /// The shorts between the buffer's current position and its limit, if any, are copied
+    /// to the beginning of the buffer. That is, the short at index <tt><i>p</i> = position()</tt>
+    /// is copied to index zero, the short at index <i>p</i> + 1 is copied to index one, and
     /// so forth until the short at index <tt>limit()</tt> - 1 is copied to
     /// index <i>n</i> = <tt>limit()</tt> - <tt>1</tt> - <i>p</i>.
     /// </para>
@@ -569,7 +568,7 @@ public abstract class ShortBuffer : Buffer
     /// <returns> A summary string </returns>
     public override String ToString()
     {
-        return ( $@"{GetType().Name}[pos={Position} lim={Limit} cap={Capacity}]" );
+        return ( $@"{GetType().Name}: [pos={Position} lim={Limit} cap={Capacity}]" );
     }
 
     /// <summary>
@@ -593,7 +592,7 @@ public abstract class ShortBuffer : Buffer
 
         for ( var i = Limit - 1; i >= p; i-- )
         {
-            h = ( 31 * h ) + ( int )Get( i );
+            h = ( 31 * h ) + Get( i );
         }
 
         return h;
@@ -629,7 +628,7 @@ public abstract class ShortBuffer : Buffer
             return true;
         }
 
-        if ( !( ob is ShortBuffer that ) )
+        if ( ob is not ShortBuffer that )
         {
             return false;
         }

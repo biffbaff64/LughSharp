@@ -44,7 +44,7 @@ public class Widget : Actor, ILayout
     /// on each child. This method should almost never be called directly, instead
     /// <see cref="ILayout.Validate"/> should be used. 
     /// </summary>
-    public void Layout()
+    public virtual void Layout()
     {
     }
 
@@ -55,7 +55,7 @@ public class Widget : Actor, ILayout
     /// preferred, maximum, or actual size of the actor (meaning it does not affect the
     /// parent actor's layout). 
     /// </summary>
-    public void Invalidate()
+    public virtual void Invalidate()
     {
         NeedsLayout = true;
     }
@@ -66,7 +66,7 @@ public class Widget : Actor, ILayout
     /// preferred, maximum, or actual size of the actor (meaning it potentially affects the
     /// parent actor's layout). 
     /// </summary>
-    public void InvalidateHierarchy()
+    public virtual void InvalidateHierarchy()
     {
         if ( !LayoutEnabled )
         {
@@ -90,7 +90,7 @@ public class Widget : Actor, ILayout
     /// the actor itself before drawing is performed. 
     /// </para>
     /// </summary>
-    public void Validate()
+    public virtual void Validate()
     {
         if ( !LayoutEnabled )
         {
@@ -147,7 +147,7 @@ public class Widget : Actor, ILayout
     /// not layout their children. 
     /// </para>
     /// </summary>
-    public void Pack()
+    public virtual void Pack()
     {
         SetSize( PrefWidth, PrefHeight );
         Validate();

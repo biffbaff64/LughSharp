@@ -135,15 +135,13 @@ public class Buffer16BitStereo : ABuffer
         {
             var fs = samples[ i ];
 
-            // clamp values
-            if ( fs > 32767.0f )
-            {
-                fs = 32767.0f;
-            }
-            else if ( fs < -32767.0f )
-            {
-                fs = -32767.0f;
-            }
+            fs = fs switch
+                 {
+                     // clamp values
+                     > 32767.0f  => 32767.0f,
+                     < -32767.0f => -32767.0f,
+                     _           => fs
+                 };
 
             var sample = ( int )fs;
             

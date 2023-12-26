@@ -255,13 +255,13 @@ public class Header
                     }
                     else
                     {
-                        throw stream.NewBitstreamException( BitstreamErrors.UNKNOWN_ERROR );
+                        throw new BitstreamException( BitstreamErrors.UNKNOWN_ERROR );
                     }
                 }
 
                 if ( ( _sampleFrequency = SupportClass.URShift( headerstring, 10 ) & 3 ) == 3 )
                 {
-                    throw stream.NewBitstreamException( BitstreamErrors.UNKNOWN_ERROR );
+                    throw new BitstreamException( BitstreamErrors.UNKNOWN_ERROR );
                 }
             }
 
@@ -307,11 +307,11 @@ public class Header
                     }
                 }
 
-                if ( ( channelBitrate == 1 ) || ( channelBitrate == 2 ) )
+                if ( channelBitrate is 1 or 2 )
                 {
                     _numberOfSubbands = _sampleFrequency == THIRTYTWO ? 12 : 8;
                 }
-                else if ( ( _sampleFrequency == FOURTYEIGHT ) || ( ( channelBitrate >= 3 ) && ( channelBitrate <= 5 ) ) )
+                else if ( ( _sampleFrequency == FOURTYEIGHT ) || channelBitrate is >= 3 and <= 5 )
                 {
                     _numberOfSubbands = 27;
                 }
@@ -426,12 +426,7 @@ public class Header
     /// </summary>
     public bool IsProtection()
     {
-        if ( _protectionBit == 0 )
-        {
-            return true;
-        }
-
-        return false;
+        return _protectionBit == 0;
     }
 
     /// <summary>
@@ -455,12 +450,7 @@ public class Header
     /// </summary>
     public bool IsPadding()
     {
-        if ( _paddingBit == 0 )
-        {
-            return false;
-        }
-
-        return true;
+        return _paddingBit != 0;
     }
 
     /// <summary>
@@ -495,7 +485,7 @@ public class Header
         {
             framesize = ( 144 * Bitrates[ _version ][ _layer - 1 ][ _bitrateIndex ] ) / Frequencies[ _version ][ _sampleFrequency ];
 
-            if ( ( _version == MPEG2_LSF ) || ( _version == MPEG25_LSF ) )
+            if ( _version is MPEG2_LSF or MPEG25_LSF )
             {
                 framesize >>= 1;
             }
@@ -581,19 +571,13 @@ public class Header
     /// </summary>
     public string? LayerAsString()
     {
-        switch ( _layer )
-        {
-            case 1:
-                return "I";
-
-            case 2:
-                return "II";
-
-            case 3:
-                return "III";
-        }
-
-        return null;
+        return _layer switch
+               {
+                   1 => "I",
+                   2 => "II",
+                   3 => "III",
+                   _ => null
+               };
     }
 
     /// <summary>
@@ -614,12 +598,7 @@ public class Header
                     return "32 kHz";
                 }
 
-                if ( _version == MPEG2_LSF )
-                {
-                    return "16 kHz";
-                }
-
-                return "8 kHz";
+                return ( _version == MPEG2_LSF ) ? "16 kHz" : "8 kHz";
 
             case FOURTYFOUR_POINT_ONE:
                 if ( _version == MPEG1 )
@@ -627,12 +606,7 @@ public class Header
                     return "44.1 kHz";
                 }
 
-                if ( _version == MPEG2_LSF )
-                {
-                    return "22.05 kHz";
-                }
-
-                return "11.025 kHz";
+                return ( _version == MPEG2_LSF ) ? "22.05 kHz" : "11.025 kHz";
 
             case FOURTYEIGHT:
                 if ( _version == MPEG1 )
@@ -640,12 +614,7 @@ public class Header
                     return "48 kHz";
                 }
 
-                if ( _version == MPEG2_LSF )
-                {
-                    return "24 kHz";
-                }
-
-                return "12 kHz";
+                return ( _version == MPEG2_LSF ) ? "24 kHz" : "12 kHz";
         }
 
         return null;

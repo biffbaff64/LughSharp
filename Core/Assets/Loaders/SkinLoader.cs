@@ -20,7 +20,7 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 namespace LibGDXSharp.Assets.Loaders;
 
 [PublicAPI]
-public class SkinLoader : AsynchronousAssetLoader, IDisposable
+public class SkinLoader : AsynchronousAssetLoader
 {
     public SkinLoader( IFileHandleResolver resolver ) : base( resolver )
     {
@@ -112,20 +112,6 @@ public class SkinLoader : AsynchronousAssetLoader, IDisposable
     private static Skin NewSkin( TextureAtlas atlas )
     {
         return new Skin( atlas );
-    }
-
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
-    }
-
-    private void Dispose( bool disposing )
-    {
-        if ( disposing )
-        {
-        }
     }
 
     [PublicAPI]

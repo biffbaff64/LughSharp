@@ -53,7 +53,9 @@ public abstract class Game : IApplicationListener
     /// <summary>
     /// Called when the <see cref="IApplication"/> is first created.
     /// </summary>
-    public virtual void Create() { }
+    public virtual void Create()
+    {
+    }
 
     /// <summary>
     /// Render the currently active screen.
@@ -86,5 +88,9 @@ public abstract class Game : IApplicationListener
     /// Called when the <see cref="IApplication"/> is destroyed.
     /// Preceded by a call to <see cref="Pause"/>.
     /// </summary>
-    public virtual void Dispose() => Screen?.Hide();
+    public virtual void Dispose()
+    {
+        Screen?.Hide();
+        GC.SuppressFinalize( this );
+    }
 }

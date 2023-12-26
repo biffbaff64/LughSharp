@@ -69,7 +69,7 @@ public abstract class ByteBuffer : Buffer
     {
         if ( capacity < 0 )
         {
-            throw new ArgumentException();
+            throw new ArgumentException( "capacity should not be less than zero!" );
         }
 
         return new HeapByteBuffer( capacity, capacity );
@@ -336,7 +336,7 @@ public abstract class ByteBuffer : Buffer
     {
         if ( src.Equals( this ) )
         {
-            throw new ArgumentException();
+            throw new ArgumentException( "Source buffer cannot be this buffer!" );
         }
 
         if ( IsReadOnly )
@@ -601,7 +601,7 @@ public abstract class ByteBuffer : Buffer
             return true;
         }
 
-        if ( !( ob is ByteBuffer that ) )
+        if ( ob is not ByteBuffer that )
         {
             return false;
         }

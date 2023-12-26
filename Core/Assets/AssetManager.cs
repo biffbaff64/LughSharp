@@ -79,7 +79,6 @@ public class AssetManager
                 SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
                 SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
                 SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
-//                SetLoader( typeof(I18NBundle),      new I18NBundleLoader( resolver ) );
                 //@formatter:on
         }
 
@@ -493,7 +492,7 @@ public class AssetManager
     /// </param>
     /// <param name="type">the type of the asset.</param>
     /// <param name="parameter"></param>
-    public void Load( string? fileName, Type? type, AssetLoaderParameters parameter )
+    public void Load( string? fileName, Type? type, AssetLoaderParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( fileName, "Filename not specified!" );
         
@@ -537,11 +536,8 @@ public class AssetManager
             if ( ( desc.FilePath == fileName ) && ( desc.Type != type ) )
             {
                 throw new GdxRuntimeException
-                    (
-                    $"Asset with name '{fileName}'"
-                  + $"' already in preload queue, but has different type (expected: {type?.Name}"
-                  + $", found: {desc.Type.Name})"
-                    );
+                    ( $"Asset with name '{fileName}' already in preload queue, but has "
+                    + $"different type (expected: {type?.Name}, found: {desc.Type.Name})" );
             }
         }
 
@@ -551,10 +547,8 @@ public class AssetManager
         if ( ( otherType != null ) && ( otherType != type ) )
         {
             throw new GdxRuntimeException
-                (
-                $"Asset with name '{fileName}' already loaded, but has"
-              + $"different type (expected: {type?.Name}, found: {otherType.Name})"
-                );
+                ( $"Asset with name '{fileName}' already loaded, but has "
+                + $"different type (expected: {type?.Name}, found: {otherType.Name})" );
         }
 
         _toLoad++;
@@ -577,6 +571,8 @@ public class AssetManager
     /// <param name="desc">the <see cref="LibGDXSharp.Assets.AssetDescriptor"/></param>
     public void Load( AssetDescriptor desc )
     {
+        ArgumentNullException.ThrowIfNull( desc );
+        
         Load( desc.FilePath, desc.Type, desc.Parameters );
     }
 
@@ -812,7 +808,7 @@ public class AssetManager
 
             IncrementRefCountedDependencies( assetDesc.FilePath );
 
-            assetDesc.Parameters.LoadedCallback?.FinishedLoading
+            assetDesc.Parameters?.LoadedCallback?.FinishedLoading
                 (
                 this,
                 assetDesc.FilePath,
@@ -912,7 +908,7 @@ public class AssetManager
             AddAsset( task.AssetDesc.FilePath, task.AssetDesc.Type, task.Asset );
 
             // otherwise, if a listener was found in the parameter invoke it
-            task.AssetDesc.Parameters.LoadedCallback?.FinishedLoading
+            task.AssetDesc.Parameters?.LoadedCallback?.FinishedLoading
                 (
                 this,
                 task.AssetDesc.FilePath,

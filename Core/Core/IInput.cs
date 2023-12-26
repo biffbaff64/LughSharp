@@ -430,9 +430,9 @@ public interface IInput
         
         static Keys()
         {
-            for ( var i = 0; i <= Keys.MAX_KEYCODE; i++ )
+            for ( var i = 0; i <= MAX_KEYCODE; i++ )
             {
-                var name = Keys.ToString( i );
+                var name = ToString( i );
 
                 if ( ( name != null ) && ( KeyNames != null ) )
                 {

@@ -21,7 +21,7 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public class InputMultiplexer : IInputProcessor
 {
-    private readonly SnapshotArray< IInputProcessor > _processors = new SnapshotArray< IInputProcessor >( 4 );
+    private readonly SnapshotArray< IInputProcessor > _processors = new( 4 );
 
     public InputMultiplexer()
     {

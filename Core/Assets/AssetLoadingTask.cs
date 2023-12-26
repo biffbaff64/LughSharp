@@ -135,11 +135,11 @@ public class AssetLoadingTask
     {
         if ( !_loader.IsSynchronous )
         {
-            ( ( AsynchronousAssetLoader< Type, AssetLoaderParameters > )_loader ).UnloadAsync
-                ( _manager,
-                  AssetDesc.FilePath,
-                  Resolve( _loader, AssetDesc ),
-                  AssetDesc.Parameters );
+            ( ( AsynchronousAssetLoader< Type, AssetLoaderParameters > )_loader )
+               .UnloadAsync( _manager,
+                             AssetDesc.FilePath,
+                             Resolve( _loader, AssetDesc ),
+                             AssetDesc.Parameters );
         }
     }
 

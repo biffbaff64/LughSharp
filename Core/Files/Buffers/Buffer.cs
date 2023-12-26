@@ -203,6 +203,11 @@ public abstract class Buffer
     }
 
     /// <summary>
+    /// Used only by DirectBuffers
+    /// </summary>
+    public long Address { get; set; }
+    
+    /// <summary>
     /// Returns this buffers capacity
     /// </summary>
     public int Capacity { get; set; }
@@ -237,7 +242,7 @@ public abstract class Buffer
     {
         if ( ( newPosition > Limit ) || ( newPosition < 0 ) )
         {
-            throw new ArgumentException();
+            throw new ArgumentException( $"newPosition: {newPosition}, Limit: {Limit}" );
         }
 
         Position = newPosition;
@@ -266,7 +271,7 @@ public abstract class Buffer
     {
         if ( ( newLimit > Capacity ) || ( newLimit < 0 ) )
         {
-            throw new ArgumentException();
+            throw new ArgumentException( $"newLimit: {newLimit}, Capacity: {Capacity}" );
         }
 
         Limit = newLimit;

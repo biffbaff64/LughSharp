@@ -33,7 +33,7 @@ public class RandomAccessFileStream
         }
         else
         {
-            throw new ArgumentException();
+            throw new ArgumentException( $"fileName: {fileName}, mode: {mode}" );
         }
 
         return newFile;

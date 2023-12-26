@@ -38,7 +38,7 @@ public class Crc16
     /// </summary>
     public void AddBits( int bitstring, int length )
     {
-        int bitmask = 1 << ( length - 1 );
+        var bitmask = 1 << ( length - 1 );
 
         do
         {

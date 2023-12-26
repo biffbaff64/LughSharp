@@ -173,15 +173,18 @@ public class BufferUtils
         {
             return dst.Position;
         }
-        else if ( dst is ShortBuffer or CharBuffer )
+        
+        if ( dst is ShortBuffer or CharBuffer )
         {
             return dst.Position << 1;
         }
-        else if ( dst is IntBuffer or FloatBuffer )
+        
+        if ( dst is IntBuffer or FloatBuffer )
         {
             return dst.Position << 2;
         }
-        else if ( dst is LongBuffer or DoubleBuffer )
+        
+        if ( dst is LongBuffer or DoubleBuffer )
         {
             return dst.Position << 3;
         }
@@ -201,15 +204,18 @@ public class BufferUtils
         {
             return bytes;
         }
-        else if ( dst is ShortBuffer or CharBuffer )
+        
+        if ( dst is ShortBuffer or CharBuffer )
         {
             return bytes >>> 1;
         }
-        else if ( dst is IntBuffer or FloatBuffer )
+        
+        if ( dst is IntBuffer or FloatBuffer )
         {
             return bytes >>> 2;
         }
-        else if ( dst is LongBuffer or DoubleBuffer )
+        
+        if ( dst is LongBuffer or DoubleBuffer )
         {
             return bytes >>> 3;
         }
@@ -229,15 +235,18 @@ public class BufferUtils
         {
             return elements;
         }
-        else if ( dst is ShortBuffer or CharBuffer )
+        
+        if ( dst is ShortBuffer or CharBuffer )
         {
             return elements << 1;
         }
-        else if ( dst is IntBuffer or FloatBuffer )
+        
+        if ( dst is IntBuffer or FloatBuffer )
         {
             return elements << 2;
         }
-        else if ( dst is LongBuffer or DoubleBuffer )
+        
+        if ( dst is LongBuffer or DoubleBuffer )
         {
             return elements << 3;
         }
