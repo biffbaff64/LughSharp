@@ -99,7 +99,7 @@ public class ListBox<T> : Widget
         InvalidateHierarchy();
     }
 
-    public override void Layout()
+    public override void SetLayout()
     {
         BitmapFont? font             = _style?.Font;
         IDrawable?  selectedDrawable = _style?.Selection;

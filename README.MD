@@ -15,10 +15,12 @@ DISCLAIMER:- THE CODE QUALITY IN THIS PROJECT WILL IMPROVE OVER TIME. C# IS NEW 
 The standard of the code here won't be great to start off with, but will hopefully improve as I
 learn more about C#.
 
-Project name is to change. Current possibility is LughEngine, or just Lugh.
+Project name is to change. Current candidates are:-
 
-I think I will remove any mobile development support as I do NOT want to rival the official Java
-LibGDX framework and the original inspiration for this was desktop development anyway.
+    - LughEngine
+    - Lugh
+    - LughGDX
+    - SharpGDX
 
 As far as I can see, I do not need to convert:-
 
@@ -41,9 +43,11 @@ LIBGDX CSharp CONVERSION - ROUND 1
 -         Some classes can become structs / records instead.
 -         Some/Most Get / Set method declarations in interfaces could become Properties.
 -         switch expressions instead of switch statements where appropriate.
+-         switch expressions instead of if..if/else..else where appropriate.
 -         Check methods to see if they can be virtual.
 -         Use [PublicApi] where necessary.
 -         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
+-         Use of virtual for base classes/methods and classes that are likely to be extended is essential.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
 
@@ -262,10 +266,12 @@ CORE
 EXTENSIONS/BOX2D
 ----------------
 
+    - It's most likely best to recommend the use of an already available C# port.
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXTENSIONS/TOOLS
+EXTENSIONS/GDX-TOOLS
 ----------------
 
     - IP   - FileProcessor
@@ -273,13 +279,24 @@ EXTENSIONS/TOOLS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXTENSIONS/TOOLS/GDX-TOOLS
+EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
+-----------------------------------
+
+    - IP   - TileMapPacker
+    -      - TiledMapPackerTest
+    -      - TiledMapPackerTestRender
+    -      - TileSetLayout
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/GDX-TOOLS/TOOLS
 --------------------------
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXTENSIONS/TOOLS/GDX-TOOLS/TEXTUREPACKER
+EXTENSIONS/GDX-TOOLS/TOOLS/TEXTUREPACKER
 ----------------------------------------
 
     -      - ColorBleedEffect
@@ -288,18 +305,10 @@ EXTENSIONS/TOOLS/GDX-TOOLS/TEXTUREPACKER
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXTENSIONS/TOOLS/IMAGEPACKER
-----------------------------
+EXTENSIONS/GDX-TOOLS/IMAGEPACKER
+--------------------------------
 
     - IP   - ImagePacker
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/TOOLS/TILEDMAPPACKER
--------------------------------
-
-    - IP   - TileMapPacker
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -347,8 +356,10 @@ FILES
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-FILES/BUFFERS
--------------
+FILES/BUFFERS - DELETE CANDIDATE
+--------------------------------
+
+    - See if these can be replaced by any C# System classes
 
     - DONE - Buffer
     - IP   - BufferUtils
@@ -378,7 +389,6 @@ GRAPHICS
     - DONE - Color                              
     - DONE - Colors                             
     - DONE - Cubemap
-    - DONE - Cubemap.CubemapSide
     - DONE - FPSLogger                          
     - DONE - GLTexture                          
     - DONE - GraphicsType                       
@@ -390,26 +400,19 @@ GRAPHICS
     - DONE - IGL31                              
     - DONE - IGL32                              
     - DONE - ITextureArrayData        
-    - DONE - ITextureArrayData.TextureArrayDataFactory
     - DONE - ITextureData             
-    - DONE - ITextureData.Factory
     - DONE - Mesh                               
     - DONE - OrthographicCamera                 
     - DONE - PerspectiveCamera                  
     - DONE - Pixmap              
-    - DONE - Pixmap.PixmapFormatExtensions
     - DONE - PixmapFormat                             
     - DONE - PixmapIO
-    - DONE - PixmapIO.CIM
-    - DONE - PixmapIO.PNG
-    - DONE - PixmapIO.PNG.ChunkBuffer
     - DONE - Texture                            
     - DONE - TextureArray                       
     - DONE - TextureFilter                      
     - DONE - TextureWrap                        
     - DONE - VertexAttribute                    
     - DONE - VertexAttributes
-    - DONE - VertexAttributes.Usage
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -440,8 +443,6 @@ GRAPHICS/G2D
     - DONE - AtlasRegion                    
     - DONE - AtlasSprite                    
     - DONE - BitmapFont 
-    - DONE - BitmapFont.Glyph
-    - DONE - BitmapFont.BitmapFontData
     - DONE - BitmapFontCache                
     - DONE - CpuSpriteBatch                 
     - DONE - DistanceFieldFont              
@@ -452,55 +453,20 @@ GRAPHICS/G2D
     - DONE - NinePatch                      
     - DONE - ParticleEffect                 
     - DONE - ParticleEffectPool        
-    - DONE - ParticleEffectPool.PooledEffect
     - DONE - ParticleEmitter           
-    - DONE - ParticleEmitter.Particle
-    - DONE - ParticleEmitter.ParticleValue
-    - DONE - ParticleEmitter.NumericValue
-    - DONE - ParticleEmitter.RangedNumericValue
-    - DONE - ParticleEmitter.ScaledNumericValue
-    - DONE - ParticleEmitter.IndependentScaledNumericValue
-    - DONE - ParticleEmitter.GradientColorValue
-    - DONE - ParticleEmitter.ParticleSpawnShapeValue
     - DONE - PixmapPacker
-    - DONE - PixmapPacker.Page
-    - DONE - PixmapPacker.GuillotineStrategy
-    - DONE - PixmapPacker.SkylineStrategy
-    - DONE - PixmapPacker.PixmapPackerRectangle
-    - DONE - PixmapPacker.IPackStrategy
     - DONE - PixmapPacker10       
-    - DONE - PixmapPacker10.ImageFormat
-    - DONE - PixmapPacker10.SaveParameters
     - DONE - PolygonRegion                  
     - DONE - PolygonRegionLoader
-    - DONE - PolygonRegionLoader.PolygonRegionParameters
     - DONE - PolygonSprite                  
     - DONE - PolygonSpriteBatch             
     - DONE - RepeatablePolygonSprite        
     - DONE - Sprite                         
     - DONE - SpriteBatch                    
     - DONE - SpriteCache
-    - DONE - SpriteCache.Cache
     - DONE - TextureAtlas                   
     - DONE - TextureAtlasData   
-    - DONE - TextureAtlasData.IField
-    - DONE - TextureAtlasData.Page
-    - DONE - TextureAtlasData.Region
     - DONE - TextureAtlasDataExtensions
-    - DONE - TextureAtlasDataExtensions.ComparatorAnonymousInner
-    - DONE - TextureAtlasDataExtensions.PageFieldParse
-    - DONE - TextureAtlasDataExtensions.PageFieldFormat
-    - DONE - TextureAtlasDataExtensions.PageFieldFilter
-    - DONE - TextureAtlasDataExtensions.PageFieldRepeat
-    - DONE - TextureAtlasDataExtensions.PageFieldPma
-    - DONE - TextureAtlasDataExtensions.RegionFieldXY
-    - DONE - TextureAtlasDataExtensions.RegionFieldSize
-    - DONE - TextureAtlasDataExtensions.RegionFieldBounds
-    - DONE - TextureAtlasDataExtensions.RegionFieldOffset
-    - DONE - TextureAtlasDataExtensions.RegionFieldOrig
-    - DONE - TextureAtlasDataExtensions.RegionFieldOffsets
-    - DONE - TextureAtlasDataExtensions.RegionFieldRotate
-    - DONE - TextureAtlasDataExtensions.RegionFieldIndex
     - DONE - TextureRegion                  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -817,6 +783,8 @@ GRAPHICS/PROFILING
 INPUT
 -----
 
+    - Not sure about these. Am I supporting mobile? Probably?
+
     -      - GestureDetector
     -      - RemoteInput
     -      - RemoteSender
@@ -1087,14 +1055,13 @@ SCENES.SCENE2D/UI
     -      - SplitPane                      
     - DONE - Stack                          
     - DONE - Table                          
-    -      - TextArea                       
-    -      - TextButton                     
-    -      - TextField                      
+    - IP   - TextArea                       
+    - IP   - TextButton                     
+    - IP   - TextField                      
     -      - TextTooltip                    
     -      - TooltipManager                 
     -      - Touchpad                       
     - DONE - Tree
-    - DONE - Tree.TreeClickListener
     - DONE - Value                          
     - DONE - ValueExtensions
     - DONE - VerticalGroup                  
@@ -1296,7 +1263,6 @@ BACKENDS/DESKTOPGL
 ------------------
 
     - IP   - DesktopGLApplication
-    - IP   - DesktopGLApplication.GLDebugMessageSeverity
     - DONE - DesktopGLApplicationConfiguration
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet

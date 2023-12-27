@@ -351,7 +351,7 @@ public partial class ScrollPane : WidgetGroup
         }
     }
 
-    public override void Layout()
+    public override void SetLayout()
     {
         IDrawable? bg             = Style.Background;
         IDrawable? hScrollKnob    = Style.HScrollKnob;

@@ -271,7 +271,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         }
     }
 
-    public override void Layout()
+    public override void SetLayout()
     {
         if ( _sizeInvalid )
         {

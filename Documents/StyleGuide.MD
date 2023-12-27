@@ -22,9 +22,11 @@ Rule summary:
 
 Code
 ----
- - Names of classes, methods, enumerations, public fields, public properties, namespaces: **_PascalCase_**.
- - Names of local variables, parameters: **_camelCase_**.
- - Names of private, protected, internal and protected internal fields and properties: **__camelCase_**.
+ - Names of classes, methods, enumerations, public properties, namespaces: **_PascalCase_**.
+ - Names of public fields, local variables, parameters: **_camelCase_**.
+ - Names of private, fields and properties: **__camelCase_**.
+ - Names of protected, internal and protected internal fields and properties: **_camelCase_**.
+ - Names of constant fields: **_UPPER_CASE_UNDERSCORE_TOLERANT_**
  - Naming convention is unaffected by modifiers such as const, static, readonly, etc.
  - For casing, a “word” is anything written without internal spaces, including acronyms. For example, **_MyRpc_** instead of **_MyRPC_**.
  - Names of interfaces start with I, e.g. IInterface.
@@ -37,7 +39,22 @@ Files
 
 Organization
 ------------
- - Modifiers occur in the following order: public protected internal private new abstract virtual override sealed static readonly extern unsafe volatile async.
+- Modifiers occur in the following order:
+   - public
+   - protected
+   - internal
+   - private
+   - new
+   - abstract
+   - virtual
+   - override
+   - sealed
+   - static
+   - readonly
+   - extern
+   - unsafe
+   - volatile
+   - async.
  - Namespace using declarations go at the top, before any namespaces. using import order is alphabetical, apart from System imports which always go first.
  - Namespaces must be **_File-Scoped_**.
  - 
@@ -95,9 +112,9 @@ Whitespace rules
     
     public class MyClass                                // Classes are PascalCase.
     {
-        public int Foo = 0;                             // Public member variables are
+        public int Foo { get; set; } = 0;               // Public member variables are
                                                         // PascalCase.
-        public bool NoCounting = false;                 // Field initializers are encouraged.
+        public bool noCounting = false;                 // Field initializers are encouraged.
         
         private class Results
         {
@@ -108,7 +125,7 @@ Whitespace rules
         private Results _results;                       // Private member variables are
                                                         // _camelCase.
         public static int NumTimesCalled = 0;
-        private const int _bar = 100;                   // const does not affect naming
+        private const int BAR = 100;                    // const does not affect naming
                                                         // convention.
         private int[] _someTable =
         {
@@ -129,7 +146,7 @@ Whitespace rules
             var resultValue = Foo * mulNumber;          // Local variables are camelCase.
     
             NumTimesCalled++;
-            Foo += _bar;
+            Foo += BAR;
     
             if ( !NoCounting )                          // No space after unary operator and space after 'if'.
             {

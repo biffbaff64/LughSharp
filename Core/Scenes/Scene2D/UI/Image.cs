@@ -75,7 +75,7 @@ public class Image : Widget
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    public new void Layout()
+    public override void SetLayout()
     {
         if ( _drawable == null )
         {
