@@ -16,7 +16,7 @@
 
 using System.Text;
 
-using LibGDXSharp.G2D;
+using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils.Collections;
 

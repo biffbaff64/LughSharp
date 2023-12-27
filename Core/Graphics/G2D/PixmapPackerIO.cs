@@ -16,7 +16,7 @@
 
 using System.Text.RegularExpressions;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
 /// PixmapPacker I/O, saves PixmapPackers to files.

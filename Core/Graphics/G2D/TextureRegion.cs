@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
 /// Defines a rectangular area of a texture. The coordinate system used has

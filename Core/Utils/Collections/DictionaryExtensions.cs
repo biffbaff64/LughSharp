@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Utils.Collections;
+namespace LibGDXSharp.Utils.Collections;
 
 [PublicAPI]
 public static class DictionaryExtension

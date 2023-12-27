@@ -15,7 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Backends.DesktopGL;
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Backends.Desktop;
 

@@ -16,7 +16,7 @@
 
 using System.Text.RegularExpressions;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
 /// Packs <see cref="Pixmap"/>s into one or more <see cref="Page"/> to generate

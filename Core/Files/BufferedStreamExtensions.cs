@@ -14,7 +14,7 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Files;
+namespace LibGDXSharp.Files;
 
 [PublicAPI]
 public static class BufferedStreamExtensions

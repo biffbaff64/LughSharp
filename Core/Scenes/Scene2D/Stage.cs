@@ -16,7 +16,7 @@
 
 using System.Reflection.Metadata;
 
-using LibGDXSharp.G2D;
+using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Utils.Collections;

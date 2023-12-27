@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.G2D;
+using LibGDXSharp.Graphics.G2D;
 
 using Blendmode = LibGDXSharp.Maps.Tiled.ITiledMapTile.Blendmode;
 

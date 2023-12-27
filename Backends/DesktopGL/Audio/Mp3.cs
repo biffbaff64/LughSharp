@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files;
+using LibGDXSharp.Files;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 

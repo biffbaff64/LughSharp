@@ -16,7 +16,7 @@
 
 using System.Text;
 
-namespace LibGDXSharp.Core.Utils.Collections;
+namespace LibGDXSharp.Utils.Collections;
 
 /// <summary>
 /// <para>An unordered map where the keys and values are objects.</para>

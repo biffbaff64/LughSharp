@@ -16,7 +16,7 @@
 
 using LibGDXSharp.Utils.Pooling;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
 /// Caches glyph geometry for a BitmapFont, providing a fast way to render

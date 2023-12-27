@@ -17,7 +17,7 @@
 using System.Runtime.Serialization;
 using System.Text;
 
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Utils.Xml;
 
@@ -57,8 +57,10 @@ public partial class XmlReader
         return Parse( data, 0, data.Length );
     }
 
-    public virtual Element? Parse( StreamReader reader )
+    public virtual Element? Parse( StreamReader? reader )
     {
+        ArgumentNullException.ThrowIfNull( reader );
+        
         try
         {
             var data   = new char[ 1024 ];
@@ -66,7 +68,7 @@ public partial class XmlReader
 
             while ( true )
             {
-                var length = reader.Read( data /*, offset, data.Length - offset*/ );
+                var length = reader.Read( data );
 
                 if ( length == -1 )
                 {
@@ -495,7 +497,7 @@ public partial class XmlReader
         return root;
     }
 
-    private void Open( string name )
+    public void Open( string name )
     {
         var child = new Element( name, _current );
 
@@ -505,7 +507,7 @@ public partial class XmlReader
         _current = child;
     }
 
-    private void Attribute( string name, string value )
+    public void Attribute( string name, string value )
     {
         _current?.SetAttribute( name, value );
     }
@@ -524,13 +526,13 @@ public partial class XmlReader
 
     }
 
-    private void Text( string text )
+    public void Text( string text )
     {
         var existing = _current?.Text;
         _current!.Text = existing != null ? existing + text : text;
     }
 
-    private void Close()
+    public void Close()
     {
         _root    = _elements.Pop();
         _current = _elements.Count > 0 ? _elements.Peek() : null;

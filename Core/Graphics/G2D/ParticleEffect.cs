@@ -16,7 +16,7 @@
 
 using LibGDXSharp.Maths.Collision;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 [PublicAPI]
 public class ParticleEffect : IDisposable

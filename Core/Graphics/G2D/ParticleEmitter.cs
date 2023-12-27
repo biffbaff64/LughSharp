@@ -14,10 +14,10 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Maths.Collision;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 [PublicAPI]
 public class ParticleEmitter

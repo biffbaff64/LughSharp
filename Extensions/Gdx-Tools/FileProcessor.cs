@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Extensions.Tools;
+namespace LibGDXSharp.Extensions;
 
 /// <summary>
 /// Collects files recursively, filtering by file name. Callbacks are provided to

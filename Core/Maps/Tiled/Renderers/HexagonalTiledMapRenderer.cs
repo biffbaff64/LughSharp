@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.G2D;
+using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Maps.Tiled.Tiles;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;

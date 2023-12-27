@@ -16,7 +16,7 @@
 
 using Color = LibGDXSharp.Graphics.Color;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 [PublicAPI]
 public class PolygonSprite

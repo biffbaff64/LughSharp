@@ -17,7 +17,7 @@
 using Trace = LibGDXSharp.Utils.Trace;
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
-using LibGDXSharp.G2D;
+using LibGDXSharp.Graphics.G2D;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 

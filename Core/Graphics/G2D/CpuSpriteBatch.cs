@@ -18,7 +18,7 @@ using LibGDXSharp.Scenes.Scene2D;
 
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
 /// CpuSpriteBatch behaves like SpriteBatch, except it doesn't flush automatically

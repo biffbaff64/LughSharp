@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Extensions.Tools.Tools.TexturePacker;
+namespace LibGDXSharp.Extensions.Tools.TexturePacker;
 
 public class ColorBleedEffect
 {

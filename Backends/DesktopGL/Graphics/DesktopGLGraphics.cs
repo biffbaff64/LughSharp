@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files.Buffers;
+using LibGDXSharp.Files.Buffers;
 
 using Monitor = GLFW.Monitor;
 

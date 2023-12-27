@@ -272,7 +272,7 @@ EXTENSIONS/BOX2D
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 EXTENSIONS/GDX-TOOLS
-----------------
+--------------------
 
     - IP   - FileProcessor
 
@@ -967,7 +967,7 @@ SCENES/SCENE2D
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SCENES.SCENE2D/ACTIONS
+SCENES/SCENE2D/ACTIONS
 ----------------------
 
     - DONE - Actions                        
@@ -1010,7 +1010,7 @@ SCENES.SCENE2D/ACTIONS
 SCENES/SCENE2D/LISTENERS
 ------------------------
 
-    - Base classes to be used and extended as r4equired
+    - Base classes to be used and extended as required
 
     - IP   - ActorGestureListener           
     - IP   - ChangeListener                 
@@ -1024,7 +1024,7 @@ SCENES/SCENE2D/LISTENERS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SCENES.SCENE2D/UI
+SCENES/SCENE2D/UI
 -----------------
 
     TODO: I don't like the way Cell and Value classes are implemented.
@@ -1072,7 +1072,7 @@ SCENES.SCENE2D/UI
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SCENES.SCENE2D/UTILS
+SCENES/SCENE2D/UTILS
 --------------------
 
     - DONE - ArraySelection                 

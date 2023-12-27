@@ -14,12 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Files.Buffers;
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Collections;
 
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
 /// Draws 2D images, optimized for geometry that does not change. Sprites and/or

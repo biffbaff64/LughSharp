@@ -16,7 +16,7 @@
 
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
 /// A Batch is used to draw 2D rectangles that reference a texture (region). The class will

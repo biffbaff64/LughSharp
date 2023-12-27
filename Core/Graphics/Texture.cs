@@ -16,7 +16,7 @@
 
 using System.Text;
 
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics;
 

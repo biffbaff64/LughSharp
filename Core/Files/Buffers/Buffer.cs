@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Files.Buffers;
+namespace LibGDXSharp.Files.Buffers;
 
 /// <summary>
 /// A container for data of a specific primitive type.

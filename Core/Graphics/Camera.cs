@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.G2D;
+using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Maths.Collision;
 
 using Matrix4 = LibGDXSharp.Maths.Matrix4;

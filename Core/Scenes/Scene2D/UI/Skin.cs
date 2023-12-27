@@ -16,8 +16,8 @@
 
 using System.Runtime.Serialization;
 
-using LibGDXSharp.Core.Utils.Collections;
-using LibGDXSharp.G2D;
+using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;

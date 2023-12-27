@@ -16,7 +16,7 @@
 
 using System.Drawing;
 
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
 

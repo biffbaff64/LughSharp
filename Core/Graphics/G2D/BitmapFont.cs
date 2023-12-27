@@ -16,9 +16,9 @@
 
 using System.Text.RegularExpressions;
 
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 [PublicAPI]
 public class BitmapFont

@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Files.Buffers;
+namespace LibGDXSharp.Files.Buffers;
 
 [PublicAPI]
 public abstract class DoubleBuffer : Buffer

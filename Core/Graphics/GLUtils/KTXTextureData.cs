@@ -16,7 +16,7 @@
 
 using System.IO.Compression;
 
-using LibGDXSharp.Core.Files.Buffers;
+using LibGDXSharp.Files.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 

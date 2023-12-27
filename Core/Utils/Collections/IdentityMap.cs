@@ -16,7 +16,7 @@
 
 using System.Runtime.Serialization;
 
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Utils.Collections;
 

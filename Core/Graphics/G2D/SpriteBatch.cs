@@ -16,7 +16,7 @@
 
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 [PublicAPI]
 public class SpriteBatch : IBatch

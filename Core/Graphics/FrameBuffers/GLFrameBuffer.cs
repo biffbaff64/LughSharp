@@ -16,8 +16,8 @@
 
 using System.Text;
 
-using LibGDXSharp.Core.Files.Buffers;
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 

@@ -16,10 +16,10 @@
 
 using System.Text;
 
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Pooling;
 
-namespace LibGDXSharp.G2D;
+namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
 /// Stores <see cref="GlyphRun"/> runs of glyphs for a piece of text. The text

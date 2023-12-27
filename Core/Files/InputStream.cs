@@ -14,7 +14,7 @@
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core.Files;
+namespace LibGDXSharp.Files;
 
 /// <summary>
 /// This abstract class is the superclass of all classes representing

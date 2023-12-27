@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Core.Utils.Collections;
+using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Graphics.G3D;
 using LibGDXSharp.Graphics.G3D.Models.Data;
 using LibGDXSharp.Graphics.G3D.Utils;
