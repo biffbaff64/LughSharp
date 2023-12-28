@@ -18,6 +18,8 @@ using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Utils.Xml;
 
+using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
+
 namespace LibGDXSharp.Maps.Tiled;
 
 [PublicAPI]
@@ -66,6 +68,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     /// <returns> the TiledMap </returns>
     public TiledMap Load( string fileName, TmxMapLoader.Parameters parameter )
     {
+        MemberNullException.ThrowIfNull( base.xml );
+
         FileInfo tmxFile = Resolve( fileName );
 
         this.root = xml.Parse( tmxFile );
@@ -94,12 +98,11 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                                     FileInfo? tmxFile,
                                     AssetLoaderParameters parameter )
     {
-        this.Map = LoadTiledMap
-            (
-            tmxFile!,
-            ( ( Parameters )parameter ),
-            new IImageResolver.AssetManagerImageResolver( manager! )
-            );
+        Debug.Assert( tmxFile != null );
+        
+        this.Map = LoadTiledMap( tmxFile,
+                                 ( ( Parameters )parameter ),
+                                 new IImageResolver.AssetManagerImageResolver( manager! ) );
     }
 
     public override TiledMap LoadSync( AssetManager? manager,
@@ -130,7 +133,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
         var fileHandles = new List< FileInfo >();
 
         // TileSet descriptors
-        foreach ( XmlReader.Element tileset in root.GetChildrenByName( "tileset" ) )
+        foreach ( XmlReader.Element tileset in root!.GetChildrenByName( "tileset" ) )
         {
             var source = tileset.GetAttribute( "source", null );
 
@@ -138,12 +141,12 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
             {
                 FileInfo? tsxFile = GetRelativeFileHandle( tmxFile, source );
 
-                XmlReader.Element  tset         = xml.Parse( tsxFile! );
-                XmlReader.Element? imageElement = tset.GetChildByName( "image" );
+                XmlReader.Element? tset         = xml!.Parse( tsxFile! );
+                XmlReader.Element? imageElement = tset!.GetChildByName( "image" );
 
                 if ( imageElement != null )
                 {
-                    var      imageSource = imageElement.GetAttribute( "source" );
+                    var       imageSource = imageElement.GetAttribute( "source" );
                     FileInfo? image       = GetRelativeFileHandle( tsxFile, imageSource );
 
                     fileHandles.Add( image! );
@@ -152,7 +155,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                 {
                     foreach ( XmlReader.Element tile in tset.GetChildrenByName( "tile" ) )
                     {
-                        var      imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
+                        var       imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
                         FileInfo? image       = GetRelativeFileHandle( tsxFile, imageSource );
 
                         fileHandles.Add( image! );
@@ -165,7 +168,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 
                 if ( imageElement != null )
                 {
-                    var      imageSource = imageElement.GetAttribute( "source" );
+                    var       imageSource = imageElement.GetAttribute( "source" );
                     FileInfo? image       = GetRelativeFileHandle( tmxFile, imageSource );
                     fileHandles.Add( image! );
                 }
@@ -173,7 +176,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                 {
                     foreach ( XmlReader.Element tile in tileset.GetChildrenByName( "tile" ) )
                     {
-                        var      imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
+                        var       imageSource = tile.GetChildByName( "image" )?.GetAttribute( "source" );
                         FileInfo? image       = GetRelativeFileHandle( tmxFile, imageSource );
                         fileHandles.Add( image! );
                     }
@@ -205,7 +208,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
-    public override List< AssetDescriptor > GetDependencies( string? fileName, FileInfo? file,
+    public override List< AssetDescriptor > GetDependencies( string? fileName,
+                                                             FileInfo? file,
                                                              AssetLoaderParameters parameter )
     {
         return null!;
@@ -258,7 +262,10 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
             // One image for the whole tileSet
             TextureRegion? texture = imageResolver.GetImage( Path.GetFullPath( image.Name ) );
 
-            if ( texture == null ) throw new GdxRuntimeException( $"Tileset image not found: {image.Name}" );
+            if ( texture == null )
+            {
+                throw new GdxRuntimeException( $"Tileset image not found: {image.Name}" );
+            }
 
             props.Put( "imagesource", imageSource );
             props.Put( "imagewidth", imageWidth );
@@ -295,8 +302,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                 {
                     imageSource = imageElement.GetAttribute( "source" );
 
-                    image = GetRelativeFileHandle
-                        ( source != null ? GetRelativeFileHandle( tmxFile, source ) : tmxFile, imageSource );
+                    image = GetRelativeFileHandle( source != null ? GetRelativeFileHandle( tmxFile, source ) : tmxFile, imageSource );
                 }
 
                 TextureRegion? texture = imageResolver.GetImage( Path.GetFullPath( image?.Name! ) );

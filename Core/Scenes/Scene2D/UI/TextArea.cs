@@ -37,7 +37,7 @@ public class TextArea : TextField
     public int LinesShowing { get; set; }
 
     // Array storing lines breaks positions
-    public List< int >? LinesBreak { get; set; }
+    public List<int>? LinesBreak { get; set; }
 
     // Last text processed. This attribute is used to avoid unnecessary
     // computations while calculating offsets
@@ -72,7 +72,7 @@ public class TextArea : TextField
         base.Initialise();
 
         WriteEnters      = true;
-        LinesBreak       = new List< int >();
+        LinesBreak       = new List<int>();
         CursorLine       = 0;
         FirstLineShowing = 0;
         _moveOffset      = -1;
@@ -125,7 +125,7 @@ public class TextArea : TextField
         base.Style = style;
 
         // no extra descent to fake line height
-        TextHeight = ( float )( style.Font?.GetCapHeight() - style.Font?.GetDescent() )!;
+        TextHeight = ( float ) ( style.Font?.GetCapHeight() - style.Font?.GetDescent() )!;
 
         if ( Text != null )
         {
@@ -207,8 +207,8 @@ public class TextArea : TextField
 
         if ( line < 0 )
         {
-            CursorLine  = 0;
-            Cursor      = 0;
+            CursorLine = 0;
+            Cursor = 0;
             _moveOffset = -1;
         }
         else if ( line >= GetLines() )
@@ -334,7 +334,7 @@ public class TextArea : TextField
                                   ? 0
                                   : background.BottomHeight + background.TopHeight );
 
-        LinesShowing = ( int )Math.Floor( availableHeight / font!.GetLineHeight() );
+        LinesShowing = ( int ) Math.Floor( availableHeight / font!.GetLineHeight() );
     }
 
     protected override float GetTextY( BitmapFont font, IDrawable? background )
@@ -348,7 +348,7 @@ public class TextArea : TextField
 
         if ( font.UseIntegerPositions )
         {
-            textY = ( int )textY;
+            textY = ( int ) textY;
         }
 
         return textY;
@@ -412,7 +412,7 @@ public class TextArea : TextField
             }
 
             offsetY += font.GetLineHeight();
-            i       += 2;
+            i += 2;
         }
     }
 
@@ -422,7 +422,7 @@ public class TextArea : TextField
         {
             return;
         }
-        
+
         var offsetY = -( Style.Font?.GetLineHeight() - TextHeight ) / 2;
 
         for ( var i = FirstLineShowing * 2; ( i < ( ( FirstLineShowing + LinesShowing ) * 2 ) ) && ( i < LinesBreak.Count ); i += 2 )
@@ -615,7 +615,7 @@ public class TextArea : TextField
             if ( background != null )
             {
                 height -= background.TopHeight;
-                x      -= background.LeftWidth;
+                x -= background.LeftWidth;
             }
 
             x = Math.Max( 0, x );
@@ -625,7 +625,7 @@ public class TextArea : TextField
                 y -= background.TopHeight;
             }
 
-            _parent.CursorLine = ( int )Math.Floor( ( height - y ) / font.GetLineHeight() ) + _parent.FirstLineShowing;
+            _parent.CursorLine = ( int ) Math.Floor( ( height - y ) / font.GetLineHeight() ) + _parent.FirstLineShowing;
             _parent.CursorLine = Math.Max( 0, Math.Min( _parent.CursorLine, _parent.GetLines() - 1 ) );
 
             base.SetCursorPosition( x, y );
@@ -650,7 +650,7 @@ public class TextArea : TextField
                         if ( !_parent.HasSelection )
                         {
                             _parent.SelectionStart = _parent.Cursor;
-                            _parent.HasSelection   = true;
+                            _parent.HasSelection = true;
                         }
                     }
                     else
@@ -669,7 +669,7 @@ public class TextArea : TextField
                         if ( !_parent.HasSelection )
                         {
                             _parent.SelectionStart = _parent.Cursor;
-                            _parent.HasSelection   = true;
+                            _parent.HasSelection = true;
                         }
                     }
                     else

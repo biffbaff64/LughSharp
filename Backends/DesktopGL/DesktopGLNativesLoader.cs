@@ -21,6 +21,5 @@ public class DesktopGLNativesLoader
 {
     public static void Load()
     {
-        GdxNativesLoader.Load();
     }
 }

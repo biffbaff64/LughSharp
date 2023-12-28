@@ -44,17 +44,18 @@ public class OpenALSound : ISound
               .Put( pcm, 0, bytes )
               .Flip();
 
-        if ( _bufferID == -1 )
-        {
-            _bufferID = AL.GenBuffers();
-
-            AL.BufferData( _bufferID,
-                           channels > 1
-                               ? AL.FORMAT_STEREO16
-                               : AL.FORMAT_MONO16,
-                           buffer.AsShortBuffer(),
-                           sampleRate );
-        }
+//TODO:
+//        if ( _bufferID == -1 )
+//        {
+//            _bufferID = AL.GenBuffers();
+//
+//            AL.BufferData( _bufferID,
+//                           channels > 1
+//                               ? AL.FORMAT_STEREO16
+//                               : AL.FORMAT_MONO16,
+//                           buffer.AsShortBuffer(),
+//                           sampleRate );
+//        }
     }
 
     public long Play( float volume = 1f )
@@ -85,10 +86,10 @@ public class OpenALSound : ISound
 
         var soundId = _audio.GetSoundId( sourceID );
 
-        AL.Sourcei( sourceID, AL.BUFFER, _bufferID );
-        AL.Sourcei( sourceID, AL.LOOPING, AL.FALSE );
-        AL.Sourcef( sourceID, AL.GAIN, volume );
-        AL.SourcePlay( sourceID );
+        AL.Sourcei( ( uint )sourceID, AL.BUFFER, _bufferID );
+        AL.Sourcei( ( uint )sourceID, AL.LOOPING, AL.FALSE );
+        AL.Sourcef( ( uint )sourceID, AL.GAIN, volume );
+        AL.SourcePlay( ( uint )sourceID );
 
         return soundId;
     }
@@ -109,10 +110,10 @@ public class OpenALSound : ISound
 
         var soundId = _audio.GetSoundId( sourceID );
 
-        AL.Sourcei( sourceID, AL.BUFFER, _bufferID );
-        AL.Sourcei( sourceID, AL.LOOPING, AL.TRUE );
-        AL.Sourcef( sourceID, AL.GAIN, volume );
-        AL.SourcePlay( sourceID );
+        AL.Sourcei( ( uint )sourceID, AL.BUFFER, _bufferID );
+        AL.Sourcei( ( uint )sourceID, AL.LOOPING, AL.TRUE );
+        AL.Sourcef( ( uint )sourceID, AL.GAIN, volume );
+        AL.SourcePlay( ( uint )sourceID );
 
         return soundId;
     }
@@ -140,7 +141,7 @@ public class OpenALSound : ISound
         }
 
         _audio.FreeBuffer( _bufferID );
-        AL.DeleteBuffers( _bufferID );
+//TODO:        AL.DeleteBuffers( _bufferID );
 
         _bufferID = -1;
 

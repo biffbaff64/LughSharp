@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Files;
+
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
 [PublicAPI]
@@ -21,9 +23,25 @@ public class Wav
 {
     public class Music : OpenALMusic
     {
+        /// <inheritdoc />
+        public Music( OpenALAudio audio, FileHandle file ) : base( audio, file )
+        {
+        }
+
+        /// <inheritdoc />
+        public override int Read( byte[] buffer ) => 0;
+
+        /// <inheritdoc />
+        public override void Reset()
+        {
+        }
     }
     
     public class Sound : OpenALSound
     {
+        /// <inheritdoc />
+        public Sound( OpenALAudio audio ) : base( audio )
+        {
+        }
     }
 }

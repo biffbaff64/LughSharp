@@ -174,13 +174,11 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         VideoMode videoMode = Glfw.GetVideoMode( Glfw.PrimaryMonitor );
 
-        return new DesktopGLGraphics.DesktopGLDisplayMode(
-            0, //TODO:
-            videoMode.Width,
-            videoMode.Height,
-            videoMode.RefreshRate,
-            videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits
-            );
+        return new DesktopGLGraphics.DesktopGLDisplayMode( Glfw.PrimaryMonitor,
+                                                           videoMode.Width,
+                                                           videoMode.Height,
+                                                           videoMode.RefreshRate,
+                                                           videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
     }
 
     public static IGraphics.DisplayModeDescriptor GetDisplayMode( GLFW.Monitor monitor )
@@ -189,13 +187,11 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         VideoMode videoMode = Glfw.GetVideoMode( monitor );
 
-        return new DesktopGLGraphics.DesktopGLDisplayMode(
-            0, //TODO:
-            videoMode.Width,
-            videoMode.Height,
-            videoMode.RefreshRate,
-            videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits
-            );
+        return new DesktopGLGraphics.DesktopGLDisplayMode( monitor,
+                                                           videoMode.Width,
+                                                           videoMode.Height,
+                                                           videoMode.RefreshRate,
+                                                           videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
     }
 
     /// <summary>
@@ -213,12 +209,11 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         {
             VideoMode videoMode = videoModes[ i ];
 
-            result[ i ] = new DesktopGLGraphics.DesktopGLDisplayMode(
-                0,  //TODO:
-                videoMode.Width,
-                videoMode.Height,
-                videoMode.RefreshRate,
-                videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
+            result[ i ] = new DesktopGLGraphics.DesktopGLDisplayMode( Glfw.PrimaryMonitor,
+                                                                      videoMode.Width,
+                                                                      videoMode.Height,
+                                                                      videoMode.RefreshRate,
+                                                                      videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
         }
 
         return result;
@@ -240,12 +235,11 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         {
             VideoMode videoMode = videoModes[ i ];
 
-            result[ i ] = new DesktopGLGraphics.DesktopGLDisplayMode(
-                0, // TODO
-                videoMode.Width,
-                videoMode.Height,
-                videoMode.RefreshRate,
-                videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
+            result[ i ] = new DesktopGLGraphics.DesktopGLDisplayMode( monitor,
+                                                                      videoMode.Width,
+                                                                      videoMode.Height,
+                                                                      videoMode.RefreshRate,
+                                                                      videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
         }
 
         return result;
@@ -282,10 +276,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         var name = Glfw.GetMonitorName( monitor );
 
-        return new IGraphics.MonitorDescriptor(
-            virtualX,
-            virtualY,
-            name
-            );
+        return new IGraphics.MonitorDescriptor( virtualX, virtualY, name );
     }
 }

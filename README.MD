@@ -837,9 +837,9 @@ MAPS/TILED
 MAPS/TILED/LOADERS
 ------------------
 
-    - IP   - AtlasTmxMapLoader                      Check for nullability issues 
-    - IP   - BaseTmxMapLoader                       Check for nullability issues
-    - IP   - TmxMapLoader                           Check for nullability issues
+    - DONE - AtlasTmxMapLoader 
+    - DONE - BaseTmxMapLoader
+    - DONE - TmxMapLoader
     -      - TideMapLoader
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -954,15 +954,15 @@ NETWORK - DELETE CANDIDATE
 SCENES/SCENE2D
 --------------
 
-    - DONE - Action                         
-    - DONE - Actor                          
-    - DONE - Event                          
-    - DONE - Group                
+    - DONE - Action
+    - DONE - Actor
+    - DONE - Event
+    - DONE - Group
     - DONE - IActor
-    - DONE - InputEvent                     
-    - DONE - Stage                          
-    - DONE - Touchable                      
-    - DONE - TouchFocus                     
+    - DONE - InputEvent
+    - DONE - Stage
+    - DONE - Touchable
+    - DONE - TouchFocus
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

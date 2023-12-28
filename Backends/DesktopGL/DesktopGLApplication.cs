@@ -21,6 +21,7 @@ using LibGDXSharp.Utils.Collections;
 
 using Monitor = GLFW.Monitor;
 using Sync = LibGDXSharp.Backends.Desktop.Sync;
+using Trace = LibGDXSharp.Utils.Trace;
 
 namespace LibGDXSharp;
 
@@ -39,14 +40,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public DesktopGLApplicationLogger?         ApplicationLogger  { get; set; }
     public int                                 LogLevel           { get; set; }
     public IClipboard?                         Clipboard          { get; set; }
-
-    public static GLVersion? GLVersion { get; set; }
-
-    public IApplication.ApplicationType AppType
-    {
-        get => IApplication.ApplicationType.Desktop;
-        set { }
-    }
+    public GLVersion?                          GLVersion          { get; set; }
 
     public IGraphics?            Graphics            => _currentWindow?.Graphics;
     public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
@@ -55,8 +49,16 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public INet                  Net                 { get; set; }
     public IFiles                Files               { get; set; }
 
+    public IApplication.ApplicationType AppType
+    {
+        get => IApplication.ApplicationType.Desktop;
+        set { }
+    }
+
     #endregion public properties
 
+    private const string TAG = "GLApplication";
+    
     private static   GLFW.ErrorCallback? _errorCallback = null;
     private volatile DesktopGLWindow?    _currentWindow = null;
     private          Sync?               _sync          = null;
@@ -85,7 +87,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
             catch ( System.Exception e )
             {
-                Log( "GLApplication", "Couldn't initialize audio, disabling audio", e );
+                Log( TAG, "Couldn't initialize audio, disabling audio", e );
 
                 this.Audio = new MockAudio();
             }
@@ -276,6 +278,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.Terminate();
     }
 
+    #region debug logging
+
     public void Debug( string tag, string message )
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
@@ -324,6 +328,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    #endregion debug logging
+
     public IPreferences GetPreferences( string name )
     {
         if ( Preferences!.ContainsKey( name ) )
@@ -356,7 +362,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         appConfig.SetWindowConfiguration( config );
 
-        return CreateWindow( appConfig, listener, 0 ); //TODO:
+        return CreateWindow( appConfig, listener, 0 );
     }
 
     public DesktopGLWindow CreateWindow( DesktopGLApplicationConfiguration config,
@@ -435,7 +441,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 // see: http://www.glfw.org/docs/latest/compat.html
 
                 Glfw.WindowHint( Hint.OpenglForwardCompatible, true );
-                Glfw.WindowHint( Hint.OpenglProfile, GL.GL_CONTEXT_CORE_PROFILE_BIT );
+                Glfw.WindowHint( Hint.OpenglProfile, ( int )Gl.CONTEXT_CORE_PROFILE_BIT );
             }
         }
 
@@ -463,7 +469,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
         else
         {
-            Glfw.WindowHint( Hint.Decorated, appConfig.WindowDecorated ? GL.GL_TRUE : GL.GL_FALSE );
+            Glfw.WindowHint( Hint.Decorated, appConfig.WindowDecorated ? Gl.TRUE : Gl.FALSE );
 
             windowHandle = Glfw.CreateWindow( appConfig.WindowWidth,
                                               appConfig.WindowHeight,
@@ -536,14 +542,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.SwapInterval( appConfig.VSyncEnabled ? 1 : 0 );
 
         //TODO: What do I do here????
-        Glfw.CreateCapabilities();
+//        Glfw.CreateCapabilities();
 
         InitiateGL();
 
         if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) )
         {
             throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is "
-                                         + $"required. OpenGL version: {GL.glGetString( GL.GL_VERSION )}"
+                                         + $"required. OpenGL version: {Gl.GetString( StringName.Version )}"
                                          + $"\n{GLVersion?.DebugVersionString()}" );
         }
 
@@ -554,11 +560,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                          + $"FBO extension: false\n{GLVersion?.DebugVersionString()}" );
         }
 
-//        if ( appConfig.Debug )
-//        {
+        if ( appConfig.Debug )
+        {
 //            GlDebugCallback = GLFW.DebugMessageCallback( config.debugStream );
 //            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
-//        }
+        }
 
         return windowHandle;
     }
@@ -571,13 +577,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    private static bool SupportsFBO()
+    private bool SupportsFBO()
     {
-        GdxRuntimeException.ThrowIfNull( GLVersion );
+        GdxRuntimeException.ThrowIfNull( this.GLVersion );
 
         // FBO is in core since OpenGL 3.0,
         // see https://www.opengl.org/wiki/Framebuffer_Object
-        return GLVersion.IsVersionEqualToOrHigher( 3, 0 )
+        return this.GLVersion.IsVersionEqualToOrHigher( 3, 0 )
             || Glfw.GetExtensionSupported( "GL_EXT_framebuffer_object" )
             || Glfw.GetExtensionSupported( "GL_ARB_framebuffer_object" );
     }
@@ -601,8 +607,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
     {
         return new OpenALAudio( config.AudioDeviceSimultaneousSources,
-                                  config.AudioDeviceBufferCount,
-                                  config.AudioDeviceBufferSize );
+                                config.AudioDeviceBufferCount,
+                                config.AudioDeviceBufferSize );
     }
 
     public IDesktopGLInput CreateInput( DesktopGLWindow window )
@@ -651,7 +657,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     // ------------------------------------------------------------------------
 
     #region GLDebug specific
-    
+
     //TODO: Unfinished, see GLDebugMessageSeverity below
     [PublicAPI]
     public struct Gldms
@@ -738,4 +744,5 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     #endregion GLDebug specific
+
 }

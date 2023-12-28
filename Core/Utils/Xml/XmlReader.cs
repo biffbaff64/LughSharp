@@ -60,7 +60,7 @@ public partial class XmlReader
     public virtual Element? Parse( StreamReader? reader )
     {
         ArgumentNullException.ThrowIfNull( reader );
-        
+
         try
         {
             var data   = new char[ 1024 ];
@@ -109,15 +109,26 @@ public partial class XmlReader
         }
     }
 
+    private enum Ps
+    {
+        Stage0,
+        Stage1,
+        Stage2,
+        Stage3,
+        Stage4,
+        Stage5,
+    }
+
+    //TODO: When this library is at a stage when testing can be done, rewrite this method by testing, testing, testing!! 
     private Element? Parse( char[] data, int offset, int length )
     {
         //TODO: establish from Java LibGDX the meanings behind these variable names, then rename.
         var cs       = XML_START;
-        var p        = offset;          // position ??
-        var pe       = length;          // position end ??
+        var p        = offset; // position ??
+        var pe       = length; // position end ??
         var s        = 0;
         var hasBody  = false;
-        var gotoTarg = 0;
+        var gotoTarg = Ps.Stage0;
 
         string? attributeName = null;
 
@@ -127,24 +138,24 @@ public partial class XmlReader
         {
             switch ( gotoTarg )
             {
-                case 0:
+                case Ps.Stage0:
                     if ( p == pe )
                     {
-                        gotoTarg = 4;
+                        gotoTarg = Ps.Stage4;
 
                         goto _goto;
                     }
 
                     if ( cs == XML_ERROR )
                     {
-                        gotoTarg = 5;
+                        gotoTarg = Ps.Stage5;
 
                         goto _goto;
                     }
 
                     break;
 
-                case 1:
+                case Ps.Stage1:
                     _match:
 
                     int trans;
@@ -295,7 +306,7 @@ public partial class XmlReader
                                         }
 
                                         cs       = 15;
-                                        gotoTarg = 2;
+                                        gotoTarg = Ps.Stage2;
 
                                         if ( true )
                                         {
@@ -315,7 +326,7 @@ public partial class XmlReader
                                     Close();
 
                                     cs       = 15;
-                                    gotoTarg = 2;
+                                    gotoTarg = Ps.Stage2;
 
                                     if ( true )
                                     {
@@ -328,7 +339,7 @@ public partial class XmlReader
                                     Close();
 
                                     cs       = 15;
-                                    gotoTarg = 2;
+                                    gotoTarg = Ps.Stage2;
 
                                     if ( true )
                                     {
@@ -341,7 +352,7 @@ public partial class XmlReader
                                     if ( hasBody )
                                     {
                                         cs       = 15;
-                                        gotoTarg = 2;
+                                        gotoTarg = Ps.Stage2;
 
                                         if ( true )
                                         {
@@ -442,25 +453,26 @@ public partial class XmlReader
 
                     break;
 
-                case 2:
+                case Ps.Stage2:
                     if ( cs == XML_ERROR )
                     {
-                        gotoTarg = 5;
+                        gotoTarg = Ps.Stage5;
 
                         goto _goto;
                     }
 
                     if ( ++p != pe )
                     {
-                        gotoTarg = 1;
+                        gotoTarg = Ps.Stage1;
 
                         goto _goto;
                     }
 
                     break;
 
-                case 4:
-                case 5:
+                case Ps.Stage3:
+                case Ps.Stage4:
+                case Ps.Stage5:
                     break;
             }
 
@@ -1023,3 +1035,4 @@ public partial class XmlReader
         }
     }
 }
+

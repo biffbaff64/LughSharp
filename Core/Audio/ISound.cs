@@ -22,12 +22,6 @@ public interface ISound
     /// <summary>
     /// Plays the sound. If the sound is already playing, it will be played again, concurrently.
     /// </summary>
-    /// <returns> the id of the sound instance if successful, or -1 on failure.  </returns>
-    long Play();
-
-    /// <summary>
-    /// Plays the sound. If the sound is already playing, it will be played again, concurrently.
-    /// </summary>
     /// <param name="volume"> the volume in the range [0,1] </param>
     /// <returns> the id of the sound instance if successful, or -1 on failure.  </returns>
     long Play( float volume );
@@ -45,13 +39,6 @@ public interface ISound
     /// </param>
     /// <returns> the id of the sound instance if successful, or -1 on failure.  </returns>
     long Play( float volume, float pitch, float pan );
-
-    /// <summary>
-    /// Plays the sound, looping. If the sound is already playing,
-    /// it will be played again, concurrently.
-    /// </summary>
-    /// <returns> the id of the sound instance if successful, or -1 on failure.  </returns>
-    long Loop();
 
     /// <summary>
     /// Plays the sound, looping. If the sound is already playing, it will be played

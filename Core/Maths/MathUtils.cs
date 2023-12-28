@@ -97,7 +97,10 @@ public class MathUtils
         {
             atan = z / ( 1f + ( 0.28f * z * z ) );
 
-            if ( x < 0f ) return atan + ( y < 0f ? -PI : PI );
+            if ( x < 0f )
+            {
+                return atan + ( y < 0f ? -PI : PI );
+            }
 
             return atan;
         }
@@ -253,7 +256,10 @@ public class MathUtils
     /// </summary>
     public static int NextPowerOfTwo( int value )
     {
-        if ( value == 0 ) return 1;
+        if ( value == 0 )
+        {
+            return 1;
+        }
 
         value--;
         value |= value >> 1;
@@ -282,7 +288,10 @@ public class MathUtils
     /// <returns></returns>
     public static short Clamp( short value, short min, short max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -295,7 +304,10 @@ public class MathUtils
     /// <returns></returns>
     public static int Clamp( int value, int min, int max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -308,7 +320,10 @@ public class MathUtils
     /// <returns></returns>
     public static long Clamp( long value, long min, long max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -321,7 +336,10 @@ public class MathUtils
     /// <returns></returns>
     public static float Clamp( float value, float min, float max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -334,7 +352,10 @@ public class MathUtils
     /// <returns></returns>
     public static double Clamp( double value, double min, double max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -441,41 +462,18 @@ public class MathUtils
     }
 
     /// <summary>
-    /// Returns true if the value is zero (using the default tolerance as upper bound) </summary>
-    public static bool IsZero( float value )
-    {
-        return Math.Abs( value ) <= FLOAT_ROUNDING_ERROR;
-    }
-
-    /// <summary>
     /// Returns true if the value is zero.
     /// </summary>
     /// <param name="value">the value to test.</param>
     /// <param name="tolerance"> represent an upper bound below which the value is considered zero.  </param>
-    public static bool IsZero( float value, float tolerance )
+    public static bool IsZero( float value, float tolerance = FLOAT_ROUNDING_ERROR )
     {
         return Math.Abs( value ) <= tolerance;
     }
 
-    public static bool IsNotEqual( float a, float b )
-    {
-        return !IsEqual( a, b );
-    }
-
-    public static bool IsNotEqual( float a, float b, float tolerance )
+    public static bool IsNotEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR )
     {
         return !IsEqual( a, b, tolerance );
-    }
-
-    /// <summary>
-    /// Returns true if a is nearly equal to b.
-    /// The function uses the default floating error tolerance.
-    /// </summary>
-    /// <param name="a"> the first value. </param>
-    /// <param name="b"> the second value.  </param>
-    public static bool IsEqual( float a, float b )
-    {
-        return Math.Abs( a - b ) <= FLOAT_ROUNDING_ERROR;
     }
 
     /// <summary>
@@ -484,7 +482,7 @@ public class MathUtils
     /// <param name="a"> the first value. </param>
     /// <param name="b"> the second value. </param>
     /// <param name="tolerance">represent an upper bound below which the two values are considered equal.</param>
-    public static bool IsEqual( float a, float b, float tolerance )
+    public static bool IsEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR )
     {
         return Math.Abs( a - b ) <= tolerance;
     }
@@ -504,6 +502,13 @@ public class MathUtils
     {
         return Log( 2, value );
     }
+
+    /// <summary>
+    /// Helper method for convenience. Simply 'converts' a ubyte to an int.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static int UnsignedByteToInt( byte b ) => b & 0xFF;
 
     /// <summary>
     /// </summary>

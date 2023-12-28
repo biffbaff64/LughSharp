@@ -21,6 +21,7 @@ using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Backends.Desktop;
 
+[PublicAPI]
 public class DesktopGL20 : IGL20
 {
     private ByteBuffer?  _buffer      = null;
@@ -65,94 +66,102 @@ public class DesktopGL20 : IGL20
         return _intBuffer;
     }
 
-//    public void GLActiveTexture( int texture )
-//    {
-//        OpenGL.Gl.ActiveTexture( texture );
-//    }
+    public void GLActiveTexture( TextureUnit texture )
+    {
+        Gl.ActiveTexture( texture );
+    }
 
-//    public void GLAttachShader( int program, int shader )
-//    {
-//        GL20.AttachShader( program, shader );
-//    }
+    public void GLAttachShader( uint program, uint shader )
+    {
+        Gl.AttachShader( program, shader );
+    }
 
-//    public void GLBindAttribLocation( int program, int index, String name )
-//    {
-//        Gl.BindAttribLocation( program, index, name );
-//    }
+    public void GLBindAttribLocation( uint program, uint index, string name )
+    {
+        Gl.BindAttribLocation( program, index, name );
+    }
 
-//    public void GLBindBuffer( int target, int buffer )
-//    {
-//        Gl.BindBuffer( target, buffer );
-//    }
+    public void GLBindBuffer( BufferTarget target, uint buffer )
+    {
+        Gl.BindBuffer( target, buffer );
+    }
 
-//    public void GLBindFramebuffer( int target, int framebuffer )
-//    {
-//        EXTFramebufferObject.glBindFramebufferEXT( target, framebuffer );
-//    }
+    public void GLBindFramebuffer( FramebufferTarget target, uint framebuffer )
+    {
+        Gl.BindFramebufferEXT( target, framebuffer );
+    }
 
-//    public void GLBindRenderbuffer( int target, int renderbuffer )
-//    {
-//        EXTFramebufferObject.glBindRenderbufferEXT( target, renderbuffer );
-//    }
+    public void GLBindRenderbuffer( RenderbufferTarget target, uint renderbuffer )
+    {
+        Gl.BindRenderbufferEXT( target, renderbuffer );
+    }
 
-//    public void glBindTexture( int target, int texture )
-//    {
-//        Gl.BindTexture( target, texture );
-//    }
+    public void GLBindTexture( TextureTarget target, uint texture )
+    {
+        Gl.BindTexture( target, texture );
+    }
 
-//    public void glBlendColor( float red, float green, float blue, float alpha )
-//    {
-//        GL14.glBlendColor( red, green, blue, alpha );
-//    }
+    public void GLBlendColor( float red, float green, float blue, float alpha )
+    {
+        Gl.BlendColor( red, green, blue, alpha );
+    }
 
-//    public void glBlendEquation( int mode )
-//    {
-//        GL14.glBlendEquation( mode );
-//    }
+    public void GLBlendEquation( BlendEquationMode mode )
+    {
+        Gl.BlendEquation( mode );
+    }
 
-//    public void glBlendEquationSeparate( int modeRGB, int modeAlpha )
-//    {
-//        Gl.BlendEquationSeparate( modeRGB, modeAlpha );
-//    }
+    public void GLBlendEquationSeparate( int modeRGB, int modeAlpha )
+    {
+        Gl.BlendEquationSeparate( modeRGB, modeAlpha );
+    }
 
-//    public void glBlendFunc( int sfactor, int dfactor )
-//    {
-//        Gl.BlendFunc( sfactor, dfactor );
-//    }
+    public void GLBlendFunc( int sfactor, int dfactor )
+    {
+        Gl.BlendFunc( sfactor, dfactor );
+    }
 
-//    public void glBlendFuncSeparate( int srcRGB, int dstRGB, int srcAlpha, int dstAlpha )
-//    {
-//        GL14.glBlendFuncSeparate( srcRGB, dstRGB, srcAlpha, dstAlpha );
-//    }
+    public void GLBlendFuncSeparate( int srcRGB, int dstRGB, int srcAlpha, int dstAlpha )
+    {
+        GL14.glBlendFuncSeparate( srcRGB, dstRGB, srcAlpha, dstAlpha );
+    }
 
     public void GLBufferData( OpenGL.BufferTarget target,
                               uint size,
                               Buffer? data,
                               OpenGL.BufferUsage usage )
     {
-        if ( data == null )
+        switch ( data )
         {
-            Gl.BufferData( target, size, data, usage );
-        }
-        else if ( data is ByteBuffer byteBuffer )
-        {
-            Gl.BufferData( target, size, byteBuffer, usage );
-        }
-        else if ( data is IntBuffer intBuffer )
-        {
-            Gl.BufferData( target, size, intBuffer, usage );
-        }
-        else if ( data is FloatBuffer floatBuffer )
-        {
-            Gl.BufferData( target, size, floatBuffer, usage );
-        }
-        else if ( data is DoubleBuffer doubleBuffer )
-        {
-            Gl.BufferData( target, size, doubleBuffer, usage );
-        }
-        else if ( data is ShortBuffer shortBuffer )
-        {
-            Gl.BufferData( target, size, shortBuffer, usage );
+            case null:
+                Gl.BufferData( target, size, data, usage );
+
+                break;
+
+            case ByteBuffer byteBuffer:
+                Gl.BufferData( target, size, byteBuffer, usage );
+
+                break;
+
+            case IntBuffer intBuffer:
+                Gl.BufferData( target, size, intBuffer, usage );
+
+                break;
+
+            case FloatBuffer floatBuffer:
+                Gl.BufferData( target, size, floatBuffer, usage );
+
+                break;
+
+            case DoubleBuffer doubleBuffer:
+                Gl.BufferData( target, size, doubleBuffer, usage );
+
+                break;
+
+            case ShortBuffer shortBuffer:
+                Gl.BufferData( target, size, shortBuffer, usage );
+
+                break;
         }
     }
 
@@ -160,25 +169,32 @@ public class DesktopGL20 : IGL20
     {
         ArgumentNullException.ThrowIfNull( data );
 
-        if ( data is ByteBuffer byteBuffer )
+        switch ( data )
         {
-            Gl.BufferSubData( target, offset, size, byteBuffer );
-        }
-        else if ( data is IntBuffer intBuffer )
-        {
-            Gl.BufferSubData( target, offset, intBuffer );
-        }
-        else if ( data is FloatBuffer floatBuffer )
-        {
-            Gl.BufferSubData( target, offset, floatBuffer );
-        }
-        else if ( data is DoubleBuffer )
-        {
-            Gl.BufferSubData( target, offset, ( DoubleBuffer )data );
-        }
-        else if ( data is ShortBuffer ) //
-        {
-            Gl.BufferSubData( target, offset, ( ShortBuffer )data );
+            case ByteBuffer byteBuffer:
+                Gl.BufferSubData( target, offset, size, byteBuffer );
+
+                break;
+
+            case IntBuffer intBuffer:
+                Gl.BufferSubData( target, offset, size, intBuffer );
+
+                break;
+
+            case FloatBuffer floatBuffer:
+                Gl.BufferSubData( target, offset, size, floatBuffer );
+
+                break;
+
+            case DoubleBuffer doubleBuffer:
+                Gl.BufferSubData( target, offset, size, doubleBuffer );
+
+                break;
+
+            case ShortBuffer shortBuffer:
+                Gl.BufferSubData( target, offset, size, shortBuffer );
+
+                break;
         }
     }
 
@@ -217,9 +233,9 @@ public class DesktopGL20 : IGL20
         Gl.CompileShader( shader );
     }
 
-    public void GLCompressedTexImage2D( int target,
+    public void GLCompressedTexImage2D( TextureTarget target,
                                         int level,
-                                        int internalformat,
+                                        InternalFormat internalformat,
                                         int width,
                                         int height,
                                         int border,
@@ -228,7 +244,7 @@ public class DesktopGL20 : IGL20
     {
         if ( data is ByteBuffer buffer )
         {
-            Gl.CompressedTexImage2D( target, level, internalformat, width, height, border, buffer );
+            Gl.CompressedTexImage2D( target, level, internalformat, width, height, border, imageSize, buffer );
         }
         else
         {
@@ -381,7 +397,6 @@ public class DesktopGL20 : IGL20
             Gl.DrawElements( mode, count, byteBuf2 );
         }
         else
-
         {
             throw new GdxRuntimeException( $"Can't use {indices.GetType().Name} with this method. Use ShortBuffer or ByteBuffer instead." );
         }
@@ -409,12 +424,12 @@ public class DesktopGL20 : IGL20
 
     public void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer )
     {
-        EXTFramebufferObject.glFramebufferRenderbufferEXT( target, attachment, renderbuffertarget, renderbuffer );
+//        EXTFramebufferObject.glFramebufferRenderbufferEXT( target, attachment, renderbuffertarget, renderbuffer );
     }
 
     public void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level )
     {
-        EXTFramebufferObject.glFramebufferTexture2DEXT( target, attachment, textarget, texture, level );
+//        EXTFramebufferObject.glFramebufferTexture2DEXT( target, attachment, textarget, texture, level );
     }
 
     public void GLFrontFace( FrontFaceDirection mode )
@@ -427,29 +442,29 @@ public class DesktopGL20 : IGL20
         Gl.GenBuffers( buffers );
     }
 
-//    public uint GLGenBuffer()
-//    {
+    public uint GLGenBuffer()
+    {
 //        return Gl.GenBuffer();
-//    }
+    }
 
     public void GLGenFramebuffers( int n, IntBuffer framebuffers )
     {
-        EXTFramebufferObject.glGenFramebuffersEXT( framebuffers );
+//        EXTFramebufferObject.glGenFramebuffersEXT( framebuffers );
     }
 
     public int GLGenFramebuffer()
     {
-        return EXTFramebufferObject.glGenFramebuffersEXT();
+//        return EXTFramebufferObject.glGenFramebuffersEXT();
     }
 
     public void GLGenRenderbuffers( int n, IntBuffer renderbuffers )
     {
-        EXTFramebufferObject.glGenRenderbuffersEXT( renderbuffers );
+//        EXTFramebufferObject.glGenRenderbuffersEXT( renderbuffers );
     }
 
     public int GLGenRenderbuffer()
     {
-        return EXTFramebufferObject.glGenRenderbuffersEXT();
+//        return EXTFramebufferObject.glGenRenderbuffersEXT();
     }
 
     public void GLGenTextures( int n, uint[] textures )
@@ -459,22 +474,22 @@ public class DesktopGL20 : IGL20
 
     public uint GLGenTexture()
     {
-        return Gl.GenTexture();
+//        return Gl.GenTexture();
     }
 
     public void GLGenerateMipmap( int target )
     {
-        EXTFramebufferObject.glGenerateMipmapEXT( target );
+//        EXTFramebufferObject.glGenerateMipmapEXT( target );
     }
 
-    public String GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type )
+    public string GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type )
     {
-        return Gl.GetActiveAttrib( program, index, 256, size, type );
+//        return Gl.GetActiveAttrib( program, index, 256, size, type );
     }
 
-    public String GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type )
+    public string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type )
     {
-        return Gl.GetActiveUniform( program, index, 256, size, type );
+//        return Gl.GetActiveUniform( program, index, 256, size, type );
     }
 
     public void GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders )
@@ -482,9 +497,9 @@ public class DesktopGL20 : IGL20
         Gl.GetAttachedShaders( program, ( IntBuffer )count, shaders );
     }
 
-    public int GLGetAttribLocation( int program, String name )
+    public int GLGetAttribLocation( int program, string name )
     {
-        return Gl.GetAttribLocation( program, name );
+//        return Gl.GetAttribLocation( program, name );
     }
 
     public void GLGetBooleanv( int pname, Buffer parameters )
@@ -499,7 +514,7 @@ public class DesktopGL20 : IGL20
 
     public ErrorCode GLGetError()
     {
-        return Gl.GetError();
+//        return Gl.GetError();
     }
 
     public void GLGetFloatv( int pname, FloatBuffer parameters )
@@ -509,7 +524,7 @@ public class DesktopGL20 : IGL20
 
     public void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters )
     {
-        EXTFramebufferObject.glGetFramebufferAttachmentParameterivEXT( target, attachment, pname, parameters );
+//        EXTFramebufferObject.glGetFramebufferAttachmentParameterivEXT( target, attachment, pname, parameters );
     }
 
     public void GLGetIntegerv( int pname, IntBuffer parameters )
@@ -517,7 +532,7 @@ public class DesktopGL20 : IGL20
         Gl.GetIntegerv( pname, parameters );
     }
 
-    public String GLGetProgramInfoLog( int program )
+    public string GLGetProgramInfoLog( int program )
     {
         ByteBuffer buffer = ByteBuffer.allocateDirect( 1024 * 10 );
         buffer.order( ByteOrder.nativeOrder() );
@@ -530,7 +545,7 @@ public class DesktopGL20 : IGL20
         byte[] bytes    = new byte[ numBytes ];
         buffer.get( bytes );
 
-        return new String( bytes );
+        return new string( bytes );
     }
 
     public void GLGetProgramiv( int program, int pname, IntBuffer parameters )
@@ -540,10 +555,10 @@ public class DesktopGL20 : IGL20
 
     public void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters )
     {
-        EXTFramebufferObject.glGetRenderbufferParameterivEXT( target, pname, parameters );
+//        EXTFramebufferObject.glGetRenderbufferParameterivEXT( target, pname, parameters );
     }
 
-    public String GLGetShaderInfoLog( int shader )
+    public string GLGetShaderInfoLog( int shader )
     {
         ByteBuffer buffer = ByteBuffer.allocateDirect( 1024 * 10 );
         buffer.order( ByteOrder.nativeOrder() );
@@ -556,12 +571,12 @@ public class DesktopGL20 : IGL20
         byte[] bytes    = new byte[ numBytes ];
         buffer.get( bytes );
 
-        return new String( bytes );
+        return new string( bytes );
     }
 
     public void GLGetShaderPrecisionFormat( int shadertype, int precisiontype, IntBuffer range, IntBuffer precision )
     {
-        throw new UnsupportedOperationException( "unsupported, won't implement" );
+//        throw new UnsupportedOperationException( "unsupported, won't implement" );
     }
 
     public void GLGetShaderiv( int shader, int pname, IntBuffer parameters )
@@ -569,9 +584,9 @@ public class DesktopGL20 : IGL20
         Gl.GetShaderiv( shader, pname, parameters );
     }
 
-    public String GLGetString( int name )
+    public string GLGetString( int name )
     {
-        return Gl.GetString( name );
+//        return Gl.GetString( name );
     }
 
     public void GLGetTexParameterfv( int target, int pname, FloatBuffer parameters )
@@ -584,9 +599,9 @@ public class DesktopGL20 : IGL20
         Gl.GetTexParameteriv( target, pname, parameters );
     }
 
-    public int GLGetUniformLocation( int program, String name )
+    public int GLGetUniformLocation( int program, string name )
     {
-        return Gl.GetUniformLocation( program, name );
+//        return Gl.GetUniformLocation( program, name );
     }
 
     public void GLGetUniformfv( int program, int location, FloatBuffer parameters )
@@ -601,7 +616,7 @@ public class DesktopGL20 : IGL20
 
     public void GLGetVertexAttribPointerv( int index, int pname, Buffer pointer )
     {
-        throw new UnsupportedOperationException( "unsupported, won't implement" );
+//        throw new UnsupportedOperationException( "unsupported, won't implement" );
     }
 
     public void GLGetVertexAttribfv( int index, int pname, FloatBuffer parameters )
@@ -621,32 +636,32 @@ public class DesktopGL20 : IGL20
 
     public bool GLIsBuffer( int buffer )
     {
-        return Gl.IsBuffer( buffer );
+//        return Gl.IsBuffer( buffer );
     }
 
     public bool GLIsEnabled( int cap )
     {
-        return Gl.IsEnabled( cap );
+//        return Gl.IsEnabled( cap );
     }
 
     public bool GLIsFramebuffer( int framebuffer )
     {
-        return EXTFramebufferObject.glIsFramebufferEXT( framebuffer );
+//        return EXTFramebufferObject.glIsFramebufferEXT( framebuffer );
     }
 
     public bool GLIsProgram( int program )
     {
-        return Gl.IsProgram( program );
+//        return Gl.IsProgram( program );
     }
 
     public bool GLIsRenderbuffer( int renderbuffer )
     {
-        return EXTFramebufferObject.glIsRenderbufferEXT( renderbuffer );
+//        return EXTFramebufferObject.glIsRenderbufferEXT( renderbuffer );
     }
 
     public bool GLIsShader( int shader )
     {
-        return Gl.IsShader( shader );
+//        return Gl.IsShader( shader );
     }
 
     public bool GLIsTexture( int texture )
@@ -715,7 +730,7 @@ public class DesktopGL20 : IGL20
         throw new UnsupportedOperationException( "unsupported, won't implement" );
     }
 
-    public void GLShaderSource( int shader, String string )
+    public void GLShaderSource( int shader, string string )
     {
         Gl.ShaderSource( shader, string );
     }
@@ -892,30 +907,30 @@ public class DesktopGL20 : IGL20
         Gl.Uniform3f( location, x, y, z );
     }
 
-//    public void GLUniform3Fv( int location, int count, FloatBuffer v )
-//    {
-//        Gl.Uniform3fv( location, v );
-//    }
+    public void GLUniform3Fv( int location, int count, FloatBuffer v )
+    {
+        Gl.Uniform3fv( location, v );
+    }
 
-//    public void GLUniform3Fv( int location, int count, float[] v, int offset )
-//    {
-//        Gl.Uniform3fv( location, toFloatBuffer( v, offset, count * 3 ) );
-//    }
+    public void GLUniform3Fv( int location, int count, float[] v, int offset )
+    {
+        Gl.Uniform3fv( location, toFloatBuffer( v, offset, count * 3 ) );
+    }
 
     public void GLUniform3I<T>( int location, int count, int value ) where T : struct
     {
         Gl.Uniform3i( location, count, value );
     }
 
-//    public void GLUniform3Iv( int location, int count, IntBuffer v )
-//    {
-//        Gl.Uniform3iv( location, v );
-//    }
+    public void GLUniform3Iv( int location, int count, IntBuffer v )
+    {
+        Gl.Uniform3iv( location, v );
+    }
 
-//    public void GLUniform3Iv( int location, int count, int[] v, int offset )
-//    {
-//        Gl.Uniform3iv( location, ToIntBuffer( v, offset, count * 3 ) );
-//    }
+    public void GLUniform3Iv( int location, int count, int[] v, int offset )
+    {
+        Gl.Uniform3iv( location, ToIntBuffer( v, offset, count * 3 ) );
+    }
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -937,20 +952,20 @@ public class DesktopGL20 : IGL20
         Gl.Uniform4f( location, count, value );
     }
 
-//    public void GLUniform4Fv( int location, int count, FloatBuffer v )
-//    {
-//        Gl.Uniform4fv( location, v );
-//    }
+    public void GLUniform4Fv( int location, int count, FloatBuffer v )
+    {
+        Gl.Uniform4fv( location, v );
+    }
 
-//    public void GLUniform4Fv( int location, int count, float[] v, int offset )
-//    {
-//        Gl.Uniform4fv( location, ToFloatBuffer( v, offset, count << 2 ) );
-//    }
+    public void GLUniform4Fv( int location, int count, float[] v, int offset )
+    {
+        Gl.Uniform4fv( location, ToFloatBuffer( v, offset, count << 2 ) );
+    }
 
-//    public void GLUniform4I( int location, int x, int y, int z, int w )
-//    {
-//        Gl.Uniform4i( location, x, y, z, w );
-//    }
+    public void GLUniform4I( int location, int x, int y, int z, int w )
+    {
+        Gl.Uniform4i( location, x, y, z, w );
+    }
 
 //    public void GLUniform4Iv( int location, int count, IntBuffer v )
 //    {
@@ -1012,11 +1027,11 @@ public class DesktopGL20 : IGL20
         Gl.VertexAttrib1f( indx, values.Get() );
     }
 
-//    public void GLVertexAttrib2F( int indx, float x, float y )
-//    {
-//        //TODO:
-//        throw new NotImplementedException();
-//    }
+    public void GLVertexAttrib2F( int indx, float x, float y )
+    {
+        //TODO:
+        throw new NotImplementedException();
+    }
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -1031,11 +1046,11 @@ public class DesktopGL20 : IGL20
         Gl.VertexAttrib2f( indx, values.Get() );
     }
 
-//    public void GLVertexAttrib3F( int indx, float x, float y, float z )
-//    {
-//        //TODO:
-//        throw new NotImplementedException();
-//    }
+    public void GLVertexAttrib3F( int indx, float x, float y, float z )
+    {
+        //TODO:
+        throw new NotImplementedException();
+    }
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -1050,11 +1065,11 @@ public class DesktopGL20 : IGL20
         Gl.VertexAttrib3f( indx, values.Get() );
     }
 
-//    public void GLVertexAttrib4F( int indx, float x, float y, float z, float w )
-//    {
-//        //TODO:
-//        throw new NotImplementedException();
-//    }
+    public void GLVertexAttrib4F( int indx, float x, float y, float z, float w )
+    {
+        //TODO:
+        throw new NotImplementedException();
+    }
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -1112,31 +1127,29 @@ public class DesktopGL20 : IGL20
     {
         if ( pointer is ByteBuffer byteBuffer )
         {
-            if ( type == VertexAttribType.Byte )
+            switch ( type )
             {
-                Gl.VertexAttribPointer( indx, size, type, normalized, stride, byteBuffer );
-            }
-            else if ( type == VertexAttribType.UnsignedByte )
-            {
-                Gl.VertexAttribPointer( indx, size, type, normalized, stride, byteBuffer );
-            }
-            else if ( type == VertexAttribType.Short )
-            {
-                Gl.VertexAttribPointer( indx, size, type, normalized, stride, byteBuffer.AsShortBuffer() );
-            }
-            else if ( type == VertexAttribType.UnsignedShort )
-            {
-                Gl.VertexAttribPointer( indx, size, type, normalized, stride, byteBuffer.AsShortBuffer() );
-            }
-            else if ( type == VertexAttribType.Float )
-            {
-                Gl.VertexAttribPointer( indx, size, type, normalized, stride, byteBuffer.AsFloatBuffer() );
-            }
-            else
-            {
-                throw new GdxRuntimeException( $"Can't use {byteBuffer.GetType().Name} with type {type} with this "
-                                             + $"method. Use ByteBuffer and one of GL_BYTE, GL_UNSIGNED_BYTE, "
-                                             + $"GL_SHORT, GL_UNSIGNED_SHORT or GL_FLOAT for type." );
+                case VertexAttribType.Byte:
+                case VertexAttribType.UnsignedByte:
+                    Gl.VertexAttribPointer( indx, size, type, normalized, stride, byteBuffer );
+
+                    break;
+
+                case VertexAttribType.Short:
+                case VertexAttribType.UnsignedShort:
+                    Gl.VertexAttribPointer( indx, size, type, normalized, stride, byteBuffer.AsShortBuffer() );
+
+                    break;
+
+                case VertexAttribType.Float:
+                    Gl.VertexAttribPointer( indx, size, type, normalized, stride, byteBuffer.AsFloatBuffer() );
+
+                    break;
+
+                default:
+                    throw new GdxRuntimeException( $"Can't use {byteBuffer.GetType().Name} with type {type} with this "
+                                                 + $"method. Use ByteBuffer and one of GL_BYTE, GL_UNSIGNED_BYTE, "
+                                                 + $"GL_SHORT, GL_UNSIGNED_SHORT or GL_FLOAT for type." );
             }
         }
         else if ( pointer is FloatBuffer fBuffer )

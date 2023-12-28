@@ -175,17 +175,18 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="enable"></param>
     public void EnableCubeMapSeamless( bool enable )
     {
-        if ( SupportsCubeMapSeamless() )
-        {
-            if ( enable )
-            {
-                Gdx.GL20.GLEnable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-            }
-            else
-            {
-                Gdx.GL20.GLDisable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-            }
-        }
+//TODO:
+//        if ( SupportsCubeMapSeamless() )
+//        {
+//            if ( enable )
+//            {
+//                Gdx.GL20.GLEnable( Gl.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+//            }
+//            else
+//            {
+//                Gdx.GL20.GLDisable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+//            }
+//        }
     }
 
     // ------------------------------------------------------------------------
@@ -236,11 +237,14 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
+    /// <inheritdoc />
+    public override bool SetWindowedMode( int width, int height ) => false;
+
     public override void SetTitle( string title )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        Glfw.SetWindowTitle( GLWindow.GlfwWindow, title ?? "" );
+        Glfw.SetWindowTitle( GLWindow.GlfwWindow, title );
     }
 
     public override void SetUndecorated( bool undecorated )
@@ -257,7 +261,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
         GLWindow.Config.WindowResizable = resizable;
-        
+
         Glfw.SetWindowAttribute( GLWindow.GlfwWindow, GLFW.WindowAttribute.Resizable, resizable );
     }
 
@@ -266,7 +270,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
         GLWindow.Config.VSyncEnabled = vsync;
-        
+
         Glfw.SwapInterval( vsync ? 1 : 0 );
     }
 
@@ -305,7 +309,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <returns></returns>
     public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot )
     {
-        return new DesktopGLCursor( GLWindow, pixmap, xHotspot, yHotspot);
+        return new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
     }
 
     /// <summary>
@@ -322,7 +326,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        Glfw.SetCursor( GLWindow.GlfwWindow, ( (DesktopGLCursor )cursor ).GLFWCursor );
+        Glfw.SetCursor( GLWindow.GlfwWindow, ( ( DesktopGLCursor )cursor ).GLFWCursor );
     }
 
     /// <summary>
@@ -380,18 +384,108 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     // ------------------------------------------------------------------------
+    //TODO:
 
-    public override int GetSafeInsetLeft() => 0;
+    public override int  GetSafeInsetLeft()   => 0;
+    public override int  GetSafeInsetTop()    => 0;
+    public override int  GetSafeInsetBottom() => 0;
+    public override int  GetSafeInsetRight()  => 0;
+    public override long GetFrameId()         => _frameId;
+    public override int  GetFramesPerSecond() => _fps;
 
-    public override int GetSafeInsetTop() => 0;
+    // ------------------------------------------------------------------------
 
-    public override int GetSafeInsetBottom() => 0;
+    /// <inheritdoc />
+    public override IGraphics.MonitorDescriptor[] GetMonitors()
+    {
+        Monitor[] glfwMonitors = Glfw.Monitors;
+        var       monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
 
-    public override int GetSafeInsetRight() => 0;
+        for ( var i = 0; i < Glfw.Monitors.Length; i++ )
+        {
+            monitors[ i ] = DesktopGLApplicationConfiguration.ToGLMonitor( glfwMonitors[ i ] );
+        }
 
-    public override long GetFrameId() => 0;
+        return monitors;
+    }
 
-    public override int GetFramesPerSecond() => 0;
+    /// <inheritdoc />
+    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes()
+    {
+        return DesktopGLApplicationConfiguration.GetDisplayModes();
+    }
+
+    /// <inheritdoc />
+    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor )
+    {
+        return DesktopGLApplicationConfiguration.GetDisplayModes( monitor.MonitorHandle );
+    }
+
+    /// <inheritdoc />
+    public override IGraphics.DisplayModeDescriptor GetDisplayMode()
+    {
+        return DesktopGLApplicationConfiguration.GetDisplayMode( GetMonitor().MonitorHandle );
+    }
+
+    /// <inheritdoc />
+    public override IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor )
+    {
+        return DesktopGLApplicationConfiguration.GetDisplayMode( monitor.MonitorHandle );
+    }
+
+    /// <inheritdoc />
+    public override bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode )
+    {
+        MemberNullException.ThrowIfNull( GLWindow );
+        
+        GLWindow.Input.ResetPollingStates();
+
+        var newMode = ( DesktopGLDisplayMode )displayMode;
+
+        if ( IsFullscreen() )
+        {
+            var currentMode = ( DesktopGLDisplayMode )GetDisplayMode();
+
+            if ( ( currentMode.MonitorHandle == newMode.MonitorHandle )
+              && ( currentMode.RefreshRate == newMode.RefreshRate ) )
+            {
+                // same monitor and refresh rate
+                Glfw.SetWindowSize( GLWindow.GlfwWindow, newMode.Width, newMode.Height );
+            }
+            else
+            {
+                // different monitor and/or refresh rate
+                Glfw.SetWindowMonitor( GLWindow.GlfwWindow,
+                                           newMode.MonitorHandle,
+                                           0,
+                                           0,
+                                           newMode.Width,
+                                           newMode.Height,
+                                           newMode.RefreshRate );
+            }
+        }
+        else
+        {
+            // store window position so we can restore it when switching
+            // from fullscreen to windowed later
+            StoreCurrentWindowPositionAndDisplayMode();
+
+            // switch from windowed to fullscreen
+            Glfw.SetWindowMonitor( GLWindow.GlfwWindow,
+                                   newMode.MonitorHandle,
+                                   0,
+                                   0,
+                                   newMode.Width,
+                                   newMode.Height,
+                                   newMode.RefreshRate );
+        }
+
+        UpdateFramebufferInfo();
+
+        SetVSync( GLWindow!.Config.VSyncEnabled );
+
+        return true;
+    }
 
     // ------------------------------------------------------------------------
 
@@ -403,26 +497,43 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public override float GetPpcX()
     {
-        Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY );
+        Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY ); //TODO:
 
         return ( GetDisplayMode().Width / ( float )sizeX ) * 10;
     }
 
     public override float GetPpcY()
     {
-        Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY );
+        Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY ); //TODO:
 
         return ( GetDisplayMode().Height / ( float )sizeY ) * 10;
     }
 
     // ------------------------------------------------------------------------
 
+    private void StoreCurrentWindowPositionAndDisplayMode()
+    {
+        if ( GLWindow == null )
+        {
+            return;
+        }
+
+        _windowPosXBeforeFullscreen   = GLWindow.GetPositionX();
+        _windowPosYBeforeFullscreen   = GLWindow.GetPositionY();
+        _windowWidthBeforeFullscreen  = LogicalWidth;
+        _windowHeightBeforeFullscreen = LogicalHeight;
+        _displayModeBeforeFullscreen  = GetDisplayMode();
+    }
+
+    // ------------------------------------------------------------------------
+
     #region IDisposable implementation
-    
+
     protected void Dispose( bool disposing )
     {
         if ( disposing )
         {
+            //TODO:
         }
     }
 
@@ -437,7 +548,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    //TODO: To be removed
     [PublicAPI]
     public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
     {
@@ -454,7 +564,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    //TODO: To be removed
     [PublicAPI]
     public class DesktopGLMonitor : IGraphics.MonitorDescriptor
     {
