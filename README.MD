@@ -840,7 +840,7 @@ MAPS/TILED/LOADERS
     - DONE - AtlasTmxMapLoader 
     - DONE - BaseTmxMapLoader
     - DONE - TmxMapLoader
-    -      - TideMapLoader
+    - **** - TideMapLoader
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1036,20 +1036,20 @@ SCENES/SCENE2D/UI
     - DONE - CheckBox
     - DONE - Container
     - DONE - Dialog
-    - IP   - DialogChangeObserver
-    - IP   - DialogFocusObserver
-    - IP   - DialogInputObserver
+    - DONE - DialogChangeListener
+    - DONE - DialogFocusListener
+    - DONE - DialogInputListener
     - DONE - HorizontalGroup
     - DONE - Image
     - DONE - ImageButton
     - DONE - ImageTextButton
     - DONE - Label
     - DONE - ListBox
-    -      - ParticleEffectActor            
-    - DONE - ProgressBar                    
-    - DONE - ScrollPane        
+    - IP   - ParticleEffectActor            
+    - DONE - ProgressBar
+    - DONE - ScrollPane
     - IP   _ ScrollPaneListeners
-    -      - SelectBox                      
+    -      - SelectBox
     - DONE - Skin                           
     -      - Slider                         
     -      - SplitPane                      

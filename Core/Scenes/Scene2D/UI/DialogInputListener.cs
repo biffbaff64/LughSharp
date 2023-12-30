@@ -19,18 +19,41 @@ using LibGDXSharp.Scenes.Listeners;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [PublicAPI]
-public class DialogInputObserver : InputListener
+public class DialogInputListener : InputListener
 {
-    private readonly Dialog _dialog;
+    private readonly Dialog  _dialog;
+    private readonly int     _thisKey;
+    private readonly object? _object;
 
-    public DialogInputObserver( Dialog d )
+    public DialogInputListener( Dialog d, int thisKey, object? o )
     {
-        this._dialog = d;
+        this._dialog  = d;
+        this._thisKey = thisKey;
+        this._object  = o;
     }
 
-    public override bool Handle( Event ev )
+    /// <inheritdoc />
+    public override bool KeyDown( InputEvent inputEvent, int keycode )
     {
+        if ( keycode == _thisKey )
+        {
+            // Delay a frame to eat the keyTyped event.
+            Gdx.App.PostRunnable( () =>
+            {
+                void Run()
+                {
+                    _dialog.Result( _object );
+
+                    if ( !_dialog.CancelHide )
+                    {
+                        _dialog.Hide();
+                    }
+
+                    _dialog.CancelHide = false;
+                }
+            } );
+        }
+
         return false;
     }
 }
-

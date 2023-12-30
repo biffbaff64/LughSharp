@@ -34,14 +34,14 @@ public class Dialog : Window
     public Table? ButtonTable           { get; private set; }
     public bool   CancelHide            { get; set; }
 
+    public Dictionary< Actor, object >? Values { get; set; } = new();
+
     private ChangeListener  _dialogChangeListener = null!;
     private FocusListener   _dialogFocusListener  = null!;
     private InputListener   _dialogInputListener  = null!;
     private IgnoreTouchDown _ignoreTouchDown      = null!;
 
     private Skin? _skin;
-
-    private Dictionary< Actor, object >? _values = new();
 
     // ------------------------------------------------------------------------
 
@@ -105,9 +105,9 @@ public class Dialog : Window
         ContentTable.CellDefaults.Space( 6 );
         ButtonTable.CellDefaults.Space( 6 );
 
-        this._dialogFocusListener  = new DialogFocusObserver( this );
-        this._dialogChangeListener = new DialogChangeObserver( this );
-        this._dialogInputListener  = new DialogInputObserver( this );
+        this._dialogFocusListener  = new DialogFocusListener( this );
+        this._dialogChangeListener = new DialogChangeListener( this );
+        this._dialogInputListener  = new DialogInputListener( this );
 
         ButtonTable.AddListener( new ButtonTableChangeListener( this ) );
 
@@ -339,9 +339,9 @@ public class Dialog : Window
 
     public void SetObject( Actor actor, object obj )
     {
-        Debug.Assert( _values != null, nameof( _values ) + " != null" );
+        Debug.Assert( Values != null, nameof( Values ) + " != null" );
 
-        _values[ actor ] = obj;
+        Values[ actor ] = obj;
     }
 
     /// <summary>
@@ -394,7 +394,7 @@ public class Dialog : Window
     /// method returns unless <see cref="CancelHide"/> is set.
     /// </summary>
     /// <param name="obj"> The object specified when the button was added. </param>
-    protected void Result( object? obj )
+    public virtual void Result( object? obj )
     {
     }
 
@@ -404,7 +404,7 @@ public class Dialog : Window
                        "This method may only be used if the dialog was constructed "
                      + "with a Skin, a default Skin has been provided." );
     }
-    
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -419,12 +419,12 @@ public class Dialog : Window
 
         public override void Changed( ChangeEvent ev, Actor? actor )
         {
-            if ( ( _dialog._values == null ) || ( actor == null ) )
+            if ( ( _dialog.Values == null ) || ( actor == null ) )
             {
                 return;
             }
 
-            if ( !_dialog._values.ContainsKey( actor ) )
+            if ( !_dialog.Values.ContainsKey( actor ) )
             {
                 return;
             }
@@ -434,7 +434,7 @@ public class Dialog : Window
                 actor = actor?.Parent;
             }
 
-            _dialog.Result( _dialog._values[ actor! ] );
+            _dialog.Result( _dialog.Values[ actor! ] );
 
             if ( !_dialog.CancelHide )
             {

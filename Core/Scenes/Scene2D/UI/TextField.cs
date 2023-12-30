@@ -68,7 +68,7 @@ public class TextField : Widget
     public bool            WriteEnters    { get; set; }
     public GlyphLayout     Layout         { get; set; } = new();
     public List< float >   GlyphPositions { get; set; } = new();
-    public string          DisplayText    { get; set; } = "";
+    public string?         DisplayText    { get; set; }
     public float           FontOffset     { get; set; }
     public float           TextHeight     { get; set; }
     public float           TextOffset     { get; set; }
@@ -110,14 +110,23 @@ public class TextField : Widget
     }
 
     public TextField( string? text, Skin skin, string styleName )
-        : this( text, ( TextFieldStyle )skin.Get< TextFieldStyle >( styleName ) )
+        : this( text, skin.Get< TextFieldStyle >( styleName ) )
     {
     }
 
     public TextField( string? text, TextFieldStyle style )
     {
-        SetStyle( style );
+        NonVirtualInitialise( text, style );
+    }
+    
+    /// <summary>
+    /// Not a good idea to call virtual methods from a constructor, so...
+    /// </summary>
+    private void NonVirtualInitialise( string? text, TextFieldStyle style )
+    {
         _clipboard = Gdx.App.Clipboard;
+        
+        SetStyle( style );
         Initialise();
         SetText( text );
         SetSize( GetPrefWidth(), GetPrefHeight() );
@@ -125,10 +134,29 @@ public class TextField : Widget
 
     public virtual void Initialise()
     {
+        this._inputListener = CreateInputListener();
     }
 
+    protected virtual InputListener CreateInputListener()
+    {
+        return new TextFieldClickListener();
+    }
+    
     public virtual void SetStyle( TextFieldStyle style )
     {
+        ArgumentNullException.ThrowIfNull( style );
+        ArgumentNullException.ThrowIfNull( style.Font );
+        
+        this.Style = style;
+
+        TextHeight = style.Font.GetCapHeight() - ( style.Font.GetDescent() * 2 );
+
+        if ( Text != null )
+        {
+            UpdateDisplayText();
+        }
+        
+        InvalidateHierarchy();
     }
 
     public virtual void CalculateOffsets()

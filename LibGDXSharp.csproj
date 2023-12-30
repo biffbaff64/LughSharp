@@ -59,10 +59,4 @@
         <None Remove="GDXBackends\**" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="LughGLFW">
-        <HintPath>packages\LughGLFW.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

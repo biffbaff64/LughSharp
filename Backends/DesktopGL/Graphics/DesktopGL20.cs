@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Text;
+
 using LibGDXSharp.Files.Buffers;
 
 using Buffer = LibGDXSharp.Files.Buffers.Buffer;
@@ -40,9 +42,9 @@ public class DesktopGL20 : IGL20
 
     private FloatBuffer ToFloatBuffer( float[] v, int offset, int count )
     {
-        EnsureBufferCapacity( count << 2 );
-
         MemberNullException.ThrowIfNull( _floatBuffer );
+
+        EnsureBufferCapacity( count << 2 );
 
         _floatBuffer.Clear();
         _floatBuffer.Limit = count;
@@ -54,9 +56,9 @@ public class DesktopGL20 : IGL20
 
     private IntBuffer ToIntBuffer( int[] v, int offset, int count )
     {
-        EnsureBufferCapacity( count << 2 );
-
         MemberNullException.ThrowIfNull( _intBuffer );
+
+        EnsureBufferCapacity( count << 2 );
 
         _intBuffer.Clear();
         _intBuffer.Limit = count;
@@ -66,67 +68,82 @@ public class DesktopGL20 : IGL20
         return _intBuffer;
     }
 
-    public void GLActiveTexture( TextureUnit texture )
+    /// <inheritdoc cref="Gl.ActiveTexture(TextureUnit)"/>
+    public static void GLActiveTexture( TextureUnit texture )
     {
         Gl.ActiveTexture( texture );
     }
 
-    public void GLAttachShader( uint program, uint shader )
+    /// <inheritdoc cref="Gl.AttachShader(uint,uint)"/>
+    public static void GLAttachShader( uint program, uint shader )
     {
         Gl.AttachShader( program, shader );
     }
 
-    public void GLBindAttribLocation( uint program, uint index, string name )
+    /// <inheritdoc cref="Gl.BindAttribLocation(uint,uint,string)"/>
+    public static void GLBindAttribLocation( uint program, uint index, string name )
     {
         Gl.BindAttribLocation( program, index, name );
     }
 
-    public void GLBindBuffer( BufferTarget target, uint buffer )
+    /// <inheritdoc cref="Gl.BindBuffer(BufferTarget,uint)"/>
+    public static void GLBindBuffer( BufferTarget target, uint buffer )
     {
         Gl.BindBuffer( target, buffer );
     }
 
-    public void GLBindFramebuffer( FramebufferTarget target, uint framebuffer )
+    /// <inheritdoc cref="Gl.BindFramebufferEXT(FramebufferTarget,uint)"/>
+    public static void GLBindFramebuffer( FramebufferTarget target, uint framebuffer )
     {
         Gl.BindFramebufferEXT( target, framebuffer );
     }
 
-    public void GLBindRenderbuffer( RenderbufferTarget target, uint renderbuffer )
+    /// <inheritdoc cref="Gl.BindRenderbufferEXT(RenderbufferTarget,uint)"/>
+    public static void GLBindRenderbuffer( RenderbufferTarget target, uint renderbuffer )
     {
         Gl.BindRenderbufferEXT( target, renderbuffer );
     }
 
-    public void GLBindTexture( TextureTarget target, uint texture )
+    /// <inheritdoc cref="Gl.BindTexture(TextureTarget,uint)"/>
+    public static void GLBindTexture( TextureTarget target, uint texture )
     {
         Gl.BindTexture( target, texture );
     }
 
+    /// <inheritdoc cref="Gl.BlendColor(float,float,float,float)"/>
     public void GLBlendColor( float red, float green, float blue, float alpha )
     {
         Gl.BlendColor( red, green, blue, alpha );
     }
 
-    public void GLBlendEquation( BlendEquationMode mode )
+    /// <inheritdoc cref="Gl.BlendEquation(BlendEquationMode)"/>
+    public static void GLBlendEquation( BlendEquationMode mode )
     {
         Gl.BlendEquation( mode );
     }
 
-    public void GLBlendEquationSeparate( int modeRGB, int modeAlpha )
+    /// <inheritdoc cref="Gl.BlendFuncSeparate(BlendingFactor,BlendingFactor,BlendingFactor,BlendingFactor)"/>
+    public static void GLBlendEquationSeparate( BlendEquationMode modeRGB, BlendEquationMode modeAlpha )
     {
         Gl.BlendEquationSeparate( modeRGB, modeAlpha );
     }
 
-    public void GLBlendFunc( int sfactor, int dfactor )
+    /// <inheritdoc cref="Gl.BlendFunc(BlendingFactor,BlendingFactor)"/>
+    public static void GLBlendFunc( BlendingFactor sfactor, BlendingFactor dfactor )
     {
         Gl.BlendFunc( sfactor, dfactor );
     }
 
-    public void GLBlendFuncSeparate( int srcRGB, int dstRGB, int srcAlpha, int dstAlpha )
+    /// <inheritdoc cref="Gl.BlendFuncSeparate(BlendingFactor,BlendingFactor,BlendingFactor,BlendingFactor)"/>
+    public static void GLBlendFuncSeparate( BlendingFactor srcRGB,
+                                     BlendingFactor dstRGB,
+                                     BlendingFactor srcAlpha,
+                                     BlendingFactor dstAlpha )
     {
-        GL14.glBlendFuncSeparate( srcRGB, dstRGB, srcAlpha, dstAlpha );
+        Gl.BlendFuncSeparate( srcRGB, dstRGB, srcAlpha, dstAlpha );
     }
 
-    public void GLBufferData( OpenGL.BufferTarget target,
+    public static void GLBufferData( OpenGL.BufferTarget target,
                               uint size,
                               Buffer? data,
                               OpenGL.BufferUsage usage )
@@ -165,7 +182,7 @@ public class DesktopGL20 : IGL20
         }
     }
 
-    public void GLBufferSubData( OpenGL.BufferTarget target, IntPtr offset, uint size, Buffer data )
+    public static void GLBufferSubData( BufferTarget target, IntPtr offset, uint size, Buffer data )
     {
         ArgumentNullException.ThrowIfNull( data );
 
@@ -198,42 +215,48 @@ public class DesktopGL20 : IGL20
         }
     }
 
-    public int GLCheckFramebufferStatus( int target )
-    {
-        return EXTFramebufferObject.glCheckFramebufferStatusEXT( target );
-    }
+//    public int GLCheckFramebufferStatus( int target )
+//    {
+//        return EXTFramebufferObject.glCheckFramebufferStatusEXT( target );
+//    }
 
-    public void GLClear( ClearBufferMask mask )
+    /// <inheritdoc cref="Gl.Clear(ClearBufferMask)"/>
+    public static void GLClear( ClearBufferMask mask )
     {
         Gl.Clear( mask );
     }
 
+    /// <inheritdoc cref="Gl.ClearColor(float,float,float,float)"/>
     public void GLClearColor( float red, float green, float blue, float alpha )
     {
         Gl.ClearColor( red, green, blue, alpha );
     }
 
+    /// <inheritdoc cref="Gl.ClearDepth(float)"/>
     public void GLClearDepthf( float depth )
     {
         Gl.ClearDepth( depth );
     }
 
+    /// <inheritdoc cref="Gl.ClearStencil(int)"/>
     public void GLClearStencil( int s )
     {
         Gl.ClearStencil( s );
     }
 
+    /// <inheritdoc cref="Gl.ColorMask(bool,bool,bool,bool)"/>
     public void GLColorMask( bool red, bool green, bool blue, bool alpha )
     {
         Gl.ColorMask( red, green, blue, alpha );
     }
 
+    /// <inheritdoc cref="Gl.CompileShader(uint)"/>
     public void GLCompileShader( uint shader )
     {
         Gl.CompileShader( shader );
     }
 
-    public void GLCompressedTexImage2D( TextureTarget target,
+    public static void GLCompressedTexImage2D( TextureTarget target,
                                         int level,
                                         InternalFormat internalformat,
                                         int width,
@@ -252,22 +275,23 @@ public class DesktopGL20 : IGL20
         }
     }
 
-    public void GLCompressedTexSubImage2D( int target,
-                                           int level,
-                                           int xoffset,
-                                           int yoffset,
-                                           int width,
-                                           int height,
-                                           int format,
-                                           int imageSize,
-                                           Buffer data )
-    {
-        throw new GdxRuntimeException( "not implemented" );
-    }
+//    public void GLCompressedTexSubImage2D( int target,
+//                                           int level,
+//                                           int xoffset,
+//                                           int yoffset,
+//                                           int width,
+//                                           int height,
+//                                           int format,
+//                                           int imageSize,
+//                                           Buffer data )
+//    {
+//        throw new GdxRuntimeException( "not implemented" );
+//    }
 
-    public void GLCopyTexImage2D( TextureTarget target,
+    /// <inheritdoc cref="Gl.CopyTexImage2D(TextureTarget,int,InternalFormat,int,int,int,int,int)"/>
+    public static void GLCopyTexImage2D( TextureTarget target,
                                   int level,
-                                  OpenGL.InternalFormat internalformat,
+                                  InternalFormat internalformat,
                                   int x,
                                   int y,
                                   int width,
@@ -277,76 +301,75 @@ public class DesktopGL20 : IGL20
         Gl.CopyTexImage2D( target, level, internalformat, x, y, width, height, border );
     }
 
+    /// <inheritdoc cref="Gl.CopyTexSubImage2D(TextureTarget,int,int,int,int,int,int,int)"/>
     public void GLCopyTexSubImage2D( TextureTarget target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
     {
         Gl.CopyTexSubImage2D( target, level, xoffset, yoffset, x, y, width, height );
     }
 
+    /// <inheritdoc cref="Gl.CreateProgram()"/>
     public uint GLCreateProgram()
     {
         return Gl.CreateProgram();
     }
 
+    /// <inheritdoc cref="Gl.CreateShader(ShaderType)"/>
     public uint GLCreateShader( ShaderType type )
     {
         return Gl.CreateShader( type );
     }
 
+    /// <inheritdoc cref="Gl.CullFace(CullFaceMode)"/>
     public void GLCullFace( CullFaceMode mode )
     {
         Gl.CullFace( mode );
     }
 
-    public void GLDeleteBuffers( int n, uint buffers )
+    /// <inheritdoc cref="Gl.DeleteBuffers(uint[])"/>
+    public void GLDeleteBuffers( params uint[] buffers )
     {
         Gl.DeleteBuffers( buffers );
     }
 
-    public void GLDeleteBuffer( uint buffer )
-    {
-        Gl.DeleteBuffers( buffer );
-    }
+//    public void GLDeleteFramebuffers( int n, IntBuffer framebuffers )
+//    {
+//        EXTFramebufferObject.glDeleteFramebuffersEXT( framebuffers );
+//    }
 
-    public void GLDeleteFramebuffers( int n, IntBuffer framebuffers )
-    {
-        EXTFramebufferObject.glDeleteFramebuffersEXT( framebuffers );
-    }
+//    public void GLDeleteFramebuffer( int framebuffer )
+//    {
+//        EXTFramebufferObject.glDeleteFramebuffersEXT( framebuffer );
+//    }
 
-    public void GLDeleteFramebuffer( int framebuffer )
-    {
-        EXTFramebufferObject.glDeleteFramebuffersEXT( framebuffer );
-    }
-
+    /// <inheritdoc cref="Gl.DeleteProgram(uint)"/>
     public void GLDeleteProgram( uint program )
     {
         Gl.DeleteProgram( program );
     }
 
-    public void GLDeleteRenderbuffers( int n, IntBuffer renderbuffers )
-    {
-        EXTFramebufferObject.glDeleteRenderbuffersEXT( renderbuffers );
-    }
+//    public void GLDeleteRenderbuffers( int n, IntBuffer renderbuffers )
+//    {
+//        EXTFramebufferObject.glDeleteRenderbuffersEXT( renderbuffers );
+//    }
 
-    public void GLDeleteRenderbuffer( int renderbuffer )
-    {
-        EXTFramebufferObject.glDeleteRenderbuffersEXT( renderbuffer );
-    }
+//    public void GLDeleteRenderbuffer( int renderbuffer )
+//    {
+//        EXTFramebufferObject.glDeleteRenderbuffersEXT( renderbuffer );
+//    }
 
+    /// <inheritdoc cref="Gl.DeleteShader(uint)"/>
     public void GLDeleteShader( uint shader )
     {
         Gl.DeleteShader( shader );
     }
 
-    public void GLDeleteTextures( int n, uint textures )
+    /// <inheritdoc cref="Gl.DeleteTextures(uint[])"/>
+    public void GLDeleteTextures( params uint[] textures )
     {
         Gl.DeleteTextures( textures );
     }
 
-    public void GLDeleteTexture( uint texture )
-    {
-        Gl.DeleteTextures( texture );
-    }
-
+    /// <inheritdoc cref="Gl.DepthFunc(DepthFunction)"/>
     public void GLDepthFunc( DepthFunction func )
     {
         Gl.DepthFunc( func );
@@ -382,327 +405,384 @@ public class DesktopGL20 : IGL20
         Gl.DrawArrays( mode, first, count );
     }
 
-    public void GLDrawElements( int mode, int count, int type, Buffer indices )
+    public void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, Buffer indices )
     {
-        if ( indices is ShortBuffer buffer && ( type == IGL20.GL_UNSIGNED_SHORT ) )
+        if ( indices is ShortBuffer buffer && ( type == DrawElementsType.UnsignedShort ) )
         {
-            Gl.DrawElements( mode, buffer );
+            Gl.DrawElements( mode, count, type, buffer );
         }
-        else if ( indices is ByteBuffer byteBuf1 && ( type == IGL20.GL_UNSIGNED_SHORT ) )
+        else if ( indices is ByteBuffer byteBuf1 && ( type == DrawElementsType.UnsignedShort ) )
         {
-            Gl.DrawElements( mode, count, byteBuf1.AsShortBuffer() );
+            Gl.DrawElements( mode, count, type, byteBuf1.AsShortBuffer() );
         }
-        else if ( indices is ByteBuffer byteBuf2 && ( type == IGL20.GL_UNSIGNED_BYTE ) )
+        else if ( indices is ByteBuffer byteBuf2 && ( type == DrawElementsType.UnsignedByte ) )
         {
-            Gl.DrawElements( mode, count, byteBuf2 );
+            Gl.DrawElements( mode, count, type, byteBuf2 );
         }
         else
         {
-            throw new GdxRuntimeException( $"Can't use {indices.GetType().Name} with this method. Use ShortBuffer or ByteBuffer instead." );
+            throw new GdxRuntimeException( $"Can't use {indices.GetType().Name} with this "
+                                         + $"method. Use ShortBuffer or ByteBuffer instead." );
         }
     }
 
+    /// <inheritdoc cref="Gl.Enable(EnableCap)"/>
     public void GLEnable( EnableCap cap )
     {
         Gl.Enable( cap );
     }
 
+    /// <inheritdoc cref="Gl.EnableVertexAttribArray(uint)"/>
     public void GLEnableVertexAttribArray( uint index )
     {
         Gl.EnableVertexAttribArray( index );
     }
 
+    /// <inheritdoc cref="Gl.Finish()"/>
     public void GLFinish()
     {
         Gl.Finish();
     }
 
+    /// <inheritdoc cref="Gl.Flush()"/>
     public void GLFlush()
     {
         Gl.Flush();
     }
 
-    public void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer )
-    {
+//    public void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer )
+//    {
 //        EXTFramebufferObject.glFramebufferRenderbufferEXT( target, attachment, renderbuffertarget, renderbuffer );
-    }
+//    }
 
-    public void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level )
-    {
+//    public void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level )
+//    {
 //        EXTFramebufferObject.glFramebufferTexture2DEXT( target, attachment, textarget, texture, level );
-    }
+//    }
 
+    /// <inheritdoc cref="Gl.FrontFace(FrontFaceDirection)"/>
     public void GLFrontFace( FrontFaceDirection mode )
     {
         Gl.FrontFace( mode );
     }
 
-    public void GLGenBuffers( int n, uint[] buffers )
+    /// <inheritdoc cref="Gl.GenBuffers(uint[])"/>
+    public void GLGenBuffers( uint[] buffers )
     {
         Gl.GenBuffers( buffers );
     }
 
+    /// <inheritdoc cref="Gl.GenBuffer()"/>
     public uint GLGenBuffer()
     {
-//        return Gl.GenBuffer();
+        return Gl.GenBuffer();
     }
 
-    public void GLGenFramebuffers( int n, IntBuffer framebuffers )
-    {
+//    public void GLGenFramebuffers( int n, IntBuffer framebuffers )
+//    {
 //        EXTFramebufferObject.glGenFramebuffersEXT( framebuffers );
-    }
+//    }
 
-    public int GLGenFramebuffer()
-    {
+//    public int GLGenFramebuffer()
+//    {
 //        return EXTFramebufferObject.glGenFramebuffersEXT();
-    }
+//    }
 
-    public void GLGenRenderbuffers( int n, IntBuffer renderbuffers )
-    {
+//    public void GLGenRenderbuffers( int n, IntBuffer renderbuffers )
+//    {
 //        EXTFramebufferObject.glGenRenderbuffersEXT( renderbuffers );
-    }
+//    }
 
-    public int GLGenRenderbuffer()
-    {
+//    public int GLGenRenderbuffer()
+//    {
 //        return EXTFramebufferObject.glGenRenderbuffersEXT();
-    }
+//    }
 
-    public void GLGenTextures( int n, uint[] textures )
+    /// <inheritdoc cref="Gl.GenTextures(uint[])"/>
+    public void GLGenTextures( uint[] textures )
     {
         Gl.GenTextures( textures );
     }
 
+    /// <inheritdoc cref="Gl.GenTexture()"/>
     public uint GLGenTexture()
     {
-//        return Gl.GenTexture();
+        return Gl.GenTexture();
     }
 
-    public void GLGenerateMipmap( int target )
-    {
+//    public void GLGenerateMipmap( int target )
+//    {
 //        EXTFramebufferObject.glGenerateMipmapEXT( target );
-    }
+//    }
 
-    public string GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type )
+    /// <inheritdoc cref="Gl.GetActiveAttrib(uint,uint,int,out int,out int,out int,StringBuilder)"/>
+    public void GLGetActiveAttrib( uint program,
+                                   uint index,
+                                   int bufSize,
+                                   out int length,
+                                   out int size,
+                                   out int type,
+                                   StringBuilder name )
     {
-//        return Gl.GetActiveAttrib( program, index, 256, size, type );
+        Gl.GetActiveAttrib( program, index, bufSize, out length, out size, out type, name );
     }
 
-    public string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type )
+    /// <inheritdoc cref="Gl.GetActiveUniform(uint,uint,int,out int, out int,out int,StringBuilder)"/>
+    public void GLGetActiveUniform( uint program,
+                                    uint index,
+                                    int bufSize,
+                                    out int length,
+                                    out int size,
+                                    out int type,
+                                    StringBuilder name )
     {
-//        return Gl.GetActiveUniform( program, index, 256, size, type );
+        Gl.GetActiveUniform( program, index, bufSize, out length, out size, out type, name );
     }
 
-    public void GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders )
+    /// <inheritdoc cref="Gl.GetAttachedShaders(uint,out int,uint[])"/>
+    public void GLGetAttachedShaders( uint program, out int buffer, uint[] shaders )
     {
-        Gl.GetAttachedShaders( program, ( IntBuffer )count, shaders );
+        Gl.GetAttachedShaders( program, out buffer, shaders );
     }
 
-    public int GLGetAttribLocation( int program, string name )
+    /// <inheritdoc cref="Gl.GetAttribLocation(uint,string)"/>
+    public int GLGetAttribLocation( uint program, string name )
     {
-//        return Gl.GetAttribLocation( program, name );
+        return Gl.GetAttribLocation( program, name );
     }
 
-    public void GLGetBooleanv( int pname, Buffer parameters )
-    {
-        Gl.GetBooleanv( pname, ( ByteBuffer )parameters );
-    }
+//    public void GLGetBooleanv( int pname, Buffer parameters )
+//    {
+//        Gl.GetBooleanv( pname, ( ByteBuffer )parameters );
+//    }
 
-    public void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters )
-    {
-        Gl.GetBufferParameteriv( target, pname, parameters );
-    }
+//    public void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters )
+//    {
+//        Gl.GetBufferParameteriv( target, pname, parameters );
+//    }
 
+    /// <inheritdoc cref="Gl.GetError()"/>
     public ErrorCode GLGetError()
     {
-//        return Gl.GetError();
+        return Gl.GetError();
     }
 
-    public void GLGetFloatv( int pname, FloatBuffer parameters )
-    {
-        Gl.GetFloatv( pname, parameters );
-    }
+//    public void GLGetFloatv( int pname, FloatBuffer parameters )
+//    {
+//        Gl.GetFloatv( pname, parameters );
+//    }
 
-    public void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters )
-    {
+//    public void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters )
+//    {
 //        EXTFramebufferObject.glGetFramebufferAttachmentParameterivEXT( target, attachment, pname, parameters );
-    }
+//    }
 
-    public void GLGetIntegerv( int pname, IntBuffer parameters )
-    {
-        Gl.GetIntegerv( pname, parameters );
-    }
+//    public void GLGetIntegerv( int pname, IntBuffer parameters )
+//    {
+//        Gl.GetIntegerv( pname, parameters );
+//    }
 
-    public string GLGetProgramInfoLog( int program )
-    {
-        ByteBuffer buffer = ByteBuffer.allocateDirect( 1024 * 10 );
-        buffer.order( ByteOrder.nativeOrder() );
-        ByteBuffer tmp = ByteBuffer.allocateDirect( 4 );
-        tmp.order( ByteOrder.nativeOrder() );
-        IntBuffer intBuffer = tmp.asIntBuffer();
+//    public string GLGetProgramInfoLog( uint program )
+//    {
+//        ByteBuffer buffer = ByteBuffer.AllocateDirect( 1024 * 10 );
 
-        Gl.GetProgramInfoLog( program, intBuffer, buffer );
-        int    numBytes = intBuffer.get( 0 );
-        byte[] bytes    = new byte[ numBytes ];
-        buffer.get( bytes );
+//        buffer.Order( ByteOrder.NativeOrder );
+        
+//        ByteBuffer tmp = ByteBuffer.AllocateDirect( 4 );
+//        tmp.Order( ByteOrder.NativeOrder );
+        
+//        IntBuffer intBuffer = tmp.AsIntBuffer();
 
-        return new string( bytes );
-    }
+//        Gl.GetProgramInfoLog( program, intBuffer, buffer );
 
-    public void GLGetProgramiv( int program, int pname, IntBuffer parameters )
-    {
-        Gl.GetProgramiv( program, pname, parameters );
-    }
+//        var numBytes = intBuffer.Get( 0 );
+//        var bytes    = new byte[ numBytes ];
+        
+//        buffer.Get( bytes );
 
-    public void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters )
-    {
+//        return new string( bytes );
+//    }
+
+//    public void GLGetProgramiv( int program, int pname, IntBuffer parameters )
+//    {
+//        Gl.GetProgramiv( program, pname, parameters );
+//    }
+
+//    public void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters )
+//    {
 //        EXTFramebufferObject.glGetRenderbufferParameterivEXT( target, pname, parameters );
-    }
+//    }
 
-    public string GLGetShaderInfoLog( int shader )
-    {
-        ByteBuffer buffer = ByteBuffer.allocateDirect( 1024 * 10 );
-        buffer.order( ByteOrder.nativeOrder() );
-        ByteBuffer tmp = ByteBuffer.allocateDirect( 4 );
-        tmp.order( ByteOrder.nativeOrder() );
-        IntBuffer intBuffer = tmp.asIntBuffer();
+//    public string GLGetShaderInfoLog( int shader )
+//    {
+//        ByteBuffer buffer = ByteBuffer.allocateDirect( 1024 * 10 );
+//        buffer.order( ByteOrder.nativeOrder() );
+//        ByteBuffer tmp = ByteBuffer.allocateDirect( 4 );
+//        tmp.order( ByteOrder.nativeOrder() );
+//        IntBuffer intBuffer = tmp.asIntBuffer();
 
-        Gl.GetShaderInfoLog( shader, intBuffer, buffer );
-        int    numBytes = intBuffer.get( 0 );
-        byte[] bytes    = new byte[ numBytes ];
-        buffer.get( bytes );
+//        Gl.GetShaderInfoLog( shader, intBuffer, buffer );
+//        int    numBytes = intBuffer.get( 0 );
+//        byte[] bytes    = new byte[ numBytes ];
+//        buffer.get( bytes );
 
-        return new string( bytes );
-    }
+//        return new string( bytes );
+//    }
 
-    public void GLGetShaderPrecisionFormat( int shadertype, int precisiontype, IntBuffer range, IntBuffer precision )
-    {
+//    public void GLGetShaderPrecisionFormat( int shadertype, int precisiontype, IntBuffer range, IntBuffer precision )
+//    {
 //        throw new UnsupportedOperationException( "unsupported, won't implement" );
+//    }
+
+//    public void GLGetShaderiv( int shader, int pname, IntBuffer parameters )
+//    {
+//        Gl.GetShaderiv( shader, pname, parameters );
+//    }
+
+    /// <inheritdoc cref="Gl.GetString(StringName)"/>
+    public string GLGetString( StringName name )
+    {
+        return Gl.GetString( name );
     }
 
-    public void GLGetShaderiv( int shader, int pname, IntBuffer parameters )
+//    public void GLGetTexParameterfv( int target, int pname, FloatBuffer parameters )
+//    {
+//        Gl.GetTexParameterfv( target, pname, parameters );
+//    }
+
+//    public void GLGetTexParameteriv( int target, int pname, IntBuffer parameters )
+//    {
+//        Gl.GetTexParameteriv( target, pname, parameters );
+//    }
+
+    /// <inheritdoc cref="Gl.GetUniformLocation(uint,string)"/>
+    public int GLGetUniformLocation( uint program, string name )
     {
-        Gl.GetShaderiv( shader, pname, parameters );
+        return Gl.GetUniformLocation( program, name );
     }
 
-    public string GLGetString( int name )
-    {
-//        return Gl.GetString( name );
-    }
+//    public void GLGetUniformfv( int program, int location, FloatBuffer parameters )
+//    {
+//        Gl.GetUniformfv( program, location, parameters );
+//    }
 
-    public void GLGetTexParameterfv( int target, int pname, FloatBuffer parameters )
-    {
-        Gl.GetTexParameterfv( target, pname, parameters );
-    }
+//    public void GLGetUniformiv( int program, int location, IntBuffer parameters )
+//    {
+//        Gl.GetUniformiv( program, location, parameters );
+//    }
 
-    public void GLGetTexParameteriv( int target, int pname, IntBuffer parameters )
-    {
-        Gl.GetTexParameteriv( target, pname, parameters );
-    }
-
-    public int GLGetUniformLocation( int program, string name )
-    {
-//        return Gl.GetUniformLocation( program, name );
-    }
-
-    public void GLGetUniformfv( int program, int location, FloatBuffer parameters )
-    {
-        Gl.GetUniformfv( program, location, parameters );
-    }
-
-    public void GLGetUniformiv( int program, int location, IntBuffer parameters )
-    {
-        Gl.GetUniformiv( program, location, parameters );
-    }
-
-    public void GLGetVertexAttribPointerv( int index, int pname, Buffer pointer )
-    {
+//    public void GLGetVertexAttribPointerv( int index, int pname, Buffer pointer )
+//    {
 //        throw new UnsupportedOperationException( "unsupported, won't implement" );
-    }
+//    }
 
-    public void GLGetVertexAttribfv( int index, int pname, FloatBuffer parameters )
-    {
-        Gl.GetVertexAttribfv( index, pname, parameters );
-    }
+//    public void GLGetVertexAttribfv( int index, int pname, FloatBuffer parameters )
+//    {
+//        Gl.GetVertexAttribfv( index, pname, parameters );
+//    }
 
-    public void GLGetVertexAttribiv( int index, int pname, IntBuffer parameters )
-    {
-        Gl.GetVertexAttribiv( index, pname, parameters );
-    }
+//    public void GLGetVertexAttribiv( int index, int pname, IntBuffer parameters )
+//    {
+//        Gl.GetVertexAttribiv( index, pname, parameters );
+//    }
 
-    public void GLHint( int target, int mode )
+    /// <inheritdoc cref="Gl.Hint(HintTarget,HintMode)"/>
+    public void GLHint( HintTarget target, HintMode mode )
     {
         Gl.Hint( target, mode );
     }
 
-    public bool GLIsBuffer( int buffer )
+    /// <inheritdoc cref="Gl.IsBuffer(uint)"/>
+    public bool GLIsBuffer( uint buffer )
     {
-//        return Gl.IsBuffer( buffer );
+        return Gl.IsBuffer( buffer );
     }
 
-    public bool GLIsEnabled( int cap )
+    /// <inheritdoc cref="Gl.IsEnabled(EnableCap)"/>
+    public bool GLIsEnabled( EnableCap cap )
     {
-//        return Gl.IsEnabled( cap );
+        return Gl.IsEnabled( cap );
     }
 
-    public bool GLIsFramebuffer( int framebuffer )
-    {
+//    public bool GLIsFramebuffer( int framebuffer )
+//    {
 //        return EXTFramebufferObject.glIsFramebufferEXT( framebuffer );
+//    }
+
+    /// <inheritdoc cref="Gl.IsProgram(uint)"/>
+    public bool GLIsProgram( uint program )
+    {
+        return Gl.IsProgram( program );
     }
 
-    public bool GLIsProgram( int program )
-    {
-//        return Gl.IsProgram( program );
-    }
-
-    public bool GLIsRenderbuffer( int renderbuffer )
-    {
+//    public bool GLIsRenderbuffer( int renderbuffer )
+//    {
 //        return EXTFramebufferObject.glIsRenderbufferEXT( renderbuffer );
-    }
+//    }
 
-    public bool GLIsShader( int shader )
+    /// <inheritdoc cref="Gl.IsShader(uint)"/>
+    public bool GLIsShader( uint shader )
     {
-//        return Gl.IsShader( shader );
+        return Gl.IsShader( shader );
     }
 
-    public bool GLIsTexture( int texture )
+    /// <inheritdoc cref="Gl.IsTexture(uint)"/>
+    public bool GLIsTexture( uint texture )
     {
         return Gl.IsTexture( texture );
     }
 
+    /// <inheritdoc cref="Gl.LineWidth(float)"/>
     public void GLLineWidth( float width )
     {
         Gl.LineWidth( width );
     }
 
-    public void GLLinkProgram( int program )
+    /// <inheritdoc cref="Gl.LinkProgram(uint)"/>
+    public void GLLinkProgram( uint program )
     {
         Gl.LinkProgram( program );
     }
 
-    public void GLPixelStorei( int pname, int param )
-    {
-        Gl.PixelStorei( pname, param );
-    }
+//    public void GLPixelStorei( int pname, int param )
+//    {
+//        Gl.PixelStorei( pname, param );
+//    }
 
+    /// <inheritdoc cref="Gl.PolygonOffset(float,float)"/>
     public void GLPolygonOffset( float factor, float units )
     {
         Gl.PolygonOffset( factor, units );
     }
 
-    public void GLReadPixels( int x, int y, int width, int height, int format, int type, Buffer pixels )
+    public void GLReadPixels( int x, int y, int width, int height, PixelFormat format, PixelType type, Buffer pixels )
     {
-        if ( pixels is ByteBuffer )
-            Gl.ReadPixels( x, y, width, height, format, type, ( ByteBuffer )pixels );
-        else if ( pixels is ShortBuffer )
-            Gl.ReadPixels( x, y, width, height, format, type, ( ShortBuffer )pixels );
-        else if ( pixels is IntBuffer )
-            Gl.ReadPixels( x, y, width, height, format, type, ( IntBuffer )pixels );
-        else if ( pixels is FloatBuffer )
-            Gl.ReadPixels( x, y, width, height, format, type, ( FloatBuffer )pixels );
-        else
+        switch ( pixels )
+        {
+            case ByteBuffer buffer:
+                Gl.ReadPixels( x, y, width, height, format, type, buffer );
 
-            throw new GdxRuntimeException(
-                $"Can't use {pixels.GetType().Name} with this method. Use ByteBuffer, ShortBuffer, IntBuffer or FloatBuffer instead." );
+                break;
+
+            case ShortBuffer buffer:
+                Gl.ReadPixels( x, y, width, height, format, type, buffer );
+
+                break;
+
+            case IntBuffer buffer:
+                Gl.ReadPixels( x, y, width, height, format, type, buffer );
+
+                break;
+
+            case FloatBuffer buffer:
+                Gl.ReadPixels( x, y, width, height, format, type, buffer );
+
+                break;
+
+            default:
+                throw new GdxRuntimeException(
+                    $"Can't use {pixels.GetType().Name} with this method. Use ByteBuffer, ShortBuffer, IntBuffer or FloatBuffer instead." );
+        }
     }
 
     public void GLReleaseShaderCompiler()
@@ -710,10 +790,10 @@ public class DesktopGL20 : IGL20
         // nothing to do here
     }
 
-    public void GLRenderbufferStorage( int target, int internalformat, int width, int height )
-    {
-        EXTFramebufferObject.glRenderbufferStorageEXT( target, internalformat, width, height );
-    }
+//    public void GLRenderbufferStorage( int target, int internalformat, int width, int height )
+//    {
+//        EXTFramebufferObject.glRenderbufferStorageEXT( target, internalformat, width, height );
+//    }
 
     public void GLSampleCoverage( float value, bool invert )
     {
@@ -730,35 +810,37 @@ public class DesktopGL20 : IGL20
         throw new UnsupportedOperationException( "unsupported, won't implement" );
     }
 
-    public void GLShaderSource( int shader, string string )
+    public void GLShaderSource( uint shader, string[] str )
     {
-        Gl.ShaderSource( shader, string );
+        Gl.ShaderSource( shader, str );
     }
 
-    public void GLStencilFunc( int func, int ref, int Mask) {
-        Gl.StencilFunc( func, ref, mask );
+    public void GLStencilFunc( StencilFunction func, int reference, uint mask )
+    {
+        Gl.StencilFunc( func, reference, mask );
     }
 
-    public void GLStencilFuncSeparate( int face, int func, int ref, int Mask) {
-        Gl.StencilFuncSeparate( face, func, ref, mask );
+    public void GLStencilFuncSeparate( StencilFaceDirection face, StencilFunction func, int reference, uint mask )
+    {
+        Gl.StencilFuncSeparate( face, func, reference, mask );
     }
 
-    public void GLStencilMask( int mask )
+    public void GLStencilMask( uint mask )
     {
         Gl.StencilMask( mask );
     }
 
-    public void GLStencilMaskSeparate( int face, int mask )
+    public void GLStencilMaskSeparate( StencilFaceDirection face, uint mask )
     {
         Gl.StencilMaskSeparate( face, mask );
     }
 
-    public void GLStencilOp( int fail, int zfail, int zpass )
+    public void GLStencilOp( StencilOp fail, StencilOp zfail, StencilOp zpass )
     {
         Gl.StencilOp( fail, zfail, zpass );
     }
 
-    public void GLStencilOpSeparate( int face, int fail, int zfail, int zpass )
+    public void GLStencilOpSeparate( StencilFaceDirection face, StencilOp fail, StencilOp zfail, StencilOp zpass )
     {
         Gl.StencilOpSeparate( face, fail, zfail, zpass );
     }
@@ -794,25 +876,25 @@ public class DesktopGL20 : IGL20
                 $"Can't use {pixels.GetType().Name} with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead." );
     }
 
-    public void GLTexParameterf( int target, int pname, float param )
+    public void GLTexParameterf<T>( TextureTarget target, TextureParameterName pname, T param ) where T : struct
     {
         Gl.TexParameterf( target, pname, param );
     }
 
-    public void GLTexParameterfv( int target, int pname, FloatBuffer parameters )
-    {
-        Gl.TexParameterfv( target, pname, parameters );
-    }
+//    public void GLTexParameterfv( int target, int pname, FloatBuffer parameters )
+//    {
+//        Gl.TexParameterfv( target, pname, parameters );
+//    }
 
-    public void GLTexParameteri( int target, int pname, int param )
+    public void GLTexParameteri<T>( TextureTarget target, TextureParameterName pname, T param ) where T : struct
     {
         Gl.TexParameteri( target, pname, param );
     }
 
-    public void GLTexParameteriv( int target, int pname, IntBuffer parameters )
-    {
-        Gl.TexParameteriv( target, pname, parameters );
-    }
+//    public void GLTexParameteriv( int target, int pname, IntBuffer parameters )
+//    {
+//        Gl.TexParameteriv( target, pname, parameters );
+//    }
 
     public void GLTexSubImage2D( int target,
                                  int level,
@@ -824,113 +906,145 @@ public class DesktopGL20 : IGL20
                                  int type,
                                  Buffer pixels )
     {
-        if ( pixels is ByteBuffer )
-            Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, ( ByteBuffer )pixels );
-        else if ( pixels is ShortBuffer )
-            Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, ( ShortBuffer )pixels );
-        else if ( pixels is IntBuffer )
-            Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, ( IntBuffer )pixels );
-        else if ( pixels is FloatBuffer )
-            Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, ( FloatBuffer )pixels );
-        else if ( pixels is DoubleBuffer )
-            Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, ( DoubleBuffer )pixels );
-        else
+        switch ( pixels )
+        {
+            case ByteBuffer buffer:
+                Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, buffer );
 
-            throw new GdxRuntimeException(
-                $"Can't use {pixels.GetType().Name} with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead." );
+                break;
+
+            case ShortBuffer buffer:
+                Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, buffer );
+
+                break;
+
+            case IntBuffer buffer:
+                Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, buffer );
+
+                break;
+
+            case FloatBuffer buffer:
+                Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, buffer );
+
+                break;
+
+            case DoubleBuffer buffer:
+                Gl.TexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, buffer );
+
+                break;
+
+            default:
+                throw new GdxRuntimeException( $"Can't use {pixels.GetType().Name} with this method. "
+                                             + $"Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer "
+                                             + $"or DoubleBuffer instead." );
+        }
     }
 
-    public void GLUniform1F( int location, float x )
+    public static void GLUniform1F<T>( int location, int count, T value ) where T : struct
     {
-        Gl.Uniform1f( location, x );
+        Gl.Uniform1f( location, count, value );
     }
 
-    public void GLUniform1Fv( int location, int count, FloatBuffer v )
+//    public void GLUniform1Fv( int location, int count, FloatBuffer v )
+//    {
+//        Gl.Uniform1fv( location, v );
+//    }
+
+//    public void GLUniform1Fv( int location, int count, float[] v, int offset )
+//    {
+//        Gl.Uniform1fv( location, toFloatBuffer( v, offset, count ) );
+//    }
+
+    public static void GLUniform1I<T>( int location, int count, T value ) where T : struct
     {
-        Gl.Uniform1fv( location, v );
+        Gl.Uniform1i( location, count, value );
     }
 
-    public void GLUniform1Fv( int location, int count, float[] v, int offset )
-    {
-        Gl.Uniform1fv( location, toFloatBuffer( v, offset, count ) );
-    }
+//    public void GLUniform1Iv( int location, int count, IntBuffer v )
+//    {
+//        Gl.Uniform1iv( location, v );
+//    }
 
-    public void GLUniform1I( int location, int x )
-    {
-        Gl.Uniform1i( location, x );
-    }
+//    public void GLUniform1Iv( int location, int count, int[] v, int offset )
+//    {
+//        Gl.Uniform1iv( location, toIntBuffer( v, offset, count ) );
+//    }
 
-    public void GLUniform1Iv( int location, int count, IntBuffer v )
-    {
-        Gl.Uniform1iv( location, v );
-    }
-
-    @Override
-
-    public void GLUniform1Iv( int location, int count, int[] v, int offset )
-    {
-        Gl.Uniform1iv( location, toIntBuffer( v, offset, count ) );
-    }
-
-    public void GLUniform2F( int location, float x, float y )
+    public static void GLUniform2F<T>( int location, int x, T y ) where T : struct
     {
         Gl.Uniform2f( location, x, y );
     }
 
-    public void GLUniform2Fv( int location, int count, FloatBuffer v )
-    {
-        Gl.Uniform2fv( location, v );
-    }
+//    public void GLUniform2Fv( int location, int count, FloatBuffer v )
+//    {
+//        Gl.Uniform2fv( location, v );
+//    }
 
-    public void GLUniform2Fv( int location, int count, float[] v, int offset )
-    {
-        Gl.Uniform2fv( location, toFloatBuffer( v, offset, count << 1 ) );
-    }
+//    public void GLUniform2Fv( int location, int count, float[] v, int offset )
+//    {
+//        Gl.Uniform2fv( location, toFloatBuffer( v, offset, count << 1 ) );
+//    }
 
     public void GLUniform2I( int location, int x, int y )
     {
         Gl.Uniform2i( location, x, y );
     }
 
-    public void GLUniform2Iv( int location, int count, IntBuffer v )
+//    public void GLUniform2Iv( int location, int count, IntBuffer v )
+//    {
+//        Gl.Uniform2iv( location, v );
+//    }
+
+//    public void GLUniform2Iv( int location, int count, int[] v, int offset )
+//    {
+//        Gl.Uniform2iv( location, toIntBuffer( v, offset, count << 1 ) );
+//    }
+
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object
+    /// </summary>
+    /// <param name="location">
+    /// Specifies the location of the uniform variable to be modified.
+    /// </param>
+    /// <param name="count">
+    /// For the vector (Gl.Uniform*v) commands, specifies the number of elements that are
+    /// to be modified. This should be 1 if the targeted uniform variable is not an array,
+    /// and 1 or more if it is an array.
+    /// </param>
+    /// <param name="value">
+    /// For the vector and matrix commands, specifies a pointer to an array of
+    /// <paramref name="count" /> values that will be used to update the specified
+    /// uniform variable.
+    /// </param>
+    public void GLUniform3F<T>( int location, int count, T value ) where T : struct
     {
-        Gl.Uniform2iv( location, v );
+        Gl.Uniform3f( location, count, value );
     }
 
-    public void GLUniform2Iv( int location, int count, int[] v, int offset )
-    {
-        Gl.Uniform2iv( location, toIntBuffer( v, offset, count << 1 ) );
-    }
+//    public void GLUniform3Fv( int location, int count, FloatBuffer v )
+//    {
+//        Gl.Uniform3fv( location, v );
+//    }
 
-    public void GLUniform3F( int location, float x, float y, float z )
-    {
-        Gl.Uniform3f( location, x, y, z );
-    }
-
-    public void GLUniform3Fv( int location, int count, FloatBuffer v )
-    {
-        Gl.Uniform3fv( location, v );
-    }
-
-    public void GLUniform3Fv( int location, int count, float[] v, int offset )
-    {
-        Gl.Uniform3fv( location, toFloatBuffer( v, offset, count * 3 ) );
-    }
+//    public void GLUniform3Fv( int location, int count, float[] v, int offset )
+//    {
+//        Gl.Uniform3fv( location, toFloatBuffer( v, offset, count * 3 ) );
+//    }
 
     public void GLUniform3I<T>( int location, int count, int value ) where T : struct
     {
         Gl.Uniform3i( location, count, value );
     }
 
-    public void GLUniform3Iv( int location, int count, IntBuffer v )
-    {
-        Gl.Uniform3iv( location, v );
-    }
+//    public void GLUniform3Iv( int location, int count, IntBuffer v )
+//    {
+//        Gl.Uniform3iv( location, v );
+//    }
 
-    public void GLUniform3Iv( int location, int count, int[] v, int offset )
-    {
-        Gl.Uniform3iv( location, ToIntBuffer( v, offset, count * 3 ) );
-    }
+//    public void GLUniform3Iv( int location, int count, int[] v, int offset )
+//    {
+//        Gl.Uniform3iv( location, ToIntBuffer( v, offset, count * 3 ) );
+//    }
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -952,19 +1066,20 @@ public class DesktopGL20 : IGL20
         Gl.Uniform4f( location, count, value );
     }
 
-    public void GLUniform4Fv( int location, int count, FloatBuffer v )
-    {
-        Gl.Uniform4fv( location, v );
-    }
+//    public void GLUniform4Fv( int location, int count, FloatBuffer v )
+//    {
+//        Gl.Uniform4fv( location, v );
+//    }
 
-    public void GLUniform4Fv( int location, int count, float[] v, int offset )
-    {
-        Gl.Uniform4fv( location, ToFloatBuffer( v, offset, count << 2 ) );
-    }
+//    public void GLUniform4Fv( int location, int count, float[] v, int offset )
+//    {
+//        Gl.Uniform4fv( location, ToFloatBuffer( v, offset, count << 2 ) );
+//    }
 
-    public void GLUniform4I( int location, int x, int y, int z, int w )
+    /// <inheritdoc cref="Gl.Uniform4i(int,int,T)"/>
+    public static void GLUniform4I<T>( int location, int count, T value ) where T : struct
     {
-        Gl.Uniform4i( location, x, y, z, w );
+        Gl.Uniform4i( location, count, value );
     }
 
 //    public void GLUniform4Iv( int location, int count, IntBuffer v )
@@ -1007,22 +1122,22 @@ public class DesktopGL20 : IGL20
 //        Gl.UniformMatrix4fv( location, transpose, ToFloatBuffer( value, offset, count << 4 ) );
 //    }
 
-    public void GLUseProgram( uint program )
+    public static void GLUseProgram( uint program )
     {
         Gl.UseProgram( program );
     }
 
-    public void GLValidateProgram( uint program )
+    public static void GLValidateProgram( uint program )
     {
         Gl.ValidateProgram( program );
     }
 
-    public void GLVertexAttrib1F( uint indx, float x )
+    public static void GLVertexAttrib1F( uint indx, float x )
     {
         Gl.VertexAttrib1f( indx, x );
     }
 
-    public void GLVertexAttrib1Fv( uint indx, FloatBuffer values )
+    public static void GLVertexAttrib1Fv( uint indx, FloatBuffer values )
     {
         Gl.VertexAttrib1f( indx, values.Get() );
     }
@@ -1041,7 +1156,7 @@ public class DesktopGL20 : IGL20
     /// For the vector commands (Gl.VertexAttrib*v), specifies a pointer to an array
     /// of values to be used for the generic vertex attribute.
     /// </param>
-    public void GLVertexAttrib2Fv( uint indx, FloatBuffer values )
+    public static void GLVertexAttrib2Fv( uint indx, FloatBuffer values )
     {
         Gl.VertexAttrib2f( indx, values.Get() );
     }
@@ -1060,26 +1175,19 @@ public class DesktopGL20 : IGL20
     /// For the vector commands (Gl.VertexAttrib*v), specifies a pointer to an array
     /// of values to be used for the generic vertex attribute.
     /// </param>
-    public void GLVertexAttrib3Fv( uint indx, FloatBuffer values )
+    public static void GLVertexAttrib3Fv( uint indx, FloatBuffer values )
     {
         Gl.VertexAttrib3f( indx, values.Get() );
     }
 
-    public void GLVertexAttrib4F( int indx, float x, float y, float z, float w )
-    {
-        //TODO:
-        throw new NotImplementedException();
-    }
+//    public void GLVertexAttrib4F( int indx, float x, float y, float z, float w )
+//    {
+//        //TODO:
+//        throw new NotImplementedException();
+//    }
 
-    /// <summary>
-    /// Specifies the value of a generic vertex attribute
-    /// </summary>
-    /// <param name="indx">Specifies the index of the generic vertex attribute to be modified.</param>
-    /// <param name="values">
-    /// For the vector commands (Gl.VertexAttrib*v), specifies a pointer to an array
-    /// of values to be used for the generic vertex attribute.
-    /// </param>
-    public void GLVertexAttrib4Fv( uint indx, FloatBuffer values )
+    /// <inheritdoc cref="Gl.VertexAttrib4f(uint,)"/>
+    public static void GLVertexAttrib4Fv( uint indx, FloatBuffer values )
     {
         Gl.VertexAttrib4f( indx, values.Get() );
     }
@@ -1118,7 +1226,7 @@ public class DesktopGL20 : IGL20
     /// in the data store of the buffer currently bound to the Gl.ARRAY_BUFFER target.
     /// The initial value is 0.
     /// </param>
-    public void GLVertexAttribPointer( uint indx,
+    public static void GLVertexAttribPointer( uint indx,
                                        int size,
                                        VertexAttribType type,
                                        bool normalized,
@@ -1169,76 +1277,25 @@ public class DesktopGL20 : IGL20
         }
     }
 
-    /// <summary>
-    /// Set the viewport.
-    /// </summary>
-    /// <param name="x">
-    /// Specify the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).
-    /// </param>
-    /// <param name="y">
-    /// Specify the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).
-    /// </param>
-    /// <param name="width">
-    /// Specify the width and height of the viewport. When a GL context is first attached to a window,
-    /// width and height are set to the dimensions of that window.
-    /// </param>
-    /// <param name="height">
-    /// Specify the width and height of the viewport. When a GL context is first attached to a window,
-    /// width and height are set to the dimensions of that window.
-    /// </param>
+    /// <inheritdoc cref="Gl.Viewport(int,int,int,int)"/>
     public void GLViewport( int x, int y, int width, int height )
     {
         Gl.Viewport( x, y, width, height );
     }
 
-    /// <summary>
-    /// render primitives from array data.
-    /// </summary>
-    /// <param name="mode">
-    /// Specifies what kind of primitives to render. Symbolic constants Gl.POINTS, Gl.LINE_STRIP, Gl.LINE_LOOP,
-    /// Gl.LINES, Gl.LINE_STRIP_ADJACENCY, Gl.LINES_ADJACENCY, Gl.TRIANGLE_STRIP, Gl.TRIANGLE_FAN, Gl.TRIANGLES,
-    /// Gl.TRIANGLE_STRIP_ADJACENCY, Gl.TRIANGLES_ADJACENCY and Gl.PATCHES are accepted.
-    /// </param>
-    /// <param name="count"> Specifies the number of elements to be rendered. </param>
-    /// <param name="type">
-    /// Specifies the type of the values in indices. Must be one of Gl.UNSIGNED_BYTE, Gl.UNSIGNED_SHORT,
-    /// or Gl.UNSIGNED_INT.
-    /// </param>
-    /// <param name="indices"> Specifies a pointer to the location where the indices are stored. </param>
-    public void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, int indices )
+    /// <inheritdoc cref="Gl.DrawElements(PrimitiveType,int,DrawElementsType,IntPtr)"/>
+    public void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, IntPtr indices )
     {
         Gl.DrawElements( mode, count, type, indices );
     }
 
-    /// <summary>
-    /// define an array of generic vertex attribute data.
-    /// </summary>
-    /// <param name="indx">Specifies the index of the generic vertex attribute to be modified.</param>
-    /// <param name="size">
-    /// Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4. Additionally,
-    /// the symbolic constant Gl.BGRA is accepted by Gl.VertexAttribPointer. The initial value is 4.
-    /// </param>
-    /// <param name="type">
-    /// Specifies the data type of each component in the array. The symbolic constants Gl.BYTE, Gl.UNSIGNED_BYTE,
-    /// Gl.SHORT, Gl.UNSIGNED_SHORT, Gl.INT, and Gl.UNSIGNED_INT are accepted by Gl.VertexAttribPointer and
-    /// Gl.VertexAttribIPointer. Additionally Gl.HALF_FLOAT, Gl.FLOAT, Gl.DOUBLE, Gl.FIXED, Gl.INT_2_10_10_10_REV,
-    /// Gl.UNSIGNED_INT_2_10_10_10_REV and Gl.UNSIGNED_INT_10F_11F_11F_REV are accepted by Gl.VertexAttribPointer.
-    /// Gl.DOUBLE is also accepted by Gl.VertexAttribLPointer and is the only token accepted by the type parameter
-    /// for that function. The initial value is Gl.FLOAT.
-    /// </param>
-    /// <param name="normalized">
-    /// For Gl.VertexAttribPointer, specifies whether fixed-point data values should be normalized (Gl.TRUE) or
-    /// converted directly as fixed-point values (Gl.FALSE) when they are accessed.
-    /// </param>
-    /// <param name="stride">
-    /// Specifies the byte offset between consecutive generic vertex attributes. If stride is 0, the generic vertex
-    /// attributes are understood to be tightly packed in the array. The initial value is 0.
-    /// </param>
-    /// <param name="ptr">
-    /// Specifies a offset of the first component of the first generic vertex attribute in the array in the data
-    /// store of the buffer currently bound to the Gl.ARRAY_BUFFER target. The initial value is 0.
-    /// </param>
-    public void GLVertexAttribPointer( uint indx, int size, VertexAttribType type, bool normalized, int stride, int ptr )
+    /// <inheritdoc cref="Gl.VertexAttribPointer(uint,int,VertexAttribType,bool,int,IntPtr)"/>
+    public void GLVertexAttribPointer( uint indx,
+                                       int size,
+                                       VertexAttribType type,
+                                       bool normalized,
+                                       int stride,
+                                       IntPtr ptr )
     {
         Gl.VertexAttribPointer( indx, size, type, normalized, stride, ptr );
     }

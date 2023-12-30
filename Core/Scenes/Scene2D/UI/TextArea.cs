@@ -37,7 +37,7 @@ public class TextArea : TextField
     public int LinesShowing { get; set; }
 
     // Array storing lines breaks positions
-    public List<int>? LinesBreak { get; set; }
+    public List< int >? LinesBreak { get; set; }
 
     // Last text processed. This attribute is used to avoid unnecessary
     // computations while calculating offsets
@@ -72,7 +72,7 @@ public class TextArea : TextField
         base.Initialise();
 
         WriteEnters      = true;
-        LinesBreak       = new List<int>();
+        LinesBreak       = new List< int >();
         CursorLine       = 0;
         FirstLineShowing = 0;
         _moveOffset      = -1;
@@ -92,8 +92,8 @@ public class TextArea : TextField
         }
         else
         {
-            var glyphPos = this.GlyphPositions.ToArray();
-            var start    = this.LinesBreak![ CursorLine * 2 ];
+            var glyphPos = GlyphPositions.ToArray();
+            var start    = LinesBreak![ CursorLine * 2 ];
 
             x += glyphPos[ start ];
 
@@ -119,13 +119,14 @@ public class TextArea : TextField
 
     public override void SetStyle( TextFieldStyle? style )
     {
-        // same as base(), just different textHeight. no base() so we don't do same work twice
+        // same as base(), just different textHeight. no base()
+        // so we don't do same work twice
         ArgumentNullException.ThrowIfNull( style );
 
-        base.Style = style;
+        this.Style = style;
 
         // no extra descent to fake line height
-        TextHeight = ( float ) ( style.Font?.GetCapHeight() - style.Font?.GetDescent() )!;
+        TextHeight = ( float )( style.Font?.GetCapHeight() - style.Font?.GetDescent() )!;
 
         if ( Text != null )
         {
@@ -207,8 +208,8 @@ public class TextArea : TextField
 
         if ( line < 0 )
         {
-            CursorLine = 0;
-            Cursor = 0;
+            CursorLine  = 0;
+            Cursor      = 0;
             _moveOffset = -1;
         }
         else if ( line >= GetLines() )
@@ -334,7 +335,7 @@ public class TextArea : TextField
                                   ? 0
                                   : background.BottomHeight + background.TopHeight );
 
-        LinesShowing = ( int ) Math.Floor( availableHeight / font!.GetLineHeight() );
+        LinesShowing = ( int )Math.Floor( availableHeight / font!.GetLineHeight() );
     }
 
     protected override float GetTextY( BitmapFont font, IDrawable? background )
@@ -343,12 +344,12 @@ public class TextArea : TextField
 
         if ( background != null )
         {
-            textY = textY - background.TopHeight;
+            textY -= background.TopHeight;
         }
 
         if ( font.UseIntegerPositions )
         {
-            textY = ( int ) textY;
+            textY = ( int )textY;
         }
 
         return textY;
@@ -372,7 +373,6 @@ public class TextArea : TextField
             if ( !( ( ( minIndex < lineStart ) && ( minIndex < lineEnd ) && ( maxIndex < lineStart ) && ( maxIndex < lineEnd ) )
                  || ( ( minIndex > lineStart ) && ( minIndex > lineEnd ) && ( maxIndex > lineStart ) && ( maxIndex > lineEnd ) ) ) )
             {
-
                 var start = Math.Max( lineStart, minIndex );
                 var end   = Math.Min( lineEnd, maxIndex );
 
@@ -412,7 +412,7 @@ public class TextArea : TextField
             }
 
             offsetY += font.GetLineHeight();
-            i += 2;
+            i       += 2;
         }
     }
 
@@ -439,14 +439,16 @@ public class TextArea : TextField
 
     public override void CalculateOffsets()
     {
+        MemberNullException.ThrowIfNull( this.Text );
+        MemberNullException.ThrowIfNull( this.Style );
+        
         base.CalculateOffsets();
 
         if ( !this.Text.Equals( _lastText ) )
         {
             this._lastText = Text;
-            BitmapFont font = Style.Font;
 
-            float maxWidthLine = this.Width
+            var maxWidthLine = this.Width
                                - ( Style.Background != null
                                      ? Style.Background.LeftWidth + Style.Background.RightWidth
                                      : 0 );
@@ -465,24 +467,24 @@ public class TextArea : TextField
 
                 if ( ( lastCharacter == CARRIAGE_RETURN ) || ( lastCharacter == NEWLINE ) )
                 {
-                    LinesBreak.Add( lineStart );
-                    LinesBreak.Add( i );
+                    LinesBreak?.Add( lineStart );
+                    LinesBreak?.Add( i );
                     lineStart = i + 1;
                 }
                 else
                 {
                     lastSpace = ( ContinueCursor( i, 0 ) ? lastSpace : i );
-                    layout.SetText( font, Text.Substring( lineStart, i + 1 ) );
+                    layout?.SetText( Style.Font!, Text.Substring( lineStart, i + 1 ) );
 
-                    if ( layout.Width > maxWidthLine )
+                    if ( layout?.Width > maxWidthLine )
                     {
                         if ( lineStart >= lastSpace )
                         {
                             lastSpace = i - 1;
                         }
 
-                        LinesBreak.Add( lineStart );
-                        LinesBreak.Add( lastSpace + 1 );
+                        LinesBreak?.Add( lineStart );
+                        LinesBreak?.Add( lastSpace + 1 );
 
                         lineStart = lastSpace + 1;
                         lastSpace = lineStart;
@@ -490,13 +492,13 @@ public class TextArea : TextField
                 }
             }
 
-            layoutPool.Free( layout );
+            layoutPool.Free( layout! );
 
             // Add last line
             if ( lineStart < Text.Length )
             {
-                LinesBreak.Add( lineStart );
-                LinesBreak.Add( Text.Length );
+                LinesBreak?.Add( lineStart );
+                LinesBreak?.Add( Text.Length );
             }
 
             ShowCursor();
@@ -615,7 +617,7 @@ public class TextArea : TextField
             if ( background != null )
             {
                 height -= background.TopHeight;
-                x -= background.LeftWidth;
+                x      -= background.LeftWidth;
             }
 
             x = Math.Max( 0, x );
@@ -625,7 +627,7 @@ public class TextArea : TextField
                 y -= background.TopHeight;
             }
 
-            _parent.CursorLine = ( int ) Math.Floor( ( height - y ) / font.GetLineHeight() ) + _parent.FirstLineShowing;
+            _parent.CursorLine = ( int )Math.Floor( ( height - y ) / font.GetLineHeight() ) + _parent.FirstLineShowing;
             _parent.CursorLine = Math.Max( 0, Math.Min( _parent.CursorLine, _parent.GetLines() - 1 ) );
 
             base.SetCursorPosition( x, y );
@@ -650,7 +652,7 @@ public class TextArea : TextField
                         if ( !_parent.HasSelection )
                         {
                             _parent.SelectionStart = _parent.Cursor;
-                            _parent.HasSelection = true;
+                            _parent.HasSelection   = true;
                         }
                     }
                     else
@@ -669,7 +671,7 @@ public class TextArea : TextField
                         if ( !_parent.HasSelection )
                         {
                             _parent.SelectionStart = _parent.Cursor;
-                            _parent.HasSelection = true;
+                            _parent.HasSelection   = true;
                         }
                     }
                     else

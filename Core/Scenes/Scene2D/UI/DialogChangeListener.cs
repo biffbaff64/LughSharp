@@ -19,18 +19,40 @@ using LibGDXSharp.Scenes.Listeners;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [PublicAPI]
-public class DialogChangeObserver : ChangeListener
+public class DialogChangeListener : ChangeListener
 {
     private readonly Dialog _dialog;
 
-    public DialogChangeObserver( Dialog d )
+    public DialogChangeListener( Dialog d )
     {
         this._dialog = d;
     }
 
-    public override bool Handle( Event ev )
+    /// <inheritdoc cref="ChangeListener.Changed"/>
+    public override void Changed( ChangeEvent ev, Actor? actor )
     {
-        return false;
+        if ( ( _dialog.Values == null ) || ( actor == null ) )
+        {
+            return;
+        }
+        
+        if ( !_dialog.Values!.ContainsKey( actor ) )
+        {
+            return;
+        }
+
+        while ( actor!.Parent != _dialog.ButtonTable )
+        {
+            actor = actor.Parent;
+        }
+
+        _dialog.Result( _dialog.Values[ actor ] );
+
+        if ( !_dialog.CancelHide )
+        {
+            _dialog.Hide();
+        }
+        
+        _dialog.CancelHide = false;
     }
 }
-

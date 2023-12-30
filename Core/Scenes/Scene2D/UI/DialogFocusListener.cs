@@ -19,11 +19,11 @@ using LibGDXSharp.Scenes.Listeners;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 [PublicAPI]
-public class DialogFocusObserver : FocusListener
+public class DialogFocusListener : FocusListener
 {
     private readonly Dialog _dialog;
 
-    public DialogFocusObserver( Dialog dialog )
+    public DialogFocusListener( Dialog dialog )
     {
         _dialog = dialog;
     }

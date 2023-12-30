@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Text;
+
 using LibGDXSharp.Files.Buffers;
 
 using Buffer = LibGDXSharp.Files.Buffers.Buffer;
@@ -393,9 +395,7 @@ public interface IGL20
 
     void GLCullFace( CullFaceMode mode );
 
-    void GLDeleteTextures( int n, int textures );
-
-    void GLDeleteTexture( int texture );
+    void GLDeleteTextures( params uint[] textures );
 
     void GLDepthFunc( DepthFunction func );
 
@@ -417,17 +417,17 @@ public interface IGL20
 
     void GLFrontFace( FrontFaceDirection mode );
 
-    void GLGenTextures( int n, int[] textures );
+    void GLGenTextures( uint[] textures );
 
-    int GLGenTexture();
+    uint GLGenTexture();
 
     ErrorCode GLGetError();
 
     void GLGetIntegerv( int pname, IntBuffer parameters );
 
-    string GLGetString( int name );
+    string GLGetString( StringName name );
 
-    void GLHint( int target, int mode );
+    void GLHint( HintTarget target, HintMode mode );
 
     void GLLineWidth( float width );
 
@@ -435,15 +435,15 @@ public interface IGL20
 
     void GLPolygonOffset( float factor, float units );
 
-    void GLReadPixels( int x, int y, int width, int height, int format, int type, Buffer pixels );
+    void GLReadPixels( int x, int y, int width, int height, PixelFormat format, PixelType type, Buffer pixels );
 
     void GLScissor( int x, int y, int width, int height );
 
-    void GLStencilFunc( int func, int reference, int mask );
+    void GLStencilFunc( StencilFunction func, int reference, uint mask );
 
-    void GLStencilMask( int mask );
+    void GLStencilMask( uint mask );
 
-    void GLStencilOp( int fail, int zfail, int zpass );
+    void GLStencilOp( StencilOp fail, StencilOp zfail, StencilOp zpass );
 
     void GLTexImage2D( int target,
                        int level,
@@ -455,7 +455,7 @@ public interface IGL20
                        int type,
                        Buffer pixels );
 
-    void GLTexParameterf( int target, int pname, float param );
+    void GLTexParameterf<T>( TextureTarget target, TextureParameterName pname, T param ) where T : struct;
 
     void GLTexSubImage2D( int target,
                           int level,
@@ -493,43 +493,41 @@ public interface IGL20
 
     int GLCheckFramebufferStatus( int target );
 
-    void GLCompileShader( int shader );
+    void GLCompileShader( uint shader );
 
-    int GLCreateProgram();
+    uint GLCreateProgram();
 
-    int GLCreateShader( ShaderType type );
+    uint GLCreateShader( ShaderType type );
 
-    void GLDeleteBuffer( int buffer );
-
-    void GLDeleteBuffers( int n, int buffers );
+    void GLDeleteBuffers( params uint[] buffer );
 
     void GLDeleteFramebuffer( int framebuffer );
 
     void GLDeleteFramebuffers( int n, IntBuffer framebuffers );
 
-    void GLDeleteProgram( int program );
+    void GLDeleteProgram( uint program );
 
     void GLDeleteRenderbuffer( int renderbuffer );
 
     void GLDeleteRenderbuffers( int n, IntBuffer renderbuffers );
 
-    void GLDeleteShader( int shader );
+    void GLDeleteShader( uint shader );
 
-    void GLDetachShader( int program, int shader );
+    void GLDetachShader( uint program, uint shader );
 
-    void GLDisableVertexAttribArray( int index );
+    void GLDisableVertexAttribArray( uint index );
 
-    void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, int indices );
+    void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, IntPtr indices );
 
-    void GLEnableVertexAttribArray( int index );
+    void GLEnableVertexAttribArray( uint index );
 
     void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer );
 
     void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level );
 
-    int GLGenBuffer();
+    uint GLGenBuffer();
 
-    void GLGenBuffers( int n, int[] buffers );
+    void GLGenBuffers( uint[] buffers );
 
     void GLGenerateMipmap( int target );
 
@@ -542,14 +540,26 @@ public interface IGL20
     void GLGenRenderbuffers( int n, IntBuffer renderbuffers );
 
     // deviates
-    string GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type );
+    void GLGetActiveAttrib( uint program,
+                              uint index,
+                              int bufSize,
+                              out int length,
+                              out int size,
+                              out int type,
+                              StringBuilder name );
 
     // deviates
-    string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type );
+    void GLGetActiveUniform( uint program,
+                               uint index,
+                               int bufSize,
+                               out int length,
+                               out int size,
+                               out int type,
+                               StringBuilder name );
 
-    void GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders );
+    void GLGetAttachedShaders( uint program, out int buffer, uint[] shaders );
 
-    int GLGetAttribLocation( int program, string name );
+    int GLGetAttribLocation( uint program, string name );
 
     void GLGetBooleanv( int pname, Buffer parameters );
 
@@ -579,7 +589,7 @@ public interface IGL20
 
     void GLGetUniformiv( int program, int location, IntBuffer parameters );
 
-    int GLGetUniformLocation( int program, string name );
+    int GLGetUniformLocation( uint program, string name );
 
     void GLGetVertexAttribfv( int index, int pname, FloatBuffer parameters );
 
@@ -587,21 +597,21 @@ public interface IGL20
 
     void GLGetVertexAttribPointerv( int index, int pname, Buffer pointer );
 
-    bool GLIsBuffer( int buffer );
+    bool GLIsBuffer( uint buffer );
 
-    bool GLIsEnabled( int cap );
+    bool GLIsEnabled( EnableCap cap );
 
     bool GLIsFramebuffer( int framebuffer );
 
-    bool GLIsProgram( int program );
+    bool GLIsProgram( uint program );
 
     bool GLIsRenderbuffer( int renderbuffer );
 
-    bool GLIsShader( int shader );
+    bool GLIsShader( uint shader );
 
-    bool GLIsTexture( int texture );
+    bool GLIsTexture( uint texture );
 
-    void GLLinkProgram( int program );
+    void GLLinkProgram( uint program );
 
     void GLReleaseShaderCompiler();
 
@@ -611,17 +621,17 @@ public interface IGL20
 
     void GLShaderBinary( int n, IntBuffer shaders, int binaryformat, Buffer binary, int length );
 
-    void GLShaderSource( int shader, string str );
+    void GLShaderSource( uint shader, string[] str );
 
-    void GLStencilFuncSeparate( int face, int func, int reference, int mask );
+    void GLStencilFuncSeparate( StencilFaceDirection face, StencilFunction func, int reference, uint mask );
 
-    void GLStencilMaskSeparate( int face, int mask );
+    void GLStencilMaskSeparate( StencilFaceDirection face, uint mask );
 
-    void GLStencilOpSeparate( int face, int fail, int zfail, int zpass );
+    void GLStencilOpSeparate( StencilFaceDirection face, StencilOp fail, StencilOp zfail, StencilOp zpass );
 
     void GLTexParameterfv( int target, int pname, FloatBuffer parameters );
 
-    void GLTexParameteri( int target, int pname, int param );
+    void GLTexParameteri<T>( TextureTarget target, TextureParameterName pname, T param ) where T : struct;
 
     void GLTexParameteriv( int target, int pname, IntBuffer parameters );
 
@@ -649,19 +659,19 @@ public interface IGL20
 
     void GLUniform2Iv( int location, int count, int[] v, int offset );
 
-    void GLUniform3F( int location, float x, float y, float z );
+    void GLUniform3F<T>( int location, int count, T value ) where T : struct;
 
     void GLUniform3Fv( int location, int count, FloatBuffer v );
 
     void GLUniform3Fv( int location, int count, float[] v, int offset );
 
-    void GLUniform3I( int location, int x, int y, int z );
+    void GLUniform3I<T>( int location, int count, int value ) where T : struct;
 
     void GLUniform3Iv( int location, int count, IntBuffer v );
 
     void GLUniform3Iv( int location, int count, int[] v, int offset );
 
-    void GLUniform4F( int location, float x, float y, float z, float w );
+    void GLUniform4F<T>( int location, int count, T value ) where T : struct;
 
     void GLUniform4Fv( int location, int count, FloatBuffer v );
 
@@ -710,5 +720,5 @@ public interface IGL20
 
     // 'indx' parameters must be signed
     void GLVertexAttribPointer( int indx, int size, VertexAttribType type, bool normalized, int stride, Buffer ptr );
-    void GLVertexAttribPointer( int indx, int size, VertexAttribType type, bool normalized, int stride, int ptr );
+    void GLVertexAttribPointer( uint indx, int size, VertexAttribType type, bool normalized, int stride, IntPtr ptr );
 }
