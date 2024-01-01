@@ -20,6 +20,8 @@ using System.Text;
 using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Utils.Pooling;
 
 using Color = LibGDXSharp.Graphics.Color;
 
@@ -60,30 +62,31 @@ public class TextField : Widget
     public static float keyRepeatInitialTime = 0.4f;
     public static float keyRepeatTime        = 0.1f;
 
-    public TextFieldStyle? Style          { get; set; }
-    public string?         Text           { get; set; }
-    public int             Cursor         { get; set; }
-    public int             SelectionStart { get; set; }
-    public bool            HasSelection   { get; set; }
-    public bool            WriteEnters    { get; set; }
-    public GlyphLayout     Layout         { get; set; } = new();
-    public List< float >   GlyphPositions { get; set; } = new();
-    public string?         DisplayText    { get; set; }
-    public float           FontOffset     { get; set; }
-    public float           TextHeight     { get; set; }
-    public float           TextOffset     { get; set; }
-    public bool            FocusTraversal { get; set; } = true;
+    public  TextFieldStyle? Style          { get; set; }
+    public  string?         Text           { get; set; }
+    public  int             Cursor         { get; set; }
+    public  int             SelectionStart { get; set; }
+    public  bool            HasSelection   { get; set; }
+    public  bool            WriteEnters    { get; set; }
+    public  GlyphLayout     Layout         { get; set; } = new();
+    public  List< float >   GlyphPositions { get; set; } = new();
+    public  string?         DisplayText    { get; set; }
+    public  float           FontOffset     { get; set; }
+    public  float           TextHeight     { get; set; }
+    public  float           TextOffset     { get; set; }
+    public  bool            FocusTraversal { get; set; } = true;
+    private bool            _disabled;
 
     private string?        _messageText;
-    private IClipboard?    _clipboard;
+    private IClipboard     _clipboard;
     private InputListener? _inputListener;
 
-//    private TextFieldListener? _listener;
-//    private TextFieldFilter?   _filter;
-//    private OnscreenKeyboard   _keyboard       = new DefaultOnscreenKeyboard();
+    private ITextFieldListener? _listener;
+    private ITextFieldFilter?   _filter;
+    private IOnscreenKeyboard   _keyboard = new DefaultOnscreenKeyboard();
+
     private bool  _onlyFontChars = true;
-    private bool  _disabled;
-    private int   _textHAlign = Align.LEFT;
+    private int   _textHAlign    = Align.LEFT;
     private float _selectionX;
     private float _selectionWidth;
 
@@ -98,9 +101,8 @@ public class TextField : Widget
     private int   _visibleTextEnd;
     private int   _maxLength;
 
-    private float _blinkTime = 0.32f;
-    private bool  _focused;
-    private bool  _cursorOn;
+    private bool _focused;
+    private bool _cursorOn;
 
     private bool _programmaticChangeEvents;
 
@@ -116,16 +118,16 @@ public class TextField : Widget
 
     public TextField( string? text, TextFieldStyle style )
     {
+        _clipboard = Gdx.App.Clipboard!;
+
         NonVirtualInitialise( text, style );
     }
-    
+
     /// <summary>
     /// Not a good idea to call virtual methods from a constructor, so...
     /// </summary>
     private void NonVirtualInitialise( string? text, TextFieldStyle style )
     {
-        _clipboard = Gdx.App.Clipboard;
-        
         SetStyle( style );
         Initialise();
         SetText( text );
@@ -141,12 +143,12 @@ public class TextField : Widget
     {
         return new TextFieldClickListener();
     }
-    
+
     public virtual void SetStyle( TextFieldStyle style )
     {
         ArgumentNullException.ThrowIfNull( style );
         ArgumentNullException.ThrowIfNull( style.Font );
-        
+
         this.Style = style;
 
         TextHeight = style.Font.GetCapHeight() - ( style.Font.GetDescent() * 2 );
@@ -155,35 +157,237 @@ public class TextField : Widget
         {
             UpdateDisplayText();
         }
-        
+
         InvalidateHierarchy();
     }
 
     public virtual void CalculateOffsets()
     {
+        var        visibleWidth = Width;
+        IDrawable? background   = GetBackgroundDrawable();
+
+        if ( background != null )
+        {
+            visibleWidth -= background.LeftWidth + background.RightWidth;
+        }
+
+        var glyphCount     = this.GlyphPositions.Count;
+        var glyphPositions = this.GlyphPositions.ToArray();
+
+        // Check if the cursor has gone out the left or right side of
+        // the visible area and adjust renderOffset.
+        var distance = glyphPositions[ Math.Max( 0, Cursor - 1 ) ] + _renderOffset;
+
+        if ( distance <= 0 )
+        {
+            _renderOffset -= distance;
+        }
+        else
+        {
+            var index = Math.Min( glyphCount - 1, Cursor + 1 );
+            var minX  = glyphPositions[ index ] - visibleWidth;
+
+            if ( -_renderOffset < minX )
+            {
+                _renderOffset = -minX;
+            }
+        }
+
+        // Prevent renderOffset from starting too close to the end, eg after text was deleted.
+        var maxOffset = 0f;
+        var width     = glyphPositions[ glyphCount - 1 ];
+
+        for ( var i = glyphCount - 2; i >= 0; i-- )
+        {
+            var x = glyphPositions[ i ];
+
+            if ( ( width - x ) > visibleWidth )
+            {
+                break;
+            }
+
+            maxOffset = x;
+        }
+
+        if ( -_renderOffset > maxOffset )
+        {
+            _renderOffset = -maxOffset;
+        }
+
+        // calculate first visible char based on render offset
+        _visibleTextStart = 0;
+
+        var startX = 0f;
+
+        for ( var i = 0; i < glyphCount; i++ )
+        {
+            if ( glyphPositions[ i ] >= -_renderOffset )
+            {
+                _visibleTextStart = i;
+                startX            = glyphPositions[ i ];
+
+                break;
+            }
+        }
+
+        // calculate last visible char based on visible width and render offset
+        var end  = _visibleTextStart + 1;
+        var endX = visibleWidth - _renderOffset;
+
+        for ( var n = Math.Min( DisplayText!.Length, glyphCount ); end <= n; end++ )
+        {
+            if ( glyphPositions[ end ] > endX )
+            {
+                break;
+            }
+        }
+
+        _visibleTextEnd = Math.Max( 0, end - 1 );
+
+        if ( ( _textHAlign & Align.LEFT ) == 0 )
+        {
+            TextOffset = ( visibleWidth - glyphPositions[ _visibleTextEnd ] - FontOffset ) + startX;
+
+            if ( ( _textHAlign & Align.CENTER ) != 0 )
+            {
+                TextOffset = ( float )Math.Round( TextOffset * 0.5f );
+            }
+        }
+        else
+        {
+            TextOffset = startX + _renderOffset;
+        }
+
+        // calculate selection x position and width
+        if ( HasSelection )
+        {
+            var minIndex = Math.Min( Cursor, SelectionStart );
+            var maxIndex = Math.Max( Cursor, SelectionStart );
+            var minX     = Math.Max( glyphPositions[ minIndex ] - glyphPositions[ _visibleTextStart ], -TextOffset );
+            var maxX     = Math.Min( glyphPositions[ maxIndex ] - glyphPositions[ _visibleTextStart ], visibleWidth - TextOffset );
+
+            _selectionX     = minX;
+            _selectionWidth = maxX - minX - Style!.Font!.GetData().CursorX;
+        }
     }
 
     public virtual float GetPrefWidth()  => 150;
     public virtual float GetPrefHeight() => PrefHeight;
 
-    protected virtual int LetterUnderCursor( float x )
+    public override float PrefHeight
     {
-        return 0;
+        get
+        {
+            float topAndBottom = 0, minHeight = 0;
+
+            if ( Style?.Background != null )
+            {
+                topAndBottom = Math.Max( topAndBottom, Style.Background.BottomHeight + Style.Background.TopHeight );
+                minHeight    = Math.Max( minHeight, Style.Background.MinHeight );
+            }
+
+            if ( Style?.FocusedBackground != null )
+            {
+                topAndBottom = Math.Max( topAndBottom,
+                                         Style.FocusedBackground.BottomHeight + Style.FocusedBackground.TopHeight );
+
+                minHeight = Math.Max( minHeight, Style.FocusedBackground.MinHeight );
+            }
+
+            if ( Style?.DisabledBackground != null )
+            {
+                topAndBottom = Math.Max( topAndBottom,
+                                         Style.DisabledBackground.BottomHeight + Style.DisabledBackground.TopHeight );
+
+                minHeight = Math.Max( minHeight, Style.DisabledBackground.MinHeight );
+            }
+
+            return Math.Max( topAndBottom + TextHeight, minHeight );
+        }
     }
 
-    protected virtual bool IsWordCharacter( char c )
+    protected virtual int LetterUnderCursor( float x )
     {
-        return false;
+        if ( Style == null )
+        {
+            return this.GlyphPositions.Count - 1;
+        }
+
+        x -= ( TextOffset + FontOffset ) - Style.Font!.GetData().CursorX - GlyphPositions[ _visibleTextStart ];
+
+        IDrawable? background = GetBackgroundDrawable();
+
+        if ( background != null )
+        {
+            x -= Style.Background!.LeftWidth;
+        }
+
+        var n              = this.GlyphPositions.Count;
+        var glyphPositions = this.GlyphPositions.ToArray();
+
+        for ( var i = 1; i < n; i++ )
+        {
+            if ( glyphPositions[ i ] > x )
+            {
+                if ( ( glyphPositions[ i ] - x ) <= ( x - glyphPositions[ i - 1 ] ) )
+                {
+                    return i;
+                }
+
+                return i - 1;
+            }
+        }
+
+        return n - 1;
     }
+
+    protected virtual bool IsWordCharacter( char c ) => char.IsLetterOrDigit( c );
 
     protected virtual int[] WordUnderCursor( int at )
     {
-        throw new NotImplementedException();
+        var text  = this.Text;
+        var start = at;
+        var right = this.Text!.Length;
+        var left  = 0;
+        var index = start;
+
+        if ( at >= text?.Length )
+        {
+            left  = text.Length;
+            right = 0;
+        }
+        else
+        {
+            if ( text != null )
+            {
+                for ( ; index < right; index++ )
+                {
+                    if ( !IsWordCharacter( text[ index ] ) )
+                    {
+                        right = index;
+
+                        break;
+                    }
+                }
+
+                for ( index = start - 1; index > -1; index-- )
+                {
+                    if ( !IsWordCharacter( text[ index ] ) )
+                    {
+                        left = index + 1;
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        return new[] { left, right };
     }
 
     protected virtual int[] WordUnderCursor( float x )
     {
-        throw new NotImplementedException();
+        return WordUnderCursor( LetterUnderCursor( x ) );
     }
 
     protected virtual bool WithinMaxLength( int size )
@@ -193,43 +397,710 @@ public class TextField : Widget
 
     protected virtual IDrawable? GetBackgroundDrawable()
     {
-        return null;
+        if ( _disabled && ( Style?.DisabledBackground != null ) )
+        {
+            return Style.DisabledBackground;
+        }
+
+        if ( ( Style?.FocusedBackground != null ) && HasKeyboardFocus() )
+        {
+            return Style.FocusedBackground;
+        }
+
+        return Style?.Background;
     }
 
     public override void Draw( IBatch batch, float parentAlpha )
     {
+        bool focused = HasKeyboardFocus();
+
+        if ( ( focused != this._focused ) || ( focused && !_blinkTask.isScheduled() ) )
+        {
+            this.focused = focused;
+            blinkTask.cancel();
+            cursorOn = focused;
+
+            if ( focused )
+            {
+                Timer.schedule( blinkTask, blinkTime, blinkTime );
+            }
+            else
+            {
+                keyRepeatTask.cancel();
+            }
+        }
+        else if ( !focused ) //
+        {
+            cursorOn = false;
+        }
+
+        final BitmapFont font = style.font;
+        final Color fontColor = ( disabled && ( style.disabledFontColor != null ) )
+            ? style.disabledFontColor
+            : ( ( focused && ( style.focusedFontColor != null ) ) ? style.focusedFontColor : style.fontColor );
+
+        final Drawable selection   = style.selection;
+        final Drawable cursorPatch = style.cursor;
+        final Drawable background  = getBackgroundDrawable();
+
+        Color color  = getColor();
+        float x      = getX();
+        float y      = getY();
+        float width  = getWidth();
+        float height = getHeight();
+
+        batch.setColor( color.r, color.g, color.b, color.a * parentAlpha );
+        float bgLeftWidth = 0, bgRightWidth = 0;
+
+        if ( background != null )
+        {
+            background.Draw( batch, x, y, width, height );
+            bgLeftWidth  = background.getLeftWidth();
+            bgRightWidth = background.getRightWidth();
+        }
+
+        float textY = getTextY( font, background );
+        calculateOffsets();
+
+        if ( focused && hasSelection && ( selection != null ) )
+        {
+            drawSelection( selection, batch, font, x + bgLeftWidth, y + textY );
+        }
+
+        float yOffset = font.Flipped ? -TextHeight : 0;
+
+        if ( DisplayText?.Length == 0 )
+        {
+            if ( !focused && ( _messageText != null ) )
+            {
+                BitmapFont messageFont = Style?.MessageFont ?? font;
+
+                if ( Style?.MessageFontColor != null )
+                {
+                    messageFont.SetColor( Style.MessageFontColor.R,
+                                          Style.MessageFontColor.G,
+                                          Style.MessageFontColor.B,
+                                          Style.MessageFontColor.A * color.A * parentAlpha );
+                }
+                else
+                {
+                    messageFont.SetColor( 0.7f, 0.7f, 0.7f, color.A * parentAlpha );
+                }
+
+                DrawMessageText( batch, messageFont, x + bgLeftWidth, y + textY + yOffset, width - bgLeftWidth - bgRightWidth );
+            }
+        }
+        else
+        {
+            font.SetColor( fontColor.R, fontColor.G, fontColor.B, fontColor.A * color.A * parentAlpha );
+            DrawText( batch, font, x + bgLeftWidth, y + textY + yOffset );
+        }
+
+        if ( !_disabled && _cursorOn && ( cursorPatch != null ) )
+        {
+            DrawCursor( cursorPatch, batch, font, x + bgLeftWidth, y + textY );
+        }
     }
 
     protected virtual float GetTextY( BitmapFont font, IDrawable? background )
     {
-        return 0;
+        var height = Height;
+        var textY  = ( TextHeight / 2 ) + font.GetDescent();
+
+        if ( background != null )
+        {
+            var bottom = background.BottomHeight;
+
+            textY = textY + ( ( height - background.TopHeight - bottom ) / 2 ) + bottom;
+        }
+        else
+        {
+            textY = textY + ( height / 2 );
+        }
+
+        if ( font.UseIntegerPositions )
+        {
+            textY = ( int )textY;
+        }
+
+        return textY;
     }
 
     protected virtual void DrawSelection( IDrawable selection, IBatch batch, BitmapFont font, float x, float y )
     {
+        selection.Draw( batch,
+                        x + TextOffset + _selectionX + FontOffset,
+                        y - TextHeight - font.GetDescent(),
+                        _selectionWidth,
+                        TextHeight );
     }
 
     protected virtual void DrawText( IBatch batch, BitmapFont font, float x, float y )
     {
+        if ( DisplayText != null )
+        {
+            font.Draw( batch, DisplayText, x + TextOffset, y, _visibleTextStart, _visibleTextEnd, 0, Align.LEFT, false );
+        }
     }
 
     protected virtual void DrawMessageText( IBatch batch, BitmapFont font, float x, float y, float maxWidth )
     {
+        if ( _messageText != null )
+        {
+            font.Draw( batch, _messageText, x, y, 0, _messageText.Length, maxWidth, _textHAlign, false, "..." );
+        }
     }
 
     protected virtual void DrawCursor( IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y )
     {
+        cursorPatch.Draw( batch,
+                          ( ( x + TextOffset + GlyphPositions[ Cursor ] ) - GlyphPositions[ _visibleTextStart ] ) + FontOffset + font.GetData().CursorX,
+                          y - TextHeight - font.GetDescent(),
+                          cursorPatch.MinWidth,
+                          TextHeight );
     }
 
     public virtual void UpdateDisplayText()
     {
+        BitmapFont                font = Style?.Font ?? new BitmapFont();
+        BitmapFont.BitmapFontData data = font.GetData();
+
+        var text       = this.Text ?? string.Empty;
+        var textLength = text.Length;
+        var buffer     = new StringBuilder();
+
+        for ( var i = 0; i < textLength; i++ )
+        {
+            var c = text[ i ];
+            buffer.Append( data.HasGlyph( c ) ? c : ' ' );
+        }
+
+        var newDisplayText = buffer.ToString();
+
+        if ( _passwordMode && data.HasGlyph( _passwordCharacter ) )
+        {
+            _passwordBuffer ??= new StringBuilder( newDisplayText.Length );
+
+            if ( _passwordBuffer.Length > textLength )
+            {
+                _passwordBuffer.Length = textLength;
+            }
+            else
+            {
+                for ( var i = _passwordBuffer.Length; i < textLength; i++ )
+                {
+                    _passwordBuffer.Append( _passwordCharacter );
+                }
+            }
+
+            DisplayText = _passwordBuffer?.ToString();
+        }
+        else
+        {
+            DisplayText = newDisplayText;
+        }
+
+        Layout.SetText( font, DisplayText?.Replace( '\r', ' ' ).Replace( '\n', ' ' )! );
+        GlyphPositions.Clear();
+
+        float x = 0;
+
+        if ( Layout.Runs.Count > 0 )
+        {
+            GlyphLayout.GlyphRun run       = Layout.Runs.First();
+            List< float >        xAdvances = run.XAdvances;
+
+            FontOffset = xAdvances.First();
+
+            for ( int i = 1, n = xAdvances.Count; i < n; i++ )
+            {
+                GlyphPositions.Add( x );
+                x += xAdvances[ i ];
+            }
+        }
+        else
+        {
+            FontOffset = 0;
+        }
+
+        GlyphPositions.Add( x );
+
+        _visibleTextStart = Math.Min( _visibleTextStart, GlyphPositions.Count - 1 );
+        _visibleTextEnd   = MathUtils.Clamp( _visibleTextEnd, _visibleTextStart, GlyphPositions.Count - 1 );
+
+        if ( SelectionStart > newDisplayText.Length )
+        {
+            SelectionStart = textLength;
+        }
     }
 
     public virtual void SetText( string? str )
     {
+        str ??= string.Empty;
+
+        if ( str.Equals( Text ) )
+        {
+            return;
+        }
+
+        ClearSelection();
+
+        var oldText = Text;
+        Text = string.Empty;
+
+        Paste( str, false );
+
+        if ( _programmaticChangeEvents )
+        {
+            ChangeText( oldText!, Text );
+        }
+
+        Cursor = 0;
+    }
+
+    /// <summary>
+    /// Copies the contents of this TextField to the <see cref="IClipboard"/>
+    /// implementation set on this TextField.
+    /// </summary>
+    public void Copy()
+    {
+        if ( HasSelection && !PasswordMode && ( Text != null ) )
+        {
+            _clipboard.Contents = Text.Substring( Math.Min( Cursor, SelectionStart ),
+                                                  Math.Max( Cursor, SelectionStart ) );
+        }
+    }
+
+    /// <summary>
+    /// Copies the selected contents of this TextField to the <see cref="IClipboard"/>
+    /// implementation set on this TextField, then removes it.
+    /// </summary>
+    public void Cut()
+    {
+        Cut( _programmaticChangeEvents );
+    }
+
+    public void Cut( bool fireChangeEvent )
+    {
+        if ( HasSelection && !PasswordMode )
+        {
+            Copy();
+
+            Cursor = Delete( fireChangeEvent );
+
+            UpdateDisplayText();
+        }
+    }
+
+    public void Paste( string? content, bool fireChangeEvent )
+    {
+        if ( ( content == null ) || ( Text == null ) )
+        {
+            return;
+        }
+
+        var buffer     = new StringBuilder();
+        var textLength = Text.Length;
+
+        if ( HasSelection )
+        {
+            textLength -= Math.Abs( Cursor - SelectionStart );
+        }
+
+        BitmapFont.BitmapFontData data = Style!.Font!.GetData();
+
+        for ( int i = 0, n = content.Length; i < n; i++ )
+        {
+            if ( !WithinMaxLength( textLength + buffer.Length ) )
+            {
+                break;
+            }
+
+            var c = content[ i ];
+
+            if ( !( WriteEnters && ( ( c == NEWLINE ) || ( c == CARRIAGE_RETURN ) ) ) )
+            {
+                if ( ( c == '\r' ) || ( c == '\n' ) )
+                {
+                    continue;
+                }
+
+                if ( _onlyFontChars && !data.HasGlyph( c ) )
+                {
+                    continue;
+                }
+
+                if ( ( _filter != null ) && !_filter.AcceptChar( this, c ) )
+                {
+                    continue;
+                }
+            }
+
+            buffer.Append( c );
+        }
+
+        content = buffer.ToString();
+
+        if ( HasSelection )
+        {
+            Cursor = Delete( fireChangeEvent );
+        }
+
+        if ( fireChangeEvent )
+        {
+            ChangeText( Text, Insert( Cursor, content, Text ) );
+        }
+        else
+        {
+            Text = Insert( Cursor, content, Text );
+        }
+
+        UpdateDisplayText();
+        Cursor += content.Length;
+    }
+
+    public string Insert( int position, string text, string to )
+    {
+        if ( to.Length == 0 )
+        {
+            return text;
+        }
+
+        return to.Substring( 0, position ) + text + to.Substring( position, to.Length );
+    }
+
+    public int Delete( bool fireChangeEvent )
+    {
+        if ( Text == null )
+        {
+            return 0;
+        }
+
+        var from     = SelectionStart;
+        var to       = Cursor;
+        var minIndex = Math.Min( from, to );
+        var maxIndex = Math.Max( from, to );
+
+        var newText = ( minIndex > 0 ? Text.Substring( 0, minIndex ) : "" )
+                    + ( maxIndex < Text.Length ? Text.Substring( maxIndex, Text.Length ) : "" );
+
+        if ( fireChangeEvent )
+        {
+            ChangeText( Text, newText );
+        }
+        else
+        {
+            Text = newText;
+        }
+
+        ClearSelection();
+
+        return minIndex;
+    }
+
+    /// <summary>
+    /// Sets the <see cref="Stage.KeyboardFocus"/>" to the next TextField. If no
+    /// next text field is found, the onscreen keyboard is hidden. Does nothing
+    /// if the text field is not in a stage.
+    /// </summary>
+    /// <param name="up">
+    /// If true, the text field with the same or next smallest y coordinate is
+    /// found, else the next highest.
+    /// </param>
+    public void Next( bool up )
+    {
+        if ( Stage == null )
+        {
+            return;
+        }
+
+        TextField current       = this;
+        Vector2   currentCoords = current.Parent!.LocalToStageCoordinates( _tmp2.Set( current.X, current.Y ) );
+        Vector2   bestCoords    = _tmp1;
+
+        while ( true )
+        {
+            TextField? textField = current.FindNextTextField( Stage.Actors, null, bestCoords, currentCoords, up );
+
+            if ( textField == null )
+            {
+                // Try to wrap around.
+                if ( up )
+                {
+                    currentCoords.Set( -float.MaxValue, -float.MaxValue );
+                }
+                else
+                {
+                    currentCoords.Set( float.MaxValue, float.MaxValue );
+                }
+
+                textField = current.FindNextTextField( Stage.Actors, null, bestCoords, currentCoords, up );
+            }
+
+            if ( textField == null )
+            {
+                Gdx.Input.SetOnscreenKeyboardVisible( false );
+
+                break;
+            }
+
+            if ( Stage.KeyboardFocus == textField )
+            {
+                textField.SelectAll();
+
+                break;
+            }
+
+            current = textField;
+            currentCoords.Set( bestCoords );
+        }
+    }
+
+    private TextField? FindNextTextField( SnapshotArray< Actor > actors,
+                                          TextField? best,
+                                          Vector2 bestCoords,
+                                          Vector2 currentCoords,
+                                          bool up )
+    {
+        for ( int i = 0, n = actors.Size; i < n; i++ )
+        {
+            Actor actor = actors.Get( i );
+
+            if ( actor is TextField textField )
+            {
+                if ( textField == this )
+                {
+                    continue;
+                }
+
+                if ( textField._disabled || !textField.FocusTraversal || !textField.AscendantsVisible() )
+                {
+                    continue;
+                }
+
+                Vector2? actorCoords = textField.Parent?.LocalToStageCoordinates( _tmp3.Set( textField.X, textField.Y ) );
+
+                if ( actorCoords == null )
+                {
+                    continue;
+                }
+
+                var below = !actorCoords.Y.Equals( currentCoords.Y ) && ( ( actorCoords.Y < currentCoords.Y ) ^ up );
+                var right = actorCoords.Y.Equals( currentCoords.Y ) && ( ( actorCoords.X > currentCoords.X ) ^ up );
+
+                if ( !below && !right )
+                {
+                    continue;
+                }
+
+                var better = ( best == null )
+                          || ( !actorCoords.Y.Equals( bestCoords.Y ) && ( ( actorCoords.Y > bestCoords.Y ) ^ up ) );
+
+                if ( !better )
+                {
+                    better = actorCoords.Y.Equals( bestCoords.Y ) && ( ( actorCoords.X < bestCoords.X ) ^ up );
+                }
+
+                if ( better )
+                {
+                    best = textField;
+                    bestCoords.Set( actorCoords );
+                }
+            }
+            else if ( actor is Group group )
+            {
+                best = FindNextTextField( group.Children, best, bestCoords, currentCoords, up );
+            }
+        }
+
+        return best;
+    }
+
+    /// <summary>
+    /// returns True if the text was changed.
+    /// </summary>
+    private bool ChangeText( string oldText, string newText )
+    {
+        if ( newText.Equals( oldText ) )
+        {
+            return false;
+        }
+
+        this.Text = newText;
+
+        ChangeListener.ChangeEvent? changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
+
+        var cancelled = Fire( changeEvent );
+
+        if ( cancelled )
+        {
+            this.Text = oldText;
+        }
+
+        Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
+
+        return !cancelled;
+    }
+
+    /// <summary>
+    /// If true, the text in this text field will be shown as bullet characters.
+    /// <see cref="PasswordCharacter"/>
+    /// </summary>
+    public bool PasswordMode
+    {
+        get => _passwordMode;
+        set
+        {
+            _passwordMode = value;
+            UpdateDisplayText();
+        }
+    }
+
+    public char PasswordCharacter
+    {
+        get => _passwordCharacter;
+        set
+        {
+            _passwordCharacter = value;
+
+            if ( PasswordMode )
+            {
+                UpdateDisplayText();
+            }
+        }
+    }
+
+    protected virtual bool ContinueCursor( int index, int offset )
+    {
+        if ( Text == null )
+        {
+            return false;
+        }
+
+        return IsWordCharacter( Text[ index + offset ] );
+    }
+
+    protected virtual void MoveCursor( bool forward, bool jump )
+    {
+        var limit      = forward ? Text?.Length ?? 0 : 0;
+        var charOffset = forward ? 0 : -1;
+
+        while ( ( forward ? ++Cursor < limit : --Cursor > limit ) && jump )
+        {
+            if ( !ContinueCursor( Cursor, charOffset ) )
+            {
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Sets the selected text.
+    /// </summary>
+    public void SetSelection( int selectionStart, int selectionEnd )
+    {
+        if ( selectionStart < 0 )
+        {
+            throw new ArgumentException( "SelectionStart must be >= 0" );
+        }
+
+        if ( selectionEnd < 0 )
+        {
+            throw new ArgumentException( "selectionEnd must be >= 0" );
+        }
+
+        if ( Text != null )
+        {
+            selectionStart = Math.Min( Text.Length, selectionStart );
+            selectionEnd   = Math.Min( Text.Length, selectionEnd );
+
+            if ( selectionEnd == selectionStart )
+            {
+                ClearSelection();
+
+                return;
+            }
+
+            if ( selectionEnd < selectionStart )
+            {
+                ( selectionEnd, selectionStart ) = ( selectionStart, selectionEnd );
+            }
+
+            HasSelection   = true;
+            SelectionStart = selectionStart;
+            Cursor         = selectionEnd;
+        }
+    }
+
+    public void SelectAll()
+    {
+        if ( Text != null )
+        {
+            SetSelection( 0, Text.Length );
+        }
+    }
+
+    public void ClearSelection()
+    {
+        HasSelection = false;
+    }
+
+    /// <summary>
+    /// Sets the cursor position and clears any selection.
+    /// </summary>
+    public void SetCursorPosition( int cursorPosition )
+    {
+        if ( cursorPosition < 0 )
+        {
+            throw new ArgumentException( "cursorPosition must be >= 0" );
+        }
+
+        ClearSelection();
+
+        Cursor = Math.Min( cursorPosition, Text!.Length );
     }
 
     // ------------------------------------------------------------------------
+    // Tasks
+    // ------------------------------------------------------------------------
+
+    private float _blinkTime = 0.32f;
+    private Task  _blinkTask;
+    private Task  _keyRepeatTask;
+
+    [PublicAPI]
+    private class BlinkTask
+    {
+        private TextField _tf;
+
+        public BlinkTask( TextField tf )
+        {
+            _tf = tf;
+
+            _tf._blinkTask = Task.Run( () =>
+            {
+                _tf._cursorOn = !_tf._cursorOn;
+                Gdx.Graphics.RequestRendering();
+            } );
+        }
+    }
+    
+    [PublicAPI]
+    private class KeyRepeatTask
+    {
+        private TextField _tf;
+        private int       _keycode;
+
+        public KeyRepeatTask( TextField tf )
+        {
+            _tf = tf;
+
+            _tf._keyRepeatTask = Task.Run( () => { _tf._inputListener?.KeyDown( null, _keycode ); } );
+        }
+    }
+
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
     /// <summary>
     /// The style for a <see cref="TextField"/>.
@@ -300,26 +1171,10 @@ public class TextField : Widget
         }
     }
 
-    protected virtual bool ContinueCursor( int index, int offset )
-    {
-        return false;
-    }
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
-    protected virtual void MoveCursor( bool forward, bool jump )
-    {
-    }
-
-    public virtual void ClearSelection()
-    {
-    }
-
-    public virtual void SetSelection( int selectionStart, int selectionEnd )
-    {
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
+    [PublicAPI]
     public class TextFieldClickListener : ClickListener
     {
         protected virtual void SetCursorPosition( float f, float f1 )
@@ -330,4 +1185,58 @@ public class TextField : Widget
         {
         }
     }
+
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Interface for listening to typed characters.
+    /// </summary>
+    [PublicAPI]
+    public interface ITextFieldListener
+    {
+        public void KeyTyped( TextField textField, char c );
+    }
+
+    /// <summary>
+    /// Interface for filtering characters entered into the text field.
+    /// </summary>
+    [PublicAPI]
+    public interface ITextFieldFilter
+    {
+        public bool AcceptChar( TextField textField, char c );
+
+        public class DigitsOnlyFilter : ITextFieldFilter
+        {
+            public bool AcceptChar( TextField textField, char c )
+            {
+                return char.IsDigit( c );
+            }
+        }
+    }
+
+    /// <summary>
+    /// An interface for onscreen keyboards.
+    /// Can invoke the default keyboard or render your own keyboard!
+    /// </summary>
+    [PublicAPI]
+    public interface IOnscreenKeyboard
+    {
+        public void Show( bool visible );
+    }
+
+    /// <summary>
+    /// The default <see cref="IOnscreenKeyboard"/> used by all {@link TextField} instances.
+    /// Just uses <see cref="IInput.SetOnscreenKeyboardVisible(bool)"/> as appropriate. Might
+    /// overlap your actual rendering, so use with care!
+    /// </summary>
+    [PublicAPI]
+    public class DefaultOnscreenKeyboard : IOnscreenKeyboard
+    {
+        public void Show( bool visible )
+        {
+            Gdx.Input.SetOnscreenKeyboardVisible( visible );
+        }
+    }
+
 }
