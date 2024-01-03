@@ -381,7 +381,7 @@ public class TextArea : TextField
 
                 // we can't use fontOffset as it is valid only for first glyph/line in the text
                 // we will grab first character in this line and calculate proper offset for this line
-                BitmapFont.Glyph? lineFirst = fontData.GetGlyph( DisplayText[ lineStart ] );
+                BitmapFont.Glyph? lineFirst = fontData.GetGlyph( DisplayText![ lineStart ] );
 
                 if ( lineFirst != null )
                 {
@@ -401,8 +401,8 @@ public class TextArea : TextField
                     }
                 }
 
-                float selectionX     = GlyphPositions[ start ] - GlyphPositions[ lineStart ];
-                float selectionWidth = GlyphPositions[ end ] - GlyphPositions[ start ];
+                var selectionX     = GlyphPositions[ start ] - GlyphPositions[ lineStart ];
+                var selectionWidth = GlyphPositions[ end ] - GlyphPositions[ start ];
 
                 selection.Draw( batch,
                                 x + selectionX + fontLineOffsetX,
@@ -427,7 +427,7 @@ public class TextArea : TextField
 
         for ( var i = FirstLineShowing * 2; ( i < ( ( FirstLineShowing + LinesShowing ) * 2 ) ) && ( i < LinesBreak.Count ); i += 2 )
         {
-            font.Draw( batch, DisplayText, x, ( y + ( offsetY ?? 0 ) ), LinesBreak[ i ], LinesBreak[ i + 1 ], 0, Align.LEFT, false );
+            font.Draw( batch, DisplayText!, x, ( y + ( offsetY ?? 0 ) ), LinesBreak[ i ], LinesBreak[ i + 1 ], 0, Align.LEFT, false );
             offsetY -= font.GetLineHeight();
         }
     }
@@ -441,7 +441,7 @@ public class TextArea : TextField
     {
         MemberNullException.ThrowIfNull( this.Text );
         MemberNullException.ThrowIfNull( this.Style );
-        
+
         base.CalculateOffsets();
 
         if ( !this.Text.Equals( _lastText ) )
@@ -449,9 +449,9 @@ public class TextArea : TextField
             this._lastText = Text;
 
             var maxWidthLine = this.Width
-                               - ( Style.Background != null
-                                     ? Style.Background.LeftWidth + Style.Background.RightWidth
-                                     : 0 );
+                             - ( Style.Background != null
+                                   ? Style.Background.LeftWidth + Style.Background.RightWidth
+                                   : 0 );
 
             LinesBreak?.Clear();
 
@@ -505,7 +505,7 @@ public class TextArea : TextField
         }
     }
 
-    protected InputListener CreateInputListener()
+    protected override InputListener CreateInputListener()
     {
         return new TextAreaListener( this );
     }
@@ -598,7 +598,7 @@ public class TextArea : TextField
     /// </summary>
     public class TextAreaListener : TextFieldClickListener
     {
-        private TextArea _parent;
+        private readonly TextArea _parent;
 
         public TextAreaListener( TextArea ta )
         {
@@ -609,8 +609,8 @@ public class TextArea : TextField
         {
             _parent._moveOffset = -1;
 
-            IDrawable  background = _parent.Style.Background;
-            BitmapFont font       = _parent.Style.Font;
+            IDrawable?  background = _parent.Style?.Background;
+            BitmapFont? font       = _parent.Style?.Font;
 
             var height = _parent.Height;
 
@@ -627,14 +627,14 @@ public class TextArea : TextField
                 y -= background.TopHeight;
             }
 
-            _parent.CursorLine = ( int )Math.Floor( ( height - y ) / font.GetLineHeight() ) + _parent.FirstLineShowing;
+            _parent.CursorLine = ( int )Math.Floor( ( ( height - y ) / font!.GetLineHeight() ) ) + _parent.FirstLineShowing;
             _parent.CursorLine = Math.Max( 0, Math.Min( _parent.CursorLine, _parent.GetLines() - 1 ) );
 
             base.SetCursorPosition( x, y );
             _parent.UpdateCurrentLine();
         }
 
-        public override bool KeyDown( InputEvent ev, int keycode )
+        public override bool KeyDown( InputEvent? ev, int keycode )
         {
             var result = base.KeyDown( ev, keycode );
 
@@ -681,7 +681,6 @@ public class TextArea : TextField
 
                     _parent.MoveCursorLine( _parent.CursorLine - 1 );
                     repeat = true;
-
                 }
                 else
                 {
@@ -706,9 +705,9 @@ public class TextArea : TextField
             return _parent.FocusTraversal && ( character == TAB );
         }
 
-        public override bool KeyTyped( InputEvent ev, char character )
+        public override bool KeyTyped( InputEvent? ev, char character )
         {
-            bool result = base.KeyTyped( ev, character );
+            var result = base.KeyTyped( ev, character );
 
             _parent.ShowCursor();
 
@@ -731,15 +730,12 @@ public class TextArea : TextField
         {
             if ( jump || ( _parent.CursorLine >= _parent.GetLines() ) )
             {
-                _parent.Cursor = _parent.Text.Length;
+                _parent.Cursor = _parent.Text!.Length;
             }
-            else if ( ( ( _parent.CursorLine * 2 ) + 1 ) < _parent.LinesBreak.Count )
+            else if ( ( ( _parent.CursorLine * 2 ) + 1 ) < _parent.LinesBreak!.Count )
             {
                 _parent.Cursor = _parent.LinesBreak[ ( _parent.CursorLine * 2 ) + 1 ];
             }
         }
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 }

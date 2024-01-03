@@ -258,7 +258,7 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// disposed of here. 
     /// </para>
     /// </summary>
-    public void ConsumeCustomData( int target )
+    public void ConsumeCustomData( TextureTarget target )
     {
         if ( _compressedData == null )
         {

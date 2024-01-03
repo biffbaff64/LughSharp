@@ -43,7 +43,7 @@ public class MipMapGenerator
     /// The texture must be bound for this to work. If <code>disposePixmap</code> is true,
     /// the pixmap will be disposed at the end of the method.
     /// </summary>
-    public static void GenerateMipMap( int target, Pixmap pixmap, int textureWidth, int textureHeight )
+    public static void GenerateMipMap( TextureTarget target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
         if ( !UseHwMipMap )
         {

@@ -408,19 +408,19 @@ public class Pixmap : IDisposable
     /// Returns the OpenGL ES format of this Pixmap.
     /// </summary>
     /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public int GLFormat => gdx2DPixmap.GLFormat;
+    public PixelFormat GLFormat => gdx2DPixmap.GLFormat;
 
     /// <summary>
     /// Returns the OpenGL ES internal format of this Pixmap.
     /// </summary>
     /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public int GLInternalFormat => gdx2DPixmap.GLInternalFormat;
+    public InternalFormat GLInternalFormat => gdx2DPixmap.GLInternalFormat;
 
     /// <summary>
     /// Returns the OpenGL ES type of this Pixmap.
     /// </summary>
     /// <returns> one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT_5_6_5, GL_UNSIGNED_SHORT_4_4_4_4 </returns>
-    public int GLType => gdx2DPixmap.GLType;
+    public PixelType GLType => gdx2DPixmap.GLType;
 
     /// <summary>
     /// Returns the direct ByteBuffer holding the pixel data. For the format Alpha each
@@ -439,7 +439,7 @@ public class Pixmap : IDisposable
     /// </para>
     /// </summary>
     /// <returns> the direct <see cref="ByteBuffer"/> holding the pixel data.  </returns>
-    public ByteBuffer Pixels
+    public IntPtr Pixels
     {
         get
         {
@@ -479,7 +479,7 @@ public class Pixmap : IDisposable
 
         ByteBuffer pixels = pixmap.Pixels;
 
-        Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
+        Gdx.GL.GLReadPixels( x, y, width, height, PixelFormat.Rgba, PixelType.UnsignedByte, pixels );
 
         return pixmap;
     }

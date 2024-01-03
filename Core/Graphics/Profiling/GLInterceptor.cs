@@ -153,8 +153,8 @@ public abstract class GLInterceptor : IGL20
     public abstract void   GLBufferSubData( int target, int offset, int size, Buffer data );
     public abstract int    GLCheckFramebufferStatus( int target );
     public abstract void   GLCompileShader( int shader );
-    public abstract int   GLCreateProgram();
-    public abstract int   GLCreateShader( ShaderType type );
+    public abstract uint   GLCreateProgram();
+    public abstract uint   GLCreateShader( ShaderType type );
     public abstract void   GLDeleteBuffer( int buffer );
     public abstract void   GLDeleteBuffers( int n, int buffers );
     public abstract void   GLDeleteFramebuffer( int framebuffer );
@@ -169,7 +169,7 @@ public abstract class GLInterceptor : IGL20
     public abstract void   GLEnableVertexAttribArray( int index );
     public abstract void   GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer );
     public abstract void   GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level );
-    public abstract int   GLGenBuffer();
+    public abstract uint   GLGenBuffer();
     public abstract void   GLGenBuffers( int n, int[] buffers );
     public abstract void   GLGenerateMipmap( int target );
     public abstract int    GLGenFramebuffer();

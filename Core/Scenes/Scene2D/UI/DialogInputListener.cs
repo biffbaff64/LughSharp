@@ -18,6 +18,9 @@ using LibGDXSharp.Scenes.Listeners;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
+
+//TODO: I think I was drunk when writing this class. Rip it up and start again.
+
 [PublicAPI]
 public class DialogInputListener : InputListener
 {
@@ -27,13 +30,13 @@ public class DialogInputListener : InputListener
 
     public DialogInputListener( Dialog d, int thisKey, object? o )
     {
-        this._dialog  = d;
+        this._dialog = d;
         this._thisKey = thisKey;
         this._object  = o;
     }
 
     /// <inheritdoc />
-    public override bool KeyDown( InputEvent inputEvent, int keycode )
+    public override bool KeyDown( InputEvent? inputEvent, int keycode )
     {
         if ( keycode == _thisKey )
         {

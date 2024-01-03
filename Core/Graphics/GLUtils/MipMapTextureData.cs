@@ -72,7 +72,7 @@ public class MipMapTextureData : ITextureData
     /// should be disposed of here. 
     /// </para>
     /// </summary>
-    public void ConsumeCustomData( int target )
+    public void ConsumeCustomData( TextureTarget target )
     {
         for ( var i = 0; i < _mips.Length; ++i )
         {

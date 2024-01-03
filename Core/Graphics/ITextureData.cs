@@ -51,7 +51,7 @@ public interface ITextureData
 
     /// <summary>
     /// Prepares the TextureData for a call to <see cref="ConsumePixmap()"/> or
-    /// <see cref="ConsumeCustomData(int)"/>. This method can be called from a non
+    /// <see cref="ConsumeCustomData"/>. This method can be called from a non
     /// OpenGL thread and should thus not interact with OpenGL. 
     /// </summary>
     public void Prepare();
@@ -82,7 +82,7 @@ public interface ITextureData
     /// disposed of here. 
     /// </para>
     /// </summary>
-    public void ConsumeCustomData( int target );
+    public void ConsumeCustomData( TextureTarget target );
 
     /// <returns> the width of the pixel data </returns>
     public int Width { get; set; }

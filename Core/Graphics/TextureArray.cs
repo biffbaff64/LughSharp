@@ -70,7 +70,7 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL30.GL_TEXTURE_2D_ARRAY, ( int )Gdx.GL.GLGenTexture() )
+        : base( IGL30.GL_TEXTURE_2D_ARRAY, Gdx.GL.GLGenTexture() )
     {
         if ( Gdx.GL30 == null )
         {
@@ -154,7 +154,7 @@ public class TextureArray : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
         }
 
-        GLTextureHandle = ( int )Gdx.GL.GLGenTexture();
+        GLTextureHandle = Gdx.GL.GLGenTexture();
 
         Load( this._data );
     }

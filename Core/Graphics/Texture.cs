@@ -97,7 +97,7 @@ public class Texture : GLTexture
     }
 
     public Texture( ITextureData? data )
-        : this( IGL20.GL_TEXTURE_2D, ( int )Gdx.GL.GLGenTexture(), data )
+        : this( IGL20.GL_TEXTURE_2D, Gdx.GL.GLGenTexture(), data )
     {
     }
 
@@ -157,7 +157,7 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        GLTextureHandle = ( int )Gdx.GL.GLGenTexture();
+        GLTextureHandle = Gdx.GL.GLGenTexture();
         Load( TextureData );
     }
 
@@ -295,7 +295,7 @@ public class Texture : GLTexture
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.GLTextureHandle = ( int )Gdx.GL.GLGenTexture();
+                    texture.GLTextureHandle = Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof( Texture ), parameters );
                 }
             }

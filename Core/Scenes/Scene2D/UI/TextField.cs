@@ -137,6 +137,9 @@ public class TextField : Widget
     public virtual void Initialise()
     {
         this._inputListener = CreateInputListener();
+        
+        BlinkTask.Create( this );
+        KeyRepeatTask.Create( this );
     }
 
     protected virtual InputListener CreateInputListener()
@@ -412,62 +415,69 @@ public class TextField : Widget
 
     public override void Draw( IBatch batch, float parentAlpha )
     {
-        bool focused = HasKeyboardFocus();
-
-        if ( ( focused != this._focused ) || ( focused && !_blinkTask.isScheduled() ) )
+        if ( Style == null )
         {
-            this.focused = focused;
-            blinkTask.cancel();
-            cursorOn = focused;
+            return;
+        }
+
+        var focused = HasKeyboardFocus();
+
+        if ( ( focused != this._focused ) || ( focused && ( _blinkTask?.Status != TaskStatus.Running ) ) )
+        {
+            this._focused = focused;
+            BlinkTask.Cancel();
+            _cursorOn = focused;
 
             if ( focused )
             {
-                Timer.schedule( blinkTask, blinkTime, blinkTime );
+                BlinkTask.Start();
             }
             else
             {
-                keyRepeatTask.cancel();
+                KeyRepeatTask.Cancel();
             }
         }
-        else if ( !focused ) //
+        else if ( !focused )
         {
-            cursorOn = false;
+            _cursorOn = false;
         }
 
-        final BitmapFont font = style.font;
-        final Color fontColor = ( disabled && ( style.disabledFontColor != null ) )
-            ? style.disabledFontColor
-            : ( ( focused && ( style.focusedFontColor != null ) ) ? style.focusedFontColor : style.fontColor );
+        BitmapFont font = Style.Font!;
 
-        final Drawable selection   = style.selection;
-        final Drawable cursorPatch = style.cursor;
-        final Drawable background  = getBackgroundDrawable();
+        Color? fontColor = ( _disabled && ( Style.DisabledFontColor != null ) )
+            ? Style.DisabledFontColor
+            : ( ( focused && ( Style.FocusedFontColor != null ) ) ? Style.FocusedFontColor : Style.FontColor );
 
-        Color color  = getColor();
-        float x      = getX();
-        float y      = getY();
-        float width  = getWidth();
-        float height = getHeight();
+        IDrawable? selection   = Style.Selection;
+        IDrawable? cursorPatch = Style.Cursor;
+        IDrawable? background  = GetBackgroundDrawable();
 
-        batch.setColor( color.r, color.g, color.b, color.a * parentAlpha );
+        Color color  = Color!;
+        var   x      = X;
+        var   y      = Y;
+        var   width  = Width;
+        var   height = Height;
+
+        batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
         float bgLeftWidth = 0, bgRightWidth = 0;
 
         if ( background != null )
         {
             background.Draw( batch, x, y, width, height );
-            bgLeftWidth  = background.getLeftWidth();
-            bgRightWidth = background.getRightWidth();
+            bgLeftWidth  = background.LeftWidth;
+            bgRightWidth = background.RightWidth;
         }
 
-        float textY = getTextY( font, background );
-        calculateOffsets();
+        var textY = GetTextY( font, background );
 
-        if ( focused && hasSelection && ( selection != null ) )
+        CalculateOffsets();
+
+        if ( focused && HasSelection && ( selection != null ) )
         {
-            drawSelection( selection, batch, font, x + bgLeftWidth, y + textY );
+            DrawSelection( selection, batch, font, x + bgLeftWidth, y + textY );
         }
 
-        float yOffset = font.Flipped ? -TextHeight : 0;
+        var yOffset = font.Flipped ? -TextHeight : 0;
 
         if ( DisplayText?.Length == 0 )
         {
@@ -492,7 +502,7 @@ public class TextField : Widget
         }
         else
         {
-            font.SetColor( fontColor.R, fontColor.G, fontColor.B, fontColor.A * color.A * parentAlpha );
+            font.SetColor( fontColor!.R, fontColor.G, fontColor.B, fontColor.A * color.A * parentAlpha );
             DrawText( batch, font, x + bgLeftWidth, y + textY + yOffset );
         }
 
@@ -997,7 +1007,7 @@ public class TextField : Widget
     /// <summary>
     /// Sets the selected text.
     /// </summary>
-    public void SetSelection( int selectionStart, int selectionEnd )
+    public virtual void SetSelection( int selectionStart, int selectionEnd )
     {
         if ( selectionStart < 0 )
         {
@@ -1064,38 +1074,93 @@ public class TextField : Widget
     // Tasks
     // ------------------------------------------------------------------------
 
-    private float _blinkTime = 0.32f;
-    private Task  _blinkTask;
-    private Task  _keyRepeatTask;
+    private float                    _blinkTime = 0.32f;
+    private Task?                    _blinkTask;
+    private Task?                    _keyRepeatTask;
+    private CancellationTokenSource? _blinkTokenSource;
+    private CancellationToken        _blinkCancellationToken;
+    private CancellationTokenSource? _keyRepeatTokenSource;
+    private CancellationToken        _keyRepeatCancellationToken;
 
     [PublicAPI]
     private class BlinkTask
     {
-        private TextField _tf;
+        private static TextField? _tf;
 
-        public BlinkTask( TextField tf )
+        public static void Create( TextField tf )
         {
             _tf = tf;
 
-            _tf._blinkTask = Task.Run( () =>
+            _tf._blinkTokenSource       = new CancellationTokenSource();
+            _tf._blinkCancellationToken = _tf._blinkTokenSource.Token;
+
+            //@formatter:off
+            _tf._blinkTask = new Task( () =>
+               {
+                   _tf._cursorOn = !_tf._cursorOn;
+                   Gdx.Graphics.RequestRendering();
+               },
+               _tf._blinkCancellationToken );
+            //@formatter:on
+        }
+
+        public static void Start()
+        {
+            if ( ( _tf == null ) || ( _tf._blinkTask == null ) )
             {
-                _tf._cursorOn = !_tf._cursorOn;
-                Gdx.Graphics.RequestRendering();
-            } );
+                throw new GdxRuntimeException( "Unable to start BlinkTask" );
+            }
+            
+            _tf._blinkTask.Start();
+        }
+        
+        public static void Cancel()
+        {
+            if ( _tf?._blinkTask is { Status: TaskStatus.Running } )
+            {
+                _tf._blinkTokenSource?.Cancel();
+            }
         }
     }
-    
+
     [PublicAPI]
     private class KeyRepeatTask
     {
-        private TextField _tf;
-        private int       _keycode;
+        private static TextField? _tf;
+        private static int        _keycode;
 
-        public KeyRepeatTask( TextField tf )
+        public static void Create( TextField tf )
         {
             _tf = tf;
 
-            _tf._keyRepeatTask = Task.Run( () => { _tf._inputListener?.KeyDown( null, _keycode ); } );
+            _tf._keyRepeatTokenSource       = new CancellationTokenSource();
+            _tf._keyRepeatCancellationToken = _tf._keyRepeatTokenSource.Token;
+
+            //@formatter:off
+                _tf._keyRepeatTask = new Task( () =>
+                {
+                    _tf._inputListener?.KeyDown( null, _keycode );
+                },
+                _tf._keyRepeatCancellationToken );
+            //@formatter:on
+        }
+
+        public static void Start()
+        {
+            if ( ( _tf == null ) || ( _tf._keyRepeatTask == null ) )
+            {
+                throw new GdxRuntimeException( "Unable to start KeyRepeatTask" );
+            }
+            
+            _tf._keyRepeatTask.Start();
+        }
+
+        public static void Cancel()
+        {
+            if ( _tf?._keyRepeatTask is { Status: TaskStatus.Running } )
+            {
+                _tf._keyRepeatTokenSource?.Cancel();
+            }
         }
     }
 

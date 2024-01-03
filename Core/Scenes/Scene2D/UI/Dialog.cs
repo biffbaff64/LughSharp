@@ -107,7 +107,7 @@ public class Dialog : Window
 
         this._dialogFocusListener  = new DialogFocusListener( this );
         this._dialogChangeListener = new DialogChangeListener( this );
-        this._dialogInputListener  = new DialogInputListener( this );
+        this._dialogInputListener  = new DialogInputListener( this, 0, null ); //TODO: Correct param values needed
 
         ButtonTable.AddListener( new ButtonTableChangeListener( this ) );
 

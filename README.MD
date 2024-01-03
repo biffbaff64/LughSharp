@@ -395,10 +395,8 @@ GRAPHICS
     - DONE - ICubemapData                       
     - DONE - ICursor                            
     - DONE - IDownloadPixmapResponseListener    
-    - DONE - IGL20                              
-    - DONE - IGL30                              
-    - DONE - IGL31                              
-    - DONE - IGL32                              
+    - IP   - IGL20                              
+    - IP   - IGL30                              
     - DONE - ITextureArrayData        
     - DONE - ITextureData             
     - DONE - Mesh                               
@@ -1055,9 +1053,9 @@ SCENES/SCENE2D/UI
     -      - SplitPane                      
     - DONE - Stack                          
     - DONE - Table                          
-    - IP   - TextArea                       
-    - IP   - TextButton                     
-    - IP   - TextField                      
+    - DONE - TextArea                       
+    - DONE - TextButton                     
+    - DONE - TextField      Check that _blinkTask and _KeyRepeatTask are disposed of properly                      
     -      - TextTooltip                    
     -      - TooltipManager                 
     -      - Touchpad                       

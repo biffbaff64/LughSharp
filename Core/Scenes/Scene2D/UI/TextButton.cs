@@ -32,7 +32,7 @@ public class TextButton : Button
     }
 
     public TextButton( string? text, Skin skin, string styleName )
-        : this( text, ( TextButtonStyle )skin.Get< TextButton.TextButtonStyle >( styleName ) )
+        : this( text, skin.Get< TextButton.TextButtonStyle >( styleName ) )
     {
         Skin = skin;
     }
@@ -206,6 +206,7 @@ public class TextButton : Button
     /// <summary>
     /// The style for a text button, see <see cref="TextButton"/>.
     /// </summary>
+    [PublicAPI]
     public class TextButtonStyle : ButtonStyle
     {
         public BitmapFont? Font { get; protected init; }

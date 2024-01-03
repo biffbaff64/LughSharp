@@ -153,7 +153,7 @@ public class GL20Interceptor : GLInterceptor, IGL20
     public override void GLDeleteTextures( int n, int textures )
     {
         Calls++;
-        GL20.GLDeleteTextures( n, textures );
+        GL20.GLDeleteTextures( textures );
         Check();
     }
 

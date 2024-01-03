@@ -81,7 +81,7 @@ public class ETC1TextureData : ITextureData
     }
 
     /// <inheritdoc/>
-    public void ConsumeCustomData( int target )
+    public void ConsumeCustomData( TextureTarget target )
     {
         if ( !IsPrepared )
         {
