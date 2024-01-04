@@ -540,9 +540,9 @@ public interface IGL30 : IGL20
 
     public void GLUniformBlockBinding( int program, int uniformBlockIndex, int uniformBlockBinding );
 
-    public void GLDrawArraysInstanced( PrimitiveType mode, int first, int count, int instanceCount );
+    public void GLDrawArraysInstanced( int mode, int first, int count, int instanceCount );
 
-    public void GLDrawElementsInstanced( PrimitiveType mode,
+    public void GLDrawElementsInstanced( int mode,
                                          int count,
                                          int type,
                                          int indicesOffset,

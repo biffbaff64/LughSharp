@@ -82,7 +82,7 @@ public interface ITextureData
     /// disposed of here. 
     /// </para>
     /// </summary>
-    public void ConsumeCustomData( TextureTarget target );
+    public void ConsumeCustomData( int target );
 
     /// <returns> the width of the pixel data </returns>
     public int Width { get; set; }

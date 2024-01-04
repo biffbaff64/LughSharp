@@ -30,9 +30,9 @@ public abstract class GLTexture : IDisposable
     public virtual int Height { get; }
     public virtual int Depth  { get; }
 
-    public uint          GLTextureHandle        { get; set; }
-    public TextureTarget GLTarget               { get; set; }
-    public float         AnisotropicFilterLevel { get; private set; } = 1.0f;
+    public int   GLTextureHandle        { get; set; }
+    public int   GLTarget               { get; set; }
+    public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
     /// <summary>
     /// Returns the <see cref="TextureFilter"/> used for minification.
@@ -58,12 +58,11 @@ public abstract class GLTexture : IDisposable
 
     // ------------------------------------------------------------------------
 
-    protected GLTexture( TextureTarget glTarget )
-        : this( glTarget, Gdx.GL.GLGenTexture() )
+    protected GLTexture( int glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
     {
     }
 
-    protected GLTexture( TextureTarget glTarget, uint glTextureHandle )
+    protected GLTexture( int glTarget, int glTextureHandle )
     {
         this.GLTarget        = glTarget;
         this.GLTextureHandle = glTextureHandle;
@@ -95,7 +94,7 @@ public abstract class GLTexture : IDisposable
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        Gdx.GL.GLActiveTexture( TextureUnit.Texture0 + unit );
+        Gdx.GL.GLActiveTexture( IGL20.GL_TEXTURE0 + unit );
         Gdx.GL.GLBindTexture( GLTarget, GLTextureHandle );
     }
 
@@ -112,13 +111,13 @@ public abstract class GLTexture : IDisposable
     {
         if ( ( u != null ) && ( force || ( UWrap != u ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, TextureParameterName.TextureWrapS, u.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
             UWrap = u;
         }
 
         if ( ( v != null ) && ( force || ( VWrap != v ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, TextureParameterName.TextureWrapT, v.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
             VWrap = v;
         }
     }
@@ -136,8 +135,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL.GLTexParameteri( GLTarget, TextureParameterName.TextureWrapS, u.GLEnum );
-        Gdx.GL.GLTexParameteri( GLTarget, TextureParameterName.TextureWrapT, v.GLEnum );
+        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
+        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
     }
 
     /// <summary>
@@ -154,13 +153,13 @@ public abstract class GLTexture : IDisposable
     {
         if ( ( minFilter != null ) && ( force || ( this.MinFilter != minFilter ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, TextureParameterName.TextureMinFilter, minFilter.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
             this.MinFilter = minFilter;
         }
 
         if ( ( magFilter != null ) && ( force || ( this.MagFilter != magFilter ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, TextureParameterName.TextureMagFilter, magFilter.GLEnum );
+            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
             this.MagFilter = magFilter;
         }
     }
@@ -178,8 +177,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL.GLTexParameteri( GLTarget, TextureParameterName.TextureMinFilter, minFilter.GLEnum );
-        Gdx.GL.GLTexParameteri( GLTarget, TextureParameterName.TextureMagFilter, magFilter.GLEnum );
+        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
+        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
     }
 
     /// <summary>
@@ -211,8 +210,8 @@ public abstract class GLTexture : IDisposable
             return AnisotropicFilterLevel;
         }
 
-        Gdx.GL20.GLTexParameterf( TextureTarget.Texture2d,
-                                  ( TextureParameterName )34046, // IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+        Gdx.GL20.GLTexParameterf( IGL20.GL_TEXTURE_2D,
+                                  IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
                                   level );
 
         return AnisotropicFilterLevel = level;
@@ -241,8 +240,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL20.GLTexParameterf( TextureTarget.Texture2d,
-                                  ( TextureParameterName )34046, // IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+        Gdx.GL20.GLTexParameterf( IGL20.GL_TEXTURE_2D,
+                                  IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
                                   level );
 
         return AnisotropicFilterLevel = level;
@@ -258,7 +257,7 @@ public abstract class GLTexture : IDisposable
         {
             return _maxAnisotropicFilterLevel;
         }
-        
+
 //TODO:
 //        if ( Gdx.Graphics.SupportsExtension( "GL_EXT_texture_filter_anisotropic" ) )
 //        {
@@ -292,7 +291,7 @@ public abstract class GLTexture : IDisposable
     /// <param name="target"></param>
     /// <param name="data"></param>
     /// <param name="miplevel"></param>
-    public static void UploadImageData( TextureTarget target, ITextureData? data, int miplevel = 0 )
+    public static void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
     {
         if ( data == null )
         {
@@ -338,7 +337,7 @@ public abstract class GLTexture : IDisposable
             disposePixmap = true;
         }
 
-        Gdx.GL.GLPixelStorei( PixelStoreParameter.UnpackAlignment, 1 );
+        Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
 
         if ( data.UseMipMaps )
         {
@@ -366,7 +365,7 @@ public abstract class GLTexture : IDisposable
     /// <summary>
     /// Convenience method for when 'GLHandle' isn't descriptive enough.
     /// </summary>
-    public uint GetTextureObjectHandle() => GLTextureHandle;
+    public int GetTextureObjectHandle() => GLTextureHandle;
 
     /// <inheritdoc cref="IDisposable.Dispose"/>>
     public virtual void Dispose()

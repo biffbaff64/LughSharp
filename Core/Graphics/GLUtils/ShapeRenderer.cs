@@ -178,7 +178,7 @@ public class ShapeRenderer : IDisposable
             _matrixDirty = false;
         }
 
-        Renderer.Begin( _combinedMatrix, ( PrimitiveType )ShapeType );
+        Renderer.Begin( _combinedMatrix, ( int )ShapeType );
     }
 
     /// <summary>
@@ -190,7 +190,7 @@ public class ShapeRenderer : IDisposable
         this.ShapeType = null;
     }
 
-    public void Set( PrimitiveType type )
+    public void Set( int type )
     {
         if ( this.ShapeType == type )
         {

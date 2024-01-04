@@ -177,7 +177,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        Gdx.GL30.GLBindVertexArray( _vaoHandle );
+        Gdx.GL30?.GLBindVertexArray( _vaoHandle );
 
         BindAttributes( shader, locations );
 
@@ -194,7 +194,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Unbind( ShaderProgram? shader, int[]? locations = null )
     {
-        Gdx.GL30.GLBindVertexArray( 0 );
+        Gdx.GL30?.GLBindVertexArray( 0 );
         _isBound = false;
     }
 
@@ -203,7 +203,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = Gdx.GL30.GLGenBuffer();
+        _bufferHandle = Gdx.GL30!.GLGenBuffer();
 
         CreateVAO();
 
@@ -216,8 +216,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Dispose()
     {
-        Gdx.GL30.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL30.GLDeleteBuffer( _bufferHandle );
+        Gdx.GL30?.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL30?.GLDeleteBuffers( _bufferHandle );
 
         _bufferHandle = 0;
 
@@ -283,12 +283,12 @@ public class VertexBufferObjectWithVAO : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                shader.SetVertexAttribute
-                    (
-                     location, attribute.numComponents,
-                     attribute.type, attribute.normalized,
-                     Attributes.VertexSize, attribute.Offset
-                    );
+                shader.SetVertexAttribute( location,
+                                           attribute.numComponents,
+                                           attribute.type,
+                                           attribute.normalized,
+                                           Attributes.VertexSize,
+                                           attribute.Offset );
             }
         }
     }
@@ -315,15 +315,15 @@ public class VertexBufferObjectWithVAO : IVertexData
         }
     }
 
-    private void BindData( IGL20 gl )
+    private void BindData( IGL20? gl )
     {
         if ( _isDirty )
         {
-            gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+            gl?.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
 
             _byteBuffer.Limit = _buffer.Limit * 4;
 
-            gl.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            gl?.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
 
             _isDirty = false;
         }
@@ -333,7 +333,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         TmpHandle.Clear();
 
-        Gdx.GL30.GLGenVertexArrays( 1, TmpHandle );
+        Gdx.GL30?.GLGenVertexArrays( 1, TmpHandle );
 
         _vaoHandle = TmpHandle.Get();
     }
@@ -347,7 +347,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
             TmpHandle.Flip();
 
-            Gdx.GL30.GLDeleteVertexArrays( 1, TmpHandle );
+            Gdx.GL30?.GLDeleteVertexArrays( 1, TmpHandle );
 
             _vaoHandle = -1;
         }

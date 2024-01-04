@@ -74,7 +74,7 @@ public class PixmapTextureData : ITextureData
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
     public bool IsManaged() => Managed;
 
-    public void ConsumeCustomData( TextureTarget target )
+    public void ConsumeCustomData( int target )
     {
         throw new GdxRuntimeException( "This TextureData implementation does not upload data itself" );
     }

@@ -21,7 +21,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public interface IImmediateModeRenderer : IDisposable
 {
-    public void Begin( Matrix4 projModelView, PrimitiveType primitiveType );
+    public void Begin( Matrix4 projModelView, int primitiveType );
 
     public void End();
 

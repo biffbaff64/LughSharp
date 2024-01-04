@@ -17,6 +17,8 @@
 using LibGDXSharp.Files.Buffers;
 using LibGDXSharp.Graphics.G2D;
 
+using Buffer = LibGDXSharp.Files.Buffers.Buffer;
+
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
@@ -408,19 +410,19 @@ public class Pixmap : IDisposable
     /// Returns the OpenGL ES format of this Pixmap.
     /// </summary>
     /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public PixelFormat GLFormat => gdx2DPixmap.GLFormat;
+    public int GLFormat => gdx2DPixmap.GLFormat;
 
     /// <summary>
     /// Returns the OpenGL ES internal format of this Pixmap.
     /// </summary>
     /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public InternalFormat GLInternalFormat => gdx2DPixmap.GLInternalFormat;
+    public int GLInternalFormat => gdx2DPixmap.GLInternalFormat;
 
     /// <summary>
     /// Returns the OpenGL ES type of this Pixmap.
     /// </summary>
     /// <returns> one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT_5_6_5, GL_UNSIGNED_SHORT_4_4_4_4 </returns>
-    public PixelType GLType => gdx2DPixmap.GLType;
+    public int GLType => gdx2DPixmap.GLType;
 
     /// <summary>
     /// Returns the direct ByteBuffer holding the pixel data. For the format Alpha each
@@ -439,7 +441,7 @@ public class Pixmap : IDisposable
     /// </para>
     /// </summary>
     /// <returns> the direct <see cref="ByteBuffer"/> holding the pixel data.  </returns>
-    public IntPtr Pixels
+    public ByteBuffer Pixels
     {
         get
         {
@@ -477,9 +479,7 @@ public class Pixmap : IDisposable
 
         Pixmap pixmap = new( width, height, Pixmap.Format.RGBA8888 );
 
-        ByteBuffer pixels = pixmap.Pixels;
-
-        Gdx.GL.GLReadPixels( x, y, width, height, PixelFormat.Rgba, PixelType.UnsignedByte, pixels );
+        Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixmap.Pixels );
 
         return pixmap;
     }

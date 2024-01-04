@@ -112,7 +112,7 @@ public class FileTextureData : ITextureData
     /// disposed of here. 
     /// </para>
     /// </summary>
-    public void ConsumeCustomData( TextureTarget target )
+    public void ConsumeCustomData( int target )
     {
         throw new GdxRuntimeException
             ( "This TextureData implementation does not upload data itself" );

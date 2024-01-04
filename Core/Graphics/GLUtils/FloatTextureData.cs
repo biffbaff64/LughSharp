@@ -85,7 +85,7 @@ public class FloatTextureData : ITextureData
         IsPrepared = true;
     }
 
-    public void ConsumeCustomData( TextureTarget target )
+    public void ConsumeCustomData( int target )
     {
         if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
              || ( Gdx.App.AppType == IApplication.ApplicationType.IOS )

@@ -17,7 +17,6 @@
 using LibGDXSharp.Files.Buffers;
 
 using Buffer = LibGDXSharp.Files.Buffers.Buffer;
-using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
@@ -34,7 +33,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
 
     private void Check()
     {
-        ErrorCode error = GL30.GLGetError();
+        var error = GL30.GLGetError();
 
         while ( error != IGL20.GL_NO_ERROR )
         {
@@ -136,35 +135,28 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLCopyTexSubImage2D( TextureTarget target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
+    public override void GLCopyTexSubImage2D( int target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
     {
         Calls++;
         GL30.GLCopyTexSubImage2D( target, level, xoffset, yoffset, x, y, width, height );
         Check();
     }
 
-    public override void GLCullFace( CullFaceMode mode )
+    public override void GLCullFace( int mode )
     {
         Calls++;
         GL30.GLCullFace( mode );
         Check();
     }
 
-    public override void GLDeleteTextures( int n, int textures )
+    public override void GLDeleteTextures( params int[] textures )
     {
         Calls++;
-        GL30.GLDeleteTextures( n, textures );
+        GL30.GLDeleteTextures( textures );
         Check();
     }
 
-    public override void GLDeleteTexture( int texture )
-    {
-        Calls++;
-        GL30.GLDeleteTexture( texture );
-        Check();
-    }
-
-    public override void GLDepthFunc( DepthFunction func )
+    public override void GLDepthFunc( int func )
     {
         Calls++;
         GL30.GLDepthFunc( func );
@@ -185,14 +177,14 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLDisable( EnableCap cap )
+    public override void GLDisable( int cap )
     {
         Calls++;
         GL30.GLDisable( cap );
         Check();
     }
 
-    public override void GLDrawArrays( PrimitiveType mode, int first, int count )
+    public override void GLDrawArrays( int mode, int first, int count )
     {
         VertexCount.Put( count );
         DrawCalls++;
@@ -201,7 +193,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, Buffer indices )
+    public override void GLDrawElements( int mode, int count, int type, Buffer indices )
     {
         VertexCount.Put( count );
         DrawCalls++;
@@ -210,7 +202,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLEnable( EnableCap cap )
+    public override void GLEnable( int cap )
     {
         Calls++;
         GL30.GLEnable( cap );
@@ -231,17 +223,17 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLFrontFace( FrontFaceDirection mode )
+    public override void GLFrontFace( int mode )
     {
         Calls++;
         GL30.GLFrontFace( mode );
         Check();
     }
 
-    public override void GLGenTextures( int n, int[] textures )
+    public override void GLGenTextures( int[] textures )
     {
         Calls++;
-        GL30.GLGenTextures( n, textures );
+        GL30.GLGenTextures( textures );
         Check();
     }
 
@@ -254,11 +246,13 @@ public class GL30Interceptor : GLInterceptor, IGL30
         return result;
     }
 
-    public override ErrorCode GLGetError()
+    public override int GLGetError()
     {
         Calls++;
-
-        return GL30.GLGetError();
+        var result = GL30.GLGetError();
+        Check();
+        
+        return result;
     }
 
     public override void GLGetIntegerv( int pname, IntBuffer parameters )
@@ -330,6 +324,14 @@ public class GL30Interceptor : GLInterceptor, IGL30
     {
         Calls++;
         GL30.GLStencilMask( mask );
+        Check();
+    }
+
+    /// <inheritdoc />
+    public override void GLInt( int fail, int zfail, int zpass )
+    {
+        Calls++;
+        GL30.GLInt( fail, zfail, zpass );
         Check();
     }
 
@@ -447,7 +449,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLBufferData( int target, int size, Buffer data, int usage )
+    public override void GLBufferData( int target, int size, Buffer? data, int usage )
     {
         Calls++;
         GL30.GLBufferData( target, size, data, usage );
@@ -486,7 +488,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         return result;
     }
 
-    public override int GLCreateShader( ShaderType type )
+    public override int GLCreateShader( int type )
     {
         Calls++;
         var result = GL30.GLCreateShader( type );
@@ -495,17 +497,10 @@ public class GL30Interceptor : GLInterceptor, IGL30
         return result;
     }
 
-    public override void GLDeleteBuffer( int buffer )
+    public override void GLDeleteBuffers( params int[] buffers )
     {
         Calls++;
-        GL30.GLDeleteBuffer( buffer );
-        Check();
-    }
-
-    public override void GLDeleteBuffers( int n, int buffers )
-    {
-        Calls++;
-        GL30.GLDeleteBuffers( n, buffers );
+        GL30.GLDeleteBuffers( buffers );
         Check();
     }
 
@@ -565,7 +560,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLDrawElements( PrimitiveType mode, int count, DrawElementsType type, int indices )
+    public override void GLDrawElements( int mode, int count, int type, int indices )
     {
         VertexCount.Put( count );
         DrawCalls++;
@@ -604,10 +599,10 @@ public class GL30Interceptor : GLInterceptor, IGL30
         return result;
     }
 
-    public override void GLGenBuffers( int n, int[] buffers )
+    public override void GLGenBuffers( Buffer buffers )
     {
         Calls++;
-        GL30.GLGenBuffers( n, buffers );
+        GL30.GLGenBuffers( buffers );
         Check();
     }
 
@@ -653,7 +648,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
     }
 
 
-    public override string GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type )
+    public override string GLGetActiveAttrib( int program, int index, int size, int type )
     {
         Calls++;
         var result = GL30.GLGetActiveAttrib( program, index, size, type );
@@ -663,7 +658,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
     }
 
 
-    public override string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type )
+    public override string GLGetActiveUniform( int program, int index, int size, int type )
     {
         Calls++;
         var result = GL30.GLGetActiveUniform( program, index, size, type );
@@ -702,7 +697,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLGetFloatv( int pname, FloatBuffer parameters )
+    public override void GLGetFloatv( int pname, int parameters )
     {
         Calls++;
         GL30.GLGetFloatv( pname, parameters );
@@ -946,6 +941,14 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
+    /// <inheritdoc />
+    public override void GLIntSeparate( int face, int fail, int zfail, int zpass )
+    {
+        Calls++;
+        GL30.GLIntSeparate( face, fail, zfail, zpass );
+        Check();
+    }
+
     public override void GLTexParameterfv( int target, int pname, FloatBuffer parameters )
     {
         Calls++;
@@ -967,10 +970,10 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLUniform1F( int location, float x )
+    public override void GLUniform1F( int location, int count, int value )
     {
         Calls++;
-        GL30.GLUniform1F( location, x );
+        GL30.GLUniform1F( location, count, value );
         Check();
     }
 
@@ -988,10 +991,10 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLUniform1I( int location, int x )
+    public override void GLUniform1I( int location, int count, int value )
     {
         Calls++;
-        GL30.GLUniform1I( location, x );
+        GL30.GLUniform1I( location, count, value );
         Check();
     }
 
@@ -1009,7 +1012,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLUniform2F( int location, float x, float y )
+    public override void GLUniform2F( int location, int x, int y )
     {
         Calls++;
         GL30.GLUniform2F( location, x, y );
@@ -1051,10 +1054,10 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLUniform3F( int location, float x, float y, float z )
+    public override void GLUniform3F( int location, int count, int value )
     {
         Calls++;
-        GL30.GLUniform3F( location, x, y, z );
+        GL30.GLUniform3F( location, count, value );
         Check();
     }
 
@@ -1072,10 +1075,10 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLUniform3I( int location, int x, int y, int z )
+    public override void GLUniform3I( int location, int count, int value )
     {
         Calls++;
-        GL30.GLUniform3I( location, x, y, z );
+        GL30.GLUniform3I( location, count, value );
         Check();
     }
 
@@ -1093,10 +1096,10 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLUniform4F( int location, float x, float y, float z, float w )
+    public override void GLUniform4F( int location, int count, int value )
     {
         Calls++;
-        GL30.GLUniform4F( location, x, y, z, w );
+        GL30.GLUniform4F( location, count, value );
         Check();
     }
 
@@ -1114,10 +1117,10 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLUniform4I( int location, int x, int y, int z, int w )
+    public override void GLUniform4I( int location, int count, int value )
     {
         Calls++;
-        GL30.GLUniform4I( location, x, y, z, w );
+        GL30.GLUniform4I( location, count, value );
         Check();
     }
 
@@ -1192,14 +1195,14 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLVertexAttrib1F( int indx, float x )
+    public override void GLVertexAttrib1F( int indx, int x )
     {
         Calls++;
         GL30.GLVertexAttrib1F( indx, x );
         Check();
     }
 
-    public override void GLVertexAttrib1Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib1Fv( int indx, int values )
     {
         Calls++;
         GL30.GLVertexAttrib1Fv( indx, values );
@@ -1213,7 +1216,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLVertexAttrib2Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib2Fv( int indx, int values )
     {
         Calls++;
         GL30.GLVertexAttrib2Fv( indx, values );
@@ -1227,7 +1230,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLVertexAttrib3Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib3Fv( int indx, int values )
     {
         Calls++;
         GL30.GLVertexAttrib3Fv( indx, values );
@@ -1241,21 +1244,21 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLVertexAttrib4Fv( int indx, FloatBuffer values )
+    public override void GLVertexAttrib4Fv( int indx, int values )
     {
         Calls++;
         GL30.GLVertexAttrib4Fv( indx, values );
         Check();
     }
 
-    public override void GLVertexAttribPointer( int indx, int size, VertexAttribType type, bool normalized, int stride, Buffer ptr )
+    public override void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Buffer ptr )
     {
         Calls++;
         GL30.GLVertexAttribPointer( indx, size, type, normalized, stride, ptr );
         Check();
     }
 
-    public override void GLVertexAttribPointer( int indx, int size, VertexAttribType type, bool normalized, int stride, int ptr )
+    public override void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, IntPtr ptr )
     {
         Calls++;
         GL30.GLVertexAttribPointer( indx, size, type, normalized, stride, ptr );
@@ -1846,7 +1849,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
     }
 
 
-    public void GLDrawArraysInstanced( PrimitiveType mode, int first, int count, int instanceCount )
+    public void GLDrawArraysInstanced( int mode, int first, int count, int instanceCount )
     {
         VertexCount.Put( count );
         DrawCalls++;
@@ -1855,7 +1858,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public void GLDrawElementsInstanced( PrimitiveType mode, int count, int type, int indicesOffset, int instanceCount )
+    public void GLDrawElementsInstanced( int mode, int count, int type, int indicesOffset, int instanceCount )
     {
         VertexCount.Put( count );
         DrawCalls++;

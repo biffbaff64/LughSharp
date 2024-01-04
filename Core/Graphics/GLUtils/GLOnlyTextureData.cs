@@ -59,7 +59,7 @@ public class GLOnlyTextureData : ITextureData
         IsPrepared = true;
     }
 
-    public void ConsumeCustomData( TextureTarget target )
+    public void ConsumeCustomData( int target )
     {
         Gdx.GL.GLTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
     }

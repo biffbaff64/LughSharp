@@ -41,10 +41,10 @@ global using JetBrains.Annotations;
 // -----------------------------------------------------------------------
 // OpenGL support
 
-global using GLFW;
-global using GLFW.Game;
-global using LibGDXSharp.Audio.OpenAL;
-global using OpenGL;
+//global using GLFW;
+//global using GLFW.Game;
+//global using LibGDXSharp.Audio.OpenAL;
+//global using OpenGL;
 
 // -----------------------------------------------------------------------
 // LibGDXSharp

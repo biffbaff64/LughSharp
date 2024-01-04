@@ -1336,7 +1336,7 @@ public class Stage : InputAdapter
             }
         }
 
-        Gdx.GL.GLEnable( EnableCap.Blend );
+        Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
         _debugShapes.ProjectionMatrix = Camera.Combined;
         _debugShapes.Begin();
@@ -1345,7 +1345,7 @@ public class Stage : InputAdapter
 
         _debugShapes.End();
 
-        Gdx.GL.GLDisable( EnableCap.Blend );
+        Gdx.GL.GLDisable( IGL20.GL_BLEND );
     }
 
     /// <summary>

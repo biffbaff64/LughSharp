@@ -19,9 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="glfw-net" Version="3.3.1" />
         <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
-        <PackageReference Include="OpenGL.Net" Version="0.8.4" />
         <PackageReference Include="RestSharp" Version="110.2.0" />
         <PackageReference Include="SharpZipLib" Version="1.4.2" />
         <PackageReference Include="System.Drawing.Common" Version="7.0.0" />

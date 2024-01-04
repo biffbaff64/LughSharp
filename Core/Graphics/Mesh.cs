@@ -715,7 +715,7 @@ public class Mesh
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="primitiveType"> the primitive type  </param>
-    public void Render( ShaderProgram shader, PrimitiveType primitiveType )
+    public void Render( ShaderProgram shader, int primitiveType )
     {
         Render( shader,
                 primitiveType,
@@ -751,7 +751,7 @@ public class Mesh
     /// <param name="primitiveType"> the primitive type </param>
     /// <param name="offset"> the offset into the vertex or index buffer </param>
     /// <param name="count"> number of vertices or indices to use  </param>
-    public void Render( ShaderProgram? shader, PrimitiveType primitiveType, int offset, int count )
+    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count )
     {
         Render( shader, primitiveType, offset, count, AutoBind );
     }
@@ -782,7 +782,7 @@ public class Mesh
     /// <param name="offset"> the offset into the vertex or index buffer </param>
     /// <param name="count"> number of vertices or indices to use </param>
     /// <param name="autoBind"> overrides the autoBind member of this Mesh  </param>
-    public void Render( ShaderProgram? shader, PrimitiveType primitiveType, int offset, int count, bool autoBind )
+    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count, bool autoBind )
     {
         ArgumentNullException.ThrowIfNull( shader );
 
@@ -807,7 +807,7 @@ public class Mesh
                 buffer.Position = offset;
                 buffer.Limit    = ( offset + count );
 
-                Gdx.GL20.GLDrawElements( primitiveType, count, DrawElementsType.UnsignedShort, buffer );
+                Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
 
                 buffer.Position = oldPosition;
                 buffer.Limit    = oldLimit;
@@ -845,7 +845,7 @@ public class Mesh
                 }
                 else
                 {
-                    Gdx.GL20.GLDrawElements( primitiveType, count, DrawElementsType.UnsignedShort, offset * 2 );
+                    Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
                 }
             }
             else

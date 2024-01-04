@@ -212,8 +212,8 @@ public class ShaderProgram
     /// <param name="fragmentShader">  </param>
     private void CompileShaders( string vertexShader, string fragmentShader )
     {
-        _vertexShaderHandle   = LoadShader( ShaderType.VertexShader, vertexShader );
-        _fragmentShaderHandle = LoadShader( ShaderType.FragmentShader, fragmentShader );
+        _vertexShaderHandle   = LoadShader( IGL20.GL_VERTEX_SHADER, vertexShader );
+        _fragmentShaderHandle = LoadShader( IGL20.GL_FRAGMENT_SHADER, fragmentShader );
 
         if ( ( _vertexShaderHandle == -1 ) || ( _fragmentShaderHandle == -1 ) )
         {
@@ -234,11 +234,11 @@ public class ShaderProgram
         IsCompiled = true;
     }
 
-    private int LoadShader( ShaderType type, string source )
+    private int LoadShader( int type, string source )
     {
         IntBuffer intbuf = BufferUtils.NewIntBuffer( 1 );
 
-        var shader = ( int )Gdx.GL20.GLCreateShader( type );
+        var shader = Gdx.GL20.GLCreateShader( type );
 
         if ( shader == 0 )
         {
@@ -257,7 +257,7 @@ public class ShaderProgram
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
             var infoLog = Gdx.GL20.GLGetShaderInfoLog( shader );
-            _log += type == ShaderType.VertexShader ? "Vertex shader\n" : "Fragment shader:\n";
+            _log += type == IGL20.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
 
 // }
@@ -273,7 +273,7 @@ public class ShaderProgram
     /// <returns></returns>
     protected int CreateProgram()
     {
-        var program = ( int )Gdx.GL20.GLCreateProgram();
+        var program = Gdx.GL20.GLCreateProgram();
 
         return program != 0 ? program : -1;
     }
@@ -393,10 +393,10 @@ public class ShaderProgram
         Gdx.GL20.GLUniform1I( FetchUniformLocation( name ), value );
     }
 
-    public void SetUniformi( int location, int value )
+    public void SetUniformi( int location, int count, int value )
     {
         CheckManaged();
-        Gdx.GL20.GLUniform1I( location, value );
+        Gdx.GL20.GLUniform1I( location, count, value );
     }
 
     /// <summary>
@@ -410,12 +410,6 @@ public class ShaderProgram
     {
         CheckManaged();
         Gdx.GL20.GLUniform2I( FetchUniformLocation( name ), value1, value2 );
-    }
-
-    public void SetUniformi( int location, int value1, int value2 )
-    {
-        CheckManaged();
-        Gdx.GL20.GLUniform2I( location, value1, value2 );
     }
 
     /// <summary>
@@ -756,7 +750,7 @@ public class ShaderProgram
     /// </param>
     /// <param name="stride">The stride in bytes between successive attributes.</param>
     /// <param name="buffer">The buffer containing the vertex attributes.</param>
-    public void SetVertexAttribute( string name, int size, VertexAttribType type, bool normalize, int stride, Buffer buffer )
+    public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
 
@@ -770,7 +764,7 @@ public class ShaderProgram
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
     }
 
-    public void SetVertexAttribute( int location, int size, VertexAttribType type, bool normalize, int stride, Buffer buffer )
+    public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
@@ -794,7 +788,7 @@ public class ShaderProgram
     /// <param name="offset">
     /// Byte offset into the vertex buffer object bound to IGL20.GL_Array_Buffer.
     /// </param>
-    public void SetVertexAttribute( string name, int size, VertexAttribType type, bool normalize, int stride, int offset )
+    public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, int offset )
     {
         CheckManaged();
 
@@ -808,7 +802,7 @@ public class ShaderProgram
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, offset );
     }
 
-    public void SetVertexAttribute( int location, int size, VertexAttribType type, bool normalize, int stride, int offset )
+    public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, int offset )
     {
         CheckManaged();
         Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, offset );
@@ -817,7 +811,7 @@ public class ShaderProgram
     public void Bind()
     {
         CheckManaged();
-        Gdx.GL20.GLUseProgram( ( int )_programHandle );
+        Gdx.GL20.GLUseProgram( _programHandle );
     }
 
     /// <summary>
@@ -827,9 +821,9 @@ public class ShaderProgram
     public void Dispose()
     {
         Gdx.GL20.GLUseProgram( 0 );
-        Gdx.GL20.GLDeleteShader( ( int )_vertexShaderHandle );
-        Gdx.GL20.GLDeleteShader( ( int )_fragmentShaderHandle );
-        Gdx.GL20.GLDeleteProgram( ( int )_programHandle );
+        Gdx.GL20.GLDeleteShader( _vertexShaderHandle );
+        Gdx.GL20.GLDeleteShader( _fragmentShaderHandle );
+        Gdx.GL20.GLDeleteProgram( _programHandle );
 
         Shaders.Get( Gdx.App ).Remove( this );
     }
