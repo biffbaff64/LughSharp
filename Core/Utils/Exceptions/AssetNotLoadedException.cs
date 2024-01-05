@@ -32,7 +32,7 @@ public class AssetNotLoadedException : System.Exception
     }
 
     public AssetNotLoadedException( AssetDescriptor desc )
-        : this( desc.Type, desc.FilePath!, desc.Parameters )
+        : this( desc.AssetType, desc.Filepath!, desc.Parameters )
     {
     }
 }

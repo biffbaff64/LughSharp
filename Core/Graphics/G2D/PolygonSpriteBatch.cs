@@ -90,8 +90,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     /// The max number of vertices and number of triangles in a single batch. Max of 32767.
     /// </param>
     /// <seealso cref="PolygonSpriteBatch(int, int, ShaderProgram)"/>
-    public PolygonSpriteBatch( int size )
-        : this( size, size * 2, null )
+    public PolygonSpriteBatch( int size ) : this( size, size * 2, null )
     {
     }
 
@@ -142,13 +141,13 @@ public class PolygonSpriteBatch : IPolygonBatch
             vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
         }
 
-        _mesh = new Mesh
-            (
-            vertexDataType, false, maxVertices, maxTriangles * 3,
-            new VertexAttribute( VertexAttributes.Usage.POSITION, 2, ShaderProgram.POSITION_ATTRIBUTE ),
-            new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED, 4, ShaderProgram.COLOR_ATTRIBUTE ),
-            new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0" )
-            );
+        _mesh = new Mesh( vertexDataType,
+                          false,
+                          maxVertices,
+                          maxTriangles * 3,
+                          new VertexAttribute( VertexAttributes.Usage.POSITION, 2, ShaderProgram.POSITION_ATTRIBUTE ),
+                          new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED, 4, ShaderProgram.COLOR_ATTRIBUTE ),
+                          new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0" ) );
 
         _vertices  = new float[ maxVertices * Sprite.VertexSize ];
         _triangles = new short[ maxTriangles * 3 ];
@@ -210,7 +209,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( ISBlendingEnabled() )
         {
-            Gdx.GL.GLDisable( EnableCap.Blend );
+            Gdx.GL.GLDisable( IGL20.GL_BLEND );
         }
     }
 
@@ -1345,11 +1344,11 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( _blendingDisabled )
         {
-            Gdx.GL.GLDisable( EnableCap.Blend );
+            Gdx.GL.GLDisable( IGL20.GL_BLEND );
         }
         else
         {
-            Gdx.GL.GLEnable( EnableCap.Blend );
+            Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
@@ -1357,7 +1356,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             }
         }
 
-        mesh.Render( _customShader ?? _shader, PrimitiveType.Triangles, 0, trianglesInBatch );
+        mesh.Render( _customShader ?? _shader, IGL20.GL_TRIANGLES, 0, trianglesInBatch );
 
         _vertexIndex   = 0;
         _triangleIndex = 0;

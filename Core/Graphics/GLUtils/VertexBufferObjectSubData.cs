@@ -100,12 +100,12 @@ public class VertexBufferObjectSubData : IVertexData
     /// <summary>
     /// </summary>
     /// <returns> the number of vertices this VertexData stores </returns>
-    public int NumVertices => ( _buffer.Limit * 4 ) / Attributes!.VertexSize;
+    public int NumVertices => ( _buffer.Limit * 4 ) / Attributes.VertexSize;
 
     /// <summary>
     /// </summary>
     /// <returns> the number of vertices this VertedData can store </returns>
-    public int NumMaxVertices => ByteBuffer.Capacity / Attributes!.VertexSize;
+    public int NumMaxVertices => ByteBuffer.Capacity / Attributes.VertexSize;
 
     /// <summary>
     /// Sets the vertices of this VertexData, discarding the old vertex data. The
@@ -200,13 +200,13 @@ public class VertexBufferObjectSubData : IVertexData
             _isDirty = false;
         }
 
-        var numAttributes = Attributes?.Size ?? 0;
+        var numAttributes = Attributes.Size;
 
         if ( locations == null )
         {
             for ( var i = 0; i < numAttributes; i++ )
             {
-                VertexAttribute attribute = Attributes!.Get( i );
+                VertexAttribute attribute = Attributes.Get( i );
                 var             location  = shader.GetAttributeLocation( attribute.alias );
 
                 if ( location < 0 )
@@ -216,21 +216,19 @@ public class VertexBufferObjectSubData : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                shader.SetVertexAttribute(
-                    location,
-                    attribute.numComponents,
-                    attribute.type,
-                    attribute.normalized,
-                    Attributes!.VertexSize,
-                    attribute.Offset
-                    );
+                shader.SetVertexAttribute( location,
+                                           attribute.numComponents,
+                                           attribute.type,
+                                           attribute.normalized,
+                                           Attributes.VertexSize,
+                                           attribute.Offset );
             }
         }
         else
         {
             for ( var i = 0; i < numAttributes; i++ )
             {
-                VertexAttribute attribute = Attributes!.Get( i );
+                VertexAttribute attribute = Attributes.Get( i );
                 var             location  = locations[ i ];
 
                 if ( location < 0 )
@@ -240,14 +238,12 @@ public class VertexBufferObjectSubData : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                shader.SetVertexAttribute(
-                    location,
-                    attribute.numComponents,
-                    attribute.type,
-                    attribute.normalized,
-                    Attributes!.VertexSize,
-                    attribute.Offset
-                    );
+                shader.SetVertexAttribute( location,
+                                           attribute.numComponents,
+                                           attribute.type,
+                                           attribute.normalized,
+                                           Attributes.VertexSize,
+                                           attribute.Offset );
             }
         }
 
@@ -305,7 +301,7 @@ public class VertexBufferObjectSubData : IVertexData
     public void Dispose()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
+        Gdx.GL20.GLDeleteBuffers( _bufferHandle );
         _bufferHandle = 0;
     }
 }

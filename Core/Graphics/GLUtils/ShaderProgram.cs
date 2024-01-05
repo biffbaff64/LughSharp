@@ -393,23 +393,10 @@ public class ShaderProgram
         Gdx.GL20.GLUniform1I( FetchUniformLocation( name ), value );
     }
 
-    public void SetUniformi( int location, int count, int value )
+    public void SetUniformi( int location, int value )
     {
         CheckManaged();
-        Gdx.GL20.GLUniform1I( location, count, value );
-    }
-
-    /// <summary>
-    /// Sets the uniform with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
-    /// </summary>
-    /// <param name="name"> the name of the uniform </param>
-    /// <param name="value1"> the first value </param>
-    /// <param name="value2"> the second value  </param>
-    public void SetUniformi( string name, int value1, int value2 )
-    {
-        CheckManaged();
-        Gdx.GL20.GLUniform2I( FetchUniformLocation( name ), value1, value2 );
+        Gdx.GL20.GLUniform1I( location, value );
     }
 
     /// <summary>
@@ -417,19 +404,18 @@ public class ShaderProgram
     /// must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
-    /// <param name="value1"> the first value </param>
-    /// <param name="value2"> the second value </param>
-    /// <param name="value3"> the third value  </param>
-    public void SetUniformi( string name, int value1, int value2, int value3 )
+    /// <param name="count"> the first value </param>
+    /// <param name="value"> the second value </param>
+    public void SetUniformi( string name, int count, int value )
     {
         CheckManaged();
-        Gdx.GL20.GLUniform3I( FetchUniformLocation( name ), value1, value2, value3 );
+        Gdx.GL20.GLUniform2I( FetchUniformLocation( name ), count, value );
     }
 
-    public void SetUniformi( int location, int value1, int value2, int value3 )
+    public void SetUniformi( int location, int count, int value )
     {
         CheckManaged();
-        Gdx.GL20.GLUniform3I( location, value1, value2, value3 );
+        Gdx.GL20.GLUniform2I( location, count, value );
     }
 
     /// <summary>
@@ -440,17 +426,16 @@ public class ShaderProgram
     /// <param name="value1"> the first value </param>
     /// <param name="value2"> the second value </param>
     /// <param name="value3"> the third value </param>
-    /// <param name="value4"> the fourth value  </param>
-    public void SetUniformi( string name, int value1, int value2, int value3, int value4 )
+    public void SetUniformi( string name, int value1, int value2, int value3 )
     {
         CheckManaged();
-        Gdx.GL20.GLUniform4I( FetchUniformLocation( name ), value1, value2, value3, value4 );
+        Gdx.GL20.GLUniform3I( FetchUniformLocation( name ), value1, value2, value3 );
     }
 
-    public void SetUniformi( int location, int value1, int value2, int value3, int value4 )
+    public void SetUniformi( int location, int x, int y, int z )
     {
         CheckManaged();
-        Gdx.GL20.GLUniform4I( location, value1, value2, value3, value4 );
+        Gdx.GL20.GLUniform3I( location, x, y, z );
     }
 
     /// <summary>
@@ -465,7 +450,7 @@ public class ShaderProgram
         Gdx.GL20.GLUniform1F( FetchUniformLocation( name ), value );
     }
 
-    public void SetUniformf( int location, float value )
+    public void SetUniformf( int location, int value )
     {
         CheckManaged();
         Gdx.GL20.GLUniform1F( location, value );
@@ -484,7 +469,7 @@ public class ShaderProgram
         Gdx.GL20.GLUniform2F( FetchUniformLocation( name ), value1, value2 );
     }
 
-    public void SetUniformf( int location, float value1, float value2 )
+    public void SetUniformf( int location, int value1, int value2 )
     {
         CheckManaged();
         Gdx.GL20.GLUniform2F( location, value1, value2 );
@@ -515,20 +500,20 @@ public class ShaderProgram
     /// must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
-    /// <param name="value1"> the first value </param>
-    /// <param name="value2"> the second value </param>
-    /// <param name="value3"> the third value </param>
-    /// <param name="value4"> the fourth value  </param>
-    public void SetUniformf( string name, float value1, float value2, float value3, float value4 )
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="w"></param>
+    public void SetUniformf( string name, float x, float y, float z, float w )
     {
         CheckManaged();
-        Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), value1, value2, value3, value4 );
+        Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), x, y, z, w );
     }
 
-    public void SetUniformf( int location, float value1, float value2, float value3, float value4 )
+    public void SetUniformf( int location, float x, float y, float z, float w )
     {
         CheckManaged();
-        Gdx.GL20.GLUniform4F( location, value1, value2, value3, value4 );
+        Gdx.GL20.GLUniform4F( location, x, y, z, w );
     }
 
     public void SetUniform1Fv( string name, float[] values, int offset, int length )
@@ -694,12 +679,14 @@ public class ShaderProgram
     /// <param name="values"> x and y as the first and second values respectively  </param>
     public void SetUniformf( string name, Vector2 values )
     {
-        SetUniformf( name, values.X, values.Y );
+        CheckManaged();
+        Gdx.GL20.GLUniform2F( FetchUniformLocation( name ), values.X, values.Y );
     }
 
     public void SetUniformf( int location, Vector2 values )
     {
-        SetUniformf( location, values.X, values.Y );
+        CheckManaged();
+        Gdx.GL20.GLUniform2F( location, values.X, values.Y );
     }
 
     /// <summary>
@@ -709,12 +696,14 @@ public class ShaderProgram
     /// <param name="values"> x, y and z as the first, second and third values respectively  </param>
     public void SetUniformf( string name, Vector3 values )
     {
-        SetUniformf( name, values.X, values.Y, values.Z );
+        CheckManaged();
+        Gdx.GL20.GLUniform3F( FetchUniformLocation( name ), values.X, values.Y, values.Z );
     }
 
     public void SetUniformf( int location, Vector3 values )
     {
-        SetUniformf( location, values.X, values.Y, values.Z );
+        CheckManaged();
+        Gdx.GL20.GLUniform3F( location, values.X, values.Y, values.Z );
     }
 
     /// <summary>
@@ -724,12 +713,12 @@ public class ShaderProgram
     /// <param name="values"> r, g, b and a as the first through fourth values respectively  </param>
     public void SetUniformf( string name, Color values )
     {
-        SetUniformf( name, values.R, values.G, values.B, values.A );
+        Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), values.R, values.G, values.B, values.A );
     }
 
     public void SetUniformf( int location, Color values )
     {
-        SetUniformf( location, values.R, values.G, values.B, values.A );
+        Gdx.GL20.GLUniform4F( location, values.R, values.G, values.B, values.A );
     }
 
     /// <summary>

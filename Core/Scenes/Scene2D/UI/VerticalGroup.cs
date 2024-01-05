@@ -193,7 +193,7 @@ public class VerticalGroup : WidgetGroup
         }
     }
 
-    public new void Layout()
+    public void Layout()
     {
         if ( _sizeInvalid )
         {
@@ -763,7 +763,7 @@ public class VerticalGroup : WidgetGroup
             return;
         }
 
-        shapes.Set( PrimitiveType.Lines );
+        shapes.Set( ShapeRenderer.ShapeTypes.Lines );
 
         if ( Stage != null )
         {

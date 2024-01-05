@@ -25,6 +25,9 @@ public abstract class AssetLoader
     public IFileHandleResolver Resolver      { get; set; }
     public bool                IsSynchronous { get; protected init; } = false;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// Constructor, sets the FileHandleResolver to use to resolve the file
     /// associated with the asset name.
@@ -41,8 +44,8 @@ public abstract class AssetLoader
     public FileInfo Resolve( string fileName ) => Resolver.Resolve( fileName );
 
     /// <summary>
-    /// Returns the assets this asset requires to be loaded first.
-    /// This method may be called on a thread other than the GL thread.
+    /// Returns the assets this asset requires to be loaded first. This method may be
+    /// called on a thread other than the GL thread.
     /// </summary>
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>

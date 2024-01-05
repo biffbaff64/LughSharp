@@ -47,9 +47,9 @@ public abstract class AsynchronousAssetLoader : AssetLoader
     /// <param name="parameter"></param>
     /// <returns></returns>
     public abstract object LoadSync( AssetManager manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     AssetLoaderParameters parameter );
+                                   string? fileName,
+                                   FileInfo? file,
+                                   AssetLoaderParameters parameter );
 
     /// <summary>
     /// </summary>

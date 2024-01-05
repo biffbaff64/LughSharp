@@ -49,10 +49,10 @@ public class PixmapLoader : AsynchronousAssetLoader
         _pixmap = new Pixmap( file );
     }
 
-    public override Pixmap LoadSync( AssetManager? manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     AssetLoaderParameters parameter )
+    public override object LoadSync( AssetManager manager,
+                                   string? fileName,
+                                   FileInfo? file,
+                                   AssetLoaderParameters parameter )
     {
         Pixmap? pixmap = _pixmap;
 

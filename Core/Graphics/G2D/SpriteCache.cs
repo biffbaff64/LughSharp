@@ -71,20 +71,9 @@ namespace LibGDXSharp.Graphics.G2D;
 [PublicAPI]
 public class SpriteCache
 {
-    private readonly static float[] TempVertices = new float[ Sprite.VertexSize * 6 ];
-
-    private readonly Mesh            _mesh;
-    private readonly List< Cache >   _caches         = new();
-    private readonly Matrix4         _combinedMatrix = new();
-    private readonly ShaderProgram?  _shader;
-    private readonly List< Texture > _textures = new( 8 );
-    private readonly List< int >     _counts   = new( 8 );
-
-    private Cache? _currentCache;
-    private bool   _drawing;
-
-    private float _colorPacked = Color.WhiteFloatBits;
-
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Number of render calls since the last <see cref="Begin"/>.
     /// </summary>
@@ -113,6 +102,26 @@ public class SpriteCache
     public Matrix4 ProjectionMatrix { get; init; } = new();
     public Matrix4 TransformMatrix  { get; init; } = new();
     public bool    IsDrawing        => _drawing;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    private readonly static float[] TempVertices = new float[ Sprite.VertexSize * 6 ];
+
+    private readonly Mesh            _mesh;
+    private readonly List< Cache >   _caches         = new();
+    private readonly Matrix4         _combinedMatrix = new();
+    private readonly ShaderProgram?  _shader;
+    private readonly List< Texture > _textures = new( 8 );
+    private readonly List< int >     _counts   = new( 8 );
+
+    private Cache? _currentCache;
+    private bool   _drawing;
+
+    private float _colorPacked = Color.WhiteFloatBits;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Creates a cache that uses indexed geometry and can contain up to 1000 images.
@@ -153,30 +162,18 @@ public class SpriteCache
             throw new ArgumentException( $"Can't have more than 8191 sprites per batch: {size}" );
         }
 
-        _mesh = new Mesh
-            (
-             true,
-             size * ( useIndices ? 4 : 6 ),
-             useIndices ? size * 6 : 0,
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.POSITION,
-                  2,
-                  ShaderProgram.POSITION_ATTRIBUTE
-                 ),
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.COLOR_PACKED,
-                  4,
-                  ShaderProgram.COLOR_ATTRIBUTE
-                 ),
-             new VertexAttribute
-                 (
-                  VertexAttributes.Usage.TEXTURE_COORDINATES,
-                  2,
-                  ShaderProgram.TEXCOORD_ATTRIBUTE + "0"
-                 )
-            )
+        _mesh = new Mesh( true,
+                          size * ( useIndices ? 4 : 6 ),
+                          useIndices ? size * 6 : 0,
+                          new VertexAttribute( VertexAttributes.Usage.POSITION,
+                                               2,
+                                               ShaderProgram.POSITION_ATTRIBUTE ),
+                          new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED,
+                                               4,
+                                               ShaderProgram.COLOR_ATTRIBUTE ),
+                          new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
+                                               2,
+                                               ShaderProgram.TEXCOORD_ATTRIBUTE + "0" ) )
             {
                 AutoBind = false
             };
@@ -307,12 +304,9 @@ public class SpriteCache
             // Redefine existing cache.
             if ( cacheCount > cache.maxCount )
             {
-                throw new GdxRuntimeException
-                    (
-                     $"If a cache is not the last created, it cannot be redefined"
-                   + $"with more entries than when it was first created: "
-                   + $"{cacheCount} ({cache.maxCount} max)"
-                    );
+                throw new GdxRuntimeException( $"If a cache is not the last created, it cannot be redefined"
+                                             + $"with more entries than when it was first created: "
+                                             + $"{cacheCount} ({cache.maxCount} max)" );
             }
 
             cache.textureCount = _textures.Count;
@@ -1189,7 +1183,7 @@ public class SpriteCache
         {
             textures?[ i ].Bind();
 
-            _mesh.Render( CustomShader ?? _shader, PrimitiveType.Triangles, offset, counts![ i ] );
+            _mesh.Render( CustomShader ?? _shader, IGL20.GL_TRIANGLES, offset, counts![ i ] );
 
             offset += counts[ i ];
         }
@@ -1240,7 +1234,7 @@ public class SpriteCache
                 length -= count;
             }
 
-            _mesh.Render( CustomShader ?? _shader, PrimitiveType.Triangles, offset, count );
+            _mesh.Render( CustomShader ?? _shader, IGL20.GL_TRIANGLES, offset, count );
 
             offset += count;
         }

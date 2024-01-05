@@ -1414,7 +1414,7 @@ public class Table : WidgetGroup
     /// with each child. The values given are the position within the parent
     /// and size of the table.
     /// </summary>
-    public new void Layout()
+    public void Layout()
     {
         if ( _sizeInvalid )
         {
@@ -2036,7 +2036,7 @@ public class Table : WidgetGroup
             return;
         }
 
-        shapes.Set( PrimitiveType.Lines );
+        shapes.Set( ShapeRenderer.ShapeTypes.Lines );
 
         if ( Stage != null )
         {

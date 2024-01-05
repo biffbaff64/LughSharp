@@ -56,7 +56,7 @@ public interface IGraphics
         public int          VirtualX      { get; set; }
         public int          VirtualY      { get; set; }
         public string?      Name          { get; set; }
-        public GLFW.Monitor MonitorHandle { get; set; }
+//        public GLFW.Monitor MonitorHandle { get; set; }
 
         public MonitorDescriptor( int x, int y, string name )
         {

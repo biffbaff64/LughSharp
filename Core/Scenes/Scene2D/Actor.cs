@@ -1386,7 +1386,7 @@ public class Actor : IActor
             return;
         }
 
-        shapes.Set( IGL20.GL_LINES );
+        shapes.Set( ShapeRenderer.ShapeTypes.Lines );
 
         if ( Stage != null )
         {

@@ -21,15 +21,15 @@ namespace LibGDXSharp.Graphics.GLUtils;
 [PublicAPI]
 public class ShapeRenderer : IDisposable
 {
-//    public enum PrimitiveType
-//    {
-//        Points = PrimitiveType.Points,
-//        Lines  = PrimitiveType.Lines,
-//        Filled = PrimitiveType.Triangles
-//    }
+    public enum ShapeTypes
+    {
+        Points = IGL20.GL_POINTS,
+        Lines  = IGL20.GL_LINES,
+        Filled = IGL20.GL_TRIANGLES
+    }
 
     public IImmediateModeRenderer Renderer  { get; set; }
-    public PrimitiveType?         ShapeType { get; set; }
+    public ShapeTypes?         ShapeType { get; set; }
 
     private readonly Matrix4 _combinedMatrix       = new();
     private readonly Color   _color                = new( 1, 1, 1, 1 );
@@ -148,7 +148,7 @@ public class ShapeRenderer : IDisposable
             throw new System.InvalidOperationException( "autoShapeType must be true to use this method." );
         }
 
-        Begin( PrimitiveType.Lines );
+        Begin( ShapeTypes.Lines );
     }
 
     /// <summary>
@@ -157,7 +157,7 @@ public class ShapeRenderer : IDisposable
     /// call to <see cref="End()"/>.
     /// </summary>
     /// <see cref="SetAutoShapeType(bool) "/>
-    public void Begin( PrimitiveType? type )
+    public void Begin( ShapeTypes? type )
     {
         if ( this.ShapeType != null )
         {
@@ -190,7 +190,7 @@ public class ShapeRenderer : IDisposable
         this.ShapeType = null;
     }
 
-    public void Set( int type )
+    public void Set( ShapeTypes type )
     {
         if ( this.ShapeType == type )
         {
@@ -213,12 +213,12 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a point using <see cref="PrimitiveType.Points"/>, <see cref="PrimitiveType.Lines"/>
-    /// or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws a point using <see cref="ShapeTypes.Points"/>, <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Point( float x, float y, float z )
     {
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             var size = _defaultRectLineWidth * 0.5f;
 
@@ -226,7 +226,7 @@ public class ShapeRenderer : IDisposable
 
             return;
         }
-        else if ( this.ShapeType == PrimitiveType.Triangles )
+        else if ( this.ShapeType == ShapeTypes.Filled )
         {
             var size = _defaultRectLineWidth * 0.5f;
 
@@ -242,14 +242,14 @@ public class ShapeRenderer : IDisposable
             return;
         }
 
-        Check( PrimitiveType.Points, null, 1 );
+        Check( ShapeTypes.Points, null, 1 );
 
         Renderer.SetColor( _color );
         Renderer.Vertex( x, y, z );
     }
 
     /// <summary>
-    /// Draws a line using <see cref="PrimitiveType.Lines"/> or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws a line using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Line( float x, float y, float z, float x2, float y2, float z2 )
     {
@@ -277,19 +277,19 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a line using <see cref="PrimitiveType.Lines"/> or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws a line using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// The line is drawn with two colors interpolated between the start and end points.
     /// </summary>
     public void Line( float x, float y, float z, float x2, float y2, float z2, Color c1, Color c2 )
     {
-        if ( this.ShapeType == PrimitiveType.Triangles )
+        if ( this.ShapeType == ShapeTypes.Filled )
         {
             RectLine( x, y, x2, y2, _defaultRectLineWidth, c1, c2 );
 
             return;
         }
 
-        Check( PrimitiveType.Lines, null, 2 );
+        Check( ShapeTypes.Lines, null, 2 );
 
         Renderer.SetColor( c1.R, c1.G, c1.B, c1.A );
         Renderer.Vertex( x, y, z );
@@ -298,7 +298,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a curve using <see cref="PrimitiveType.Lines"/>
+    /// Draws a curve using <see cref="ShapeTypes.Lines"/>
     /// </summary>
     public void Curve( float x1,
                        float y1,
@@ -310,7 +310,7 @@ public class ShapeRenderer : IDisposable
                        float y2,
                        int segments )
     {
-        Check( PrimitiveType.Lines, null, ( segments * 2 ) + 2 );
+        Check( ShapeTypes.Lines, null, ( segments * 2 ) + 2 );
 
         var colorBits = _color.ToFloatBits();
 
@@ -365,16 +365,16 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a triangle in x/y plane using <see cref="PrimitiveType.Lines"/>
-    /// or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws a triangle in x/y plane using <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Triangle( float x1, float y1, float x2, float y2, float x3, float y3 )
     {
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, 6 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, 6 );
 
         var colorBits = _color.ToFloatBits();
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             Renderer.SetColor( colorBits );
             Renderer.Vertex( x1, y1, 0 );
@@ -403,8 +403,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a triangle in x/y plane with colored corners using <see cref="PrimitiveType.Lines"/>
-    /// or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws a triangle in x/y plane with colored corners using <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Triangle( float x1,
                           float y1,
@@ -416,9 +416,9 @@ public class ShapeRenderer : IDisposable
                           Color col2,
                           Color col3 )
     {
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, 6 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, 6 );
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
             Renderer.Vertex( x1, y1, 0 );
@@ -447,15 +447,15 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a rectangle in the x/y plane using <see cref="PrimitiveType.Lines"/> or
-    /// <see cref="PrimitiveType.Triangles"/>.
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Rect( float x, float y, float width, float height )
     {
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, 8 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, 8 );
         var colorBits = _color.ToFloatBits();
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             Renderer.SetColor( colorBits );
             Renderer.Vertex( x, y, 0 );
@@ -496,8 +496,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a rectangle in the x/y plane using <see cref="PrimitiveType.Lines"/> or
-    /// <see cref="PrimitiveType.Triangles"/>. The x and y specify the lower left corner.
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left corner.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -516,9 +516,9 @@ public class ShapeRenderer : IDisposable
                       Color col3,
                       Color col4 )
     {
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, 8 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, 8 );
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
             Renderer.Vertex( x, y, 0 );
@@ -559,8 +559,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a rectangle in the x/y plane using <see cref="PrimitiveType.Lines"/> or
-    /// <see cref="PrimitiveType.Triangles"/>. The x and y specify the lower left corner.
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left corner.
     /// The originX and originY specify the point about which to rotate the rectangle. 
     /// </summary>
     public void Rect( float x,
@@ -577,8 +577,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a rectangle in the x/y plane using <see cref="PrimitiveType.Lines"/>
-    /// or <see cref="PrimitiveType.Triangles"/>. The x and y specify the lower left
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left
     /// corner. The originX and originY specify the point about which to rotate
     /// the rectangle.
     /// </summary>
@@ -609,7 +609,7 @@ public class ShapeRenderer : IDisposable
                       Color col3,
                       Color col4 )
     {
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, 8 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, 8 );
 
         var cos = MathUtils.CosDeg( degrees );
         var sin = MathUtils.SinDeg( degrees );
@@ -642,7 +642,7 @@ public class ShapeRenderer : IDisposable
         var x4 = x1 + ( x3 - x2 );
         var y4 = y3 - ( y2 - y1 );
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             Renderer.SetColor( col1.R, col1.G, col1.B, col1.A );
             Renderer.Vertex( x1, y1, 0 );
@@ -686,7 +686,7 @@ public class ShapeRenderer : IDisposable
     /// Draws a line using a rotated rectangle, where with one edge is centered at x1, y1 and the opposite edge centered at x2, y2. </summary>
     public void RectLine( float x1, float y1, float x2, float y2, float width )
     {
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, 8 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, 8 );
 
         var     colorBits = _color.ToFloatBits();
         Vector2 t         = _tmp.Set( y2 - y1, x1 - x2 ).Nor();
@@ -696,7 +696,7 @@ public class ShapeRenderer : IDisposable
         var tx = t.X * width;
         var ty = t.Y * width;
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             Renderer.SetColor( colorBits );
             Renderer.Vertex( x1 + tx, y1 + ty, 0 );
@@ -742,7 +742,7 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void RectLine( float x1, float y1, float x2, float y2, float width, Color c1, Color c2 )
     {
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, 8 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, 8 );
 
         var col1Bits = c1.ToFloatBits();
         var col2Bits = c2.ToFloatBits();
@@ -754,7 +754,7 @@ public class ShapeRenderer : IDisposable
         var tx = t.X * width;
         var ty = t.Y * width;
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             Renderer.SetColor( col1Bits );
             Renderer.Vertex( x1 + tx, y1 + ty, 0 );
@@ -800,8 +800,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a cube using <see cref="PrimitiveType.Lines"/> or
-    /// <see cref="PrimitiveType.Triangles"/>. The x, y and z specify
+    /// Draws a cube using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x, y and z specify
     /// the bottom, left, front corner of the rectangle. 
     /// </summary>
     public void Box( float x, float y, float z, float width, float height, float depth )
@@ -809,9 +809,9 @@ public class ShapeRenderer : IDisposable
         depth = -depth;
         var colorBits = _color.ToFloatBits();
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
-            Check( PrimitiveType.Lines, PrimitiveType.Triangles, 24 );
+            Check( ShapeTypes.Lines, ShapeTypes.Filled, 24 );
 
             Renderer.SetColor( colorBits );
             Renderer.Vertex( x, y, z );
@@ -875,7 +875,7 @@ public class ShapeRenderer : IDisposable
         }
         else
         {
-            Check( PrimitiveType.Lines, PrimitiveType.Triangles, 36 );
+            Check( ShapeTypes.Lines, ShapeTypes.Filled, 36 );
 
             // Front
             Renderer.SetColor( colorBits );
@@ -970,8 +970,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws two crossed lines using <seealso cref="PrimitiveType.Lines"/>
-    /// or <seealso cref="PrimitiveType.Triangles"/>.
+    /// Draws two crossed lines using <seealso cref="ShapeTypes.Lines"/>
+    /// or <seealso cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void XShape( float x, float y, float size )
     {
@@ -999,7 +999,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws an arc using <see cref="PrimitiveType.Lines"/> or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws an arc using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Arc( float x, float y, float radius, float start, float degrees, int segments )
     {
@@ -1019,9 +1019,9 @@ public class ShapeRenderer : IDisposable
 
         float temp;
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
-            Check( PrimitiveType.Lines, PrimitiveType.Triangles, ( segments * 2 ) + 2 );
+            Check( ShapeTypes.Lines, ShapeTypes.Filled, ( segments * 2 ) + 2 );
 
             Renderer.SetColor( colorBits );
             Renderer.Vertex( x, y, 0 );
@@ -1046,7 +1046,7 @@ public class ShapeRenderer : IDisposable
         }
         else
         {
-            Check( PrimitiveType.Lines, PrimitiveType.Triangles, ( segments * 3 ) + 3 );
+            Check( ShapeTypes.Lines, ShapeTypes.Filled, ( segments * 3 ) + 3 );
 
             for ( var i = 0; i < segments; i++ )
             {
@@ -1086,8 +1086,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a circle using <see cref="PrimitiveType.Lines"/> or
-    /// <see cref="PrimitiveType.Triangles"/>.
+    /// Draws a circle using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Circle( float x, float y, float radius, int segments )
     {
@@ -1106,9 +1106,9 @@ public class ShapeRenderer : IDisposable
 
         float temp;
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
-            Check( PrimitiveType.Lines, PrimitiveType.Triangles, ( segments * 2 ) + 2 );
+            Check( ShapeTypes.Lines, ShapeTypes.Filled, ( segments * 2 ) + 2 );
 
             for ( var i = 0; i < segments; i++ )
             {
@@ -1130,7 +1130,7 @@ public class ShapeRenderer : IDisposable
         }
         else
         {
-            Check( PrimitiveType.Lines, PrimitiveType.Triangles, ( segments * 3 ) + 3 );
+            Check( ShapeTypes.Lines, ShapeTypes.Filled, ( segments * 3 ) + 3 );
             segments--;
 
             for ( var i = 0; i < segments; i++ )
@@ -1176,7 +1176,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws an ellipse using <see cref="PrimitiveType.Lines"/> or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws an ellipse using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Ellipse( float x, float y, float width, float height, int segments )
     {
@@ -1185,14 +1185,14 @@ public class ShapeRenderer : IDisposable
             throw new ArgumentException( "segments must be > 0." );
         }
 
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, segments * 3 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, segments * 3 );
 
         var colorBits = _color.ToFloatBits();
         var angle     = ( 2 * MathUtils.PI ) / segments;
 
         float cx = x + ( width / 2 ), cy = y + ( height / 2 );
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             for ( var i = 0; i < segments; i++ )
             {
@@ -1245,7 +1245,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws an ellipse using <see cref="PrimitiveType.Lines"/> or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws an ellipse using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Ellipse( float x, float y, float width, float height, float rotation, int segments )
     {
@@ -1254,7 +1254,7 @@ public class ShapeRenderer : IDisposable
             throw new ArgumentException( "segments must be > 0." );
         }
 
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, segments * 3 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, segments * 3 );
 
         var colorBits = _color.ToFloatBits();
         var angle     = ( 2 * MathUtils.PI ) / segments;
@@ -1268,7 +1268,7 @@ public class ShapeRenderer : IDisposable
         var   x1 = width * 0.5f;
         float y1 = 0;
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             for ( var i = 0; i < segments; i++ )
             {
@@ -1311,7 +1311,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a cone using <see cref="PrimitiveType.Lines"/> or <see cref="PrimitiveType.Triangles"/>.
+    /// Draws a cone using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Cone( float x, float y, float z, float radius, float height, int segments )
     {
@@ -1320,7 +1320,7 @@ public class ShapeRenderer : IDisposable
             throw new ArgumentException( "segments must be > 0." );
         }
 
-        Check( PrimitiveType.Lines, PrimitiveType.Triangles, ( segments * 4 ) + 2 );
+        Check( ShapeTypes.Lines, ShapeTypes.Filled, ( segments * 4 ) + 2 );
 
         var colorBits = _color.ToFloatBits();
         var angle     = ( 2 * MathUtils.PI ) / segments;
@@ -1332,7 +1332,7 @@ public class ShapeRenderer : IDisposable
         float temp;
         float temp2;
 
-        if ( this.ShapeType == PrimitiveType.Lines )
+        if ( this.ShapeType == ShapeTypes.Lines )
         {
             for ( var i = 0; i < segments; i++ )
             {
@@ -1399,7 +1399,7 @@ public class ShapeRenderer : IDisposable
         Renderer.SetColor( colorBits );
         Renderer.Vertex( x + cx, y + cy, z );
 
-        if ( this.ShapeType != PrimitiveType.Lines )
+        if ( this.ShapeType != ShapeTypes.Lines )
         {
             Renderer.SetColor( colorBits );
             Renderer.Vertex( x + temp, y + temp2, z );
@@ -1411,7 +1411,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a polygon in the x/y plane using <see cref="PrimitiveType.Lines"/>.
+    /// Draws a polygon in the x/y plane using <see cref="ShapeTypes.Lines"/>.
     /// The vertices must contain at least 3 points (6 floats x,y).
     /// </summary>
     public void Polygon( float[] vertices, int offset, int count )
@@ -1426,7 +1426,7 @@ public class ShapeRenderer : IDisposable
             throw new ArgumentException( "Polygons must have an even number of vertices." );
         }
 
-        Check( PrimitiveType.Lines, null, count );
+        Check( ShapeTypes.Lines, null, count );
 
         var colorBits = _color.ToFloatBits();
         var firstX    = vertices[ 0 ];
@@ -1464,7 +1464,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    /// Draws a polyline in the x/y plane using <see cref="PrimitiveType.Lines"/>.
+    /// Draws a polyline in the x/y plane using <see cref="ShapeTypes.Lines"/>.
     /// The vertices must contain at least 2 points (4 floats x,y).
     /// </summary>
     public void Polyline( float[] vertices, int offset, int count )
@@ -1479,7 +1479,7 @@ public class ShapeRenderer : IDisposable
             throw new ArgumentException( "Polylines must have an even number of vertices." );
         }
 
-        Check( PrimitiveType.Lines, null, count );
+        Check( ShapeTypes.Lines, null, count );
 
         var colorBits = _color.ToFloatBits();
 
@@ -1508,7 +1508,7 @@ public class ShapeRenderer : IDisposable
     /// <param name="other"></param>
     /// <param name="newVertices"></param>
     /// <exception cref="IllegalStateException"></exception>
-    private void Check( PrimitiveType preferred, PrimitiveType? other, int newVertices )
+    private void Check( ShapeTypes preferred, ShapeTypes? other, int newVertices )
     {
         if ( this.ShapeType == null )
         {
@@ -1568,9 +1568,21 @@ public class ShapeRenderer : IDisposable
     {
         return this.ShapeType != null;
     }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            Renderer.Dispose();
+        }
+    }
+    
     public void Dispose()
     {
-        Renderer.Dispose();
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 }

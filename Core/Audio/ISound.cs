@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Audio;
 
 [PublicAPI]
-public interface ISound
+public interface ISound : IDisposable
 {
     /// <summary>
     /// Plays the sound. If the sound is already playing, it will be played again, concurrently.

@@ -163,19 +163,16 @@ public class IndexBufferObject : IIndexData
             throw new GdxRuntimeException( "No buffer allocated!" );
         }
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, ( int )_bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, _bufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = ( _buffer.Limit * 2 );
 
-            Gdx.GL20.GLBufferData
-                (
-                 IGL20.GL_ELEMENT_ARRAY_BUFFER,
-                 _byteBuffer.Limit,
-                 _byteBuffer,
-                 _usage
-                );
+            Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                                   _byteBuffer.Limit,
+                                   _byteBuffer,
+                                   _usage );
 
             _isDirty = false;
         }
@@ -201,7 +198,7 @@ public class IndexBufferObject : IIndexData
     public void Dispose()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
-        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
+        Gdx.GL20.GLDeleteBuffers( _bufferHandle );
 
         _bufferHandle = 0;
 

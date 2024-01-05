@@ -325,23 +325,23 @@ FILES
 
     ------------------------------------------
     - java.io.BufferedReader                -> 
-    - java.io.BufferedInputStream           -> BufferedStream
+    - java.io.BufferedInputStream           -> BufferedStream ?
     - java.io.ByteArrayInputStream          -> 
     - java.io.ByteArrayOutputStream         -> 
-    - java.io.DataInputStream               -> BinaryReader
-    - java.io.DataOutputStream              -> BinaryWriter
-    - java.io.File                          -> 
-    - java.io.FileHandle                    -> FileInfo ?
+    - java.io.DataInputStream               -> BinaryReader ?
+    - java.io.DataOutputStream              -> BinaryWriter ?
+    - java.io.File                          -> File ( static class )
+    - java.io.FileHandle                    -> FileInfo + File + DirectoryInfo ?
     - java.io.FileInputStream               -> 
     - java.io.FileOutputStream              -> 
     - java.io.FilterInputStream             -> 
     - java.io.FilterOutputStream            -> 
     - java.io.DataOuput                     -> (Interface)
-    - java.io.InputStream                   -> StreamReader
-    - java.io.InputStreamReader             -> StreamReader
+    - java.io.InputStream                   -> StreamReader ?
+    - java.io.InputStreamReader             -> StreamReader ?
     - java.io.IOException                   -> System.IO.IOException
-    - java.io.OutputStream                  -> StreamWriter
-    - java.io.Reader                        -> 
+    - java.io.OutputStream                  -> StreamWriter ?
+    - java.io.Reader                        -> StreamReader ?
 
     ------------------------------------------
 

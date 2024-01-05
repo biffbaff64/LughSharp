@@ -555,31 +555,31 @@ public interface IGL20
 
     void GLTexParameteri( int target, int pname, int param );
 
-    void GLUniform1F( int location, int count, int value );
+    void GLUniform1F( int location, float x );
 
-    void GLUniform1I( int location, int count, int value );
+    void GLUniform1I( int location, int x );
 
-    void GLUniform2F( int location, int x, int y );
+    void GLUniform2F( int location, float x, float y );
 
     void GLUniform2I( int location, int count, int value );
 
-    void GLUniform3F( int location, int count, int value );
+    void GLUniform3F( int location, float x, float y, float z );
 
-    void GLUniform3I( int location, int count, int value );
+    void GLUniform3I( int location, int x, int y, int z );
 
-    void GLUniform4F( int location, int count, int value );
+    void GLUniform4F( int location, float x, float y, float z, float w );
 
-    void GLUniform4I( int location, int count, int value );
+    void GLUniform4I( int location, int x, int y, int z, int w );
 
-    void GLVertexAttrib1F( int indx, int x );
+    void GLVertexAttrib1F( int location, float x );
 
-    void GLVertexAttrib1Fv( int indx, int values );
+    void GLVertexAttrib1Fv( int location, int count, float[] v, int offset );
 
-    void GLVertexAttrib2Fv( int indx, int values );
+    void GLVertexAttrib2Fv( int location, int count, FloatBuffer values );
 
-    void GLVertexAttrib3Fv( int indx, int values );
+    void GLVertexAttrib3Fv( int location, int count, float[] v, int offset );
 
-    void GLVertexAttrib4Fv( int indx, int values );
+    void GLVertexAttrib4Fv( int location, int count, float[] v, int offset );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

@@ -815,7 +815,7 @@ public class HorizontalGroup : WidgetGroup
             return;
         }
 
-        shapes.Set( OpenGL.PrimitiveType.Lines );
+        shapes.Set( ShapeRenderer.ShapeTypes.Lines );
 
         if ( Stage != null )
         {

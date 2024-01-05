@@ -90,10 +90,10 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     /// <returns></returns>
-    public override Texture LoadSync( AssetManager? manager,
-                                      string? fileName,
-                                      FileInfo? file,
-                                      AssetLoaderParameters parameter )
+    public override object LoadSync( AssetManager manager,
+                                   string? fileName,
+                                   FileInfo? file,
+                                   AssetLoaderParameters parameter )
     {
         Texture? texture = _loaderInfo.Texture;
 

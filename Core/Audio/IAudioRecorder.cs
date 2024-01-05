@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Audio;
 
 [PublicAPI]
-public interface IAudioRecorder
+public interface IAudioRecorder : IDisposable
 {
     /// <summary>
     /// Reads in numSamples samples into the array samples starting at offset.
@@ -27,6 +27,4 @@ public interface IAudioRecorder
     /// <param name="offset">the offset into the array</param>
     /// <param name="numSamples">The number of samples to be read.</param>
     void Read( short[] samples, int offset, int numSamples );
-
-    void Dispose();
 }

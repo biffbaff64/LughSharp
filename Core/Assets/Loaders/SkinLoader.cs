@@ -68,10 +68,10 @@ public class SkinLoader : AsynchronousAssetLoader
     {
     }
 
-    public override object LoadSync( AssetManager? manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     AssetLoaderParameters? parameter )
+    public override object LoadSync( AssetManager manager,
+                                   string? fileName,
+                                   FileInfo? file,
+                                   AssetLoaderParameters parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );

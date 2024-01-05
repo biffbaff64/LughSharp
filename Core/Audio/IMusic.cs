@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Audio;
 
 [PublicAPI]
-public interface IMusic
+public interface IMusic : IDisposable
 {
     /// <summary>
     /// Starts the play back of the music stream. In case the stream was paused
@@ -76,11 +76,6 @@ public interface IMusic
     /// Returns the playback position in seconds.
     /// </summary>
     public float GetPosition();
-
-    /// <summary>
-    /// Needs to be called when the Music is no longer needed.
-    /// </summary>
-    public void Dispose();
 
     /// <summary>
     /// Register a callback to be invoked when the end of a music stream has been reached during playback.

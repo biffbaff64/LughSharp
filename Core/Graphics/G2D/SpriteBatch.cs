@@ -99,31 +99,19 @@ public class SpriteBatch : IBatch
 
         var vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
 
-        _mesh = new Mesh
-            (
-            vertexDataType,
-            false,
-            size * 4,
-            size * 6,
-            new VertexAttribute
-                (
-                VertexAttributes.Usage.POSITION,
-                2,
-                ShaderProgram.POSITION_ATTRIBUTE
-                ),
-            new VertexAttribute
-                (
-                VertexAttributes.Usage.COLOR_PACKED,
-                4,
-                ShaderProgram.COLOR_ATTRIBUTE
-                ),
-            new VertexAttribute
-                (
-                VertexAttributes.Usage.TEXTURE_COORDINATES,
-                2,
-                ShaderProgram.TEXCOORD_ATTRIBUTE + "0"
-                )
-            );
+        _mesh = new Mesh( vertexDataType,
+                          false,
+                          size * 4,
+                          size * 6,
+                          new VertexAttribute( VertexAttributes.Usage.POSITION,
+                                               2,
+                                               ShaderProgram.POSITION_ATTRIBUTE ),
+                          new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED,
+                                               4,
+                                               ShaderProgram.COLOR_ATTRIBUTE ),
+                          new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
+                                               2,
+                                               ShaderProgram.TEXCOORD_ATTRIBUTE + "0" ) );
 
         _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
@@ -257,7 +245,7 @@ public class SpriteBatch : IBatch
 
         if ( !BlendingDisabled )
         {
-            Gdx.GL20.GLDisable( EnableCap.Blend );
+            Gdx.GL20.GLDisable( IGL20.GL_BLEND );
         }
     }
 
@@ -1182,11 +1170,11 @@ public class SpriteBatch : IBatch
 
         if ( BlendingDisabled )
         {
-            Gdx.GL.GLDisable( EnableCap.Blend );
+            Gdx.GL.GLDisable( IGL20.GL_BLEND );
         }
         else
         {
-            Gdx.GL.GLEnable( EnableCap.Blend );
+            Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
             if ( _blendSrcFunc != -1 )
             {
@@ -1200,7 +1188,7 @@ public class SpriteBatch : IBatch
             }
         }
 
-        _mesh.Render( _customShader ?? _shader, PrimitiveType.Triangles, 0, count );
+        _mesh.Render( _customShader ?? _shader, IGL20.GL_TRIANGLES, 0, count );
 
         idx = 0;
     }

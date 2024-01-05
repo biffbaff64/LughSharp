@@ -245,10 +245,10 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLGenBuffers( Buffer buffers );
 
     /// <inheritdoc />
-    public abstract string GLGetActiveAttrib( int program, int index, int size, int type );
+    public abstract string GLGetActiveAttrib( int program, int index, Buffer size, Buffer type );
 
     /// <inheritdoc />
-    public abstract string GLGetActiveUniform( int program, int index, int size, int type );
+    public abstract string GLGetActiveUniform( int program, int index, Buffer size, Buffer type );
 
     /// <inheritdoc />
     public abstract void GLGetAttachedShaders( int program, int maxCount, Buffer count, IntBuffer shaders );
@@ -314,43 +314,43 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLTexParameteri( int target, int pname, int param );
 
     /// <inheritdoc />
-    public abstract void GLUniform1F( int location, int count, int value );
+    public abstract void GLUniform1F( int location, float x );
 
     /// <inheritdoc />
-    public abstract void GLUniform1I( int location, int count, int value );
+    public abstract void GLUniform1I( int location, int value );
 
     /// <inheritdoc />
-    public abstract void GLUniform2F( int location, int x, int y );
+    public abstract void GLUniform2F( int location, float x, float y );
 
     /// <inheritdoc />
     public abstract void GLUniform2I( int location, int count, int value );
 
     /// <inheritdoc />
-    public abstract void GLUniform3F( int location, int count, int value );
+    public abstract void GLUniform3F( int location, float x, float y, float z );
 
     /// <inheritdoc />
-    public abstract void GLUniform3I( int location, int count, int value );
+    public abstract void GLUniform3I( int location, int x, int y, int z );
 
     /// <inheritdoc />
-    public abstract void GLUniform4F( int location, int count, int value );
+    public abstract void GLUniform4F( int location, float x, float y, float z, float w );
 
     /// <inheritdoc />
-    public abstract void GLUniform4I( int location, int count, int value );
+    public abstract void GLUniform4I( int location, int x, int y, int z, int w );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib1F( int indx, int x );
+    public abstract void GLVertexAttrib1F( int indx, float x );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib1Fv( int indx, int values );
+    public abstract void GLVertexAttrib1Fv( int location, int count, float[] v, int offset );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib2Fv( int indx, int values );
+    public abstract void GLVertexAttrib2Fv( int location, int count, FloatBuffer values );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib3Fv( int indx, int values );
+    public abstract void GLVertexAttrib3Fv( int location, int count, float[] v, int offset );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib4Fv( int indx, int values );
+    public abstract void GLVertexAttrib4Fv( int location, int count, float[] v, int offset );
 
     /// <inheritdoc />
     public abstract void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Buffer ptr );

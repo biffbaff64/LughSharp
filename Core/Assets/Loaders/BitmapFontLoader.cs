@@ -58,12 +58,18 @@ public class BitmapFontParameter : AssetLoaderParameters
     public string? AtlasName { get; set; }
 }
 
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+
 /// <summary>
 /// </summary>
 [PublicAPI]
 public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 {
     private BitmapFont.BitmapFontData? _data;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>
@@ -99,15 +105,9 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 
         if ( ( ( BitmapFontParameter )parameter ).AtlasName != null )
         {
-            deps.Add
-                (
-                 new AssetDescriptor
-                     (
-                      ( ( BitmapFontParameter )parameter ).AtlasName,
-                      typeof( TextureAtlas ),
-                      ( ( BitmapFontParameter )parameter )
-                     )
-                );
+            deps.Add( new AssetDescriptor( ( ( BitmapFontParameter )parameter ).AtlasName,
+                                           typeof( TextureAtlas ),
+                                           ( ( BitmapFontParameter )parameter ) ) );
         }
         else
         {
@@ -144,6 +144,8 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
                                     FileInfo? file,
                                     AssetLoaderParameters parameter )
     {
+        // Not used in this class.
+        // Implemented as method is abstract in base class.
     }
 
     /// <summary>
@@ -154,10 +156,10 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="parameter"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public override BitmapFont LoadSync( AssetManager manager,
-                                         string? fileName,
-                                         FileInfo? file,
-                                         AssetLoaderParameters parameter )
+    public override object LoadSync( AssetManager manager,
+                                   string? fileName,
+                                   FileInfo? file,
+                                   AssetLoaderParameters parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );
@@ -171,11 +173,8 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 
             if ( region == null )
             {
-                throw new GdxRuntimeException
-                    (
-                     $"Could not find font region {name} in atlas "
-                   + $"{( ( BitmapFontParameter )parameter ).AtlasName}"
-                    );
+                throw new GdxRuntimeException( $"Could not find font region {name} in atlas "
+                                             + $"{( ( BitmapFontParameter )parameter ).AtlasName}" );
             }
 
             return new BitmapFont( file, region );
@@ -191,6 +190,9 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 
         return new BitmapFont( _data, regs, true );
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     private void Dispose( bool disposing )
     {

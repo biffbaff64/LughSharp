@@ -25,7 +25,7 @@ namespace LibGDXSharp.Audio;
 /// called when this AudioDevice is no longer needed.
 /// </summary>
 [PublicAPI]
-public interface IAudioDevice
+public interface IAudioDevice : IDisposable
 {
     /// <summary>
     /// Returns whether this AudioDevice is in mono or stereo mode.
@@ -60,10 +60,4 @@ public interface IAudioDevice
     /// Sets the volume in the range [0,1].
     /// </summary>
     void SetVolume( float volume );
-
-    /// <summary>
-    /// Frees all resources associated with this AudioDevice.
-    /// Needs to be called when the device is no longer needed.
-    /// </summary>
-    void Dispose();
 }

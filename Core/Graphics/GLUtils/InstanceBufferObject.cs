@@ -213,7 +213,7 @@ public class InstanceBufferObject : IInstanceData
     {
         Debug.Assert( _byteBuffer != null, "Bind(ShaderProgram, int[]) fail: _byteBuffer is NULL" );
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, ( int )_bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
 
         if ( _isDirty )
         {
@@ -340,7 +340,7 @@ public class InstanceBufferObject : IInstanceData
     public void Dispose()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
+        Gdx.GL20.GLDeleteBuffers( _bufferHandle );
 
         _bufferHandle = 0;
 

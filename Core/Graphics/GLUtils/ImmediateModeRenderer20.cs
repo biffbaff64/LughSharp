@@ -44,7 +44,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     private readonly string[] _shaderUniformNames;
 
     private ShaderProgram? _shader;
-    private PrimitiveType  _primitiveType;
+    private int  _primitiveType;
 
     public ImmediateModeRenderer20( bool hasNormals, bool hasColors, int numTexCoords )
         : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) )
@@ -102,49 +102,30 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
 
     private VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
     {
-        var attribs = new List< VertexAttribute >
+        var attribs = new System.Collections.Generic.List< VertexAttribute >
         {
-            new(
-                VertexAttributes.Usage.POSITION,
-                3,
-                ShaderProgram.POSITION_ATTRIBUTE
-                )
+            new( VertexAttributes.Usage.POSITION, 3, ShaderProgram.POSITION_ATTRIBUTE )
         };
 
         if ( hasNormals )
         {
-            attribs.Add
-                (
-                new VertexAttribute(
-                    VertexAttributes.Usage.NORMAL,
-                    3,
-                    ShaderProgram.NORMAL_ATTRIBUTE
-                    )
-                );
+            attribs.Add( new VertexAttribute( VertexAttributes.Usage.NORMAL,
+                                              3,
+                                              ShaderProgram.NORMAL_ATTRIBUTE ) );
         }
 
         if ( hasColor )
         {
-            attribs.Add
-                (
-                new VertexAttribute(
-                    VertexAttributes.Usage.COLOR_PACKED,
-                    4,
-                    ShaderProgram.COLOR_ATTRIBUTE
-                    )
-                );
+            attribs.Add( new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED,
+                                              4,
+                                              ShaderProgram.COLOR_ATTRIBUTE ) );
         }
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
-            attribs.Add
-                (
-                new VertexAttribute(
-                    VertexAttributes.Usage.TEXTURE_COORDINATES,
-                    2,
-                    ShaderProgram.TEXCOORD_ATTRIBUTE + i
-                    )
-                );
+            attribs.Add( new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
+                                              2,
+                                              ShaderProgram.TEXCOORD_ATTRIBUTE + i ) );
         }
 
         var array = new VertexAttribute[ attribs.Count ];
@@ -173,7 +154,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     }
 
 
-    public void Begin( Matrix4 projModelView, PrimitiveType primitiveType )
+    public void Begin( Matrix4 projModelView, int primitiveType )
     {
         this._projModelView.Set( projModelView );
         this._primitiveType = primitiveType;
