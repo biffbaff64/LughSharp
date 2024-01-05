@@ -17,10 +17,9 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// public class for layer I subbands in single channel mode. Used for single channel mode
-/// and in derived class for intensity stereo mode
+///     public class for layer I subbands in single channel mode. Used for single channel mode
+///     and in derived class for intensity stereo mode
 /// </summary>
-[PublicAPI]
 public class SubbandLayer1 : ASubband
 {
     // Factors and offsets for sample requantization
@@ -55,7 +54,7 @@ public class SubbandLayer1 : ASubband
     protected float scalefactor;
 
     /// <summary>
-    /// Construtor.
+    ///     Construtor.
     /// </summary>
     public SubbandLayer1( int subbandnumber )
     {
@@ -64,7 +63,6 @@ public class SubbandLayer1 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadAllocation( Bitstream stream, Header? header, Crc16 crc )
     {
@@ -85,7 +83,6 @@ public class SubbandLayer1 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
@@ -96,7 +93,6 @@ public class SubbandLayer1 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override bool ReadSampleData( Bitstream stream )
     {
@@ -116,7 +112,6 @@ public class SubbandLayer1 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override bool PutNextSample( int channels, SynthesisFilter? filter1, SynthesisFilter? filter2 )
     {

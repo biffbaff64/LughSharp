@@ -20,27 +20,13 @@ using Buffer = LibGDXSharp.Files.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
-[PublicAPI]
 public class GL30Interceptor : GLInterceptor, IGL30
 {
-    public IGL30 GL30 { get; set; }
 
     public GL30Interceptor( GLProfiler glProfiler, IGL30 gl30 )
-        : base( glProfiler )
-    {
-        this.GL30 = gl30;
-    }
+        : base( glProfiler ) => GL30 = gl30;
 
-    private void Check()
-    {
-        var error = GL30.GLGetError();
-
-        while ( error != IGL20.GL_NO_ERROR )
-        {
-            glProfiler.Listener.OnError( error );
-            error = GL30.GLGetError();
-        }
-    }
+    public IGL30 GL30 { get; set; }
 
     public override void GLActiveTexture( int texture )
     {
@@ -251,7 +237,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Calls++;
         var result = GL30.GLGetError();
         Check();
-        
+
         return result;
     }
 
@@ -2058,5 +2044,16 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Calls++;
         GL30.GLInvalidateSubFramebuffer( target, numAttachments, attachments, x, y, width, height );
         Check();
+    }
+
+    private void Check()
+    {
+        var error = GL30.GLGetError();
+
+        while ( error != IGL20.GL_NO_ERROR )
+        {
+            glProfiler.Listener.OnError( error );
+            error = GL30.GLGetError();
+        }
     }
 }

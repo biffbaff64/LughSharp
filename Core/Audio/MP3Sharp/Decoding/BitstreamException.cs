@@ -19,35 +19,31 @@ using System.Runtime.Serialization;
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// Instances of BitstreamException are thrown
-/// when operations on a Bitstream fail.
-/// <p>
-/// The exception provides details of the exception condition
-/// in two ways:
-/// <ol>
-///     <li>
-///         as an error-code describing the nature of the error
-///     </li>
-///     <br></br>
-///     <li>
-///         as the Throwable instance, if any, that was thrown
-///         indicating that an exceptional condition has occurred.
-///     </li>
-/// </ol>
-/// </p>
+///     Instances of BitstreamException are thrown
+///     when operations on a Bitstream fail.
+///     <p>
+///         The exception provides details of the exception condition
+///         in two ways:
+///         <ol>
+///             <li>
+///                 as an error-code describing the nature of the error
+///             </li>
+///             <br></br>
+///             <li>
+///                 as the Throwable instance, if any, that was thrown
+///                 indicating that an exceptional condition has occurred.
+///             </li>
+///         </ol>
+///     </p>
 /// </summary>
 [Serializable]
 public class BitstreamException : Mp3SharpException
 {
-    public int ErrorCode { get; set; }
 
-    public BitstreamException( string message, System.Exception? inner = null )
-        : base( message, inner )
-    {
-        ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
-    }
+    public BitstreamException( string message, Exception? inner = null )
+        : base( message, inner ) => ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
 
-    public BitstreamException( int errorcode, System.Exception? inner = null )
+    public BitstreamException( int errorcode, Exception? inner = null )
         : this( GetErrorString( errorcode ), inner )
     {
         ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
@@ -55,10 +51,9 @@ public class BitstreamException : Mp3SharpException
     }
 
     protected BitstreamException( SerializationInfo info, StreamingContext context )
-        : base( info, context )
-    {
-        ErrorCode = info.GetInt32( "ErrorCode" );
-    }
+        : base( info, context ) => ErrorCode = info.GetInt32( "ErrorCode" );
+
+    public int ErrorCode { get; set; }
 
     public override void GetObjectData( SerializationInfo info, StreamingContext context )
     {
@@ -68,8 +63,5 @@ public class BitstreamException : Mp3SharpException
         base.GetObjectData( info, context );
     }
 
-    public static string GetErrorString( int errorcode )
-    {
-        return $"Bitstream errorcode {Convert.ToString( errorcode, 16 )}";
-    }
+    public static string GetErrorString( int errorcode ) => $"Bitstream errorcode {Convert.ToString( errorcode, 16 )}";
 }

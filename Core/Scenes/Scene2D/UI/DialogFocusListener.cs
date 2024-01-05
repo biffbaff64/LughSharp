@@ -18,17 +18,13 @@ using LibGDXSharp.Scenes.Listeners;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-[PublicAPI]
 public class DialogFocusListener : FocusListener
 {
     private readonly Dialog _dialog;
 
-    public DialogFocusListener( Dialog dialog )
-    {
-        _dialog = dialog;
-    }
+    public DialogFocusListener( Dialog dialog ) => _dialog = dialog;
 
-    public override void KeyboardFocusChanged( FocusListener.FocusEvent ev, Actor? actor, bool focused )
+    public override void KeyboardFocusChanged( FocusEvent ev, Actor? actor, bool focused )
     {
         if ( !focused )
         {
@@ -36,7 +32,7 @@ public class DialogFocusListener : FocusListener
         }
     }
 
-    public override void ScrollFocusChanged( FocusListener.FocusEvent ev, Actor? actor, bool focused )
+    public override void ScrollFocusChanged( FocusEvent ev, Actor? actor, bool focused )
     {
         if ( !focused )
         {
@@ -44,7 +40,7 @@ public class DialogFocusListener : FocusListener
         }
     }
 
-    private void FocusChanged( FocusListener.FocusEvent ev )
+    private void FocusChanged( FocusEvent ev )
     {
         if ( _dialog is { IsModal: true, Stage: not null }
           && ( _dialog.Stage.Root.Children.Size > 0 )

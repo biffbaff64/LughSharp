@@ -21,66 +21,17 @@ using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
 namespace LibGDXSharp.Maps.Tiled;
 
 /// <summary>
-/// A TiledMap Loader which loads tiles from a TextureAtlas instead of separate images.
-/// It requires a map-level property called 'atlas' with its value being the relative
-/// path to the TextureAtlas.
-/// <p>
-/// The atlas must have in it indexed regions named after the tilesets used in the map.
-/// The indexes shall be local to the tileset (not the global id). Strip whitespace and
-/// rotation should not be used when creating the atlas.
-/// </p>
+///     A TiledMap Loader which loads tiles from a TextureAtlas instead of separate images.
+///     It requires a map-level property called 'atlas' with its value being the relative
+///     path to the TextureAtlas.
+///     <p>
+///         The atlas must have in it indexed regions named after the tilesets used in the map.
+///         The indexes shall be local to the tileset (not the global id). Strip whitespace and
+///         rotation should not be used when creating the atlas.
+///     </p>
 /// </summary>
-[PublicAPI]
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
-    [PublicAPI]
-    public class AtlasTiledMapLoaderParameters
-        : BaseTmxMapLoader< AtlasTiledMapLoaderParameters >.Parameters
-    {
-        public bool ForceTextureFilters { get; set; } = false;
-    }
-
-    [PublicAPI]
-    protected interface IAtlasResolver : IImageResolver
-    {
-        public TextureAtlas GetAtlas();
-
-        public class DirectAtlasResolver : IAtlasResolver
-        {
-            private readonly TextureAtlas _atlas;
-
-            public DirectAtlasResolver( TextureAtlas atlas )
-            {
-                this._atlas = atlas;
-            }
-
-            public TextureAtlas GetAtlas() => _atlas;
-
-            public TextureRegion? GetImage( string name ) => _atlas.FindRegion( name );
-        }
-
-        public class AssetManagerAtlasResolver : IAtlasResolver
-        {
-            private readonly AssetManager _assetManager;
-            private readonly string       _atlasName;
-
-            public AssetManagerAtlasResolver( AssetManager assetManager, string atlasName )
-            {
-                this._assetManager = assetManager;
-                this._atlasName    = atlasName;
-            }
-
-            public TextureAtlas GetAtlas()
-            {
-                return _assetManager.Get< TextureAtlas >( _atlasName );
-            }
-
-            public TextureRegion? GetImage( string name )
-            {
-                return GetAtlas().FindRegion( name );
-            }
-        }
-    }
 
     protected readonly List< Texture > trackedTextures = new();
     protected          IAtlasResolver? atlasResolver;
@@ -93,22 +44,19 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
     }
 
-    public TiledMap Load( string fileName )
-    {
-        return Load( fileName, new AtlasTmxMapLoader.AtlasTiledMapLoaderParameters() );
-    }
+    public TiledMap Load( string fileName ) => Load( fileName, new AtlasTiledMapLoaderParameters() );
 
-    public TiledMap Load( string fileName, AtlasTmxMapLoader.AtlasTiledMapLoaderParameters parameter )
+    public TiledMap Load( string fileName, AtlasTiledMapLoaderParameters parameter )
     {
         FileInfo tmxFile = Resolve( fileName );
 
-        this.root = xml?.Parse( tmxFile );
+        root = xml?.Parse( tmxFile );
 
         FileInfo? atlasFileHandle = GetAtlasFileHandle( tmxFile );
 
         var atlas = new TextureAtlas( atlasFileHandle! );
 
-        this.atlasResolver = new IAtlasResolver.DirectAtlasResolver( atlas );
+        atlasResolver = new IAtlasResolver.DirectAtlasResolver( atlas );
 
         TiledMap map = LoadTiledMap( tmxFile, parameter, atlasResolver );
         map.OwnedResources = new List< object >( new[] { atlas } );
@@ -127,9 +75,9 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         ArgumentNullException.ThrowIfNull( tmxFile );
 
         FileInfo? atlasHandle = GetAtlasFileHandle( tmxFile );
-        this.atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle!.Name );
+        atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle!.Name );
 
-        this.Map = LoadTiledMap(
+        Map = LoadTiledMap(
             tmxFile,
             ( AtlasTiledMapLoaderParameters )parameter,
             atlasResolver
@@ -276,17 +224,15 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         {
             throw new GdxRuntimeException( "The map is missing the 'atlas' property" );
         }
-        else
+
+        FileInfo? fileHandle = GetRelativeFileHandle( tmxFile, atlasFilePath );
+
+        if ( ( fileHandle == null ) || fileHandle.Exists )
         {
-            FileInfo? fileHandle = GetRelativeFileHandle( tmxFile, atlasFilePath );
-
-            if ( ( fileHandle == null ) || fileHandle.Exists )
-            {
-                return fileHandle;
-            }
-
-            throw new GdxRuntimeException( $"The 'atlas' file could not be found: '{atlasFilePath}'" );
+            return fileHandle;
         }
+
+        throw new GdxRuntimeException( $"The 'atlas' file could not be found: '{atlasFilePath}'" );
     }
 
     protected void SetTextureFilters( TextureFilter min, TextureFilter mag )
@@ -300,16 +246,52 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     }
 
     /// <summary>
-    /// Returns the assets this asset requires to be loaded first.
-    /// This method may be called on a thread other than the GL thread.
+    ///     Returns the assets this asset requires to be loaded first.
+    ///     This method may be called on a thread other than the GL thread.
     /// </summary>
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter )
+                                                             AssetLoaderParameters parameter ) => null!;
+
+    public class AtlasTiledMapLoaderParameters
+        : Parameters
     {
-        return null!;
+        public bool ForceTextureFilters { get; set; } = false;
+    }
+
+
+    protected interface IAtlasResolver : IImageResolver
+    {
+        public TextureAtlas GetAtlas();
+
+        public class DirectAtlasResolver : IAtlasResolver
+        {
+            private readonly TextureAtlas _atlas;
+
+            public DirectAtlasResolver( TextureAtlas atlas ) => _atlas = atlas;
+
+            public TextureAtlas GetAtlas() => _atlas;
+
+            public TextureRegion? GetImage( string name ) => _atlas.FindRegion( name );
+        }
+
+        public class AssetManagerAtlasResolver : IAtlasResolver
+        {
+            private readonly AssetManager _assetManager;
+            private readonly string       _atlasName;
+
+            public AssetManagerAtlasResolver( AssetManager assetManager, string atlasName )
+            {
+                _assetManager = assetManager;
+                _atlasName    = atlasName;
+            }
+
+            public TextureAtlas GetAtlas() => _assetManager.Get< TextureAtlas >( _atlasName );
+
+            public TextureRegion? GetImage( string name ) => GetAtlas().FindRegion( name );
+        }
     }
 }

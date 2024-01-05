@@ -17,11 +17,10 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// A class for the synthesis filter bank. This class does a fast downsampling from 32,
-/// 44.1 or 48 kHz to 8 kHz, if ULAW is defined. Frequencies above 4 kHz are removed by
-/// ignoring higher subbands.
+///     A class for the synthesis filter bank. This class does a fast downsampling from 32,
+///     44.1 or 48 kHz to 8 kHz, if ULAW is defined. Frequencies above 4 kHz are removed by
+///     ignoring higher subbands.
 /// </summary>
-[PublicAPI]
 public class SynthesisFilter
 {
     private const double MY_PI = 3.14159265358979323846;
@@ -201,25 +200,25 @@ public class SynthesisFilter
         0.007919312f, -0.003326416f, 0.000473022f, 0.000015259f
     };
 
-    private readonly float[] _samples; // 32 new subband samples
-    private readonly float[] _v1;
-    private readonly float[] _v2;
+    private readonly int _channel;
 
-    private readonly int   _channel;
-    private readonly float _scalefactor;
-    private          int   _actualWritePos; // 0-15
+    private readonly float[]  _samples; // 32 new subband samples
+    private readonly float    _scalefactor;
+    private readonly float[]  _v1;
+    private readonly float[]  _v2;
+    private          float[]  _actualV = null!; // v1 or v2
+    private          int      _actualWritePos;  // 0-15
+    private          float[]? _eq;
 
-    private float[]  _tmpOut  = null!;
-    private float[]  _actualV = null!; // v1 or v2
-    private float[]? _eq;
+    private float[] _tmpOut = null!;
 
     /// <summary>
-    /// Quality value for controlling CPU usage/quality tradeoff.
+    ///     Quality value for controlling CPU usage/quality tradeoff.
     /// </summary>
     /// <summary>
-    /// Contructor.
-    /// The scalefactor scales the calculated float pcm samples to short values
-    /// (raw pcm samples are in [-1.0, 1.0], if no violations occur).
+    ///     Contructor.
+    ///     The scalefactor scales the calculated float pcm samples to short values
+    ///     (raw pcm samples are in [-1.0, 1.0], if no violations occur).
     /// </summary>
     public SynthesisFilter( int channelnumber, float factor, float[]? eq0 )
     {
@@ -264,13 +263,10 @@ public class SynthesisFilter
         }
     }
 
-    private void InitBlock()
-    {
-        _tmpOut = new float[ 32 ];
-    }
+    private void InitBlock() => _tmpOut = new float[ 32 ];
 
     /// <summary>
-    /// Reset the synthesis filter.
+    ///     Reset the synthesis filter.
     /// </summary>
     public void Reset()
     {
@@ -310,7 +306,7 @@ public class SynthesisFilter
     }
 
     /// <summary>
-    /// Compute new values via a fast cosine transform.
+    ///     Compute new values via a fast cosine transform.
     /// </summary>
     private void ComputeNewValues()
     {
@@ -1191,7 +1187,7 @@ public class SynthesisFilter
     }
 
     /// <summary>
-    /// Calculate 32 PCM samples and put the into the Obuffer-object.
+    ///     Calculate 32 PCM samples and put the into the Obuffer-object.
     /// </summary>
     public void CalculatePcSamples( ABuffer? buffer )
     {
@@ -1216,17 +1212,17 @@ public class SynthesisFilter
     }
 
     /// <summary>
-    /// Converts a 1D array into a number of smaller arrays. This is used achieve offset
-    /// + constant indexing into an array. Each sub-array represents a block of values of
-    /// the original array.
+    ///     Converts a 1D array into a number of smaller arrays. This is used achieve offset
+    ///     + constant indexing into an array. Each sub-array represents a block of values of
+    ///     the original array.
     /// </summary>
     /// <param name="array"> The array to split up into blocks. </param>
     /// <param name="blockSize">
-    /// The size of the blocks to split the array into. This must be an exact divisor of
-    /// the length of the array, or some data will be lost from the main array.
+    ///     The size of the blocks to split the array into. This must be an exact divisor of
+    ///     the length of the array, or some data will be lost from the main array.
     /// </param>
     /// <returns>
-    /// An array of arrays in which each element in the returned array will be of length blockSize.
+    ///     An array of arrays in which each element in the returned array will be of length blockSize.
     /// </returns>
     private static float[][] SplitArray( float[] array, int blockSize )
     {

@@ -20,69 +20,35 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
-[PublicAPI]
 public abstract class OpenALMusic : IMusic
 {
     public const int INVALID_SOURCE_ID = -1;
 
-    #region properties
+    private readonly static int         _bufferSize     = 4096 * 10;
+    private readonly static int         _bufferCount    = 3;
+    private readonly static int         _bytesPerSample = 2;
+    private readonly static byte[]      _tempBytes      = new byte[ _bufferSize ];
+    private readonly static ByteBuffer  _tempBuffer     = BufferUtils.NewByteBuffer( _bufferSize );
+    private readonly        OpenALAudio _audio;
+    private                 uint[]?     _buffers;
+    private                 int         _format;
+    private                 bool        _isPlaying;
+    private                 float       _maxSecondsPerBuffer;
+    private                 float       _pan = 0;
+    private                 float       _renderedSeconds;
 
-    public IMusic.IOnCompletionListener? OnCompletionListener { get; set; }
-    public bool                          IsLooping            { get; set; }
-
-    public bool IsPlaying
-    {
-        get
-        {
-            if ( _audio.NoDevice )
-            {
-                return false;
-            }
-
-            if ( _sourceID == INVALID_SOURCE_ID )
-            {
-                return false;
-            }
-
-            return _isPlaying;
-        }
-        set => _isPlaying = value;
-    }
-
-    #endregion properties
-
-    private static int        _bufferSize     = 4096 * 10;
-    private static int        _bufferCount    = 3;
-    private static int        _bytesPerSample = 2;
-    private static byte[]     _tempBytes      = new byte[ _bufferSize ];
-    private static ByteBuffer _tempBuffer     = BufferUtils.NewByteBuffer( _bufferSize );
-
-    private List< float > _renderedSecondsQueue = new( _bufferCount );
-    private OpenALAudio   _audio;
-    private uint[]?       _buffers;
-    private int           _sourceID = INVALID_SOURCE_ID;
-    private float         _volume   = 1;
-    private float         _pan      = 0;
-    private int           _format;
-    private int           _sampleRate;
-    private bool          _isPlaying;
-    private float         _renderedSeconds;
-    private float         _maxSecondsPerBuffer;
+    private readonly List< float > _renderedSecondsQueue = new( _bufferCount );
+    private          int           _sampleRate;
+    private          int           _sourceID = INVALID_SOURCE_ID;
+    private          float         _volume   = 1;
 
     protected FileHandle file;
 
     protected OpenALMusic( OpenALAudio audio, FileHandle file )
     {
-        this._audio               = audio;
-        this.file                 = file;
-        this.OnCompletionListener = null;
-    }
-
-    protected void Setup( int channels, int sampleRate )
-    {
-        this._format              = channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
-        this._sampleRate          = sampleRate;
-        this._maxSecondsPerBuffer = ( float )_bufferSize / ( _bytesPerSample * channels * sampleRate );
+        _audio               = audio;
+        this.file            = file;
+        OnCompletionListener = null;
     }
 
     public void Play()
@@ -204,7 +170,7 @@ public abstract class OpenALMusic : IMusic
 
     public void SetVolume( float volume )
     {
-        this._volume = volume;
+        _volume = volume;
 
         if ( _audio.NoDevice )
         {
@@ -217,15 +183,12 @@ public abstract class OpenALMusic : IMusic
         }
     }
 
-    public float GetVolume()
-    {
-        return this._volume;
-    }
+    public float GetVolume() => _volume;
 
     public void SetPan( float pan, float volume )
     {
-        this._volume = volume;
-        this._pan    = pan;
+        _volume = volume;
+        _pan    = pan;
 
         if ( _audio.NoDevice )
         {
@@ -258,7 +221,7 @@ public abstract class OpenALMusic : IMusic
             return;
         }
 
-        bool wasPlaying = IsPlaying;
+        var wasPlaying = IsPlaying;
         IsPlaying = false;
         alSourceStop( _sourceID );
         alSourceUnqueueBuffers( _sourceID, _buffers );
@@ -336,35 +299,48 @@ public abstract class OpenALMusic : IMusic
         return _renderedSeconds + AL.GetSourcef( _sourceID, AL.SEC_OFFSET );
     }
 
+    public void Dispose()
+    {
+        Stop();
+
+        if ( _audio.NoDevice || ( _buffers == null ) )
+        {
+            return;
+        }
+
+        AL.DeleteBuffers( _buffers );
+
+        _buffers             = null;
+        OnCompletionListener = null;
+    }
+
+    protected void Setup( int channels, int sampleRate )
+    {
+        _format              = channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
+        _sampleRate          = sampleRate;
+        _maxSecondsPerBuffer = ( float )_bufferSize / ( _bytesPerSample * channels * sampleRate );
+    }
+
     /// <summary>
-    /// Fills as much of the buffer as possible and returns the number of
-    /// bytes filled. Returns &lt;= 0 to indicate the end of the stream.
+    ///     Fills as much of the buffer as possible and returns the number of
+    ///     bytes filled. Returns &lt;= 0 to indicate the end of the stream.
     /// </summary>
     public abstract int Read( byte[] buffer );
 
     /// <summary>
-    /// Resets the stream to the beginning.
+    ///     Resets the stream to the beginning.
     /// </summary>
     public abstract void Reset();
 
     /// <summary>
-    /// By default, does just the same as reset().
-    /// Used to add special behaviour in Ogg.Music.
+    ///     By default, does just the same as reset().
+    ///     Used to add special behaviour in Ogg.Music.
     /// </summary>
-    protected void Loop()
-    {
-        Reset();
-    }
+    protected void Loop() => Reset();
 
-    public int GetChannels()
-    {
-        return _format == AL.FORMAT_STEREO16 ? 2 : 1;
-    }
+    public int GetChannels() => _format == AL.FORMAT_STEREO16 ? 2 : 1;
 
-    public int GetRate()
-    {
-        return _sampleRate;
-    }
+    public int GetRate() => _sampleRate;
 
     public void Update()
     {
@@ -463,31 +439,37 @@ public abstract class OpenALMusic : IMusic
 
         _tempBuffer.Put( _tempBytes, 0, length ).Flip();
 
-        unsafe
-        {
-            AL.BufferData( bufferID, _format, _tempBuffer, _sampleRate );
-        }
+        AL.BufferData( bufferID, _format, _tempBuffer, _sampleRate );
 
         return true;
     }
 
-    public void Dispose()
-    {
-        Stop();
+    public int GetSourceId() => _sourceID;
 
-        if ( ( _audio.NoDevice ) || ( _buffers == null ) )
+    #region properties
+
+    public IMusic.IOnCompletionListener? OnCompletionListener { get; set; }
+    public bool                          IsLooping            { get; set; }
+
+    public bool IsPlaying
+    {
+        get
         {
-            return;
+            if ( _audio.NoDevice )
+            {
+                return false;
+            }
+
+            if ( _sourceID == INVALID_SOURCE_ID )
+            {
+                return false;
+            }
+
+            return _isPlaying;
         }
-
-        AL.DeleteBuffers( _buffers );
-
-        _buffers             = null;
-        OnCompletionListener = null;
+        set => _isPlaying = value;
     }
 
-    public int GetSourceId()
-    {
-        return _sourceID;
-    }
+    #endregion properties
+
 }

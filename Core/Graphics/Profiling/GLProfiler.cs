@@ -17,28 +17,23 @@
 namespace LibGDXSharp.Graphics.Profiling;
 
 /// <summary>
-/// When enabled, collects statistics about GL calls and checks for GL errors.
-/// Enabling will wrap Gdx.GL* instances with delegate classes which provide
-/// described functionality and route GL calls to the actual GL instances.
+///     When enabled, collects statistics about GL calls and checks for GL errors.
+///     Enabling will wrap Gdx.GL* instances with delegate classes which provide
+///     described functionality and route GL calls to the actual GL instances.
 /// </summary>
-/// <seealso cref="GL20Interceptor"/>
-/// <seealso cref="GL30Interceptor"/>
-[PublicAPI]
+/// <seealso cref="GL20Interceptor" />
+/// <seealso cref="GL30Interceptor" />
 public class GLProfiler
 {
-    public IGLErrorListener Listener    { get; set; }
-    public bool             Enabled     { get; set; } = false;
-    public IGraphics        Graphics    { get; set; }
-    public GLInterceptor    Interceptor { get; set; }
 
     /// <summary>
-    /// Create a new instance of GLProfiler to monitor a <see cref="IGraphics"/>
-    /// instance's gl calls
+    ///     Create a new instance of GLProfiler to monitor a <see cref="IGraphics" />
+    ///     instance's gl calls
     /// </summary>
     /// <param name="graphics"> instance to monitor with this instance.</param>
     public GLProfiler( IGraphics graphics )
     {
-        this.Graphics = graphics;
+        Graphics = graphics;
 
         if ( graphics.IsGL30Available() )
         {
@@ -52,9 +47,42 @@ public class GLProfiler
         Listener = new GLLoggingListener();
     }
 
+    public IGLErrorListener Listener    { get; set; }
+    public bool             Enabled     { get; set; } = false;
+    public IGraphics        Graphics    { get; set; }
+    public GLInterceptor    Interceptor { get; set; }
+
     /// <summary>
-    /// Enables profiling by replacing the <tt>GL20</tt> and <tt>GL30</tt>
-    /// instances with profiling ones.
+    ///     Returns the total gl calls made since the last reset
+    /// </summary>
+    public int Calls => Interceptor.Calls;
+
+    /// <summary>
+    ///     Returns the total amount of texture bindings made since the last reset
+    /// </summary>
+    public int TextureBindings => Interceptor.TextureBindings;
+
+    /// <summary>
+    ///     Returns the total amount of draw calls made since the last reset
+    /// </summary>
+    public int DrawCalls => Interceptor.DrawCalls;
+
+    /// <summary>
+    /// </summary>
+    /// <returns>
+    ///     the total amount of shader switches made since the last reset
+    /// </returns>
+    public int ShaderSwitches => Interceptor.ShaderSwitches;
+
+    /// <summary>
+    ///     Returns <see cref="FloatCounter" /> containing information about rendered
+    ///     vertices since the last reset.
+    /// </summary>
+    public FloatCounter VertexCount => Interceptor.VertexCount;
+
+    /// <summary>
+    ///     Enables profiling by replacing the <tt>GL20</tt> and <tt>GL30</tt>
+    ///     instances with profiling ones.
     /// </summary>
     public void Enable()
     {
@@ -76,8 +104,8 @@ public class GLProfiler
     }
 
     /// <summary>
-    /// Disables profiling by resetting the <tt>GL20</tt> and <tt>GL30</tt>
-    /// instances with the original ones.
+    ///     Disables profiling by resetting the <tt>GL20</tt> and <tt>GL30</tt>
+    ///     instances with the original ones.
     /// </summary>
     public void Disable()
     {
@@ -99,37 +127,9 @@ public class GLProfiler
     }
 
     /// <summary>
-    /// Returns the total gl calls made since the last reset
-    /// </summary>
-    public int Calls => Interceptor.Calls;
-
-    /// <summary>
-    /// Returns the total amount of texture bindings made since the last reset
-    /// </summary>
-    public int TextureBindings => Interceptor.TextureBindings;
-
-    /// <summary>
-    /// Returns the total amount of draw calls made since the last reset
-    /// </summary>
-    public int DrawCalls => Interceptor.DrawCalls;
-
-    /// <summary>
-    /// </summary>
-    /// <returns>
-    /// the total amount of shader switches made since the last reset
-    /// </returns>
-    public int ShaderSwitches => Interceptor.ShaderSwitches;
-
-    /// <summary>
-    /// Returns <see cref="FloatCounter"/> containing information about rendered
-    /// vertices since the last reset.
-    /// </summary>
-    public FloatCounter VertexCount => Interceptor.VertexCount;
-
-    /// <summary>
-    /// Will reset the statistical information which has been collected so far.
-    /// This should be called after every frame.
-    /// Error listener is kept as it is. 
+    ///     Will reset the statistical information which has been collected so far.
+    ///     This should be called after every frame.
+    ///     Error listener is kept as it is.
     /// </summary>
     public void Reset() => Interceptor.Reset();
 }

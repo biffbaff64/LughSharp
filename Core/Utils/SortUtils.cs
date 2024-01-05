@@ -17,35 +17,29 @@
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Provides methods to sort arrays of objects.
-/// Sorting requires working memory and this class allows that memory to be reused
-/// to avoid allocation. The sorting is otherwise identical to the Arrays.sort
-/// methods (uses timsort).
+///     Provides methods to sort arrays of objects.
+///     Sorting requires working memory and this class allows that memory to be reused
+///     to avoid allocation. The sorting is otherwise identical to the Arrays.sort
+///     methods (uses timsort).
 /// </summary>
-[PublicAPI]
 public class SortUtils
 {
-    public static SortUtils Instance { get; } = new();
-
-    private TimSort< object >?           _timSort;
-    private ComparableTimSort< object >? _comparableTimSort;
-
-    public void Sort<T>( List< T > a ) where T : IComparable< T >
+    public static void Sort<T>( List< T > a ) where T : IComparable< T >
     {
-        _comparableTimSort ??= new ComparableTimSort< object >();
-        _comparableTimSort.DoSort( a.ToArray() as object[], 0, a.Count );
+        var comparableTimSort = new ComparableTimSort< T >();
+        comparableTimSort.DoSort( a.ToArray(), 0, a.Count );
     }
 
-    public void Sort( object[] a )
+    public static void Sort( object[] a )
     {
-        _comparableTimSort ??= new ComparableTimSort< object >();
-        _comparableTimSort.DoSort( a, 0, a.Length );
+        var comparableTimSort = new ComparableTimSort< object >();
+        comparableTimSort.DoSort( a, 0, a.Length );
     }
 
-    public void Sort( object[] a, int fromIndex, int toIndex )
+    public static void Sort( object[] a, int fromIndex, int toIndex )
     {
-        _comparableTimSort ??= new ComparableTimSort< object >();
-        _comparableTimSort.DoSort( a, fromIndex, toIndex );
+        var comparableTimSort = new ComparableTimSort< object >();
+        comparableTimSort.DoSort( a, fromIndex, toIndex );
     }
 
     /// <summary>
@@ -53,11 +47,11 @@ public class SortUtils
     /// <param name="a"></param>
     /// <param name="c"></param>
     /// <typeparam name="T"></typeparam>
-    public void Sort<T>( List< T > a, IComparer< object > c )
+    public static void Sort<T>( List< T > a, IComparer< T > c )
     {
-        _timSort ??= new TimSort< object >();
+        var timSort = new TimSort< T >();
 
-        _timSort.DoSort( a.Cast< object >().ToArray(), c, 0, a.Count );
+        timSort.DoSort( a.ToArray(), c, 0, a.Count );
     }
 
     /// <summary>
@@ -65,11 +59,11 @@ public class SortUtils
     /// <param name="a"></param>
     /// <param name="c"></param>
     /// <typeparam name="T"></typeparam>
-    public void Sort<T>( T[] a, IComparer< object > c )
+    public static void Sort<T>( T[] a, IComparer< T > c )
     {
-        _timSort ??= new TimSort< object >();
+        var timSort = new TimSort< T >();
 
-        _timSort.DoSort( a.Cast< object >().ToArray(), c, 0, a.Length );
+        timSort.DoSort( a.ToArray(), c, 0, a.Length );
     }
 
     /// <summary>
@@ -79,10 +73,17 @@ public class SortUtils
     /// <param name="fromIndex"></param>
     /// <param name="toIndex"></param>
     /// <typeparam name="T"></typeparam>
-    public void Sort<T>( T[] a, IComparer< object > c, int fromIndex, int toIndex )
+    public static void Sort<T>( T[] a, IComparer< T > c, int fromIndex, int toIndex )
     {
-        _timSort ??= new TimSort< object >();
+        var timSort = new TimSort< T >();
 
-        _timSort.DoSort( a.Cast< object >().ToArray(), c, fromIndex, toIndex );
+        timSort.DoSort( a.ToArray(), c, fromIndex, toIndex );
+    }
+
+    public static void Sort<T>( T[] a, int from, int to )
+    {
+        var comparableTimSort = new ComparableTimSort< T >();
+
+        comparableTimSort.DoSort( a, from, to );
     }
 }

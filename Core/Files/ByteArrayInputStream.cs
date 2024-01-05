@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Files;
 
-[PublicAPI]
 public class ByteArrayInputStream : InputStream
 {
     public ByteArrayInputStream( byte[]? byteStream )
@@ -26,4 +25,3 @@ public class ByteArrayInputStream : InputStream
     /// <inheritdoc />
     public override int Read() => 0;
 }
-

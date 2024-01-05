@@ -16,5 +16,4 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
 public delegate void Runnable();

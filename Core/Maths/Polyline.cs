@@ -16,20 +16,16 @@
 
 namespace LibGDXSharp.Maths;
 
-[PublicAPI]
 public class Polyline : IShape2D
 {
-    private float[]? _worldVertices;
+    private bool     _calculateLength       = true;
+    private bool     _calculateScaledLength = true;
+    private bool     _dirty                 = true;
     private float    _length;
     private float    _scaledLength;
-    private bool     _calculateScaledLength = true;
-    private bool     _calculateLength       = true;
-    private bool     _dirty                 = true;
+    private float[]? _worldVertices;
 
-    public Polyline()
-    {
-        this.LocalVertices = Array.Empty< float >();
-    }
+    public Polyline() => LocalVertices = Array.Empty< float >();
 
     public Polyline( float[] vertices )
     {
@@ -38,34 +34,61 @@ public class Polyline : IShape2D
             throw new ArgumentException( "polylines must contain at least 2 points." );
         }
 
-        this.LocalVertices = vertices;
+        LocalVertices = vertices;
     }
 
     /// <summary>
-    /// Returns vertices scaled, rotated, and offset by the polygon position.
+    ///     Returns vertices without scaling or rotation and without
+    ///     being offset by the polyline position.
+    /// </summary>
+    public float[] LocalVertices { get; private set; }
+
+    public float X { get; private set; }
+
+    public float Y { get; private set; }
+
+    public float OriginX { get; private set; }
+
+    public float OriginY { get; private set; }
+
+    public float Rotation { get; private set; }
+
+    public float ScaleX { get; private set; } = 1;
+
+    public float ScaleY { get; private set; } = 1;
+
+    public bool Contains( Vector2 point ) => false;
+
+    public bool Contains( float x, float y ) => false;
+
+    /// <summary>
+    ///     Returns vertices scaled, rotated, and offset by the polygon position.
     /// </summary>
     public float[]? GetTransformedVertices()
     {
-        if ( !_dirty ) return _worldVertices;
+        if ( !_dirty )
+        {
+            return _worldVertices;
+        }
 
         _dirty = false;
 
-        var localVertices = this.LocalVertices;
+        var localVertices = LocalVertices;
 
         if ( ( _worldVertices == null ) || ( _worldVertices.Length < localVertices.Length ) )
         {
             _worldVertices = new float[ localVertices.Length ];
         }
 
-        var worldVertices = this._worldVertices;
+        var worldVertices = _worldVertices;
         var positionX     = X;
         var positionY     = Y;
-        var originX       = this.OriginX;
-        var originY       = this.OriginY;
-        var scaleX        = this.ScaleX;
-        var scaleY        = this.ScaleY;
+        var originX       = OriginX;
+        var originY       = OriginY;
+        var scaleX        = ScaleX;
+        var scaleY        = ScaleY;
         var scale         = scaleX is not 1 || scaleY is not 1;
-        var rotation      = this.Rotation;
+        var rotation      = Rotation;
         var cos           = MathUtils.CosDeg( rotation );
         var sin           = MathUtils.SinDeg( rotation );
 
@@ -96,10 +119,15 @@ public class Polyline : IShape2D
         return worldVertices;
     }
 
-    /** Returns the euclidean length of the polyline without scaling */
+    /**
+     * Returns the euclidean length of the polyline without scaling
+     */
     public float GetLength()
     {
-        if ( !_calculateLength ) return _length;
+        if ( !_calculateLength )
+        {
+            return _length;
+        }
 
         _calculateLength = false;
 
@@ -115,10 +143,15 @@ public class Polyline : IShape2D
         return _length;
     }
 
-    /** Returns the euclidean length of the polyline */
+    /**
+     * Returns the euclidean length of the polyline
+     */
     public float GetScaledLength()
     {
-        if ( !_calculateScaledLength ) return _scaledLength;
+        if ( !_calculateScaledLength )
+        {
+            return _scaledLength;
+        }
 
         _calculateScaledLength = false;
 
@@ -134,37 +167,17 @@ public class Polyline : IShape2D
         return _scaledLength;
     }
 
-    /// <summary>
-    /// Returns vertices without scaling or rotation and without
-    /// being offset by the polyline position.
-    /// </summary>
-    public float[] LocalVertices { get; private set; }
-
-    public float X { get; private set; }
-
-    public float Y { get; private set; }
-
-    public float OriginX { get; private set; }
-
-    public float OriginY { get; private set; }
-
-    public float Rotation { get; private set; }
-
-    public float ScaleX { get; private set; } = 1;
-
-    public float ScaleY { get; private set; } = 1;
-
     public void SetOrigin( float originX, float originY )
     {
-        this.OriginX = originX;
-        this.OriginY = originY;
-        _dirty       = true;
+        OriginX = originX;
+        OriginY = originY;
+        _dirty  = true;
     }
 
     public void SetPosition( float x, float y )
     {
-        this.X = x;
-        this.Y = y;
+        X      = x;
+        Y      = y;
         _dirty = true;
     }
 
@@ -175,14 +188,14 @@ public class Polyline : IShape2D
             throw new ArgumentException( "polylines must contain at least 2 points." );
         }
 
-        this.LocalVertices = vertices;
-        _dirty             = true;
+        LocalVertices = vertices;
+        _dirty        = true;
     }
 
     public void SetRotation( float degrees )
     {
-        this.Rotation = degrees;
-        _dirty        = true;
+        Rotation = degrees;
+        _dirty   = true;
     }
 
     public void Rotate( float degrees )
@@ -193,16 +206,16 @@ public class Polyline : IShape2D
 
     public void SetScale( float scaleX, float scaleY )
     {
-        this.ScaleX            = scaleX;
-        this.ScaleY            = scaleY;
+        ScaleX                 = scaleX;
+        ScaleY                 = scaleY;
         _dirty                 = true;
         _calculateScaledLength = true;
     }
 
     public void Scale( float amount )
     {
-        this.ScaleX            += amount;
-        this.ScaleY            += amount;
+        ScaleX                 += amount;
+        ScaleY                 += amount;
         _dirty                 =  true;
         _calculateScaledLength =  true;
     }
@@ -213,18 +226,8 @@ public class Polyline : IShape2D
 
     public void Translate( float x, float y )
     {
-        this.X += x;
-        this.Y += y;
+        X      += x;
+        Y      += y;
         _dirty =  true;
-    }
-
-    public bool Contains( Vector2 point )
-    {
-        return false;
-    }
-
-    public bool Contains( float x, float y )
-    {
-        return false;
     }
 }

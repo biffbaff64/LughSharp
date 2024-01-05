@@ -18,74 +18,48 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
 namespace LibGDXSharp.Graphics.G2D;
 
-[PublicAPI]
 public class SpriteBatch : IBatch
 {
-    /// <summary>
-    /// Number of render calls since the last <seealso cref="Begin()"/>.
-    /// </summary>
-    public int RenderCalls { get; set; } = 0;
 
-    /// <summary>
-    /// Number of rendering calls, ever. Will not be reset unless set manually.
-    /// </summary>
-    public int TotalRenderCalls { get; set; } = 0;
-
-    /// <summary>
-    /// The maximum number of sprites rendered in one batch so far.
-    /// </summary>
-    public int MaxSpritesInBatch { get; set; } = 0;
-
-    public Texture? LastTexture      { get; set; }
-    public float[]  Vertices         { get; set; }
-    public bool     BlendingDisabled { get; set; } = false;
-
-    public int   idx          = 0;
-    public float invTexWidth  = 0;
-    public float invTexHeight = 0;
-    public float colorPacked  = Color.WhiteFloatBits;
-
-    private readonly Matrix4 _transformMatrix  = new();
-    private readonly Matrix4 _projectionMatrix = new();
-    private readonly Matrix4 _combinedMatrix   = new();
-
-    private int _blendSrcFunc      = IGL20.GL_SRC_ALPHA;
-    private int _blendDstFunc      = IGL20.GL_ONE_MINUS_SRC_ALPHA;
-    private int _blendSrcFuncAlpha = IGL20.GL_SRC_ALPHA;
-    private int _blendDstFuncAlpha = IGL20.GL_ONE_MINUS_SRC_ALPHA;
+    private readonly Color   _color          = new( 1, 1, 1, 1 );
+    private readonly Matrix4 _combinedMatrix = new();
+    private readonly Mesh    _mesh;
 
     private readonly bool           _ownsShader;
-    private readonly Mesh           _mesh;
     private readonly ShaderProgram? _shader;
-    private          ShaderProgram? _customShader;
 
-    private readonly Color _color = new( 1, 1, 1, 1 );
+    private ShaderProgram? _customShader;
+    public  float          colorPacked = Color.WhiteFloatBits;
+
+    public int   idx          = 0;
+    public float invTexHeight = 0;
+    public float invTexWidth  = 0;
 
     /// <summary>
-    /// Constructs a new SpriteBatch with a size of 1000, one buffer,
-    /// and the default shader.
+    ///     Constructs a new SpriteBatch with a size of 1000, one buffer,
+    ///     and the default shader.
     /// </summary>
     public SpriteBatch() : this( 1000 )
     {
     }
 
     /// <summary>
-    /// Constructs a new SpriteBatch. Sets the projection matrix to an orthographic
-    /// projection with y-axis point upwards, x-axis point to the right and the origin
-    /// being in the bottom left corner of the screen. The projection will be pixel
-    /// perfect with respect to the current screen resolution.
-    /// <para>
-    /// The defaultShader specifies the shader to use. Note that the names for uniforms
-    /// for this default shader are different than the ones expect for shaders set with
-    /// <see cref="Shader"/>. See <see cref="CreateDefaultShader()"/>.
-    /// </para>
+    ///     Constructs a new SpriteBatch. Sets the projection matrix to an orthographic
+    ///     projection with y-axis point upwards, x-axis point to the right and the origin
+    ///     being in the bottom left corner of the screen. The projection will be pixel
+    ///     perfect with respect to the current screen resolution.
+    ///     <para>
+    ///         The defaultShader specifies the shader to use. Note that the names for uniforms
+    ///         for this default shader are different than the ones expect for shaders set with
+    ///         <see cref="Shader" />. See <see cref="CreateDefaultShader()" />.
+    ///     </para>
     /// </summary>
     /// <param name="size">
-    /// The max number of sprites in a single batch. Max of 8191.
+    ///     The max number of sprites in a single batch. Max of 8191.
     /// </param>
     /// <param name="defaultShader">
-    /// The default shader to use. This is not owned by the SpriteBatch and must
-    /// be disposed separately.
+    ///     The default shader to use. This is not owned by the SpriteBatch and must
+    ///     be disposed separately.
     /// </param>
     protected SpriteBatch( int size, ShaderProgram? defaultShader = null )
     {
@@ -113,7 +87,7 @@ public class SpriteBatch : IBatch
                                                2,
                                                ShaderProgram.TEXCOORD_ATTRIBUTE + "0" ) );
 
-        _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
         Vertices = new float[ size * Sprite.SpriteSize ];
 
@@ -145,67 +119,29 @@ public class SpriteBatch : IBatch
     }
 
     /// <summary>
-    /// Returns a new instance of the default shader used by SpriteBatch
-    /// for GL2 when no shader is specified.
+    ///     Number of render calls since the last <seealso cref="Begin()" />.
     /// </summary>
-    public static ShaderProgram CreateDefaultShader()
-    {
-        var vertexShader = "attribute vec4 "
-                         + ShaderProgram.POSITION_ATTRIBUTE
-                         + ";\n"
-                         + "attribute vec4 "
-                         + ShaderProgram.COLOR_ATTRIBUTE
-                         + ";\n"
-                         + "attribute vec2 "
-                         + ShaderProgram.TEXCOORD_ATTRIBUTE
-                         + "0;\n"
-                         + "uniform mat4 u_projTrans;\n"
-                         + "varying vec4 v_color;\n"
-                         + "varying vec2 v_texCoords;\n"
-                         + "\n"
-                         + "void main()\n"
-                         + "{\n"
-                         + "   v_color = "
-                         + ShaderProgram.COLOR_ATTRIBUTE
-                         + ";\n"
-                         + "   v_color.a = v_color.a * (255.0/254.0);\n"
-                         + "   v_texCoords = "
-                         + ShaderProgram.TEXCOORD_ATTRIBUTE
-                         + "0;\n"
-                         + "   gl_Position =  u_projTrans * "
-                         + ShaderProgram.POSITION_ATTRIBUTE
-                         + ";\n"
-                         + "}\n";
+    public int RenderCalls { get; set; } = 0;
 
-        var fragmentShader = "#ifdef GL_ES\n"
-                           + "#define LOWP lowp\n"
-                           + "precision mediump float;\n"
-                           + "#else\n"
-                           + "#define LOWP \n"
-                           + "#endif\n"
-                           + "varying LOWP vec4 v_color;\n"
-                           + "varying vec2 v_texCoords;\n"
-                           + "uniform sampler2D u_texture;\n"
-                           + "void main()\n"
-                           + "{\n"
-                           + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
-                           + "}";
+    /// <summary>
+    ///     Number of rendering calls, ever. Will not be reset unless set manually.
+    /// </summary>
+    public int TotalRenderCalls { get; set; } = 0;
 
-        var shader = new ShaderProgram( vertexShader, fragmentShader );
+    /// <summary>
+    ///     The maximum number of sprites rendered in one batch so far.
+    /// </summary>
+    public int MaxSpritesInBatch { get; set; } = 0;
 
-        if ( !shader.IsCompiled )
-        {
-            throw new System.ArgumentException( "Error compiling shader: " + shader.Log );
-        }
-
-        return shader;
-    }
+    public Texture? LastTexture      { get; set; }
+    public float[]  Vertices         { get; set; }
+    public bool     BlendingDisabled { get; set; } = false;
 
     public void Begin()
     {
         if ( IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.end must be called before begin." );
+            throw new InvalidOperationException( "SpriteBatch.end must be called before begin." );
         }
 
         RenderCalls = 0;
@@ -230,7 +166,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "SpriteBatch.begin must be called before end." );
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before end." );
         }
 
         if ( idx > 0 )
@@ -270,7 +206,7 @@ public class SpriteBatch : IBatch
         set
         {
             Color.Abgr8888ToColor( _color, value );
-            this.colorPacked = value;
+            colorPacked = value;
         }
         get => colorPacked;
     }
@@ -301,7 +237,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
@@ -388,7 +324,7 @@ public class SpriteBatch : IBatch
         var v     = ( srcY + srcHeight ) * invTexHeight;
         var u2    = ( srcX + srcWidth ) * invTexWidth;
         var v2    = srcY * invTexHeight;
-        var color = this.colorPacked;
+        var color = colorPacked;
 
         if ( flipX )
         {
@@ -400,31 +336,31 @@ public class SpriteBatch : IBatch
             ( v, v2 ) = ( v2, v );
         }
 
-        this.Vertices[ idx ]     = x1;
-        this.Vertices[ idx + 1 ] = y1;
-        this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = u;
-        this.Vertices[ idx + 4 ] = v;
+        Vertices[ idx ]     = x1;
+        Vertices[ idx + 1 ] = y1;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
 
-        this.Vertices[ idx + 5 ] = x2;
-        this.Vertices[ idx + 6 ] = y2;
-        this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = u;
-        this.Vertices[ idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = x2;
+        Vertices[ idx + 6 ] = y2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
 
-        this.Vertices[ idx + 10 ] = x3;
-        this.Vertices[ idx + 11 ] = y3;
-        this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = u2;
-        this.Vertices[ idx + 14 ] = v2;
+        Vertices[ idx + 10 ] = x3;
+        Vertices[ idx + 11 ] = y3;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
 
-        this.Vertices[ idx + 15 ] = x4;
-        this.Vertices[ idx + 16 ] = y4;
-        this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = u2;
-        this.Vertices[ idx + 19 ] = v;
+        Vertices[ idx + 15 ] = x4;
+        Vertices[ idx + 16 ] = y4;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
     public virtual void Draw( Texture texture,
@@ -448,7 +384,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
@@ -459,7 +395,7 @@ public class SpriteBatch : IBatch
         var v2    = srcY * invTexHeight;
         var fx2   = x + width;
         var fy2   = y + height;
-        var color = this.colorPacked;
+        var color = colorPacked;
 
         if ( flipX )
         {
@@ -471,31 +407,31 @@ public class SpriteBatch : IBatch
             ( v, v2 ) = ( v2, v );
         }
 
-        this.Vertices[ idx ]     = x;
-        this.Vertices[ idx + 1 ] = y;
-        this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = u;
-        this.Vertices[ idx + 4 ] = v;
+        Vertices[ idx ]     = x;
+        Vertices[ idx + 1 ] = y;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
 
-        this.Vertices[ idx + 5 ] = x;
-        this.Vertices[ idx + 6 ] = fy2;
-        this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = u;
-        this.Vertices[ idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = x;
+        Vertices[ idx + 6 ] = fy2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
 
-        this.Vertices[ idx + 10 ] = fx2;
-        this.Vertices[ idx + 11 ] = fy2;
-        this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = u2;
-        this.Vertices[ idx + 14 ] = v2;
+        Vertices[ idx + 10 ] = fx2;
+        Vertices[ idx + 11 ] = fy2;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
 
-        this.Vertices[ idx + 15 ] = fx2;
-        this.Vertices[ idx + 16 ] = y;
-        this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = u2;
-        this.Vertices[ idx + 19 ] = v;
+        Vertices[ idx + 15 ] = fx2;
+        Vertices[ idx + 16 ] = y;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
     public virtual void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
@@ -509,7 +445,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
@@ -521,33 +457,33 @@ public class SpriteBatch : IBatch
         var fx2 = x + srcWidth;
         var fy2 = y + srcHeight;
 
-        var color = this.colorPacked;
+        var color = colorPacked;
 
-        this.Vertices[ idx ]     = x;
-        this.Vertices[ idx + 1 ] = y;
-        this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = u;
-        this.Vertices[ idx + 4 ] = v;
+        Vertices[ idx ]     = x;
+        Vertices[ idx + 1 ] = y;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
 
-        this.Vertices[ idx + 5 ] = x;
-        this.Vertices[ idx + 6 ] = fy2;
-        this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = u;
-        this.Vertices[ idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = x;
+        Vertices[ idx + 6 ] = fy2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
 
-        this.Vertices[ idx + 10 ] = fx2;
-        this.Vertices[ idx + 11 ] = fy2;
-        this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = u2;
-        this.Vertices[ idx + 14 ] = v2;
+        Vertices[ idx + 10 ] = fx2;
+        Vertices[ idx + 11 ] = fy2;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
 
-        this.Vertices[ idx + 15 ] = fx2;
-        this.Vertices[ idx + 16 ] = y;
-        this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = u2;
-        this.Vertices[ idx + 19 ] = v;
+        Vertices[ idx + 15 ] = fx2;
+        Vertices[ idx + 16 ] = y;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
     public virtual void Draw( Texture texture,
@@ -569,46 +505,43 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
 
         var fx2   = x + width;
         var fy2   = y + height;
-        var color = this.colorPacked;
+        var color = colorPacked;
 
-        this.Vertices[ idx ]     = x;
-        this.Vertices[ idx + 1 ] = y;
-        this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = u;
-        this.Vertices[ idx + 4 ] = v;
+        Vertices[ idx ]     = x;
+        Vertices[ idx + 1 ] = y;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
 
-        this.Vertices[ idx + 5 ] = x;
-        this.Vertices[ idx + 6 ] = fy2;
-        this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = u;
-        this.Vertices[ idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = x;
+        Vertices[ idx + 6 ] = fy2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
 
-        this.Vertices[ idx + 10 ] = fx2;
-        this.Vertices[ idx + 11 ] = fy2;
-        this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = u2;
-        this.Vertices[ idx + 14 ] = v2;
+        Vertices[ idx + 10 ] = fx2;
+        Vertices[ idx + 11 ] = fy2;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
 
-        this.Vertices[ idx + 15 ] = fx2;
-        this.Vertices[ idx + 16 ] = y;
-        this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = u2;
-        this.Vertices[ idx + 19 ] = v;
+        Vertices[ idx + 15 ] = fx2;
+        Vertices[ idx + 16 ] = y;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
-    public virtual void Draw( Texture texture, float x, float y )
-    {
-        Draw( texture, x, y, texture.Width, texture.Height );
-    }
+    public virtual void Draw( Texture texture, float x, float y ) => Draw( texture, x, y, texture.Width, texture.Height );
 
     public virtual void Draw( Texture texture, float x, float y, float width, float height )
     {
@@ -621,45 +554,45 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
 
         var fx2   = x + width;
         var fy2   = y + height;
-        var color = this.colorPacked;
+        var color = colorPacked;
 
         const float U  = 0;
         const float V  = 1;
         const float U2 = 1;
         const float V2 = 0;
 
-        this.Vertices[ idx ]     = x;
-        this.Vertices[ idx + 1 ] = y;
-        this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = U;
-        this.Vertices[ idx + 4 ] = V;
+        Vertices[ idx ]     = x;
+        Vertices[ idx + 1 ] = y;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = U;
+        Vertices[ idx + 4 ] = V;
 
-        this.Vertices[ idx + 5 ] = x;
-        this.Vertices[ idx + 6 ] = fy2;
-        this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = U;
-        this.Vertices[ idx + 9 ] = V2;
+        Vertices[ idx + 5 ] = x;
+        Vertices[ idx + 6 ] = fy2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = U;
+        Vertices[ idx + 9 ] = V2;
 
-        this.Vertices[ idx + 10 ] = fx2;
-        this.Vertices[ idx + 11 ] = fy2;
-        this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = U2;
-        this.Vertices[ idx + 14 ] = V2;
+        Vertices[ idx + 10 ] = fx2;
+        Vertices[ idx + 11 ] = fy2;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = U2;
+        Vertices[ idx + 14 ] = V2;
 
-        this.Vertices[ idx + 15 ] = fx2;
-        this.Vertices[ idx + 16 ] = y;
-        this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = U2;
-        this.Vertices[ idx + 19 ] = V;
+        Vertices[ idx + 15 ] = fx2;
+        Vertices[ idx + 16 ] = y;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = U2;
+        Vertices[ idx + 19 ] = V;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
     public virtual void Draw( Texture texture, float[] spriteVertices, int offset, int count )
@@ -689,8 +622,7 @@ public class SpriteBatch : IBatch
 
         var copyCount = Math.Min( remainingVertices, count );
 
-        Array.Copy
-            (
+        Array.Copy(
             spriteVertices,
             offset,
             Vertices,
@@ -709,8 +641,7 @@ public class SpriteBatch : IBatch
 
             copyCount = Math.Min( verticesLength, count );
 
-            Array.Copy
-                (
+            Array.Copy(
                 spriteVertices,
                 offset,
                 Vertices,
@@ -723,10 +654,7 @@ public class SpriteBatch : IBatch
         }
     }
 
-    public virtual void Draw( TextureRegion region, float x, float y )
-    {
-        Draw( region, x, y, region.RegionWidth, region.RegionHeight );
-    }
+    public virtual void Draw( TextureRegion region, float x, float y ) => Draw( region, x, y, region.RegionWidth, region.RegionHeight );
 
     public virtual void Draw( TextureRegion region, float x, float y, float width, float height )
     {
@@ -741,7 +669,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
@@ -753,33 +681,33 @@ public class SpriteBatch : IBatch
         var u2  = region.U2;
         var v2  = region.V;
 
-        var color = this.colorPacked;
+        var color = colorPacked;
 
-        this.Vertices[ idx ]     = x;
-        this.Vertices[ idx + 1 ] = y;
-        this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = u;
-        this.Vertices[ idx + 4 ] = v;
+        Vertices[ idx ]     = x;
+        Vertices[ idx + 1 ] = y;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
 
-        this.Vertices[ idx + 5 ] = x;
-        this.Vertices[ idx + 6 ] = fy2;
-        this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = u;
-        this.Vertices[ idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = x;
+        Vertices[ idx + 6 ] = fy2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
 
-        this.Vertices[ idx + 10 ] = fx2;
-        this.Vertices[ idx + 11 ] = fy2;
-        this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = u2;
-        this.Vertices[ idx + 14 ] = v2;
+        Vertices[ idx + 10 ] = fx2;
+        Vertices[ idx + 11 ] = fy2;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
 
-        this.Vertices[ idx + 15 ] = fx2;
-        this.Vertices[ idx + 16 ] = y;
-        this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = u2;
-        this.Vertices[ idx + 19 ] = v;
+        Vertices[ idx + 15 ] = fx2;
+        Vertices[ idx + 16 ] = y;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
     public virtual void Draw( TextureRegion region,
@@ -804,7 +732,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
@@ -892,33 +820,33 @@ public class SpriteBatch : IBatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        var color = this.colorPacked;
+        var color = colorPacked;
 
-        this.Vertices[ idx ]     = x1;
-        this.Vertices[ idx + 1 ] = y1;
-        this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = u;
-        this.Vertices[ idx + 4 ] = v;
+        Vertices[ idx ]     = x1;
+        Vertices[ idx + 1 ] = y1;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
 
-        this.Vertices[ idx + 5 ] = x2;
-        this.Vertices[ idx + 6 ] = y2;
-        this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = u;
-        this.Vertices[ idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = x2;
+        Vertices[ idx + 6 ] = y2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
 
-        this.Vertices[ idx + 10 ] = x3;
-        this.Vertices[ idx + 11 ] = y3;
-        this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = u2;
-        this.Vertices[ idx + 14 ] = v2;
+        Vertices[ idx + 10 ] = x3;
+        Vertices[ idx + 11 ] = y3;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
 
-        this.Vertices[ idx + 15 ] = x4;
-        this.Vertices[ idx + 16 ] = y4;
-        this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = u2;
-        this.Vertices[ idx + 19 ] = v;
+        Vertices[ idx + 15 ] = x4;
+        Vertices[ idx + 16 ] = y4;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
     public virtual void Draw( TextureRegion region,
@@ -944,7 +872,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
@@ -1052,33 +980,33 @@ public class SpriteBatch : IBatch
             v4 = region.V2;
         }
 
-        var color = this.colorPacked;
+        var color = colorPacked;
 
-        this.Vertices[ idx ]     = x1;
-        this.Vertices[ idx + 1 ] = y1;
-        this.Vertices[ idx + 2 ] = color;
-        this.Vertices[ idx + 3 ] = u1;
-        this.Vertices[ idx + 4 ] = v1;
+        Vertices[ idx ]     = x1;
+        Vertices[ idx + 1 ] = y1;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = u1;
+        Vertices[ idx + 4 ] = v1;
 
-        this.Vertices[ idx + 5 ] = x2;
-        this.Vertices[ idx + 6 ] = y2;
-        this.Vertices[ idx + 7 ] = color;
-        this.Vertices[ idx + 8 ] = u2;
-        this.Vertices[ idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = x2;
+        Vertices[ idx + 6 ] = y2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = u2;
+        Vertices[ idx + 9 ] = v2;
 
-        this.Vertices[ idx + 10 ] = x3;
-        this.Vertices[ idx + 11 ] = y3;
-        this.Vertices[ idx + 12 ] = color;
-        this.Vertices[ idx + 13 ] = u3;
-        this.Vertices[ idx + 14 ] = v3;
+        Vertices[ idx + 10 ] = x3;
+        Vertices[ idx + 11 ] = y3;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = u3;
+        Vertices[ idx + 14 ] = v3;
 
-        this.Vertices[ idx + 15 ] = x4;
-        this.Vertices[ idx + 16 ] = y4;
-        this.Vertices[ idx + 17 ] = color;
-        this.Vertices[ idx + 18 ] = u4;
-        this.Vertices[ idx + 19 ] = v4;
+        Vertices[ idx + 15 ] = x4;
+        Vertices[ idx + 16 ] = y4;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = u4;
+        Vertices[ idx + 19 ] = v4;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
     public virtual void Draw( TextureRegion region, float width, float height, Affine2 transform )
@@ -1092,7 +1020,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( region.Texture );
         }
-        else if ( idx == this.Vertices.Length )
+        else if ( idx == Vertices.Length )
         {
             Flush();
         }
@@ -1111,37 +1039,36 @@ public class SpriteBatch : IBatch
         var v     = region.V2;
         var u2    = region.U2;
         var v2    = region.V;
-        var color = this.colorPacked;
+        var color = colorPacked;
 
-        this.Vertices[ this.idx ]     = x1;
-        this.Vertices[ this.idx + 1 ] = y1;
-        this.Vertices[ this.idx + 2 ] = color;
-        this.Vertices[ this.idx + 3 ] = u;
-        this.Vertices[ this.idx + 4 ] = v;
+        Vertices[ idx ]     = x1;
+        Vertices[ idx + 1 ] = y1;
+        Vertices[ idx + 2 ] = color;
+        Vertices[ idx + 3 ] = u;
+        Vertices[ idx + 4 ] = v;
 
-        this.Vertices[ this.idx + 5 ] = x2;
-        this.Vertices[ this.idx + 6 ] = y2;
-        this.Vertices[ this.idx + 7 ] = color;
-        this.Vertices[ this.idx + 8 ] = u;
-        this.Vertices[ this.idx + 9 ] = v2;
+        Vertices[ idx + 5 ] = x2;
+        Vertices[ idx + 6 ] = y2;
+        Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 8 ] = u;
+        Vertices[ idx + 9 ] = v2;
 
-        this.Vertices[ this.idx + 10 ] = x3;
-        this.Vertices[ this.idx + 11 ] = y3;
-        this.Vertices[ this.idx + 12 ] = color;
-        this.Vertices[ this.idx + 13 ] = u2;
-        this.Vertices[ this.idx + 14 ] = v2;
+        Vertices[ idx + 10 ] = x3;
+        Vertices[ idx + 11 ] = y3;
+        Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 13 ] = u2;
+        Vertices[ idx + 14 ] = v2;
 
-        this.Vertices[ this.idx + 15 ] = x4;
-        this.Vertices[ this.idx + 16 ] = y4;
-        this.Vertices[ this.idx + 17 ] = color;
-        this.Vertices[ this.idx + 18 ] = u2;
-        this.Vertices[ this.idx + 19 ] = v;
+        Vertices[ idx + 15 ] = x4;
+        Vertices[ idx + 16 ] = y4;
+        Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 18 ] = u2;
+        Vertices[ idx + 19 ] = v;
 
-        this.idx = idx + 20;
+        idx = idx + 20;
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public void Flush()
     {
@@ -1176,14 +1103,13 @@ public class SpriteBatch : IBatch
         {
             Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
-            if ( _blendSrcFunc != -1 )
+            if ( BlendSrcFunc != -1 )
             {
-                Gdx.GL.GLBlendFuncSeparate
-                    (
-                    _blendSrcFunc,
-                    _blendDstFunc,
-                    _blendSrcFuncAlpha,
-                    _blendDstFuncAlpha
+                Gdx.GL.GLBlendFuncSeparate(
+                    BlendSrcFunc,
+                    BlendDstFunc,
+                    BlendSrcFuncAlpha,
+                    BlendDstFuncAlpha
                     );
             }
         }
@@ -1215,42 +1141,38 @@ public class SpriteBatch : IBatch
         BlendingDisabled = false;
     }
 
-    public void SetBlendFunction( int srcFunc, int dstFunc )
-    {
-        SetBlendFunctionSeparate
-            (
-            srcFunc,
-            dstFunc,
-            srcFunc,
-            dstFunc
-            );
-    }
+    public void SetBlendFunction( int srcFunc, int dstFunc ) => SetBlendFunctionSeparate(
+        srcFunc,
+        dstFunc,
+        srcFunc,
+        dstFunc
+        );
 
     public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
     {
-        if ( ( _blendSrcFunc == srcFuncColor )
-          && ( _blendDstFunc == dstFuncColor )
-          && ( _blendSrcFuncAlpha == srcFuncAlpha )
-          && ( _blendDstFuncAlpha == dstFuncAlpha ) )
+        if ( ( BlendSrcFunc == srcFuncColor )
+          && ( BlendDstFunc == dstFuncColor )
+          && ( BlendSrcFuncAlpha == srcFuncAlpha )
+          && ( BlendDstFuncAlpha == dstFuncAlpha ) )
         {
             return;
         }
 
         Flush();
 
-        _blendSrcFunc      = srcFuncColor;
-        _blendDstFunc      = dstFuncColor;
-        _blendSrcFuncAlpha = srcFuncAlpha;
-        _blendDstFuncAlpha = dstFuncAlpha;
+        BlendSrcFunc      = srcFuncColor;
+        BlendDstFunc      = dstFuncColor;
+        BlendSrcFuncAlpha = srcFuncAlpha;
+        BlendDstFuncAlpha = dstFuncAlpha;
     }
 
-    public int BlendSrcFunc => _blendSrcFunc;
+    public int BlendSrcFunc { get; private set; } = IGL20.GL_SRC_ALPHA;
 
-    public int BlendDstFunc => _blendDstFunc;
+    public int BlendDstFunc { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
 
-    public int BlendSrcFuncAlpha => _blendSrcFuncAlpha;
+    public int BlendSrcFuncAlpha { get; private set; } = IGL20.GL_SRC_ALPHA;
 
-    public int BlendDstFuncAlpha => _blendDstFuncAlpha;
+    public int BlendDstFuncAlpha { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
 
     public void Dispose()
     {
@@ -1262,9 +1184,9 @@ public class SpriteBatch : IBatch
         }
     }
 
-    public Matrix4 ProjectionMatrix => _projectionMatrix;
+    public Matrix4 ProjectionMatrix { get; } = new();
 
-    public Matrix4 TransformMatrix => _transformMatrix;
+    public Matrix4 TransformMatrix { get; } = new();
 
     public void SetProjectionMatrix( Matrix4 projection )
     {
@@ -1273,7 +1195,7 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        _projectionMatrix.Set( projection );
+        ProjectionMatrix.Set( projection );
 
         if ( IsDrawing )
         {
@@ -1288,36 +1210,12 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        _transformMatrix.Set( transform );
+        TransformMatrix.Set( transform );
 
         if ( IsDrawing )
         {
             SetupMatrices();
         }
-    }
-
-    protected void SetupMatrices()
-    {
-        _combinedMatrix.Set( _projectionMatrix ).Mul( _transformMatrix );
-
-        if ( _customShader != null )
-        {
-            _customShader.SetUniformMatrix( "u_projTrans", _combinedMatrix );
-            _customShader.SetUniformi( "u_texture", 0 );
-        }
-        else
-        {
-            _shader?.SetUniformMatrix( "u_projTrans", _combinedMatrix );
-            _shader?.SetUniformi( "u_texture", 0 );
-        }
-    }
-
-    protected void SwitchTexture( Texture texture )
-    {
-        Flush();
-        LastTexture  = texture;
-        invTexWidth  = 1.0f / texture.Width;
-        invTexHeight = 1.0f / texture.Height;
     }
 
     public bool IsDrawing { get; set; }
@@ -1342,11 +1240,92 @@ public class SpriteBatch : IBatch
                 }
                 else
                 {
-                    this._shader?.Bind();
+                    _shader?.Bind();
                 }
 
                 SetupMatrices();
             }
         }
+    }
+
+    /// <summary>
+    ///     Returns a new instance of the default shader used by SpriteBatch
+    ///     for GL2 when no shader is specified.
+    /// </summary>
+    public static ShaderProgram CreateDefaultShader()
+    {
+        var vertexShader = "attribute vec4 "
+                         + ShaderProgram.POSITION_ATTRIBUTE
+                         + ";\n"
+                         + "attribute vec4 "
+                         + ShaderProgram.COLOR_ATTRIBUTE
+                         + ";\n"
+                         + "attribute vec2 "
+                         + ShaderProgram.TEXCOORD_ATTRIBUTE
+                         + "0;\n"
+                         + "uniform mat4 u_projTrans;\n"
+                         + "varying vec4 v_color;\n"
+                         + "varying vec2 v_texCoords;\n"
+                         + "\n"
+                         + "void main()\n"
+                         + "{\n"
+                         + "   v_color = "
+                         + ShaderProgram.COLOR_ATTRIBUTE
+                         + ";\n"
+                         + "   v_color.a = v_color.a * (255.0/254.0);\n"
+                         + "   v_texCoords = "
+                         + ShaderProgram.TEXCOORD_ATTRIBUTE
+                         + "0;\n"
+                         + "   gl_Position =  u_projTrans * "
+                         + ShaderProgram.POSITION_ATTRIBUTE
+                         + ";\n"
+                         + "}\n";
+
+        var fragmentShader = "#ifdef GL_ES\n"
+                           + "#define LOWP lowp\n"
+                           + "precision mediump float;\n"
+                           + "#else\n"
+                           + "#define LOWP \n"
+                           + "#endif\n"
+                           + "varying LOWP vec4 v_color;\n"
+                           + "varying vec2 v_texCoords;\n"
+                           + "uniform sampler2D u_texture;\n"
+                           + "void main()\n"
+                           + "{\n"
+                           + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
+                           + "}";
+
+        var shader = new ShaderProgram( vertexShader, fragmentShader );
+
+        if ( !shader.IsCompiled )
+        {
+            throw new ArgumentException( "Error compiling shader: " + shader.Log );
+        }
+
+        return shader;
+    }
+
+    protected void SetupMatrices()
+    {
+        _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
+
+        if ( _customShader != null )
+        {
+            _customShader.SetUniformMatrix( "u_projTrans", _combinedMatrix );
+            _customShader.SetUniformi( "u_texture", 0 );
+        }
+        else
+        {
+            _shader?.SetUniformMatrix( "u_projTrans", _combinedMatrix );
+            _shader?.SetUniformi( "u_texture", 0 );
+        }
+    }
+
+    protected void SwitchTexture( Texture texture )
+    {
+        Flush();
+        LastTexture  = texture;
+        invTexWidth  = 1.0f / texture.Width;
+        invTexHeight = 1.0f / texture.Height;
     }
 }

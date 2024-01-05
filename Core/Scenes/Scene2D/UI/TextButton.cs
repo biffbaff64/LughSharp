@@ -19,27 +19,20 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-[PublicAPI]
 public class TextButton : Button
 {
     private Label?           _label;
     private TextButtonStyle? _style;
 
     public TextButton( string? text, Skin skin )
-        : this( text, skin.Get< TextButtonStyle >() )
-    {
-        Skin = skin;
-    }
+        : this( text, skin.Get< TextButtonStyle >() ) => Skin = skin;
 
     public TextButton( string? text, Skin skin, string styleName )
-        : this( text, skin.Get< TextButton.TextButtonStyle >( styleName ) )
-    {
-        Skin = skin;
-    }
+        : this( text, skin.Get< TextButtonStyle >( styleName ) ) => Skin = skin;
 
-    public TextButton( string? text, TextButton.TextButtonStyle style )
+    public TextButton( string? text, TextButtonStyle style )
     {
-        this.Style = style;
+        Style = style;
 
         _label = new Label( text, new Label.LabelStyle( style.Font!, style.FontColor! ) );
         _label.SetAlignment( Align.CENTER );
@@ -49,8 +42,50 @@ public class TextButton : Button
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
+    // This method needs to be public...
+    // ReSharper disable once MemberCanBeProtected.Global
+    public new TextButtonStyle? Style
+    {
+        get => _style;
+        set
+        {
+            ArgumentNullException.ThrowIfNull( value );
+
+            if ( value.GetType() != typeof( TextButtonStyle ) )
+            {
+                throw new ArgumentException( "style must be a TextButtonStyle." );
+            }
+
+            _style     = value;
+            base.Style = value;
+
+            if ( Label != null )
+            {
+                TextButtonStyle textButtonStyle = value;
+
+                Label.LabelStyle labelStyle = Label.Style;
+
+                labelStyle.Font      = textButtonStyle.Font!;
+                labelStyle.FontColor = textButtonStyle.FontColor;
+                Label.Style          = labelStyle;
+            }
+        }
+    }
+
+    public Label? Label
+    {
+        get => _label;
+        set
+        {
+            ArgumentNullException.ThrowIfNull( value );
+
+            GetLabelCell()!.Actor = value;
+            _label                = value;
+        }
+    }
+
     /// <summary>
-    /// Returns the appropriate label font color from the style based on the current button state.
+    ///     Returns the appropriate label font color from the style based on the current button state.
     /// </summary>
     public Color? GetFontColor()
     {
@@ -129,52 +164,7 @@ public class TextButton : Button
         }
     }
 
-    // This method needs to be public...
-    // ReSharper disable once MemberCanBeProtected.Global
-    public new TextButtonStyle? Style
-    {
-        get => _style;
-        set
-        {
-            ArgumentNullException.ThrowIfNull( value );
-
-            if ( value.GetType() != typeof( TextButtonStyle ) )
-            {
-                throw new ArgumentException( "style must be a TextButtonStyle." );
-            }
-
-            this._style = value;
-            base.Style  = value;
-
-            if ( Label != null )
-            {
-                TextButtonStyle textButtonStyle = value;
-
-                Label.LabelStyle labelStyle = Label.Style;
-
-                labelStyle.Font      = textButtonStyle.Font!;
-                labelStyle.FontColor = textButtonStyle.FontColor;
-                Label.Style          = labelStyle;
-            }
-        }
-    }
-
-    public Label? Label
-    {
-        get => _label;
-        set
-        {
-            ArgumentNullException.ThrowIfNull( value );
-
-            GetLabelCell()!.Actor = value;
-            this._label           = value;
-        }
-    }
-
-    public Cell? GetLabelCell()
-    {
-        return GetCell( _label! );
-    }
+    public Cell? GetLabelCell() => GetCell( _label! );
 
     public void SetText( string? text ) => _label?.SetText( text );
 
@@ -204,32 +194,17 @@ public class TextButton : Button
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// The style for a text button, see <see cref="TextButton"/>.
+    ///     The style for a text button, see <see cref="TextButton" />.
     /// </summary>
-    [PublicAPI]
     public class TextButtonStyle : ButtonStyle
     {
-        public BitmapFont? Font { get; protected init; }
-
-        public Color? FontColor               { get; protected init; }
-        public Color? DownFontColor           { get; set; }
-        public Color? OverFontColor           { get; set; }
-        public Color? FocusedFontColor        { get; set; }
-        public Color? DisabledFontColor       { get; set; }
-        public Color? CheckedFontColor        { get; set; }
-        public Color? CheckedDownFontColor    { get; set; }
-        public Color? CheckedOverFontColor    { get; set; }
-        public Color? CheckedFocusedFontColor { get; set; }
 
         protected TextButtonStyle()
         {
         }
 
         public TextButtonStyle( IDrawable upImage, IDrawable downImage, IDrawable checkedImage, BitmapFont font )
-            : base( upImage, downImage, checkedImage )
-        {
-            this.Font = font;
-        }
+            : base( upImage, downImage, checkedImage ) => Font = font;
 
         protected TextButtonStyle( TextButtonStyle style ) : base( style )
         {
@@ -280,5 +255,17 @@ public class TextButton : Button
                 CheckedFocusedFontColor = new Color( style.CheckedFocusedFontColor );
             }
         }
+
+        public BitmapFont? Font { get; protected init; }
+
+        public Color? FontColor               { get; protected init; }
+        public Color? DownFontColor           { get; set; }
+        public Color? OverFontColor           { get; set; }
+        public Color? FocusedFontColor        { get; set; }
+        public Color? DisabledFontColor       { get; set; }
+        public Color? CheckedFontColor        { get; set; }
+        public Color? CheckedDownFontColor    { get; set; }
+        public Color? CheckedOverFontColor    { get; set; }
+        public Color? CheckedFocusedFontColor { get; set; }
     }
 }

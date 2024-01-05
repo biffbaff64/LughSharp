@@ -16,23 +16,23 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
-public class AssetNotLoadedException : System.Exception
+public class AssetNotLoadedException : Exception
 {
-    public Type                  Type   { get; private set; }
-    public string                Path   { get; private set; }
-    public AssetLoaderParameters Params { get; private set; }
 
     public AssetNotLoadedException( Type type, string path, AssetLoaderParameters param )
         : base( $"Asset not loaded: '{path}' ({type})" )
     {
-        this.Type   = type;
-        this.Path   = path;
-        this.Params = param;
+        Type   = type;
+        Path   = path;
+        Params = param;
     }
 
     public AssetNotLoadedException( AssetDescriptor desc )
         : this( desc.AssetType, desc.Filepath!, desc.Parameters )
     {
     }
+
+    public Type                  Type   { get; private set; }
+    public string                Path   { get; private set; }
+    public AssetLoaderParameters Params { get; private set; }
 }

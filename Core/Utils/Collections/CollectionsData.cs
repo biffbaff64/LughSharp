@@ -16,16 +16,15 @@
 
 namespace LibGDXSharp.Utils.Collections;
 
-[PublicAPI]
 public class CollectionsData
 {
     /// <summary>
-    /// When true, <see cref="IEnumerator{T}"/> for collections will allocate a new
-    /// iterator for each invocation. When false, the iterator is reused and nested
-    /// use will throw an exception.
-    /// <p>
-    /// Default is false.
-    /// </p> 
+    ///     When true, <see cref="IEnumerator{T}" /> for collections will allocate a new
+    ///     iterator for each invocation. When false, the iterator is reused and nested
+    ///     use will throw an exception.
+    ///     <p>
+    ///         Default is false.
+    ///     </p>
     /// </summary>
     public static bool AllocateIterators { get; set; }
 }

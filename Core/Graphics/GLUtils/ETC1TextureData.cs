@@ -16,31 +16,30 @@
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[PublicAPI]
 public class ETC1TextureData : ITextureData
 {
-    private FileInfo?      _file;
-    private ETC1.ETC1Data? _data;
+    private          ETC1.ETC1Data? _data;
+    private readonly FileInfo?      _file;
 
     public ETC1TextureData( FileInfo file, bool useMipMaps = false )
     {
-        this._file      = file;
-        this.UseMipMaps = useMipMaps;
+        _file      = file;
+        UseMipMaps = useMipMaps;
     }
 
     public ETC1TextureData( ETC1.ETC1Data encodedImage, bool useMipMaps )
     {
-        this._data      = encodedImage;
-        this.UseMipMaps = useMipMaps;
+        _data      = encodedImage;
+        UseMipMaps = useMipMaps;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool IsPrepared { get; set; }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Prepare()
     {
         if ( IsPrepared )
@@ -62,25 +61,19 @@ public class ETC1TextureData : ITextureData
         {
             throw new GdxRuntimeException( "No data to prepare!" );
         }
-        
+
         Width      = _data.Width;
         Height     = _data.Height;
         IsPrepared = true;
     }
 
-    /// <inheritdoc/>
-    public Pixmap ConsumePixmap()
-    {
-        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
-    }
+    /// <inheritdoc />
+    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
 
-    /// <inheritdoc/>
-    public bool DisposePixmap()
-    {
-        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
-    }
+    /// <inheritdoc />
+    public bool DisposePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void ConsumeCustomData( int target )
     {
         if ( !IsPrepared )
@@ -92,15 +85,21 @@ public class ETC1TextureData : ITextureData
         {
             throw new GdxRuntimeException( "No data to consume!" );
         }
-            
+
         if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
         {
             Pixmap pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
 
-            Gdx.GL.GLTexImage2D
-                (
-                 target, 0, pixmap.GLInternalFormat, pixmap.Width, pixmap.Height, 0,
-                 pixmap.GLFormat, pixmap.GLType, pixmap.Pixels
+            Gdx.GL.GLTexImage2D(
+                target,
+                0,
+                pixmap.GLInternalFormat,
+                pixmap.Width,
+                pixmap.Height,
+                0,
+                pixmap.GLFormat,
+                pixmap.GLType,
+                pixmap.Pixels
                 );
 
             if ( UseMipMaps )
@@ -113,15 +112,15 @@ public class ETC1TextureData : ITextureData
         }
         else
         {
-            Gdx.GL.GLCompressedTexImage2D
-                (
-                 target,
-                 0,
-                 ETC1.ETC1_RGB8_OES,
-                 Width, Height,
-                 0,
-                 _data.CompressedData!.Capacity - _data.DataOffset,
-                 _data.CompressedData
+            Gdx.GL.GLCompressedTexImage2D(
+                target,
+                0,
+                ETC1.ETC1_RGB8_OES,
+                Width,
+                Height,
+                0,
+                _data.CompressedData!.Capacity - _data.DataOffset,
+                _data.CompressedData
                 );
 
             if ( UseMipMaps )
@@ -131,23 +130,23 @@ public class ETC1TextureData : ITextureData
         }
 
         _data.Dispose();
-        
-        _data       = null;
+
+        _data      = null;
         IsPrepared = false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int Width { get; set; }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int Height { get; set; }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool UseMipMaps { get; set; } = false;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public Pixmap.Format GetFormat() => Pixmap.Format.Alpha;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool IsManaged() => false;
 }

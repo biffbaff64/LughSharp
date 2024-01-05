@@ -16,8 +16,6 @@
 
 namespace LibGDXSharp.Extensions.Tools.ImagePacker;
 
-[PublicAPI]
 public class ImagePacker
 {
 }
-

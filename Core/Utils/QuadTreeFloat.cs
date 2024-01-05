@@ -19,15 +19,44 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// A quad tree that stores a float for each point.
+///     A quad tree that stores a float for each point.
 /// </summary>
-[PublicAPI]
 public class QuadTreeFloat : IPoolable
 {
     public const int VALUE   = 0;
     public const int XPOS    = 1;
     public const int YPOS    = 2;
     public const int DISTSQR = 3;
+
+    private readonly Pool< QuadTreeFloat > _pool = new( 128, 4096 );
+
+    /// <summary>
+    ///     Creates a quad tree with 16 for maxValues and 8 for maxDepth.
+    /// </summary>
+    public QuadTreeFloat() : this( 16, 8 )
+    {
+    }
+
+    /// <summary>
+    ///     Creates a quad tree with provided values for maxValues and maxDepth.
+    /// </summary>
+    /// <param name="maxValues">
+    ///     The maximum number of values stored in each quad tree node. When exceeded,
+    ///     the node is split into 4 child nodes. If the maxDepth has been reached,
+    ///     more than maxValues may be stored.
+    /// </param>
+    /// <param name="maxDepth">
+    ///     The maximum depth of the tree nodes. Nodes at the maxDepth will not be
+    ///     split and may store more than maxValues number of entries.
+    /// </param>
+    public QuadTreeFloat( int maxValues, int maxDepth )
+    {
+        MaxValues = maxValues * 3;
+        MaxDepth  = maxDepth;
+        Values    = new List< float >( MaxValues );
+
+        _pool.NewObject = GetNewObject;
+    }
 
     public int            MaxValues { get; set; }
     public int            MaxDepth  { get; set; }
@@ -47,47 +76,54 @@ public class QuadTreeFloat : IPoolable
     // The number of elements stored in 'values' (3 values per quad tree entry).
     public int Count { get; set; }
 
-    private Pool< QuadTreeFloat > _pool = new( 128, 4096 );
-
-    /// <summary>
-    /// Creates a quad tree with 16 for maxValues and 8 for maxDepth.
-    /// </summary>
-    public QuadTreeFloat() : this( 16, 8 )
+    public void Reset()
     {
-    }
+        if ( Count == -1 )
+        {
+            if ( Nw != null )
+            {
+                _pool.Free( Nw );
+                Nw = null;
+            }
 
-    /// <summary>
-    /// Creates a quad tree with provided values for maxValues and maxDepth.
-    /// </summary>
-    /// <param name="maxValues">
-    /// The maximum number of values stored in each quad tree node. When exceeded,
-    /// the node is split into 4 child nodes. If the maxDepth has been reached,
-    /// more than maxValues may be stored.
-    /// </param>
-    /// <param name="maxDepth">
-    /// The maximum depth of the tree nodes. Nodes at the maxDepth will not be
-    /// split and may store more than maxValues number of entries.
-    /// </param>
-    public QuadTreeFloat( int maxValues, int maxDepth )
-    {
-        this.MaxValues = maxValues * 3;
-        this.MaxDepth  = maxDepth;
-        this.Values    = new List< float >( this.MaxValues );
+            if ( Sw != null )
+            {
+                _pool.Free( Sw );
+                Sw = null;
+            }
 
-        _pool.NewObject = GetNewObject;
+            if ( Ne != null )
+            {
+                _pool.Free( Ne );
+                Ne = null;
+            }
+
+            if ( Se != null )
+            {
+                _pool.Free( Se );
+                Se = null;
+            }
+        }
+
+        Count = 0;
+
+        if ( Values.Count > MaxValues )
+        {
+            Values = new List< float >( MaxValues );
+        }
     }
 
     public void SetBounds( float x, float y, float width, float height )
     {
-        this.X      = x;
-        this.Y      = y;
-        this.Width  = width;
-        this.Height = height;
+        X      = x;
+        Y      = y;
+        Width  = width;
+        Height = height;
     }
 
     public void Add( float value, float valueX, float valueY )
     {
-        var count = this.Count;
+        var count = Count;
 
         if ( count == -1 )
         {
@@ -114,14 +150,14 @@ public class QuadTreeFloat : IPoolable
         Values[ count + 1 ] = valueX;
         Values[ count + 2 ] = valueY;
 
-        this.Count += 3;
+        Count += 3;
     }
 
     private void Split( float value, float valueX, float valueY )
     {
         for ( var i = 0; i < MaxValues; i += 3 )
         {
-            AddToChild( this.Values[ i ], this.Values[ i + 1 ], this.Values[ i + 2 ] );
+            AddToChild( Values[ i ], Values[ i + 1 ], Values[ i + 2 ] );
         }
 
         // values isn't nulled because the trees are pooled.
@@ -179,13 +215,10 @@ public class QuadTreeFloat : IPoolable
     }
 
     /// <summary>
-    /// Returns a new length for <see cref="Values"/> when it is not enough to
-    /// hold all the entries after <see cref="MaxDepth"/> has been reached.
+    ///     Returns a new length for <see cref="Values" /> when it is not enough to
+    ///     hold all the entries after <see cref="MaxDepth" /> has been reached.
     /// </summary>
-    protected int GrowValues()
-    {
-        return Count + ( 10 * 3 );
-    }
+    protected int GrowValues() => Count + ( 10 * 3 );
 
     /// <summary>
     /// </summary>
@@ -193,17 +226,18 @@ public class QuadTreeFloat : IPoolable
     /// <param name="centerY"></param>
     /// <param name="radius"></param>
     /// <param name="results">
-    /// For each entry found within the radius, if any, the value, x, y, and
-    /// square of the distance to the entry are added to this array.
+    ///     For each entry found within the radius, if any, the value, x, y, and
+    ///     square of the distance to the entry are added to this array.
     /// </param>
-    public void Query( float centerX, float centerY, float radius, List< float > results )
-    {
-        Query
-            (
-             centerX, centerY, radius * radius, centerX - radius,
-             centerY - radius, radius * 2, results
-            );
-    }
+    public void Query( float centerX, float centerY, float radius, List< float > results ) => Query(
+        centerX,
+        centerY,
+        radius * radius,
+        centerX - radius,
+        centerY - radius,
+        radius * 2,
+        results
+        );
 
     private void Query( float centerX,
                         float centerY,
@@ -221,11 +255,11 @@ public class QuadTreeFloat : IPoolable
             return;
         }
 
-        var count = this.Count;
+        var count = Count;
 
         if ( count != -1 )
         {
-            List< float > values = this.Values;
+            List< float > values = Values;
 
             for ( var i = 1; i < count; i += 3 )
             {
@@ -257,14 +291,14 @@ public class QuadTreeFloat : IPoolable
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    /// <param name ="result">
-    /// For the entry nearest to the specified point, the value, x, y, and square
-    /// of the distance to the value are added to this array after it is cleared.
+    /// <param name="result">
+    ///     For the entry nearest to the specified point, the value, x, y, and square
+    ///     of the distance to the value are added to this array after it is cleared.
     /// </param>
     /// <returns>
-    /// False if no entry was found because the quad tree was empty or the specified
-    /// point is farther than the larger of the quad tree's width or height from an
-    /// entry. If false is returned the result array is empty.
+    ///     False if no entry was found because the quad tree was empty or the specified
+    ///     point is farther than the larger of the quad tree's width or height from an
+    ///     entry. If false is returned the result array is empty.
     /// </returns>
     public bool Nearest( float x, float y, List< float > result )
     {
@@ -323,15 +357,15 @@ public class QuadTreeFloat : IPoolable
 
     private void FindNearestInternal( float x, float y, List< float > result )
     {
-        if ( !( ( this.X < x )
-             && ( ( this.X + Width ) > x )
-             && ( this.Y < y )
-             && ( ( this.Y + Height ) > y ) ) )
+        if ( !( ( X < x )
+             && ( ( X + Width ) > x )
+             && ( Y < y )
+             && ( ( Y + Height ) > y ) ) )
         {
             return;
         }
 
-        var count = this.Count;
+        var count = Count;
 
         if ( count != -1 )
         {
@@ -340,7 +374,7 @@ public class QuadTreeFloat : IPoolable
             var nearY     = result[ 2 ];
             var nearDist  = result[ 3 ];
 
-            List< float > values = this.Values;
+            List< float > values = Values;
 
             for ( var i = 1; i < count; i += 3 )
             {
@@ -371,45 +405,5 @@ public class QuadTreeFloat : IPoolable
         }
     }
 
-    public void Reset()
-    {
-        if ( Count == -1 )
-        {
-            if ( Nw != null )
-            {
-                _pool.Free( Nw );
-                Nw = null;
-            }
-
-            if ( Sw != null )
-            {
-                _pool.Free( Sw );
-                Sw = null;
-            }
-
-            if ( Ne != null )
-            {
-                _pool.Free( Ne );
-                Ne = null;
-            }
-
-            if ( Se != null )
-            {
-                _pool.Free( Se );
-                Se = null;
-            }
-        }
-
-        Count = 0;
-
-        if ( Values.Count > MaxValues )
-        {
-            Values = new List< float >( MaxValues );
-        }
-    }
-
-    public static QuadTreeFloat GetNewObject()
-    {
-        return new QuadTreeFloat();
-    }
+    public static QuadTreeFloat GetNewObject() => new();
 }

@@ -18,7 +18,6 @@ namespace LibGDXSharp.Core;
 
 using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
-[PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
 

@@ -17,29 +17,28 @@
 namespace LibGDXSharp.Assets.Loaders;
 
 /// <summary>
-/// <see cref="AssetLoader"/> for <see cref="Texture"/> instances.
-/// The pixel data is loaded asynchronously. The texture is then created on the
-/// rendering thread, synchronously. Passing a <see cref="TextureParameter"/>
-/// to <see cref="AssetManager"/>.Load() allows one to specify parameters as
-/// can be passed to the various Texture constructors, e.g. filtering, whether
-/// to generate mipmaps and so on.
+///     <see cref="AssetLoader" /> for <see cref="Texture" /> instances.
+///     The pixel data is loaded asynchronously. The texture is then created on the
+///     rendering thread, synchronously. Passing a <see cref="TextureParameter" />
+///     to <see cref="AssetManager" />.Load() allows one to specify parameters as
+///     can be passed to the various Texture constructors, e.g. filtering, whether
+///     to generate mipmaps and so on.
 /// </summary>
-[PublicAPI]
 public class TextureLoader : AsynchronousAssetLoader, IDisposable
 {
-    [PublicAPI]
-    public class TextureLoaderInfo
-    {
-        public string?       Filename { get; set; }
-        public ITextureData? Data     { get; set; }
-        public Texture?      Texture  { get; set; }
-    }
 
     private readonly TextureLoaderInfo _loaderInfo;
 
-    public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
+    public TextureLoader( IFileHandleResolver resolver ) : base( resolver ) => _loaderInfo = new TextureLoaderInfo();
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
     {
-        _loaderInfo = new TextureLoaderInfo();
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
     /// <summary>
@@ -91,9 +90,9 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="parameter"></param>
     /// <returns></returns>
     public override object LoadSync( AssetManager manager,
-                                   string? fileName,
-                                   FileInfo? file,
-                                   AssetLoaderParameters parameter )
+                                     string? fileName,
+                                     FileInfo? file,
+                                     AssetLoaderParameters parameter )
     {
         Texture? texture = _loaderInfo.Texture;
 
@@ -123,44 +122,9 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     /// <returns></returns>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter )
-    {
-        return null!;
-    }
+                                                             AssetLoaderParameters parameter ) => null!;
 
     /// <summary>
-    /// </summary>
-    [PublicAPI]
-    public class TextureParameter : AssetLoaderParameters
-    {
-        /// <summary>
-        /// the format of the final Texture. Uses the source images format if null
-        /// </summary>
-        public Pixmap.Format? Format { get; set; } = null;
-
-        /// <summary>
-        /// whether to generate mipmaps
-        /// </summary>
-        public bool GenMipMaps { get; set; } = false;
-
-        /// <summary>
-        /// The texture to put the <see cref="TextureData"/> in, optional.
-        /// </summary>
-        public Texture? Texture { get; set; } = null;
-
-        /// <summary>
-        /// TextureData for textures created on the fly, optional. When set, all format and genMipMaps are ignored
-        /// </summary>
-        public ITextureData? TextureData { get; set; } = null;
-
-        public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
-        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
-        public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
-        public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
-    }
-
-    /// <summary>
-    /// 
     /// </summary>
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
@@ -170,13 +134,40 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
         }
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
+    public class TextureLoaderInfo
     {
-        Dispose( true );
-        GC.SuppressFinalize( this );
+        public string?       Filename { get; set; }
+        public ITextureData? Data     { get; set; }
+        public Texture?      Texture  { get; set; }
+    }
+
+    /// <summary>
+    /// </summary>
+    public class TextureParameter : AssetLoaderParameters
+    {
+        /// <summary>
+        ///     the format of the final Texture. Uses the source images format if null
+        /// </summary>
+        public Pixmap.Format? Format { get; set; } = null;
+
+        /// <summary>
+        ///     whether to generate mipmaps
+        /// </summary>
+        public bool GenMipMaps { get; set; } = false;
+
+        /// <summary>
+        ///     The texture to put the <see cref="TextureData" /> in, optional.
+        /// </summary>
+        public Texture? Texture { get; set; } = null;
+
+        /// <summary>
+        ///     TextureData for textures created on the fly, optional. When set, all format and genMipMaps are ignored
+        /// </summary>
+        public ITextureData? TextureData { get; set; } = null;
+
+        public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
+        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
+        public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
+        public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
     }
 }

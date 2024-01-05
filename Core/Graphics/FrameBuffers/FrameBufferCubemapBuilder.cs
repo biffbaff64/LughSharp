@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
-[PublicAPI]
 public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< GLFrameBuffer< GLTexture > >
 {
     public FrameBufferCubemapBuilder( int width, int height )
@@ -24,9 +23,5 @@ public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< GLFrameBuffer< GL
     {
     }
 
-    public override FrameBufferCubemap Build()
-    {
-        return new FrameBufferCubemap( this );
-    }
+    public override FrameBufferCubemap Build() => new( this );
 }
-

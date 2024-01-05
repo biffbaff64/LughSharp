@@ -17,27 +17,26 @@
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Unchecked exception thrown when a relative <i>get</i> operation reaches
-/// the source buffer's limit.
+///     Unchecked exception thrown when a relative <i>get</i> operation reaches
+///     the source buffer's limit.
 /// </summary>
-[PublicAPI]
-public class BufferUnderflowException : System.Exception
+public class BufferUnderflowException : Exception
 {
     public BufferUnderflowException()
     {
     }
-        
+
     public BufferUnderflowException( string? message = "" )
         : base( message )
     {
     }
 
-    public BufferUnderflowException( System.Exception e )
+    public BufferUnderflowException( Exception e )
         : this( "", e )
     {
     }
 
-    public BufferUnderflowException( string message, System.Exception? exception )
+    public BufferUnderflowException( string message, Exception? exception )
         : base( message, exception )
     {
     }

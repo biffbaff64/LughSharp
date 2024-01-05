@@ -18,23 +18,15 @@ using LibGDXSharp.Graphics.G2D;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
-[PublicAPI]
 public class BaseDrawable : IDrawable
 {
-    public string? Name         { get; set; }
-    public float   LeftWidth    { get; set; }
-    public float   RightWidth   { get; set; }
-    public float   TopHeight    { get; set; }
-    public float   BottomHeight { get; set; }
-    public float   MinWidth     { get; set; }
-    public float   MinHeight    { get; set; }
 
     protected BaseDrawable()
     {
     }
 
     /// <summary>
-    /// Creates a new empty drawable with the same sizing information as the specified drawable.
+    ///     Creates a new empty drawable with the same sizing information as the specified drawable.
     /// </summary>
     protected BaseDrawable( IDrawable? drawable )
     {
@@ -53,9 +45,17 @@ public class BaseDrawable : IDrawable
         MinHeight    = drawable.MinHeight;
     }
 
+    public string? Name         { get; set; }
+    public float   LeftWidth    { get; set; }
+    public float   RightWidth   { get; set; }
+    public float   TopHeight    { get; set; }
+    public float   BottomHeight { get; set; }
+    public float   MinWidth     { get; set; }
+    public float   MinHeight    { get; set; }
+
     /// <summary>
-    /// Draws this drawable at the specified bounds. The drawable should be tinted
-    /// with <see cref="IBatch.Color"/>, possibly by mixing its own color. 
+    ///     Draws this drawable at the specified bounds. The drawable should be tinted
+    ///     with <see cref="IBatch.Color" />, possibly by mixing its own color.
     /// </summary>
     public virtual void Draw( IBatch batch, float x, float y, float width, float height )
     {

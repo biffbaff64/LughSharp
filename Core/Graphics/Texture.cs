@@ -21,33 +21,28 @@ using LibGDXSharp.Utils.Collections;
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
-/// A Texture wraps a standard OpenGL ES texture.
-/// <para>
-/// A Texture can be managed. If the OpenGL context is lost all managed textures
-/// get invalidated. This happens when a user switches to another application or
-/// receives an incoming call. Managed textures get reloaded automatically.
-/// </para>
-/// <para>
-/// A Texture has to be bound via the <see cref="Texture.Bind()"/> method in order
-/// for it to be applied to geometry. The texture will be bound to the currently
-/// active texture unit specified via <see cref="IGL20.GLActiveTexture"/>.
-/// </para>
-/// <para>
-/// You can draw <see cref="Pixmap"/>s to a texture at any time. The changes will
-/// be automatically uploaded to texture memory. This is of course not extremely
-/// fast so use it with care. It also only works with unmanaged textures.
-/// </para>
-/// <para>
-/// A Texture must be disposed when it is no longer used
-/// </para>
+///     A Texture wraps a standard OpenGL ES texture.
+///     <para>
+///         A Texture can be managed. If the OpenGL context is lost all managed textures
+///         get invalidated. This happens when a user switches to another application or
+///         receives an incoming call. Managed textures get reloaded automatically.
+///     </para>
+///     <para>
+///         A Texture has to be bound via the <see cref="Texture.Bind()" /> method in order
+///         for it to be applied to geometry. The texture will be bound to the currently
+///         active texture unit specified via <see cref="IGL20.GLActiveTexture" />.
+///     </para>
+///     <para>
+///         You can draw <see cref="Pixmap" />s to a texture at any time. The changes will
+///         be automatically uploaded to texture memory. This is of course not extremely
+///         fast so use it with care. It also only works with unmanaged textures.
+///     </para>
+///     <para>
+///         A Texture must be disposed when it is no longer used
+///     </para>
 /// </summary>
-[PublicAPI]
 public class Texture : GLTexture
 {
-    // ------------------------------------------------------------------------
-
-    public AssetManager? AssetManager { get; set; } = null;
-    public ITextureData? TextureData  { get; set; } = null;
 
     // ------------------------------------------------------------------------
 
@@ -86,11 +81,11 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Creates a new Texture with the specified width, height, and Pixmap format.
+    ///     Creates a new Texture with the specified width, height, and Pixmap format.
     /// </summary>
     /// <param name="width">The width in pixels.</param>
     /// <param name="height">The Height in pixels.</param>
-    /// <param name="format">The pixmap <see cref="Pixmap.Format"/></param>
+    /// <param name="format">The pixmap <see cref="Pixmap.Format" /></param>
     public Texture( int width, int height, Pixmap.Format format )
         : this( new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
@@ -115,21 +110,33 @@ public class Texture : GLTexture
     }
 
     // ------------------------------------------------------------------------
+
+    public AssetManager? AssetManager { get; set; } = null;
+    public ITextureData? TextureData  { get; set; } = null;
+
+    public override int  Width     => TextureData?.Width ?? 0;
+    public override int  Height    => TextureData?.Height ?? 0;
+    public override int  Depth     => 0;
+    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
+
+    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
+
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     public void Load( ITextureData? data )
     {
-        if ( ( this.TextureData == null ) || ( data == null ) )
+        if ( ( TextureData == null ) || ( data == null ) )
         {
             throw new GdxRuntimeException( "Load failed!: null TextureData supplied" );
         }
 
-        if ( data.IsManaged() != this.TextureData.IsManaged() )
+        if ( data.IsManaged() != TextureData.IsManaged() )
         {
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }
 
-        this.TextureData = data;
+        TextureData = data;
 
         if ( !data.IsPrepared )
         {
@@ -148,8 +155,8 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Used internally to reload after context loss. Creates a new GL handle then
-    /// calls <see cref="Load(ITextureData)"/>.
+    ///     Used internally to reload after context loss. Creates a new GL handle then
+    ///     calls <see cref="Load(ITextureData)" />.
     /// </summary>
     protected override void Reload()
     {
@@ -163,9 +170,9 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Draws the given <seealso cref="Pixmap"/> to the texture at position x, y.
-    /// No clipping is performed so you have to make sure that you draw only inside
-    /// the texture region. Note that this will only draw to mipmap level 0!
+    ///     Draws the given <seealso cref="Pixmap" /> to the texture at position x, y.
+    ///     No clipping is performed so you have to make sure that you draw only inside
+    ///     the texture region. Note that this will only draw to mipmap level 0!
     /// </summary>
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>
@@ -190,15 +197,8 @@ public class Texture : GLTexture
                                 pixmap.Pixels );
     }
 
-    public override int  Width     => TextureData?.Width ?? 0;
-    public override int  Height    => TextureData?.Height ?? 0;
-    public override int  Depth     => 0;
-    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
-
-    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
-
     /// <summary>
-    /// Disposes all resources associated with the texture.
+    ///     Disposes all resources associated with the texture.
     /// </summary>
     public override void Dispose()
     {
@@ -232,7 +232,7 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Invalidate all managed textures. This is an internal method. Do not use it!
+    ///     Invalidate all managed textures. This is an internal method. Do not use it!
     /// </summary>
     public void InvalidateAllTextures( IApplication app )
     {
@@ -306,21 +306,6 @@ public class Texture : GLTexture
         }
     }
 
-    private class LoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
-    {
-        private readonly int _refCount;
-
-        public LoadedCallbackInnerClass( int refCount )
-        {
-            this._refCount = refCount;
-        }
-
-        public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type )
-        {
-            assetManager.SetReferenceCount( fileName!, _refCount );
-        }
-    }
-
     public string GetManagedStatus()
     {
         var builder = new StringBuilder( "Managed textures/app: { " );
@@ -339,16 +324,19 @@ public class Texture : GLTexture
         return builder.ToString();
     }
 
-    public override string? ToString()
-    {
-        return TextureData is FileTextureData ? TextureData.ToString() : base.ToString();
-    }
+    public override string? ToString() => TextureData is FileTextureData ? TextureData.ToString() : base.ToString();
 
     /// <summary>
-    /// Clears all managed textures. This is an internal method. Do not use it!
+    ///     Clears all managed textures. This is an internal method. Do not use it!
     /// </summary>
-    internal void ClearAllTextures( IApplication app )
+    internal void ClearAllTextures( IApplication app ) => _managedTextures.Remove( app );
+
+    private class LoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
     {
-        _managedTextures.Remove( app );
+        private readonly int _refCount;
+
+        public LoadedCallbackInnerClass( int refCount ) => _refCount = refCount;
+
+        public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type ) => assetManager.SetReferenceCount( fileName!, _refCount );
     }
 }

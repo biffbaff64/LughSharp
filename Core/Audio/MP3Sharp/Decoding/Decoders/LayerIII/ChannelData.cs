@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
-[PublicAPI]
 public class ChannelData
 {
     public GranuleInfo[] granules;

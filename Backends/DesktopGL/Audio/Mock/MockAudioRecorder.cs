@@ -16,10 +16,9 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
-[PublicAPI]
 public class MockAudioRecorder : IAudioRecorder
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Read( short[] samples, int offset, int numSamples )
     {
     }

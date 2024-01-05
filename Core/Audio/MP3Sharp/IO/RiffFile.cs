@@ -19,9 +19,8 @@ using LibGDXSharp.Audio.MP3Sharp.Support;
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// public class to manage RIFF files
+///     public class to manage RIFF files
 /// </summary>
-[PublicAPI]
 public class RiffFile
 {
     protected const int DDC_SUCCESS       = 0; // The operation succeded
@@ -36,8 +35,8 @@ public class RiffFile
     protected const int RF_READ           = 2; // open for read
 
     private readonly RiffChunkHeader _riffHeader; // header for whole file
-    private          int             _fmode;      // current file I/O mode
     private          Stream?         _file;       // I/O stream to use
+    private          int             _fmode;      // current file I/O mode
 
     public RiffFile()
     {
@@ -53,12 +52,12 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Return File Mode.
+    ///     Return File Mode.
     /// </summary>
     public int CurrentFileMode() => _fmode;
 
     /// <summary>
-    /// Open a RIFF file.
+    ///     Open a RIFF file.
     /// </summary>
     public virtual int Open( string filename, int newMode )
     {
@@ -84,14 +83,14 @@ public class RiffFile
                             // We will have to come back later and patch it!
                             var br = new sbyte[ 8 ];
 
-                            br[ 0 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 24 ) ) & 0x000000FF );
-                            br[ 1 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 16 ) ) & 0x000000FF );
-                            br[ 2 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 8 ) ) & 0x000000FF );
+                            br[ 0 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 24 ) & 0x000000FF );
+                            br[ 1 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 16 ) & 0x000000FF );
+                            br[ 2 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 8 ) & 0x000000FF );
                             br[ 3 ] = ( sbyte )( _riffHeader.CkId & 0x000000FF );
 
-                            var br4 = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 24 ) ) & 0x000000FF );
-                            var br5 = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 16 ) ) & 0x000000FF );
-                            var br6 = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 8 ) ) & 0x000000FF );
+                            var br4 = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 24 ) & 0x000000FF );
+                            var br5 = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 16 ) & 0x000000FF );
+                            var br6 = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 8 ) & 0x000000FF );
                             var br7 = ( sbyte )( _riffHeader.CkSize & 0x000000FF );
 
                             br[ 4 ] = br7;
@@ -163,7 +162,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Open a RIFF STREAM.
+    ///     Open a RIFF STREAM.
     /// </summary>
     public virtual int Open( Stream stream, int newMode )
     {
@@ -190,14 +189,14 @@ public class RiffFile
                             // We will have to come back later and patch it!
                             var br = new sbyte[ 8 ];
 
-                            br[ 0 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 24 ) ) & 0x000000FF );
-                            br[ 1 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 16 ) ) & 0x000000FF );
-                            br[ 2 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 8 ) ) & 0x000000FF );
+                            br[ 0 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 24 ) & 0x000000FF );
+                            br[ 1 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 16 ) & 0x000000FF );
+                            br[ 2 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 8 ) & 0x000000FF );
                             br[ 3 ] = ( sbyte )( _riffHeader.CkId & 0x000000FF );
 
-                            var br4 = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 24 ) ) & 0x000000FF );
-                            var br5 = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 16 ) ) & 0x000000FF );
-                            var br6 = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 8 ) ) & 0x000000FF );
+                            var br4 = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 24 ) & 0x000000FF );
+                            var br5 = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 16 ) & 0x000000FF );
+                            var br6 = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 8 ) & 0x000000FF );
                             var br7 = ( sbyte )( _riffHeader.CkSize & 0x000000FF );
 
                             br[ 4 ] = br7;
@@ -272,7 +271,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Write NumBytes data.
+    ///     Write NumBytes data.
     /// </summary>
     public virtual int Write( sbyte[] data, int numBytes )
     {
@@ -297,7 +296,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Write NumBytes data.
+    ///     Write NumBytes data.
     /// </summary>
     public virtual int Write( short[] data, int numBytes )
     {
@@ -307,7 +306,7 @@ public class RiffFile
         for ( var y = 0; y < numBytes; y += 2 )
         {
             theData[ y ]     = ( sbyte )( data[ yc ] & 0x00FF );
-            theData[ y + 1 ] = ( sbyte )( ( SupportClass.URShift( data[ yc++ ], 8 ) ) & 0x00FF );
+            theData[ y + 1 ] = ( sbyte )( SupportClass.URShift( data[ yc++ ], 8 ) & 0x00FF );
         }
 
         if ( _fmode != RF_WRITE )
@@ -331,20 +330,20 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Write NumBytes data.
+    ///     Write NumBytes data.
     /// </summary>
     public virtual int Write( RiffChunkHeader riffHeader, int numBytes )
     {
         var br = new sbyte[ 8 ];
 
-        br[ 0 ] = ( sbyte )( ( SupportClass.URShift( riffHeader.CkId, 24 ) ) & 0x000000FF );
-        br[ 1 ] = ( sbyte )( ( SupportClass.URShift( riffHeader.CkId, 16 ) ) & 0x000000FF );
-        br[ 2 ] = ( sbyte )( ( SupportClass.URShift( riffHeader.CkId, 8 ) ) & 0x000000FF );
+        br[ 0 ] = ( sbyte )( SupportClass.URShift( riffHeader.CkId, 24 ) & 0x000000FF );
+        br[ 1 ] = ( sbyte )( SupportClass.URShift( riffHeader.CkId, 16 ) & 0x000000FF );
+        br[ 2 ] = ( sbyte )( SupportClass.URShift( riffHeader.CkId, 8 ) & 0x000000FF );
         br[ 3 ] = ( sbyte )( riffHeader.CkId & 0x000000FF );
 
-        var br4 = ( sbyte )( ( SupportClass.URShift( riffHeader.CkSize, 24 ) ) & 0x000000FF );
-        var br5 = ( sbyte )( ( SupportClass.URShift( riffHeader.CkSize, 16 ) ) & 0x000000FF );
-        var br6 = ( sbyte )( ( SupportClass.URShift( riffHeader.CkSize, 8 ) ) & 0x000000FF );
+        var br4 = ( sbyte )( SupportClass.URShift( riffHeader.CkSize, 24 ) & 0x000000FF );
+        var br5 = ( sbyte )( SupportClass.URShift( riffHeader.CkSize, 16 ) & 0x000000FF );
+        var br6 = ( sbyte )( SupportClass.URShift( riffHeader.CkSize, 8 ) & 0x000000FF );
         var br7 = ( sbyte )( riffHeader.CkSize & 0x000000FF );
 
         br[ 4 ] = br7;
@@ -373,7 +372,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Write NumBytes data.
+    ///     Write NumBytes data.
     /// </summary>
     public virtual int Write( short data, int numBytes )
     {
@@ -399,7 +398,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Write NumBytes data.
+    ///     Write NumBytes data.
     /// </summary>
     public virtual int Write( int data, int numBytes )
     {
@@ -426,7 +425,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Read NumBytes data.
+    ///     Read NumBytes data.
     /// </summary>
     public virtual int Read( sbyte[] data, int numBytes )
     {
@@ -445,7 +444,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Expect NumBytes data.
+    ///     Expect NumBytes data.
     /// </summary>
     public virtual int Expect( string data, int numBytes )
     {
@@ -453,7 +452,7 @@ public class RiffFile
 
         try
         {
-            while ( ( numBytes-- ) != 0 )
+            while ( numBytes-- != 0 )
             {
                 var target = ( sbyte? )_file?.ReadByte();
 
@@ -472,8 +471,8 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Close Riff File.
-    /// Length is written too.
+    ///     Close Riff File.
+    ///     Length is written too.
     /// </summary>
     public virtual int Close()
     {
@@ -490,14 +489,14 @@ public class RiffFile
                     {
                         var br = new sbyte[ 8 ];
 
-                        br[ 0 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 24 ) ) & 0x000000FF );
-                        br[ 1 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 16 ) ) & 0x000000FF );
-                        br[ 2 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkId, 8 ) ) & 0x000000FF );
+                        br[ 0 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 24 ) & 0x000000FF );
+                        br[ 1 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 16 ) & 0x000000FF );
+                        br[ 2 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkId, 8 ) & 0x000000FF );
                         br[ 3 ] = ( sbyte )( _riffHeader.CkId & 0x000000FF );
 
-                        br[ 7 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 24 ) ) & 0x000000FF );
-                        br[ 6 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 16 ) ) & 0x000000FF );
-                        br[ 5 ] = ( sbyte )( ( SupportClass.URShift( _riffHeader.CkSize, 8 ) ) & 0x000000FF );
+                        br[ 7 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 24 ) & 0x000000FF );
+                        br[ 6 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 16 ) & 0x000000FF );
+                        br[ 5 ] = ( sbyte )( SupportClass.URShift( _riffHeader.CkSize, 8 ) & 0x000000FF );
                         br[ 4 ] = ( sbyte )( _riffHeader.CkSize & 0x000000FF );
 
                         _file?.Write( SupportClass.ToByteArray( br ), 0, 8 );
@@ -535,7 +534,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Return File Position.
+    ///     Return File Position.
     /// </summary>
     public virtual long CurrentFilePosition()
     {
@@ -556,7 +555,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Write Data to specified offset.
+    ///     Write Data to specified offset.
     /// </summary>
     public virtual int Backpatch( long fileOffset, RiffChunkHeader data, int numBytes )
     {
@@ -597,7 +596,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Seek in the File.
+    ///     Seek in the File.
     /// </summary>
     protected virtual int Seek( long offset )
     {
@@ -617,7 +616,7 @@ public class RiffFile
     }
 
     /// <summary>
-    /// Fill the header.
+    ///     Fill the header.
     /// </summary>
     public static int FourCC( string chunkName )
     {
@@ -625,31 +624,26 @@ public class RiffFile
 
         SupportClass.GetSBytesFromString( chunkName, 0, 4, ref p, 0 );
 
-        var ret = ( ( ( p[ 0 ] << 24 ) & ( int )SupportClass.Identity( 0xFF000000 ) )
-                  | ( ( p[ 1 ] << 16 ) & 0x00FF0000 )
-                  | ( ( p[ 2 ] << 8 ) & 0x0000FF00 )
-                  | ( p[ 3 ] & 0x000000FF ) );
+        var ret = ( ( p[ 0 ] << 24 ) & ( int )SupportClass.Identity( 0xFF000000 ) )
+                | ( ( p[ 1 ] << 16 ) & 0x00FF0000 )
+                | ( ( p[ 2 ] << 8 ) & 0x0000FF00 )
+                | ( p[ 3 ] & 0x000000FF );
 
         return ret;
     }
 
-    [PublicAPI]
+
     public class RiffChunkHeader
     {
+
+        // Length of data in chunk
+        public RiffChunkHeader( RiffFile enclosingInstance ) => InitBlock( enclosingInstance );
+
         public int CkId   { get; set; } // Four-character chunk ID
         public int CkSize { get; set; }
 
-        // Length of data in chunk
-        public RiffChunkHeader( RiffFile enclosingInstance )
-        {
-            InitBlock( enclosingInstance );
-        }
-
         public RiffFile EnclosingInstance { get; private set; } = null!;
 
-        private void InitBlock( RiffFile instance )
-        {
-            EnclosingInstance = instance;
-        }
+        private void InitBlock( RiffFile instance ) => EnclosingInstance = instance;
     }
 }

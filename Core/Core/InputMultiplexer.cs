@@ -18,7 +18,6 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Core;
 
-[PublicAPI]
 public class InputMultiplexer : IInputProcessor
 {
     private readonly SnapshotArray< IInputProcessor > _processors = new( 4 );
@@ -31,73 +30,8 @@ public class InputMultiplexer : IInputProcessor
     {
         foreach ( IInputProcessor inputProcessor in processors )
         {
-            this._processors.Add( inputProcessor );
+            _processors.Add( inputProcessor );
         }
-    }
-
-    public void AddProcessor( int index, IInputProcessor processor )
-    {
-        if ( processor == null )
-        {
-            throw new NullReferenceException( "processor cannot be null" );
-        }
-
-        this._processors.Insert( index, processor );
-    }
-
-    public void RemoveProcessor( int index )
-    {
-        this._processors.RemoveAt( index );
-    }
-
-    public void AddProcessor( IInputProcessor processor )
-    {
-        if ( processor == null )
-        {
-            throw new NullReferenceException( "processor cannot be null" );
-        }
-
-        this._processors.Add( processor );
-    }
-
-    public void RemoveProcessor( IInputProcessor processor )
-    {
-        this._processors.Remove( processor );
-    }
-
-    public int Size()
-    {
-        return this._processors.Size;
-    }
-
-    public void Clear()
-    {
-        this._processors.Clear();
-    }
-
-    public void SetProcessors( params IInputProcessor[] processorList )
-    {
-        this._processors.Clear();
-
-        foreach ( IInputProcessor inputProcessor in processorList )
-        {
-            this._processors.Add( inputProcessor );
-        }
-    }
-
-    public void SetProcessors( List< IInputProcessor > processorList )
-    {
-        this._processors.Clear();
-
-        foreach ( IInputProcessor inputProcessor in processorList )
-        {
-            this._processors.Add( inputProcessor );
-        }
-    }
-
-    public SnapshotArray< IInputProcessor > GetProcessors()
-    {
-        return this._processors;
     }
 
     public bool KeyDown( int keycode )
@@ -122,7 +56,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool KeyUp( int keycode )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -145,7 +79,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool KeyTyped( char character )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -168,7 +102,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool TouchDown( int screenX, int screenY, int pointer, int button )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -191,7 +125,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool TouchUp( int screenX, int screenY, int pointer, int button )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -214,7 +148,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool TouchDragged( int screenX, int screenY, int pointer )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -237,7 +171,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool MouseMoved( int screenX, int screenY )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -260,7 +194,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool Scrolled( float amountX, float amountY )
     {
         IInputProcessor?[] items = _processors.Begin();
@@ -282,4 +216,54 @@ public class InputMultiplexer : IInputProcessor
 
         return false;
     }
+
+    public void AddProcessor( int index, IInputProcessor processor )
+    {
+        if ( processor == null )
+        {
+            throw new NullReferenceException( "processor cannot be null" );
+        }
+
+        _processors.Insert( index, processor );
+    }
+
+    public void RemoveProcessor( int index ) => _processors.RemoveAt( index );
+
+    public void AddProcessor( IInputProcessor processor )
+    {
+        if ( processor == null )
+        {
+            throw new NullReferenceException( "processor cannot be null" );
+        }
+
+        _processors.Add( processor );
+    }
+
+    public void RemoveProcessor( IInputProcessor processor ) => _processors.Remove( processor );
+
+    public int Size() => _processors.Size;
+
+    public void Clear() => _processors.Clear();
+
+    public void SetProcessors( params IInputProcessor[] processorList )
+    {
+        _processors.Clear();
+
+        foreach ( IInputProcessor inputProcessor in processorList )
+        {
+            _processors.Add( inputProcessor );
+        }
+    }
+
+    public void SetProcessors( List< IInputProcessor > processorList )
+    {
+        _processors.Clear();
+
+        foreach ( IInputProcessor inputProcessor in processorList )
+        {
+            _processors.Add( inputProcessor );
+        }
+    }
+
+    public SnapshotArray< IInputProcessor > GetProcessors() => _processors;
 }

@@ -19,38 +19,32 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// Immediate mode rendering class for GLES 2.0. The renderer will allow you to
-/// specify vertices on the fly and provides a default shader for (unlit) rendering.
+///     Immediate mode rendering class for GLES 2.0. The renderer will allow you to
+///     specify vertices on the fly and provides a default shader for (unlit) rendering.
 /// </summary>
-[PublicAPI]
 public class ImmediateModeRenderer20 : IImmediateModeRenderer
 {
-    public int MaxVertices { get; set; }
-    public int NumVertices { get; set; }
-
-    private readonly int _numTexCoords;
-    private readonly int _vertexSize;
-    private readonly int _normalOffset;
     private readonly int _colorOffset;
-    private readonly int _texCoordOffset;
+
+    private readonly Mesh _mesh;
+    private readonly int  _normalOffset;
+
+    private readonly int      _numTexCoords;
+    private readonly Matrix4  _projModelView = new();
+    private readonly string[] _shaderUniformNames;
+    private readonly int      _texCoordOffset;
+    private readonly int      _vertexSize;
+    private readonly float[]  _vertices;
+    private          int      _numSetTexCoords;
 
     private bool _ownsShader;
-    private int  _vertexIdx;
-    private int  _numSetTexCoords;
-
-    private readonly Mesh     _mesh;
-    private readonly Matrix4  _projModelView = new();
-    private readonly float[]  _vertices;
-    private readonly string[] _shaderUniformNames;
-
-    private ShaderProgram? _shader;
     private int  _primitiveType;
 
+    private ShaderProgram? _shader;
+    private int            _vertexIdx;
+
     public ImmediateModeRenderer20( bool hasNormals, bool hasColors, int numTexCoords )
-        : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) )
-    {
-        _ownsShader = true;
-    }
+        : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) ) => _ownsShader = true;
 
     public ImmediateModeRenderer20( int maxVertices, bool hasNormals, bool hasColors, int numTexCoords )
         : this(
@@ -59,10 +53,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
             hasColors,
             numTexCoords,
             CreateDefaultShader( hasNormals, hasColors, numTexCoords )
-            )
-    {
-        _ownsShader = true;
-    }
+            ) => _ownsShader = true;
 
     public ImmediateModeRenderer20( int maxVertices,
                                     bool hasNormals,
@@ -70,9 +61,9 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
                                     int numTexCoords,
                                     ShaderProgram shader )
     {
-        this.MaxVertices   = maxVertices;
-        this._numTexCoords = numTexCoords;
-        this._shader       = shader;
+        MaxVertices   = maxVertices;
+        _numTexCoords = numTexCoords;
+        _shader       = shader;
 
         VertexAttribute[] attribs = BuildVertexAttributes( hasNormals, hasColors, numTexCoords );
         _mesh = new Mesh( false, maxVertices, 0, attribs );
@@ -100,44 +91,6 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
     }
 
-    private VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
-    {
-        var attribs = new System.Collections.Generic.List< VertexAttribute >
-        {
-            new( VertexAttributes.Usage.POSITION, 3, ShaderProgram.POSITION_ATTRIBUTE )
-        };
-
-        if ( hasNormals )
-        {
-            attribs.Add( new VertexAttribute( VertexAttributes.Usage.NORMAL,
-                                              3,
-                                              ShaderProgram.NORMAL_ATTRIBUTE ) );
-        }
-
-        if ( hasColor )
-        {
-            attribs.Add( new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED,
-                                              4,
-                                              ShaderProgram.COLOR_ATTRIBUTE ) );
-        }
-
-        for ( var i = 0; i < numTexCoords; i++ )
-        {
-            attribs.Add( new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
-                                              2,
-                                              ShaderProgram.TEXCOORD_ATTRIBUTE + i ) );
-        }
-
-        var array = new VertexAttribute[ attribs.Count ];
-
-        for ( var i = 0; i < attribs.Count; i++ )
-        {
-            array[ i ] = attribs[ i ];
-        }
-
-        return array;
-    }
-
     public ShaderProgram? Shader
     {
         get => _shader;
@@ -145,35 +98,29 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         {
             if ( _ownsShader )
             {
-                this._shader?.Dispose();
+                _shader?.Dispose();
             }
 
-            this._shader = value;
-            _ownsShader  = false;
+            _shader     = value;
+            _ownsShader = false;
         }
     }
+
+    public int MaxVertices { get; set; }
+    public int NumVertices { get; set; }
 
 
     public void Begin( Matrix4 projModelView, int primitiveType )
     {
-        this._projModelView.Set( projModelView );
-        this._primitiveType = primitiveType;
+        _projModelView.Set( projModelView );
+        _primitiveType = primitiveType;
     }
 
-    public void SetColor( Color color )
-    {
-        _vertices[ _vertexIdx + _colorOffset ] = color.ToFloatBits();
-    }
+    public void SetColor( Color color ) => _vertices[ _vertexIdx + _colorOffset ] = color.ToFloatBits();
 
-    public void SetColor( float r, float g, float b, float a )
-    {
-        _vertices[ _vertexIdx + _colorOffset ] = Color.ToFloatBits( r, g, b, a );
-    }
+    public void SetColor( float r, float g, float b, float a ) => _vertices[ _vertexIdx + _colorOffset ] = Color.ToFloatBits( r, g, b, a );
 
-    public void SetColor( float colorBits )
-    {
-        _vertices[ _vertexIdx + _colorOffset ] = colorBits;
-    }
+    public void SetColor( float colorBits ) => _vertices[ _vertexIdx + _colorOffset ] = colorBits;
 
     public void TexCoord( float u, float v )
     {
@@ -234,10 +181,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         NumVertices      = 0;
     }
 
-    public void End()
-    {
-        Flush();
-    }
+    public void End() => Flush();
 
     public void Dispose()
     {
@@ -247,6 +191,44 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         _mesh.Dispose();
+    }
+
+    private VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
+    {
+        var attribs = new List< VertexAttribute >
+        {
+            new( VertexAttributes.Usage.POSITION, 3, ShaderProgram.POSITION_ATTRIBUTE )
+        };
+
+        if ( hasNormals )
+        {
+            attribs.Add( new VertexAttribute( VertexAttributes.Usage.NORMAL,
+                                              3,
+                                              ShaderProgram.NORMAL_ATTRIBUTE ) );
+        }
+
+        if ( hasColor )
+        {
+            attribs.Add( new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED,
+                                              4,
+                                              ShaderProgram.COLOR_ATTRIBUTE ) );
+        }
+
+        for ( var i = 0; i < numTexCoords; i++ )
+        {
+            attribs.Add( new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
+                                              2,
+                                              ShaderProgram.TEXCOORD_ATTRIBUTE + i ) );
+        }
+
+        var array = new VertexAttribute[ attribs.Count ];
+
+        for ( var i = 0; i < attribs.Count; i++ )
+        {
+            array[ i ] = attribs[ i ];
+        }
+
+        return array;
     }
 
     /// <summary>
@@ -346,8 +328,8 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     }
 
     /// <summary>
-    /// Returns a new instance of the default shader used by SpriteBatch
-    /// for GL2 when no shader is specified.
+    ///     Returns a new instance of the default shader used by SpriteBatch
+    ///     for GL2 when no shader is specified.
     /// </summary>
     public static ShaderProgram CreateDefaultShader( bool hasNormals, bool hasColors, int numTexCoords )
     {

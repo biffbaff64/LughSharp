@@ -17,24 +17,23 @@
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
-/// A simple helper class to log the frames per seconds achieved.
-/// Just invoke the Log() method in your rendering method. The output
-/// will be logged once per second.
+///     A simple helper class to log the frames per seconds achieved.
+///     Just invoke the Log() method in your rendering method. The output
+///     will be logged once per second.
 /// </summary>
-[PublicAPI]
 public class FPSLogger
 {
-    private          long _startTime;
     private readonly int  _bound;
+    private          long _startTime;
 
     public FPSLogger( int bound = int.MaxValue )
     {
-        this._bound     = bound;
-        this._startTime = TimeUtils.NanoTime();
+        _bound     = bound;
+        _startTime = TimeUtils.NanoTime();
     }
 
     /// <summary>
-    /// Logs the current frames per second to the console. 
+    ///     Logs the current frames per second to the console.
     /// </summary>
     public void Log()
     {

@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Assets.Loaders.Resolvers;
 
-[PublicAPI]
 public class AbsoluteFileHandleResolver : IFileHandleResolver
 {
     public FileInfo Resolve( string fileName ) => Gdx.Files.Absolute( fileName );

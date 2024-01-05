@@ -16,12 +16,11 @@
 
 namespace LibGDXSharp.Audio;
 
-[PublicAPI]
 public interface IAudioRecorder : IDisposable
 {
     /// <summary>
-    /// Reads in numSamples samples into the array samples starting at offset.
-    /// If the recorder is in stereo you have to multiply numSamples by 2.
+    ///     Reads in numSamples samples into the array samples starting at offset.
+    ///     If the recorder is in stereo you have to multiply numSamples by 2.
     /// </summary>
     /// <param name="samples">the array to write the samples to</param>
     /// <param name="offset">the offset into the array</param>

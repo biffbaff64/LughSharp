@@ -16,17 +16,16 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
 public class NumberFormatException : FormatException
 {
-    /// <inheritdoc cref="FormatException(string?)"/>
+    /// <inheritdoc cref="FormatException(string?)" />
     public NumberFormatException( string? message = "" )
         : base( message )
     {
     }
 
-    /// <inheritdoc cref="FormatException(string?,System.Exception?)"/>
-    public NumberFormatException( string? message, System.Exception? innerException )
+    /// <inheritdoc cref="FormatException(string?,System.Exception?)" />
+    public NumberFormatException( string? message, Exception? innerException )
         : base( message, innerException )
     {
     }

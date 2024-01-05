@@ -14,84 +14,80 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Immutable;
-
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class DesktopGLFiles : IFiles
 {
     public readonly static string UserHomePath = Environment.GetEnvironmentVariable( "user.home" ) + Path.PathSeparator;
     public readonly static string LocalPath    = Path.GetFullPath( "" ) + Path.PathSeparator;
 
     /// <summary>
-    /// Returns a handle representing a file or directory.
+    ///     Returns a handle representing a file or directory.
     /// </summary>
     /// <param name="path"></param>
     /// <param name="type">Determines how the path is resolved.</param>
     /// <exception cref="GdxRuntimeException">
-    /// if the type is classpath or internal and the file does not exist.
+    ///     if the type is classpath or internal and the file does not exist.
     /// </exception>
-    /// <seealso cref="FileType"/>
-    /// 
+    /// <seealso cref="FileType" />
     public FileInfo GetFileHandle( string path, FileType type ) => null!;
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Classpath"/> file handle.
+    ///     Convenience method that returns a <see cref="FileType.Classpath" /> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
     public FileInfo Classpath( string path ) => null!;
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Internal"/> file handle.
+    ///     Convenience method that returns a <see cref="FileType.Internal" /> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
     public FileInfo Internal( string path ) => null!;
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.External"/> file handle.
+    ///     Convenience method that returns a <see cref="FileType.External" /> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
     public FileInfo External( string path ) => null!;
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Absolute"/> file handle.
+    ///     Convenience method that returns a <see cref="FileType.Absolute" /> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
     public FileInfo Absolute( string path ) => null!;
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Local"/> file handle.
+    ///     Convenience method that returns a <see cref="FileType.Local" /> file handle.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
     public FileInfo Local( string path ) => null!;
 
     /// <summary>
-    /// Returns the external storage path directory. This is the app
-    /// external storage on Android and the home directory of the
-    /// current user on the desktop.
+    ///     Returns the external storage path directory. This is the app
+    ///     external storage on Android and the home directory of the
+    ///     current user on the desktop.
     /// </summary>
     public string GetExternalStoragePath() => string.Empty;
 
     /// <summary>
-    /// Returns true if the external storage is ready for file IO.
+    ///     Returns true if the external storage is ready for file IO.
     /// </summary>
     public bool IsExternalStorageAvailable() => false;
 
     /// <summary>
-    /// Returns the local storage path directory. This is the private
-    /// files directory on Android and the directory of the jar on
-    /// the desktop.
+    ///     Returns the local storage path directory. This is the private
+    ///     files directory on Android and the directory of the jar on
+    ///     the desktop.
     /// </summary>
     public string GetLocalStoragePath() => string.Empty;
 
     /// <summary>
-    /// Returns true if the local storage is ready for file IO.
+    ///     Returns true if the local storage is ready for file IO.
     /// </summary>
     public bool IsLocalStorageAvailable() => false;
 }

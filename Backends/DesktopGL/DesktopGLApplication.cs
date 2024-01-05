@@ -19,50 +19,19 @@ using LibGDXSharp.Backends.Desktop.Audio;
 using LibGDXSharp.Backends.Desktop.Audio.Mock;
 using LibGDXSharp.Utils.Collections;
 
-using Monitor = GLFW.Monitor;
 using Sync = LibGDXSharp.Backends.Desktop.Sync;
-using Trace = LibGDXSharp.Utils.Trace;
 
 namespace LibGDXSharp;
 
-[PublicAPI]
 public class DesktopGLApplication : IDesktopGLApplicationBase
 {
 
-    #region public properties
-
-    public DesktopGLApplicationConfiguration?  Config             { get; set; }
-    public List< DesktopGLWindow >             Windows            { get; set; } = new();
-    public Dictionary< string, IPreferences >? Preferences        { get; set; }
-    public List< Runnable >                    Runnables          { get; set; } = new();
-    public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
-    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-    public DesktopGLApplicationLogger?         ApplicationLogger  { get; set; }
-    public int                                 LogLevel           { get; set; }
-    public IClipboard?                         Clipboard          { get; set; }
-    public GLVersion?                          GLVersion          { get; set; }
-
-    public IGraphics?            Graphics            => _currentWindow?.Graphics;
-    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
-    public IInput?               Input               => _currentWindow?.Input;
-    public IGLAudio?             Audio               { get; set; } = null;
-    public INet                  Net                 { get; set; }
-    public IFiles                Files               { get; set; }
-
-    public IApplication.ApplicationType AppType
-    {
-        get => IApplication.ApplicationType.Desktop;
-        set { }
-    }
-
-    #endregion public properties
-
     private const string TAG = "GLApplication";
-    
+
     private static   GLFW.ErrorCallback? _errorCallback = null;
     private volatile DesktopGLWindow?    _currentWindow = null;
-    private          Sync?               _sync          = null;
     private          bool                _running       = true;
+    private readonly Sync?               _sync          = null;
 
     // ------------------------------------------------------------------------
 
@@ -75,7 +44,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         config.Title ??= listener.GetType().Name;
 
-        this.Config = config = DesktopGLApplicationConfiguration.Copy( config );
+        Config = config = DesktopGLApplicationConfiguration.Copy( config );
 
         Gdx.App = this;
 
@@ -83,28 +52,28 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         {
             try
             {
-                this.Audio = CreateAudio( config );
+                Audio = CreateAudio( config );
             }
-            catch ( System.Exception e )
+            catch ( Exception e )
             {
                 Log( TAG, "Couldn't initialize audio, disabling audio", e );
 
-                this.Audio = new MockAudio();
+                Audio = new MockAudio();
             }
         }
         else
         {
-            this.Audio = new MockAudio();
+            Audio = new MockAudio();
         }
 
-        this.Files     = CreateFiles();
-        this.Net       = new DesktopGLNet( config );
-        this.Clipboard = new DesktopGLClipboard();
-        this._sync     = new Sync();
+        Files     = CreateFiles();
+        Net       = new DesktopGLNet( config );
+        Clipboard = new DesktopGLClipboard();
+        _sync     = new Sync();
 
-        Gdx.Audio = this.Audio;
-        Gdx.Files = this.Files;
-        Gdx.Net   = this.Net;
+        Gdx.Audio = Audio;
+        Gdx.Files = Files;
+        Gdx.Net   = Net;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
 
@@ -113,7 +82,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Loop();
             CleanupWindows();
         }
-        catch ( System.Exception e )
+        catch ( Exception e )
         {
             if ( e is SystemException exception )
             {
@@ -130,8 +99,56 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    public IPreferences GetPreferences( string name )
+    {
+        if ( Preferences!.ContainsKey( name ) )
+        {
+            return Preferences.Get( name );
+        }
+
+        IPreferences prefs = new DesktopGLPreferences( name );
+
+        Preferences.Put( name, prefs );
+
+        return prefs;
+    }
+
+    public void PostRunnable( Runnable runnable )
+    {
+        lock ( Runnables )
+        {
+            Runnables.Add( runnable );
+        }
+    }
+
+    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config ) => new OpenALAudio( config.AudioDeviceSimultaneousSources,
+                                                                                                config.AudioDeviceBufferCount,
+                                                                                                config.AudioDeviceBufferSize );
+
+    public IDesktopGLInput CreateInput( DesktopGLWindow window ) => new DefaultDesktopGLInput( window );
+
+    public int GetVersion() => 0;
+
+    public void Exit() => _running = false;
+
+    public void AddLifecycleListener( ILifecycleListener listener )
+    {
+        lock ( LifecycleListeners )
+        {
+            LifecycleListeners.Add( listener );
+        }
+    }
+
+    public void RemoveLifecycleListener( ILifecycleListener listener )
+    {
+        lock ( LifecycleListeners )
+        {
+            LifecycleListeners.Remove( listener );
+        }
+    }
+
     /// <summary>
-    /// Framework Main Loop
+    ///     Framework Main Loop
     /// </summary>
     protected void Loop()
     {
@@ -246,7 +263,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    /// Cleans up, and disposes of, any windows that have been closed. 
+    ///     Cleans up, and disposes of, any windows that have been closed.
     /// </summary>
     protected void CleanupWindows()
     {
@@ -278,87 +295,21 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.Terminate();
     }
 
-    #region debug logging
-
-    public void Debug( string tag, string message )
-    {
-        if ( LogLevel >= IApplication.LOG_DEBUG )
-        {
-            ApplicationLogger?.Debug( tag, message );
-        }
-    }
-
-    public void Debug( string tag, string message, System.Exception exception )
-    {
-        if ( LogLevel >= IApplication.LOG_DEBUG )
-        {
-            ApplicationLogger?.Debug( tag, message, exception );
-        }
-    }
-
-    public void Log( string tag, string message )
-    {
-        if ( LogLevel >= IApplication.LOG_INFO )
-        {
-            ApplicationLogger?.Log( tag, message );
-        }
-    }
-
-    public void Log( string tag, string message, System.Exception exception )
-    {
-        if ( LogLevel >= IApplication.LOG_INFO )
-        {
-            ApplicationLogger?.Log( tag, message, exception );
-        }
-    }
-
-    public void Error( string tag, string message )
-    {
-        if ( LogLevel >= IApplication.LOG_ERROR )
-        {
-            ApplicationLogger?.Error( tag, message );
-        }
-    }
-
-    public void Error( string tag, string message, System.Exception exception )
-    {
-        if ( LogLevel >= IApplication.LOG_ERROR )
-        {
-            ApplicationLogger?.Error( tag, message, exception );
-        }
-    }
-
-    #endregion debug logging
-
-    public IPreferences GetPreferences( string name )
-    {
-        if ( Preferences!.ContainsKey( name ) )
-        {
-            return Preferences.Get( name );
-        }
-
-        IPreferences prefs = new DesktopGLPreferences( name );
-
-        Preferences.Put( name, prefs );
-
-        return prefs;
-    }
-
     /// <summary>
-    /// Creates a new <see cref="DesktopGLWindow"/> using the provided listener and
-    /// <see cref="DesktopGLWindowConfiguration"/>.
-    /// <para>
-    /// This function only just instantiates a <see cref="DesktopGLWindow"/> and
-    /// returns immediately. The actual window creation is postponed with
-    /// <see cref="DesktopGLApplication.PostRunnable(Runnable)"/> until after all
-    /// existing windows are updated.
-    /// </para>
+    ///     Creates a new <see cref="DesktopGLWindow" /> using the provided listener and
+    ///     <see cref="DesktopGLWindowConfiguration" />.
+    ///     <para>
+    ///         This function only just instantiates a <see cref="DesktopGLWindow" /> and
+    ///         returns immediately. The actual window creation is postponed with
+    ///         <see cref="DesktopGLApplication.PostRunnable(Runnable)" /> until after all
+    ///         existing windows are updated.
+    ///     </para>
     /// </summary>
     public DesktopGLWindow NewWindow( IApplicationListener listener, DesktopGLWindowConfiguration config )
     {
         GdxRuntimeException.ThrowIfNull( Config );
 
-        DesktopGLApplicationConfiguration appConfig = DesktopGLApplicationConfiguration.Copy( this.Config );
+        DesktopGLApplicationConfiguration appConfig = DesktopGLApplicationConfiguration.Copy( Config );
 
         appConfig.SetWindowConfiguration( config );
 
@@ -400,7 +351,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         window.Create( windowHandle );
         window.SetVisible( config.InitialVisible );
 
-        for ( int i = 0; i < 2; i++ )
+        for ( var i = 0; i < 2; i++ )
         {
             Gl.ClearColor( config.InitialBackgroundColor.R,
                            config.InitialBackgroundColor.G,
@@ -569,21 +520,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return windowHandle;
     }
 
-    public void PostRunnable( Runnable runnable )
-    {
-        lock ( Runnables )
-        {
-            Runnables.Add( runnable );
-        }
-    }
-
     private bool SupportsFBO()
     {
-        GdxRuntimeException.ThrowIfNull( this.GLVersion );
+        GdxRuntimeException.ThrowIfNull( GLVersion );
 
         // FBO is in core since OpenGL 3.0,
         // see https://www.opengl.org/wiki/Framebuffer_Object
-        return this.GLVersion.IsVersionEqualToOrHigher( 3, 0 )
+        return GLVersion.IsVersionEqualToOrHigher( 3, 0 )
             || Glfw.GetExtensionSupported( "GL_EXT_framebuffer_object" )
             || Glfw.GetExtensionSupported( "GL_ARB_framebuffer_object" );
     }
@@ -604,42 +547,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
-    {
-        return new OpenALAudio( config.AudioDeviceSimultaneousSources,
-                                config.AudioDeviceBufferCount,
-                                config.AudioDeviceBufferSize );
-    }
-
-    public IDesktopGLInput CreateInput( DesktopGLWindow window )
-    {
-        return new DefaultDesktopGLInput( window );
-    }
-
     protected IFiles CreateFiles() => new DesktopGLFiles();
-
-    public int GetVersion() => 0;
-
-    public void Exit()
-    {
-        _running = false;
-    }
-
-    public void AddLifecycleListener( ILifecycleListener listener )
-    {
-        lock ( LifecycleListeners )
-        {
-            LifecycleListeners.Add( listener );
-        }
-    }
-
-    public void RemoveLifecycleListener( ILifecycleListener listener )
-    {
-        lock ( LifecycleListeners )
-        {
-            LifecycleListeners.Remove( listener );
-        }
-    }
 
     /// <summary>
     /// </summary>
@@ -653,13 +561,93 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                    Gdx.GL20.GLGetString( IGL20.GL_RENDERER ) );
     }
 
+    #region public properties
+
+    public DesktopGLApplicationConfiguration?  Config             { get; set; }
+    public List< DesktopGLWindow >             Windows            { get; set; } = new();
+    public Dictionary< string, IPreferences >? Preferences        { get; set; }
+    public List< Runnable >                    Runnables          { get; set; } = new();
+    public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
+    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
+    public DesktopGLApplicationLogger?         ApplicationLogger  { get; set; }
+    public int                                 LogLevel           { get; set; }
+    public IClipboard?                         Clipboard          { get; set; }
+    public GLVersion?                          GLVersion          { get; set; }
+
+    public IGraphics?            Graphics            => _currentWindow?.Graphics;
+    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
+    public IInput?               Input               => _currentWindow?.Input;
+    public IGLAudio?             Audio               { get; set; } = null;
+    public INet                  Net                 { get; set; }
+    public IFiles                Files               { get; set; }
+
+    public IApplication.ApplicationType AppType
+    {
+        get => IApplication.ApplicationType.Desktop;
+        set { }
+    }
+
+    #endregion public properties
+
+    #region debug logging
+
+    public void Debug( string tag, string message )
+    {
+        if ( LogLevel >= IApplication.LOG_DEBUG )
+        {
+            ApplicationLogger?.Debug( tag, message );
+        }
+    }
+
+    public void Debug( string tag, string message, Exception exception )
+    {
+        if ( LogLevel >= IApplication.LOG_DEBUG )
+        {
+            ApplicationLogger?.Debug( tag, message, exception );
+        }
+    }
+
+    public void Log( string tag, string message )
+    {
+        if ( LogLevel >= IApplication.LOG_INFO )
+        {
+            ApplicationLogger?.Log( tag, message );
+        }
+    }
+
+    public void Log( string tag, string message, Exception exception )
+    {
+        if ( LogLevel >= IApplication.LOG_INFO )
+        {
+            ApplicationLogger?.Log( tag, message, exception );
+        }
+    }
+
+    public void Error( string tag, string message )
+    {
+        if ( LogLevel >= IApplication.LOG_ERROR )
+        {
+            ApplicationLogger?.Error( tag, message );
+        }
+    }
+
+    public void Error( string tag, string message, Exception exception )
+    {
+        if ( LogLevel >= IApplication.LOG_ERROR )
+        {
+            ApplicationLogger?.Error( tag, message, exception );
+        }
+    }
+
+    #endregion debug logging
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     #region GLDebug specific
 
     //TODO: Unfinished, see GLDebugMessageSeverity below
-    [PublicAPI]
+
     public struct Gldms
     {
         public int gl43;
@@ -676,7 +664,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    [PublicAPI]
+
     public record GLDebugMessageSeverity
     {
 //        public Gldms High = new(
@@ -702,46 +690,44 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    /// Enables or disables GL debug messages for the specified severity level.
-    /// Returns false if the severity level could not be set (e.g. the NOTIFICATION
-    /// level is not supported by the ARB and AMD extensions).
+    ///     Enables or disables GL debug messages for the specified severity level.
+    ///     Returns false if the severity level could not be set (e.g. the NOTIFICATION
+    ///     level is not supported by the ARB and AMD extensions).
     /// </summary>
-    /// <seealso cref="DesktopGLApplicationConfiguration.EnableGLDebugOutput(bool, StreamWriter)"/>
-    public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
-    {
-//        GLCapabilities caps         = GL.GetCapabilities();
-//        const int      GL_DONT_CARE = 0x1100; // not defined anywhere yet
-//
-//        if ( caps.OpenGL43 )
-//        {
-//            GL43.glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, severity.gl43, ( IntBuffer )null, enabled );
-//
-//            return true;
-//        }
-//
-//        if ( caps.GL_KHR_debug )
-//        {
-//            KHRDebug.glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, severity.khr, ( IntBuffer )null, enabled );
-//
-//            return true;
-//        }
-//
-//        if ( caps.GL_ARB_debug_output && severity.arb != -1 )
-//        {
-//            ARBDebugOutput.glDebugMessageControlARB( GL_DONT_CARE, GL_DONT_CARE, severity.arb, ( IntBuffer )null, enabled );
-//
-//            return true;
-//        }
-//
-//        if ( caps.GL_AMD_debug_output && severity.amd != -1 )
-//        {
-//            AMDDebugOutput.glDebugMessageEnableAMD( GL_DONT_CARE, severity.amd, ( IntBuffer )null, enabled );
-//
-//            return true;
-//        }
+    /// <seealso cref="DesktopGLApplicationConfiguration.EnableGLDebugOutput(bool, StreamWriter)" />
+    public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled ) =>
 
-        return false;
-    }
+        //        GLCapabilities caps         = GL.GetCapabilities();
+        //        const int      GL_DONT_CARE = 0x1100; // not defined anywhere yet
+        //
+        //        if ( caps.OpenGL43 )
+        //        {
+        //            GL43.glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, severity.gl43, ( IntBuffer )null, enabled );
+        //
+        //            return true;
+        //        }
+        //
+        //        if ( caps.GL_KHR_debug )
+        //        {
+        //            KHRDebug.glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, severity.khr, ( IntBuffer )null, enabled );
+        //
+        //            return true;
+        //        }
+        //
+        //        if ( caps.GL_ARB_debug_output && severity.arb != -1 )
+        //        {
+        //            ARBDebugOutput.glDebugMessageControlARB( GL_DONT_CARE, GL_DONT_CARE, severity.arb, ( IntBuffer )null, enabled );
+        //
+        //            return true;
+        //        }
+        //
+        //        if ( caps.GL_AMD_debug_output && severity.amd != -1 )
+        //        {
+        //            AMDDebugOutput.glDebugMessageEnableAMD( GL_DONT_CARE, severity.amd, ( IntBuffer )null, enabled );
+        //
+        //            return true;
+        //        }
+        false;
 
     #endregion GLDebug specific
 

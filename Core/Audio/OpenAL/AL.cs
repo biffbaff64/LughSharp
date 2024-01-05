@@ -19,7 +19,6 @@ using System.Runtime.InteropServices;
 
 namespace LibGDXSharp.Audio.OpenAL;
 
-[PublicAPI]
 public static class AL
 {
 
@@ -27,10 +26,7 @@ public static class AL
 
     public const string OPEN_AL_DLL = "OpenAL";
 
-    static AL()
-    {
-        NativeLibrary.SetDllImportResolver( typeof( AL ).Assembly, ImportResolver );
-    }
+    static AL() => NativeLibrary.SetDllImportResolver( typeof( AL ).Assembly, ImportResolver );
 
     private static IntPtr ImportResolver( string libraryName, Assembly assembly, DllImportSearchPath? searchPath )
     {
@@ -38,7 +34,7 @@ public static class AL
 
         if ( libraryName == OPEN_AL_DLL )
         {
-            if ( System.Environment.OSVersion.Platform == PlatformID.Unix )
+            if ( Environment.OSVersion.Platform == PlatformID.Unix )
             {
                 const string OSX   = "OpenAL.framework/OpenAL";
                 const string LINUX = "libopenal.so.1";

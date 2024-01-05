@@ -19,28 +19,27 @@ using LibGDXSharp.Audio.MP3Sharp.Support;
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// The Bistream class is responsible for parsing an MPEG audio bitstream.
-/// TODO: much of the parsing currently occurs in the various decoders.
-/// This should be moved into this class and associated inner classes.
+///     The Bistream class is responsible for parsing an MPEG audio bitstream.
+///     TODO: much of the parsing currently occurs in the various decoders.
+///     This should be moved into this class and associated inner classes.
 /// </summary>
-[PublicAPI]
 public sealed class Bitstream
 {
     /// <summary>
-    /// Synchronization control constant for the initial
-    /// synchronization to the start of a frame.
+    ///     Synchronization control constant for the initial
+    ///     synchronization to the start of a frame.
     /// </summary>
     public const sbyte INITIAL_SYNC = 0;
 
     /// <summary>
-    /// Synchronization control constant for non-inital frame
-    /// synchronizations.
+    ///     Synchronization control constant for non-inital frame
+    ///     synchronizations.
     /// </summary>
     public const sbyte STRICT_SYNC = 1;
 
     /// <summary>
-    /// Maximum size of the frame buffer:
-    /// 1730 bytes per frame: 144 * 384kbit/s / 32000 Hz + 2 Bytes CRC
+    ///     Maximum size of the frame buffer:
+    ///     1730 bytes per frame: 144 * 384kbit/s / 32000 Hz + 2 Bytes CRC
     /// </summary>
     private const int BUFFER_INT_SIZE = 433;
 
@@ -54,42 +53,42 @@ public sealed class Bitstream
     private readonly PushbackStream _sourceStream;
 
     /// <summary>
-    /// Number (0-31, from MSB to LSB) of next bit for get_bits()
+    ///     Number (0-31, from MSB to LSB) of next bit for get_bits()
     /// </summary>
     private int _bitIndex;
+    private readonly Crc16[] _crc;
 
     /// <summary>
-    /// The bytes read from the stream.
+    ///     The frame buffer that holds the data for the current frame.
     /// </summary>
-    private sbyte[] _frameBytes;
+    private readonly int[] _frameBuffer;
 
     /// <summary>
-    /// The frame buffer that holds the data for the current frame.
+    ///     The bytes read from the stream.
     /// </summary>
-    private int[] _frameBuffer;
+    private readonly sbyte[] _frameBytes;
 
     /// <summary>
-    /// Number of valid bytes in the frame buffer.
+    ///     Number of valid bytes in the frame buffer.
     /// </summary>
     private int _frameSize;
 
-    private Header  _header;
-    private bool    _singleChMode;
-    private sbyte[] _syncBuffer;
-    private Crc16[] _crc;
+    private readonly Header  _header;
+    private          bool    _singleChMode;
+    private readonly sbyte[] _syncBuffer;
 
     /// <summary>
-    /// The current specified syncword
+    ///     The current specified syncword
     /// </summary>
     private int _syncWord;
 
     /// <summary>
-    /// Index into framebuffer where the next bits are retrieved.
+    ///     Index into framebuffer where the next bits are retrieved.
     /// </summary>
     private int _wordPointer;
 
     /// <summary>
-    /// Create a IBitstream that reads data from a given InputStream.
+    ///     Create a IBitstream that reads data from a given InputStream.
     /// </summary>
     public Bitstream( PushbackStream stream )
     {
@@ -117,11 +116,11 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Reads and parses the next frame from the input source.
+    ///     Reads and parses the next frame from the input source.
     /// </summary>
     /// <returns>
-    /// The Header describing details of the frame read,
-    /// or null if the end of the stream has been reached.
+    ///     The Header describing details of the frame read,
+    ///     or null if the end of the stream has been reached.
     /// </returns>
     public Header? ReadFrame()
     {
@@ -155,9 +154,9 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Unreads the bytes read from the frame.
-    /// Throws BitstreamException.
-    /// TODO: add new error codes for this.
+    ///     Unreads the bytes read from the frame.
+    ///     Throws BitstreamException.
+    ///     TODO: add new error codes for this.
     /// </summary>
     public void UnreadFrame()
     {
@@ -182,7 +181,7 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Determines if the next 4 bytes of the stream represent a frame header.
+    ///     Determines if the next 4 bytes of the stream represent a frame header.
     /// </summary>
     public bool IsSyncCurrentPosition( int syncmode )
     {
@@ -197,7 +196,7 @@ public sealed class Bitstream
         {
             _sourceStream.UnRead( read );
         }
-        catch ( System.Exception e )
+        catch ( Exception e )
         {
             throw new Mp3SharpException( "Could not restore file after reading frame header.", e );
         }
@@ -225,10 +224,10 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Get next 32 bits from bitstream.
-    /// They are stored in the headerstring.
-    /// syncmod allows Synchro flag ID
-    /// The returned value is False at the end of stream.
+    ///     Get next 32 bits from bitstream.
+    ///     They are stored in the headerstring.
+    ///     syncmod allows Synchro flag ID
+    ///     The returned value is False at the end of stream.
     /// </summary>
     public int SyncHeader( sbyte syncmode )
     {
@@ -281,11 +280,11 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// check and skip the id3v2 tag.
-    /// mp3 frame sync inside id3 tag may led false decodeing.
-    /// id3 tag do have a flag for "unsynchronisation", indicate there are no
-    /// frame sync inside tags, scence decoder don't care about tags, we just
-    /// skip all tags.
+    ///     check and skip the id3v2 tag.
+    ///     mp3 frame sync inside id3 tag may led false decodeing.
+    ///     id3 tag do have a flag for "unsynchronisation", indicate there are no
+    ///     frame sync inside tags, scence decoder don't care about tags, we just
+    ///     skip all tags.
     /// </summary>
     public bool CheckAndSkipId3Tag( int headerstring )
     {
@@ -359,7 +358,7 @@ public sealed class Bitstream
         if ( sync )
         {
             sync = ( SupportClass.URShift( headerstring, 19 ) & 3 ) != 1;
-            
+
             if ( !sync )
             {
                 Console.WriteLine( @"INVALID VERSION DETECTED" );
@@ -370,8 +369,8 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Reads the data for the next frame. The frame is not parsed
-    /// until parse frame is called.
+    ///     Reads the data for the next frame. The frame is not parsed
+    ///     until parse frame is called.
     /// </summary>
     public void Read_frame_data( int bytesize )
     {
@@ -382,7 +381,7 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Parses the data previously read with read_frame_data().
+    ///     Parses the data previously read with read_frame_data().
     /// </summary>
     public void ParseFrame()
     {
@@ -424,9 +423,9 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Read bits from buffer into the lower bits of an unsigned int.
-    /// The LSB contains the latest read bit of the stream.
-    /// (between 1 and 16, inclusive).
+    ///     Read bits from buffer into the lower bits of an unsigned int.
+    ///     The LSB contains the latest read bit of the stream.
+    ///     (between 1 and 16, inclusive).
     /// </summary>
     public int GetBitsFromBuffer( int countBits )
     {
@@ -453,24 +452,25 @@ public sealed class Bitstream
         }
 
         var right = _frameBuffer[ _wordPointer ] & 0x0000FFFF;
-        
+
         _wordPointer++;
-        
+
         var left = _frameBuffer[ _wordPointer ] & ( int )SupportClass.Identity( 0xFFFF0000 );
-        
-        returnvalue =  ( ( right << 16 ) & ( int )SupportClass.Identity( 0xFFFF0000 ) )
-                     | ( SupportClass.URShift( left, 16 ) & 0x0000FFFF );
+
+        returnvalue = ( ( right << 16 ) & ( int )SupportClass.Identity( 0xFFFF0000 ) )
+                    | ( SupportClass.URShift( left, 16 ) & 0x0000FFFF );
+
         returnvalue =  SupportClass.URShift( returnvalue, 48 - sum );
         returnvalue &= _bitmask[ countBits ];
-        
-        _bitIndex   =  sum - 32;
+
+        _bitIndex = sum - 32;
 
         return returnvalue;
     }
 
     /// <summary>
-    /// Set the word we want to sync the header to.
-    /// In Big-Endian byte order
+    ///     Set the word we want to sync the header to.
+    ///     In Big-Endian byte order
     /// </summary>
     public void SetSyncWord( int syncword0 )
     {
@@ -479,7 +479,7 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Reads the exact number of bytes from the source input stream into a byte array.
+    ///     Reads the exact number of bytes from the source input stream into a byte array.
     /// </summary>
     private void ReadFully( sbyte[] b, int offs, int len )
     {
@@ -514,7 +514,7 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    /// Simlar to readFully, but doesn't throw exception when EOF is reached.
+    ///     Simlar to readFully, but doesn't throw exception when EOF is reached.
     /// </summary>
     private int ReadBytes( sbyte[] b, int offs, int len )
     {

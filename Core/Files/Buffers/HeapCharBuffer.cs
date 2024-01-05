@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Files.Buffers;
 
-[PublicAPI]
 public class HeapCharBuffer : CharBuffer
 {
     public HeapCharBuffer( char[] array, int offset, int length )
@@ -30,146 +29,146 @@ public class HeapCharBuffer : CharBuffer
     }
 
     /// <summary>
-    /// Tells whether or not this buffer is <i>direct</i>.
+    ///     Tells whether or not this buffer is <i>direct</i>.
     /// </summary>
     /// <returns> <tt>true</tt> if, and only if, this buffer is direct </returns>
     public override bool IsDirect() => false;
 
     /// <summary>
-    /// Relative <i>get</i> method.  Reads the char at this buffer's
-    /// current position, and then increments the position.
+    ///     Relative <i>get</i> method.  Reads the char at this buffer's
+    ///     current position, and then increments the position.
     /// </summary>
     /// <returns>The char at the buffer's current position</returns>
     /// <exception cref="BufferUnderflowException">
-    /// If the buffer's current position is not smaller than its limit
+    ///     If the buffer's current position is not smaller than its limit
     /// </exception>
     protected override char Get() => '\0';
 
     /// <summary>
-    /// Relative <i>put</i> method  <i>(optional operation)</i>.
-    /// <para>
-    /// Writes the given char into this buffer at the current position, and then
-    /// increments the position.
-    /// </para>
+    ///     Relative <i>put</i> method  <i>(optional operation)</i>.
+    ///     <para>
+    ///         Writes the given char into this buffer at the current position, and then
+    ///         increments the position.
+    ///     </para>
     /// </summary>
     /// <param name="c">The char to be written</param>
     /// <returns> This buffer </returns>
     /// <exception cref="BufferOverflowException">
-    /// If this buffer's current position is not smaller than its limit
+    ///     If this buffer's current position is not smaller than its limit
     /// </exception>
     /// <exception cref="ReadOnlyBufferException">
-    /// If this buffer is read-only, which it shouldn't be!
+    ///     If this buffer is read-only, which it shouldn't be!
     /// </exception>
     protected override CharBuffer Put( char c ) => this;
 
     /// <summary>
-    /// Absolute <i>get</i> method.  Reads the char at the given index.
+    ///     Absolute <i>get</i> method.  Reads the char at the given index.
     /// </summary>
     /// <param name="index">The index from which the char will be read</param>
     /// <returns> The char at the given index </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit
+    ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
     protected override char Get( int index ) => '\0';
 
     /// <summary>
-    /// Absolute <i>get</i> method. Reads the char at the given index without
-    /// any validation of the index.
+    ///     Absolute <i>get</i> method. Reads the char at the given index without
+    ///     any validation of the index.
     /// </summary>
     /// <param name="index">The index from which the char will be read</param>
     /// <returns>  The char at the given index </returns>
     public override char GetUnchecked( int index ) => '\0';
 
     /// <summary>
-    /// Absolute <i>put</i> method  <i>(optional operation)</i>.
-    /// <para>
-    /// Writes the given char into this buffer at the given index.
-    /// </para>
+    ///     Absolute <i>put</i> method  <i>(optional operation)</i>.
+    ///     <para>
+    ///         Writes the given char into this buffer at the given index.
+    ///     </para>
     /// </summary>
     /// <param name="index">
-    /// The index at which the char will be written
+    ///     The index at which the char will be written
     /// </param>
     /// <param name="c"> The char value to be written </param>
     /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit
+    ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
     /// <exception cref="ReadOnlyBufferException">If this buffer is read-only </exception>
     public override CharBuffer Put( int index, char c ) => this;
 
     /// <summary>
-    /// Compacts this buffer  <i>(optional operation)</i>.
-    /// The chars between the buffer's current position and its limit, if any, are
-    /// copied to the beginning of the buffer. That is, the char at index p = position()
-    /// is copied to index zero, the char at index p + 1 is copied to index one, and so
-    /// forth until the char at index limit() - 1 is copied to index n = limit() - 1 - p.
-    /// The buffer's position is then set to n+1 and its limit is set to its capacity.
-    /// The mark, if defined, is discarded.
-    /// <para>
-    /// The buffer's position is set to the number of chars copied, rather than to zero,
-    /// so that an invocation of this method can be followed immediately by an invocation
-    /// of another relative put method.
-    /// </para>
+    ///     Compacts this buffer  <i>(optional operation)</i>.
+    ///     The chars between the buffer's current position and its limit, if any, are
+    ///     copied to the beginning of the buffer. That is, the char at index p = position()
+    ///     is copied to index zero, the char at index p + 1 is copied to index one, and so
+    ///     forth until the char at index limit() - 1 is copied to index n = limit() - 1 - p.
+    ///     The buffer's position is then set to n+1 and its limit is set to its capacity.
+    ///     The mark, if defined, is discarded.
+    ///     <para>
+    ///         The buffer's position is set to the number of chars copied, rather than to zero,
+    ///         so that an invocation of this method can be followed immediately by an invocation
+    ///         of another relative put method.
+    ///     </para>
     /// </summary>
     /// <returns> This Buffer </returns>
     public override CharBuffer Compact() => this;
 
     /// <summary>
-    /// Creates a new char buffer whose content is a shared subsequence of
-    /// this buffer's content.
-    /// <para>
-    /// The content of the new buffer will start at this buffer's current
-    /// position.  Changes to this buffer's content will be visible in the new
-    /// buffer, and vice versa; the two buffers' position, limit, and mark
-    /// values will be independent.
-    /// </para>
-    /// <para>
-    /// The new buffer's position will be zero, its capacity and its limit
-    /// will be the number of chars remaining in this buffer, and its mark
-    /// will be undefined.  The new buffer will be direct if, and only if, this
-    /// buffer is direct, and it will be read-only if, and only if, this buffer
-    /// is read-only.
-    /// </para>
+    ///     Creates a new char buffer whose content is a shared subsequence of
+    ///     this buffer's content.
+    ///     <para>
+    ///         The content of the new buffer will start at this buffer's current
+    ///         position.  Changes to this buffer's content will be visible in the new
+    ///         buffer, and vice versa; the two buffers' position, limit, and mark
+    ///         values will be independent.
+    ///     </para>
+    ///     <para>
+    ///         The new buffer's position will be zero, its capacity and its limit
+    ///         will be the number of chars remaining in this buffer, and its mark
+    ///         will be undefined.  The new buffer will be direct if, and only if, this
+    ///         buffer is direct, and it will be read-only if, and only if, this buffer
+    ///         is read-only.
+    ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
     public override CharBuffer Slice() => this;
 
     /// <summary>
-    /// Creates a new char buffer that shares this buffer's content.
-    /// <para>
-    /// The content of the new buffer will be that of this buffer.  Changes
-    /// to this buffer's content will be visible in the new buffer, and vice
-    /// versa; the two buffers' position, limit, and mark values will be
-    /// independent.
-    /// </para>
-    /// <para>
-    /// The new buffer's capacity, limit, position, and mark values will be
-    /// identical to those of this buffer.  The new buffer will be direct if,
-    /// and only if, this buffer is direct, and it will be read-only if, and
-    /// only if, this buffer is read-only.
-    /// </para>
+    ///     Creates a new char buffer that shares this buffer's content.
+    ///     <para>
+    ///         The content of the new buffer will be that of this buffer.  Changes
+    ///         to this buffer's content will be visible in the new buffer, and vice
+    ///         versa; the two buffers' position, limit, and mark values will be
+    ///         independent.
+    ///     </para>
+    ///     <para>
+    ///         The new buffer's capacity, limit, position, and mark values will be
+    ///         identical to those of this buffer.  The new buffer will be direct if,
+    ///         and only if, this buffer is direct, and it will be read-only if, and
+    ///         only if, this buffer is read-only.
+    ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
     public override CharBuffer Duplicate() => this;
 
     /// <summary>
-    /// Creates a new, read-only char buffer that shares this buffer's
-    /// content.
-    /// <para>
-    /// The content of the new buffer will be that of this buffer.  Changes
-    /// to this buffer's content will be visible in the new buffer; the new
-    /// buffer itself, however, will be read-only and will not allow the shared
-    /// content to be modified.  The two buffers' position, limit, and mark
-    /// values will be independent.
-    /// </para>
-    /// <para>
-    /// The new buffer's capacity, limit, position, and mark values will be
-    /// identical to those of this buffer.
-    /// </para>
-    /// <para>
-    /// If this buffer is itself read-only then this method behaves in
-    /// exactly the same way as the <see cref="Duplicate"/> method.
-    /// </para>
+    ///     Creates a new, read-only char buffer that shares this buffer's
+    ///     content.
+    ///     <para>
+    ///         The content of the new buffer will be that of this buffer.  Changes
+    ///         to this buffer's content will be visible in the new buffer; the new
+    ///         buffer itself, however, will be read-only and will not allow the shared
+    ///         content to be modified.  The two buffers' position, limit, and mark
+    ///         values will be independent.
+    ///     </para>
+    ///     <para>
+    ///         The new buffer's capacity, limit, position, and mark values will be
+    ///         identical to those of this buffer.
+    ///     </para>
+    ///     <para>
+    ///         If this buffer is itself read-only then this method behaves in
+    ///         exactly the same way as the <see cref="Duplicate" /> method.
+    ///     </para>
     /// </summary>
     /// <returns>  The new, read-only char buffer </returns>
     public override CharBuffer AsReadOnlyBuffer() => this;
@@ -177,45 +176,45 @@ public class HeapCharBuffer : CharBuffer
     protected override string ToString( int start, int end ) => "";
 
     /// <summary>
-    /// Retrieves this buffer's byte order.
-    /// <para>
-    /// The byte order of a char buffer created by allocation or by wrapping an existing
-    /// <tt>char</tt> array is the <see cref="ByteOrder.NativeOrder"/> of the underlying
-    /// hardware.  The byte order of a char buffer created as a view of a byte buffer is
-    /// that of the byte buffer at the moment that the view is created.
-    /// </para>
+    ///     Retrieves this buffer's byte order.
+    ///     <para>
+    ///         The byte order of a char buffer created by allocation or by wrapping an existing
+    ///         <tt>char</tt> array is the <see cref="ByteOrder.NativeOrder" /> of the underlying
+    ///         hardware.  The byte order of a char buffer created as a view of a byte buffer is
+    ///         that of the byte buffer at the moment that the view is created.
+    ///     </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
     public override ByteOrder Order() => ByteOrder.NativeOrder;
 
     /// <summary>
-    /// Creates a new character buffer that represents the specified subsequence
-    /// of this buffer, relative to the current position.
-    /// <para>
-    /// The new buffer will share this buffer's content; that is, if the
-    /// content of this buffer is mutable then modifications to one buffer will
-    /// cause the other to be modified.  The new buffer's capacity will be that
-    /// of this buffer, its position will be
-    /// <tt>position()</tt> + <tt>start</tt>, and its limit will be
-    /// <tt>position()</tt> + <tt>end</tt>.  The new buffer will be
-    /// direct if, and only if, this buffer is direct, and it will be read-only
-    /// if, and only if, this buffer is read-only.
-    /// </para>
+    ///     Creates a new character buffer that represents the specified subsequence
+    ///     of this buffer, relative to the current position.
+    ///     <para>
+    ///         The new buffer will share this buffer's content; that is, if the
+    ///         content of this buffer is mutable then modifications to one buffer will
+    ///         cause the other to be modified.  The new buffer's capacity will be that
+    ///         of this buffer, its position will be
+    ///         <tt>position()</tt> + <tt>start</tt>, and its limit will be
+    ///         <tt>position()</tt> + <tt>end</tt>.  The new buffer will be
+    ///         direct if, and only if, this buffer is direct, and it will be read-only
+    ///         if, and only if, this buffer is read-only.
+    ///     </para>
     /// </summary>
     /// <param name="start">
-    ///         The index, relative to the current position, of the first
-    ///         character in the subsequence; must be non-negative and no larger
-    ///         than <tt>Remaining()</tt>
+    ///     The index, relative to the current position, of the first
+    ///     character in the subsequence; must be non-negative and no larger
+    ///     than <tt>Remaining()</tt>
     /// </param>
     /// <param name="end">
-    ///         The index, relative to the current position, of the character
-    ///         following the last character in the subsequence; must be no
-    ///         smaller than <tt>start</tt> and no larger than
-    ///         <tt>Remaining()</tt>
+    ///     The index, relative to the current position, of the character
+    ///     following the last character in the subsequence; must be no
+    ///     smaller than <tt>start</tt> and no larger than
+    ///     <tt>Remaining()</tt>
     /// </param>
     /// <returns> The new character buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If the preconditions on <tt>start</tt> and <tt>end</tt> do not hold
+    ///     If the preconditions on <tt>start</tt> and <tt>end</tt> do not hold
     /// </exception>
     public override CharBuffer SubSequence( int start, int end ) => this;
 }

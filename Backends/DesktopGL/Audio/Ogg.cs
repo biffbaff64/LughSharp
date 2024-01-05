@@ -16,13 +16,12 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
-[PublicAPI]
 public class Ogg
 {
     public class Music : OpenALMusic
     {
     }
-    
+
     public class Sound : OpenALSound
     {
     }

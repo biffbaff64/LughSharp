@@ -16,15 +16,11 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public abstract class RelativeTemporalAction : TemporalAction
 {
     private float _lastPercent;
 
-    protected new void Begin()
-    {
-        _lastPercent = 0;
-    }
+    protected new void Begin() => _lastPercent = 0;
 
     protected override void Update( float percent )
     {

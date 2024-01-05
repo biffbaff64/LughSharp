@@ -17,21 +17,21 @@
 namespace LibGDXSharp.Utils.Viewport;
 
 /// <summary>
-/// A viewport where the world size is based on the size of the screen.
-/// By default 1 world unit == 1 screen pixel, but this ratio can be
-/// changed by modifying <see cref="UnitsPerPixel"/>.
+///     A viewport where the world size is based on the size of the screen.
+///     By default 1 world unit == 1 screen pixel, but this ratio can be
+///     changed by modifying <see cref="UnitsPerPixel" />.
 /// </summary>
-[PublicAPI]
 public class ScreenViewport : Viewport
 {
-    public float UnitsPerPixel { get; set; } = 1;
 
     /// <summary>
-    /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
+    ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
     /// </summary>
     public ScreenViewport() : base( new OrthographicCamera() )
     {
     }
+
+    public float UnitsPerPixel { get; set; } = 1;
 
     public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {

@@ -19,28 +19,33 @@ using LibGDXSharp.Graphics.G2D;
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// Drawable for a <see cref="Sprite"/>.
+///     Drawable for a <see cref="Sprite" />.
 /// </summary>
-[PublicAPI]
 public class SpriteDrawable : BaseDrawable, ITransformDrawable
 {
     private Sprite? _sprite;
 
     /// <summary>
-    /// Creates an uninitialized SpriteDrawable. The sprite must be set before use.
+    ///     Creates an uninitialized SpriteDrawable. The sprite must be set before use.
     /// </summary>
     public SpriteDrawable()
     {
     }
 
-    public SpriteDrawable( Sprite sprite )
-    {
-        Sprite = sprite;
-    }
+    public SpriteDrawable( Sprite sprite ) => Sprite = sprite;
 
-    public SpriteDrawable( SpriteDrawable? drawable ) : base( drawable )
+    public SpriteDrawable( SpriteDrawable? drawable ) : base( drawable ) => Sprite = drawable?.Sprite;
+
+    public Sprite? Sprite
     {
-        Sprite = drawable?.Sprite;
+        get => _sprite;
+        set
+        {
+            _sprite = value;
+
+            MinWidth  = value?.Width ?? 0;
+            MinHeight = value?.Height ?? 0;
+        }
     }
 
     public override void Draw( IBatch batch, float x, float y, float width, float height )
@@ -92,21 +97,9 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
         Sprite.PackedColor = oldColor;
     }
 
-    public Sprite? Sprite
-    {
-        get => _sprite;
-        set
-        {
-            this._sprite = value;
-
-            MinWidth  = value?.Width ?? 0;
-            MinHeight = value?.Height ?? 0;
-        }
-    }
-    
     /// <summary>
-    /// Creates a new drawable that renders the same as this
-    /// drawable tinted the specified color.
+    ///     Creates a new drawable that renders the same as this
+    ///     drawable tinted the specified color.
     /// </summary>
     public SpriteDrawable Tint( Color tint )
     {

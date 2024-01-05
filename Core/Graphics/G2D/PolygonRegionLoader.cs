@@ -17,39 +17,14 @@
 namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
-/// loads <see cref="PolygonRegion"/>s.
+///     loads <see cref="PolygonRegion" />s.
 /// </summary>
-[PublicAPI]
 public class PolygonRegionLoader
     : SynchronousAssetLoader< PolygonRegion, PolygonRegionLoader.PolygonRegionParameters >
 {
-    [PublicAPI]
-    public class PolygonRegionParameters : AssetLoaderParameters
-    {
-        /// <summary>
-        /// what the line starts with that contains the file name of the
-        /// texture for this <tt>PolygonRegion</tt>.
-        /// </summary>
-        public string? texturePrefix = "i ";
 
-        /// <summary>
-        /// what buffer size of the reader should be used to read the
-        /// <tt>texturePrefix</tt> line.
-        /// </summary>
-        public int readerBuffer = 1024;
-
-        /// <summary>
-        /// the possible file name extensions of the texture file.
-        /// </summary>
-        public readonly string[] textureExtensions =
-        {
-            "png", "PNG", "jpeg", "JPEG", "jpg", "JPG", "cim", "CIM",
-            "etc1", "ETC1", "ktx", "KTX", "zktx", "ZKTX"
-        };
-    }
-
-    private PolygonRegionParameters _defaultParameters = new();
-    private EarClippingTriangulator _triangulator      = new();
+    private readonly PolygonRegionParameters _defaultParameters = new();
+    private readonly EarClippingTriangulator _triangulator      = new();
 
     public PolygonRegionLoader()
         : this( new InternalFileHandleResolver() )
@@ -74,12 +49,11 @@ public class PolygonRegionLoader
     }
 
     /// <summary>
-    /// If the PSH file contains a line starting with <see cref="PolygonRegionParameters.texturePrefix"/>,
-    /// an <see cref="AssetDescriptor"/> for the file referenced on that line will be added to the returned
-    /// Array. Otherwise a sibling of the given file with the same name and the first found extension
-    /// in <see cref="PolygonRegionParameters.textureExtensions"/>" will be used. If no suitable file is
-    ///
-    /// found, the returned Array will be empty.
+    ///     If the PSH file contains a line starting with <see cref="PolygonRegionParameters.texturePrefix" />,
+    ///     an <see cref="AssetDescriptor" /> for the file referenced on that line will be added to the returned
+    ///     Array. Otherwise a sibling of the given file with the same name and the first found extension
+    ///     in <see cref="PolygonRegionParameters.textureExtensions" />" will be used. If no suitable file is
+    ///     found, the returned Array will be empty.
     /// </summary>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
@@ -113,12 +87,12 @@ public class PolygonRegionLoader
         }
 
         var siblingFilePath = string.Empty;
-        
+
         if ( image == null )
         {
             var directory = Path.GetDirectoryName( fileName );
             var fileNoExt = Path.GetFileNameWithoutExtension( fileName );
-            
+
             foreach ( var extension in ( ( PolygonRegionParameters )parameters ).textureExtensions )
             {
                 siblingFilePath = Path.Combine( directory!, fileNoExt + extension );
@@ -144,13 +118,13 @@ public class PolygonRegionLoader
     }
 
     /// <summary>
-    /// Loads a PolygonRegion from a PSH (Polygon SHape) file. The PSH file format defines the polygon vertices before
-    /// triangulation:
-    /// <para>s 200.0, 100.0, ...</para>
-    /// <para>
-    /// Lines not prefixed with "s" are ignored. PSH files can be created with external tools, eg:
-    /// </para>
-    /// <para>http://www.codeandweb.com/physicseditor/</para>
+    ///     Loads a PolygonRegion from a PSH (Polygon SHape) file. The PSH file format defines the polygon vertices before
+    ///     triangulation:
+    ///     <para>s 200.0, 100.0, ...</para>
+    ///     <para>
+    ///         Lines not prefixed with "s" are ignored. PSH files can be created with external tools, eg:
+    ///     </para>
+    ///     <para>http://www.codeandweb.com/physicseditor/</para>
     /// </summary>
     /// <param name="textureRegion"></param>
     /// <param name="file"> file handle to the shape definition file </param>
@@ -200,5 +174,29 @@ public class PolygonRegionLoader
         }
 
         throw new GdxRuntimeException( "Polygon shape not found: " + file );
+    }
+
+    public class PolygonRegionParameters : AssetLoaderParameters
+    {
+
+        /// <summary>
+        ///     the possible file name extensions of the texture file.
+        /// </summary>
+        public readonly string[] textureExtensions =
+        {
+            "png", "PNG", "jpeg", "JPEG", "jpg", "JPG", "cim", "CIM",
+            "etc1", "ETC1", "ktx", "KTX", "zktx", "ZKTX"
+        };
+
+        /// <summary>
+        ///     what buffer size of the reader should be used to read the
+        ///     <tt>texturePrefix</tt> line.
+        /// </summary>
+        public int readerBuffer = 1024;
+        /// <summary>
+        ///     what the line starts with that contains the file name of the
+        ///     texture for this <tt>PolygonRegion</tt>.
+        /// </summary>
+        public string? texturePrefix = "i ";
     }
 }

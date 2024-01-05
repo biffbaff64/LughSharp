@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// Implements an Obuffer by writing the data to a file in RIFF WAVE format.
+///     Implements an Obuffer by writing the data to a file in RIFF WAVE format.
 /// </summary>
-[PublicAPI]
 public class WaveFileBuffer : ABuffer
 {
     private readonly short[]  _buffer;
@@ -60,7 +59,7 @@ public class WaveFileBuffer : ABuffer
     }
 
     /// <summary>
-    /// Takes a 16 Bit PCM sample.
+    ///     Takes a 16 Bit PCM sample.
     /// </summary>
     protected override void Append( int channel, short valueRenamed )
     {
@@ -78,25 +77,17 @@ public class WaveFileBuffer : ABuffer
         }
     }
 
-    public void Close( bool justWriteLengthBytes )
-    {
-        _outWave.Close( justWriteLengthBytes );
-    }
+    public void Close( bool justWriteLengthBytes ) => _outWave.Close( justWriteLengthBytes );
 
-    public override void Close()
-    {
-        _outWave.Close();
-    }
+    public override void Close() => _outWave.Close();
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ClearBuffer()
     {
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void SetStopFlag()
     {

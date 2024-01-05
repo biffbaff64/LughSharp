@@ -18,23 +18,15 @@ using LibGDXSharp.Maths.Collision;
 
 namespace LibGDXSharp.Graphics.G2D;
 
-[PublicAPI]
 public class ParticleEffect : IDisposable
 {
     private const int DEFAULT_EMITTERS_SIZE = 8;
-
-    public float XSizeScale  { get; set; } = 1f;
-    public float YSizeScale  { get; set; } = 1f;
-    public float MotionScale { get; set; } = 1f;
 
     private readonly List< ParticleEmitter > _emitters;
     private          BoundingBox?            _bounds;
     private          bool                    _ownsTexture;
 
-    public ParticleEffect()
-    {
-        _emitters = new List< ParticleEmitter >( DEFAULT_EMITTERS_SIZE );
-    }
+    public ParticleEffect() => _emitters = new List< ParticleEmitter >( DEFAULT_EMITTERS_SIZE );
 
     public ParticleEffect( ParticleEffect effect )
     {
@@ -46,6 +38,16 @@ public class ParticleEffect : IDisposable
         }
     }
 
+    public float XSizeScale  { get; set; } = 1f;
+    public float YSizeScale  { get; set; } = 1f;
+    public float MotionScale { get; set; } = 1f;
+
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
     public void Start()
     {
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
@@ -55,11 +57,11 @@ public class ParticleEffect : IDisposable
     }
 
     /// <summary>
-    /// Resets the effect so it can be started again like a new effect.
+    ///     Resets the effect so it can be started again like a new effect.
     /// </summary>
     /// <param name="resetScaling">
-    /// Whether to restore the original size and motion parameters if they
-    /// were scaled. Repeated scaling and resetting may introduce error.
+    ///     Whether to restore the original size and motion parameters if they
+    ///     were scaled. Repeated scaling and resetting may introduce error.
     /// </param>
     public void Reset( bool resetScaling = true )
     {
@@ -161,7 +163,7 @@ public class ParticleEffect : IDisposable
     public List< ParticleEmitter > GetEmitters() => _emitters;
 
     /// <summary>
-    /// Returns the emitter with the specified name, or null.
+    ///     Returns the emitter with the specified name, or null.
     /// </summary>
     public ParticleEmitter? FindEmitter( string name )
     {
@@ -179,8 +181,8 @@ public class ParticleEffect : IDisposable
     }
 
     /// <summary>
-    /// Allocates all emitters particles.
-    /// See <see cref="ParticleEmitter.PreAllocateParticles()"/>
+    ///     Allocates all emitters particles.
+    ///     See <see cref="ParticleEmitter.PreAllocateParticles()" />
     /// </summary>
     public void PreAllocateParticles()
     {
@@ -220,24 +222,24 @@ public class ParticleEffect : IDisposable
     }
 
     /// <summary>
-    /// Loads particle emitters from the specified <paramref name="effectFile"/> and
-    /// adds them to the collection.
+    ///     Loads particle emitters from the specified <paramref name="effectFile" /> and
+    ///     adds them to the collection.
     /// </summary>
     /// <param name="effectFile">The file containing the particle effect configuration.</param>
     /// <remarks>
-    /// <para>
-    /// This method reads the configuration from the <paramref name="effectFile"/> and
-    /// creates particle emitters based on the provided information. Each emitter is
-    /// constructed using the <see cref="NewEmitter(StreamReader)"/> method, and it is
-    /// added to the collection of emitters.
-    /// </para>
-    /// <para>
-    /// After loading all emitters, the existing emitters in the collection are cleared
-    /// before adding the newly loaded ones.
-    /// </para>
+    ///     <para>
+    ///         This method reads the configuration from the <paramref name="effectFile" /> and
+    ///         creates particle emitters based on the provided information. Each emitter is
+    ///         constructed using the <see cref="NewEmitter(StreamReader)" /> method, and it is
+    ///         added to the collection of emitters.
+    ///     </para>
+    ///     <para>
+    ///         After loading all emitters, the existing emitters in the collection are cleared
+    ///         before adding the newly loaded ones.
+    ///     </para>
     /// </remarks>
     /// <exception cref="GdxRuntimeException">
-    /// Thrown if an error occurs while loading the effect from the <paramref name="effectFile"/>.
+    ///     Thrown if an error occurs while loading the effect from the <paramref name="effectFile" />.
     /// </exception>
     public void LoadEmitters( FileInfo effectFile )
     {
@@ -267,27 +269,27 @@ public class ParticleEffect : IDisposable
     }
 
     /// <summary>
-    /// Loads emitter images from a <paramref name="atlas"/> and associates them with
-    /// the respective emitters.
+    ///     Loads emitter images from a <paramref name="atlas" /> and associates them with
+    ///     the respective emitters.
     /// </summary>
     /// <param name="atlas">The texture atlas containing the emitter images.</param>
     /// <param name="atlasPrefix">An optional prefix to apply to image names in the atlas.</param>
     /// <remarks>
-    /// <para>
-    /// This method loads images from the provided <paramref name="atlas"/> and associates
-    /// them with the corresponding emitters in the collection. Each emitter's image paths
-    /// are retrieved using the <see cref="ParticleEmitter.ImagePaths"/> method.
-    /// If an emitter has no image paths, it is skipped.
-    /// </para>
-    /// <para>
-    /// The method attempts to create sprites from the atlas using the specified
-    /// <paramref name="atlasPrefix"/> for image names.
-    /// If a sprite cannot be created, an <see cref="ArgumentException"/> is thrown,
-    /// indicating the missing image.
-    /// </para>
+    ///     <para>
+    ///         This method loads images from the provided <paramref name="atlas" /> and associates
+    ///         them with the corresponding emitters in the collection. Each emitter's image paths
+    ///         are retrieved using the <see cref="ParticleEmitter.ImagePaths" /> method.
+    ///         If an emitter has no image paths, it is skipped.
+    ///     </para>
+    ///     <para>
+    ///         The method attempts to create sprites from the atlas using the specified
+    ///         <paramref name="atlasPrefix" /> for image names.
+    ///         If a sprite cannot be created, an <see cref="ArgumentException" /> is thrown,
+    ///         indicating the missing image.
+    ///     </para>
     /// </remarks>
-    /// <seealso cref="ParticleEmitter.ImagePaths"/>
-    /// <seealso cref="ParticleEmitter.SetSprites"/>
+    /// <seealso cref="ParticleEmitter.ImagePaths" />
+    /// <seealso cref="ParticleEmitter.SetSprites" />
     public void LoadEmitterImages( TextureAtlas atlas, string? atlasPrefix = null )
     {
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
@@ -331,25 +333,25 @@ public class ParticleEffect : IDisposable
     }
 
     /// <summary>
-    /// Loads emitter images from the specified directory and associates them with
-    /// the respective emitters.
+    ///     Loads emitter images from the specified directory and associates them with
+    ///     the respective emitters.
     /// </summary>
     /// <param name="imagesDir">The directory containing the emitter images.</param>
     /// <remarks>
-    /// <para>
-    /// This method loads images from the <paramref name="imagesDir"/> directory and
-    /// associates them with the corresponding emitters in the collection. Each emitter's
-    /// image paths are retrieved using the <see cref="ParticleEmitter.ImagePaths"/>
-    /// method. If an emitter has no image paths, it is skipped.
-    /// </para>
-    /// <para>
-    /// The loaded sprites are stored in a dictionary to avoid reloading the same sprite
-    /// if it has already been loaded. This improves performance by reusing already loaded
-    /// textures.
-    /// </para>
+    ///     <para>
+    ///         This method loads images from the <paramref name="imagesDir" /> directory and
+    ///         associates them with the corresponding emitters in the collection. Each emitter's
+    ///         image paths are retrieved using the <see cref="ParticleEmitter.ImagePaths" />
+    ///         method. If an emitter has no image paths, it is skipped.
+    ///     </para>
+    ///     <para>
+    ///         The loaded sprites are stored in a dictionary to avoid reloading the same sprite
+    ///         if it has already been loaded. This improves performance by reusing already loaded
+    ///         textures.
+    ///     </para>
     /// </remarks>
-    /// <seealso cref="ParticleEmitter.ImagePaths"/>
-    /// <seealso cref="ParticleEmitter.SetSprites"/>
+    /// <seealso cref="ParticleEmitter.ImagePaths" />
+    /// <seealso cref="ParticleEmitter.SetSprites" />
     public void LoadEmitterImages( DirectoryInfo imagesDir )
     {
         _ownsTexture = true;
@@ -387,25 +389,16 @@ public class ParticleEffect : IDisposable
 
     // ------------------------------------------------------------------------
 
-    protected ParticleEmitter NewEmitter( StreamReader reader )
-    {
-        return new ParticleEmitter( reader );
-    }
+    protected ParticleEmitter NewEmitter( StreamReader reader ) => new( reader );
 
-    protected ParticleEmitter NewEmitter( ParticleEmitter emitter )
-    {
-        return new ParticleEmitter( emitter );
-    }
+    protected ParticleEmitter NewEmitter( ParticleEmitter emitter ) => new( emitter );
 
-    protected Texture LoadTexture( FileInfo file )
-    {
-        return new Texture( file, false );
-    }
+    protected Texture LoadTexture( FileInfo file ) => new( file, false );
 
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Disposes the texture for each sprite for each ParticleEmitter.
+    ///     Disposes the texture for each sprite for each ParticleEmitter.
     /// </summary>
     protected void Dispose( bool disposing )
     {
@@ -428,25 +421,19 @@ public class ParticleEffect : IDisposable
         }
     }
 
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
-    }
-
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Returns the bounding box for all active particles. z axis will always be zero.
+    ///     Returns the bounding box for all active particles. z axis will always be zero.
     /// </summary>
     public BoundingBox GetBoundingBox()
     {
         _bounds ??= new BoundingBox();
 
-        BoundingBox box = this._bounds;
+        BoundingBox box = _bounds;
         box.ToInfinity();
 
-        foreach ( ParticleEmitter emitter in this._emitters )
+        foreach ( ParticleEmitter emitter in _emitters )
         {
             box.Extend( emitter.GetBoundingBox() );
         }
@@ -455,32 +442,26 @@ public class ParticleEffect : IDisposable
     }
 
     /// <summary>
-    /// Permanently scales all the size and motion parameters of all the emitters
-    /// in this effect. If this effect originated from a <see cref="ParticleEffectPool"/>,
-    /// the scale will be reset when it is returned to the pool.
+    ///     Permanently scales all the size and motion parameters of all the emitters
+    ///     in this effect. If this effect originated from a <see cref="ParticleEffectPool" />,
+    ///     the scale will be reset when it is returned to the pool.
     /// </summary>
     /// <param name="scaleFactor"></param>
-    public void ScaleEffect( float scaleFactor )
-    {
-        ScaleEffect( scaleFactor, scaleFactor, scaleFactor );
-    }
+    public void ScaleEffect( float scaleFactor ) => ScaleEffect( scaleFactor, scaleFactor, scaleFactor );
 
     /// <summary>
-    /// Permanently scales all the size and motion parameters of all the emitters
-    /// in this effect. If this effect originated from a <see cref="ParticleEffectPool"/>,
-    /// the scale will be reset when it is returned to the pool.
+    ///     Permanently scales all the size and motion parameters of all the emitters
+    ///     in this effect. If this effect originated from a <see cref="ParticleEffectPool" />,
+    ///     the scale will be reset when it is returned to the pool.
     /// </summary>
     /// <param name="scaleFactor"></param>
     /// <param name="motionScaleFactor"></param>
-    public void ScaleEffect( float scaleFactor, float motionScaleFactor )
-    {
-        ScaleEffect( scaleFactor, scaleFactor, motionScaleFactor );
-    }
+    public void ScaleEffect( float scaleFactor, float motionScaleFactor ) => ScaleEffect( scaleFactor, scaleFactor, motionScaleFactor );
 
     /// <summary>
-    /// Permanently scales all the size and motion parameters of all the emitters
-    /// in this effect. If this effect originated from a <see cref="ParticleEffectPool"/>,
-    /// the scale will be reset when it is returned to the pool.
+    ///     Permanently scales all the size and motion parameters of all the emitters
+    ///     in this effect. If this effect originated from a <see cref="ParticleEffectPool" />,
+    ///     the scale will be reset when it is returned to the pool.
     /// </summary>
     /// <param name="xSizeScaleFactor"></param>
     /// <param name="ySizeScaleFactor"></param>
@@ -499,13 +480,13 @@ public class ParticleEffect : IDisposable
     }
 
     /// <summary>
-    /// Sets the 'CleansUpBlendFunction' <see cref="ParticleEmitter"/> currently
-    /// in this ParticleEffect.
-    /// <para>
-    /// IMPORTANT: If set to false and if the next object to use this Batch expects
-    /// alpha blending, you are responsible for setting the Batch's blend function
-    /// to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
-    /// </para>
+    ///     Sets the 'CleansUpBlendFunction' <see cref="ParticleEmitter" /> currently
+    ///     in this ParticleEffect.
+    ///     <para>
+    ///         IMPORTANT: If set to false and if the next object to use this Batch expects
+    ///         alpha blending, you are responsible for setting the Batch's blend function
+    ///         to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
+    ///     </para>
     /// </summary>
     /// <param name="cleanUpBlendFunction"></param>
     public void SetEmittersCleanUpBlendFunction( bool cleanUpBlendFunction )

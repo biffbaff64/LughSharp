@@ -20,34 +20,32 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A group with a single child that sizes and positions the child using constraints.
-/// This provides layout similar to a <see cref="Table"/> with a single cell but is
-/// more lightweight.
+///     A group with a single child that sizes and positions the child using constraints.
+///     This provides layout similar to a <see cref="Table" /> with a single cell but is
+///     more lightweight.
 /// </summary>
-[PublicAPI]
 public class Container<T> : WidgetGroup where T : Actor
 {
-    public bool Rounding { get; set; } = true;
 
     private T?         _actor;
-    private Value      _minWidth   = Value.MinWidth;
-    private Value      _minHeight  = Value.MinHeight;
-    private Value      _prefWidth  = Value.PrefWidth;
-    private Value      _prefHeight = Value.PrefHeight;
-    private Value      _maxWidth   = Value.Zero;
-    private Value      _maxHeight  = Value.Zero;
-    private Value      _padTop     = Value.Zero;
-    private Value      _padLeft    = Value.Zero;
-    private Value      _padBottom  = Value.Zero;
-    private Value      _padRight   = Value.Zero;
-    private float      _fillX;
-    private float      _fillY;
     private int        _align;
     private IDrawable? _background;
     private bool       _clip;
+    private float      _fillX;
+    private float      _fillY;
+    private Value      _maxHeight  = Value.Zero;
+    private Value      _maxWidth   = Value.Zero;
+    private Value      _minHeight  = Value.MinHeight;
+    private Value      _minWidth   = Value.MinWidth;
+    private Value      _padBottom  = Value.Zero;
+    private Value      _padLeft    = Value.Zero;
+    private Value      _padRight   = Value.Zero;
+    private Value      _padTop     = Value.Zero;
+    private Value      _prefHeight = Value.PrefHeight;
+    private Value      _prefWidth  = Value.PrefWidth;
 
     /// <summary>
-    /// Creates a container with no actor.
+    ///     Creates a container with no actor.
     /// </summary>
     public Container()
     {
@@ -55,23 +53,25 @@ public class Container<T> : WidgetGroup where T : Actor
         Transform = false;
     }
 
-    public Container( T? actor ) : this()
-    {
-        SetActor( actor );
-    }
+    public Container( T? actor ) : this() => SetActor( actor );
+
+    public bool Rounding { get; set; } = true;
 
     /// <summary>
-    /// Sets the background drawable and, if adjustPadding is true, sets the container's
-    /// padding to <see cref="IDrawable.BottomHeight"/> , <see cref="IDrawable.TopHeight"/>,
-    /// <see cref="IDrawable.LeftWidth"/>, and <see cref="IDrawable.RightWidth"/>.
+    ///     Sets the background drawable and, if adjustPadding is true, sets the container's
+    ///     padding to <see cref="IDrawable.BottomHeight" /> , <see cref="IDrawable.TopHeight" />,
+    ///     <see cref="IDrawable.LeftWidth" />, and <see cref="IDrawable.RightWidth" />.
     /// </summary>
     /// <param name="background"> If null, the background will be cleared and padding removed. </param>
     /// <param name="adjustPadding"></param>
     public void SetBackground( IDrawable? background, bool adjustPadding = true )
     {
-        if ( this._background == background ) return;
+        if ( _background == background )
+        {
+            return;
+        }
 
-        this._background = background;
+        _background = background;
 
         if ( adjustPadding )
         {
@@ -95,22 +95,22 @@ public class Container<T> : WidgetGroup where T : Actor
         return this;
     }
 
-    public IDrawable? GetBackground()
-    {
-        return _background;
-    }
+    public IDrawable? GetBackground() => _background;
 
-    public new void Layout()
+    public void Layout()
     {
-        if ( _actor == null ) return;
+        if ( _actor == null )
+        {
+            return;
+        }
 
-        var   padLeft         = this._padLeft.Get( this );
-        var   padBottom       = this._padBottom.Get( this );
+        var   padLeft         = _padLeft.Get( this );
+        var   padBottom       = _padBottom.Get( this );
         var   containerWidth  = Width - padLeft - _padRight.Get( this );
         var   containerHeight = Height - padBottom - _padTop.Get( this );
-        float minWidth        = this._minWidth.Get( _actor ),  minHeight  = this._minHeight.Get( _actor );
-        float prefWidth       = this._prefWidth.Get( _actor ), prefHeight = this._prefHeight.Get( _actor );
-        float maxWidth        = this._maxWidth.Get( _actor ),  maxHeight  = this._maxHeight.Get( _actor );
+        float minWidth        = _minWidth.Get( _actor ),  minHeight  = _minHeight.Get( _actor );
+        float prefWidth       = _prefWidth.Get( _actor ), prefHeight = _prefHeight.Get( _actor );
+        float maxWidth        = _maxWidth.Get( _actor ),  maxHeight  = _maxHeight.Get( _actor );
 
         float width;
 
@@ -123,9 +123,15 @@ public class Container<T> : WidgetGroup where T : Actor
             width = Math.Min( prefWidth, containerWidth );
         }
 
-        if ( width < minWidth ) width = minWidth;
+        if ( width < minWidth )
+        {
+            width = minWidth;
+        }
 
-        if ( ( maxWidth > 0 ) && ( width > maxWidth ) ) width = maxWidth;
+        if ( ( maxWidth > 0 ) && ( width > maxWidth ) )
+        {
+            width = maxWidth;
+        }
 
         float height;
 
@@ -138,8 +144,15 @@ public class Container<T> : WidgetGroup where T : Actor
             height = Math.Min( prefHeight, containerHeight );
         }
 
-        if ( height < minHeight ) height                          = minHeight;
-        if ( ( maxHeight > 0 ) && ( height > maxHeight ) ) height = maxHeight;
+        if ( height < minHeight )
+        {
+            height = minHeight;
+        }
+
+        if ( ( maxHeight > 0 ) && ( height > maxHeight ) )
+        {
+            height = maxHeight;
+        }
 
         var x = padLeft;
 
@@ -173,12 +186,15 @@ public class Container<T> : WidgetGroup where T : Actor
 
         _actor.SetBounds( x, y, width, height );
 
-        if ( _actor is ILayout layoutActor ) layoutActor.Validate();
+        if ( _actor is ILayout layoutActor )
+        {
+            layoutActor.Validate();
+        }
     }
 
     public void SetCullingArea( RectangleShape cullingArea )
     {
-        base.CullingArea = cullingArea;
+        CullingArea = cullingArea;
 
         if ( _fillX is 1f && _fillY is 1f && _actor is ICullable cullableActor )
         {
@@ -188,21 +204,30 @@ public class Container<T> : WidgetGroup where T : Actor
 
     public void SetActor( T? actor )
     {
-        if ( actor == this ) throw new ArgumentException( "actor cannot be the Container." );
+        if ( actor == this )
+        {
+            throw new ArgumentException( "actor cannot be the Container." );
+        }
 
-        if ( actor == this._actor ) return;
+        if ( actor == _actor )
+        {
+            return;
+        }
 
-        if ( this._actor != null ) base.RemoveActor( this._actor );
+        if ( _actor != null )
+        {
+            base.RemoveActor( _actor );
+        }
 
-        this._actor = actor;
+        _actor = actor;
 
-        if ( actor != null ) base.AddActor( actor );
+        if ( actor != null )
+        {
+            base.AddActor( actor );
+        }
     }
 
-    public T? GetActor()
-    {
-        return _actor;
-    }
+    public T? GetActor() => _actor;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -211,7 +236,10 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( actor );
 
-        if ( actor != this._actor ) return false;
+        if ( actor != _actor )
+        {
+            return false;
+        }
 
         SetActor( null );
 
@@ -222,9 +250,12 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( actor );
 
-        if ( actor != this._actor ) return false;
+        if ( actor != _actor )
+        {
+            return false;
+        }
 
-        this._actor = null;
+        _actor = null;
 
         return base.RemoveActor( actor, unfocus );
     }
@@ -233,14 +264,17 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         Actor actor = base.RemoveActorAt( index, unfocus );
 
-        if ( actor == this._actor ) this._actor = null;
+        if ( actor == _actor )
+        {
+            _actor = null;
+        }
 
         return actor;
     }
 
     /// <summary>
-    /// Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
-    /// maxHeight to the specified values.
+    ///     Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
+    ///     maxHeight to the specified values.
     /// </summary>
     public Container< T > Size( Value size )
     {
@@ -257,8 +291,8 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
-    /// maxHeight to the specified values.
+    ///     Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
+    ///     maxHeight to the specified values.
     /// </summary>
     public Container< T > Size( Value width, Value height )
     {
@@ -276,8 +310,8 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
-    /// maxHeight to the specified values.
+    ///     Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
+    ///     maxHeight to the specified values.
     /// </summary>
     public Container< T > Size( float size )
     {
@@ -287,8 +321,8 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
-    /// maxHeight to the specified values.
+    ///     Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and
+    ///     maxHeight to the specified values.
     /// </summary>
     public Container< T > Size( float width, float height )
     {
@@ -300,10 +334,109 @@ public class Container<T> : WidgetGroup where T : Actor
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    public Container< T > SetFill( float x = 1f, float y = 1f )
+    {
+        _fillX = x;
+        _fillY = y;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets fillX to 1.
+    /// </summary>
+    public Container< T > SetFillX()
+    {
+        _fillX = 1f;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets fillY to 1.
+    /// </summary>
+    public Container< T > SetFillY()
+    {
+        _fillY = 1f;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets fillX and fillY to 1 if true, 0 if false.
+    /// </summary>
+    public Container< T > FillOnTrue( bool x, bool y )
+    {
+        _fillX = x ? 1f : 0;
+        _fillY = y ? 1f : 0;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets fillX and fillY to 1 if true, 0 if false.
+    /// </summary>
+    public Container< T > FillOnTrue( bool fill )
+    {
+        _fillX = fill ? 1f : 0;
+        _fillY = fill ? 1f : 0;
+
+        return this;
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public float GetFillX() => _fillX;
+
+    public float GetFillY() => _fillY;
+
+    public Container< T > Clip( bool enabled = true )
+    {
+        SetClip( enabled );
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Causes the contents to be clipped if they exceed the container bounds.
+    ///     Enabling clipping will set <see cref="Group.Transform" /> to true.
+    /// </summary>
+    public void SetClip( bool enabled )
+    {
+        _clip     = enabled;
+        Transform = enabled;
+
+        Invalidate();
+    }
+
+    public bool GetClip() => _clip;
+
+    public new Actor? Hit( float x, float y, bool touchable )
+    {
+        if ( _clip )
+        {
+            if ( touchable && ( Touchable == Touchable.Disabled ) )
+            {
+                return null;
+            }
+
+            if ( ( x < 0 ) || ( x >= Width ) || ( y < 0 ) || ( y >= Height ) )
+            {
+                return null;
+            }
+        }
+
+        return base.Hit( x, y, touchable );
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     #region widths
 
     /// <summary>
-    /// Sets the minWidth, prefWidth, and maxWidth to the specified value.
+    ///     Sets the minWidth, prefWidth, and maxWidth to the specified value.
     /// </summary>
     public Container< T > SetWidths( Value width )
     {
@@ -317,7 +450,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the minWidth, prefWidth, and maxWidth to the specified value.
+    ///     Sets the minWidth, prefWidth, and maxWidth to the specified value.
     /// </summary>
     public Container< T > SetWidths( float width )
     {
@@ -330,41 +463,35 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( minWidth );
 
-        this._minWidth = minWidth;
+        _minWidth = minWidth;
 
         return this;
     }
 
     public Container< T > SetMinWidth( float minWidth )
     {
-        this._minWidth = Value.Fixed.ValueOf( minWidth );
+        _minWidth = Value.Fixed.ValueOf( minWidth );
 
         return this;
     }
 
-    public new float GetMinWidth()
-    {
-        return _minWidth.Get( _actor ) + _padLeft.Get( this ) + _padRight.Get( this );
-    }
+    public float GetMinWidth() => _minWidth.Get( _actor ) + _padLeft.Get( this ) + _padRight.Get( this );
 
-    public Value GetMinWidthValue()
-    {
-        return _minWidth;
-    }
+    public Value GetMinWidthValue() => _minWidth;
 
-    public new float GetMaxWidth()
+    public float GetMaxWidth()
     {
         var v = _maxWidth.Get( _actor );
 
-        if ( v > 0 ) v += _padLeft.Get( this ) + _padRight.Get( this );
+        if ( v > 0 )
+        {
+            v += _padLeft.Get( this ) + _padRight.Get( this );
+        }
 
         return v;
     }
 
-    public Value GetMaxWidthValue()
-    {
-        return _maxWidth;
-    }
+    public Value GetMaxWidthValue() => _maxWidth;
 
     #endregion widths
 
@@ -374,7 +501,7 @@ public class Container<T> : WidgetGroup where T : Actor
     #region heights
 
     /// <summary>
-    /// Sets the minHeight, prefHeight, and maxHeight to the specified value.
+    ///     Sets the minHeight, prefHeight, and maxHeight to the specified value.
     /// </summary>
     public Container< T > SetHeights( Value height )
     {
@@ -388,7 +515,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the minHeight, prefHeight, and maxHeight to the specified value.
+    ///     Sets the minHeight, prefHeight, and maxHeight to the specified value.
     /// </summary>
     public Container< T > SetHeights( float height )
     {
@@ -401,29 +528,23 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( minHeight );
 
-        this._minHeight = minHeight;
+        _minHeight = minHeight;
 
         return this;
     }
 
     public Container< T > SetMinHeight( float minHeight )
     {
-        this._minHeight = Value.Fixed.ValueOf( minHeight );
+        _minHeight = Value.Fixed.ValueOf( minHeight );
 
         return this;
     }
 
-    public new float GetMinHeight()
-    {
-        return _minHeight.Get( _actor ) + _padTop.Get( this ) + _padBottom.Get( this );
-    }
+    public float GetMinHeight() => _minHeight.Get( _actor ) + _padTop.Get( this ) + _padBottom.Get( this );
 
-    public Value GetMinHeightValue()
-    {
-        return _minHeight;
-    }
+    public Value GetMinHeightValue() => _minHeight;
 
-    public new float GetMaxHeight()
+    public float GetMaxHeight()
     {
         var v = _maxHeight.Get( _actor );
 
@@ -435,10 +556,7 @@ public class Container<T> : WidgetGroup where T : Actor
         return v;
     }
 
-    public Value GetMaxHeightValue()
-    {
-        return _maxHeight;
-    }
+    public Value GetMaxHeightValue() => _maxHeight;
 
     #endregion heights
 
@@ -448,7 +566,7 @@ public class Container<T> : WidgetGroup where T : Actor
     #region minimum sizes
 
     /// <summary>
-    /// Sets the minWidth and minHeight to the specified values.
+    ///     Sets the minWidth and minHeight to the specified values.
     /// </summary>
     public Container< T > SetMinSize( Value size )
     {
@@ -461,7 +579,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the minWidth and minHeight to the specified values.
+    ///     Sets the minWidth and minHeight to the specified values.
     /// </summary>
     public Container< T > SetMinSize( Value width, Value height )
     {
@@ -475,7 +593,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the minWidth and minHeight to the specified value.
+    ///     Sets the minWidth and minHeight to the specified value.
     /// </summary>
     public Container< T > SetMinSize( float size )
     {
@@ -485,7 +603,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the minWidth and minHeight to the specified values.
+    ///     Sets the minWidth and minHeight to the specified values.
     /// </summary>
     public Container< T > SetMinSize( float width, float height )
     {
@@ -502,7 +620,7 @@ public class Container<T> : WidgetGroup where T : Actor
     #region maximum sizes
 
     /// <summary>
-    /// Sets the maxWidth and maxHeight to the specified values.
+    ///     Sets the maxWidth and maxHeight to the specified values.
     /// </summary>
     public Container< T > SetMaxSize( Value size )
     {
@@ -515,7 +633,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the maxWidth and maxHeight to the specified values.
+    ///     Sets the maxWidth and maxHeight to the specified values.
     /// </summary>
     public Container< T > SetMaxSize( Value width, Value height )
     {
@@ -532,7 +650,7 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( maxWidth );
 
-        this._maxWidth = maxWidth;
+        _maxWidth = maxWidth;
 
         return this;
     }
@@ -541,13 +659,13 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( maxHeight );
 
-        this._maxHeight = maxHeight;
+        _maxHeight = maxHeight;
 
         return this;
     }
 
     /// <summary>
-    /// Sets the maxWidth and maxHeight to the specified values.
+    ///     Sets the maxWidth and maxHeight to the specified values.
     /// </summary>
     public Container< T > SetMaxSize( float size )
     {
@@ -557,7 +675,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the maxWidth and maxHeight to the specified values.
+    ///     Sets the maxWidth and maxHeight to the specified values.
     /// </summary>
     public Container< T > SetMaxSize( float width, float height )
     {
@@ -568,14 +686,14 @@ public class Container<T> : WidgetGroup where T : Actor
 
     public Container< T > SetMaxWidth( float maxWidth )
     {
-        this._maxWidth = Value.Fixed.ValueOf( maxWidth );
+        _maxWidth = Value.Fixed.ValueOf( maxWidth );
 
         return this;
     }
 
     public Container< T > SetMaxHeight( float maxHeight )
     {
-        this._maxHeight = Value.Fixed.ValueOf( maxHeight );
+        _maxHeight = Value.Fixed.ValueOf( maxHeight );
 
         return this;
     }
@@ -588,7 +706,7 @@ public class Container<T> : WidgetGroup where T : Actor
     #region preferred sizing
 
     /// <summary>
-    /// Sets the prefWidth and prefHeight to the specified value.
+    ///     Sets the prefWidth and prefHeight to the specified value.
     /// </summary>
     public Container< T > SetPrefSize( Value size )
     {
@@ -601,7 +719,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the prefWidth and prefHeight to the specified values.
+    ///     Sets the prefWidth and prefHeight to the specified values.
     /// </summary>
     public Container< T > SetPrefSize( Value width, Value height )
     {
@@ -615,7 +733,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the prefWidth and prefHeight to the specified value.
+    ///     Sets the prefWidth and prefHeight to the specified value.
     /// </summary>
     public Container< T > SetPrefSize( float width, float height )
     {
@@ -625,7 +743,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the prefWidth and prefHeight to the specified value.
+    ///     Sets the prefWidth and prefHeight to the specified value.
     /// </summary>
     public Container< T > SetPrefSize( float size )
     {
@@ -638,14 +756,14 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( prefWidth );
 
-        this._prefWidth = prefWidth;
+        _prefWidth = prefWidth;
 
         return this;
     }
 
     public Container< T > SetPrefWidth( float prefWidth )
     {
-        this._prefWidth = Value.Fixed.ValueOf( prefWidth );
+        _prefWidth = Value.Fixed.ValueOf( prefWidth );
 
         return this;
     }
@@ -654,42 +772,42 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( prefHeight );
 
-        this._prefHeight = prefHeight;
+        _prefHeight = prefHeight;
 
         return this;
     }
 
     public Container< T > SetPrefHeight( float prefHeight )
     {
-        this._prefHeight = Value.Fixed.ValueOf( prefHeight );
+        _prefHeight = Value.Fixed.ValueOf( prefHeight );
 
         return this;
     }
 
-    public Value GetPrefWidthValue()
-    {
-        return _prefWidth;
-    }
+    public Value GetPrefWidthValue() => _prefWidth;
 
-    public new float GetPrefWidth()
+    public float GetPrefWidth()
     {
         var v = _prefWidth.Get( _actor );
 
-        if ( _background != null ) v = Math.Max( v, _background.MinWidth );
+        if ( _background != null )
+        {
+            v = Math.Max( v, _background.MinWidth );
+        }
 
         return Math.Max( GetMinWidth(), v + _padLeft.Get( this ) + _padRight.Get( this ) );
     }
 
-    public Value GetPrefHeightValue()
-    {
-        return _prefHeight;
-    }
+    public Value GetPrefHeightValue() => _prefHeight;
 
-    public new float GetPrefHeight()
+    public float GetPrefHeight()
     {
         var v = _prefHeight.Get( _actor );
 
-        if ( _background != null ) v = Math.Max( v, _background.MinHeight );
+        if ( _background != null )
+        {
+            v = Math.Max( v, _background.MinHeight );
+        }
 
         return Math.Max( MinHeight, v + _padTop.Get( this ) + _padBottom.Get( this ) );
     }
@@ -702,7 +820,7 @@ public class Container<T> : WidgetGroup where T : Actor
     #region padding
 
     /// <summary>
-    /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
+    ///     Sets the padTop, padLeft, padBottom, and padRight to the specified value.
     /// </summary>
     public Container< T > SetPadding( Value pad )
     {
@@ -717,7 +835,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
+    ///     Sets the padTop, padLeft, padBottom, and padRight to the specified value.
     /// </summary>
     public Container< T > SetPadding( Value top, Value left, Value bottom, Value right )
     {
@@ -735,7 +853,7 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
+    ///     Sets the padTop, padLeft, padBottom, and padRight to the specified value.
     /// </summary>
     public Container< T > SetPadding( float pad )
     {
@@ -763,7 +881,7 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( padTop );
 
-        this._padTop = padTop;
+        _padTop = padTop;
 
         return this;
     }
@@ -772,7 +890,7 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( padLeft );
 
-        this._padLeft = padLeft;
+        _padLeft = padLeft;
 
         return this;
     }
@@ -781,7 +899,7 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( padBottom );
 
-        this._padBottom = padBottom;
+        _padBottom = padBottom;
 
         return this;
     }
@@ -790,143 +908,60 @@ public class Container<T> : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( padRight );
 
-        this._padRight = padRight;
+        _padRight = padRight;
 
         return this;
     }
 
     public Container< T > SetPadTop( float padTop )
     {
-        this._padTop = Value.Fixed.ValueOf( padTop );
+        _padTop = Value.Fixed.ValueOf( padTop );
 
         return this;
     }
 
     public Container< T > SetPadLeft( float padLeft )
     {
-        this._padLeft = Value.Fixed.ValueOf( padLeft );
+        _padLeft = Value.Fixed.ValueOf( padLeft );
 
         return this;
     }
 
     public Container< T > SetPadBottom( float padBottom )
     {
-        this._padBottom = Value.Fixed.ValueOf( padBottom );
+        _padBottom = Value.Fixed.ValueOf( padBottom );
 
         return this;
     }
 
     public Container< T > SetPadRight( float padRight )
     {
-        this._padRight = Value.Fixed.ValueOf( padRight );
+        _padRight = Value.Fixed.ValueOf( padRight );
 
         return this;
     }
 
-    public Value GetPadTopValue()
-    {
-        return _padTop;
-    }
+    public Value GetPadTopValue() => _padTop;
 
-    public float GetPadTop()
-    {
-        return _padTop.Get( this );
-    }
+    public float GetPadTop() => _padTop.Get( this );
 
-    public Value GetPadLeftValue()
-    {
-        return _padLeft;
-    }
+    public Value GetPadLeftValue() => _padLeft;
 
-    public float GetPadLeft()
-    {
-        return _padLeft.Get( this );
-    }
+    public float GetPadLeft() => _padLeft.Get( this );
 
-    public Value GetPadBottomValue()
-    {
-        return _padBottom;
-    }
+    public Value GetPadBottomValue() => _padBottom;
 
-    public float GetPadBottom()
-    {
-        return _padBottom.Get( this );
-    }
+    public float GetPadBottom() => _padBottom.Get( this );
 
-    public Value GetPadRightValue()
-    {
-        return _padRight;
-    }
+    public Value GetPadRightValue() => _padRight;
 
-    public float GetPadRight()
-    {
-        return _padRight.Get( this );
-    }
+    public float GetPadRight() => _padRight.Get( this );
 
-    public float GetPadX()
-    {
-        return _padLeft.Get( this ) + _padRight.Get( this );
-    }
+    public float GetPadX() => _padLeft.Get( this ) + _padRight.Get( this );
 
-    public float GetPadY()
-    {
-        return _padTop.Get( this ) + _padBottom.Get( this );
-    }
+    public float GetPadY() => _padTop.Get( this ) + _padBottom.Get( this );
 
     #endregion padding
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public Container< T > SetFill( float x = 1f, float y = 1f )
-    {
-        _fillX = x;
-        _fillY = y;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets fillX to 1.
-    /// </summary>
-    public Container< T > SetFillX()
-    {
-        _fillX = 1f;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets fillY to 1.
-    /// </summary>
-    public Container< T > SetFillY()
-    {
-        _fillY = 1f;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets fillX and fillY to 1 if true, 0 if false.
-    /// </summary>
-    public Container< T > FillOnTrue( bool x, bool y )
-    {
-        _fillX = x ? 1f : 0;
-        _fillY = y ? 1f : 0;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets fillX and fillY to 1 if true, 0 if false.
-    /// </summary>
-    public Container< T > FillOnTrue( bool fill )
-    {
-        _fillX = fill ? 1f : 0;
-        _fillY = fill ? 1f : 0;
-
-        return this;
-    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -934,32 +969,32 @@ public class Container<T> : WidgetGroup where T : Actor
     #region alignment
 
     /// <summary>
-    /// Sets the alignment of the actor within the container.
-    /// Set to <see cref="Align.CENTER"/>, <see cref="Align.TOP"/>,
-    /// <see cref="Align.BOTTOM"/>, <see cref="Align.LEFT"/>,
-    /// <see cref="Align.RIGHT"/>, or any combination of those.
+    ///     Sets the alignment of the actor within the container.
+    ///     Set to <see cref="Align.CENTER" />, <see cref="Align.TOP" />,
+    ///     <see cref="Align.BOTTOM" />, <see cref="Align.LEFT" />,
+    ///     <see cref="Align.RIGHT" />, or any combination of those.
     /// </summary>
     public Container< T > SetAlignment( int align )
     {
-        this._align = align;
+        _align = align;
 
         return this;
     }
 
     /// <summary>
-    /// Sets the alignment of the actor within the container to <see cref="Align.CENTER"/>.
-    /// This clears any other alignment.
+    ///     Sets the alignment of the actor within the container to <see cref="Align.CENTER" />.
+    ///     This clears any other alignment.
     /// </summary>
     public Container< T > AlignCenter()
     {
-        this._align = Align.CENTER;
+        _align = Align.CENTER;
 
         return this;
     }
 
     /// <summary>
-    /// Sets <see cref="Align.TOP"/> and clears <see cref="Align.BOTTOM"/> for
-    /// the alignment of the actor within the container.
+    ///     Sets <see cref="Align.TOP" /> and clears <see cref="Align.BOTTOM" /> for
+    ///     the alignment of the actor within the container.
     /// </summary>
     public Container< T > AlignTop()
     {
@@ -970,8 +1005,8 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets <see cref="Align.LEFT"/> and clears <see cref="Align.RIGHT"/> for
-    /// the alignment of the actor within the container.
+    ///     Sets <see cref="Align.LEFT" /> and clears <see cref="Align.RIGHT" /> for
+    ///     the alignment of the actor within the container.
     /// </summary>
     public Container< T > AlignLeft()
     {
@@ -982,8 +1017,8 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets <see cref="Align.BOTTOM"/> and clears <see cref="Align.TOP"/> for
-    /// the alignment of the actor within the container.
+    ///     Sets <see cref="Align.BOTTOM" /> and clears <see cref="Align.TOP" /> for
+    ///     the alignment of the actor within the container.
     /// </summary>
     public Container< T > AlignBottom()
     {
@@ -994,8 +1029,8 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Sets <see cref="Align.RIGHT"/> and clears <see cref="Align.LEFT"/> for the
-    /// alignment of the actor within the container.
+    ///     Sets <see cref="Align.RIGHT" /> and clears <see cref="Align.LEFT" /> for the
+    ///     alignment of the actor within the container.
     /// </summary>
     public Container< T > AlignRight()
     {
@@ -1005,61 +1040,9 @@ public class Container<T> : WidgetGroup where T : Actor
         return this;
     }
 
-    public int GetAlignment()
-    {
-        return _align;
-    }
+    public int GetAlignment() => _align;
 
     #endregion alignment
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public float GetFillX()
-    {
-        return _fillX;
-    }
-
-    public float GetFillY()
-    {
-        return _fillY;
-    }
-
-    public Container< T > Clip( bool enabled = true )
-    {
-        SetClip( enabled );
-
-        return this;
-    }
-
-    /// <summary>
-    /// Causes the contents to be clipped if they exceed the container bounds.
-    /// Enabling clipping will set <see cref="Group.Transform"/> to true.
-    /// </summary>
-    public void SetClip( bool enabled )
-    {
-        _clip     = enabled;
-        Transform = enabled;
-
-        Invalidate();
-    }
-
-    public bool GetClip()
-    {
-        return _clip;
-    }
-
-    public new Actor? Hit( float x, float y, bool touchable )
-    {
-        if ( _clip )
-        {
-            if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
-
-            if ( ( x < 0 ) || ( x >= Width ) || ( y < 0 ) || ( y >= Height ) ) return null;
-        }
-
-        return base.Hit( x, y, touchable );
-    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -1079,12 +1062,13 @@ public class Container<T> : WidgetGroup where T : Actor
             {
                 batch.Flush();
 
-                var padLeft   = this._padLeft.Get( this );
-                var padBottom = this._padBottom.Get( this );
+                var padLeft   = _padLeft.Get( this );
+                var padBottom = _padBottom.Get( this );
 
-                if ( ClipBegin
-                        (
-                        padLeft, padBottom, Width - padLeft - _padRight.Get( this ),
+                if ( ClipBegin(
+                        padLeft,
+                        padBottom,
+                        Width - padLeft - _padRight.Get( this ),
                         Height - padBottom - _padTop.Get( this )
                         ) )
                 {
@@ -1108,14 +1092,17 @@ public class Container<T> : WidgetGroup where T : Actor
     }
 
     /// <summary>
-    /// Called to draw the background, before clipping is applied (if enabled).
-    /// Default implementation draws the background drawable.
+    ///     Called to draw the background, before clipping is applied (if enabled).
+    ///     Default implementation draws the background drawable.
     /// </summary>
     protected void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
     {
-        if ( _background == null ) return;
+        if ( _background == null )
+        {
+            return;
+        }
 
-        Color color = base.Color ?? Color.Black;
+        Color color = Color ?? Color.Black;
 
         batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
         _background.Draw( batch, x, y, Width, Height );
@@ -1133,14 +1120,15 @@ public class Container<T> : WidgetGroup where T : Actor
             {
                 shapes.Flush();
 
-                var padLeft   = this._padLeft.Get( this );
-                var padBottom = this._padBottom.Get( this );
+                var padLeft   = _padLeft.Get( this );
+                var padBottom = _padBottom.Get( this );
 
-                var draw = ( _background == null )
+                var draw = _background == null
                     ? ClipBegin( 0, 0, Width, Height )
-                    : ClipBegin
-                        (
-                        padLeft, padBottom, Width - padLeft - _padRight.Get( this ),
+                    : ClipBegin(
+                        padLeft,
+                        padBottom,
+                        Width - padLeft - _padRight.Get( this ),
                         Height - padBottom - _padTop.Get( this )
                         );
 
@@ -1171,28 +1159,16 @@ public class Container<T> : WidgetGroup where T : Actor
     #region deprecated methods
 
     [Obsolete]
-    public new void AddActor( Actor actor )
-    {
-        throw new System.NotSupportedException( "Use Container#setActor." );
-    }
+    public new void AddActor( Actor actor ) => throw new NotSupportedException( "Use Container#setActor." );
 
     [Obsolete]
-    public new void AddActorAt( int index, Actor actor )
-    {
-        throw new System.NotSupportedException( "Use Container#setActor." );
-    }
+    public new void AddActorAt( int index, Actor actor ) => throw new NotSupportedException( "Use Container#setActor." );
 
     [Obsolete]
-    public new void AddActorBefore( Actor actorBefore, Actor actor )
-    {
-        throw new System.NotSupportedException( "Use Container#setActor." );
-    }
+    public new void AddActorBefore( Actor actorBefore, Actor actor ) => throw new NotSupportedException( "Use Container#setActor." );
 
     [Obsolete]
-    public new void AddActorAfter( Actor actorAfter, Actor actor )
-    {
-        throw new System.NotSupportedException( "Use Container#setActor." );
-    }
+    public new void AddActorAfter( Actor actorAfter, Actor actor ) => throw new NotSupportedException( "Use Container#setActor." );
 
     #endregion deprecated methods
 

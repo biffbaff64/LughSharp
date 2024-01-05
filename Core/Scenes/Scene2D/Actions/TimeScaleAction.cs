@@ -16,13 +16,9 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class TimeScaleAction : DelegateAction
 {
     public float Scale { get; set; }
 
-    protected override bool Delegate(float delta)
-    {
-        return ( base.Action == null ) || base.Action.Act(delta * Scale);
-    }
+    protected override bool Delegate( float delta ) => ( Action == null ) || Action.Act( delta * Scale );
 }

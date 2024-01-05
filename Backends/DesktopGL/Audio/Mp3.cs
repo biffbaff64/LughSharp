@@ -18,14 +18,13 @@ using LibGDXSharp.Files;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
-[PublicAPI]
 public class Mp3 : OpenALMusic
 {
     public class Music : OpenALMusic
     {
         private Bitstream?    _bitstream;
-        private SampleBuffer? _outputBuffer;
         private Decoder?      _decoder;
+        private SampleBuffer? _outputBuffer;
 
         public Music( OpenALAudio audio, FileHandle file )
             : base( audio, file )
@@ -47,7 +46,7 @@ public class Mp3 : OpenALMusic
                     throw new GdxRuntimeException( "Empty MP3" );
                 }
 
-                int channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
+                var channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
                 _outputBuffer = new OutputBuffer( channels, false );
                 _decoder.setOutputBuffer( _outputBuffer );
                 Setup( channels, header.getSampleRate() );
@@ -71,8 +70,8 @@ public class Mp3 : OpenALMusic
                     _decoder   = new MP3Decoder();
                 }
 
-                int totalLength       = 0;
-                int minRequiredLength = buffer.length - OutputBuffer.BUFFERSIZE * 2;
+                var totalLength       = 0;
+                var minRequiredLength = buffer.length - ( OutputBuffer.BUFFERSIZE * 2 );
 
                 while ( totalLength <= minRequiredLength )
                 {
@@ -85,7 +84,7 @@ public class Mp3 : OpenALMusic
 
                     if ( setup )
                     {
-                        int channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
+                        var channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
                         _outputBuffer = new OutputBuffer( channels, false );
                         _decoder.setOutputBuffer( _outputBuffer );
                         setup( channels, header.getSampleRate() );
@@ -96,7 +95,7 @@ public class Mp3 : OpenALMusic
                     {
                         _decoder.decodeFrame( header, _bitstream );
                     }
-                    catch ( System.Exception ignored )
+                    catch ( Exception ignored )
                     {
                         // JLayer's decoder throws ArrayIndexOutOfBoundsException sometimes!?
                     }
@@ -179,7 +178,7 @@ public class Mp3 : OpenALMusic
                     {
                         decoder.decodeFrame( header, bitstream );
                     }
-                    catch ( System.Exception )
+                    catch ( Exception )
                     {
                         // Ignored
                     }
@@ -192,7 +191,7 @@ public class Mp3 : OpenALMusic
 
                 Setup( output.toByteArray(), channels, sampleRate );
             }
-            catch ( System.Exception ex )
+            catch ( Exception ex )
             {
                 throw new GdxRuntimeException( "Error reading audio data.", ex );
             }

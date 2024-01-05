@@ -22,54 +22,45 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
-/// Stores <see cref="GlyphRun"/> runs of glyphs for a piece of text. The text
-/// may contain newlines and color markup tags.
-/// <para>
-/// Where wrapping occurs is determined by <see cref="BitmapFont.BitmapFontData.GetWrapIndex"/>.
-/// Additionally, when <see cref="BitmapFont.BitmapFontData.MarkupEnabled"/> is true wrapping
-/// can occur at color start or end tags.
-/// </para>
-/// <para>
-/// When wrapping occurs, whitespace is removed before and after the wrap position.
-/// Whitespace is determined by <see cref="BitmapFont.BitmapFontData.IsWhitespace(char)"/>.
-/// </para>
-/// <para>
-/// Glyphs positions are determined by <see cref="BitmapFont.BitmapFontData.GetGlyphs"/>.
-/// </para>
-/// <para>
-/// This class is not thread safe, even if synchronized externally, and must only
-/// be used from the game thread.
-/// </para>
+///     Stores <see cref="GlyphRun" /> runs of glyphs for a piece of text. The text
+///     may contain newlines and color markup tags.
+///     <para>
+///         Where wrapping occurs is determined by <see cref="BitmapFont.BitmapFontData.GetWrapIndex" />.
+///         Additionally, when <see cref="BitmapFont.BitmapFontData.MarkupEnabled" /> is true wrapping
+///         can occur at color start or end tags.
+///     </para>
+///     <para>
+///         When wrapping occurs, whitespace is removed before and after the wrap position.
+///         Whitespace is determined by <see cref="BitmapFont.BitmapFontData.IsWhitespace(char)" />.
+///     </para>
+///     <para>
+///         Glyphs positions are determined by <see cref="BitmapFont.BitmapFontData.GetGlyphs" />.
+///     </para>
+///     <para>
+///         This class is not thread safe, even if synchronized externally, and must only
+///         be used from the game thread.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class GlyphLayout : IPoolable
 {
-    public List< GlyphRun > Runs   { get; set; } = new( 1 );
-    public float            Width  { get; set; }
-    public float            Height { get; set; }
 
     private readonly static Pool< GlyphRun > GlyphRunPool = Pools< GlyphRun >.Get();
     private readonly static Pool< Color >    ColorPool    = Pools< Color >.Get();
     private readonly static List< Color >    ColorStack   = new( 4 );
 
-    private static float _epsilon = 0.0001f;
+    private readonly static float _epsilon = 0.0001f;
 
     /// <summary>
-    /// Creates an empty GlyphLayout.
+    ///     Creates an empty GlyphLayout.
     /// </summary>
     public GlyphLayout()
     {
     }
 
-    public GlyphLayout( BitmapFont font, string str )
-    {
-        SetText( font, str );
-    }
+    public GlyphLayout( BitmapFont font, string str ) => SetText( font, str );
 
     public GlyphLayout( BitmapFont font, string str, Color color, float targetWidth, int halign, bool wrap )
-    {
-        SetText( font, str, color, targetWidth, halign, wrap );
-    }
+        => SetText( font, str, color, targetWidth, halign, wrap );
 
     public GlyphLayout( BitmapFont font,
                         string str,
@@ -79,28 +70,37 @@ public class GlyphLayout : IPoolable
                         float targetWidth,
                         int halign,
                         bool wrap,
-                        string truncate )
-    {
-        SetText( font, str, start, end, color, targetWidth, halign, wrap, truncate );
-    }
+                        string truncate ) => SetText( font, str, start, end, color, targetWidth, halign, wrap, truncate );
+
+    public List< GlyphRun > Runs   { get; set; } = new( 1 );
+    public float            Width  { get; set; }
+    public float            Height { get; set; }
 
     /// <summary>
-    /// Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)"/>
-    /// with the whole string, the font's current color, and no alignment or wrapping.
+    ///     Resets the object for reuse. Object references should
+    ///     be nulled and fields may be set to default values.
     /// </summary>
-    public void SetText( BitmapFont font, string str )
+    public void Reset()
     {
-        SetText( font, str, 0, str.Length, font.GetColor(), 0, Align.LEFT, false, null );
+        Pools< GlyphRun >.Get().FreeAll( Runs );
+        Runs.Clear();
+
+        Width  = 0;
+        Height = 0;
     }
 
     /// <summary>
-    /// Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)"/>
-    /// with the whole string and no truncation.
+    ///     Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)" />
+    ///     with the whole string, the font's current color, and no alignment or wrapping.
+    /// </summary>
+    public void SetText( BitmapFont font, string str ) => SetText( font, str, 0, str.Length, font.GetColor(), 0, Align.LEFT, false, null );
+
+    /// <summary>
+    ///     Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)" />
+    ///     with the whole string and no truncation.
     /// </summary>
     public void SetText( BitmapFont font, string str, Color color, float targetWidth, int halign, bool wrap )
-    {
-        SetText( font, str, 0, str.Length, color, targetWidth, halign, wrap, null );
-    }
+        => SetText( font, str, 0, str.Length, color, targetWidth, halign, wrap, null );
 
     /// <summary>
     /// </summary>
@@ -109,24 +109,24 @@ public class GlyphLayout : IPoolable
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <param name="color">
-    /// The default color to use for the text (the BitmapFont <see cref="BitmapFont.GetColor()"/>
-    /// is not used). If <see cref="BitmapFont.BitmapFontData.MarkupEnabled"/> is true, color
-    /// markup tags in the specified string may change the color for portions of the text.
+    ///     The default color to use for the text (the BitmapFont <see cref="BitmapFont.GetColor()" />
+    ///     is not used). If <see cref="BitmapFont.BitmapFontData.MarkupEnabled" /> is true, color
+    ///     markup tags in the specified string may change the color for portions of the text.
     /// </param>
     /// <param name="halign">
-    /// Horizontal alignment of the text, see also <see cref="Align"/>.
+    ///     Horizontal alignment of the text, see also <see cref="Align" />.
     /// </param>
     /// <param name="targetWidth">
-    /// The width used for alignment, line wrapping, and truncation. May be zero if
-    /// those features are not used.
+    ///     The width used for alignment, line wrapping, and truncation. May be zero if
+    ///     those features are not used.
     /// </param>
     /// <param name="wrap"></param>
     /// <param name="truncate">
-    /// If not null and the width of the glyphs exceed targetWidth, the glyphs are
-    /// truncated and the glyphs for the specified truncate string are placed at the end.
-    /// Empty string can be used to truncate without adding glyphs. Truncate should not
-    /// be used with text that contains multiple lines. Wrap is ignored if truncate is
-    /// not null.
+    ///     If not null and the width of the glyphs exceed targetWidth, the glyphs are
+    ///     truncated and the glyphs for the specified truncate string are placed at the end.
+    ///     Empty string can be used to truncate without adding glyphs. Truncate should not
+    ///     be used with text that contains multiple lines. Wrap is ignored if truncate is
+    ///     not null.
     /// </param>
     public void SetText( BitmapFont font,
                          string str,
@@ -139,16 +139,16 @@ public class GlyphLayout : IPoolable
                          string? truncate )
     {
 
-        GlyphRunPool.FreeAll( this.Runs );
-        this.Runs.Clear();
+        GlyphRunPool.FreeAll( Runs );
+        Runs.Clear();
 
         BitmapFont.BitmapFontData fontData = font.GetData();
 
         if ( start == end )
         {
             // Empty string.
-            this.Width  = 0;
-            this.Height = fontData.CapHeight;
+            Width  = 0;
+            Height = fontData.CapHeight;
 
             return;
         }
@@ -274,7 +274,7 @@ public class GlyphLayout : IPoolable
                         AdjustLastGlyph( fontData, run );
                     }
 
-                    this.Runs.Add( run );
+                    Runs.Add( run );
 
                     var n         = run.XAdvances.Count;
                     var xAdvances = run.XAdvances.ToArray();
@@ -436,13 +436,13 @@ public class GlyphLayout : IPoolable
         Height = fontData.CapHeight + Math.Abs( y );
 
         // Calculate run widths and the entire layout width.
-        float                  width     = 0;
-        GlyphLayout.GlyphRun[] runsItems = Runs.ToArray();
-        var                    runsSize  = Runs.Count;
+        float      width     = 0;
+        GlyphRun[] runsItems = Runs.ToArray();
+        var        runsSize  = Runs.Count;
 
         for ( var i = 0; i < runsSize; i++ )
         {
-            var                run       = runsItems[ i ];
+            GlyphRun           run       = runsItems[ i ];
             var                xAdvances = run.XAdvances.ToArray();
             var                runWidth  = xAdvances[ 0 ];
             float              max       = 0;
@@ -450,8 +450,8 @@ public class GlyphLayout : IPoolable
 
             for ( int ii = 0, nn = run.Glyphs.Count; ii < nn; )
             {
-                var glyph      = glyphs[ ii ];
-                var glyphWidth = ( ( glyph.width + glyph.xoffset ) * fontData.ScaleX ) - fontData.PadRight;
+                BitmapFont.Glyph glyph      = glyphs[ ii ];
+                var              glyphWidth = ( ( glyph.width + glyph.xoffset ) * fontData.ScaleX ) - fontData.PadRight;
 
                 // A glyph can extend past the right edge of subsequent glyphs.
                 max = Math.Max( max, runWidth + glyphWidth );
@@ -464,7 +464,7 @@ public class GlyphLayout : IPoolable
             width     = Math.Max( width, run.X + run.Width );
         }
 
-        this.Width = width;
+        Width = width;
 
         // Align runs to center or right of targetWidth.
         if ( ( halign & Align.LEFT ) == 0 )
@@ -600,7 +600,7 @@ public class GlyphLayout : IPoolable
     }
 
     /// <summary>
-    /// Breaks a run into two runs at the specified wrapIndex.
+    ///     Breaks a run into two runs at the specified wrapIndex.
     /// </summary>
     /// <returns> May be null if second run is all whitespace. </returns>
     private GlyphRun? Wrap( BitmapFont.BitmapFontData? fontData, GlyphRun? first, int wrapIndex, int widthIndex )
@@ -681,7 +681,7 @@ public class GlyphLayout : IPoolable
     }
 
     /// <summary>
-    /// Adjusts the xadvance of the last glyph to use its width instead of xadvance.
+    ///     Adjusts the xadvance of the last glyph to use its width instead of xadvance.
     /// </summary>
     private void AdjustLastGlyph( BitmapFont.BitmapFontData fontData, GlyphRun run )
     {
@@ -802,27 +802,13 @@ public class GlyphLayout : IPoolable
         return -1; // Unclosed color tag.
     }
 
-    /// <summary>
-    /// Resets the object for reuse. Object references should
-    /// be nulled and fields may be set to default values.
-    /// </summary>
-    public void Reset()
-    {
-        Pools< GlyphRun >.Get().FreeAll( Runs );
-        Runs.Clear();
-
-        Width  = 0;
-        Height = 0;
-    }
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Stores glyphs and positions for a piece of text which is a single
-    /// color and does not span multiple lines.
+    ///     Stores glyphs and positions for a piece of text which is a single
+    ///     color and does not span multiple lines.
     /// </summary>
-    [PublicAPI]
     public class GlyphRun : IPoolable
     {
         public List< BitmapFont.Glyph > Glyphs    { get; set; } = null!;
@@ -833,8 +819,8 @@ public class GlyphLayout : IPoolable
         public Color                    Color     { get; set; } = new();
 
         /// <summary>
-        /// Resets the object for reuse. Object references should
-        /// be nulled and fields may be set to default values.
+        ///     Resets the object for reuse. Object references should
+        ///     be nulled and fields may be set to default values.
         /// </summary>
         public void Reset()
         {
@@ -847,9 +833,9 @@ public class GlyphLayout : IPoolable
         {
             StringBuilder buffer = new( Glyphs.Count + 32 );
 
-            for ( int i = 0, n = this.Glyphs.Count; i < n; i++ )
+            for ( int i = 0, n = Glyphs.Count; i < n; i++ )
             {
-                BitmapFont.Glyph g = this.Glyphs[ i ];
+                BitmapFont.Glyph g = Glyphs[ i ];
                 buffer.Append( ( char )g.id );
             }
 

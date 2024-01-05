@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Maths;
 
-[PublicAPI]
 public class MathUtils
 {
     public const float NANO_TO_SEC          = 1 / 1000000000f;
@@ -42,42 +41,38 @@ public class MathUtils
     private const float RAD_TO_INDEX = SIN_COUNT / RAD_FULL;
     private const float DEG_TO_INDEX = SIN_COUNT / DEG_FULL;
 
-    /// <summary>
-    /// Returns the sine in radians from a lookup table. 
-    /// </summary>
-    public static float Sin( float radians )
-    {
-        return SinClass.Table[ ( int )( radians * RAD_TO_INDEX ) & SIN_MASK ];
-    }
+    private const int    BIG_ENOUGH_INT   = 16 * 1024;
+    private const double BIG_ENOUGH_FLOOR = BIG_ENOUGH_INT;
+    private const double CEILING          = 0.9999999;
+    private const double BIG_ENOUGH_CEIL  = 16384.999999999996;
+    private const double BIG_ENOUGH_ROUND = BIG_ENOUGH_INT + 0.5f;
+
+    private readonly static Random Rand = new();
 
     /// <summary>
-    /// Returns the cosine in radians from a lookup table. 
+    ///     Returns the sine in radians from a lookup table.
     /// </summary>
-    public static float Cos( float radians )
-    {
-        return SinClass.Table[ ( int )( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
-    }
+    public static float Sin( float radians ) => SinClass.Table[ ( int )( radians * RAD_TO_INDEX ) & SIN_MASK ];
 
     /// <summary>
-    /// Returns the sine in radians from a lookup table.
+    ///     Returns the cosine in radians from a lookup table.
     /// </summary>
-    public static float SinDeg( float degrees )
-    {
-        return SinClass.Table[ ( int )( degrees * DEG_TO_INDEX ) & SIN_MASK ];
-    }
+    public static float Cos( float radians ) => SinClass.Table[ ( int )( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
 
     /// <summary>
-    /// Returns the cosine in radians from a lookup table.
+    ///     Returns the sine in radians from a lookup table.
     /// </summary>
-    public static float CosDeg( float degrees )
-    {
-        return SinClass.Table[ ( int )( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
-    }
+    public static float SinDeg( float degrees ) => SinClass.Table[ ( int )( degrees * DEG_TO_INDEX ) & SIN_MASK ];
 
     /// <summary>
-    /// Returns atan2 in radians, faster but less accurate than Math.atan2.
-    /// Average error of 0.00231 radians (0.1323 degrees),
-    /// Largest error of 0.00488 radians (0.2796 degrees).
+    ///     Returns the cosine in radians from a lookup table.
+    /// </summary>
+    public static float CosDeg( float degrees ) => SinClass.Table[ ( int )( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
+
+    /// <summary>
+    ///     Returns atan2 in radians, faster but less accurate than Math.atan2.
+    ///     Average error of 0.00231 radians (0.1323 degrees),
+    ///     Largest error of 0.00488 radians (0.2796 degrees).
     /// </summary>
     public static float Atan2( float y, float x )
     {
@@ -110,130 +105,87 @@ public class MathUtils
         return y < 0f ? atan - PI : atan;
     }
 
-    private readonly static Random Rand = new();
-
     /// <summary>
-    /// Returns a random number between 0 (inclusive) and the specified value (inclusive).
+    ///     Returns a random number between 0 (inclusive) and the specified value (inclusive).
     /// </summary>
-    public static int Random( int range )
-    {
-        return Rand.Next( range + 1 );
-    }
+    public static int Random( int range ) => Rand.Next( range + 1 );
 
     /// <summary>
-    /// Returns a random number between start (inclusive) and end (inclusive).
+    ///     Returns a random number between start (inclusive) and end (inclusive).
     /// </summary>
-    public static int Random( int start, int end )
-    {
-        return start + Rand.Next( ( end - start ) + 1 );
-    }
+    public static int Random( int start, int end ) => start + Rand.Next( ( end - start ) + 1 );
 
     /// <summary>
-    /// Returns a random number between 0 (inclusive) and the specified value (inclusive).
+    ///     Returns a random number between 0 (inclusive) and the specified value (inclusive).
     /// </summary>
-    public static long Random( long range )
-    {
-        return ( long )( Rand.NextDouble() * range );
-    }
+    public static long Random( long range ) => ( long )( Rand.NextDouble() * range );
 
     /// <summary>
-    /// Returns a random number between start (inclusive) and end (inclusive).
+    ///     Returns a random number between start (inclusive) and end (inclusive).
     /// </summary>
-    public static long Random( long start, long end )
-    {
-        return start + ( long )( Rand.NextDouble() * ( end - start ) );
-    }
+    public static long Random( long start, long end ) => start + ( long )( Rand.NextDouble() * ( end - start ) );
 
     /// <summary>
-    /// Returns the next random number as a long.
+    ///     Returns the next random number as a long.
     /// </summary>
-    public static long RandomLong()
-    {
-        return ( long )( Rand.NextDouble() );
-    }
+    public static long RandomLong() => ( long )Rand.NextDouble();
 
     /// <summary>
-    /// Returns a random bool value.
+    ///     Returns a random bool value.
     /// </summary>
-    public static bool RandomBool()
-    {
-        return Convert.ToBoolean( Rand.Next( 1 ) );
-    }
+    public static bool RandomBool() => Convert.ToBoolean( Rand.Next( 1 ) );
 
     /// <summary>
-    /// Returns true if a random value between 0 and 1 is less than the specified value.
+    ///     Returns true if a random value between 0 and 1 is less than the specified value.
     /// </summary>
-    public static bool RandomBool( float chance )
-    {
-        return Random() < chance;
-    }
+    public static bool RandomBool( float chance ) => Random() < chance;
 
     /// <summary>
-    /// Returns random number between 0.0 (inclusive) and 1.0 (exclusive).
+    ///     Returns random number between 0.0 (inclusive) and 1.0 (exclusive).
     /// </summary>
-    public static float Random()
-    {
-        return ( float )Rand.NextDouble();
-    }
+    public static float Random() => ( float )Rand.NextDouble();
 
     /// <summary>
-    /// Returns a random number between 0 (inclusive) and the specified value (exclusive).
+    ///     Returns a random number between 0 (inclusive) and the specified value (exclusive).
     /// </summary>
-    public static float Random( float range )
-    {
-        return ( float )Rand.NextDouble() * range;
-    }
+    public static float Random( float range ) => ( float )Rand.NextDouble() * range;
 
     /// <summary>
-    /// Returns a random number between start (inclusive) and end (exclusive).
+    ///     Returns a random number between start (inclusive) and end (exclusive).
     /// </summary>
-    public static float Random( float start, float end )
-    {
-        return start + ( ( float )Rand.NextDouble() * ( end - start ) );
-    }
+    public static float Random( float start, float end ) => start + ( ( float )Rand.NextDouble() * ( end - start ) );
 
     /// <summary>
-    /// Returns -1 or 1, randomly.
+    ///     Returns -1 or 1, randomly.
     /// </summary>
-    public static int RandomSign()
-    {
-        return 1 | ( Rand.Next() >> 31 );
-    }
+    public static int RandomSign() => 1 | ( Rand.Next() >> 31 );
 
     /// <summary>
-    /// Returns a triangularly distributed random number between -1.0 (exclusive) and
-    /// 1.0 (exclusive), where values around zero are more likely.
+    ///     Returns a triangularly distributed random number between -1.0 (exclusive) and
+    ///     1.0 (exclusive), where values around zero are more likely.
     /// </summary>
-    public static float RandomTriangular()
-    {
-        return ( float )Rand.NextDouble() - ( float )Rand.NextDouble();
-    }
+    public static float RandomTriangular() => ( float )Rand.NextDouble() - ( float )Rand.NextDouble();
 
     /// <summary>
-    /// Returns a triangularly distributed random number between {@code -max} (exclusive)
-    /// and {@code max} (exclusive), where values around zero are more likely.
+    ///     Returns a triangularly distributed random number between {@code -max} (exclusive)
+    ///     and {@code max} (exclusive), where values around zero are more likely.
     /// </summary>
     /// <param name="max"> the upper limit  </param>
-    public static float RandomTriangular( float max )
-    {
-        return ( float )( Rand.NextDouble() - Rand.NextDouble() ) * max;
-    }
+    public static float RandomTriangular( float max ) => ( float )( Rand.NextDouble() - Rand.NextDouble() ) * max;
 
     /// <summary>
-    /// Returns a triangularly distributed random number between {@code min} (inclusive) and {@code max} (exclusive), where the
-    /// {@code mode} argument defaults to the midpoint between the bounds, giving a symmetric distribution.
+    ///     Returns a triangularly distributed random number between {@code min} (inclusive) and {@code max} (exclusive), where
+    ///     the
+    ///     {@code mode} argument defaults to the midpoint between the bounds, giving a symmetric distribution.
     /// </summary>
     /// <param name="min"> the lower limit </param>
     /// <param name="max"> the upper limit  </param>
-    public static float RandomTriangular( float min, float max )
-    {
-        return RandomTriangular( min, max, ( min + max ) * 0.5f );
-    }
+    public static float RandomTriangular( float min, float max ) => RandomTriangular( min, max, ( min + max ) * 0.5f );
 
     /// <summary>
-    /// Returns a triangularly distributed random number between <code>min</code>
-    /// (inclusive) and <code>max</code> (exclusive), where values
-    /// around <code>mode</code> are more likely.
+    ///     Returns a triangularly distributed random number between <code>min</code>
+    ///     (inclusive) and <code>max</code> (exclusive), where values
+    ///     around <code>mode</code> are more likely.
     /// </summary>
     /// <param name="min"> the lower limit </param>
     /// <param name="max"> the upper limit </param>
@@ -252,7 +204,7 @@ public class MathUtils
     }
 
     /// <summary>
-    /// Returns the next power of two. Returns the specified value if the value is already a power of two.
+    ///     Returns the next power of two. Returns the specified value if the value is already a power of two.
     /// </summary>
     public static int NextPowerOfTwo( int value )
     {
@@ -275,10 +227,7 @@ public class MathUtils
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static bool IsPowerOfTwo( int value )
-    {
-        return ( value != 0 ) && ( ( value & ( value - 1 ) ) == 0 );
-    }
+    public static bool IsPowerOfTwo( int value ) => ( value != 0 ) && ( ( value & ( value - 1 ) ) == 0 );
 
     /// <summary>
     /// </summary>
@@ -361,16 +310,13 @@ public class MathUtils
     }
 
     /// <summary>
-    /// Linearly interpolates between fromValue to toValue on progress position.
+    ///     Linearly interpolates between fromValue to toValue on progress position.
     /// </summary>
-    public static float Lerp( float fromValue, float toValue, float progress )
-    {
-        return fromValue + ( ( toValue - fromValue ) * progress );
-    }
+    public static float Lerp( float fromValue, float toValue, float progress ) => fromValue + ( ( toValue - fromValue ) * progress );
 
     /// <summary>
-    /// Linearly interpolates between two angles in radians. Takes into account that
-    /// angles wrap at two pi and always takes the direction with the smallest delta angle.
+    ///     Linearly interpolates between two angles in radians. Takes into account that
+    ///     angles wrap at two pi and always takes the direction with the smallest delta angle.
     /// </summary>
     /// <param name="fromRadians"> start angle in radians </param>
     /// <param name="toRadians"> target angle in radians </param>
@@ -384,9 +330,9 @@ public class MathUtils
     }
 
     /// <summary>
-    /// Linearly interpolates between two angles in degrees. Takes into account
-    /// that angles wrap at 360 degrees and always takes the direction with the
-    /// smallest delta angle.
+    ///     Linearly interpolates between two angles in degrees. Takes into account
+    ///     that angles wrap at 360 degrees and always takes the direction with the
+    ///     smallest delta angle.
     /// </summary>
     /// <param name="fromDegrees"> start angle in degrees </param>
     /// <param name="toDegrees"> target angle in degrees </param>
@@ -399,112 +345,73 @@ public class MathUtils
         return ( fromDegrees + ( delta * progress ) + 360 ) % 360;
     }
 
-    private const int    BIG_ENOUGH_INT   = 16 * 1024;
-    private const double BIG_ENOUGH_FLOOR = BIG_ENOUGH_INT;
-    private const double CEILING          = 0.9999999;
-    private const double BIG_ENOUGH_CEIL  = 16384.999999999996;
-    private const double BIG_ENOUGH_ROUND = BIG_ENOUGH_INT + 0.5f;
-
     /// <summary>
-    /// Returns the largest integer less than or equal to the specified float.
-    /// This method will only properly floor floats from
-    /// -(2^14) to (Float.MAX_VALUE - 2^14). 
+    ///     Returns the largest integer less than or equal to the specified float.
+    ///     This method will only properly floor floats from
+    ///     -(2^14) to (Float.MAX_VALUE - 2^14).
     /// </summary>
-    public static int Floor( float value )
-    {
-        return ( int )( value + BIG_ENOUGH_FLOOR ) - BIG_ENOUGH_INT;
-    }
+    public static int Floor( float value ) => ( int )( value + BIG_ENOUGH_FLOOR ) - BIG_ENOUGH_INT;
 
     /// <summary>
-    /// Returns the largest integer less than or equal to the specified float.
-    /// This method will only properly floor floats that are positive.
-    /// Note this method simply casts the float to int. 
+    ///     Returns the largest integer less than or equal to the specified float.
+    ///     This method will only properly floor floats that are positive.
+    ///     Note this method simply casts the float to int.
     /// </summary>
-    public static int FloorPositive( float value )
-    {
-        return ( int )value;
-    }
+    public static int FloorPositive( float value ) => ( int )value;
 
     /// <summary>
-    /// Returns the smallest integer greater than or equal to the specified float.
-    /// This method will only properly ceil floats from -(2^14) to (Float.MAX_VALUE - 2^14). 
+    ///     Returns the smallest integer greater than or equal to the specified float.
+    ///     This method will only properly ceil floats from -(2^14) to (Float.MAX_VALUE - 2^14).
     /// </summary>
-    public static int Ceil( float value )
-    {
-        return ( int )( value + BIG_ENOUGH_CEIL ) - BIG_ENOUGH_INT;
-    }
+    public static int Ceil( float value ) => ( int )( value + BIG_ENOUGH_CEIL ) - BIG_ENOUGH_INT;
 
     /// <summary>
-    /// Returns the smallest integer greater than or equal to the specified float.
-    /// This method will only properly ceil floats that are positive. 
+    ///     Returns the smallest integer greater than or equal to the specified float.
+    ///     This method will only properly ceil floats that are positive.
     /// </summary>
-    public static int CeilPositive( float value )
-    {
-        return ( int )( value + CEILING );
-    }
+    public static int CeilPositive( float value ) => ( int )( value + CEILING );
 
     /// <summary>
-    /// Returns the closest integer to the specified float.
-    /// This method will only properly round floats from -(2^14) to (Float.MAX_VALUE - 2^14). 
+    ///     Returns the closest integer to the specified float.
+    ///     This method will only properly round floats from -(2^14) to (Float.MAX_VALUE - 2^14).
     /// </summary>
-    public static int Round( float value )
-    {
-        return ( int )( value + BIG_ENOUGH_ROUND ) - BIG_ENOUGH_INT;
-    }
+    public static int Round( float value ) => ( int )( value + BIG_ENOUGH_ROUND ) - BIG_ENOUGH_INT;
 
     /// <summary>
-    /// Returns the closest integer to the specified float.
-    /// This method will only properly round floats that are positive.
+    ///     Returns the closest integer to the specified float.
+    ///     This method will only properly round floats that are positive.
     /// </summary>
-    public static int RoundPositive( float value )
-    {
-        return ( int )( value + 0.5f );
-    }
+    public static int RoundPositive( float value ) => ( int )( value + 0.5f );
 
     /// <summary>
-    /// Returns true if the value is zero.
+    ///     Returns true if the value is zero.
     /// </summary>
     /// <param name="value">the value to test.</param>
     /// <param name="tolerance"> represent an upper bound below which the value is considered zero.  </param>
-    public static bool IsZero( float value, float tolerance = FLOAT_ROUNDING_ERROR )
-    {
-        return Math.Abs( value ) <= tolerance;
-    }
+    public static bool IsZero( float value, float tolerance = FLOAT_ROUNDING_ERROR ) => Math.Abs( value ) <= tolerance;
 
-    public static bool IsNotEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR )
-    {
-        return !IsEqual( a, b, tolerance );
-    }
+    public static bool IsNotEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR ) => !IsEqual( a, b, tolerance );
 
     /// <summary>
-    /// Returns true if a is nearly equal to b.
+    ///     Returns true if a is nearly equal to b.
     /// </summary>
     /// <param name="a"> the first value. </param>
     /// <param name="b"> the second value. </param>
     /// <param name="tolerance">represent an upper bound below which the two values are considered equal.</param>
-    public static bool IsEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR )
-    {
-        return Math.Abs( a - b ) <= tolerance;
-    }
+    public static bool IsEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR ) => Math.Abs( a - b ) <= tolerance;
 
     /// <summary>
     /// </summary>
     /// <returns> the logarithm of value with base a </returns>
-    public static float Log( float a, float value )
-    {
-        return ( float )( Math.Log( value ) / Math.Log( a ) );
-    }
+    public static float Log( float a, float value ) => ( float )( Math.Log( value ) / Math.Log( a ) );
 
     /// <summary>
     /// </summary>
     /// <returns> the logarithm of value with base 2 </returns>
-    public static float Log2( float value )
-    {
-        return Log( 2, value );
-    }
+    public static float Log2( float value ) => Log( 2, value );
 
     /// <summary>
-    /// Helper method for convenience. Simply 'converts' a ubyte to an int.
+    ///     Helper method for convenience. Simply 'converts' a ubyte to an int.
     /// </summary>
     /// <param name="b"></param>
     /// <returns></returns>

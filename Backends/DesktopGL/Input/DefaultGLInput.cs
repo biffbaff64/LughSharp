@@ -16,33 +16,33 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 {
-    private DesktopGLWindow? _window;
-    private IInputProcessor? _inputProcessor;
-    private InputEventQueue  _eventQueue = new();
+    private          int              _deltaX;
+    private          int              _deltaY;
+    private readonly InputEventQueue  _eventQueue = new();
+    private          IInputProcessor? _inputProcessor;
+    private readonly bool[]           _justPressedButtons = new bool[ 5 ];
+    private          bool             _justTouched;
+    private          char             _lastCharacter;
+    private          int              _logicalMouseX;
 
-    private int    _mouseX;
-    private int    _mouseY;
-    private int    _mousePressed;
-    private int    _deltaX;
-    private int    _deltaY;
-    private bool   _justTouched;
-    private bool[] _justPressedButtons = new bool[ 5 ];
-    private char   _lastCharacter;
+    private int _logicalMouseY;
+    private int _mousePressed;
+
+    private          int              _mouseX;
+    private          int              _mouseY;
+    private readonly DesktopGLWindow? _window;
 
     /// <inheritdoc />
     public DefaultDesktopGLInput( DesktopGLWindow? window )
     {
         ArgumentNullException.ThrowIfNull( window );
 
-        this._window = window;
+        _window = window;
 
-        unsafe
-        {
-            WindowHandleChanged( _window.GlfwWindow );
-        }
+        WindowHandleChanged( _window.GlfwWindow );
+
     }
 
     /// <inheritdoc />
@@ -58,10 +58,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     }
 
     /// <inheritdoc />
-    public void Update()
-    {
-        _eventQueue.Drain( _inputProcessor );
-    }
+    public void Update() => _eventQueue.Drain( _inputProcessor );
 
     /// <inheritdoc />
     public void PrepareNext()
@@ -149,40 +146,15 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     }
 
     /// <inheritdoc />
-    public override bool JustTouched()
-    {
-        return _justTouched;
-    }
+    public override bool JustTouched() => _justTouched;
 
     /// <inheritdoc />
-    public override float GetPressure( int pointer = 0 )
-    {
-        return IsTouched( pointer ) ? 1 : 0;
-    }
+    public override float GetPressure( int pointer = 0 ) => IsTouched( pointer ) ? 1 : 0;
 
     /// <inheritdoc />
-    public override bool IsButtonPressed( int button )
-    {
-        return GLFW.GetMouseButton( _window!.GlfwWindow,
-                                    TranslateToMouseButton( button ) )
-            == InputAction.Press;
-    }
-
-    private MouseButton TranslateToMouseButton( int button )
-    {
-        return button switch
-               {
-                   0 => MouseButton.Button1,
-                   1 => MouseButton.Button2,
-                   2 => MouseButton.Button3,
-                   3 => MouseButton.Button4,
-                   4 => MouseButton.Button5,
-                   5 => MouseButton.Button6,
-                   6 => MouseButton.Button7,
-                   7 => MouseButton.Button8,
-                   _ => MouseButton.Last
-               };
-    }
+    public override bool IsButtonPressed( int button ) => GLFW.GetMouseButton( _window!.GlfwWindow,
+                                                                               TranslateToMouseButton( button ) )
+                                                       == InputAction.Press;
 
     /// <inheritdoc />
     public override bool IsButtonJustPressed( int button )
@@ -200,38 +172,31 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
                                        string title,
                                        string text,
                                        string hint,
-                                       IInput.OnscreenKeyboardType type = IInput.OnscreenKeyboardType.Default )
-    {
+                                       IInput.OnscreenKeyboardType type = IInput.OnscreenKeyboardType.Default ) =>
+
         //FIXME: TextInput does nothing ( this fixme from Java/LibGdx )
         listener.Canceled();
-    }
 
     /// <inheritdoc />
-    public override long GetCurrentEventTime()
-    {
+    public override long GetCurrentEventTime() =>
+
         // queue sets its event time for each event dequeued/processed
-        return _eventQueue.CurrentEventTime;
-    }
+        _eventQueue.CurrentEventTime;
 
     /// <inheritdoc />
     public override void SetCursorCaught( bool caught )
     {
-        unsafe
-        {
-            GLFW.SetInputMode( _window!.GlfwWindow,
-                               CursorStateAttribute.Cursor,
-                               caught
-                                   ? CursorModeValue.CursorDisabled
-                                   : CursorModeValue.CursorNormal );
-        }
+        GLFW.SetInputMode( _window!.GlfwWindow,
+                           CursorStateAttribute.Cursor,
+                           caught
+                               ? CursorModeValue.CursorDisabled
+                               : CursorModeValue.CursorNormal );
+
     }
 
     /// <inheritdoc />
-    public override bool IsCursorCaught()
-    {
-        return GLFW.GetInputMode( _window!.GlfwWindow, CursorStateAttribute.Cursor )
-            == CursorModeValue.CursorDisabled;
-    }
+    public override bool IsCursorCaught() => GLFW.GetInputMode( _window!.GlfwWindow, CursorStateAttribute.Cursor )
+                                          == CursorModeValue.CursorDisabled;
 
     /// <inheritdoc />
     public override void SetCursorPosition( int x, int y )
@@ -245,11 +210,85 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             y = ( int )( y * yScale );
         }
 
-        unsafe
-        {
-            GLFW.SetCursorPos( _window!.GlfwWindow, x, y );
-        }
+        GLFW.SetCursorPos( _window!.GlfwWindow, x, y );
+
     }
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing,
+    ///     or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+    }
+
+    /// <inheritdoc />
+    public void WindowHandleChanged( GLFW.Window windowHandle )
+    {
+        ResetPollingStates();
+
+        GLFW.SetKeyCallback( windowHandle, KeyCallback );
+        GLFW.SetCharCallback( windowHandle, CharCallback );
+        GLFW.SetMouseButtonCallback( windowHandle, MouseCallback );
+        GLFW.SetScrollCallback( windowHandle, ScrollCallback );
+        GLFW.SetCursorPosCallback( windowHandle, CursorPosCallback );
+    }
+
+    // ------------------------------------------------------------------------
+    // Stubs
+    // ------------------------------------------------------------------------
+
+    public override float GetAccelerometerX() => 0;
+    public override float GetAccelerometerY() => 0;
+    public override float GetAccelerometerZ() => 0;
+    public override int   GetRotation()       => 0;
+    public override float GetAzimuth()        => 0;
+    public override float GetPitch()          => 0;
+    public override float GetRoll()           => 0;
+    public override float GetGyroscopeX()     => 0;
+    public override float GetGyroscopeY()     => 0;
+    public override float GetGyroscopeZ()     => 0;
+
+    public override bool IsPeripheralAvailable( IInput.Peripheral peripheral ) => peripheral == IInput.Peripheral.HardwareKeyboard;
+
+    public override IInput.Orientation GetNativeOrientation() => IInput.Orientation.Landscape;
+
+    public override void SetOnscreenKeyboardVisible( bool visible )
+    {
+    }
+
+    public override void SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type )
+    {
+    }
+
+    public override void Vibrate( int milliseconds )
+    {
+    }
+
+    public override void Vibrate( long[] pattern, int repeat )
+    {
+    }
+
+    public override void CancelVibrate()
+    {
+    }
+
+    public override void GetRotationMatrix( float[] matrix )
+    {
+    }
+
+    private MouseButton TranslateToMouseButton( int button ) => button switch
+                                                                {
+                                                                    0 => MouseButton.Button1,
+                                                                    1 => MouseButton.Button2,
+                                                                    2 => MouseButton.Button3,
+                                                                    3 => MouseButton.Button4,
+                                                                    4 => MouseButton.Button5,
+                                                                    5 => MouseButton.Button6,
+                                                                    6 => MouseButton.Button7,
+                                                                    7 => MouseButton.Button8,
+                                                                    _ => MouseButton.Last
+                                                                };
 
     protected char CharacterForKeyCode( int key )
     {
@@ -639,34 +678,14 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     }
 
     /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing,
-    /// or resetting unmanaged resources.
+    ///     Performs application-defined tasks associated with freeing, releasing,
+    ///     or resetting unmanaged resources.
     /// </summary>
     private void Dispose( bool disposing )
     {
         if ( disposing )
         {
         }
-    }
-
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing,
-    /// or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-    }
-
-    /// <inheritdoc />
-    public void WindowHandleChanged( GLFW.Window windowHandle )
-    {
-        ResetPollingStates();
-
-        GLFW.SetKeyCallback( windowHandle, this.KeyCallback );
-        GLFW.SetCharCallback( windowHandle, this.CharCallback );
-        GLFW.SetMouseButtonCallback( windowHandle, this.MouseCallback );
-        GLFW.SetScrollCallback( windowHandle, ScrollCallback );
-        GLFW.SetCursorPosCallback( windowHandle, CursorPosCallback );
     }
 
     // ------------------------------------------------------------------------
@@ -791,9 +810,6 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _eventQueue.Scrolled( -( float )x, -( float )y, TimeUtils.NanoTime() );
     }
 
-    private int _logicalMouseY;
-    private int _logicalMouseX;
-        
     public void CursorPosCallback( GLFW.Window window, double x, double y )
     {
         _deltaX = ( int )x - _logicalMouseX;
@@ -806,7 +822,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             // null check can be surpressed here because of above
             var xScale = _window!.Graphics.BackBufferWidth / ( float )_window!.Graphics.LogicalWidth;
             var yScale = _window!.Graphics.BackBufferHeight / ( float )_window!.Graphics.LogicalHeight;
-            
+
             _deltaX = ( int )( _deltaX * xScale );
             _deltaY = ( int )( _deltaY * yScale );
             _mouseX = ( int )( _mouseX * xScale );
@@ -823,54 +839,5 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         {
             _eventQueue.MouseMoved( _mouseX, _mouseY, TimeUtils.NanoTime() );
         }
-    }
-
-    // ------------------------------------------------------------------------
-    // Stubs
-    // ------------------------------------------------------------------------
-
-    public override float GetAccelerometerX() => 0;
-    public override float GetAccelerometerY() => 0;
-    public override float GetAccelerometerZ() => 0;
-    public override int   GetRotation()       => 0;
-    public override float GetAzimuth()        => 0;
-    public override float GetPitch()          => 0;
-    public override float GetRoll()           => 0;
-    public override float GetGyroscopeX()     => 0;
-    public override float GetGyroscopeY()     => 0;
-    public override float GetGyroscopeZ()     => 0;
-
-    public override bool IsPeripheralAvailable( IInput.Peripheral peripheral )
-    {
-        return peripheral == IInput.Peripheral.HardwareKeyboard;
-    }
-
-    public override IInput.Orientation GetNativeOrientation()
-    {
-        return IInput.Orientation.Landscape;
-    }
-
-    public override void SetOnscreenKeyboardVisible( bool visible )
-    {
-    }
-
-    public override void SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type )
-    {
-    }
-
-    public override void Vibrate( int milliseconds )
-    {
-    }
-
-    public override void Vibrate( long[] pattern, int repeat )
-    {
-    }
-
-    public override void CancelVibrate()
-    {
-    }
-
-    public override void GetRotationMatrix( float[] matrix )
-    {
     }
 }

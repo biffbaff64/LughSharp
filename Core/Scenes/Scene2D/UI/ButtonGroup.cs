@@ -20,41 +20,37 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// buttons. This enables "radio button" functionality and more. A button may only
 /// be in one group at a time.
 /// <para>
-/// The <see cref="CanCheck(T, bool)"/> method can be overridden to control
-/// if a button check or uncheck is allowed.
+///     The <see cref="CanCheck(T, bool)" /> method can be overridden to control
+///     if a button check or uncheck is allowed.
 /// </para>
-[PublicAPI]
 public class ButtonGroup<T> where T : Button
 {
     private readonly List< T > _buttons        = new();
     private readonly List< T > _checkedButtons = new( 1 );
+    private          T         _lastChecked    = null!;
+    private          int       _maxCheckCount  = 1;
 
     private int  _minCheckCount;
-    private int  _maxCheckCount = 1;
-    private bool _uncheckLast   = true;
-    private T    _lastChecked   = null!;
+    private bool _uncheckLast = true;
 
-    public ButtonGroup()
-    {
-        _minCheckCount = 1;
-    }
+    public ButtonGroup() => _minCheckCount = 1;
 
     public ButtonGroup( params T[] buttons )
     {
         _minCheckCount = 0;
-        
+
         Add( buttons );
-        
+
         _minCheckCount = 1;
     }
 
     public void Add( T button )
     {
         ArgumentNullException.ThrowIfNull( button );
-        
+
         button.ButtonGroup = null!;
 
-        var shouldCheck = ( button.IsChecked || ( _buttons.Count < _minCheckCount ) );
+        var shouldCheck = button.IsChecked || ( _buttons.Count < _minCheckCount );
 
         button.SetChecked( false );
         button.ButtonGroup = ( this as ButtonGroup< Button > )!;
@@ -66,7 +62,10 @@ public class ButtonGroup<T> where T : Button
 
     public void Add( params T[] buttons )
     {
-        if ( buttons == null ) throw new ArgumentException( "buttons cannot be null." );
+        if ( buttons == null )
+        {
+            throw new ArgumentException( "buttons cannot be null." );
+        }
 
         for ( int i = 0, n = buttons.Length; i < n; i++ )
         {
@@ -76,17 +75,23 @@ public class ButtonGroup<T> where T : Button
 
     public void Remove( T button )
     {
-        if ( button == null ) throw new ArgumentException( "button cannot be null." );
+        if ( button == null )
+        {
+            throw new ArgumentException( "button cannot be null." );
+        }
 
         button.ButtonGroup = null!;
-        
+
         _buttons.Remove( button );
         _checkedButtons.Remove( button );
     }
 
     public void Remove( params T[] buttons )
     {
-        if ( buttons == null ) throw new ArgumentException( "buttons cannot be null." );
+        if ( buttons == null )
+        {
+            throw new ArgumentException( "buttons cannot be null." );
+        }
 
         for ( int i = 0, n = buttons.Length; i < n; i++ )
         {
@@ -101,18 +106,21 @@ public class ButtonGroup<T> where T : Button
     }
 
     /// <summary>
-    /// Sets the first <see cref="TextButton"/> with the specified text to checked.
+    ///     Sets the first <see cref="TextButton" /> with the specified text to checked.
     /// </summary>
     public void SetChecked( string text )
     {
-        if ( text == null ) throw new ArgumentException( "text cannot be null." );
+        if ( text == null )
+        {
+            throw new ArgumentException( "text cannot be null." );
+        }
 
         for ( int i = 0, n = _buttons.Count; i < n; i++ )
         {
             Button button = _buttons[ i ];
 
             if ( ( button.GetType() == typeof( TextButton ) )
-                 && text.Equals( ( ( TextButton )button ).GetText() ) )
+              && text.Equals( ( ( TextButton )button ).GetText() ) )
             {
                 button.SetChecked( true );
 
@@ -122,18 +130,24 @@ public class ButtonGroup<T> where T : Button
     }
 
     /// <summary>
-    /// Called when a button is checked or unchecked. If overridden, generally
-    /// changing button checked states should not be done from within this method.
+    ///     Called when a button is checked or unchecked. If overridden, generally
+    ///     changing button checked states should not be done from within this method.
     /// </summary>
-	/// <returns> True if the new state should be allowed. </returns>
+    /// <returns> True if the new state should be allowed. </returns>
     public bool CanCheck( T button, bool newState )
     {
-        if ( button.IsChecked == newState ) return false;
+        if ( button.IsChecked == newState )
+        {
+            return false;
+        }
 
         if ( !newState )
         {
             // Keep button checked to enforce minCheckCount.
-            if ( _checkedButtons.Count <= _minCheckCount ) return false;
+            if ( _checkedButtons.Count <= _minCheckCount )
+            {
+                return false;
+            }
 
             _checkedButtons.Remove( button );
         }
@@ -164,8 +178,8 @@ public class ButtonGroup<T> where T : Button
     }
 
     /// <summary>
-    /// Sets all buttons' <see cref="Button.IsChecked"/> to false, regardless
-    /// of <see cref="SetMinCheckCount(int)"/>.
+    ///     Sets all buttons' <see cref="Button.IsChecked" /> to false, regardless
+    ///     of <see cref="SetMinCheckCount(int)" />.
     /// </summary>
     public void UncheckAll()
     {
@@ -183,57 +197,48 @@ public class ButtonGroup<T> where T : Button
     }
 
     /// <returns> The first checked button, or null. </returns>
-    public T? GetChecked()
-    {
-        return _checkedButtons.Count > 0 ? _checkedButtons[ 0 ] : null;
-    }
+    public T? GetChecked() => _checkedButtons.Count > 0 ? _checkedButtons[ 0 ] : null;
 
     /// <returns> The first checked button index, or -1. </returns>
     public int GetCheckedIndex()
     {
-        if ( _checkedButtons.Count > 0 ) return _buttons.IndexOf( _checkedButtons[ 0 ] );
+        if ( _checkedButtons.Count > 0 )
+        {
+            return _buttons.IndexOf( _checkedButtons[ 0 ] );
+        }
 
         return -1;
     }
 
-    public List< T > GetAllChecked()
-    {
-        return _checkedButtons;
-    }
+    public List< T > GetAllChecked() => _checkedButtons;
 
-    public List< T > GetButtons()
-    {
-        return _buttons;
-    }
+    public List< T > GetButtons() => _buttons;
 
     /// <summary>
-    /// Sets the minimum number of buttons that must be checked. Default is 1.
+    ///     Sets the minimum number of buttons that must be checked. Default is 1.
     /// </summary>
-    public void SetMinCheckCount( int minCheckCount )
-    {
-        this._minCheckCount = minCheckCount;
-    }
+    public void SetMinCheckCount( int minCheckCount ) => _minCheckCount = minCheckCount;
 
     /// <summary>
-    /// Sets the maximum number of buttons that can be checked.
-    /// Set to -1 for no maximum. Default is 1.
+    ///     Sets the maximum number of buttons that can be checked.
+    ///     Set to -1 for no maximum. Default is 1.
     /// </summary>
     public void SetMaxCheckCount( int maxCheckCount )
     {
-        if ( maxCheckCount == 0 ) maxCheckCount = -1;
-        
-        this._maxCheckCount = maxCheckCount;
+        if ( maxCheckCount == 0 )
+        {
+            maxCheckCount = -1;
+        }
+
+        _maxCheckCount = maxCheckCount;
     }
 
     /// <summary>
-    /// If true, when the maximum number of buttons are checked and an
-    /// additional button is checked, the last button to be checked
-	/// is unchecked so that the maximum is not exceeded. If false,
-	/// additional buttons beyond the maximum are not allowed to be
-	/// checked. Default is true.
+    ///     If true, when the maximum number of buttons are checked and an
+    ///     additional button is checked, the last button to be checked
+    ///     is unchecked so that the maximum is not exceeded. If false,
+    ///     additional buttons beyond the maximum are not allowed to be
+    ///     checked. Default is true.
     /// </summary>
-    public void SetUncheckLast( bool uncheckLast )
-    {
-        this._uncheckLast = uncheckLast;
-    }
+    public void SetUncheckLast( bool uncheckLast ) => _uncheckLast = uncheckLast;
 }

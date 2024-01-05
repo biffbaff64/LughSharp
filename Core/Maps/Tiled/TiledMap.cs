@@ -16,15 +16,22 @@
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[PublicAPI]
 public class TiledMap : Map, IDisposable
 {
+
+    public TiledMap() => Tilesets = new TiledMapTileSets();
+
     public TiledMapTileSets Tilesets       { get; set; }
     public List< object >?  OwnedResources { get; set; }
 
-    public TiledMap()
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
     {
-        Tilesets = new TiledMapTileSets();
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
     /// <summary>
@@ -47,21 +54,8 @@ public class TiledMap : Map, IDisposable
     }
 
     /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
+    ///     Allows an object to try to free resources and perform other cleanup
+    ///     operations before it is reclaimed by garbage collection.
     /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
-    }
-
-    /// <summary>
-    /// Allows an object to try to free resources and perform other cleanup
-    /// operations before it is reclaimed by garbage collection.
-    /// </summary>
-    ~TiledMap()
-    {
-        Dispose( false );
-    }
+    ~TiledMap() => Dispose( false );
 }

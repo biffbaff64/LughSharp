@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils.Collections;
 
-[PublicAPI]
 public static class ListExtensions
 {
     public static T[] Resize<T>( this List< T > ts, int newSize )
@@ -29,26 +28,21 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// Returns the element found at a random position
-    /// within the list.
+    ///     Returns the element found at a random position
+    ///     within the list.
     /// </summary>
     /// <param name="list"> This list </param>
     /// <typeparam name="T"> This list type </typeparam>
     /// <returns></returns>
-    public static T Random<T>( this List< T > list )
-    {
-        return list[ MathUtils.Random( list.Count - 1 ) ];
-    }
-    
+    public static T Random<T>( this List< T > list ) => list[ MathUtils.Random( list.Count - 1 ) ];
+
     /// <summary>
     /// </summary>
     /// <param name="t"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static List< T > With<T>( T t )
-    {
-        return new List< T > { t };
-    }
+    public static List< T > With<T>( T t ) => new()
+        { t };
 
     public static void AddAll<T>( this List< T > ts, T[] array, int start, int count )
     {
@@ -66,7 +60,7 @@ public static class ListExtensions
         }
     }
 
-    public static void AddAll<T>( this List< T > ts, List< T >? array )
+    public static void AddAll<T>( this List< T > ts, List< T > array )
     {
         foreach ( T tex in array )
         {
@@ -81,9 +75,9 @@ public static class ListExtensions
             ts.Add( item );
         }
     }
-    
+
     /// <summary>
-    /// Shuffles the element order of the specified list.
+    ///     Shuffles the element order of the specified list.
     /// </summary>
     public static void Shuffle<T>( this List< T > ts )
     {
@@ -101,8 +95,8 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// Reduces the size of the array to the specified size. If the array is
-    /// already smaller than the specified size, no action is taken.
+    ///     Reduces the size of the array to the specified size. If the array is
+    ///     already smaller than the specified size, no action is taken.
     /// </summary>
     public static void Truncate<T>( this List< T > ts, int newSize )
     {
@@ -113,7 +107,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// Removes and returns the last item in the list.
+    ///     Removes and returns the last item in the list.
     /// </summary>
     /// <param name="ts"></param>
     /// <typeparam name="T"></typeparam>
@@ -134,18 +128,15 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// Returns the last item in a list.
+    ///     Returns the last item in a list.
     /// </summary>
     /// <param name="ts"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T Peek<T>( this List< T > ts )
-    {
-        return ts[ ^1 ];
-    }
+    public static T Peek<T>( this List< T > ts ) => ts[ ^1 ];
 
     /// <summary>
-    /// Removes and returns the item at the specified index.
+    ///     Removes and returns the item at the specified index.
     /// </summary>
     /// <param name="ts"></param>
     /// <param name="index"></param>

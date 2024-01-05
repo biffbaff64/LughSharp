@@ -16,39 +16,30 @@
 
 namespace LibGDXSharp.Maps.Objects;
 
-[PublicAPI]
 public class PolygonMapObject : MapObject
-{        
-    public Polygon Polygon { get; set; }
+{
 
     /// <summary>
-    /// Creates empty polygon map object
+    ///     Creates empty polygon map object
     /// </summary>
-    public PolygonMapObject() : this( new float[0] )
+    public PolygonMapObject() : this( new float[ 0 ] )
     {
     }
 
     /// <summary>
     /// </summary>
     /// <param name="vertices">polygon defining vertices (at least 3)</param>
-    public PolygonMapObject( float[]? vertices )
-    {
-        this.Polygon = new Polygon(vertices);
-    }
+    public PolygonMapObject( float[]? vertices ) => Polygon = new Polygon( vertices );
 
     /// <summary>
     /// </summary>
     /// <param name="polygon">the polygon</param>
-    public PolygonMapObject( Polygon polygon )
-    {
-        this.Polygon = polygon;
-    }
+    public PolygonMapObject( Polygon polygon ) => Polygon = polygon;
+
+    public Polygon Polygon { get; set; }
 
     /// <summary>
-    /// <param name="polygon">new object's polygon shape</param>
+    ///     <param name="polygon">new object's polygon shape</param>
     /// </summary>
-    public void SetPolygon( Polygon polygon )
-    {
-        this.Polygon = polygon;
-    }
+    public void SetPolygon( Polygon polygon ) => Polygon = polygon;
 }

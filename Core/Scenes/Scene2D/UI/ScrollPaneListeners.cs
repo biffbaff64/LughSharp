@@ -24,16 +24,13 @@ public partial class ScrollPane
     {
         private readonly ScrollPane? _parent;
 
-        public ScrollPaneScrollListener( ScrollPane parent )
-        {
-            this._parent = parent;
-        }
+        public ScrollPaneScrollListener( ScrollPane parent ) => _parent = parent;
 
         /// <inheritdoc />
         public override bool Scrolled( InputEvent inputEvent, float x, float y, float scrollAmountX, float scrollAmountY )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
-            
+
             _parent!.SetScrollbarsVisible( true );
 
             if ( _parent!.ScrollY || _parent!.ScrollX )
@@ -53,8 +50,8 @@ public partial class ScrollPane
                     }
                 }
 
-                _parent!.AmountY += ( _parent!.GetMouseWheelY() * scrollAmountY );
-                _parent!.AmountX += ( _parent!.GetMouseWheelX() * scrollAmountX );
+                _parent!.AmountY += _parent!.GetMouseWheelY() * scrollAmountY;
+                _parent!.AmountX += _parent!.GetMouseWheelX() * scrollAmountX;
             }
             else
             {
@@ -70,10 +67,7 @@ public partial class ScrollPane
         private readonly ScrollPane? _parent;
         private          float       _handlePosition;
 
-        public ScrollPaneCaptureListener( ScrollPane parent )
-        {
-            this._parent = parent;
-        }
+        public ScrollPaneCaptureListener( ScrollPane parent ) => _parent = parent;
 
         /// <inheritdoc />
         public override bool TouchDown( InputEvent inputEvent, float x, float y, int pointer, int button )
@@ -122,7 +116,7 @@ public partial class ScrollPane
                     return true;
                 }
 
-                _parent!.AmountX += ( _parent!._widgetArea.Width * ( x < _parent!._hKnobBounds.X ? -1 : 1 ) );
+                _parent!.AmountX += _parent!._widgetArea.Width * ( x < _parent!._hKnobBounds.X ? -1 : 1 );
 
                 return true;
             }
@@ -183,8 +177,8 @@ public partial class ScrollPane
                 _handlePosition = scrollH;
                 scrollH         = Math.Max( _parent!._hScrollBounds.X, scrollH );
 
-                scrollH = Math.Min( ( ( _parent!._hScrollBounds.X + _parent!._hScrollBounds.Width )
-                                    - _parent!._hKnobBounds.Width ),
+                scrollH = Math.Min( ( _parent!._hScrollBounds.X + _parent!._hScrollBounds.Width )
+                                  - _parent!._hKnobBounds.Width,
                                     scrollH );
 
                 var total = _parent!._hScrollBounds.Width - _parent!._hKnobBounds.Width;
@@ -237,10 +231,7 @@ public partial class ScrollPane
     {
         private readonly ScrollPane? _parent;
 
-        public ScrollPaneGestureListener( ScrollPane parent )
-        {
-            this._parent = parent;
-        }
+        public ScrollPaneGestureListener( ScrollPane parent ) => _parent = parent;
 
         /// <inheritdoc />
         public override void Pan( InputEvent inputEvent, float x, float y, float deltaX, float deltaY )
@@ -299,10 +290,11 @@ public partial class ScrollPane
                 {
                     _parent!._flingTimer = 0;
                 }
-                
+
                 return true;
             }
-            else if ( ( inputEvent is InputEvent { TouchFocusCancel: true } ) )
+
+            if ( inputEvent is InputEvent { TouchFocusCancel: true } )
             {
                 _parent!.Cancel();
             }

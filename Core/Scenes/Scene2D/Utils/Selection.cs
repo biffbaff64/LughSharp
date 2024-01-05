@@ -14,49 +14,48 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Scenes.Listeners;
+using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// Manages selected objects. Optionally fires a <see cref="ChangeListener.ChangeEvent"/>
-/// on an actor.
-/// <para>
-/// Selection changes can be vetoed via <see cref="ChangeListener.ChangeEvent.Cancel()"/>.
-/// </para>
+///     Manages selected objects. Optionally fires a <see cref="ChangeListener.ChangeEvent" />
+///     on an actor.
+///     <para>
+///         Selection changes can be vetoed via <see cref="ChangeListener.ChangeEvent.Cancel()" />.
+///     </para>
 /// </summary>
-/// <seealso cref="SortedSet{T}"/>
-[PublicAPI]
+/// <seealso cref="SortedSet{T}" />
 public class Selection<T> : IDisableable
 {
-    public SortedSet< T > Selected                 { get; set; } = new();
-    public bool           IsDisabled               { get; set; }
-    public bool           Multiple                 { get; set; }
-    public bool           Required                 { get; set; }
-    public T?             LastSelected             { get; set; }
-    public bool           Toggle                   { get; set; }
-    public bool           ProgrammaticChangeEvents { get; set; } = true;
+
+    private readonly SortedSet< T > _old = new();
+    public           SortedSet< T > Selected                 { get; set; } = new();
+    public           bool           Multiple                 { get; set; }
+    public           bool           Required                 { get; set; }
+    public           T?             LastSelected             { get; set; }
+    public           bool           Toggle                   { get; set; }
+    public           bool           ProgrammaticChangeEvents { get; set; } = true;
 
     /// <summary>
-    /// <param name="value">
-    /// An actor to fire a <see cref="ChangeListener.ChangeEvent"/> on when the
-    /// selection changes, or null.
-    /// </param>
+    ///     <param name="value">
+    ///         An actor to fire a <see cref="ChangeListener.ChangeEvent" /> on when the
+    ///         selection changes, or null.
+    ///     </param>
     /// </summary>
     public Actor? Actor { get; set; }
 
-    public bool IsEmpty => Selected.Count == 0;
-
-    private readonly SortedSet< T > _old = new();
+    public bool IsEmpty    => Selected.Count == 0;
+    public bool IsDisabled { get; set; }
 
     /// <summary>
-    /// Selects or deselects the specified item based on how the selection is
-    /// configured, whether ctrl is currently pressed, etc.
-    /// <para>
-    /// This is typically invoked by user interaction. 
-    /// </para>
+    ///     Selects or deselects the specified item based on how the selection is
+    ///     configured, whether ctrl is currently pressed, etc.
+    ///     <para>
+    ///         This is typically invoked by user interaction.
+    ///     </para>
     /// </summary>
     public void Choose( T item )
     {
@@ -120,7 +119,7 @@ public class Selection<T> : IDisableable
     }
 
     /// <summary>
-    /// Returns TRUE if this set has items in it.
+    ///     Returns TRUE if this set has items in it.
     /// </summary>
     public bool NotEmpty() => !IsEmpty;
 
@@ -128,23 +127,17 @@ public class Selection<T> : IDisableable
 
     public bool HasItems() => Selected.Count > 0;
 
-    public SortedSet< T > Items()
-    {
-        return Selected;
-    }
+    public SortedSet< T > Items() => Selected;
 
     /// <summary>
-    /// Returns the first selected item, or null.
+    ///     Returns the first selected item, or null.
     /// </summary>
-    public T? First()
-    {
-        return Selected.Count == 0 ? default( T? ) : Selected.First();
-    }
+    public T? First() => Selected.Count == 0 ? default( T? ) : Selected.First();
 
     public void Snapshot()
     {
         _old.Clear();
-        
+
         foreach ( T item in Selected )
         {
             _old.Add( item );
@@ -154,26 +147,23 @@ public class Selection<T> : IDisableable
     public void Revert()
     {
         Selected.Clear();
-        
+
         foreach ( T item in _old )
         {
             Selected.Add( item );
         }
     }
 
-    public void Cleanup()
-    {
-        _old.Clear();
-    }
+    public void Cleanup() => _old.Clear();
 
     /// <summary>
-    /// Sets the selection to only the specified item.
+    ///     Sets the selection to only the specified item.
     /// </summary>
     public void Set( T item )
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( ( Selected.Count == 1 ) && ( Equals( Selected.First(), item ) ) )
+        if ( ( Selected.Count == 1 ) && Equals( Selected.First(), item ) )
         {
             return;
         }
@@ -237,7 +227,7 @@ public class Selection<T> : IDisableable
     }
 
     /// <summary>
-    /// Adds the item to the selection.
+    ///     Adds the item to the selection.
     /// </summary>
     public void Add( T item )
     {
@@ -260,7 +250,7 @@ public class Selection<T> : IDisableable
     }
 
     /// <summary>
-    /// Adds all items from the supplied list to the selection.
+    ///     Adds all items from the supplied list to the selection.
     /// </summary>
     public void AddAll( List< T > items )
     {
@@ -381,17 +371,17 @@ public class Selection<T> : IDisableable
     }
 
     /// <summary>
-    /// Called after the selection changes. The default implementation does nothing.
+    ///     Called after the selection changes. The default implementation does nothing.
     /// </summary>
     protected virtual void Changed()
     {
     }
 
     /// <summary>
-    /// Fires a change event on the selection's actor, if any. Called internally when
-    /// the selection changes, depending on <see cref="ProgrammaticChangeEvents"/>.
+    ///     Fires a change event on the selection's actor, if any. Called internally when
+    ///     the selection changes, depending on <see cref="ProgrammaticChangeEvents" />.
     /// </summary>
-	/// <returns> true if the change should be undone. </returns>
+    /// <returns> true if the change should be undone. </returns>
     public bool FireChangeEvent()
     {
         if ( Actor == null )
@@ -405,7 +395,7 @@ public class Selection<T> : IDisableable
         {
             return false;
         }
-        
+
         try
         {
             return Actor.Fire( changeEvent );
@@ -427,8 +417,8 @@ public class Selection<T> : IDisableable
     }
 
     /// <summary>
-    /// Makes a best effort to return the last item selected, else returns an
-    /// arbitrary item or null if the selection is empty.
+    ///     Makes a best effort to return the last item selected, else returns an
+    ///     arbitrary item or null if the selection is empty.
     /// </summary>
     public T? GetLastSelected()
     {

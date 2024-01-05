@@ -17,37 +17,38 @@
 namespace LibGDXSharp.Assets.Loaders;
 
 /// <summary>
-/// <see cref="AssetLoader"/> for <see cref="IMusic"/> instances.
-/// The Music instance is loaded synchronously.
+///     <see cref="AssetLoader" /> for <see cref="IMusic" /> instances.
+///     The Music instance is loaded synchronously.
 /// </summary>
-[PublicAPI]
 public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameters >, IDisposable
 {
-    public IMusic LoadedMusic { get; set; }
 
     public MusicLoader( IFileHandleResolver resolver )
-        : base( resolver )
+        : base( resolver ) => LoadedMusic = null!;
+
+    public IMusic LoadedMusic { get; set; }
+
+    /// <inheritdoc />
+    public void Dispose()
     {
-        LoadedMusic = null!;
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
     /// <summary>
-    /// Returns the assets this asset requires to be loaded first.
-    /// This method may be called on a thread other than the GL thread.
+    ///     Returns the assets this asset requires to be loaded first.
+    ///     This method may be called on a thread other than the GL thread.
     /// </summary>
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter )
-    {
-        return null!;
-    }
+                                                             AssetLoaderParameters parameter ) => null!;
 
     /// <summary>
-    /// Loads the non-OpenGL part of the asset and injects any dependencies of
-    /// the asset into the AssetManager.
+    ///     Loads the non-OpenGL part of the asset and injects any dependencies of
+    ///     the asset into the AssetManager.
     /// </summary>
     /// <param name="manager"></param>
     /// <param name="fileName"></param>
@@ -56,13 +57,10 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    AssetLoaderParameters parameter )
-    {
-        LoadedMusic = Gdx.Audio.NewMusic( file );
-    }
+                                    AssetLoaderParameters parameter ) => LoadedMusic = Gdx.Audio.NewMusic( file );
 
     /// <summary>
-    /// Loads the OpenGL part of the asset.
+    ///     Loads the OpenGL part of the asset.
     /// </summary>
     /// <param name="manager"></param>
     /// <param name="fileName"></param>
@@ -79,13 +77,6 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
         LoadedMusic = null!;
 
         return music;
-    }
-
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     private void Dispose( bool disposing )

@@ -17,37 +17,36 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// Sets the actor's rotation from its current value to a specific value.
-/// <para>
-/// By default, the rotation will take you from the starting value to the specified
-/// value via simple subtraction. For example, setting the start at 350 and the target
-/// at 10 will result in 340 degrees of movement.
-/// </para>
-/// <para>
-/// If the action is instead set to useShortestDirection instead, it will rotate
-/// straight to the target angle, regardless of where the angle starts and stops.
-/// For example, starting at 350 and rotating to 10 will cause 20 degrees of rotation.
-/// </para>
-/// <para>
-/// <seealso cref="LibGDXSharp.Maths.MathUtils.LerpAngleDeg(float, float, float)"/>
-/// </para>
+///     Sets the actor's rotation from its current value to a specific value.
+///     <para>
+///         By default, the rotation will take you from the starting value to the specified
+///         value via simple subtraction. For example, setting the start at 350 and the target
+///         at 10 will result in 340 degrees of movement.
+///     </para>
+///     <para>
+///         If the action is instead set to useShortestDirection instead, it will rotate
+///         straight to the target angle, regardless of where the angle starts and stops.
+///         For example, starting at 350 and rotating to 10 will cause 20 degrees of rotation.
+///     </para>
+///     <para>
+///         <seealso cref="LibGDXSharp.Maths.MathUtils.LerpAngleDeg(float, float, float)" />
+///     </para>
 /// </summary>
-[PublicAPI]
 public class RotateToAction : TemporalAction
 {
-    public float Start                { get; set; }
-    public float Rotation             { get; set; }
-    public bool  UseShortestDirection { get; set; } = false;
 
     public RotateToAction()
     {
     }
 
-    /** @param useShortestDirection Set to true to move directly to the closest angle */
-    public RotateToAction( bool useShortestDirection )
-    {
-        this.UseShortestDirection = useShortestDirection;
-    }
+    /**
+     * @param useShortestDirection Set to true to move directly to the closest angle
+     */
+    public RotateToAction( bool useShortestDirection ) => UseShortestDirection = useShortestDirection;
+
+    public float Start                { get; set; }
+    public float Rotation             { get; set; }
+    public bool  UseShortestDirection { get; set; } = false;
 
     protected new void Begin()
     {
@@ -78,7 +77,7 @@ public class RotateToAction : TemporalAction
         }
         else if ( UseShortestDirection )
         {
-            rotation = MathUtils.LerpAngleDeg( this.Start, this.Rotation, percent );
+            rotation = MathUtils.LerpAngleDeg( Start, Rotation, percent );
         }
         else
         {

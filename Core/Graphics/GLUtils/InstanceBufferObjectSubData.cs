@@ -19,31 +19,28 @@ using LibGDXSharp.Files.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// Modification of the <see cref="VertexBufferObjectSubData"/> class.
-/// Sets the glVertexAttribDivisor for every <see cref="VertexAttribute"/>
-/// automatically.
+///     Modification of the <see cref="VertexBufferObjectSubData" /> class.
+///     Sets the glVertexAttribDivisor for every <see cref="VertexAttribute" />
+///     automatically.
 /// </summary>
-[PublicAPI]
 public class InstanceBufferObjectSubData : IInstanceData
 {
-    public VertexAttributes Attributes   { get; set; }
-    public int             BufferHandle { get; set; }
 
-    private FloatBuffer _buffer;
-    private ByteBuffer  _byteBuffer;
+    private readonly FloatBuffer _buffer;
+    private readonly ByteBuffer  _byteBuffer;
+    private          bool        _isBound = false;
+    private readonly bool        _isDirect;
+    private          bool        _isDirty = false;
+    private          bool        _isStatic;
 
-    private int  _usage;
-    private bool _isDirect;
-    private bool _isStatic;
-    private bool _isDirty = false;
-    private bool _isBound = false;
+    private readonly int _usage;
 
     /// <summary>
-    /// Constructs a new interleaved InstanceBufferObject.
+    ///     Constructs a new interleaved InstanceBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numInstances"> the maximum number of vertices. </param>
-    /// <param name="instanceAttributes"> the <see cref="VertexAttributes"/>". </param>
+    /// <param name="instanceAttributes"> the <see cref="VertexAttributes" />". </param>
     public InstanceBufferObjectSubData( bool isStatic,
                                         int numInstances,
                                         params VertexAttribute[] instanceAttributes )
@@ -52,17 +49,17 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    /// Constructs a new interleaved InstanceBufferObject.
+    ///     Constructs a new interleaved InstanceBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numInstances"> the maximum number of vertices. </param>
-    /// <param name="instanceAttributes"> the <see cref="VertexAttributes"/>". </param>
+    /// <param name="instanceAttributes"> the <see cref="VertexAttributes" />". </param>
     public InstanceBufferObjectSubData( bool isStatic, int numInstances, VertexAttributes instanceAttributes )
     {
-        this._isStatic  = isStatic;
-        this.Attributes = instanceAttributes;
-        _byteBuffer     = BufferUtils.NewByteBuffer( this.Attributes.VertexSize * numInstances );
-        _isDirect       = true;
+        _isStatic   = isStatic;
+        Attributes  = instanceAttributes;
+        _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numInstances );
+        _isDirect   = true;
 
         _usage       = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
         _buffer      = _byteBuffer.AsFloatBuffer();
@@ -72,24 +69,16 @@ public class InstanceBufferObjectSubData : IInstanceData
         _byteBuffer.Flip();
     }
 
-    private int CreateBufferObject()
-    {
-        var result = Gdx.GL20.GLGenBuffer();
-
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
-        Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-
-        return result;
-    }
+    public int              BufferHandle { get; set; }
+    public VertexAttributes Attributes   { get; set; }
 
     /// <summary>
-    /// Returns the number of instances in this buffer.
+    ///     Returns the number of instances in this buffer.
     /// </summary>
     public int NumInstances => ( _buffer.Limit * 4 ) / Attributes.VertexSize;
 
     /// <summary>
-    /// Returns the max number of instances in this buffer.
+    ///     Returns the max number of instances in this buffer.
     /// </summary>
     public int NumMaxInstances => _byteBuffer.Capacity / Attributes.VertexSize;
 
@@ -98,16 +87,6 @@ public class InstanceBufferObjectSubData : IInstanceData
         _isDirty |= forWriting;
 
         return _buffer;
-    }
-
-    private void BufferChanged()
-    {
-        if ( _isBound )
-        {
-            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
-            Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, _byteBuffer.Limit, _byteBuffer );
-            _isDirty = false;
-        }
     }
 
     public void SetInstanceData( float[] data, int offset, int count )
@@ -129,7 +108,7 @@ public class InstanceBufferObjectSubData : IInstanceData
 
             _buffer.Flip();
             _byteBuffer.Position = 0;
-            _byteBuffer.Limit    = ( _buffer.Limit << 2 );
+            _byteBuffer.Limit    = _buffer.Limit << 2;
         }
 
         BufferChanged();
@@ -154,7 +133,7 @@ public class InstanceBufferObjectSubData : IInstanceData
 
             _buffer.Flip();
             _byteBuffer.Position = 0;
-            _byteBuffer.Limit    = ( _buffer.Limit << 2 );
+            _byteBuffer.Limit    = _buffer.Limit << 2;
         }
 
         BufferChanged();
@@ -168,7 +147,7 @@ public class InstanceBufferObjectSubData : IInstanceData
         {
             var pos = _byteBuffer.Position;
 
-            _byteBuffer.Position = ( targetOffset * 4 );
+            _byteBuffer.Position = targetOffset * 4;
 
             BufferUtils.Copy( data, sourceOffset, count, _byteBuffer );
 
@@ -190,8 +169,8 @@ public class InstanceBufferObjectSubData : IInstanceData
         {
             var pos = _byteBuffer.Position;
 
-            _byteBuffer.Position = ( targetOffset * 4 );
-            data.Position        = ( sourceOffset * 4 );
+            _byteBuffer.Position = targetOffset * 4;
+            data.Position        = sourceOffset * 4;
 
             BufferUtils.Copy( data, _byteBuffer, count );
 
@@ -206,8 +185,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    /// Binds this InstanceBufferObject for rendering via glDrawArraysInstanced
-    /// or glDrawElementsInstanced.
+    ///     Binds this InstanceBufferObject for rendering via glDrawArraysInstanced
+    ///     or glDrawElementsInstanced.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"></param>
@@ -219,7 +198,7 @@ public class InstanceBufferObjectSubData : IInstanceData
 
         if ( _isDirty )
         {
-            _byteBuffer.Limit = ( _buffer.Limit * 4 );
+            _byteBuffer.Limit = _buffer.Limit * 4;
             gl.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
             _isDirty = false;
         }
@@ -281,7 +260,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    /// Unbinds this InstanceBufferObject.
+    ///     Unbinds this InstanceBufferObject.
     /// </summary>
     public void Unbind( ShaderProgram shader, int[]? locations = null )
     {
@@ -327,8 +306,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    /// Invalidates the InstanceBufferObject so a new OpenGL buffer handle is
-    /// created. Use this in case of a context loss.
+    ///     Invalidates the InstanceBufferObject so a new OpenGL buffer handle is
+    ///     created. Use this in case of a context loss.
     /// </summary>
     public void Invalidate()
     {
@@ -337,12 +316,33 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    /// Disposes of all resources this InstanceBufferObject uses.
+    ///     Disposes of all resources this InstanceBufferObject uses.
     /// </summary>
     public void Dispose()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
         Gdx.GL20.GLDeleteBuffers( BufferHandle );
         BufferHandle = 0;
+    }
+
+    private int CreateBufferObject()
+    {
+        var result = Gdx.GL20.GLGenBuffer();
+
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
+        Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+
+        return result;
+    }
+
+    private void BufferChanged()
+    {
+        if ( _isBound )
+        {
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
+            Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, _byteBuffer.Limit, _byteBuffer );
+            _isDirty = false;
+        }
     }
 }

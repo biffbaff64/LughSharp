@@ -19,18 +19,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
-        <PackageReference Include="RestSharp" Version="110.2.0" />
-        <PackageReference Include="SharpZipLib" Version="1.4.2" />
-        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-        <PackageReference Include="System.IO.Hashing" Version="7.0.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2023.2.0"/>
+        <PackageReference Include="RestSharp" Version="110.2.0"/>
+        <PackageReference Include="SharpZipLib" Version="1.4.2"/>
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0"/>
+        <PackageReference Include="System.IO.Hashing" Version="7.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Core\Utils\Async\" />
-        <Folder Include="DeleteCandidates\" />
-        <Folder Include="packages\" />
-        <Folder Include="Releases\" />
+        <Folder Include="DeleteCandidates\"/>
+        <Folder Include="packages\"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -38,8 +36,8 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>LocalResources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-        <EmbeddedResource Remove="GDXExtensions\**" />
-        <EmbeddedResource Remove="GDXBackends\**" />
+        <EmbeddedResource Remove="GDXExtensions\**"/>
+        <EmbeddedResource Remove="GDXBackends\**"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -48,13 +46,13 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>LocalResources.resx</DependentUpon>
         </Compile>
-        <Compile Remove="GDXExtensions\**" />
-        <Compile Remove="GDXBackends\**" />
+        <Compile Remove="GDXExtensions\**"/>
+        <Compile Remove="GDXBackends\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="GDXExtensions\**" />
-        <None Remove="GDXBackends\**" />
+        <None Remove="GDXExtensions\**"/>
+        <None Remove="GDXBackends\**"/>
     </ItemGroup>
 
 </Project>

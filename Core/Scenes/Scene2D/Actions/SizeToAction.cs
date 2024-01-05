@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// Moves an actor from its current size to a specific size.
+///     Moves an actor from its current size to a specific size.
 /// </summary>
-[PublicAPI]
 public class SizeToAction : TemporalAction
 {
     public float StartWidth  { get; set; }

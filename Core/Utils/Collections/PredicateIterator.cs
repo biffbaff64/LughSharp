@@ -18,14 +18,8 @@ using System.Collections;
 
 namespace LibGDXSharp.Utils.Collections;
 
-[PublicAPI]
 public class PredicateIterator<T> : IEnumerator< T >
 {
-    public IEnumerator< T? > Enumerator { get; set; }
-    public IPredicate< T >   Predicate  { get; set; }
-    public bool              End        { get; set; } = false;
-    public bool              Peeked     { get; set; } = false;
-    public T?                NextItem   { get; set; } = default;
 
     /// <summary>
     /// </summary>
@@ -42,22 +36,35 @@ public class PredicateIterator<T> : IEnumerator< T >
     /// <param name="predicate"></param>
     public PredicateIterator( IEnumerator< T? > enumerator, IPredicate< T > predicate )
     {
-        this.Enumerator = enumerator;
-        this.Predicate  = predicate;
-        End             = false;
-        Peeked          = false;
-        NextItem        = default( T? );
-        Current         = default( T? )!;
+        Enumerator = enumerator;
+        Predicate  = predicate;
+        End        = false;
+        Peeked     = false;
+        NextItem   = default( T? );
+        Current    = default( T? )!;
     }
+
+    public IEnumerator< T? > Enumerator { get; set; }
+    public IPredicate< T >   Predicate  { get; set; }
+    public bool              End        { get; set; } = false;
+    public bool              Peeked     { get; set; } = false;
+    public T?                NextItem   { get; set; } = default( T? );
+
+    public virtual bool MoveNext() => throw new NotImplementedException();
+
+    public virtual void Reset() => throw new NotImplementedException();
+
+    object? IEnumerator.Current => Current;
+
+    public T Current { get; init; }
+
+    public void Dispose() => Remove();
 
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>
     /// <param name="predicate"></param>
-    public void Set( IEnumerable< T? > enumerable, IPredicate< T > predicate )
-    {
-        Set( enumerable.GetEnumerator(), predicate );
-    }
+    public void Set( IEnumerable< T? > enumerable, IPredicate< T > predicate ) => Set( enumerable.GetEnumerator(), predicate );
 
     /// <summary>
     /// </summary>
@@ -65,11 +72,11 @@ public class PredicateIterator<T> : IEnumerator< T >
     /// <param name="predicate"></param>
     public void Set( IEnumerator< T? > iterator, IPredicate< T > predicate )
     {
-        this.Enumerator = iterator;
-        this.Predicate  = predicate;
-        End             = false;
-        Peeked          = false;
-        NextItem        = default( T? );
+        Enumerator = iterator;
+        Predicate  = predicate;
+        End        = false;
+        Peeked     = false;
+        NextItem   = default( T? );
     }
 
     public bool HasNext()
@@ -125,24 +132,5 @@ public class PredicateIterator<T> : IEnumerator< T >
         }
 
         Enumerator.Dispose();
-    }
-
-    public virtual bool MoveNext()
-    {
-        throw new NotImplementedException();
-    }
-
-    public virtual void Reset()
-    {
-        throw new NotImplementedException();
-    }
-
-    object? IEnumerator.Current => Current;
-
-    public T Current { get; init; }
-
-    public void Dispose()
-    {
-        Remove();
     }
 }

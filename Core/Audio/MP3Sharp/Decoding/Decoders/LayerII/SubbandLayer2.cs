@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// public class for layer II subbands in single channel mode.
+///     public class for layer II subbands in single channel mode.
 /// </summary>
-[PublicAPI]
 public class SubbandLayer2 : ASubband
 {
     // this table contains 3 requantized samples for each legal codeword
@@ -432,15 +431,15 @@ public class SubbandLayer2 : ASubband
         0.01562500000f, 0.00781250000f, 0.00390625000f, 0.00195312500f, 0.00097656250f, 0.00048828125f,
         0.00024414063f, 0.00012207031f, 0.00006103516f
     };
-
-    protected          int     allocation;
     protected readonly float[] cFactor    = { 0 };
     protected readonly int[]   codelength = { 0 };
 
-    protected float[] d = { 0 };
-
     protected readonly float[] factor = { 0.0f };
     protected readonly int     subbandnumber;
+
+    protected int allocation;
+
+    protected float[] d = { 0 };
 
     protected float[]?[] groupingtable = null!;
     protected int        groupnumber;
@@ -464,7 +463,6 @@ public class SubbandLayer2 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     protected virtual int GetAllocationLength( Header? header )
     {
@@ -488,7 +486,7 @@ public class SubbandLayer2 : ASubband
             // table 3-B.2c or 3-B.2d
             if ( channelBitrate is 1 or 2 )
             {
-                return ( subbandnumber <= 1 ) ? 4 : 3;
+                return subbandnumber <= 1 ? 4 : 3;
             }
 
             // tables 3-B.2a or 3-B.2b
@@ -507,7 +505,6 @@ public class SubbandLayer2 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     protected virtual void PrepareForSampleRead( Header? header,
                                                  int alloc,
@@ -587,19 +584,17 @@ public class SubbandLayer2 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadAllocation( Bitstream stream, Header? header, Crc16 crc )
     {
         ArgumentNullException.ThrowIfNull( header );
-        
+
         var length = GetAllocationLength( header );
         allocation = stream.GetBitsFromBuffer( length );
         crc.AddBits( allocation, length );
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public virtual void ReadScaleFactorSelection( Bitstream stream, Crc16? crc )
     {
@@ -611,12 +606,11 @@ public class SubbandLayer2 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
         ArgumentNullException.ThrowIfNull( header );
-        
+
         if ( allocation != 0 )
         {
             switch ( scfsi )
@@ -630,22 +624,24 @@ public class SubbandLayer2 : ASubband
 
                 case 1:
                     scalefactor1 =
-                    scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
                     scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 2:
                     scalefactor1 =
-                    scalefactor2 =
-                    scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        scalefactor2 =
+                            scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 3:
                     scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
                     scalefactor2 =
-                    scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
             }
@@ -655,7 +651,6 @@ public class SubbandLayer2 : ASubband
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override bool ReadSampleData( Bitstream stream )
     {
@@ -707,11 +702,10 @@ public class SubbandLayer2 : ASubband
 
         samplenumber = 0;
 
-        return ( ++groupnumber == 12 );
+        return ++groupnumber == 12;
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override bool PutNextSample( int channels, SynthesisFilter? filter1, SynthesisFilter? filter2 )
     {
@@ -734,6 +728,6 @@ public class SubbandLayer2 : ASubband
             filter1?.AddSample( sample, subbandnumber );
         }
 
-        return ( ++samplenumber == 3 );
+        return ++samplenumber == 3;
     }
 }

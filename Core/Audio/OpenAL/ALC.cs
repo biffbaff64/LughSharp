@@ -19,18 +19,23 @@ using System.Runtime.InteropServices;
 
 namespace LibGDXSharp.Audio.OpenAL;
 
-[PublicAPI]
 public class ALC
 {
+
+    public readonly static int[] AttrList =
+    {
+        FREQUENCY,
+        REFRESH,
+        SYNC,
+        MONO_SOURCES,
+        STEREO_SOURCES
+    };
 
     #region Dll Import Handling
 
     public const string OPEN_AL_DLL = "OpenAL";
 
-    static ALC()
-    {
-        NativeLibrary.SetDllImportResolver( typeof( AL ).Assembly, ImportResolver );
-    }
+    static ALC() => NativeLibrary.SetDllImportResolver( typeof( AL ).Assembly, ImportResolver );
 
     private static IntPtr ImportResolver( string libraryName, Assembly assembly, DllImportSearchPath? searchPath )
     {
@@ -38,7 +43,7 @@ public class ALC
 
         if ( libraryName == OPEN_AL_DLL )
         {
-            if ( System.Environment.OSVersion.Platform == PlatformID.Unix )
+            if ( Environment.OSVersion.Platform == PlatformID.Unix )
             {
                 const string OSX   = "OpenAL.framework/OpenAL";
                 const string LINUX = "libopenal.so.1";
@@ -61,15 +66,6 @@ public class ALC
 
     #endregion
 
-    public readonly static int[] AttrList =
-    {
-        FREQUENCY,
-        REFRESH,
-        SYNC,
-        MONO_SOURCES,
-        STEREO_SOURCES
-    };
-    
     #region Enum
 
     public const int FALSE                            = 0;

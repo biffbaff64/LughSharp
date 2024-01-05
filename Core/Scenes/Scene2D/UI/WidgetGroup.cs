@@ -21,33 +21,29 @@ using LibGDXSharp.Utils.Collections;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A <see cref="Group"/> that participates in layout and provides a minimum,
-/// preferred, and maximum size.
-/// <para>
-/// The default preferred size of a widget group is 0 and this is almost always
-/// overridden by a subclass. The default minimum size returns the preferred size,
-/// so a subclass may choose to return 0 for minimum size if it wants to allow
-/// itself to be sized smaller than the preferred size. The default maximum size
-/// is 0, which means no maximum size.
-/// </para>
-/// See <see cref="ILayout"/> for details on how a widget group should participate
-/// in layout. A widget group's mutator methods should call <see cref="Invalidate()"/>
-/// or <see cref="InvalidateHierarchy()"/> as needed. By default, InvalidateHierarchy
-/// is called when child widgets are added and removed.
+///     A <see cref="Group" /> that participates in layout and provides a minimum,
+///     preferred, and maximum size.
+///     <para>
+///         The default preferred size of a widget group is 0 and this is almost always
+///         overridden by a subclass. The default minimum size returns the preferred size,
+///         so a subclass may choose to return 0 for minimum size if it wants to allow
+///         itself to be sized smaller than the preferred size. The default maximum size
+///         is 0, which means no maximum size.
+///     </para>
+///     See <see cref="ILayout" /> for details on how a widget group should participate
+///     in layout. A widget group's mutator methods should call <see cref="Invalidate()" />
+///     or <see cref="InvalidateHierarchy()" /> as needed. By default, InvalidateHierarchy
+///     is called when child widgets are added and removed.
 /// </summary>
-[PublicAPI]
 public class WidgetGroup : Group, ILayout
 {
-    public bool FillParent { get; set; }
-
-    private bool _layoutEnabled = true;
 
     protected WidgetGroup()
     {
     }
 
     /// <summary>
-    /// Creates a new widget group containing the specified actors.
+    ///     Creates a new widget group containing the specified actors.
     /// </summary>
     public WidgetGroup( params Actor[] actors )
     {
@@ -57,34 +53,16 @@ public class WidgetGroup : Group, ILayout
         }
     }
 
-    public void SetLayoutEnabled( bool enabled )
-    {
-        _layoutEnabled = enabled;
-        SetLayoutEnabled( this, enabled );
-    }
+    /// <summary>
+    ///     Returns true if the widget's layout has been invalidated.
+    /// </summary>
+    public bool NeedsLayout { get; private set; } = true;
 
-    private static void SetLayoutEnabled( Group parent, bool enabled )
-    {
-        SnapshotArray< Actor > children = parent.Children;
-
-        for ( int i = 0, n = children.Size; i < n; i++ )
-        {
-            Actor actor = children.Get( i );
-
-            if ( actor is ILayout layout )
-            {
-                layout.LayoutEnabled = enabled;
-            }
-            else if ( actor is Group group )
-            {
-                SetLayoutEnabled( group, enabled );
-            }
-        }
-    }
+    public bool FillParent { get; set; }
 
     public virtual void Validate()
     {
-        if ( !_layoutEnabled )
+        if ( !LayoutEnabled )
         {
             return;
         }
@@ -147,15 +125,7 @@ public class WidgetGroup : Group, ILayout
         }
     }
 
-    /// <summary>
-    /// Returns true if the widget's layout has been invalidated.
-    /// </summary>
-    public bool NeedsLayout { get; private set; } = true;
-
-    public virtual void Invalidate()
-    {
-        NeedsLayout = true;
-    }
+    public virtual void Invalidate() => NeedsLayout = true;
 
     public virtual void InvalidateHierarchy()
     {
@@ -165,16 +135,6 @@ public class WidgetGroup : Group, ILayout
         {
             layout.InvalidateHierarchy();
         }
-    }
-
-    protected new void ChildrenChanged()
-    {
-        InvalidateHierarchy();
-    }
-
-    protected new void SizeChanged()
-    {
-        Invalidate();
     }
 
     public virtual void Pack()
@@ -195,19 +155,44 @@ public class WidgetGroup : Group, ILayout
     {
     }
 
+    public bool LayoutEnabled { get; set; } = true;
+
+    public void SetLayoutEnabled( bool enabled )
+    {
+        LayoutEnabled = enabled;
+        SetLayoutEnabled( this, enabled );
+    }
+
+    private static void SetLayoutEnabled( Group parent, bool enabled )
+    {
+        SnapshotArray< Actor > children = parent.Children;
+
+        for ( int i = 0, n = children.Size; i < n; i++ )
+        {
+            Actor actor = children.GetAt( i );
+
+            if ( actor is ILayout layout )
+            {
+                layout.LayoutEnabled = enabled;
+            }
+            else if ( actor is Group group )
+            {
+                SetLayoutEnabled( group, enabled );
+            }
+        }
+    }
+
+    protected new void ChildrenChanged() => InvalidateHierarchy();
+
+    protected new void SizeChanged() => Invalidate();
+
     /// <summary>
-    /// If this method is overridden, the super method or <see cref="Validate()"/>
-    /// should be called to ensure the widget group is laid out.
+    ///     If this method is overridden, the super method or <see cref="Validate()" />
+    ///     should be called to ensure the widget group is laid out.
     /// </summary>
     public virtual new void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
         base.Draw( batch, parentAlpha );
-    }
-
-    public bool LayoutEnabled
-    {
-        get => _layoutEnabled;
-        set => _layoutEnabled = value;
     }
 }

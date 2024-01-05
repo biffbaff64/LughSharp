@@ -16,36 +16,31 @@
 
 namespace LibGDXSharp.Graphics.G2D;
 
-[PublicAPI]
 public class PolygonRegion
 {
-    public TextureRegion Region        { get; set; }
-    public float[]       TextureCoords { get; set; } // texture coordinates in atlas coordinates
-    public float[]?       Vertices      { get; set; } // pixel coordinates relative to source image.
-    public short[]       Triangles     { get; set; }
 
     /// <summary>
-    /// Creates a PolygonRegion by triangulating the polygon coordinates in vertices
-    /// and calculates uvs based on that. TextureRegion can come from an atlas.
+    ///     Creates a PolygonRegion by triangulating the polygon coordinates in vertices
+    ///     and calculates uvs based on that. TextureRegion can come from an atlas.
     /// </summary>
     /// <param name="region"> the region used for drawing </param>
     /// <param name="vertices">
-    /// contains 2D polygon coordinates in pixels relative to source region.
+    ///     contains 2D polygon coordinates in pixels relative to source region.
     /// </param>
     /// <param name="triangles"></param>
     public PolygonRegion( TextureRegion region, float[]? vertices, short[] triangles )
     {
-        this.Region        = region;
-        this.Vertices      = vertices;
-        this.Triangles     = triangles;
-        this.TextureCoords = new float[ vertices.Length ];
+        Region        = region;
+        Vertices      = vertices;
+        Triangles     = triangles;
+        TextureCoords = new float[ vertices.Length ];
 
-        var u             = region.U;
-        var v             = region.V;
-        var uvWidth       = region.U2 - u;
-        var uvHeight      = region.V2 - v;
-        var width         = region.RegionWidth;
-        var height        = region.RegionHeight;
+        var u        = region.U;
+        var v        = region.V;
+        var uvWidth  = region.U2 - u;
+        var uvHeight = region.V2 - v;
+        var width    = region.RegionWidth;
+        var height   = region.RegionHeight;
 
         for ( int i = 0, n = vertices.Length; i < n; i += 2 )
         {
@@ -53,4 +48,9 @@ public class PolygonRegion
             TextureCoords[ i + 1 ] = v + ( uvHeight * ( 1 - ( vertices[ i + 1 ] / height ) ) );
         }
     }
+
+    public TextureRegion Region        { get; set; }
+    public float[]       TextureCoords { get; set; } // texture coordinates in atlas coordinates
+    public float[]?      Vertices      { get; set; } // pixel coordinates relative to source image.
+    public short[]       Triangles     { get; set; }
 }

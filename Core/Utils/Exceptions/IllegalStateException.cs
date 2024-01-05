@@ -16,15 +16,14 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
-public class IllegalStateException : System.Exception
+public class IllegalStateException : Exception
 {
     public IllegalStateException( string? message = "" )
         : base( message )
     {
     }
 
-    public IllegalStateException( string message, System.Exception exception )
+    public IllegalStateException( string message, Exception exception )
         : base( message, exception )
     {
     }

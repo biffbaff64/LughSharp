@@ -16,15 +16,8 @@
 
 namespace LibGDXSharp.Core;
 
-[PublicAPI]
 public abstract class AbstractInput : IInput
 {
-    public IInputProcessor? InputProcessor { get; set; }
-    
-    protected bool[] PressedKeys     { get; set; }
-    protected bool[] JustPressedKeys { get; set; }
-    protected bool   KeyJustPressed  { get; set; }
-    protected int    PressedKeyCount { get; set; }
 
     private readonly List< int > _keysToCatch;
 
@@ -37,6 +30,12 @@ public abstract class AbstractInput : IInput
         _keysToCatch    = new List< int >();
     }
 
+    protected bool[]           PressedKeys     { get; set; }
+    protected bool[]           JustPressedKeys { get; set; }
+    protected bool             KeyJustPressed  { get; set; }
+    protected int              PressedKeyCount { get; set; }
+    public    IInputProcessor? InputProcessor  { get; set; }
+
     /// <summary>
     /// </summary>
     /// <param name="key"></param>
@@ -48,11 +47,10 @@ public abstract class AbstractInput : IInput
             return PressedKeyCount > 0;
         }
 
-        return ( key is >= 0 and <= IInput.Keys.MAX_KEYCODE ) && PressedKeys[ key ];
+        return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && PressedKeys[ key ];
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
@@ -63,35 +61,10 @@ public abstract class AbstractInput : IInput
             return KeyJustPressed;
         }
 
-        return ( key is >= 0 and <= IInput.Keys.MAX_KEYCODE ) && JustPressedKeys[ key ];
+        return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && JustPressedKeys[ key ];
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    public virtual bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="catchBack"></param>
-    public virtual void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    public virtual bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="catchMenu"></param>
-    public virtual void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
-
-    /// <summary>
-    /// 
     /// </summary>
     /// <param name="keycode"></param>
     /// <param name="catchKey"></param>
@@ -108,7 +81,6 @@ public abstract class AbstractInput : IInput
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="keycode"></param>
     /// <returns></returns>
@@ -187,4 +159,24 @@ public abstract class AbstractInput : IInput
     public abstract void GetRotationMatrix( float[] matrix );
 
     public abstract long GetCurrentEventTime();
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
+
+    /// <summary>
+    /// </summary>
+    /// <param name="catchBack"></param>
+    public virtual void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
+
+    /// <summary>
+    /// </summary>
+    /// <param name="catchMenu"></param>
+    public virtual void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
 }

@@ -17,22 +17,22 @@
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// A selection that supports range selection by knowing about the
-/// array of items being selected.
+///     A selection that supports range selection by knowing about the
+///     array of items being selected.
 /// </summary>
-[PublicAPI]
 public class ArraySelection<T> : Selection< T >
 {
-    public bool RangeSelect { get; set; } = true;
 
     private readonly List< T >? _array;
-    private          T?        _rangeStart;
+    private          T?         _rangeStart;
 
     public ArraySelection( List< T >? array )
     {
-        this._array      = array;
-        this._rangeStart = default( T? );
+        _array      = array;
+        _rangeStart = default( T? );
     }
+
+    public bool RangeSelect { get; set; } = true;
 
     public new void Choose( T item )
     {
@@ -70,7 +70,7 @@ public class ArraySelection<T> : Selection< T >
 
                 if ( !UIUtils.Ctrl() )
                 {
-                    Selected.Clear();   // Clear( 8 );
+                    Selected.Clear(); // Clear( 8 );
                 }
 
                 for ( var i = start; i <= end; i++ )
@@ -101,21 +101,18 @@ public class ArraySelection<T> : Selection< T >
     }
 
     /// <summary>
-    /// Called after the selection changes, clears the range start item.
+    ///     Called after the selection changes, clears the range start item.
     /// </summary>
-    protected new void Changed()
-    {
-        _rangeStart = default( T? );
-    }
+    protected new void Changed() => _rangeStart = default( T? );
 
     /// <summary>
-    /// Removes objects from the selection that are no longer in the items
-    /// array. If <see cref="Selection{T}.Required"/> is true and there is
-    /// no selected item, the first item is selected.
+    ///     Removes objects from the selection that are no longer in the items
+    ///     array. If <see cref="Selection{T}.Required" /> is true and there is
+    ///     no selected item, the first item is selected.
     /// </summary>
     public void Validate()
     {
-        List< T > array = this._array;
+        List< T > array = _array;
 
         if ( array.Count == 0 )
         {

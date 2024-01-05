@@ -16,8 +16,6 @@
 
 namespace LibGDXSharp.Input;
 
-[PublicAPI]
 public class RemoteInput
 {
-        
 }

@@ -18,7 +18,6 @@ using LibGDXSharp.Files;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
-[PublicAPI]
 public class Wav
 {
     public class Music : OpenALMusic
@@ -36,7 +35,7 @@ public class Wav
         {
         }
     }
-    
+
     public class Sound : OpenALSound
     {
         /// <inheritdoc />

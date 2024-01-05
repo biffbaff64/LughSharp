@@ -18,28 +18,23 @@ using LibGDXSharp.Utils.Async;
 
 namespace LibGDXSharp.Assets;
 
-[PublicAPI]
 public class AssetLoadingTask
 {
-    public bool            DependenciesLoaded { get; set; }
-    public AssetDescriptor AssetDesc          { get; set; }
-    public bool            Cancel             { get; set; }
-    public object?         Asset              { get; set; }
-
-    public List< AssetDescriptor >? dependencies;
+    private readonly AssetLoader _loader;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     private readonly AssetManager _manager;
-    private readonly AssetLoader  _loader;
 
     private volatile bool          _asyncDone = false;
     private volatile AsyncResult?  _depsFuture;
-    private volatile AsyncResult?  _loadFuture;
     private volatile AsyncExecutor _executor;
+    private volatile AsyncResult?  _loadFuture;
 
     private long _startTime;
+
+    public List< AssetDescriptor >? dependencies;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -62,9 +57,14 @@ public class AssetLoadingTask
         _startTime = manager.Log.Level == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
     }
 
+    public bool            DependenciesLoaded { get; set; }
+    public AssetDescriptor AssetDesc          { get; set; }
+    public bool            Cancel             { get; set; }
+    public object?         Asset              { get; set; }
+
     /// <summary>
-    /// Loads parts of the asset asynchronously if the loader is
-    /// an <see cref="AsynchronousAssetLoader{T,TP}"/>.
+    ///     Loads parts of the asset asynchronously if the loader is
+    ///     an <see cref="AsynchronousAssetLoader{T,TP}" />.
     /// </summary>
     public void Call()
     {
@@ -84,7 +84,7 @@ public class AssetLoadingTask
                 if ( dependencies != null )
                 {
                     RemoveDuplicates( dependencies );
-                    
+
                     _manager.InjectDependencies( AssetDesc.Filepath, dependencies );
                 }
                 else
@@ -112,11 +112,11 @@ public class AssetLoadingTask
     }
 
     /// <summary>
-    /// Updates the loading of the asset. In case the asset is loaded with an
-    /// <see cref="AsynchronousAssetLoader{T, TP}"/>, the loaders
-    /// <see cref="AsynchronousAssetLoader{T, TP}.LoadAsync"/> method is first called on a
-    /// worker thread. Once this method returns, the rest of the asset is loaded on the
-    /// rendering thread via <see cref="AsynchronousAssetLoader{T, TP}.LoadSync"/>.
+    ///     Updates the loading of the asset. In case the asset is loaded with an
+    ///     <see cref="AsynchronousAssetLoader{T, TP}" />, the loaders
+    ///     <see cref="AsynchronousAssetLoader{T, TP}.LoadAsync" /> method is first called on a
+    ///     worker thread. Once this method returns, the rest of the asset is loaded on the
+    ///     rendering thread via <see cref="AsynchronousAssetLoader{T, TP}.LoadSync" />.
     /// </summary>
     /// <returns> true in case the asset was fully loaded, false otherwise </returns>
     /// <exception cref="GdxRuntimeException"></exception>
@@ -136,7 +136,6 @@ public class AssetLoadingTask
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public void Unload()
     {
@@ -237,7 +236,7 @@ public class AssetLoadingTask
                 {
                     _depsFuture.Get();
                 }
-                catch ( System.Exception e )
+                catch ( Exception e )
                 {
                     throw new GdxRuntimeException( $"Couldn't load dependencies of asset: {AssetDesc.Filepath}", e );
                 }
@@ -270,7 +269,7 @@ public class AssetLoadingTask
             {
                 _loadFuture.Get();
             }
-            catch ( System.Exception e )
+            catch ( Exception e )
             {
                 throw new GdxRuntimeException( $"Couldn't load asset: {AssetDesc.Filepath}", e );
             }

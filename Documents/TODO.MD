@@ -18,14 +18,15 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - NO MAGIC NUMBERS!!!
-- 
+-
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - SORT OUT VERSIONING!!!
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- IP   = Conversion In Progress.
+- IP = Conversion In Progress.
 - DONE = Class finished but may not be fully 'CSharp-ified'
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,7 +38,8 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - Constantly look for opportunities to improve this code.
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
 - Make more use of <inheritdoc cref=""/>> or just <inheritdoc/>
-- 
+-
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ASSETS

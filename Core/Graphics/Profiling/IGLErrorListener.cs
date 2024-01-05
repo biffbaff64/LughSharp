@@ -14,26 +14,26 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Reflection;
+
 namespace LibGDXSharp.Graphics.Profiling;
 
 /// <summary>
-/// Listener for GL errors detected by <see cref="GLProfiler"/>.
+///     Listener for GL errors detected by <see cref="GLProfiler" />.
 /// </summary>
-/// <seealso cref="GLProfiler"/>
-[PublicAPI]
+/// <seealso cref="GLProfiler" />
 public interface IGLErrorListener
 {
     /// <summary>
-    /// Put your error logging code here.
+    ///     Put your error logging code here.
     /// </summary>
-    /// <seealso cref="GLInterceptor.ResolveErrorNumber(int) "/>
+    /// <seealso cref="GLInterceptor.ResolveErrorNumber(int) " />
     void OnError( int error );
 }
 
 /// <summary>
-/// Listener that will log using Gdx.app.error GL error name and GL function.
+///     Listener that will log using Gdx.app.error GL error name and GL function.
 /// </summary>
-[PublicAPI]
 public class GLLoggingListener : IGLErrorListener
 {
     public void OnError( int error )
@@ -42,8 +42,8 @@ public class GLLoggingListener : IGLErrorListener
 
         try
         {
-            System.Diagnostics.StackTrace   stackTrace = new System.Diagnostics.StackTrace();
-            System.Diagnostics.StackFrame[] frames     = stackTrace.GetFrames();
+            var          stackTrace = new StackTrace();
+            StackFrame[] frames     = stackTrace.GetFrames();
 
             for ( var i = 0; i < frames.Length; i++ )
             {
@@ -51,7 +51,7 @@ public class GLLoggingListener : IGLErrorListener
                 {
                     if ( ( i + 1 ) < frames.Length )
                     {
-                        System.Reflection.MethodBase? glMethod = frames[ i + 1 ].GetMethod();
+                        MethodBase? glMethod = frames[ i + 1 ].GetMethod();
                         place = glMethod?.Name;
                     }
 
@@ -59,7 +59,7 @@ public class GLLoggingListener : IGLErrorListener
                 }
             }
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             // ignored
         }
@@ -69,20 +69,16 @@ public class GLLoggingListener : IGLErrorListener
                            ? $"Error {GLInterceptor.ResolveErrorNumber( error )} from {place}"
 
                            // This will capture current stack trace for logging, if possible
-                           : $"Error {GLInterceptor.ResolveErrorNumber( error )} at: {new System.Exception()}"
+                           : $"Error {GLInterceptor.ResolveErrorNumber( error )} at: {new Exception()}"
             );
     }
 }
 
 /// <summary>
-/// Listener that will throw a GdxRuntimeException with error name.
+///     Listener that will throw a GdxRuntimeException with error name.
 /// </summary>
-[PublicAPI]
 public class ThrowingListener : IGLErrorListener
 {
-    public void OnError( int error )
-    {
-        throw new GdxRuntimeException
-            ( $"GLProfiler: Got GL error {GLInterceptor.ResolveErrorNumber( error )}" );
-    }
+    public void OnError( int error ) => throw new GdxRuntimeException
+        ( $"GLProfiler: Got GL error {GLInterceptor.ResolveErrorNumber( error )}" );
 }

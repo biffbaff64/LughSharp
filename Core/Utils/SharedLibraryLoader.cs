@@ -18,7 +18,6 @@ using System.Runtime.InteropServices;
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
 public class SharedLibraryLoader
 {
     public static bool IsWindows { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Windows );
@@ -27,24 +26,17 @@ public class SharedLibraryLoader
     public static bool IsIos     { get; private set; } = false; //TODO:
     public static bool IsAndroid { get; private set; } = false; //TODO:
     public static bool IsARM     { get; private set; } = SystemHelpers.IsArmArchitecture();
-    public static bool Is64Bit   { get; private set; } = System.Environment.Is64BitOperatingSystem;
+    public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
 }
 
-[PublicAPI]
 public static class SystemHelpers
 {
-    public static bool IsArmArchitecture()
-    {
-        return RuntimeInformation.OSArchitecture switch
-               {
-                   System.Runtime.InteropServices.Architecture.Arm   => true,
-                   System.Runtime.InteropServices.Architecture.Arm64 => true,
-                   _                                                 => false
-               };
-    }
+    public static bool IsArmArchitecture() => RuntimeInformation.OSArchitecture switch
+                                              {
+                                                  Architecture.Arm   => true,
+                                                  Architecture.Arm64 => true,
+                                                  _                  => false
+                                              };
 
-    public static String RandomUUID()
-    {
-        return Guid.NewGuid().ToString();
-    }
+    public static String RandomUUID() => Guid.NewGuid().ToString();
 }

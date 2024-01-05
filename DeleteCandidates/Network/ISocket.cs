@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Network;
 
-[PublicAPI]
 public interface ISocket
 {
 }

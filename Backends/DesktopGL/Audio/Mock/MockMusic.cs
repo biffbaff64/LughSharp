@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
-[PublicAPI]
 public class MockMusic : IMusic
 {
     /// <inheritdoc />

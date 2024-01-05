@@ -16,32 +16,31 @@
 
 namespace LibGDXSharp.Core;
 
-[PublicAPI]
 public interface IInputProcessor
 {
     /// <summary>
-    /// Called when a key is pressed.
+    ///     Called when a key is pressed.
     /// </summary>
-    /// <param name="keycode">One of the constants in <see cref="IInput.Keys"/></param>
+    /// <param name="keycode">One of the constants in <see cref="IInput.Keys" /></param>
     /// <returns>TRUE if the input was processed.</returns>
     bool KeyDown( int keycode );
 
     /// <summary>
-    /// Called when a key is released.
+    ///     Called when a key is released.
     /// </summary>
-    /// <param name="keycode">One of the constants in <see cref="IInput.Keys"/></param>
+    /// <param name="keycode">One of the constants in <see cref="IInput.Keys" /></param>
     /// <returns>TRUE if the input was processed.</returns>
     bool KeyUp( int keycode );
 
     /// <summary>
-    /// Called when a key was typed
+    ///     Called when a key was typed
     /// </summary>
     /// <param name="character"></param>
     /// <returns>TRUE if the input was processed.</returns>
     bool KeyTyped( char character );
 
     /// <summary>
-    /// Called when the screen was touched or a mouse button was pressed.
+    ///     Called when the screen was touched or a mouse button was pressed.
     /// </summary>
     /// <param name="screenX"></param>
     /// <param name="screenY"></param>
@@ -51,7 +50,7 @@ public interface IInputProcessor
     bool TouchDown( int screenX, int screenY, int pointer, int button );
 
     /// <summary>
-    /// Called when a screen touch is lifted or mouse button is released.
+    ///     Called when a screen touch is lifted or mouse button is released.
     /// </summary>
     /// <param name="screenX"></param>
     /// <param name="screenY"></param>

@@ -17,12 +17,11 @@
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Simple logger that uses the <see cref="IApplication"/> logging facilities to
-/// output messages.
-/// The log level set with <see cref="IApplication.LogLevel"/> overrides
-/// the log level set here.
+///     Simple logger that uses the <see cref="IApplication" /> logging facilities to
+///     output messages.
+///     The log level set with <see cref="IApplication.LogLevel" /> overrides
+///     the log level set here.
 /// </summary>
-[PublicAPI]
 public class Logger
 {
     public const int LOG_NONE  = 0;
@@ -38,9 +37,18 @@ public class Logger
     /// <param name="level"></param>
     public Logger( string tag, int level = LOG_ERROR )
     {
-        this._tag  = tag;
-        this.Level = level;
+        _tag  = tag;
+        Level = level;
     }
+
+    /// <summary>
+    ///     Sets the log level.
+    ///     <see cref="LOG_NONE" /> will mute all log output.
+    ///     <see cref="LOG_ERROR" /> will only let error messages through.
+    ///     <see cref="LOG_INFO" /> will let all non-debug messages through.
+    ///     <see cref="LOG_DEBUG" /> will let all messages through.
+    /// </summary>
+    public int Level { get; set; }
 
     /// <summary>
     /// </summary>
@@ -57,7 +65,7 @@ public class Logger
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
-    public void Debug( string message, System.Exception exception )
+    public void Debug( string message, Exception exception )
     {
         if ( Level >= LOG_DEBUG )
         {
@@ -80,7 +88,7 @@ public class Logger
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
-    public void Info( string message, System.Exception exception )
+    public void Info( string message, Exception exception )
     {
         if ( Level >= LOG_INFO )
         {
@@ -103,20 +111,11 @@ public class Logger
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
-    public void Error( string message, System.Exception exception )
+    public void Error( string message, Exception exception )
     {
         if ( Level >= LOG_ERROR )
         {
             Gdx.App.Error( _tag, message, exception );
         }
     }
-
-    /// <summary>
-    /// Sets the log level.
-    /// <see cref="LOG_NONE"/> will mute all log output.
-    /// <see cref="LOG_ERROR"/> will only let error messages through.
-    /// <see cref="LOG_INFO"/> will let all non-debug messages through.
-    /// <see cref="LOG_DEBUG"/> will let all messages through.
-    /// </summary>
-    public int Level { get; set; }
 }

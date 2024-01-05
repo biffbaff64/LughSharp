@@ -16,13 +16,12 @@
 
 namespace LibGDXSharp.Utils.Collections;
 
-[PublicAPI]
 public static class DictionaryExtension
 {
     /// <summary>
-    /// Returns the key for the specified value, or null if it is not in the map.
-    /// Note this traverses the entire map and compares every value, which may be
-    /// an expensive operation.
+    ///     Returns the key for the specified value, or null if it is not in the map.
+    ///     Note this traverses the entire map and compares every value, which may be
+    ///     an expensive operation.
     /// </summary>
     public static TK? FindKey<TK, TV>( this Dictionary< TK, TV > self, TV value ) where TK : notnull
     {
@@ -54,8 +53,8 @@ public static class DictionaryExtension
     }
 
     /// <summary>
-    /// Allows to retrieve the value associated with the specified key from the dictionary.
-    /// If there's no such key in the dictionary, the default value is returned instead.
+    ///     Allows to retrieve the value associated with the specified key from the dictionary.
+    ///     If there's no such key in the dictionary, the default value is returned instead.
     /// </summary>
     public static TV Get<TK, TV>( this Dictionary< TK, TV > self, TK key, TV defaultValue ) where TK : notnull
     {
@@ -92,14 +91,14 @@ public static class DictionaryExtension
     }
 
     /// <summary>
-    /// Allows to add a new key to the dictionary, even if the dictionary already
-    /// contains this key.
+    ///     Allows to add a new key to the dictionary, even if the dictionary already
+    ///     contains this key.
     /// </summary>
     public static void Put<TK, TV>( this Dictionary< TK, TV > self, TK key, TV value ) where TK : notnull
     {
         self.Remove( key );
         self.Add( key, value );
     }
-    
+
 //    public static TV 
 }

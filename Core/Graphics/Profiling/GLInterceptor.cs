@@ -20,43 +20,18 @@ using Buffer = LibGDXSharp.Files.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
-[PublicAPI]
 public abstract class GLInterceptor : IGL20
 {
+
+    protected GLProfiler glProfiler;
+
+    protected GLInterceptor( GLProfiler profiler ) => glProfiler = profiler;
+
     public int          Calls           { get; set; }
     public int          TextureBindings { get; set; }
     public int          DrawCalls       { get; set; }
     public int          ShaderSwitches  { get; set; }
     public FloatCounter VertexCount     { get; set; } = new( 0 );
-
-    protected GLProfiler glProfiler;
-
-    protected GLInterceptor( GLProfiler profiler )
-    {
-        this.glProfiler = profiler;
-    }
-
-    public static string ResolveErrorNumber( int error )
-    {
-        return error switch
-               {
-                   IGL20.GL_INVALID_VALUE                 => "InvalidValue",
-                   IGL20.GL_INVALID_OPERATION             => "InvalidOperation",
-                   IGL20.GL_INVALID_FRAMEBUFFER_OPERATION => "InvalidFramebufferOperation",
-                   IGL20.GL_INVALID_ENUM                  => "InvalidEnum",
-                   IGL20.GL_OUT_OF_MEMORY                 => "OutOfMemory",
-                   _                                      => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
-               };
-    }
-
-    public void Reset()
-    {
-        Calls           = 0;
-        TextureBindings = 0;
-        DrawCalls       = 0;
-        ShaderSwitches  = 0;
-        VertexCount.Reset();
-    }
 
     /// <inheritdoc />
     public abstract void GLActiveTexture( int texture );
@@ -359,7 +334,15 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, IntPtr ptr );
 
     /// <inheritdoc />
-    public abstract void GLCompressedTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data );
+    public abstract void GLCompressedTexSubImage2D( int target,
+                                                    int level,
+                                                    int xoffset,
+                                                    int yoffset,
+                                                    int width,
+                                                    int height,
+                                                    int format,
+                                                    int imageSize,
+                                                    Buffer data );
 
     /// <inheritdoc />
     public abstract void GLGetIntegerv( int pname, IntBuffer parameters );
@@ -543,4 +526,23 @@ public abstract class GLInterceptor : IGL20
 
     /// <inheritdoc />
     public abstract void GLVertexAttrib4F( int indx, float x, float y, float z, float w );
+
+    public static string ResolveErrorNumber( int error ) => error switch
+                                                            {
+                                                                IGL20.GL_INVALID_VALUE => "InvalidValue",
+                                                                IGL20.GL_INVALID_OPERATION => "InvalidOperation",
+                                                                IGL20.GL_INVALID_FRAMEBUFFER_OPERATION => "InvalidFramebufferOperation",
+                                                                IGL20.GL_INVALID_ENUM => "InvalidEnum",
+                                                                IGL20.GL_OUT_OF_MEMORY => "OutOfMemory",
+                                                                _ => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
+                                                            };
+
+    public void Reset()
+    {
+        Calls           = 0;
+        TextureBindings = 0;
+        DrawCalls       = 0;
+        ShaderSwitches  = 0;
+        VertexCount.Reset();
+    }
 }

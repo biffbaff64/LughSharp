@@ -17,11 +17,10 @@
 namespace LibGDXSharp.Utils.Pooling;
 
 /// <summary>
-/// A <see cref="Pool{T}"/> which keeps track of the obtained items
-/// (see <see cref="Obtain()"/>), which can be freed all at once using the
-/// <see cref="Flush()"/> method.
+///     A <see cref="Pool{T}" /> which keeps track of the obtained items
+///     (see <see cref="Obtain()" />), which can be freed all at once using the
+///     <see cref="Flush()" /> method.
 /// </summary>
-[PublicAPI]
 public abstract class FlushablePool<T> : Pool< T >
 {
     private readonly List< T > _obtained = new();
@@ -45,12 +44,12 @@ public abstract class FlushablePool<T> : Pool< T >
         T? result = base.Obtain();
 
         _obtained.Add( result! );
-        
+
         return result;
     }
 
     /// <summary>
-    /// Frees all obtained instances.
+    ///     Frees all obtained instances.
     /// </summary>
     public virtual void Flush()
     {
@@ -71,7 +70,7 @@ public abstract class FlushablePool<T> : Pool< T >
         {
             _obtained.Remove( obj );
         }
-            
+
         base.FreeAll( objects );
     }
 }

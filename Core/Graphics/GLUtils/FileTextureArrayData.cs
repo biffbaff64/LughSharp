@@ -16,22 +16,21 @@
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[PublicAPI]
 public class FileTextureArrayData : ITextureArrayData
 {
     private readonly ITextureData?[] _textureData;
+    private          int             _depth;
 
-    private Pixmap.Format _format;
-    private int           _depth;
-    private bool          _useMipMaps;
-    private bool          _prepared;
+    private readonly Pixmap.Format _format;
+    private          bool          _prepared;
+    private readonly bool          _useMipMaps;
 
     public FileTextureArrayData( Pixmap.Format format, bool useMipMaps, FileInfo[] files )
     {
-        this._format      = format;
-        this._useMipMaps  = useMipMaps;
-        this._depth       = files.Length;
-        this._textureData = new ITextureData?[ files.Length ];
+        _format      = format;
+        _useMipMaps  = useMipMaps;
+        _depth       = files.Length;
+        _textureData = new ITextureData?[ files.Length ];
 
         for ( var i = 0; i < files.Length; i++ )
         {
@@ -61,9 +60,9 @@ public class FileTextureArrayData : ITextureArrayData
     public int GLType => _format.ToGLType();
 
     /// <summary>
-    /// Prepares the TextureArrayData for a call to <see cref="ITextureArrayData.ConsumeTextureArrayData"/>.
-    /// This method can be called from a non OpenGL thread and should thus not interact
-    /// with OpenGL. 
+    ///     Prepares the TextureArrayData for a call to <see cref="ITextureArrayData.ConsumeTextureArrayData" />.
+    ///     This method can be called from a non OpenGL thread and should thus not interact
+    ///     with OpenGL.
     /// </summary>
     public void Prepare()
     {
@@ -91,8 +90,8 @@ public class FileTextureArrayData : ITextureArrayData
             {
                 throw new GdxRuntimeException
                     (
-                     "Error whilst preparing TextureArray:"
-                   + "TextureArray Textures must have equal dimensions."
+                    "Error whilst preparing TextureArray:"
+                  + "TextureArray Textures must have equal dimensions."
                     );
             }
         }
@@ -101,16 +100,16 @@ public class FileTextureArrayData : ITextureArrayData
     }
 
     /// <summary>
-    /// Uploads the pixel data of the TextureArray layers of the TextureArray to the OpenGL
-    /// ES texture. The caller must bind an OpenGL ES texture.
-    /// <para></para>
-    /// <para>
-    /// A call to <see cref="ITextureArrayData.Prepare"/> must preceed a call to this method.
-    /// </para>
-    /// <para>
-    /// Any internal data structures created in <see cref="ITextureArrayData.Prepare"/>
-    /// should be disposed of here. 
-    /// </para>
+    ///     Uploads the pixel data of the TextureArray layers of the TextureArray to the OpenGL
+    ///     ES texture. The caller must bind an OpenGL ES texture.
+    ///     <para></para>
+    ///     <para>
+    ///         A call to <see cref="ITextureArrayData.Prepare" /> must preceed a call to this method.
+    ///     </para>
+    ///     <para>
+    ///         Any internal data structures created in <see cref="ITextureArrayData.Prepare" />
+    ///         should be disposed of here.
+    ///     </para>
     /// </summary>
     public void ConsumeTextureArrayData()
     {
@@ -145,19 +144,18 @@ public class FileTextureArrayData : ITextureArrayData
                     disposePixmap = true;
                 }
 
-                Gdx.GL30.GLTexSubImage3D
-                    (
-                     IGL30.GL_TEXTURE_2D_ARRAY,
-                     0,
-                     0,
-                     0,
-                     i,
-                     pixmap.Width,
-                     pixmap.Height,
-                     1,
-                     pixmap.GLInternalFormat,
-                     pixmap.GLType,
-                     pixmap.Pixels
+                Gdx.GL30.GLTexSubImage3D(
+                    IGL30.GL_TEXTURE_2D_ARRAY,
+                    0,
+                    0,
+                    0,
+                    i,
+                    pixmap.Width,
+                    pixmap.Height,
+                    1,
+                    pixmap.GLInternalFormat,
+                    pixmap.GLType,
+                    pixmap.Pixels
                     );
 
                 if ( _useMipMaps )

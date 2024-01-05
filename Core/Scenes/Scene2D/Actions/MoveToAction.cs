@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// Moves an actor from its current position to a specific position.
+///     Moves an actor from its current position to a specific position.
 /// </summary>
-[PublicAPI]
 public class MoveToAction : TemporalAction
 {
     public float StartX    { get; set; }
@@ -82,8 +81,8 @@ public class MoveToAction : TemporalAction
 
     public void SetPosition( float x, float y, int alignment )
     {
-        EndX           = x;
-        EndY           = y;
-        this.Alignment = alignment;
+        EndX      = x;
+        EndY      = y;
+        Alignment = alignment;
     }
 }

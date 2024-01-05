@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Maps;
 
 /// <summary>
-/// This is a base type so cannot be a record or struct.
+///     This is a base type so cannot be a record or struct.
 /// </summary>
-[PublicAPI]
 public class Map
 {
     public MapLayers     Layers     { get; } = new();

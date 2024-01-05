@@ -18,7 +18,6 @@ using LibGDXSharp.Scenes.Listeners;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class RemoveListenerAction : Action
 {
     public IEventListener? Listener { get; set; }

@@ -17,13 +17,12 @@
 namespace LibGDXSharp.Maths;
 
 /// <summary>
-/// A truncated rectangular pyramid. Used to define the viewable
-/// region and its projection onto the screen.
+///     A truncated rectangular pyramid. Used to define the viewable
+///     region and its projection onto the screen.
 /// </summary>
-[PublicAPI]
 public class Frustrum
 {
-    protected readonly static Vector3[] ClipSpacePlanePoints = new Vector3[]
+    protected readonly static Vector3[] ClipSpacePlanePoints =
     {
         new( -1, -1, -1 ),
         new( 1, -1, -1 ),
@@ -37,28 +36,11 @@ public class Frustrum
 
     protected readonly static float[] ClipSpacePlanePointsArray = new float[ 8 * 3 ];
 
-    static Frustrum()
-    {
-        int j = 0;
-
-        foreach ( Vector3 v in ClipSpacePlanePoints )
-        {
-            ClipSpacePlanePointsArray[ j++ ] = v.X;
-            ClipSpacePlanePointsArray[ j++ ] = v.Y;
-            ClipSpacePlanePointsArray[ j++ ] = v.Z;
-        }
-    }
-
     private readonly static Vector3 TmpV = new();
 
     /// <system>
-    /// the six clipping planes, near, far, left, right, top, bottom
-    /// </system>
-    public Plane[] Planes { get; set; } = new Plane[ 6 ];
-
-    /// <system>
-    /// eight points making up the near and far clipping "rectangles".
-    /// Order is counter clockwise, starting at bottom left.
+    ///     eight points making up the near and far clipping "rectangles".
+    ///     Order is counter clockwise, starting at bottom left.
     /// </system>
     public readonly Vector3[] planePoints =
     {
@@ -68,18 +50,35 @@ public class Frustrum
 
     protected readonly float[] planePointsArray = new float[ 8 * 3 ];
 
-    public Frustrum()
+    static Frustrum()
     {
-        for ( int i = 0; i < 6; i++ )
+        var j = 0;
+
+        foreach ( Vector3 v in ClipSpacePlanePoints )
         {
-            this.Planes[ i ] = new Plane( new Vector3(), 0 );
+            ClipSpacePlanePointsArray[ j++ ] = v.X;
+            ClipSpacePlanePointsArray[ j++ ] = v.Y;
+            ClipSpacePlanePointsArray[ j++ ] = v.Z;
         }
     }
 
+    public Frustrum()
+    {
+        for ( var i = 0; i < 6; i++ )
+        {
+            Planes[ i ] = new Plane( new Vector3(), 0 );
+        }
+    }
+
+    /// <system>
+    ///     the six clipping planes, near, far, left, right, top, bottom
+    /// </system>
+    public Plane[] Planes { get; set; } = new Plane[ 6 ];
+
     /// <summary>
-    /// Updates the clipping plane's based on the given inverse combined
-    /// projection and view matrix, e.g. from an <see cref="OrthographicCamera"/>
-    /// or <see cref="PerspectiveCamera"/>.
+    ///     Updates the clipping plane's based on the given inverse combined
+    ///     projection and view matrix, e.g. from an <see cref="OrthographicCamera" />
+    ///     or <see cref="PerspectiveCamera" />.
     /// </summary>
     /// <param name="inverseProjectionView">The combined projection and view matrices.</param>
     public virtual void Update( Matrix4 inverseProjectionView )
@@ -106,7 +105,7 @@ public class Frustrum
     }
 
     /// <summary>
-    /// Returns whether the point is in the frustum.
+    ///     Returns whether the point is in the frustum.
     /// </summary>
     /// <param name="point"> The point </param>
     /// <returns> Whether the point is in the frustum.  </returns>

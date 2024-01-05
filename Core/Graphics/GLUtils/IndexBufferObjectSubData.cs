@@ -19,34 +19,33 @@ using LibGDXSharp.Files.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// IndexBufferObject wraps OpenGL's index buffer functionality to be
-/// used in conjunction with VBOs.
-/// <para>
-/// You can also use this to store indices for vertex arrays. Do not call
-/// <see cref="Bind()"/>" or <see cref="Unbind()"/>" in this case but rather
-/// use <see cref="GetBuffer(bool)"/>" to use the buffer directly with
-/// GLDrawElements. You must also create the IndexBufferObject with the second
-/// constructor and specify isDirect as true as glDrawElements in conjunction
-/// with vertex arrays needs direct buffers.
-/// </para>
-/// <para>
-/// VertexBufferObjects must be disposed via the <see cref="Dispose()"/>" method
-/// when no longer needed.
-/// </para>
+///     IndexBufferObject wraps OpenGL's index buffer functionality to be
+///     used in conjunction with VBOs.
+///     <para>
+///         You can also use this to store indices for vertex arrays. Do not call
+///         <see cref="Bind()" />" or <see cref="Unbind()" />" in this case but rather
+///         use <see cref="GetBuffer(bool)" />" to use the buffer directly with
+///         GLDrawElements. You must also create the IndexBufferObject with the second
+///         constructor and specify isDirect as true as glDrawElements in conjunction
+///         with vertex arrays needs direct buffers.
+///     </para>
+///     <para>
+///         VertexBufferObjects must be disposed via the <see cref="Dispose()" />" method
+///         when no longer needed.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class IndexBufferObjectSubData : IIndexData
 {
-    private ShortBuffer _buffer;
-    private ByteBuffer  _byteBuffer;
-    private int        _bufferHandle;
-    private bool        _isDirect;
-    private bool        _isDirty = true;
-    private bool        _isBound = false;
-    private int         _usage;
+    private readonly ShortBuffer _buffer;
+    private          int         _bufferHandle;
+    private readonly ByteBuffer  _byteBuffer;
+    private          bool        _isBound = false;
+    private          bool        _isDirect;
+    private          bool        _isDirty = true;
+    private readonly int         _usage;
 
     /// <summary>
-    /// Creates a new IndexBufferObject.
+    ///     Creates a new IndexBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the index buffer is static </param>
     /// <param name="maxIndices"> the maximum number of indices this buffer can hold </param>
@@ -65,7 +64,7 @@ public class IndexBufferObjectSubData : IIndexData
     }
 
     /// <summary>
-    /// Creates a new IndexBufferObject to be used with vertex arrays.
+    ///     Creates a new IndexBufferObject to be used with vertex arrays.
     /// </summary>
     /// <param name="maxIndices"> the maximum number of indices this buffer can hold </param>
     public IndexBufferObjectSubData( int maxIndices )
@@ -82,34 +81,23 @@ public class IndexBufferObjectSubData : IIndexData
         _bufferHandle = CreateBufferObject();
     }
 
-    private int CreateBufferObject()
-    {
-        var result = Gdx.GL20.GLGenBuffer();
-
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, result );
-        Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
-
-        return result;
-    }
-
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int NumIndices => _buffer.Limit;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int NumMaxIndices => _buffer.Capacity;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SetIndices( short[] indices, int offset, int count )
     {
         _isDirty = true;
-        
+
         _buffer.Clear();
         _buffer.Put( indices, offset, count );
         _buffer.Flip();
-        
+
         _byteBuffer.Position = 0;
-        _byteBuffer.Limit = ( count << 1 );
+        _byteBuffer.Limit    = count << 1;
 
         if ( _isBound )
         {
@@ -117,25 +105,26 @@ public class IndexBufferObjectSubData : IIndexData
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
+
             _isDirty = false;
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SetIndices( ShortBuffer indices )
     {
         var pos = indices.Position;
-        
+
         _isDirty = true;
-        
+
         _buffer.Clear();
         _buffer.Put( indices );
         _buffer.Flip();
-        
+
         indices.Position = pos;
-        
+
         _byteBuffer.Position = 0;
-        _byteBuffer.Limit = ( _buffer.Limit << 1 );
+        _byteBuffer.Limit    = _buffer.Limit << 1;
 
         if ( _isBound )
         {
@@ -143,23 +132,24 @@ public class IndexBufferObjectSubData : IIndexData
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
+
             _isDirty = false;
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
     {
         _isDirty = true;
-        
+
         var pos = _byteBuffer.Position;
-        
-        _byteBuffer.Position = ( targetOffset * 2 );
-        
+
+        _byteBuffer.Position = targetOffset * 2;
+
         BufferUtils.Copy( indices, offset, _byteBuffer, count );
-        
+
         _byteBuffer.Position = pos;
-        _buffer.Position = 0;
+        _buffer.Position     = 0;
 
         if ( _isBound )
         {
@@ -172,7 +162,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public ShortBuffer GetBuffer( bool forWriting )
     {
         _isDirty |= forWriting;
@@ -180,7 +170,7 @@ public class IndexBufferObjectSubData : IIndexData
         return _buffer;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Bind()
     {
         if ( _bufferHandle == 0 )
@@ -193,39 +183,50 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isDirty )
         {
-            _byteBuffer.Limit = ( _buffer.Limit * 2 );
-            
+            _byteBuffer.Limit = _buffer.Limit * 2;
+
             Gdx.GL20.GLBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
-            
+
             _isDirty = false;
         }
 
         _isBound = true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Unbind()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Invalidate()
     {
         _bufferHandle = CreateBufferObject();
         _isDirty      = true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Dispose()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
         Gdx.GL20.GLDeleteBuffers( _bufferHandle );
-        
+
         _bufferHandle = 0;
+    }
+
+    private int CreateBufferObject()
+    {
+        var result = Gdx.GL20.GLGenBuffer();
+
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, result );
+        Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+
+        return result;
     }
 }

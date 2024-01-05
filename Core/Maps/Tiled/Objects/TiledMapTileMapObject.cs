@@ -21,17 +21,13 @@ using LibGDXSharp.Maps.Tiled.Tiles;
 namespace LibGDXSharp.Maps.Tiled.Objects;
 
 /// <summary>
-/// A <see cref="MapObject"/> with a <see cref="ITiledMapTile"/>.
-/// Can be both <see cref="StaticTiledMapTile"/> or <see cref="AnimatedTiledMapTile"/>.
-/// For compatibility reasons, this extends <see cref="TextureMapObject"/>.
-/// Use <see cref="ITiledMapTile.TextureRegion"/> instead of <see cref="TextureRegion"/>.
+///     A <see cref="MapObject" /> with a <see cref="ITiledMapTile" />.
+///     Can be both <see cref="StaticTiledMapTile" /> or <see cref="AnimatedTiledMapTile" />.
+///     For compatibility reasons, this extends <see cref="TextureMapObject" />.
+///     Use <see cref="ITiledMapTile.TextureRegion" /> instead of <see cref="TextureRegion" />.
 /// </summary>
-[PublicAPI]
 public class TiledMapTileMapObject : TextureMapObject
 {
-    public ITiledMapTile Tile             { get; set; }
-    public bool          FlipHorizontally { get; set; }
-    public bool          FlipVertically   { get; set; }
 
     /// <summary>
     /// </summary>
@@ -40,14 +36,18 @@ public class TiledMapTileMapObject : TextureMapObject
     /// <param name="flipVertically"></param>
     public TiledMapTileMapObject( ITiledMapTile tile, bool flipHorizontally, bool flipVertically )
     {
-        this.FlipHorizontally = flipHorizontally;
-        this.FlipVertically   = flipVertically;
-        this.Tile              = tile;
+        FlipHorizontally = flipHorizontally;
+        FlipVertically   = flipVertically;
+        Tile             = tile;
 
-        TextureRegion region = new TextureRegion( tile.TextureRegion );
+        var region = new TextureRegion( tile.TextureRegion );
 
         region.Flip( flipHorizontally, flipVertically );
 
         TextureRegion = region;
     }
+
+    public ITiledMapTile Tile             { get; set; }
+    public bool          FlipHorizontally { get; set; }
+    public bool          FlipVertically   { get; set; }
 }

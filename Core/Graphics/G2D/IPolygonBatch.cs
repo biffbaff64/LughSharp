@@ -17,21 +17,20 @@
 namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
-/// A PolygonBatch is an extension of the Batch interface that provides additional
-/// render methods specifically for rendering polygons.
+///     A PolygonBatch is an extension of the Batch interface that provides additional
+///     render methods specifically for rendering polygons.
 /// </summary>
-[PublicAPI]
 public interface IPolygonBatch : IBatch
 {
     /// <summary>
-    /// Draws a polygon region with the bottom left corner at x,y
-    /// having the width and height of the region.
+    ///     Draws a polygon region with the bottom left corner at x,y
+    ///     having the width and height of the region.
     /// </summary>
     void Draw( PolygonRegion region, float x, float y );
 
     /// <summary>
-    /// Draws a polygon region with the bottom left corner at x,y and stretching
-    /// the region to cover the given width and height.
+    ///     Draws a polygon region with the bottom left corner at x,y and stretching
+    ///     the region to cover the given width and height.
     /// </summary>
     void Draw( PolygonRegion region, float x, float y, float width, float height );
 
@@ -53,8 +52,8 @@ public interface IPolygonBatch : IBatch
                float rotation );
 
     /// <summary>
-    /// Draws the polygon using the given vertices and triangles. Each vertices must be
-    /// made up of 5 elements in this order: x, y, color, u, v.
+    ///     Draws the polygon using the given vertices and triangles. Each vertices must be
+    ///     made up of 5 elements in this order: x, y, color, u, v.
     /// </summary>
     void Draw( Texture texture,
                float[] polygonVertices,

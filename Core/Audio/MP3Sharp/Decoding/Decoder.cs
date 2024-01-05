@@ -17,27 +17,26 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// Encapsulates the details of decoding an MPEG audio frame.
+///     Encapsulates the details of decoding an MPEG audio frame.
 /// </summary>
-[PublicAPI]
 public class Decoder
 {
     private readonly static Parameters DecoderDefaultParams = new();
 
-    private Equalizer?       _equalizer;
-    private SynthesisFilter? _leftChannelFilter;
-    private SynthesisFilter? _rightChannelFilter;
+    private readonly Equalizer? _equalizer;
+
+    private bool             _isInitialized;
     private LayerIDecoder?   _l1Decoder;
     private LayerIIDecoder?  _l2Decoder;
     private LayerIIIDecoder? _l3Decoder;
+    private SynthesisFilter? _leftChannelFilter;
     private ABuffer?         _output;
-
-    private bool _isInitialized;
-    private int  _outputChannels;
-    private int  _outputFrequency;
+    private int              _outputChannels;
+    private int              _outputFrequency;
+    private SynthesisFilter? _rightChannelFilter;
 
     /// <summary>
-    /// Creates a new Decoder instance with custom parameters.
+    ///     Creates a new Decoder instance with custom parameters.
     /// </summary>
     public Decoder( Parameters? params0 = null )
     {
@@ -78,8 +77,8 @@ public class Decoder
     }
 
     /// <summary>
-    /// Changes the output buffer. This will take effect the next time
-    /// decodeFrame() is called.
+    ///     Changes the output buffer. This will take effect the next time
+    ///     decodeFrame() is called.
     /// </summary>
     public virtual ABuffer OutputBuffer
     {
@@ -87,40 +86,40 @@ public class Decoder
     }
 
     /// <summary>
-    /// Retrieves the sample frequency of the PCM samples output
-    /// by this decoder. This typically corresponds to the sample
-    /// rate encoded in the MPEG audio stream.
+    ///     Retrieves the sample frequency of the PCM samples output
+    ///     by this decoder. This typically corresponds to the sample
+    ///     rate encoded in the MPEG audio stream.
     /// </summary>
     public virtual int OutputFrequency => _outputFrequency;
 
     /// <summary>
-    /// Retrieves the number of channels of PCM samples output by
-    /// this decoder. This usually corresponds to the number of
-    /// channels in the MPEG audio stream.
+    ///     Retrieves the number of channels of PCM samples output by
+    ///     this decoder. This usually corresponds to the number of
+    ///     channels in the MPEG audio stream.
     /// </summary>
     public virtual int OutputChannels => _outputChannels;
 
     /// <summary>
-    /// Retrieves the maximum number of samples that will be written to
-    /// the output buffer when one frame is decoded. This can be used to
-    /// help calculate the size of other buffers whose size is based upon
-    /// the number of samples written to the output buffer. NB: this is
-    /// an upper bound and fewer samples may actually be written, depending
-    /// upon the sample rate and number of channels.
+    ///     Retrieves the maximum number of samples that will be written to
+    ///     the output buffer when one frame is decoded. This can be used to
+    ///     help calculate the size of other buffers whose size is based upon
+    ///     the number of samples written to the output buffer. NB: this is
+    ///     an upper bound and fewer samples may actually be written, depending
+    ///     upon the sample rate and number of channels.
     /// </summary>
     public virtual int OutputBlockSize => ABuffer.OBUFFERSIZE;
 
     /// <summary>
-    /// Decodes one frame from an MPEG audio bitstream.
+    ///     Decodes one frame from an MPEG audio bitstream.
     /// </summary>
     /// <param name="header">
-    /// Header describing the frame to decode.
+    ///     Header describing the frame to decode.
     /// </param>
     /// <param name="stream">
-    /// Bistream that provides the bits for the body of the frame.
+    ///     Bistream that provides the bits for the body of the frame.
     /// </param>
     /// <returns>
-    /// A SampleBuffer containing the decoded samples.
+    ///     A SampleBuffer containing the decoded samples.
     /// </returns>
     public virtual ABuffer? DecodeFrame( Header header, Bitstream stream )
     {
@@ -141,15 +140,9 @@ public class Decoder
         return _output;
     }
 
-    protected virtual DecoderException NewDecoderException( int errorcode )
-    {
-        return new DecoderException( errorcode, null );
-    }
+    protected virtual DecoderException NewDecoderException( int errorcode ) => new( errorcode, null );
 
-    protected virtual DecoderException NewDecoderException( int errorcode, System.Exception? throwable )
-    {
-        return new DecoderException( errorcode, throwable );
-    }
+    protected virtual DecoderException NewDecoderException( int errorcode, Exception? throwable ) => new( errorcode, throwable );
 
     protected virtual IFrameDecoder RetrieveDecoder( Header header, Bitstream stream, int layer )
     {
@@ -161,11 +154,11 @@ public class Decoder
         {
             case 3:
                 _l3Decoder ??= new LayerIIIDecoder( stream,
-                                                  header,
-                                                  _leftChannelFilter,
-                                                  _rightChannelFilter,
-                                                  _output,
-                                                  ( int )OutputChannelsEnum.BothChannels );
+                                                    header,
+                                                    _leftChannelFilter,
+                                                    _rightChannelFilter,
+                                                    _output,
+                                                    ( int )OutputChannelsEnum.BothChannels );
 
                 decoder = _l3Decoder;
 
@@ -240,22 +233,21 @@ public class Decoder
     }
 
     /// <summary>
-    /// The Params class presents the customizable aspects of the decoder. Instances of
-    /// this class are not thread safe.
+    ///     The Params class presents the customizable aspects of the decoder. Instances of
+    ///     this class are not thread safe.
     /// </summary>
-    [PublicAPI]
     public class Parameters : ICloneable
     {
         public virtual OutputChannels? OutputChannels { get; set; }
 
         /// <summary>
-        /// Retrieves the equalizer settings that the decoder's equalizer will be initialized from.
-        /// The Equalizer instance returned cannot be changed in real time to affect the decoder output
-        /// as it is used only to initialize the decoders EQ settings. To affect the decoder's output
-        /// in realtime, use the Equalizer returned from the getEqualizer() method on the decoder.
+        ///     Retrieves the equalizer settings that the decoder's equalizer will be initialized from.
+        ///     The Equalizer instance returned cannot be changed in real time to affect the decoder output
+        ///     as it is used only to initialize the decoders EQ settings. To affect the decoder's output
+        ///     in realtime, use the Equalizer returned from the getEqualizer() method on the decoder.
         /// </summary>
         /// <returns>
-        /// The Equalizer used to initialize the EQ settings of the decoder.
+        ///     The Equalizer used to initialize the EQ settings of the decoder.
         /// </returns>
         public virtual Equalizer? InitialEqualizerSettings { get; } = null;
 
@@ -265,7 +257,7 @@ public class Decoder
             {
                 return MemberwiseClone();
             }
-            catch ( System.Exception ex )
+            catch ( Exception ex )
             {
                 throw new ApplicationException( this + ": " + ex );
             }

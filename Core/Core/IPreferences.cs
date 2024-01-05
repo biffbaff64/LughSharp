@@ -17,13 +17,12 @@
 namespace LibGDXSharp.Core;
 
 /// <summary>
-/// A Preference instance is a hash map holding different values. It is stored
-/// in a "%USERPROFILE%/.prefs" directory. CAUTION: On the desktop platform,
-/// all libgdx applications share the same ".prefs" directory. To avoid collisions
-/// use specific names like "game1.settings" instead of "settings".
-/// To persist changes made to a preferences instance Flush() has to be invoked.
+///     A Preference instance is a hash map holding different values. It is stored
+///     in a "%USERPROFILE%/.prefs" directory. CAUTION: On the desktop platform,
+///     all libgdx applications share the same ".prefs" directory. To avoid collisions
+///     use specific names like "game1.settings" instead of "settings".
+///     To persist changes made to a preferences instance Flush() has to be invoked.
 /// </summary>
-[PublicAPI]
 public interface IPreferences
 {
     public IPreferences PutEntry( string key, object? val );

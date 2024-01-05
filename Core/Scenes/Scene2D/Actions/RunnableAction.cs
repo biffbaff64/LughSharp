@@ -16,10 +16,11 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class RunnableAction : Action
 {
     private bool _ran;
+
+    public Runnable? Runnable { get; set; }
 
     public override bool Act( float delta )
     {
@@ -33,7 +34,7 @@ public class RunnableAction : Action
     }
 
     /// <summary>
-    /// Called to run the runnable.
+    ///     Called to run the runnable.
     /// </summary>
     public void Run()
     {
@@ -45,7 +46,7 @@ public class RunnableAction : Action
 //        Pool< object >? pool = base.Pool;
 
         // Ensure this action can't be returned to the pool inside the runnable.
-        base.Pool = null;
+        Pool = null;
 
 //        try
 //        {
@@ -58,16 +59,11 @@ public class RunnableAction : Action
 //        }
     }
 
-    public new void Restart()
-    {
-        _ran = false;
-    }
+    public new void Restart() => _ran = false;
 
     public new void Reset()
     {
         base.Reset();
         Runnable = null;
     }
-
-    public Runnable? Runnable { get; set; }
 }

@@ -16,17 +16,15 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
-public class MissingResourceException : System.Exception
+public class MissingResourceException : Exception
 {
     public MissingResourceException( string? message = "" )
         : base( message )
     {
     }
 
-    public MissingResourceException( string? message, System.Exception? innerException )
+    public MissingResourceException( string? message, Exception? innerException )
         : base( message, innerException )
     {
     }
 }
-

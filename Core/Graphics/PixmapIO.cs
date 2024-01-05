@@ -24,49 +24,42 @@ using LibGDXSharp.Files.Buffers;
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
-/// Write Pixmaps to various formats.
+///     Write Pixmaps to various formats.
 /// </summary>
-[PublicAPI]
 public static class PixmapIO
 {
     /// <summary>
-    /// Writes the <see cref="Pixmap"/> to the given file using a custom compression
-    /// scheme. First three integers define the width, height and format, remaining
-    /// bytes are zlib compressed pixels. To be able to load the Pixmap to a Texture,
-    /// use ".cim" as the file suffix.
-    /// <para>
-    /// Throws a GdxRuntimeException if the Pixmap couldn't be written to the file.
-    /// </para>
+    ///     Writes the <see cref="Pixmap" /> to the given file using a custom compression
+    ///     scheme. First three integers define the width, height and format, remaining
+    ///     bytes are zlib compressed pixels. To be able to load the Pixmap to a Texture,
+    ///     use ".cim" as the file suffix.
+    ///     <para>
+    ///         Throws a GdxRuntimeException if the Pixmap couldn't be written to the file.
+    ///     </para>
     /// </summary>
     /// <param name="file">The file to write the Pixmap to.</param>
     /// <param name="pixmap"></param>
-    public static void WriteCIM( FileInfo file, Pixmap pixmap )
-    {
-        CIM.Write( file, pixmap );
-    }
+    public static void WriteCIM( FileInfo file, Pixmap pixmap ) => CIM.Write( file, pixmap );
 
     /// <summary>
-    /// Reads the <see cref="Pixmap"/> from the given file, assuming the Pixmap was
-    /// written with the <see cref="PixmapIO.WriteCIM(FileInfo, Pixmap)"/> method.
-    /// <para>
-    /// Throws a GdxRuntimeException in case the file couldn't be read.
-    /// </para>
+    ///     Reads the <see cref="Pixmap" /> from the given file, assuming the Pixmap was
+    ///     written with the <see cref="PixmapIO.WriteCIM(FileInfo, Pixmap)" /> method.
+    ///     <para>
+    ///         Throws a GdxRuntimeException in case the file couldn't be read.
+    ///     </para>
     /// </summary>
     /// <param name="file"> the file to read the Pixmap from  </param>
-    public static Pixmap ReadCIM( FileInfo file )
-    {
-        return CIM.Read( file );
-    }
+    public static Pixmap ReadCIM( FileInfo file ) => CIM.Read( file );
 
     /// <summary>
-    /// Writes the pixmap as a PNG. See <see cref="PNG"/> to write out multiple PNGs
-    /// with minimal allocation.
+    ///     Writes the pixmap as a PNG. See <see cref="PNG" /> to write out multiple PNGs
+    ///     with minimal allocation.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="pixmap"></param>
     /// <param name="compression">
-    /// Sets the deflate compression level.
-    /// Default is <see cref="Deflater.DEFAULT_COMPRESSION"/>
+    ///     Sets the deflate compression level.
+    ///     Default is <see cref="Deflater.DEFAULT_COMPRESSION" />
     /// </param>
     /// <param name="flipY">Flips the Pixmap vertically if true</param>
     public static void WritePNG( FileInfo file,
@@ -117,7 +110,7 @@ public static class PixmapIO
             try
             {
                 var deflaterOutputStream = new DeflaterOutputStream( file.OpenWrite() );
-                var output = new BinaryWriter( deflaterOutputStream );
+                var output               = new BinaryWriter( deflaterOutputStream );
 
                 output.Write( pixmap.Width );
                 output.Write( pixmap.Height );
@@ -146,7 +139,7 @@ public static class PixmapIO
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
             }
-            catch ( System.Exception e )
+            catch ( Exception e )
             {
                 throw new GdxRuntimeException( "Couldn't write Pixmap to file '" + file + "'", e );
             }
@@ -190,7 +183,7 @@ public static class PixmapIO
 
                 return pixmap;
             }
-            catch ( System.Exception e )
+            catch ( Exception e )
             {
                 throw new GdxRuntimeException( "Couldn't read Pixmap from file '" + file + "'", e );
             }
@@ -200,28 +193,27 @@ public static class PixmapIO
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Paeth filter - a filtering algorithm used in the compression of PNG images
+    ///     Paeth filter - a filtering algorithm used in the compression of PNG images
     /// </summary>
-    [PublicAPI]
     public class PNG : IDisposable
     {
-        private const int  IHDR                = 0x49484452;
-        private const int  IDAT                = 0x49444154;
-        private const int  IEND                = 0x49454E44;
-        private const byte COLOR_ARGB          = 6;
-        private const byte COMPRESSION_DEFLATE = 0;
-        private const byte FILTER_NONE         = 0;
-        private const byte INTERLACE_NONE      = 0;
-        private const byte PAETH_FILTER        = 4;
-
-        private readonly byte[]      _signature = { 137, 80, 78, 71, 13, 10, 26, 10 };
-        private readonly Deflater    _deflater;
+        private const    int         IHDR                = 0x49484452;
+        private const    int         IDAT                = 0x49444154;
+        private const    int         IEND                = 0x49454E44;
+        private const    byte        COLOR_ARGB          = 6;
+        private const    byte        COMPRESSION_DEFLATE = 0;
+        private const    byte        FILTER_NONE         = 0;
+        private const    byte        INTERLACE_NONE      = 0;
+        private const    byte        PAETH_FILTER        = 4;
         private readonly ChunkBuffer _buffer;
+        private readonly Deflater    _deflater;
+
+        private readonly byte[]        _signature = { 137, 80, 78, 71, 13, 10, 26, 10 };
+        private          List< byte >? _curLineBytes;
+        private          int           _lastLineLen;
 
         private List< byte >? _lineOutBytes;
-        private List< byte >? _curLineBytes;
         private List< byte >? _prevLineBytes;
-        private int           _lastLineLen;
 
         /// <summary>
         /// </summary>
@@ -233,13 +225,19 @@ public static class PixmapIO
         }
 
         /// <summary>
-        /// If true, the resulting PNG is flipped vertically. Default is true.
+        ///     If true, the resulting PNG is flipped vertically. Default is true.
         /// </summary>
         public bool FlipY { get; set; }
 
         /// <summary>
-        /// Sets the deflate compression level.
-        /// Default is <see cref="Deflater.DEFAULT_COMPRESSION"/>. 
+        ///     Performs application-defined tasks associated with freeing,
+        ///     releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose() => _deflater.Finish();
+
+        /// <summary>
+        ///     Sets the deflate compression level.
+        ///     Default is <see cref="Deflater.DEFAULT_COMPRESSION" />.
         /// </summary>
         public void SetCompression( int level ) => _deflater.SetLevel( level );
 
@@ -261,11 +259,11 @@ public static class PixmapIO
         }
 
         /// <summary>
-        /// Writes the pixmap to the stream without closing the stream.
+        ///     Writes the pixmap to the stream without closing the stream.
         /// </summary>
         public void Write( Stream output, Pixmap pixmap )
         {
-            var deflaterOutput = new DeflaterOutputStream( output/*_buffer*/, _deflater );
+            var deflaterOutput = new DeflaterOutputStream( output /*_buffer*/, _deflater );
             var dataOutput     = new BinaryWriter( output );
 
             dataOutput.Write( _signature );
@@ -318,11 +316,11 @@ public static class PixmapIO
 
             for ( int y = 0, h = pixmap.Height; y < h; y++ )
             {
-                var py = FlipY ? ( h - y - 1 ) : y;
+                var py = FlipY ? h - y - 1 : y;
 
                 if ( isRgba8888 )
                 {
-                    pixmap.Pixels.Position = ( py * lineLen );
+                    pixmap.Pixels.Position = py * lineLen;
                     pixmap.Pixels.Get( curLine, 0, lineLen );
                 }
                 else
@@ -351,15 +349,24 @@ public static class PixmapIO
                     var p  = ( a + b ) - c;
                     var pa = p - a;
 
-                    if ( pa < 0 ) pa = -pa;
+                    if ( pa < 0 )
+                    {
+                        pa = -pa;
+                    }
 
                     var pb = p - b;
 
-                    if ( pb < 0 ) pb = -pb;
+                    if ( pb < 0 )
+                    {
+                        pb = -pb;
+                    }
 
                     var pc = p - c;
 
-                    if ( pc < 0 ) pc = -pc;
+                    if ( pc < 0 )
+                    {
+                        pc = -pc;
+                    }
 
                     if ( ( pa <= pb ) && ( pa <= pc ) )
                     {
@@ -403,10 +410,10 @@ public static class PixmapIO
             }
 
             private ChunkBuffer( MemoryStream buffer, Crc32 crc )
-                : base( new MemoryStream()/*new CheckedOutputStream( buffer, crc )*/ )
+                : base( new MemoryStream() /*new CheckedOutputStream( buffer, crc )*/ )
             {
-                this._buffer = buffer;
-                this._crc    = crc;
+                _buffer = buffer;
+                _crc    = crc;
             }
 
             public void EndChunk( BinaryWriter target )
@@ -420,15 +427,6 @@ public static class PixmapIO
                 _buffer.Position = 0;
                 _crc.Reset();
             }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing,
-        /// releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            _deflater.Finish();
         }
     }
 }

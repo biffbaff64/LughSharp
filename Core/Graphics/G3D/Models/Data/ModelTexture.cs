@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Graphics.G3D.Models.Data;
 
-[PublicAPI]
 public class ModelTexture
 {
     public const int USAGE_UNKNOWN      = 0;

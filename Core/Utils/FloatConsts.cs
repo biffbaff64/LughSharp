@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
 public record FloatConsts
 {
     public const float POSITIVE_INFINITY = float.PositiveInfinity;

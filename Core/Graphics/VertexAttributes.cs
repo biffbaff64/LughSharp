@@ -18,45 +18,27 @@ using System.Text;
 
 namespace LibGDXSharp.Graphics;
 
-[PublicAPI]
 public class VertexAttributes
 {
-    public static class Usage
-    {
-        internal const int POSITION            = 1;
-        internal const int COLOR_UNPACKED      = 2;
-        internal const int COLOR_PACKED        = 4;
-        internal const int NORMAL              = 8;
-        internal const int TEXTURE_COORDINATES = 16;
-        internal const int GENERIC             = 32;
-        internal const int BONE_WEIGHT         = 64;
-        internal const int TANGENT             = 128;
-        internal const int BI_NORMAL           = 256;
-    }
 
     /// <summary>
-    /// the attributes in the order they were specified
+    ///     the attributes in the order they were specified
     /// </summary>
     private readonly VertexAttribute[] _attributes;
 
     /// <summary>
-    /// the size of a single vertex in bytes
-    /// </summary>
-    public int VertexSize { get; set; }
-
-    /// <summary>
-    /// cache of the value calculated by <see cref="Mask"/>.
+    ///     cache of the value calculated by <see cref="Mask" />.
     /// </summary>
     private long _mask = -1;
 
     /// <summary>
-    /// Constructor, sets the vertex attributes in a specific order.
+    ///     Constructor, sets the vertex attributes in a specific order.
     /// </summary>
     public VertexAttributes( params VertexAttribute[] attributes )
     {
         if ( attributes.Length == 0 )
         {
-            throw new System.ArgumentException( "attributes must be >= 1" );
+            throw new ArgumentException( "attributes must be >= 1" );
         }
 
         var list = new VertexAttribute[ attributes.Length ];
@@ -66,12 +48,57 @@ public class VertexAttributes
             list[ i ] = attributes[ i ];
         }
 
-        this._attributes = list;
-        VertexSize       = CalculateOffsets();
+        _attributes = list;
+        VertexSize  = CalculateOffsets();
     }
 
     /// <summary>
-    /// Returns the offset for the first VertexAttribute with the specified usage.
+    ///     the size of a single vertex in bytes
+    /// </summary>
+    public int VertexSize { get; set; }
+
+    /// <summary>
+    ///     Gets the number of attributes.
+    /// </summary>
+    public int Size => _attributes.Length;
+
+    /// <summary>
+    ///     Calculates a mask based on the contained <see cref="VertexAttribute" />
+    ///     instances. The mask is a bit-wise or of each attributes
+    ///     <seealso cref="VertexAttribute.usage" />.
+    /// </summary>
+    /// <returns> the mask  </returns>
+    protected long Mask
+    {
+        get
+        {
+            if ( _mask == -1 )
+            {
+                long result = 0;
+
+                foreach ( VertexAttribute t in _attributes )
+                {
+                    result |= ( uint )t.usage;
+                }
+
+                _mask = result;
+            }
+
+            return _mask;
+        }
+    }
+
+    /// <summary>
+    ///     Calculates the mask based on <see cref="Mask" /> and packs
+    ///     the attributes count into the last 32 bits.
+    /// </summary>
+    /// <returns>
+    ///     the mask with attributes count packed into the last 32 bits.
+    /// </returns>
+    public virtual long MaskWithSizePacked => Mask | ( ( long )_attributes.Length << 32 );
+
+    /// <summary>
+    ///     Returns the offset for the first VertexAttribute with the specified usage.
     /// </summary>
     /// <param name="usage"> The usage of the VertexAttribute.</param>
     /// <param name="defaultIfNotFound"></param>
@@ -88,13 +115,14 @@ public class VertexAttributes
     }
 
     /// <summary>
-    /// Returns the offset for the first VertexAttribute with the specified usage.
+    ///     Returns the offset for the first VertexAttribute with the specified usage.
     /// </summary>
     /// <param name="usage"> The usage of the VertexAttribute.  </param>
     public int GetOffset( int usage ) => GetOffset( usage, 0 );
 
     /// <summary>
-    /// Returns the first VertexAttribute for the given usage. </summary>
+    ///     Returns the first VertexAttribute for the given usage.
+    /// </summary>
     /// <param name="usage"> The usage of the VertexAttribute to find.  </param>
     public VertexAttribute? FindByUsage( int usage )
     {
@@ -125,12 +153,7 @@ public class VertexAttributes
     }
 
     /// <summary>
-    /// Gets the number of attributes.
-    /// </summary>
-    public int Size => _attributes.Length;
-
-    /// <summary>
-    /// Gets the VertexAttribute at the given index.
+    ///     Gets the VertexAttribute at the given index.
     /// </summary>
     /// <param name="index"> the index </param>
     public VertexAttribute Get( int index ) => _attributes[ index ];
@@ -175,7 +198,7 @@ public class VertexAttributes
             return false;
         }
 
-        if ( this._attributes.Length != other._attributes.Length )
+        if ( _attributes.Length != other._attributes.Length )
         {
             return false;
         }
@@ -205,41 +228,6 @@ public class VertexAttributes
 
         return ( int )( result ^ ( result >> 32 ) );
     }
-
-    /// <summary>
-    /// Calculates a mask based on the contained <see cref="VertexAttribute"/>
-    /// instances. The mask is a bit-wise or of each attributes
-    /// <seealso cref="VertexAttribute.usage"/>.
-    /// </summary>
-    /// <returns> the mask  </returns>
-    protected long Mask
-    {
-        get
-        {
-            if ( _mask == -1 )
-            {
-                long result = 0;
-
-                foreach ( VertexAttribute t in _attributes )
-                {
-                    result |= ( uint )t.usage;
-                }
-
-                _mask = result;
-            }
-
-            return _mask;
-        }
-    }
-
-    /// <summary>
-    /// Calculates the mask based on <see cref="Mask"/> and packs
-    /// the attributes count into the last 32 bits.
-    /// </summary>
-    /// <returns>
-    /// the mask with attributes count packed into the last 32 bits.
-    /// </returns>
-    public virtual long MaskWithSizePacked => Mask | ( ( long )_attributes.Length << 32 );
 
     public int CompareTo( VertexAttributes o )
     {
@@ -288,5 +276,18 @@ public class VertexAttributes
         }
 
         return 0;
+    }
+
+    public static class Usage
+    {
+        internal const int POSITION            = 1;
+        internal const int COLOR_UNPACKED      = 2;
+        internal const int COLOR_PACKED        = 4;
+        internal const int NORMAL              = 8;
+        internal const int TEXTURE_COORDINATES = 16;
+        internal const int GENERIC             = 32;
+        internal const int BONE_WEIGHT         = 64;
+        internal const int TANGENT             = 128;
+        internal const int BI_NORMAL           = 256;
     }
 }

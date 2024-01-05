@@ -18,32 +18,34 @@ using System.Collections;
 
 namespace LibGDXSharp.Maps.Tiled;
 
-using System.Collections.Generic;
-
 /// <summary>
-/// A Collection of <see cref="TiledMapTileSet"/> objects.
+///     A Collection of <see cref="TiledMapTileSet" /> objects.
 /// </summary>
-[PublicAPI]
 public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
 {
 
-    private List< TiledMapTileSet > _tilesets;
+    private readonly List< TiledMapTileSet > _tilesets;
 
     /// <summary>
-    /// Creates an empty collection of tilesets. </summary>
-    public TiledMapTileSets()
-    {
-        _tilesets = new List< TiledMapTileSet >();
-    }
+    ///     Creates an empty collection of tilesets.
+    /// </summary>
+    public TiledMapTileSets() => _tilesets = new List< TiledMapTileSet >();
 
-    /// <param name="index"> index to get the desired <seealso cref="TiledMapTileSet"/> at. </param>
+    /// <returns> iterator to tilesets </returns>
+    public virtual IEnumerator< TiledMapTileSet > GetEnumerator() => _tilesets.GetEnumerator();
+
+    /// <summary>Returns an enumerator that iterates through a collection.</summary>
+    /// <returns>
+    ///     An <see cref="T:System.Collections.IEnumerator" /> object that can be used
+    ///     to iterate through the collection.
+    /// </returns>
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    /// <param name="index"> index to get the desired <seealso cref="TiledMapTileSet" /> at. </param>
     /// <returns> tileset at index  </returns>
-    public virtual TiledMapTileSet GetTileSet( int index )
-    {
-        return _tilesets[ index ];
-    }
+    public virtual TiledMapTileSet GetTileSet( int index ) => _tilesets[ index ];
 
-    /// <param name="name"> Name of the <see cref="TiledMapTileSet"/> to retrieve.</param>
+    /// <param name="name"> Name of the <see cref="TiledMapTileSet" /> to retrieve.</param>
     /// <returns> tileset with matching name, null if it doesn't exist  </returns>
     public virtual TiledMapTileSet? GetTileSet( string name )
     {
@@ -59,27 +61,18 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     }
 
     /// <param name="tileset"> set to be added to the collection </param>
-    public virtual void AddTileSet( TiledMapTileSet tileset )
-    {
-        _tilesets.Add( tileset );
-    }
+    public virtual void AddTileSet( TiledMapTileSet tileset ) => _tilesets.Add( tileset );
 
     /// <summary>
-    /// Removes tileset at index
+    ///     Removes tileset at index
     /// </summary>
     /// <param name="index"> index at which to remove a tileset. </param>
-    public virtual void RemoveTileSet( int index )
-    {
-        _tilesets.RemoveAt( index );
-    }
+    public virtual void RemoveTileSet( int index ) => _tilesets.RemoveAt( index );
 
     /// <param name="tileset"> set to be removed </param>
-    public virtual void RemoveTileSet( TiledMapTileSet tileset )
-    {
-        _tilesets.Remove( tileset );
-    }
+    public virtual void RemoveTileSet( TiledMapTileSet tileset ) => _tilesets.Remove( tileset );
 
-    /// <param name="id"> id of the <seealso cref="ITiledMapTile"/> to get. </param>
+    /// <param name="id"> id of the <seealso cref="ITiledMapTile" /> to get. </param>
     /// <returns> tile with matching id, null if it doesn't exist  </returns>
     public virtual ITiledMapTile? GetTile( int id )
     {
@@ -89,7 +82,7 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         // iterating precedence for conflicts is given to later tilesets in the list, 
         // which are likely to be the earlier version of any given gid.  
         // See TiledMapModifiedExternalTilesetTest for example of this issue.
-        for ( int i = _tilesets.Count - 1; i >= 0; i-- )
+        for ( var i = _tilesets.Count - 1; i >= 0; i-- )
         {
             TiledMapTileSet tileset = _tilesets[ i ];
             ITiledMapTile?  tile    = tileset.GetTile( id );
@@ -101,21 +94,5 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         }
 
         return null;
-    }
-
-    /// <returns> iterator to tilesets </returns>
-    public virtual IEnumerator< TiledMapTileSet > GetEnumerator()
-    {
-        return _tilesets.GetEnumerator();
-    }
-
-    /// <summary>Returns an enumerator that iterates through a collection.</summary>
-    /// <returns>
-    /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used
-    /// to iterate through the collection.
-    /// </returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }

@@ -22,17 +22,16 @@ using LibGDXSharp.Utils.Collections;
 namespace LibGDXSharp.Utils.Xml;
 
 /// <summary>
-/// Lightweight XML parser. Supports a subset of XML features: elements, attributes,
-/// text, predefined entities, CDATA, mixed content. Namespaces are parsed as part
-/// of the element or attribute name. Prologs and doctypes are ignored. Only 8-bit
-/// character encodings are supported. Input is assumed to be well formed.
-/// <para>
-/// The default behavior is to parse the XML into a DOM. Extend this class and
-/// override methods to perform event driven parsing. When this is done, the parse
-/// methods will return null.
-/// </para>
+///     Lightweight XML parser. Supports a subset of XML features: elements, attributes,
+///     text, predefined entities, CDATA, mixed content. Namespaces are parsed as part
+///     of the element or attribute name. Prologs and doctypes are ignored. Only 8-bit
+///     character encodings are supported. Input is assumed to be well formed.
+///     <para>
+///         The default behavior is to parse the XML into a DOM. Extend this class and
+///         override methods to perform event driven parsing. When this is done, the parse
+///         methods will return null.
+///     </para>
 /// </summary>
-[PublicAPI]
 public partial class XmlReader
 {
     private const int XML_START           = 1;
@@ -103,20 +102,10 @@ public partial class XmlReader
         {
             return Parse( file?.OpenText() );
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new SerializationException( "Error parsing file: " + file, ex );
         }
-    }
-
-    private enum Ps
-    {
-        Stage0,
-        Stage1,
-        Stage2,
-        Stage3,
-        Stage4,
-        Stage5,
     }
 
     //TODO: When this library is at a stage when testing can be done, rewrite this method by testing, testing, testing!! 
@@ -519,24 +508,17 @@ public partial class XmlReader
         _current = child;
     }
 
-    public void Attribute( string name, string value )
-    {
-        _current?.SetAttribute( name, value );
-    }
+    public void Attribute( string name, string value ) => _current?.SetAttribute( name, value );
 
-    public virtual string? Entity( string name )
-    {
-        return name switch
-               {
-                   "lt"   => "<",
-                   "gt"   => ">",
-                   "amp"  => "&",
-                   "apos" => "'",
-                   "quot" => "\"",
-                   _      => name.StartsWith( "#x" ) ? char.Parse( name[ 2.. ] ).ToString() : null
-               };
-
-    }
+    public virtual string? Entity( string name ) => name switch
+                                                    {
+                                                        "lt"   => "<",
+                                                        "gt"   => ">",
+                                                        "amp"  => "&",
+                                                        "apos" => "'",
+                                                        "quot" => "\"",
+                                                        _      => name.StartsWith( "#x" ) ? char.Parse( name[ 2.. ] ).ToString() : null
+                                                    };
 
     public void Text( string text )
     {
@@ -550,19 +532,24 @@ public partial class XmlReader
         _current = _elements.Count > 0 ? _elements.Peek() : null;
     }
 
+    private enum Ps
+    {
+        Stage0,
+        Stage1,
+        Stage2,
+        Stage3,
+        Stage4,
+        Stage5
+    }
+
     // --------------------------------------------------------------------
     //
     // --------------------------------------------------------------------
 
-    [PublicAPI]
+
     public class Element
     {
         private List< Element >? _children;
-
-        public string?                       Name       { get; }
-        public ObjectMap< string, string? >? Attributes { get; set; }
-        public Element?                      Parent     { get; set; }
-        public string?                       Text       { get; set; }
 
         public Element( string name, Element? parent )
         {
@@ -570,6 +557,11 @@ public partial class XmlReader
             Parent = parent;
             Text   = string.Empty;
         }
+
+        public string?                       Name       { get; }
+        public ObjectMap< string, string? >? Attributes { get; set; }
+        public Element?                      Parent     { get; set; }
+        public string?                       Text       { get; set; }
 
         /// <summary>
         /// </summary>
@@ -591,7 +583,7 @@ public partial class XmlReader
 
             var value = Attributes.Get( name );
 
-            if ( ( value == null ) )
+            if ( value == null )
             {
                 throw new GdxRuntimeException( $"Element {Name} doesn't have attribute: {name}" );
             }
@@ -731,7 +723,7 @@ public partial class XmlReader
 
             foreach ( Element? element in _children )
             {
-                if ( ( element.Name != null ) && ( element.Name.Equals( name ) ) )
+                if ( ( element.Name != null ) && element.Name.Equals( name ) )
                 {
                     return element;
                 }
@@ -799,7 +791,7 @@ public partial class XmlReader
 
         /// <param name="name"> the name of the children </param>
         /// <returns>
-        /// the children with the given name or an empty <seealso cref="Array"/>
+        ///     the children with the given name or an empty <seealso cref="Array" />
         /// </returns>
         public List< Element > GetChildrenByName( string name )
         {
@@ -878,7 +870,7 @@ public partial class XmlReader
         {
             var value = GetAttribute( name, null );
 
-            return ( value == null ) ? defaultValue : float.Parse( value );
+            return value == null ? defaultValue : float.Parse( value );
         }
 
         /// <summary>
@@ -896,17 +888,14 @@ public partial class XmlReader
         {
             var value = GetAttribute( name, null );
 
-            return ( value == null ) ? defaultValue : int.Parse( value );
+            return value == null ? defaultValue : int.Parse( value );
         }
 
         /// <summary>
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool GetboolAttribute( string name )
-        {
-            return bool.Parse( GetAttribute( name ) );
-        }
+        public bool GetboolAttribute( string name ) => bool.Parse( GetAttribute( name ) );
 
         /// <summary>
         /// </summary>
@@ -917,12 +906,12 @@ public partial class XmlReader
         {
             var value = GetAttribute( name, null );
 
-            return ( value == null ) ? defaultValue : bool.Parse( value );
+            return value == null ? defaultValue : bool.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
         public string Get( string name )
@@ -933,8 +922,8 @@ public partial class XmlReader
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
         public string? Get( string name, string? defaultValue )
@@ -951,7 +940,7 @@ public partial class XmlReader
 
             Element? child = GetChildByName( name );
 
-            return ( child == null )
+            return child == null
                 ? defaultValue
                 : child.Text ?? defaultValue;
         }
@@ -965,7 +954,7 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            return ( value == null )
+            return value == null
                 ? throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" )
                 : int.Parse( value );
         }
@@ -979,60 +968,59 @@ public partial class XmlReader
         {
             var value = Get( name, null );
 
-            return ( value == null ) ? defaultValue : int.Parse( value );
+            return value == null ? defaultValue : int.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
         public float GetFloat( string name )
         {
             var value = Get( name, null );
 
-            return ( value == null )
+            return value == null
                 ? throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" )
                 : float.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
         public float GetFloat( string name, float defaultValue )
         {
             var value = Get( name, null );
 
-            return ( value == null ) ? defaultValue : float.Parse( value );
+            return value == null ? defaultValue : float.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
         public bool GetBool( string name )
         {
             var value = Get( name, null );
 
-            return ( value == null )
+            return value == null
                 ? throw new GdxRuntimeException( $"Element {Name} doesn't have attribute or child: {name}" )
                 : bool.Parse( value );
         }
 
         /// <summary>
-        /// Returns the attribute value with the specified name, or if no attribute
-        /// is found, the text of a child with the name.
+        ///     Returns the attribute value with the specified name, or if no attribute
+        ///     is found, the text of a child with the name.
         /// </summary>
         /// <exception cref="GdxRuntimeException">if no attribute or child was not found.</exception>
         public bool GetBool( string name, bool defaultValue )
         {
             var value = Get( name, null );
 
-            return ( value == null ) ? defaultValue : bool.Parse( value );
+            return value == null ? defaultValue : bool.Parse( value );
         }
     }
 }
-

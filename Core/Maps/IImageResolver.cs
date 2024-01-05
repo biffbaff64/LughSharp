@@ -19,15 +19,14 @@ using LibGDXSharp.Graphics.G2D;
 namespace LibGDXSharp.Maps;
 
 /// <summary>
-/// esolves an image by a string, wrapper around a Map or AssetManager to load
-/// maps either directly or via AssetManager.
+///     esolves an image by a string, wrapper around a Map or AssetManager to load
+///     maps either directly or via AssetManager.
 /// </summary>
-[PublicAPI]
 public interface IImageResolver
 {
     /// <summary>
-    /// Returns the <see cref="TextureRegion"/> for the given name,
-    /// or null if texture doesn't exist.
+    ///     Returns the <see cref="TextureRegion" /> for the given name,
+    ///     or null if texture doesn't exist.
     /// </summary>
     public TextureRegion? GetImage( string name );
 
@@ -37,15 +36,9 @@ public interface IImageResolver
     {
         private readonly Dictionary< string, Texture > _images;
 
-        internal DirectImageResolver( Dictionary< string, Texture > images )
-        {
-            this._images = images;
-        }
+        internal DirectImageResolver( Dictionary< string, Texture > images ) => _images = images;
 
-        public TextureRegion GetImage( string name )
-        {
-            return new TextureRegion( _images[ name ] );
-        }
+        public TextureRegion GetImage( string name ) => new( _images[ name ] );
     }
 
     /// <summary>
@@ -54,15 +47,9 @@ public interface IImageResolver
     {
         private readonly AssetManager _assetManager;
 
-        internal AssetManagerImageResolver( AssetManager assetManager )
-        {
-            this._assetManager = assetManager;
-        }
+        internal AssetManagerImageResolver( AssetManager assetManager ) => _assetManager = assetManager;
 
-        public TextureRegion GetImage( string name )
-        {
-            return new TextureRegion( _assetManager.Get< Texture >( name ) );
-        }
+        public TextureRegion GetImage( string name ) => new( _assetManager.Get< Texture >( name ) );
     }
 
     /// <summary>
@@ -71,14 +58,8 @@ public interface IImageResolver
     {
         private readonly TextureAtlas _atlas;
 
-        public TextureAtlasImageResolver( TextureAtlas atlas )
-        {
-            this._atlas = atlas;
-        }
+        public TextureAtlasImageResolver( TextureAtlas atlas ) => _atlas = atlas;
 
-        public TextureRegion? GetImage( string name )
-        {
-            return _atlas.FindRegion( name );
-        }
+        public TextureRegion? GetImage( string name ) => _atlas.FindRegion( name );
     }
 }

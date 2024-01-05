@@ -17,13 +17,11 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// The SampleBuffer class implements an output buffer that provides storage for a
-/// fixed size block of samples.
+///     The SampleBuffer class implements an output buffer that provides storage for a
+///     fixed size block of samples.
 /// </summary>
-[PublicAPI]
 public class SampleBuffer : ABuffer
 {
-    public virtual int SampleFrequency { get; set; }
 
     private readonly short[] _buffer;
     private readonly int[]   _bufferp;
@@ -31,9 +29,9 @@ public class SampleBuffer : ABuffer
 
     public SampleBuffer( int sampleFrequency, int numberOfChannels )
     {
-        _buffer         = new short[ OBUFFERSIZE ];
-        _bufferp        = new int[ MAXCHANNELS ];
-        _channels       = numberOfChannels;
+        _buffer   = new short[ OBUFFERSIZE ];
+        _bufferp  = new int[ MAXCHANNELS ];
+        _channels = numberOfChannels;
 
         Init( sampleFrequency );
 
@@ -43,17 +41,16 @@ public class SampleBuffer : ABuffer
         }
     }
 
-    private void Init( int sampleFrequency )
-    {
-        SampleFrequency = sampleFrequency;
-    }
+    public virtual int SampleFrequency { get; set; }
 
     public virtual int     ChannelCount => _channels;
     public virtual short[] Buffer       => _buffer;
     public virtual int     BufferLength => _bufferp[ 0 ];
 
+    private void Init( int sampleFrequency ) => SampleFrequency = sampleFrequency;
+
     /// <summary>
-    /// Takes a 16 Bit PCM sample.
+    ///     Takes a 16 Bit PCM sample.
     /// </summary>
     protected override void Append( int channel, short valueRenamed )
     {
@@ -73,7 +70,7 @@ public class SampleBuffer : ABuffer
             //UPGRADE_WARNING: Narrowing conversions may produce unexpected results in C#.
             //'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="jlca1042"'
             var s = ( short )fs;
-            
+
             _buffer[ pos ] =  s;
             pos            += _channels;
         }
@@ -82,7 +79,7 @@ public class SampleBuffer : ABuffer
     }
 
     /// <summary>
-    /// Write the samples to the file (Random Acces).
+    ///     Write the samples to the file (Random Acces).
     /// </summary>
     public override void WriteBuffer( int val )
     {
@@ -95,7 +92,6 @@ public class SampleBuffer : ABuffer
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ClearBuffer()
     {
@@ -106,7 +102,6 @@ public class SampleBuffer : ABuffer
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void SetStopFlag()
     {

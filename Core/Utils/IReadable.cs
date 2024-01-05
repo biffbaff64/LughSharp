@@ -19,20 +19,21 @@ using LibGDXSharp.Files.Buffers;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// A <tt>Readable</tt> is a source of characters. Characters from a <tt>Readable</tt>
-/// are made available to callers of the read method via a <see cref="CharBuffer"/>.
+///     A <tt>Readable</tt> is a source of characters. Characters from a <tt>Readable</tt>
+///     are made available to callers of the read method via a <see cref="CharBuffer" />.
 /// </summary>
-[PublicAPI]
 public interface IReadable
 {
     /// <summary>
-    /// Attempts to read characters into the specified character buffer.
-    /// The buffer is used as a repository of characters as-is: the only
-    /// changes made are the results of a put operation. No flipping or
-    /// rewinding of the buffer is performed.
+    ///     Attempts to read characters into the specified character buffer.
+    ///     The buffer is used as a repository of characters as-is: the only
+    ///     changes made are the results of a put operation. No flipping or
+    ///     rewinding of the buffer is performed.
     /// </summary>
     /// <param name="cb"> the buffer to read characters into </param>
-    /// <returns> The number of {@code char} values added to the buffer,
-    ///                 or -1 if this source of characters is at its end </returns>
+    /// <returns>
+    ///     The number of {@code char} values added to the buffer,
+    ///     or -1 if this source of characters is at its end
+    /// </returns>
     int Read( CharBuffer cb );
 }

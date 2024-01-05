@@ -14,48 +14,35 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Graphics.G2D;
+
 using Trace = LibGDXSharp.Utils.Trace;
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
-using LibGDXSharp.Graphics.G2D;
-
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
-[PublicAPI]
 public class IsometricTiledMapRenderer : BatchTileMapRenderer
 {
-    private Matrix4? _isoTransform;
-    private Matrix4? _invIsotransform;
-
-    private readonly Vector3 _screenPos   = new();
-    private readonly Vector2 _topRight    = new();
     private readonly Vector2 _bottomLeft  = new();
-    private readonly Vector2 _topLeft     = new();
     private readonly Vector2 _bottomRight = new();
 
+    private readonly Vector3  _screenPos = new();
+    private readonly Vector2  _topLeft   = new();
+    private readonly Vector2  _topRight  = new();
+    private          Matrix4? _invIsotransform;
+    private          Matrix4? _isoTransform;
+
     public IsometricTiledMapRenderer( TiledMap map )
-        : base( map )
-    {
-        Init();
-    }
+        : base( map ) => Init();
 
     public IsometricTiledMapRenderer( TiledMap map, IBatch batch )
-        : base( map, batch )
-    {
-        Init();
-    }
+        : base( map, batch ) => Init();
 
     public IsometricTiledMapRenderer( TiledMap map, float unitScale )
-        : base( map, unitScale )
-    {
-        Init();
-    }
+        : base( map, unitScale ) => Init();
 
     public IsometricTiledMapRenderer( TiledMap map, float unitScale, IBatch batch )
-        : base( map, unitScale, batch )
-    {
-        Init();
-    }
+        : base( map, unitScale, batch ) => Init();
 
     private void Init()
     {

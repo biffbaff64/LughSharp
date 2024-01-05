@@ -16,16 +16,12 @@
 
 namespace LibGDXSharp.Graphics.G2D;
 
-[PublicAPI]
 public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
 {
     private readonly ParticleEffect _effect;
 
     public ParticleEffectPool( ParticleEffect effect, int initialCapacity, int max )
-        : base( initialCapacity, max )
-    {
-        this._effect = effect;
-    }
+        : base( initialCapacity, max ) => _effect = effect;
 
     protected new PooledEffect NewObject()
     {
@@ -41,12 +37,12 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
 
         effect.Reset( false ); // copy parameters exactly to avoid introducing error
 
-        if ( ( !effect.XSizeScale.Equals( this._effect.XSizeScale ) )
-          || ( !effect.YSizeScale.Equals( this._effect.YSizeScale ) )
-          || ( !effect.MotionScale.Equals( this._effect.MotionScale ) ) )
+        if ( !effect.XSizeScale.Equals( _effect.XSizeScale )
+          || !effect.YSizeScale.Equals( _effect.YSizeScale )
+          || !effect.MotionScale.Equals( _effect.MotionScale ) )
         {
             List< ParticleEmitter > emitters         = effect.GetEmitters();
-            List< ParticleEmitter > templateEmitters = this._effect.GetEmitters();
+            List< ParticleEmitter > templateEmitters = _effect.GetEmitters();
 
             for ( var i = 0; i < emitters.Count; i++ )
             {
@@ -57,26 +53,20 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
                 emitter.MatchMotion( templateEmitter );
             }
 
-            effect.XSizeScale  = this._effect.XSizeScale;
-            effect.YSizeScale  = this._effect.YSizeScale;
-            effect.MotionScale = this._effect.MotionScale;
+            effect.XSizeScale  = _effect.XSizeScale;
+            effect.YSizeScale  = _effect.YSizeScale;
+            effect.MotionScale = _effect.MotionScale;
         }
     }
 
-    [PublicAPI]
+
     public class PooledEffect : ParticleEffect
     {
         private readonly ParticleEffectPool _effectPool;
 
         public PooledEffect( ParticleEffect effect, ParticleEffectPool pep )
-            : base( effect )
-        {
-            _effectPool = pep;
-        }
+            : base( effect ) => _effectPool = pep;
 
-        public void Free()
-        {
-            _effectPool.Free( this );
-        }
+        public void Free() => _effectPool.Free( this );
     }
 }

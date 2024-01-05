@@ -18,30 +18,26 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
-[PublicAPI]
 public class OpenALAudio : IGLAudio
 {
-    public bool                NoDevice { get; set; } = false;
-    public List< OpenALMusic > Music    { get; set; } = new( 1 );
+    private readonly uint[]? _allSources;
+    private readonly IntPtr  _context;
 
-    private int                      _deviceBufferSize;
-    private int                      _deviceBufferCount;
-    private List< uint >?            _idleSources;
-    private uint[]?                  _allSources;
-    private Dictionary< long, int >? _soundIdToSource;
-    private Dictionary< int, long >? _sourceToSoundId;
-    private long                     _nextSoundId = 0;
-    private OpenALSound?[]?          _recentSounds;
-    private int                      _mostRecentSound = -1;
+    private readonly IntPtr _device;
+    private readonly int    _deviceBufferCount;
 
-    private ObjectMap< string, Type > _extensionToSoundClass = new();
-    private ObjectMap< string, Type > _extensionToMusicClass = new();
+    private readonly int                       _deviceBufferSize;
+    private readonly ObjectMap< string, Type > _extensionToMusicClass = new();
 
-    private IntPtr _device;
-    private IntPtr _context;
+    private readonly ObjectMap< string, Type > _extensionToSoundClass = new();
+    private readonly List< uint >?             _idleSources;
+    private          int                       _mostRecentSound = -1;
+    private          long                      _nextSoundId     = 0;
+    private readonly OpenALSound?[]?           _recentSounds;
+    private readonly Dictionary< long, int >?  _soundIdToSource;
+    private readonly Dictionary< int, long >?  _sourceToSoundId;
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="simultaneousSources"></param>
     /// <param name="deviceBufferCount"></param>
@@ -50,8 +46,8 @@ public class OpenALAudio : IGLAudio
                         int deviceBufferCount = 9,
                         int deviceBufferSize = 512 )
     {
-        this._deviceBufferSize  = deviceBufferSize;
-        this._deviceBufferCount = deviceBufferCount;
+        _deviceBufferSize  = deviceBufferSize;
+        _deviceBufferCount = deviceBufferCount;
 
         RegisterSound( "ogg", typeof( Ogg.Sound ) );
         RegisterMusic( "ogg", typeof( Ogg.Music ) );
@@ -128,34 +124,10 @@ public class OpenALAudio : IGLAudio
         _recentSounds = new OpenALSound[ simultaneousSources ];
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="extension"></param>
-    /// <param name="soundClass"></param>
-    public void RegisterSound( String extension, Type soundClass )
-    {
-        ArgumentNullException.ThrowIfNull( extension );
-        ArgumentNullException.ThrowIfNull( soundClass );
-
-        _extensionToSoundClass.Put( extension, soundClass );
-    }
+    public bool                NoDevice { get; set; } = false;
+    public List< OpenALMusic > Music    { get; set; } = new( 1 );
 
     /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="extension"></param>
-    /// <param name="musicClass"></param>
-    public void RegisterMusic( String extension, Type musicClass )
-    {
-        ArgumentNullException.ThrowIfNull( extension );
-        ArgumentNullException.ThrowIfNull( musicClass );
-
-        _extensionToMusicClass.Put( extension, musicClass );
-    }
-
-    /// <summary>
-    /// 
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
@@ -178,14 +150,13 @@ public class OpenALAudio : IGLAudio
 
             return snd ?? throw new NullReferenceException();
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new GdxRuntimeException( $"Error creating sound {soundClass.Name} for file: {file}", ex );
         }
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
@@ -209,14 +180,99 @@ public class OpenALAudio : IGLAudio
 
             return snd ?? throw new NullReferenceException();
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new GdxRuntimeException( $"Error creating music {musicClass.Name} for file: {file}", ex );
         }
     }
 
     /// <summary>
-    /// 
+    /// </summary>
+    public void Update()
+    {
+        if ( NoDevice )
+        {
+            return;
+        }
+
+        foreach ( OpenALMusic alm in Music )
+        {
+            alm.Update();
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    public IAudioDevice NewAudioDevice( int sampleRate, bool isMono ) =>
+
+        //        if ( NoDevice )
+        //        {
+        //            return new IAudioDevice()
+        //            {
+        //                public void writeSamples (float[] samples, int offset, int numSamples)
+        //                {
+        //            }
+        //            }
+        //            public void WriteSamples( short[] samples, int offset, int numSamples )
+        //            {
+        //            }
+        //            public void SetVolume( float volume )
+        //            {
+        //            }
+        //            public bool ISMono()
+        //            {
+        //                return ISMono;
+        //            }
+        //            public int GetLatency()
+        //            {
+        //                return 0;
+        //            }
+        //            public void Dispose()
+        //            {
+        //            }
+        //        }
+        new OpenALAudioDevice( this, sampleRate, isMono, _deviceBufferSize, _deviceBufferCount );
+
+    public IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono ) =>
+
+        //        if ( NoDevice )
+        //        {
+        //            return new IAudioRecorder()
+        //            {
+        //                public void read (short[] samples, int offset, int numSamples) {
+        //            }
+        //            }
+        //            public void Dispose()
+        //            {
+        //            }
+        //        }
+        new GdxSoundAudioRecorder( samplingRate, isMono );
+
+    /// <summary>
+    /// </summary>
+    /// <param name="extension"></param>
+    /// <param name="soundClass"></param>
+    public void RegisterSound( String extension, Type soundClass )
+    {
+        ArgumentNullException.ThrowIfNull( extension );
+        ArgumentNullException.ThrowIfNull( soundClass );
+
+        _extensionToSoundClass.Put( extension, soundClass );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="extension"></param>
+    /// <param name="musicClass"></param>
+    public void RegisterMusic( String extension, Type musicClass )
+    {
+        ArgumentNullException.ThrowIfNull( extension );
+        ArgumentNullException.ThrowIfNull( musicClass );
+
+        _extensionToMusicClass.Put( extension, musicClass );
+    }
+
+    /// <summary>
     /// </summary>
     /// <param name="isMusic"></param>
     /// <returns></returns>
@@ -268,7 +324,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="sourceID"></param>
     public void FreeSource( int sourceID )
@@ -294,7 +349,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="bufferID"></param>
     public void FreeBuffer( int bufferID )
@@ -303,7 +357,7 @@ public class OpenALAudio : IGLAudio
         {
             return;
         }
-        
+
         for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
             var sourceID = _idleSources?[ i ];
@@ -333,7 +387,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="bufferID"></param>
     public void StopSourcesWithBuffer( int bufferID )
@@ -348,11 +401,11 @@ public class OpenALAudio : IGLAudio
             var sourceID = _idleSources[ i ];
 
             AL.GetSourcei( sourceID, AL.BUFFER, out var outval );
-            
+
             if ( outval == bufferID )
             {
                 var soundId = _sourceToSoundId?[ ( int )sourceID ];
-                
+
                 _sourceToSoundId?.Remove( ( int )sourceID );
 
                 if ( soundId != null )
@@ -366,7 +419,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="bufferID"></param>
     public void PauseSourcesWithBuffer( int bufferID )
@@ -381,7 +433,7 @@ public class OpenALAudio : IGLAudio
             var sourceID = _idleSources[ i ];
 
             AL.GetSourcei( sourceID, AL.BUFFER, out var outval );
-                
+
             if ( outval == bufferID )
             {
                 AL.SourcePause( sourceID );
@@ -390,7 +442,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="bufferID"></param>
     public void ResumeSourcesWithBuffer( int bufferID )
@@ -405,11 +456,11 @@ public class OpenALAudio : IGLAudio
             var sourceID = _idleSources[ i ];
 
             AL.GetSourcei( sourceID, AL.BUFFER, out var outval );
-            
+
             if ( outval == bufferID )
             {
                 AL.GetSourcei( sourceID, AL.SOURCE_STATE, out var state );
-                
+
                 if ( state == AL.PAUSED )
                 {
                     AL.SourcePlay( sourceID );
@@ -419,23 +470,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    public void Update()
-    {
-        if ( NoDevice )
-        {
-            return;
-        }
-
-        foreach ( OpenALMusic alm in Music )
-        {
-            alm.Update();
-        }
-    }
-
-    /// <summary>
-    /// 
     /// </summary>
     /// <param name="sourceId"></param>
     /// <returns></returns>
@@ -447,7 +481,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="soundId"></param>
     /// <returns></returns>
@@ -459,7 +492,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="soundId"></param>
     public void StopSound( long soundId )
@@ -473,7 +505,6 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="soundId"></param>
     public void PauseSound( long soundId )
@@ -548,8 +579,8 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// Retains a list of the most recently played sounds and stops the sound played
-    /// least recently if necessary for a new sound to play.
+    ///     Retains a list of the most recently played sounds and stops the sound played
+    ///     least recently if necessary for a new sound to play.
     /// </summary>
     public void Retain( OpenALSound sound, bool stop )
     {
@@ -578,7 +609,7 @@ public class OpenALAudio : IGLAudio
     }
 
     /// <summary>
-    /// Removes the disposed sound from the least recently played list.
+    ///     Removes the disposed sound from the least recently played list.
     /// </summary>
     public void Forget( OpenALSound sound )
     {
@@ -589,71 +620,6 @@ public class OpenALAudio : IGLAudio
                 _recentSounds[ i ] = null;
             }
         }
-    }
-
-    // ------------------------------------------------------------------------
-
-    public IAudioDevice NewAudioDevice( int sampleRate, bool isMono )
-    {
-//        if ( NoDevice )
-//        {
-//            return new IAudioDevice()
-//            {
- 
-
-
-//                public void writeSamples (float[] samples, int offset, int numSamples)
-//                {
-//            }
-
-//            }
-
-//            public void WriteSamples( short[] samples, int offset, int numSamples )
-//            {
-//            }
-
-//            public void SetVolume( float volume )
-//            {
-//            }
-
-//            public bool ISMono()
-//            {
-//                return ISMono;
-//            }
-
-//            public int GetLatency()
-//            {
-//                return 0;
-//            }
-
-//            public void Dispose()
-//            {
-//            }
-//        }
-
-        return new OpenALAudioDevice( this, sampleRate, isMono, _deviceBufferSize, _deviceBufferCount );
-    }
-
-    public IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono )
-    {
-//        if ( NoDevice )
-//        {
-//            return new IAudioRecorder()
-//            {
- 
-
-
-//                public void read (short[] samples, int offset, int numSamples) {
-//            }
-
-//            }
-
-//            public void Dispose()
-//            {
-//            }
-//        }
-
-        return new GdxSoundAudioRecorder( samplingRate, isMono );
     }
 
     // ------------------------------------------------------------------------

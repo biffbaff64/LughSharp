@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Graphics.G3D.Particles;
 
-[PublicAPI]
 public class ParticleEffectLoader
 {
 }

@@ -19,11 +19,10 @@ using LibGDXSharp.Graphics.G2D;
 namespace LibGDXSharp.Assets.Loaders;
 
 /// <summary>
-/// AssetLoader to load TextureAtlas instances. Passing a <see cref="TextureAtlasParameter"/> to
-/// <see cref="AssetManager.Load(String, Type, AssetLoaderParameters)"/> allows to specify whether
-/// the atlas regions should be flipped on the y-axis or not.
+///     AssetLoader to load TextureAtlas instances. Passing a <see cref="TextureAtlasParameter" /> to
+///     <see cref="AssetManager.Load(String, Type, AssetLoaderParameters)" /> allows to specify whether
+///     the atlas regions should be flipped on the y-axis or not.
 /// </summary>
-[PublicAPI]
 public class TextureAtlasLoader
     : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >, IDisposable
 {
@@ -32,6 +31,16 @@ public class TextureAtlasLoader
     public TextureAtlasLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
+    }
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
     /// <summary>
@@ -50,7 +59,7 @@ public class TextureAtlasLoader
         {
             throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
         }
-        
+
         foreach ( TextureAtlasData.Page page in _data.Pages )
         {
             if ( page.textureFile != null )
@@ -77,7 +86,7 @@ public class TextureAtlasLoader
 
         DirectoryInfo? imgDir = atlasFile.Directory;
 
-        _data = ( parameter != null )
+        _data = parameter != null
             ? new TextureAtlasData( atlasFile, imgDir, ( ( TextureAtlasParameter )parameter ).FlipVertically )
             : new TextureAtlasData( atlasFile, imgDir, false );
 
@@ -103,7 +112,6 @@ public class TextureAtlasLoader
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
@@ -113,29 +121,14 @@ public class TextureAtlasLoader
         }
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
-    }
 
-    [PublicAPI]
     public class TextureAtlasParameter : AssetLoaderParameters
     {
-        public bool FlipVertically { get; private set; }
 
-        public TextureAtlasParameter()
-        {
-            this.FlipVertically = false;
-        }
+        public TextureAtlasParameter() => FlipVertically = false;
 
-        public TextureAtlasParameter( bool flip )
-        {
-            this.FlipVertically = flip;
-        }
+        public TextureAtlasParameter( bool flip ) => FlipVertically = flip;
+
+        public bool FlipVertically { get; }
     }
 }

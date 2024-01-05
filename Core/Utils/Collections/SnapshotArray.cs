@@ -19,27 +19,26 @@ using System.Collections;
 namespace LibGDXSharp.Utils.Collections;
 
 /// <summary>
-/// An array that allows modification during iteration. Guarantees that
-/// array entries provided by begin() between indexes 0 and size at the
-/// time begin was called will not be modified until end() is called. If
-/// modification of the SnapshotArray occurs between begin/end, the backing
-/// array is copied prior to the modification, ensuring that the backing
-/// array that was returned by begin() is unaffected. To avoid allocation,
-/// an attempt is made to reuse any extra array created as a result of this
-/// copy on subsequent copies.
-/// <para>
-/// Note that SnapshotArray is not for thread safety, only for modification
-/// during iteration.
-/// </para>
+///     An array that allows modification during iteration. Guarantees that
+///     array entries provided by begin() between indexes 0 and size at the
+///     time begin was called will not be modified until end() is called. If
+///     modification of the SnapshotArray occurs between begin/end, the backing
+///     array is copied prior to the modification, ensuring that the backing
+///     array that was returned by begin() is unaffected. To avoid allocation,
+///     an attempt is made to reuse any extra array created as a result of this
+///     copy on subsequent copies.
+///     <para>
+///         Note that SnapshotArray is not for thread safety, only for modification
+///         during iteration.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 {
-    private T[]? _snapshot;
-    private T[]? _recycled;
-    private int  _snapshotCount;
 
     private IEnumerable< T >? _iterable;
+    private T[]?              _recycled;
+    private T[]?              _snapshot;
+    private int               _snapshotCount;
 
     public SnapshotArray( int capacity = 0 )
         : this( true, capacity )
@@ -73,9 +72,15 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         Array.Copy( array, startIndex, Items, 0, count );
     }
 
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    /// <inheritdoc />
+    public IEnumerator< T > GetEnumerator() => new SnapshotEnumerator< T >( Items );
+
     /// <summary>
-    /// Takes a snapshot of the current array state and then
-    /// returns the array. 
+    ///     Takes a snapshot of the current array state and then
+    ///     returns the array.
     /// </summary>
     /// <returns></returns>
     public T?[] Begin()
@@ -136,7 +141,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         }
         else
         {
-            this.Resize( Size );
+            Resize( Size );
         }
     }
 
@@ -153,8 +158,8 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    /// Copy 'count' items from the supplied array to this array,
-    /// starting from position 'start'.
+    ///     Copy 'count' items from the supplied array to this array,
+    ///     starting from position 'start'.
     /// </summary>
     /// <param name="array">The array of items to add.</param>
     /// <param name="start">The start index.</param>
@@ -174,8 +179,8 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    /// Copy 'count' items from the supplied array to this array,
-    /// starting from position 'start'.
+    ///     Copy 'count' items from the supplied array to this array,
+    ///     starting from position 'start'.
     /// </summary>
     /// <param name="array">The array of items to add.</param>
     /// <param name="start">The start index.</param>
@@ -196,7 +201,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         Size += count;
     }
 
-    public override T Get( int index )
+    public override T GetAt( int index )
     {
         if ( index >= Size )
         {
@@ -266,7 +271,6 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
@@ -319,7 +323,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    /// Removes a range of elements from the array.
+    ///     Removes a range of elements from the array.
     /// </summary>
     /// <param name="start">The zero-based starting index of the range of elements to remove.</param>
     /// <param name="end">The ending index of the range.</param>
@@ -345,7 +349,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         }
         else
         {
-            var lastIndex = this.Size - 1;
+            var lastIndex = Size - 1;
 
             for ( var i = 0; i < count; i++ )
             {
@@ -357,8 +361,8 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    /// Removes all the elements that match the conditions defined by the
-    /// specified predicate.
+    ///     Removes all the elements that match the conditions defined by the
+    ///     specified predicate.
     /// </summary>
     /// <param name="array"></param>
     /// <returns></returns>
@@ -366,12 +370,12 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     {
         Modified();
 
-        var size      = this.Size;
+        var size      = Size;
         var startSize = size;
 
         for ( int i = 0, n = array.Size; i < n; i++ )
         {
-            T item = array.Get( i );
+            T item = array.GetAt( i );
 
             for ( var ii = 0; ii < size; ii++ )
             {
@@ -389,12 +393,12 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    /// Returns the index of first occurrence of value in the array,
-    /// or -1 if no such value exists.
+    ///     Returns the index of first occurrence of value in the array,
+    ///     or -1 if no such value exists.
     /// </summary>
     /// <param name="value"> May be null. </param>
     /// <returns>
-    /// An index of first occurrence of value in array or -1 if no such value exists
+    ///     An index of first occurrence of value in array or -1 if no such value exists
     /// </returns>
     public override int IndexOf( T? value )
     {
@@ -463,9 +467,9 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     {
         var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
 
-        Array.Copy( Items, 0, newItems, 0, System.Math.Min( Size, newItems.Length ) );
+        Array.Copy( Items, 0, newItems, 0, Math.Min( Size, newItems.Length ) );
 
-        this.Items = newItems;
+        Items = newItems;
 
         return newItems;
     }
@@ -519,7 +523,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 
         for ( var i = 0; i < n; i++ )
         {
-            T obj1 = this.Items[ i ];
+            T obj1 = Items[ i ];
             T obj2 = array.Items[ i ];
 
             if ( !( obj1?.Equals( obj2 ) ?? ( obj2 == null ) ) )
@@ -530,27 +534,14 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 
         return true;
     }
-
-    /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    /// <inheritdoc />
-    public IEnumerator< T > GetEnumerator()
-    {
-        return new SnapshotEnumerator< T >( Items );
-    }
 }
 
-[PublicAPI]
 public class SnapshotEnumerator<T> : IEnumerator< T >
 {
-    private int _position = -1;
-    private T[] _array;
+    private readonly T[] _array;
+    private          int _position = -1;
 
-    public SnapshotEnumerator( T[] array )
-    {
-        this._array = array;
-    }
+    public SnapshotEnumerator( T[] array ) => _array = array;
 
     /// <inheritdoc />
     public bool MoveNext()

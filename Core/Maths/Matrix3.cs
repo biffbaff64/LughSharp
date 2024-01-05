@@ -16,48 +16,41 @@
 
 namespace LibGDXSharp.Maths;
 
-[PublicAPI]
 public class Matrix3
 {
-    public const int M00 = 0;
-    public const int M01 = 3;
-    public const int M02 = 6;
-    public const int M10 = 1;
-    public const int M11 = 4;
-    public const int M12 = 7;
-    public const int M20 = 2;
-    public const int M21 = 5;
-    public const int M22 = 8;
-
-    public readonly  float[] val  = new float[ 9 ];
+    public const     int     M00  = 0;
+    public const     int     M01  = 3;
+    public const     int     M02  = 6;
+    public const     int     M10  = 1;
+    public const     int     M11  = 4;
+    public const     int     M12  = 7;
+    public const     int     M20  = 2;
+    public const     int     M21  = 5;
+    public const     int     M22  = 8;
     private readonly float[] _tmp = new float[ 9 ];
 
-    public Matrix3()
-    {
-        Idt();
-    }
+    public readonly float[] val = new float[ 9 ];
 
-    public Matrix3( Matrix3 matrix )
-    {
-        Set( matrix );
-    }
+    public Matrix3() => Idt();
+
+    public Matrix3( Matrix3 matrix ) => Set( matrix );
 
     /// <summary>
-    /// Constructs a matrix from the given float array. The array must have at
-    /// least 9 elements; the first 9 will be copied.
+    ///     Constructs a matrix from the given float array. The array must have at
+    ///     least 9 elements; the first 9 will be copied.
     /// </summary>
     /// <param name="values">
-    /// The float array to copy.
-    /// Remember that this matrix is in <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">
-    /// column major</a> order. (The float array is not modified.)
+    ///     The float array to copy.
+    ///     Remember that this matrix is in
+    ///     <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">
+    ///         column major
+    ///     </a>
+    ///     order. (The float array is not modified.)
     /// </param>
-    public Matrix3( float[] values )
-    {
-        this.Set( values );
-    }
+    public Matrix3( float[] values ) => Set( values );
 
     /// <summary>
-    /// Sets this matrix to the identity matrix
+    ///     Sets this matrix to the identity matrix
     /// </summary>
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 Idt()
@@ -76,13 +69,13 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with the provided matrix and stores the
-    /// result in this matrix. For example:
-    /// <para>
-    /// <tt>A.mul(B) results in A := AB</tt>
-    /// </para>
+    ///     Postmultiplies this matrix with the provided matrix and stores the
+    ///     result in this matrix. For example:
+    ///     <para>
+    ///         <tt>A.mul(B) results in A := AB</tt>
+    ///     </para>
     /// </summary>
-    /// <param name ="m"> Matrix to multiply by. </param>
+    /// <param name="m"> Matrix to multiply by. </param>
     /// <returns> This matrix for chaining operations together. </returns>
     public Matrix3 Mul( Matrix3 m )
     {
@@ -112,14 +105,14 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Premultiplies this matrix with the provided matrix and stores the
-    /// result in this matrix. For example:
-	/// <para>
-	/// <tt>A.mulLeft(B) results in A := BA</tt>
-	/// </para>
+    ///     Premultiplies this matrix with the provided matrix and stores the
+    ///     result in this matrix. For example:
+    ///     <para>
+    ///         <tt>A.mulLeft(B) results in A := BA</tt>
+    ///     </para>
     /// </summary>
-	/// <param name="m"> The other Matrix to multiply by </param>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
+    /// <param name="m"> The other Matrix to multiply by </param>
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 MulLeft( Matrix3 m )
     {
         var v00 = ( m.val[ M00 ] * val[ M00 ] ) + ( m.val[ M01 ] * val[ M10 ] ) + ( m.val[ M02 ] * val[ M20 ] );
@@ -148,22 +141,19 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Sets this matrix to a rotation matrix that will rotate any vector in
-    /// counter-clockwise direction around the z-axis.
+    ///     Sets this matrix to a rotation matrix that will rotate any vector in
+    ///     counter-clockwise direction around the z-axis.
     /// </summary>
-	/// <param name="degrees"> the angle in degrees.</param>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
-    public Matrix3 SetToRotation( float degrees )
-    {
-        return SetToRotationRad( MathUtils.DEGREES_TO_RADIANS * degrees );
-    }
+    /// <param name="degrees"> the angle in degrees.</param>
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
+    public Matrix3 SetToRotation( float degrees ) => SetToRotationRad( MathUtils.DEGREES_TO_RADIANS * degrees );
 
     /// <summary>
-    /// Sets this matrix to a rotation matrix that will rotate any vector in
-    /// counter-clockwise direction around the z-axis.
+    ///     Sets this matrix to a rotation matrix that will rotate any vector in
+    ///     counter-clockwise direction around the z-axis.
     /// </summary>
-	/// <param name="radians"> the angle in radians.</param>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
+    /// <param name="radians"> the angle in radians.</param>
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToRotationRad( float radians )
     {
         var cos = ( float )Math.Cos( radians );
@@ -184,10 +174,7 @@ public class Matrix3
         return this;
     }
 
-    public Matrix3 SetToRotation( Vector3 axis, float degrees )
-    {
-        return SetToRotation( axis, MathUtils.CosDeg( degrees ), MathUtils.SinDeg( degrees ) );
-    }
+    public Matrix3 SetToRotation( Vector3 axis, float degrees ) => SetToRotation( axis, MathUtils.CosDeg( degrees ), MathUtils.SinDeg( degrees ) );
 
     public Matrix3 SetToRotation( Vector3 axis, float cos, float sin )
     {
@@ -207,9 +194,9 @@ public class Matrix3
     }
 
     /// Sets this matrix to a translation matrix.
-	/// <param name="x"> the translation in x</param>
-	/// <param name="y"> the translation in y</param>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
+    /// <param name="x"> the translation in x</param>
+    /// <param name="y"> the translation in y</param>
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToTranslation( float x, float y )
     {
         val[ M00 ] = 1;
@@ -228,8 +215,8 @@ public class Matrix3
     }
 
     /// Sets this matrix to a translation matrix.
-	/// <param name="translation"> The translation vector.</param>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
+    /// <param name="translation"> The translation vector.</param>
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToTranslation( Vector2 translation )
     {
         val[ M00 ] = 1;
@@ -248,9 +235,9 @@ public class Matrix3
     }
 
     /// Sets this matrix to a scaling matrix.
-	/// <param name="scaleX"> the scale in x </param>
-	/// <param name="scaleY"> the scale in y </param>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
+    /// <param name="scaleX"> the scale in x </param>
+    /// <param name="scaleY"> the scale in y </param>
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToScaling( float scaleX, float scaleY )
     {
         val[ M00 ] = scaleX;
@@ -267,8 +254,8 @@ public class Matrix3
     }
 
     /// Sets this matrix to a scaling matrix.
-	/// <param name="scale"> The scale vector. </param>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
+    /// <param name="scale"> The scale vector. </param>
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToScaling( Vector2 scale )
     {
         val[ M00 ] = scale.X;
@@ -284,34 +271,31 @@ public class Matrix3
         return this;
     }
 
-    public new string ToString()
-    {
-        return ( $"[{val[ M00 ]} | {val[ M01 ]} | {val[ M02 ]}]\n"
-                 + $"[{val[ M10 ]} | {val[ M11 ]} | {val[ M12 ]}]\n"
-                 + $"[{val[ M20 ]} | {val[ M21 ]} | {val[ M22 ]}]" );
-    }
+    public new string ToString() => $"[{val[ M00 ]} | {val[ M01 ]} | {val[ M02 ]}]\n"
+                                  + $"[{val[ M10 ]} | {val[ M11 ]} | {val[ M12 ]}]\n"
+                                  + $"[{val[ M20 ]} | {val[ M21 ]} | {val[ M22 ]}]";
 
     /// <returns> The determinant of this matrix </returns>
-    public float Det()
-    {
-        return ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
-                 + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
-                 + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
-               - ( val[ M00 ] * val[ M12 ] * val[ M21 ] )
-               - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
-               - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
-    }
+    public float Det() => ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
+                          + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
+                          + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
+                        - ( val[ M00 ] * val[ M12 ] * val[ M21 ] )
+                        - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
+                        - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
 
     /// <summary>
-    /// Inverts this matrix given that the determinant is != 0.
+    ///     Inverts this matrix given that the determinant is != 0.
     /// </summary>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
-	/// <exception cref="GdxRuntimeException"> if the matrix is singular (not invertible) </exception> 
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
+    /// <exception cref="GdxRuntimeException"> if the matrix is singular (not invertible) </exception>
     public Matrix3 Inv()
     {
         var det = Det();
 
-        if ( det == 0 ) throw new GdxRuntimeException( "Can't invert a singular matrix" );
+        if ( det == 0 )
+        {
+            throw new GdxRuntimeException( "Can't invert a singular matrix" );
+        }
 
         var invDet = 1.0f / det;
 
@@ -339,8 +323,8 @@ public class Matrix3
     }
 
     /// Copies the values from the provided matrix to this matrix.
-	/// <param name="mat"> The matrix to copy. </param>
-	/// <returns> This matrix for the purposes of chaining. </returns>
+    /// <param name="mat"> The matrix to copy. </param>
+    /// <returns> This matrix for the purposes of chaining. </returns>
     public Matrix3 Set( Matrix3 mat )
     {
         Array.Copy( mat.val, 0, val, 0, val.Length );
@@ -349,11 +333,11 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Copies the values from the provided affine matrix to this matrix.
-    /// The last row is set to (0, 0, 1).
+    ///     Copies the values from the provided affine matrix to this matrix.
+    ///     The last row is set to (0, 0, 1).
     /// </summary>
-	/// <param name="affine"> The affine matrix to copy. </param>
-	/// <returns> This matrix for the purposes of chaining. </returns>
+    /// <param name="affine"> The affine matrix to copy. </param>
+    /// <returns> This matrix for the purposes of chaining. </returns>
     public Matrix3 Set( Affine2 affine )
     {
         val[ M00 ] = affine.m00;
@@ -370,10 +354,10 @@ public class Matrix3
     }
 
     /// Sets this 3x3 matrix to the top left 3x3 corner of the provided 4x4 matrix.
-	/// <param name="mat">
-	/// The matrix whose top left corner will be copied. This matrix will not be modified.
-	/// </param>
-	/// <returns> This matrix for the purpose of chaining operations. </returns>
+    /// <param name="mat">
+    ///     The matrix whose top left corner will be copied. This matrix will not be modified.
+    /// </param>
+    /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 Set( Matrix4 mat )
     {
         val[ M00 ] = mat.val[ Matrix4.M00 ];
@@ -390,15 +374,15 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Sets the matrix to the given matrix as a float array. The float array
-    /// must have at least 9 elements; the first 9 will be copied.
+    ///     Sets the matrix to the given matrix as a float array. The float array
+    ///     must have at least 9 elements; the first 9 will be copied.
     /// </summary>
-	/// <param name="values">
-	/// The matrix, in float form, that is to be copied. Remember that this matrix is in
-	/// <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">column major</a>
-	/// order.
-	/// </param>
-	/// <returns> This matrix for the purpose of chaining methods together. </returns>
+    /// <param name="values">
+    ///     The matrix, in float form, that is to be copied. Remember that this matrix is in
+    ///     <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">column major</a>
+    ///     order.
+    /// </param>
+    /// <returns> This matrix for the purpose of chaining methods together. </returns>
     public Matrix3 Set( float[] values )
     {
         Array.Copy( values, 0, val, 0, val.Length );
@@ -407,10 +391,10 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
+    ///     Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
     /// </summary>
-	/// <param name="vector"> The translation vector. </param>
-	/// <returns> This matrix for the purpose of chaining. </returns>
+    /// <param name="vector"> The translation vector. </param>
+    /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Trn( Vector2 vector )
     {
         val[ M02 ] += vector.X;
@@ -420,11 +404,11 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
+    ///     Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
     /// </summary>
-	/// <param name="x"> The x-component of the translation vector. </param>
-	/// <param name="y"> The y-component of the translation vector. </param>
-	/// <returns> This matrix for the purpose of chaining. </returns>
+    /// <param name="x"> The x-component of the translation vector. </param>
+    /// <param name="y"> The y-component of the translation vector. </param>
+    /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Trn( float x, float y )
     {
         val[ M02 ] += x;
@@ -434,12 +418,12 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
+    ///     Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
     /// </summary>
-	/// <param name="vector">
-	/// The translation vector. (The z-component of the vector is ignored because this is a 3x3 matrix)
-	/// </param>
-	/// <returns> This matrix for the purpose of chaining. </returns>
+    /// <param name="vector">
+    ///     The translation vector. (The z-component of the vector is ignored because this is a 3x3 matrix)
+    /// </param>
+    /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Trn( Vector3 vector )
     {
         val[ M02 ] += vector.X;
@@ -449,12 +433,12 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	/// glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
+    ///     glTranslate/glRotate/glScale.
     /// </summary>
-	/// <param name="x"> The x-component of the translation vector. </param>
-	/// <param name="y"> The y-component of the translation vector. </param>
-	/// <returns> This matrix for the purpose of chaining. </returns>
+    /// <param name="x"> The x-component of the translation vector. </param>
+    /// <param name="y"> The y-component of the translation vector. </param>
+    /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Translate( float x, float y )
     {
         _tmp[ M00 ] = 1;
@@ -475,11 +459,11 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	/// glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
+    ///     glTranslate/glRotate/glScale.
     /// </summary>
-	/// <param name="translation"> The translation vector. </param>
-	/// <returns> This matrix for the purpose of chaining. </returns>
+    /// <param name="translation"> The translation vector. </param>
+    /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Translate( Vector2 translation )
     {
         _tmp[ M00 ] = 1;
@@ -500,25 +484,26 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	/// glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL
+    ///     ES' 1.x
+    ///     glTranslate/glRotate/glScale.
     /// </summary>
-	/// <param name="degrees"> The angle in degrees </param>
-	/// <returns> This matrix for the purpose of chaining. </returns>
-    public Matrix3 Rotate( float degrees )
-    {
-        return RotateRad( MathUtils.DEGREES_TO_RADIANS * degrees );
-    }
+    /// <param name="degrees"> The angle in degrees </param>
+    /// <returns> This matrix for the purpose of chaining. </returns>
+    public Matrix3 Rotate( float degrees ) => RotateRad( MathUtils.DEGREES_TO_RADIANS * degrees );
 
     /// <summary>
-    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
-	/// <param name="radians"> The angle in radians </param>
-	/// <returns> This matrix for the purpose of chaining. </returns>
+    /// <param name="radians"> The angle in radians </param>
+    /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 RotateRad( float radians )
     {
-        if ( radians == 0 ) return this;
+        if ( radians == 0 )
+        {
+            return this;
+        }
 
         var cos = ( float )Math.Cos( radians );
         var sin = ( float )Math.Sin( radians );
@@ -541,8 +526,8 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a scale matrix. Postmultiplication is also
-    /// used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix with a scale matrix. Postmultiplication is also
+    ///     used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="scaleX"> The scale in the x-axis. </param>
     /// <param name="scaleY"> The scale in the y-axis. </param>
@@ -565,8 +550,8 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a scale matrix. Postmultiplication is also
-    /// used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix with a scale matrix. Postmultiplication is also
+    ///     used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="scale"> The vector to scale the matrix by. </param>
     /// <returns> This matrix for the purpose of chaining.  </returns>
@@ -588,13 +573,10 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Get the values in this matrix.
+    ///     Get the values in this matrix.
     /// </summary>
     /// <returns> The float values that make up this matrix in column-major order. </returns>
-    public float[] GetValues()
-    {
-        return val;
-    }
+    public float[] GetValues() => val;
 
     public Vector2 GetTranslation( Vector2 position )
     {
@@ -605,7 +587,7 @@ public class Matrix3
     }
 
     /// <param name="scale">
-    /// The vector which will receive the (non-negative) scale components on each axis.
+    ///     The vector which will receive the (non-negative) scale components on each axis.
     /// </param>
     /// <returns> The provided vector for chaining. </returns>
     public Vector2 GetScale( Vector2 scale )
@@ -616,18 +598,12 @@ public class Matrix3
         return scale;
     }
 
-    public float GetRotation()
-    {
-        return MathUtils.RADIANS_TO_DEGREES * ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
-    }
+    public float GetRotation() => MathUtils.RADIANS_TO_DEGREES * ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
 
-    public float GetRotationRad()
-    {
-        return ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
-    }
+    public float GetRotationRad() => ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
 
     /// <summary>
-    /// Scale the matrix in the both the x and y components by the scalar value.
+    ///     Scale the matrix in the both the x and y components by the scalar value.
     /// </summary>
     /// <param name="scale"> The single value that will be used to scale both the x and y components. </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -640,10 +616,10 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Scale this matrix using the x and y components of the vector
-    /// but leave the rest of the matrix alone.
+    ///     Scale this matrix using the x and y components of the vector
+    ///     but leave the rest of the matrix alone.
     /// </summary>
-    /// <param name="scale"> The <see cref="Vector3"/> to use to scale this matrix. </param>
+    /// <param name="scale"> The <see cref="Vector3" /> to use to scale this matrix. </param>
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     public Matrix3 Scl( Vector2 scale )
     {
@@ -654,12 +630,12 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Scale this matrix using the x and y components of the vector but
-    /// leave the rest of the matrix alone.
+    ///     Scale this matrix using the x and y components of the vector but
+    ///     leave the rest of the matrix alone.
     /// </summary>
     /// <param name="scale">
-    /// The <see cref="Vector3"/> to use to scale this matrix.
-    /// The z component will be ignored.
+    ///     The <see cref="Vector3" /> to use to scale this matrix.
+    ///     The z component will be ignored.
     /// </param>
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     public Matrix3 Scl( Vector3 scale )
@@ -671,7 +647,7 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Transposes the current matrix.
+    ///     Transposes the current matrix.
     /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     public Matrix3 Transpose()
@@ -685,13 +661,13 @@ public class Matrix3
 
     /// Multiplies matrix a with matrix b in the following manner:
     /// <para>
-    /// <tt>mul(A, B) => A := AB</tt>
+    ///     <tt>mul(A, B) => A := AB</tt>
     /// </para>
     /// <param name="mata">
-    /// The float array representing the first matrix. Must have at least 9 elements.
+    ///     The float array representing the first matrix. Must have at least 9 elements.
     /// </param>
     /// <param name="matb">
-    /// The float array representing the second matrix. Must have at least 9 elements.
+    ///     The float array representing the second matrix. Must have at least 9 elements.
     /// </param>
     private static void Mul( float[] mata, float[] matb )
     {

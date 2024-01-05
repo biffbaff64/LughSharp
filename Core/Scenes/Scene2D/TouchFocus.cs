@@ -18,14 +18,13 @@ using LibGDXSharp.Scenes.Listeners;
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
-[PublicAPI]
 public class TouchFocus
 {
+    public int             button;
     public IEventListener? listener;
     public Actor?          listenerActor;
-    public Actor?          target;
     public int             pointer;
-    public int             button;
+    public Actor?          target;
 
     public void Reset()
     {

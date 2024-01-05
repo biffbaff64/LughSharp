@@ -20,29 +20,20 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A button with a child <see cref="UI.Image"/> to display an image. This is useful when
-/// the button must be larger than the image and the image centered on the button. If
-/// the image is the size of the button, a Button without any children can be used,
-/// where the <see cref="Button.ButtonStyle.Up"/>, <see cref="Button.ButtonStyle.Down"/>,
-/// and <see cref="Button.ButtonStyle.Checked"/> nine patches define the image.
+///     A button with a child <see cref="UI.Image" /> to display an image. This is useful when
+///     the button must be larger than the image and the image centered on the button. If
+///     the image is the size of the button, a Button without any children can be used,
+///     where the <see cref="Button.ButtonStyle.Up" />, <see cref="Button.ButtonStyle.Down" />,
+///     and <see cref="Button.ButtonStyle.Checked" /> nine patches define the image.
 /// </summary>
-[PublicAPI]
 public class ImageButton : Button
 {
-    public     Image            Image { get; private set; }
-    public new ImageButtonStyle Style { get; private set; } = null!;
 
     public ImageButton( Skin skin )
-        : this( skin.Get< ImageButtonStyle >() )
-    {
-        this.Skin = skin;
-    }
+        : this( skin.Get< ImageButtonStyle >() ) => Skin = skin;
 
     public ImageButton( Skin skin, String styleName )
-        : this( skin.Get< ImageButtonStyle >( styleName ) )
-    {
-        this.Skin = skin;
-    }
+        : this( skin.Get< ImageButtonStyle >( styleName ) ) => Skin = skin;
 
     public ImageButton( ImageButtonStyle style )
         : base( style )
@@ -70,16 +61,19 @@ public class ImageButton : Button
     {
     }
 
+    public     Image            Image { get; }
+    public new ImageButtonStyle Style { get; private set; } = null!;
+
     public void SetStyle( ButtonStyle style )
     {
-        this.Style = style as ImageButtonStyle ?? throw new ArgumentException( "style must be an ImageButtonStyle." );
+        Style      = style as ImageButtonStyle ?? throw new ArgumentException( "style must be an ImageButtonStyle." );
         base.Style = style;
 
         UpdateImage();
     }
 
     /// <summary>
-    /// Returns the appropriate image drawable from the style based on the current button state.
+    ///     Returns the appropriate image drawable from the style based on the current button state.
     /// </summary>
     protected IDrawable? GetImageDrawable()
     {
@@ -136,13 +130,10 @@ public class ImageButton : Button
     }
 
     /// <summary>
-    /// Sets the image drawable based on the current button state. The default implementation
-    /// sets the image drawable using <see cref="GetImageDrawable()"/>.
+    ///     Sets the image drawable based on the current button state. The default implementation
+    ///     sets the image drawable using <see cref="GetImageDrawable()" />.
     /// </summary>
-    protected void UpdateImage()
-    {
-        Image.SetDrawable( GetImageDrawable() );
-    }
+    protected void UpdateImage() => Image.SetDrawable( GetImageDrawable() );
 
     public override void Draw( IBatch batch, float parentAlpha )
     {
@@ -171,20 +162,23 @@ public class ImageButton : Button
     }
 
     /// <summary>
-    /// The style for an image button.
+    ///     The style for an image button.
     /// </summary>
-    [PublicAPI]
     public class ImageButtonStyle : ButtonStyle
     {
-        public readonly IDrawable? imageUp, imageDown, imageOver, imageDisabled;
         public readonly IDrawable? imageChecked, imageCheckedDown, imageCheckedOver;
+        public readonly IDrawable? imageUp,      imageDown,        imageOver, imageDisabled;
 
         public ImageButtonStyle()
         {
         }
 
-        public ImageButtonStyle( IDrawable? up, IDrawable? down, IDrawable? chcked,
-                                 IDrawable? imageUp, IDrawable? imageDown, IDrawable? imageChecked )
+        public ImageButtonStyle( IDrawable? up,
+                                 IDrawable? down,
+                                 IDrawable? chcked,
+                                 IDrawable? imageUp,
+                                 IDrawable? imageDown,
+                                 IDrawable? imageChecked )
             : base( up, down, chcked )
         {
             this.imageUp      = imageUp;

@@ -16,17 +16,16 @@
 
 namespace LibGDXSharp.Backends.DesktopGL;
 
-[PublicAPI]
 public class DesktopWindowCallbacks
 {
     public static void GdxFocusCallback( IntPtr window, bool focusing )
     {
     }
-    
+
     public static void GdxIconifyCallback( IntPtr window, bool focusing )
     {
     }
-    
+
     public static void GdxMaximizeCallback( IntPtr window, bool maximized )
     {
     }
@@ -34,13 +33,12 @@ public class DesktopWindowCallbacks
     public static void GdxWindowCloseCallback( IntPtr window )
     {
     }
-    
+
     public static void GdxDropCallback( IntPtr window, int count, IntPtr arrayPtr )
     {
     }
-    
+
     public static void GdxRefreshCallback( IntPtr window )
     {
     }
 }
-

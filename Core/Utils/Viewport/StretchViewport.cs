@@ -17,21 +17,21 @@
 namespace LibGDXSharp.Utils.Viewport;
 
 /// <summary>
-/// A ScalingViewport that uses <seealso cref="Scaling.Stretch"/> so it does not
-/// keep the aspect ratio, the world is scaled to take the whole screen.
+///     A ScalingViewport that uses <seealso cref="Scaling.Stretch" /> so it does not
+///     keep the aspect ratio, the world is scaled to take the whole screen.
 /// </summary>
-[PublicAPI]
 public class StretchViewport : ScalingViewport
 {
     /// <summary>
-    /// Creates a new viewport using a new <seealso cref="OrthographicCamera"/>. </summary>
+    ///     Creates a new viewport using a new <seealso cref="OrthographicCamera" />.
+    /// </summary>
     public StretchViewport( float worldWidth, float worldHeight )
-            : base( Utils.Scaling.Stretch, worldWidth, worldHeight )
+        : base( Scaling.Stretch, worldWidth, worldHeight )
     {
     }
 
     public StretchViewport( float worldWidth, float worldHeight, Camera camera )
-            : base( Utils.Scaling.Stretch, worldWidth, worldHeight, camera )
+        : base( Scaling.Stretch, worldWidth, worldHeight, camera )
     {
     }
 }

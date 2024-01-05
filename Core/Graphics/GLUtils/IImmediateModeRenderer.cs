@@ -18,9 +18,12 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[PublicAPI]
 public interface IImmediateModeRenderer : IDisposable
 {
+
+    public int NumVertices { get; set; }
+
+    public int  MaxVertices { get; set; }
     public void Begin( Matrix4 projModelView, int primitiveType );
 
     public void End();
@@ -38,8 +41,4 @@ public interface IImmediateModeRenderer : IDisposable
     public void Normal( float x, float y, float z );
 
     public void Vertex( float x, float y, float z );
-
-    public int NumVertices { get; set; }
-
-    public int MaxVertices { get; set; }
 }

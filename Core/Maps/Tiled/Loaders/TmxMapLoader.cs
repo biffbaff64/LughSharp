@@ -14,31 +14,25 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Utils.Xml;
+using LibGDXSharp.Utils.Collections;
 
 using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[PublicAPI]
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 {
-    public new class Parameters
-        : BaseTmxMapLoader< TmxMapLoader.Parameters >.Parameters
-    {
-    }
 
     /// <summary>
-    /// Creates a new TmxMapLoader using a <see cref="InternalFileHandleResolver"/>.
+    ///     Creates a new TmxMapLoader using a <see cref="InternalFileHandleResolver" />.
     /// </summary>
     public TmxMapLoader() : base( new InternalFileHandleResolver() )
     {
     }
 
     /// <summary>
-    /// Creates loader
+    ///     Creates loader
     /// </summary>
     /// <param name="resolver"></param>
     public TmxMapLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -46,33 +40,30 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     }
 
     /// <summary>
-    /// Loads the <see cref="TiledMap"/> from the given file. The file is resolved via
-    /// the <see cref="IFileHandleResolver"/> set in the constructor of this class.
-    /// By default it will resolve to an internal file. The map will be loaded for a
-    /// y-up coordinate system.
+    ///     Loads the <see cref="TiledMap" /> from the given file. The file is resolved via
+    ///     the <see cref="IFileHandleResolver" /> set in the constructor of this class.
+    ///     By default it will resolve to an internal file. The map will be loaded for a
+    ///     y-up coordinate system.
     /// </summary>
     /// <param name="fileName"> the filename </param>
     /// <returns> the TiledMap </returns>
-    public TiledMap Load( string fileName )
-    {
-        return Load( fileName, new TmxMapLoader.Parameters() );
-    }
+    public TiledMap Load( string fileName ) => Load( fileName, new Parameters() );
 
     /// <summary>
-    /// Loads the <see cref="TiledMap"/> from the given file. The file is resolved
-    /// via the <see cref="IFileHandleResolver"/> set in the constructor of this class.
-    /// By default it will resolve to an internal file.
+    ///     Loads the <see cref="TiledMap" /> from the given file. The file is resolved
+    ///     via the <see cref="IFileHandleResolver" /> set in the constructor of this class.
+    ///     By default it will resolve to an internal file.
     /// </summary>
     /// <param name="fileName"> the filename </param>
     /// <param name="parameter"> specifies whether to use y-up, generate mip maps etc. </param>
     /// <returns> the TiledMap </returns>
-    public TiledMap Load( string fileName, TmxMapLoader.Parameters parameter )
+    public TiledMap Load( string fileName, Parameters parameter )
     {
-        MemberNullException.ThrowIfNull( base.xml );
+        MemberNullException.ThrowIfNull( xml );
 
         FileInfo tmxFile = Resolve( fileName );
 
-        this.root = xml.Parse( tmxFile );
+        root = xml.Parse( tmxFile );
 
         var textures = new Dictionary< string, Texture >();
 
@@ -99,19 +90,16 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                                     AssetLoaderParameters parameter )
     {
         Debug.Assert( tmxFile != null );
-        
-        this.Map = LoadTiledMap( tmxFile,
-                                 ( ( Parameters )parameter ),
-                                 new IImageResolver.AssetManagerImageResolver( manager! ) );
+
+        Map = LoadTiledMap( tmxFile,
+                            ( Parameters )parameter,
+                            new IImageResolver.AssetManagerImageResolver( manager! ) );
     }
 
     public override TiledMap LoadSync( AssetManager? manager,
                                        string? fileName,
                                        FileInfo? file,
-                                       AssetLoaderParameters parameter )
-    {
-        return Map;
-    }
+                                       AssetLoaderParameters parameter ) => Map;
 
     protected List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile,
                                                                      AssetLoaderParameters textureParameter )
@@ -202,18 +190,15 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     }
 
     /// <summary>
-    /// Returns the assets this asset requires to be loaded first.
-    /// This method may be called on a thread other than the GL thread.
+    ///     Returns the assets this asset requires to be loaded first.
+    ///     This method may be called on a thread other than the GL thread.
     /// </summary>
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter )
-    {
-        return null!;
-    }
+                                                             AssetLoaderParameters parameter ) => null!;
 
     /// <summary>
     /// </summary>
@@ -311,5 +296,10 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                 AddStaticTiledMapTile( tileSet, texture, int.Parse( tileId ), offsetX, offsetY );
             }
         }
+    }
+
+    public new class Parameters
+        : BaseTmxMapLoader< Parameters >.Parameters
+    {
     }
 }

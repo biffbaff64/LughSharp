@@ -17,17 +17,13 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// An action that has a int, whose value is transitioned over time.
+///     An action that has a int, whose value is transitioned over time.
 /// </summary>
-[PublicAPI]
 public class IntAction : TemporalAction
 {
-    public int Start    { get; set; }
-    public int EndValue { get; set; }
-    public int Value    { get; set; }
 
     /// <summary>
-    /// Creates a IntAction that transitions from 0 to 1.
+    ///     Creates a IntAction that transitions from 0 to 1.
     /// </summary>
     public IntAction()
     {
@@ -36,37 +32,38 @@ public class IntAction : TemporalAction
     }
 
     /// <summary>
-    /// Creates a IntAction that transitions from start to end.
+    ///     Creates a IntAction that transitions from start to end.
     /// </summary>
     public IntAction( int start, int end )
     {
-        this.Start    = start;
-        this.EndValue = end;
+        Start    = start;
+        EndValue = end;
     }
 
     /// <summary>
-    /// Creates a IntAction that transitions from start to end.
+    ///     Creates a IntAction that transitions from start to end.
     /// </summary>
     public IntAction( int start, int end, float duration ) : base( duration )
     {
-        this.Start    = start;
-        this.EndValue = end;
+        Start    = start;
+        EndValue = end;
     }
 
     /// <summary>
-    /// Creates a IntAction that transitions from start to end.
+    ///     Creates a IntAction that transitions from start to end.
     /// </summary>
     public IntAction( int start, int end, float duration, IInterpolation interpolation )
         : base( duration, interpolation )
     {
-        this.Start    = start;
-        this.EndValue = end;
+        Start    = start;
+        EndValue = end;
     }
 
-    protected override void Begin()
-    {
-        Value = Start;
-    }
+    public int Start    { get; set; }
+    public int EndValue { get; set; }
+    public int Value    { get; set; }
+
+    protected override void Begin() => Value = Start;
 
     protected override void Update( float percent )
     {

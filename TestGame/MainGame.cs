@@ -14,14 +14,12 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Extensions.Tools.TexturePacker;
-
 namespace LibGDXSharp.TestGame;
 
 public class MainGame
 {
     private readonly bool _rebuildAtlas = true;
-    
+
     public void Main()
     {
         if ( _rebuildAtlas )
@@ -30,4 +28,3 @@ public class MainGame
         }
     }
 }
-

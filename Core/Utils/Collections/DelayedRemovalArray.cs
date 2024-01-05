@@ -18,31 +18,24 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
 public class DelayedRemovalArray<T> : List< T >
 {
-    private int _iterating = 0;
-    private int _clear     = 0;
 
-    private readonly List< int > _remove = new();
+    private readonly List< int > _remove    = new();
+    private          int         _clear     = 0;
+    private          int         _iterating = 0;
 
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
     public DelayedRemovalArray( IEnumerable< T > array )
-        : base( array )
-    {
-        Reset();
-    }
+        : base( array ) => Reset();
 
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
     public DelayedRemovalArray( T[] array )
-        : base( array )
-    {
-        Reset();
-    }
+        : base( array ) => Reset();
 
     /// <summary>
     /// </summary>
@@ -63,17 +56,11 @@ public class DelayedRemovalArray<T> : List< T >
     /// </summary>
     /// <param name="initialCapacity"></param>
     public DelayedRemovalArray( int initialCapacity = 16 )
-        : base( initialCapacity )
-    {
-        Reset();
-    }
+        : base( initialCapacity ) => Reset();
 
     /// <summary>
     /// </summary>
-    public void Begin()
-    {
-        _iterating++;
-    }
+    public void Begin() => _iterating++;
 
     /// <summary>
     /// </summary>
@@ -170,7 +157,7 @@ public class DelayedRemovalArray<T> : List< T >
     }
 
     /// <summary>
-    /// Removes the element at the specified index of the List.
+    ///     Removes the element at the specified index of the List.
     /// </summary>
     /// <param name="index">The zero-based index of the element to remove.</param>
     /// <returns></returns>
@@ -183,7 +170,7 @@ public class DelayedRemovalArray<T> : List< T >
             return this[ index ];
         }
 
-        base.RemoveAt( index );
+        RemoveAt( index );
 
         return this[ index ];
     }
@@ -252,9 +239,9 @@ public class DelayedRemovalArray<T> : List< T >
     }
 
     /// <summary>
-    /// Inserts the specified number of items at the specified index.
-    /// The new items will have values equal to the values at those indices
-    /// before the insertion.
+    ///     Inserts the specified number of items at the specified index.
+    ///     The new items will have values equal to the values at those indices
+    ///     before the insertion.
     /// </summary>
     /// <param name="index"></param>
     /// <param name="count"></param>
@@ -302,7 +289,7 @@ public class DelayedRemovalArray<T> : List< T >
 
         T t = base[ ^1 ];
 
-        base.RemoveAt( Count - 1 );
+        RemoveAt( Count - 1 );
 
         return t;
     }
@@ -398,12 +385,12 @@ public class DelayedRemovalArray<T> : List< T >
             throw new GdxRuntimeException( "Invalid between begin/end." );
         }
 
-        if ( base.Count >= newSize )
+        if ( Count >= newSize )
         {
             throw new GdxRuntimeException( $"Invalid new size: {newSize} (current: {Count} )" );
         }
 
-        return base.EnsureCapacity( newSize );
+        return EnsureCapacity( newSize );
     }
 
     /// <summary>

@@ -19,40 +19,33 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 
 namespace LibGDXSharp.Scenes.Listeners;
 
-[PublicAPI]
 public class DragScrollListener : DragListener
 {
-    private readonly static Vector2 TmpCoords = new Vector2();
+    private readonly static Vector2             TmpCoords      = new();
+    private readonly        Interpolation.ExpIn _interpolation = Interpolation.Exp5In;
+    private                 float               _maxSpeed      = 75;
+    private                 float               _minSpeed      = 15;
+    private                 float               _padBottom;
+    private                 float               _padTop;
+    private                 long                _rampTime = 1750;
 
-    private ScrollPane          _scroll;
-    private Interpolation.ExpIn _interpolation = Interpolation.Exp5In;
-    private float               _minSpeed      = 15;
-    private float               _maxSpeed      = 75;
-    private float               _tickSecs      = 0.05f;
-    private long                _rampTime      = 1750;
-    private long                _startTime;
-    private float               _padTop;
-    private float               _padBottom;
+    private readonly ScrollPane _scroll;
+    private          long       _startTime;
+    private          float      _tickSecs = 0.05f;
 
-    public DragScrollListener( ScrollPane scroll )
-    {
-        this._scroll = scroll;
-    }
+    public DragScrollListener( ScrollPane scroll ) => _scroll = scroll;
 
     public void Setup( float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs )
     {
-        this._minSpeed = minSpeedPixels;
-        this._maxSpeed = maxSpeedPixels;
-        this._tickSecs = tickSecs;
-        this._rampTime = ( long )( rampSecs * 1000 );
+        _minSpeed = minSpeedPixels;
+        _maxSpeed = maxSpeedPixels;
+        _tickSecs = tickSecs;
+        _rampTime = ( long )( rampSecs * 1000 );
     }
 
-    private float GetScrollPixels()
-    {
-        return _interpolation.Apply( _minSpeed,
-                                     _maxSpeed,
-                                     Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float )_rampTime ) );
-    }
+    private float GetScrollPixels() => _interpolation.Apply( _minSpeed,
+                                                             _maxSpeed,
+                                                             Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float )_rampTime ) );
 
     public override void Drag( InputEvent ev, float x, float y, int pointer )
     {
@@ -80,7 +73,7 @@ public class DragScrollListener : DragListener
 
     public void SetPadding( float padtop, float padbottom )
     {
-        this._padTop    = padtop;
-        this._padBottom = padbottom;
+        _padTop    = padtop;
+        _padBottom = padbottom;
     }
 }

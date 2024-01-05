@@ -19,20 +19,16 @@ using LibGDXSharp.Scenes.Scene2D;
 namespace LibGDXSharp.Scenes.Listeners;
 
 /// <summary>
-/// Detects tap, long press, fling, pan, zoom, and pinch gestures on an actor.
-/// If there is only a need to detect tap, use <see cref="ClickListener"/>.
+///     Detects tap, long press, fling, pan, zoom, and pinch gestures on an actor.
+///     If there is only a need to detect tap, use <see cref="ClickListener" />.
 /// </summary>
-[PublicAPI]
 public class ActorGestureListener : IEventListener
 {
-    private static Vector2 _tmpCoords  = new();
-    private static Vector2 _tmpCoords2 = new();
-
-    public ActorGestureDetector Detector        { get; set; }
-    public Actor?               TouchDownTarget { get; set; }
+    private readonly static Vector2 _tmpCoords  = new();
+    private readonly static Vector2 _tmpCoords2 = new();
+    private                 Actor?  _actor;
 
     private InputEvent? _inputEvent;
-    private Actor?      _actor;
 
     public ActorGestureListener() : this( 20, 0.4f, 1.1f, int.MaxValue )
     {
@@ -41,14 +37,14 @@ public class ActorGestureListener : IEventListener
     public ActorGestureListener( float halfTapSquareSize,
                                  float tapCountInterval,
                                  float longPressDuration,
-                                 float maxFlingDelay )
-    {
-        Detector = new ActorGestureDetector( halfTapSquareSize,
-                                             tapCountInterval,
-                                             longPressDuration,
-                                             maxFlingDelay,
-                                             this );
-    }
+                                 float maxFlingDelay ) => Detector = new ActorGestureDetector( halfTapSquareSize,
+                                                                                               tapCountInterval,
+                                                                                               longPressDuration,
+                                                                                               maxFlingDelay,
+                                                                                               this );
+
+    public ActorGestureDetector Detector        { get; set; }
+    public Actor?               TouchDownTarget { get; set; }
 
     public virtual bool Handle( Event e )
     {
@@ -86,8 +82,8 @@ public class ActorGestureListener : IEventListener
                     return false;
                 }
 
-                this._inputEvent = ev;
-                _actor   = ev.ListenerActor;
+                _inputEvent = ev;
+                _actor      = ev.ListenerActor;
 
                 Detector.TouchUp( ev.StageX, ev.StageY, ev.Pointer, ev.Button );
                 _actor?.StageToLocalCoordinates( _tmpCoords.Set( ev.StageX, ev.StageY ) );
@@ -96,8 +92,8 @@ public class ActorGestureListener : IEventListener
                 return true;
 
             case InputEvent.EventType.TouchDragged:
-                this._inputEvent = ev;
-                _actor   = ev.ListenerActor;
+                _inputEvent = ev;
+                _actor      = ev.ListenerActor;
                 Detector.TouchDragged( ev.StageX, ev.StageY, ev.Pointer );
 
                 return true;
@@ -119,20 +115,17 @@ public class ActorGestureListener : IEventListener
     }
 
     /// <summary>
-    /// If true is returned, additional gestures will not be triggered. No ev is
-    /// provided because this ev is triggered by time passing, not by an InputEvent.
+    ///     If true is returned, additional gestures will not be triggered. No ev is
+    ///     provided because this ev is triggered by time passing, not by an InputEvent.
     /// </summary>
-    public virtual bool LongPress( Actor actor, float x, float y )
-    {
-        return false;
-    }
+    public virtual bool LongPress( Actor actor, float x, float y ) => false;
 
     public virtual void Fling( InputEvent ev, float velocityX, float velocityY, int button )
     {
     }
 
     /// <summary>
-    /// The delta is the difference in stage coordinates since the last pan.
+    ///     The delta is the difference in stage coordinates since the last pan.
     /// </summary>
     public virtual void Pan( InputEvent ev, float x, float y, float deltaX, float deltaY )
     {
@@ -156,11 +149,11 @@ public class ActorGestureListener : IEventListener
 
     public class ActorGestureDetector : GestureDetector
     {
-        private readonly ActorGestureListener _parent;
         private readonly Vector2              _initialPointer1 = new();
         private readonly Vector2              _initialPointer2 = new();
-        private readonly Vector2              _pointer1        = new();
-        private readonly Vector2              _pointer2        = new();
+        private readonly ActorGestureListener _parent;
+        private readonly Vector2              _pointer1 = new();
+        private readonly Vector2              _pointer2 = new();
 
         public ActorGestureDetector( float halfTapSquareSize,
                                      float tapCountInterval,
@@ -171,15 +164,12 @@ public class ActorGestureListener : IEventListener
                     tapCountInterval,
                     longPressDuration,
                     maxFlingDelay,
-                    new GestureAdapter() )
-        {
-            this._parent = parent;
-        }
+                    new GestureAdapter() ) => _parent = parent;
 
         public bool Tap( float stageX, float stageY, int count, int button )
         {
             _parent._actor?.StageToLocalCoordinates( _tmpCoords.Set( stageX, stageY ) );
-            
+
             _parent.Tap( _parent._inputEvent!, _tmpCoords.X, _tmpCoords.Y, count, button );
 
             return true;

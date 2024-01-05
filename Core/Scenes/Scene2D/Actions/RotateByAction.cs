@@ -16,13 +16,9 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class RotateByAction : RelativeTemporalAction
 {
     public float Amount { get; set; }
 
-    protected override void UpdateRelative (float percentDelta)
-    {
-        Target?.RotateBy(Amount * percentDelta);
-    }
+    protected override void UpdateRelative( float percentDelta ) => Target?.RotateBy( Amount * percentDelta );
 }

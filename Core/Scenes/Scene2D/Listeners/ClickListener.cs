@@ -19,53 +19,106 @@ using LibGDXSharp.Scenes.Scene2D;
 namespace LibGDXSharp.Scenes.Listeners;
 
 /// <summary>
-/// Detects mouse over, mouse or finger touch presses, and clicks on an actor.
-/// A touch must go down over the actor and is considered pressed as long as
-/// it is over the actor or within the <see cref="TapSquareSize"/>.
-/// This behavior makes it easier to press buttons on a touch interface when
-/// the initial touch happens near the edge of the actor. Double clicks can be
-/// detected using <see cref="TapCount"/>. Any touch (not just the first) will
-/// trigger this listener. While pressed, other touch downs are ignored.
+///     Detects mouse over, mouse or finger touch presses, and clicks on an actor.
+///     A touch must go down over the actor and is considered pressed as long as
+///     it is over the actor or within the <see cref="TapSquareSize" />.
+///     This behavior makes it easier to press buttons on a touch interface when
+///     the initial touch happens near the edge of the actor. Double clicks can be
+///     detected using <see cref="TapCount" />. Any touch (not just the first) will
+///     trigger this listener. While pressed, other touch downs are ignored.
 /// </summary>
-[PublicAPI]
 public class ClickListener : InputListener
 {
     /// <summary>
-    /// Time in seconds <see cref="VisualPressed"/> reports true after a press
-    /// resulting in a click is released.
+    ///     Time in seconds <see cref="VisualPressed" /> reports true after a press
+    ///     resulting in a click is released.
     /// </summary>
     public readonly static float VisualPressedDuration = 0.1f;
-
-    public float TouchDownX       { get; set; } = -1;
-    public float TouchDownY       { get; set; } = -1;
-    public int   PressedPointer   { get; set; } = -1;
-    public int   PressedButton    { get; set; } = -1;
-    public int   Button           { get; set; }
-    public bool  Pressed          { get; set; }
-    public float TapSquareSize    { get; set; } = 14;
-    public int   TapCount         { get; set; }
+    private bool _cancelled;
+    private long _lastTapTime;
 
     private bool _over;
-    private bool _cancelled;
-    private long _visualPressedTime;
-    private long _lastTapTime;
     private long _tapCountInterval = ( long )( 0.4f * 1000000000L );
+    private long _visualPressedTime;
 
     /// <summary>
-    /// Create a listener where <see cref="Clicked(InputEvent, float, float)"/> is
-    /// only called for left clicks.
+    ///     Create a listener where <see cref="Clicked(InputEvent, float, float)" /> is
+    ///     only called for left clicks.
     /// </summary>
-    /// <see cref="ClickListener(int)"/>
+    /// <see cref="ClickListener(int)" />
     public ClickListener()
     {
     }
 
     /// <summary>
-    /// 
     /// </summary>
-    public ClickListener( int button )
+    public ClickListener( int button ) => Button = button;
+
+    public float TouchDownX     { get; set; } = -1;
+    public float TouchDownY     { get; set; } = -1;
+    public int   PressedPointer { get; set; } = -1;
+    public int   PressedButton  { get; set; } = -1;
+    public int   Button         { get; set; }
+    public bool  Pressed        { get; set; }
+    public float TapSquareSize  { get; set; } = 14;
+    public int   TapCount       { get; set; }
+
+    /// <summary>
+    ///     Returns true if a touch is over the actor or within the tap square or
+    ///     has been very recently. This allows the UI to show a press and release
+    ///     that was so fast it occurred within a single frame.
+    /// </summary>
+    public bool VisualPressed
     {
-        this.Button = button;
+        get
+        {
+            if ( Pressed )
+            {
+                return true;
+            }
+
+            if ( _visualPressedTime <= 0 )
+            {
+                return false;
+            }
+
+            if ( _visualPressedTime > TimeUtils.Millis() )
+            {
+                return true;
+            }
+
+            _visualPressedTime = 0;
+
+            return false;
+        }
+        set
+        {
+            if ( value )
+            {
+                _visualPressedTime = TimeUtils.Millis() + ( long )( VisualPressedDuration * 1000 );
+            }
+            else
+            {
+                _visualPressedTime = 0;
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Returns true if the mouse or touch is over the actor or pressed
+    ///     and within the tap square.
+    /// </summary>
+    public bool Over => _over || Pressed;
+
+    /// <summary>
+    ///     Sets the button to listen for, all other buttons are ignored.
+    ///     Default is <see cref="IInput.Buttons.LEFT" />.
+    ///     Use -1 for any button.
+    /// </summary>
+    public long TapCountInterval
+    {
+        get => _tapCountInterval;
+        set => _tapCountInterval = value * 1000000000L;
     }
 
     public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
@@ -75,7 +128,7 @@ public class ClickListener : InputListener
             return false;
         }
 
-        if ( ( pointer == 0 ) && ( this.Button != -1 ) && ( button != this.Button ) )
+        if ( ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) )
         {
             return false;
         }
@@ -115,7 +168,7 @@ public class ClickListener : InputListener
                 var touchUpOver = IsOver( ev.ListenerActor, x, y );
 
                 // Ignore touch up if the wrong mouse button.
-                if ( touchUpOver && ( pointer == 0 ) && ( this.Button != -1 ) && ( button != this.Button ) )
+                if ( touchUpOver && ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) )
                 {
                     touchUpOver = false;
                 }
@@ -160,8 +213,8 @@ public class ClickListener : InputListener
     }
 
     /// <summary>
-    /// If a touch down is being monitored, the drag and touch up events are
-    /// ignored until the next touch up.
+    ///     If a touch down is being monitored, the drag and touch up events are
+    ///     ignored until the next touch up.
     /// </summary>
     public virtual void Cancel()
     {
@@ -179,8 +232,8 @@ public class ClickListener : InputListener
     }
 
     /// <summary>
-    /// Returns true if the specified position is over the specified
-    /// actor or within the tap square.
+    ///     Returns true if the specified position is over the specified
+    ///     actor or within the tap square.
     /// </summary>
     public bool IsOver( Actor? actor, float x, float y )
     {
@@ -202,81 +255,20 @@ public class ClickListener : InputListener
         }
 
         return ( Math.Abs( x - TouchDownX ) < TapSquareSize )
-               && ( Math.Abs( y - TouchDownY ) < TapSquareSize );
+            && ( Math.Abs( y - TouchDownY ) < TapSquareSize );
     }
 
     /// <summary>
-    /// Returns true if a touch is within the tap square.
+    ///     Returns true if a touch is within the tap square.
     /// </summary>
-    public bool InTapSquare()
-    {
-        return !TouchDownX.Equals( -1 );
-    }
+    public bool InTapSquare() => !TouchDownX.Equals( -1 );
 
     /// <summary>
-    /// The tap square will no longer be used for the current touch.
+    ///     The tap square will no longer be used for the current touch.
     /// </summary>
     public void InvalidateTapSquare()
     {
         TouchDownX = -1;
         TouchDownY = -1;
-    }
-
-    /// <summary>
-    /// Returns true if a touch is over the actor or within the tap square or
-    /// has been very recently. This allows the UI to show a press and release
-    /// that was so fast it occurred within a single frame. 
-    /// </summary>
-    public bool VisualPressed
-    {
-        get
-        {
-            if ( Pressed )
-            {
-                return true;
-            }
-
-            if ( _visualPressedTime <= 0 )
-            {
-                return false;
-            }
-
-            if ( _visualPressedTime > TimeUtils.Millis() )
-            {
-                return true;
-            }
-
-            _visualPressedTime = 0;
-
-            return false;
-        }
-        set
-        {
-            if ( value )
-            {
-                _visualPressedTime = TimeUtils.Millis() + ( long )( VisualPressedDuration * 1000 );
-            }
-            else
-            {
-                _visualPressedTime = 0;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Returns true if the mouse or touch is over the actor or pressed
-    /// and within the tap square.
-    /// </summary>
-    public bool Over => ( _over || Pressed );
-    
-    /// <summary>
-    /// Sets the button to listen for, all other buttons are ignored.
-    /// Default is <see cref="IInput.Buttons.LEFT"/>.
-    /// Use -1 for any button.
-    /// </summary>
-    public long TapCountInterval
-    {
-        get => _tapCountInterval;
-        set => _tapCountInterval = ( value * 1000000000L );
     }
 }

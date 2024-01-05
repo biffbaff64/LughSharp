@@ -16,38 +16,14 @@
 
 namespace LibGDXSharp.Graphics.G2D;
 
-[PublicAPI]
 public partial record TextureAtlasData
 {
-    protected interface IField<in T>
-    {
-        void Parse( T obj, params string[] entry );
-    }
+
+    internal readonly static bool[] HasIndexes = { false };
 
     public List< Page >   Pages   { get; set; } = new();
     public List< Region > Regions { get; set; } = new();
     public string[]       Entry   { get; set; } = new string[ 5 ];
-
-    internal readonly static bool[] HasIndexes = { false };
-
-    #region Constructors
-
-    public TextureAtlasData()
-    {
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="packFile"></param>
-    /// <param name="imagesDir"></param>
-    /// <param name="flip"></param>
-    public TextureAtlasData( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
-    {
-        Load( packFile, imagesDir, flip );
-    }
-
-    #endregion
 
     private void Load( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
     {
@@ -58,7 +34,7 @@ public partial record TextureAtlasData
             { "size",       new PageFieldParse()  },
             { "format",     new PageFieldFormat() },
             { "filter",     new PageFieldFilter() },
-            { "repeat",     new PageFieldRepeat() },
+            { "repeat",     new PageFieldRepeat() }
         };
 
         Dictionary< string, IField< Region > > regionFields = new( 127 )
@@ -70,7 +46,7 @@ public partial record TextureAtlasData
             { "orig",       new RegionFieldOrig()    },
             { "offset",     new RegionFieldOffset()  },
             { "offsets",    new RegionFieldOffsets() },
-            { "index",      new RegionFieldIndex()   },
+            { "index",      new RegionFieldIndex()   }
         };
         //@formatter:on
 
@@ -183,7 +159,7 @@ public partial record TextureAtlasData
                                 {
                                     entryValues[ i ] = int.Parse( Entry[ i + 1 ] );
                                 }
-                                catch ( System.FormatException )
+                                catch ( FormatException )
                                 {
                                     // Silently ignore non-integer values.
                                 }
@@ -212,7 +188,7 @@ public partial record TextureAtlasData
                 }
             }
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new GdxRuntimeException( "Error reading texture atlas file: " + packFile, ex );
         }
@@ -276,25 +252,44 @@ public partial record TextureAtlasData
         }
     }
 
+    protected interface IField<in T>
+    {
+        void Parse( T obj, params string[] entry );
+    }
+
+    #region Constructors
+
+    public TextureAtlasData()
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="packFile"></param>
+    /// <param name="imagesDir"></param>
+    /// <param name="flip"></param>
+    public TextureAtlasData( FileInfo packFile, DirectoryInfo? imagesDir, bool flip ) => Load( packFile, imagesDir, flip );
+
+    #endregion
+
     // ######################################################################
     //      Companions.
     // ######################################################################
 
     #region Companions
 
-    [PublicAPI]
     public record Page
     {
-        /// <summary>
-        /// May be null if this page isn't associated with a file. In that
-        /// case, <see cref="texture"/> must be set.
-        /// </summary>
-        public FileInfo? textureFile;
 
         /// <summary>
-        /// May be null if the texture is not yet loaded.
+        ///     May be null if the texture is not yet loaded.
         /// </summary>
         public Texture? texture;
+        /// <summary>
+        ///     May be null if this page isn't associated with a file. In that
+        ///     case, <see cref="texture" /> must be set.
+        /// </summary>
+        public FileInfo? textureFile;
 
         public bool          UseMipMaps { get; set; }
         public Pixmap.Format Format     { get; set; } = Pixmap.Format.RGBA8888;
@@ -307,7 +302,7 @@ public partial record TextureAtlasData
         public bool          Pma        { get; set; }
     }
 
-    [PublicAPI]
+
     public class Region
     {
         public Page?     Page           { get; init; }

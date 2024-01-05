@@ -16,57 +16,55 @@
 
 using System.Text;
 
-using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
 using LibGDXSharp.Utils.Async;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Assets;
 
 /// <summary>
-/// Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
+///     Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
 /// </summary>
-[PublicAPI]
 public class AssetManager
 {
-    public Logger Log { get; set; }
-
-    private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets  = new();
-    private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? >        _loaders = new();
-
-    private readonly Dictionary< string, Type? >           _assetTypes        = new();
     private readonly Dictionary< string, List< string > >? _assetDependencies = new();
-    private readonly List< string >                        _injected          = new();
-    private readonly List< AssetDescriptor >               _loadQueue         = new();
-    private readonly Stack< AssetLoadingTask >             _tasks             = new();
 
-    private readonly AsyncExecutor        _executor;
-    private          IAssetErrorListener? _listener;
+    private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets = new();
+
+    private readonly Dictionary< string, Type? > _assetTypes = new();
+
+    private readonly AsyncExecutor                                           _executor;
+    private readonly List< string >                                          _injected  = new();
+    private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? > _loaders   = new();
+    private readonly List< AssetDescriptor >                                 _loadQueue = new();
+    private readonly Stack< AssetLoadingTask >                               _tasks     = new();
+    private          IAssetErrorListener?                                    _listener;
 
     private int _loaded;
-    private int _toLoad;
     private int _peakTasks;
+    private int _toLoad;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    /// Creates a new AssetManager with all default loaders.
-    ///</summary>
+    ///     Creates a new AssetManager with all default loaders.
+    /// </summary>
     public AssetManager() : this( new AbsoluteFileHandleResolver() )
     {
     }
 
     /// <summary>
-    /// Creates a new AssetManager with optionally all default loaders. If you don't add the
-    /// default loaders then you do have to manually add the loaders you need, including any
-    /// loaders they might depend on.
+    ///     Creates a new AssetManager with optionally all default loaders. If you don't add the
+    ///     default loaders then you do have to manually add the loaders you need, including any
+    ///     loaders they might depend on.
     /// </summary>
     /// <param name="resolver"></param>
     /// <param name="defaultLoaders">Whether to add the default loaders (default is true).</param>
     public AssetManager( IFileHandleResolver resolver, bool defaultLoaders = true )
     {
-        this.Log = new Logger( "AssetManager", IApplication.LOG_NONE );
+        Log = new Logger( "AssetManager", IApplication.LOG_NONE );
 
         if ( defaultLoaders )
         {
@@ -82,19 +80,26 @@ public class AssetManager
                 SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
                 SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
                 SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
-                //@formatter:on
+            //@formatter:on
         }
 
-        this.FileHandleResolver = resolver;
-        this._executor          = new AsyncExecutor( 1, "AssetManager" );
+        FileHandleResolver = resolver;
+        _executor          = new AsyncExecutor( 1, "AssetManager" );
     }
 
+    public Logger Log { get; set; }
+
     /// <summary>
-    /// Returns the <see cref="IFileHandleResolver"/> which this
-    /// AssetManager was loaded with.
+    ///     Returns the <see cref="IFileHandleResolver" /> which this
+    ///     AssetManager was loaded with.
     /// </summary>
     /// <returns>the file handle resolver which this AssetManager uses.</returns>
     public IFileHandleResolver FileHandleResolver { get; set; }
+
+    /// <summary>
+    ///     Returns the number of loaded assets.
+    /// </summary>
+    public int LoadedAssetsCount => _assetTypes.Count;
 
     /// <summary>
     /// </summary>
@@ -187,7 +192,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Returns all assets matching the requested type.
+    ///     Returns all assets matching the requested type.
     /// </summary>
     /// <param name="type"></param>
     /// <param name="outArray"></param>
@@ -218,7 +223,7 @@ public class AssetManager
     {
         if ( _tasks.First().AssetDesc is { } assetDescriptor
           && ( _tasks.Count > 0 )
-          && ( assetDescriptor.Filepath.Equals( fileName ) ) )
+          && assetDescriptor.Filepath.Equals( fileName ) )
         {
             return true;
         }
@@ -264,7 +269,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Removes the asset and all its dependencies, IF they are not used by other assets.
+    ///     Removes the asset and all its dependencies, IF they are not used by other assets.
     /// </summary>
     /// <param name="fileName"> the asset file name</param>
     public void Unload( string fileName )
@@ -433,30 +438,24 @@ public class AssetManager
     /// </summary>
     /// <param name="fileName">the file name of the asset</param>
     /// <returns>whether the asset is loaded</returns>
-    public bool IsLoaded( string? fileName )
-    {
-        return ( fileName != null ) && _assetTypes.ContainsKey( fileName );
-    }
+    public bool IsLoaded( string? fileName ) => ( fileName != null ) && _assetTypes.ContainsKey( fileName );
 
     /// <summary>
     /// </summary>
     /// <param name="fileName">the file name of the asset</param>
     /// <param name="type"></param>
     /// <returns>whether the asset is loaded</returns>
-    public bool IsLoaded( string fileName, Type type )
-    {
-        return _assets[ type ][ fileName ].Asset != null;
-    }
+    public bool IsLoaded( string fileName, Type type ) => _assets[ type ][ fileName ].Asset != null;
 
     /// <summary>
-    /// Returns the loader for the given type and the specified filename.
+    ///     Returns the loader for the given type and the specified filename.
     /// </summary>
     /// <param name="type">The type of the loader to get</param>
     /// <param name="fileName">
-    /// The filename of the asset to get a loader for, or null to get the default loader.
+    ///     The filename of the asset to get a loader for, or null to get the default loader.
     /// </param>
     /// <returns>
-    /// The loader capable of loading the type and filename, or null if none exists.
+    ///     The loader capable of loading the type and filename, or null if none exists.
     /// </returns>
     public AssetLoader? GetLoader( Type? type, string? fileName = null )
     {
@@ -476,7 +475,7 @@ public class AssetManager
 
         foreach ( KeyValuePair< string, AssetLoader? > entry in _loaders[ type ]! )
         {
-            if ( ( entry.Key.Length > len ) && ( fileName.EndsWith( entry.Key ) ) )
+            if ( ( entry.Key.Length > len ) && fileName.EndsWith( entry.Key ) )
             {
                 result = entry.Value;
             }
@@ -488,17 +487,17 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Adds the given asset to the loading queue of the AssetManager.
+    ///     Adds the given asset to the loading queue of the AssetManager.
     /// </summary>
     /// <param name="fileName">
-    /// the file name (interpretation depends on <see cref="AssetLoader"/>)
+    ///     the file name (interpretation depends on <see cref="AssetLoader" />)
     /// </param>
     /// <param name="type">the type of the asset.</param>
     /// <param name="parameter"></param>
     public void Load( string? fileName, Type? type, AssetLoaderParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( fileName, "Filename not specified!" );
-        
+
         AssetLoader? loader = GetLoader( type, fileName );
 
         if ( loader == null )
@@ -559,7 +558,7 @@ public class AssetManager
         var assetDesc = new AssetDescriptor
         {
             Filepath   = fileName,
-            AssetType       = type!,
+            AssetType  = type!,
             Parameters = parameter
         };
 
@@ -569,20 +568,20 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Adds the given asset to the loading queue of the AssetManager.
+    ///     Adds the given asset to the loading queue of the AssetManager.
     /// </summary>
-    /// <param name="desc">the <see cref="LibGDXSharp.Assets.AssetDescriptor"/></param>
+    /// <param name="desc">the <see cref="LibGDXSharp.Assets.AssetDescriptor" /></param>
     public void Load( AssetDescriptor desc )
     {
         ArgumentNullException.ThrowIfNull( desc );
-        
+
         Load( desc.Filepath, desc.AssetType, desc.Parameters );
     }
 
     /// <summary>
-    /// Updates the AssetManager for a single task. Returns if the current task is
-    /// still being processed or there are no tasks, otherwise it finishes the current
-    /// task and starts the next task.
+    ///     Updates the AssetManager for a single task. Returns if the current task is
+    ///     still being processed or there are no tasks, otherwise it finishes the current
+    ///     task and starts the next task.
     /// </summary>
     /// <returns>true if all loading is finished.</returns>
     public bool Update()
@@ -606,7 +605,7 @@ public class AssetManager
 
             return UpdateTask() && ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
         }
-        catch ( System.Exception t )
+        catch ( Exception t )
         {
             HandleTaskError( t );
 
@@ -615,10 +614,10 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Updates the AssetManager continuously for the specified number of milliseconds,
-    /// yielding the CPU to the loading thread between updates. This may block for less
-    /// time if all loading tasks are complete. This may block for more time if the portion
-    /// of a single task that happens in the GL thread takes a long time.
+    ///     Updates the AssetManager continuously for the specified number of milliseconds,
+    ///     yielding the CPU to the loading thread between updates. This may block for less
+    ///     time if all loading tasks are complete. This may block for more time if the portion
+    ///     of a single task that happens in the GL thread takes a long time.
     /// </summary>
     /// <returns> true if all loading is finished.</returns>
     public bool Update( int millis )
@@ -639,16 +638,13 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Returns true when all assets are loaded. Can be called from any thread but
-    /// note <see cref="Update()"/> or related methods must be called to process tasks. 
+    ///     Returns true when all assets are loaded. Can be called from any thread but
+    ///     note <see cref="Update()" /> or related methods must be called to process tasks.
     /// </summary>
-    public bool IsFinished()
-    {
-        return ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
-    }
+    public bool IsFinished() => ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
 
     /// <summary>
-    /// Blocks until all assets are loaded.
+    ///     Blocks until all assets are loaded.
     /// </summary>
     public void FinishLoading()
     {
@@ -663,19 +659,16 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Blocks until the specified asset is loaded.
+    ///     Blocks until the specified asset is loaded.
     /// </summary>
     /// <param name="assetDesc">the AssetDescriptor of the asset</param>
-    public T FinishLoadingAsset<T>( AssetDescriptor assetDesc )
-    {
-        return FinishLoadingAsset< T >( assetDesc.Filepath );
-    }
+    public T FinishLoadingAsset<T>( AssetDescriptor assetDesc ) => FinishLoadingAsset< T >( assetDesc.Filepath );
 
     /// <summary>
-    /// Blocks until the specified asset is loaded.
+    ///     Blocks until the specified asset is loaded.
     /// </summary>
     /// <param name="fileName">
-    /// the file name (interpretation depends on <see cref="AssetLoader"/>)
+    ///     the file name (interpretation depends on <see cref="AssetLoader" />)
     /// </param>
     public T FinishLoadingAsset<T>( string? fileName )
     {
@@ -725,19 +718,19 @@ public class AssetManager
         {
             Debug.Assert( desc.Filepath != null, "desc.FilePath is null" );
 
-            if ( this._injected.Contains( desc.Filepath ) )
+            if ( _injected.Contains( desc.Filepath ) )
             {
                 // Ignore subsequent dependencies if there are duplicates.
                 continue;
             }
 
-            this._injected.Add( desc.Filepath );
+            _injected.Add( desc.Filepath );
 
             InjectDependency( parentAssetFilename, desc );
         }
 
-        this._injected.Clear();
-        this._injected.EnsureCapacity( 32 );
+        _injected.Clear();
+        _injected.EnsureCapacity( 32 );
     }
 
     /// <summary>
@@ -785,10 +778,10 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Removes a task from the loadQueue and adds it to the task stack.
-    /// If the asset is already loaded (which can happen if it was a
-    /// dependency of a previously loaded asset) its reference count will
-    /// be increased. 
+    ///     Removes a task from the loadQueue and adds it to the task stack.
+    ///     If the asset is already loaded (which can happen if it was a
+    ///     dependency of a previously loaded asset) its reference count will
+    ///     be increased.
     /// </summary>
     public void NextTask()
     {
@@ -811,8 +804,7 @@ public class AssetManager
 
             IncrementRefCountedDependencies( assetDesc.Filepath );
 
-            assetDesc.Parameters?.LoadedCallback?.FinishedLoading
-                (
+            assetDesc.Parameters?.LoadedCallback?.FinishedLoading(
                 this,
                 assetDesc.Filepath,
                 assetDesc.AssetType
@@ -830,7 +822,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Adds a <see cref="LibGDXSharp.Assets.AssetLoadingTask"/> to the task stack for the given asset.
+    ///     Adds a <see cref="LibGDXSharp.Assets.AssetLoadingTask" /> to the task stack for the given asset.
     /// </summary>
     public void AddTask( AssetDescriptor assetDesc )
     {
@@ -847,7 +839,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Adds an asset to this AssetManager.
+    ///     Adds an asset to this AssetManager.
     /// </summary>
     /// <param name="fileName"></param>
     /// <param name="type"></param>
@@ -866,7 +858,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Updates the current task on the top of the task stack.
+    ///     Updates the current task on the top of the task stack.
     /// </summary>
     /// <returns>true if the asset is loaded or the task was cancelled.</returns>
     public bool UpdateTask()
@@ -911,8 +903,7 @@ public class AssetManager
             AddAsset( task.AssetDesc.Filepath, task.AssetDesc.AssetType, task.Asset );
 
             // otherwise, if a listener was found in the parameter invoke it
-            task.AssetDesc.Parameters?.LoadedCallback?.FinishedLoading
-                (
+            task.AssetDesc.Parameters?.LoadedCallback?.FinishedLoading(
                 this,
                 task.AssetDesc.Filepath,
                 task.AssetDesc.AssetType
@@ -925,18 +916,14 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Called when a task throws an exception during loading. The default implementation
-    /// rethrows the exception and does not use the <tt>assetDesc</tt> parameter.
-    /// A subclass may supress the default implementation when loading assets where loading
-    /// failure is recoverable.
+    ///     Called when a task throws an exception during loading. The default implementation
+    ///     rethrows the exception and does not use the <tt>assetDesc</tt> parameter.
+    ///     A subclass may supress the default implementation when loading assets where loading
+    ///     failure is recoverable.
     /// </summary>
-    public virtual void TaskFailed( AssetDescriptor assetDesc, System.Exception ex )
-    {
-        throw ex;
-    }
- 
+    public virtual void TaskFailed( AssetDescriptor assetDesc, Exception ex ) => throw ex;
+
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="parent"></param>
     public void IncrementRefCountedDependencies( string parent )
@@ -963,11 +950,11 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Handles a runtime/loading error in <see cref="Update()"/> by optionally
-    /// invoking the <see cref="IAssetErrorListener"/>.
+    ///     Handles a runtime/loading error in <see cref="Update()" /> by optionally
+    ///     invoking the <see cref="IAssetErrorListener" />.
     /// </summary>
     /// <param name="t"></param>
-    public void HandleTaskError( System.Exception t )
+    public void HandleTaskError( Exception t )
     {
         Log.Error( $"Error loading asset: {t}" );
 
@@ -1005,7 +992,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Sets a new <see cref="AssetLoader"/> for the given type.
+    ///     Sets a new <see cref="AssetLoader" /> for the given type.
     /// </summary>
     /// <param name="type"> the type of the asset </param>
     /// <param name="loader"> the loader  </param>
@@ -1018,12 +1005,12 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Sets a new <see cref="AssetLoader"/> for the given type.
+    ///     Sets a new <see cref="AssetLoader" /> for the given type.
     /// </summary>
     /// <param name="type"> the type of the asset </param>
     /// <param name="suffix">
-    /// the suffix the filename must have for this loader to be used or null
-    /// to specify the default loader.
+    ///     the suffix the filename must have for this loader to be used or null
+    ///     to specify the default loader.
     /// </param>
     /// <param name="loader"> the loader</param>
     public void SetLoader( Type type, string? suffix, AssetLoader loader )
@@ -1033,29 +1020,24 @@ public class AssetManager
             ArgumentNullException.ThrowIfNull( type );
             ArgumentNullException.ThrowIfNull( loader );
 
-            if ( this._loaders[ type ] == null )
+            if ( _loaders[ type ] == null )
             {
-                this._loaders.Put( type, new Dictionary< string, AssetLoader? >() );
+                _loaders.Put( type, new Dictionary< string, AssetLoader? >() );
             }
 
-            this._loaders[ type ]?.Put( suffix ?? "", loader );
+            _loaders[ type ]?.Put( suffix ?? "", loader );
 
             Log.Debug( $"Loader set: {type.Name} -> {loader.GetType().Name}" );
         }
     }
 
     /// <summary>
-    /// Returns the number of loaded assets.
-    /// </summary>
-    public int LoadedAssetsCount => _assetTypes.Count;
-
-    /// <summary>
-    /// Returns the number of currently queued assets.
+    ///     Returns the number of currently queued assets.
     /// </summary>
     public int GetQueuedAssets() => _loadQueue.Count + _tasks.Count;
 
     /// <summary>
-    /// Returns the progress in percent of completion.
+    ///     Returns the progress in percent of completion.
     /// </summary>
     public float GetProgress()
     {
@@ -1068,22 +1050,19 @@ public class AssetManager
 
         if ( _peakTasks > 0 )
         {
-            fractionalLoaded += ( ( _peakTasks - _tasks.Count ) / ( float )_peakTasks );
+            fractionalLoaded += ( _peakTasks - _tasks.Count ) / ( float )_peakTasks;
         }
 
         return Math.Min( 1f, fractionalLoaded / _toLoad );
     }
 
     /// <summary>
-    /// Sets an <see cref="IAssetErrorListener"/> to be invoked in case loading an asset failed.
+    ///     Sets an <see cref="IAssetErrorListener" /> to be invoked in case loading an asset failed.
     /// </summary>
-    public void SetErrorListener( IAssetErrorListener listener )
-    {
-        this._listener = listener;
-    }
+    public void SetErrorListener( IAssetErrorListener listener ) => _listener = listener;
 
     /// <summary>
-    /// Disposes all assets in the manager and stops all asynchronous loading.
+    ///     Disposes all assets in the manager and stops all asynchronous loading.
     /// </summary>
     public void Dispose()
     {
@@ -1093,7 +1072,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Clears and disposes all assets and the preloading queue.
+    ///     Clears and disposes all assets and the preloading queue.
     /// </summary>
     public void Clear()
     {
@@ -1148,18 +1127,18 @@ public class AssetManager
             }
         }
 
-        this._assets.Clear();
-        this._assetTypes.Clear();
-        this._assetDependencies?.Clear();
-        this._loaded    = 0;
-        this._toLoad    = 0;
-        this._peakTasks = 0;
-        this._loadQueue.Clear();
-        this._tasks.Clear();
+        _assets.Clear();
+        _assetTypes.Clear();
+        _assetDependencies?.Clear();
+        _loaded    = 0;
+        _toLoad    = 0;
+        _peakTasks = 0;
+        _loadQueue.Clear();
+        _tasks.Clear();
     }
 
     /// <summary>
-    /// Returns the reference count of an asset.
+    ///     Returns the reference count of an asset.
     /// </summary>
     /// <param name="fileName"></param>
     public int GetReferenceCount( string fileName )
@@ -1180,7 +1159,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Sets the reference count of an asset.
+    ///     Sets the reference count of an asset.
     /// </summary>
     /// <param name="fileName"></param>
     /// <param name="refCount"></param>
@@ -1197,7 +1176,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Returns a string containing ref count and dependency information for all assets.
+    ///     Returns a string containing ref count and dependency information for all assets.
     /// </summary>
     public string GetDiagnostics()
     {

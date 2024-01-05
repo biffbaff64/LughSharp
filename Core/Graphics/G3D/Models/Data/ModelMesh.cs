@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Graphics.G3D.Models.Data;
 
-[PublicAPI]
 public class ModelMesh
 {
     public string?            ID         { get; set; }

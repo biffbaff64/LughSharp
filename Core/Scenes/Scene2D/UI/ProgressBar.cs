@@ -22,34 +22,33 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A progress bar is a widget that visually displays the progress of some activity
-/// or a value within given range. The progress bar has a range (min, max) and a
-/// stepping between each value it represents. The percentage of completeness typically
-/// starts out as an empty progress bar and gradually becomes filled in as the task
-/// or variable value progresses.
-/// <para>
-/// A <see cref="ChangeListener.ChangeEvent"/> is fired when the progress bar knob is moved. Cancelling
-/// the event will move the knob to where it was previously.
-/// </para>
-/// <para>
-/// For a horizontal progress bar, its preferred height is determined by the larger of
-/// the knob and background, and the preferred width is 140, a relatively arbitrary size.
-/// These parameters are reversed for a vertical progress bar.
-/// </para>
+///     A progress bar is a widget that visually displays the progress of some activity
+///     or a value within given range. The progress bar has a range (min, max) and a
+///     stepping between each value it represents. The percentage of completeness typically
+///     starts out as an empty progress bar and gradually becomes filled in as the task
+///     or variable value progresses.
+///     <para>
+///         A <see cref="ChangeListener.ChangeEvent" /> is fired when the progress bar knob is moved. Cancelling
+///         the event will move the knob to where it was previously.
+///     </para>
+///     <para>
+///         For a horizontal progress bar, its preferred height is determined by the larger of
+///         the knob and background, and the preferred width is 140, a relatively arbitrary size.
+///         These parameters are reversed for a vertical progress bar.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class ProgressBar : Widget, IDisableable
 {
-    private const float DEFAULT_PREF_WIDTH  = 140f;
-    private const float DEFAULT_PREF_HEIGHT = 140f;
-
-    private float _animateFromValue;
-    private float _animateDuration;
-    private float _animateTime;
+    private const    float DEFAULT_PREF_WIDTH        = 140f;
+    private const    float DEFAULT_PREF_HEIGHT       = 140f;
+    private readonly bool  _programmaticChangeEvents = true;
+    private readonly float _stepSize;
 
     private readonly ProgressBarStyle? _style;
-    private readonly float             _stepSize;
-    private readonly bool              _programmaticChangeEvents = true;
+    private          float             _animateDuration;
+
+    private float _animateFromValue;
+    private float _animateTime;
 
     public ProgressBar( float min, float max, float stepSize, bool vertical, Skin skin )
         : this( min,
@@ -66,44 +65,86 @@ public class ProgressBar : Widget, IDisableable
     }
 
     /// <summary>
-    /// Creates a new progress bar. If horizontal, its width is determined by the
-    /// prefWidth parameter, and its height is determined by the maximum of the height
-    /// of either the progress bar <see cref="NinePatch"/> or progress bar handle
-    /// <see cref="TextureRegion"/>. The min and max values determine the range the
-    /// values of this progress bar can take on, the stepSize parameter specifies the
-    /// distance between individual values.
-    /// <para>
-    /// E.g. min could be 4, max could be 10 and stepSize could be 0.2, giving you a
-    /// total of 30 values, 4.0 4.2, 4.4 and so on.
-    /// </para>
+    ///     Creates a new progress bar. If horizontal, its width is determined by the
+    ///     prefWidth parameter, and its height is determined by the maximum of the height
+    ///     of either the progress bar <see cref="NinePatch" /> or progress bar handle
+    ///     <see cref="TextureRegion" />. The min and max values determine the range the
+    ///     values of this progress bar can take on, the stepSize parameter specifies the
+    ///     distance between individual values.
+    ///     <para>
+    ///         E.g. min could be 4, max could be 10 and stepSize could be 0.2, giving you a
+    ///         total of 30 values, 4.0 4.2, 4.4 and so on.
+    ///     </para>
     /// </summary>
     /// <param name="min"> the minimum value </param>
     /// <param name="max"> the maximum value </param>
     /// <param name="stepSize"> the step size between values </param>
     /// <param name="vertical"></param>
-    /// <param name="style"> the <seealso cref="ProgressBarStyle"/>  </param>
+    /// <param name="style"> the <seealso cref="ProgressBarStyle" />  </param>
     public ProgressBar( float min, float max, float stepSize, bool vertical, ProgressBarStyle style )
     {
         if ( min > max )
         {
-            throw new System.ArgumentException( "max must be > min. min,max: " + min + ", " + max );
+            throw new ArgumentException( "max must be > min. min,max: " + min + ", " + max );
         }
 
         if ( stepSize <= 0 )
         {
-            throw new System.ArgumentException( "stepSize must be > 0: " + stepSize );
+            throw new ArgumentException( "stepSize must be > 0: " + stepSize );
         }
 
         Style = style;
 
-        this.MinValue   = min;
-        this.MaxValue   = max;
-        this.StepSize   = stepSize;
-        this.IsVertical = vertical;
-        this.Value      = min;
+        MinValue   = min;
+        MaxValue   = max;
+        StepSize   = stepSize;
+        IsVertical = vertical;
+        Value      = min;
 
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
+
+    // ------------------------------------------------------------------------
+
+    public float KnobPosition { get; private set; }
+    public float MinValue     { get; set; }
+    public float MaxValue     { get; set; }
+    public float Value        { get; set; }
+    public bool  IsVertical   { get; set; }
+    public bool  IsRound      { get; set; } = true;
+
+    public Interpolator AnimateInterpolation { get; set; } = Interpolation.linear;
+    public Interpolator VisualInterpolation  { get; set; } = Interpolation.linear;
+
+    public bool IsAnimating => _animateTime > 0;
+
+    public float StepSize
+    {
+        get => _stepSize;
+        init
+        {
+            if ( _stepSize <= 0 )
+            {
+                throw new ArgumentException( "steps must be > 0: " + _stepSize );
+            }
+
+            _stepSize = value;
+        }
+    }
+
+    public ProgressBarStyle Style
+    {
+        get => _style!;
+        init
+        {
+            ArgumentNullException.ThrowIfNull( value );
+
+            _style = value;
+            InvalidateHierarchy();
+        }
+    }
+
+    public bool IsDisabled { get; set; }
 
     public new void Act( float delta )
     {
@@ -122,7 +163,7 @@ public class ProgressBar : Widget, IDisableable
 
     public new void Draw( IBatch batch, float parentAlpha )
     {
-        IDrawable? knob        = this.Style.Knob;
+        IDrawable? knob        = Style.Knob;
         IDrawable? currentKnob = GetKnobDrawable();
         IDrawable? bg          = GetBackgroundDrawable();
         IDrawable? knobBefore  = GetKnobBeforeDrawable();
@@ -136,7 +177,7 @@ public class ProgressBar : Widget, IDisableable
         var knobWidth  = knob?.MinWidth ?? 0;
         var percent    = GetVisualPercent();
 
-        batch.SetColor( this.Color!.R, this.Color!.G, this.Color!.B, this.Color!.A * parentAlpha );
+        batch.SetColor( Color!.R, Color!.G, Color!.B, Color!.A * parentAlpha );
 
         if ( IsVertical )
         {
@@ -363,20 +404,20 @@ public class ProgressBar : Widget, IDisableable
     }
 
     /// <summary>
-    /// Sets the progress bar _position, rounded to the nearest step size and
-    /// clamped to the minimum and maximum values. <see cref="Clamp(float)"/>
-    /// can be overridden to allow values outside of the progress bar's min/max
-    /// range.
+    ///     Sets the progress bar _position, rounded to the nearest step size and
+    ///     clamped to the minimum and maximum values. <see cref="Clamp(float)" />
+    ///     can be overridden to allow values outside of the progress bar's min/max
+    ///     range.
     /// </summary>
     /// <returns>
-    /// <tt>false</tt> if the value was not changed because the progress bar
-    /// already had the value or it was canceled by a listener.
+    ///     <tt>false</tt> if the value was not changed because the progress bar
+    ///     already had the value or it was canceled by a listener.
     /// </returns>
     public bool SetBarPosition( float value )
     {
         value = Clamp( Round( value ) );
 
-        var oldValue = this.Value;
+        var oldValue = Value;
 
         if ( value.Equals( oldValue ) )
         {
@@ -385,7 +426,7 @@ public class ProgressBar : Widget, IDisableable
 
         var oldVisualValue = GetVisualValue();
 
-        this.Value = value;
+        Value = value;
 
         if ( _programmaticChangeEvents )
         {
@@ -397,7 +438,7 @@ public class ProgressBar : Widget, IDisableable
 
             if ( cancelled )
             {
-                this.Value = oldValue;
+                Value = oldValue;
 
                 return false;
             }
@@ -413,19 +454,19 @@ public class ProgressBar : Widget, IDisableable
     }
 
     /// <summary>
-    /// Rounds the value using the progress bar's step size.
-    /// This can be overridden to customize or disable rounding.
+    ///     Rounds the value using the progress bar's step size.
+    ///     This can be overridden to customize or disable rounding.
     /// </summary>
     private float Round( float value ) => ( float )( Math.Round( value / StepSize ) * StepSize );
 
     /// <summary>
-    /// Clamps the value to the progress bar's min/max range. This can be overridden
-    /// to allow a range different from the progress bar knob's range.
+    ///     Clamps the value to the progress bar's min/max range. This can be overridden
+    ///     to allow a range different from the progress bar knob's range.
     /// </summary>
     private float Clamp( float value ) => MathUtils.Clamp( value, MinValue, MaxValue );
 
     /// <summary>
-    /// Sets the range of this progress bar. The progress bar's current value is clamped to the range.
+    ///     Sets the range of this progress bar. The progress bar's current value is clamped to the range.
     /// </summary>
     public void SetRange( float min, float max )
     {
@@ -434,8 +475,8 @@ public class ProgressBar : Widget, IDisableable
             throw new ArgumentException( "min must be <= max: " + min + " <= " + max );
         }
 
-        this.MinValue = min;
-        this.MaxValue = max;
+        MinValue = min;
+        MaxValue = max;
 
         if ( Value < min )
         {
@@ -474,15 +515,15 @@ public class ProgressBar : Widget, IDisableable
     }
 
     /// <summary>
-    /// If > 0, changes to the progress bar value via <see cref="Value"/>
-    /// will happen over this duration in seconds.
+    ///     If > 0, changes to the progress bar value via <see cref="Value" />
+    ///     will happen over this duration in seconds.
     /// </summary>
     /// <param name="duration"></param>
-    public void SetAnimateDuration( float duration ) => this._animateDuration = duration;
+    public void SetAnimateDuration( float duration ) => _animateDuration = duration;
 
     /// <summary>
-    /// If <see cref="SetAnimateDuration(float)"/> animating the progress bar value,
-    /// this returns the value current displayed.
+    ///     If <see cref="SetAnimateDuration(float)" /> animating the progress bar value,
+    ///     this returns the value current displayed.
     /// </summary>
     public float GetVisualValue()
     {
@@ -495,13 +536,10 @@ public class ProgressBar : Widget, IDisableable
     }
 
     /// <summary>
-    /// Sets the visual value equal to the actual value. This can be used
-    /// to set the value without animating.
+    ///     Sets the visual value equal to the actual value. This can be used
+    ///     to set the value without animating.
     /// </summary>
-    public void UpdateVisualValue()
-    {
-        _animateTime = 0;
-    }
+    public void UpdateVisualValue() => _animateTime = 0;
 
     public float GetPercent()
     {
@@ -564,64 +602,13 @@ public class ProgressBar : Widget, IDisableable
     }
 
     // ------------------------------------------------------------------------
-
-    public float KnobPosition { get; private set; }
-    public float MinValue     { get; set; }
-    public float MaxValue     { get; set; }
-    public float Value        { get; set; }
-    public bool  IsVertical   { get; set; }
-    public bool  IsRound      { get; set; } = true;
-    public bool  IsDisabled   { get; set; }
-
-    public Interpolator AnimateInterpolation { get; set; } = Interpolation.linear;
-    public Interpolator VisualInterpolation  { get; set; } = Interpolation.linear;
-
-    public bool IsAnimating => ( _animateTime > 0 );
-
-    public float StepSize
-    {
-        get => _stepSize;
-        init
-        {
-            if ( _stepSize <= 0 )
-            {
-                throw new ArgumentException( "steps must be > 0: " + _stepSize );
-            }
-
-            this._stepSize = value;
-        }
-    }
-
-    public ProgressBarStyle Style
-    {
-        get => _style!;
-        init
-        {
-            ArgumentNullException.ThrowIfNull( value );
-
-            this._style = value;
-            InvalidateHierarchy();
-        }
-    }
-
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// The style for a progress bar, see <see cref="ProgressBar"/>.
+    ///     The style for a progress bar, see <see cref="ProgressBar" />.
     /// </summary>
-    [PublicAPI]
     public class ProgressBarStyle
     {
-        // The progress bar background, stretched only in one direction.
-        public IDrawable? Background         { get; set; }
-        public IDrawable? DisabledBackground { get; set; }
-        public IDrawable? Knob               { get; set; }
-        public IDrawable? DisabledKnob       { get; set; }
-        public IDrawable? KnobBefore         { get; set; }
-        public IDrawable? DisabledKnobBefore { get; set; }
-        public IDrawable? KnobAfter          { get; set; }
-        public IDrawable? DisabledKnobAfter  { get; set; }
 
         public ProgressBarStyle()
         {
@@ -629,8 +616,8 @@ public class ProgressBar : Widget, IDisableable
 
         public ProgressBarStyle( IDrawable background, IDrawable knob )
         {
-            this.Background = background;
-            this.Knob       = knob;
+            Background = background;
+            Knob       = knob;
         }
 
         public ProgressBarStyle( ProgressBarStyle style )
@@ -644,5 +631,15 @@ public class ProgressBar : Widget, IDisableable
             KnobAfter          = style.KnobAfter;
             DisabledKnobAfter  = style.DisabledKnobAfter;
         }
+
+        // The progress bar background, stretched only in one direction.
+        public IDrawable? Background         { get; set; }
+        public IDrawable? DisabledBackground { get; set; }
+        public IDrawable? Knob               { get; set; }
+        public IDrawable? DisabledKnob       { get; set; }
+        public IDrawable? KnobBefore         { get; set; }
+        public IDrawable? DisabledKnobBefore { get; set; }
+        public IDrawable? KnobAfter          { get; set; }
+        public IDrawable? DisabledKnobAfter  { get; set; }
     }
 }

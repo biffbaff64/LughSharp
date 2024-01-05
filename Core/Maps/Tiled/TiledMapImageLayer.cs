@@ -18,17 +18,17 @@ using LibGDXSharp.Graphics.G2D;
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[PublicAPI]
 public class TiledMapImageLayer : MapLayer
 {
-    public TextureRegion? Region { get; set; }
-    public float          X      { get; set; }
-    public float          Y      { get; set; }
 
     public TiledMapImageLayer( TextureRegion? region, float x, float y )
     {
-        this.Region = region;
-        this.X      = x;
-        this.Y      = y;
+        Region = region;
+        X      = x;
+        Y      = y;
     }
+
+    public TextureRegion? Region { get; set; }
+    public float          X      { get; set; }
+    public float          Y      { get; set; }
 }

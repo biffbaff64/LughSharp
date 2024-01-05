@@ -19,7 +19,6 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-[PublicAPI]
 public class CheckBox : TextButton
 {
     private CheckBoxStyle? _style;
@@ -30,7 +29,7 @@ public class CheckBox : TextButton
     }
 
     public CheckBox( string text, Skin skin, string styleName )
-        : this( text, ( CheckBoxStyle )skin.Get< CheckBoxStyle >( styleName ) )
+        : this( text, skin.Get< CheckBoxStyle >( styleName ) )
     {
     }
 
@@ -40,13 +39,13 @@ public class CheckBox : TextButton
 
         Label? label = Label;
 
-        this.Image = new Image( style.CheckboxOff, Scaling.None );
+        Image = new Image( style.CheckboxOff, Scaling.None );
 
-        ImageCell = Add( this.Image );
+        ImageCell = Add( Image );
 
         Add( label );
 
-        label?.SetAlignment( LibGDXSharp.Utils.Align.LEFT );
+        label?.SetAlignment( Align.LEFT );
 
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
@@ -58,13 +57,19 @@ public class CheckBox : TextButton
         {
             if ( value is not CheckBoxStyle style )
             {
-                throw new System.ArgumentException( "style must be a CheckBoxStyle." );
+                throw new ArgumentException( "style must be a CheckBoxStyle." );
             }
 
-            this._style = style;
-            base.Style  = style;
+            _style     = style;
+            base.Style = style;
         }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public Image? Image     { get; set; }
+    public Cell   ImageCell { get; set; }
 
     public new void Draw( IBatch batch, float parentAlpha )
     {
@@ -88,7 +93,7 @@ public class CheckBox : TextButton
 
             if ( IsChecked && ( _style?.CheckboxOn != null ) )
             {
-                checkbox = ( over && ( _style.CheckboxOnOver != null ) )
+                checkbox = over && ( _style.CheckboxOnOver != null )
                     ? _style.CheckboxOnOver
                     : _style.CheckboxOn;
             }
@@ -110,23 +115,11 @@ public class CheckBox : TextButton
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public Image? Image     { get; set; }
-    public Cell   ImageCell { get; set; }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     /// <summary>
-    /// The style for a select box, see <seealso cref="CheckBox"/>.
+    ///     The style for a select box, see <seealso cref="CheckBox" />.
     /// </summary>
     public class CheckBoxStyle : TextButtonStyle
     {
-        public IDrawable? CheckboxOn          { get; set; }
-        public IDrawable? CheckboxOff         { get; set; }
-        public IDrawable? CheckboxOnOver      { get; set; }
-        public IDrawable? CheckboxOver        { get; set; }
-        public IDrawable? CheckboxOnDisabled  { get; set; }
-        public IDrawable? CheckboxOffDisabled { get; set; }
 
         public CheckBoxStyle()
         {
@@ -134,10 +127,10 @@ public class CheckBox : TextButton
 
         public CheckBoxStyle( IDrawable checkboxOff, IDrawable checkboxOn, BitmapFont font, Color fontColor )
         {
-            this.CheckboxOff = checkboxOff;
-            this.CheckboxOn  = checkboxOn;
-            this.Font        = font;
-            this.FontColor   = fontColor;
+            CheckboxOff = checkboxOff;
+            CheckboxOn  = checkboxOn;
+            Font        = font;
+            FontColor   = fontColor;
         }
 
         public CheckBoxStyle( CheckBoxStyle style ) : base( style )
@@ -150,5 +143,12 @@ public class CheckBox : TextButton
             CheckboxOnDisabled  = style.CheckboxOnDisabled;
             CheckboxOffDisabled = style.CheckboxOffDisabled;
         }
+
+        public IDrawable? CheckboxOn          { get; set; }
+        public IDrawable? CheckboxOff         { get; set; }
+        public IDrawable? CheckboxOnOver      { get; set; }
+        public IDrawable? CheckboxOver        { get; set; }
+        public IDrawable? CheckboxOnDisabled  { get; set; }
+        public IDrawable? CheckboxOffDisabled { get; set; }
     }
 }

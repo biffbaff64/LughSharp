@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
-[PublicAPI]
 public interface IGLAudio : IAudio, IDisposable
 {
     void Update();

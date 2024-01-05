@@ -16,61 +16,56 @@
 
 namespace LibGDXSharp.Core;
 
-[PublicAPI]
 public interface IGraphics
 {
 
     #region nested classes
 
     /// <summary>
-    /// Describes a fullscreen display mode.
+    ///     Describes a fullscreen display mode.
     /// </summary>
-    [PublicAPI]
     public class DisplayModeDescriptor
     {
+
+        public DisplayModeDescriptor( int width, int height, int refreshRate, int bitsPerPixel )
+        {
+            Width        = width;
+            Height       = height;
+            RefreshRate  = refreshRate;
+            BitsPerPixel = bitsPerPixel;
+        }
+
         public int Width        { get; set; }
         public int Height       { get; set; }
         public int RefreshRate  { get; set; }
         public int BitsPerPixel { get; set; }
 
-        public DisplayModeDescriptor( int width, int height, int refreshRate, int bitsPerPixel )
-        {
-            this.Width        = width;
-            this.Height       = height;
-            this.RefreshRate  = refreshRate;
-            this.BitsPerPixel = bitsPerPixel;
-        }
-
-        public override string ToString()
-        {
-            return $"{Width}x{Height}, bpp: {BitsPerPixel}, hz: {RefreshRate}";
-        }
+        public override string ToString() => $"{Width}x{Height}, bpp: {BitsPerPixel}, hz: {RefreshRate}";
     }
 
     /// <summary>
-    /// Describes a monitor, with X, Y, and Name properties.
+    ///     Describes a monitor, with X, Y, and Name properties.
     /// </summary>
-    [PublicAPI]
     public class MonitorDescriptor
     {
-        public int          VirtualX      { get; set; }
-        public int          VirtualY      { get; set; }
-        public string?      Name          { get; set; }
 //        public GLFW.Monitor MonitorHandle { get; set; }
 
         public MonitorDescriptor( int x, int y, string name )
         {
-            this.VirtualX = x;
-            this.VirtualY = y;
-            this.Name     = name;
+            VirtualX = x;
+            VirtualY = y;
+            Name     = name;
         }
+
+        public int     VirtualX { get; set; }
+        public int     VirtualY { get; set; }
+        public string? Name     { get; set; }
     }
 
     /// <summary>
-    /// Class describing the bits per pixel, depth buffer precision,
-    /// stencil precision and number of MSAA samples.
+    ///     Class describing the bits per pixel, depth buffer precision,
+    ///     stencil precision and number of MSAA samples.
     /// </summary>
-    [PublicAPI]
     public record BufferFormatDescriptor
     {
         public int R       { get; set; } // number of bits per color channel.
@@ -85,11 +80,8 @@ public interface IGraphics
         // If so, you have to clear the coverage buffer as well!
         public bool CoverageSampling { get; set; }
 
-        public override string ToString()
-        {
-            return $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
-                 + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
-        }
+        public override string ToString() => $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
+                                           + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
     }
 
     #endregion nested classes
@@ -111,11 +103,11 @@ public interface IGraphics
     #region methods
 
     /// <summary>
-    /// Returns whether OpenGL ES 3.0 is available.
-    /// If it is you can get an instance of GL30 via GetGL30() to access
-    /// OpenGL ES 3.0 functionality. Note that this functionality will
-    /// only be available if you instructed the Application instance
-    /// to use OpenGL ES 3.0!
+    ///     Returns whether OpenGL ES 3.0 is available.
+    ///     If it is you can get an instance of GL30 via GetGL30() to access
+    ///     OpenGL ES 3.0 functionality. Note that this functionality will
+    ///     only be available if you instructed the Application instance
+    ///     to use OpenGL ES 3.0!
     /// </summary>
     /// <returns>TRUE if available.</returns>
     bool IsGL30Available();
@@ -145,10 +137,10 @@ public interface IGraphics
     float GetPpcY();
 
     /// <summary>
-    /// This is a scaling factor for the Density Independent Pixel
-    /// unit, following the convention where one DIP is one pixel on
-    /// an approximately 160 dpi screen. Thus on a 160dpi screen this
-    /// density value will be 1; on a 120 dpi screen it would be .75; etc.
+    ///     This is a scaling factor for the Density Independent Pixel
+    ///     unit, following the convention where one DIP is one pixel on
+    ///     an approximately 160 dpi screen. Thus on a 160dpi screen this
+    ///     density value will be 1; on a 120 dpi screen it would be .75; etc.
     /// </summary>
     /// <returns>the Density Independent Pixel factor of the display.</returns>
     float GetDensity();
@@ -190,12 +182,11 @@ public interface IGraphics
     void RequestRendering();
 
     /// <summary>
-    /// Whether the app is full screen or not.
+    ///     Whether the app is full screen or not.
     /// </summary>
     bool IsFullscreen();
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="pixmap"></param>
     /// <param name="xHotspot"></param>
@@ -204,18 +195,18 @@ public interface IGraphics
     ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
 
     /// <summary>
-    /// Only viable on the lwjgl-backend and on the gwt-backend.
-    /// Browsers that support cursor:url() and support the png format (the pixmap
-    /// is converted to a data-url of type image/png) should also support custom
-    /// cursors. Will set the mouse cursor image to the image represented by the
-    /// Cursor. It is recommended to call this function in the main render thread,
-    /// and maximum one time per frame.
+    ///     Only viable on the lwjgl-backend and on the gwt-backend.
+    ///     Browsers that support cursor:url() and support the png format (the pixmap
+    ///     is converted to a data-url of type image/png) should also support custom
+    ///     cursors. Will set the mouse cursor image to the image represented by the
+    ///     Cursor. It is recommended to call this function in the main render thread,
+    ///     and maximum one time per frame.
     /// </summary>
-    /// <param name="cursor">The mouse cursor as a <see cref="ICursor"/></param>
+    /// <param name="cursor">The mouse cursor as a <see cref="ICursor" /></param>
     void SetCursor( ICursor cursor );
 
     /// <summary>
-    /// Sets one of the predefined <see cref="ICursor.SystemCursor"/>s.
+    ///     Sets one of the predefined <see cref="ICursor.SystemCursor" />s.
     /// </summary>
     /// <param name="systemCursor">The system cursor to use.</param>
     void SetSystemCursor( ICursor.SystemCursor systemCursor );

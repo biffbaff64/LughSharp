@@ -1,5 +1,4 @@
-﻿
-C# 2D Game Framework heavily inspired by the Java LibGDX Game Framework.
+﻿C# 2D Game Framework heavily inspired by the Java LibGDX Game Framework.
 
 It is NOT a 100% conversion, some things may be different.
 
@@ -55,13 +54,14 @@ LIBGDX CSharp CONVERSION - ROUND 1
 
 - NO MAGIC NUMBERS!!!
 -
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - SORT OUT VERSIONING!!!
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- IP   = Conversion In Progress.
+- IP = Conversion In Progress.
 - DONE = Class finished but may not be fully 'CSharp-ified'
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,6 +74,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
 - Make more use of <inheritdoc cref=""/>> or just <inheritdoc/>
 -
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ASSETS
@@ -259,57 +260,6 @@ CORE
     - DONE - IPreferences                   
     - DONE - IScreen                        
     - DONE - ScreenAdapter                  
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/BOX2D
-----------------
-
-    - It's most likely best to recommend the use of an already available C# port.
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/GDX-TOOLS
---------------------
-
-    - IP   - FileProcessor
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
------------------------------------
-
-    - IP   - TileMapPacker
-    -      - TiledMapPackerTest
-    -      - TiledMapPackerTestRender
-    -      - TileSetLayout
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/GDX-TOOLS/TOOLS
---------------------------
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/GDX-TOOLS/TOOLS/TEXTUREPACKER
-----------------------------------------
-
-    -      - ColorBleedEffect
-    -      - TexturePacker
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/GDX-TOOLS/IMAGEPACKER
---------------------------------
-
-    - IP   - ImagePacker
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1157,7 +1107,7 @@ UTILS/COLLECTIONS
     - DONE - Array<T>                       Converted, but use List<T> for most cases.
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
-    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    - IP   - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - DONE - ObjectMap                      Converted, but use Dictionary< object, object >
     - DONE - PredicateIterable
     - DONE - PredicateIterator
@@ -1333,6 +1283,56 @@ BACKENDS/DESKTOPGL/AUDIO/MOCK
     - DONE - MockAudioRecorder
     - DONE - MockMusic
     - DONE - MockSound
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/BOX2D
+----------------
+
+    - It's most likely best to recommend the use of an already available C# port.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/GDX-TOOLS
+--------------------
+
+    - IP   - FileProcessor
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
+-----------------------------------
+
+    - IP   - TileMapPacker
+    -      - TiledMapPackerTest
+    -      - TiledMapPackerTestRender
+    -      - TileSetLayout
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/GDX-TOOLS/TOOLS
+--------------------------
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/GDX-TOOLS/TOOLS/TEXTUREPACKER
+----------------------------------------
+
+    -      - ColorBleedEffect
+    -      - TexturePacker
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXTENSIONS/GDX-TOOLS/IMAGEPACKER
+--------------------------------
+
+    - IP   - ImagePacker
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

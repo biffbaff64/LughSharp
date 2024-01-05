@@ -20,16 +20,33 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// Manages drag and drop operations through registered
-/// drag sources and drop targets.
+///     Manages drag and drop operations through registered
+///     drag sources and drop targets.
 /// </summary>
-[PublicAPI]
 public class DragAndDrop
 {
+
+    private readonly static Vector2                                TmpVector        = new();
+    private readonly        Dictionary< DragSource, DragListener > _sourceListeners = new();
+    private readonly        List< DragTarget >                     _targets         = new();
+    private                 float                                  _dragActorX      = 0;
+    private                 float                                  _dragActorY      = 0;
+
+    private DragListener? _dragListener;
+    private long          _dragValidTime;
+    private bool          _isValidTarget;
+
+    private bool  _removeDragActor;
+    private float _tapSquareSize = 8;
+    private float _touchOffsetX;
+    private float _touchOffsetY;
+
+    protected int activePointer = -1;
+
     /// <summary>
-    /// Time in milliseconds that a drag must take before a drop will be
-    /// considered valid. This ignores an accidental drag and drop that
-    /// was meant to be a click. Default is 250ms.
+    ///     Time in milliseconds that a drag must take before a drop will be
+    ///     considered valid. This ignores an accidental drag and drop that
+    ///     was meant to be a click. Default is 250ms.
     /// </summary>
     public int DragTime { get; set; } = 250;
 
@@ -40,22 +57,102 @@ public class DragAndDrop
     public Payload?    DragPayload     { get; set; }
     public int         Button          { get; set; }
 
-    protected int activePointer = -1;
+    /// <summary>
+    ///     When true (default), the touch focus (<see cref="Stage.CancelTouchFocus()" />) is cancelled
+    ///     if <see cref="DragAndDrop.DragSource.DragStart(InputEvent, float, float, int)" />" returns
+    ///     non-null. This ensures the DragAndDrop is the only touch focus listener, eg when the source
+    ///     is inside a <see cref="ScrollPane" /> with flick scroll enabled.
+    /// </summary>
+    public bool CancelTouchFocus { get; set; } = true;
 
-    private readonly static Vector2                                TmpVector        = new();
-    private readonly        Dictionary< DragSource, DragListener > _sourceListeners = new();
-    private readonly        List< DragTarget >                     _targets         = new();
+    public void AddSource( DragSource source )
+    {
+        _dragListener = new DragListenerImpl( this, source );
 
-    private DragListener? _dragListener;
+        _dragListener.TapSquareSize = _tapSquareSize;
+        _dragListener.Button        = Button;
 
-    private bool  _removeDragActor;
-    private bool  _isValidTarget;
-    private float _tapSquareSize = 8;
-    private float _dragActorX    = 0;
-    private float _dragActorY    = 0;
-    private float _touchOffsetX;
-    private float _touchOffsetY;
-    private long  _dragValidTime;
+        source.Actor.AddCaptureListener( _dragListener );
+
+        _sourceListeners[ source ] = _dragListener;
+    }
+
+    public void RemoveSource( DragSource source )
+    {
+        _sourceListeners.Remove( source, out DragListener? dragListener );
+
+        source.Actor.RemoveCaptureListener( dragListener! );
+    }
+
+    public void AddTarget( DragTarget target ) => _targets.Add( target );
+
+    public void RemoveTarget( DragTarget target ) => _targets.Remove( target );
+
+    /// <summary>
+    ///     Removes all targets and sources.
+    /// </summary>
+    public void Clear()
+    {
+        _targets.Clear();
+
+        foreach ( KeyValuePair< DragSource, DragListener > entry in _sourceListeners )
+        {
+            entry.Key.Actor.RemoveCaptureListener( entry.Value );
+        }
+
+        _sourceListeners.Clear();
+    }
+
+    /// <summary>
+    ///     Cancels the touch focus for everything except the specified source.
+    /// </summary>
+    public void CancelTouchFocusExcept( DragSource except )
+    {
+        DragListener listener;
+
+        if ( ( listener = _sourceListeners[ except ] ) == null )
+        {
+            return;
+        }
+
+        Stage? stage = except.Actor.Stage;
+
+        if ( stage != null )
+        {
+            stage.CancelTouchFocusExcept( listener, except.Actor );
+        }
+    }
+
+    /// <summary>
+    ///     Sets the distance a touch must travel before being considered a drag.
+    /// </summary>
+    public void SetTapSquareSize( float halfTapSquareSize ) => _tapSquareSize = halfTapSquareSize;
+
+    public void SetDragActorPosition( float dragActorX, float dragActorY )
+    {
+        _dragActorX = dragActorX;
+        _dragActorY = dragActorY;
+    }
+
+    /// <summary>
+    ///     Sets an offset in stage coordinates from the touch position which
+    ///     is used to determine the drop location. Default is 0,0.
+    /// </summary>
+    /// <param name="touchOffsetX"></param>
+    /// <param name="touchOffsetY"></param>
+    public void SetTouchOffset( float touchOffsetX, float touchOffsetY )
+    {
+        _touchOffsetX = touchOffsetX;
+        _touchOffsetY = touchOffsetY;
+    }
+
+    public bool IsDragging() => DragPayload != null;
+
+    /// <summary>
+    ///     Returns true if a drag is in progress and the <see cref="DragTime" />"
+    ///     has elapsed since the drag started.
+    /// </summary>
+    public bool IsDragValid() => ( DragPayload != null ) && ( TimeUtils.Millis() >= _dragValidTime );
 
     // ------------------------------------------------------------------------
 
@@ -66,8 +163,8 @@ public class DragAndDrop
 
         internal DragListenerImpl( DragAndDrop parent, DragSource source )
         {
-            this._parent = parent;
-            this._source = source;
+            _parent = parent;
+            _source = source;
         }
 
         public override void DragStart( InputEvent ev, float x, float y, int pointer )
@@ -294,153 +391,38 @@ public class DragAndDrop
         }
     }
 
-    public void AddSource( DragSource source )
-    {
-        _dragListener = new DragListenerImpl( this, source );
-
-        _dragListener.TapSquareSize = _tapSquareSize;
-        _dragListener.Button        = Button;
-
-        source.Actor.AddCaptureListener( _dragListener );
-
-        _sourceListeners[ source ] = _dragListener;
-    }
-
-    public void RemoveSource( DragSource source )
-    {
-        _sourceListeners.Remove( source, out DragListener? dragListener );
-
-        source.Actor.RemoveCaptureListener( dragListener! );
-    }
-
-    public void AddTarget( DragTarget target )
-    {
-        _targets.Add( target );
-    }
-
-    public void RemoveTarget( DragTarget target )
-    {
-        _targets.Remove( target );
-    }
-
     /// <summary>
-    /// Removes all targets and sources.
+    ///     A source where a payload can be dragged from.
     /// </summary>
-    public void Clear()
-    {
-        _targets.Clear();
-
-        foreach ( KeyValuePair< DragSource, DragListener > entry in _sourceListeners )
-        {
-            entry.Key.Actor.RemoveCaptureListener( entry.Value );
-        }
-
-        _sourceListeners.Clear();
-    }
-
-    /// <summary>
-    /// Cancels the touch focus for everything except the specified source.
-    /// </summary>
-    public void CancelTouchFocusExcept( DragSource except )
-    {
-        DragListener listener;
-
-        if ( ( listener = _sourceListeners[ except ] ) == null )
-        {
-            return;
-        }
-
-        Stage? stage = except.Actor.Stage;
-
-        if ( stage != null )
-        {
-            stage.CancelTouchFocusExcept( listener, except.Actor );
-        }
-    }
-
-    /// <summary>
-    /// Sets the distance a touch must travel before being considered a drag.
-    /// </summary>
-    public void SetTapSquareSize( float halfTapSquareSize )
-    {
-        _tapSquareSize = halfTapSquareSize;
-    }
-
-    public void SetDragActorPosition( float dragActorX, float dragActorY )
-    {
-        this._dragActorX = dragActorX;
-        this._dragActorY = dragActorY;
-    }
-
-    /// <summary>
-    /// Sets an offset in stage coordinates from the touch position which
-    /// is used to determine the drop location. Default is 0,0.
-    /// </summary>
-    /// <param name="touchOffsetX"></param>
-    /// <param name="touchOffsetY"></param>
-    public void SetTouchOffset( float touchOffsetX, float touchOffsetY )
-    {
-        this._touchOffsetX = touchOffsetX;
-        this._touchOffsetY = touchOffsetY;
-    }
-
-    public bool IsDragging()
-    {
-        return DragPayload != null;
-    }
-
-    /// <summary>
-    /// Returns true if a drag is in progress and the <see cref="DragTime"/>"
-    /// has elapsed since the drag started.
-    /// </summary>
-    public bool IsDragValid()
-    {
-        return ( DragPayload != null ) && ( TimeUtils.Millis() >= _dragValidTime );
-    }
-
-    /// <summary>
-    /// When true (default), the touch focus (<see cref="Stage.CancelTouchFocus()"/>) is cancelled
-    /// if <see cref="DragAndDrop.DragSource.DragStart(InputEvent, float, float, int)"/>" returns
-    /// non-null. This ensures the DragAndDrop is the only touch focus listener, eg when the source
-    /// is inside a <see cref="ScrollPane"/> with flick scroll enabled.
-    /// </summary>
-    public bool CancelTouchFocus { get; set; } = true;
-
-    /// <summary>
-    /// A source where a payload can be dragged from.
-    /// </summary>
-    [PublicAPI]
     public class DragSource
     {
-        public Actor Actor { get; set; }
 
         public DragSource( Actor actor )
         {
             ArgumentNullException.ThrowIfNull( actor );
 
-            this.Actor = actor;
+            Actor = actor;
         }
 
+        public Actor Actor { get; set; }
+
         /// <summary>
-        /// Called when a drag is started on the source. The coordinates
-        /// are in the source's local coordinate system.
+        ///     Called when a drag is started on the source. The coordinates
+        ///     are in the source's local coordinate system.
         /// </summary>
         /// <returns> If null the drag will not affect any targets. </returns>
-        public virtual Payload? DragStart( InputEvent ev, float x, float y, int pointer )
-        {
-            return default( Payload? );
-        }
+        public virtual Payload? DragStart( InputEvent ev, float x, float y, int pointer ) => default( Payload? );
 
         /// <summary>
-        /// Called repeatedly during a drag which started on this source.
+        ///     Called repeatedly during a drag which started on this source.
         /// </summary>
         public virtual void Drag( InputEvent ev, float x, float y, int pointer )
         {
         }
 
         /// <summary>
-        /// Called when a drag for the source is stopped. The coordinates are
-        /// in the source's local coordinate system.
+        ///     Called when a drag for the source is stopped. The coordinates are
+        ///     in the source's local coordinate system.
         /// </summary>
         /// <param name="ev"></param>
         /// <param name="x"></param>
@@ -459,15 +441,13 @@ public class DragAndDrop
     }
 
     /// <summary>
-    /// A target where a payload can be dropped to.
+    ///     A target where a payload can be dropped to.
     /// </summary>
-    [PublicAPI]
     public abstract class DragTarget
     {
-        public Actor Actor { get; set; }
 
         /// <summary>
-        /// Constructor, creates a new Target actor. 
+        ///     Constructor, creates a new Target actor.
         /// </summary>
         /// <param name="actor"></param>
         /// <exception cref="ArgumentException"></exception>
@@ -475,7 +455,7 @@ public class DragAndDrop
         {
             ArgumentNullException.ThrowIfNull( actor );
 
-            this.Actor = actor;
+            Actor = actor;
             Stage? stage = actor.Stage;
 
             if ( ( stage != null ) && ( actor == stage.Root ) )
@@ -484,38 +464,39 @@ public class DragAndDrop
             }
         }
 
+        public Actor Actor { get; set; }
+
         /// <summary>
-        /// Called when the payload is dragged over the target. The coordinates are in the
-        /// target's local coordinate system.
+        ///     Called when the payload is dragged over the target. The coordinates are in the
+        ///     target's local coordinate system.
         /// </summary>
         /// <returns> true if this is a valid target for the payload. </returns>
         public abstract bool Drag( DragSource source, Payload payload, float x, float y, int pointer );
 
         /// <summary>
-        /// Called when the payload is no longer over the target, whether
-        /// because the touch was moved or a drop occurred. This is called
-        /// even if <see cref="Drag(DragSource, Payload, float, float, int)"/>
-        /// returned false.
+        ///     Called when the payload is no longer over the target, whether
+        ///     because the touch was moved or a drop occurred. This is called
+        ///     even if <see cref="Drag(DragSource, Payload, float, float, int)" />
+        ///     returned false.
         /// </summary>
         public void Reset( DragSource source, Payload payload )
         {
         }
 
         /// <summary>
-        /// Called when the payload is dropped on the target. The coordinates
-        /// are in the target's local coordinate system. This is not called if
-        /// <see cref="Drag(DragSource, Payload, float, float, int)"/> returned false.
+        ///     Called when the payload is dropped on the target. The coordinates
+        ///     are in the target's local coordinate system. This is not called if
+        ///     <see cref="Drag(DragSource, Payload, float, float, int)" /> returned false.
         /// </summary>
         public abstract void Drop( DragSource source, Payload payload, float x, float y, int pointer );
     }
 
     /// <summary>
-    /// The payload of a drag and drop operation. Actors can be optionally provided to follow
-    /// the cursor and change when over a target. Such actors will be added the stage automatically
-    /// during the drag operation as necessary and they will only be removed from the stage if they
-    /// were added automatically. A source actor can be used a payload drag actor.
+    ///     The payload of a drag and drop operation. Actors can be optionally provided to follow
+    ///     the cursor and change when over a target. Such actors will be added the stage automatically
+    ///     during the drag operation as necessary and they will only be removed from the stage if they
+    ///     were added automatically. A source actor can be used a payload drag actor.
     /// </summary>
-    [PublicAPI]
     public class Payload
     {
         public Actor?  DragActor        { get; set; }

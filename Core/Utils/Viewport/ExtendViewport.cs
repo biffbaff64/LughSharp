@@ -16,22 +16,12 @@
 
 namespace LibGDXSharp.Utils.Viewport;
 
-[PublicAPI]
 public class ExtendViewport : Viewport
 {
 
-    #region Properties
-
-    public float MinWorldWidth  { get; set; }
-    public float MinWorldHeight { get; set; }
-    public float MaxWorldWidth  { get; set; }
-    public float MaxWorldHeight { get; set; }
-
-    #endregion
-
     /// <summary>
-    /// Creates a new viewport using a new <seealso cref="OrthographicCamera"/>
-    /// with no maximum world size.
+    ///     Creates a new viewport using a new <seealso cref="OrthographicCamera" />
+    ///     with no maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
@@ -41,7 +31,7 @@ public class ExtendViewport : Viewport
     }
 
     /// <summary>
-    /// Creates a new viewport with no maximum world size.
+    ///     Creates a new viewport with no maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
@@ -52,14 +42,14 @@ public class ExtendViewport : Viewport
     }
 
     /// <summary>
-    /// Creates a new viewport using a new <seealso cref="OrthographicCamera"/>
-    /// and a maximum world size.
+    ///     Creates a new viewport using a new <seealso cref="OrthographicCamera" />
+    ///     and a maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
     /// <param name="maxWorldWidth"> Use zero for no maximum width. </param>
     /// <param name="maxWorldHeight"> Use zero for no maximum height. </param>
-    /// <see cref="ExtendViewport(float, float, float, float, Camera)"/>
+    /// <see cref="ExtendViewport(float, float, float, float, Camera)" />
     public ExtendViewport( float minWorldWidth,
                            float minWorldHeight,
                            float maxWorldWidth,
@@ -69,7 +59,7 @@ public class ExtendViewport : Viewport
     }
 
     /// <summary>
-    /// Creates a new viewport with a maximum world size.
+    ///     Creates a new viewport with a maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
@@ -82,14 +72,14 @@ public class ExtendViewport : Viewport
                            float maxWorldHeight,
                            Camera camera ) : base( camera )
     {
-        this.MinWorldWidth  = minWorldWidth;
-        this.MinWorldHeight = minWorldHeight;
-        this.MaxWorldWidth  = maxWorldWidth;
-        this.MaxWorldHeight = maxWorldHeight;
+        MinWorldWidth  = minWorldWidth;
+        MinWorldHeight = minWorldHeight;
+        MaxWorldWidth  = maxWorldWidth;
+        MaxWorldHeight = maxWorldHeight;
     }
 
     /// <summary>
-    /// Update the viewport with the supplied width and height.
+    ///     Update the viewport with the supplied width and height.
     /// </summary>
     /// <param name="screenWidth"> The Viewport width. </param>
     /// <param name="screenHeight"> The Viewport height. </param>
@@ -137,14 +127,23 @@ public class ExtendViewport : Viewport
         SetWorldSize( worldWidth, worldHeight );
 
         // Center.
-        SetScreenBounds
-            (
-             ( screenWidth - viewportWidth ) / 2,
-             ( screenHeight - viewportHeight ) / 2,
-             viewportWidth,
-             viewportHeight
+        SetScreenBounds(
+            ( screenWidth - viewportWidth ) / 2,
+            ( screenHeight - viewportHeight ) / 2,
+            viewportWidth,
+            viewportHeight
             );
 
         Apply( centerCamera );
     }
+
+    #region Properties
+
+    public float MinWorldWidth  { get; set; }
+    public float MinWorldHeight { get; set; }
+    public float MaxWorldWidth  { get; set; }
+    public float MaxWorldHeight { get; set; }
+
+    #endregion
+
 }

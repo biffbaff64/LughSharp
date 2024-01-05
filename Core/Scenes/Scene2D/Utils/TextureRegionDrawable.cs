@@ -19,34 +19,39 @@ using LibGDXSharp.Graphics.G2D;
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// Drawable for a <see cref="TextureRegion"/>.
+///     Drawable for a <see cref="TextureRegion" />.
 /// </summary>
-[PublicAPI]
 public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 {
     private readonly TextureRegion? _region;
 
     /// <summary>
-    /// Creates an uninitialized TextureRegionDrawable.
-    /// The texture region must be set before use.
+    ///     Creates an uninitialized TextureRegionDrawable.
+    ///     The texture region must be set before use.
     /// </summary>
     public TextureRegionDrawable()
     {
     }
 
-    public TextureRegionDrawable( Texture texture )
-    {
-        Region = new TextureRegion( texture );
-    }
+    public TextureRegionDrawable( Texture texture ) => Region = new TextureRegion( texture );
 
-    public TextureRegionDrawable( TextureRegion region )
-    {
-        Region = region;
-    }
+    public TextureRegionDrawable( TextureRegion region ) => Region = region;
 
-    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable )
+    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable ) => Region = drawable.Region;
+
+    protected TextureRegion? Region
     {
-        Region = drawable.Region;
+        get => _region;
+        private init
+        {
+            _region = value;
+
+            if ( _region != null )
+            {
+                MinWidth  = _region.RegionWidth;
+                MinHeight = _region.RegionHeight;
+            }
+        }
     }
 
     public virtual new void Draw( IBatch batch, float x, float y, float width, float height )
@@ -74,24 +79,9 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
         }
     }
 
-    protected TextureRegion? Region
-    {
-        get => _region;
-        private init
-        {
-            this._region = value;
-
-            if ( _region != null )
-            {
-                MinWidth  = _region.RegionWidth;
-                MinHeight = _region.RegionHeight;
-            }
-        }
-    }
-
     /// <summary>
-    /// Creates a new drawable that renders the same as this drawable
-    /// tinted the specified color.
+    ///     Creates a new drawable that renders the same as this drawable
+    ///     tinted the specified color.
     /// </summary>
     public virtual IDrawable Tint( Color tint )
     {
@@ -99,7 +89,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
         {
             throw new NullReferenceException();
         }
-        
+
         Sprite sprite;
 
         if ( Region is AtlasRegion region )
@@ -113,12 +103,12 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 
         sprite.SetColor( tint );
         sprite.SetSize( MinWidth, MinHeight );
-        
+
         var drawable = new SpriteDrawable( sprite )
         {
-            LeftWidth = LeftWidth,
-            RightWidth = RightWidth,
-            TopHeight = TopHeight,
+            LeftWidth    = LeftWidth,
+            RightWidth   = RightWidth,
+            TopHeight    = TopHeight,
             BottomHeight = BottomHeight
         };
 

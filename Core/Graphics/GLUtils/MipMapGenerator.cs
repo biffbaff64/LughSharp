@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[PublicAPI]
 public class MipMapGenerator
 {
     private MipMapGenerator()
@@ -26,22 +25,20 @@ public class MipMapGenerator
     public static bool UseHwMipMap { get; set; } = true;
 
     /// <summary>
-    /// Sets the image data of the <see cref="Texture"/> based on the <see cref="Pixmap"/>.
-    /// The texture must be bound for this to work. If <code>disposePixmap</code> is true,
-    /// the pixmap will be disposed at the end of the method.
+    ///     Sets the image data of the <see cref="Texture" /> based on the <see cref="Pixmap" />.
+    ///     The texture must be bound for this to work. If <code>disposePixmap</code> is true,
+    ///     the pixmap will be disposed at the end of the method.
     /// </summary>
     /// <param name="pixmap"> the Pixmap </param>
     /// <param name="textureWidth"></param>
     /// <param name="textureHeight"></param>
     public static void GenerateMipMap( Pixmap pixmap, int textureWidth, int textureHeight )
-    {
-        GenerateMipMap( IGL20.GL_TEXTURE_2D, pixmap, textureWidth, textureHeight );
-    }
+        => GenerateMipMap( IGL20.GL_TEXTURE_2D, pixmap, textureWidth, textureHeight );
 
     /// <summary>
-    /// Sets the image data of the <see cref="Texture"/> based on the <see cref="Pixmap"/>.
-    /// The texture must be bound for this to work. If <code>disposePixmap</code> is true,
-    /// the pixmap will be disposed at the end of the method.
+    ///     Sets the image data of the <see cref="Texture" /> based on the <see cref="Pixmap" />.
+    ///     The texture must be bound for this to work. If <code>disposePixmap</code> is true,
+    ///     the pixmap will be disposed at the end of the method.
     /// </summary>
     public static void GenerateMipMap( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
@@ -66,10 +63,16 @@ public class MipMapGenerator
 
     private static void GenerateMipMapGLES20( int target, Pixmap pixmap )
     {
-        Gdx.GL.GLTexImage2D
-            (
-             target, 0, pixmap.GLInternalFormat, pixmap.Width, pixmap.Height, 0,
-             pixmap.GLFormat, pixmap.GLType, pixmap.Pixels
+        Gdx.GL.GLTexImage2D(
+            target,
+            0,
+            pixmap.GLInternalFormat,
+            pixmap.Width,
+            pixmap.Height,
+            0,
+            pixmap.GLFormat,
+            pixmap.GLType,
+            pixmap.Pixels
             );
 
         Gdx.GL20.GLGenerateMipmap( target );
@@ -81,10 +84,16 @@ public class MipMapGenerator
           || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" )
           || ( Gdx.GL30 != null ) )
         {
-            Gdx.GL.GLTexImage2D
-                (
-                 target, 0, pixmap.GLInternalFormat, pixmap.Width, pixmap.Height, 0,
-                 pixmap.GLFormat, pixmap.GLType, pixmap.Pixels
+            Gdx.GL.GLTexImage2D(
+                target,
+                0,
+                pixmap.GLInternalFormat,
+                pixmap.Width,
+                pixmap.Height,
+                0,
+                pixmap.GLFormat,
+                pixmap.GLType,
+                pixmap.Pixels
                 );
 
             Gdx.GL20.GLGenerateMipmap( target );
@@ -97,10 +106,16 @@ public class MipMapGenerator
 
     private static void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        Gdx.GL.GLTexImage2D
-            (
-             target, 0, pixmap.GLInternalFormat, pixmap.Width, pixmap.Height, 0,
-             pixmap.GLFormat, pixmap.GLType, pixmap.Pixels
+        Gdx.GL.GLTexImage2D(
+            target,
+            0,
+            pixmap.GLInternalFormat,
+            pixmap.Width,
+            pixmap.Height,
+            0,
+            pixmap.GLFormat,
+            pixmap.GLType,
+            pixmap.Pixels
             );
 
         if ( ( Gdx.GL20 == null ) && ( textureWidth != textureHeight ) )
@@ -123,13 +138,19 @@ public class MipMapGenerator
             {
                 pixmap.Dispose();
             }
-            
+
             pixmap = tmp;
 
-            Gdx.GL.GLTexImage2D
-                (
-                 target, level, pixmap.GLInternalFormat, pixmap.Width, pixmap.Height, 0,
-                 pixmap.GLFormat, pixmap.GLType, pixmap.Pixels
+            Gdx.GL.GLTexImage2D(
+                target,
+                level,
+                pixmap.GLInternalFormat,
+                pixmap.Width,
+                pixmap.Height,
+                0,
+                pixmap.GLFormat,
+                pixmap.GLType,
+                pixmap.Pixels
                 );
 
             width  = pixmap.Width / 2;

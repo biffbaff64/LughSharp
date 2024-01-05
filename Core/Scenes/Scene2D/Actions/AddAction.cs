@@ -17,25 +17,24 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// Adds an action to an actor.
+///     Adds an action to an actor.
 /// </summary>
-[PublicAPI]
 public class AddAction : Action
 {
     public Action? Action { get; set; }
 
     public override bool Act( float delta )
     {
-        Target?.AddAction( this.Action );
+        Target?.AddAction( Action );
 
         return true;
     }
 
-    public override void Restart() => this.Action?.Restart();
+    public override void Restart() => Action?.Restart();
 
     public override void Reset()
     {
         base.Reset();
-        this.Action = null;
+        Action = null;
     }
 }

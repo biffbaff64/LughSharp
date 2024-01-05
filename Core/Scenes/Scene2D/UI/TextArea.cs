@@ -22,22 +22,10 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A text input field with multiple lines.
+///     A text input field with multiple lines.
 /// </summary>
-[PublicAPI]
 public class TextArea : TextField
 {
-    // Current line for the cursor
-    public int CursorLine { get; set; }
-
-    // Index of the first line showed by the text area
-    public int FirstLineShowing { get; set; }
-
-    // Number of lines showed by the text area
-    public int LinesShowing { get; set; }
-
-    // Array storing lines breaks positions
-    public List< int >? LinesBreak { get; set; }
 
     // Last text processed. This attribute is used to avoid unnecessary
     // computations while calculating offsets
@@ -64,8 +52,20 @@ public class TextArea : TextField
     {
     }
 
+    // Current line for the cursor
+    public int CursorLine { get; set; }
+
+    // Index of the first line showed by the text area
+    public int FirstLineShowing { get; set; }
+
+    // Number of lines showed by the text area
+    public int LinesShowing { get; set; }
+
+    // Array storing lines breaks positions
+    public List< int >? LinesBreak { get; set; }
+
     /// <summary>
-    /// Initialise this TextArea.
+    ///     Initialise this TextArea.
     /// </summary>
     public override void Initialise()
     {
@@ -90,31 +90,29 @@ public class TextArea : TextField
         {
             return Text?.Length ?? throw new GdxRuntimeException( "member 'text' is null!" );
         }
-        else
+
+        var glyphPos = GlyphPositions.ToArray();
+        var start    = LinesBreak![ CursorLine * 2 ];
+
+        x += glyphPos[ start ];
+
+        var end = LinesBreak?[ ( CursorLine * 2 ) + 1 ];
+        var i   = start;
+
+        for ( ; i < end; i++ )
         {
-            var glyphPos = GlyphPositions.ToArray();
-            var start    = LinesBreak![ CursorLine * 2 ];
-
-            x += glyphPos[ start ];
-
-            var end = LinesBreak?[ ( CursorLine * 2 ) + 1 ];
-            var i   = start;
-
-            for ( ; i < end; i++ )
+            if ( glyphPos[ i ] > x )
             {
-                if ( glyphPos[ i ] > x )
-                {
-                    break;
-                }
+                break;
             }
-
-            if ( ( i > 0 ) && ( ( glyphPos[ i ] - x ) <= ( x - glyphPos[ i - 1 ] ) ) )
-            {
-                return i;
-            }
-
-            return Math.Max( 0, i - 1 );
         }
+
+        if ( ( i > 0 ) && ( ( glyphPos[ i ] - x ) <= ( x - glyphPos[ i - 1 ] ) ) )
+        {
+            return i;
+        }
+
+        return Math.Max( 0, i - 1 );
     }
 
     public override void SetStyle( TextFieldStyle? style )
@@ -123,7 +121,7 @@ public class TextArea : TextField
         // so we don't do same work twice
         ArgumentNullException.ThrowIfNull( style );
 
-        this.Style = style;
+        Style = style;
 
         // no extra descent to fake line height
         TextHeight = ( float )( style.Font?.GetCapHeight() - style.Font?.GetDescent() )!;
@@ -137,13 +135,10 @@ public class TextArea : TextField
     }
 
     /// <summary>
-    /// Sets the preferred number of rows (lines) for this text area.
-    /// Used to calculate preferred height
+    ///     Sets the preferred number of rows (lines) for this text area.
+    ///     Used to calculate preferred height
     /// </summary>
-    public void SetPrefRows( float prefRows )
-    {
-        this._prefRows = prefRows;
-    }
+    public void SetPrefRows( float prefRows ) => _prefRows = prefRows;
 
     public override float GetPrefHeight()
     {
@@ -151,38 +146,33 @@ public class TextArea : TextField
         {
             return base.GetPrefHeight();
         }
-        else
+
+        if ( ( Style == null ) || ( Style.Font == null ) )
         {
-            if ( ( Style == null ) || ( Style.Font == null ) )
-            {
-                return base.GetPrefHeight();
-            }
-
-            // without ceil we might end up with one less row then expected due to
-            // how linesShowing is calculated in SizeChanged and GetHeight() returning
-            // rounded value.
-            float prefHeight = MathUtils.Ceil( Style.Font.GetLineHeight() * _prefRows );
-
-            if ( Style.Background != null )
-            {
-                prefHeight = Math.Max( prefHeight + Style.Background.BottomHeight + Style.Background.TopHeight,
-                                       Style.Background.MinHeight );
-            }
-
-            return prefHeight;
+            return base.GetPrefHeight();
         }
+
+        // without ceil we might end up with one less row then expected due to
+        // how linesShowing is calculated in SizeChanged and GetHeight() returning
+        // rounded value.
+        float prefHeight = MathUtils.Ceil( Style.Font.GetLineHeight() * _prefRows );
+
+        if ( Style.Background != null )
+        {
+            prefHeight = Math.Max( prefHeight + Style.Background.BottomHeight + Style.Background.TopHeight,
+                                   Style.Background.MinHeight );
+        }
+
+        return prefHeight;
     }
 
     /// <summary>
-    /// Returns total number of lines that the text occupies
+    ///     Returns total number of lines that the text occupies
     /// </summary>
-    public int GetLines()
-    {
-        return ( LinesBreak!.Count / 2 ) + ( NewLineAtEnd() ? 1 : 0 );
-    }
+    public int GetLines() => ( LinesBreak!.Count / 2 ) + ( NewLineAtEnd() ? 1 : 0 );
 
     /// <summary>
-    /// Returns if there's a new line at then end of the text 
+    ///     Returns if there's a new line at then end of the text
     /// </summary>
     public bool NewLineAtEnd()
     {
@@ -197,7 +187,7 @@ public class TextArea : TextField
     }
 
     /// <summary>
-    /// Moves the cursor to the given number line.
+    ///     Moves the cursor to the given number line.
     /// </summary>
     public void MoveCursorLine( int line )
     {
@@ -251,7 +241,7 @@ public class TextArea : TextField
     }
 
     /// <summary>
-    /// Updates the current line, checking the cursor position in the text
+    ///     Updates the current line, checking the cursor position in the text
     /// </summary>
     private void UpdateCurrentLine()
     {
@@ -284,7 +274,7 @@ public class TextArea : TextField
     }
 
     /// <summary>
-    /// Scroll the text area to show the line of the cursor
+    ///     Scroll the text area to show the line of the cursor
     /// </summary>
     private void ShowCursor()
     {
@@ -307,7 +297,7 @@ public class TextArea : TextField
     }
 
     /// <summary>
-    /// Calculates the text area line for the given cursor position
+    ///     Calculates the text area line for the given cursor position
     /// </summary>
     private int CalculateCurrentLineIndex( int cursor )
     {
@@ -427,28 +417,26 @@ public class TextArea : TextField
 
         for ( var i = FirstLineShowing * 2; ( i < ( ( FirstLineShowing + LinesShowing ) * 2 ) ) && ( i < LinesBreak.Count ); i += 2 )
         {
-            font.Draw( batch, DisplayText!, x, ( y + ( offsetY ?? 0 ) ), LinesBreak[ i ], LinesBreak[ i + 1 ], 0, Align.LEFT, false );
+            font.Draw( batch, DisplayText!, x, y + ( offsetY ?? 0 ), LinesBreak[ i ], LinesBreak[ i + 1 ], 0, Align.LEFT, false );
             offsetY -= font.GetLineHeight();
         }
     }
 
     protected override void DrawCursor( IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y )
-    {
-        cursorPatch.Draw( batch, x + GetCursorX(), y + GetCursorY(), cursorPatch.MinWidth, font.GetLineHeight() );
-    }
+        => cursorPatch.Draw( batch, x + GetCursorX(), y + GetCursorY(), cursorPatch.MinWidth, font.GetLineHeight() );
 
     public override void CalculateOffsets()
     {
-        MemberNullException.ThrowIfNull( this.Text );
-        MemberNullException.ThrowIfNull( this.Style );
+        MemberNullException.ThrowIfNull( Text );
+        MemberNullException.ThrowIfNull( Style );
 
         base.CalculateOffsets();
 
-        if ( !this.Text.Equals( _lastText ) )
+        if ( !Text.Equals( _lastText ) )
         {
-            this._lastText = Text;
+            _lastText = Text;
 
-            var maxWidthLine = this.Width
+            var maxWidthLine = Width
                              - ( Style.Background != null
                                    ? Style.Background.LeftWidth + Style.Background.RightWidth
                                    : 0 );
@@ -473,7 +461,7 @@ public class TextArea : TextField
                 }
                 else
                 {
-                    lastSpace = ( ContinueCursor( i, 0 ) ? lastSpace : i );
+                    lastSpace = ContinueCursor( i, 0 ) ? lastSpace : i;
                     layout?.SetText( Style.Font!, Text.Substring( lineStart, i + 1 ) );
 
                     if ( layout?.Width > maxWidthLine )
@@ -505,10 +493,7 @@ public class TextArea : TextField
         }
     }
 
-    protected override InputListener CreateInputListener()
-    {
-        return new TextAreaListener( this );
-    }
+    protected override InputListener CreateInputListener() => new TextAreaListener( this );
 
     public override void SetSelection( int selectionStart, int selectionEnd )
     {
@@ -584,26 +569,20 @@ public class TextArea : TextField
         return textOffset + fontData!.CursorX;
     }
 
-    public float GetCursorY()
-    {
-        return ( -( ( CursorLine - FirstLineShowing ) + 1 ) * Style!.Font!.GetLineHeight() );
-    }
+    public float GetCursorY() => -( ( CursorLine - FirstLineShowing ) + 1 ) * Style!.Font!.GetLineHeight();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
 
     /// <summary>
-    /// Input listener for the text area.
+    ///     Input listener for the text area.
     /// </summary>
     public class TextAreaListener : TextFieldClickListener
     {
         private readonly TextArea _parent;
 
-        public TextAreaListener( TextArea ta )
-        {
-            this._parent = ta;
-        }
+        public TextAreaListener( TextArea ta ) => _parent = ta;
 
         protected override void SetCursorPosition( float x, float y )
         {
@@ -627,7 +606,7 @@ public class TextArea : TextField
                 y -= background.TopHeight;
             }
 
-            _parent.CursorLine = ( int )Math.Floor( ( ( height - y ) / font!.GetLineHeight() ) ) + _parent.FirstLineShowing;
+            _parent.CursorLine = ( int )Math.Floor( ( height - y ) / font!.GetLineHeight() ) + _parent.FirstLineShowing;
             _parent.CursorLine = Math.Max( 0, Math.Min( _parent.CursorLine, _parent.GetLines() - 1 ) );
 
             base.SetCursorPosition( x, y );
@@ -700,10 +679,7 @@ public class TextArea : TextField
             return result;
         }
 
-        protected bool CheckFocusTraversal( char character )
-        {
-            return _parent.FocusTraversal && ( character == TAB );
-        }
+        protected bool CheckFocusTraversal( char character ) => _parent.FocusTraversal && ( character == TAB );
 
         public override bool KeyTyped( InputEvent? ev, char character )
         {

@@ -19,53 +19,50 @@ using LibGDXSharp.Files.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// A <see cref="IVertexData"/> implementation based on OpenGL vertex buffer objects.
-/// If the OpenGL ES context was lost you can call <see cref="Invalidate()"/> to
-/// recreate a new OpenGL vertex buffer object.
-/// <para>
-/// The data is bound via GLVertexAttribPointer() according to the attribute aliases
-/// specified via <see cref="VertexAttributes"/> in the constructor. VertexBufferObjects
-/// must be disposed via the <see cref="Dispose()"/> method when no longer needed.
-/// </para>
+///     A <see cref="IVertexData" /> implementation based on OpenGL vertex buffer objects.
+///     If the OpenGL ES context was lost you can call <see cref="Invalidate()" /> to
+///     recreate a new OpenGL vertex buffer object.
+///     <para>
+///         The data is bound via GLVertexAttribPointer() according to the attribute aliases
+///         specified via <see cref="VertexAttributes" /> in the constructor. VertexBufferObjects
+///         must be disposed via the <see cref="Dispose()" /> method when no longer needed.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class VertexBufferObjectSubData : IVertexData
 {
-    public VertexAttributes Attributes { get; set; }
-    public ByteBuffer       ByteBuffer { get; set; }
+    private readonly bool _isDirect;
+    private readonly int  _usage;
 
-    private          FloatBuffer _buffer;
-    private readonly bool        _isDirect;
-    private readonly int         _usage;
+    private readonly FloatBuffer _buffer;
+    private          int         _bufferHandle;
+    private          bool        _isBound = false;
+    private          bool        _isDirty = false;
 
     private bool _isStatic;
-    private int  _bufferHandle;
-    private bool _isDirty = false;
-    private bool _isBound = false;
 
     /// <summary>
-    /// Constructs a new interleaved VertexBufferObject.
+    ///     Constructs a new interleaved VertexBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <seealso cref="VertexAttributes"/>.  </param>
+    /// <param name="attributes"> the <seealso cref="VertexAttributes" />.  </param>
     public VertexBufferObjectSubData( bool isStatic, int numVertices, params VertexAttribute[] attributes )
         : this( isStatic, numVertices, new VertexAttributes( attributes ) )
     {
     }
 
     /// <summary>
-    /// Constructs a new interleaved VertexBufferObject.
+    ///     Constructs a new interleaved VertexBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numVertices"> the maximum number of vertices </param>
     /// <param name="attributes"> the {@link VertexAttributes}. </param>
     public VertexBufferObjectSubData( bool isStatic, int numVertices, VertexAttributes attributes )
     {
-        this._isStatic  = isStatic;
-        this.Attributes = attributes;
+        _isStatic  = isStatic;
+        Attributes = attributes;
 
-        ByteBuffer = BufferUtils.NewByteBuffer( this.Attributes.VertexSize * numVertices );
+        ByteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices );
         _isDirect  = true;
 
         _usage  = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
@@ -77,25 +74,8 @@ public class VertexBufferObjectSubData : IVertexData
         ByteBuffer.Flip();
     }
 
-    private int CreateBufferObject()
-    {
-        var result = Gdx.GL20.GLGenBuffer();
-
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
-        Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, ByteBuffer.Capacity, null!, _usage );
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-
-        return result;
-    }
-
-    private void BufferChanged()
-    {
-        if ( _isBound )
-        {
-            Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ByteBuffer );
-            _isDirty = false;
-        }
-    }
+    public ByteBuffer       ByteBuffer { get; set; }
+    public VertexAttributes Attributes { get; set; }
 
     /// <summary>
     /// </summary>
@@ -108,14 +88,14 @@ public class VertexBufferObjectSubData : IVertexData
     public int NumMaxVertices => ByteBuffer.Capacity / Attributes.VertexSize;
 
     /// <summary>
-    /// Sets the vertices of this VertexData, discarding the old vertex data. The
-    /// count must equal the number of floats per vertex times the number of vertices
-    /// to be copied to this VertexData. The order of the vertex attributes must be
-    /// the same as specified at construction time via <see cref="VertexAttributes"/>.
-    /// <para>
-    /// This can be called in between calls to bind and unbind. The vertex data will
-    /// be updated instantly.
-    /// </para>
+    ///     Sets the vertices of this VertexData, discarding the old vertex data. The
+    ///     count must equal the number of floats per vertex times the number of vertices
+    ///     to be copied to this VertexData. The order of the vertex attributes must be
+    ///     the same as specified at construction time via <see cref="VertexAttributes" />.
+    ///     <para>
+    ///         This can be called in between calls to bind and unbind. The vertex data will
+    ///         be updated instantly.
+    ///     </para>
     /// </summary>
     /// <param name="vertices"> the vertex data </param>
     /// <param name="offset"> the offset to start copying the data from </param>
@@ -138,14 +118,15 @@ public class VertexBufferObjectSubData : IVertexData
 
             _buffer.Flip();
             ByteBuffer.Position = 0;
-            ByteBuffer.Limit    = ( _buffer.Limit << 2 );
+            ByteBuffer.Limit    = _buffer.Limit << 2;
         }
 
         BufferChanged();
     }
 
     /// <summary>
-    /// Update (a portion of) the vertices. Does not resize the backing buffer. </summary>
+    ///     Update (a portion of) the vertices. Does not resize the backing buffer.
+    /// </summary>
     /// <param name="targetOffset"></param>
     /// <param name="vertices"> the vertex data </param>
     /// <param name="sourceOffset"> the offset to start copying the data from </param>
@@ -158,7 +139,7 @@ public class VertexBufferObjectSubData : IVertexData
         {
             var pos = ByteBuffer.Position;
 
-            ByteBuffer.Position = ( targetOffset * 4 );
+            ByteBuffer.Position = targetOffset * 4;
             BufferUtils.Copy( vertices, sourceOffset, count, ByteBuffer );
             ByteBuffer.Position = pos;
         }
@@ -171,10 +152,10 @@ public class VertexBufferObjectSubData : IVertexData
     }
 
     /// <summary>
-    /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
-    /// contents to be uploaded on the next call to bind. If you need immediate
-    /// uploading use <see cref="IVertexData.SetVertices"/>; Any modifications made
-    /// to the Buffer after the call to bind will not automatically be uploaded.
+    ///     Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
+    ///     contents to be uploaded on the next call to bind. If you need immediate
+    ///     uploading use <see cref="IVertexData.SetVertices" />; Any modifications made
+    ///     to the Buffer after the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
     public FloatBuffer GetBuffer( bool forWriting )
@@ -185,7 +166,7 @@ public class VertexBufferObjectSubData : IVertexData
     }
 
     /// <summary>
-    /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
+    ///     Binds this VertexData for rendering via glDrawArrays or glDrawElements.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.</param>
@@ -195,7 +176,7 @@ public class VertexBufferObjectSubData : IVertexData
 
         if ( _isDirty )
         {
-            ByteBuffer.Limit = ( _buffer.Limit * 4 );
+            ByteBuffer.Limit = _buffer.Limit * 4;
             Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, ByteBuffer.Limit, ByteBuffer, _usage );
             _isDirty = false;
         }
@@ -251,7 +232,7 @@ public class VertexBufferObjectSubData : IVertexData
     }
 
     /// <summary>
-    /// Unbinds this VertexData.
+    ///     Unbinds this VertexData.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.</param>
@@ -286,7 +267,7 @@ public class VertexBufferObjectSubData : IVertexData
     }
 
     /// <summary>
-    /// Invalidates the VertexData if applicable. Use this in case of a context loss.
+    ///     Invalidates the VertexData if applicable. Use this in case of a context loss.
     /// </summary>
     public void Invalidate()
     {
@@ -295,13 +276,33 @@ public class VertexBufferObjectSubData : IVertexData
     }
 
     /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing,
-    /// or resetting unmanaged resources.
+    ///     Performs application-defined tasks associated with freeing, releasing,
+    ///     or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {
         Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
         Gdx.GL20.GLDeleteBuffers( _bufferHandle );
         _bufferHandle = 0;
+    }
+
+    private int CreateBufferObject()
+    {
+        var result = Gdx.GL20.GLGenBuffer();
+
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
+        Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, ByteBuffer.Capacity, null!, _usage );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+
+        return result;
+    }
+
+    private void BufferChanged()
+    {
+        if ( _isBound )
+        {
+            Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ByteBuffer );
+            _isDirty = false;
+        }
     }
 }

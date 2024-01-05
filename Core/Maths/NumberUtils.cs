@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Maths;
 
-[PublicAPI]
 public class NumberUtils
 {
     public static int FloatToIntBits( float value )
@@ -26,7 +25,7 @@ public class NumberUtils
         // Check for NaN based on values of bit fields, maximum
         // exponent and nonzero significand.
         if ( ( ( result & FloatConsts.EXP_BIT_MASK ) == FloatConsts.EXP_BIT_MASK )
-             && ( ( result & FloatConsts.SIGNIF_BIT_MASK ) != 0 ) )
+          && ( ( result & FloatConsts.SIGNIF_BIT_MASK ) != 0 ) )
         {
             result = 0x7fc00000;
         }
@@ -38,19 +37,13 @@ public class NumberUtils
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static int FloatToRawIntBits( float value )
-    {
-        return BitConverter.SingleToInt32Bits( value );
-    }
+    public static int FloatToRawIntBits( float value ) => BitConverter.SingleToInt32Bits( value );
 
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static float IntBitsToFloat( int value )
-    {
-        return BitConverter.Int32BitsToSingle( value );
-    }
+    public static float IntBitsToFloat( int value ) => BitConverter.Int32BitsToSingle( value );
 
     /// <summary>
     /// </summary>
@@ -69,26 +62,17 @@ public class NumberUtils
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static float IntToFloatColor( int value )
-    {
-        return BitConverter.Int32BitsToSingle( value );
-    }
+    public static float IntToFloatColor( int value ) => BitConverter.Int32BitsToSingle( value );
 
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static long DoubleToLongBits( double value )
-    {
-        return BitConverter.DoubleToInt64Bits( value );
-    }
+    public static long DoubleToLongBits( double value ) => BitConverter.DoubleToInt64Bits( value );
 
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static double LongBitsToDouble( long value )
-    {
-        return BitConverter.Int64BitsToDouble( value );
-    }
+    public static double LongBitsToDouble( long value ) => BitConverter.Int64BitsToDouble( value );
 }

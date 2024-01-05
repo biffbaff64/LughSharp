@@ -16,12 +16,8 @@
 
 namespace LibGDXSharp.Maths;
 
-[PublicAPI]
 public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
 {
-    public T[]  ControlPoints { get; set; } = default( T[] )!;
-    public bool Continuous    { get; set; }
-    public int  SpanCount     { get; set; }
 
     private T? _tmp;
     private T? _tmp2;
@@ -31,9 +27,55 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     {
     }
 
-    public CatmullRomSpline( T[] controlPoints, bool continuous )
+    public CatmullRomSpline( T[] controlPoints, bool continuous ) => Set( controlPoints, continuous );
+
+    public T[]  ControlPoints { get; set; } = default( T[] )!;
+    public bool Continuous    { get; set; }
+    public int  SpanCount     { get; set; }
+
+    public T ValueAt( in T outp, in float t )
     {
-        Set( controlPoints, continuous );
+        var n = SpanCount;
+        var u = t * n;
+        var i = t >= 1f ? n - 1 : ( int )u;
+        u -= i;
+
+        return ValueAt( outp, i, u );
+    }
+
+    public T DerivativeAt( in T outp, in float t )
+    {
+        var n = SpanCount;
+        var u = t * n;
+        var i = t >= 1f ? n - 1 : ( int )u;
+        u -= i;
+
+        return DerivativeAt( outp, i, u );
+    }
+
+    public float Approximate( in T v ) => Approximate( v, Nearest( v ) );
+
+    public float Locate( T v ) => Approximate( v );
+
+    public float ApproxLength( int samples )
+    {
+        float tempLength = 0;
+
+        if ( ( _tmp2 != null ) && ( _tmp3 != null ) )
+        {
+            for ( var i = 0; i < samples; ++i )
+            {
+                _tmp2.Set( _tmp3 );
+                ValueAt( _tmp3, i / ( ( float )samples - 1 ) );
+
+                if ( i > 0 )
+                {
+                    tempLength += _tmp2.Dst( _tmp3 );
+                }
+            }
+        }
+
+        return tempLength;
     }
 
     public CatmullRomSpline< T > Set( T[] controlPoints, bool continuous )
@@ -42,63 +84,36 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         _tmp2 ??= controlPoints[ 0 ].Cpy();
         _tmp3 ??= controlPoints[ 0 ].Cpy();
 
-        this.ControlPoints = controlPoints;
-        this.Continuous    = continuous;
-        this.SpanCount     = continuous ? controlPoints.Length : controlPoints.Length - 3;
+        ControlPoints = controlPoints;
+        Continuous    = continuous;
+        SpanCount     = continuous ? controlPoints.Length : controlPoints.Length - 3;
 
         return this;
-    }
-
-    public T ValueAt( in T outp, in float t )
-    {
-        var n = SpanCount;
-        var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
-        u -= i;
-
-        return ValueAt( outp, i, u );
     }
 
     /// <summary>
     /// </summary>
     /// <returns> The value of the spline at position u of the specified span. </returns>
-    public T ValueAt( T outp, int span, float u )
-    {
-        return Calculate
-            (
-             outp,
-             Continuous ? span : ( span + 1 ),
-             u,
-             ControlPoints,
-             Continuous,
-             _tmp
-            );
-    }
-
-    public T DerivativeAt( in T outp, in float t )
-    {
-        var n = SpanCount;
-        var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
-        u -= i;
-
-        return DerivativeAt( outp, i, u );
-    }
+    public T ValueAt( T outp, int span, float u ) => Calculate(
+        outp,
+        Continuous ? span : span + 1,
+        u,
+        ControlPoints,
+        Continuous,
+        _tmp
+        );
 
     /// <summary>
     /// </summary>
     /// <returns> The derivative of the spline at position u of the specified span </returns>
-    public T DerivativeAt( T outp, int span, float u )
-    {
-        return Derivative
-            (
-             outp,
-             Continuous ? span : ( span + 1 ),
-             u,
-             ControlPoints,
-             Continuous, _tmp
-            );
-    }
+    public T DerivativeAt( T outp, int span, float u ) => Derivative(
+        outp,
+        Continuous ? span : span + 1,
+        u,
+        ControlPoints,
+        Continuous,
+        _tmp
+        );
 
     /// <summary>
     /// </summary>
@@ -108,7 +123,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     /// <summary>
     /// </summary>
     /// <returns>
-    /// The span closest to the specified value, restricting to the specified spans.
+    ///     The span closest to the specified value, restricting to the specified spans.
     /// </returns>
     public int Nearest( T inp, int start, int count )
     {
@@ -135,12 +150,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         return result;
     }
 
-    public float Approximate( in T v ) => Approximate( v, Nearest( v ) );
-
-    public float Approximate( in T inp, int start, int count )
-    {
-        return Approximate( inp, Nearest( inp, start, count ) );
-    }
+    public float Approximate( in T inp, int start, int count ) => Approximate( inp, Nearest( inp, start, count ) );
 
     public float Approximate( in T inp, int near )
     {
@@ -176,34 +186,8 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         return ( n + u ) / SpanCount;
     }
 
-    public float Locate( T v )
-    {
-        return Approximate( v );
-    }
-
-    public float ApproxLength( int samples )
-    {
-        float tempLength = 0;
-
-        if ( ( _tmp2 != null ) && ( _tmp3 != null ) )
-        {
-            for ( var i = 0; i < samples; ++i )
-            {
-                _tmp2.Set( _tmp3 );
-                ValueAt( _tmp3, ( i ) / ( ( float )samples - 1 ) );
-
-                if ( i > 0 )
-                {
-                    tempLength += _tmp2.Dst( _tmp3 );
-                }
-            }
-        }
-
-        return tempLength;
-    }
-
     /// <summary>
-    /// Calculates the catmullrom value for the given position (t).
+    ///     Calculates the catmullrom value for the given position (t).
     /// </summary>
     /// <param name="outvec"> The Vector to Set to the result. </param>
     /// <param name="t"> The position (0 &lt;= t &lt;= 1) on the spline </param>
@@ -215,7 +199,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = continuous ? points.Length : points.Length - 3;
         var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int )u;
 
         u -= i;
 
@@ -223,11 +207,11 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    /// Calculates the catmullrom value for the given span (i) at the given position (u).
+    ///     Calculates the catmullrom value for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="outp"> The Vector to Set to the result. </param>
     /// <param name="i">
-    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.Length : points.Length - degree
+    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.Length : points.Length - degree
     /// </param>
     /// <param name="u"> The position (0 &lt;= u &lt;= 1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -266,7 +250,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    /// Calculates the derivative of the catmullrom spline for the given position (t).
+    ///     Calculates the derivative of the catmullrom spline for the given position (t).
     /// </summary>
     /// <param name="outp"> The Vector to Set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -282,19 +266,19 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = continuous ? points.Length : points.Length - 3;
         var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int )u;
         u -= i;
 
         return Derivative( outp, i, u, points, continuous, tmp );
     }
 
     /// <summary>
-    /// Calculates the derivative of the catmullrom spline for the given
-    /// span (i) at the given position (u).
+    ///     Calculates the derivative of the catmullrom spline for the given
+    ///     span (i) at the given position (u).
     /// </summary>
     /// <param name="outp"> The Vector to Set to the result. </param>
     /// <param name="i">
-    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.Length : points.Length - degree
+    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.Length : points.Length - degree
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -322,8 +306,8 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         {
             outp.Add
                 (
-                 tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                    .Scl( ( -0.5f + ( u * 2 ) ) - ( u2 * 1.5f ) )
+                tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
+                   .Scl( ( -0.5f + ( u * 2 ) ) - ( u2 * 1.5f ) )
                 );
         }
 
@@ -331,8 +315,8 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         {
             outp.Add
                 (
-                 tmp.Set( points[ ( i + 1 ) % n ] )
-                    .Scl( ( 0.5f + ( u * 4 ) ) - ( u2 * 4.5f ) )
+                tmp.Set( points[ ( i + 1 ) % n ] )
+                   .Scl( ( 0.5f + ( u * 4 ) ) - ( u2 * 4.5f ) )
                 );
         }
 
@@ -340,8 +324,8 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         {
             outp.Add
                 (
-                 tmp.Set( points[ ( i + 2 ) % n ] )
-                    .Scl( -u + ( u2 * 1.5f ) )
+                tmp.Set( points[ ( i + 2 ) % n ] )
+                   .Scl( -u + ( u2 * 1.5f ) )
                 );
         }
 

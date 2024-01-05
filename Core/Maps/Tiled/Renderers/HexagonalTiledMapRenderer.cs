@@ -19,51 +19,38 @@ using LibGDXSharp.Maps.Tiled.Tiles;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
-[PublicAPI]
 public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 {
+
     /// <summary>
-    /// true for X-Axis, false for Y-Axis
+    ///     the parameter defining the shape of the hexagon from tiled. more
+    ///     specifically it represents the length of the sides that are parallel
+    ///     to the stagger axis. e.g. with respect to the stagger axis a value
+    ///     of 0 results in a rhombus shape, while a value equal to the tile
+    ///     length/height represents a square shape and a value of 0.5 represents
+    ///     a regular hexagon if tile length equals tile height
+    /// </summary>
+    private float _hexSideLength = 0f;
+    /// <summary>
+    ///     true for X-Axis, false for Y-Axis
     /// </summary>
     private bool _staggerAxisX = true;
 
     /// <summary>
-    /// true for even StaggerIndex, false for odd
+    ///     true for even StaggerIndex, false for odd
     /// </summary>
     private bool _staggerIndexEven = false;
 
-    /// <summary>
-    /// the parameter defining the shape of the hexagon from tiled. more
-    /// specifically it represents the length of the sides that are parallel
-    /// to the stagger axis. e.g. with respect to the stagger axis a value
-    /// of 0 results in a rhombus shape, while a value equal to the tile
-    /// length/height represents a square shape and a value of 0.5 represents
-    /// a regular hexagon if tile length equals tile height 
-    /// </summary>
-    private float _hexSideLength = 0f;
-
-    public HexagonalTiledMapRenderer( TiledMap map ) : base( map )
-    {
-        Init( map );
-    }
+    public HexagonalTiledMapRenderer( TiledMap map ) : base( map ) => Init( map );
 
     public HexagonalTiledMapRenderer( TiledMap map, float unitScale )
-        : base( map, unitScale )
-    {
-        Init( map );
-    }
+        : base( map, unitScale ) => Init( map );
 
     public HexagonalTiledMapRenderer( TiledMap map, IBatch batch )
-        : base( map, batch )
-    {
-        Init( map );
-    }
+        : base( map, batch ) => Init( map );
 
     public HexagonalTiledMapRenderer( TiledMap map, float unitScale, IBatch batch )
-        : base( map, unitScale, batch )
-    {
-        Init( map );
-    }
+        : base( map, unitScale, batch ) => Init( map );
 
     private void Init( TiledMap map )
     {
@@ -145,31 +132,28 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 
             var row1 = Math.Max( 0, ( int )( ( ViewBounds.Y - layerTileHeight50 - layerOffsetX ) / layerTileHeight ) );
 
-            var row2 = Math.Min
-                (
+            var row2 = Math.Min(
                 layerHeight,
                 ( int )( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetX ) / layerTileHeight )
                 );
 
-            var col1 = Math.Max( 0, ( int )( ( ( ViewBounds.X - tileWidthLowerCorner - layerOffsetY ) / tileWidthUpperCorner ) ) );
+            var col1 = Math.Max( 0, ( int )( ( ViewBounds.X - tileWidthLowerCorner - layerOffsetY ) / tileWidthUpperCorner ) );
 
-            var col2 = Math.Min
-                (
+            var col2 = Math.Min(
                 layerWidth,
                 ( int )( ( ( ViewBounds.X + ViewBounds.Width + tileWidthUpperCorner ) - layerOffsetY )
                        / tileWidthUpperCorner )
                 );
 
             // depending on the stagger index either draw all even before the odd or vice versa
-            var colA = ( _staggerIndexEven == ( ( col1 % 2 ) == 0 ) ) ? col1 + 1 : col1;
-            var colB = ( _staggerIndexEven == ( ( col1 % 2 ) == 0 ) ) ? col1 : col1 + 1;
+            var colA = _staggerIndexEven == ( ( col1 % 2 ) == 0 ) ? col1 + 1 : col1;
+            var colB = _staggerIndexEven == ( ( col1 % 2 ) == 0 ) ? col1 : col1 + 1;
 
             for ( var row = row2 - 1; row >= row1; row-- )
             {
                 for ( var col = colA; col < col2; col += 2 )
                 {
-                    RenderCell
-                        (
+                    RenderCell(
                         layer.GetCell( col, row ),
                         ( tileWidthUpperCorner * col ) + layerOffsetX,
                         layerTileHeight50 + ( layerTileHeight * row ) + layerOffsetY,
@@ -179,8 +163,7 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 
                 for ( var col = colB; col < col2; col += 2 )
                 {
-                    RenderCell
-                        (
+                    RenderCell(
                         layer.GetCell( col, row ),
                         ( tileWidthUpperCorner * col ) + layerOffsetX,
                         ( layerTileHeight * row ) + layerOffsetY,
@@ -195,21 +178,17 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
             var tileHeightUpperCorner = ( layerTileHeight + layerHexLength ) / 2;
             var layerTileWidth50      = layerTileWidth * 0.50f;
 
-            var row1 = Math.Max
-                ( 0, ( int )( ( ( ViewBounds.Y - tileHeightLowerCorner - layerOffsetX ) / tileHeightUpperCorner ) ) );
+            var row1 = Math.Max( 0, ( int )( ( ViewBounds.Y - tileHeightLowerCorner - layerOffsetX ) / tileHeightUpperCorner ) );
 
-            var row2 = Math.Min
-                (
+            var row2 = Math.Min(
                 layerHeight,
                 ( int )( ( ( ViewBounds.Y + ViewBounds.Height + tileHeightUpperCorner ) - layerOffsetX )
                        / tileHeightUpperCorner )
                 );
 
-            var col1 = Math.Max
-                ( 0, ( int )( ( ( ViewBounds.X - layerTileWidth50 - layerOffsetY ) / layerTileWidth ) ) );
+            var col1 = Math.Max( 0, ( int )( ( ViewBounds.X - layerTileWidth50 - layerOffsetY ) / layerTileWidth ) );
 
-            var col2 = Math.Min
-                (
+            var col2 = Math.Min(
                 layerWidth,
                 ( int )( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth ) - layerOffsetY ) / layerTileWidth )
                 );
@@ -217,12 +196,11 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
             for ( var row = row2 - 1; row >= row1; row-- )
             {
                 // depending on the stagger index either shift for even or uneven indexes
-                var shiftX = ( ( row % 2 ) == 0 ) == _staggerIndexEven ? layerTileWidth50 : 0;
+                var shiftX = ( row % 2 ) == 0 == _staggerIndexEven ? layerTileWidth50 : 0;
 
                 for ( var col = col1; col < col2; col++ )
                 {
-                    RenderCell
-                        (
+                    RenderCell(
                         layer.GetCell( col, row ),
                         ( layerTileWidth * col ) + shiftX + layerOffsetX,
                         ( tileHeightUpperCorner * row ) + layerOffsetY,

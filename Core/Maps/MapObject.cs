@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Maps;
 
-[PublicAPI]
 public class MapObject
 {
     public string        Name       { get; set; }         = "";

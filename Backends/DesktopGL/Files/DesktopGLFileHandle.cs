@@ -37,21 +37,21 @@ public class DesktopGLFileHandle : FileHandle
     //TODO: Updates to Child(string) and Sibling(string) needed. I'm not sure either are correct.
 
     /// <summary>
-    /// Returns a handle to the child with the specified name.
+    ///     Returns a handle to the child with the specified name.
     /// </summary>
     public FileHandle Child( string name )
     {
-        if ( System.IO.Path.GetFullPath( base.FileInfo.Name ).Length == 0 )
+        if ( System.IO.Path.GetFullPath( FileInfo.Name ).Length == 0 )
         {
-            return new DesktopGLFileHandle( new FileInfo( base.FileInfo.Name ), base.FileType );
+            return new DesktopGLFileHandle( new FileInfo( FileInfo.Name ), FileType );
         }
 
-        return new DesktopGLFileHandle( new FileInfo( System.IO.Path.GetDirectoryName( base.FileInfo.Name ) + name ),
-                                        base.FileType );
+        return new DesktopGLFileHandle( new FileInfo( System.IO.Path.GetDirectoryName( FileInfo.Name ) + name ),
+                                        FileType );
     }
 
     /// <summary>
-    /// Returns a handle to the sibling with the specified name.
+    ///     Returns a handle to the sibling with the specified name.
     /// </summary>
     public FileHandle Sibling( string name )
     {
@@ -60,28 +60,28 @@ public class DesktopGLFileHandle : FileHandle
             throw new GdxRuntimeException( "Cannot get the sibling of the root." );
         }
 
-        return new FileHandle( name, base.FileType );
+        return new FileHandle( name, FileType );
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Returns the abstract pathname of this abstract pathname's parent, or null if this pathname
-    /// does not name a parent directory.
-    /// <para>
-    /// The parent of an abstract pathname consists of the pathname's prefix, if any, and each name
-    /// in the pathname's name sequence except for the last. If the name sequence is empty then the
-    /// pathname does not name a parent directory.
-    /// </para>
+    ///     Returns the abstract pathname of this abstract pathname's parent, or null if this pathname
+    ///     does not name a parent directory.
+    ///     <para>
+    ///         The parent of an abstract pathname consists of the pathname's prefix, if any, and each name
+    ///         in the pathname's name sequence except for the last. If the name sequence is empty then the
+    ///         pathname does not name a parent directory.
+    ///     </para>
     /// </summary>
     public DirectoryInfo ParentFolder()
     {
         DirectoryInfo directoryInfo;
 
-        if ( !System.IO.Directory.Exists( base.Path() ) )
+        if ( !Directory.Exists( base.Path() ) )
         {
-            directoryInfo = base.FileType == FileType.Absolute
+            directoryInfo = FileType == FileType.Absolute
                 ? new DirectoryInfo( "/" )
                 : new DirectoryInfo( "" );
         }
@@ -94,18 +94,18 @@ public class DesktopGLFileHandle : FileHandle
     }
 
     /// <summary>
-    /// Returns a FileInfo that represents this file handle. Note the returned file will
-    /// only be usable for <see cref="FileType.Absolute"/> and <see cref="FileType.External"/>
-    /// file handles.
+    ///     Returns a FileInfo that represents this file handle. Note the returned file will
+    ///     only be usable for <see cref="FileType.Absolute" /> and <see cref="FileType.External" />
+    ///     file handles.
     /// </summary>
     public FileInfo File()
     {
-        if ( base.FileType == FileType.External )
+        if ( FileType == FileType.External )
         {
             return new FileInfo( DesktopGLFiles.UserHomePath + base.Name() );
         }
 
-        if ( base.FileType == FileType.Local )
+        if ( FileType == FileType.Local )
         {
             return new FileInfo( DesktopGLFiles.LocalPath + base.Name() );
         }

@@ -16,31 +16,24 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
-public class InvalidTypeException : System.Exception
+public class InvalidTypeException : Exception
 {
-    public string? TypeName { get; set; } = string.Empty;
-    
+
     public InvalidTypeException( string? message = "" )
         : base( message )
     {
     }
-    
-    public InvalidTypeException( string message, System.Exception exception )
+
+    public InvalidTypeException( string message, Exception exception )
         : base( message, exception )
     {
     }
 
     public InvalidTypeException( string message, string typeName )
-        : base( message )
-    {
-        this.TypeName = typeName;
-    }
+        : base( message ) => TypeName = typeName;
 
-    public InvalidTypeException( string message, string typeName, System.Exception exception )
-        : base( message, exception )
-    {
-        this.TypeName = typeName;
-    }
+    public InvalidTypeException( string message, string typeName, Exception exception )
+        : base( message, exception ) => TypeName = typeName;
+
+    public string? TypeName { get; set; } = string.Empty;
 }
-

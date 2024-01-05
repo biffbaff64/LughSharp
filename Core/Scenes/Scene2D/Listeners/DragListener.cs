@@ -23,9 +23,13 @@ namespace LibGDXSharp.Scenes.Listeners;
  * outside the {@link #setTapSquareSize(float) tap square}. Any touch (not just the first) will trigger this listener. While
  * pressed, other touch downs are ignored.
  */
-[PublicAPI]
 public class DragListener : InputListener
 {
+
+    private float _dragLastX;
+    private float _dragLastY;
+    private int   _pressedPointer = -1;
+
     /// Sets the button to listen for, all other buttons are ignored.
     public int Button { get; set; } = IInput.Buttons.LEFT;
 
@@ -42,10 +46,6 @@ public class DragListener : InputListener
     public float DragX           { get; private set; }
     public float DragY           { get; private set; }
 
-    private float _dragLastX;
-    private float _dragLastY;
-    private int   _pressedPointer = -1;
-
     public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
     {
         if ( _pressedPointer != -1 )
@@ -53,7 +53,7 @@ public class DragListener : InputListener
             return false;
         }
 
-        if ( ( pointer == 0 ) && ( this.Button != -1 ) && ( button != this.Button ) )
+        if ( ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) )
         {
             return false;
         }
@@ -125,8 +125,8 @@ public class DragListener : InputListener
     }
 
     /// <summary>
-    /// If a drag is in progress, no further drag methods will be
-    /// called until a new drag is started.
+    ///     If a drag is in progress, no further drag methods will be
+    ///     called until a new drag is started.
     /// </summary>
     public virtual void Cancel()
     {
@@ -135,28 +135,19 @@ public class DragListener : InputListener
     }
 
     /// <summary>
-    /// The distance from drag start to the current drag position.
+    ///     The distance from drag start to the current drag position.
     /// </summary>
-    public float GetDragDistance()
-    {
-        return Vector2.Len( DragX - DragStartX, DragY - DragStartY );
-    }
+    public float GetDragDistance() => Vector2.Len( DragX - DragStartX, DragY - DragStartY );
 
     /// <summary>
-    /// Returns the amount on the x axis that the touch has been
-    /// dragged since the last drag event.
+    ///     Returns the amount on the x axis that the touch has been
+    ///     dragged since the last drag event.
     /// </summary>
-    public float GetDeltaX()
-    {
-        return DragX - _dragLastX;
-    }
+    public float GetDeltaX() => DragX - _dragLastX;
 
     /// <summary>
-    /// Returns the amount on the y axis that the touch has been
-    /// dragged since the last drag event.
+    ///     Returns the amount on the y axis that the touch has been
+    ///     dragged since the last drag event.
     /// </summary>
-    public float GetDeltaY()
-    {
-        return DragY - _dragLastY;
-    }
+    public float GetDeltaY() => DragY - _dragLastY;
 }

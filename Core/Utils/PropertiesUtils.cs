@@ -21,11 +21,10 @@ using LibGDXSharp.Utils.Collections;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// A helper class that allows you to load and store key/value pairs of an
-/// <see cref="Dictionary{TK,TV}"/> with the same line-oriented syntax supported
-/// by <see cref="IPreferences"/>
+///     A helper class that allows you to load and store key/value pairs of an
+///     <see cref="Dictionary{TK,TV}" /> with the same line-oriented syntax supported
+///     by <see cref="IPreferences" />
 /// </summary>
-[PublicAPI]
 public class PropertiesUtils
 {
     private const int    NONE           = 0;
@@ -41,11 +40,11 @@ public class PropertiesUtils
     }
 
     /// <summary>
-    /// Adds to the specified <see cref="Dictionary{T,K}"/> the key/value pairs
-    /// loaded from the <see cref="StreamReader"/> in a simple line-oriented format.
-    /// <para>
-    /// The input stream remains open after this method returns.
-    /// </para>
+    ///     Adds to the specified <see cref="Dictionary{T,K}" /> the key/value pairs
+    ///     loaded from the <see cref="StreamReader" /> in a simple line-oriented format.
+    ///     <para>
+    ///         The input stream remains open after this method returns.
+    ///     </para>
     /// </summary>
     /// <param name="properties"> the map to be filled. </param>
     /// <param name="reader"> the input character stream reader. </param>
@@ -235,7 +234,7 @@ public class PropertiesUtils
                             switch ( offset )
                             {
                                 case > 0:
-                                case 0 when ( keyLength == 0 ):
+                                case 0 when keyLength == 0:
                                 {
                                     keyLength = keyLength switch
                                                 {
@@ -335,14 +334,14 @@ public class PropertiesUtils
 
         switch ( mode )
         {
-            case UNICODE when ( count <= 4 ):
+            case UNICODE when count <= 4:
                 throw new ArgumentException( "Invalid Unicode sequence: expected format \\uxxxx" );
         }
 
         keyLength = keyLength switch
                     {
-                        -1 when ( offset > 0 ) => offset,
-                        _                      => keyLength
+                        -1 when offset > 0 => offset,
+                        _                  => keyLength
                     };
 
         switch ( keyLength )
@@ -369,34 +368,31 @@ public class PropertiesUtils
     }
 
     /// <summary>
-    /// Writes the key/value pairs of the specified <see cref="Dictionary{T,K}"/> to
-    /// the output character stream in a simple line-oriented format.
-    /// <para>
-    /// Every entry in the <tt>Dictionary</tt> is written out, one per line. For each
-    /// entry the key string is written, then an <tt>ASCII =</tt>, then the associated
-    /// element string. For the key, all space characters are written with a preceding
-    /// <tt>\ (back-slash)</tt> character. For the element, leading space characters,
-    /// but not embedded or trailing space characters, are written with a preceding
-    /// <tt>\ (back-slash)</tt> character. The key and element characters <tt>#</tt>, <tt>!</tt>,
-    /// <tt>=</tt>, and <tt>:</tt> are written with a preceding backslash to ensure that
-    /// they are properly loaded.
-    /// </para>
-    /// <para>
-    /// After the entries have been written, the output stream is flushed. The output
-    /// stream remains open after this method returns.
-    /// </para>
+    ///     Writes the key/value pairs of the specified <see cref="Dictionary{T,K}" /> to
+    ///     the output character stream in a simple line-oriented format.
+    ///     <para>
+    ///         Every entry in the <tt>Dictionary</tt> is written out, one per line. For each
+    ///         entry the key string is written, then an <tt>ASCII =</tt>, then the associated
+    ///         element string. For the key, all space characters are written with a preceding
+    ///         <tt>\ (back-slash)</tt> character. For the element, leading space characters,
+    ///         but not embedded or trailing space characters, are written with a preceding
+    ///         <tt>\ (back-slash)</tt> character. The key and element characters <tt>#</tt>, <tt>!</tt>,
+    ///         <tt>=</tt>, and <tt>:</tt> are written with a preceding backslash to ensure that
+    ///         they are properly loaded.
+    ///     </para>
+    ///     <para>
+    ///         After the entries have been written, the output stream is flushed. The output
+    ///         stream remains open after this method returns.
+    ///     </para>
     /// </summary>
     /// <param name="properties"> the Dictionary. </param>
     /// <param name="writer"> an output character stream writer. </param>
     /// <param name="comment"> an optional comment to be written, or null. </param>
     /// <exception cref="IOException">
-    /// if writing this property list to the specified output stream throws an <tt>IOException</tt>.
+    ///     if writing this property list to the specified output stream throws an <tt>IOException</tt>.
     /// </exception>
     /// <exception cref="NullReferenceException"> if <code>writer</code> is null.</exception>
-    public static void Store( Dictionary< string, string > properties, StreamWriter writer, string comment )
-    {
-        StoreImpl( properties, writer, comment, false );
-    }
+    public static void Store( Dictionary< string, string > properties, StreamWriter writer, string comment ) => StoreImpl( properties, writer, comment, false );
 
     private static void StoreImpl( Dictionary< string, string > properties,
                                    StreamWriter writer,

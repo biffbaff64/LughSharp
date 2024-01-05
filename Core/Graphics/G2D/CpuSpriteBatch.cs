@@ -21,50 +21,49 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
-/// CpuSpriteBatch behaves like SpriteBatch, except it doesn't flush automatically
-/// whenever the transformation matrix changes. Instead, the vertices get adjusted
-/// on subsequent draws to match the running batch. This can improve performance
-/// through longer batches, for example when drawing Groups with transform enabled.
+///     CpuSpriteBatch behaves like SpriteBatch, except it doesn't flush automatically
+///     whenever the transformation matrix changes. Instead, the vertices get adjusted
+///     on subsequent draws to match the running batch. This can improve performance
+///     through longer batches, for example when drawing Groups with transform enabled.
 /// </summary>
-/// <see cref="SpriteBatch.RenderCalls"/>
-/// <see cref="Group.Transform"/>
-[PublicAPI]
+/// <see cref="SpriteBatch.RenderCalls" />
+/// <see cref="Group.Transform" />
 public class CpuSpriteBatch : SpriteBatch
 {
-    private readonly Matrix4 _virtualMatrix = new();
     private readonly Affine2 _adjustAffine  = new();
     private readonly Affine2 _tmpAffine     = new();
+    private readonly Matrix4 _virtualMatrix = new();
 
     private bool _adjustNeeded;
     private bool _haveIdentityRealMatrix = true;
 
     /// <summary>
-    /// Constructs a CpuSpriteBatch with a size of 1000 and the default shader.
+    ///     Constructs a CpuSpriteBatch with a size of 1000 and the default shader.
     /// </summary>
-    /// <para>See also: <see cref="SpriteBatch()"/></para>
+    /// <para>See also: <see cref="SpriteBatch()" /></para>
     public CpuSpriteBatch() : this( 1000 )
     {
     }
 
     /// <summary>
-    /// Constructs a CpuSpriteBatch with a custom shader.
+    ///     Constructs a CpuSpriteBatch with a custom shader.
     /// </summary>
-    /// <para>See also: <see cref="SpriteBatch()"/></para>
+    /// <para>See also: <see cref="SpriteBatch()" /></para>
     public CpuSpriteBatch( int size, ShaderProgram defaultShader = null! )
         : base( size, defaultShader )
     {
     }
 
     /// <summary>
-    /// <para>
-    /// Flushes the batch and realigns the real matrix on the GPU. Subsequent
-    /// draws won't need adjustment and will be slightly faster as long as the
-    /// transform matrix is not changed by <see cref="SetTransformMatrix(Matrix4)"/>.
-    /// </para>
-    /// <para>
-    /// Note: The real transform matrix <em>must</em> be invertible. If a singular
-    /// matrix is detected, GdxRuntimeException will be thrown.
-    /// </para>
+    ///     <para>
+    ///         Flushes the batch and realigns the real matrix on the GPU. Subsequent
+    ///         draws won't need adjustment and will be slightly faster as long as the
+    ///         transform matrix is not changed by <see cref="SetTransformMatrix(Matrix4)" />.
+    ///     </para>
+    ///     <para>
+    ///         Note: The real transform matrix <em>must</em> be invertible. If a singular
+    ///         matrix is detected, GdxRuntimeException will be thrown.
+    ///     </para>
     /// </summary>
     public virtual void FlushAndSyncTransformMatrix()
     {
@@ -85,23 +84,20 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    public Matrix4 GetTransformMatrix()
-    {
-        return ( _adjustNeeded ? _virtualMatrix : base.TransformMatrix );
-    }
+    public Matrix4 GetTransformMatrix() => _adjustNeeded ? _virtualMatrix : TransformMatrix;
 
     /// <summary>
-    /// Sets the transform matrix to be used by this Batch. Even if this is called
-    /// inside a <see cref="SpriteBatch.Begin"/>/<see cref="SpriteBatch.End"/> block,
-    /// the current batch is <em>not</em> flushed to the GPU. Instead, for every
-    /// subsequent draw() the vertices will be transformed on the CPU to match the
-    /// original batch matrix. This adjustment must be performed until the matrices
-    /// are realigned by restoring the original matrix, or by calling
-    /// <see cref="FlushAndSyncTransformMatrix()"/>. 
+    ///     Sets the transform matrix to be used by this Batch. Even if this is called
+    ///     inside a <see cref="SpriteBatch.Begin" />/<see cref="SpriteBatch.End" /> block,
+    ///     the current batch is <em>not</em> flushed to the GPU. Instead, for every
+    ///     subsequent draw() the vertices will be transformed on the CPU to match the
+    ///     original batch matrix. This adjustment must be performed until the matrices
+    ///     are realigned by restoring the original matrix, or by calling
+    ///     <see cref="FlushAndSyncTransformMatrix()" />.
     /// </summary>
     public override void SetTransformMatrix( Matrix4 transform )
     {
-        Matrix4 realMatrix = base.TransformMatrix;
+        Matrix4 realMatrix = TransformMatrix;
 
         if ( CheckEqual( realMatrix, transform ) )
         {
@@ -136,20 +132,20 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <summary>
-    /// Sets the transform matrix to be used by this Batch. Even if this is calle
-    /// inside a <see cref="SpriteBatch.Begin"/>/<see cref="SpriteBatch.End"/> block,
-    /// the current batch is <em>not</em> flushed to the GPU. Instead, for every
-    /// subsequent draw() the vertices will be transformed on the CPU to match the
-    /// original batch matrix.
-    /// <para>
-    /// This adjustment must be performed until the matrices are realigned by restoring
-    /// the original matrix, or by calling <see cref="FlushAndSyncTransformMatrix()"/>
-    /// or <seealso cref="SpriteBatch.End"/>. 
-    /// </para>
+    ///     Sets the transform matrix to be used by this Batch. Even if this is calle
+    ///     inside a <see cref="SpriteBatch.Begin" />/<see cref="SpriteBatch.End" /> block,
+    ///     the current batch is <em>not</em> flushed to the GPU. Instead, for every
+    ///     subsequent draw() the vertices will be transformed on the CPU to match the
+    ///     original batch matrix.
+    ///     <para>
+    ///         This adjustment must be performed until the matrices are realigned by restoring
+    ///         the original matrix, or by calling <see cref="FlushAndSyncTransformMatrix()" />
+    ///         or <seealso cref="SpriteBatch.End" />.
+    ///     </para>
     /// </summary>
     public virtual void SetTransformMatrix( Affine2 transform )
     {
-        Matrix4 realMatrix = base.TransformMatrix;
+        Matrix4 realMatrix = TransformMatrix;
 
         if ( CheckEqual( realMatrix, transform ) )
         {
@@ -202,18 +198,44 @@ public class CpuSpriteBatch : SpriteBatch
     {
         if ( !_adjustNeeded )
         {
-            base.Draw
-                (
-                texture, x, y, originX, originY, width, height, scaleX, scaleY,
-                rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY
+            base.Draw(
+                texture,
+                x,
+                y,
+                originX,
+                originY,
+                width,
+                height,
+                scaleX,
+                scaleY,
+                rotation,
+                srcX,
+                srcY,
+                srcWidth,
+                srcHeight,
+                flipX,
+                flipY
                 );
         }
         else
         {
-            DrawAdjusted
-                (
-                texture, x, y, originX, originY, width, height, scaleX, scaleY,
-                rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY
+            DrawAdjusted(
+                texture,
+                x,
+                y,
+                originX,
+                originY,
+                width,
+                height,
+                scaleX,
+                scaleY,
+                rotation,
+                srcX,
+                srcY,
+                srcWidth,
+                srcHeight,
+                flipX,
+                flipY
                 );
         }
     }
@@ -236,10 +258,23 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted
-                (
-                texture, x, y, 0, 0, width, height, 1, 1, 0,
-                srcX, srcY, srcWidth, srcHeight, flipX, flipY
+            DrawAdjusted(
+                texture,
+                x,
+                y,
+                0,
+                0,
+                width,
+                height,
+                1,
+                1,
+                0,
+                srcX,
+                srcY,
+                srcWidth,
+                srcHeight,
+                flipX,
+                flipY
                 );
         }
     }
@@ -252,10 +287,23 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted
-                (
-                texture, x, y, 0, 0, srcWidth, srcHeight, 1, 1, 0,
-                srcX, srcY, srcWidth, srcHeight, false, false
+            DrawAdjusted(
+                texture,
+                x,
+                y,
+                0,
+                0,
+                srcWidth,
+                srcHeight,
+                1,
+                1,
+                0,
+                srcX,
+                srcY,
+                srcWidth,
+                srcHeight,
+                false,
+                false
                 );
         }
     }
@@ -288,10 +336,23 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted
-                (
-                texture, x, y, 0, 0, texture.Width, texture.Height,
-                1, 1, 0, 0, 1, 1, 0, false, false
+            DrawAdjusted(
+                texture,
+                x,
+                y,
+                0,
+                0,
+                texture.Width,
+                texture.Height,
+                1,
+                1,
+                0,
+                0,
+                1,
+                1,
+                0,
+                false,
+                false
                 );
         }
     }
@@ -371,10 +432,18 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted
-                (
-                region, x, y, originX, originY, width, height,
-                scaleX, scaleY, rotation, clockwise
+            DrawAdjusted(
+                region,
+                x,
+                y,
+                originX,
+                originY,
+                width,
+                height,
+                scaleX,
+                scaleY,
+                rotation,
+                clockwise
                 );
         }
     }
@@ -417,15 +486,27 @@ public class CpuSpriteBatch : SpriteBatch
                                float height,
                                float scaleX,
                                float scaleY,
-                               float rotation )
-    {
+                               float rotation ) =>
+
         // v must be flipped
-        DrawAdjustedUV
-            (
-            region.Texture, x, y, originX, originY, width, height, scaleX,
-            scaleY, rotation, region.U, region.V2, region.U2, region.V, false, false
+        DrawAdjustedUV(
+            region.Texture,
+            x,
+            y,
+            originX,
+            originY,
+            width,
+            height,
+            scaleX,
+            scaleY,
+            rotation,
+            region.U,
+            region.V2,
+            region.U2,
+            region.V,
+            false,
+            false
             );
-    }
 
     private void DrawAdjusted( Texture texture,
                                float x,
@@ -452,10 +533,23 @@ public class CpuSpriteBatch : SpriteBatch
         var u2 = ( srcX + srcWidth ) * invWidth;
         var v2 = srcY * invHeight;
 
-        DrawAdjustedUV
-            (
-            texture, x, y, originX, originY, width, height, scaleX,
-            scaleY, rotation, u, v, u2, v2, flipX, flipY
+        DrawAdjustedUV(
+            texture,
+            x,
+            y,
+            originX,
+            originY,
+            width,
+            height,
+            scaleX,
+            scaleY,
+            rotation,
+            u,
+            v,
+            u2,
+            v2,
+            flipX,
+            flipY
             );
     }
 
@@ -487,7 +581,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else if ( idx == Vertices.Length )
         {
-            base.Flush();
+            Flush();
         }
 
         // bottom left and top right corner points relative to origin
@@ -499,7 +593,7 @@ public class CpuSpriteBatch : SpriteBatch
         var fy2          = height - originY;
 
         // scale
-        if ( ( scaleX is not 1 ) || ( scaleY is not 1 ) )
+        if ( scaleX is not 1 || scaleY is not 1 )
         {
             fx  *= scaleX;
             fy  *= scaleY;
@@ -630,7 +724,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else if ( idx == Vertices.Length )
         {
-            base.Flush();
+            Flush();
         }
 
         // bottom left and top right corner points relative to origin
@@ -642,7 +736,7 @@ public class CpuSpriteBatch : SpriteBatch
         var fy2          = height - originY;
 
         // scale
-        if ( ( scaleX is not 1 ) || ( scaleY is not 1 ) )
+        if ( scaleX is not 1 || scaleY is not 1 )
         {
             fx  *= scaleX;
             fy  *= scaleY;
@@ -776,7 +870,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else if ( idx == Vertices.Length )
         {
-            base.Flush();
+            Flush();
         }
 
         // construct corner points
@@ -826,7 +920,7 @@ public class CpuSpriteBatch : SpriteBatch
     {
         if ( !IsDrawing )
         {
-            throw new System.InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
         }
 
         if ( texture != LastTexture )
@@ -858,7 +952,7 @@ public class CpuSpriteBatch : SpriteBatch
 
             if ( count > 0 )
             {
-                base.Flush();
+                Flush();
                 copyCount = Math.Min( Vertices.Length, count );
             }
         }
@@ -873,12 +967,12 @@ public class CpuSpriteBatch : SpriteBatch
         }
 
         // matrices are assumed to be 2D transformations
-        return ( ( a.val[ Matrix4.M00 ].Equals( b.val[ Matrix4.M00 ] ) )
-              && ( a.val[ Matrix4.M10 ].Equals( b.val[ Matrix4.M10 ] ) )
-              && ( a.val[ Matrix4.M01 ].Equals( b.val[ Matrix4.M01 ] ) )
-              && ( a.val[ Matrix4.M11 ].Equals( b.val[ Matrix4.M11 ] ) )
-              && ( a.val[ Matrix4.M03 ].Equals( b.val[ Matrix4.M03 ] ) )
-              && ( a.val[ Matrix4.M13 ].Equals( b.val[ Matrix4.M13 ] ) ) );
+        return a.val[ Matrix4.M00 ].Equals( b.val[ Matrix4.M00 ] )
+            && a.val[ Matrix4.M10 ].Equals( b.val[ Matrix4.M10 ] )
+            && a.val[ Matrix4.M01 ].Equals( b.val[ Matrix4.M01 ] )
+            && a.val[ Matrix4.M11 ].Equals( b.val[ Matrix4.M11 ] )
+            && a.val[ Matrix4.M03 ].Equals( b.val[ Matrix4.M03 ] )
+            && a.val[ Matrix4.M13 ].Equals( b.val[ Matrix4.M13 ] );
     }
 
     private static bool CheckEqual( Matrix4 matrix, Affine2 affine )
@@ -886,12 +980,12 @@ public class CpuSpriteBatch : SpriteBatch
         var val = matrix.Values;
 
         // matrix is assumed to be 2D transformation
-        return ( ( val[ Matrix4.M00 ].Equals( affine.m00 ) )
-              && ( val[ Matrix4.M10 ].Equals( affine.m10 ) )
-              && ( val[ Matrix4.M01 ].Equals( affine.m01 ) )
-              && ( val[ Matrix4.M11 ].Equals( affine.m11 ) )
-              && ( val[ Matrix4.M03 ].Equals( affine.m02 ) )
-              && ( val[ Matrix4.M13 ].Equals( affine.m12 ) ) );
+        return val[ Matrix4.M00 ].Equals( affine.m00 )
+            && val[ Matrix4.M10 ].Equals( affine.m10 )
+            && val[ Matrix4.M01 ].Equals( affine.m01 )
+            && val[ Matrix4.M11 ].Equals( affine.m11 )
+            && val[ Matrix4.M03 ].Equals( affine.m02 )
+            && val[ Matrix4.M13 ].Equals( affine.m12 );
     }
 
     private static bool CheckIdt( Matrix4 matrix )
@@ -899,11 +993,11 @@ public class CpuSpriteBatch : SpriteBatch
         var val = matrix.Values;
 
         // matrix is assumed to be 2D transformation
-        return ( ( val[ Matrix4.M00 ] is 1 )
-              && ( val[ Matrix4.M10 ] is 0 )
-              && ( val[ Matrix4.M01 ] is 0 )
-              && ( val[ Matrix4.M11 ] is 1 )
-              && ( val[ Matrix4.M03 ] is 0 )
-              && ( val[ Matrix4.M13 ] is 0 ) );
+        return val[ Matrix4.M00 ] is 1
+            && val[ Matrix4.M10 ] is 0
+            && val[ Matrix4.M01 ] is 0
+            && val[ Matrix4.M11 ] is 1
+            && val[ Matrix4.M03 ] is 0
+            && val[ Matrix4.M13 ] is 0;
     }
 }

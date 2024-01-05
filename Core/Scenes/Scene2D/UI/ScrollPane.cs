@@ -22,37 +22,36 @@ using Color = LibGDXSharp.Graphics.Color;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-[PublicAPI]
 public partial class ScrollPane : WidgetGroup
 {
-    private Actor?               _widget;
-    private RectangleShape       _widgetArea        = new();
-    private RectangleShape       _hScrollBounds     = new();
-    private RectangleShape       _hKnobBounds       = new();
-    private RectangleShape       _vScrollBounds     = new();
-    private RectangleShape       _vKnobBounds       = new();
-    private RectangleShape       _widgetCullingArea = new();
-    private ActorGestureListener _flickScrollListener;
+    private          int                  _draggingPointer = -1;
+    private          float                _fadeAlpha;
+    private          float                _fadeAlphaSeconds = 1;
+    private          float                _fadeDelay;
+    private          float                _fadeDelaySeconds = 1;
+    private          bool                 _flickScroll      = true;
+    private readonly ActorGestureListener _flickScrollListener;
+    private          float                _flingTimer;
+    private readonly RectangleShape       _hKnobBounds        = new();
+    private readonly RectangleShape       _hScrollBounds      = new();
+    private          bool                 _hScrollOnBottom    = true;
+    private readonly Vector2              _lastPoint          = new();
+    private          float                _overscrollSpeedMax = 200;
+    private          float                _overscrollSpeedMin = 30;
+    private          bool                 _overscrollX        = true;
+    private          bool                 _overscrollY        = true;
+    private          bool                 _scrollbarsOnTop;
+    private          bool                 _touchScrollH;
+    private          bool                 _touchScrollV;
+    private          float                _visualAmountX;
+    private          float                _visualAmountY;
+    private readonly RectangleShape       _vKnobBounds   = new();
+    private readonly RectangleShape       _vScrollBounds = new();
 
-    private bool    _vScrollOnRight  = true;
-    private bool    _hScrollOnBottom = true;
-    private float   _visualAmountX;
-    private float   _visualAmountY;
-    private bool    _touchScrollH;
-    private bool    _touchScrollV;
-    private Vector2 _lastPoint = new();
-    private float   _fadeAlpha;
-    private float   _fadeAlphaSeconds = 1;
-    private float   _fadeDelay;
-    private float   _fadeDelaySeconds = 1;
-    private bool    _flickScroll      = true;
-    private float   _flingTimer;
-    private bool    _overscrollX        = true;
-    private bool    _overscrollY        = true;
-    private float   _overscrollSpeedMin = 30;
-    private float   _overscrollSpeedMax = 200;
-    private bool    _scrollbarsOnTop;
-    private int     _draggingPointer = -1;
+    private          bool           _vScrollOnRight = true;
+    private          Actor?         _widget;
+    private readonly RectangleShape _widgetArea        = new();
+    private readonly RectangleShape _widgetCullingArea = new();
 
     public ScrollPane( Actor? widget )
         : this( widget, new ScrollPaneStyle() )
@@ -73,20 +72,20 @@ public partial class ScrollPane : WidgetGroup
     {
         ArgumentNullException.ThrowIfNull( style, "style cannot be null." );
 
-        this.Style = style;
+        Style = style;
 
         SetActor( widget );
         SetSize( 150, 150 );
 
-        this._flickScrollListener = new ScrollPaneGestureListener( this );
+        _flickScrollListener = new ScrollPaneGestureListener( this );
 
         AddCaptureListener( new ScrollPaneCaptureListener( this ) );
-        AddListener( this._flickScrollListener );
+        AddListener( _flickScrollListener );
         AddListener( new ScrollPaneScrollListener( this ) );
     }
 
     /// <summary>
-    /// Shows or hides the scrollbars for when using <see cref="SetFadeScrollBars(bool)"/>"
+    ///     Shows or hides the scrollbars for when using <see cref="SetFadeScrollBars(bool)" />"
     /// </summary>
     public void SetScrollbarsVisible( bool visible )
     {
@@ -103,9 +102,9 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// Cancels the stage's touch focus for all listeners except this scroll
-    /// pane's flick scroll listener. This causes any widgets inside the
-    /// scrollpane that have received touchDown to receive touchUp.
+    ///     Cancels the stage's touch focus for all listeners except this scroll
+    ///     pane's flick scroll listener. This causes any widgets inside the
+    ///     scrollpane that have received touchDown to receive touchUp.
     /// </summary>
     public void TouchFocusCancel()
     {
@@ -116,7 +115,7 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// If currently scrolling by tracking a touch down, stop scrolling.
+    ///     If currently scrolling by tracking a touch down, stop scrolling.
     /// </summary>
     public void Cancel()
     {
@@ -133,31 +132,28 @@ public partial class ScrollPane : WidgetGroup
             return;
         }
 
-        AmountX = ( _overscrollX
+        AmountX = _overscrollX
             ? MathUtils.Clamp( AmountX, -OverscrollDistance, MaxX + OverscrollDistance )
-            : MathUtils.Clamp( AmountX, 0, MaxX ) );
+            : MathUtils.Clamp( AmountX, 0, MaxX );
 
-        AmountY = ( _overscrollY
+        AmountY = _overscrollY
             ? MathUtils.Clamp( AmountY, -OverscrollDistance, MaxY + OverscrollDistance )
-            : MathUtils.Clamp( AmountY, 0, MaxY ) );
+            : MathUtils.Clamp( AmountY, 0, MaxY );
     }
 
     public void SetStyle( ScrollPaneStyle? style )
     {
         ArgumentNullException.ThrowIfNull( style, "style cannot be null." );
 
-        this.Style = style;
+        Style = style;
         InvalidateHierarchy();
     }
 
     /// <summary>
-    /// Returns the scroll pane's style. Modifying the returned style may
-    /// not have an effect until <see cref="SetStyle(ScrollPaneStyle)"/> is called.
+    ///     Returns the scroll pane's style. Modifying the returned style may
+    ///     not have an effect until <see cref="SetStyle(ScrollPaneStyle)" /> is called.
     /// </summary>
-    public ScrollPaneStyle GetStyle()
-    {
-        return Style;
-    }
+    public ScrollPaneStyle GetStyle() => Style;
 
     public override void Act( float delta )
     {
@@ -227,8 +223,8 @@ public partial class ScrollPane : WidgetGroup
         if ( SmoothScrolling
           && ( _flingTimer <= 0 )
           && !panning
-          && ( ( !_touchScrollH || ( ScrollX && ( ( MaxX / ( _hScrollBounds.Width - _hKnobBounds.Width ) ) > ( _widgetArea.Width * 0.1f ) ) ) )
-            && ( !_touchScrollV || ( ScrollY && ( ( MaxY / ( _vScrollBounds.Height - _vKnobBounds.Height ) ) > ( _widgetArea.Height * 0.1f ) ) ) ) ) //
+          && ( !_touchScrollH || ( ScrollX && ( ( MaxX / ( _hScrollBounds.Width - _hKnobBounds.Width ) ) > ( _widgetArea.Width * 0.1f ) ) ) )
+          && ( !_touchScrollV || ( ScrollY && ( ( MaxY / ( _vScrollBounds.Height - _vKnobBounds.Height ) ) > ( _widgetArea.Height * 0.1f ) ) ) ) //
            )
         {
             if ( !_visualAmountX.Equals( AmountX ) )
@@ -353,15 +349,15 @@ public partial class ScrollPane : WidgetGroup
 
     public override void SetLayout()
     {
-        IDrawable? bg             = Style.Background;
-        IDrawable? hScrollKnob    = Style.HScrollKnob;
-        IDrawable? vScrollKnob    = Style.VScrollKnob;
+        IDrawable? bg          = Style.Background;
+        IDrawable? hScrollKnob = Style.HScrollKnob;
+        IDrawable? vScrollKnob = Style.VScrollKnob;
 
         if ( bg == null )
         {
             return;
         }
-        
+
         _widgetArea.Set( bg.LeftWidth,
                          bg.BottomHeight,
                          Width - bg.LeftWidth - bg.RightWidth,
@@ -615,7 +611,7 @@ public partial class ScrollPane : WidgetGroup
 
         // Draw the background ninepatch.
         Color? color = Color;
-        var    alpha = ( color!.A * parentAlpha );
+        var    alpha = color!.A * parentAlpha;
 
         if ( Style.Background != null )
         {
@@ -646,8 +642,8 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// Renders the scrollbars after the children have been drawn. If the
-    /// scrollbars faded out, a is zero and rendering can be skipped.
+    ///     Renders the scrollbars after the children have been drawn. If the
+    ///     scrollbars faded out, a is zero and rendering can be skipped.
     /// </summary>
     protected void DrawScrollBars( IBatch batch, float r, float g, float b, float a )
     {
@@ -666,7 +662,7 @@ public partial class ScrollPane : WidgetGroup
             if ( Style.Corner != null )
             {
                 Style.Corner.Draw( batch,
-                                   ( _hScrollBounds.X + _hScrollBounds.Width ),
+                                   _hScrollBounds.X + _hScrollBounds.Width,
                                    _hScrollBounds.Y,
                                    _vScrollBounds.Width,
                                    _vScrollBounds.Y );
@@ -717,16 +713,16 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// Generate fling gesture.
+    ///     Generate fling gesture.
     /// </summary>
     /// <param name="flingTime"> Time in seconds for which you want to fling last. </param>
     /// <param name="velocityX"> Velocity for horizontal direction. </param>
     /// <param name="velocityY"> Velocity for vertical direction. </param>
     public void Fling( float flingTime, float velocityX, float velocityY )
     {
-        this._flingTimer = flingTime;
-        this.VelocityX   = velocityX;
-        this.VelocityY   = velocityY;
+        _flingTimer = flingTime;
+        VelocityX   = velocityX;
+        VelocityY   = velocityY;
     }
 
     public float GetPrefWidth()
@@ -810,7 +806,7 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// Sets the <see cref="Actor"/> embedded in this scroll pane.
+    ///     Sets the <see cref="Actor" /> embedded in this scroll pane.
     /// </summary>
     /// <param name="actor"> May be null to remove zsany current actor. </param>
     public void SetActor( Actor? actor )
@@ -820,16 +816,16 @@ public partial class ScrollPane : WidgetGroup
             throw new ArgumentException( "widget cannot be the ScrollPane." );
         }
 
-        if ( this._widget != null )
+        if ( _widget != null )
         {
-            base.RemoveActor( this._widget );
+            base.RemoveActor( _widget );
         }
 
-        this._widget = actor;
+        _widget = actor;
 
         if ( _widget != null )
         {
-            base.AddActor( _widget );
+            AddActor( _widget );
         }
     }
 
@@ -859,7 +855,7 @@ public partial class ScrollPane : WidgetGroup
             return false;
         }
 
-        this._widget = null;
+        _widget = null;
 
         return base.RemoveActor( actor, unfocus );
     }
@@ -870,7 +866,7 @@ public partial class ScrollPane : WidgetGroup
 
         if ( actor == _widget )
         {
-            this._widget = null;
+            _widget = null;
         }
 
         return actor;
@@ -900,22 +896,16 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// Returns the amount to scroll horizontally when the mouse wheel is scrolled.
+    ///     Returns the amount to scroll horizontally when the mouse wheel is scrolled.
     /// </summary>
-    protected float GetMouseWheelX()
-    {
-        return Math.Min( _widgetArea.Width, Math.Max( _widgetArea.Width * 0.9f, MaxX * 0.1f ) / 4 );
-    }
+    protected float GetMouseWheelX() => Math.Min( _widgetArea.Width, Math.Max( _widgetArea.Width * 0.9f, MaxX * 0.1f ) / 4 );
 
     /// <summary>
-    /// Returns the amount to scroll vertically when the mouse wheel is scrolled.
+    ///     Returns the amount to scroll vertically when the mouse wheel is scrolled.
     /// </summary>
-    protected float GetMouseWheelY()
-    {
-        return Math.Min( _widgetArea.Height, Math.Max( _widgetArea.Height * 0.9f, MaxY * 0.1f ) / 4 );
-    }
+    protected float GetMouseWheelY() => Math.Min( _widgetArea.Height, Math.Max( _widgetArea.Height * 0.9f, MaxY * 0.1f ) / 4 );
 
-//
+    //
 //    /// <summary>
 //    /// Called whenever the x scroll amount is changed.
 //    /// </summary>
@@ -933,8 +923,8 @@ public partial class ScrollPane : WidgetGroup
 //    }
 
     /// <summary>
-    /// Sets the visual scroll amount equal to the scroll amount. This can
-    /// be used when setting the scroll amount without animating.
+    ///     Sets the visual scroll amount equal to the scroll amount. This can
+    ///     be used when setting the scroll amount without animating.
     /// </summary>
     public void UpdateVisualScroll()
     {
@@ -972,10 +962,7 @@ public partial class ScrollPane : WidgetGroup
         return MathUtils.Clamp( AmountX / MaxX, 0, 1 );
     }
 
-    public void SetScrollPercentX( float percentX )
-    {
-        AmountX = ( MaxX * MathUtils.Clamp( percentX, 0, 1 ) );
-    }
+    public void SetScrollPercentX( float percentX ) => AmountX = MaxX * MathUtils.Clamp( percentX, 0, 1 );
 
     public float GetScrollPercentY()
     {
@@ -987,19 +974,16 @@ public partial class ScrollPane : WidgetGroup
         return MathUtils.Clamp( AmountY / MaxY, 0, 1 );
     }
 
-    public void SetScrollPercentY( float percentY )
-    {
-        AmountY = MaxY * MathUtils.Clamp( percentY, 0, 1 );
-    }
+    public void SetScrollPercentY( float percentY ) => AmountY = MaxY * MathUtils.Clamp( percentY, 0, 1 );
 
     public void SetFlickScroll( bool flickScroll )
     {
-        if ( this._flickScroll == flickScroll )
+        if ( _flickScroll == flickScroll )
         {
             return;
         }
 
-        this._flickScroll = flickScroll;
+        _flickScroll = flickScroll;
 
         if ( flickScroll )
         {
@@ -1013,31 +997,25 @@ public partial class ScrollPane : WidgetGroup
         Invalidate();
     }
 
-    public void SetFlickScrollTapSquareSize( float halfTapSquareSize )
-    {
-        _flickScrollListener.Detector.SetTapSquareSize( halfTapSquareSize );
-    }
+    public void SetFlickScrollTapSquareSize( float halfTapSquareSize ) => _flickScrollListener.Detector.SetTapSquareSize( halfTapSquareSize );
 
     /// <summary>
-    /// Sets the scroll offset so the specified rectangle is fully in view,
-    /// if possible. Coordinates are in the scroll pane widget's coordinate
-    /// system.
+    ///     Sets the scroll offset so the specified rectangle is fully in view,
+    ///     if possible. Coordinates are in the scroll pane widget's coordinate
+    ///     system.
     /// </summary>
-    public void ScrollTo( float x, float y, float width, float height )
-    {
-        ScrollTo( x, y, width, height, false, false );
-    }
+    public void ScrollTo( float x, float y, float width, float height ) => ScrollTo( x, y, width, height, false, false );
 
     /// <summary>
-    /// Sets the scroll offset so the specified rectangle is fully in view, and
-    /// optionally centered vertically and/or horizontally, if possible.
-    /// Coordinates are in the scroll pane widget's coordinate system.
+    ///     Sets the scroll offset so the specified rectangle is fully in view, and
+    ///     optionally centered vertically and/or horizontally, if possible.
+    ///     Coordinates are in the scroll pane widget's coordinate system.
     /// </summary>
     public void ScrollTo( float x, float y, float width, float height, bool centerHorizontal, bool centerVertical )
     {
         Validate();
 
-        var amountX = this.AmountX;
+        var amountX = AmountX;
 
         if ( centerHorizontal )
         {
@@ -1058,7 +1036,7 @@ public partial class ScrollPane : WidgetGroup
 
         AmountX = MathUtils.Clamp( amountX, 0, MaxX );
 
-        var amountY = this.AmountY;
+        var amountY = AmountY;
 
         if ( centerVertical )
         {
@@ -1125,8 +1103,8 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// Disables scrolling in a direction. The widget will be sized to the
-    /// FlickScrollPane in the disabled direction.
+    ///     Disables scrolling in a direction. The widget will be sized to the
+    ///     FlickScrollPane in the disabled direction.
     /// </summary>
     public void SetScrollingDisabled( bool x, bool y )
     {
@@ -1136,25 +1114,22 @@ public partial class ScrollPane : WidgetGroup
         Invalidate();
     }
 
-    public bool IsPanning()
-    {
-        return _flickScrollListener.Detector.IsPanning();
-    }
+    public bool IsPanning() => _flickScrollListener.Detector.IsPanning();
 
     /// <summary>
-    /// For flick scroll, if true the widget can be scrolled slightly past its
-    /// bounds and will animate back to its bounds when scrolling is stopped.
-    /// Default is true.
+    ///     For flick scroll, if true the widget can be scrolled slightly past its
+    ///     bounds and will animate back to its bounds when scrolling is stopped.
+    ///     Default is true.
     /// </summary>
     public void SetOverscroll( bool overscrollX, bool overscrollY )
     {
-        this._overscrollX = overscrollX;
-        this._overscrollY = overscrollY;
+        _overscrollX = overscrollX;
+        _overscrollY = overscrollY;
     }
 
     /// <summary>
-    /// For flick scroll, sets the overscroll distance in pixels and the speed
-    /// it returns to the widget's bounds in seconds. Default is 50, 30, 200. 
+    ///     For flick scroll, sets the overscroll distance in pixels and the speed
+    ///     it returns to the widget's bounds in seconds. Default is 50, 30, 200.
     /// </summary>
     public void SetupOverscroll( float distance, float speedMin, float speedMax )
     {
@@ -1164,9 +1139,9 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// Forces enabling scrollbars (for non-flick scroll) and overscrolling
-    /// (for flick scroll) in a direction, even if the contents do not exceed
-    /// the bounds in that direction.
+    ///     Forces enabling scrollbars (for non-flick scroll) and overscrolling
+    ///     (for flick scroll) in a direction, even if the contents do not exceed
+    ///     the bounds in that direction.
     /// </summary>
     public void SetForceScroll( bool x, bool y )
     {
@@ -1175,7 +1150,7 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// Set the position of the vertical and horizontal scroll bars.
+    ///     Set the position of the vertical and horizontal scroll bars.
     /// </summary>
     public void SetScrollBarPositions( bool bottom, bool right )
     {
@@ -1184,17 +1159,17 @@ public partial class ScrollPane : WidgetGroup
     }
 
     /// <summary>
-    /// When true the scrollbars don't reduce the scrollable size and fade out
-    /// after some time of not being used.
+    ///     When true the scrollbars don't reduce the scrollable size and fade out
+    ///     after some time of not being used.
     /// </summary>
     public void SetFadeScrollBars( bool fadeScrollBars )
     {
-        if ( this.FadeScrollBars == fadeScrollBars )
+        if ( FadeScrollBars == fadeScrollBars )
         {
             return;
         }
 
-        this.FadeScrollBars = fadeScrollBars;
+        FadeScrollBars = fadeScrollBars;
 
         if ( !fadeScrollBars )
         {
@@ -1206,21 +1181,85 @@ public partial class ScrollPane : WidgetGroup
 
     public void SetupFadeScrollBars( float fadeAlphaSeconds, float fadeDelaySeconds )
     {
-        this._fadeAlphaSeconds = fadeAlphaSeconds;
-        this._fadeDelaySeconds = fadeDelaySeconds;
+        _fadeAlphaSeconds = fadeAlphaSeconds;
+        _fadeDelaySeconds = fadeDelaySeconds;
     }
 
     /// <summary>
-    /// When false (the default), the widget is clipped so it is not drawn
-    /// under the scrollbars. When true, the widget is clipped to the entire
-    /// scroll pane bounds and the scrollbars are drawn on top of the widget.
-    /// If <see cref="SetFadeScrollBars(bool)"/> is true, the scroll bars are
-    /// always drawn on top.
+    ///     When false (the default), the widget is clipped so it is not drawn
+    ///     under the scrollbars. When true, the widget is clipped to the entire
+    ///     scroll pane bounds and the scrollbars are drawn on top of the widget.
+    ///     If <see cref="SetFadeScrollBars(bool)" /> is true, the scroll bars are
+    ///     always drawn on top.
     /// </summary>
     public void setScrollbarsOnTop( bool scrollbarsOnTop )
     {
-        this._scrollbarsOnTop = scrollbarsOnTop;
+        _scrollbarsOnTop = scrollbarsOnTop;
         Invalidate();
+    }
+
+    // ------------------------------------------------------------------------
+
+    #region debug
+
+    public override void DrawDebug( ShapeRenderer shapes )
+    {
+        DrawDebugBounds( shapes );
+        ApplyTransform( shapes, ComputeTransform() );
+
+        if ( ClipBegin( _widgetArea.X, _widgetArea.Y, _widgetArea.Width, _widgetArea.Height ) )
+        {
+            DrawDebugChildren( shapes );
+            shapes.Flush();
+            ClipEnd();
+        }
+
+        ResetTransform( shapes );
+    }
+
+    #endregion debug
+
+    // ------------------------------------------------------------------------
+
+
+    public class ScrollPaneStyle
+    {
+
+        public ScrollPaneStyle()
+        {
+        }
+
+        public ScrollPaneStyle( IDrawable background,
+                                IDrawable hScroll,
+                                IDrawable hScrollKnob,
+                                IDrawable vScroll,
+                                IDrawable vScrollKnob )
+        {
+            Background  = background;
+            HScroll     = hScroll;
+            HScrollKnob = hScrollKnob;
+            VScroll     = vScroll;
+            VScrollKnob = vScrollKnob;
+        }
+
+        public ScrollPaneStyle( ScrollPaneStyle style )
+        {
+            Background = style.Background;
+            Corner     = style.Corner;
+
+            HScroll     = style.HScroll;
+            HScrollKnob = style.HScrollKnob;
+
+            VScroll     = style.VScroll;
+            VScrollKnob = style.VScrollKnob;
+        }
+
+        public IDrawable? Background  { get; set; }
+        public IDrawable? Corner      { get; set; }
+        public IDrawable? HScroll     { get; set; }
+        public IDrawable? HScrollKnob { get; set; }
+        public IDrawable? VScroll     { get; set; }
+        public IDrawable? VScrollKnob { get; set; }
     }
 
     // ------------------------------------------------------------------------
@@ -1228,37 +1267,37 @@ public partial class ScrollPane : WidgetGroup
     #region expression bodies
 
     /// <summary>
-    /// Called whenever the visual x scroll amount is changed.
+    ///     Called whenever the visual x scroll amount is changed.
     /// </summary>
-    protected void VisualScrollX( float pixelsX ) => this._visualAmountX = pixelsX;
+    protected void VisualScrollX( float pixelsX ) => _visualAmountX = pixelsX;
 
     /// <summary>
-    /// Called whenever the visual y scroll amount is changed.
+    ///     Called whenever the visual y scroll amount is changed.
     /// </summary>
-    protected void VisualScrollY( float pixelsY ) => this._visualAmountY = pixelsY;
+    protected void VisualScrollY( float pixelsY ) => _visualAmountY = pixelsY;
 
     /// <summary>
-    /// Returns the actor embedded in this scroll pane, or null.
+    ///     Returns the actor embedded in this scroll pane, or null.
     /// </summary>
     public Actor? GetActor() => _widget;
 
     /// <summary>
-    /// Returns the width of the scrolled viewport.
+    ///     Returns the width of the scrolled viewport.
     /// </summary>
     public float GetScrollWidth() => _widgetArea.Width;
 
     /// <summary>
-    /// Returns the height of the scrolled viewport.
+    ///     Returns the height of the scrolled viewport.
     /// </summary>
     public float GetScrollHeight() => _widgetArea.Height;
 
     /// <summary>
-    /// Returns true if the widget is larger than the scroll pane horizontally.
+    ///     Returns true if the widget is larger than the scroll pane horizontally.
     /// </summary>
     public bool ISScrollX() => ScrollX;
 
     /// <summary>
-    /// Returns true if the widget is larger than the scroll pane vertically.
+    ///     Returns true if the widget is larger than the scroll pane vertically.
     /// </summary>
     public bool ISScrollY() => ScrollY;
 
@@ -1296,128 +1335,72 @@ public partial class ScrollPane : WidgetGroup
     public bool            SmoothScrolling    { get; set; } = true;
 
     /// <summary>
-    /// Returns the maximum scroll value in the x direction.
+    ///     Returns the maximum scroll value in the x direction.
     /// </summary>
     public float MaxX { get; set; }
 
     /// <summary>
-    /// Returns the maximum scroll value in the y direction.
+    ///     Returns the maximum scroll value in the y direction.
     /// </summary>
     public float MaxY { get; set; }
 
     /// <summary>
-    /// The x scroll position in pixels, where 0 is the left of the scroll pane.
+    ///     The x scroll position in pixels, where 0 is the left of the scroll pane.
     /// </summary>
     public bool ScrollX { get; set; }
 
     /// <summary>
-    /// The y scroll position in pixels, where 0 is the top of the scroll pane.
+    ///     The y scroll position in pixels, where 0 is the top of the scroll pane.
     /// </summary>
     public bool ScrollY { get; set; }
 
     /// <summary>
-    /// Flick scroll X velocity.
+    ///     Flick scroll X velocity.
     /// </summary>
     public float VelocityX { get; set; }
 
     /// <summary>
-    /// Flick scroll Y velocity.
+    ///     Flick scroll Y velocity.
     /// </summary>
     public float VelocityY { get; set; }
 
     /// <summary>
-    /// When false, the scroll bars don't respond to touch or mouse events.
-    /// Default is true.
+    ///     When false, the scroll bars don't respond to touch or mouse events.
+    ///     Default is true.
     /// </summary>
     public bool ScrollBarTouch { get; set; } = true;
 
     /// <summary>
-    /// For flick scroll, sets the amount of time in seconds that a fling
-    /// will continue to scroll. Default is 1.
+    ///     For flick scroll, sets the amount of time in seconds that a fling
+    ///     will continue to scroll. Default is 1.
     /// </summary>
     public float FlingTime { get; set; } = 1f;
 
     /// <summary>
-    /// For flick scroll, prevents scrolling out of the widget's bounds.
-    /// Default is true.
+    ///     For flick scroll, prevents scrolling out of the widget's bounds.
+    ///     Default is true.
     /// </summary>
     public bool Clamp { get; set; } = true;
 
-    /// If true, the scroll knobs are sized based on <see cref="MaxX()"/>" or
-    /// <see cref="MaxY()"/>. If false, the scroll knobs are sized based on
-    /// <see cref="IDrawable.MinWidth"/> or <see cref="IDrawable.MinHeight"/>".
+    /// If true, the scroll knobs are sized based on
+    /// <see cref="MaxX()" />
+    /// " or
+    /// <see cref="MaxY()" />
+    /// . If false, the scroll knobs are sized based on
+    /// <see cref="IDrawable.MinWidth" />
+    /// or
+    /// <see cref="IDrawable.MinHeight" />
+    /// ".
     /// Default is true.
     public bool VariableSizeKnobs { get; set; } = true;
 
     /// <summary>
-    /// When true (default) and flick scrolling begins, <see cref="TouchFocusCancel"/>"
-    /// is called. This causes any widgets inside the scrollpane that have received
-    /// touchDown to receive touchUp when flick scrolling begins.
+    ///     When true (default) and flick scrolling begins, <see cref="TouchFocusCancel" />"
+    ///     is called. This causes any widgets inside the scrollpane that have received
+    ///     touchDown to receive touchUp when flick scrolling begins.
     /// </summary>
     public bool CancelTouchFocus { get; set; } = true;
 
     #endregion properties
 
-    // ------------------------------------------------------------------------
-
-    #region debug
-
-    public override void DrawDebug( ShapeRenderer shapes )
-    {
-        DrawDebugBounds( shapes );
-        ApplyTransform( shapes, ComputeTransform() );
-
-        if ( ClipBegin( _widgetArea.X, _widgetArea.Y, _widgetArea.Width, _widgetArea.Height ) )
-        {
-            DrawDebugChildren( shapes );
-            shapes.Flush();
-            ClipEnd();
-        }
-
-        ResetTransform( shapes );
-    }
-
-    #endregion debug
-
-    // ------------------------------------------------------------------------
-
-    [PublicAPI]
-    public class ScrollPaneStyle
-    {
-        public IDrawable? Background  { get; set; }
-        public IDrawable? Corner      { get; set; }
-        public IDrawable? HScroll     { get; set; }
-        public IDrawable? HScrollKnob { get; set; }
-        public IDrawable? VScroll     { get; set; }
-        public IDrawable? VScrollKnob { get; set; }
-
-        public ScrollPaneStyle()
-        {
-        }
-
-        public ScrollPaneStyle( IDrawable background,
-                                IDrawable hScroll,
-                                IDrawable hScrollKnob,
-                                IDrawable vScroll,
-                                IDrawable vScrollKnob )
-        {
-            this.Background  = background;
-            this.HScroll     = hScroll;
-            this.HScrollKnob = hScrollKnob;
-            this.VScroll     = vScroll;
-            this.VScrollKnob = vScrollKnob;
-        }
-
-        public ScrollPaneStyle( ScrollPaneStyle style )
-        {
-            Background = style.Background;
-            Corner     = style.Corner;
-
-            HScroll     = style.HScroll;
-            HScrollKnob = style.HScrollKnob;
-
-            VScroll     = style.VScroll;
-            VScrollKnob = style.VScrollKnob;
-        }
-    }
 }

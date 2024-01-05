@@ -14,29 +14,17 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Color = LibGDXSharp.Graphics.Color;
-
 namespace LibGDXSharp.Graphics.G2D;
 
-[PublicAPI]
 public class PolygonSprite
 {
-    public PolygonRegion? Region   { get; private set; }
-    public float          Width    { get; set; }
-    public float          Height   { get; set; }
-    public float          OriginX  { get; set; }
-    public float          OriginY  { get; set; }
-    public float          ScaleX   { get; set; } = 1f;
-    public float          ScaleY   { get; set; } = 1f;
-    public float          Rotation { get; set; }
-
-    private float    _x;
-    private float    _y;
-    private float[]? _vertices;
-    private bool     _dirty;
 
     private readonly RectangleShape _bounds = new();
-    private readonly Color          _color  = new( 1f, 1f, 1f, 1f );
+    private          bool           _dirty;
+    private          float[]?       _vertices;
+
+    private float _x;
+    private float _y;
 
     public PolygonSprite( PolygonRegion region )
     {
@@ -46,12 +34,50 @@ public class PolygonSprite
     }
 
     /// <summary>
-    /// Creates a sprite that is a copy in every way of the specified sprite.
+    ///     Creates a sprite that is a copy in every way of the specified sprite.
     /// </summary>
-    public PolygonSprite( PolygonSprite sprite )
+    public PolygonSprite( PolygonSprite sprite ) => Set( sprite );
+
+    public PolygonRegion? Region   { get; private set; }
+    public float          Width    { get; set; }
+    public float          Height   { get; set; }
+    public float          OriginX  { get; set; }
+    public float          OriginY  { get; set; }
+    public float          ScaleX   { get; set; } = 1f;
+    public float          ScaleY   { get; set; } = 1f;
+    public float          Rotation { get; set; }
+
+    /// <summary>
+    ///     Sets the x position where the sprite will be drawn. If origin, rotation,
+    ///     or scale are changed, it is slightly more efficient to set the position
+    ///     after those operations. If both position and size are to be changed, it
+    ///     is better to use <see cref="SetBounds(float, float, float, float)" />.
+    /// </summary>
+    public float X
     {
-        Set( sprite );
+        get => _x;
+        set => TranslateX( value );
     }
+
+    /// <summary>
+    ///     Sets the y position where the sprite will be drawn. If origin, rotation,
+    ///     or scale are changed, it is slightly more efficient to set the position
+    ///     after those operations. If both position and size are to be changed, it
+    ///     is better to use <see cref="SetBounds(float, float, float, float)" />.
+    /// </summary>
+    public float Y
+    {
+        get => _y;
+        set => TranslateY( value );
+    }
+
+    /// <summary>
+    ///     Returns the color of this sprite. Modifying the returned color
+    ///     will have unexpected effects unless <see cref="SetColor(LibGDXSharp.Graphics.Color)" /> or
+    ///     <see cref="SetColor(float, float, float, float)" /> is subsequently
+    ///     called before drawing this sprite.
+    /// </summary>
+    public Color Color { get; } = new( 1f, 1f, 1f, 1f );
 
     public void Set( PolygonSprite sprite )
     {
@@ -69,98 +95,71 @@ public class PolygonSprite
         ScaleX   = sprite.ScaleX;
         ScaleY   = sprite.ScaleY;
 
-        _color.Set( sprite._color );
+        Color.Set( sprite.Color );
     }
 
     /// <summary>
-    /// Sets the position and size of the sprite when drawn, before scaling
-    /// and rotation are applied. If origin, rotation, or scale are changed,
-    /// it is slightly more efficient to set the bounds after those operations.
+    ///     Sets the position and size of the sprite when drawn, before scaling
+    ///     and rotation are applied. If origin, rotation, or scale are changed,
+    ///     it is slightly more efficient to set the bounds after those operations.
     /// </summary>
     public void SetBounds( float x, float y, float width, float height )
     {
-        this._x     = x;
-        this._y     = y;
-        this.Width  = width;
-        this.Height = height;
+        _x     = x;
+        _y     = y;
+        Width  = width;
+        Height = height;
 
         _dirty = true;
     }
 
     /// <summary>
-    /// Sets the size of the sprite when drawn, before scaling and rotation
-    /// are applied. If origin, rotation, or scale are changed, it is slightly
-    /// more efficient to set the size after those operations. If both position
-    /// and size are to be changed, it is better to use
-    /// <see cref="SetBounds(float, float, float, float)"/>
+    ///     Sets the size of the sprite when drawn, before scaling and rotation
+    ///     are applied. If origin, rotation, or scale are changed, it is slightly
+    ///     more efficient to set the size after those operations. If both position
+    ///     and size are to be changed, it is better to use
+    ///     <see cref="SetBounds(float, float, float, float)" />
     /// </summary>
     public void SetSize( float width, float height )
     {
-        this.Width  = width;
-        this.Height = height;
+        Width  = width;
+        Height = height;
 
         _dirty = true;
     }
 
     /// <summary>
-    /// Sets the position where the sprite will be drawn. If origin, rotation,
-    /// or scale are changed, it is slightly more efficient to set the position
-    /// after those operations. If both position and size are to be changed,
-    /// it is better to use <see cref="SetBounds(float, float, float, float)"/>
+    ///     Sets the position where the sprite will be drawn. If origin, rotation,
+    ///     or scale are changed, it is slightly more efficient to set the position
+    ///     after those operations. If both position and size are to be changed,
+    ///     it is better to use <see cref="SetBounds(float, float, float, float)" />
     /// </summary>
-    public void SetPosition( float x, float y )
-    {
-        Translate( x - this._x, y - this._y );
-    }
+    public void SetPosition( float x, float y ) => Translate( x - _x, y - _y );
 
     /// <summary>
-    /// Sets the x position where the sprite will be drawn. If origin, rotation,
-    /// or scale are changed, it is slightly more efficient to set the position
-    /// after those operations. If both position and size are to be changed, it
-    /// is better to use <see cref="SetBounds(float, float, float, float)"/>.
-    /// </summary>
-    public float X
-    {
-        get => _x;
-        set => TranslateX( value );
-    }
-
-    /// <summary>
-    /// Sets the y position where the sprite will be drawn. If origin, rotation,
-    /// or scale are changed, it is slightly more efficient to set the position
-    /// after those operations. If both position and size are to be changed, it
-    /// is better to use <see cref="SetBounds(float, float, float, float)"/>.
-    /// </summary>
-    public float Y
-    {
-        get => _y;
-        set => TranslateY( value );
-    }
-
-    /// <summary>
-    /// Sets the x position relative to the current position where the sprite
-    /// will be drawn. If origin, rotation, or scale are changed, it is slightly
-    /// more efficient to translate after those operations.
+    ///     Sets the x position relative to the current position where the sprite
+    ///     will be drawn. If origin, rotation, or scale are changed, it is slightly
+    ///     more efficient to translate after those operations.
     /// </summary>
     public void TranslateX( float xAmount )
     {
-        this._x += xAmount;
+        _x += xAmount;
 
         if ( _dirty )
         {
             return;
         }
 
-        for ( var i = 0; i < this._vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 0; i < _vertices?.Length; i += Sprite.VertexSize )
         {
-            this._vertices[ i ] += xAmount;
+            _vertices[ i ] += xAmount;
         }
     }
 
     /// <summary>
-    /// Sets the y position relative to the current position where the sprite
-    /// will be drawn. If origin, rotation, or scale are changed, it is slightly
-    /// more efficient to translate after those operations.
+    ///     Sets the y position relative to the current position where the sprite
+    ///     will be drawn. If origin, rotation, or scale are changed, it is slightly
+    ///     more efficient to translate after those operations.
     /// </summary>
     public void TranslateY( float yAmount )
     {
@@ -171,16 +170,16 @@ public class PolygonSprite
             return;
         }
 
-        for ( var i = 1; i < this._vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 1; i < _vertices?.Length; i += Sprite.VertexSize )
         {
-            this._vertices[ i ] += yAmount;
+            _vertices[ i ] += yAmount;
         }
     }
 
     /// <summary>
-    /// Sets the position relative to the current position where the sprite
-    /// will be drawn. If origin, rotation, or scale are changed, it is
-    /// slightly more efficient to translate after those operations. 
+    ///     Sets the position relative to the current position where the sprite
+    ///     will be drawn. If origin, rotation, or scale are changed, it is
+    ///     slightly more efficient to translate after those operations.
     /// </summary>
     public void Translate( float xAmount, float yAmount )
     {
@@ -192,53 +191,53 @@ public class PolygonSprite
             return;
         }
 
-        for ( var i = 0; i < this._vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 0; i < _vertices?.Length; i += Sprite.VertexSize )
         {
-            this._vertices[ i ]     += xAmount;
-            this._vertices[ i + 1 ] += yAmount;
+            _vertices[ i ]     += xAmount;
+            _vertices[ i + 1 ] += yAmount;
         }
     }
 
     public void SetColor( Color tint )
     {
-        _color.Set( tint );
+        Color.Set( tint );
 
         var color = tint.ToFloatBits();
 
-        for ( var i = 2; i < this._vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 2; i < _vertices?.Length; i += Sprite.VertexSize )
         {
-            this._vertices[ i ] = color;
+            _vertices[ i ] = color;
         }
     }
 
     public void SetColor( float r, float g, float b, float a )
     {
-        _color.Set( r, g, b, a );
+        Color.Set( r, g, b, a );
 
         for ( var i = 2; i < _vertices?.Length; i += Sprite.VertexSize )
         {
-            _vertices[ i ] = _color.ToFloatBits();
+            _vertices[ i ] = Color.ToFloatBits();
         }
     }
 
     /// <summary>
-    /// Sets the origin in relation to the sprite's position for scaling and rotation.
+    ///     Sets the origin in relation to the sprite's position for scaling and rotation.
     /// </summary>
     public void SetOrigin( float originX, float originY )
     {
-        this.OriginX = originX;
-        this.OriginY = originY;
-        _dirty       = true;
+        OriginX = originX;
+        OriginY = originY;
+        _dirty  = true;
     }
 
     public void SetRotation( float degrees )
     {
-        this.Rotation = degrees;
-        _dirty        = true;
+        Rotation = degrees;
+        _dirty   = true;
     }
 
     /// <summary>
-    /// Sets the sprite's rotation relative to the current rotation.
+    ///     Sets the sprite's rotation relative to the current rotation.
     /// </summary>
     public void Rotate( float degrees )
     {
@@ -248,30 +247,30 @@ public class PolygonSprite
 
     public void SetScale( float scaleXY )
     {
-        this.ScaleX = scaleXY;
-        this.ScaleY = scaleXY;
-        _dirty      = true;
+        ScaleX = scaleXY;
+        ScaleY = scaleXY;
+        _dirty = true;
     }
 
     public void SetScale( float scaleX, float scaleY )
     {
-        this.ScaleX = scaleX;
-        this.ScaleY = scaleY;
-        _dirty      = true;
+        ScaleX = scaleX;
+        ScaleY = scaleY;
+        _dirty = true;
     }
 
     /// <summary>
-    /// Sets the sprite's scale relative to the current scale.
+    ///     Sets the sprite's scale relative to the current scale.
     /// </summary>
     public void Scale( float amount )
     {
-        this.ScaleX += amount;
-        this.ScaleY += amount;
-        _dirty      =  true;
+        ScaleX += amount;
+        ScaleY += amount;
+        _dirty =  true;
     }
 
     /// <summary>
-    /// Returns the packed vertices, colors, and texture coordinates for this sprite.
+    ///     Returns the packed vertices, colors, and texture coordinates for this sprite.
     /// </summary>
     public float[]? GetVertices()
     {
@@ -282,15 +281,15 @@ public class PolygonSprite
 
         _dirty = false;
 
-        var originX  = this.OriginX;
-        var originY  = this.OriginY;
-        var scaleX   = this.ScaleX;
-        var scaleY   = this.ScaleY;
-        var vertices = this._vertices;
+        var originX  = OriginX;
+        var originY  = OriginY;
+        var scaleX   = ScaleX;
+        var scaleY   = ScaleY;
+        var vertices = _vertices;
 
         var regionVertices = Region.Vertices;
 
-        PolygonRegion region = this.Region;
+        PolygonRegion region = Region;
 
         var worldOriginX = _x + originX;
         var worldOriginY = _y + originY;
@@ -311,10 +310,10 @@ public class PolygonSprite
     }
 
     /// <summary>
-    /// Returns the bounding axis aligned <see cref="RectangleShape"/> that bounds
-    /// this sprite. The rectangles x and y coordinates describe its bottom left
-    /// corner. If you change the position or size of the sprite, you have to fetch
-    /// the triangle again for it to be recomputed.
+    ///     Returns the bounding axis aligned <see cref="RectangleShape" /> that bounds
+    ///     this sprite. The rectangles x and y coordinates describe its bottom left
+    ///     corner. If you change the position or size of the sprite, you have to fetch
+    ///     the triangle again for it to be recomputed.
     /// </summary>
     /// <returns> the bounding Rectangle </returns>
     public RectangleShape GetBoundingRectangle()
@@ -356,9 +355,8 @@ public class PolygonSprite
         {
             return;
         }
-        
-        spriteBatch.Draw
-            (
+
+        spriteBatch.Draw(
             Region.Region.Texture,
             GetVertices()!,
             0,
@@ -384,27 +382,19 @@ public class PolygonSprite
     }
 
     /// <summary>
-    /// Returns the color of this sprite. Modifying the returned color
-    /// will have unexpected effects unless <see cref="SetColor(LibGDXSharp.Graphics.Color)"/> or
-    /// <see cref="SetColor(float, float, float, float)"/> is subsequently
-    /// called before drawing this sprite.
-    /// </summary>
-    public Color Color => _color;
-
-    /// <summary>
-    /// Returns the actual color used in the vertices of this sprite. Modifying the
-    /// returned color will have unexpected effects unless <see cref="SetColor(LibGDXSharp.Graphics.Color)"/>
-    /// or <see cref="SetColor(float, float, float, float)"/> is subsequently called
-    /// before drawing this sprite.
+    ///     Returns the actual color used in the vertices of this sprite. Modifying the
+    ///     returned color will have unexpected effects unless <see cref="SetColor(LibGDXSharp.Graphics.Color)" />
+    ///     or <see cref="SetColor(float, float, float, float)" /> is subsequently called
+    ///     before drawing this sprite.
     /// </summary>
     public Color GetPackedColor()
     {
         if ( _vertices != null )
         {
-            Color.Abgr8888ToColor( _color, _vertices[ 2 ] );
+            Color.Abgr8888ToColor( Color, _vertices[ 2 ] );
         }
 
-        return _color;
+        return Color;
     }
 
     public void SetRegion( PolygonRegion? region )
@@ -413,8 +403,8 @@ public class PolygonSprite
         {
             return;
         }
-        
-        this.Region = region;
+
+        Region = region;
 
         var regionVertices = region.Vertices;
         var textureCoords  = region.TextureCoords;
@@ -429,9 +419,9 @@ public class PolygonSprite
         // Set the color and UVs in this sprite's vertices.
         for ( int i = 0, v = 2; v < verticesLength; i += 2, v += 5 )
         {
-            this._vertices[ v ]     = _color.ToFloatBits();
-            this._vertices[ v + 1 ] = textureCoords[ i ];
-            this._vertices[ v + 2 ] = textureCoords[ i + 1 ];
+            _vertices[ v ]     = Color.ToFloatBits();
+            _vertices[ v + 1 ] = textureCoords[ i ];
+            _vertices[ v + 2 ] = textureCoords[ i + 1 ];
         }
 
         _dirty = true;

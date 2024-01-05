@@ -20,104 +20,88 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics.G2D;
 
-[PublicAPI]
 public class BitmapFont
 {
-    private const string REGEX_PATTERN  = ".*id=(\\d+)";
-    private const string FONT_NAME      = "Resources/arial-15.fnt";
-    private const int    LOG2_PAGE_SIZE = 9;
-    private const int    PAGE_SIZE      = 1 << LOG2_PAGE_SIZE;
-    private const int    PAGES          = 0x10000 / PAGE_SIZE;
-
-    public bool Flipped     { get; set; }
-    public bool OwnsTexture { get; set; }
+    private const    string          REGEX_PATTERN  = ".*id=(\\d+)";
+    private const    string          FONT_NAME      = "Resources/arial-15.fnt";
+    private const    int             LOG2_PAGE_SIZE = 9;
+    private const    int             PAGE_SIZE      = 1 << LOG2_PAGE_SIZE;
+    private const    int             PAGES          = 0x10000 / PAGE_SIZE;
+    private readonly BitmapFontCache _cache;
 
     private readonly BitmapFontData        _data;
     private readonly List< TextureRegion > _regions;
-    private readonly BitmapFontCache       _cache;
 
-    private FileType _fileType;
-    private bool     _integer;
+    private readonly FileType _fileType;
+    private          bool     _integer;
 
     /// <summary>
-    /// Creates a BitmapFont using the default 15pt Arial font included in the library.
-    /// This is convenient to easily display text without bothering without generating
-    /// a bitmap font yourself.
+    ///     Creates a BitmapFont using the default 15pt Arial font included in the library.
+    ///     This is convenient to easily display text without bothering without generating
+    ///     a bitmap font yourself.
     /// </summary>
     public BitmapFont()
         : this(
             Gdx.Files.Internal( FONT_NAME ),
             Gdx.Files.Internal( FONT_NAME ),
             false
-            )
-    {
-        _fileType = FileType.Internal;
-    }
+            ) => _fileType = FileType.Internal;
 
     /// <summary>
-    /// Creates a BitmapFont using the default 15pt Arial font included in the
-    /// libGDXSharp project.
-    /// <para>
-    /// This is convenient to easily display text without bothering without generating a
-    /// bitmap font yourself.
-    /// </para>
+    ///     Creates a BitmapFont using the default 15pt Arial font included in the
+    ///     libGDXSharp project.
+    ///     <para>
+    ///         This is convenient to easily display text without bothering without generating a
+    ///         bitmap font yourself.
+    ///     </para>
     /// </summary>
     /// <param name="flip">
-    /// If true, the glyphs will be flipped for use with a perspective where 0,0 is
-    /// the upper left corner.
+    ///     If true, the glyphs will be flipped for use with a perspective where 0,0 is
+    ///     the upper left corner.
     /// </param>
     public BitmapFont( bool flip )
-        : this( Gdx.Files.Internal( FONT_NAME ), Gdx.Files.Internal( FONT_NAME ), flip )
-    {
-        _fileType = FileType.Internal;
-    }
+        : this( Gdx.Files.Internal( FONT_NAME ), Gdx.Files.Internal( FONT_NAME ), flip ) => _fileType = FileType.Internal;
 
     /// <summary>
-    /// Creates a BitmapFont with the glyphs relative to the specified region.
-    /// If the region is null, the glyph textures are loaded from the image file
-    /// given in the font file. The Dispose() method will not dispose the region's
-    /// texture in this case!
+    ///     Creates a BitmapFont with the glyphs relative to the specified region.
+    ///     If the region is null, the glyph textures are loaded from the image file
+    ///     given in the font file. The Dispose() method will not dispose the region's
+    ///     texture in this case!
     /// </summary>
     /// <param name="fontFile"> the font definition file.</param>
     /// <param name="region">
-    /// The texture region containing the glyphs. The glyphs must be relative to
-    /// the lower left corner (ie, the region should not be flipped). If the region
-    /// is null the glyph images are loaded from the image path in the font file.
+    ///     The texture region containing the glyphs. The glyphs must be relative to
+    ///     the lower left corner (ie, the region should not be flipped). If the region
+    ///     is null the glyph images are loaded from the image path in the font file.
     /// </param>
     /// <param name="flip">
-    /// If true, the glyphs will be flipped for use with a perspective where 0,0
-    /// is the upper left corner.
+    ///     If true, the glyphs will be flipped for use with a perspective where 0,0
+    ///     is the upper left corner.
     /// </param>
     public BitmapFont( FileInfo fontFile, TextureRegion region, bool flip = false )
-        : this( new BitmapFontData( fontFile, flip ), region, true )
-    {
-        _fileType = FileType.Local;
-    }
+        : this( new BitmapFontData( fontFile, flip ), region, true ) => _fileType = FileType.Local;
 
     /// <summary>
-    /// Creates a BitmapFont from a BMFont file. The image file name is read from
-    /// the BMFont file and the image is loaded from the same directory.
+    ///     Creates a BitmapFont from a BMFont file. The image file name is read from
+    ///     the BMFont file and the image is loaded from the same directory.
     /// </summary>
     /// <param name="fontFile"> the font definition file.</param>
     /// <param name="flip">
-    /// If true, the glyphs will be flipped for use with a perspective where 0,0
-    /// is the upper left corner.
+    ///     If true, the glyphs will be flipped for use with a perspective where 0,0
+    ///     is the upper left corner.
     /// </param>
     public BitmapFont( FileInfo fontFile, bool flip = false )
-        : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? )null, true )
-    {
-        _fileType = FileType.Local;
-    }
+        : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? )null, true ) => _fileType = FileType.Local;
 
     /// <summary>
-    /// Creates a BitmapFont from a BMFont file, using the specified image for
-    /// glyphs. Any image specified in the BMFont file is ignored.
+    ///     Creates a BitmapFont from a BMFont file, using the specified image for
+    ///     glyphs. Any image specified in the BMFont file is ignored.
     /// </summary>
     /// <param name="fontFile"> the font definition file.</param>
     /// <param name="imageFile"></param>
     /// <param name="flip">
-    /// If true, the glyphs will be flipped for use with a perspective where
-    /// 0,0 is the upper left corner.
+    ///     If true, the glyphs will be flipped for use with a perspective where
+    ///     0,0 is the upper left corner.
     /// </param>
     /// <param name="integer"></param>
     public BitmapFont( FileInfo fontFile, FileInfo imageFile, bool flip, bool integer = true )
@@ -132,42 +116,39 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Constructs a new BitmapFont from the given <see cref="BitmapFontData"/> and
-    /// <see cref="TextureRegion"/>. If the TextureRegion is null, the image path(s)
-    /// will be read from the BitmapFontData.
-    /// <para>
-    /// The dispose() method will not dispose the texture of the region(s) if the
-    /// region is != null.
-    /// </para>
-    /// <para>
-    /// Passing a single TextureRegion assumes that your font only needs a single
-    /// texture page. If you need to support multiple pages, either let the Font read
-    /// the images themselves (by specifying null as the TextureRegion), or by
-    /// specifying each page manually with the TextureRegion[] constructor.
-    /// </para>
+    ///     Constructs a new BitmapFont from the given <see cref="BitmapFontData" /> and
+    ///     <see cref="TextureRegion" />. If the TextureRegion is null, the image path(s)
+    ///     will be read from the BitmapFontData.
+    ///     <para>
+    ///         The dispose() method will not dispose the texture of the region(s) if the
+    ///         region is != null.
+    ///     </para>
+    ///     <para>
+    ///         Passing a single TextureRegion assumes that your font only needs a single
+    ///         texture page. If you need to support multiple pages, either let the Font read
+    ///         the images themselves (by specifying null as the TextureRegion), or by
+    ///         specifying each page manually with the TextureRegion[] constructor.
+    ///     </para>
     /// </summary>
     /// <param name="data"></param>
     /// <param name="region"></param>
     /// <param name="integer">
-    /// If true, rendering positions will be at integer values to avoid filtering
-    /// artifacts.
+    ///     If true, rendering positions will be at integer values to avoid filtering
+    ///     artifacts.
     /// </param>
     public BitmapFont( BitmapFontData data, TextureRegion? region, bool integer )
-        : this( data, region != null ? ListExtensions.With( region ) : null, integer )
-    {
-        _fileType = FileType.Local;
-    }
+        : this( data, region != null ? ListExtensions.With( region ) : null, integer ) => _fileType = FileType.Local;
 
     /// <summary>
-    /// Constructs a new BitmapFont from the given <see cref="BitmapFontData"/> and array
-    /// of <see cref="TextureRegion"/>. If the TextureRegion is null or empty, the image
-    /// path(s) will be read from the BitmapFontData. The dispose() method will not dispose
-    /// the texture of the region(s) if the regions array is != null and not empty.
+    ///     Constructs a new BitmapFont from the given <see cref="BitmapFontData" /> and array
+    ///     of <see cref="TextureRegion" />. If the TextureRegion is null or empty, the image
+    ///     path(s) will be read from the BitmapFontData. The dispose() method will not dispose
+    ///     the texture of the region(s) if the regions array is != null and not empty.
     /// </summary>
     /// <param name="data"></param>
     /// <param name="pageRegions"></param>
     /// <param name="integer">
-    /// If true, rendering positions will be at integer values to avoid filtering artifacts.
+    ///     If true, rendering positions will be at integer values to avoid filtering artifacts.
     /// </param>
     public BitmapFont( BitmapFontData data, List< TextureRegion >? pageRegions, bool integer )
     {
@@ -211,6 +192,23 @@ public class BitmapFont
         Load( data );
     }
 
+    public bool Flipped     { get; set; }
+    public bool OwnsTexture { get; set; }
+
+    /// <summary>
+    ///     Specifies whether to use integer positions.
+    ///     Default is to use them so filtering doesn't kick in as badly.
+    /// </summary>
+    public bool UseIntegerPositions
+    {
+        get => _integer;
+        set
+        {
+            _integer                   = value;
+            _cache.UseIntegerPositions = value;
+        }
+    }
+
     protected virtual void Load( BitmapFontData data )
     {
         foreach ( Glyph?[]? page in data.Glyphs )
@@ -239,7 +237,7 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Draws text at the specified position.
+    ///     Draws text at the specified position.
     /// </summary>
     /// <param name="batch"></param>
     /// <param name="str"></param>
@@ -258,7 +256,7 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Draws text at the specified position.
+    ///     Draws text at the specified position.
     /// </summary>
     public GlyphLayout Draw( IBatch batch, string str, float x, float y, int targetWidth, int halign, bool wrap )
     {
@@ -272,7 +270,7 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Draws text at the specified position.
+    ///     Draws text at the specified position.
     /// </summary>
     public GlyphLayout Draw( IBatch batch,
                              string str,
@@ -303,7 +301,7 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Draws text at the specified position.
+    ///     Draws text at the specified position.
     /// </summary>
     public GlyphLayout Draw( IBatch batch,
                              string str,
@@ -326,7 +324,7 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Draws text at the specified position.
+    ///     Draws text at the specified position.
     /// </summary>
     public void Draw( IBatch batch, GlyphLayout layout, float x, float y )
     {
@@ -336,84 +334,85 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Returns the color of text drawn with this font.
+    ///     Returns the color of text drawn with this font.
     /// </summary>
     public Color GetColor() => _cache.GetColor();
 
     /// <summary>
-    /// A convenience method for setting the font color.
+    ///     A convenience method for setting the font color.
     /// </summary>
     public void SetColor( Color color ) => _cache.GetColor().Set( color );
 
     /// <summary>
-    /// A convenience method for setting the font color.
+    ///     A convenience method for setting the font color.
     /// </summary>
-    public void SetColor( float r, float g, float b, float a )
-    {
-        _cache.GetColor().Set( r, g, b, a );
-    }
+    public void SetColor( float r, float g, float b, float a ) => _cache.GetColor().Set( r, g, b, a );
 
     public float GetScaleX() => _data.ScaleX;
 
     public float GetScaleY() => _data.ScaleY;
 
     /// <summary>
-    /// Returns the first texture region. This is included for backwards
-    /// compatibility, and for convenience since most fonts only use one
-    /// texture page.
-    /// <para>
-    /// For multi-page fonts, use <see cref="GetRegions()"/>.
-    /// </para>
+    ///     Returns the first texture region. This is included for backwards
+    ///     compatibility, and for convenience since most fonts only use one
+    ///     texture page.
+    ///     <para>
+    ///         For multi-page fonts, use <see cref="GetRegions()" />.
+    ///     </para>
     /// </summary>
     /// <returns>the first texture region</returns>
     public TextureRegion GetRegion() => _regions.First();
 
     /// <summary>
-    /// Returns the array of TextureRegions that represents each texture page of glyphs.
+    ///     Returns the array of TextureRegions that represents each texture page of glyphs.
     /// </summary>
     /// <returns>
-    /// the array of texture regions; modifying it may produce undesirable results
+    ///     the array of texture regions; modifying it may produce undesirable results
     /// </returns>
     public List< TextureRegion > GetRegions() => _regions;
 
     /// <summary>
-    /// Returns the texture page at the given index.
+    ///     Returns the texture page at the given index.
     /// </summary>
     public TextureRegion GetRegion( int index ) => _regions[ index ];
 
     /// <summary>
-    /// Returns the line height, which is the distance from one line of text to the next.
+    ///     Returns the line height, which is the distance from one line of text to the next.
     /// </summary>
     public float GetLineHeight() => _data.LineHeight;
 
-    /** Returns the x-advance of the space character. */
+    /**
+     * Returns the x-advance of the space character.
+     */
     public float GetSpaceXadvance() => _data.SpaceXadvance;
 
-    /** Returns the x-height, which is the distance from the top of most lowercase characters to the baseline. */
+    /**
+     * Returns the x-height, which is the distance from the top of most lowercase characters to the baseline.
+     */
     public float GetXHeight() => _data.XHeight;
 
     /// <summary>
-    /// Returns the cap height, which is the distance from the top of most uppercase
-    /// characters to the baseline. Since the drawing position is the cap height of
-    /// the first line, the cap height can be used to get the location of the baseline. 
+    ///     Returns the cap height, which is the distance from the top of most uppercase
+    ///     characters to the baseline. Since the drawing position is the cap height of
+    ///     the first line, the cap height can be used to get the location of the baseline.
     /// </summary>
     public float GetCapHeight() => _data.CapHeight;
 
     /// <summary>
-    /// Returns the ascent, which is the distance from the cap height to the top of
-    /// the tallest glyph.
+    ///     Returns the ascent, which is the distance from the cap height to the top of
+    ///     the tallest glyph.
     /// </summary>
     public float GetAscent() => _data.Ascent;
 
     /// <summary>
-    /// Returns the descent, which is the distance from the bottom of the glyph that
-    /// extends the lowest to the baseline. This number is negative. 
+    ///     Returns the descent, which is the distance from the bottom of the glyph that
+    ///     extends the lowest to the baseline. This number is negative.
     /// </summary>
     public float GetDescent() => _data.Descent;
 
     /// <summary>
-    /// Disposes the texture used by this BitmapFont's region IF this BitmapFont
-    /// created the texture.
+    ///     Disposes the texture used by this BitmapFont's region IF this BitmapFont
+    ///     created the texture.
     /// </summary>
     public void Dispose()
     {
@@ -427,9 +426,9 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Makes the specified glyphs fixed width. This can be useful to make the numbers
-    /// in a font fixed width. Eg, when horizontally centering a score or loading
-    /// percentage text, it will not jump around as different numbers are shown. 
+    ///     Makes the specified glyphs fixed width. This can be useful to make the numbers
+    ///     in a font fixed width. Eg, when horizontally centering a score or loading
+    ///     percentage text, it will not jump around as different numbers are shown.
     /// </summary>
     public void SetFixedWidthGlyphs( string glyphs )
     {
@@ -463,72 +462,67 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// Specifies whether to use integer positions.
-    /// Default is to use them so filtering doesn't kick in as badly.
-    /// </summary>
-    public bool UseIntegerPositions
-    {
-        get => _integer;
-        set
-        {
-            _integer                   = value;
-            _cache.UseIntegerPositions = value;
-        }
-    }
-
-    /// <summary>
-    /// For expert usage -- returns the BitmapFontCache used by this font, for rendering
-    /// to a sprite batch. This can be used, for example, to manipulate glyph colors
-    /// within a specific index.
+    ///     For expert usage -- returns the BitmapFontCache used by this font, for rendering
+    ///     to a sprite batch. This can be used, for example, to manipulate glyph colors
+    ///     within a specific index.
     /// </summary>
     /// <returns> the bitmap font cache used by this font  </returns>
     public BitmapFontCache GetCache() => _cache;
 
     /// <summary>
-    /// Gets the underlying <see cref="BitmapFontData"/> for this BitmapFont.
+    ///     Gets the underlying <see cref="BitmapFontData" /> for this BitmapFont.
     /// </summary>
     public BitmapFontData GetData() => _data;
 
     /// <summary>
-    /// Creates a new BitmapFontCache for this font. Using this method allows the
-    /// font to provide the BitmapFontCache implementation to customize rendering.
+    ///     Creates a new BitmapFontCache for this font. Using this method allows the
+    ///     font to provide the BitmapFontCache implementation to customize rendering.
     /// </summary>
     /// <para>
-    /// Note this method is called by the BitmapFont constructors. If a subclass
-    /// overrides this method, it will be called before the subclass constructors. 
+    ///     Note this method is called by the BitmapFont constructors. If a subclass
+    ///     overrides this method, it will be called before the subclass constructors.
     /// </para>
-    public BitmapFontCache NewFontCache()
-    {
-        return new BitmapFontCache( this, UseIntegerPositions );
-    }
+    public BitmapFontCache NewFontCache() => new( this, UseIntegerPositions );
 
-    public new string? ToString()
+    public new string? ToString() => _data.Name ?? base.ToString();
+
+    private static int IndexOf( string text, char ch, int start )
     {
-        return _data.Name ?? base.ToString();
+        var n = text.Length;
+
+        for ( ; start < n; start++ )
+        {
+            if ( text[ start ] == ch )
+            {
+                return start;
+            }
+        }
+
+        return n;
     }
 
     /// <summary>
-    /// Represents a single character in a font page.
+    ///     Represents a single character in a font page.
     /// </summary>
     public class Glyph
     {
+        internal bool       fixedWidth;
+        internal int        height;
         internal int        id;
+        internal byte[]?[]? kerning;
         internal int        srcX;
         internal int        srcY;
-        internal int        width;
-        internal int        height;
         internal float      u;
-        internal float      v;
         internal float      u2;
+        internal float      v;
         internal float      v2;
+        internal int        width;
+        internal int        xadvance;
         internal int        xoffset;
         internal int        yoffset;
-        internal int        xadvance;
-        internal byte[]?[]? kerning;
-        internal bool       fixedWidth;
 
         /// <summary>
-        /// The index to the texture page that holds this glyph.
+        ///     The index to the texture page that holds this glyph.
         /// </summary>
         internal int Page { get; set; } = 0;
 
@@ -554,122 +548,14 @@ public class BitmapFont
             page[ ch & ( PAGE_SIZE - 1 ) ] = ( byte )value;
         }
 
-        public new string ToString()
-        {
-            return id.ToString();
-        }
-    }
-
-    private static int IndexOf( string text, char ch, int start )
-    {
-        var n = text.Length;
-
-        for ( ; start < n; start++ )
-        {
-            if ( text[ start ] == ch )
-            {
-                return start;
-            }
-        }
-
-        return n;
+        public new string ToString() => id.ToString();
     }
 
     /// <summary>
-    /// Backing data for a <see cref="BitmapFont"/>.
+    ///     Backing data for a <see cref="BitmapFont" />.
     /// </summary>
-    [PublicAPI]
     public class BitmapFontData
     {
-        // The name of the font, or null.
-        internal string? Name { get; private set; }
-
-        // An array of the image paths, for multiple texture pages.
-        internal string[]? ImagePaths { get; private set; }
-
-        internal FileInfo FontFile  { get; set; }
-        internal bool     Flipped   { get; set; }
-        internal float    PadTop    { get; set; }
-        internal float    PadRight  { get; set; }
-        internal float    PadBottom { get; set; }
-        internal float    PadLeft   { get; set; }
-
-        /// <summary>
-        /// The distance from one line of text to the next.
-        /// </summary>
-        internal float LineHeight { get; private set; }
-
-        /// <summary>
-        /// The distance from the top of most uppercase characters to the
-        /// baseline. Since the drawing position is the cap height of the
-        /// first line, the cap height can be used to get the location of
-        /// the baseline. 
-        /// </summary>
-        internal float CapHeight { get; private set; } = 1;
-
-        /// <summary>
-        /// The distance from the cap height to the top of the tallest glyph.
-        /// </summary>
-        internal float Ascent { get; private set; }
-
-        /// <summary>
-        /// The distance from the bottom of the glyph that extends the lowest
-        /// to the baseline. This number is negative.
-        /// </summary>
-        internal float Descent { get; private set; }
-
-        /// <summary>
-        /// The distance to move down when \n is encountered.
-        /// </summary>
-        internal float Down { get; set; }
-
-        /// <summary>
-        /// Multiplier for the line height of blank lines. down * blankLineHeight is
-        /// used as the distance to move down for a blank line. 
-        /// </summary>
-        internal float BlankLineScale { get; set; } = 1;
-
-        internal float ScaleX        { get; private set; } = 1;
-        internal float ScaleY        { get; private set; } = 1;
-        internal bool  MarkupEnabled { get; set; }
-
-        /// <summary>
-        /// The amount to add to the glyph X position when drawing a cursor between
-        /// glyphs. This field is not set by the BMFont file, it needs to be set
-        /// manually depending on how the glyphs are rendered on the backing textures. 
-        /// </summary>
-        internal float CursorX { get; set; }
-
-        internal Glyph?[]?[] Glyphs { get; set; } = new Glyph[ PAGES ][];
-
-        /// <summary>
-        /// The glyph to display for characters not in the font. May be null.
-        /// </summary>
-        internal Glyph? MissingGlyph { get; set; }
-
-        /// <summary>
-        /// The width of the space character.
-        /// </summary>
-        internal float SpaceXadvance { get; set; }
-
-        /// <summary>
-        /// The x-height, which is the distance from the top of most lowercase
-        /// characters to the baseline.
-        /// </summary>
-        internal float XHeight { get; set; } = 1;
-
-        /// <summary>
-        /// Additional characters besides whitespace where text is wrapped.
-        /// Eg, a hypen (-).
-        /// </summary>
-
-        // ReSharper disable once UnassignedField.Global
-        internal char[]? breakChars;
-
-        internal readonly char[] xChars =
-        {
-            'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z'
-        };
 
         internal readonly char[] capChars =
         {
@@ -677,10 +563,23 @@ public class BitmapFont
             'L', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
         };
 
+        internal readonly char[] xChars =
+        {
+            'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z'
+        };
+
         /// <summary>
-        /// Creates an empty BitmapFontData for configuration before calling
-        /// <see cref="Load(FileInfo, bool)"/>, to subclass, or to populate
-        /// yourself, e.g. using stb-truetype or FreeType.
+        ///     Additional characters besides whitespace where text is wrapped.
+        ///     Eg, a hypen (-).
+        /// </summary>
+
+        // ReSharper disable once UnassignedField.Global
+        internal char[]? breakChars;
+
+        /// <summary>
+        ///     Creates an empty BitmapFontData for configuration before calling
+        ///     <see cref="Load(FileInfo, bool)" />, to subclass, or to populate
+        ///     yourself, e.g. using stb-truetype or FreeType.
         /// </summary>
         public BitmapFontData()
         {
@@ -699,6 +598,83 @@ public class BitmapFont
 
             Load( fontFile, flip );
         }
+
+        // The name of the font, or null.
+        internal string? Name { get; private set; }
+
+        // An array of the image paths, for multiple texture pages.
+        internal string[]? ImagePaths { get; private set; }
+
+        internal FileInfo FontFile  { get; set; }
+        internal bool     Flipped   { get; set; }
+        internal float    PadTop    { get; set; }
+        internal float    PadRight  { get; set; }
+        internal float    PadBottom { get; set; }
+        internal float    PadLeft   { get; set; }
+
+        /// <summary>
+        ///     The distance from one line of text to the next.
+        /// </summary>
+        internal float LineHeight { get; private set; }
+
+        /// <summary>
+        ///     The distance from the top of most uppercase characters to the
+        ///     baseline. Since the drawing position is the cap height of the
+        ///     first line, the cap height can be used to get the location of
+        ///     the baseline.
+        /// </summary>
+        internal float CapHeight { get; private set; } = 1;
+
+        /// <summary>
+        ///     The distance from the cap height to the top of the tallest glyph.
+        /// </summary>
+        internal float Ascent { get; private set; }
+
+        /// <summary>
+        ///     The distance from the bottom of the glyph that extends the lowest
+        ///     to the baseline. This number is negative.
+        /// </summary>
+        internal float Descent { get; private set; }
+
+        /// <summary>
+        ///     The distance to move down when \n is encountered.
+        /// </summary>
+        internal float Down { get; set; }
+
+        /// <summary>
+        ///     Multiplier for the line height of blank lines. down * blankLineHeight is
+        ///     used as the distance to move down for a blank line.
+        /// </summary>
+        internal float BlankLineScale { get; set; } = 1;
+
+        internal float ScaleX        { get; private set; } = 1;
+        internal float ScaleY        { get; private set; } = 1;
+        internal bool  MarkupEnabled { get; set; }
+
+        /// <summary>
+        ///     The amount to add to the glyph X position when drawing a cursor between
+        ///     glyphs. This field is not set by the BMFont file, it needs to be set
+        ///     manually depending on how the glyphs are rendered on the backing textures.
+        /// </summary>
+        internal float CursorX { get; set; }
+
+        internal Glyph?[]?[] Glyphs { get; set; } = new Glyph[ PAGES ][];
+
+        /// <summary>
+        ///     The glyph to display for characters not in the font. May be null.
+        /// </summary>
+        internal Glyph? MissingGlyph { get; set; }
+
+        /// <summary>
+        ///     The width of the space character.
+        /// </summary>
+        internal float SpaceXadvance { get; set; }
+
+        /// <summary>
+        ///     The x-height, which is the distance from the top of most lowercase
+        ///     characters to the baseline.
+        /// </summary>
+        internal float XHeight { get; set; } = 1;
 
         /// <summary>
         /// </summary>
@@ -1121,7 +1097,7 @@ public class BitmapFont
                     XHeight       = overrideXHeight;
                 }
             }
-            catch ( System.Exception ex )
+            catch ( Exception ex )
             {
                 throw new GdxRuntimeException( "Error loading font file: " + file, ex );
             }
@@ -1134,7 +1110,7 @@ public class BitmapFont
         /// <summary>
         /// </summary>
         /// <param name="glyph">
-        /// A reference to the Glyph whose region is to be set.
+        ///     A reference to the Glyph whose region is to be set.
         /// </param>
         /// <param name="region"></param>
         /// <remarks>This method is a candidate for reworking using 'ref'</remarks>
@@ -1236,7 +1212,7 @@ public class BitmapFont
         }
 
         /// <summary>
-        /// Sets the line height, which is the distance from one line of text to the next.
+        ///     Sets the line height, which is the distance from one line of text to the next.
         /// </summary>
         public void SetLineHeight( float height )
         {
@@ -1288,7 +1264,7 @@ public class BitmapFont
         }
 
         /// <summary>
-        /// Returns true if the font has the glyph, or if the font has a <see cref="MissingGlyph"/>.
+        ///     Returns true if the font has the glyph, or if the font has a <see cref="MissingGlyph" />.
         /// </summary>
         public bool HasGlyph( char ch )
         {
@@ -1301,27 +1277,29 @@ public class BitmapFont
         }
 
         /// <summary>
-        /// Returns the glyph for the specified character, or null if no such
-        /// glyph exists. Note that
+        ///     Returns the glyph for the specified character, or null if no such
+        ///     glyph exists. Note that
         /// </summary>
-        /// See also <see cref="GetGlyphs"/> should be be used to shape a string
-        /// of characters into a list of glyphs. 
+        /// See also
+        /// <see cref="GetGlyphs" />
+        /// should be be used to shape a string
+        /// of characters into a list of glyphs.
         public Glyph? GetGlyph( char ch ) => Glyphs[ ch / PAGE_SIZE ]?[ ch & ( PAGE_SIZE - 1 ) ];
 
         /// <summary>
-        /// Using the specified string, populates the glyphs and positions of the
-        /// specified glyph run.
+        ///     Using the specified string, populates the glyphs and positions of the
+        ///     specified glyph run.
         /// </summary>
         /// <param name="run"></param>
         /// <param name="str">
-        /// Characters to convert to glyphs. Will not contain newline or color tags.
-        /// May contain "[[" for an escaped left square bracket.
+        ///     Characters to convert to glyphs. Will not contain newline or color tags.
+        ///     May contain "[[" for an escaped left square bracket.
         /// </param>
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <param name="lastGlyph">
-        /// The glyph immediately before this run, or null if this is run is the
-        /// first on a line of text.
+        ///     The glyph immediately before this run, or null if this is run is the
+        ///     first on a line of text.
         /// </param>
         public void GetGlyphs( GlyphLayout.GlyphRun? run, string str, int start, int end, Glyph? lastGlyph )
         {
@@ -1396,9 +1374,9 @@ public class BitmapFont
         }
 
         /// <summary>
-        /// Returns the first valid glyph index to use to wrap to the next line,
-        /// starting at the specified start index and (typically) moving toward
-        /// the beginning of the glyphs array.
+        ///     Returns the first valid glyph index to use to wrap to the next line,
+        ///     starting at the specified start index and (typically) moving toward
+        ///     the beginning of the glyphs array.
         /// </summary>
         public int GetWrapIndex( List< Glyph > glyphList, int start )
         {
@@ -1470,13 +1448,13 @@ public class BitmapFont
         }
 
         /// <summary>
-        /// Scales the font by the specified amounts on both axes
-        /// <para>
-        /// Note that smoother scaling can be achieved if the texture backing
-        /// the BitmapFont is using <see cref="TextureFilter.Linear"/>.
-        /// The default is Nearest, so use a BitmapFont constructor that takes
-        /// a <see cref="TextureRegion"/>.
-        /// </para>
+        ///     Scales the font by the specified amounts on both axes
+        ///     <para>
+        ///         Note that smoother scaling can be achieved if the texture backing
+        ///         the BitmapFont is using <see cref="TextureFilter.Linear" />.
+        ///         The default is Nearest, so use a BitmapFont constructor that takes
+        ///         a <see cref="TextureRegion" />.
+        ///     </para>
         /// </summary>
         /// <exception cref="ArgumentException">if scaleX or scaleY is zero.</exception>
         public void SetScale( float scalex, float scaley )
@@ -1511,28 +1489,21 @@ public class BitmapFont
         }
 
         /// <summary>
-        /// Scales the font by the specified amount in both directions.
+        ///     Scales the font by the specified amount in both directions.
         /// </summary>
-        /// See also <see cref="SetScale(float, float)"/>
+        /// See also
+        /// <see cref="SetScale(float, float)" />
         /// <exception cref="ArgumentException">if scaleX or scaleY is zero.</exception>
-        public void SetScale( float scaleXy )
-        {
-            SetScale( scaleXy, scaleXy );
-        }
+        public void SetScale( float scaleXy ) => SetScale( scaleXy, scaleXy );
 
         /// <summary>
-        /// Sets the font's scale relative to the current scale.
+        ///     Sets the font's scale relative to the current scale.
         /// </summary>
-        /// See also <see cref="SetScale(float, float)"/>
+        /// See also
+        /// <see cref="SetScale(float, float)" />
         /// <exception cref="ArgumentException">if the resulting scale is zero.</exception>
-        public void Scale( float amount )
-        {
-            SetScale( ScaleX + amount, ScaleY + amount );
-        }
+        public void Scale( float amount ) => SetScale( ScaleX + amount, ScaleY + amount );
 
-        public override string? ToString()
-        {
-            return Name ?? base.ToString();
-        }
+        public override string? ToString() => Name ?? base.ToString();
     }
 }

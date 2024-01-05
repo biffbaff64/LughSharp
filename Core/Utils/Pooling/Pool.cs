@@ -19,48 +19,48 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// A pool of objects that can be reused to avoid allocation.
+///     A pool of objects that can be reused to avoid allocation.
 /// </summary>
-[PublicAPI]
 public class Pool<T>
 {
-    public int Max  { get; set; } // The maximum number of objects that will be pooled.
-    public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
 
     public delegate T? NewObjectHandler();
 
-    public virtual NewObjectHandler? NewObject { get; set; } = null;
-
-    private List< T? > _freeObjects;
+    private readonly List< T? > _freeObjects;
 
     /// <summary>
-    /// Creates a new pool with a specified initial capacity,
+    ///     Creates a new pool with a specified initial capacity,
     /// </summary>
     /// <param name="initialCapacity">
-    /// The initial size of the array supporting the pool. No objects are created/pre-allocated.
-    /// Default value is 16.
+    ///     The initial size of the array supporting the pool. No objects are created/pre-allocated.
+    ///     Default value is 16.
     /// </param>
     /// <param name="max">
-    /// The maximum number of free objects to store in this pool.
-    /// Default is int.MaxValue, ie NO max.
+    ///     The maximum number of free objects to store in this pool.
+    ///     Default is int.MaxValue, ie NO max.
     /// </param>
     public Pool( int initialCapacity = 16, int max = int.MaxValue )
     {
-        this._freeObjects = new List< T? >( initialCapacity );
-        this.Max          = max;
+        _freeObjects = new List< T? >( initialCapacity );
+        Max          = max;
     }
 
+    public int Max  { get; set; } // The maximum number of objects that will be pooled.
+    public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
+
+    public virtual NewObjectHandler? NewObject { get; set; } = null;
+
     /// <summary>
-    /// Returns an object from this pool.
-    /// The object may be new (from <see cref="NewObject"/>) or reused
-    /// (previously <see cref="Free(T)"/> freed).
+    ///     Returns an object from this pool.
+    ///     The object may be new (from <see cref="NewObject" />) or reused
+    ///     (previously <see cref="Free(T)" /> freed).
     /// </summary>
     public virtual T? Obtain()
     {
         if ( _freeObjects.Count == 0 )
         {
             MemberNullException.ThrowIfNull( NewObject );
-            
+
             return NewObject();
         }
 
@@ -72,11 +72,11 @@ public class Pool<T>
     }
 
     /// <summary>
-    /// Puts the specified object in the pool, making it eligible to be returned by
-    /// <see cref="Obtain"/>. If the pool already contains <see cref="Max"/> free objects,
-    /// the specified object is discarded using <see cref="Discard"/> and not added to the pool.
-    /// The pool does not check if an object is already freed, so the same object must not be
-    /// freed multiple times.
+    ///     Puts the specified object in the pool, making it eligible to be returned by
+    ///     <see cref="Obtain" />. If the pool already contains <see cref="Max" /> free objects,
+    ///     the specified object is discarded using <see cref="Discard" /> and not added to the pool.
+    ///     The pool does not check if an object is already freed, so the same object must not be
+    ///     freed multiple times.
     /// </summary>
     /// <param name="obj">The object to add to the pool.</param>
     /// <exception cref="ArgumentException"></exception>
@@ -99,9 +99,9 @@ public class Pool<T>
     }
 
     /// <summary>
-    /// Adds the specified number of new free objects to the pool.
-    /// Usually called early on as a pre-allocation mechanism but
-    /// can be used at any time.
+    ///     Adds the specified number of new free objects to the pool.
+    ///     Usually called early on as a pre-allocation mechanism but
+    ///     can be used at any time.
     /// </summary>
     /// <param name="size">The number of objects to be added.</param>
     public virtual void Fill( int size )
@@ -118,9 +118,9 @@ public class Pool<T>
     }
 
     /// <summary>
-    /// Called when an object is freed to clear the state of the object for possible
-    /// later reuse. The default implementation calls <see cref="IPoolable.Reset"/>
-    /// if the object is Poolable.
+    ///     Called when an object is freed to clear the state of the object for possible
+    ///     later reuse. The default implementation calls <see cref="IPoolable.Reset" />
+    ///     if the object is Poolable.
     /// </summary>
     public virtual void Reset( T obj )
     {
@@ -131,24 +131,24 @@ public class Pool<T>
     }
 
     /// <summary>
-    /// Called when an object is discarded. This is the case when an object is
-    /// freed, but the maximum capacity of the pool is reached, and when the
-    /// pool is <see cref="Clear"/>ed.
+    ///     Called when an object is discarded. This is the case when an object is
+    ///     freed, but the maximum capacity of the pool is reached, and when the
+    ///     pool is <see cref="Clear" />ed.
     /// </summary>
     protected virtual void Discard( T? obj )
     {
     }
 
     /// <summary>
-    /// Puts the specified objects in the pool. Null objects within the array
-    /// are silently ignored. The pool does not check if an object is already
-    /// freed, so the same object must not be freed multiple times.
+    ///     Puts the specified objects in the pool. Null objects within the array
+    ///     are silently ignored. The pool does not check if an object is already
+    ///     freed, so the same object must not be freed multiple times.
     /// </summary>
     public virtual void FreeAll( List< T > objects )
     {
         ArgumentNullException.ThrowIfNull( objects );
 
-        var max = this.Max;
+        var max = Max;
 
         for ( int i = 0, n = objects.Count; i < n; i++ )
         {
@@ -157,9 +157,9 @@ public class Pool<T>
                 continue;
             }
 
-            if ( this._freeObjects.Count < max )
+            if ( _freeObjects.Count < max )
             {
-                this._freeObjects.Add( objects[ i ] );
+                _freeObjects.Add( objects[ i ] );
 
                 Reset( objects[ i ] );
             }
@@ -169,11 +169,11 @@ public class Pool<T>
             }
         }
 
-        Peak = Math.Max( Peak, this._freeObjects.Count );
+        Peak = Math.Max( Peak, _freeObjects.Count );
     }
 
     /// <summary>
-    /// Removes and discards all free objects from this pool.
+    ///     Removes and discards all free objects from this pool.
     /// </summary>
     public virtual void Clear()
     {
@@ -186,7 +186,7 @@ public class Pool<T>
     }
 
     /// <summary>
-    /// The number of objects available to be obtained.
+    ///     The number of objects available to be obtained.
     /// </summary>
     public virtual int GetFree() => _freeObjects.Count;
 }

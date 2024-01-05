@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// Implements decoding of MPEG Audio Layer II frames.
+///     Implements decoding of MPEG Audio Layer II frames.
 /// </summary>
-[PublicAPI]
 public class LayerIIDecoder : LayerIDecoder
 {
     protected override void CreateSubbands()
@@ -39,7 +38,7 @@ public class LayerIIDecoder : LayerIDecoder
             case Header.JOINT_STEREO:
             {
                 int i;
-                
+
                 for ( i = 0; i < header?.IntensityStereoBound(); ++i )
                 {
                     subbands[ i ] = new SubbandLayer2Stereo( i );

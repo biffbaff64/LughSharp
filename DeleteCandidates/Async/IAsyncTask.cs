@@ -16,16 +16,7 @@
 
 namespace LibGDXSharp.Utils.Async;
 
-[PublicAPI]
-public class AsyncResult
+public interface IAsyncTask
 {
-    public bool IsDone()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Get()
-    {
-        throw new NotImplementedException();
-    }
+    void Call();
 }

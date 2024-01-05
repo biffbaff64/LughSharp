@@ -16,13 +16,8 @@
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[PublicAPI]
 public class PixmapTextureData : ITextureData
 {
-    public Pixmap        Pixmap        { get; set; }
-    public Pixmap.Format Format        { get; set; }
-    public bool          DisposePixmap { get; set; }
-    public bool          Managed       { get; set; }
 
     public PixmapTextureData( Pixmap pixmap,
                               Pixmap.Format? format,
@@ -30,12 +25,17 @@ public class PixmapTextureData : ITextureData
                               bool disposePixmap,
                               bool managed = false )
     {
-        this.Pixmap        = pixmap;
-        this.UseMipMaps    = useMipMaps;
-        this.DisposePixmap = disposePixmap;
-        this.Managed       = managed;
-        this.Format        = format ?? pixmap.GetFormat();
+        Pixmap        = pixmap;
+        UseMipMaps    = useMipMaps;
+        DisposePixmap = disposePixmap;
+        Managed       = managed;
+        Format        = format ?? pixmap.GetFormat();
     }
+
+    public Pixmap        Pixmap        { get; set; }
+    public Pixmap.Format Format        { get; set; }
+    public bool          DisposePixmap { get; set; }
+    public bool          Managed       { get; set; }
 
     public Pixmap ConsumePixmap() => Pixmap;
 
@@ -60,12 +60,12 @@ public class PixmapTextureData : ITextureData
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;
 
     /// <returns>
-    /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
-    /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
+    ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
+    ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
     /// </returns>
     bool ITextureData.DisposePixmap() => DisposePixmap;
 
-    /// <returns> the <see cref="Pixmap.Format"/> of the pixel data </returns>
+    /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
     public Pixmap.Format GetFormat() => Format;
 
     /// <returns> whether to generate mipmaps or not. </returns>
@@ -74,14 +74,8 @@ public class PixmapTextureData : ITextureData
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
     public bool IsManaged() => Managed;
 
-    public void ConsumeCustomData( int target )
-    {
-        throw new GdxRuntimeException( "This TextureData implementation does not upload data itself" );
-    }
+    public void ConsumeCustomData( int target ) => throw new GdxRuntimeException( "This TextureData implementation does not upload data itself" );
 
-    public void Prepare()
-    {
-        throw new GdxRuntimeException
-            ( "prepare() must not be called on a PixmapTextureData instance as it is already prepared." );
-    }
+    public void Prepare() => throw new GdxRuntimeException
+        ( "prepare() must not be called on a PixmapTextureData instance as it is already prepared." );
 }

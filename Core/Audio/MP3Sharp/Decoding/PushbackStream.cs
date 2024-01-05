@@ -17,13 +17,12 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// A PushbackStream is a stream that can "push back" or "unread" data. This is useful in
-/// situations where it is convenient for a fragment of code to read an indefinite number
-/// of data bytes that are delimited by a particular byte value; after reading the terminating
-/// byte, the code fragment can "unread" it, so that the next read operation on the input stream
-/// will reread the byte that was pushed back.
+///     A PushbackStream is a stream that can "push back" or "unread" data. This is useful in
+///     situations where it is convenient for a fragment of code to read an indefinite number
+///     of data bytes that are delimited by a particular byte value; after reading the terminating
+///     byte, the code fragment can "unread" it, so that the next read operation on the input stream
+///     will reread the byte that was pushed back.
 /// </summary>
-[PublicAPI]
 public class PushbackStream
 {
     private readonly int                _backBufferSize;
@@ -42,7 +41,7 @@ public class PushbackStream
 
     public int Read( sbyte[] readBuffer, int offset, int length )
     {
-        var  index         = 0;
+        var index         = 0;
         var canReadStream = true;
 
         while ( ( index < length ) && canReadStream )
@@ -80,12 +79,9 @@ public class PushbackStream
 
         if ( _numForwardBytesInBuffer > _backBufferSize )
         {
-            throw new System.Exception( "The backstream cannot unread the requested number of bytes." );
+            throw new Exception( "The backstream cannot unread the requested number of bytes." );
         }
     }
 
-    public void Close()
-    {
-        _stream.Close();
-    }
+    public void Close() => _stream.Close();
 }

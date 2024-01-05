@@ -19,17 +19,13 @@ using LibGDXSharp.Graphics.G3D.Utils;
 
 namespace LibGDXSharp.Graphics.G3D;
 
-[PublicAPI]
 public class Model
 {
-    private List< IDisposable > _disposables = new();
-    
+    private readonly List< IDisposable > _disposables = new();
+
     public Model( ModelData data, ITextureProvider textureProvider )
     {
     }
 
-    public IEnumerable<IDisposable> GetManagedDisposables()
-    {
-        return _disposables;
-    }
+    public IEnumerable< IDisposable > GetManagedDisposables() => _disposables;
 }

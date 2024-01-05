@@ -16,16 +16,9 @@
 
 namespace LibGDXSharp.Maths;
 
-[PublicAPI]
 public class BSpline<T> : IPath< T > where T : IVector< T >
 {
     private const float D6 = 1f / 6f;
-
-    public T[]?        ControlPoints { get; set; }
-    public List< T >? Knots         { get; set; }
-    public int        Degree        { get; set; }
-    public bool       Continuous    { get; set; }
-    public int        SpanCount     { get; set; }
 
     private T? _tmp;
     private T? _tmp2;
@@ -35,13 +28,68 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     {
     }
 
-    public BSpline( T[] controlPoints, int degree, bool continuous )
+    public BSpline( T[] controlPoints, int degree, bool continuous ) => Set( controlPoints, degree, continuous );
+
+    public T[]?       ControlPoints { get; set; }
+    public List< T >? Knots         { get; set; }
+    public int        Degree        { get; set; }
+    public bool       Continuous    { get; set; }
+    public int        SpanCount     { get; set; }
+
+    public T ValueAt( in T output, in float t )
     {
-        Set( controlPoints, degree, continuous );
+        var n = SpanCount;
+        var u = t * n;
+        var i = t >= 1f ? n - 1 : ( int )u;
+
+        u -= i;
+
+        return ValueAt( output, i, u );
+    }
+
+    public virtual T DerivativeAt( in T output, in float t )
+    {
+        var n = SpanCount;
+        var u = t * n;
+        var i = t >= 1f ? n - 1 : ( int )u;
+
+        u -= i;
+
+        return DerivativeAt( output, i, u );
+    }
+
+    public virtual float Approximate( in T v ) => Approximate( v, Nearest( v ) );
+
+    public float Locate( T v ) =>
+
+        // TODO Add a precise method
+        Approximate( v );
+
+    public float ApproxLength( int samples )
+    {
+        float tempLength = 0;
+
+        for ( var i = 0; i < samples; ++i )
+        {
+            if ( _tmp3 != null )
+            {
+                _tmp2?.Set( _tmp3 );
+
+                ValueAt( _tmp3, i / ( ( float )samples - 1 ) );
+
+                if ( ( _tmp2 != null ) && ( i > 0 ) )
+                {
+                    tempLength += _tmp2.Dst( _tmp3 );
+                }
+            }
+
+        }
+
+        return tempLength;
     }
 
     /// <summary>
-    /// Calculates the cubic b-spline value for the given position (t).
+    ///     Calculates the cubic b-spline value for the given position (t).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -53,7 +101,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = continuous ? points.Length : points.Length - 3;
         var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int )u;
 
         u -= i;
 
@@ -61,7 +109,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    /// Calculates the cubic b-spline derivative for the given position (t).
+    ///     Calculates the cubic b-spline derivative for the given position (t).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -73,7 +121,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = continuous ? points.Length : points.Length - 3;
         var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int )u;
 
         u -= i;
 
@@ -81,11 +129,11 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    /// Calculates the cubic b-spline value for the given span (i) at the given position (u).
+    ///     Calculates the cubic b-spline value for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="i">
-    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - 3 (cubic degree)
+    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - 3 (cubic degree)
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -105,8 +153,8 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         {
             output.Add
                 (
-                 tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                    .Scl( dt * dt * dt * D6 )
+                tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
+                   .Scl( dt * dt * dt * D6 )
                 );
         }
 
@@ -114,8 +162,8 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         {
             output.Add
                 (
-                 tmp.Set( points[ ( i + 1 ) % n ] )
-                    .Scl( ( ( -3f * t3 ) + ( 3f * t2 ) + ( 3f * u ) + 1f ) * D6 )
+                tmp.Set( points[ ( i + 1 ) % n ] )
+                   .Scl( ( ( -3f * t3 ) + ( 3f * t2 ) + ( 3f * u ) + 1f ) * D6 )
                 );
         }
 
@@ -128,11 +176,11 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    /// Calculates the cubic b-spline derivative for the given span (i) at the given position (u).
+    ///     Calculates the cubic b-spline derivative for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="i">
-    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - 3 (cubic degree)
+    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - 3 (cubic degree)
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -151,8 +199,8 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         {
             output.Add
                 (
-                 tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                    .Scl( -0.5f * dt * dt )
+                tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
+                   .Scl( -0.5f * dt * dt )
                 );
         }
 
@@ -160,8 +208,8 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         {
             output.Add
                 (
-                 tmp.Set( points[ ( i + 1 ) % n ] )
-                    .Scl( ( -1.5f * t2 ) + u + 0.5f )
+                tmp.Set( points[ ( i + 1 ) % n ] )
+                   .Scl( ( -1.5f * t2 ) + u + 0.5f )
                 );
         }
 
@@ -174,7 +222,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    /// Calculates the n-degree b-spline value for the given position (t).
+    ///     Calculates the n-degree b-spline value for the given position (t).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -187,7 +235,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = continuous ? points.Length : points.Length - degree;
         var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int )u;
 
         u -= i;
 
@@ -195,7 +243,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    /// Calculates the n-degree b-spline derivative for the given position (t).
+    ///     Calculates the n-degree b-spline derivative for the given position (t).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -208,7 +256,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = continuous ? points.Length : points.Length - degree;
         var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int )u;
 
         u -= i;
 
@@ -216,11 +264,11 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    /// Calculates the n-degree b-spline value for the given span (i) at the given position (u).
+    ///     Calculates the n-degree b-spline value for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="i">
-    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - degree
+    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - degree
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -235,14 +283,15 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
             return Cubic( output, i, u, points, continuous, tmp );
         }
 
-        throw new System.ArgumentException();
+        throw new ArgumentException();
     }
 
     /// <summary>
-    /// Calculates the n-degree b-spline derivative for the given span (i) at the given position (u). </summary>
+    ///     Calculates the n-degree b-spline derivative for the given span (i) at the given position (u).
+    /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="i">
-    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - degree
+    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - degree
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -257,7 +306,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
             return CubicDerivative( output, i, u, points, continuous, tmp );
         }
 
-        throw new System.ArgumentException();
+        throw new ArgumentException();
     }
 
     public BSpline< T > Set( T[] controlPoints, int degree, bool continuous )
@@ -266,10 +315,10 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         _tmp2 ??= controlPoints[ 0 ].Cpy();
         _tmp3 ??= controlPoints[ 0 ].Cpy();
 
-        this.ControlPoints = controlPoints;
-        this.Degree        = degree;
-        this.Continuous    = continuous;
-        this.SpanCount     = continuous ? controlPoints.Length : controlPoints.Length - degree;
+        ControlPoints = controlPoints;
+        Degree        = degree;
+        Continuous    = continuous;
+        SpanCount     = continuous ? controlPoints.Length : controlPoints.Length - degree;
 
         if ( Knots == null )
         {
@@ -285,79 +334,45 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         {
             Knots.Add
                 (
-                 Calculate
-                     (
-                      controlPoints[ 0 ].Cpy(),
-                      continuous ? i : ( int )( i + ( 0.5f * degree ) ),
-                      0f,
-                      controlPoints,
-                      degree,
-                      continuous,
-                      _tmp
-                     )
+                Calculate(
+                    controlPoints[ 0 ].Cpy(),
+                    continuous ? i : ( int )( i + ( 0.5f * degree ) ),
+                    0f,
+                    controlPoints,
+                    degree,
+                    continuous,
+                    _tmp
+                    )
                 );
         }
 
         return this;
     }
 
-    public T ValueAt( in T output, in float t )
-    {
-        var n = SpanCount;
-        var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
-
-        u -= i;
-
-        return ValueAt( output, i, u );
-    }
-
     /// <returns> The value of the spline at position u of the specified span </returns>
-    protected virtual T ValueAt( T output, int span, float u )
-    {
-        return Calculate
-            (
-             output,
-             Continuous ? span : ( span + ( int )( Degree * 0.5f ) ),
-             u,
-             ControlPoints!,
-             Degree,
-             Continuous,
-             _tmp!
-            );
-    }
-
-    public virtual T DerivativeAt( in T output, in float t )
-    {
-        var n = SpanCount;
-        var u = t * n;
-        var i = ( t >= 1f ) ? ( n - 1 ) : ( int )u;
-        
-        u -= i;
-
-        return DerivativeAt( output, i, u );
-    }
+    protected virtual T ValueAt( T output, int span, float u ) => Calculate(
+        output,
+        Continuous ? span : span + ( int )( Degree * 0.5f ),
+        u,
+        ControlPoints!,
+        Degree,
+        Continuous,
+        _tmp!
+        );
 
     /// <returns> The derivative of the spline at position u of the specified span </returns>
-    protected virtual T DerivativeAt( T output, int span, float u )
-    {
-        return Derivative
-            (
-             output,
-             Continuous ? span : ( span + ( int )( Degree * 0.5f ) ),
-             u,
-             ControlPoints!,
-             Degree,
-             Continuous,
-             _tmp!
-            );
-    }
+    protected virtual T DerivativeAt( T output, int span, float u ) => Derivative(
+        output,
+        Continuous ? span : span + ( int )( Degree * 0.5f ),
+        u,
+        ControlPoints!,
+        Degree,
+        Continuous,
+        _tmp!
+        );
 
     /// <returns> The span closest to the specified value </returns>
-    protected virtual int Nearest( T input )
-    {
-        return Nearest( input, 0, SpanCount );
-    }
+    protected virtual int Nearest( T input ) => Nearest( input, 0, SpanCount );
 
     /// <returns> The span closest to the specified value, restricting to the specified spans. </returns>
     protected virtual int Nearest( T input, int start, int count )
@@ -385,15 +400,7 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         return result;
     }
 
-    public virtual float Approximate( in T v )
-    {
-        return Approximate( v, Nearest( v ) );
-    }
-
-    public virtual float Approximate( T input, int start, int count )
-    {
-        return Approximate( input, Nearest( input, start, count ) );
-    }
+    public virtual float Approximate( T input, int start, int count ) => Approximate( input, Nearest( input, start, count ) );
 
     protected virtual float Approximate( T input, int near )
     {
@@ -431,34 +438,5 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         var u     = MathUtils.Clamp( ( l1 - s ) / l1, 0f, 1f );
 
         return ( n + u ) / SpanCount;
-    }
-
-    public float Locate( T v )
-    {
-        // TODO Add a precise method
-        return Approximate( v );
-    }
-
-    public float ApproxLength( int samples )
-    {
-        float tempLength = 0;
-
-        for ( var i = 0; i < samples; ++i )
-        {
-            if ( _tmp3 != null )
-            {
-                _tmp2?.Set( _tmp3 );
-                
-                ValueAt( _tmp3, ( i ) / ( ( float )samples - 1 ) );
-
-                if ( ( _tmp2 != null ) && ( i > 0 ) )
-                {
-                    tempLength += _tmp2.Dst( _tmp3 );
-                }
-            }
-
-        }
-
-        return tempLength;
     }
 }

@@ -16,16 +16,15 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class Sync
 {
     private const long NANOS_IN_SECOND = 1000L * 1000L * 1000L;
 
     private readonly RunningAvg _sleepDurations = new( 10 );
     private readonly RunningAvg _yieldDurations = new( 10 );
+    private          bool       _initialised    = false;
 
-    private long _nextFrame   = 0;
-    private bool _initialised = false;
+    private long _nextFrame = 0;
 
     public Sync()
     {
@@ -33,13 +32,20 @@ public class Sync
 
     public void SyncFrameRate( int fps )
     {
-        if ( fps <= 0 ) return;
-        if ( !_initialised ) Initialise();
+        if ( fps <= 0 )
+        {
+            return;
+        }
+
+        if ( !_initialised )
+        {
+            Initialise();
+        }
 
         try
         {
             long t1;
-            
+
             var t0 = GetTime();
 
             while ( ( _nextFrame - t0 ) > _sleepDurations.Average )
@@ -102,34 +108,20 @@ public class Sync
         }
     }
 
-    private long GetTime() => ( DateTime.UtcNow.Ticks * 100 );
+    private long GetTime() => DateTime.UtcNow.Ticks * 100;
 
     private class RunningAvg
     {
+
+        private const    long   DAMPEN_THRESHOLD = 10 * 1000L * 1000L;
+        private const    float  DAMPEN_FACTOR    = 0.9f;
         private readonly long[] _slots;
         private          int    _offset;
-
-        private const long  DAMPEN_THRESHOLD = 10 * 1000L * 1000L;
-        private const float DAMPEN_FACTOR    = 0.9f;
 
         public RunningAvg( int slotCount )
         {
             _slots  = new long[ slotCount ];
             _offset = 0;
-        }
-
-        public void Init( long value )
-        {
-            while ( _offset < _slots.Length )
-            {
-                _slots[ _offset++ ] = value;
-            }
-        }
-
-        public void Add( long value )
-        {
-            _slots[ _offset++ % _slots.Length ] =  value;
-            _offset                             %= _slots.Length;
         }
 
         public long Average
@@ -145,6 +137,20 @@ public class Sync
 
                 return sum / _slots.Length;
             }
+        }
+
+        public void Init( long value )
+        {
+            while ( _offset < _slots.Length )
+            {
+                _slots[ _offset++ ] = value;
+            }
+        }
+
+        public void Add( long value )
+        {
+            _slots[ _offset++ % _slots.Length ] =  value;
+            _offset                             %= _slots.Length;
         }
 
         public void DampenForLowResTicker()

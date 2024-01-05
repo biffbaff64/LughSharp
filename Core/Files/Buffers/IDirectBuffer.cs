@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Files.Buffers;
 
-[PublicAPI]
 public interface IDirectBuffer
 {
     long Address();

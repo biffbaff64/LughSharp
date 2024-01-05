@@ -17,20 +17,12 @@
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// A <see cref="ITextureData"/> implementation which should be used to create
-/// gl only textures. This TextureData fits perfectly for <see cref="FrameBuffer"/>s.
-/// The data is not managed.
+///     A <see cref="ITextureData" /> implementation which should be used to create
+///     gl only textures. This TextureData fits perfectly for <see cref="FrameBuffer" />s.
+///     The data is not managed.
 /// </summary>
-[PublicAPI]
 public class GLOnlyTextureData : ITextureData
 {
-    public int  Width          { get; set; } = 0;
-    public int  Height         { get; set; } = 0;
-    public bool IsPrepared     { get; set; } = false;
-    public int  MipLevel       { get; set; } = 0;
-    public int  InternalFormat { get; set; }
-    public int  Format         { get; set; }
-    public int  Type           { get; set; }
 
     public GLOnlyTextureData( int width,
                               int height,
@@ -39,13 +31,21 @@ public class GLOnlyTextureData : ITextureData
                               int format,
                               int type )
     {
-        this.Width          = width;
-        this.Height         = height;
-        this.MipLevel       = mipMapLevel;
-        this.InternalFormat = internalFormat;
-        this.Format         = format;
-        this.Type           = type;
+        Width          = width;
+        Height         = height;
+        MipLevel       = mipMapLevel;
+        InternalFormat = internalFormat;
+        Format         = format;
+        Type           = type;
     }
+
+    public int  MipLevel       { get; set; } = 0;
+    public int  InternalFormat { get; set; }
+    public int  Format         { get; set; }
+    public int  Type           { get; set; }
+    public int  Width          { get; set; } = 0;
+    public int  Height         { get; set; } = 0;
+    public bool IsPrepared     { get; set; } = false;
 
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
@@ -55,20 +55,15 @@ public class GLOnlyTextureData : ITextureData
         {
             throw new GdxRuntimeException( "Already prepared" );
         }
-        
+
         IsPrepared = true;
     }
 
-    public void ConsumeCustomData( int target )
-    {
-        Gdx.GL.GLTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
-    }
+    public void ConsumeCustomData( int target ) => Gdx.GL.GLTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
 
-    public Pixmap ConsumePixmap() =>
-        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
 
-    public bool DisposePixmap() =>
-        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public bool DisposePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
 
     public Pixmap.Format GetFormat() => Pixmap.Format.RGBA8888;
 

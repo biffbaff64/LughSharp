@@ -17,26 +17,136 @@
 namespace LibGDXSharp.Core;
 
 /// <summary>
-/// Interface to the input facilities. This allows polling the state of the
-/// keyboard, the touch screen and the accelerometer. On some backends
-/// (desktop, gwt, etc) the touch screen is replaced by mouse input. The
-/// accelerometer is of course not available on all backends.
-/// Instead of polling for events, one can process all input events with an
-/// InputProcessor. You can set the InputProcessor via the SetInputProcessor(InputProcessor)
-/// method. It will be called before the ApplicationListener.render() method in each frame.
-/// Keyboard keys are translated to the constants in Input.Keys transparently on all systems.
-/// Do not use system specific key constants.
-/// The class also offers methods to use (and test for the presence of) other input systems
-/// like vibration, compass, on-screen keyboards, and cursor capture.
-/// Support for simple input dialogs is also provided.
+///     Interface to the input facilities. This allows polling the state of the
+///     keyboard, the touch screen and the accelerometer. On some backends
+///     (desktop, gwt, etc) the touch screen is replaced by mouse input. The
+///     accelerometer is of course not available on all backends.
+///     Instead of polling for events, one can process all input events with an
+///     InputProcessor. You can set the InputProcessor via the SetInputProcessor(InputProcessor)
+///     method. It will be called before the ApplicationListener.render() method in each frame.
+///     Keyboard keys are translated to the constants in Input.Keys transparently on all systems.
+///     Do not use system specific key constants.
+///     The class also offers methods to use (and test for the presence of) other input systems
+///     like vibration, compass, on-screen keyboards, and cursor capture.
+///     Support for simple input dialogs is also provided.
 /// </summary>
-[PublicAPI]
 public interface IInput
 {
+
+    // --------------------------------------------------------------------
+
+
+    public enum OnscreenKeyboardType
+    {
+        Default,
+        NumberPad,
+        PhonePad,
+        Email,
+        Password,
+        Uri
+    }
+
+    // --------------------------------------------------------------------
+
+
+    public enum Orientation
+    {
+        Landscape,
+        Portrait
+    }
+
+    // --------------------------------------------------------------------
+
+
+    public enum Peripheral
+    {
+        HardwareKeyboard,
+        OnscreenKeyboard,
+        MultitouchScreen,
+        Accelerometer,
+        Compass,
+        Vibrator,
+        Gyroscope,
+        RotationVector,
+        Pressure
+    }
+
+    IInputProcessor? InputProcessor { get; set; }
+
+    // --------------------------------------------------------------------
+
+    public float GetAccelerometerX();
+    public float GetAccelerometerY();
+    public float GetAccelerometerZ();
+    public float GetGyroscopeX();
+    public float GetGyroscopeY();
+    public float GetGyroscopeZ();
+
+    public int GetMaxPointers();
+    public int GetX( int pointer = 0 );
+    public int GetDeltaX( int pointer = 0 );
+    public int GetY( int pointer = 0 );
+    public int GetDeltaY( int pointer = 0 );
+
+    public bool IsTouched( int pointer = 0 );
+    public bool JustTouched();
+
+    public float GetPressure( int pointer = 0 );
+
+    public bool IsButtonPressed( int button );
+    public bool IsButtonJustPressed( int button );
+
+    public bool IsKeyPressed( int key );
+    public bool IsKeyJustPressed( int key );
+
+    public void GetTextInput( ITextInputListener listener,
+                              string title,
+                              string text,
+                              string hint,
+                              OnscreenKeyboardType type );
+
+    public void SetOnscreenKeyboardVisible( bool visible );
+    public void SetOnscreenKeyboardVisible( bool visible, OnscreenKeyboardType type );
+
+    public void Vibrate( int milliseconds );
+    public void Vibrate( long[] pattern, int repeat );
+    public void CancelVibrate();
+
+    public float GetAzimuth();
+
+    public float GetPitch();
+
+    public float GetRoll();
+
+    public void GetRotationMatrix( float[] matrix );
+
+    public long GetCurrentEventTime();
+
+    public void SetCatchKey( int keycode, bool catchKey );
+
+    public bool IsCatchKey( int keycode );
+
+    public bool IsPeripheralAvailable( Peripheral peripheral );
+
+    public int GetRotation();
+
+    public Orientation GetNativeOrientation();
+
+    /// <remarks>
+    ///     Java LibGDX has this method named as SetCursorCatched(bool catched).
+    /// </remarks>
+    public void SetCursorCaught( bool caught );
+
+    /// <remarks>
+    ///     Java LibGDX has this method named as IsCursorCatched().
+    /// </remarks>
+    public bool IsCursorCaught();
+
+    public void SetCursorPosition( int x, int y );
+
     /// <summary>
-    /// Mouse Buttons
+    ///     Mouse Buttons
     /// </summary>
-    [PublicAPI]
     public static class Buttons
     {
         public const int LEFT    = 0;
@@ -46,7 +156,7 @@ public interface IInput
         public const int FORWARD = 4;
     }
 
-    [PublicAPI]
+
     public static class Keys
     {
         public const int ANY_KEY             = -1;
@@ -237,6 +347,23 @@ public interface IInput
 
         public const int MAX_KEYCODE = 255;
 
+        private readonly static List< string > KeyNames = new();
+
+        // --------------------------------------------------------------------
+
+        static Keys()
+        {
+            for ( var i = 0; i <= MAX_KEYCODE; i++ )
+            {
+                var name = ToString( i );
+
+                if ( ( name != null ) && ( KeyNames != null ) )
+                {
+                    KeyNames[ i ] = name;
+                }
+            }
+        }
+
         public static string? ToString( int keycode )
         {
             if ( keycode < 0 )
@@ -424,147 +551,16 @@ public interface IInput
             return str;
         }
 
-        private readonly static List< string > KeyNames = new();
-
-        // --------------------------------------------------------------------
-        
-        static Keys()
-        {
-            for ( var i = 0; i <= MAX_KEYCODE; i++ )
-            {
-                var name = ToString( i );
-
-                if ( ( name != null ) && ( KeyNames != null ) )
-                {
-                    KeyNames[ i ] = name;
-                }
-            }
-        }
-
-        public static int ValueOf( string keyname )
-        {
-            return KeyNames.IndexOf( keyname );
-        }
+        public static int ValueOf( string keyname ) => KeyNames.IndexOf( keyname );
     }
 
-    IInputProcessor? InputProcessor { get; set; }
-    
     // --------------------------------------------------------------------
 
-    [PublicAPI]
+
     public interface ITextInputListener
     {
         void Input( string text );
 
         void Canceled();
     }
-
-    // --------------------------------------------------------------------
-
-    [PublicAPI]
-    public enum Peripheral
-    {
-        HardwareKeyboard,
-        OnscreenKeyboard,
-        MultitouchScreen,
-        Accelerometer,
-        Compass,
-        Vibrator,
-        Gyroscope,
-        RotationVector,
-        Pressure
-    }
-
-    // --------------------------------------------------------------------
-
-    [PublicAPI]
-    public enum OnscreenKeyboardType
-    {
-        Default,
-        NumberPad,
-        PhonePad,
-        Email,
-        Password,
-        Uri
-    }
-
-    // --------------------------------------------------------------------
-
-    [PublicAPI]
-    public enum Orientation
-    {
-        Landscape,
-        Portrait
-    }
-
-    // --------------------------------------------------------------------
-
-    public float GetAccelerometerX();
-    public float GetAccelerometerY();
-    public float GetAccelerometerZ();
-    public float GetGyroscopeX();
-    public float GetGyroscopeY();
-    public float GetGyroscopeZ();
-
-    public int GetMaxPointers();
-    public int GetX( int pointer = 0 );
-    public int GetDeltaX( int pointer = 0 );
-    public int GetY( int pointer = 0 );
-    public int GetDeltaY( int pointer = 0 );
-
-    public bool IsTouched( int pointer = 0 );
-    public bool JustTouched();
-
-    public float GetPressure( int pointer = 0 );
-
-    public bool IsButtonPressed( int button );
-    public bool IsButtonJustPressed( int button );
-
-    public bool IsKeyPressed( int key );
-    public bool IsKeyJustPressed( int key );
-
-    public void GetTextInput( ITextInputListener listener,
-                              string title,
-                              string text,
-                              string hint,
-                              OnscreenKeyboardType type );
-
-    public void SetOnscreenKeyboardVisible( bool visible );
-    public void SetOnscreenKeyboardVisible( bool visible, OnscreenKeyboardType type );
-
-    public void Vibrate( int milliseconds );
-    public void Vibrate( long[] pattern, int repeat );
-    public void CancelVibrate();
-
-    public float GetAzimuth();
-
-    public float GetPitch();
-
-    public float GetRoll();
-
-    public void GetRotationMatrix( float[] matrix );
-
-    public long GetCurrentEventTime();
-
-    public void SetCatchKey( int keycode, bool catchKey );
-
-    public bool IsCatchKey( int keycode );
-
-    public bool IsPeripheralAvailable( Peripheral peripheral );
-
-    public int GetRotation();
-
-    public Orientation GetNativeOrientation();
-
-    /// <remarks>
-    /// Java LibGDX has this method named as SetCursorCatched(bool catched).
-    /// </remarks>
-    public void SetCursorCaught( bool caught );
-
-    /// <remarks>
-    /// Java LibGDX has this method named as IsCursorCatched().
-    /// </remarks>
-    public bool IsCursorCaught();
-
-    public void SetCursorPosition( int x, int y );
 }

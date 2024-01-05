@@ -21,50 +21,35 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A table that can be dragged and act as a modal window. The top padding is
-/// used as the window's title height.
-/// <p>
-/// The preferred size of a window is the preferred size of the title text and
-/// the children as laid out by the table. After adding children to the window,
-/// it can be convenient to call {@link #pack()} to size the window to the size
-/// of the children.
-/// </p>
+///     A table that can be dragged and act as a modal window. The top padding is
+///     used as the window's title height.
+///     <p>
+///         The preferred size of a window is the preferred size of the title text and
+///         the children as laid out by the table. After adding children to the window,
+///         it can be convenient to call {@link #pack()} to size the window to the size
+///         of the children.
+///     </p>
 /// </summary>
-[PublicAPI]
 public class Window : Table
 {
-    public bool  DrawTitleTable  { get; set; }
-    public Label TitleLabel      { get; set; }
-    public bool  IsMovable       { get; set; } = true;
-    public bool  IsModal         { get; set; }
-    public bool  IsResizable     { get; set; }
-    public bool  Dragging        { get; set; }
-    public int   ResizeBorder    { get; set; } = 8;
-    public bool  KeepWithinStage { get; set; } = true;
+
+    private const int MOVE = 1 << 5;
 
     private readonly static Vector2 TmpPosition = new();
     private readonly static Vector2 TmpSize     = new();
+    private readonly        Table   _titleTable;
 
-    private const int MOVE = ( 1 << 5 );
-
-    private          WindowStyle _style;
-    private readonly Table       _titleTable;
+    private WindowStyle _style;
 
     protected int edge;
 
     // ------------------------------------------------------------------------
 
     public Window( string title, Skin skin )
-        : this( title, skin.Get< WindowStyle >() )
-    {
-        Skin = skin;
-    }
+        : this( title, skin.Get< WindowStyle >() ) => Skin = skin;
 
     public Window( string title, Skin skin, string styleName )
-        : this( title, ( WindowStyle )skin.Get< WindowStyle >( styleName ) )
-    {
-        Skin = skin;
-    }
+        : this( title, skin.Get< WindowStyle >( styleName ) ) => Skin = skin;
 
     public Window( string title, WindowStyle style )
     {
@@ -75,11 +60,12 @@ public class Window : Table
         TitleLabel.SetEllipsis( true );
 
         _titleTable = new TitleTableClass( this );
+
         _titleTable.Add( TitleLabel )
                    .SetExpandX()
                    .SetFillX()
                    .SetMinWidth( 0 );
-        
+
         AddActor( _titleTable );
 
         Style = _style = style;
@@ -90,12 +76,21 @@ public class Window : Table
 
     }
 
+    public bool  DrawTitleTable  { get; set; }
+    public Label TitleLabel      { get; set; }
+    public bool  IsMovable       { get; set; } = true;
+    public bool  IsModal         { get; set; }
+    public bool  IsResizable     { get; set; }
+    public bool  Dragging        { get; set; }
+    public int   ResizeBorder    { get; set; } = 8;
+    public bool  KeepWithinStage { get; set; } = true;
+
     public WindowStyle Style
     {
         get => _style;
         set
         {
-            this._style = value;
+            _style = value;
 
             SetBackground( _style.Background );
             TitleLabel.Style = new Label.LabelStyle( _style.TitleFont!, _style.TitleFontColor! );
@@ -105,63 +100,59 @@ public class Window : Table
 
     public void DoKeepWithinStage()
     {
-        if ( !KeepWithinStage || ( this.Stage == null ) )
+        if ( !KeepWithinStage || ( Stage == null ) )
         {
             return;
         }
 
-        if ( this.Stage.Camera is OrthographicCamera orthographicCamera )
+        if ( Stage.Camera is OrthographicCamera orthographicCamera )
         {
-            var parentWidth  = this.Stage.Width;
-            var parentHeight = this.Stage.Height;
+            var parentWidth  = Stage.Width;
+            var parentHeight = Stage.Height;
 
-            if ( ( GetX( Align.RIGHT ) - this.Stage.Camera.Position.X )
+            if ( ( GetX( Align.RIGHT ) - Stage.Camera.Position.X )
                > ( parentWidth / 2 / orthographicCamera.Zoom ) )
             {
-                SetPosition
-                    (
-                     this.Stage.Camera.Position.X + ( parentWidth / 2 / orthographicCamera.Zoom ),
-                     GetY( Align.RIGHT ),
-                     Align.RIGHT
+                SetPosition(
+                    Stage.Camera.Position.X + ( parentWidth / 2 / orthographicCamera.Zoom ),
+                    GetY( Align.RIGHT ),
+                    Align.RIGHT
                     );
             }
 
-            if ( ( GetX( Align.LEFT ) - this.Stage.Camera.Position.X )
+            if ( ( GetX( Align.LEFT ) - Stage.Camera.Position.X )
                < ( -parentWidth / 2 / orthographicCamera.Zoom ) )
             {
-                SetPosition
-                    (
-                     this.Stage.Camera.Position.X - ( parentWidth / 2 / orthographicCamera.Zoom ),
-                     GetY( Align.LEFT ),
-                     Align.LEFT
+                SetPosition(
+                    Stage.Camera.Position.X - ( parentWidth / 2 / orthographicCamera.Zoom ),
+                    GetY( Align.LEFT ),
+                    Align.LEFT
                     );
             }
 
-            if ( ( GetY( Align.TOP ) - this.Stage.Camera.Position.Y ) > ( parentHeight / 2 / orthographicCamera.Zoom ) )
+            if ( ( GetY( Align.TOP ) - Stage.Camera.Position.Y ) > ( parentHeight / 2 / orthographicCamera.Zoom ) )
             {
-                SetPosition
-                    (
-                     GetX( Align.TOP ),
-                     this.Stage.Camera.Position.Y + ( parentHeight / 2 / orthographicCamera.Zoom ),
-                     Align.TOP
+                SetPosition(
+                    GetX( Align.TOP ),
+                    Stage.Camera.Position.Y + ( parentHeight / 2 / orthographicCamera.Zoom ),
+                    Align.TOP
                     );
             }
 
-            if ( ( GetY( Align.BOTTOM ) - this.Stage.Camera.Position.Y )
+            if ( ( GetY( Align.BOTTOM ) - Stage.Camera.Position.Y )
                < ( -parentHeight / 2 / orthographicCamera.Zoom ) )
             {
-                SetPosition
-                    (
-                     GetX( Align.BOTTOM ),
-                     this.Stage.Camera.Position.Y - ( parentHeight / 2 / orthographicCamera.Zoom ),
-                     Align.BOTTOM
+                SetPosition(
+                    GetX( Align.BOTTOM ),
+                    Stage.Camera.Position.Y - ( parentHeight / 2 / orthographicCamera.Zoom ),
+                    Align.BOTTOM
                     );
             }
         }
-        else if ( Parent == this.Stage.Root )
+        else if ( Parent == Stage.Root )
         {
-            var parentWidth  = this.Stage.Width;
-            var parentHeight = this.Stage.Height;
+            var parentWidth  = Stage.Width;
+            var parentHeight = Stage.Height;
 
             if ( X < 0 )
             {
@@ -170,7 +161,7 @@ public class Window : Table
 
             if ( RightEdge > parentWidth )
             {
-                X = ( parentWidth - Width );
+                X = parentWidth - Width;
             }
 
             if ( Y < 0 )
@@ -180,32 +171,31 @@ public class Window : Table
 
             if ( TopEdge > parentHeight )
             {
-                Y = ( parentHeight - Height );
+                Y = parentHeight - Height;
             }
         }
     }
 
     public new void Draw( IBatch batch, float parentAlpha )
     {
-        if ( this.Stage != null )
+        if ( Stage != null )
         {
-            this.Stage.KeyboardFocus ??= this;
+            Stage.KeyboardFocus ??= this;
 
             DoKeepWithinStage();
 
             if ( Style.StageBackground != null )
             {
                 StageToLocalCoordinates( TmpPosition.Set( 0, 0 ) );
-                StageToLocalCoordinates( TmpSize.Set( this.Stage.Width, this.Stage.Height ) );
+                StageToLocalCoordinates( TmpSize.Set( Stage.Width, Stage.Height ) );
 
-                DrawStageBackground
-                    (
-                     batch,
-                     parentAlpha,
-                     ( X + TmpPosition.X ),
-                     ( Y + TmpPosition.Y ),
-                     ( X + TmpSize.X ),
-                     ( Y + TmpSize.Y )
+                DrawStageBackground(
+                    batch,
+                    parentAlpha,
+                    X + TmpPosition.X,
+                    Y + TmpPosition.Y,
+                    X + TmpSize.X,
+                    Y + TmpSize.Y
                     );
             }
         }
@@ -286,10 +276,7 @@ public class Window : Table
         return hit;
     }
 
-    public new float GetPrefWidth()
-    {
-        return Math.Max( base.GetPrefWidth(), _titleTable.PrefWidth + GetPadLeft() + GetPadRight() );
-    }
+    public new float GetPrefWidth() => Math.Max( base.GetPrefWidth(), _titleTable.PrefWidth + GetPadLeft() + GetPadRight() );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -298,10 +285,7 @@ public class Window : Table
     {
         private readonly Window _window;
 
-        public TitleTableClass( Window window )
-        {
-            this._window = window;
-        }
+        public TitleTableClass( Window window ) => _window = window;
 
         public new void Draw( IBatch batch, float parentAlpha )
         {
@@ -316,10 +300,7 @@ public class Window : Table
     {
         private readonly Window _window;
 
-        internal WindowCaptureListener( Window window )
-        {
-            this._window = window;
-        }
+        internal WindowCaptureListener( Window window ) => _window = window;
 
         internal new bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
         {
@@ -331,17 +312,14 @@ public class Window : Table
 
     internal class WindowInputListener : InputListener
     {
-        private float _startX;
-        private float _startY;
-        private float _lastX;
-        private float _lastY;
 
         private readonly Window _window;
+        private          float  _lastX;
+        private          float  _lastY;
+        private          float  _startX;
+        private          float  _startY;
 
-        internal WindowInputListener( Window window )
-        {
-            this._window = window;
-        }
+        internal WindowInputListener( Window window ) => _window = window;
 
         private void UpdateEdge( float x, float y )
         {
@@ -402,8 +380,10 @@ public class Window : Table
             }
 
             if ( _window is { IsMovable: true, edge: 0 }
-              && ( ( y <= height ) && ( y >= ( height - padTop ) ) )
-              && ( ( x >= left ) && ( x <= right ) )
+              && ( y <= height )
+              && ( y >= ( height - padTop ) )
+              && ( x >= left )
+              && ( x <= right )
                )
             {
                 _window.edge = MOVE;
@@ -426,10 +406,7 @@ public class Window : Table
             return ( _window.edge != 0 ) || _window.IsModal;
         }
 
-        public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
-        {
-            _window.Dragging = false;
-        }
+        public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button ) => _window.Dragging = false;
 
         public override void TouchDragged( InputEvent ev, float x, float y, int pointer )
         {
@@ -534,10 +511,11 @@ public class Window : Table
                 height += amountY;
             }
 
-            _window.SetBounds
-                (
-                 ( float )Math.Round( windowX ), ( float )Math.Round( windowY ),
-                 ( float )Math.Round( width ), ( float )Math.Round( height )
+            _window.SetBounds(
+                ( float )Math.Round( windowX ),
+                ( float )Math.Round( windowY ),
+                ( float )Math.Round( width ),
+                ( float )Math.Round( height )
                 );
         }
 
@@ -548,40 +526,23 @@ public class Window : Table
             return _window.IsModal;
         }
 
-        public bool Scrolled( InputEvent ev, float x, float y, int amount )
-        {
-            return _window.IsModal;
-        }
+        public bool Scrolled( InputEvent ev, float x, float y, int amount ) => _window.IsModal;
 
-        public new bool KeyDown( InputEvent ev, int keycode )
-        {
-            return _window.IsModal;
-        }
+        public new bool KeyDown( InputEvent ev, int keycode ) => _window.IsModal;
 
-        public new bool KeyUp( InputEvent ev, int keycode )
-        {
-            return _window.IsModal;
-        }
+        public new bool KeyUp( InputEvent ev, int keycode ) => _window.IsModal;
 
-        public new bool KeyTyped( InputEvent ev, char character )
-        {
-            return _window.IsModal;
-        }
+        public new bool KeyTyped( InputEvent ev, char character ) => _window.IsModal;
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// The style for a window, see <see cref="Window"/>.
+    ///     The style for a window, see <see cref="Window" />.
     /// </summary>
-    [PublicAPI]
     public class WindowStyle
     {
-        public IDrawable?  Background      { get; set; }
-        public BitmapFont? TitleFont       { get; set; }
-        public Color?      TitleFontColor  { get; set; } = new( 1, 1, 1, 1 );
-        public IDrawable?  StageBackground { get; set; }
 
         public WindowStyle()
         {
@@ -589,10 +550,10 @@ public class Window : Table
 
         public WindowStyle( BitmapFont titleFont, Color titleFontColor, IDrawable? background )
         {
-            this.TitleFont  = titleFont;
-            this.Background = background;
+            TitleFont  = titleFont;
+            Background = background;
 
-            this.TitleFontColor?.Set( titleFontColor );
+            TitleFontColor?.Set( titleFontColor );
         }
 
         public WindowStyle( WindowStyle style )
@@ -607,6 +568,11 @@ public class Window : Table
 
             Background = style.Background;
         }
+
+        public IDrawable?  Background      { get; set; }
+        public BitmapFont? TitleFont       { get; set; }
+        public Color?      TitleFontColor  { get; set; } = new( 1, 1, 1, 1 );
+        public IDrawable?  StageBackground { get; set; }
     }
 }
 

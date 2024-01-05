@@ -20,8 +20,8 @@ using System.Text;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Object used for creating debug messages which include
-/// the calling file and method.
+///     Object used for creating debug messages which include
+///     the calling file and method.
 /// </summary>
 internal struct CallerID
 {
@@ -31,48 +31,22 @@ internal struct CallerID
 }
 
 /// <summary>
-/// A class to write debug messages to console and a text file.
-/// Primarily intended for flow tracing, messages will display calling
-/// file/class/methods and any provided debug message.
-/// <see cref="TraceLevel"/> must be set to either <see cref="LOG_DEBUG"/>,
-///  <see cref="LOG_INFO"/>, or <see cref="LOG_ERROR"/> for messages to work.
-/// To enable writing to file, <see cref="EnableWriteToFile"/> must be TRUE
-/// and <see cref="OpenDebugFile"/> must be called.
+///     A class to write debug messages to console and a text file.
+///     Primarily intended for flow tracing, messages will display calling
+///     file/class/methods and any provided debug message.
+///     <see cref="TraceLevel" /> must be set to either <see cref="LOG_DEBUG" />,
+///     <see cref="LOG_INFO" />, or <see cref="LOG_ERROR" /> for messages to work.
+///     To enable writing to file, <see cref="EnableWriteToFile" /> must be TRUE
+///     and <see cref="OpenDebugFile" /> must be called.
 /// </summary>
-[PublicAPI]
 public static class Trace
 {
-    // ------------------------------------------------------------------------
-
-    #region constants
-
-    public const int LOG_NONE   = 0;
-    public const int LOG_DEBUG  = 1;
-    public const int LOG_INFO   = 2;
-    public const int LOG_ERROR  = 4;
-    public const int LOG_ASSERT = 8;
-
-    private const string DEBUG_TAG = "[Debug] ";
-    private const string INFO_TAG  = "[Info ] ";
-    private const string ERROR_TAG = "[ERROR] ";
-
-    #endregion constants
-
-    // ------------------------------------------------------------------------
-
-    #region properties
-
-    public static bool EnableWriteToFile { get; set; } = false;
-    public static bool AllowAsserts      { get; set; } = false;
-    public static int  TraceLevel        { get; set; } = LOG_NONE;
-
-    #endregion properties
 
     private static string _debugFilePath = "";
     private static string _debugFileName = "";
 
     /// <summary>
-    /// Default initialisation method.
+    ///     Default initialisation method.
     /// </summary>
     /// <param name="logLevel"></param>
     /// <param name="enableWriteToFile"></param>
@@ -91,8 +65,8 @@ public static class Trace
     }
 
     /// <summary>
-    /// Write a debug string to console and logfile, if enabled.
-    /// The string can contain format options.
+    ///     Write a debug string to console and logfile, if enabled.
+    ///     The string can contain format options.
     /// </summary>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
@@ -127,10 +101,10 @@ public static class Trace
     }
 
     /// <summary>
-    /// Calls <see cref="Debug.Assert(bool, string?)"/> with the given message
-    /// if LOG_ASSERT is enabled and the supplied condition is true.
-    /// The supplied message will have the calling fgile, method and line details
-    /// prepended to it.
+    ///     Calls <see cref="Debug.Assert(bool, string?)" /> with the given message
+    ///     if LOG_ASSERT is enabled and the supplied condition is true.
+    ///     The supplied message will have the calling fgile, method and line details
+    ///     prepended to it.
     /// </summary>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
@@ -161,7 +135,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Writes a Debug message, but adds a divider line before and after the message.
+    ///     Writes a Debug message, but adds a divider line before and after the message.
     /// </summary>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
@@ -200,7 +174,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Write an error string to console and logfile, if enabled.
+    ///     Write an error string to console and logfile, if enabled.
     /// </summary>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
@@ -235,7 +209,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Write a message to console if the supplied condition is TRUE.
+    ///     Write a message to console if the supplied condition is TRUE.
     /// </summary>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
@@ -250,7 +224,7 @@ public static class Trace
                                     string message = "",
                                     params object[] args )
     {
-        if ( ( !IsEnabled( LOG_DEBUG ) ) || !condition )
+        if ( !IsEnabled( LOG_DEBUG ) || !condition )
         {
             return;
         }
@@ -272,9 +246,9 @@ public static class Trace
     }
 
     /// <summary>
-    /// Writes a debug message consisting solely of the following:-
-    /// - Current time and date.
-    /// - Calling Class/method/line number information.
+    ///     Writes a debug message consisting solely of the following:-
+    ///     - Current time and date.
+    ///     - Calling Class/method/line number information.
     /// </summary>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
@@ -307,8 +281,8 @@ public static class Trace
     }
 
     /// <summary>
-    /// This method does the same as Trace#dbg(string, params object[] args)/>
-    /// but does not output time and date information.
+    ///     This method does the same as Trace#dbg(string, params object[] args)/>
+    ///     but does not output time and date information.
     /// </summary>
     /// <param name="message"></param>
     /// <param name="args"></param>
@@ -340,7 +314,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Creates a debug/error/info message ready for dumping.
+    ///     Creates a debug/error/info message ready for dumping.
     /// </summary>
     /// <param name="formatString">The base message</param>
     /// <param name="cid">Stack trace info from the calling method/file.</param>
@@ -371,7 +345,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Adds a dividing line to text output.
+    ///     Adds a dividing line to text output.
     /// </summary>
     /// <param name="ch">The character to use, default is '-'</param>
     /// <param name="length">The line length, default is 80.</param>
@@ -388,15 +362,15 @@ public static class Trace
     }
 
     /// <summary>
-    /// Opens a physical file for writing copies of debug messages to.
+    ///     Opens a physical file for writing copies of debug messages to.
     /// </summary>
     /// <param name="fileName">
-    /// The filename. This should be filename only,
-    /// and the file will be created in the working directory.
+    ///     The filename. This should be filename only,
+    ///     and the file will be created in the working directory.
     /// </param>
     /// <param name="deleteExisting">
-    /// True to delete existing copies of the file.
-    /// False to append to existing file.
+    ///     True to delete existing copies of the file.
+    ///     False to append to existing file.
     /// </param>
     public static void OpenDebugFile( string fileName, bool deleteExisting )
     {
@@ -422,7 +396,7 @@ public static class Trace
 
         _debugFileName = fileName;
 
-        using System.IO.FileStream fs = File.Create( _debugFilePath + _debugFileName );
+        using FileStream fs = File.Create( _debugFilePath + _debugFileName );
 
         DateTime dateTime = DateTime.Now;
 
@@ -439,7 +413,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Returns a string holding the current time.
+    ///     Returns a string holding the current time.
     /// </summary>
     private static string GetTimeStampInfo()
     {
@@ -458,7 +432,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Returns a string holding the calling filename, method and line number.
+    ///     Returns a string holding the calling filename, method and line number.
     /// </summary>
     private static string GetCallerInfo( CallerID cid )
     {
@@ -474,7 +448,7 @@ public static class Trace
     }
 
     /// <summary>
-    /// Writes text to the logFile, if it exists.
+    ///     Writes text to the logFile, if it exists.
     /// </summary>
     /// <param name="text">String holding the text to write.</param>
     private static void WriteToFile( string text )
@@ -493,21 +467,45 @@ public static class Trace
     }
 
     /// <summary>
-    /// Returns whether the requested trace level is enabled or not.
+    ///     Returns whether the requested trace level is enabled or not.
     /// </summary>
     /// <param name="traceLevel">
-    /// The trace level to check, either LOG_DEBUG, LOG_INFO, LOG_ERROR or LOG_ASSERT
+    ///     The trace level to check, either LOG_DEBUG, LOG_INFO, LOG_ERROR or LOG_ASSERT
     /// </param>
     /// <returns> True if the level is enabled. </returns>
-    private static bool IsEnabled( int traceLevel )
-    {
-        return traceLevel switch
-               {
-                   LOG_DEBUG
-                       or LOG_INFO
-                       or LOG_ERROR
-                       or LOG_ASSERT => ( TraceLevel & traceLevel ) != 0,
-                   _ => false
-               };
-    }
+    private static bool IsEnabled( int traceLevel ) => traceLevel switch
+                                                       {
+                                                           LOG_DEBUG
+                                                               or LOG_INFO
+                                                               or LOG_ERROR
+                                                               or LOG_ASSERT => ( TraceLevel & traceLevel ) != 0,
+                                                           _ => false
+                                                       };
+
+    // ------------------------------------------------------------------------
+
+    #region constants
+
+    public const int LOG_NONE   = 0;
+    public const int LOG_DEBUG  = 1;
+    public const int LOG_INFO   = 2;
+    public const int LOG_ERROR  = 4;
+    public const int LOG_ASSERT = 8;
+
+    private const string DEBUG_TAG = "[Debug] ";
+    private const string INFO_TAG  = "[Info ] ";
+    private const string ERROR_TAG = "[ERROR] ";
+
+    #endregion constants
+
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    public static bool EnableWriteToFile { get; set; } = false;
+    public static bool AllowAsserts      { get; set; } = false;
+    public static int  TraceLevel        { get; set; } = LOG_NONE;
+
+    #endregion properties
+
 }

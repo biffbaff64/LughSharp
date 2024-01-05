@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// public class for layer I subbands in joint stereo mode.
+///     public class for layer I subbands in joint stereo mode.
 /// </summary>
-[PublicAPI]
 public class SubbandLayer1IntensityStereo : SubbandLayer1
 {
     protected float channel2Scalefactor;
@@ -30,7 +29,6 @@ public class SubbandLayer1IntensityStereo : SubbandLayer1
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
@@ -42,7 +40,6 @@ public class SubbandLayer1IntensityStereo : SubbandLayer1
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override bool PutNextSample( int channels, SynthesisFilter? filter1, SynthesisFilter? filter2 )
     {

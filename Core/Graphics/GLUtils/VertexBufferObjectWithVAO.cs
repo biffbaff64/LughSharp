@@ -18,48 +18,45 @@ using LibGDXSharp.Files.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
-[PublicAPI]
 public class VertexBufferObjectWithVAO : IVertexData
 {
     private readonly static IntBuffer TmpHandle = BufferUtils.NewIntBuffer( 1 );
 
-    public VertexAttributes Attributes { get; set; }
-
     private readonly ByteBuffer  _byteBuffer;
+    private readonly List< int > _cachedLocations = new();
     private readonly bool        _ownsBuffer;
     private readonly int         _usage;
-    private readonly List< int > _cachedLocations = new();
 
-    private FloatBuffer _buffer;
-    private int         _bufferHandle;
-    private bool        _isStatic;
-    private bool        _isDirty   = false;
-    private bool        _isBound   = false;
-    private int         _vaoHandle = -1;
+    private readonly FloatBuffer _buffer;
+    private          int         _bufferHandle;
+    private          bool        _isBound = false;
+    private          bool        _isDirty = false;
+    private          bool        _isStatic;
+    private          int         _vaoHandle = -1;
 
     /// <summary>
-    /// Constructs a new interleaved VertexBufferObjectWithVAO.
+    ///     Constructs a new interleaved VertexBufferObjectWithVAO.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <see cref="VertexAttribute"/>s. </param>
+    /// <param name="attributes"> the <see cref="VertexAttribute" />s. </param>
     public VertexBufferObjectWithVAO( bool isStatic, int numVertices, params VertexAttribute[] attributes )
         : this( isStatic, numVertices, new VertexAttributes( attributes ) )
     {
     }
 
     /// <summary>
-    /// Constructs a new interleaved VertexBufferObjectWithVAO.
+    ///     Constructs a new interleaved VertexBufferObjectWithVAO.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <see cref="VertexAttributes"/>. </param>
+    /// <param name="attributes"> the <see cref="VertexAttributes" />. </param>
     public VertexBufferObjectWithVAO( bool isStatic, int numVertices, VertexAttributes attributes )
     {
-        this._isStatic  = isStatic;
-        this.Attributes = attributes;
+        _isStatic  = isStatic;
+        Attributes = attributes;
 
-        _byteBuffer = BufferUtils.NewByteBuffer( this.Attributes.VertexSize * numVertices );
+        _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices );
         _buffer     = _byteBuffer.AsFloatBuffer();
         _ownsBuffer = true;
 
@@ -74,8 +71,8 @@ public class VertexBufferObjectWithVAO : IVertexData
 
     public VertexBufferObjectWithVAO( bool isStatic, ByteBuffer unmanagedBuffer, VertexAttributes attributes )
     {
-        this._isStatic  = isStatic;
-        this.Attributes = attributes;
+        _isStatic  = isStatic;
+        Attributes = attributes;
 
         _byteBuffer = unmanagedBuffer;
         _ownsBuffer = false;
@@ -90,15 +87,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         CreateVAO();
     }
 
-    private void BufferChanged()
-    {
-        if ( _isBound )
-        {
-            Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
-            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
-            _isDirty = false;
-        }
-    }
+    public VertexAttributes Attributes { get; set; }
 
     /// <summary>
     /// </summary>
@@ -111,14 +100,14 @@ public class VertexBufferObjectWithVAO : IVertexData
     public int NumMaxVertices => _byteBuffer.Capacity / Attributes.VertexSize;
 
     /// <summary>
-    /// Sets the vertices of this VertexData, discarding the old vertex data. The
-    /// count must equal the number of floats per vertex times the number of vertices
-    /// to be copied to this VertexData. The order of the vertex attributes must be
-    /// the same as specified at construction time via <see cref="VertexAttributes"/>.
-    /// <para>
-    /// This can be called in between calls to bind and unbind. The vertex data will
-    /// be updated instantly.
-    /// </para>
+    ///     Sets the vertices of this VertexData, discarding the old vertex data. The
+    ///     count must equal the number of floats per vertex times the number of vertices
+    ///     to be copied to this VertexData. The order of the vertex attributes must be
+    ///     the same as specified at construction time via <see cref="VertexAttributes" />.
+    ///     <para>
+    ///         This can be called in between calls to bind and unbind. The vertex data will
+    ///         be updated instantly.
+    ///     </para>
     /// </summary>
     /// <param name="vertices"> the vertex data </param>
     /// <param name="offset"> the offset to start copying the data from </param>
@@ -136,7 +125,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     }
 
     /// <summary>
-    /// Update (a portion of) the vertices. Does not resize the backing buffer. </summary>
+    ///     Update (a portion of) the vertices. Does not resize the backing buffer.
+    /// </summary>
     /// <param name="targetOffset"></param>
     /// <param name="vertices"> the vertex data </param>
     /// <param name="sourceOffset"> the offset to start copying the data from </param>
@@ -146,7 +136,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         _isDirty = true;
         var pos = _byteBuffer.Position;
 
-        _byteBuffer.Position = ( targetOffset * 4 );
+        _byteBuffer.Position = targetOffset * 4;
 
         BufferUtils.Copy( vertices, sourceOffset, count, _byteBuffer );
 
@@ -157,10 +147,10 @@ public class VertexBufferObjectWithVAO : IVertexData
     }
 
     /// <summary>
-    /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
-    /// contents to be uploaded on the next call to bind. If you need immediate
-    /// uploading use <see cref="IVertexData.SetVertices"/>; Any modifications made to the Buffer
-    /// after* the call to bind will not automatically be uploaded.
+    ///     Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
+    ///     contents to be uploaded on the next call to bind. If you need immediate
+    ///     uploading use <see cref="IVertexData.SetVertices" />; Any modifications made to the Buffer
+    ///     after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.  </returns>
     public FloatBuffer GetBuffer( bool forWriting )
@@ -171,7 +161,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     }
 
     /// <summary>
-    /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
+    ///     Binds this VertexData for rendering via glDrawArrays or glDrawElements.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
@@ -188,7 +178,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     }
 
     /// <summary>
-    /// Unbinds this VertexData.
+    ///     Unbinds this VertexData.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.  </param>
@@ -199,7 +189,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     }
 
     /// <summary>
-    /// Invalidates the VertexData if applicable. Use this in case of a context loss.
+    ///     Invalidates the VertexData if applicable. Use this in case of a context loss.
     /// </summary>
     public void Invalidate()
     {
@@ -211,8 +201,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     }
 
     /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {
@@ -229,9 +219,19 @@ public class VertexBufferObjectWithVAO : IVertexData
         DeleteVAO();
     }
 
+    private void BufferChanged()
+    {
+        if ( _isBound )
+        {
+            Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            _isDirty = false;
+        }
+    }
+
     private void BindAttributes( ShaderProgram shader, int[]? locations )
     {
-        var stillValid    = this._cachedLocations.Count != 0;
+        var stillValid    = _cachedLocations.Count != 0;
         var numAttributes = Attributes.Size;
 
         if ( stillValid )
@@ -244,16 +244,16 @@ public class VertexBufferObjectWithVAO : IVertexData
 
                     var location = shader.GetAttributeLocation( attribute.alias );
 
-                    stillValid = location == this._cachedLocations[ i ];
+                    stillValid = location == _cachedLocations[ i ];
                 }
             }
             else
             {
-                stillValid = locations.Length == this._cachedLocations.Count;
+                stillValid = locations.Length == _cachedLocations.Count;
 
                 for ( var i = 0; stillValid && ( i < numAttributes ); i++ )
                 {
-                    stillValid = locations[ i ] == this._cachedLocations[ i ];
+                    stillValid = locations[ i ] == _cachedLocations[ i ];
                 }
             }
         }
@@ -264,17 +264,17 @@ public class VertexBufferObjectWithVAO : IVertexData
 
             UnbindAttributes( shader );
 
-            this._cachedLocations.Clear();
+            _cachedLocations.Clear();
 
             for ( var i = 0; i < numAttributes; i++ )
             {
                 VertexAttribute attribute = Attributes.Get( i );
 
-                this._cachedLocations.Add( locations == null
-                                               ? shader.GetAttributeLocation( attribute.alias )
-                                               : locations[ i ] );
+                _cachedLocations.Add( locations == null
+                                          ? shader.GetAttributeLocation( attribute.alias )
+                                          : locations[ i ] );
 
-                var location = this._cachedLocations[ i ];
+                var location = _cachedLocations[ i ];
 
                 if ( location < 0 )
                 {

@@ -16,93 +16,92 @@
 
 namespace LibGDXSharp.Maths;
 
-[PublicAPI]
 public class Matrix4
 {
     /// <summary>
-    /// XX: Typically the unrotated X component for scaling, also the cosine
-    /// of the angle when rotated on the Y and/or Z axis. On Vector3 multiplication
-    /// this value is multiplied with the source X component and added to the
-    /// target X component. 
+    ///     XX: Typically the unrotated X component for scaling, also the cosine
+    ///     of the angle when rotated on the Y and/or Z axis. On Vector3 multiplication
+    ///     this value is multiplied with the source X component and added to the
+    ///     target X component.
     /// </summary>
     public const int M00 = 0;
     /// <summary>
-    /// XY: Typically the negative sine of the angle when rotated on the Z axis.
-    /// On Vector3 multiplication this value is multiplied with the source Y
-    /// component and added to the target X component. 
+    ///     XY: Typically the negative sine of the angle when rotated on the Z axis.
+    ///     On Vector3 multiplication this value is multiplied with the source Y
+    ///     component and added to the target X component.
     /// </summary>
     public const int M01 = 4;
     /// <summary>
-    /// XZ: Typically the sine of the angle when rotated on the Y axis.
-    /// On Vector3 multiplication this value is multiplied with the
-    /// source Z component and added to the target X component. 
+    ///     XZ: Typically the sine of the angle when rotated on the Y axis.
+    ///     On Vector3 multiplication this value is multiplied with the
+    ///     source Z component and added to the target X component.
     /// </summary>
     public const int M02 = 8;
     /// <summary>
-    /// XW: Typically the translation of the X component. On Vector3 multiplication
-    /// this value is added to the target X component.
+    ///     XW: Typically the translation of the X component. On Vector3 multiplication
+    ///     this value is added to the target X component.
     /// </summary>
     public const int M03 = 12;
     /// <summary>
-    /// YX: Typically the sine of the angle when rotated on the Z axis. On Vector3
-    /// multiplication this value is multiplied with the source X component and
-    /// added to the target Y component. 
+    ///     YX: Typically the sine of the angle when rotated on the Z axis. On Vector3
+    ///     multiplication this value is multiplied with the source X component and
+    ///     added to the target Y component.
     /// </summary>
     public const int M10 = 1;
     /// <summary>
-    /// YY: Typically the unrotated Y component for scaling, also the cosine of the
-    /// angle when rotated on the X and/or Z axis. On Vector3 multiplication this value
-    /// is multiplied with the source Y component and added to the target Y component. 
+    ///     YY: Typically the unrotated Y component for scaling, also the cosine of the
+    ///     angle when rotated on the X and/or Z axis. On Vector3 multiplication this value
+    ///     is multiplied with the source Y component and added to the target Y component.
     /// </summary>
     public const int M11 = 5;
     /// <summary>
-    /// YZ: Typically the negative sine of the angle when rotated on the X axis.
-    /// On Vector3 multiplication this value is multiplied with the source Z component
-    /// and added to the target Y component. 
+    ///     YZ: Typically the negative sine of the angle when rotated on the X axis.
+    ///     On Vector3 multiplication this value is multiplied with the source Z component
+    ///     and added to the target Y component.
     /// </summary>
     public const int M12 = 9;
     /// <summary>
-    /// YW: Typically the translation of the Y component.
-    /// On Vector3 multiplication this value is added to the target Y component.
+    ///     YW: Typically the translation of the Y component.
+    ///     On Vector3 multiplication this value is added to the target Y component.
     /// </summary>
     public const int M13 = 13;
     /// <summary>
-    /// ZX: Typically the negative sine of the angle when rotated on the Y axis.
-    /// On Vector3 multiplication this value is multiplied with the source X component
-    /// and added to the target Z component. 
+    ///     ZX: Typically the negative sine of the angle when rotated on the Y axis.
+    ///     On Vector3 multiplication this value is multiplied with the source X component
+    ///     and added to the target Z component.
     /// </summary>
     public const int M20 = 2;
     /// <summary>
-    /// ZY: Typically the sine of the angle when rotated on the X axis.
-    /// On Vector3 multiplication this value is multiplied with the source Y component
-    /// and added to the target Z component. 
+    ///     ZY: Typically the sine of the angle when rotated on the X axis.
+    ///     On Vector3 multiplication this value is multiplied with the source Y component
+    ///     and added to the target Z component.
     /// </summary>
     public const int M21 = 6;
     /// <summary>
-    /// ZZ: Typically the unrotated Z component for scaling, also the cosine of the angle
-    /// when rotated on the X and/or Y axis. On Vector3 multiplication this value is
-    /// multiplied with the source Z component and added to the target Z component. 
+    ///     ZZ: Typically the unrotated Z component for scaling, also the cosine of the angle
+    ///     when rotated on the X and/or Y axis. On Vector3 multiplication this value is
+    ///     multiplied with the source Z component and added to the target Z component.
     /// </summary>
     public const int M22 = 10;
     /// <summary>
-    /// ZW: Typically the translation of the Z component. On Vector3 multiplication
-    /// this value is added to the target Z component.
+    ///     ZW: Typically the translation of the Z component. On Vector3 multiplication
+    ///     this value is added to the target Z component.
     /// </summary>
     public const int M23 = 14;
     /// <summary>
-    /// WX: Typically the value zero. On Vector3 multiplication this value is ignored.
+    ///     WX: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M30 = 3;
     /// <summary>
-    /// WY: Typically the value zero. On Vector3 multiplication this value is ignored.
+    ///     WY: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M31 = 7;
     /// <summary>
-    /// WZ: Typically the value zero. On Vector3 multiplication this value is ignored.
+    ///     WZ: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M32 = 11;
     /// <summary>
-    /// WW: Typically the value one. On Vector3 multiplication this value is ignored.
+    ///     WW: Typically the value one. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M33 = 15;
 
@@ -120,7 +119,7 @@ public class Matrix4
     public readonly float[] val = new float[ 16 ];
 
     /// <summary>
-    /// Constructs an identity matrix
+    ///     Constructs an identity matrix
     /// </summary>
     public Matrix4()
     {
@@ -131,74 +130,59 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Constructs a matrix from the given matrix.
+    ///     Constructs a matrix from the given matrix.
     /// </summary>
     /// <param name="matrix">
-    /// The matrix to copy. (This matrix is not modified)
+    ///     The matrix to copy. (This matrix is not modified)
     /// </param>
-    public Matrix4( Matrix4 matrix )
-    {
-        Set( matrix );
-    }
+    public Matrix4( Matrix4 matrix ) => Set( matrix );
 
     /// <summary>
-    /// Constructs a matrix from the given float array. The array must have at
-    /// least 16 elements; the first 16 will be copied.
+    ///     Constructs a matrix from the given float array. The array must have at
+    ///     least 16 elements; the first 16 will be copied.
     /// </summary>
     /// <param name="values">
-    /// The float array to copy. Remember that this matrix is in column-major order.
-    /// (The float array is not modified.)
-    /// <para>
-    /// See here:
-    /// <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
-    /// </para>
+    ///     The float array to copy. Remember that this matrix is in column-major order.
+    ///     (The float array is not modified.)
+    ///     <para>
+    ///         See here:
+    ///         <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
+    ///     </para>
     /// </param>
-    public Matrix4( float[] values )
-    {
-        Set( values );
-    }
+    public Matrix4( float[] values ) => Set( values );
 
     /// <summary>
-    /// Constructs a rotation matrix from the given <see cref="Quaternion"/>.
+    ///     Constructs a rotation matrix from the given <see cref="Quaternion" />.
     /// </summary>
     /// <param name="quaternion">The quaternion to be copied. (The quaternion is not modified)</param>
-    public Matrix4( Quaternion quaternion )
-    {
-        Set( quaternion );
-    }
+    public Matrix4( Quaternion quaternion ) => Set( quaternion );
 
     /// <summary>
-    /// Construct a matrix from the given translation, rotation and scale.
+    ///     Construct a matrix from the given translation, rotation and scale.
     /// </summary>
     /// <param name="position"> The translation </param>
     /// <param name="rotation"> The rotation, must be normalized </param>
     /// <param name="scale"> The scale</param>
-    public Matrix4( Vector3 position, Quaternion rotation, Vector3 scale )
-    {
-        Set( position, rotation, scale );
-    }
+    public Matrix4( Vector3 position, Quaternion rotation, Vector3 scale ) => Set( position, rotation, scale );
 
     /// <summary>
-    /// Sets the matrix to the given matrix.
+    ///     Sets the matrix to the given matrix.
     /// </summary>
     /// <param name="matrix"> The matrix that is to be copied.(The given matrix is not modified)</param>
     /// <returns> This matrix for the purpose of chaining methods together.</returns>
-    public Matrix4 Set( Matrix4 matrix )
-    {
-        return Set( matrix.val );
-    }
+    public Matrix4 Set( Matrix4 matrix ) => Set( matrix.val );
 
     /// <summary>
-    /// Sets the matrix to the given matrix as a float array. The float array must
-    /// have at least 16 elements; the first 16 will be copied.
+    ///     Sets the matrix to the given matrix as a float array. The float array must
+    ///     have at least 16 elements; the first 16 will be copied.
     /// </summary>
     /// <param name="values">
-    /// The matrix, in float form, that is to be copied. Remember that this matrix is in
-    /// Column-Major order.
-    /// <p>
-    /// See here:
-    /// <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
-    /// </p>
+    ///     The matrix, in float form, that is to be copied. Remember that this matrix is in
+    ///     Column-Major order.
+    ///     <p>
+    ///         See here:
+    ///         <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
+    ///     </p>
     /// </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Set( float[] values )
@@ -209,17 +193,14 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the matrix to a rotation matrix representing the quaternion.
+    ///     Sets the matrix to a rotation matrix representing the quaternion.
     /// </summary>
     /// <param name="quaternion"> The quaternion that is to be used to Set this matrix. </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
-    public Matrix4 Set( Quaternion quaternion )
-    {
-        return Set( quaternion.X, quaternion.Y, quaternion.Z, quaternion.W );
-    }
+    public Matrix4 Set( Quaternion quaternion ) => Set( quaternion.X, quaternion.Y, quaternion.Z, quaternion.W );
 
     /// <summary>
-    /// Sets the matrix to a rotation matrix representing the quaternion.
+    ///     Sets the matrix to a rotation matrix representing the quaternion.
     /// </summary>
     /// <param name="quaternionX"> The X component of the quaternion that is to be used to Set this matrix. </param>
     /// <param name="quaternionY"> The Y component of the quaternion that is to be used to Set this matrix. </param>
@@ -227,22 +208,20 @@ public class Matrix4
     /// <param name="quaternionW"> The W component of the quaternion that is to be used to Set this matrix. </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Set( float quaternionX, float quaternionY, float quaternionZ, float quaternionW )
-    {
-        return Set( 0f, 0f, 0f, quaternionX, quaternionY, quaternionZ, quaternionW );
-    }
+        => Set( 0f, 0f, 0f, quaternionX, quaternionY, quaternionZ, quaternionW );
 
     /// <summary>
-    /// Set this matrix to the specified translation and rotation. </summary>
+    ///     Set this matrix to the specified translation and rotation.
+    /// </summary>
     /// <param name="position"> The translation </param>
     /// <param name="orientation"> The rotation, must be normalized </param>
     /// <returns> This matrix for chaining  </returns>
     public Matrix4 Set( Vector3 position, Quaternion orientation )
-    {
-        return Set( position.X, position.Y, position.Z, orientation.X, orientation.Y, orientation.Z, orientation.W );
-    }
+        => Set( position.X, position.Y, position.Z, orientation.X, orientation.Y, orientation.Z, orientation.W );
 
     /// <summary>
-    /// Sets the matrix to a rotation matrix representing the translation and quaternion. </summary>
+    ///     Sets the matrix to a rotation matrix representing the translation and quaternion.
+    /// </summary>
     /// <param name="translationX"> The X component of the translation that is to be used to Set this matrix. </param>
     /// <param name="translationY"> The Y component of the translation that is to be used to Set this matrix. </param>
     /// <param name="translationZ"> The Z component of the translation that is to be used to Set this matrix. </param>
@@ -288,30 +267,28 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Set this matrix to the specified translation, rotation and scale. </summary>
+    ///     Set this matrix to the specified translation, rotation and scale.
+    /// </summary>
     /// <param name="position"> The translation </param>
     /// <param name="orientation"> The rotation, must be normalized </param>
     /// <param name="scale"> The scale </param>
     /// <returns> This matrix for chaining  </returns>
-    public Matrix4 Set( Vector3 position, Quaternion orientation, Vector3 scale )
-    {
-        return Set
-            (
-             position.X,
-             position.Y,
-             position.Z,
-             orientation.X,
-             orientation.Y,
-             orientation.Z,
-             orientation.W,
-             scale.X,
-             scale.Y,
-             scale.Z
-            );
-    }
+    public Matrix4 Set( Vector3 position, Quaternion orientation, Vector3 scale ) => Set(
+        position.X,
+        position.Y,
+        position.Z,
+        orientation.X,
+        orientation.Y,
+        orientation.Z,
+        orientation.W,
+        scale.X,
+        scale.Y,
+        scale.Z
+        );
 
     /// <summary>
-    /// Sets the matrix to a rotation matrix representing the translation and quaternion. </summary>
+    ///     Sets the matrix to a rotation matrix representing the translation and quaternion.
+    /// </summary>
     /// <param name="translationX"> The X component of the translation that is to be used to Set this matrix. </param>
     /// <param name="translationY"> The Y component of the translation that is to be used to Set this matrix. </param>
     /// <param name="translationZ"> The Z component of the translation that is to be used to Set this matrix. </param>
@@ -363,8 +340,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the four columns of the matrix which correspond to the x-, y- and z-axis of the vector space this matrix creates as
-    /// well as the 4th column representing the translation of any point that is multiplied by this matrix. </summary>
+    ///     Sets the four columns of the matrix which correspond to the x-, y- and z-axis of the vector space this matrix
+    ///     creates as
+    ///     well as the 4th column representing the translation of any point that is multiplied by this matrix.
+    /// </summary>
     /// <param name="xAxis"> The x-axis. </param>
     /// <param name="yAxis"> The y-axis. </param>
     /// <param name="zAxis"> The z-axis. </param>
@@ -392,17 +371,14 @@ public class Matrix4
     }
 
     /// <returns> a copy of this matrix </returns>
-    public Matrix4 Cpy()
-    {
-        return new Matrix4( this );
-    }
+    public Matrix4 Cpy() => new( this );
 
     /// <summary>
-    /// Adds a translational component to the matrix in the 4th column.
-    /// The other columns are untouched.
+    ///     Adds a translational component to the matrix in the 4th column.
+    ///     The other columns are untouched.
     /// </summary>
     /// <param name="vector">
-    /// The translation vector to add to the current matrix. (This vector is not modified)
+    ///     The translation vector to add to the current matrix. (This vector is not modified)
     /// </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Trn( Vector3 vector )
@@ -415,8 +391,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Adds a translational component to the matrix in the 4th column.
-    /// The other columns are untouched.
+    ///     Adds a translational component to the matrix in the 4th column.
+    ///     The other columns are untouched.
     /// </summary>
     /// <param name="x"> The x-component of the translation vector. </param>
     /// <param name="y"> The y-component of the translation vector. </param>
@@ -437,8 +413,8 @@ public class Matrix4
     public float[] Values => val;
 
     /// <summary>
-    /// Postmultiplies this matrix with the given matrix, storing the result in this matrix. For example:
-    /// <code>
+    ///     Postmultiplies this matrix with the given matrix, storing the result in this matrix. For example:
+    ///     <code>
     /// A.mul(B) results in A := AB.
     /// </code>
     /// </summary>
@@ -452,10 +428,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Premultiplies this matrix with the given matrix, storing the result in this matrix. For example:
-    /// <para>
-    /// <tt>A.mulLeft(B) results in A := BA.</tt>
-    /// </para>
+    ///     Premultiplies this matrix with the given matrix, storing the result in this matrix. For example:
+    ///     <para>
+    ///         <tt>A.mulLeft(B) results in A := BA.</tt>
+    ///     </para>
     /// </summary>
     /// <param name="matrix"> The other matrix to multiply by. </param>
     /// <returns> This matrix for the purpose of chaining operations together.  </returns>
@@ -469,7 +445,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Transposes the matrix. </summary>
+    ///     Transposes the matrix.
+    /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Tra()
     {
@@ -497,7 +474,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the matrix to an identity matrix. </summary>
+    ///     Sets the matrix to an identity matrix.
+    /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Idt()
     {
@@ -522,167 +500,171 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Inverts the matrix. Stores the result in this matrix. </summary>
+    ///     Inverts the matrix. Stores the result in this matrix.
+    /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     /// <exception cref="GdxRuntimeException"> if the matrix is singular (not invertible)  </exception>
     public Matrix4 Inv()
     {
         var lDet = ( ( ( ( ( ( ( ( ( ( ( ( val[ M30 ] * val[ M21 ] * val[ M12 ] * val[ M03 ] )
-                                         - ( val[ M20 ] * val[ M31 ] * val[ M12 ] * val[ M03 ] )
-                                         - ( val[ M30 ]
-                                             * val[ M11 ]
-                                             * val[ M22 ]
-                                             * val[ M03 ] ) )
-                                       + ( val[ M10 ] * val[ M31 ] * val[ M22 ] * val[ M03 ] )
-                                       + ( val[ M20 ] * val[ M11 ] * val[ M32 ] * val[ M03 ] ) )
-                                     - ( val[ M10 ]
-                                         * val[ M21 ]
-                                         * val[ M32 ]
-                                         * val[ M03 ] )
-                                     - ( val[ M30 ] * val[ M21 ] * val[ M02 ] * val[ M13 ] ) )
-                                   + ( val[ M20 ] * val[ M31 ] * val[ M02 ] * val[ M13 ] )
-                                   + ( val[ M30 ] * val[ M01 ] * val[ M22 ] * val[ M13 ] ) )
-                                 - ( val[ M00 ] * val[ M31 ] * val[ M22 ] * val[ M13 ] )
-                                 - ( val[ M20 ]
-                                     * val[ M01 ]
+                                       - ( val[ M20 ] * val[ M31 ] * val[ M12 ] * val[ M03 ] )
+                                       - ( val[ M30 ]
+                                         * val[ M11 ]
+                                         * val[ M22 ]
+                                         * val[ M03 ] ) )
+                                     + ( val[ M10 ] * val[ M31 ] * val[ M22 ] * val[ M03 ] )
+                                     + ( val[ M20 ] * val[ M11 ] * val[ M32 ] * val[ M03 ] ) )
+                                   - ( val[ M10 ]
+                                     * val[ M21 ]
                                      * val[ M32 ]
-                                     * val[ M13 ] ) )
-                               + ( val[ M00 ] * val[ M21 ] * val[ M32 ] * val[ M13 ] )
-                               + ( val[ M30 ] * val[ M11 ] * val[ M02 ] * val[ M23 ] ) )
-                             - ( val[ M10 ]
-                                 * val[ M31 ]
-                                 * val[ M02 ]
-                                 * val[ M23 ] )
-                             - ( val[ M30 ] * val[ M01 ] * val[ M12 ] * val[ M23 ] ) )
-                           + ( val[ M00 ] * val[ M31 ] * val[ M12 ] * val[ M23 ] )
-                           + ( val[ M10 ]
-                               * val[ M01 ]
-                               * val[ M32 ]
-                               * val[ M23 ] ) )
-                         - ( val[ M00 ] * val[ M11 ] * val[ M32 ] * val[ M23 ] )
-                         - ( val[ M20 ] * val[ M11 ] * val[ M02 ] * val[ M33 ] ) )
-                       + ( val[ M10 ] * val[ M21 ] * val[ M02 ] * val[ M33 ] )
-                       + ( val[ M20 ] * val[ M01 ] * val[ M12 ] * val[ M33 ] ) )
-                     - ( val[ M00 ]
-                         * val[ M21 ]
-                         * val[ M12 ]
-                         * val[ M33 ] )
-                     - ( val[ M10 ] * val[ M01 ] * val[ M22 ] * val[ M33 ] ) )
-                   + ( val[ M00 ] * val[ M11 ] * val[ M22 ] * val[ M33 ] );
+                                     * val[ M03 ] )
+                                   - ( val[ M30 ] * val[ M21 ] * val[ M02 ] * val[ M13 ] ) )
+                                 + ( val[ M20 ] * val[ M31 ] * val[ M02 ] * val[ M13 ] )
+                                 + ( val[ M30 ] * val[ M01 ] * val[ M22 ] * val[ M13 ] ) )
+                               - ( val[ M00 ] * val[ M31 ] * val[ M22 ] * val[ M13 ] )
+                               - ( val[ M20 ]
+                                 * val[ M01 ]
+                                 * val[ M32 ]
+                                 * val[ M13 ] ) )
+                             + ( val[ M00 ] * val[ M21 ] * val[ M32 ] * val[ M13 ] )
+                             + ( val[ M30 ] * val[ M11 ] * val[ M02 ] * val[ M23 ] ) )
+                           - ( val[ M10 ]
+                             * val[ M31 ]
+                             * val[ M02 ]
+                             * val[ M23 ] )
+                           - ( val[ M30 ] * val[ M01 ] * val[ M12 ] * val[ M23 ] ) )
+                         + ( val[ M00 ] * val[ M31 ] * val[ M12 ] * val[ M23 ] )
+                         + ( val[ M10 ]
+                           * val[ M01 ]
+                           * val[ M32 ]
+                           * val[ M23 ] ) )
+                       - ( val[ M00 ] * val[ M11 ] * val[ M32 ] * val[ M23 ] )
+                       - ( val[ M20 ] * val[ M11 ] * val[ M02 ] * val[ M33 ] ) )
+                     + ( val[ M10 ] * val[ M21 ] * val[ M02 ] * val[ M33 ] )
+                     + ( val[ M20 ] * val[ M01 ] * val[ M12 ] * val[ M33 ] ) )
+                   - ( val[ M00 ]
+                     * val[ M21 ]
+                     * val[ M12 ]
+                     * val[ M33 ] )
+                   - ( val[ M10 ] * val[ M01 ] * val[ M22 ] * val[ M33 ] ) )
+                 + ( val[ M00 ] * val[ M11 ] * val[ M22 ] * val[ M33 ] );
 
-        if ( lDet == 0f ) throw new GdxRuntimeException( "non-invertible matrix" );
+        if ( lDet == 0f )
+        {
+            throw new GdxRuntimeException( "non-invertible matrix" );
+        }
 
         var m00 = ( ( ( ( val[ M12 ] * val[ M23 ] * val[ M31 ] )
-                        - ( val[ M13 ] * val[ M22 ] * val[ M31 ] ) )
-                      + ( val[ M13 ] * val[ M21 ] * val[ M32 ] ) )
-                    - ( val[ M11 ] * val[ M23 ] * val[ M32 ] )
-                    - ( val[ M12 ] * val[ M21 ] * val[ M33 ] ) )
-                  + ( val[ M11 ] * val[ M22 ] * val[ M33 ] );
+                      - ( val[ M13 ] * val[ M22 ] * val[ M31 ] ) )
+                    + ( val[ M13 ] * val[ M21 ] * val[ M32 ] ) )
+                  - ( val[ M11 ] * val[ M23 ] * val[ M32 ] )
+                  - ( val[ M12 ] * val[ M21 ] * val[ M33 ] ) )
+                + ( val[ M11 ] * val[ M22 ] * val[ M33 ] );
 
         var m01 = ( ( ( val[ M03 ] * val[ M22 ] * val[ M31 ] )
-                      - ( val[ M02 ] * val[ M23 ] * val[ M31 ] )
-                      - ( val[ M03 ] * val[ M21 ] * val[ M32 ] ) )
-                    + ( val[ M01 ] * val[ M23 ] * val[ M32 ] )
-                    + ( val[ M02 ] * val[ M21 ] * val[ M33 ] ) )
-                  - ( val[ M01 ] * val[ M22 ] * val[ M33 ] );
+                    - ( val[ M02 ] * val[ M23 ] * val[ M31 ] )
+                    - ( val[ M03 ] * val[ M21 ] * val[ M32 ] ) )
+                  + ( val[ M01 ] * val[ M23 ] * val[ M32 ] )
+                  + ( val[ M02 ] * val[ M21 ] * val[ M33 ] ) )
+                - ( val[ M01 ] * val[ M22 ] * val[ M33 ] );
 
         var m02 = ( ( ( ( val[ M02 ] * val[ M13 ] * val[ M31 ] )
-                        - ( val[ M03 ] * val[ M12 ] * val[ M31 ] ) )
-                      + ( val[ M03 ] * val[ M11 ] * val[ M32 ] ) )
-                    - ( val[ M01 ] * val[ M13 ] * val[ M32 ] )
-                    - ( val[ M02 ] * val[ M11 ] * val[ M33 ] ) )
-                  + ( val[ M01 ] * val[ M12 ] * val[ M33 ] );
+                      - ( val[ M03 ] * val[ M12 ] * val[ M31 ] ) )
+                    + ( val[ M03 ] * val[ M11 ] * val[ M32 ] ) )
+                  - ( val[ M01 ] * val[ M13 ] * val[ M32 ] )
+                  - ( val[ M02 ] * val[ M11 ] * val[ M33 ] ) )
+                + ( val[ M01 ] * val[ M12 ] * val[ M33 ] );
 
         var m03 = ( ( ( val[ M03 ] * val[ M12 ] * val[ M21 ] )
-                      - ( val[ M02 ] * val[ M13 ] * val[ M21 ] )
-                      - ( val[ M03 ] * val[ M11 ] * val[ M22 ] ) )
-                    + ( val[ M01 ] * val[ M13 ] * val[ M22 ] )
-                    + ( val[ M02 ] * val[ M11 ] * val[ M23 ] ) )
-                  - ( val[ M01 ] * val[ M12 ] * val[ M23 ] );
+                    - ( val[ M02 ] * val[ M13 ] * val[ M21 ] )
+                    - ( val[ M03 ] * val[ M11 ] * val[ M22 ] ) )
+                  + ( val[ M01 ] * val[ M13 ] * val[ M22 ] )
+                  + ( val[ M02 ] * val[ M11 ] * val[ M23 ] ) )
+                - ( val[ M01 ] * val[ M12 ] * val[ M23 ] );
 
         var m10 = ( ( ( val[ M13 ] * val[ M22 ] * val[ M30 ] )
-                      - ( val[ M12 ] * val[ M23 ] * val[ M30 ] )
-                      - ( val[ M13 ] * val[ M20 ] * val[ M32 ] ) )
-                    + ( val[ M10 ] * val[ M23 ] * val[ M32 ] )
-                    + ( val[ M12 ] * val[ M20 ] * val[ M33 ] ) )
-                  - ( val[ M10 ] * val[ M22 ] * val[ M33 ] );
+                    - ( val[ M12 ] * val[ M23 ] * val[ M30 ] )
+                    - ( val[ M13 ] * val[ M20 ] * val[ M32 ] ) )
+                  + ( val[ M10 ] * val[ M23 ] * val[ M32 ] )
+                  + ( val[ M12 ] * val[ M20 ] * val[ M33 ] ) )
+                - ( val[ M10 ] * val[ M22 ] * val[ M33 ] );
 
         var m11 = ( ( ( ( val[ M02 ] * val[ M23 ] * val[ M30 ] )
-                        - ( val[ M03 ] * val[ M22 ] * val[ M30 ] ) )
-                      + ( val[ M03 ] * val[ M20 ] * val[ M32 ] ) )
-                    - ( val[ M00 ] * val[ M23 ] * val[ M32 ] )
-                    - ( val[ M02 ] * val[ M20 ] * val[ M33 ] ) )
-                  + ( val[ M00 ] * val[ M22 ] * val[ M33 ] );
+                      - ( val[ M03 ] * val[ M22 ] * val[ M30 ] ) )
+                    + ( val[ M03 ] * val[ M20 ] * val[ M32 ] ) )
+                  - ( val[ M00 ] * val[ M23 ] * val[ M32 ] )
+                  - ( val[ M02 ] * val[ M20 ] * val[ M33 ] ) )
+                + ( val[ M00 ] * val[ M22 ] * val[ M33 ] );
 
         var m12 = ( ( ( val[ M03 ] * val[ M12 ] * val[ M30 ] )
-                      - ( val[ M02 ] * val[ M13 ] * val[ M30 ] )
-                      - ( val[ M03 ] * val[ M10 ] * val[ M32 ] ) )
-                    + ( val[ M00 ] * val[ M13 ] * val[ M32 ] )
-                    + ( val[ M02 ] * val[ M10 ] * val[ M33 ] ) )
-                  - ( val[ M00 ] * val[ M12 ] * val[ M33 ] );
+                    - ( val[ M02 ] * val[ M13 ] * val[ M30 ] )
+                    - ( val[ M03 ] * val[ M10 ] * val[ M32 ] ) )
+                  + ( val[ M00 ] * val[ M13 ] * val[ M32 ] )
+                  + ( val[ M02 ] * val[ M10 ] * val[ M33 ] ) )
+                - ( val[ M00 ] * val[ M12 ] * val[ M33 ] );
 
         var m13 = ( ( ( ( val[ M02 ] * val[ M13 ] * val[ M20 ] )
-                        - ( val[ M03 ] * val[ M12 ] * val[ M20 ] ) )
-                      + ( val[ M03 ] * val[ M10 ] * val[ M22 ] ) )
-                    - ( val[ M00 ] * val[ M13 ] * val[ M22 ] )
-                    - ( val[ M02 ] * val[ M10 ] * val[ M23 ] ) )
-                  + ( val[ M00 ] * val[ M12 ] * val[ M23 ] );
+                      - ( val[ M03 ] * val[ M12 ] * val[ M20 ] ) )
+                    + ( val[ M03 ] * val[ M10 ] * val[ M22 ] ) )
+                  - ( val[ M00 ] * val[ M13 ] * val[ M22 ] )
+                  - ( val[ M02 ] * val[ M10 ] * val[ M23 ] ) )
+                + ( val[ M00 ] * val[ M12 ] * val[ M23 ] );
 
         var m20 = ( ( ( ( val[ M11 ] * val[ M23 ] * val[ M30 ] )
-                        - ( val[ M13 ] * val[ M21 ] * val[ M30 ] ) )
-                      + ( val[ M13 ] * val[ M20 ] * val[ M31 ] ) )
-                    - ( val[ M10 ] * val[ M23 ] * val[ M31 ] )
-                    - ( val[ M11 ] * val[ M20 ] * val[ M33 ] ) )
-                  + ( val[ M10 ] * val[ M21 ] * val[ M33 ] );
+                      - ( val[ M13 ] * val[ M21 ] * val[ M30 ] ) )
+                    + ( val[ M13 ] * val[ M20 ] * val[ M31 ] ) )
+                  - ( val[ M10 ] * val[ M23 ] * val[ M31 ] )
+                  - ( val[ M11 ] * val[ M20 ] * val[ M33 ] ) )
+                + ( val[ M10 ] * val[ M21 ] * val[ M33 ] );
 
         var m21 = ( ( ( val[ M03 ] * val[ M21 ] * val[ M30 ] )
-                      - ( val[ M01 ] * val[ M23 ] * val[ M30 ] )
-                      - ( val[ M03 ] * val[ M20 ] * val[ M31 ] ) )
-                    + ( val[ M00 ] * val[ M23 ] * val[ M31 ] )
-                    + ( val[ M01 ] * val[ M20 ] * val[ M33 ] ) )
-                  - ( val[ M00 ] * val[ M21 ] * val[ M33 ] );
+                    - ( val[ M01 ] * val[ M23 ] * val[ M30 ] )
+                    - ( val[ M03 ] * val[ M20 ] * val[ M31 ] ) )
+                  + ( val[ M00 ] * val[ M23 ] * val[ M31 ] )
+                  + ( val[ M01 ] * val[ M20 ] * val[ M33 ] ) )
+                - ( val[ M00 ] * val[ M21 ] * val[ M33 ] );
 
         var m22 = ( ( ( ( val[ M01 ] * val[ M13 ] * val[ M30 ] )
-                        - ( val[ M03 ] * val[ M11 ] * val[ M30 ] ) )
-                      + ( val[ M03 ] * val[ M10 ] * val[ M31 ] ) )
-                    - ( val[ M00 ] * val[ M13 ] * val[ M31 ] )
-                    - ( val[ M01 ] * val[ M10 ] * val[ M33 ] ) )
-                  + ( val[ M00 ] * val[ M11 ] * val[ M33 ] );
+                      - ( val[ M03 ] * val[ M11 ] * val[ M30 ] ) )
+                    + ( val[ M03 ] * val[ M10 ] * val[ M31 ] ) )
+                  - ( val[ M00 ] * val[ M13 ] * val[ M31 ] )
+                  - ( val[ M01 ] * val[ M10 ] * val[ M33 ] ) )
+                + ( val[ M00 ] * val[ M11 ] * val[ M33 ] );
 
         var m23 = ( ( ( val[ M03 ] * val[ M11 ] * val[ M20 ] )
-                      - ( val[ M01 ] * val[ M13 ] * val[ M20 ] )
-                      - ( val[ M03 ] * val[ M10 ] * val[ M21 ] ) )
-                    + ( val[ M00 ] * val[ M13 ] * val[ M21 ] )
-                    + ( val[ M01 ] * val[ M10 ] * val[ M23 ] ) )
-                  - ( val[ M00 ] * val[ M11 ] * val[ M23 ] );
+                    - ( val[ M01 ] * val[ M13 ] * val[ M20 ] )
+                    - ( val[ M03 ] * val[ M10 ] * val[ M21 ] ) )
+                  + ( val[ M00 ] * val[ M13 ] * val[ M21 ] )
+                  + ( val[ M01 ] * val[ M10 ] * val[ M23 ] ) )
+                - ( val[ M00 ] * val[ M11 ] * val[ M23 ] );
 
         var m30 = ( ( ( val[ M12 ] * val[ M21 ] * val[ M30 ] )
-                      - ( val[ M11 ] * val[ M22 ] * val[ M30 ] )
-                      - ( val[ M12 ] * val[ M20 ] * val[ M31 ] ) )
-                    + ( val[ M10 ] * val[ M22 ] * val[ M31 ] )
-                    + ( val[ M11 ] * val[ M20 ] * val[ M32 ] ) )
-                  - ( val[ M10 ] * val[ M21 ] * val[ M32 ] );
+                    - ( val[ M11 ] * val[ M22 ] * val[ M30 ] )
+                    - ( val[ M12 ] * val[ M20 ] * val[ M31 ] ) )
+                  + ( val[ M10 ] * val[ M22 ] * val[ M31 ] )
+                  + ( val[ M11 ] * val[ M20 ] * val[ M32 ] ) )
+                - ( val[ M10 ] * val[ M21 ] * val[ M32 ] );
 
         var m31 = ( ( ( ( val[ M01 ] * val[ M22 ] * val[ M30 ] )
-                        - ( val[ M02 ] * val[ M21 ] * val[ M30 ] ) )
-                      + ( val[ M02 ] * val[ M20 ] * val[ M31 ] ) )
-                    - ( val[ M00 ] * val[ M22 ] * val[ M31 ] )
-                    - ( val[ M01 ] * val[ M20 ] * val[ M32 ] ) )
-                  + ( val[ M00 ] * val[ M21 ] * val[ M32 ] );
+                      - ( val[ M02 ] * val[ M21 ] * val[ M30 ] ) )
+                    + ( val[ M02 ] * val[ M20 ] * val[ M31 ] ) )
+                  - ( val[ M00 ] * val[ M22 ] * val[ M31 ] )
+                  - ( val[ M01 ] * val[ M20 ] * val[ M32 ] ) )
+                + ( val[ M00 ] * val[ M21 ] * val[ M32 ] );
 
         var m32 = ( ( ( val[ M02 ] * val[ M11 ] * val[ M30 ] )
-                      - ( val[ M01 ] * val[ M12 ] * val[ M30 ] )
-                      - ( val[ M02 ] * val[ M10 ] * val[ M31 ] ) )
-                    + ( val[ M00 ] * val[ M12 ] * val[ M31 ] )
-                    + ( val[ M01 ] * val[ M10 ] * val[ M32 ] ) )
-                  - ( val[ M00 ] * val[ M11 ] * val[ M32 ] );
+                    - ( val[ M01 ] * val[ M12 ] * val[ M30 ] )
+                    - ( val[ M02 ] * val[ M10 ] * val[ M31 ] ) )
+                  + ( val[ M00 ] * val[ M12 ] * val[ M31 ] )
+                  + ( val[ M01 ] * val[ M10 ] * val[ M32 ] ) )
+                - ( val[ M00 ] * val[ M11 ] * val[ M32 ] );
 
         var m33 = ( ( ( ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
-                        - ( val[ M02 ] * val[ M11 ] * val[ M20 ] ) )
-                      + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
-                    - ( val[ M00 ] * val[ M12 ] * val[ M21 ] )
-                    - ( val[ M01 ] * val[ M10 ] * val[ M22 ] ) )
-                  + ( val[ M00 ] * val[ M11 ] * val[ M22 ] );
+                      - ( val[ M02 ] * val[ M11 ] * val[ M20 ] ) )
+                    + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
+                  - ( val[ M00 ] * val[ M12 ] * val[ M21 ] )
+                  - ( val[ M01 ] * val[ M10 ] * val[ M22 ] ) )
+                + ( val[ M00 ] * val[ M11 ] * val[ M22 ] );
 
         var invDet = 1.0f / lDet;
 
@@ -706,70 +688,65 @@ public class Matrix4
         return this;
     }
 
-    public float Det()
-    {
-        return ( ( ( ( ( ( ( ( ( ( ( ( val[ M30 ] * val[ M21 ] * val[ M12 ] * val[ M03 ] )
-                                     - ( val[ M20 ] * val[ M31 ] * val[ M12 ] * val[ M03 ] )
-                                     - ( val[ M30 ]
-                                         * val[ M11 ]
-                                         * val[ M22 ]
-                                         * val[ M03 ] ) )
-                                   + ( val[ M10 ] * val[ M31 ] * val[ M22 ] * val[ M03 ] )
-                                   + ( val[ M20 ] * val[ M11 ] * val[ M32 ] * val[ M03 ] ) )
-                                 - ( val[ M10 ]
-                                     * val[ M21 ]
-                                     * val[ M32 ]
-                                     * val[ M03 ] )
-                                 - ( val[ M30 ] * val[ M21 ] * val[ M02 ] * val[ M13 ] ) )
-                               + ( val[ M20 ] * val[ M31 ] * val[ M02 ] * val[ M13 ] )
-                               + ( val[ M30 ] * val[ M01 ] * val[ M22 ] * val[ M13 ] ) )
-                             - ( val[ M00 ] * val[ M31 ] * val[ M22 ] * val[ M13 ] )
-                             - ( val[ M20 ]
-                                 * val[ M01 ]
-                                 * val[ M32 ]
-                                 * val[ M13 ] ) )
-                           + ( val[ M00 ] * val[ M21 ] * val[ M32 ] * val[ M13 ] )
-                           + ( val[ M30 ] * val[ M11 ] * val[ M02 ] * val[ M23 ] ) )
-                         - ( val[ M10 ]
-                             * val[ M31 ]
-                             * val[ M02 ]
-                             * val[ M23 ] )
-                         - ( val[ M30 ] * val[ M01 ] * val[ M12 ] * val[ M23 ] ) )
-                       + ( val[ M00 ] * val[ M31 ] * val[ M12 ] * val[ M23 ] )
-                       + ( val[ M10 ]
-                           * val[ M01 ]
-                           * val[ M32 ]
-                           * val[ M23 ] ) )
-                     - ( val[ M00 ] * val[ M11 ] * val[ M32 ] * val[ M23 ] )
-                     - ( val[ M20 ] * val[ M11 ] * val[ M02 ] * val[ M33 ] ) )
-                   + ( val[ M10 ] * val[ M21 ] * val[ M02 ] * val[ M33 ] )
-                   + ( val[ M20 ] * val[ M01 ] * val[ M12 ] * val[ M33 ] ) )
-                 - ( val[ M00 ]
-                     * val[ M21 ]
-                     * val[ M12 ]
-                     * val[ M33 ] )
-                 - ( val[ M10 ] * val[ M01 ] * val[ M22 ] * val[ M33 ] ) )
-               + ( val[ M00 ] * val[ M11 ] * val[ M22 ] * val[ M33 ] );
-    }
+    public float Det() => ( ( ( ( ( ( ( ( ( ( ( ( val[ M30 ] * val[ M21 ] * val[ M12 ] * val[ M03 ] )
+                                              - ( val[ M20 ] * val[ M31 ] * val[ M12 ] * val[ M03 ] )
+                                              - ( val[ M30 ]
+                                                * val[ M11 ]
+                                                * val[ M22 ]
+                                                * val[ M03 ] ) )
+                                            + ( val[ M10 ] * val[ M31 ] * val[ M22 ] * val[ M03 ] )
+                                            + ( val[ M20 ] * val[ M11 ] * val[ M32 ] * val[ M03 ] ) )
+                                          - ( val[ M10 ]
+                                            * val[ M21 ]
+                                            * val[ M32 ]
+                                            * val[ M03 ] )
+                                          - ( val[ M30 ] * val[ M21 ] * val[ M02 ] * val[ M13 ] ) )
+                                        + ( val[ M20 ] * val[ M31 ] * val[ M02 ] * val[ M13 ] )
+                                        + ( val[ M30 ] * val[ M01 ] * val[ M22 ] * val[ M13 ] ) )
+                                      - ( val[ M00 ] * val[ M31 ] * val[ M22 ] * val[ M13 ] )
+                                      - ( val[ M20 ]
+                                        * val[ M01 ]
+                                        * val[ M32 ]
+                                        * val[ M13 ] ) )
+                                    + ( val[ M00 ] * val[ M21 ] * val[ M32 ] * val[ M13 ] )
+                                    + ( val[ M30 ] * val[ M11 ] * val[ M02 ] * val[ M23 ] ) )
+                                  - ( val[ M10 ]
+                                    * val[ M31 ]
+                                    * val[ M02 ]
+                                    * val[ M23 ] )
+                                  - ( val[ M30 ] * val[ M01 ] * val[ M12 ] * val[ M23 ] ) )
+                                + ( val[ M00 ] * val[ M31 ] * val[ M12 ] * val[ M23 ] )
+                                + ( val[ M10 ]
+                                  * val[ M01 ]
+                                  * val[ M32 ]
+                                  * val[ M23 ] ) )
+                              - ( val[ M00 ] * val[ M11 ] * val[ M32 ] * val[ M23 ] )
+                              - ( val[ M20 ] * val[ M11 ] * val[ M02 ] * val[ M33 ] ) )
+                            + ( val[ M10 ] * val[ M21 ] * val[ M02 ] * val[ M33 ] )
+                            + ( val[ M20 ] * val[ M01 ] * val[ M12 ] * val[ M33 ] ) )
+                          - ( val[ M00 ]
+                            * val[ M21 ]
+                            * val[ M12 ]
+                            * val[ M33 ] )
+                          - ( val[ M10 ] * val[ M01 ] * val[ M22 ] * val[ M33 ] ) )
+                        + ( val[ M00 ] * val[ M11 ] * val[ M22 ] * val[ M33 ] );
 
     /// <returns> The determinant of the 3x3 upper left matrix </returns>
-    public float Det3X3()
-    {
-        return ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
-                 + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
-                 + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
-               - ( val[ M00 ]
-                   * val[ M12 ]
-                   * val[ M21 ] )
-               - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
-               - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
-    }
+    public float Det3X3() => ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
+                             + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
+                             + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
+                           - ( val[ M00 ]
+                             * val[ M12 ]
+                             * val[ M21 ] )
+                           - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
+                           - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
 
     /// <summary>
-    /// Sets the matrix to a projection matrix with a near- and far plane, a field
-    /// of view in degrees and an aspect ratio. Note that the field of view specified
-    /// is the angle in degrees for the height, the field of view for the width will
-    /// be calculated according to the aspect ratio. </summary>
+    ///     Sets the matrix to a projection matrix with a near- and far plane, a field
+    ///     of view in degrees and an aspect ratio. Note that the field of view specified
+    ///     is the angle in degrees for the height, the field of view for the width will
+    ///     be calculated according to the aspect ratio.
+    /// </summary>
     /// <param name="near"> The near plane </param>
     /// <param name="far"> The far plane </param>
     /// <param name="fovy"> The field of view of the height in degrees </param>
@@ -804,10 +781,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the matrix to a projection matrix with a near/far plane, and left, bottom,
-    /// right and top specifying the points on the near plane that are mapped to the lower
-    /// left and upper right corners of the viewport. This allows to create projection
-    /// matrix with off-center vanishing point.
+    ///     Sets the matrix to a projection matrix with a near/far plane, and left, bottom,
+    ///     right and top specifying the points on the near plane that are mapped to the lower
+    ///     left and upper right corners of the viewport. This allows to create projection
+    ///     matrix with off-center vanishing point.
     /// </summary>
     /// <param name="left"> </param>
     /// <param name="right"> </param>
@@ -846,8 +823,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height. The near plane
-    /// is Set to 0, the far plane is Set to 1. </summary>
+    ///     Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height. The
+    ///     near plane
+    ///     is Set to 0, the far plane is Set to 1.
+    /// </summary>
     /// <param name="x"> The x-coordinate of the origin </param>
     /// <param name="y"> The y-coordinate of the origin </param>
     /// <param name="width"> The width </param>
@@ -861,8 +840,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height, having a near
-    /// and far plane. </summary>
+    ///     Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height,
+    ///     having a near
+    ///     and far plane.
+    /// </summary>
     /// <param name="x"> The x-coordinate of the origin </param>
     /// <param name="y"> The y-coordinate of the origin </param>
     /// <param name="width"> The width </param>
@@ -878,8 +859,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the matrix to an orthographic projection like glOrtho (http://www.opengl.org/sdk/docs/man/xhtml/glOrtho.xml) following
-    /// the OpenGL equivalent </summary>
+    ///     Sets the matrix to an orthographic projection like glOrtho (http://www.opengl.org/sdk/docs/man/xhtml/glOrtho.xml)
+    ///     following
+    ///     the OpenGL equivalent
+    /// </summary>
     /// <param name="left"> The left clipping plane </param>
     /// <param name="right"> The right clipping plane </param>
     /// <param name="bottom"> The bottom clipping plane </param>
@@ -918,7 +901,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the 4th column to the translation vector. </summary>
+    ///     Sets the 4th column to the translation vector.
+    /// </summary>
     /// <param name="vector"> The translation vector </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 SetTranslation( Vector3 vector )
@@ -931,7 +915,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the 4th column to the translation vector. </summary>
+    ///     Sets the 4th column to the translation vector.
+    /// </summary>
     /// <param name="x"> The X coordinate of the translation vector </param>
     /// <param name="y"> The Y coordinate of the translation vector </param>
     /// <param name="z"> The Z coordinate of the translation vector </param>
@@ -946,8 +931,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th column to the
-    /// translation vector. </summary>
+    ///     Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th
+    ///     column to the
+    ///     translation vector.
+    /// </summary>
     /// <param name="vector"> The translation vector </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 SetToTranslation( Vector3 vector )
@@ -962,8 +949,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th column to the
-    /// translation vector. </summary>
+    ///     Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th
+    ///     column to the
+    ///     translation vector.
+    /// </summary>
     /// <param name="x"> The x-component of the translation vector. </param>
     /// <param name="y"> The y-component of the translation vector. </param>
     /// <param name="z"> The z-component of the translation vector. </param>
@@ -980,8 +969,9 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the
-    /// translation vector in the 4th column and the scaling vector in the diagonal. </summary>
+    ///     Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the
+    ///     translation vector in the 4th column and the scaling vector in the diagonal.
+    /// </summary>
     /// <param name="translation"> The translation vector </param>
     /// <param name="scaling"> The scaling vector </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -1000,8 +990,9 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the
-    /// translation vector in the 4th column and the scaling vector in the diagonal. </summary>
+    ///     Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the
+    ///     translation vector in the 4th column and the scaling vector in the diagonal.
+    /// </summary>
     /// <param name="translationX"> The x-component of the translation vector </param>
     /// <param name="translationY"> The y-component of the translation vector </param>
     /// <param name="translationZ"> The z-component of the translation vector </param>
@@ -1029,7 +1020,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the matrix to a rotation matrix around the given axis. </summary>
+    ///     Sets the matrix to a rotation matrix around the given axis.
+    /// </summary>
     /// <param name="axis"> The axis </param>
     /// <param name="degrees"> The angle in degrees </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -1046,7 +1038,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the matrix to a rotation matrix around the given axis. </summary>
+    ///     Sets the matrix to a rotation matrix around the given axis.
+    /// </summary>
     /// <param name="axis"> The axis </param>
     /// <param name="radians"> The angle in radians </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -1063,7 +1056,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the matrix to a rotation matrix around the given axis. </summary>
+    ///     Sets the matrix to a rotation matrix around the given axis.
+    /// </summary>
     /// <param name="axisX"> The x-component of the axis </param>
     /// <param name="axisY"> The y-component of the axis </param>
     /// <param name="axisZ"> The z-component of the axis </param>
@@ -1082,7 +1076,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets the matrix to a rotation matrix around the given axis. </summary>
+    ///     Sets the matrix to a rotation matrix around the given axis.
+    /// </summary>
     /// <param name="axisX"> The x-component of the axis </param>
     /// <param name="axisY"> The y-component of the axis </param>
     /// <param name="axisZ"> The z-component of the axis </param>
@@ -1101,17 +1096,16 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Set the matrix to a rotation matrix between two vectors. </summary>
+    ///     Set the matrix to a rotation matrix between two vectors.
+    /// </summary>
     /// <param name="v1"> The base vector </param>
     /// <param name="v2"> The target vector </param>
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
-    public Matrix4 SetToRotation( Vector3 v1, Vector3 v2 )
-    {
-        return Set( Quat.SetFromCross( v1, v2 ) );
-    }
+    public Matrix4 SetToRotation( Vector3 v1, Vector3 v2 ) => Set( Quat.SetFromCross( v1, v2 ) );
 
     /// <summary>
-    /// Set the matrix to a rotation matrix between two vectors. </summary>
+    ///     Set the matrix to a rotation matrix between two vectors.
+    /// </summary>
     /// <param name="x1"> The base vectors x value </param>
     /// <param name="y1"> The base vectors y value </param>
     /// <param name="z1"> The base vectors z value </param>
@@ -1119,13 +1113,11 @@ public class Matrix4
     /// <param name="y2"> The target vector y value </param>
     /// <param name="z2"> The target vector z value </param>
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
-    public Matrix4 SetToRotation( float x1, float y1, float z1, float x2, float y2, float z2 )
-    {
-        return Set( Quat.SetFromCross( x1, y1, z1, x2, y2, z2 ) );
-    }
+    public Matrix4 SetToRotation( float x1, float y1, float z1, float x2, float y2, float z2 ) => Set( Quat.SetFromCross( x1, y1, z1, x2, y2, z2 ) );
 
     /// <summary>
-    /// Sets this matrix to a rotation matrix from the given euler angles. </summary>
+    ///     Sets this matrix to a rotation matrix from the given euler angles.
+    /// </summary>
     /// <param name="yaw"> the yaw in degrees </param>
     /// <param name="pitch"> the pitch in degrees </param>
     /// <param name="roll"> the roll in degrees </param>
@@ -1138,7 +1130,7 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to a rotation matrix from the given euler angles.
+    ///     Sets this matrix to a rotation matrix from the given euler angles.
     /// </summary>
     /// <param name="yaw"> the yaw in radians </param>
     /// <param name="pitch"> the pitch in radians </param>
@@ -1152,7 +1144,7 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to a scaling matrix
+    ///     Sets this matrix to a scaling matrix
     /// </summary>
     /// <param name="vector"> The scaling vector </param>
     /// <returns> This matrix for chaining.  </returns>
@@ -1168,7 +1160,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to a scaling matrix </summary>
+    ///     Sets this matrix to a scaling matrix
+    /// </summary>
     /// <param name="x"> The x-component of the scaling vector </param>
     /// <param name="y"> The y-component of the scaling vector </param>
     /// <param name="z"> The z-component of the scaling vector </param>
@@ -1186,8 +1179,8 @@ public class Matrix4
 
 
     /// <summary>
-    /// Sets the matrix to a look at matrix with a direction and an up vector. Multiply
-    /// with a translation matrix to get a camera model view matrix.
+    ///     Sets the matrix to a look at matrix with a direction and an up vector. Multiply
+    ///     with a translation matrix to get a camera model view matrix.
     /// </summary>
     /// <param name="direction"> The direction vector </param>
     /// <param name="up"> The up vector </param>
@@ -1215,7 +1208,7 @@ public class Matrix4
 
 
     /// <summary>
-    /// Sets this matrix to a look at matrix with the given position, target and up vector.
+    ///     Sets this matrix to a look at matrix with the given position, target and up vector.
     /// </summary>
     /// <param name="position"> the position </param>
     /// <param name="target"> the target </param>
@@ -1242,7 +1235,7 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Linearly interpolates between this matrix and the given matrix mixing by alpha
+    ///     Linearly interpolates between this matrix and the given matrix mixing by alpha
     /// </summary>
     /// <param name="matrix"> the matrix </param>
     /// <param name="alpha"> the alpha value in the range [0,1] </param>
@@ -1258,8 +1251,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Averages the given transform with this one and stores the result in this matrix. Translations and scales are lerped while
-    /// rotations are slerped. </summary>
+    ///     Averages the given transform with this one and stores the result in this matrix. Translations and scales are lerped
+    ///     while
+    ///     rotations are slerped.
+    /// </summary>
     /// <param name="other"> The other transform </param>
     /// <param name="w"> Weight of this transform; weight of the other transform is (1 - w) </param>
     /// <returns> This matrix for chaining  </returns>
@@ -1282,9 +1277,9 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Averages the given transforms and stores the result in this matrix. Translations
-    /// and scales are lerped while rotations are slerped. Does not destroy the data
-    /// contained in t.
+    ///     Averages the given transforms and stores the result in this matrix. Translations
+    ///     and scales are lerped while rotations are slerped. Does not destroy the data
+    ///     contained in t.
     /// </summary>
     /// <param name="t"> List of transforms </param>
     /// <returns> This matrix for chaining  </returns>
@@ -1313,10 +1308,10 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Averages the given transforms with the given weights and stores the result
-    /// in this matrix. Translations and scales are lerped while rotations are slerped.
-    /// Does not destroy the data contained in t or w; Sum of w_i must be equal to 1, or
-    /// unexpected results will occur.
+    ///     Averages the given transforms with the given weights and stores the result
+    ///     in this matrix. Translations and scales are lerped while rotations are slerped.
+    ///     Does not destroy the data contained in t or w; Sum of w_i must be equal to 1, or
+    ///     unexpected results will occur.
     /// </summary>
     /// <param name="t"> List of transforms </param>
     /// <param name="w"> List of weights </param>
@@ -1344,8 +1339,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to the given 3x3 matrix.
-    /// The third column of this matrix is Set to ( 0, 0, 1, 0 ).
+    ///     Sets this matrix to the given 3x3 matrix.
+    ///     The third column of this matrix is Set to ( 0, 0, 1, 0 ).
     /// </summary>
     /// <param name="mat"> the matrix </param>
     public Matrix4 Set( Matrix3 mat )
@@ -1371,13 +1366,13 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Sets this matrix to the given affine matrix. The values are mapped as follows:
-    /// <para></para>
-    /// <para>     [  M00  M01  ___  M02  ]</para>
-    /// <para>     [  M10  M11  ___  M12  ]</para>
-    /// <para>     [  ___  ___  ___  ___  ]</para>
-    /// <para>     [  ___  ___  ___  ___  ]</para>
-    /// <para></para>
+    ///     Sets this matrix to the given affine matrix. The values are mapped as follows:
+    ///     <para></para>
+    ///     <para>     [  M00  M01  ___  M02  ]</para>
+    ///     <para>     [  M10  M11  ___  M12  ]</para>
+    ///     <para>     [  ___  ___  ___  ___  ]</para>
+    ///     <para>     [  ___  ___  ___  ___  ]</para>
+    ///     <para></para>
     /// </summary>
     /// <param name="affine"> the source matrix </param>
     /// <returns> This matrix for chaining </returns>
@@ -1404,14 +1399,14 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Assumes that both matrices are 2D affine transformations, copying only
-    /// the relevant components. The copied are mapped as follows:
-    /// <para></para>
-    /// <para>     [  M00  M01  ___  M02  ]</para>
-    /// <para>     [  M10  M11  ___  M12  ]</para>
-    /// <para>     [  ___  ___  ___  ___  ]</para>
-    /// <para>     [  ___  ___  ___  ___  ]</para>
-    /// <para></para>
+    ///     Assumes that both matrices are 2D affine transformations, copying only
+    ///     the relevant components. The copied are mapped as follows:
+    ///     <para></para>
+    ///     <para>     [  M00  M01  ___  M02  ]</para>
+    ///     <para>     [  M10  M11  ___  M12  ]</para>
+    ///     <para>     [  ___  ___  ___  ___  ]</para>
+    ///     <para>     [  ___  ___  ___  ___  ]</para>
+    ///     <para></para>
     /// </summary>
     /// <param name="affine"> the source matrix </param>
     /// <returns> This matrix for chaining </returns>
@@ -1428,14 +1423,14 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Assumes that both matrices are 2D affine transformations, copying only
-    /// the relevant components. The copied values are:
-    /// <para></para>
-    /// <para>     [  M00  M01  ___  M03  ]</para>
-    /// <para>     [  M10  M11  ___  M13  ]</para>
-    /// <para>     [  ___  ___  ___  ___  ]</para>
-    /// <para>     [  ___  ___  ___  ___  ]</para>
-    /// <para></para>
+    ///     Assumes that both matrices are 2D affine transformations, copying only
+    ///     the relevant components. The copied values are:
+    ///     <para></para>
+    ///     <para>     [  M00  M01  ___  M03  ]</para>
+    ///     <para>     [  M10  M11  ___  M13  ]</para>
+    ///     <para>     [  ___  ___  ___  ___  ]</para>
+    ///     <para>     [  ___  ___  ___  ___  ]</para>
+    ///     <para></para>
     /// </summary>
     /// <param name="mat"> the source matrix </param>
     /// <returns> This matrix for chaining </returns>
@@ -1488,91 +1483,64 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Gets the rotation of this matrix.
+    ///     Gets the rotation of this matrix.
     /// </summary>
-    /// <param name="rotation"> The <see cref="Quaternion"/> to receive the rotation </param>
+    /// <param name="rotation"> The <see cref="Quaternion" /> to receive the rotation </param>
     /// <param name="normalizeAxes"> True to normalize the axes, necessary when the matrix might also include scaling. </param>
-    /// <returns> The provided <see cref="Quaternion"/> for chaining.  </returns>
-    public Quaternion GetRotation( Quaternion rotation, bool normalizeAxes )
-    {
-        return rotation.SetFromMatrix( normalizeAxes, this );
-    }
+    /// <returns> The provided <see cref="Quaternion" /> for chaining.  </returns>
+    public Quaternion GetRotation( Quaternion rotation, bool normalizeAxes ) => rotation.SetFromMatrix( normalizeAxes, this );
 
     /// <summary>
-    /// Gets the rotation of this matrix.
+    ///     Gets the rotation of this matrix.
     /// </summary>
-    /// <param name="rotation"> The <see cref="Quaternion"/> to receive the rotation </param>
-    /// <returns> The provided <see cref="Quaternion"/> for chaining.  </returns>
-    public Quaternion GetRotation( Quaternion rotation )
-    {
-        return rotation.SetFromMatrix( this );
-    }
+    /// <param name="rotation"> The <see cref="Quaternion" /> to receive the rotation </param>
+    /// <returns> The provided <see cref="Quaternion" /> for chaining.  </returns>
+    public Quaternion GetRotation( Quaternion rotation ) => rotation.SetFromMatrix( this );
 
     /// <summary>
     /// </summary>
     /// <returns> the squared scale factor on the X axis </returns>
-    public float GetScaleXSquared()
-    {
-        return ( val[ M00 ] * val[ M00 ] ) + ( val[ M01 ] * val[ M01 ] ) + ( val[ M02 ] * val[ M02 ] );
-    }
+    public float GetScaleXSquared() => ( val[ M00 ] * val[ M00 ] ) + ( val[ M01 ] * val[ M01 ] ) + ( val[ M02 ] * val[ M02 ] );
 
     /// <summary>
     /// </summary>
     /// <returns> the squared scale factor on the Y axis </returns>
-    public float GetScaleYSquared()
-    {
-        return ( val[ M10 ] * val[ M10 ] ) + ( val[ M11 ] * val[ M11 ] ) + ( val[ M12 ] * val[ M12 ] );
-    }
+    public float GetScaleYSquared() => ( val[ M10 ] * val[ M10 ] ) + ( val[ M11 ] * val[ M11 ] ) + ( val[ M12 ] * val[ M12 ] );
 
     /// <summary>
     /// </summary>
     /// <returns> the squared scale factor on the Z axis </returns>
-    public float GetScaleZSquared()
-    {
-        return ( val[ M20 ] * val[ M20 ] ) + ( val[ M21 ] * val[ M21 ] ) + ( val[ M22 ] * val[ M22 ] );
-    }
+    public float GetScaleZSquared() => ( val[ M20 ] * val[ M20 ] ) + ( val[ M21 ] * val[ M21 ] ) + ( val[ M22 ] * val[ M22 ] );
 
     /// <summary>
     /// </summary>
     /// <returns> the scale factor on the X axis (non-negative) </returns>
-    public float GetScaleX()
-    {
-        return ( MathUtils.IsZero( val[ M01 ] ) && MathUtils.IsZero( val[ M02 ] ) )
-            ? Math.Abs( val[ M00 ] )
-            : ( float )Math.Sqrt( GetScaleXSquared() );
-    }
+    public float GetScaleX() => MathUtils.IsZero( val[ M01 ] ) && MathUtils.IsZero( val[ M02 ] )
+        ? Math.Abs( val[ M00 ] )
+        : ( float )Math.Sqrt( GetScaleXSquared() );
 
     /// <summary>
     /// </summary>
     /// <returns> the scale factor on the Y axis (non-negative) </returns>
-    public float GetScaleY()
-    {
-        return ( MathUtils.IsZero( val[ M10 ] ) && MathUtils.IsZero( val[ M12 ] ) )
-            ? Math.Abs( val[ M11 ] )
-            : ( float )Math.Sqrt( GetScaleYSquared() );
-    }
+    public float GetScaleY() => MathUtils.IsZero( val[ M10 ] ) && MathUtils.IsZero( val[ M12 ] )
+        ? Math.Abs( val[ M11 ] )
+        : ( float )Math.Sqrt( GetScaleYSquared() );
 
     /// <summary>
     /// </summary>
     /// <returns> the scale factor on the Z axis (non-negative) </returns>
-    public float GetScaleZ()
-    {
-        return ( MathUtils.IsZero( val[ M20 ] ) && MathUtils.IsZero( val[ M21 ] ) )
-            ? Math.Abs( val[ M22 ] )
-            : ( float )Math.Sqrt( GetScaleZSquared() );
-    }
+    public float GetScaleZ() => MathUtils.IsZero( val[ M20 ] ) && MathUtils.IsZero( val[ M21 ] )
+        ? Math.Abs( val[ M22 ] )
+        : ( float )Math.Sqrt( GetScaleZSquared() );
 
     /// <summary>
-    /// <param name="scale"> The vector which will receive the (non-negative) scale components on each axis. </param>
-    /// <returns> The provided vector for chaining.  </returns>
+    ///     <param name="scale"> The vector which will receive the (non-negative) scale components on each axis. </param>
+    ///     <returns> The provided vector for chaining.  </returns>
     /// </summary>
-    public Vector3 GetScale( Vector3 scale )
-    {
-        return scale.Set( GetScaleX(), GetScaleY(), GetScaleZ() );
-    }
+    public Vector3 GetScale( Vector3 scale ) => scale.Set( GetScaleX(), GetScaleY(), GetScaleZ() );
 
     /// <summary>
-    /// removes the translational part and transposes the matrix.
+    ///     removes the translational part and transposes the matrix.
     /// </summary>
     public Matrix4 ToNormalMatrix()
     {
@@ -1583,23 +1551,20 @@ public class Matrix4
         return Inv().Tra();
     }
 
-    public new string ToString()
-    {
-        return $"[{val[ M00 ]}|{val[ M01 ]}|{val[ M02 ]}|{val[ M03 ]}]\n[{val[ M10 ]}"
-               + $"|{val[ M11 ]}|{val[ M12 ]}|{val[ M13 ]}]\n[{val[ M20 ]}|{val[ M21 ]}"
-               + $"|{val[ M22 ]}|{val[ M23 ]}]\n[{val[ M30 ]}|{val[ M31 ]}|{val[ M32 ]}"
-               + $"|{val[ M33 ]}]\n";
-    }
+    public new string ToString() => $"[{val[ M00 ]}|{val[ M01 ]}|{val[ M02 ]}|{val[ M03 ]}]\n[{val[ M10 ]}"
+                                  + $"|{val[ M11 ]}|{val[ M12 ]}|{val[ M13 ]}]\n[{val[ M20 ]}|{val[ M21 ]}"
+                                  + $"|{val[ M22 ]}|{val[ M23 ]}]\n[{val[ M30 ]}|{val[ M31 ]}|{val[ M32 ]}"
+                                  + $"|{val[ M33 ]}]\n";
 
     /// <summary>
-    /// Multiplies the vectors with the given matrix. The matrix array is assumed to
-    /// hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val"/>.
-    /// The vectors array is assumed to hold 3-component vectors. Offset specifies
-    /// the offset into the array where the x-component of the first vector is located.
-    /// The numVecs parameter specifies the number of vectors stored in the vectors
-    /// array. The stride parameter specifies the number of floats between subsequent
-    /// vectors and must be >= 3. This is the same as <see cref="Vector3.Mul(Matrix4)"/>
-    /// applied to multiple vectors.
+    ///     Multiplies the vectors with the given matrix. The matrix array is assumed to
+    ///     hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val" />.
+    ///     The vectors array is assumed to hold 3-component vectors. Offset specifies
+    ///     the offset into the array where the x-component of the first vector is located.
+    ///     The numVecs parameter specifies the number of vectors stored in the vectors
+    ///     array. The stride parameter specifies the number of floats between subsequent
+    ///     vectors and must be >= 3. This is the same as <see cref="Vector3.Mul(Matrix4)" />
+    ///     applied to multiple vectors.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
@@ -1618,23 +1583,23 @@ public class Matrix4
     }
 
     /*-{ }-*/ /*
-		float* vecPtr = vecs + offset;
-		for(int i = 0; i < numVecs; i++) {
-			matrix4_mulVec(mat, vecPtr);
-			vecPtr += stride;
-		}
-	*/
+        float* vecPtr = vecs + offset;
+        for(int i = 0; i < numVecs; i++) {
+            matrix4_mulVec(mat, vecPtr);
+            vecPtr += stride;
+        }
+    */
 
     /// <summary>
-    /// Multiplies the vectors with the given matrix, performing a division by w.
-    /// The matrix array is assumed to hold a 4x4 column major matrix as you can
-    /// get from <see cref="Matrix4.val"/>. The vectors array is assumed to hold
-    /// 3-component vectors. Offset specifies the offset into the array where the
-    /// x-component of the first vector is located. The numVecs parameter specifies
-    /// the number of vectors stored in the vectors array. The stride parameter
-    /// specifies the number of floats between subsequent vectors and must be >= 3.
-    /// This is the same as <see cref="Vector3.Prj(Matrix4)"/> applied to multiple
-    /// vectors.
+    ///     Multiplies the vectors with the given matrix, performing a division by w.
+    ///     The matrix array is assumed to hold a 4x4 column major matrix as you can
+    ///     get from <see cref="Matrix4.val" />. The vectors array is assumed to hold
+    ///     3-component vectors. Offset specifies the offset into the array where the
+    ///     x-component of the first vector is located. The numVecs parameter specifies
+    ///     the number of vectors stored in the vectors array. The stride parameter
+    ///     specifies the number of floats between subsequent vectors and must be >= 3.
+    ///     This is the same as <see cref="Vector3.Prj(Matrix4)" /> applied to multiple
+    ///     vectors.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
@@ -1652,22 +1617,22 @@ public class Matrix4
         }
     }
     /*-{ }-*/ /*
-		float* vecPtr = vecs + offset;
-		for(int i = 0; i < numVecs; i++) {
-			matrix4_proj(mat, vecPtr);
-			vecPtr += stride;
-		}
-	*/
+        float* vecPtr = vecs + offset;
+        for(int i = 0; i < numVecs; i++) {
+            matrix4_proj(mat, vecPtr);
+            vecPtr += stride;
+        }
+    */
 
     /// <summary>
-    /// Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix.
-    /// The matrix array is assumed to hold a 4x4 column major matrix as you can get
-    /// from <see cref="Matrix4.val"/>. The vectors array is assumed to hold
-    /// 3-component vectors. Offset specifies the offset into the array where the
-    /// x-component of the first vector is located. The numVecs parameter specifies
-    /// the number of vectors stored in the vectors array. The stride parameter
-    /// specifies the number of floats between subsequent vectors and must be >= 3.
-    /// This is the same as <see cref="Vector3.Rot(Matrix4)"/> applied to multiple vectors.
+    ///     Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix.
+    ///     The matrix array is assumed to hold a 4x4 column major matrix as you can get
+    ///     from <see cref="Matrix4.val" />. The vectors array is assumed to hold
+    ///     3-component vectors. Offset specifies the offset into the array where the
+    ///     x-component of the first vector is located. The numVecs parameter specifies
+    ///     the number of vectors stored in the vectors array. The stride parameter
+    ///     specifies the number of floats between subsequent vectors and must be >= 3.
+    ///     This is the same as <see cref="Vector3.Rot(Matrix4)" /> applied to multiple vectors.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
@@ -1686,103 +1651,103 @@ public class Matrix4
     }
 
     /*-{ }-*/ /*
-		float* vecPtr = vecs + offset;
-		for(int i = 0; i < numVecs; i++) {
-			matrix4_rot(mat, vecPtr);
-			vecPtr += stride;
-		}
-	*/
+        float* vecPtr = vecs + offset;
+        for(int i = 0; i < numVecs; i++) {
+            matrix4_rot(mat, vecPtr);
+            vecPtr += stride;
+        }
+    */
     // @on
 
     /// <summary>
-    /// Multiplies the matrix mata with matrix matb, storing the result in mata.
-    /// The arrays are assumed to hold 4x4 column major matrices as you can get
-    /// from <see cref="Matrix4.val"/>.
-    /// This is the same as <see cref="Matrix4.Mul(Matrix4)"/>.
+    ///     Multiplies the matrix mata with matrix matb, storing the result in mata.
+    ///     The arrays are assumed to hold 4x4 column major matrices as you can get
+    ///     from <see cref="Matrix4.val" />.
+    ///     This is the same as <see cref="Matrix4.Mul(Matrix4)" />.
     /// </summary>
     /// <param name="mata"> the first matrix. </param>
     /// <param name="matb"> the second matrix.  </param>
     public static void Mul( float[] mata, float[] matb )
     {
         var m00 = ( mata[ M00 ] * matb[ M00 ] )
-                  + ( mata[ M01 ] * matb[ M10 ] )
-                  + ( mata[ M02 ] * matb[ M20 ] )
-                  + ( mata[ M03 ] * matb[ M30 ] );
+                + ( mata[ M01 ] * matb[ M10 ] )
+                + ( mata[ M02 ] * matb[ M20 ] )
+                + ( mata[ M03 ] * matb[ M30 ] );
 
         var m01 = ( mata[ M00 ] * matb[ M01 ] )
-                  + ( mata[ M01 ] * matb[ M11 ] )
-                  + ( mata[ M02 ] * matb[ M21 ] )
-                  + ( mata[ M03 ] * matb[ M31 ] );
+                + ( mata[ M01 ] * matb[ M11 ] )
+                + ( mata[ M02 ] * matb[ M21 ] )
+                + ( mata[ M03 ] * matb[ M31 ] );
 
         var m02 = ( mata[ M00 ] * matb[ M02 ] )
-                  + ( mata[ M01 ] * matb[ M12 ] )
-                  + ( mata[ M02 ] * matb[ M22 ] )
-                  + ( mata[ M03 ] * matb[ M32 ] );
+                + ( mata[ M01 ] * matb[ M12 ] )
+                + ( mata[ M02 ] * matb[ M22 ] )
+                + ( mata[ M03 ] * matb[ M32 ] );
 
         var m03 = ( mata[ M00 ] * matb[ M03 ] )
-                  + ( mata[ M01 ] * matb[ M13 ] )
-                  + ( mata[ M02 ] * matb[ M23 ] )
-                  + ( mata[ M03 ] * matb[ M33 ] );
+                + ( mata[ M01 ] * matb[ M13 ] )
+                + ( mata[ M02 ] * matb[ M23 ] )
+                + ( mata[ M03 ] * matb[ M33 ] );
 
         var m10 = ( mata[ M10 ] * matb[ M00 ] )
-                  + ( mata[ M11 ] * matb[ M10 ] )
-                  + ( mata[ M12 ] * matb[ M20 ] )
-                  + ( mata[ M13 ] * matb[ M30 ] );
+                + ( mata[ M11 ] * matb[ M10 ] )
+                + ( mata[ M12 ] * matb[ M20 ] )
+                + ( mata[ M13 ] * matb[ M30 ] );
 
         var m11 = ( mata[ M10 ] * matb[ M01 ] )
-                  + ( mata[ M11 ] * matb[ M11 ] )
-                  + ( mata[ M12 ] * matb[ M21 ] )
-                  + ( mata[ M13 ] * matb[ M31 ] );
+                + ( mata[ M11 ] * matb[ M11 ] )
+                + ( mata[ M12 ] * matb[ M21 ] )
+                + ( mata[ M13 ] * matb[ M31 ] );
 
         var m12 = ( mata[ M10 ] * matb[ M02 ] )
-                  + ( mata[ M11 ] * matb[ M12 ] )
-                  + ( mata[ M12 ] * matb[ M22 ] )
-                  + ( mata[ M13 ] * matb[ M32 ] );
+                + ( mata[ M11 ] * matb[ M12 ] )
+                + ( mata[ M12 ] * matb[ M22 ] )
+                + ( mata[ M13 ] * matb[ M32 ] );
 
         var m13 = ( mata[ M10 ] * matb[ M03 ] )
-                  + ( mata[ M11 ] * matb[ M13 ] )
-                  + ( mata[ M12 ] * matb[ M23 ] )
-                  + ( mata[ M13 ] * matb[ M33 ] );
+                + ( mata[ M11 ] * matb[ M13 ] )
+                + ( mata[ M12 ] * matb[ M23 ] )
+                + ( mata[ M13 ] * matb[ M33 ] );
 
         var m20 = ( mata[ M20 ] * matb[ M00 ] )
-                  + ( mata[ M21 ] * matb[ M10 ] )
-                  + ( mata[ M22 ] * matb[ M20 ] )
-                  + ( mata[ M23 ] * matb[ M30 ] );
+                + ( mata[ M21 ] * matb[ M10 ] )
+                + ( mata[ M22 ] * matb[ M20 ] )
+                + ( mata[ M23 ] * matb[ M30 ] );
 
         var m21 = ( mata[ M20 ] * matb[ M01 ] )
-                  + ( mata[ M21 ] * matb[ M11 ] )
-                  + ( mata[ M22 ] * matb[ M21 ] )
-                  + ( mata[ M23 ] * matb[ M31 ] );
+                + ( mata[ M21 ] * matb[ M11 ] )
+                + ( mata[ M22 ] * matb[ M21 ] )
+                + ( mata[ M23 ] * matb[ M31 ] );
 
         var m22 = ( mata[ M20 ] * matb[ M02 ] )
-                  + ( mata[ M21 ] * matb[ M12 ] )
-                  + ( mata[ M22 ] * matb[ M22 ] )
-                  + ( mata[ M23 ] * matb[ M32 ] );
+                + ( mata[ M21 ] * matb[ M12 ] )
+                + ( mata[ M22 ] * matb[ M22 ] )
+                + ( mata[ M23 ] * matb[ M32 ] );
 
         var m23 = ( mata[ M20 ] * matb[ M03 ] )
-                  + ( mata[ M21 ] * matb[ M13 ] )
-                  + ( mata[ M22 ] * matb[ M23 ] )
-                  + ( mata[ M23 ] * matb[ M33 ] );
+                + ( mata[ M21 ] * matb[ M13 ] )
+                + ( mata[ M22 ] * matb[ M23 ] )
+                + ( mata[ M23 ] * matb[ M33 ] );
 
         var m30 = ( mata[ M30 ] * matb[ M00 ] )
-                  + ( mata[ M31 ] * matb[ M10 ] )
-                  + ( mata[ M32 ] * matb[ M20 ] )
-                  + ( mata[ M33 ] * matb[ M30 ] );
+                + ( mata[ M31 ] * matb[ M10 ] )
+                + ( mata[ M32 ] * matb[ M20 ] )
+                + ( mata[ M33 ] * matb[ M30 ] );
 
         var m31 = ( mata[ M30 ] * matb[ M01 ] )
-                  + ( mata[ M31 ] * matb[ M11 ] )
-                  + ( mata[ M32 ] * matb[ M21 ] )
-                  + ( mata[ M33 ] * matb[ M31 ] );
+                + ( mata[ M31 ] * matb[ M11 ] )
+                + ( mata[ M32 ] * matb[ M21 ] )
+                + ( mata[ M33 ] * matb[ M31 ] );
 
         var m32 = ( mata[ M30 ] * matb[ M02 ] )
-                  + ( mata[ M31 ] * matb[ M12 ] )
-                  + ( mata[ M32 ] * matb[ M22 ] )
-                  + ( mata[ M33 ] * matb[ M32 ] );
+                + ( mata[ M31 ] * matb[ M12 ] )
+                + ( mata[ M32 ] * matb[ M22 ] )
+                + ( mata[ M33 ] * matb[ M32 ] );
 
         var m33 = ( mata[ M30 ] * matb[ M03 ] )
-                  + ( mata[ M31 ] * matb[ M13 ] )
-                  + ( mata[ M32 ] * matb[ M23 ] )
-                  + ( mata[ M33 ] * matb[ M33 ] );
+                + ( mata[ M31 ] * matb[ M13 ] )
+                + ( mata[ M32 ] * matb[ M23 ] )
+                + ( mata[ M33 ] * matb[ M33 ] );
 
         mata[ M00 ] = m00;
         mata[ M10 ] = m10;
@@ -1803,11 +1768,11 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Multiplies the vector with the given matrix. The matrix array is assumed
-    /// to hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val"/>.
-    /// The vector array is assumed to hold a 3-component vector, with x being the
-    /// first element, y being the second and z being the last component. The result
-    /// is stored in the vector array. This is the same as <see cref="Vector3.Mul(Matrix4)"/>.
+    ///     Multiplies the vector with the given matrix. The matrix array is assumed
+    ///     to hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val" />.
+    ///     The vector array is assumed to hold a 3-component vector, with x being the
+    ///     first element, y being the second and z being the last component. The result
+    ///     is stored in the vector array. This is the same as <see cref="Vector3.Mul(Matrix4)" />.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vec"> the vector.  </param>
@@ -1823,28 +1788,28 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Multiplies the vector with the given matrix, performing a division by w. The
-    /// matrix array is assumed to hold a 4x4 column major matrix as you can get from
-    /// <see cref="Matrix4.val"/>. The vector array is assumed to hold a 3-component
-    /// vector, with x being the first element, y being the second and z being the last
-    /// component. The result is stored in the vector array. This is the same as
-    /// <see cref="Vector3.Prj(Matrix4)"/>.
+    ///     Multiplies the vector with the given matrix, performing a division by w. The
+    ///     matrix array is assumed to hold a 4x4 column major matrix as you can get from
+    ///     <see cref="Matrix4.val" />. The vector array is assumed to hold a 3-component
+    ///     vector, with x being the first element, y being the second and z being the last
+    ///     component. The result is stored in the vector array. This is the same as
+    ///     <see cref="Vector3.Prj(Matrix4)" />.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vec"> the vector.  </param>
     public static void Prj( float[] mat, float[] vec )
     {
         var invW = 1.0f
-                   / ( ( vec[ 0 ] * mat[ M30 ] ) + ( vec[ 1 ] * mat[ M31 ] ) + ( vec[ 2 ] * mat[ M32 ] ) + mat[ M33 ] );
+                 / ( ( vec[ 0 ] * mat[ M30 ] ) + ( vec[ 1 ] * mat[ M31 ] ) + ( vec[ 2 ] * mat[ M32 ] ) + mat[ M33 ] );
 
         var x = ( ( vec[ 0 ] * mat[ M00 ] ) + ( vec[ 1 ] * mat[ M01 ] ) + ( vec[ 2 ] * mat[ M02 ] ) + mat[ M03 ] )
-                * invW;
+              * invW;
 
         var y = ( ( vec[ 0 ] * mat[ M10 ] ) + ( vec[ 1 ] * mat[ M11 ] ) + ( vec[ 2 ] * mat[ M12 ] ) + mat[ M13 ] )
-                * invW;
+              * invW;
 
         var z = ( ( vec[ 0 ] * mat[ M20 ] ) + ( vec[ 1 ] * mat[ M21 ] ) + ( vec[ 2 ] * mat[ M22 ] ) + mat[ M23 ] )
-                * invW;
+              * invW;
 
         vec[ 0 ] = x;
         vec[ 1 ] = y;
@@ -1852,12 +1817,12 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Multiplies the vector with the top most 3x3 sub-matrix of the given matrix.
-    /// The matrix array is assumed to hold a 4x4 column major matrix as you can get
-    /// from <see cref="Matrix4.val"/>. The vector array is assumed to hold a
-    /// 3-component vector, with x being the first element, y being the second and z
-    /// being the last component. The result is stored in the vector array. This is the
-    /// same as <see cref="Vector3.Rot(Matrix4)"/>.
+    ///     Multiplies the vector with the top most 3x3 sub-matrix of the given matrix.
+    ///     The matrix array is assumed to hold a 4x4 column major matrix as you can get
+    ///     from <see cref="Matrix4.val" />. The vector array is assumed to hold a
+    ///     3-component vector, with x being the first element, y being the second and z
+    ///     being the last component. The result is stored in the vector array. This is the
+    ///     same as <see cref="Vector3.Rot(Matrix4)" />.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vec"> the vector.  </param>
@@ -1872,8 +1837,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Computes the inverse of the given matrix. The matrix array is assumed to
-    /// hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val"/>.
+    ///     Computes the inverse of the given matrix. The matrix array is assumed to
+    ///     hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val" />.
     /// </summary>
     /// <param name="values"> the matrix values. </param>
     /// <returns> false in case the inverse could not be calculated, true otherwise.  </returns>
@@ -1881,119 +1846,122 @@ public class Matrix4
     {
         var lDet = Det( values );
 
-        if ( lDet == 0 ) return false;
+        if ( lDet == 0 )
+        {
+            return false;
+        }
 
         var m00 = ( ( ( ( values[ M12 ] * values[ M23 ] * values[ M31 ] )
-                        - ( values[ M13 ] * values[ M22 ] * values[ M31 ] ) )
-                      + ( values[ M13 ] * values[ M21 ] * values[ M32 ] ) )
-                    - ( values[ M11 ] * values[ M23 ] * values[ M32 ] )
-                    - ( values[ M12 ] * values[ M21 ] * values[ M33 ] ) )
-                  + ( values[ M11 ] * values[ M22 ] * values[ M33 ] );
+                      - ( values[ M13 ] * values[ M22 ] * values[ M31 ] ) )
+                    + ( values[ M13 ] * values[ M21 ] * values[ M32 ] ) )
+                  - ( values[ M11 ] * values[ M23 ] * values[ M32 ] )
+                  - ( values[ M12 ] * values[ M21 ] * values[ M33 ] ) )
+                + ( values[ M11 ] * values[ M22 ] * values[ M33 ] );
 
         var m01 = ( ( ( values[ M03 ] * values[ M22 ] * values[ M31 ] )
-                      - ( values[ M02 ] * values[ M23 ] * values[ M31 ] )
-                      - ( values[ M03 ] * values[ M21 ] * values[ M32 ] ) )
-                    + ( values[ M01 ] * values[ M23 ] * values[ M32 ] )
-                    + ( values[ M02 ] * values[ M21 ] * values[ M33 ] ) )
-                  - ( values[ M01 ] * values[ M22 ] * values[ M33 ] );
+                    - ( values[ M02 ] * values[ M23 ] * values[ M31 ] )
+                    - ( values[ M03 ] * values[ M21 ] * values[ M32 ] ) )
+                  + ( values[ M01 ] * values[ M23 ] * values[ M32 ] )
+                  + ( values[ M02 ] * values[ M21 ] * values[ M33 ] ) )
+                - ( values[ M01 ] * values[ M22 ] * values[ M33 ] );
 
         var m02 = ( ( ( ( values[ M02 ] * values[ M13 ] * values[ M31 ] )
-                        - ( values[ M03 ] * values[ M12 ] * values[ M31 ] ) )
-                      + ( values[ M03 ] * values[ M11 ] * values[ M32 ] ) )
-                    - ( values[ M01 ] * values[ M13 ] * values[ M32 ] )
-                    - ( values[ M02 ] * values[ M11 ] * values[ M33 ] ) )
-                  + ( values[ M01 ] * values[ M12 ] * values[ M33 ] );
+                      - ( values[ M03 ] * values[ M12 ] * values[ M31 ] ) )
+                    + ( values[ M03 ] * values[ M11 ] * values[ M32 ] ) )
+                  - ( values[ M01 ] * values[ M13 ] * values[ M32 ] )
+                  - ( values[ M02 ] * values[ M11 ] * values[ M33 ] ) )
+                + ( values[ M01 ] * values[ M12 ] * values[ M33 ] );
 
         var m03 = ( ( ( values[ M03 ] * values[ M12 ] * values[ M21 ] )
-                      - ( values[ M02 ] * values[ M13 ] * values[ M21 ] )
-                      - ( values[ M03 ] * values[ M11 ] * values[ M22 ] ) )
-                    + ( values[ M01 ] * values[ M13 ] * values[ M22 ] )
-                    + ( values[ M02 ] * values[ M11 ] * values[ M23 ] ) )
-                  - ( values[ M01 ] * values[ M12 ] * values[ M23 ] );
+                    - ( values[ M02 ] * values[ M13 ] * values[ M21 ] )
+                    - ( values[ M03 ] * values[ M11 ] * values[ M22 ] ) )
+                  + ( values[ M01 ] * values[ M13 ] * values[ M22 ] )
+                  + ( values[ M02 ] * values[ M11 ] * values[ M23 ] ) )
+                - ( values[ M01 ] * values[ M12 ] * values[ M23 ] );
 
         var m10 = ( ( ( values[ M13 ] * values[ M22 ] * values[ M30 ] )
-                      - ( values[ M12 ] * values[ M23 ] * values[ M30 ] )
-                      - ( values[ M13 ] * values[ M20 ] * values[ M32 ] ) )
-                    + ( values[ M10 ] * values[ M23 ] * values[ M32 ] )
-                    + ( values[ M12 ] * values[ M20 ] * values[ M33 ] ) )
-                  - ( values[ M10 ] * values[ M22 ] * values[ M33 ] );
+                    - ( values[ M12 ] * values[ M23 ] * values[ M30 ] )
+                    - ( values[ M13 ] * values[ M20 ] * values[ M32 ] ) )
+                  + ( values[ M10 ] * values[ M23 ] * values[ M32 ] )
+                  + ( values[ M12 ] * values[ M20 ] * values[ M33 ] ) )
+                - ( values[ M10 ] * values[ M22 ] * values[ M33 ] );
 
         var m11 = ( ( ( ( values[ M02 ] * values[ M23 ] * values[ M30 ] )
-                        - ( values[ M03 ] * values[ M22 ] * values[ M30 ] ) )
-                      + ( values[ M03 ] * values[ M20 ] * values[ M32 ] ) )
-                    - ( values[ M00 ] * values[ M23 ] * values[ M32 ] )
-                    - ( values[ M02 ] * values[ M20 ] * values[ M33 ] ) )
-                  + ( values[ M00 ] * values[ M22 ] * values[ M33 ] );
+                      - ( values[ M03 ] * values[ M22 ] * values[ M30 ] ) )
+                    + ( values[ M03 ] * values[ M20 ] * values[ M32 ] ) )
+                  - ( values[ M00 ] * values[ M23 ] * values[ M32 ] )
+                  - ( values[ M02 ] * values[ M20 ] * values[ M33 ] ) )
+                + ( values[ M00 ] * values[ M22 ] * values[ M33 ] );
 
         var m12 = ( ( ( values[ M03 ] * values[ M12 ] * values[ M30 ] )
-                      - ( values[ M02 ] * values[ M13 ] * values[ M30 ] )
-                      - ( values[ M03 ] * values[ M10 ] * values[ M32 ] ) )
-                    + ( values[ M00 ] * values[ M13 ] * values[ M32 ] )
-                    + ( values[ M02 ] * values[ M10 ] * values[ M33 ] ) )
-                  - ( values[ M00 ] * values[ M12 ] * values[ M33 ] );
+                    - ( values[ M02 ] * values[ M13 ] * values[ M30 ] )
+                    - ( values[ M03 ] * values[ M10 ] * values[ M32 ] ) )
+                  + ( values[ M00 ] * values[ M13 ] * values[ M32 ] )
+                  + ( values[ M02 ] * values[ M10 ] * values[ M33 ] ) )
+                - ( values[ M00 ] * values[ M12 ] * values[ M33 ] );
 
         var m13 = ( ( ( ( values[ M02 ] * values[ M13 ] * values[ M20 ] )
-                        - ( values[ M03 ] * values[ M12 ] * values[ M20 ] ) )
-                      + ( values[ M03 ] * values[ M10 ] * values[ M22 ] ) )
-                    - ( values[ M00 ] * values[ M13 ] * values[ M22 ] )
-                    - ( values[ M02 ] * values[ M10 ] * values[ M23 ] ) )
-                  + ( values[ M00 ] * values[ M12 ] * values[ M23 ] );
+                      - ( values[ M03 ] * values[ M12 ] * values[ M20 ] ) )
+                    + ( values[ M03 ] * values[ M10 ] * values[ M22 ] ) )
+                  - ( values[ M00 ] * values[ M13 ] * values[ M22 ] )
+                  - ( values[ M02 ] * values[ M10 ] * values[ M23 ] ) )
+                + ( values[ M00 ] * values[ M12 ] * values[ M23 ] );
 
         var m20 = ( ( ( ( values[ M11 ] * values[ M23 ] * values[ M30 ] )
-                        - ( values[ M13 ] * values[ M21 ] * values[ M30 ] ) )
-                      + ( values[ M13 ] * values[ M20 ] * values[ M31 ] ) )
-                    - ( values[ M10 ] * values[ M23 ] * values[ M31 ] )
-                    - ( values[ M11 ] * values[ M20 ] * values[ M33 ] ) )
-                  + ( values[ M10 ] * values[ M21 ] * values[ M33 ] );
+                      - ( values[ M13 ] * values[ M21 ] * values[ M30 ] ) )
+                    + ( values[ M13 ] * values[ M20 ] * values[ M31 ] ) )
+                  - ( values[ M10 ] * values[ M23 ] * values[ M31 ] )
+                  - ( values[ M11 ] * values[ M20 ] * values[ M33 ] ) )
+                + ( values[ M10 ] * values[ M21 ] * values[ M33 ] );
 
         var m21 = ( ( ( values[ M03 ] * values[ M21 ] * values[ M30 ] )
-                      - ( values[ M01 ] * values[ M23 ] * values[ M30 ] )
-                      - ( values[ M03 ] * values[ M20 ] * values[ M31 ] ) )
-                    + ( values[ M00 ] * values[ M23 ] * values[ M31 ] )
-                    + ( values[ M01 ] * values[ M20 ] * values[ M33 ] ) )
-                  - ( values[ M00 ] * values[ M21 ] * values[ M33 ] );
+                    - ( values[ M01 ] * values[ M23 ] * values[ M30 ] )
+                    - ( values[ M03 ] * values[ M20 ] * values[ M31 ] ) )
+                  + ( values[ M00 ] * values[ M23 ] * values[ M31 ] )
+                  + ( values[ M01 ] * values[ M20 ] * values[ M33 ] ) )
+                - ( values[ M00 ] * values[ M21 ] * values[ M33 ] );
 
         var m22 = ( ( ( ( values[ M01 ] * values[ M13 ] * values[ M30 ] )
-                        - ( values[ M03 ] * values[ M11 ] * values[ M30 ] ) )
-                      + ( values[ M03 ] * values[ M10 ] * values[ M31 ] ) )
-                    - ( values[ M00 ] * values[ M13 ] * values[ M31 ] )
-                    - ( values[ M01 ] * values[ M10 ] * values[ M33 ] ) )
-                  + ( values[ M00 ] * values[ M11 ] * values[ M33 ] );
+                      - ( values[ M03 ] * values[ M11 ] * values[ M30 ] ) )
+                    + ( values[ M03 ] * values[ M10 ] * values[ M31 ] ) )
+                  - ( values[ M00 ] * values[ M13 ] * values[ M31 ] )
+                  - ( values[ M01 ] * values[ M10 ] * values[ M33 ] ) )
+                + ( values[ M00 ] * values[ M11 ] * values[ M33 ] );
 
         var m23 = ( ( ( values[ M03 ] * values[ M11 ] * values[ M20 ] )
-                      - ( values[ M01 ] * values[ M13 ] * values[ M20 ] )
-                      - ( values[ M03 ] * values[ M10 ] * values[ M21 ] ) )
-                    + ( values[ M00 ] * values[ M13 ] * values[ M21 ] )
-                    + ( values[ M01 ] * values[ M10 ] * values[ M23 ] ) )
-                  - ( values[ M00 ] * values[ M11 ] * values[ M23 ] );
+                    - ( values[ M01 ] * values[ M13 ] * values[ M20 ] )
+                    - ( values[ M03 ] * values[ M10 ] * values[ M21 ] ) )
+                  + ( values[ M00 ] * values[ M13 ] * values[ M21 ] )
+                  + ( values[ M01 ] * values[ M10 ] * values[ M23 ] ) )
+                - ( values[ M00 ] * values[ M11 ] * values[ M23 ] );
 
         var m30 = ( ( ( values[ M12 ] * values[ M21 ] * values[ M30 ] )
-                      - ( values[ M11 ] * values[ M22 ] * values[ M30 ] )
-                      - ( values[ M12 ] * values[ M20 ] * values[ M31 ] ) )
-                    + ( values[ M10 ] * values[ M22 ] * values[ M31 ] )
-                    + ( values[ M11 ] * values[ M20 ] * values[ M32 ] ) )
-                  - ( values[ M10 ] * values[ M21 ] * values[ M32 ] );
+                    - ( values[ M11 ] * values[ M22 ] * values[ M30 ] )
+                    - ( values[ M12 ] * values[ M20 ] * values[ M31 ] ) )
+                  + ( values[ M10 ] * values[ M22 ] * values[ M31 ] )
+                  + ( values[ M11 ] * values[ M20 ] * values[ M32 ] ) )
+                - ( values[ M10 ] * values[ M21 ] * values[ M32 ] );
 
         var m31 = ( ( ( ( values[ M01 ] * values[ M22 ] * values[ M30 ] )
-                        - ( values[ M02 ] * values[ M21 ] * values[ M30 ] ) )
-                      + ( values[ M02 ] * values[ M20 ] * values[ M31 ] ) )
-                    - ( values[ M00 ] * values[ M22 ] * values[ M31 ] )
-                    - ( values[ M01 ] * values[ M20 ] * values[ M32 ] ) )
-                  + ( values[ M00 ] * values[ M21 ] * values[ M32 ] );
+                      - ( values[ M02 ] * values[ M21 ] * values[ M30 ] ) )
+                    + ( values[ M02 ] * values[ M20 ] * values[ M31 ] ) )
+                  - ( values[ M00 ] * values[ M22 ] * values[ M31 ] )
+                  - ( values[ M01 ] * values[ M20 ] * values[ M32 ] ) )
+                + ( values[ M00 ] * values[ M21 ] * values[ M32 ] );
 
         var m32 = ( ( ( values[ M02 ] * values[ M11 ] * values[ M30 ] )
-                      - ( values[ M01 ] * values[ M12 ] * values[ M30 ] )
-                      - ( values[ M02 ] * values[ M10 ] * values[ M31 ] ) )
-                    + ( values[ M00 ] * values[ M12 ] * values[ M31 ] )
-                    + ( values[ M01 ] * values[ M10 ] * values[ M32 ] ) )
-                  - ( values[ M00 ] * values[ M11 ] * values[ M32 ] );
+                    - ( values[ M01 ] * values[ M12 ] * values[ M30 ] )
+                    - ( values[ M02 ] * values[ M10 ] * values[ M31 ] ) )
+                  + ( values[ M00 ] * values[ M12 ] * values[ M31 ] )
+                  + ( values[ M01 ] * values[ M10 ] * values[ M32 ] ) )
+                - ( values[ M00 ] * values[ M11 ] * values[ M32 ] );
 
         var m33 = ( ( ( ( values[ M01 ] * values[ M12 ] * values[ M20 ] )
-                        - ( values[ M02 ] * values[ M11 ] * values[ M20 ] ) )
-                      + ( values[ M02 ] * values[ M10 ] * values[ M21 ] ) )
-                    - ( values[ M00 ] * values[ M12 ] * values[ M21 ] )
-                    - ( values[ M01 ] * values[ M10 ] * values[ M22 ] ) )
-                  + ( values[ M00 ] * values[ M11 ] * values[ M22 ] );
+                      - ( values[ M02 ] * values[ M11 ] * values[ M20 ] ) )
+                    + ( values[ M02 ] * values[ M10 ] * values[ M21 ] ) )
+                  - ( values[ M00 ] * values[ M12 ] * values[ M21 ] )
+                  - ( values[ M01 ] * values[ M10 ] * values[ M22 ] ) )
+                + ( values[ M00 ] * values[ M11 ] * values[ M22 ] );
 
         var invDet = 1.0f / lDet;
         values[ M00 ] = m00 * invDet;
@@ -2017,72 +1985,65 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Computes the determinante of the given matrix. The matrix array is assumed
-    /// to hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val"/>.
+    ///     Computes the determinante of the given matrix. The matrix array is assumed
+    ///     to hold a 4x4 column major matrix as you can get from <see cref="Matrix4.val" />.
     /// </summary>
     /// <param name="values"> the matrix values. </param>
     /// <returns> the determinante.  </returns>
-    public static float Det( float[] values )
-    {
-        return ( ( ( ( ( ( ( ( ( ( ( ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
-                                     - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
-                                     - ( values[ M30 ]
-                                         * values[ M11 ]
-                                         * values[ M22 ]
-                                         * values[ M03 ] ) )
-                                   + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
-                                   + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
-                                 - ( values[ M10 ]
-                                     * values[ M21 ]
-                                     * values[ M32 ]
-                                     * values[ M03 ] )
-                                 - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
-                               + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
-                               + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
-                             - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
-                             - ( values[ M20 ]
-                                 * values[ M01 ]
-                                 * values[ M32 ]
-                                 * values[ M13 ] ) )
-                           + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
-                           + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
-                         - ( values[ M10 ]
-                             * values[ M31 ]
-                             * values[ M02 ]
-                             * values[ M23 ] )
-                         - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
-                       + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
-                       + ( values[ M10 ]
-                           * values[ M01 ]
-                           * values[ M32 ]
-                           * values[ M23 ] ) )
-                     - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
-                     - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
-                   + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
-                   + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
-                 - ( values[ M00 ]
-                     * values[ M21 ]
-                     * values[ M12 ]
-                     * values[ M33 ] )
-                 - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
-               + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
-
-    }
+    public static float Det( float[] values ) => ( ( ( ( ( ( ( ( ( ( ( ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
+                                                                     - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
+                                                                     - ( values[ M30 ]
+                                                                       * values[ M11 ]
+                                                                       * values[ M22 ]
+                                                                       * values[ M03 ] ) )
+                                                                   + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
+                                                                   + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
+                                                                 - ( values[ M10 ]
+                                                                   * values[ M21 ]
+                                                                   * values[ M32 ]
+                                                                   * values[ M03 ] )
+                                                                 - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
+                                                               + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
+                                                               + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
+                                                             - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
+                                                             - ( values[ M20 ]
+                                                               * values[ M01 ]
+                                                               * values[ M32 ]
+                                                               * values[ M13 ] ) )
+                                                           + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
+                                                           + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
+                                                         - ( values[ M10 ]
+                                                           * values[ M31 ]
+                                                           * values[ M02 ]
+                                                           * values[ M23 ] )
+                                                         - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
+                                                       + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
+                                                       + ( values[ M10 ]
+                                                         * values[ M01 ]
+                                                         * values[ M32 ]
+                                                         * values[ M23 ] ) )
+                                                     - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
+                                                     - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
+                                                   + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
+                                                   + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
+                                                 - ( values[ M00 ]
+                                                   * values[ M21 ]
+                                                   * values[ M12 ]
+                                                   * values[ M33 ] )
+                                                 - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
+                                               + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
 
     /// <summary>
-    /// Postmultiplies this matrix by a translation matrix.
-    /// Postmultiplication is also used by OpenGL ES' glTranslate/glRotate/glScale
+    ///     Postmultiplies this matrix by a translation matrix.
+    ///     Postmultiplication is also used by OpenGL ES' glTranslate/glRotate/glScale
     /// </summary>
     /// <param name="translation"> </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
-    public Matrix4 Translate( Vector3 translation )
-    {
-        return Translate( translation.X, translation.Y, translation.Z );
-    }
+    public Matrix4 Translate( Vector3 translation ) => Translate( translation.X, translation.Y, translation.Z );
 
     /// <summary>
-    /// Postmultiplies this matrix by a translation matrix.
-    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix by a translation matrix.
+    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="x"> Translation in the x-axis. </param>
     /// <param name="y"> Translation in the y-axis. </param>
@@ -2099,15 +2060,18 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="axis"> The vector axis to rotate around. </param>
     /// <param name="degrees"> The angle in degrees. </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Rotate( Vector3 axis, float degrees )
     {
-        if ( degrees == 0 ) return this;
+        if ( degrees == 0 )
+        {
+            return this;
+        }
 
         Quat.Set( axis, degrees );
 
@@ -2115,15 +2079,18 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="axis"> The vector axis to rotate around. </param>
     /// <param name="radians"> The angle in radians. </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 RotateRad( Vector3 axis, float radians )
     {
-        if ( radians == 0 ) return this;
+        if ( radians == 0 )
+        {
+            return this;
+        }
 
         Quat.SetFromAxisRad( axis, radians );
 
@@ -2131,8 +2098,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
+    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
     /// </summary>
     /// <param name="axisX"> The x-axis component of the vector to rotate around. </param>
     /// <param name="axisY"> The y-axis component of the vector to rotate around. </param>
@@ -2141,7 +2108,10 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Rotate( float axisX, float axisY, float axisZ, float degrees )
     {
-        if ( degrees == 0 ) return this;
+        if ( degrees == 0 )
+        {
+            return this;
+        }
 
         Quat.SetFromAxis( axisX, axisY, axisZ, degrees );
 
@@ -2149,8 +2119,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
+    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
     /// </summary>
     /// <param name="axisX"> The x-axis component of the vector to rotate around. </param>
     /// <param name="axisY"> The y-axis component of the vector to rotate around. </param>
@@ -2159,15 +2129,19 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 RotateRad( float axisX, float axisY, float axisZ, float radians )
     {
-        if ( radians == 0 ) return this;
+        if ( radians == 0 )
+        {
+            return this;
+        }
+
         Quat.SetFromAxisRad( axisX, axisY, axisZ, radians );
 
         return Rotate( Quat );
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="rotation"> </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -2183,6 +2157,7 @@ public class Matrix4
         var   yw = y * w;
         var   zz = z * z;
         var   zw = z * w;
+
         // Set matrix from quaternion
         var r00 = 1 - ( 2 * ( yy + zz ) );
         var r01 = 2 * ( xy - zw );
@@ -2222,18 +2197,15 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Postmultiplies this matrix by the rotation between two vectors.
+    ///     Postmultiplies this matrix by the rotation between two vectors.
     /// </summary>
     /// <param name="v1"> The base vector </param>
     /// <param name="v2"> The target vector </param>
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
-    public Matrix4 Rotate( Vector3 v1, Vector3 v2 )
-    {
-        return Rotate( Quat.SetFromCross( v1, v2 ) );
-    }
+    public Matrix4 Rotate( Vector3 v1, Vector3 v2 ) => Rotate( Quat.SetFromCross( v1, v2 ) );
 
     /// <summary>
-    /// Post-multiplies this matrix by a rotation toward a direction.
+    ///     Post-multiplies this matrix by a rotation toward a direction.
     /// </summary>
     /// <param name="direction"> direction to rotate toward </param>
     /// <param name="up"> up vector </param>
@@ -2274,7 +2246,7 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Post-multiplies this matrix by a rotation toward a target.
+    ///     Post-multiplies this matrix by a rotation toward a target.
     /// </summary>
     /// <param name="target"> the target to rotate to </param>
     /// <param name="up"> the up vector </param>
@@ -2287,8 +2259,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Postmultiplies this matrix with a scale matrix.
-    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    ///     Postmultiplies this matrix with a scale matrix.
+    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="scaleX"> The scale in the x-axis. </param>
     /// <param name="scaleY"> The scale in the y-axis. </param>
@@ -2313,8 +2285,8 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Copies the 4x3 upper-left sub-matrix into float array. The destination
-    /// array is supposed to be a column major matrix.
+    ///     Copies the 4x3 upper-left sub-matrix into float array. The destination
+    ///     array is supposed to be a column major matrix.
     /// </summary>
     /// <param name="dst"> the destination matrix </param>
     public void Extract4X3Matrix( float[] dst )
@@ -2336,16 +2308,13 @@ public class Matrix4
     /// <summary>
     /// </summary>
     /// <returns>True if this matrix has any rotation or scaling, false otherwise </returns>
-    public bool HasRotationOrScaling()
-    {
-        return !( MathUtils.IsEqual( val[ M00 ], 1 )
-                  && MathUtils.IsEqual( val[ M11 ], 1 )
-                  && MathUtils.IsEqual( val[ M22 ], 1 )
-                  && MathUtils.IsZero( val[ M01 ] )
-                  && MathUtils.IsZero( val[ M02 ] )
-                  && MathUtils.IsZero( val[ M10 ] )
-                  && MathUtils.IsZero( val[ M12 ] )
-                  && MathUtils.IsZero( val[ M20 ] )
-                  && MathUtils.IsZero( val[ M21 ] ) );
-    }
+    public bool HasRotationOrScaling() => !( MathUtils.IsEqual( val[ M00 ], 1 )
+                                          && MathUtils.IsEqual( val[ M11 ], 1 )
+                                          && MathUtils.IsEqual( val[ M22 ], 1 )
+                                          && MathUtils.IsZero( val[ M01 ] )
+                                          && MathUtils.IsZero( val[ M02 ] )
+                                          && MathUtils.IsZero( val[ M10 ] )
+                                          && MathUtils.IsZero( val[ M12 ] )
+                                          && MathUtils.IsZero( val[ M20 ] )
+                                          && MathUtils.IsZero( val[ M21 ] ) );
 }

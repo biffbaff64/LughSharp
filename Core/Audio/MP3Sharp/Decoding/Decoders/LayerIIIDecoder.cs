@@ -19,9 +19,8 @@ using LibGDXSharp.Audio.MP3Sharp.Support;
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// Implements decoding of MPEG Audio Layer 3 frames.
+///     Implements decoding of MPEG Audio Layer 3 frames.
 /// </summary>
-[PublicAPI]
 public sealed class LayerIIIDecoder : IFrameDecoder
 {
     private const int SSLIMIT = 18;
@@ -183,13 +182,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private int _checkSumHuff;
     private int _frameStart;
 
-    public int[]   IsPos          { get; set; } = null!;
-    public float[] IsRatio        { get; set; } = null!;
-    public float[] Rawout         { get; set; } = null!;
-    public int[]   ScalefacBuffer { get; set; }
-
-    public ScaleFactorTable sftable;
-
     // new_slen is fully initialized before use, no need
     // to reallocate array.
     private int[] _newSlen = null!;
@@ -201,6 +193,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
     private float[] _samples2 = null!;
 
+    public ScaleFactorTable sftable;
+
     // MDM: tsOutCopy and rawout do not need initializing, so the arrays
     // can be reused.
     public float[] tsOutCopy = null!;
@@ -210,13 +204,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     public int[] x = { 0 };
     public int[] y = { 0 };
 
-    static LayerIIIDecoder()
-    {
-        PowerTable = CreatePowerTable();
-    }
+    static LayerIIIDecoder() => PowerTable = CreatePowerTable();
 
     /// <summary>
-    /// TODO: these ctor arguments should be moved to the decodeFrame() method.
+    ///     TODO: these ctor arguments should be moved to the decodeFrame() method.
     /// </summary>
     public LayerIIIDecoder( Bitstream stream, Header header, SynthesisFilter? filtera, SynthesisFilter? filterb, ABuffer? buffer, int whichCh )
     {
@@ -436,10 +427,12 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         _sideInfo   = new Layer3SideInfo();
     }
 
-    public void DecodeFrame()
-    {
-        Decode();
-    }
+    public int[]   IsPos          { get; set; } = null!;
+    public float[] IsRatio        { get; set; } = null!;
+    public float[] Rawout         { get; set; } = null!;
+    public int[]   ScalefacBuffer { get; set; }
+
+    public void DecodeFrame() => Decode();
 
     private void InitBlock()
     {
@@ -453,7 +446,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// Notify decoder that a seek is being made.
+    ///     Notify decoder that a seek is being made.
     /// </summary>
     public void SeekNotify()
     {
@@ -623,10 +616,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// Reads the side info from the stream, assuming the entire.
-    /// frame has been read already.
-    /// Mono   : 136 bits (= 17 bytes)
-    /// Stereo : 256 bits (= 32 bytes)
+    ///     Reads the side info from the stream, assuming the entire.
+    ///     frame has been read already.
+    ///     Mono   : 136 bits (= 17 bytes)
+    ///     Stereo : 256 bits (= 32 bytes)
     /// </summary>
     private bool ReadSideInfo()
     {
@@ -766,7 +759,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// 
     /// </summary>
     private void ReadScaleFactors( int ch, int gr )
     {
@@ -926,7 +918,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             blocktypenumber = 0;
         }
 
-        if ( !( ( modeExt is 1 or 3 ) && ( ch == 1 ) ) )
+        if ( !( modeExt is 1 or 3 && ( ch == 1 ) ) )
         {
             if ( scalefacComp < 400 )
             {
@@ -960,7 +952,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             }
         }
 
-        if ( ( modeExt is 1 or 3 ) && ( ch == 1 ) )
+        if ( modeExt is 1 or 3 && ( ch == 1 ) )
         {
             var intScalefacComp = SupportClass.URShift( scalefacComp, 1 );
 
@@ -1018,7 +1010,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// 
     /// </summary>
     private void GlsfScaleFactors( int ch, int gr )
     {
@@ -1213,7 +1204,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// 
     /// </summary>
     private void GetKStereoValues( int isPos, int ioType, int i )
     {
@@ -1235,7 +1225,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// 
     /// </summary>
     private void DequantizeSample( float[][] xr, int ch, int gr )
     {
@@ -1255,6 +1244,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             {
                 nextCbBoundary = _sfBandIndex[ _sfreq ].L[ 1 ];
             }
+
             // LONG blocks: 0,1,3
             else
             {
@@ -1407,7 +1397,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 }
 
                 idx <<= grInfo.ScaleFacScale;
-                
+
                 xr[ quotien ][ reste ] *= TwoToNegativeHalfPow[ idx ];
             }
 
@@ -1434,7 +1424,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// 
     /// </summary>
     private void Reorder( float[][] xr, int ch, int gr )
     {
@@ -1957,7 +1946,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// 
     /// </summary>
     private void Antialias( int ch, int gr )
     {
@@ -2066,7 +2054,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// 
     /// </summary>
     private void DoDownMix()
     {
@@ -2082,7 +2069,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    /// Fast Inverse Modified discrete cosine transform.
+    ///     Fast Inverse Modified discrete cosine transform.
     /// </summary>
     public static void InverseMdct( float[] inValues, float[] outValues, int blockType )
     {

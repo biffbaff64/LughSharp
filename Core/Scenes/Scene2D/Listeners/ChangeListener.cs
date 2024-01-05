@@ -18,17 +18,16 @@ using LibGDXSharp.Scenes.Scene2D;
 
 namespace LibGDXSharp.Scenes.Listeners;
 
-[PublicAPI]
 public class ChangeListener : IEventListener
 {
     public ChangeListener()
     {
     }
-    
+
     public ChangeListener( Action< object > action )
     {
     }
-    
+
     public virtual bool Handle( Event ev )
     {
         if ( ev is not ChangeEvent changeEvent )
@@ -45,15 +44,15 @@ public class ChangeListener : IEventListener
     /// </summary>
     /// <param name="ev"></param>
     /// <param name="actor">
-    /// The event target, which is the actor that emitted the change event.
+    ///     The event target, which is the actor that emitted the change event.
     /// </param>
     public virtual void Changed( ChangeEvent ev, Actor? actor )
     {
     }
 
     /// <summary>
-    /// Fired when something in an actor has changed. This is a generic event, exactly
-    /// what changed in an actor will vary.
+    ///     Fired when something in an actor has changed. This is a generic event, exactly
+    ///     what changed in an actor will vary.
     /// </summary>
     public class ChangeEvent : Event
     {

@@ -19,11 +19,10 @@ using System.Text;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Node record holding a value and its index.
-/// To change the contents of <see cref="Value"/> use <see cref="BinaryHeap{T}.Add(T, float)"/>
-/// if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(T, float)"/>.
+///     Node record holding a value and its index.
+///     To change the contents of <see cref="Value" /> use <see cref="BinaryHeap{T}.Add(T, float)" />
+///     if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(T, float)" />.
 /// </summary>
-[PublicAPI]
 public record BinaryHeapNode
 {
     public float Value { get; set; }
@@ -31,46 +30,31 @@ public record BinaryHeapNode
 }
 
 /// <summary>
-/// A binary heap that stores nodes which each have a float value and are
-/// sorted either lowest first or highest first.
-/// <para>
-/// The <see cref="BinaryHeapNode"/> class can be extended to store additional information.
-/// </para>
+///     A binary heap that stores nodes which each have a float value and are
+///     sorted either lowest first or highest first.
+///     <para>
+///         The <see cref="BinaryHeapNode" /> class can be extended to store additional information.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class BinaryHeap<T> where T : BinaryHeapNode
 {
-    #region properties
-    
-    public int Size { get; set; }
-
-    /// <summary>
-    /// Returns true if the heap has one or more items.
-    /// </summary>
-    public bool NotEmpty => Size > 0;
-
-    /// <summary>
-    /// Returns true if the heap is empty.
-    /// </summary>
-    public bool IsEmpty => Size == 0;
-
-    #endregion properties
 
     private const int DEFAULT_CAPACITY = 16;
 
-    private readonly bool _isMaxHeap;
+    private readonly bool              _isMaxHeap;
+    private          BinaryHeapNode[]? _nodes;
 
-    private BinaryHeapNode[]? _nodes;
+    // ------------------------------------------------------------------------
 
     public BinaryHeap( int capacity = DEFAULT_CAPACITY, bool isMaxHeap = false )
     {
-        this._isMaxHeap = isMaxHeap;
-        this._nodes     = new BinaryHeapNode[ capacity ];
+        _isMaxHeap = isMaxHeap;
+        _nodes     = new BinaryHeapNode[ capacity ];
     }
 
     /// <summary>
-    /// Adds the node to the heap using its current value.
-    /// The node should not already be in the heap.
+    ///     Adds the node to the heap using its current value.
+    ///     The node should not already be in the heap.
     /// </summary>
     /// <returns>The specified node.</returns>
     public T Add( T node )
@@ -98,8 +82,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     }
 
     /// <summary>
-    /// Sets the node's value and adds it to the heap.
-    /// The node should not already be in the heap.
+    ///     Sets the node's value and adds it to the heap.
+    ///     The node should not already be in the heap.
     /// </summary>
     /// <returns>The specified node.</returns>
     public T Add( T node, float value )
@@ -110,11 +94,11 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     }
 
     /// <summary>
-    /// Returns true if the heap contains the specified node.
+    ///     Returns true if the heap contains the specified node.
     /// </summary>
-    /// <param name="node">The <see cref="BinaryHeapNode"/>to look for.</param>
+    /// <param name="node">The <see cref="BinaryHeapNode" />to look for.</param>
     /// <param name="identity">
-    /// If true, == comparison will be used. If false, .Equals() comparison will be used.
+    ///     If true, == comparison will be used. If false, .Equals() comparison will be used.
     /// </param>
     public bool Contains( T node, bool identity )
     {
@@ -128,7 +112,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         foreach ( BinaryHeapNode n in _nodes )
         {
             if ( ( identity && ( n == node ) )
-              || ( !identity && ( n.Equals( node ) ) ) )
+              || ( !identity && n.Equals( node ) ) )
             {
                 return true;
             }
@@ -138,8 +122,8 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     }
 
     /// <summary>
-    /// Returns the first item in the heap. This is the item with the lowest
-    /// value (or highest value if this heap is configured as a max heap). 
+    ///     Returns the first item in the heap. This is the item with the lowest
+    ///     value (or highest value if this heap is configured as a max heap).
     /// </summary>
     public virtual T Peek()
     {
@@ -154,9 +138,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     }
 
     /// <summary>
-    /// Removes the first item in the heap and returns it. This is
-    /// the item with the lowest value (or highest value if this heap
-    /// is configured as a max heap). 
+    ///     Removes the first item in the heap and returns it. This is
+    ///     the item with the lowest value (or highest value if this heap
+    ///     is configured as a max heap).
     /// </summary>
     public virtual T Pop()
     {
@@ -217,7 +201,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     }
 
     /// <summary>
-    /// Changes the value of the node, which should already be in the heap.
+    ///     Changes the value of the node, which should already be in the heap.
     /// </summary>
     public void SetValue( T node, float value )
     {
@@ -267,9 +251,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     {
         MemberNullException.ThrowIfNull( _nodes );
 
-        BinaryHeapNode node = this._nodes[ index ];
+        BinaryHeapNode node = _nodes[ index ];
 
-        var size  = this.Size;
+        var size  = Size;
         var value = node.Value;
 
         while ( true )
@@ -283,7 +267,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             }
 
             // Always has a left child.
-            BinaryHeapNode leftNode  = this._nodes[ leftIndex ];
+            BinaryHeapNode leftNode  = _nodes[ leftIndex ];
             var            leftValue = leftNode.Value;
 
             // May have a right child.
@@ -297,7 +281,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             }
             else
             {
-                rightNode  = this._nodes[ rightIndex ];
+                rightNode  = _nodes[ rightIndex ];
                 rightValue = rightNode.Value;
             }
 
@@ -309,9 +293,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
                     break;
                 }
 
-                this._nodes[ index ] = leftNode;
-                leftNode.Index       = index;
-                index                = leftIndex;
+                _nodes[ index ] = leftNode;
+                leftNode.Index  = index;
+                index           = leftIndex;
             }
             else
             {
@@ -320,7 +304,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
                     break;
                 }
 
-                this._nodes[ index ] = rightNode!;
+                _nodes[ index ] = rightNode!;
 
                 if ( rightNode != null )
                 {
@@ -347,15 +331,12 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             return false;
         }
 
-        MemberNullException.ThrowIfNull( _nodes );
-        MemberNullException.ThrowIfNull( other._nodes );
-
-        BinaryHeapNode[] nodes1 = this._nodes;
-        BinaryHeapNode[] nodes2 = other._nodes;
+        Debug.Assert( _nodes != null );
+        Debug.Assert( other._nodes != null );
 
         for ( int i = 0, n = Size; i < n; i++ )
         {
-            if ( !nodes1[ i ].Value.Equals( nodes2[ i ].Value ) )
+            if ( !_nodes[ i ].Value.Equals( other._nodes[ i ].Value ) )
             {
                 return false;
             }
@@ -367,7 +348,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     public override int GetHashCode()
     {
         var hash = 37 + GetType().GetHashCode();
-        
+
         hash = ( hash * 67 ) + NumberUtils.FloatToIntBits( hash );
 
         return hash;
@@ -380,7 +361,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             return "[]";
         }
 
-        BinaryHeapNode[] nodes  = this._nodes;
+        BinaryHeapNode[] nodes  = _nodes;
         var              buffer = new StringBuilder( 32 );
 
         buffer.Append( '[' );
@@ -396,4 +377,21 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
         return buffer.ToString();
     }
+
+    #region properties
+
+    public int Size { get; set; }
+
+    /// <summary>
+    ///     Returns true if the heap has one or more items.
+    /// </summary>
+    public bool NotEmpty => Size > 0;
+
+    /// <summary>
+    ///     Returns true if the heap is empty.
+    /// </summary>
+    public bool IsEmpty => Size == 0;
+
+    #endregion properties
+
 }

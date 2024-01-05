@@ -19,11 +19,13 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
-/// A Camera with Perspective Projection.
+///     A Camera with Perspective Projection.
 /// </summary>
-[PublicAPI]
 public class PerspectiveCamera : Camera
 {
+
+    private readonly Vector3 _tmp = new();
+
     // the field of view of the height, in degrees.
     public float fieldOfView = 67;
 
@@ -32,24 +34,22 @@ public class PerspectiveCamera : Camera
     }
 
     /// <summary>
-    /// Constructs a new <see cref="PerspectiveCamera"/> with the given field
-    /// of view and viewport size. The aspect ratio is derived from the viewport size.
+    ///     Constructs a new <see cref="PerspectiveCamera" /> with the given field
+    ///     of view and viewport size. The aspect ratio is derived from the viewport size.
     /// </summary>
     /// <param name="fieldOfViewY">
-    /// The field of view of the height, in degrees. The field of view for the
-    /// width will be calculated according to the aspect ratio.
+    ///     The field of view of the height, in degrees. The field of view for the
+    ///     width will be calculated according to the aspect ratio.
     /// </param>
     /// <param name="viewportWidth">Viewport width in pixels.</param>
     /// <param name="viewportHeight">Viewport height in pixels.</param>
-    /// <remarks>Call <see cref="Update"/> immediately after this constructor.</remarks>
+    /// <remarks>Call <see cref="Update" /> immediately after this constructor.</remarks>
     public PerspectiveCamera( float fieldOfViewY, float viewportWidth, float viewportHeight )
     {
-        this.fieldOfView    = fieldOfViewY;
-        this.ViewportWidth  = viewportWidth;
-        this.ViewportHeight = viewportHeight;
+        fieldOfView    = fieldOfViewY;
+        ViewportWidth  = viewportWidth;
+        ViewportHeight = viewportHeight;
     }
-
-    private readonly Vector3 _tmp = new();
 
     /// <summary>
     /// </summary>
@@ -59,11 +59,11 @@ public class PerspectiveCamera : Camera
         var aspect = ViewportWidth / ViewportHeight;
 
         Projection.SetToProjection( Math.Abs( Near ), Math.Abs( Far ), fieldOfView, aspect );
-        
+
         View.SetToLookAt( Position, _tmp.Set( Position ).Add( Direction ), Up );
-        
+
         Combined.Set( Projection );
-        
+
         Matrix4.Mul( Combined.val, View.val );
 
         if ( updateFrustum )

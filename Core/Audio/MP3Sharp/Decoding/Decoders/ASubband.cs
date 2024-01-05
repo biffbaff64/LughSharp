@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// Abstract base class for subband classes of layer I and II
+///     Abstract base class for subband classes of layer I and II
 /// </summary>
-[PublicAPI]
 public abstract class ASubband
 {
     // Scalefactors for layer I and II, Annex 3-B.1 in ISO/IEC DIS 11172:

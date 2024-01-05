@@ -17,10 +17,9 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// This interface provides constants describing the error
-/// codes used by the Decoder to indicate errors.
+///     This interface provides constants describing the error
+///     codes used by the Decoder to indicate errors.
 /// </summary>
-[PublicAPI]
 public struct DecoderErrors
 {
     public const int UNKNOWN_ERROR     = BitstreamErrors.DECODER_ERROR + 0;

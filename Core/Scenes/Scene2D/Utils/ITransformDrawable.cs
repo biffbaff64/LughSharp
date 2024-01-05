@@ -19,9 +19,8 @@ using LibGDXSharp.Graphics.G2D;
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// A drawable that supports scale and rotation.
+///     A drawable that supports scale and rotation.
 /// </summary>
-[PublicAPI]
 public interface ITransformDrawable : IDrawable
 {
     void Draw( IBatch batch,

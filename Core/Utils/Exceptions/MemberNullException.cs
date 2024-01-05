@@ -18,36 +18,35 @@ using System.Runtime.CompilerServices;
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
-public class MemberNullException : System.Exception
+public class MemberNullException : Exception
 {
     public MemberNullException()
     {
     }
-    
+
     public MemberNullException( string? message = "" )
         : base( message )
     {
     }
 
-    public MemberNullException( System.Exception? innerException )
+    public MemberNullException( Exception? innerException )
         : this( "", innerException )
     {
     }
 
-    public MemberNullException( string message, System.Exception? exception )
+    public MemberNullException( string message, Exception? exception )
         : base( message, exception )
     {
     }
 
     /// <summary>
-    /// Throws an <see cref="MemberNullException"/> if <paramref name="argument"/> is null.
+    ///     Throws an <see cref="MemberNullException" /> if <paramref name="argument" /> is null.
     /// </summary>
     /// <param name="argument">
-    /// The reference type argument to validate as non-null.
+    ///     The reference type argument to validate as non-null.
     /// </param>
     /// <param name="paramName">
-    /// The name of the parameter with which <paramref name="argument"/> corresponds.
+    ///     The name of the parameter with which <paramref name="argument" /> corresponds.
     /// </param>
     public static void ThrowIfNull( [System.Diagnostics.CodeAnalysis.NotNull] object? argument,
                                     [CallerArgumentExpression( "argument" )]

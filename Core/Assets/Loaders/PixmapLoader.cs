@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
-[PublicAPI]
 public class PixmapLoader : AsynchronousAssetLoader
 {
     private Pixmap? _pixmap;
@@ -26,18 +25,15 @@ public class PixmapLoader : AsynchronousAssetLoader
     }
 
     /// <summary>
-    /// Returns the assets this asset requires to be loaded first.
-    /// This method may be called on a thread other than the GL thread.
+    ///     Returns the assets this asset requires to be loaded first.
+    ///     This method may be called on a thread other than the GL thread.
     /// </summary>
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter )
-    {
-        return null!;
-    }
+                                                             AssetLoaderParameters parameter ) => null!;
 
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
@@ -50,9 +46,9 @@ public class PixmapLoader : AsynchronousAssetLoader
     }
 
     public override object LoadSync( AssetManager manager,
-                                   string? fileName,
-                                   FileInfo? file,
-                                   AssetLoaderParameters parameter )
+                                     string? fileName,
+                                     FileInfo? file,
+                                     AssetLoaderParameters parameter )
     {
         Pixmap? pixmap = _pixmap;
 
@@ -64,8 +60,8 @@ public class PixmapLoader : AsynchronousAssetLoader
     }
 
     /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {

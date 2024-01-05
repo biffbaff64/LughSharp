@@ -17,22 +17,42 @@
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// A bitset, without size limitation, allows comparison via
-/// bitwise operators to other bitfields.
+///     A bitset, without size limitation, allows comparison via
+///     bitwise operators to other bitfields.
 /// </summary>
-[PublicAPI]
 public class Bits
 {
     private long[] _bits = { 0 };
 
     /// <summary>
-    /// Creates a bit set whose initial size is large enough to explicitly
-    /// represent bits with indices in the range 0 through nbits-1.
+    ///     Creates a bit set whose initial size is large enough to explicitly
+    ///     represent bits with indices in the range 0 through nbits-1.
     /// </summary>
     /// <param name="nbits">the initial size of the bit set</param>
-    public Bits( int nbits )
+    public Bits( int nbits ) => CheckCapacity( nbits >>> 6 );
+
+    /// <summary>
+    /// </summary>
+    /// <value> true if this bitset contains at least one bit set to true </value>
+    public bool NotEmpty => !Empty;
+
+    /// <summary>
+    /// </summary>
+    /// <returns> true if this bitset contains no bits that are set to true </returns>
+    public bool Empty
     {
-        CheckCapacity( nbits >>> 6 );
+        get
+        {
+            foreach ( var t in _bits )
+            {
+                if ( t != 0L )
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -52,7 +72,7 @@ public class Bits
     }
 
     /// <summary>
-    /// Returns the bit at the given index and clears it in one go.
+    ///     Returns the bit at the given index and clears it in one go.
     /// </summary>
     /// <param name="index"> the index of the bit </param>
     /// <returns> whether the bit was set before invocation </returns>
@@ -73,7 +93,7 @@ public class Bits
     }
 
     /// <summary>
-    /// Returns the bit at the given index and sets it in one go.
+    ///     Returns the bit at the given index and sets it in one go.
     /// </summary>
     /// <param name="index">the index of the bit</param>
     /// <returns>whether the bit was set before invocation</returns>
@@ -84,7 +104,7 @@ public class Bits
         CheckCapacity( word );
 
         var oldBits = _bits[ word ];
-        
+
         _bits[ word ] |= 1L << ( index & 0x3F );
 
         return _bits[ word ] == oldBits;
@@ -145,12 +165,9 @@ public class Bits
     }
 
     /// <summary>
-    /// Clears the entire bitset
+    ///     Clears the entire bitset
     /// </summary>
-    public void Clear()
-    {
-        Array.Fill( _bits, 0 );
-    }
+    public void Clear() => Array.Fill( _bits, 0 );
 
     /// <summary>
     /// </summary>
@@ -158,8 +175,9 @@ public class Bits
     public int NumBits() => _bits.Length << 6;
 
     /// <summary>
-    /// Returns the "logical size" of this bitset: the index of the highest set bit in the bitset plus one. Returns zero if the
-    /// bitset contains no set bits.
+    ///     Returns the "logical size" of this bitset: the index of the highest set bit in the bitset plus one. Returns zero if
+    ///     the
+    ///     bitset contains no set bits.
     /// </summary>
     /// <returns> the logical size of this bitset  </returns>
     public int Length()
@@ -184,33 +202,9 @@ public class Bits
     }
 
     /// <summary>
-    /// </summary>
-    /// <value> true if this bitset contains at least one bit set to true </value>
-    public bool NotEmpty => !Empty;
-
-    /// <summary>
-    /// </summary>
-    /// <returns> true if this bitset contains no bits that are set to true </returns>
-    public bool Empty
-    {
-        get
-        {
-            foreach ( var t in _bits )
-            {
-                if ( t != 0L )
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }
-
-    /// <summary>
-    /// Returns the index of the first bit that is set to true that occurs on
-    /// or after the specified starting index. If no such bit exists then -1
-    /// is returned. 
+    ///     Returns the index of the first bit that is set to true that occurs on
+    ///     or after the specified starting index. If no such bit exists then -1
+    ///     is returned.
     /// </summary>
     public int NextSetBit( int fromIndex )
     {
@@ -257,8 +251,8 @@ public class Bits
     }
 
     /// <summary>
-    /// Returns the index of the first bit that is set to false that occurs on
-    /// or after the specified starting index.
+    ///     Returns the index of the first bit that is set to false that occurs on
+    ///     or after the specified starting index.
     /// </summary>
     public int NextClearBit( int fromIndex )
     {
@@ -301,10 +295,10 @@ public class Bits
     }
 
     /// <summary>
-    /// Performs a logical <b>AND</b> of this target bit set with the argument
-    /// bit set. This bit set is modified so that each bit in it has the value
-    /// true if and only if it both initially had the value true and the
-    /// corresponding bit in the bit set argument also had the value true.
+    ///     Performs a logical <b>AND</b> of this target bit set with the argument
+    ///     bit set. This bit set is modified so that each bit in it has the value
+    ///     true if and only if it both initially had the value true and the
+    ///     corresponding bit in the bit set argument also had the value true.
     /// </summary>
     /// <param name="other"> a bit set  </param>
     public void And( Bits other )
@@ -326,8 +320,8 @@ public class Bits
     }
 
     /// <summary>
-    /// Clears all of the bits in this bit set whose corresponding bit is
-    /// set in the specified bit set.
+    ///     Clears all of the bits in this bit set whose corresponding bit is
+    ///     set in the specified bit set.
     /// </summary>
     /// <param name="other"> a bit set  </param>
     public void AndNot( Bits other )
@@ -339,10 +333,10 @@ public class Bits
     }
 
     /// <summary>
-    /// Performs a logical <b>OR</b> of this bit set with the bit set argument.
-    /// This bit set is modified so that a bit in it has the value true if and
-    /// only if it either already had the value true or the corresponding bit
-    /// in the bit set argument has the value true.
+    ///     Performs a logical <b>OR</b> of this bit set with the bit set argument.
+    ///     This bit set is modified so that a bit in it has the value true if and
+    ///     only if it either already had the value true or the corresponding bit
+    ///     in the bit set argument has the value true.
     /// </summary>
     /// <param name="other"> a bit set  </param>
     public void Or( Bits other )
@@ -366,19 +360,19 @@ public class Bits
     }
 
     /// <summary>
-    /// Performs a logical <b>XOR</b> of this bit set with the bit set argument.
-    /// This bit set is modified so that a bit in it has the value true if and
-    /// only if one of the following statements holds:
-    /// <ul>
-    /// <li>
-    /// The bit initially has the value true, and the corresponding bit
-    /// in the argument has the value false.
-    /// </li>
-    /// <li>
-    /// The bit initially has the value false, and the corresponding bit
-    /// in the argument has the value true.
-    /// </li>
-    /// </ul>
+    ///     Performs a logical <b>XOR</b> of this bit set with the bit set argument.
+    ///     This bit set is modified so that a bit in it has the value true if and
+    ///     only if one of the following statements holds:
+    ///     <ul>
+    ///         <li>
+    ///             The bit initially has the value true, and the corresponding bit
+    ///             in the argument has the value false.
+    ///         </li>
+    ///         <li>
+    ///             The bit initially has the value false, and the corresponding bit
+    ///             in the argument has the value true.
+    ///         </li>
+    ///     </ul>
     /// </summary>
     /// <param name="other">  </param>
     public void Xor( Bits other )
@@ -402,14 +396,14 @@ public class Bits
     }
 
     /// <summary>
-    /// Returns true if the specified BitSet has any bits set to true that are
-    /// also set to true in this BitSet.
+    ///     Returns true if the specified BitSet has any bits set to true that are
+    ///     also set to true in this BitSet.
     /// </summary>
     /// <param name="other"> a bit set </param>
     /// <returns>bool indicating whether this bit set intersects the specified bit set</returns>
     public bool Intersects( Bits other )
     {
-        var bits      = this._bits;
+        var bits      = _bits;
         var otherBits = other._bits;
 
         for ( var i = Math.Min( bits.Length, otherBits.Length ) - 1; i >= 0; i-- )
@@ -424,16 +418,16 @@ public class Bits
     }
 
     /// <summary>
-    /// Returns true if this bit set is a super set of the specified set, i.e. it
-    /// has all bits set to true that are also set to true in the specified BitSet.
+    ///     Returns true if this bit set is a super set of the specified set, i.e. it
+    ///     has all bits set to true that are also set to true in the specified BitSet.
     /// </summary>
     /// <param name="other"> a bit set </param>
     /// <returns>
-    /// bool indicating whether this bit set is a super set of the specified set
+    ///     bool indicating whether this bit set is a super set of the specified set
     /// </returns>
     public bool ContainsAll( Bits other )
     {
-        var bits            = this._bits;
+        var bits            = _bits;
         var otherBits       = other._bits;
         var otherBitsLength = otherBits.Length;
         var bitsLength      = bits.Length;
@@ -483,7 +477,7 @@ public class Bits
             return false;
         }
 
-        if ( this.GetType() != obj.GetType() )
+        if ( GetType() != obj.GetType() )
         {
             return false;
         }
@@ -511,7 +505,7 @@ public class Bits
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     #region statics
 
     private static ByteOrder? _byteOrder;

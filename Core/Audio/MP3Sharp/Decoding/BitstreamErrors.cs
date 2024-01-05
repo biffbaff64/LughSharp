@@ -17,10 +17,9 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// This struct describes all error codes that can be thrown
-/// in BistreamExceptions.
+///     This struct describes all error codes that can be thrown
+///     in BistreamExceptions.
 /// </summary>
-[PublicAPI]
 public struct BitstreamErrors
 {
     public const int UNKNOWN_ERROR       = BITSTREAM_ERROR + 0;

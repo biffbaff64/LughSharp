@@ -19,31 +19,31 @@ using LibGDXSharp.Files.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// A <see cref="ITextureData"/> implementation which should be used
-/// to create float textures.
+///     A <see cref="ITextureData" /> implementation which should be used
+///     to create float textures.
 /// </summary>
-[PublicAPI]
 public class FloatTextureData : ITextureData
 {
+    private readonly int _format;
+
+    private readonly int  _internalFormat;
+    private readonly bool _isGpuOnly;
+    private readonly int  _type;
+
+    public FloatTextureData( int w, int h, int internalFormat, int format, int type, bool isGpuOnly )
+    {
+        Width           = w;
+        Height          = h;
+        _internalFormat = internalFormat;
+        _format         = format;
+        _type           = type;
+        _isGpuOnly      = isGpuOnly;
+    }
+
     public FloatBuffer Buffer     { get; private set; } = null!;
     public int         Width      { get; set; }         = 0;
     public int         Height     { get; set; }         = 0;
     public bool        IsPrepared { get; set; }         = false;
-
-    private readonly int  _internalFormat;
-    private readonly int  _format;
-    private readonly int  _type;
-    private readonly bool _isGpuOnly;
-
-    public FloatTextureData( int w, int h, int internalFormat, int format, int type, bool isGpuOnly )
-    {
-        this.Width           = w;
-        this.Height          = h;
-        this._internalFormat = internalFormat;
-        this._format         = format;
-        this._type           = type;
-        this._isGpuOnly      = isGpuOnly;
-    }
 
     public void Prepare()
     {
@@ -79,7 +79,7 @@ public class FloatTextureData : ITextureData
                 }
             }
 
-            this.Buffer = BufferUtils.NewFloatBuffer( Width * Height * amountOfFloats );
+            Buffer = BufferUtils.NewFloatBuffer( Width * Height * amountOfFloats );
         }
 
         IsPrepared = true;
@@ -88,8 +88,8 @@ public class FloatTextureData : ITextureData
     public void ConsumeCustomData( int target )
     {
         if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
-             || ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
-             || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL ) )
+          || ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
+          || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL ) )
         {
 
             if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
@@ -99,10 +99,16 @@ public class FloatTextureData : ITextureData
 
             // GLES and WebGL defines texture format by 3rd and 8th argument,
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
-            Gdx.GL.GLTexImage2D
-                (
-                target, 0, IGL20.GL_RGBA, Width, Height, 0,
-                IGL20.GL_RGBA, IGL20.GL_FLOAT, Buffer
+            Gdx.GL.GLTexImage2D(
+                target,
+                0,
+                IGL20.GL_RGBA,
+                Width,
+                Height,
+                0,
+                IGL20.GL_RGBA,
+                IGL20.GL_FLOAT,
+                Buffer
                 );
         }
         else
@@ -117,28 +123,25 @@ public class FloatTextureData : ITextureData
 
             // in desktop OpenGL the texture format is defined only by the third argument,
             // hence we need to use GL_RGBA32F there (this constant is unavailable in GLES/WebGL)
-            Gdx.GL.GLTexImage2D
-                (
-                target, 0, _internalFormat, Width, Height,
-                0, _format, IGL20.GL_FLOAT, Buffer
+            Gdx.GL.GLTexImage2D(
+                target,
+                0,
+                _internalFormat,
+                Width,
+                Height,
+                0,
+                _format,
+                IGL20.GL_FLOAT,
+                Buffer
                 );
         }
     }
 
-    public Pixmap ConsumePixmap()
-    {
-        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
-    }
+    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
 
-    public bool DisposePixmap()
-    {
-        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
-    }
+    public bool DisposePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
 
-    public Pixmap.Format GetFormat()
-    {
-        throw new UnsupportedOperationException();
-    }
+    public Pixmap.Format GetFormat() => throw new UnsupportedOperationException();
 
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 

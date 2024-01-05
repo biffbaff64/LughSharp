@@ -28,51 +28,20 @@ using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[PublicAPI]
 public abstract class BaseTmxMapLoader<TP>
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.Parameters
 {
-    [PublicAPI]
-    public class Parameters : AssetLoaderParameters
-    {
-        // generate mipmaps?
-        public bool GenerateMipMaps { get; set; } = false;
-
-        // The TextureFilter to use for minification
-        public TextureFilter TextureMinFilter { get; set; } = TextureFilter.Nearest;
-
-        // The TextureFilter to use for magnification
-        public TextureFilter TextureMagFilter { get; set; } = TextureFilter.Nearest;
-
-        /// <summary>
-        /// Whether to convert the objects' pixel position and size to the equivalent in tile space.
-        /// </summary>
-        public bool ConvertObjectToTileSpace { get; set; } = false;
-
-        /// <summary>
-        /// Whether to flip all Y coordinates so that Y positive is up. All LibGDX renderers
-        /// require flipped Y coordinates, and thus flipY set to true. This parameter is included
-        /// for non-rendering related purposes of TMX files, or custom renderers.
-        /// </summary>
-        public bool FlipY { get; set; } = true;
-    }
 
     protected const uint FLAG_FLIP_HORIZONTALLY = 0x80000000;
     protected const uint FLAG_FLIP_VERTICALLY   = 0x40000000;
     protected const uint FLAG_FLIP_DIAGONALLY   = 0x20000000;
     protected const uint MASK_CLEAR             = 0xE0000000;
 
-    protected XmlReader?         xml = new();
+    protected bool               convertObjectToTileSpace;
+    protected bool               flipY = true;
     protected XmlReader.Element? root;
 
-    protected bool convertObjectToTileSpace;
-    protected bool flipY = true;
-
-    public int      MapTileWidth      { get; set; }
-    public int      MapTileHeight     { get; set; }
-    public int      MapWidthInPixels  { get; set; }
-    public int      MapHeightInPixels { get; set; }
-    public TiledMap Map               { get; set; } = null!;
+    protected XmlReader? xml = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -81,6 +50,12 @@ public abstract class BaseTmxMapLoader<TP>
         : base( resolver )
     {
     }
+
+    public int      MapTileWidth      { get; set; }
+    public int      MapTileHeight     { get; set; }
+    public int      MapWidthInPixels  { get; set; }
+    public int      MapHeightInPixels { get; set; }
+    public TiledMap Map               { get; set; } = null!;
 
     /// <summary>
     /// </summary>
@@ -108,34 +83,31 @@ public abstract class BaseTmxMapLoader<TP>
     /// <param name="textureParameter"></param>
     /// <returns></returns>
     protected List< AssetDescriptor >? GetDependencyAssetDescriptors( FileInfo tmxFile,
-                                                                      TextureLoader.TextureParameter textureParameter )
-    {
-        return default( List< AssetDescriptor >? );
-    }
+                                                                      TextureLoader.TextureParameter textureParameter ) => default( List< AssetDescriptor >? );
 
     /// <summary>
-    /// Loads the map data, given the XML root element. 
+    ///     Loads the map data, given the XML root element.
     /// </summary>
     /// <param name="tmxFile">The Filehandle of the tmx file </param>
     /// <param name="parameter"></param>
     /// <param name="imageResolver"></param>
-    /// <returns>The <see cref="TiledMap"/>.</returns>
+    /// <returns>The <see cref="TiledMap" />.</returns>
     protected TiledMap LoadTiledMap( FileInfo tmxFile, TP? parameter, IImageResolver imageResolver )
     {
         MemberNullException.ThrowIfNull( xml );
         MemberNullException.ThrowIfNull( root );
 
-        this.Map = new TiledMap();
+        Map = new TiledMap();
 
         if ( parameter != null )
         {
-            this.convertObjectToTileSpace = parameter.ConvertObjectToTileSpace;
-            this.flipY                    = parameter.FlipY;
+            convertObjectToTileSpace = parameter.ConvertObjectToTileSpace;
+            flipY                    = parameter.FlipY;
         }
         else
         {
-            this.convertObjectToTileSpace = false;
-            this.flipY                    = true;
+            convertObjectToTileSpace = false;
+            flipY                    = true;
         }
 
         var mapOrientation = root.GetAttribute( "orientation", null );
@@ -178,10 +150,10 @@ public abstract class BaseTmxMapLoader<TP>
             mapProperties.Put( "backgroundcolor", mapBackgroundColor );
         }
 
-        this.MapTileWidth      = tileWidth;
-        this.MapTileHeight     = tileHeight;
-        this.MapWidthInPixels  = mapWidth * tileWidth;
-        this.MapHeightInPixels = mapHeight * tileHeight;
+        MapTileWidth      = tileWidth;
+        MapTileHeight     = tileHeight;
+        MapWidthInPixels  = mapWidth * tileWidth;
+        MapHeightInPixels = mapHeight * tileHeight;
 
         if ( mapOrientation != string.Empty )
         {
@@ -189,8 +161,8 @@ public abstract class BaseTmxMapLoader<TP>
             {
                 if ( mapHeight > 1 )
                 {
-                    this.MapWidthInPixels  += tileWidth / 2;
-                    this.MapHeightInPixels =  ( MapHeightInPixels / 2 ) + ( tileHeight / 2 );
+                    MapWidthInPixels  += tileWidth / 2;
+                    MapHeightInPixels =  ( MapHeightInPixels / 2 ) + ( tileHeight / 2 );
                 }
             }
         }
@@ -315,9 +287,9 @@ public abstract class BaseTmxMapLoader<TP>
                 for ( var x = 0; x < width; x++ )
                 {
                     var id               = ids[ ( y * width ) + x ];
-                    var flipHorizontally = ( ( id & FLAG_FLIP_HORIZONTALLY ) != 0 );
-                    var flipVertically   = ( ( id & FLAG_FLIP_VERTICALLY ) != 0 );
-                    var flipDiagonally   = ( ( id & FLAG_FLIP_DIAGONALLY ) != 0 );
+                    var flipHorizontally = ( id & FLAG_FLIP_HORIZONTALLY ) != 0;
+                    var flipVertically   = ( id & FLAG_FLIP_VERTICALLY ) != 0;
+                    var flipDiagonally   = ( id & FLAG_FLIP_DIAGONALLY ) != 0;
 
                     ITiledMapTile? tile = tilesets.GetTile( ( int )( id & ~MASK_CLEAR ) );
 
@@ -450,15 +422,10 @@ public abstract class BaseTmxMapLoader<TP>
         layer.OffsetY = offsetY;
     }
 
-    protected void LoadObject( TiledMap map, MapLayer layer, XmlReader.Element element )
-    {
-        LoadObject( map, layer.Objects, element, MapHeightInPixels );
-    }
+    protected void LoadObject( TiledMap map, MapLayer layer, XmlReader.Element element ) => LoadObject( map, layer.Objects, element, MapHeightInPixels );
 
     protected void LoadObject( TiledMap map, ITiledMapTile tile, XmlReader.Element element )
-    {
-        LoadObject( map, tile.GetObjects(), element, tile.TextureRegion.RegionHeight );
-    }
+        => LoadObject( map, tile.GetObjects(), element, tile.TextureRegion.RegionHeight );
 
     protected void LoadObject( TiledMap map, MapObjects objects, XmlReader.Element element, float heightInPixels )
     {
@@ -477,7 +444,7 @@ public abstract class BaseTmxMapLoader<TP>
             var x = element.GetFloatAttribute( "x", 0 ) * scaleX;
 
             var y = ( flipY
-                        ? ( heightInPixels - element.GetFloatAttribute( "y", 0 ) )
+                        ? heightInPixels - element.GetFloatAttribute( "y", 0 )
                         : element.GetFloatAttribute( "y", 0 ) )
                   * scaleY;
 
@@ -536,8 +503,8 @@ public abstract class BaseTmxMapLoader<TP>
                 {
                     id = ( int )long.Parse( gid );
 
-                    var flipHorizontally = ( ( id & FLAG_FLIP_HORIZONTALLY ) != 0 );
-                    var flipVertically   = ( ( id & FLAG_FLIP_VERTICALLY ) != 0 );
+                    var flipHorizontally = ( id & FLAG_FLIP_HORIZONTALLY ) != 0;
+                    var flipVertically   = ( id & FLAG_FLIP_VERTICALLY ) != 0;
 
                     ITiledMapTile? tile = map.Tilesets.GetTile( ( int )( id & ~MASK_CLEAR ) );
 
@@ -547,7 +514,7 @@ public abstract class BaseTmxMapLoader<TP>
 
                     tiledMapTileMapObject.Properties.Put( "gid", id );
                     tiledMapTileMapObject.X = x;
-                    tiledMapTileMapObject.Y = ( flipY ? y : y - height );
+                    tiledMapTileMapObject.Y = flipY ? y : y - height;
 
                     var objectWidth  = element.GetFloatAttribute( "width", textureRegion.RegionWidth );
                     var objectHeight = element.GetFloatAttribute( "height", textureRegion.RegionHeight );
@@ -594,12 +561,12 @@ public abstract class BaseTmxMapLoader<TP>
             }
             else
             {
-                mapObject.Properties.Put( "y", ( flipY ? y - height : y ) );
+                mapObject.Properties.Put( "y", flipY ? y - height : y );
             }
 
             mapObject.Properties.Put( "width", width );
             mapObject.Properties.Put( "height", height );
-            mapObject.Visible = ( element.GetIntAttribute( "visible", 1 ) == 1 );
+            mapObject.Visible = element.GetIntAttribute( "visible", 1 ) == 1;
 
             XmlReader.Element? properties = element.GetChildByName( "properties" );
 
@@ -714,7 +681,7 @@ public abstract class BaseTmxMapLoader<TP>
         return cell;
     }
 
-    public int[] GetTileIDs( Utils.Xml.XmlReader.Element element, int width, int height )
+    public int[] GetTileIDs( XmlReader.Element element, int width, int height )
     {
         XmlReader.Element? data = element.GetChildByName( "data" );
 
@@ -753,7 +720,7 @@ public abstract class BaseTmxMapLoader<TP>
                     try
                     {
                         var compression = data.GetAttribute( "compression", null );
-                        var bytes       = System.Convert.FromBase64String( data.ToString() );
+                        var bytes       = Convert.FromBase64String( data.ToString() );
 
                         switch ( compression )
                         {
@@ -1101,5 +1068,29 @@ public abstract class BaseTmxMapLoader<TP>
         tile.OffsetY = flipY ? -offsetY : offsetY;
 
         tileSet.PutTile( tileId, tile );
+    }
+
+    public class Parameters : AssetLoaderParameters
+    {
+        // generate mipmaps?
+        public bool GenerateMipMaps { get; set; } = false;
+
+        // The TextureFilter to use for minification
+        public TextureFilter TextureMinFilter { get; set; } = TextureFilter.Nearest;
+
+        // The TextureFilter to use for magnification
+        public TextureFilter TextureMagFilter { get; set; } = TextureFilter.Nearest;
+
+        /// <summary>
+        ///     Whether to convert the objects' pixel position and size to the equivalent in tile space.
+        /// </summary>
+        public bool ConvertObjectToTileSpace { get; set; } = false;
+
+        /// <summary>
+        ///     Whether to flip all Y coordinates so that Y positive is up. All LibGDX renderers
+        ///     require flipped Y coordinates, and thus flipY set to true. This parameter is included
+        ///     for non-rendering related purposes of TMX files, or custom renderers.
+        /// </summary>
+        public bool FlipY { get; set; } = true;
     }
 }

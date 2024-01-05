@@ -17,27 +17,22 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// Removes an actor from the stage.
+///     Removes an actor from the stage.
 /// </summary>
-[PublicAPI]
 public class RemoveActorAction : Action
 {
     private bool _removed;
 
-    public override bool Act(float delta)
+    public override bool Act( float delta )
     {
-        if (!_removed)
+        if ( !_removed )
         {
             _removed = true;
             Target?.Remove();
         }
-        
+
         return true;
     }
 
-    public new void Restart()
-    {
-        _removed = false;
-    }
+    public new void Restart() => _removed = false;
 }
-

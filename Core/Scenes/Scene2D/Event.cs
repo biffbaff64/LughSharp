@@ -19,28 +19,27 @@ using LibGDXSharp.Utils.Pooling;
 namespace LibGDXSharp.Scenes.Scene2D;
 
 /// <summary>
-/// The base class for all events.
-/// By default an event will "bubble" up through an actor's parent's handlers
-/// (see <see cref="Bubbles"/>).
-/// <p>
-/// An actor's capture listeners can stop() an event to prevent child actors
-/// from seeing it.
-/// </p>
-/// <p>
-/// An Event may be marked as "handled" which will end its propagation outside
-/// of the Stage (see <see cref="IsHandled"/>). The default Actor.fire(Event)
-/// will mark events handled if an EventListener returns true.
-/// A cancelled event will be stopped and handled. Additionally, many actors
-/// will undo the side-effects of a canceled event. (See <see cref="IsCancelled"/>)
-/// </p>
+///     The base class for all events.
+///     By default an event will "bubble" up through an actor's parent's handlers
+///     (see <see cref="Bubbles" />).
+///     <p>
+///         An actor's capture listeners can stop() an event to prevent child actors
+///         from seeing it.
+///     </p>
+///     <p>
+///         An Event may be marked as "handled" which will end its propagation outside
+///         of the Stage (see <see cref="IsHandled" />). The default Actor.fire(Event)
+///         will mark events handled if an EventListener returns true.
+///         A cancelled event will be stopped and handled. Additionally, many actors
+///         will undo the side-effects of a canceled event. (See <see cref="IsCancelled" />)
+///     </p>
 /// </summary>
 /// <remarks>
-/// The original getters and setters for 'cancelled', 'handled', 'bubbles',
-/// 'stopped', 'stage', 'targetActor', 'listenerActor', and 'capture' have
-/// been removed and replaced with C# Properties.
-/// Therefore, Event.isHandled() is now Event.IsHandled etc.
+///     The original getters and setters for 'cancelled', 'handled', 'bubbles',
+///     'stopped', 'stage', 'targetActor', 'listenerActor', and 'capture' have
+///     been removed and replaced with C# Properties.
+///     Therefore, Event.isHandled() is now Event.IsHandled etc.
 /// </remarks>
-[PublicAPI]
 public class Event : IPoolable
 {
     // The Stage for the Actor the event was fired on.
@@ -68,43 +67,6 @@ public class Event : IPoolable
     // true means propagation was stopped and any action that this event would cause should not happen
     public bool IsCancelled { get; set; }
 
-    /// <summary>
-    /// Marks this event as handled. This does not affect event propagation inside
-    /// scene2d, but causes the <see cref="Stage"/> <see cref="IInputProcessor"/>
-    /// methods to return true, which will consume the event so it is not passed
-    /// on to the application under the stage. 
-    /// </summary>
-    public void Handle()
-    {
-        IsHandled = true;
-    }
-
-    /// <summary>
-    /// Marks this event cancelled. This handles the event and stops the event
-    /// propagation. It also cancels any default action that would have been taken
-    /// by the code that fired the event.
-    /// <para>
-    /// Eg, if the event is for a checkbox being checked, cancelling
-    /// the event could uncheck the checkbox.
-    /// </para>
-    /// </summary>
-    public void Cancel()
-    {
-        IsCancelled = true;
-        IsStopped   = true;
-        IsHandled   = true;
-    }
-
-    /// <summary>
-    /// Marks this event as being stopped. This halts event propagation. Any other
-    /// listeners on the <see cref="ListenerActor"/> are notified, but
-    /// after that no other listeners are notified.
-    /// </summary>
-    public void Stop()
-    {
-        IsStopped = true;
-    }
-
     public void Reset()
     {
         Stage         = null;
@@ -116,4 +78,35 @@ public class Event : IPoolable
         IsStopped     = false;
         IsCancelled   = false;
     }
+
+    /// <summary>
+    ///     Marks this event as handled. This does not affect event propagation inside
+    ///     scene2d, but causes the <see cref="Stage" /> <see cref="IInputProcessor" />
+    ///     methods to return true, which will consume the event so it is not passed
+    ///     on to the application under the stage.
+    /// </summary>
+    public void Handle() => IsHandled = true;
+
+    /// <summary>
+    ///     Marks this event cancelled. This handles the event and stops the event
+    ///     propagation. It also cancels any default action that would have been taken
+    ///     by the code that fired the event.
+    ///     <para>
+    ///         Eg, if the event is for a checkbox being checked, cancelling
+    ///         the event could uncheck the checkbox.
+    ///     </para>
+    /// </summary>
+    public void Cancel()
+    {
+        IsCancelled = true;
+        IsStopped   = true;
+        IsHandled   = true;
+    }
+
+    /// <summary>
+    ///     Marks this event as being stopped. This halts event propagation. Any other
+    ///     listeners on the <see cref="ListenerActor" /> are notified, but
+    ///     after that no other listeners are notified.
+    /// </summary>
+    public void Stop() => IsStopped = true;
 }

@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// public class for layer II subbands in joint stereo mode.
+///     public class for layer II subbands in joint stereo mode.
 /// </summary>
-[PublicAPI]
 public class SubbandLayer2IntensityStereo : SubbandLayer2
 {
     protected float channel2Scalefactor1;
@@ -33,7 +32,6 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadScaleFactorSelection( Bitstream stream, Crc16? crc )
     {
@@ -51,7 +49,6 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
@@ -82,22 +79,24 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
 
                 case 1:
                     channel2Scalefactor1 =
-                    channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
                     channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 2:
                     channel2Scalefactor1 =
-                    channel2Scalefactor2 =
-                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        channel2Scalefactor2 =
+                            channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 3:
                     channel2Scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
                     channel2Scalefactor2 =
-                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
             }
@@ -105,7 +104,6 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override bool PutNextSample( int channels, SynthesisFilter? filter1, SynthesisFilter? filter2 )
     {
@@ -177,6 +175,6 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
             }
         }
 
-        return ( ++samplenumber == 3 );
+        return ++samplenumber == 3;
     }
 }

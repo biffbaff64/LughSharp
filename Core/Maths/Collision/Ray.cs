@@ -17,17 +17,18 @@
 namespace LibGDXSharp.Maths.Collision;
 
 /// <summary>
-/// Encapsulates a ray having a starting position and a unit length direction.
+///     Encapsulates a ray having a starting position and a unit length direction.
 /// </summary>
 [Serializable]
-[PublicAPI]
 public class Ray
 {
-    public readonly Vector3 origin    = new();
+
+    private static  Vector3 _tmp      = new();
     public readonly Vector3 direction = new();
+    public readonly Vector3 origin    = new();
 
     /// <summary>
-    /// Constructor, sets the starting position of the ray and the direction.
+    ///     Constructor, sets the starting position of the ray and the direction.
     /// </summary>
     /// <param name="origin"> The starting position </param>
     /// <param name="direction"> The direction  </param>
@@ -40,28 +41,20 @@ public class Ray
     /// <summary>
     /// </summary>
     /// <returns> a copy of this ray. </returns>
-    public virtual Ray Copy()
-    {
-        return new Ray( this.origin, this.direction );
-    }
+    public virtual Ray Copy() => new( origin, direction );
 
     /// <summary>
-    /// Returns the endpoint given the distance.
-    /// This is calculated as startpoint + distance * direction.
+    ///     Returns the endpoint given the distance.
+    ///     This is calculated as startpoint + distance * direction.
     /// </summary>
     /// <param name="result">The vector to set to the result</param>
     /// <param name="distance">The distance from the end point to the start point.</param>
     /// <returns> The out param  </returns>
-    public virtual Vector3 GetEndPoint( in Vector3 result, in float distance )
-    {
-        return result.Set( direction ).Scl( distance ).Add( origin );
-    }
-
-    private static Vector3 _tmp = new();
+    public virtual Vector3 GetEndPoint( in Vector3 result, in float distance ) => result.Set( direction ).Scl( distance ).Add( origin );
 
     /// <summary>
-    /// Multiplies the ray by the given matrix.
-    /// Use this to transform a ray into another coordinate system.
+    ///     Multiplies the ray by the given matrix.
+    ///     Use this to transform a ray into another coordinate system.
     /// </summary>
     /// <param name="matrix"> The matrix </param>
     /// <returns> This ray for chaining.  </returns>
@@ -79,27 +72,24 @@ public class Ray
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override string ToString()
-    {
-        return "ray [" + origin + ":" + direction + "]";
-    }
+    public override string ToString() => "ray [" + origin + ":" + direction + "]";
 
     /// <summary>
-    /// Sets the starting position and the direction of this ray.
+    ///     Sets the starting position and the direction of this ray.
     /// </summary>
     /// <param name="orig"> The starting position </param>
     /// <param name="dir"> The direction </param>
     /// <returns> this ray for chaining  </returns>
     public virtual Ray Set( Vector3 orig, Vector3 dir )
     {
-        this.origin.Set( orig );
-        this.direction.Set( dir ).Nor();
+        origin.Set( orig );
+        direction.Set( dir ).Nor();
 
         return this;
     }
 
     /// <summary>
-    /// Sets this ray from the given starting position and direction.
+    ///     Sets this ray from the given starting position and direction.
     /// </summary>
     /// <param name="x"> The x-component of the starting position </param>
     /// <param name="y"> The y-component of the starting position </param>
@@ -110,21 +100,21 @@ public class Ray
     /// <returns> this ray for chaining  </returns>
     public virtual Ray Set( float x, float y, float z, float dx, float dy, float dz )
     {
-        this.origin.Set( x, y, z );
-        this.direction.Set( dx, dy, dz ).Nor();
+        origin.Set( x, y, z );
+        direction.Set( dx, dy, dz ).Nor();
 
         return this;
     }
 
     /// <summary>
-    /// Sets the starting position and direction from the given ray
+    ///     Sets the starting position and direction from the given ray
     /// </summary>
     /// <param name="ray"> The ray </param>
     /// <returns> This ray for chaining  </returns>
     public virtual Ray Set( Ray ray )
     {
-        this.origin.Set( ray.origin );
-        this.direction.Set( ray.direction ).Nor();
+        origin.Set( ray.origin );
+        direction.Set( ray.direction ).Nor();
 
         return this;
     }
@@ -135,13 +125,19 @@ public class Ray
     /// <returns></returns>
     public override bool Equals( object? o )
     {
-        if ( o == this ) return true;
+        if ( o == this )
+        {
+            return true;
+        }
 
-        if ( ( o == null ) || ( o.GetType() != this.GetType() ) ) return false;
+        if ( ( o == null ) || ( o.GetType() != GetType() ) )
+        {
+            return false;
+        }
 
         var r = ( Ray )o;
 
-        return this.direction.Equals( r.direction ) && this.origin.Equals( r.origin );
+        return direction.Equals( r.direction ) && origin.Equals( r.origin );
     }
 
     /// <summary>
@@ -151,8 +147,8 @@ public class Ray
     {
         const int prime = 73;
 
-        var result = prime + this.direction.GetHashCode();
-        result = ( prime * result ) + this.origin.GetHashCode();
+        var result = prime + direction.GetHashCode();
+        result = ( prime * result ) + origin.GetHashCode();
 
         return result;
     }

@@ -21,12 +21,8 @@ namespace LibGDXSharp.Utils.Collections;
 /// <summary>
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[PublicAPI]
 public class PredicateIterable<T> : IEnumerable< T >
 {
-    public IEnumerable< T >        Enumerable { get; set; }
-    public IPredicate< T >         Predicate  { get; set; }
-    public PredicateIterator< T >? Enumerator { get; set; } = null;
 
     /// <summary>
     /// </summary>
@@ -34,9 +30,23 @@ public class PredicateIterable<T> : IEnumerable< T >
     /// <param name="predicate"></param>
     public PredicateIterable( IEnumerable< T > enumerable, IPredicate< T > predicate )
     {
-        this.Enumerable = enumerable;
-        this.Predicate  = predicate;
+        Enumerable = enumerable;
+        Predicate  = predicate;
     }
+
+    public IEnumerable< T >        Enumerable { get; set; }
+    public IPredicate< T >         Predicate  { get; set; }
+    public PredicateIterator< T >? Enumerator { get; set; } = null;
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator< T > GetEnumerator() => Enumerable.GetEnumerator();
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     /// <summary>
     /// </summary>
@@ -44,8 +54,8 @@ public class PredicateIterable<T> : IEnumerable< T >
     /// <param name="predicate"></param>
     public void Set( IEnumerable< T > enumerable, IPredicate< T > predicate )
     {
-        this.Enumerable = enumerable;
-        this.Predicate  = predicate;
+        Enumerable = enumerable;
+        Predicate  = predicate;
     }
 
     /// <summary>
@@ -63,21 +73,5 @@ public class PredicateIterable<T> : IEnumerable< T >
         }
 
         return Enumerator;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator< T > GetEnumerator()
-    {
-        return Enumerable.GetEnumerator();
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }

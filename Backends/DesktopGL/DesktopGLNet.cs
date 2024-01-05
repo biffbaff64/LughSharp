@@ -18,7 +18,6 @@ using LibGDXSharp.Network;
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class DesktopGLNet : INet
 {
     public DesktopGLNet( DesktopGLApplicationConfiguration config )
@@ -37,55 +36,44 @@ public class DesktopGLNet : INet
     public IServerSocket? NewServerSocket( INet.Protocol protocol,
                                            string hostname,
                                            int port,
-                                           ServerSocketHints hints )
-    {
-        return null;
-    }
+                                           ServerSocketHints hints ) => null;
 
     public IServerSocket? NewServerSocket( INet.Protocol protocol,
                                            int port,
-                                           ServerSocketHints hints )
-    {
-        return null;
-    }
+                                           ServerSocketHints hints ) => null;
 
     public ISocket? NewClientSocket( INet.Protocol protocol,
                                      string host,
                                      int port,
-                                     SocketHints hints )
-    {
-        return null;
-    }
+                                     SocketHints hints ) => null;
 
-    public bool OpenUri( string uri )
-    {
-//        if ( SharedLibraryLoader.IsMac )
-//        {
-//            try
-//            {
-//                FileManager.OpenURL( uri );
-//
-//                return true;
-//            }
-//            catch ( IOException e )
-//            {
-//                return false;
-//            }
-//        }
-//        else
-//        {
-//            try
-//            {
-//                Desktop.GetDesktop().Browse( new URI( uri ) );
-//
-//                return true;
-//            }
-//            catch ( System.Exception )
-//            {
-//                return false;
-//            }
-//        }
+    public bool OpenUri( string uri ) =>
 
-        return false;
-    }
+        //        if ( SharedLibraryLoader.IsMac )
+        //        {
+        //            try
+        //            {
+        //                FileManager.OpenURL( uri );
+        //
+        //                return true;
+        //            }
+        //            catch ( IOException e )
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            try
+        //            {
+        //                Desktop.GetDesktop().Browse( new URI( uri ) );
+        //
+        //                return true;
+        //            }
+        //            catch ( System.Exception )
+        //            {
+        //                return false;
+        //            }
+        //        }
+        false;
 }

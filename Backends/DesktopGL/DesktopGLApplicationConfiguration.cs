@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
     public bool DisableAudio           { get; set; } = false;
@@ -63,7 +62,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <param name="config"></param>
     private void Set( DesktopGLApplicationConfiguration config )
     {
-        base.SetWindowConfiguration( config );
+        SetWindowConfiguration( config );
 
         DisableAudio                   = config.DisableAudio;
         AudioDeviceSimultaneousSources = config.AudioDeviceSimultaneousSources;
@@ -90,37 +89,37 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Sets the audio device configuration.
+    ///     Sets the audio device configuration.
     /// </summary>
     /// <param name="simultaniousSources">
-    /// the maximum number of sources that can be played simultaniously (default 16)
+    ///     the maximum number of sources that can be played simultaniously (default 16)
     /// </param>
     /// <param name="bufferSize">the audio device buffer size in samples (default 512)</param>
     /// <param name="bufferCount">the audio device buffer count (default 9)</param>
     public void SetAudioConfig( int simultaniousSources, int bufferSize, int bufferCount )
     {
-        this.AudioDeviceSimultaneousSources = simultaniousSources;
-        this.AudioDeviceBufferSize          = bufferSize;
-        this.AudioDeviceBufferCount         = bufferCount;
+        AudioDeviceSimultaneousSources = simultaniousSources;
+        AudioDeviceBufferSize          = bufferSize;
+        AudioDeviceBufferCount         = bufferCount;
     }
 
     /// <summary>
-    /// Sets whether to use OpenGL ES 3.0. If the given major/minor version is not
-    /// supported, the backend falls back to OpenGL ES 2.0.
+    ///     Sets whether to use OpenGL ES 3.0. If the given major/minor version is not
+    ///     supported, the backend falls back to OpenGL ES 2.0.
     /// </summary>
     /// <param name="useGL30">whether to use OpenGL ES 3.0</param>
     /// <param name="gles3MajorVersion">OpenGL ES major version, use 3 as default</param>
     /// <param name="gles3MinorVersion">OpenGL ES minor version, use 2 as default</param>
     public void UseOpenGL30( bool useGL30, int gles3MajorVersion = 3, int gles3MinorVersion = 2 )
     {
-        this.UseGL30                   = useGL30;
-        this.Gles30ContextMajorVersion = gles3MajorVersion;
-        this.Gles30ContextMinorVersion = gles3MinorVersion;
+        UseGL30                   = useGL30;
+        Gles30ContextMajorVersion = gles3MajorVersion;
+        Gles30ContextMinorVersion = gles3MinorVersion;
     }
 
     /// <summary>
-    /// Sets the bit depth of the color, depth and stencil buffer as well as
-    /// multi-sampling.
+    ///     Sets the bit depth of the color, depth and stencil buffer as well as
+    ///     multi-sampling.
     /// </summary>
     /// <param name="r">red bits (default 8)</param>
     /// <param name="g">green bits (default 8)</param>
@@ -131,33 +130,33 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <param name="samples">MSAA samples (default 0)</param>
     public void SetBackBufferConfig( int r, int g, int b, int a, int depth, int stencil, int samples )
     {
-        this.R       = r;
-        this.G       = g;
-        this.B       = b;
-        this.A       = a;
-        this.Depth   = depth;
-        this.Stencil = stencil;
-        this.Samples = samples;
+        R       = r;
+        G       = g;
+        B       = b;
+        A       = a;
+        Depth   = depth;
+        Stencil = stencil;
+        Samples = samples;
     }
 
     /// <summary>
-    /// Sets the directory where <see cref="IPreferences"/> will be stored, as well as
-    /// the file type to be used to store them. Defaults to "$USER_HOME/.prefs/"
-    /// and <see cref="FileType"/>.
-    ///</summary>
+    ///     Sets the directory where <see cref="IPreferences" /> will be stored, as well as
+    ///     the file type to be used to store them. Defaults to "$USER_HOME/.prefs/"
+    ///     and <see cref="FileType" />.
+    /// </summary>
     public void SetPreferencesConfig( string preferencesDirectory, FileType preferencesFileType )
     {
-        this.PreferencesDirectory = preferencesDirectory;
-        this.PreferencesFileType  = preferencesFileType;
+        PreferencesDirectory = preferencesDirectory;
+        PreferencesFileType  = preferencesFileType;
     }
 
     /// <summary>
-    /// Enables use of OpenGL debug message callbacks. If not supported by the core GL driver
-    /// (since GL 4.3), this uses the KHR_debug, ARB_debug_output or AMD_debug_output extension
-    /// if available. By default, debug messages with NOTIFICATION severity are disabled to
-    /// avoid log spam.
-    /// Use <see cref="DesktopGLApplication.SetGLDebugMessageControl(DesktopGLApplication.GLDebugMessageSeverity, bool)"/>
-    /// to enable or disable other severity debug levels.
+    ///     Enables use of OpenGL debug message callbacks. If not supported by the core GL driver
+    ///     (since GL 4.3), this uses the KHR_debug, ARB_debug_output or AMD_debug_output extension
+    ///     if available. By default, debug messages with NOTIFICATION severity are disabled to
+    ///     avoid log spam.
+    ///     Use <see cref="DesktopGLApplication.SetGLDebugMessageControl(DesktopGLApplication.GLDebugMessageSeverity, bool)" />
+    ///     to enable or disable other severity debug levels.
     /// </summary>
     public void EnableGLDebugOutput( bool enable, StreamWriter debugOutputStream )
     {
@@ -166,7 +165,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Gets the currently active display mode for the primary monitor.
+    ///     Gets the currently active display mode for the primary monitor.
     /// </summary>
     public static IGraphics.DisplayModeDescriptor GetDisplayMode()
     {
@@ -195,7 +194,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Return the available <see cref="IGraphics.DisplayModeDescriptor"/>s of the primary monitor
+    ///     Return the available <see cref="IGraphics.DisplayModeDescriptor" />s of the primary monitor
     /// </summary>
     public static IGraphics.DisplayModeDescriptor[] GetDisplayModes()
     {
@@ -220,8 +219,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Return the available <see cref="IGraphics.DisplayModeDescriptor"/>"s
-    /// of the given <see cref="GLFW.Monitor"/>
+    ///     Return the available <see cref="IGraphics.DisplayModeDescriptor" />"s
+    ///     of the given <see cref="GLFW.Monitor" />
     /// </summary>
     public static IGraphics.DisplayModeDescriptor[] GetDisplayModes( GLFW.Monitor monitor )
     {

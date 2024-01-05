@@ -19,7 +19,6 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 
 namespace LibGDXSharp.Assets.Loaders;
 
-[PublicAPI]
 public class SkinLoader : AsynchronousAssetLoader
 {
     public SkinLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -27,8 +26,8 @@ public class SkinLoader : AsynchronousAssetLoader
     }
 
     /// <summary>
-    /// Returns the assets this asset requires to be loaded first.
-    /// This method may be called on a thread other than the GL thread.
+    ///     Returns the assets this asset requires to be loaded first.
+    ///     This method may be called on a thread other than the GL thread.
     /// </summary>
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
@@ -49,12 +48,11 @@ public class SkinLoader : AsynchronousAssetLoader
         {
             deps.Add
                 (
-                 new AssetDescriptor
-                     (
-                      ( ( SkinParameter )parameter ).textureAtlasPath,
-                      typeof( TextureAtlas ),
-                      parameter
-                     )
+                new AssetDescriptor(
+                    ( ( SkinParameter )parameter ).textureAtlasPath,
+                    typeof( TextureAtlas ),
+                    parameter
+                    )
                 );
         }
 
@@ -69,13 +67,13 @@ public class SkinLoader : AsynchronousAssetLoader
     }
 
     public override object LoadSync( AssetManager manager,
-                                   string? fileName,
-                                   FileInfo? file,
-                                   AssetLoaderParameters parameter )
+                                     string? fileName,
+                                     FileInfo? file,
+                                     AssetLoaderParameters parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );
-        
+
         var textureAtlasPath = Path.ChangeExtension( file.FullName, ".atlas" );
 
         Dictionary< string, object >? resources = null;
@@ -109,16 +107,13 @@ public class SkinLoader : AsynchronousAssetLoader
         return skin;
     }
 
-    private static Skin NewSkin( TextureAtlas atlas )
-    {
-        return new Skin( atlas );
-    }
+    private static Skin NewSkin( TextureAtlas atlas ) => new( atlas );
 
-    [PublicAPI]
+
     public class SkinParameter : AssetLoaderParameters
     {
-        public readonly string?                       textureAtlasPath;
         public readonly Dictionary< string, object >? resources;
+        public readonly string?                       textureAtlasPath;
 
         public SkinParameter() : this( null, null )
         {

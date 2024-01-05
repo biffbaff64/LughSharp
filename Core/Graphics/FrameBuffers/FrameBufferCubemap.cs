@@ -16,25 +16,24 @@
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
-[PublicAPI]
 public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 {
-    /// <summary>
-    /// the zero-based index of the active side 
-    /// </summary>
-    private int _currentSide;
 
     /// <summary>
-    /// cubemap sides cache
+    ///     cubemap sides cache
     /// </summary>
     private readonly static Cubemap.CubemapSide[] CubemapSides = Cubemap.CubemapSide.Values();
+    /// <summary>
+    ///     the zero-based index of the active side
+    /// </summary>
+    private int _currentSide;
 
     public FrameBufferCubemap()
     {
     }
 
     /// <summary>
-    /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
+    ///     Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder"></param>
     public FrameBufferCubemap( FrameBufferCubemapBuilder bufferBuilder )
@@ -43,25 +42,28 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     }
 
     /// <summary>
-    /// Creates a new FrameBuffer having the given dimensions and potentially
-    /// a depth and a stencil buffer attached.
+    ///     Creates a new FrameBuffer having the given dimensions and potentially
+    ///     a depth and a stencil buffer attached.
     /// </summary>
     /// <param name="format">
-    /// the format of the color buffer; according to the OpenGL ES 2.0 spec,
-    /// only RGB565, RGBA4444 and RGB5_A1 are color-renderable
+    ///     the format of the color buffer; according to the OpenGL ES 2.0 spec,
+    ///     only RGB565, RGBA4444 and RGB5_A1 are color-renderable
     /// </param>
     /// <param name="width"> the width of the cubemap in pixels </param>
     /// <param name="height"> the height of the cubemap in pixels </param>
     /// <param name="hasDepth"> whether to attach a depth buffer </param>
     /// <param name="hasStencil"> whether to attach a stencil buffer </param>
     /// <exception cref="GdxRuntimeException">
-    /// Thrown if the FrameBuffer could not be created
+    ///     Thrown if the FrameBuffer could not be created
     /// </exception>
-    public FrameBufferCubemap( Pixmap.Format format, int width,
-                               int height, bool hasDepth, bool hasStencil = false )
+    public FrameBufferCubemap( Pixmap.Format format,
+                               int width,
+                               int height,
+                               bool hasDepth,
+                               bool hasStencil = false )
     {
-        this.BufferBuilder = new FrameBufferBuilder( width, height );
-        
+        BufferBuilder = new FrameBufferBuilder( width, height );
+
         FrameBufferCubemapBuilder frameBufferBuilder = new( width, height );
 
         frameBufferBuilder.AddBasicColorTextureAttachment( format );
@@ -76,20 +78,21 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
             frameBufferBuilder.AddBasicStencilRenderBuffer();
         }
 
-        this.BufferBuilder = frameBufferBuilder;
+        BufferBuilder = frameBufferBuilder;
 
         Build();
     }
 
     protected override Cubemap CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
-        GLOnlyTextureData data = new
-                (
-                BufferBuilder.Width, BufferBuilder.Height, 0,
-                attachmentSpec.InternalFormat,
-                attachmentSpec.Format,
-                attachmentSpec.Type
-                );
+        GLOnlyTextureData data = new(
+            BufferBuilder.Width,
+            BufferBuilder.Height,
+            0,
+            attachmentSpec.InternalFormat,
+            attachmentSpec.Format,
+            attachmentSpec.Type
+            );
 
         Cubemap result = new( data, data, data, data, data, data );
 
@@ -99,10 +102,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         return result;
     }
 
-    protected override void DisposeColorTexture( Cubemap colorTexture )
-    {
-        colorTexture.Dispose();
-    }
+    protected override void DisposeColorTexture( Cubemap colorTexture ) => colorTexture.Dispose();
 
     protected override void AttachFrameBufferColorTexture( Cubemap texture )
     {
@@ -112,32 +112,35 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         foreach ( Cubemap.CubemapSide side in sides )
         {
-            Gdx.GL20.GLFramebufferTexture2D
-                (
+            Gdx.GL20.GLFramebufferTexture2D(
                 IGL20.GL_FRAMEBUFFER,
                 IGL20.GL_COLOR_ATTACHMENT0,
                 side.GLEnum,
-                glHandle, 0
+                glHandle,
+                0
                 );
         }
     }
 
     /// <summary>
-    /// Makes the frame buffer current so everything gets drawn to it,
-    /// must be followed by call to either <see cref="NextSide()"/> or
-    /// <see cref="BindSide(Cubemap.CubemapSide)"/> to activate the side
-    /// to render onto.
+    ///     Makes the frame buffer current so everything gets drawn to it,
+    ///     must be followed by call to either <see cref="NextSide()" /> or
+    ///     <see cref="BindSide(Cubemap.CubemapSide)" /> to activate the side
+    ///     to render onto.
     /// </summary>
     protected override void Bind()
     {
         _currentSide = -1;
-        
+
         base.Bind();
     }
 
     /// Bind the next side of cubemap and return false if no more side.
-    /// Should be called in between a call to <see cref="GLFrameBuffer{T}.Begin"/>
-    /// and <see cref="GLFrameBuffer{T}.End()"/> to cycle to each side of the
+    /// Should be called in between a call to
+    /// <see cref="GLFrameBuffer{T}.Begin" />
+    /// and
+    /// <see cref="GLFrameBuffer{T}.End()" />
+    /// to cycle to each side of the
     /// cubemap to render on.
     public bool NextSide()
     {
@@ -145,40 +148,40 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         {
             throw new GdxRuntimeException( "No remaining sides." );
         }
-        else if ( _currentSide == 5 )
+
+        if ( _currentSide == 5 )
         {
             return false;
         }
 
         _currentSide++;
-        
+
         BindSide( GetSide() );
 
         return true;
     }
 
     /// <summary>
-    /// Bind the side, making it active to render on. Should be called
-    /// in between a call to <see cref="GLFrameBuffer{T}.Begin()"/> and
-    /// <see cref="GLFrameBuffer{T}.End()"/>.
+    ///     Bind the side, making it active to render on. Should be called
+    ///     in between a call to <see cref="GLFrameBuffer{T}.Begin()" /> and
+    ///     <see cref="GLFrameBuffer{T}.End()" />.
     /// </summary>
     /// <param name="side"> The side to bind </param>
     protected void BindSide( Cubemap.CubemapSide? side )
     {
         ArgumentNullException.ThrowIfNull( side );
-        
-        Gdx.GL20.GLFramebufferTexture2D
-                (
-                IGL20.GL_FRAMEBUFFER, IGL20.GL_COLOR_ATTACHMENT0, side.GLEnum,
-                GetColorBufferTexture().GetTextureObjectHandle(), 0
-                );
+
+        Gdx.GL20.GLFramebufferTexture2D(
+            IGL20.GL_FRAMEBUFFER,
+            IGL20.GL_COLOR_ATTACHMENT0,
+            side.GLEnum,
+            GetColorBufferTexture().GetTextureObjectHandle(),
+            0
+            );
     }
 
     /// <summary>
-    /// Get the currently bound side.
+    ///     Get the currently bound side.
     /// </summary>
-    public Cubemap.CubemapSide? GetSide()
-    {
-        return _currentSide < 0 ? null : CubemapSides[ _currentSide ];
-    }
+    public Cubemap.CubemapSide? GetSide() => _currentSide < 0 ? null : CubemapSides[ _currentSide ];
 }

@@ -21,13 +21,13 @@ using LibGDXSharp.Audio.MP3Sharp.Support;
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// MP3SharpException is the base class for all API-level
-/// exceptions thrown by MP3Sharp. To facilitate conversion and
-/// common handling of exceptions from other domains, the class
-/// can delegate some functionality to a contained Throwable instance.
+///     MP3SharpException is the base class for all API-level
+///     exceptions thrown by MP3Sharp. To facilitate conversion and
+///     common handling of exceptions from other domains, the class
+///     can delegate some functionality to a contained Throwable instance.
 /// </summary>
 [PublicAPI, Serializable]
-public class Mp3SharpException : System.Exception
+public class Mp3SharpException : Exception
 {
     public Mp3SharpException()
     {
@@ -38,7 +38,7 @@ public class Mp3SharpException : System.Exception
     {
     }
 
-    public Mp3SharpException( string message, System.Exception? inner )
+    public Mp3SharpException( string message, Exception? inner )
         : base( message, inner )
     {
     }
@@ -48,10 +48,7 @@ public class Mp3SharpException : System.Exception
     {
     }
 
-    public void PrintStackTrace()
-    {
-        SupportClass.WriteStackTrace( this, Console.Error );
-    }
+    public void PrintStackTrace() => SupportClass.WriteStackTrace( this, Console.Error );
 
     public void PrintStackTrace( StreamWriter ps )
     {

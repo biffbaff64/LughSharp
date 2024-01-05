@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Graphics.G2D;
 
-[PublicAPI]
 public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region >
 {
     public ComparatorAnonymousInnerClass( TextureAtlasData textureAtlasData )
@@ -24,8 +23,8 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
     }
 
     /// <summary>
-    /// Compares two objects and returns a value indicating whether one is
-    /// less than, equal to, or greater than the other.
+    ///     Compares two objects and returns a value indicating whether one is
+    ///     less than, equal to, or greater than the other.
     /// </summary>
     /// <param name="region1">The first object to compare.</param>
     /// <param name="region2">The second object to compare.</param>
@@ -36,7 +35,7 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
         {
             throw new GdxRuntimeException( "Cannot compare null region" );
         }
-        
+
         var i1 = region1.Index;
         var i2 = region2.Index;
 
@@ -67,10 +66,7 @@ public partial record TextureAtlasData
 
     public class PageFieldFormat : IField< Page >
     {
-        public void Parse( Page page, params string[] entry )
-        {
-            page.Format = Pixmap.FormatFromString( entry[ 1 ] );
-        }
+        public void Parse( Page page, params string[] entry ) => page.Format = Pixmap.FormatFromString( entry[ 1 ] );
     }
 
     public class PageFieldFilter : IField< Page >
@@ -101,16 +97,15 @@ public partial record TextureAtlasData
 
     public class PageFieldPma : IField< Page >
     {
-        public void Parse( Page page, params string[] entry )
-        {
+        public void Parse( Page page, params string[] entry ) =>
+
             // Note: I'm not sure what 'Pma' stands for. It's called that
             // in Java LibGDX so it's been carried over. Once I've figured
             // it out I'll rename it to something more meaningful.
             page.Pma = entry[ 1 ].Equals( "true" );
-        }
     }
 
-    public class RegionFieldXY : IField< TextureAtlasData.Region >
+    public class RegionFieldXY : IField< Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -119,7 +114,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldSize : IField< TextureAtlasData.Region >
+    public class RegionFieldSize : IField< Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -128,7 +123,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldBounds : IField< TextureAtlasData.Region >
+    public class RegionFieldBounds : IField< Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -139,7 +134,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldOffset : IField< TextureAtlasData.Region >
+    public class RegionFieldOffset : IField< Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -148,7 +143,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldOrig : IField< TextureAtlasData.Region >
+    public class RegionFieldOrig : IField< Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -157,7 +152,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldOffsets : IField< TextureAtlasData.Region >
+    public class RegionFieldOffsets : IField< Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -168,7 +163,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldRotate : IField< TextureAtlasData.Region >
+    public class RegionFieldRotate : IField< Region >
     {
         public void Parse( Region region, params string[] entry )
         {
@@ -187,7 +182,7 @@ public partial record TextureAtlasData
         }
     }
 
-    public class RegionFieldIndex : IField< TextureAtlasData.Region >
+    public class RegionFieldIndex : IField< Region >
     {
         public void Parse( Region region, params string[] entry )
         {

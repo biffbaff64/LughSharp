@@ -19,9 +19,8 @@ using LibGDXSharp.Audio.MP3Sharp.Support;
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// Implements a Huffman decoder.
+///     Implements a Huffman decoder.
 /// </summary>
-[PublicAPI]
 public class Huffman
 {
     private const           int     MXOFF   = 250;
@@ -671,23 +670,23 @@ public class Huffman
         new[] { 0, 12 }, new[] { 0, 13 }, new[] { 2, 1 }, new[] { 0, 14 }, new[] { 0, 15 }
     };
 
-    private static Huffman[] _huffmanTable = null!; //Simulate extern struct
+    private static   Huffman[] _huffmanTable = null!; //Simulate extern struct
+    private readonly int[]     _hlen;                 //pointer to array[xlen][ylen]
 
-    private readonly int     _linbits;    //number of linbits
-    private readonly char    _tablename0; //string, containing table_description
-    private readonly char    _tablename1; //string, containing table_description
-    private readonly int     _treelen;    //length of decoder tree
+    private readonly int      _linbits;    //number of linbits
+    private readonly int      _linmax;     //max number to be stored in linbits
+    private readonly int      _refRenamed; //a positive value indicates a reference
+    private readonly int[]    _table;      //pointer to array[xlen][ylen]
+    private readonly char     _tablename0; //string, containing table_description
+    private readonly char     _tablename1; //string, containing table_description
+    private readonly char     _tablename2; //string, containing table_description
+    private readonly int      _treelen;    //length of decoder tree
     private readonly int[][]? _val;        //decoder tree
-    private readonly int     _xlen;       //max. x-index+
-    private readonly int     _ylen;       //max. y-index+
-    private readonly int[]   _hlen;       //pointer to array[xlen][ylen]
-    private readonly int     _linmax;     //max number to be stored in linbits
-    private readonly int     _refRenamed; //a positive value indicates a reference
-    private readonly int[]   _table;      //pointer to array[xlen][ylen]
-    private readonly char    _tablename2; //string, containing table_description
+    private readonly int      _xlen;       //max. x-index+
+    private readonly int      _ylen;       //max. y-index+
 
     /// <summary>
-    /// Computes all Huffman Tables.
+    ///     Computes all Huffman Tables.
     /// </summary>
     private Huffman( string s,
                      int xlen,
@@ -715,8 +714,8 @@ public class Huffman
     }
 
     /// <summary>
-    /// Do the huffman-decoding.
-    /// NOTE: for counta, countb -the 4 bit value is returned in y, discard x.
+    ///     Do the huffman-decoding.
+    ///     NOTE: for counta, countb -the 4 bit value is returned in y, discard x.
     /// </summary>
     public static int Decode( Huffman h, int[] x, int[] y, int[] v, int[] w, BitReserve br )
     {
@@ -749,7 +748,7 @@ public class Huffman
         int bitIndex = 0;
 
         int bits[] = bitbuf;*/
-        
+
         do
         {
             if ( h._val[ point ][ 0 ] == 0 )
@@ -807,9 +806,9 @@ public class Huffman
         // System.out.println(h.tablename);
         if ( h is { _tablename0: '3', _tablename1: '1' or '3' } )
         {
-            v[ 0 ] = ( y[ 0 ] >> 3 ) & 1;
-            w[ 0 ] = ( y[ 0 ] >> 2 ) & 1;
-            x[ 0 ] = ( y[ 0 ] >> 1 ) & 1;
+            v[ 0 ] =  ( y[ 0 ] >> 3 ) & 1;
+            w[ 0 ] =  ( y[ 0 ] >> 2 ) & 1;
+            x[ 0 ] =  ( y[ 0 ] >> 1 ) & 1;
             y[ 0 ] &= 1;
 
             /* v, w, x and y are reversed in the bitstream.

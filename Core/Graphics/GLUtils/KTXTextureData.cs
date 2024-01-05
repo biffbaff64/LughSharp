@@ -21,46 +21,64 @@ using LibGDXSharp.Files.Buffers;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// A KTXTextureData holds the data from a KTX (or zipped KTX file, aka ZKTX).
-/// That is to say an OpenGL ready texture data. The KTX file format is just a
-/// thin wrapper around OpenGL textures and therefore is compatible with most
-/// OpenGL texture capabilities like texture compression, cubemapping, mipmapping,
-/// etc.
-/// <para>
-/// For example, KTXTextureData can be used for <see cref="Texture"/> or
-/// <see cref="Cubemap"/>.
-/// </para>
+///     A KTXTextureData holds the data from a KTX (or zipped KTX file, aka ZKTX).
+///     That is to say an OpenGL ready texture data. The KTX file format is just a
+///     thin wrapper around OpenGL textures and therefore is compatible with most
+///     OpenGL texture capabilities like texture compression, cubemapping, mipmapping,
+///     etc.
+///     <para>
+///         For example, KTXTextureData can be used for <see cref="Texture" /> or
+///         <see cref="Cubemap" />.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class KtxTextureData : ITextureData, ICubemapData
 {
-    // The file we are loading
-    private FileInfo? _file;
 
-    // KTX header (only available after preparing)
-    private int _glType;
-    private int _glTypeSize;
-    private int _glFormat;
-    private int _glInternalFormat;
-    private int _glBaseInternalFormat;
-    private int _pixelWidth  = -1;
-    private int _pixelHeight = -1;
-    private int _pixelDepth  = -1;
-    private int _numberOfArrayElements;
-    private int _numberOfFaces;
-    private int _numberOfMipmapLevels;
-    private int _imagePos;
+    private const int GL_TEXTURE_1D           = 0x1234;
+    private const int GL_TEXTURE_3D           = 0x1234;
+    private const int GL_TEXTURE_1D_ARRAY_EXT = 0x1234;
+    private const int GL_TEXTURE_2D_ARRAY_EXT = 0x1234;
 
     // KTX image data (only available after preparing and before consuming)
     private ByteBuffer? _compressedData;
 
+    // The file we are loading
+    private readonly FileInfo? _file;
+    private          int       _glBaseInternalFormat;
+    private          int       _glFormat;
+    private          int       _glInternalFormat;
+
+    // KTX header (only available after preparing)
+    private int _glType;
+    private int _glTypeSize;
+    private int _imagePos;
+    private int _numberOfArrayElements;
+    private int _numberOfFaces;
+    private int _numberOfMipmapLevels;
+    private int _pixelDepth  = -1;
+    private int _pixelHeight = -1;
+    private int _pixelWidth  = -1;
+
     public KtxTextureData( FileInfo? file, bool useMipMaps )
     {
-        this._file      = file;
-        this.UseMipMaps = useMipMaps;
+        _file      = file;
+        UseMipMaps = useMipMaps;
     }
 
-    /// <returns> the <see cref="ITextureData.TextureDataType"/></returns>
+    /// <summary>
+    ///     Uploads the pixel data for the 6 faces of the cube to the OpenGL ES texture.
+    ///     The caller must bind an OpenGL ES texture. A call to <see cref="ICubemapData.Prepare" />
+    ///     must preceed a call to this method. Any internal data structures created
+    ///     in <see cref="ICubemapData.Prepare" /> should be disposed of here.
+    /// </summary>
+    public void ConsumeCubemapData() => ConsumeCustomData( IGL20.GL_TEXTURE_CUBE_MAP );
+
+    /// <summary>
+    ///     Returns true if this implementation can cope with a EGL context loss.
+    /// </summary>
+    public bool Managed { get; set; }
+
+    /// <returns> the <see cref="ITextureData.TextureDataType" /></returns>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
     /// <returns> whether the TextureData is prepared or not.</returns>
@@ -80,9 +98,9 @@ public class KtxTextureData : ITextureData, ICubemapData
 //    }
 
     /// <summary>
-    /// Prepares the TextureData for a call to <see cref="ICubemapData.ConsumeCubemapData"/>.
-    /// This method can be called from a non OpenGL thread and should thus not
-    /// interact with OpenGL. 
+    ///     Prepares the TextureData for a call to <see cref="ICubemapData.ConsumeCubemapData" />.
+    ///     This method can be called from a non OpenGL thread and should thus not
+    ///     interact with OpenGL.
     /// </summary>
     public void Prepare()
     {
@@ -122,7 +140,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                 _compressedData.Position = 0;
                 _compressedData.Limit    = _compressedData.Capacity;
             }
-            catch ( System.Exception e )
+            catch ( Exception e )
             {
                 throw new GdxRuntimeException( $"Couldn't load zktx file '{_file}'", e );
             }
@@ -163,9 +181,9 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             _compressedData.Order
                 (
-                 _compressedData.Order() == ByteOrder.BigEndian
-                     ? ByteOrder.LittleEndian
-                     : ByteOrder.BigEndian
+                _compressedData.Order() == ByteOrder.BigEndian
+                    ? ByteOrder.LittleEndian
+                    : ByteOrder.BigEndian
                 );
         }
 
@@ -214,49 +232,30 @@ public class KtxTextureData : ITextureData, ICubemapData
     }
 
     /// <summary>
-    /// Returns the <see cref="Pixmap"/> for upload by Texture.
-    /// <para>
-    /// A call to <see cref="ITextureData.Prepare"/> must precede a call to this method. Any
-    /// internal data structures created in <see cref="ITextureData.Prepare"/> should be
-    /// disposed of here.
-    /// </para>
+    ///     Returns the <see cref="Pixmap" /> for upload by Texture.
+    ///     <para>
+    ///         A call to <see cref="ITextureData.Prepare" /> must precede a call to this method. Any
+    ///         internal data structures created in <see cref="ITextureData.Prepare" /> should be
+    ///         disposed of here.
+    ///     </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
-    public Pixmap ConsumePixmap()
-    {
-        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
-    }
+    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
 
     /// <returns>
-    /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
-    /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
+    ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
+    ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
     /// </returns>
     public bool DisposePixmap() => false;
 
     /// <summary>
-    /// Uploads the pixel data for the 6 faces of the cube to the OpenGL ES texture.
-    /// The caller must bind an OpenGL ES texture. A call to <see cref="ICubemapData.Prepare"/>
-    /// must preceed a call to this method. Any internal data structures created
-    /// in <see cref="ICubemapData.Prepare"/> should be disposed of here. 
-    /// </summary>
-    public void ConsumeCubemapData()
-    {
-        ConsumeCustomData( IGL20.GL_TEXTURE_CUBE_MAP );
-    }
-
-    private const int GL_TEXTURE_1D           = 0x1234;
-    private const int GL_TEXTURE_3D           = 0x1234;
-    private const int GL_TEXTURE_1D_ARRAY_EXT = 0x1234;
-    private const int GL_TEXTURE_2D_ARRAY_EXT = 0x1234;
-
-    /// <summary>
-    /// Uploads the pixel data to the OpenGL ES texture. The caller must bind an
-    /// OpenGL ES texture. A call to <see cref="ITextureData.Prepare"/> must preceed a call
-    /// to this method.
-    /// <para>
-    /// Any internal data structures created in <see cref="ITextureData.Prepare"/> should be
-    /// disposed of here. 
-    /// </para>
+    ///     Uploads the pixel data to the OpenGL ES texture. The caller must bind an
+    ///     OpenGL ES texture. A call to <see cref="ITextureData.Prepare" /> must preceed a call
+    ///     to this method.
+    ///     <para>
+    ///         Any internal data structures created in <see cref="ITextureData.Prepare" /> should be
+    ///         disposed of here.
+    ///     </para>
     /// </summary>
     public void ConsumeCustomData( int target )
     {
@@ -346,8 +345,8 @@ public class KtxTextureData : ITextureData, ICubemapData
             {
                 throw new GdxRuntimeException
                     (
-                     "You must specify either GL_TEXTURE_CUBE_MAP to bind all 6 faces of the"
-                   + "cube or the requested face GL_TEXTURE_CUBE_MAP_POSITIVE_X and followings."
+                    "You must specify either GL_TEXTURE_CUBE_MAP to bind all 6 faces of the"
+                  + "cube or the requested face GL_TEXTURE_CUBE_MAP_POSITIVE_X and followings."
                     );
             }
 
@@ -369,10 +368,10 @@ public class KtxTextureData : ITextureData, ICubemapData
             {
                 throw new GdxRuntimeException
                     (
-                     "Invalid target requested : 0x"
-                   + target.ToString( "X" )
-                   + ", expecting : 0x"
-                   + glTarget.ToString( "X" )
+                    "Invalid target requested : 0x"
+                  + target.ToString( "X" )
+                  + ", expecting : 0x"
+                  + glTarget.ToString( "X" )
                     );
             }
         }
@@ -387,15 +386,15 @@ public class KtxTextureData : ITextureData, ICubemapData
             Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 4 );
         }
 
-        var glInternalFormat = this._glInternalFormat;
-        var glFormat         = this._glFormat;
+        var glInternalFormat = _glInternalFormat;
+        var glFormat         = _glFormat;
         var pos              = _imagePos;
 
         for ( var level = 0; level < _numberOfMipmapLevels; level++ )
         {
-            var pixelWidth  = Math.Max( 1, this._pixelWidth >> level );
-            var pixelHeight = Math.Max( 1, this._pixelHeight >> level );
-            var pixelDepth  = Math.Max( 1, this._pixelDepth >> level );
+            var pixelWidth  = Math.Max( 1, _pixelWidth >> level );
+            var pixelHeight = Math.Max( 1, _pixelHeight >> level );
+            var pixelDepth  = Math.Max( 1, _pixelDepth >> level );
 
             _compressedData.Position = pos;
 
@@ -442,50 +441,61 @@ public class KtxTextureData : ITextureData, ICubemapData
                                 var    etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0 );
                                 Pixmap pixmap  = ETC1.DecodeImage( etcData, Pixmap.Format.RGB888 );
 
-                                Gdx.GL.GLTexImage2D
-                                    (
-                                     target + face,
-                                     level,
-                                     pixmap.GLInternalFormat,
-                                     pixmap.Width, pixmap.Height,
-                                     0,
-                                     pixmap.GLFormat, pixmap.GLType, pixmap.Pixels
+                                Gdx.GL.GLTexImage2D(
+                                    target + face,
+                                    level,
+                                    pixmap.GLInternalFormat,
+                                    pixmap.Width,
+                                    pixmap.Height,
+                                    0,
+                                    pixmap.GLFormat,
+                                    pixmap.GLType,
+                                    pixmap.Pixels
                                     );
 
                                 pixmap.Dispose();
                             }
                             else
                             {
-                                Gdx.GL.GLCompressedTexImage2D
-                                    (
-                                     target + face, level, glInternalFormat, pixelWidth, pixelHeight, 0,
-                                     faceLodSize, data
+                                Gdx.GL.GLCompressedTexImage2D(
+                                    target + face,
+                                    level,
+                                    glInternalFormat,
+                                    pixelWidth,
+                                    pixelHeight,
+                                    0,
+                                    faceLodSize,
+                                    data
                                     );
                             }
                         }
                         else
                         {
                             // Try to load (no software unpacking fallback)
-                            Gdx.GL.GLCompressedTexImage2D
-                                (
-                                 target + face, level, glInternalFormat, pixelWidth, pixelHeight, 0,
-                                 faceLodSize, data
+                            Gdx.GL.GLCompressedTexImage2D(
+                                target + face,
+                                level,
+                                glInternalFormat,
+                                pixelWidth,
+                                pixelHeight,
+                                0,
+                                faceLodSize,
+                                data
                                 );
                         }
                     }
                     else
                     {
-                        Gdx.GL.GLTexImage2D
-                            (
-                             target + face,
-                             level,
-                             glInternalFormat,
-                             pixelWidth,
-                             pixelHeight,
-                             0,
-                             glFormat,
-                             _glType,
-                             data
+                        Gdx.GL.GLTexImage2D(
+                            target + face,
+                            level,
+                            glInternalFormat,
+                            pixelWidth,
+                            pixelHeight,
+                            0,
+                            glFormat,
+                            _glType,
+                            data
                             );
                     }
                 }
@@ -526,12 +536,7 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// <returns> the height of the pixel data </returns>
     public int Height { get; set; }
 
-    /// <summary>
-    /// Returns true if this implementation can cope with a EGL context loss.
-    /// </summary>
-    public bool Managed { get; set; }
-
-    /// <returns> the <see cref="Pixmap.Format"/> of the pixel data </returns>
+    /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
     public Pixmap.Format GetFormat() => Pixmap.Format.Alpha;
 
     /// <returns> whether to generate mipmaps or not. </returns>

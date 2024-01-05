@@ -19,30 +19,39 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-///<summary>
-/// A group that lays out its children side by side horizontally, with optional
-/// wrapping. This can be easier than using <see cref="Table"/> when actors need
-/// to be inserted into or removed from the middle of the group.
-/// <para>
-/// <see cref="Group.Children"/> can be sorted to change the order of the actors
-/// <see cref="Actor.SetZIndex(int)"/>. <see cref="Invalidate()"/> must be called
-/// after changing the children order.
-/// </para>
-/// <para>
-/// The preferred width is the sum of the children's preferred widths plus spacing.
-/// The preferred height is the largest preferred height of any child. The preferred
-/// size is slightly different when <see cref="Wrap"/>" is enabled. The min size
-/// is the preferred size and the max size is 0.
-/// </para>
-/// <para>
-/// Widgets are sized using their <see cref="ILayout.PrefWidth"/>", so widgets
-/// which return 0 as their preferred width will be given a width of 0 (eg, a label
-/// with {@link Label#setWrap(bool) word wrap} enabled).
-/// </para>
+/// <summary>
+///     A group that lays out its children side by side horizontally, with optional
+///     wrapping. This can be easier than using <see cref="Table" /> when actors need
+///     to be inserted into or removed from the middle of the group.
+///     <para>
+///         <see cref="Group.Children" /> can be sorted to change the order of the actors
+///         <see cref="Actor.SetZIndex(int)" />. <see cref="Invalidate()" /> must be called
+///         after changing the children order.
+///     </para>
+///     <para>
+///         The preferred width is the sum of the children's preferred widths plus spacing.
+///         The preferred height is the largest preferred height of any child. The preferred
+///         size is slightly different when <see cref="Wrap" />" is enabled. The min size
+///         is the preferred size and the max size is 0.
+///     </para>
+///     <para>
+///         Widgets are sized using their <see cref="ILayout.PrefWidth" />", so widgets
+///         which return 0 as their preferred width will be given a width of 0 (eg, a label
+///         with {@link Label#setWrap(bool) word wrap} enabled).
+///     </para>
 /// </summary>
-[PublicAPI]
 public class HorizontalGroup : WidgetGroup
 {
+    private float _lastPrefHeight;
+    private float _prefHeight;
+
+    private float          _prefWidth;
+    private int            _rowAlign;
+    private List< float >? _rowSizes; // row width, row height, ...
+    private bool           _sizeInvalid = true;
+
+    public HorizontalGroup() => Touchable = Touchable.ChildrenOnly;
+
     public bool  Wrap      { get; set; }
     public float Fill      { get; set; }
     public bool  Expand    { get; set; }
@@ -53,40 +62,61 @@ public class HorizontalGroup : WidgetGroup
     public float PadRight  { get; set; }
 
     /// <summary>
-    /// If true, the children will be displayed last to first.
+    ///     If true, the children will be displayed last to first.
     /// </summary>
     public bool Reverse { get; set; }
 
     /// <summary>
-    /// If true, rows will wrap above the previous rows.
+    ///     If true, rows will wrap above the previous rows.
     /// </summary>
     public bool WrapReverse { get; set; }
 
     /// <summary>
-    /// The horizontal space between children.
+    ///     The horizontal space between children.
     /// </summary>
     public float Space { get; set; }
 
     /// <summary>
-    /// The vertical space between rows when wrap is enabled.
+    ///     The vertical space between rows when wrap is enabled.
     /// </summary>
     public float WrapSpace { get; set; }
 
     /// <summary>
-    /// If true (the default), positions and sizes are rounded to integers.
+    ///     If true (the default), positions and sizes are rounded to integers.
     /// </summary>
     public bool Round { get; set; } = true;
 
-    private float          _prefWidth;
-    private float          _prefHeight;
-    private float          _lastPrefHeight;
-    private bool           _sizeInvalid = true;
-    private List< float >? _rowSizes; // row width, row height, ...
-    private int            _rowAlign;
-
-    public HorizontalGroup()
+    public override float PrefWidth
     {
-        Touchable = Touchable.ChildrenOnly;
+        get
+        {
+            if ( Wrap )
+            {
+                return 0;
+            }
+
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
+
+            return _prefWidth;
+        }
+        set => _prefWidth = value;
+    }
+
+    public override float PrefHeight
+    {
+        get
+        {
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
+
+            return _prefHeight;
+        }
+        set => _prefHeight = value;
     }
 
     /// <inheritdoc />
@@ -118,10 +148,10 @@ public class HorizontalGroup : WidgetGroup
                 _rowSizes.Clear();
             }
 
-            List< float > rowSizes = this._rowSizes;
+            List< float > rowSizes = _rowSizes;
 
-            var space      = this.Space;
-            var wrapSpace  = this.WrapSpace;
+            var space      = Space;
+            var wrapSpace  = WrapSpace;
             var pad        = PadLeft + PadRight;
             var groupWidth = Width - pad;
             var x          = 0f;
@@ -139,7 +169,7 @@ public class HorizontalGroup : WidgetGroup
 
             for ( ; i != n; i += incr )
             {
-                Actor child = children.Get( i );
+                Actor child = children.GetAt( i );
 
                 float width;
                 float height;
@@ -203,7 +233,7 @@ public class HorizontalGroup : WidgetGroup
 
             for ( var i = 0; i < n; i++ )
             {
-                Actor child = children.Get( i );
+                Actor child = children.GetAt( i );
 
                 // ReSharper disable once MergeCastWithTypeCheck
                 if ( child is ILayout )
@@ -245,11 +275,11 @@ public class HorizontalGroup : WidgetGroup
             return;
         }
 
-        var round     = this.Round;
-        var align     = this.Alignment;
-        var space     = this.Space;
-        var padBottom = this.PadBottom;
-        var fill      = this.Fill;
+        var round     = Round;
+        var align     = Alignment;
+        var space     = Space;
+        var padBottom = PadBottom;
+        var fill      = Fill;
         var rowHeight = ( Expand ? Height : _prefHeight ) - PadTop - padBottom;
         var x         = PadLeft;
 
@@ -294,7 +324,7 @@ public class HorizontalGroup : WidgetGroup
 
         for ( ; i != n; i += incr )
         {
-            Actor child = children.Get( i );
+            Actor child = children.GetAt( i );
 
             float    width;
             float    height;
@@ -374,11 +404,11 @@ public class HorizontalGroup : WidgetGroup
             InvalidateHierarchy();
         }
 
-        var   align      = this.Alignment;
-        var   round      = this.Round;
-        var   space      = this.Space;
-        var   fill       = this.Fill;
-        var   wrapSpace  = this.WrapSpace;
+        var   align      = Alignment;
+        var   round      = Round;
+        var   space      = Space;
+        var   fill       = Fill;
+        var   wrapSpace  = WrapSpace;
         var   maxWidth   = _prefWidth - PadLeft - PadRight;
         var   rowY       = prefHeight - PadTop;
         var   groupWidth = Width;
@@ -417,9 +447,9 @@ public class HorizontalGroup : WidgetGroup
         }
 
         groupWidth -= PadRight;
-        align      =  this._rowAlign;
+        align      =  _rowAlign;
 
-        List< float >?         rowSizes = this._rowSizes;
+        List< float >?         rowSizes = _rowSizes;
         SnapshotArray< Actor > children = Children;
 
         var i    = 0;
@@ -435,7 +465,7 @@ public class HorizontalGroup : WidgetGroup
 
         for ( var r = 0; i != n; i += incr )
         {
-            Actor    child  = children.Get( i );
+            Actor    child  = children.GetAt( i );
             ILayout? layout = null;
 
             float width;
@@ -537,263 +567,52 @@ public class HorizontalGroup : WidgetGroup
     }
 
     /// <summary>
-    /// If false, the widgets are arranged in a single row and the preferred
-    /// width is the widget widths plus spacing.
-    /// <para>
-    /// If true, the widgets will wrap using the width of the horizontal group.
-    /// The preferred width of the group will be 0 as it is expected that something
-    /// external will set the width of the group. Widgets are sized to their
-    /// preferred width unless it is larger than the group's width, in which case
-    /// they are sized to the group's width but not less than their minimum width.
-    /// </para>
-    /// <para>
-    /// Default is false.
-    /// </para>
-    /// <para>
-    /// When wrap is enabled, the group's preferred height depends on the width of
-    /// the group. In some cases the parent of the group will need to layout twice:
-    /// once to set the width of the group and a second time to adjust to the group's
-    /// new preferred height.
-    /// </para>
+    ///     If false, the widgets are arranged in a single row and the preferred
+    ///     width is the widget widths plus spacing.
+    ///     <para>
+    ///         If true, the widgets will wrap using the width of the horizontal group.
+    ///         The preferred width of the group will be 0 as it is expected that something
+    ///         external will set the width of the group. Widgets are sized to their
+    ///         preferred width unless it is larger than the group's width, in which case
+    ///         they are sized to the group's width but not less than their minimum width.
+    ///     </para>
+    ///     <para>
+    ///         Default is false.
+    ///     </para>
+    ///     <para>
+    ///         When wrap is enabled, the group's preferred height depends on the width of
+    ///         the group. In some cases the parent of the group will need to layout twice:
+    ///         once to set the width of the group and a second time to adjust to the group's
+    ///         new preferred height.
+    ///     </para>
     /// </summary>
     public HorizontalGroup SetWrap( bool wrap = true )
     {
-        this.Wrap = wrap;
+        Wrap = wrap;
 
         return this;
     }
 
     // ------------------------------------------------------------------------
 
-    #region padding
-
-    /// <summary>
-    /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
-    /// </summary>
-    public HorizontalGroup SetPadding( float pad )
-    {
-        PadTop    = pad;
-        PadLeft   = pad;
-        PadBottom = pad;
-        PadRight  = pad;
-
-        return this;
-    }
-
-    public HorizontalGroup SetPadding( float top, float left, float bottom, float right )
-    {
-        PadTop    = top;
-        PadLeft   = left;
-        PadBottom = bottom;
-        PadRight  = right;
-
-        return this;
-    }
-
-    public HorizontalGroup SetPadTop( float padTop )
-    {
-        this.PadTop = padTop;
-
-        return this;
-    }
-
-    public HorizontalGroup SetPadLeft( float padLeft )
-    {
-        this.PadLeft = padLeft;
-
-        return this;
-    }
-
-    public HorizontalGroup SetPadBottom( float padBottom )
-    {
-        this.PadBottom = padBottom;
-
-        return this;
-    }
-
-    public HorizontalGroup SetPadRight( float padRight )
-    {
-        this.PadRight = padRight;
-
-        return this;
-    }
-
-    #endregion padding
-
-    // ------------------------------------------------------------------------
-
-    #region alignment
-
-    /// <summary>
-    /// Sets the alignment of all widgets within the horizontal group.
-    /// <para>
-    /// Set to <see cref="Align.CENTER"/>, <see cref="Align.LEFT"/>,
-    /// <see cref="Align.RIGHT"/>, <see cref="Align.TOP"/>,
-    /// <see cref="Align.BOTTOM"/>, or any combination of those.
-    /// </para>
-    /// </summary>
-    public HorizontalGroup SetAlign( int align )
-    {
-        this.Alignment = align;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets the alignment of all widgets within the horizontal group to
-    /// <see cref="Align.CENTER"/>. This clears any other alignment.
-    /// </summary>
-    public HorizontalGroup AlignCenter()
-    {
-        Alignment = Align.CENTER;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets <see cref="Align.TOP"/> and clears <see cref="Align.BOTTOM"/> for
-    /// the alignment of all widgets within the horizontal group.
-    /// </summary>
-    public HorizontalGroup AlignTop()
-    {
-        Alignment |= Align.TOP;
-        Alignment &= ~Align.BOTTOM;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets <see cref="Align.BOTTOM"/> and clears <see cref="Align.TOP"/> for
-    /// the alignment of all widgets within the horizontal group.
-    /// </summary>
-    public HorizontalGroup AlignBottom()
-    {
-        Alignment |= Align.BOTTOM;
-        Alignment &= ~Align.TOP;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets <see cref="Align.LEFT"/> and clears <see cref="Align.RIGHT"/> for
-    /// the alignment of all widgets within the horizontal group.
-    /// </summary>
-    public HorizontalGroup AlignLeft()
-    {
-        Alignment |= Align.LEFT;
-        Alignment &= ~Align.RIGHT;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Adds <see cref="Align.RIGHT"/> and clears <see cref="Align.LEFT"/> for
-    /// the alignment of all widgets within the horizontal group.
-    /// </summary>
-    public HorizontalGroup AlignRight()
-    {
-        Alignment |= Align.RIGHT;
-        Alignment &= ~Align.LEFT;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets the horizontal alignment of each row of widgets when <see cref="Wrap"/>
-    /// is enabled and sets the vertical alignment of widgets within each row.
-    /// </summary>
-    /// <param name="rowAlign">
-    /// Set to <see cref="Align.CENTER"/>, <see cref="Align.LEFT"/>, <see cref="Align.RIGHT"/>,
-    /// <see cref="Align.TOP"/>, <see cref="Align.BOTTOM"/> or any combination of those.
-    /// </param>
-    /// <returns></returns>
-    public HorizontalGroup RowAlign( int rowAlign )
-    {
-        this._rowAlign = rowAlign;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets the alignment of widgets within each row to <see cref="Align.CENTER"/>.
-    /// This clears any other alignment.
-    /// </summary>
-    public HorizontalGroup RowCenter()
-    {
-        _rowAlign = Align.CENTER;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets <see cref="Align.TOP"/> and clears <see cref="Align.BOTTOM"/> for
-    /// the alignment of widgets within each row.
-    /// </summary>
-    public HorizontalGroup RowTop()
-    {
-        _rowAlign |= Align.TOP;
-        _rowAlign &= ~Align.BOTTOM;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Adds <see cref="Align.LEFT"/> and clears <see cref="Align.RIGHT"/> for
-    /// the alignment of each row of widgets when <see cref="Wrap"/> is enabled.
-    /// </summary>
-    public HorizontalGroup RowLeft()
-    {
-        _rowAlign |= Align.LEFT;
-        _rowAlign &= ~Align.RIGHT;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets <see cref="Align.BOTTOM"/> and clears <see cref="Align.TOP"/> for
-    /// the alignment of widgets within each row.
-    /// </summary>
-    public HorizontalGroup RowBottom()
-    {
-        _rowAlign |= Align.BOTTOM;
-        _rowAlign &= ~Align.TOP;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Adds <see cref="Align.RIGHT"/> and clears <see cref="Align.LEFT"/> for
-    /// the alignment of each row of widgets when <see cref="Wrap"/> is enabled.
-    /// </summary>
-    public HorizontalGroup RowRight()
-    {
-        _rowAlign |= Align.RIGHT;
-        _rowAlign &= ~Align.LEFT;
-
-        return this;
-    }
-
-    #endregion alignment
-
-    // ------------------------------------------------------------------------
-
     /// <summary>
     /// </summary>
-    /// <param name="fill"> 0f will use preferred width </param>.
+    /// <param name="fill"> 0f will use preferred width </param>
+    /// .
     public HorizontalGroup SetFill( float fill = 1f )
     {
-        this.Fill = fill;
+        Fill = fill;
 
         return this;
     }
 
     /// <summary>
-    /// When true and wrap is false, the rows will take up the
-    /// entire horizontal group height.
+    ///     When true and wrap is false, the rows will take up the
+    ///     entire horizontal group height.
     /// </summary>
     public HorizontalGroup SetExpand( bool expand = true )
     {
-        this.Expand = expand;
+        Expand = expand;
 
         return this;
     }
@@ -833,36 +652,216 @@ public class HorizontalGroup : WidgetGroup
                      Rotation );
     }
 
-    public override float PrefWidth
+    // ------------------------------------------------------------------------
+
+    #region padding
+
+    /// <summary>
+    ///     Sets the padTop, padLeft, padBottom, and padRight to the specified value.
+    /// </summary>
+    public HorizontalGroup SetPadding( float pad )
     {
-        get
-        {
-            if ( Wrap )
-            {
-                return 0;
-            }
+        PadTop    = pad;
+        PadLeft   = pad;
+        PadBottom = pad;
+        PadRight  = pad;
 
-            if ( _sizeInvalid )
-            {
-                ComputeSize();
-            }
-
-            return _prefWidth;
-        }
-        set => _prefWidth = value;
+        return this;
     }
 
-    public override float PrefHeight
+    public HorizontalGroup SetPadding( float top, float left, float bottom, float right )
     {
-        get
-        {
-            if ( _sizeInvalid )
-            {
-                ComputeSize();
-            }
+        PadTop    = top;
+        PadLeft   = left;
+        PadBottom = bottom;
+        PadRight  = right;
 
-            return _prefHeight;
-        }
-        set => _prefHeight = value;
+        return this;
     }
+
+    public HorizontalGroup SetPadTop( float padTop )
+    {
+        PadTop = padTop;
+
+        return this;
+    }
+
+    public HorizontalGroup SetPadLeft( float padLeft )
+    {
+        PadLeft = padLeft;
+
+        return this;
+    }
+
+    public HorizontalGroup SetPadBottom( float padBottom )
+    {
+        PadBottom = padBottom;
+
+        return this;
+    }
+
+    public HorizontalGroup SetPadRight( float padRight )
+    {
+        PadRight = padRight;
+
+        return this;
+    }
+
+    #endregion padding
+
+    // ------------------------------------------------------------------------
+
+    #region alignment
+
+    /// <summary>
+    ///     Sets the alignment of all widgets within the horizontal group.
+    ///     <para>
+    ///         Set to <see cref="Align.CENTER" />, <see cref="Align.LEFT" />,
+    ///         <see cref="Align.RIGHT" />, <see cref="Align.TOP" />,
+    ///         <see cref="Align.BOTTOM" />, or any combination of those.
+    ///     </para>
+    /// </summary>
+    public HorizontalGroup SetAlign( int align )
+    {
+        Alignment = align;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets the alignment of all widgets within the horizontal group to
+    ///     <see cref="Align.CENTER" />. This clears any other alignment.
+    /// </summary>
+    public HorizontalGroup AlignCenter()
+    {
+        Alignment = Align.CENTER;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets <see cref="Align.TOP" /> and clears <see cref="Align.BOTTOM" /> for
+    ///     the alignment of all widgets within the horizontal group.
+    /// </summary>
+    public HorizontalGroup AlignTop()
+    {
+        Alignment |= Align.TOP;
+        Alignment &= ~Align.BOTTOM;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets <see cref="Align.BOTTOM" /> and clears <see cref="Align.TOP" /> for
+    ///     the alignment of all widgets within the horizontal group.
+    /// </summary>
+    public HorizontalGroup AlignBottom()
+    {
+        Alignment |= Align.BOTTOM;
+        Alignment &= ~Align.TOP;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets <see cref="Align.LEFT" /> and clears <see cref="Align.RIGHT" /> for
+    ///     the alignment of all widgets within the horizontal group.
+    /// </summary>
+    public HorizontalGroup AlignLeft()
+    {
+        Alignment |= Align.LEFT;
+        Alignment &= ~Align.RIGHT;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Adds <see cref="Align.RIGHT" /> and clears <see cref="Align.LEFT" /> for
+    ///     the alignment of all widgets within the horizontal group.
+    /// </summary>
+    public HorizontalGroup AlignRight()
+    {
+        Alignment |= Align.RIGHT;
+        Alignment &= ~Align.LEFT;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets the horizontal alignment of each row of widgets when <see cref="Wrap" />
+    ///     is enabled and sets the vertical alignment of widgets within each row.
+    /// </summary>
+    /// <param name="rowAlign">
+    ///     Set to <see cref="Align.CENTER" />, <see cref="Align.LEFT" />, <see cref="Align.RIGHT" />,
+    ///     <see cref="Align.TOP" />, <see cref="Align.BOTTOM" /> or any combination of those.
+    /// </param>
+    /// <returns></returns>
+    public HorizontalGroup RowAlign( int rowAlign )
+    {
+        _rowAlign = rowAlign;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets the alignment of widgets within each row to <see cref="Align.CENTER" />.
+    ///     This clears any other alignment.
+    /// </summary>
+    public HorizontalGroup RowCenter()
+    {
+        _rowAlign = Align.CENTER;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets <see cref="Align.TOP" /> and clears <see cref="Align.BOTTOM" /> for
+    ///     the alignment of widgets within each row.
+    /// </summary>
+    public HorizontalGroup RowTop()
+    {
+        _rowAlign |= Align.TOP;
+        _rowAlign &= ~Align.BOTTOM;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Adds <see cref="Align.LEFT" /> and clears <see cref="Align.RIGHT" /> for
+    ///     the alignment of each row of widgets when <see cref="Wrap" /> is enabled.
+    /// </summary>
+    public HorizontalGroup RowLeft()
+    {
+        _rowAlign |= Align.LEFT;
+        _rowAlign &= ~Align.RIGHT;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets <see cref="Align.BOTTOM" /> and clears <see cref="Align.TOP" /> for
+    ///     the alignment of widgets within each row.
+    /// </summary>
+    public HorizontalGroup RowBottom()
+    {
+        _rowAlign |= Align.BOTTOM;
+        _rowAlign &= ~Align.TOP;
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Adds <see cref="Align.RIGHT" /> and clears <see cref="Align.LEFT" /> for
+    ///     the alignment of each row of widgets when <see cref="Wrap" /> is enabled.
+    /// </summary>
+    public HorizontalGroup RowRight()
+    {
+        _rowAlign |= Align.RIGHT;
+        _rowAlign &= ~Align.LEFT;
+
+        return this;
+    }
+
+    #endregion alignment
+
 }

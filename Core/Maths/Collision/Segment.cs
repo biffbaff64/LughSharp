@@ -17,28 +17,28 @@
 namespace LibGDXSharp.Maths.Collision;
 
 /// <summary>
-/// A Segment is a line in 3-space having a starting and an ending position.
+///     A Segment is a line in 3-space having a starting and an ending position.
 /// </summary>
 [Serializable]
-[PublicAPI]
 public class Segment
 {
     public readonly Vector3 vectorA = new(); // the starting position
     public readonly Vector3 vectorB = new(); // the ending position
 
     /// <summary>
-    /// Constructs a new Segment from the two points given.
+    ///     Constructs a new Segment from the two points given.
     /// </summary>
     /// <param name="a">the first point</param>
     /// <param name="b">the second point</param>
     public Segment( Vector3 a, Vector3 b )
     {
-        this.vectorA.Set( a );
-        this.vectorB.Set( b );
+        vectorA.Set( a );
+        vectorB.Set( b );
     }
 
     /// <summary>
-    /// Constructs a new Segment from the two points given. </summary>
+    ///     Constructs a new Segment from the two points given.
+    /// </summary>
     /// <param name="aX"> the x-coordinate of the first point </param>
     /// <param name="aY"> the y-coordinate of the first point </param>
     /// <param name="aZ"> the z-coordinate of the first point </param>
@@ -47,19 +47,13 @@ public class Segment
     /// <param name="bZ"> the z-coordinate of the second point  </param>
     public Segment( float aX, float aY, float aZ, float bX, float bY, float bZ )
     {
-        this.vectorA.Set( aX, aY, aZ );
-        this.vectorB.Set( bX, bY, bZ );
+        vectorA.Set( aX, aY, aZ );
+        vectorB.Set( bX, bY, bZ );
     }
 
-    public virtual float Len()
-    {
-        return vectorA.Dst( vectorB );
-    }
+    public virtual float Len() => vectorA.Dst( vectorB );
 
-    public virtual float Len2()
-    {
-        return vectorA.Dst2( vectorB );
-    }
+    public virtual float Len2() => vectorA.Dst2( vectorB );
 
     /// <summary>
     /// </summary>
@@ -67,12 +61,19 @@ public class Segment
     /// <returns></returns>
     public override bool Equals( object? o )
     {
-        if ( o == this ) return true;
-        if ( ( o == null ) || ( o.GetType() != this.GetType() ) ) return false;
+        if ( o == this )
+        {
+            return true;
+        }
+
+        if ( ( o == null ) || ( o.GetType() != GetType() ) )
+        {
+            return false;
+        }
 
         var s = ( Segment )o;
 
-        return this.vectorA.Equals( s.vectorA ) && this.vectorB.Equals( s.vectorB );
+        return vectorA.Equals( s.vectorA ) && vectorB.Equals( s.vectorB );
     }
 
     /// <summary>
@@ -82,8 +83,8 @@ public class Segment
     {
         const int prime = 71;
 
-        var result = prime + this.vectorA.GetHashCode();
-        result = ( prime * result ) + this.vectorB.GetHashCode();
+        var result = prime + vectorA.GetHashCode();
+        result = ( prime * result ) + vectorB.GetHashCode();
 
         return result;
     }

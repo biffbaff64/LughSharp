@@ -17,11 +17,10 @@
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
-/// A color class, holding the r, g, b and alpha component as floats in
-/// the range [0,1].
-/// All methods perform clamping on the internal values after execution.
+///     A color class, holding the r, g, b and alpha component as floats in
+///     the range [0,1].
+///     All methods perform clamping on the internal values after execution.
 /// </summary>
-[PublicAPI]
 public class Color
 {
     public readonly static Color White      = new( 1, 1, 1, 1 );
@@ -60,25 +59,20 @@ public class Color
     public readonly static Color Maroon     = new( 0xb03060ff );
 
     /// <summary>
-    /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
+    ///     Convenience for frequently used <tt>White.ToFloatBits()</tt>
     /// </summary>
     public readonly static float WhiteFloatBits = White.ToFloatBits();
 
-    public float R { get; set; }
-    public float G { get; set; }
-    public float B { get; set; }
-    public float A { get; set; }
-
     /// <summary>
-    /// Constructor, sets all the components to 0.
+    ///     Constructor, sets all the components to 0.
     /// </summary>
     public Color() : this( 0, 0, 0, 0 )
     {
     }
 
     /// <summary>
-    /// Constructor, sets the Color components using the specified integer value in
-    /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
+    ///     Constructor, sets the Color components using the specified integer value in
+    ///     the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
     /// <param name="rgba8888"> An integer color value in RGBA8888 format. </param>
     public Color( int rgba8888 ) : this( ( uint )rgba8888 )
@@ -86,17 +80,14 @@ public class Color
     }
 
     /// <summary>
-    /// Constructor, sets the Color components using the specified integer value in
-    /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
+    ///     Constructor, sets the Color components using the specified integer value in
+    ///     the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
     /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
-    public Color( uint rgba8888 )
-    {
-        Rgba8888ToColor( this, rgba8888 );
-    }
+    public Color( uint rgba8888 ) => Rgba8888ToColor( this, rgba8888 );
 
     /// <summary>
-    /// Constructor, sets the components of the color.
+    ///     Constructor, sets the components of the color.
     /// </summary>
     /// <param name="r"> The red component. </param>
     /// <param name="g"> The green component. </param>
@@ -113,15 +104,17 @@ public class Color
     }
 
     /// <summary>
-    /// Constructs a new color using the components from the supplied color.
+    ///     Constructs a new color using the components from the supplied color.
     /// </summary>
-    public Color( Color color )
-    {
-        Set( color );
-    }
+    public Color( Color color ) => Set( color );
+
+    public float R { get; set; }
+    public float G { get; set; }
+    public float B { get; set; }
+    public float A { get; set; }
 
     /// <summary>
-    /// Sets this colors components using the components from the supplied colot.
+    ///     Sets this colors components using the components from the supplied colot.
     /// </summary>
     /// <returns> This Color for chaining. </returns>
     public Color Set( Color color )
@@ -148,7 +141,7 @@ public class Color
     }
 
     /// <summary>
-    /// Sets this color's component values through an integer representation.
+    ///     Sets this color's component values through an integer representation.
     /// </summary>
     /// <param name="rgba"></param>
     /// <returns>This color for chaining.</returns>
@@ -263,7 +256,7 @@ public class Color
     }
 
     /// <summary>
-    /// Clamps this Color's components to a valid range [0 - 1]
+    ///     Clamps this Color's components to a valid range [0 - 1]
     /// </summary>
     /// <returns>This Color for chaining.</returns>
     private Color Clamp()
@@ -300,27 +293,27 @@ public class Color
     }
 
     /// <summary>
-    /// Linearly interpolates between this color and the target color by
-    /// 'interpolationCoefficient' which is in the range [0,1].
-    /// The result is stored in this color.
+    ///     Linearly interpolates between this color and the target color by
+    ///     'interpolationCoefficient' which is in the range [0,1].
+    ///     The result is stored in this color.
     /// </summary>
     /// <param name="target"></param>
     /// <param name="interpolationCoefficient"></param>
     /// <returns></returns>
     public Color Lerp( Color target, float interpolationCoefficient )
     {
-        this.R += interpolationCoefficient * ( target.R - this.R );
-        this.G += interpolationCoefficient * ( target.G - this.G );
-        this.B += interpolationCoefficient * ( target.B - this.B );
-        this.A += interpolationCoefficient * ( target.A - this.A );
+        R += interpolationCoefficient * ( target.R - R );
+        G += interpolationCoefficient * ( target.G - G );
+        B += interpolationCoefficient * ( target.B - B );
+        A += interpolationCoefficient * ( target.A - A );
 
         return Clamp();
     }
 
     /// <summary>
-    /// Linearly interpolates between this color and the target color by
-    /// 'interpolationCoefficient' which is in the range [0,1].
-    /// The result is stored in this color.
+    ///     Linearly interpolates between this color and the target color by
+    ///     'interpolationCoefficient' which is in the range [0,1].
+    ///     The result is stored in this color.
     /// </summary>
     /// <param name="r">Red component</param>
     /// <param name="g">Green component</param>
@@ -330,16 +323,16 @@ public class Color
     /// <returns></returns>
     public Color Lerp( float r, float g, float b, float a, float interpolationCoefficient )
     {
-        this.R += interpolationCoefficient * ( r - this.R );
-        this.G += interpolationCoefficient * ( g - this.G );
-        this.B += interpolationCoefficient * ( b - this.B );
-        this.A += interpolationCoefficient * ( a - this.A );
+        R += interpolationCoefficient * ( r - R );
+        G += interpolationCoefficient * ( g - G );
+        B += interpolationCoefficient * ( b - B );
+        A += interpolationCoefficient * ( a - A );
 
         return Clamp();
     }
 
     /// <summary>
-    /// Multiplies the RGB values by the alpha.
+    ///     Multiplies the RGB values by the alpha.
     /// </summary>
     /// <returns>This color for chaining.</returns>
     public Color PremultiplyAlpha()
@@ -367,7 +360,7 @@ public class Color
         {
             return true;
         }
-        
+
         return !c1.Equals( c2 );
     }
 
@@ -391,7 +384,7 @@ public class Color
         color.R = ( ( value & 0x0000f000 ) >>> 12 ) / 15f;
         color.G = ( ( value & 0x00000f00 ) >>> 8 ) / 15f;
         color.B = ( ( value & 0x000000f0 ) >>> 4 ) / 15f;
-        color.A = ( ( value & 0x0000000f ) ) / 15f;
+        color.A = ( value & 0x0000000f ) / 15f;
     }
 
     /// <summary>
@@ -403,7 +396,7 @@ public class Color
         color.R = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.G = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
         color.B = ( ( value & 0x0000ff00 ) >>> 8 ) / 255f;
-        color.A = ( ( value & 0x000000ff ) ) / 255f;
+        color.A = ( value & 0x000000ff ) / 255f;
     }
 
     /// <summary>
@@ -415,7 +408,7 @@ public class Color
         color.A = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.R = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
         color.G = ( ( value & 0x0000ff00 ) >>> 8 ) / 255f;
-        color.B = ( ( value & 0x000000ff ) ) / 255f;
+        color.B = ( value & 0x000000ff ) / 255f;
     }
 
     /// <summary>
@@ -428,13 +421,13 @@ public class Color
         color.A = ( ( c & 0xff000000 ) >>> 24 ) / 255f;
         color.B = ( ( c & 0x00ff0000 ) >>> 16 ) / 255f;
         color.G = ( ( c & 0x0000ff00 ) >>> 8 ) / 255f;
-        color.R = ( ( c & 0x000000ff ) ) / 255f;
+        color.R = ( c & 0x000000ff ) / 255f;
     }
 
     /// <summary>
-    /// Sets the Color components using the specified integer value
-    /// in the format RGBA8888. This is inverse to the
-    /// RGBA8888(r, g, b, a) method.
+    ///     Sets the Color components using the specified integer value
+    ///     in the format RGBA8888. This is inverse to the
+    ///     RGBA8888(r, g, b, a) method.
     /// </summary>
     /// <param name="color">The Color to be modified.</param>
     /// <param name="value">An integer color value in RGBA8888 format.</param>
@@ -443,7 +436,7 @@ public class Color
         color.R = ( ( value & 0xff000000 ) >> 24 ) / 255f;
         color.G = ( ( value & 0x00ff0000 ) >> 16 ) / 255f;
         color.B = ( ( value & 0x0000ff00 ) >> 8 ) / 255f;
-        color.A = ( ( value & 0x000000ff ) ) / 255f;
+        color.A = ( value & 0x000000ff ) / 255f;
     }
 
     /// <summary>
@@ -453,16 +446,15 @@ public class Color
     /// <param name="b"></param>
     /// <param name="a"></param>
     /// <returns></returns>
-    public int Rgba8888( float r, float g, float b, float a ) =>
-        ( ( int )( r * 255 ) << 24 )
-        | ( ( int )( g * 255 ) << 16 )
-        | ( ( int )( b * 255 ) << 8 )
-        | ( int )( a * 255 );
+    public int Rgba8888( float r, float g, float b, float a ) => ( ( int )( r * 255 ) << 24 )
+                                                               | ( ( int )( g * 255 ) << 16 )
+                                                               | ( ( int )( b * 255 ) << 8 )
+                                                               | ( int )( a * 255 );
 
     /// <summary>
-    /// Sets the RGB Color components using the specified Hue-Saturation-Value.
-    /// Note that HSV components are voluntary not clamped to preserve high range
-    /// color and can range beyond typical values.
+    ///     Sets the RGB Color components using the specified Hue-Saturation-Value.
+    ///     Note that HSV components are voluntary not clamped to preserve high range
+    ///     color and can range beyond typical values.
     /// </summary>
     /// <param name="h">The Hue in degree from 0 to 360</param>
     /// <param name="s">The Saturation from 0 to 1</param>
@@ -526,16 +518,13 @@ public class Color
     }
 
     /// <summary>
-    /// Sets RGB components using the specified Hue-Saturation-Value.
-    /// This is a convenient method for fromHsv(float, float, float).
-    /// This is the inverse of toHsv(float[]).
+    ///     Sets RGB components using the specified Hue-Saturation-Value.
+    ///     This is a convenient method for fromHsv(float, float, float).
+    ///     This is the inverse of toHsv(float[]).
     /// </summary>
     /// <param name="hsv"></param>
     /// <returns></returns>
-    public Color FromHsv( float[] hsv )
-    {
-        return FromHsv( hsv[ 0 ], hsv[ 1 ], hsv[ 2 ] );
-    }
+    public Color FromHsv( float[] hsv ) => FromHsv( hsv[ 0 ], hsv[ 1 ], hsv[ 2 ] );
 
     public float[] ToHsv( float[] hsv )
     {
@@ -575,19 +564,19 @@ public class Color
     }
 
     /// <summary>
-    /// Packs the color components into a 32-bit integer with the format ABGR and
-    /// then converts it to a float. Alpha is compressed from 0-255 to use only even
-    /// numbers between 0-254 to avoid using float bits in the NaN range
-    /// (see NumberUtils.intToFloatColor(int)).
-    /// Converting a color to a float and back can be lossy for alpha.
+    ///     Packs the color components into a 32-bit integer with the format ABGR and
+    ///     then converts it to a float. Alpha is compressed from 0-255 to use only even
+    ///     numbers between 0-254 to avoid using float bits in the NaN range
+    ///     (see NumberUtils.intToFloatColor(int)).
+    ///     Converting a color to a float and back can be lossy for alpha.
     /// </summary>
     /// <returns></returns>
     public float ToFloatBits()
     {
         var color = ( ( int )( 255 * A ) << 24 )
-                    | ( ( int )( 255 * B ) << 16 )
-                    | ( ( int )( 255 * G ) << 8 )
-                    | ( ( int )( 255 * R ) );
+                  | ( ( int )( 255 * B ) << 16 )
+                  | ( ( int )( 255 * G ) << 8 )
+                  | ( int )( 255 * R );
 
         return NumberUtils.IntToFloatColor( color );
     }
@@ -616,7 +605,7 @@ public class Color
     /// <returns></returns>
     public static float ToFloatBits( float r, float g, float b, float a )
     {
-        var color = ( ( int )( 255 * a ) << 24 ) | ( ( int )( 255 * b ) << 16 ) | ( ( int )( 255 * g ) << 8 ) | ( ( int )( 255 * r ) );
+        var color = ( ( int )( 255 * a ) << 24 ) | ( ( int )( 255 * b ) << 16 ) | ( ( int )( 255 * g ) << 8 ) | ( int )( 255 * r );
 
         return NumberUtils.IntToFloatColor( color );
     }
@@ -624,13 +613,10 @@ public class Color
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public int ToIntBits()
-    {
-        return ( ( int )( 255 * A ) << 24 )
-               | ( ( int )( 255 * B ) << 16 )
-               | ( ( int )( 255 * G ) << 8 )
-               | ( ( int )( 255 * R ) );
-    }
+    public int ToIntBits() => ( ( int )( 255 * A ) << 24 )
+                            | ( ( int )( 255 * B ) << 16 )
+                            | ( ( int )( 255 * G ) << 8 )
+                            | ( int )( 255 * R );
 
     /// <summary>
     /// </summary>
@@ -639,20 +625,14 @@ public class Color
     /// <param name="b"></param>
     /// <param name="a"></param>
     /// <returns></returns>
-    public static int ToIntBits( int r, int g, int b, int a )
-    {
-        return ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
-    }
+    public static int ToIntBits( int r, int g, int b, int a ) => ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
 
     /// <summary>
-    /// Returns a new color from a hex string with the format RRGGBBAA.
+    ///     Returns a new color from a hex string with the format RRGGBBAA.
     /// </summary>
     /// <param name="hex"></param>
     /// <returns></returns>
-    public static Color ValueOf( string hex )
-    {
-        return ValueOf( hex, new Color() );
-    }
+    public static Color ValueOf( string hex ) => ValueOf( hex, new Color() );
 
     /// <summary>
     /// </summary>
@@ -671,75 +651,48 @@ public class Color
         return color;
     }
 
-    public static int Alpha( float alpha )
-    {
-        return ( int )( alpha * 255.0f );
-    }
+    public static int Alpha( float alpha ) => ( int )( alpha * 255.0f );
 
-    public static int LuminanceAlpha( float luminance, float alpha )
-    {
-        return ( ( int )( luminance * 255.0f ) << 8 ) | ( int )( alpha * 255 );
-    }
+    public static int LuminanceAlpha( float luminance, float alpha ) => ( ( int )( luminance * 255.0f ) << 8 ) | ( int )( alpha * 255 );
 
-    public static int RGB565( float r, float g, float b )
-    {
-        return ( ( int )( r * 31 ) << 11 ) | ( ( int )( g * 63 ) << 5 ) | ( int )( b * 31 );
-    }
+    public static int RGB565( float r, float g, float b ) => ( ( int )( r * 31 ) << 11 ) | ( ( int )( g * 63 ) << 5 ) | ( int )( b * 31 );
 
     public static int RGBA4444( float r, float g, float b, float a )
-    {
-        return ( ( int )( r * 15 ) << 12 ) | ( ( int )( g * 15 ) << 8 ) | ( ( int )( b * 15 ) << 4 ) | ( int )( a * 15 );
-    }
+        => ( ( int )( r * 15 ) << 12 ) | ( ( int )( g * 15 ) << 8 ) | ( ( int )( b * 15 ) << 4 ) | ( int )( a * 15 );
 
-    public static int RGB888( float r, float g, float b )
-    {
-        return ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
-    }
+    public static int RGB888( float r, float g, float b ) => ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
 
     public static int RGBA8888( float r, float g, float b, float a )
-    {
-        return ( ( int )( r * 255 ) << 24 ) | ( ( int )( g * 255 ) << 16 ) | ( ( int )( b * 255 ) << 8 ) | ( int )( a * 255 );
-    }
+        => ( ( int )( r * 255 ) << 24 ) | ( ( int )( g * 255 ) << 16 ) | ( ( int )( b * 255 ) << 8 ) | ( int )( a * 255 );
 
     public static int ARGB8888( float a, float r, float g, float b )
-    {
-        return ( ( int )( a * 255 ) << 24 ) | ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
-    }
+        => ( ( int )( a * 255 ) << 24 ) | ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
 
-    public static int RGB565( Color color )
-    {
-        return ( ( int )( color.R * 31 ) << 11 ) | ( ( int )( color.G * 63 ) << 5 ) | ( int )( color.B * 31 );
-    }
+    public static int RGB565( Color color ) => ( ( int )( color.R * 31 ) << 11 ) | ( ( int )( color.G * 63 ) << 5 ) | ( int )( color.B * 31 );
 
-    public static int RGBA4444( Color color )
-    {
-        return ( ( int )( color.R * 15 ) << 12 ) | ( ( int )( color.G * 15 ) << 8 ) | ( ( int )( color.B * 15 ) << 4 ) | ( int )( color.A * 15 );
-    }
+    public static int RGBA4444( Color color ) => ( ( int )( color.R * 15 ) << 12 )
+                                               | ( ( int )( color.G * 15 ) << 8 )
+                                               | ( ( int )( color.B * 15 ) << 4 )
+                                               | ( int )( color.A * 15 );
 
-    public static int RGB888( Color color )
-    {
-        return ( ( int )( color.R * 255 ) << 16 ) | ( ( int )( color.G * 255 ) << 8 ) | ( int )( color.B * 255 );
-    }
+    public static int RGB888( Color color ) => ( ( int )( color.R * 255 ) << 16 ) | ( ( int )( color.G * 255 ) << 8 ) | ( int )( color.B * 255 );
 
-    public static int RGBA8888( Color color )
-    {
-        return ( ( int )( color.R * 255 ) << 24 ) | ( ( int )( color.G * 255 ) << 16 ) | ( ( int )( color.B * 255 ) << 8 ) | ( int )( color.A * 255 );
-    }
+    public static int RGBA8888( Color color ) => ( ( int )( color.R * 255 ) << 24 )
+                                               | ( ( int )( color.G * 255 ) << 16 )
+                                               | ( ( int )( color.B * 255 ) << 8 )
+                                               | ( int )( color.A * 255 );
 
-    public static int ARGB8888( Color color )
-    {
-        return ( ( int )( color.A * 255 ) << 24 ) | ( ( int )( color.R * 255 ) << 16 ) | ( ( int )( color.G * 255 ) << 8 ) | ( int )( color.B * 255 );
-    }
+    public static int ARGB8888( Color color ) => ( ( int )( color.A * 255 ) << 24 )
+                                               | ( ( int )( color.R * 255 ) << 16 )
+                                               | ( ( int )( color.G * 255 ) << 8 )
+                                               | ( int )( color.B * 255 );
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public Color Copy()
-    {
-        return new Color( this );
-    }
-        
-    /// <inheritdoc/>
+    public Color Copy() => new( this );
+
+    /// <inheritdoc />
     public override bool Equals( object? o )
     {
         if ( ( o == null ) || ( GetType() != o.GetType() ) )
@@ -756,11 +709,11 @@ public class Color
 
         return ToIntBits() == color.ToIntBits();
     }
-    
-    /// <inheritdoc/>
+
+    /// <inheritdoc />
     public override int GetHashCode()
     {
-        var result = ( White != 0F ? NumberUtils.FloatToIntBits( White.ToFloatBits() ) : 0 );
+        var result = White != 0F ? NumberUtils.FloatToIntBits( White.ToFloatBits() ) : 0;
 
         result = ( 31 * result ) + ( LightGray != 0F ? NumberUtils.FloatToIntBits( LightGray.ToFloatBits() ) : 0 );
         result = ( 31 * result ) + ( Gray != 0F ? NumberUtils.FloatToIntBits( Gray.ToFloatBits() ) : 0 );

@@ -19,42 +19,59 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// Value placeholder, allowing the value to be computed on request.
-/// Values can be provided to an actor for context to reduce the number of value
-/// instances that need to be created and reduce verbosity in code that specifies
-/// values.
+///     Value placeholder, allowing the value to be computed on request.
+///     Values can be provided to an actor for context to reduce the number of value
+///     instances that need to be created and reduce verbosity in code that specifies
+///     values.
 /// </summary>
-[PublicAPI]
 public abstract class Value
 {
-    public abstract float Get( Actor? context = null );
 
     public readonly static Fixed Zero = new( 0 );
 
+    // ------------------------------------------------------------------------
+
+    public static   Value MinWidth   { get; set; } = new ValueMinWidthInnerClass();
+    public static   Value MinHeight  { get; set; } = new ValueMinHeightInnerClass();
+    public static   Value MaxWidth   { get; set; } = new ValueMaxWidthInnerClass();
+    public static   Value MaxHeight  { get; set; } = new ValueMaxHeightInnerClass();
+    public static   Value PrefWidth  { get; set; } = new ValuePrefWidthInnerClass();
+    public static   Value PrefHeight { get; set; } = new ValuePrefHeightInnerClass();
+    public abstract float Get( Actor? context = null );
+
+    // ------------------------------------------------------------------------
+
+    public static Value PercentWidth( float percent )  => new ValuePercentWidth( percent );
+    public static Value PercentHeight( float percent ) => new ValuePercentHeight( percent );
+
+    public static Value PercentWidth( float percent, Actor? actor )
+    {
+        ArgumentNullException.ThrowIfNull( actor );
+
+        return new ValuePercentWidth( percent, actor );
+    }
+
+    public static Value PercentHeight( float percent, Actor? actor )
+    {
+        ArgumentNullException.ThrowIfNull( actor );
+
+        return new ValuePercentHeight( percent, actor );
+    }
+
     /// <summary>
-    /// A fixed value that is not computed each time it is used.
+    ///     A fixed value that is not computed each time it is used.
     /// </summary>
-    [PublicAPI]
     public class Fixed : Value
     {
         private readonly static Fixed?[] Cache = new Fixed[ 111 ];
 
+        public Fixed( float value ) => Value = value;
+
         public float Value { get; }
 
-        public Fixed( float value )
-        {
-            this.Value = value;
-        }
+        public override float Get( Actor? context = null ) => Value;
 
-        public override float Get( Actor? context = null)
-        {
-            return Value;
-        }
-
-        public new string ToString()
-        {
-            return Value.ToString( CultureInfo.InvariantCulture );
-        }
+        public new string ToString() => Value.ToString( CultureInfo.InvariantCulture );
 
         public static Fixed ValueOf( float value )
         {
@@ -79,78 +96,44 @@ public abstract class Value
         }
     }
 
-    // ------------------------------------------------------------------------
-
-    public static Value MinWidth   { get; set; } = new ValueMinWidthInnerClass();
-    public static Value MinHeight  { get; set; } = new ValueMinHeightInnerClass();
-    public static Value MaxWidth   { get; set; } = new ValueMaxWidthInnerClass();
-    public static Value MaxHeight  { get; set; } = new ValueMaxHeightInnerClass();
-    public static Value PrefWidth  { get; set; } = new ValuePrefWidthInnerClass();
-    public static Value PrefHeight { get; set; } = new ValuePrefHeightInnerClass();
-
-    // ------------------------------------------------------------------------
-    
-    public static Value PercentWidth( float percent ) => new ValuePercentWidth( percent );
-    public static Value PercentHeight( float percent ) => new ValuePercentHeight( percent );
-
-    public static Value PercentWidth( float percent, Actor? actor )
-    {
-        ArgumentNullException.ThrowIfNull( actor );
-        
-        return new ValuePercentWidth( percent, actor );
-    }
-
-    public static Value PercentHeight( float percent, Actor? actor )
-    {
-        ArgumentNullException.ThrowIfNull( actor );
-        
-        return new ValuePercentHeight( percent, actor );
-    }
-
     /// <summary>
-    /// Returns a value that is a percentage of the actor's width.
+    ///     Returns a value that is a percentage of the actor's width.
     /// </summary>
     private class ValuePercentWidth : Value
     {
-        private readonly float  _percent;
         private readonly Actor? _actor;
+        private readonly float  _percent;
 
         public ValuePercentWidth( float percent, Actor? actor = null )
         {
-            this._percent = percent;
-            this._actor   = actor;
+            _percent = percent;
+            _actor   = actor;
         }
 
-        public override float Get( Actor? actor = null )
-        {
-            return ( this._actor == null ) ? 0 : _actor.Width * _percent;
-        }
+        public override float Get( Actor? actor = null ) => _actor == null ? 0 : _actor.Width * _percent;
     }
 
     /// <summary>
-    /// Returns a value that is a percentage of the actor's height.
+    ///     Returns a value that is a percentage of the actor's height.
     /// </summary>
     private class ValuePercentHeight : Value
     {
-        private readonly float  _percent;
         private readonly Actor? _actor;
+        private readonly float  _percent;
 
         public ValuePercentHeight( float percent, Actor? actor = null )
         {
-            this._percent = percent;
-            this._actor   = actor;
+            _percent = percent;
+            _actor   = actor;
         }
 
-        public override float Get( Actor? actor = null )
-        {
-            return ( this._actor == null ) ? 0 : _actor.Height * _percent;
-        }
+        public override float Get( Actor? actor = null ) => _actor == null ? 0 : _actor.Height * _percent;
     }
-    
+
     // ========================================================================
-    
+
     /// <summary>
-    /// Value that is the minWidth of the actor in the cell.
+    ///     Value that is the minWidth of the actor in the cell.
     /// </summary>
     private class ValueMinWidthInnerClass : Value
     {
@@ -166,7 +149,7 @@ public abstract class Value
     }
 
     /// <summary>
-    /// Value that is the minHeight of the actor in the cell.
+    ///     Value that is the minHeight of the actor in the cell.
     /// </summary>
     private class ValueMinHeightInnerClass : Value
     {
@@ -182,7 +165,7 @@ public abstract class Value
     }
 
     /// <summary>
-    /// Value that is the prefWidth of the actor in the cell.
+    ///     Value that is the prefWidth of the actor in the cell.
     /// </summary>
     private class ValuePrefWidthInnerClass : Value
     {
@@ -198,7 +181,7 @@ public abstract class Value
     }
 
     /// <summary>
-    /// Value that is the prefHeight of the actor in the cell.
+    ///     Value that is the prefHeight of the actor in the cell.
     /// </summary>
     private class ValuePrefHeightInnerClass : Value
     {
@@ -214,7 +197,7 @@ public abstract class Value
     }
 
     /// <summary>
-    /// Value that is the maxWidth of the actor in the cell.
+    ///     Value that is the maxWidth of the actor in the cell.
     /// </summary>
     private class ValueMaxWidthInnerClass : Value
     {
@@ -230,7 +213,7 @@ public abstract class Value
     }
 
     /// <summary>
-    /// Value that is the maxWidth of the actor in the cell.
+    ///     Value that is the maxWidth of the actor in the cell.
     /// </summary>
     private class ValueMaxHeightInnerClass : Value
     {

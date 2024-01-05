@@ -19,50 +19,22 @@ using System.Text;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Class to keep track of the time and load (percentage of total time) a
-/// specific task takes. Call start() just before starting the task and
-/// stop() right after. You can do this multiple times if required.
-/// <p>
-/// Every render or update call tick() to update the values. The time
-/// FloatCounter provides access to the minimum, maximum, average,
-/// total and current time (in seconds) the task takes. Likewise for
-/// the load value, which is the percentage of the total time.
-/// </p>
+///     Class to keep track of the time and load (percentage of total time) a
+///     specific task takes. Call start() just before starting the task and
+///     stop() right after. You can do this multiple times if required.
+///     <p>
+///         Every render or update call tick() to update the values. The time
+///         FloatCounter provides access to the minimum, maximum, average,
+///         total and current time (in seconds) the task takes. Likewise for
+///         the load value, which is the percentage of the total time.
+///     </p>
 /// </summary>
-[PublicAPI]
 public class PerformanceCounter
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;
+    private       long  _lastTick     = 0L;
 
     private long _startTime = 0L;
-    private long _lastTick  = 0L;
-
-    /// <summary>
-    /// The time value of this counter (seconds)
-    /// </summary>
-    public FloatCounter Time { get; set; }
-
-    /// <summary>
-    /// The load value of this counter
-    /// </summary>
-    public FloatCounter Load { get; set; }
-
-    /// <summary>
-    /// The name of this counter
-    /// </summary>
-    public string Name { get; set; }
-
-    /// <summary>
-    /// The current value in seconds, you can manually increase this using your own
-    /// timing mechanism if needed, if you do so, you also need to update <see cref="Valid"/>. 
-    /// </summary>
-    public float Current { get; set; } = 0f;
-
-    /// <summary>
-    /// Flag to indicate that the current value is valid, you need to set this to true
-    /// if using your own timing mechanism
-    /// </summary>
-    public bool Valid { get; set; } = false;
 
     public PerformanceCounter( in string name ) : this( name, 5 )
     {
@@ -70,15 +42,42 @@ public class PerformanceCounter
 
     public PerformanceCounter( in string name, in int windowSize )
     {
-        this.Name = name;
-        this.Time = new FloatCounter( windowSize );
-        this.Load = new FloatCounter( 1 );
+        Name = name;
+        Time = new FloatCounter( windowSize );
+        Load = new FloatCounter( 1 );
     }
 
     /// <summary>
-    /// Updates the time and load counters and resets the time.
-    /// Call <seealso cref="Start()"/> to begin a new count. The values are only
-    /// valid after at least two calls to this method. 
+    ///     The time value of this counter (seconds)
+    /// </summary>
+    public FloatCounter Time { get; set; }
+
+    /// <summary>
+    ///     The load value of this counter
+    /// </summary>
+    public FloatCounter Load { get; set; }
+
+    /// <summary>
+    ///     The name of this counter
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    ///     The current value in seconds, you can manually increase this using your own
+    ///     timing mechanism if needed, if you do so, you also need to update <see cref="Valid" />.
+    /// </summary>
+    public float Current { get; set; } = 0f;
+
+    /// <summary>
+    ///     Flag to indicate that the current value is valid, you need to set this to true
+    ///     if using your own timing mechanism
+    /// </summary>
+    public bool Valid { get; set; } = false;
+
+    /// <summary>
+    ///     Updates the time and load counters and resets the time.
+    ///     Call <seealso cref="Start()" /> to begin a new count. The values are only
+    ///     valid after at least two calls to this method.
     /// </summary>
     public void Tick()
     {
@@ -93,18 +92,17 @@ public class PerformanceCounter
     }
 
     /// <summary>
-    /// Updates the time and load counters and resets the time.
-    /// Call <seealso cref="Start()"/> to begin a new count.
+    ///     Updates the time and load counters and resets the time.
+    ///     Call <seealso cref="Start()" /> to begin a new count.
     /// </summary>
     /// <param name="delta"> The time since the last call to this method</param>
     public void Tick( in float delta )
     {
         if ( !Valid )
         {
-            Gdx.App.Error
-                (
-                 "PerformanceCounter",
-                 "Invalid data, check if you called PerformanceCounter#stop()"
+            Gdx.App.Error(
+                "PerformanceCounter",
+                "Invalid data, check if you called PerformanceCounter#stop()"
                 );
 
             return;
@@ -114,15 +112,15 @@ public class PerformanceCounter
 
         var currentLoad = delta == 0f ? 0f : Current / delta;
 
-        Load.Put( ( delta > 1f ) ? currentLoad : ( delta * currentLoad ) + ( ( 1f - delta ) * Load.Latest ) );
+        Load.Put( delta > 1f ? currentLoad : ( delta * currentLoad ) + ( ( 1f - delta ) * Load.Latest ) );
 
         Current = 0f;
         Valid   = false;
     }
 
     /// <summary>
-    /// Start counting, call this method just before performing the task you
-    /// want to keep track of. Call <see cref="Stop()"/> when done.
+    ///     Start counting, call this method just before performing the task you
+    ///     want to keep track of. Call <see cref="Stop()" /> when done.
     /// </summary>
     public void Start()
     {
@@ -131,9 +129,9 @@ public class PerformanceCounter
     }
 
     /// <summary>
-    /// Stop counting, call this method right after you performed the task you
-    /// want to keep track of. Call <see cref="Start()"/> again when you perform
-    /// more of that task. 
+    ///     Stop counting, call this method right after you performed the task you
+    ///     want to keep track of. Call <see cref="Start()" /> again when you perform
+    ///     more of that task.
     /// </summary>
     public void Stop()
     {
@@ -146,7 +144,7 @@ public class PerformanceCounter
     }
 
     /// <summary>
-    /// Resets this performance counter to its defaults values.
+    ///     Resets this performance counter to its defaults values.
     /// </summary>
     public void Reset()
     {
@@ -169,16 +167,16 @@ public class PerformanceCounter
     }
 
     /// <summary>
-    /// Creates a string in the form of "name [time: value, load: value]"
+    ///     Creates a string in the form of "name [time: value, load: value]"
     /// </summary>
     public StringBuilder ToString( in StringBuilder sb )
     {
         sb.Append( Name )
-            .Append( ": [time: " )
-            .Append( Time.Value )
-            .Append( ", load: " )
-            .Append( Load.Value )
-            .Append( ']' );
+          .Append( ": [time: " )
+          .Append( Time.Value )
+          .Append( ", load: " )
+          .Append( Load.Value )
+          .Append( ']' );
 
         return sb;
     }

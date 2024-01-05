@@ -22,27 +22,39 @@ using LibGDXSharp.Utils.Collections;
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
 /// <summary>
-/// Encapsulates OpenGL ES 2.0 frame buffer objects. This is a simple helper
-/// class which should cover most FBO uses. It will automatically create a
-/// gltexture for the color attachment and a renderbuffer for the depth buffer.
-/// You can get a hold of the gltexture by <see cref="GLFrameBuffer{T}.GetColorBufferTexture()"/>.
-/// This class will only work with OpenGL ES 2.0.
-/// <para>
-/// FrameBuffers are managed. In case of an OpenGL context loss, which only
-/// happens on Android when a user switches to another application or receives
-/// an incoming call, the framebuffer will be automatically recreated.
-/// </para>
-/// <para>
-/// A FrameBuffer must be disposed if it is no longer needed
-/// </para>
+///     Encapsulates OpenGL ES 2.0 frame buffer objects. This is a simple helper
+///     class which should cover most FBO uses. It will automatically create a
+///     gltexture for the color attachment and a renderbuffer for the depth buffer.
+///     You can get a hold of the gltexture by <see cref="GLFrameBuffer{T}.GetColorBufferTexture()" />.
+///     This class will only work with OpenGL ES 2.0.
+///     <para>
+///         FrameBuffers are managed. In case of an OpenGL context loss, which only
+///         happens on Android when a user switches to another application or receives
+///         an incoming call, the framebuffer will be automatically recreated.
+///     </para>
+///     <para>
+///         A FrameBuffer must be disposed if it is no longer needed
+///     </para>
 /// </summary>
 /// <typeparam name="T">
-/// Types which derive from GLTexture, such as Texture, Cubemap, TextureArray.
+///     Types which derive from GLTexture, such as Texture, Cubemap, TextureArray.
 /// </typeparam>
-[PublicAPI]
 public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 {
     public const int GL_DEPTH24_STENCIL8_OES = 0x88F0;
+
+    protected GLFrameBuffer() => BufferBuilder = null!;
+
+    /// <summary>
+    ///     Creates a GLFrameBuffer from the specifications provided
+    ///     by bufferBuilder.
+    /// </summary>
+    protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
+    {
+        BufferBuilder = bufferBuilder;
+
+        Build();
+    }
 
     // the frame buffers
     public Dictionary< IApplication, List< GLFrameBuffer< T > >? >? Buffers { get; set; } = new();
@@ -67,51 +79,65 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
     protected GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > BufferBuilder { get; set; }
 
-    protected GLFrameBuffer()
-    {
-        BufferBuilder = null!;
-    }
-
     /// <summary>
-    /// Creates a GLFrameBuffer from the specifications provided
-    /// by bufferBuilder.
+    ///     Releases all resources associated with the FrameBuffer.
     /// </summary>
-    protected GLFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
+    public void Dispose()
     {
-        this.BufferBuilder = bufferBuilder;
+        foreach ( T texture in TextureAttachments )
+        {
+            DisposeColorTexture( texture );
+        }
 
-        Build();
+        if ( HasDepthStencilPackedBuffer )
+        {
+            Gdx.GL20.GLDeleteRenderbuffer( DepthStencilPackedBufferHandle );
+        }
+        else
+        {
+            if ( BufferBuilder.HasDepthRenderBuffer )
+            {
+                Gdx.GL20.GLDeleteRenderbuffer( DepthbufferHandle );
+            }
+
+            if ( BufferBuilder.HasStencilRenderBuffer )
+            {
+                Gdx.GL20.GLDeleteRenderbuffer( StencilbufferHandle );
+            }
+        }
+
+        Gdx.GL20.GLDeleteFramebuffer( FramebufferHandle );
+
+        if ( Buffers != null )
+        {
+            if ( Buffers[ Gdx.App ] != null )
+            {
+                Buffers[ Gdx.App ]?.Remove( this );
+            }
+        }
     }
 
     /// <summary>
-    /// Override this method in a derived class to set up the
-    /// backing texture as you like.
+    ///     Override this method in a derived class to set up the
+    ///     backing texture as you like.
     /// </summary>
     protected virtual T CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
-    {
-        throw new GdxRuntimeException( "This method must be overriden by derived class(es)" );
-    }
+        => throw new GdxRuntimeException( "This method must be overriden by derived class(es)" );
 
     /// <summary>
-    /// Override this method in a derived class to dispose the
-    /// backing texture as you like.
+    ///     Override this method in a derived class to dispose the
+    ///     backing texture as you like.
     /// </summary>
-    protected virtual void DisposeColorTexture( T colorTexture )
-    {
-        throw new GdxRuntimeException( "This method must be overriden by derived class(es)" );
-    }
+    protected virtual void DisposeColorTexture( T colorTexture ) => throw new GdxRuntimeException( "This method must be overriden by derived class(es)" );
 
     /// <summary>
-    /// Override this method in a derived class to attach the backing
-    /// texture to the GL framebuffer object.
+    ///     Override this method in a derived class to attach the backing
+    ///     texture to the GL framebuffer object.
     /// </summary>
-    protected virtual void AttachFrameBufferColorTexture( T texture )
-    {
-        throw new GdxRuntimeException( "This method must be overriden by derived class(es)" );
-    }
+    protected virtual void AttachFrameBufferColorTexture( T texture ) => throw new GdxRuntimeException( "This method must be overriden by derived class(es)" );
 
     /// <summary>
-    /// Convenience method to return the first Texture attachment present in the fbo.
+    ///     Convenience method to return the first Texture attachment present in the fbo.
     /// </summary>
     public T GetColorBufferTexture() => TextureAttachments.First();
 
@@ -151,8 +177,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
             if ( BufferBuilder.DepthRenderBufferSpec != null )
             {
-                Gdx.GL20.GLRenderbufferStorage
-                    ( IGL20.GL_RENDERBUFFER, BufferBuilder.DepthRenderBufferSpec.InternalFormat, width, height );
+                Gdx.GL20.GLRenderbufferStorage( IGL20.GL_RENDERBUFFER, BufferBuilder.DepthRenderBufferSpec.InternalFormat, width, height );
             }
         }
 
@@ -163,8 +188,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
             if ( BufferBuilder.StencilRenderBufferSpec != null )
             {
-                Gdx.GL20.GLRenderbufferStorage
-                    ( IGL20.GL_RENDERBUFFER, BufferBuilder.StencilRenderBufferSpec.InternalFormat, width, height );
+                Gdx.GL20.GLRenderbufferStorage( IGL20.GL_RENDERBUFFER, BufferBuilder.StencilRenderBufferSpec.InternalFormat, width, height );
             }
         }
 
@@ -257,8 +281,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasStencilRenderBuffer )
         {
-            Gdx.GL20.GLFramebufferRenderbuffer
-                ( IGL20.GL_FRAMEBUFFER, IGL20.GL_STENCIL_ATTACHMENT, IGL20.GL_RENDERBUFFER, StencilbufferHandle );
+            Gdx.GL20.GLFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER, IGL20.GL_STENCIL_ATTACHMENT, IGL20.GL_RENDERBUFFER, StencilbufferHandle );
         }
 
         if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
@@ -309,16 +332,14 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
             Gdx.GL20.GLRenderbufferStorage( IGL20.GL_RENDERBUFFER, GL_DEPTH24_STENCIL8_OES, width, height );
             Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, 0 );
 
-            Gdx.GL20.GLFramebufferRenderbuffer
-                (
+            Gdx.GL20.GLFramebufferRenderbuffer(
                 IGL20.GL_FRAMEBUFFER,
                 IGL20.GL_DEPTH_ATTACHMENT,
                 IGL20.GL_RENDERBUFFER,
                 DepthStencilPackedBufferHandle
                 );
 
-            Gdx.GL20.GLFramebufferRenderbuffer
-                (
+            Gdx.GL20.GLFramebufferRenderbuffer(
                 IGL20.GL_FRAMEBUFFER,
                 IGL20.GL_STENCIL_ATTACHMENT,
                 IGL20.GL_RENDERBUFFER,
@@ -423,63 +444,19 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
     }
 
     /// <summary>
-    /// Releases all resources associated with the FrameBuffer.
+    ///     Makes the frame buffer current so everything gets drawn to it.
     /// </summary>
-    public void Dispose()
-    {
-        foreach ( T texture in TextureAttachments )
-        {
-            DisposeColorTexture( texture );
-        }
-
-        if ( HasDepthStencilPackedBuffer )
-        {
-            Gdx.GL20.GLDeleteRenderbuffer( DepthStencilPackedBufferHandle );
-        }
-        else
-        {
-            if ( BufferBuilder.HasDepthRenderBuffer )
-            {
-                Gdx.GL20.GLDeleteRenderbuffer( DepthbufferHandle );
-            }
-
-            if ( BufferBuilder.HasStencilRenderBuffer )
-            {
-                Gdx.GL20.GLDeleteRenderbuffer( StencilbufferHandle );
-            }
-        }
-
-        Gdx.GL20.GLDeleteFramebuffer( FramebufferHandle );
-
-        if ( Buffers != null )
-        {
-            if ( Buffers[ Gdx.App ] != null )
-            {
-                Buffers[ Gdx.App ]?.Remove( this );
-            }
-        }
-    }
+    protected virtual void Bind() => Gdx.GL20.GLBindFramebuffer( IGL20.GL_FRAMEBUFFER, FramebufferHandle );
 
     /// <summary>
-    /// Makes the frame buffer current so everything gets drawn to it.
+    ///     Unbinds the framebuffer, all drawing will be performed to the
+    ///     normal framebuffer from here on.
     /// </summary>
-    protected virtual void Bind()
-    {
-        Gdx.GL20.GLBindFramebuffer( IGL20.GL_FRAMEBUFFER, FramebufferHandle );
-    }
+    public void Unbind() => Gdx.GL20.GLBindFramebuffer( IGL20.GL_FRAMEBUFFER, DefaultFramebufferHandle );
 
     /// <summary>
-    /// Unbinds the framebuffer, all drawing will be performed to the
-    /// normal framebuffer from here on.
-    /// </summary>
-    public void Unbind()
-    {
-        Gdx.GL20.GLBindFramebuffer( IGL20.GL_FRAMEBUFFER, DefaultFramebufferHandle );
-    }
-
-    /// <summary>
-    /// Binds the frame buffer and sets the viewport accordingly,
-    /// so everything gets drawn to it.
+    ///     Binds the frame buffer and sets the viewport accordingly,
+    ///     so everything gets drawn to it.
     /// </summary>
     public virtual void Begin()
     {
@@ -488,26 +465,20 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
     }
 
     /// <summary>
-    /// Sets viewport to the dimensions of framebuffer.
-    /// Called by <see cref="Begin()"/>.
+    ///     Sets viewport to the dimensions of framebuffer.
+    ///     Called by <see cref="Begin()" />.
     /// </summary>
-    public void SetFrameBufferViewport()
-    {
-        Gdx.GL20.GLViewport( 0, 0, BufferBuilder.Width, BufferBuilder.Height );
-    }
+    public void SetFrameBufferViewport() => Gdx.GL20.GLViewport( 0, 0, BufferBuilder.Width, BufferBuilder.Height );
 
     /// <summary>
-    /// Unbinds the framebuffer, all drawing will be performed to the
-    /// normal framebuffer from here on.
+    ///     Unbinds the framebuffer, all drawing will be performed to the
+    ///     normal framebuffer from here on.
     /// </summary>
-    public virtual void End()
-    {
-        End( 0, 0, Gdx.Graphics.BackBufferWidth, Gdx.Graphics.BackBufferHeight );
-    }
+    public virtual void End() => End( 0, 0, Gdx.Graphics.BackBufferWidth, Gdx.Graphics.BackBufferHeight );
 
     /// <summary>
-    /// Unbinds the framebuffer and sets viewport sizes, all drawing will be
-    /// performed to the normal framebuffer from here on.
+    ///     Unbinds the framebuffer and sets viewport sizes, all drawing will be
+    ///     performed to the normal framebuffer from here on.
     /// </summary>
     /// <param name="x"> the x-axis position of the viewport in pixels </param>
     /// <param name="y"> the y-asis position of the viewport in pixels </param>
@@ -529,7 +500,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
         {
             throw new GdxRuntimeException( "Buffers is NULL!" );
         }
-        
+
         List< GLFrameBuffer< T > > managedResources = Buffers[ app ] ?? new List< GLFrameBuffer< T > >();
 
         managedResources.Add( frameBuffer );
@@ -537,9 +508,9 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
     }
 
     /// <summary>
-    /// Invalidates all frame buffers. This can be used when the OpenGL context is
-    /// lost to rebuild all managed frame buffers. This assumes that the texture
-    /// attached to this buffer has already been rebuild! Use with care. 
+    ///     Invalidates all frame buffers. This can be used when the OpenGL context is
+    ///     lost to rebuild all managed frame buffers. This assumes that the texture
+    ///     attached to this buffer has already been rebuild! Use with care.
     /// </summary>
     public void InvalidateAllFrameBuffers( IApplication app )
     {
@@ -556,10 +527,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
         }
     }
 
-    public void ClearAllFrameBuffers( IApplication app )
-    {
-        Buffers?.Remove( app );
-    }
+    public void ClearAllFrameBuffers( IApplication app ) => Buffers?.Remove( app );
 
     public StringBuilder GetManagedStatus( in StringBuilder builder )
     {

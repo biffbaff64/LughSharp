@@ -18,7 +18,6 @@ using LibGDXSharp.Graphics.G2D;
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[PublicAPI]
 public interface ITiledMapTile
 {
     public enum Blendmode

@@ -20,7 +20,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
 /// </summary>
-[PublicAPI]
 public class GLVersion : GDXVersion
 {
     public enum GLType
@@ -29,18 +28,14 @@ public class GLVersion : GDXVersion
         OpenGL,
         GLES,
         WebGL,
-        
+
         // --------------------------------------
         // Sub-Categories for OpenGL
         GL10,
         GL20,
         GL30,
-        GL40,
+        GL40
     }
-
-    public string? VendorString   { get; set; }
-    public string? RendererString { get; set; }
-    public GLType  GLtype         { get; set; }
 
     private const string TAG = "GLVersion";
 
@@ -55,13 +50,13 @@ public class GLVersion : GDXVersion
                       string vendorString,
                       string rendererString )
     {
-        this.GLtype = appType switch
-                      {
-                              IApplication.ApplicationType.Android => GLType.GLES,
-                              IApplication.ApplicationType.Desktop => GLType.OpenGL,
-                              IApplication.ApplicationType.WebGL   => GLType.WebGL,
-                              _                                    => GLType.None
-                      };
+        GLtype = appType switch
+                 {
+                     IApplication.ApplicationType.Android => GLType.GLES,
+                     IApplication.ApplicationType.Desktop => GLType.OpenGL,
+                     IApplication.ApplicationType.WebGL   => GLType.WebGL,
+                     _                                    => GLType.None
+                 };
 
         if ( GLtype == GLType.GLES )
         {
@@ -87,9 +82,13 @@ public class GLVersion : GDXVersion
             RendererString  = "";
         }
 
-        this.VendorString   = vendorString;
-        this.RendererString = rendererString;
+        VendorString   = vendorString;
+        RendererString = rendererString;
     }
+
+    public string? VendorString   { get; set; }
+    public string? RendererString { get; set; }
+    public GLType  GLtype         { get; set; }
 
     /// <summary>
     /// </summary>
@@ -120,8 +119,8 @@ public class GLVersion : GDXVersion
     }
 
     /// <summary>
-    /// Forgiving parsing of gl major, minor and release versions as
-    /// some manufacturers don't adhere to spec
+    ///     Forgiving parsing of gl major, minor and release versions as
+    ///     some manufacturers don't adhere to spec
     /// </summary>
     private int ParseInt( string v, int defaultValue )
     {
@@ -138,26 +137,21 @@ public class GLVersion : GDXVersion
     }
 
     /// <summary>
-    /// Checks to see if the current GL connection version is higher, or
-    /// equal to the provided test versions.
+    ///     Checks to see if the current GL connection version is higher, or
+    ///     equal to the provided test versions.
     /// </summary>
     /// <param name="testMajorVersion"> the major version to test against </param>
     /// <param name="testMinorVersion"> the minor version to test against </param>
     /// <returns> true if the current version is higher or equal to the test version </returns>
-    public bool IsVersionEqualToOrHigher( int testMajorVersion, int testMinorVersion )
-    {
-        return ( MajorVersion > testMajorVersion )
-            || ( ( MajorVersion == testMajorVersion ) && ( MinorVersion >= testMinorVersion ) );
-    }
+    public bool IsVersionEqualToOrHigher( int testMajorVersion, int testMinorVersion ) => ( MajorVersion > testMajorVersion )
+                                                                                       || ( ( MajorVersion == testMajorVersion )
+                                                                                         && ( MinorVersion >= testMinorVersion ) );
 
     /// <summary>
     /// </summary>
     /// <returns> a string with the current GL connection data </returns>
-    public string DebugVersionString()
-    {
-        return $"Type: {GLtype}\n"
-             + $"Version: {MajorVersion}:{MinorVersion}:{RevisionVersion}\n"
-             + $"Vendor: {VendorString}\n"
-             + $"Renderer: {RendererString}";
-    }
+    public string DebugVersionString() => $"Type: {GLtype}\n"
+                                        + $"Version: {MajorVersion}:{MinorVersion}:{RevisionVersion}\n"
+                                        + $"Vendor: {VendorString}\n"
+                                        + $"Renderer: {RendererString}";
 }

@@ -16,9 +16,16 @@
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
-[PublicAPI]
 public class FrameBufferTextureAttachmentSpec
 {
+
+    public FrameBufferTextureAttachmentSpec( int internalformat, int format, int type )
+    {
+        InternalFormat = internalformat;
+        Format         = format;
+        Type           = type;
+    }
+
     public int InternalFormat { get; }
     public int Format         { get; }
     public int Type           { get; }
@@ -28,13 +35,5 @@ public class FrameBufferTextureAttachmentSpec
     public bool IsDepth   { get; init; }
     public bool IsStencil { get; init; }
 
-    public FrameBufferTextureAttachmentSpec( int internalformat, int format, int type )
-    {
-        this.InternalFormat = internalformat;
-        this.Format         = format;
-        this.Type           = type;
-    }
-
-    public bool IsColorTexture => ( !IsDepth && !IsStencil );
+    public bool IsColorTexture => !IsDepth && !IsStencil;
 }
-

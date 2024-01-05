@@ -26,137 +26,87 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// <para>
-/// A shader program encapsulates a vertex and fragment shader pair
-/// linked to form a shader program.
-/// </para>
-/// <para>
-/// After construction a ShaderProgram can be used to draw <see cref="Mesh"/>.
-/// To make the GPU use a specific ShaderProgram the programs <see cref="Bind()"/>
-/// method must be used which effectively binds the program.
-/// </para>
-/// <para>
-/// When a ShaderProgram is bound one can set uniforms, vertex attributes and
-/// attributes as needed via the respective methods.
-/// </para>
-/// <para>
-/// A ShaderProgram must be disposed via a call to <see cref="Dispose()"/>
-/// when it is no longer needed
-/// </para>
-/// <para>
-/// ShaderPrograms are managed. In case the OpenGL context is lost all shaders
-/// get invalidated and have to be reloaded. Managed ShaderPrograms are
-/// automatically reloaded when the OpenGL context is recreated so you don't
-/// have to do this manually.
-/// </para>
+///     <para>
+///         A shader program encapsulates a vertex and fragment shader pair
+///         linked to form a shader program.
+///     </para>
+///     <para>
+///         After construction a ShaderProgram can be used to draw <see cref="Mesh" />.
+///         To make the GPU use a specific ShaderProgram the programs <see cref="Bind()" />
+///         method must be used which effectively binds the program.
+///     </para>
+///     <para>
+///         When a ShaderProgram is bound one can set uniforms, vertex attributes and
+///         attributes as needed via the respective methods.
+///     </para>
+///     <para>
+///         A ShaderProgram must be disposed via a call to <see cref="Dispose()" />
+///         when it is no longer needed
+///     </para>
+///     <para>
+///         ShaderPrograms are managed. In case the OpenGL context is lost all shaders
+///         get invalidated and have to be reloaded. Managed ShaderPrograms are
+///         automatically reloaded when the OpenGL context is recreated so you don't
+///         have to do this manually.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class ShaderProgram
 {
     private const int CACHED_NOT_FOUND = -1;
     private const int NOT_CACHED       = -2;
 
-    #region default attribute names
-
-    public const string POSITION_ATTRIBUTE   = "a_position";
-    public const string NORMAL_ATTRIBUTE     = "a_normal";
-    public const string COLOR_ATTRIBUTE      = "a_color";
-    public const string TEXCOORD_ATTRIBUTE   = "a_texCoord";
-    public const string TANGENT_ATTRIBUTE    = "a_tangent";
-    public const string BINORMAL_ATTRIBUTE   = "a_binormal";
-    public const string BONEWEIGHT_ATTRIBUTE = "a_boneWeight";
-
-    #endregion default attribute names
-
     /// <summary>
-    /// flag indicating whether attributes & uniforms must be present
-    /// at all times.
+    ///     flag indicating whether attributes & uniforms must be present
+    ///     at all times.
     /// </summary>
     public readonly static bool Pedantic = true;
 
     /// <summary>
-    /// code that is always added to the vertex shader code, typically used to
-    /// inject a #version line. Note that this is added as-is, you should include
-    /// a newline (`\n`) if needed. 
+    ///     code that is always added to the vertex shader code, typically used to
+    ///     inject a #version line. Note that this is added as-is, you should include
+    ///     a newline (`\n`) if needed.
     /// </summary>
     public readonly static string PrependVertexCode = "";
 
     /// <summary>
-    /// code that is always added to every fragment shader code, typically used
-    /// to inject a #version line. Note that this is added as-is, you should
-    /// include a newline (`\n`) if needed. 
+    ///     code that is always added to every fragment shader code, typically used
+    ///     to inject a #version line. Note that this is added as-is, you should
+    ///     include a newline (`\n`) if needed.
     /// </summary>
     public readonly static string PrependFragmentCode = "";
 
     /// <summary>
-    /// the list of currently available shaders
+    ///     the list of currently available shaders
     /// </summary>
     private readonly static Dictionary< IApplication, List< ShaderProgram > > Shaders = new();
 
     /// <summary>
-    /// the log
+    ///     attribute lookup
+    /// </summary>
+    private readonly Dictionary< string, int > _attributes = new();
+    private readonly Dictionary< string, int > _attributeSizes = new();
+    private readonly Dictionary< string, int > _attributeTypes = new();
+
+    private readonly FloatBuffer _matrix;
+
+    private readonly IntBuffer _parameters = BufferUtils.NewIntBuffer( 1 );
+    private readonly IntBuffer _progType   = BufferUtils.NewIntBuffer( 1 );
+
+    /// <summary>
+    ///     uniform lookup
+    /// </summary>
+    private readonly Dictionary< string, int > _uniforms = new();
+    private readonly Dictionary< string, int > _uniformSizes = new();
+    private readonly Dictionary< string, int > _uniformTypes = new();
+    private          int                       _fragmentShaderHandle;
+    private          bool                      _invalidated;
+
+    /// <summary>
+    ///     the log
     /// </summary>
     private string _log = "";
 
-    /// <summary>
-    /// uniform lookup
-    /// </summary>
-    private readonly Dictionary< string, int > _uniforms = new();
-    private readonly Dictionary< string, int > _uniformTypes = new();
-    private readonly Dictionary< string, int > _uniformSizes = new();
-    private          string[]                  _uniformNames = null!;
-
-    /// <summary>
-    /// attribute lookup
-    /// </summary>
-    private readonly Dictionary< string, int > _attributes = new();
-    private readonly Dictionary< string, int > _attributeTypes = new();
-    private readonly Dictionary< string, int > _attributeSizes = new();
-    private          string[]                  _attributeNames = null!;
-
-    private readonly FloatBuffer _matrix;
-    private readonly string      _vertexShaderSource;
-    private readonly string      _fragmentShaderSource;
-
-    private int  _programHandle;
-    private int  _vertexShaderHandle;
-    private int  _fragmentShaderHandle;
-    private bool _invalidated;
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region properties
-
-    public static string ManagedStatus
-    {
-        get
-        {
-            var builder = new StringBuilder( "Managed shaders/app: { " );
-
-            foreach ( IApplication app in Shaders.Keys )
-            {
-                builder.Append( Shaders[ app ].Count );
-                builder.Append( ' ' );
-            }
-
-            builder.Append( '}' );
-
-            return builder.ToString();
-        }
-    }
-
-    public bool IsCompiled { get; set; }
-
-    public static int NumManagedShaderPrograms => Shaders[ Gdx.App ].Count;
-
-    public string[] Attributes           => _attributeNames;
-    public string[] Uniforms             => _uniformNames;
-    public string   VertexShaderSource   => _vertexShaderSource;
-    public string   FragmentShaderSource => _fragmentShaderSource;
-    public int      Handle               => _programHandle;
-
-    #endregion properties
+    private int _vertexShaderHandle;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -181,9 +131,9 @@ public class ShaderProgram
             fragmentShader = PrependFragmentCode + fragmentShader;
         }
 
-        this._vertexShaderSource   = vertexShader;
-        this._fragmentShaderSource = fragmentShader;
-        this._matrix               = BufferUtils.NewFloatBuffer( 16 );
+        VertexShaderSource   = vertexShader;
+        FragmentShaderSource = fragmentShader;
+        _matrix              = BufferUtils.NewFloatBuffer( 16 );
 
         CompileShaders( vertexShader, fragmentShader );
 
@@ -205,8 +155,32 @@ public class ShaderProgram
     {
     }
 
+//    internal readonly static IntBuffer Intbuf = BufferUtils.NewIntBuffer( 1 );
+
+    /// <returns>
+    ///     the log info for the shader compilation and program linking stage.
+    ///     The shader needs to be bound for this method to have an effect.
+    /// </returns>
+    public string Log
+    {
+        get
+        {
+            if ( IsCompiled )
+            {
+                // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
+                // int infoLogLength = intbuf.get(0);
+                // if (infoLogLength > 1) {
+                _log = Gdx.GL20.GLGetProgramInfoLog( Handle );
+
+                // }
+            }
+
+            return _log;
+        }
+    }
+
     /// <summary>
-    /// Loads and compiles the shaders, creates a new program and links the shaders.
+    ///     Loads and compiles the shaders, creates a new program and links the shaders.
     /// </summary>
     /// <param name="vertexShader"> </param>
     /// <param name="fragmentShader">  </param>
@@ -222,9 +196,9 @@ public class ShaderProgram
             return;
         }
 
-        _programHandle = LinkProgram( CreateProgram() );
+        Handle = LinkProgram( CreateProgram() );
 
-        if ( _programHandle == -1 )
+        if ( Handle == -1 )
         {
             IsCompiled = false;
 
@@ -268,7 +242,6 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <returns></returns>
     protected int CreateProgram()
@@ -311,30 +284,6 @@ public class ShaderProgram
         return program;
     }
 
-//    internal readonly static IntBuffer Intbuf = BufferUtils.NewIntBuffer( 1 );
-
-    /// <returns>
-    /// the log info for the shader compilation and program linking stage.
-    /// The shader needs to be bound for this method to have an effect.
-    /// </returns>
-    public string Log
-    {
-        get
-        {
-            if ( IsCompiled )
-            {
-                // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
-                // int infoLogLength = intbuf.get(0);
-                // if (infoLogLength > 1) {
-                _log = Gdx.GL20.GLGetProgramInfoLog( _programHandle );
-
-                // }
-            }
-
-            return _log;
-        }
-    }
-
     private int FetchAttributeLocation( string name )
     {
         // -2 == not yet cached
@@ -343,17 +292,14 @@ public class ShaderProgram
 
         if ( ( location = _attributes.Get( name, -2 ) ) == -2 )
         {
-            location            = Gdx.GL20.GLGetAttribLocation( _programHandle, name );
+            location            = Gdx.GL20.GLGetAttribLocation( Handle, name );
             _attributes[ name ] = location;
         }
 
         return location;
     }
 
-    private int FetchUniformLocation( string name )
-    {
-        return FetchUniformLocation( name, Pedantic );
-    }
+    private int FetchUniformLocation( string name ) => FetchUniformLocation( name, Pedantic );
 
     public int FetchUniformLocation( string name, bool pedant )
     {
@@ -363,7 +309,7 @@ public class ShaderProgram
 
         if ( ( location = _uniforms.Get( name, -2 ) ) == -2 )
         {
-            location = Gdx.GL20.GLGetUniformLocation( _programHandle, name );
+            location = Gdx.GL20.GLGetUniformLocation( Handle, name );
 
             if ( ( location == -1 ) && pedant )
             {
@@ -382,8 +328,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/>
-    /// must be bound for this to work.
+    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" />
+    ///     must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value"> the value  </param>
@@ -400,8 +346,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/>
-    /// must be bound for this to work.
+    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" />
+    ///     must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="count"> the first value </param>
@@ -419,8 +365,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value1"> the first value </param>
@@ -439,8 +385,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value"> the value  </param>
@@ -457,8 +403,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value1"> the first value </param>
@@ -476,8 +422,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value1"> the first value </param>
@@ -496,8 +442,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/>
-    /// must be bound for this to work.
+    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" />
+    ///     must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="x"></param>
@@ -565,32 +511,23 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform matrix with the given name. The <see cref="ShaderProgram"/>
-    /// must be bound for this to work.
+    ///     Sets the uniform matrix with the given name. The <see cref="ShaderProgram" />
+    ///     must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix  </param>
-    public void SetUniformMatrix( string name, Matrix4 matrix )
-    {
-        SetUniformMatrix( name, matrix, false );
-    }
+    public void SetUniformMatrix( string name, Matrix4 matrix ) => SetUniformMatrix( name, matrix, false );
 
     /// <summary>
-    /// Sets the uniform matrix with the given name. The <see cref="ShaderProgram"/>
-    /// must be bound for this to work.
+    ///     Sets the uniform matrix with the given name. The <see cref="ShaderProgram" />
+    ///     must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix </param>
     /// <param name="transpose"> whether the matrix should be transposed  </param>
-    public void SetUniformMatrix( string name, Matrix4 matrix, bool transpose )
-    {
-        SetUniformMatrix( FetchUniformLocation( name ), matrix, transpose );
-    }
+    public void SetUniformMatrix( string name, Matrix4 matrix, bool transpose ) => SetUniformMatrix( FetchUniformLocation( name ), matrix, transpose );
 
-    public void SetUniformMatrix( int location, Matrix4 matrix )
-    {
-        SetUniformMatrix( location, matrix, false );
-    }
+    public void SetUniformMatrix( int location, Matrix4 matrix ) => SetUniformMatrix( location, matrix, false );
 
     public void SetUniformMatrix( int location, Matrix4 matrix, bool transpose )
     {
@@ -599,32 +536,23 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform matrix with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform matrix with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix  </param>
-    public void SetUniformMatrix( string name, Matrix3 matrix )
-    {
-        SetUniformMatrix( name, matrix, false );
-    }
+    public void SetUniformMatrix( string name, Matrix3 matrix ) => SetUniformMatrix( name, matrix, false );
 
     /// <summary>
-    /// Sets the uniform matrix with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform matrix with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix </param>
     /// <param name="transpose"> whether the uniform matrix should be transposed  </param>
-    public void SetUniformMatrix( string name, Matrix3 matrix, bool transpose )
-    {
-        SetUniformMatrix( FetchUniformLocation( name ), matrix, transpose );
-    }
+    public void SetUniformMatrix( string name, Matrix3 matrix, bool transpose ) => SetUniformMatrix( FetchUniformLocation( name ), matrix, transpose );
 
-    public void SetUniformMatrix( int location, Matrix3 matrix )
-    {
-        SetUniformMatrix( location, matrix, false );
-    }
+    public void SetUniformMatrix( int location, Matrix3 matrix ) => SetUniformMatrix( location, matrix, false );
 
     public void SetUniformMatrix( int location, Matrix3 matrix, bool transpose )
     {
@@ -633,8 +561,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets an array of uniform matrices with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets an array of uniform matrices with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name">the name of the uniform </param>
     /// <param name="buffer">buffer containing the matrix data </param>
@@ -648,7 +576,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets an array of uniform matrices with the given name. The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets an array of uniform matrices with the given name. The <see cref="ShaderProgram" /> must be bound for this to
+    ///     work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="buffer"> buffer containing the matrix data </param>
@@ -668,12 +597,10 @@ public class ShaderProgram
     }
 
     public void SetUniformMatrix4Fv( string name, float[] values, int offset, int length )
-    {
-        SetUniformMatrix4Fv( FetchUniformLocation( name ), values, offset, length );
-    }
+        => SetUniformMatrix4Fv( FetchUniformLocation( name ), values, offset, length );
 
     /// <summary>
-    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="values"> x and y as the first and second values respectively  </param>
@@ -690,7 +617,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="values"> x, y and z as the first, second and third values respectively  </param>
@@ -707,35 +634,29 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="values"> r, g, b and a as the first through fourth values respectively  </param>
-    public void SetUniformf( string name, Color values )
-    {
-        Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), values.R, values.G, values.B, values.A );
-    }
+    public void SetUniformf( string name, Color values ) => Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), values.R, values.G, values.B, values.A );
 
-    public void SetUniformf( int location, Color values )
-    {
-        Gdx.GL20.GLUniform4F( location, values.R, values.G, values.B, values.A );
-    }
+    public void SetUniformf( int location, Color values ) => Gdx.GL20.GLUniform4F( location, values.R, values.G, values.B, values.A );
 
     /// <summary>
-    /// Sets the vertex attribute with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the vertex attribute with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name">The attribute name.</param>
     /// <param name="size">
-    /// The number of components, must be >= 1 and &lt;= 4.
+    ///     The number of components, must be >= 1 and &lt;= 4.
     /// </param>
     /// <param name="type">
-    /// The type, must be one of IGL20.GL_Byte, IGL20.GL_Unsigned_Byte, IGL20.GL_Short,
-    /// IGL20.GL_Unsigned_Short, IGL20.GL_Fixed, or IGL20.GL_Float.
-    /// <para>GL_F will not work on the desktop.</para>
+    ///     The type, must be one of IGL20.GL_Byte, IGL20.GL_Unsigned_Byte, IGL20.GL_Short,
+    ///     IGL20.GL_Unsigned_Short, IGL20.GL_Fixed, or IGL20.GL_Float.
+    ///     <para>GL_F will not work on the desktop.</para>
     /// </param>
     /// <param name="normalize">
-    /// Whether fixed point data should be normalized. Will not work on the desktop.
+    ///     Whether fixed point data should be normalized. Will not work on the desktop.
     /// </param>
     /// <param name="stride">The stride in bytes between successive attributes.</param>
     /// <param name="buffer">The buffer containing the vertex attributes.</param>
@@ -760,22 +681,22 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Sets the vertex attribute with the given name.
-    /// The <see cref="ShaderProgram"/> must be bound for this to work.
+    ///     Sets the vertex attribute with the given name.
+    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
     /// </summary>
     /// <param name="name">The attribute name.</param>
     /// <param name="size">The number of components, must be >= 1 and &lt;= 4.</param>
     /// <param name="type">
-    /// The type, must be one of IGL20.GL_Byte, IGL20.GL_Unsigned_Byte, IGL20.GL_Short,
-    /// IGL20.GL_Unsigned_Short, IGL20.GL_Fixed, or IGL20.GL_Float.
-    /// <para>GL_Fixed will not work on the desktop.</para>
+    ///     The type, must be one of IGL20.GL_Byte, IGL20.GL_Unsigned_Byte, IGL20.GL_Short,
+    ///     IGL20.GL_Unsigned_Short, IGL20.GL_Fixed, or IGL20.GL_Float.
+    ///     <para>GL_Fixed will not work on the desktop.</para>
     /// </param>
     /// <param name="normalize">
-    /// Whether fixed point data should be normalized. Will not work on the desktop.
+    ///     Whether fixed point data should be normalized. Will not work on the desktop.
     /// </param>
     /// <param name="stride">The stride in bytes between successive attributes.</param>
     /// <param name="offset">
-    /// Byte offset into the vertex buffer object bound to IGL20.GL_Array_Buffer.
+    ///     Byte offset into the vertex buffer object bound to IGL20.GL_Array_Buffer.
     /// </param>
     public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, int offset )
     {
@@ -800,25 +721,25 @@ public class ShaderProgram
     public void Bind()
     {
         CheckManaged();
-        Gdx.GL20.GLUseProgram( _programHandle );
+        Gdx.GL20.GLUseProgram( Handle );
     }
 
     /// <summary>
-    /// Disposes all resources associated with this shader.
-    /// Must be called when the shader is no longer used.
+    ///     Disposes all resources associated with this shader.
+    ///     Must be called when the shader is no longer used.
     /// </summary>
     public void Dispose()
     {
         Gdx.GL20.GLUseProgram( 0 );
         Gdx.GL20.GLDeleteShader( _vertexShaderHandle );
         Gdx.GL20.GLDeleteShader( _fragmentShaderHandle );
-        Gdx.GL20.GLDeleteProgram( _programHandle );
+        Gdx.GL20.GLDeleteProgram( Handle );
 
         Shaders.Get( Gdx.App ).Remove( this );
     }
 
     /// <summary>
-    /// Disables the vertex attribute with the given name
+    ///     Disables the vertex attribute with the given name
     /// </summary>
     /// <param name="name"> the vertex attribute name  </param>
     public void DisableVertexAttribute( string name )
@@ -842,7 +763,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Enables the vertex attribute with the given name
+    ///     Enables the vertex attribute with the given name
     /// </summary>
     /// <param name="name"> the vertex attribute name  </param>
     public void EnableVertexAttribute( string name )
@@ -869,7 +790,7 @@ public class ShaderProgram
     {
         if ( _invalidated )
         {
-            CompileShaders( _vertexShaderSource, _fragmentShaderSource );
+            CompileShaders( VertexShaderSource, FragmentShaderSource );
             _invalidated = false;
         }
     }
@@ -883,8 +804,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    /// Invalidates all shaders so the next time they are used new
-    /// handles are generated.
+    ///     Invalidates all shaders so the next time they are used new
+    ///     handles are generated.
     /// </summary>
     /// <param name="app">  </param>
     public static void InvalidateAllShaderPrograms( IApplication app )
@@ -898,13 +819,10 @@ public class ShaderProgram
         }
     }
 
-    public static void ClearAllShaderPrograms( IApplication app )
-    {
-        Shaders.Remove( app );
-    }
+    public static void ClearAllShaderPrograms( IApplication app ) => Shaders.Remove( app );
 
     /// <summary>
-    /// Sets the given attribute
+    ///     Sets the given attribute
     /// </summary>
     /// <param name="name"> the name of the attribute </param>
     /// <param name="value1"> the first value </param>
@@ -912,12 +830,7 @@ public class ShaderProgram
     /// <param name="value3"> the third value </param>
     /// <param name="value4"> the fourth value  </param>
     public void SetAttributef( string name, float value1, float value2, float value3, float value4 )
-    {
-        Gdx.GL20.GLVertexAttrib4F( FetchAttributeLocation( name ), value1, value2, value3, value4 );
-    }
-
-    private readonly IntBuffer _parameters = BufferUtils.NewIntBuffer( 1 );
-    private readonly IntBuffer _progType   = BufferUtils.NewIntBuffer( 1 );
+        => Gdx.GL20.GLVertexAttrib4F( FetchAttributeLocation( name ), value1, value2, value3, value4 );
 
     /// <summary>
     /// </summary>
@@ -925,11 +838,11 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Gdx.GL20.GLGetProgramiv( _programHandle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
+        Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
 
         var numUniforms = _parameters.Get( 0 );
 
-        _uniformNames = new string[ numUniforms ];
+        Uniforms = new string[ numUniforms ];
 
         for ( var i = 0; i < numUniforms; i++ )
         {
@@ -938,14 +851,14 @@ public class ShaderProgram
 
             _progType.Clear();
 
-            var name = Gdx.GL20.GLGetActiveUniform( _programHandle, i, _parameters, _progType );
+            var name = Gdx.GL20.GLGetActiveUniform( Handle, i, _parameters, _progType );
 
-            var location = Gdx.GL20.GLGetUniformLocation( _programHandle, name );
+            var location = Gdx.GL20.GLGetUniformLocation( Handle, name );
 
             _uniforms[ name ]     = location;
             _uniformTypes[ name ] = _progType.Get( 0 );
             _uniformSizes[ name ] = _parameters.Get( 0 );
-            _uniformNames[ i ]    = name;
+            Uniforms[ i ]         = name;
         }
     }
 
@@ -955,11 +868,11 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Gdx.GL20.GLGetProgramiv( _programHandle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
+        Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
 
         var numAttributes = _parameters.Get( 0 );
 
-        _attributeNames = new string[ numAttributes ];
+        Attributes = new string[ numAttributes ];
 
         for ( var i = 0; i < numAttributes; i++ )
         {
@@ -968,75 +881,103 @@ public class ShaderProgram
 
             _progType.Clear();
 
-            var name     = Gdx.GL20.GLGetActiveAttrib( _programHandle, i, _parameters, _progType );
-            var location = Gdx.GL20.GLGetAttribLocation( _programHandle, name );
+            var name     = Gdx.GL20.GLGetActiveAttrib( Handle, i, _parameters, _progType );
+            var location = Gdx.GL20.GLGetAttribLocation( Handle, name );
 
             _attributes[ name ]     = location;
             _attributeTypes[ name ] = _progType.Get( 0 );
             _attributeSizes[ name ] = _parameters.Get( 0 );
-            _attributeNames[ i ]    = name;
+            Attributes[ i ]         = name;
         }
     }
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns> whether the attribute is available in the shader  </returns>
-    public bool HasAttribute( string name )
-    {
-        return _attributes.ContainsKey( name );
-    }
+    public bool HasAttribute( string name ) => _attributes.ContainsKey( name );
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns>
-    /// the type of the attribute, one of <see cref="IGL20.GL_FLOAT"/>,
-    /// <see cref="IGL20.GL_FLOAT_VEC2"/> etc.
+    ///     the type of the attribute, one of <see cref="IGL20.GL_FLOAT" />,
+    ///     <see cref="IGL20.GL_FLOAT_VEC2" /> etc.
     /// </returns>
-    public int GetAttributeType( string name )
-    {
-        return _attributeTypes.GetValueOrDefault( name, 0 );
-    }
+    public int GetAttributeType( string name ) => _attributeTypes.GetValueOrDefault( name, 0 );
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns> the location of the attribute or -1.  </returns>
-    public int GetAttributeLocation( string name )
-    {
-        return _attributes.GetValueOrDefault( name, 0 );
-    }
+    public int GetAttributeLocation( string name ) => _attributes.GetValueOrDefault( name, 0 );
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns> the size of the attribute or 0.</returns>
-    public int GetAttributeSize( string name )
-    {
-        return _attributeSizes.GetValueOrDefault( name, 0 );
-    }
+    public int GetAttributeSize( string name ) => _attributeSizes.GetValueOrDefault( name, 0 );
 
     /// <param name="name"> the name of the uniform.</param>
     /// <returns> whether the uniform is available in the shader.</returns>
-    public bool HasUniform( string name )
-    {
-        return _uniforms.ContainsKey( name );
-    }
+    public bool HasUniform( string name ) => _uniforms.ContainsKey( name );
 
     /// <param name="name"> the name of the uniform </param>
     /// <returns>
-    /// the type of the uniform, one of <see cref="IGL20.GL_FLOAT"/>,
-    /// <see cref="IGL20.GL_FLOAT_VEC2"/> etc.
+    ///     the type of the uniform, one of <see cref="IGL20.GL_FLOAT" />,
+    ///     <see cref="IGL20.GL_FLOAT_VEC2" /> etc.
     /// </returns>
-    public int GetUniformType( string name )
-    {
-        return _uniformTypes.GetValueOrDefault( name, 0 );
-    }
+    public int GetUniformType( string name ) => _uniformTypes.GetValueOrDefault( name, 0 );
 
     /// <param name="name"> the name of the uniform </param>
     /// <returns> the location of the uniform or -1.</returns>
-    public int GetUniformLocation( string name )
-    {
-        return _uniforms.GetValueOrDefault( name, -1 );
-    }
+    public int GetUniformLocation( string name ) => _uniforms.GetValueOrDefault( name, -1 );
 
     /// <param name="name">The name of the uniform</param>
     /// <returns> the size of the uniform or 0.</returns>
-    public int GetUniformSize( string name )
+    public int GetUniformSize( string name ) => _uniformSizes.GetValueOrDefault( name, 0 );
+
+    #region default attribute names
+
+    public const string POSITION_ATTRIBUTE   = "a_position";
+    public const string NORMAL_ATTRIBUTE     = "a_normal";
+    public const string COLOR_ATTRIBUTE      = "a_color";
+    public const string TEXCOORD_ATTRIBUTE   = "a_texCoord";
+    public const string TANGENT_ATTRIBUTE    = "a_tangent";
+    public const string BINORMAL_ATTRIBUTE   = "a_binormal";
+    public const string BONEWEIGHT_ATTRIBUTE = "a_boneWeight";
+
+    #endregion default attribute names
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    public static string ManagedStatus
     {
-        return _uniformSizes.GetValueOrDefault( name, 0 );
+        get
+        {
+            var builder = new StringBuilder( "Managed shaders/app: { " );
+
+            foreach ( IApplication app in Shaders.Keys )
+            {
+                builder.Append( Shaders[ app ].Count );
+                builder.Append( ' ' );
+            }
+
+            builder.Append( '}' );
+
+            return builder.ToString();
+        }
     }
+
+    public bool IsCompiled { get; set; }
+
+    public static int NumManagedShaderPrograms => Shaders[ Gdx.App ].Count;
+
+    public string[] Attributes { get; private set; } = null!;
+
+    public string[] Uniforms { get; private set; } = null!;
+
+    public string VertexShaderSource { get; }
+
+    public string FragmentShaderSource { get; }
+
+    public int Handle { get; private set; }
+
+    #endregion properties
+
 }

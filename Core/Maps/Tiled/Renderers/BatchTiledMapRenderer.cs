@@ -21,19 +21,9 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
 namespace LibGDXSharp.Maps.Tiled.Renderers;
 
-[PublicAPI]
 public class BatchTileMapRenderer : ITiledMapRenderer
 {
     protected const int NUM_VERTICES = 20;
-
-    public TiledMap       TiledMap    { get; set; }
-    public bool           OwnsBatch   { get; set; }
-    public RectangleShape ImageBounds { get; set; } = new();
-
-    protected IBatch         Batch      { get; set; }
-    protected RectangleShape ViewBounds { get; set; }
-    protected float          UnitScale  { get; set; }
-    protected float[]        Vertices   { get; set; } = new float[ NUM_VERTICES ];
 
     public BatchTileMapRenderer() : this( new TiledMap() )
     {
@@ -65,12 +55,21 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <param name="ownsBatch"></param>
     protected BatchTileMapRenderer( TiledMap map, float unitScale, IBatch batch, bool ownsBatch = false )
     {
-        this.TiledMap   = map;
-        this.UnitScale  = unitScale;
-        this.ViewBounds = new RectangleShape();
-        this.Batch      = batch;
-        this.OwnsBatch  = ownsBatch;
+        TiledMap   = map;
+        UnitScale  = unitScale;
+        ViewBounds = new RectangleShape();
+        Batch      = batch;
+        OwnsBatch  = ownsBatch;
     }
+
+    public TiledMap       TiledMap    { get; set; }
+    public bool           OwnsBatch   { get; set; }
+    public RectangleShape ImageBounds { get; set; } = new();
+
+    protected IBatch         Batch      { get; set; }
+    protected RectangleShape ViewBounds { get; set; }
+    protected float          UnitScale  { get; set; }
+    protected float[]        Vertices   { get; set; } = new float[ NUM_VERTICES ];
 
     /// <summary>
     /// </summary>
@@ -134,49 +133,6 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <summary>
     /// </summary>
     /// <param name="layer"></param>
-    protected void RenderMapLayer( MapLayer layer )
-    {
-        if ( !layer.Visible )
-        {
-            return;
-        }
-
-        if ( layer is MapGroupLayer groupLayer )
-        {
-            MapLayers childLayers = groupLayer.Layers;
-
-            for ( int i = 0; i < childLayers.Size(); i++ )
-            {
-                MapLayer childLayer = childLayers.Get( i );
-
-                if ( !childLayer.Visible )
-                {
-                    continue;
-                }
-
-                RenderMapLayer( childLayer );
-            }
-        }
-        else
-        {
-            if ( layer is TiledMapTileLayer tileLayer )
-            {
-                RenderTileLayer( tileLayer );
-            }
-            else if ( layer is TiledMapImageLayer imageLayer )
-            {
-                RenderImageLayer( imageLayer );
-            }
-            else
-            {
-                RenderObjects( layer );
-            }
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="layer"></param>
     public void RenderObjects( MapLayer layer )
     {
         foreach ( MapObject obj in layer.Objects )
@@ -206,12 +162,11 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     {
         Color batchColor = Batch.Color;
 
-        var color = Color.ToFloatBits
-            (
-             batchColor.R,
-             batchColor.G,
-             batchColor.B,
-             batchColor.A * layer.Opacity
+        var color = Color.ToFloatBits(
+            batchColor.R,
+            batchColor.G,
+            batchColor.B,
+            batchColor.A * layer.Opacity
             );
 
         TextureRegion? region = layer.Region;
@@ -232,10 +187,10 @@ public class BatchTileMapRenderer : ITiledMapRenderer
 
         if ( ViewBounds.Contains( ImageBounds ) || ViewBounds.Overlaps( ImageBounds ) )
         {
-            float u1 = region.U;
-            float v1 = region.V2;
-            float u2 = region.U2;
-            float v2 = region.V;
+            var u1 = region.U;
+            var v1 = region.V2;
+            var u2 = region.U2;
+            var v2 = region.V;
 
             Vertices[ IBatch.X1 ] = x1;
             Vertices[ IBatch.Y1 ] = y1;
@@ -266,7 +221,50 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     }
 
     /// <summary>
-    /// Called before the rendering of all layers starts.
+    /// </summary>
+    /// <param name="layer"></param>
+    protected void RenderMapLayer( MapLayer layer )
+    {
+        if ( !layer.Visible )
+        {
+            return;
+        }
+
+        if ( layer is MapGroupLayer groupLayer )
+        {
+            MapLayers childLayers = groupLayer.Layers;
+
+            for ( var i = 0; i < childLayers.Size(); i++ )
+            {
+                MapLayer childLayer = childLayers.Get( i );
+
+                if ( !childLayer.Visible )
+                {
+                    continue;
+                }
+
+                RenderMapLayer( childLayer );
+            }
+        }
+        else
+        {
+            if ( layer is TiledMapTileLayer tileLayer )
+            {
+                RenderTileLayer( tileLayer );
+            }
+            else if ( layer is TiledMapImageLayer imageLayer )
+            {
+                RenderImageLayer( imageLayer );
+            }
+            else
+            {
+                RenderObjects( layer );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Called before the rendering of all layers starts.
     /// </summary>
     protected void BeginRender()
     {
@@ -275,10 +273,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     }
 
     /// <summary>
-    /// Called after the rendering of all layers ended.
+    ///     Called after the rendering of all layers ended.
     /// </summary>
-    protected void EndRender()
-    {
-        Batch.End();
-    }
+    protected void EndRender() => Batch.End();
 }

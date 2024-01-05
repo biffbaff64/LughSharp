@@ -19,44 +19,38 @@ using LibGDXSharp.Utils.Collections;
 namespace LibGDXSharp.Maths;
 
 /// <summary>
-/// Computes the convex hull of a set of points using the monotone
-/// chain convex hull algorithm (aka Andrew's algorithm).
+///     Computes the convex hull of a set of points using the monotone
+///     chain convex hull algorithm (aka Andrew's algorithm).
 /// </summary>
-[PublicAPI]
 public class ConvexHull
 {
-    private readonly List< int >   _quicksortStack  = new();
     private readonly List< float > _hull            = new();
     private readonly List< int >   _indices         = new();
     private readonly List< short > _originalIndices = new();
+    private readonly List< int >   _quicksortStack  = new();
 
     private float[]? _sortedPoints;
 
-    public List< float > ComputePolygon( List< float > points, bool sorted )
-    {
-        return ComputePolygon( points.ToArray(), 0, points.Count, sorted );
-    }
+    public List< float > ComputePolygon( List< float > points, bool sorted ) => ComputePolygon( points.ToArray(), 0, points.Count, sorted );
 
-    public List< float > ComputePolygon( float[] polygon, bool sorted )
-    {
-        return ComputePolygon( polygon, 0, polygon.Length, sorted );
-    }
+    public List< float > ComputePolygon( float[] polygon, bool sorted ) => ComputePolygon( polygon, 0, polygon.Length, sorted );
 
     /// <summary>
-    /// Returns the convex hull polygon for the given point cloud. </summary>
+    ///     Returns the convex hull polygon for the given point cloud.
+    /// </summary>
     /// <param name="points">
-    /// x,y pairs describing points. Duplicate points will result in undefined behavior.
+    ///     x,y pairs describing points. Duplicate points will result in undefined behavior.
     /// </param>
     /// <param name="offset"></param>
     /// <param name="count"></param>
     /// <param name="sorted">
-    /// If false, the points will be sorted by the x coordinate then the y coordinate,
-    /// which is required by the convex hull algorithm. If sorting is done the input
-    /// array is not modified and count additional working memory is needed.
+    ///     If false, the points will be sorted by the x coordinate then the y coordinate,
+    ///     which is required by the convex hull algorithm. If sorting is done the input
+    ///     array is not modified and count additional working memory is needed.
     /// </param>
     /// <returns>
-    /// pairs of coordinates that describe the convex hull polygon in counterclockwise
-    /// order. Note the returned array is reused for later calls to the same method.
+    ///     pairs of coordinates that describe the convex hull polygon in counterclockwise
+    ///     order. Note the returned array is reused for later calls to the same method.
     /// </returns>
     public List< float > ComputePolygon( float[] points, int offset, int count, bool sorted )
     {
@@ -76,7 +70,7 @@ public class ConvexHull
             Sort( points, count );
         }
 
-        List< float > hull = this._hull;
+        List< float > hull = _hull;
         hull.Clear();
 
         // Lower hull.
@@ -112,24 +106,22 @@ public class ConvexHull
         return hull;
     }
 
-    public List< int > ComputeIndices( List< float > points, bool sorted, bool yDown )
-    {
-        return ComputeIndices( points.ToArray(), 0, points.Count, sorted, yDown );
-    }
+    public List< int > ComputeIndices( List< float > points, bool sorted, bool yDown ) => ComputeIndices( points.ToArray(), 0, points.Count, sorted, yDown );
 
-    public List< int > ComputeIndices( float[] polygon, bool sorted, bool yDown )
-    {
-        return ComputeIndices( polygon, 0, polygon.Length, sorted, yDown );
-    }
+    public List< int > ComputeIndices( float[] polygon, bool sorted, bool yDown ) => ComputeIndices( polygon, 0, polygon.Length, sorted, yDown );
 
     /// <summary>
-    /// Computes a hull the same as <see cref="ComputePolygon(float[], int, int, bool)"/>
-    /// but returns indices of the specified points.
+    ///     Computes a hull the same as <see cref="ComputePolygon(float[], int, int, bool)" />
+    ///     but returns indices of the specified points.
     /// </summary>
+
     //TODO: This method needs debugging / testing to make sure it works as expected
     public List< int > ComputeIndices( float[] points, int offset, int count, bool sorted, bool yDown )
     {
-        if ( count > 32767 ) throw new ArgumentException( "count must be <= " + 32767 );
+        if ( count > 32767 )
+        {
+            throw new ArgumentException( "count must be <= " + 32767 );
+        }
 
         var end = offset + count;
 
@@ -148,10 +140,10 @@ public class ConvexHull
             SortWithIndices( points, count, yDown );
         }
 
-        List< int > indices = this._indices;
+        List< int > indices = _indices;
         indices.Clear();
 
-        List< float > hull = this._hull;
+        List< float > hull = _hull;
         hull.Clear();
 
         // Lower hull.
@@ -201,24 +193,24 @@ public class ConvexHull
     }
 
     /// <summary>
-    /// Returns > 0 if the points are a counterclockwise turn, &lt; 0 if
-    /// clockwise, and 0 if colinear.
+    ///     Returns > 0 if the points are a counterclockwise turn, &lt; 0 if
+    ///     clockwise, and 0 if colinear.
     /// </summary>
     /// <param name="px"></param>
     /// <param name="py"></param>
     private float Ccw( float px, float py )
     {
-        var size = this._hull.Count;
-        var p1X  = this._hull[ size - 4 ];
-        var p1Y  = this._hull[ size - 3 ];
-        var p2X  = this._hull[ size - 2 ];
-        var p2Y  = this._hull.Peek();
+        var size = _hull.Count;
+        var p1X  = _hull[ size - 4 ];
+        var p1Y  = _hull[ size - 3 ];
+        var p2X  = _hull[ size - 2 ];
+        var p2Y  = _hull.Peek();
 
         return ( ( p2X - p1X ) * ( py - p1Y ) ) - ( ( p2Y - p1Y ) * ( px - p1X ) );
     }
 
     /// <summary>
-    /// Sorts x,y pairs of values by the x value, then the y value.
+    ///     Sorts x,y pairs of values by the x value, then the y value.
     /// </summary>
     /// <param name="values"></param>
     /// <param name="count"> Number of indices, must be even. </param>
@@ -237,7 +229,11 @@ public class ConvexHull
             upper = stack.Pop();
             lower = stack.Pop();
 
-            if ( upper <= lower ) continue;
+            if ( upper <= lower )
+            {
+                continue;
+            }
+
             var i = QuicksortPartition( values, lower, upper );
 
             if ( ( i - lower ) > ( upper - i ) )
@@ -271,7 +267,7 @@ public class ConvexHull
                 down += 2;
             }
 
-            while ( ( values[ up ] > x ) || ( ( values[ up ].Equals( x ) ) && ( values[ up + 1 ] < y ) ) )
+            while ( ( values[ up ] > x ) || ( values[ up ].Equals( x ) && ( values[ up + 1 ] < y ) ) )
             {
                 up -= 2;
             }
@@ -283,7 +279,7 @@ public class ConvexHull
             }
         }
 
-        if ( ( x > values[ up ] ) || ( ( x.Equals( values[ up ] ) ) && ( y < values[ up + 1 ] ) ) )
+        if ( ( x > values[ up ] ) || ( x.Equals( values[ up ] ) && ( y < values[ up + 1 ] ) ) )
         {
             values[ lower ] = values[ up ];
             values[ up ]    = x;
@@ -296,7 +292,7 @@ public class ConvexHull
     }
 
     /// <summary>
-    /// Sorts x,y pairs of values by the x value, then the y value and stores unsorted original indices.
+    ///     Sorts x,y pairs of values by the x value, then the y value and stores unsorted original indices.
     /// </summary>
     /// <param name="values"></param>
     /// <param name="count"> Number of indices, must be even. </param>
@@ -326,7 +322,10 @@ public class ConvexHull
             upper = stack.Pop();
             lower = stack.Pop();
 
-            if ( upper <= lower ) continue;
+            if ( upper <= lower )
+            {
+                continue;
+            }
 
             var i = QuicksortPartitionWithIndices( values, lower, upper, yDown, _originalIndices.ToArray() );
 
@@ -368,7 +367,7 @@ public class ConvexHull
             if ( yDown )
             {
                 while ( ( values[ up ] > x )
-                        || ( ( values[ up ].Equals( x ) ) && ( values[ up + 1 ] < y ) ) )
+                     || ( values[ up ].Equals( x ) && ( values[ up + 1 ] < y ) ) )
                 {
                     up -= 2;
                 }
@@ -376,7 +375,7 @@ public class ConvexHull
             else
             {
                 while ( ( values[ up ] > x )
-                        || ( ( values[ up ].Equals( x ) ) && ( values[ up + 1 ] > y ) ) )
+                     || ( values[ up ].Equals( x ) && ( values[ up + 1 ] > y ) ) )
                 {
                     up -= 2;
                 }
@@ -393,8 +392,8 @@ public class ConvexHull
         }
 
         if ( ( x > values[ up ] )
-             || ( ( x.Equals( values[ up ] ) )
-                  && ( yDown ? y < values[ up + 1 ] : y > values[ up + 1 ] ) ) )
+          || ( x.Equals( values[ up ] )
+            && ( yDown ? y < values[ up + 1 ] : y > values[ up + 1 ] ) ) )
         {
             values[ lower ] = values[ up ];
             values[ up ]    = x;

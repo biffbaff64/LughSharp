@@ -19,72 +19,40 @@ using System.Text;
 namespace LibGDXSharp.Utils.Collections;
 
 /// <summary>
-/// <para>An unordered map where the keys and values are objects.</para>
-/// <para>Null keys are not allowed.</para>
-/// <para>No allocation is done except when growing the table size.</para>
-/// <para>
-/// This class performs fast contains and remove (typically O(1), worst case O(n) but
-/// that is rare in practice). Add may be slightly slower, depending on hash collisions.
-/// Hashcodes are rehashed to reduce collisions and the need to resize. Load factors
-/// greater than 0.91 greatly increase the chances to resize to the next higher POT size.
-/// Unordered sets and maps are not designed to provide especially fast iteration.
-/// </para>
-/// <para>
-/// This implementation uses linear probing with the backward shift algorithm for removal.
-/// Hashcodes are rehashed using Fibonacci hashing, instead of the more common power-of-two
-/// mask, to better distribute poor hashCodes (see Malte Skarupke's blog post). Linear
-/// probing continues to work even when all hashCodes collide, just more slowly.
-/// </para>
+///     <para>An unordered map where the keys and values are objects.</para>
+///     <para>Null keys are not allowed.</para>
+///     <para>No allocation is done except when growing the table size.</para>
+///     <para>
+///         This class performs fast contains and remove (typically O(1), worst case O(n) but
+///         that is rare in practice). Add may be slightly slower, depending on hash collisions.
+///         Hashcodes are rehashed to reduce collisions and the need to resize. Load factors
+///         greater than 0.91 greatly increase the chances to resize to the next higher POT size.
+///         Unordered sets and maps are not designed to provide especially fast iteration.
+///     </para>
+///     <para>
+///         This implementation uses linear probing with the backward shift algorithm for removal.
+///         Hashcodes are rehashed using Fibonacci hashing, instead of the more common power-of-two
+///         mask, to better distribute poor hashCodes (see Malte Skarupke's blog post). Linear
+///         probing continues to work even when all hashCodes collide, just more slowly.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class ObjectMap<TK, TV>
 {
-    protected          TK?[] keyTable;
-    protected          TV?[] valueTable;
-    protected          int   threshold;
-    protected readonly float loadFactor;
 
     // ------------------------------------------------------------------------
 
-    private readonly object _dummy = new();
+    private readonly   object _dummy = new();
+    protected readonly float  loadFactor;
 
-    private Entries? _entries1;
-    private Entries? _entries2;
-    private Values?  _values1;
-    private Values?  _values2;
-    private Keys?    _keys1;
-    private Keys?    _keys2;
-
-    // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Used by <see cref="Place"/> to bit shift the upper bits of a <b>long</b>
-    /// into a usable range (&gt;= 0 and &lt;= <see cref="Mask"/>).
-    /// <para>
-    /// The shift can be negative, which is convenient to match the number of bits in
-    /// mask: if mask is a 7-bit number, a shift of -7 shifts the upper 7 bits into the
-    /// lowest 7 positions. This class sets the shift &gt; 32 and &lt; 64, which if used
-    /// with an int will still move the upper bits of an int to the lower bits.
-    /// </para>
-    /// <para>
-    /// <see cref="Mask"/> can also be used to mask the low bits of a number, which may
-    /// be faster for some hashcodes if <see cref="Place"/> is overridden.
-    /// </para>
-    /// </summary>
-    protected int Shift { get; set; }
-
-    /// <summary>
-    /// A bitmask used to confine hashcodes to the size of the table. Must be all
-    /// 1 bits in its low positions, ie a power of two minus 1.
-    /// If <see cref="Place"/> is overriden, this can be used instead of <see cref="Shift"/>
-    /// to isolate usable bits of a hash.
-    /// </summary>
-    protected int Mask { get; set; }
-
-    /// <summary>
-    /// Returns the size of this ObjectMap
-    /// </summary>
-    public int Size { get; set; }
+    private   Entries? _entries1;
+    private   Entries? _entries2;
+    private   Keys?    _keys1;
+    private   Keys?    _keys2;
+    private   Values?  _values1;
+    private   Values?  _values2;
+    protected TK?[]    keyTable;
+    protected int      threshold;
+    protected TV?[]    valueTable;
 
     // ------------------------------------------------------------------------
 
@@ -111,7 +79,7 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Copy Constructor
+    ///     Copy Constructor
     /// </summary>
     /// <param name="map">The ObjectMap to copy.</param>
     /// <exception cref="ArgumentException"></exception>
@@ -119,12 +87,10 @@ public class ObjectMap<TK, TV>
     {
         ArgumentNullException.ThrowIfNull( map );
 
-        this.loadFactor = map.loadFactor;
+        loadFactor = map.loadFactor;
 
-        var tableSize = TableSize(
-            ( int )( map.keyTable.Length * map.loadFactor ),
-            loadFactor
-            );
+        var tableSize = TableSize( ( int )( map.keyTable.Length * map.loadFactor ),
+                                   loadFactor );
 
         threshold = ( int )( tableSize * loadFactor );
         Mask      = tableSize - 1;
@@ -136,28 +102,65 @@ public class ObjectMap<TK, TV>
         Array.Copy( map.keyTable, 0, keyTable, 0, map.keyTable.Length );
         Array.Copy( map.valueTable, 0, valueTable, 0, map.valueTable.Length );
 
-        this.Size = map.Size;
+        Size = map.Size;
     }
 
+    // ------------------------------------------------------------------------
+
     /// <summary>
-    /// Returns an index between 0 and <see cref="Mask"/> for the specified <c>item</c>.
-    /// <para>
-    /// The default implementation uses Fibonacci hashing based on the <c>item.GetHashCode()</c>.
-    /// The hash code is multiplied by a constant (2 to the 64th, divided by the golden ratio),
-    /// and the uppermost bits are shifted to obtain an index within the desired range.
-    /// This method can handle even poor hash codes, preventing high collision rates.
-    /// However, it may have increased collision rates when most hash codes are multiples
-    /// of larger Fibonacci numbers.
-    /// </para>
-    /// <para>
-    /// For more details, see <a href="https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">Malte Skarupke's blog post</a>.
-    /// </para>
-    /// <para>
-    /// You can override this method to customize hashing. This might be useful, for instance,
-    /// in cases where most hash codes are Fibonacci numbers, when keys have poor or incorrect
-    /// hash codes, or when high-quality hash codes negate the need for Fibonacci hashing.
-    /// Example: <c>return item.GetHashCode() &amp; Mask;</c>
-    /// </para>
+    ///     Used by <see cref="Place" /> to bit shift the upper bits of a <b>long</b>
+    ///     into a usable range (&gt;= 0 and &lt;= <see cref="Mask" />).
+    ///     <para>
+    ///         The shift can be negative, which is convenient to match the number of bits in
+    ///         mask: if mask is a 7-bit number, a shift of -7 shifts the upper 7 bits into the
+    ///         lowest 7 positions. This class sets the shift &gt; 32 and &lt; 64, which if used
+    ///         with an int will still move the upper bits of an int to the lower bits.
+    ///     </para>
+    ///     <para>
+    ///         <see cref="Mask" /> can also be used to mask the low bits of a number, which may
+    ///         be faster for some hashcodes if <see cref="Place" /> is overridden.
+    ///     </para>
+    /// </summary>
+    protected int Shift { get; set; }
+
+    /// <summary>
+    ///     A bitmask used to confine hashcodes to the size of the table. Must be all
+    ///     1 bits in its low positions, ie a power of two minus 1.
+    ///     If <see cref="Place" /> is overriden, this can be used instead of <see cref="Shift" />
+    ///     to isolate usable bits of a hash.
+    /// </summary>
+    protected int Mask { get; set; }
+
+    /// <summary>
+    ///     Returns the size of this ObjectMap
+    /// </summary>
+    public int Size { get; set; }
+
+    /// <summary>
+    ///     Returns an index between 0 and <see cref="Mask" /> for the specified <c>item</c>.
+    ///     <para>
+    ///         The default implementation uses Fibonacci hashing based on the <c>item.GetHashCode()</c>.
+    ///         The hash code is multiplied by a constant (2 to the 64th, divided by the golden ratio),
+    ///         and the uppermost bits are shifted to obtain an index within the desired range.
+    ///         This method can handle even poor hash codes, preventing high collision rates.
+    ///         However, it may have increased collision rates when most hash codes are multiples
+    ///         of larger Fibonacci numbers.
+    ///     </para>
+    ///     <para>
+    ///         For more details, see
+    ///         <a
+    ///             href="https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">
+    ///             Malte
+    ///             Skarupke's blog post
+    ///         </a>
+    ///         .
+    ///     </para>
+    ///     <para>
+    ///         You can override this method to customize hashing. This might be useful, for instance,
+    ///         in cases where most hash codes are Fibonacci numbers, when keys have poor or incorrect
+    ///         hash codes, or when high-quality hash codes negate the need for Fibonacci hashing.
+    ///         Example: <c>return item.GetHashCode() &amp; Mask;</c>
+    ///     </para>
     /// </summary>
     /// <param name="item">The item to calculate the index for.</param>
     protected virtual int Place( TK item )
@@ -198,8 +201,8 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Replaces the value associated with the specified key, and returns the old value.
-    /// If the key is not found, the value is added at the end of the map and null is returned.
+    ///     Replaces the value associated with the specified key, and returns the old value.
+    ///     If the key is not found, the value is added at the end of the map and null is returned.
     /// </summary>
     /// <param name="key"></param>
     /// <param name="value"></param>
@@ -234,20 +237,20 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Copies all key-value pairs from the specified <paramref name="map"/>
-    /// into the current collection.
+    ///     Copies all key-value pairs from the specified <paramref name="map" />
+    ///     into the current collection.
     /// </summary>
     /// <param name="map">The source map containing the key-value pairs to copy.</param>
     /// <remarks>
-    /// <para>
-    /// This method ensures that the current collection has sufficient capacity
-    /// to accommodate the key-value pairs from the <paramref name="map"/>. Then,
-    /// it iterates through the key table, copying each non-null key along with
-    /// its associated value from the <paramref name="map"/> into the current
-    /// collection using the <see cref="Put"/> method.
-    /// </para>
+    ///     <para>
+    ///         This method ensures that the current collection has sufficient capacity
+    ///         to accommodate the key-value pairs from the <paramref name="map" />. Then,
+    ///         it iterates through the key table, copying each non-null key along with
+    ///         its associated value from the <paramref name="map" /> into the current
+    ///         collection using the <see cref="Put" /> method.
+    ///     </para>
     /// </remarks>
-    /// <seealso cref="Put"/>
+    /// <seealso cref="Put" />
     /// <typeparam name="TK">The type of the keys in the collection.</typeparam>
     /// <typeparam name="TV">The type of the values in the collection.</typeparam>
     public void PutAll( ObjectMap< TK, TV > map )
@@ -266,19 +269,19 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Retrieves the value associated with the specified <paramref name="key"/>
-    /// from the collection.
+    ///     Retrieves the value associated with the specified <paramref name="key" />
+    ///     from the collection.
     /// </summary>
     /// <param name="key">The key to look up.</param>
     /// <returns>
-    /// The value associated with the <paramref name="key"/> if found; otherwise null.
+    ///     The value associated with the <paramref name="key" /> if found; otherwise null.
     /// </returns>
     /// <remarks>
-    /// This method searches the collection for the given <paramref name="key"/>
-    /// using the <see cref="LocateKey"/> method. If the key is found, the associated
-    /// value is returned; otherwise, <c>null</c> is returned.
+    ///     This method searches the collection for the given <paramref name="key" />
+    ///     using the <see cref="LocateKey" /> method. If the key is found, the associated
+    ///     value is returned; otherwise, <c>null</c> is returned.
     /// </remarks>
-    /// <seealso cref="LocateKey"/>
+    /// <seealso cref="LocateKey" />
     /// <typeparam name="TT">The type of the key to look up.</typeparam>
     /// <typeparam name="TK">The type constraint for the key type.</typeparam>
     /// <typeparam name="TV">The type of the value to retrieve.</typeparam>
@@ -286,27 +289,27 @@ public class ObjectMap<TK, TV>
     {
         var i = LocateKey( key );
 
-        return ( i < 0 ) ? default( TV? ) : valueTable[ i ];
+        return i < 0 ? default( TV? ) : valueTable[ i ];
     }
 
     /// <summary>
-    /// Retrieves the value associated with the specified <paramref name="key"/> from the collection,
-    /// or returns the provided <paramref name="defaultValue"/> if the key is not found.
+    ///     Retrieves the value associated with the specified <paramref name="key" /> from the collection,
+    ///     or returns the provided <paramref name="defaultValue" /> if the key is not found.
     /// </summary>
     /// <param name="key">The key to look up.</param>
     /// <param name="defaultValue">The value to return if the key is not found.</param>
     /// <returns>
-    /// The value associated with the <paramref name="key"/> if found; otherwise, the
-    /// <paramref name="defaultValue"/> is returned.
+    ///     The value associated with the <paramref name="key" /> if found; otherwise, the
+    ///     <paramref name="defaultValue" /> is returned.
     /// </returns>
     /// <remarks>
-    /// <para>
-    /// This method searches the collection for the given <paramref name="key"/> using
-    /// the <see cref="LocateKey"/> method. If the key is found, the associated value is
-    /// returned; otherwise, the provided <paramref name="defaultValue"/> is returned.
-    /// </para>
+    ///     <para>
+    ///         This method searches the collection for the given <paramref name="key" /> using
+    ///         the <see cref="LocateKey" /> method. If the key is found, the associated value is
+    ///         returned; otherwise, the provided <paramref name="defaultValue" /> is returned.
+    ///     </para>
     /// </remarks>
-    /// <seealso cref="LocateKey"/>
+    /// <seealso cref="LocateKey" />
     /// <typeparam name="TK">The type of the keys in the collection.</typeparam>
     /// <typeparam name="TV">The type of the values in the collection.</typeparam>
     public TV? Get( TK key, TV? defaultValue )
@@ -317,13 +320,13 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Helper method.
+    ///     Helper method.
     /// </summary>
     /// <returns>TRUE if Size is greater than zero.</returns>
     public bool NotEmpty() => Size > 0;
 
     /// <summary>
-    /// Helper method.
+    ///     Helper method.
     /// </summary>
     /// <returns>TRUE if Size is zero.</returns>
     public bool IsEmpty() => Size == 0;
@@ -416,12 +419,12 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public bool ContainsKey( TK key ) => ( LocateKey( key ) >= 0 );
+    public bool ContainsKey( TK key ) => LocateKey( key ) >= 0;
 
     /// <summary>
-    /// Returns the key for the specified value, or null if it is not in the map.
-    /// Note this traverses the entire map and compares every value, which may be
-    /// an expensive operation.
+    ///     Returns the key for the specified value, or null if it is not in the map.
+    ///     Note this traverses the entire map and compares every value, which may be
+    ///     an expensive operation.
     /// </summary>
     public TK? FindKey( object? value )
     {
@@ -450,9 +453,9 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Increases the size of the backing array to accommodate the specified number
-    /// of additional items / loadFactor. Useful before adding many items to avoid
-    /// multiple backing array resizes.
+    ///     Increases the size of the backing array to accommodate the specified number
+    ///     of additional items / loadFactor. Useful before adding many items to avoid
+    ///     multiple backing array resizes.
     /// </summary>
     public void EnsureCapacity( int additionalCapacity )
     {
@@ -664,8 +667,8 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <remarks>Skips checks for existing keys.</remarks>
     /// <remarks>
-    /// Doesn't increment Size. This method is actually a utility
-    /// method for <see cref="Resize"/>
+    ///     Doesn't increment Size. This method is actually a utility
+    ///     method for <see cref="Resize" />
     /// </remarks>
     /// <param name="key"></param>
     /// <param name="value"></param>
@@ -734,17 +737,17 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Returns an iterator for the entries in the map. Remove is supported.
-    /// <para>
-    /// If Collections.allocateIterators is false, the same iterator instance
-    /// is returned each time this method is called. Use the ObjectMap.Entries
-    /// constructor for nested or multithreaded iteration.
-    /// </para>
+    ///     Returns an iterator for the entries in the map. Remove is supported.
+    ///     <para>
+    ///         If Collections.allocateIterators is false, the same iterator instance
+    ///         is returned each time this method is called. Use the ObjectMap.Entries
+    ///         constructor for nested or multithreaded iteration.
+    ///     </para>
     /// </summary>
     /// <returns></returns>
     public Entries GetEntries()
     {
-        if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
+        if ( CollectionsData.AllocateIterators )
         {
             return new Entries( this );
         }
@@ -774,17 +777,17 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Returns an iterator for the values in the map. Remove is supported.
-    /// <para>
-    /// If Collections.allocateIterators is false, the same iterator instance is
-    /// returned each time this method is called. Use the ObjectMap.Values
-    /// constructor for nested or multithreaded iteration.
-    /// </para>
+    ///     Returns an iterator for the values in the map. Remove is supported.
+    ///     <para>
+    ///         If Collections.allocateIterators is false, the same iterator instance is
+    ///         returned each time this method is called. Use the ObjectMap.Values
+    ///         constructor for nested or multithreaded iteration.
+    ///     </para>
     /// </summary>
     /// <returns></returns>
     public Values GetValues()
     {
-        if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
+        if ( CollectionsData.AllocateIterators )
         {
             return new Values( this );
         }
@@ -815,17 +818,17 @@ public class ObjectMap<TK, TV>
     }
 
     /// <summary>
-    /// Returns an iterator for the keys in the map. Remove is supported.
-    /// <para>
-    /// If Collections.allocateIterators is false, the same iterator instance
-    /// is returned each time this method is called. Use the ObjectMap.Keys
-    /// constructor for nested or multithreaded iteration.
-    /// </para>
+    ///     Returns an iterator for the keys in the map. Remove is supported.
+    ///     <para>
+    ///         If Collections.allocateIterators is false, the same iterator instance
+    ///         is returned each time this method is called. Use the ObjectMap.Keys
+    ///         constructor for nested or multithreaded iteration.
+    ///     </para>
     /// </summary>
     /// <returns></returns>
     public Keys GetKeys()
     {
-        if ( LibGDXSharp.Utils.Collections.CollectionsData.AllocateIterators )
+        if ( CollectionsData.AllocateIterators )
         {
             return new Keys( this );
         }
@@ -855,9 +858,10 @@ public class ObjectMap<TK, TV>
         return _keys2;
     }
 
+    protected Entries GetIterator() => GetEntries();
+
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public class Entry
     {
         public TK? key;
@@ -869,28 +873,17 @@ public class ObjectMap<TK, TV>
 
         public Entry( TK? k, TV? v )
         {
-            this.key   = k;
-            this.value = v;
+            key   = k;
+            value = v;
         }
 
-        public override string ToString()
-        {
-            return key + " = " + value;
-        }
-    }
-
-    protected Entries GetIterator()
-    {
-        return GetEntries();
+        public override string ToString() => key + " = " + value;
     }
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public abstract class MapIterator
     {
-        public    bool Valid   { get; set; } = true;
-        protected bool HasNext { get; set; }
 
         protected readonly ObjectMap< TK, TV > map;
 
@@ -903,6 +896,9 @@ public class ObjectMap<TK, TV>
 
             Reset();
         }
+
+        public    bool Valid   { get; set; } = true;
+        protected bool HasNext { get; set; }
 
         public void Reset()
         {
@@ -969,7 +965,6 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public class Entries : MapIterator
     {
         private readonly Entry _entry = new();
@@ -982,7 +977,7 @@ public class ObjectMap<TK, TV>
         }
 
         /// <summary>
-        /// Note the same entry instance is returned each time this method is called.
+        ///     Note the same entry instance is returned each time this method is called.
         /// </summary>
         public Entry Next()
         {
@@ -1005,15 +1000,11 @@ public class ObjectMap<TK, TV>
             return _entry;
         }
 
-        public Entries Iterator()
-        {
-            return this;
-        }
+        public Entries Iterator() => this;
     }
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public class Values : MapIterator
     {
         /// <summary>
@@ -1045,21 +1036,15 @@ public class ObjectMap<TK, TV>
             return value;
         }
 
-        public Values Iterator()
-        {
-            return this;
-        }
+        public Values Iterator() => this;
 
         /// <summary>
-        /// Returns a new array containing the remaining values.
+        ///     Returns a new array containing the remaining values.
         /// </summary>
-        public List< TV > ToArray()
-        {
-            return ToArray( new List< TV >( map.Size ) );
-        }
+        public List< TV > ToArray() => ToArray( new List< TV >( map.Size ) );
 
         /// <summary>
-        /// Adds the remaining values to the array.
+        ///     Adds the remaining values to the array.
         /// </summary>
         public List< TV > ToArray( List< TV > array )
         {
@@ -1074,7 +1059,6 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public class Keys : MapIterator
     {
         public Keys( ObjectMap< TK, TV > map )
@@ -1103,21 +1087,15 @@ public class ObjectMap<TK, TV>
             return key;
         }
 
-        public Keys Iterator()
-        {
-            return this;
-        }
+        public Keys Iterator() => this;
 
         /// <summary>
-        /// Returns a new array containing the remaining keys.
+        ///     Returns a new array containing the remaining keys.
         /// </summary>
-        public List< TK > ToArray()
-        {
-            return ToArray( new List< TK >( map.Size ) );
-        }
+        public List< TK > ToArray() => ToArray( new List< TK >( map.Size ) );
 
         /// <summary>
-        /// Adds the remaining keys to the array.
+        ///     Adds the remaining keys to the array.
         /// </summary>
         public List< TK > ToArray( List< TK > array )
         {

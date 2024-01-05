@@ -17,40 +17,22 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// Implements decoding of MPEG Audio Layer I frames.
+///     Implements decoding of MPEG Audio Layer I frames.
 /// </summary>
-[PublicAPI]
 public class LayerIDecoder : IFrameDecoder
 {
     protected readonly Crc16? crc = new();
 
-    protected ABuffer?         buffer   = null!;
-    protected SynthesisFilter? filter1  = null!;
-    protected SynthesisFilter? filter2  = null!;
-    protected Header?          header   = null!;
-    protected Bitstream        stream   = null!;
-    protected ASubband[]       subbands = null!;
+    protected ABuffer?         buffer  = null!;
+    protected SynthesisFilter? filter1 = null!;
+    protected SynthesisFilter? filter2 = null!;
+    protected Header?          header  = null!;
     protected int              mode;
     protected int              nuSubbands;
+    protected Bitstream        stream   = null!;
+    protected ASubband[]       subbands = null!;
 
     protected int whichChannels;
-
-    // new Crc16[1] to enable CRC checking.
-
-    public virtual void Create( Bitstream stream0,
-                                Header header0,
-                                SynthesisFilter? filtera,
-                                SynthesisFilter? filterb,
-                                ABuffer? buffer0,
-                                int whichCh0 )
-    {
-        stream        = stream0;
-        header        = header0;
-        filter1       = filtera;
-        filter2       = filterb;
-        buffer        = buffer0;
-        whichChannels = whichCh0;
-    }
 
     public virtual void DecodeFrame()
     {
@@ -69,6 +51,23 @@ public class LayerIDecoder : IFrameDecoder
 
             ReadSampleData();
         }
+    }
+
+    // new Crc16[1] to enable CRC checking.
+
+    public virtual void Create( Bitstream stream0,
+                                Header header0,
+                                SynthesisFilter? filtera,
+                                SynthesisFilter? filterb,
+                                ABuffer? buffer0,
+                                int whichCh0 )
+    {
+        stream        = stream0;
+        header        = header0;
+        filter1       = filtera;
+        filter2       = filterb;
+        buffer        = buffer0;
+        whichChannels = whichCh0;
     }
 
     protected virtual void CreateSubbands()

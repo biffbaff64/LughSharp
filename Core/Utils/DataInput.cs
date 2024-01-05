@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
 public class DataInput : BinaryReader
 {
     private char[] _chars = new char[ 32 ];
@@ -26,7 +25,7 @@ public class DataInput : BinaryReader
     }
 
     /// <summary>
-    /// Reads a 1-5 byte int.
+    ///     Reads a 1-5 byte int.
     /// </summary>
     public int ReadInt( bool optimizePositive )
     {
@@ -61,7 +60,7 @@ public class DataInput : BinaryReader
     }
 
     /// <summary>
-    /// Reads the length and string of UTF8 characters, or null.
+    ///     Reads the length and string of UTF8 characters, or null.
     /// </summary>
     public string? ReadStringUTF8()
     {
@@ -120,6 +119,7 @@ public class DataInput : BinaryReader
 
                     break;
                 }
+
                 case 12 or 13:
                 {
                     _chars[ charIndex ] = ( char )( ( ( b & 0x1F ) << 6 )
@@ -127,6 +127,7 @@ public class DataInput : BinaryReader
 
                     break;
                 }
+
                 case 14:
                 {
                     _chars[ charIndex ] = ( char )( ( ( b & 0x0F ) << 12 )

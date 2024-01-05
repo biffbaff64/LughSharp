@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
-[PublicAPI]
 public enum OutputChannelsEnum
 {
     BothChannels    = 0,

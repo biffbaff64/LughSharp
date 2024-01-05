@@ -21,22 +21,21 @@ using NotNull = System.Diagnostics.CodeAnalysis.NotNullAttribute;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Typed runtime exception used throughout LibGDXSharp.
+///     Typed runtime exception used throughout LibGDXSharp.
 /// </summary>
-[PublicAPI]
-public class GdxRuntimeException : System.Exception
+public class GdxRuntimeException : Exception
 {
     public GdxRuntimeException( string? message = "" )
         : base( message )
     {
     }
 
-    public GdxRuntimeException( System.Exception e )
+    public GdxRuntimeException( Exception e )
         : this( "", e )
     {
     }
 
-    public GdxRuntimeException( string message, System.Exception? exception )
+    public GdxRuntimeException( string message, Exception? exception )
         : base( message, exception )
     {
     }

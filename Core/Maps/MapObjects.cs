@@ -19,25 +19,26 @@ using System.Collections;
 namespace LibGDXSharp.Maps;
 
 /// <summary>
-/// A Collection of <see cref="MapObject"/> instances.
+///     A Collection of <see cref="MapObject" /> instances.
 /// </summary>
-[PublicAPI]
 public class MapObjects : IEnumerable< MapObject >
 {
     private readonly List< MapObject > _objects;
 
     /// <summary>
-    /// Creates an empty set of MapObjects
+    ///     Creates an empty set of MapObjects
     /// </summary>
-    public MapObjects()
-    {
-        _objects = new List< MapObject >();
-    }
+    public MapObjects() => _objects = new List< MapObject >();
 
-    public MapObject Get( int index )
-    {
-        return _objects[ index ];
-    }
+    /// <summary>
+    ///     Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>An <see cref="IEnumerator{T}" /> object.</returns>
+    public IEnumerator< MapObject > GetEnumerator() => _objects.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public MapObject Get( int index ) => _objects[ index ];
 
     public MapObject Get( string name )
     {
@@ -54,42 +55,21 @@ public class MapObjects : IEnumerable< MapObject >
         return null!;
     }
 
-    public int GetIndex( string name )
-    {
-        return GetIndex( Get( name ) );
-    }
+    public int GetIndex( string name ) => GetIndex( Get( name ) );
 
-    public int GetIndex( MapObject obj )
-    {
-        return _objects.IndexOf( obj );
-    }
+    public int GetIndex( MapObject obj ) => _objects.IndexOf( obj );
 
-    public int GetCount()
-    {
-        return _objects.Count;
-    }
+    public int GetCount() => _objects.Count;
 
-    public void Add( MapObject obj )
-    {
-        _objects.Add( obj );
-    }
+    public void Add( MapObject obj ) => _objects.Add( obj );
 
-    public void RemoveIndex( int index )
-    {
-        _objects.RemoveAt( index );
-    }
+    public void RemoveIndex( int index ) => _objects.RemoveAt( index );
 
-    public void Remove( MapObject obj )
-    {
-        _objects.Remove( obj );
-    }
+    public void Remove( MapObject obj ) => _objects.Remove( obj );
 
     /// <param name="type"> class of the objects we want to retrieve </param>
     /// <returns> array filled with all the objects in the collection matching type  </returns>
-    public List< T > GetByType<T>( T type ) where T : MapObject
-    {
-        return GetByType( type, new List< T >() );
-    }
+    public List< T > GetByType<T>( T type ) where T : MapObject => GetByType( type, new List< T >() );
 
     /// <param name="type"> class of the objects we want to retrieve </param>
     /// <param name="fill"> collection to put the returned objects in </param>
@@ -102,26 +82,12 @@ public class MapObjects : IEnumerable< MapObject >
         {
             MapObject obj = _objects[ i ];
 
-            if ( obj.GetType() == typeof(T) )
+            if ( obj.GetType() == typeof( T ) )
             {
                 fill.Add( ( T )obj );
             }
         }
 
         return fill;
-    }
-
-    /// <summary>
-    /// Returns an enumerator that iterates through the collection.
-    /// </summary>
-    /// <returns>An <see cref="IEnumerator{T}"/> object.</returns>
-    public IEnumerator< MapObject > GetEnumerator()
-    {
-        return _objects.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }

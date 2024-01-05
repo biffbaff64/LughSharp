@@ -19,59 +19,61 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
-/// A PolygonSpriteBatch is used to Draw 2D polygons that reference a
-/// texture (region). The class will batch the drawing commands and
-/// optimize them for processing by the GPU.
-/// <p>
-/// To Draw something with a PolygonSpriteBatch one has to first call the
-/// <see cref="PolygonSpriteBatch.Begin()"/> method which will setup appropriate
-/// render states. When you are done with drawing you have to call
-/// <see cref="PolygonSpriteBatch.End()"/> which will actually Draw the things
-/// you specified.
-/// </p>
-/// <p>
-/// All drawing commands of the PolygonSpriteBatch operate in screen coordinates.
-/// The screen coordinate system has an x-axis pointing to the right, an y-axis
-/// pointing upwards and the origin is in the lower left corner of the screen. You
-/// can also provide your own transformation and projection matrices if you so wish.
-/// A PolygonSpriteBatch is managed. In case the OpenGL context is lost all OpenGL
-/// resources a PolygonSpriteBatch uses internally get invalidated. A context is lost
-/// when a user switches to another application or receives an incoming call on Android.
-/// A SpritPolygonSpriteBatcheBatch will be automatically reloaded after the OpenGL
-/// context is restored.
-/// </p>
-/// <p>
-/// A PolygonSpriteBatch is a pretty heavy object so you should only ever have one
-/// in your program.
-/// </p>
-/// <p>
-/// A PolygonSpriteBatch works with OpenGL ES 1.x and 2.0. In the case of a 2.0 context
-/// it will use its own custom shader to Draw all provided sprites. You can set your own
-/// custom shader via <see cref="Shader"/>.
-/// </p>
-/// <p>
-/// A PolygonSpriteBatch has to be disposed if it is no longer used.
-/// </p>
+///     A PolygonSpriteBatch is used to Draw 2D polygons that reference a
+///     texture (region). The class will batch the drawing commands and
+///     optimize them for processing by the GPU.
+///     <p>
+///         To Draw something with a PolygonSpriteBatch one has to first call the
+///         <see cref="PolygonSpriteBatch.Begin()" /> method which will setup appropriate
+///         render states. When you are done with drawing you have to call
+///         <see cref="PolygonSpriteBatch.End()" /> which will actually Draw the things
+///         you specified.
+///     </p>
+///     <p>
+///         All drawing commands of the PolygonSpriteBatch operate in screen coordinates.
+///         The screen coordinate system has an x-axis pointing to the right, an y-axis
+///         pointing upwards and the origin is in the lower left corner of the screen. You
+///         can also provide your own transformation and projection matrices if you so wish.
+///         A PolygonSpriteBatch is managed. In case the OpenGL context is lost all OpenGL
+///         resources a PolygonSpriteBatch uses internally get invalidated. A context is lost
+///         when a user switches to another application or receives an incoming call on Android.
+///         A SpritPolygonSpriteBatcheBatch will be automatically reloaded after the OpenGL
+///         context is restored.
+///     </p>
+///     <p>
+///         A PolygonSpriteBatch is a pretty heavy object so you should only ever have one
+///         in your program.
+///     </p>
+///     <p>
+///         A PolygonSpriteBatch works with OpenGL ES 1.x and 2.0. In the case of a 2.0 context
+///         it will use its own custom shader to Draw all provided sprites. You can set your own
+///         custom shader via <see cref="Shader" />.
+///     </p>
+///     <p>
+///         A PolygonSpriteBatch has to be disposed if it is no longer used.
+///     </p>
 /// </summary>
-[PublicAPI]
 public class PolygonSpriteBatch : IPolygonBatch
 {
+    private readonly Color          _color          = new( 1, 1, 1, 1 );
+    private readonly Matrix4        _combinedMatrix = new();
     private readonly Mesh           _mesh;
-    private readonly float[]        _vertices;
-    private readonly short[]        _triangles;
-    private readonly Matrix4        _combinedMatrix = new Matrix4();
-    private readonly ShaderProgram? _shader;
     private readonly bool           _ownsShader;
-    private readonly Color          _color = new Color( 1, 1, 1, 1 );
+    private readonly ShaderProgram? _shader;
+    private readonly short[]        _triangles;
+    private readonly float[]        _vertices;
+    private          bool           _blendingDisabled;
+    private          float          _colorPacked = Color.WhiteFloatBits;
+    private          ShaderProgram? _customShader;
+    private          float          _invTexHeight = 0;
+    private          float          _invTexWidth  = 0;
 
-    private Texture?       _lastTexture;
-    private ShaderProgram? _customShader;
-    private float          _invTexWidth  = 0;
-    private float          _invTexHeight = 0;
-    private float          _colorPacked  = Color.WhiteFloatBits;
-    private bool           _blendingDisabled;
-    private int            _vertexIndex;
-    private int            _triangleIndex;
+    private Texture? _lastTexture;
+    private int      _triangleIndex;
+    private int      _vertexIndex;
+
+    // The maximum number of triangles rendered in one batch so far.
+    public int maxTrianglesInBatch = 0;
 
     // Number of render calls since the last call to Begin()
     public int renderCalls = 0;
@@ -79,53 +81,51 @@ public class PolygonSpriteBatch : IPolygonBatch
     // Number of rendering calls, ever. Will not be reset unless set manually.
     public int totalRenderCalls = 0;
 
-    // The maximum number of triangles rendered in one batch so far.
-    public int maxTrianglesInBatch = 0;
-
     /// <summary>
-    /// Constructs a PolygonSpriteBatch with the default shader, size vertices,
-    /// and size * 2 triangles.
+    ///     Constructs a PolygonSpriteBatch with the default shader, size vertices,
+    ///     and size * 2 triangles.
     /// </summary>
     /// <param name="size">
-    /// The max number of vertices and number of triangles in a single batch. Max of 32767.
+    ///     The max number of vertices and number of triangles in a single batch. Max of 32767.
     /// </param>
-    /// <seealso cref="PolygonSpriteBatch(int, int, ShaderProgram)"/>
+    /// <seealso cref="PolygonSpriteBatch(int, int, ShaderProgram)" />
     public PolygonSpriteBatch( int size ) : this( size, size * 2, null )
     {
     }
 
     /// <summary>
-    /// Constructs a PolygonSpriteBatch with the specified shader, size vertices
-    /// and size * 2 triangles.
+    ///     Constructs a PolygonSpriteBatch with the specified shader, size vertices
+    ///     and size * 2 triangles.
     /// </summary>
     /// <param name="size">
-    /// The max number of vertices and number of triangles in a single batch. Max of 32767.
+    ///     The max number of vertices and number of triangles in a single batch. Max of 32767.
     /// </param>
     /// <param name="defaultShader"></param>
-    /// <seealso cref="PolygonSpriteBatch(int, int, ShaderProgram)"/>
+    /// <seealso cref="PolygonSpriteBatch(int, int, ShaderProgram)" />
     public PolygonSpriteBatch( int size, ShaderProgram? defaultShader = null )
         : this( size, size * 2, defaultShader )
     {
     }
 
     /// <summary>
-    /// Constructs a new PolygonSpriteBatch. Sets the projection matrix to an orthographic
-    /// projection with y-axis point upwards, x-axis point to the right and the origin
-    /// being in the bottom left corner of the screen. The projection will be pixel perfect
-    /// with respect to the current screen resolution.
-    /// <para>
-    /// The defaultShader specifies the shader to use. Note that the names for uniforms for
-    /// this default shader are different than the ones expect for shaders set with
-    /// <see cref="Shader"/>.
-    /// </para>
+    ///     Constructs a new PolygonSpriteBatch. Sets the projection matrix to an orthographic
+    ///     projection with y-axis point upwards, x-axis point to the right and the origin
+    ///     being in the bottom left corner of the screen. The projection will be pixel perfect
+    ///     with respect to the current screen resolution.
+    ///     <para>
+    ///         The defaultShader specifies the shader to use. Note that the names for uniforms for
+    ///         this default shader are different than the ones expect for shaders set with
+    ///         <see cref="Shader" />.
+    ///     </para>
     /// </summary>
     /// <param name="maxVertices"> The max number of vertices in a single batch. Max of 32767.</param>
     /// <param name="maxTriangles"> The max number of triangles in a single batch. </param>
     /// <param name="defaultShader">
-    /// The default shader to use. This is not owned by the PolygonSpriteBatch and must
-    /// be disposed separately. May be null to use the default shader.
+    ///     The default shader to use. This is not owned by the PolygonSpriteBatch and must
+    ///     be disposed separately. May be null to use the default shader.
     /// </param>
-    /// <seealso cref="SpriteBatch.CreateDefaultShader()"/>.
+    /// <seealso cref="SpriteBatch.CreateDefaultShader()" />
+    /// .
     public PolygonSpriteBatch( int maxVertices, int maxTriangles, ShaderProgram? defaultShader )
     {
         // 32767 is max vertex index.
@@ -240,7 +240,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     }
 
     /// <summary>
-    /// Draws the supplied <see cref="PolygonRegion"/> at the given corrdinates.
+    ///     Draws the supplied <see cref="PolygonRegion" /> at the given corrdinates.
     /// </summary>
     /// <param name="region"> The Polygon Region to draw </param>
     /// <param name="x"> X coordinate </param>
@@ -257,7 +257,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         {
             SwitchTexture( region.Region.Texture );
         }
-        else if ( ( ( _triangleIndex + region.Triangles.Length ) > this._triangles.Length )
+        else if ( ( ( _triangleIndex + region.Triangles.Length ) > _triangles.Length )
                || ( ( _vertexIndex + ( ( region.Vertices?.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
         {
             Flush();
@@ -265,17 +265,17 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         foreach ( var t in region.Triangles )
         {
-            this._triangles[ this._triangleIndex++ ]
-                = ( short )( t + ( this._vertexIndex / Sprite.VertexSize ) );
+            _triangles[ _triangleIndex++ ]
+                = ( short )( t + ( _vertexIndex / Sprite.VertexSize ) );
         }
 
         for ( var i = 0; i < region.Vertices?.Length; i += 2 )
         {
-            this._vertices[ this._vertexIndex++ ] = region.Vertices[ i ] + x;
-            this._vertices[ this._vertexIndex++ ] = region.Vertices[ i + 1 ] + y;
-            this._vertices[ this._vertexIndex++ ] = this._colorPacked;
-            this._vertices[ this._vertexIndex++ ] = region.TextureCoords[ i ];
-            this._vertices[ this._vertexIndex++ ] = region.TextureCoords[ i + 1 ];
+            _vertices[ _vertexIndex++ ] = region.Vertices[ i ] + x;
+            _vertices[ _vertexIndex++ ] = region.Vertices[ i + 1 ] + y;
+            _vertices[ _vertexIndex++ ] = _colorPacked;
+            _vertices[ _vertexIndex++ ] = region.TextureCoords[ i ];
+            _vertices[ _vertexIndex++ ] = region.TextureCoords[ i + 1 ];
         }
     }
 
@@ -400,7 +400,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         }
 
         Array.Copy( polygonVertices, verticesOffset, _vertices, _vertexIndex, verticesCount );
-        this._vertexIndex += verticesCount;
+        _vertexIndex += verticesCount;
     }
 
     public void Draw( Texture texture,
@@ -752,10 +752,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v;
     }
 
-    public void Draw( Texture texture, float x, float y )
-    {
-        Draw( texture, x, y, texture.Width, texture.Height );
-    }
+    public void Draw( Texture texture, float x, float y ) => Draw( texture, x, y, texture.Width, texture.Height );
 
     public void Draw( Texture texture, float x, float y, float width, float height )
     {
@@ -855,15 +852,15 @@ public class PolygonSpriteBatch : IPolygonBatch
             _triangles[ _triangleIndex + 5 ] = vertex;
         }
 
-        var vertexIndex   = this._vertexIndex;
-        var triangleIndex = this._triangleIndex;
+        var vertexIndex   = _vertexIndex;
+        var triangleIndex = _triangleIndex;
 
         while ( true )
         {
             Array.Copy( spriteVertices, offset, _vertices, vertexIndex, batch );
-            this._vertexIndex   =  vertexIndex + batch;
-            this._triangleIndex =  triangleIndex;
-            count               -= batch;
+            _vertexIndex   =  vertexIndex + batch;
+            _triangleIndex =  triangleIndex;
+            count          -= batch;
 
             if ( count == 0 )
             {
@@ -882,10 +879,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         }
     }
 
-    public void Draw( TextureRegion region, float x, float y )
-    {
-        Draw( region, x, y, region.RegionWidth, region.RegionHeight );
-    }
+    public void Draw( TextureRegion region, float x, float y ) => Draw( region, x, y, region.RegionWidth, region.RegionHeight );
 
     public void Draw( TextureRegion region, float x, float y, float width, float height )
     {
@@ -922,25 +916,25 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         _vertices[ _vertexIndex++ ] = x;
         _vertices[ _vertexIndex++ ] = y;
-        _vertices[ _vertexIndex++ ] = this._colorPacked;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
         _vertices[ _vertexIndex++ ] = v;
 
         _vertices[ _vertexIndex++ ] = x;
         _vertices[ _vertexIndex++ ] = fy2;
-        _vertices[ _vertexIndex++ ] = this._colorPacked;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
         _vertices[ _vertexIndex++ ] = v2;
 
         _vertices[ _vertexIndex++ ] = fx2;
         _vertices[ _vertexIndex++ ] = fy2;
-        _vertices[ _vertexIndex++ ] = this._colorPacked;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u2;
         _vertices[ _vertexIndex++ ] = v2;
 
         _vertices[ _vertexIndex++ ] = fx2;
         _vertices[ _vertexIndex++ ] = y;
-        _vertices[ _vertexIndex++ ] = this._colorPacked;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u2;
         _vertices[ _vertexIndex++ ] = v;
     }
@@ -1063,29 +1057,29 @@ public class PolygonSpriteBatch : IPolygonBatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        _vertices[ this._vertexIndex++ ] = x1;
-        _vertices[ this._vertexIndex++ ] = y1;
-        _vertices[ this._vertexIndex++ ] = this._colorPacked;
-        _vertices[ this._vertexIndex++ ] = u;
-        _vertices[ this._vertexIndex++ ] = v;
+        _vertices[ _vertexIndex++ ] = x1;
+        _vertices[ _vertexIndex++ ] = y1;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u;
+        _vertices[ _vertexIndex++ ] = v;
 
-        _vertices[ this._vertexIndex++ ] = x2;
-        _vertices[ this._vertexIndex++ ] = y2;
-        _vertices[ this._vertexIndex++ ] = this._colorPacked;
-        _vertices[ this._vertexIndex++ ] = u;
-        _vertices[ this._vertexIndex++ ] = v2;
+        _vertices[ _vertexIndex++ ] = x2;
+        _vertices[ _vertexIndex++ ] = y2;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u;
+        _vertices[ _vertexIndex++ ] = v2;
 
-        _vertices[ this._vertexIndex++ ] = x3;
-        _vertices[ this._vertexIndex++ ] = y3;
-        _vertices[ this._vertexIndex++ ] = this._colorPacked;
-        _vertices[ this._vertexIndex++ ] = u2;
-        _vertices[ this._vertexIndex++ ] = v2;
+        _vertices[ _vertexIndex++ ] = x3;
+        _vertices[ _vertexIndex++ ] = y3;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u2;
+        _vertices[ _vertexIndex++ ] = v2;
 
-        _vertices[ this._vertexIndex++ ] = x4;
-        _vertices[ this._vertexIndex++ ] = y4;
-        _vertices[ this._vertexIndex++ ] = this._colorPacked;
-        _vertices[ this._vertexIndex++ ] = u2;
-        _vertices[ this._vertexIndex++ ] = v;
+        _vertices[ _vertexIndex++ ] = x4;
+        _vertices[ _vertexIndex++ ] = y4;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u2;
+        _vertices[ _vertexIndex++ ] = v;
     }
 
     public void Draw( TextureRegion region,
@@ -1227,29 +1221,29 @@ public class PolygonSpriteBatch : IPolygonBatch
             v4 = region.V2;
         }
 
-        _vertices[ this._vertexIndex++ ] = x1;
-        _vertices[ this._vertexIndex++ ] = y1;
-        _vertices[ this._vertexIndex++ ] = this._colorPacked;
-        _vertices[ this._vertexIndex++ ] = u1;
-        _vertices[ this._vertexIndex++ ] = v1;
+        _vertices[ _vertexIndex++ ] = x1;
+        _vertices[ _vertexIndex++ ] = y1;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u1;
+        _vertices[ _vertexIndex++ ] = v1;
 
-        _vertices[ this._vertexIndex++ ] = x2;
-        _vertices[ this._vertexIndex++ ] = y2;
-        _vertices[ this._vertexIndex++ ] = this._colorPacked;
-        _vertices[ this._vertexIndex++ ] = u2;
-        _vertices[ this._vertexIndex++ ] = v2;
+        _vertices[ _vertexIndex++ ] = x2;
+        _vertices[ _vertexIndex++ ] = y2;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u2;
+        _vertices[ _vertexIndex++ ] = v2;
 
-        _vertices[ this._vertexIndex++ ] = x3;
-        _vertices[ this._vertexIndex++ ] = y3;
-        _vertices[ this._vertexIndex++ ] = this._colorPacked;
-        _vertices[ this._vertexIndex++ ] = u3;
-        _vertices[ this._vertexIndex++ ] = v3;
+        _vertices[ _vertexIndex++ ] = x3;
+        _vertices[ _vertexIndex++ ] = y3;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u3;
+        _vertices[ _vertexIndex++ ] = v3;
 
-        _vertices[ this._vertexIndex++ ] = x4;
-        _vertices[ this._vertexIndex++ ] = y4;
-        _vertices[ this._vertexIndex++ ] = this._colorPacked;
-        _vertices[ this._vertexIndex++ ] = u4;
-        _vertices[ this._vertexIndex++ ] = v4;
+        _vertices[ _vertexIndex++ ] = x4;
+        _vertices[ _vertexIndex++ ] = y4;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u4;
+        _vertices[ _vertexIndex++ ] = v4;
     }
 
     public void Draw( TextureRegion region, float width, float height, Affine2 transform )
@@ -1263,20 +1257,20 @@ public class PolygonSpriteBatch : IPolygonBatch
         {
             SwitchTexture( region.Texture );
         }
-        else if ( ( ( _triangleIndex + 6 ) > this._triangles.Length )
-               || ( ( _vertexIndex + Sprite.SpriteSize ) > this._vertices.Length ) )
+        else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
+               || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) )
         {
             Flush();
         }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
-        this._triangles[ this._triangleIndex++ ] = ( short )startVertex;
-        this._triangles[ this._triangleIndex++ ] = ( short )( startVertex + 1 );
-        this._triangles[ this._triangleIndex++ ] = ( short )( startVertex + 2 );
-        this._triangles[ this._triangleIndex++ ] = ( short )( startVertex + 2 );
-        this._triangles[ this._triangleIndex++ ] = ( short )( startVertex + 3 );
-        this._triangles[ this._triangleIndex++ ] = ( short )startVertex;
+        _triangles[ _triangleIndex++ ] = ( short )startVertex;
+        _triangles[ _triangleIndex++ ] = ( short )( startVertex + 1 );
+        _triangles[ _triangleIndex++ ] = ( short )( startVertex + 2 );
+        _triangles[ _triangleIndex++ ] = ( short )( startVertex + 2 );
+        _triangles[ _triangleIndex++ ] = ( short )( startVertex + 3 );
+        _triangles[ _triangleIndex++ ] = ( short )startVertex;
 
         // construct corner points
         var x1 = transform.m02;
@@ -1293,29 +1287,29 @@ public class PolygonSpriteBatch : IPolygonBatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        this._vertices[ _vertexIndex++ ] = x1;
-        this._vertices[ _vertexIndex++ ] = y1;
-        this._vertices[ _vertexIndex++ ] = this._colorPacked;
-        this._vertices[ _vertexIndex++ ] = u;
-        this._vertices[ _vertexIndex++ ] = v;
+        _vertices[ _vertexIndex++ ] = x1;
+        _vertices[ _vertexIndex++ ] = y1;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u;
+        _vertices[ _vertexIndex++ ] = v;
 
-        this._vertices[ _vertexIndex++ ] = x2;
-        this._vertices[ _vertexIndex++ ] = y2;
-        this._vertices[ _vertexIndex++ ] = this._colorPacked;
-        this._vertices[ _vertexIndex++ ] = u;
-        this._vertices[ _vertexIndex++ ] = v2;
+        _vertices[ _vertexIndex++ ] = x2;
+        _vertices[ _vertexIndex++ ] = y2;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u;
+        _vertices[ _vertexIndex++ ] = v2;
 
-        this._vertices[ _vertexIndex++ ] = x3;
-        this._vertices[ _vertexIndex++ ] = y3;
-        this._vertices[ _vertexIndex++ ] = this._colorPacked;
-        this._vertices[ _vertexIndex++ ] = u2;
-        this._vertices[ _vertexIndex++ ] = v2;
+        _vertices[ _vertexIndex++ ] = x3;
+        _vertices[ _vertexIndex++ ] = y3;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u2;
+        _vertices[ _vertexIndex++ ] = v2;
 
-        this._vertices[ _vertexIndex++ ] = x4;
-        this._vertices[ _vertexIndex++ ] = y4;
-        this._vertices[ _vertexIndex++ ] = this._colorPacked;
-        this._vertices[ _vertexIndex++ ] = u2;
-        this._vertices[ _vertexIndex++ ] = v;
+        _vertices[ _vertexIndex++ ] = x4;
+        _vertices[ _vertexIndex++ ] = y4;
+        _vertices[ _vertexIndex++ ] = _colorPacked;
+        _vertices[ _vertexIndex++ ] = u2;
+        _vertices[ _vertexIndex++ ] = v;
     }
 
     public void Flush()
@@ -1337,7 +1331,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         _lastTexture?.Bind();
 
-        Mesh mesh = this._mesh;
+        Mesh mesh = _mesh;
 
         mesh.SetVertices( _vertices, 0, _vertexIndex );
         mesh.SetIndices( _triangles, 0, trianglesInBatch );
@@ -1374,10 +1368,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _blendingDisabled = false;
     }
 
-    public void SetBlendFunction( int srcFunc, int dstFunc )
-    {
-        SetBlendFunctionSeparate( srcFunc, dstFunc, srcFunc, dstFunc );
-    }
+    public void SetBlendFunction( int srcFunc, int dstFunc ) => SetBlendFunctionSeparate( srcFunc, dstFunc, srcFunc, dstFunc );
 
     public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
     {
@@ -1437,6 +1428,48 @@ public class PolygonSpriteBatch : IPolygonBatch
         }
     }
 
+    public ShaderProgram? Shader
+    {
+        get => _customShader ?? _shader;
+        set
+        {
+            if ( IsDrawing )
+            {
+                Flush();
+            }
+
+            _customShader = value;
+
+            if ( IsDrawing )
+            {
+                if ( _customShader != null )
+                {
+                    _customShader.Bind();
+                }
+                else
+                {
+                    _shader?.Bind();
+                }
+
+                SetupMatrices();
+            }
+        }
+    }
+
+    public int BlendSrcFunc { get; private set; } = IGL20.GL_SRC_ALPHA;
+
+    public int BlendDstFunc { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
+
+    public int BlendSrcFuncAlpha { get; private set; } = IGL20.GL_SRC_ALPHA;
+
+    public int BlendDstFuncAlpha { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
+
+    public Matrix4 ProjectionMatrix { get; set; } = new();
+
+    public Matrix4 TransformMatrix { get; set; } = new();
+
+    public bool IsDrawing { get; set; }
+
     public void SetupMatrices()
     {
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
@@ -1462,46 +1495,4 @@ public class PolygonSpriteBatch : IPolygonBatch
     }
 
     public bool ISBlendingEnabled() => !_blendingDisabled;
-
-    public ShaderProgram? Shader
-    {
-        get => _customShader ?? _shader;
-        set
-        {
-            if ( IsDrawing )
-            {
-                Flush();
-            }
-
-            _customShader = value;
-
-            if ( IsDrawing )
-            {
-                if ( _customShader != null )
-                {
-                    _customShader.Bind();
-                }
-                else
-                {
-                    this._shader?.Bind();
-                }
-
-                SetupMatrices();
-            }
-        }
-    }
-
-    public int BlendSrcFunc { get; private set; } = IGL20.GL_SRC_ALPHA;
-
-    public int BlendDstFunc { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
-
-    public int BlendSrcFuncAlpha { get; private set; } = IGL20.GL_SRC_ALPHA;
-
-    public int BlendDstFuncAlpha { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
-
-    public Matrix4 ProjectionMatrix { get; set; } = new Matrix4();
-
-    public Matrix4 TransformMatrix { get; set; } = new Matrix4();
-
-    public bool IsDrawing { get; set; }
 }

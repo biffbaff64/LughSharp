@@ -17,33 +17,24 @@
 namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
-/// A sprite that, if whitespace was stripped from the region when it was packed,
-/// is automatically positioned as if whitespace had not been stripped. */
+///     A sprite that, if whitespace was stripped from the region when it was packed,
+///     is automatically positioned as if whitespace had not been stripped. */
 /// </summary>
-[PublicAPI]
 public class AtlasSprite : Sprite
 {
 
-    #region properties
-
-    public AtlasRegion Region          { get; set; }
-    public float       OriginalOffsetX { get; set; }
-    public float       OriginalOffsetY { get; set; }
-
-    #endregion properties
-
     public AtlasSprite( AtlasSprite sprite )
     {
-        Region               = sprite.Region;
-        this.OriginalOffsetX = sprite.OriginalOffsetX;
-        this.OriginalOffsetY = sprite.OriginalOffsetY;
+        Region          = sprite.Region;
+        OriginalOffsetX = sprite.OriginalOffsetX;
+        OriginalOffsetY = sprite.OriginalOffsetY;
 
         Set( sprite );
     }
 
     public AtlasSprite( AtlasRegion region )
     {
-        this.Region = new AtlasRegion( region );
+        Region = new AtlasRegion( region );
 
         Init( region );
     }
@@ -55,7 +46,7 @@ public class AtlasSprite : Sprite
 
         SetRegion( region );
 
-        this.SetOrigin( region.OriginalWidth / 2f, region.OriginalHeight / 2f );
+        SetOrigin( region.OriginalWidth / 2f, region.OriginalHeight / 2f );
 
         var width  = region.RegionWidth;
         var height = region.RegionHeight;
@@ -73,8 +64,8 @@ public class AtlasSprite : Sprite
         SetColor( 1, 1, 1, 1 );
     }
 
-    public void SetX( float x ) => base.X = x + Region.OffsetX;
-    public void SetY( float y ) => base.Y = y + Region.OffsetY;
+    public void SetX( float x ) => X = x + Region.OffsetX;
+    public void SetY( float y ) => Y = y + Region.OffsetY;
 
     public override void SetBounds( float x, float y, float width, float height )
     {
@@ -95,20 +86,11 @@ public class AtlasSprite : Sprite
             );
     }
 
-    public override void SetSize( float width, float height )
-    {
-        SetBounds( GetX(), GetY(), width, height );
-    }
+    public override void SetSize( float width, float height ) => SetBounds( GetX(), GetY(), width, height );
 
-    public override void SetOrigin( float originX, float originY )
-    {
-        base.SetOrigin( originX - Region.OffsetX, originY - Region.OffsetY );
-    }
+    public override void SetOrigin( float originX, float originY ) => base.SetOrigin( originX - Region.OffsetX, originY - Region.OffsetY );
 
-    public override void SetOriginCenter()
-    {
-        base.SetOrigin( ( Width / 2 ) - Region.OffsetX, ( Height / 2 ) - Region.OffsetY );
-    }
+    public override void SetOriginCenter() => base.SetOrigin( ( Width / 2 ) - Region.OffsetX, ( Height / 2 ) - Region.OffsetY );
 
     public override void Flip( bool x, bool y )
     {
@@ -132,9 +114,9 @@ public class AtlasSprite : Sprite
 
         Region.OffsetX = OriginalOffsetX;
         Region.OffsetY = OriginalOffsetY;
-        
+
         Region.Flip( x, y ); // Updates x and y offsets.
-        
+
         OriginalOffsetX =  Region.OffsetX;
         OriginalOffsetY =  Region.OffsetY;
         Region.OffsetX  *= widthRatio;
@@ -180,33 +162,30 @@ public class AtlasSprite : Sprite
         SetOrigin( oldOriginX, oldOriginY );
     }
 
-    public float GetX() => base.X - Region.OffsetX;
+    public float GetX() => X - Region.OffsetX;
 
-    public float GetY() => base.Y - Region.OffsetY;
+    public float GetY() => Y - Region.OffsetY;
 
-    public float GetOriginX() => base.OriginX + Region.OffsetX;
+    public float GetOriginX() => OriginX + Region.OffsetX;
 
-    public float GetOriginY() => base.OriginY + Region.OffsetY;
+    public float GetOriginY() => OriginY + Region.OffsetY;
 
-    public float GetWidth()
-    {
-        return ( base.Width / Region.RotatedPackedWidth ) * Region.OriginalWidth;
-    }
+    public float GetWidth() => ( Width / Region.RotatedPackedWidth ) * Region.OriginalWidth;
 
-    public float GetHeight()
-    {
-        return ( base.Height / Region.RotatedPackedHeight ) * Region.OriginalHeight;
-    }
+    public float GetHeight() => ( Height / Region.RotatedPackedHeight ) * Region.OriginalHeight;
 
-    public float GetWidthRatio()
-    {
-        return base.Width / Region.RotatedPackedWidth;
-    }
+    public float GetWidthRatio() => Width / Region.RotatedPackedWidth;
 
-    public float GetHeightRatio()
-    {
-        return base.Height / Region.RotatedPackedHeight;
-    }
+    public float GetHeightRatio() => Height / Region.RotatedPackedHeight;
 
     public override string? ToString() => Region.ToString();
+
+    #region properties
+
+    public AtlasRegion Region          { get; set; }
+    public float       OriginalOffsetX { get; set; }
+    public float       OriginalOffsetY { get; set; }
+
+    #endregion properties
+
 }

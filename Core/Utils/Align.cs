@@ -19,35 +19,19 @@ using System.Text;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Provides bit flag constants for alignment.
+///     Provides bit flag constants for alignment.
 /// </summary>
-[PublicAPI]
 public static class Align
 {
-    #region constants
-    
-    public const int NONE   = 0;
-    public const int CENTER = 1 << 0;
-    public const int TOP    = 1 << 1;
-    public const int BOTTOM = 1 << 2;
-    public const int LEFT   = 1 << 3;
-    public const int RIGHT  = 1 << 4;
-
-    public const int TOP_LEFT     = TOP | LEFT;
-    public const int TOP_RIGHT    = TOP | RIGHT;
-    public const int BOTTOM_LEFT  = BOTTOM | LEFT;
-    public const int BOTTOM_RIGHT = BOTTOM | RIGHT;
-
-    #endregion constants
 
     // ------------------------------------------------------------------------
-    
+
     public static bool IsLeft( int align )             => ( align & LEFT ) != 0;
     public static bool IsRight( int align )            => ( align & RIGHT ) != 0;
     public static bool IsTop( int align )              => ( align & TOP ) != 0;
     public static bool IsBottom( int align )           => ( align & BOTTOM ) != 0;
-    public static bool IsCenterHorizontal( int align ) => ( ( ( align & LEFT ) == 0 ) && ( ( align & RIGHT ) == 0 ) );
-    public static bool IsCenterVertical( int align )   => ( ( ( align & TOP ) == 0 ) && ( ( align & BOTTOM ) == 0 ) );
+    public static bool IsCenterHorizontal( int align ) => ( ( align & LEFT ) == 0 ) && ( ( align & RIGHT ) == 0 );
+    public static bool IsCenterVertical( int align )   => ( ( align & TOP ) == 0 ) && ( ( align & BOTTOM ) == 0 );
 
     // ------------------------------------------------------------------------
 
@@ -87,4 +71,21 @@ public static class Align
 
         return buffer.ToString();
     }
+
+    #region constants
+
+    public const int NONE   = 0;
+    public const int CENTER = 1 << 0;
+    public const int TOP    = 1 << 1;
+    public const int BOTTOM = 1 << 2;
+    public const int LEFT   = 1 << 3;
+    public const int RIGHT  = 1 << 4;
+
+    public const int TOP_LEFT     = TOP | LEFT;
+    public const int TOP_RIGHT    = TOP | RIGHT;
+    public const int BOTTOM_LEFT  = BOTTOM | LEFT;
+    public const int BOTTOM_RIGHT = BOTTOM | RIGHT;
+
+    #endregion constants
+
 }

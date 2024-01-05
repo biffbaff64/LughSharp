@@ -18,6 +18,4 @@ namespace LibGDXSharp.Graphics.G3D.Particles.Renderers;
 
 public class ParticleControllerRenderer
 {
-    
 }
-

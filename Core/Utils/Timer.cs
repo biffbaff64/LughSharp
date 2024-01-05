@@ -19,25 +19,21 @@ using Monitor = System.Threading.Monitor;
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Executes tasks in the future on the main loop thread.
+///     Executes tasks in the future on the main loop thread.
 /// </summary>
-[PublicAPI]
 public class Timer
 {
     private readonly static object ThreadLock = new();
 
-    protected readonly List< Task? > tasks = new( 8 );
-
     private static TimerThread? _thread;
 
-    public Timer()
-    {
-        Start();
-    }
+    protected readonly List< Task? > tasks = new( 8 );
+
+    public Timer() => Start();
 
     /// <summary>
-    /// Timer instance singleton for general application wide usage.
-    /// Static methods on <see cref="Timer"/> make convenient use of this instance.
+    ///     Timer instance singleton for general application wide usage.
+    ///     Static methods on <see cref="Timer" /> make convenient use of this instance.
     /// </summary>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
@@ -76,34 +72,25 @@ public class Timer
     }
 
     /// <summary>
-    /// Schedules a task to occur once as soon as possible, but not sooner
-    /// than the start of the next frame.
+    ///     Schedules a task to occur once as soon as possible, but not sooner
+    ///     than the start of the next frame.
     /// </summary>
-    public Task PostTask( Task task )
-    {
-        return ScheduleTask( task, 0, 0, 0 );
-    }
+    public Task PostTask( Task task ) => ScheduleTask( task, 0, 0, 0 );
 
     /// <summary>
-    /// Schedules a task to occur once after the specified delay.
+    ///     Schedules a task to occur once after the specified delay.
     /// </summary>
-    public Task ScheduleTask( Task task, float delaySeconds )
-    {
-        return ScheduleTask( task, delaySeconds, 0, 0 );
-    }
+    public Task ScheduleTask( Task task, float delaySeconds ) => ScheduleTask( task, delaySeconds, 0, 0 );
 
     /// <summary>
-    /// Schedules a task to occur once after the specified delay and then repeatedly
-    /// at the specified interval until cancelled.
+    ///     Schedules a task to occur once after the specified delay and then repeatedly
+    ///     at the specified interval until cancelled.
     /// </summary>
-    public Task ScheduleTask( Task task, float delaySeconds, float intervalSeconds )
-    {
-        return ScheduleTask( task, delaySeconds, intervalSeconds, -1 );
-    }
+    public Task ScheduleTask( Task task, float delaySeconds, float intervalSeconds ) => ScheduleTask( task, delaySeconds, intervalSeconds, -1 );
 
     /// <summary>
-    /// Schedules a task to occur once after the specified delay and then a
-    /// number of additional times at the specified interval.
+    ///     Schedules a task to occur once after the specified delay and then a
+    ///     number of additional times at the specified interval.
     /// </summary>
     /// <param name="task"></param>
     /// <param name="delaySeconds"></param>
@@ -147,7 +134,7 @@ public class Timer
     }
 
     /// <summary>
-    /// Starts the timer if it is not currently running.
+    ///     Starts the timer if it is not currently running.
     /// </summary>
     public void Start()
     {
@@ -165,8 +152,8 @@ public class Timer
     }
 
     /// <summary>
-    /// Stops the timer, tasks will not be executed and time that passes
-    /// will not be applied to the task delays.
+    ///     Stops the timer, tasks will not be executed and time that passes
+    ///     will not be applied to the task delays.
     /// </summary>
     public void Stop()
     {
@@ -177,7 +164,7 @@ public class Timer
     }
 
     /// <summary>
-    /// Cancels all tasks.
+    ///     Cancels all tasks.
     /// </summary>
     public void Clear()
     {
@@ -199,9 +186,9 @@ public class Timer
     }
 
     /// <summary>
-    /// Returns true if the timer has no tasks in the queue.
-    /// Note that this can change at any time. Synchronize on the timer instance
-    /// to prevent tasks being added, removed, or updated.
+    ///     Returns true if the timer has no tasks in the queue.
+    ///     Note that this can change at any time. Synchronize on the timer instance
+    ///     to prevent tasks being added, removed, or updated.
     /// </summary>
     /// <returns></returns>
     public bool IsEmpty()
@@ -262,7 +249,7 @@ public class Timer
     }
 
     /// <summary>
-    /// Adds the specified delay to all tasks.
+    ///     Adds the specified delay to all tasks.
     /// </summary>
     /// <param name="delayMillis"></param>
     protected virtual void Delay( long delayMillis )
@@ -282,52 +269,40 @@ public class Timer
     }
 
     /// <summary>
-    /// Schedules a <see cref="Task"/> on <see cref="Instance"/>
+    ///     Schedules a <see cref="Task" /> on <see cref="Instance" />
     /// </summary>
-    public static Task Post( Task task )
-    {
-        return Instance().PostTask( task );
-    }
+    public static Task Post( Task task ) => Instance().PostTask( task );
 
     /// <summary>
-    /// Schedules a <see cref="Task"/> on <see cref="Instance"/>
+    ///     Schedules a <see cref="Task" /> on <see cref="Instance" />
     /// </summary>
-    public static Task Schedule( Task task, float delaySeconds )
-    {
-        return Instance().ScheduleTask( task, delaySeconds );
-    }
+    public static Task Schedule( Task task, float delaySeconds ) => Instance().ScheduleTask( task, delaySeconds );
 
     /// <summary>
-    /// Schedules a <see cref="Task"/> on <see cref="Instance"/>
+    ///     Schedules a <see cref="Task" /> on <see cref="Instance" />
     /// </summary>
-    public static Task Schedule( Task task, float delaySeconds, float intervalSeconds )
-    {
-        return Instance().ScheduleTask( task, delaySeconds, intervalSeconds );
-    }
+    public static Task Schedule( Task task, float delaySeconds, float intervalSeconds ) => Instance().ScheduleTask( task, delaySeconds, intervalSeconds );
 
     /// <summary>
-    /// Schedules a <see cref="Task"/> on <see cref="Instance"/>
+    ///     Schedules a <see cref="Task" /> on <see cref="Instance" />
     /// </summary>
     public static Task Schedule( Task task, float delaySeconds, float intervalSeconds, int repeatCount )
-    {
-        return Instance().ScheduleTask( task, delaySeconds, intervalSeconds, repeatCount );
-    }
+        => Instance().ScheduleTask( task, delaySeconds, intervalSeconds, repeatCount );
 
     // ================================================================================
     //  Companion Classes
     // ================================================================================
 
     /// <summary>
-    /// A <see cref="Runnable"/> that can be scheduled on a <see cref="Timer"/>
+    ///     A <see cref="Runnable" /> that can be scheduled on a <see cref="Timer" />
     /// </summary>
-    [PublicAPI]
     public abstract class Task
     {
-        internal volatile Timer?        timer;
         internal readonly IApplication? app;
         internal          long          executeTimeMillis;
         internal          long          intervalMillis;
         internal          int           repeatCount;
+        internal volatile Timer?        timer;
 
         protected Task()
         {
@@ -340,15 +315,15 @@ public class Timer
         }
 
         /// <summary>
-        /// If this is the last time the task will be ran or the task is first
-        /// cancelled, it may be scheduled again in this method.
+        ///     If this is the last time the task will be ran or the task is first
+        ///     cancelled, it may be scheduled again in this method.
         /// </summary>
         public abstract void Run();
 
         /// <summary>
-        /// Cancels the task.
-        /// It will not be executed until it is scheduled again.
-        /// This method can be called at any time.
+        ///     Cancels the task.
+        ///     It will not be executed until it is scheduled again.
+        ///     This method can be called at any time.
         /// </summary>
         public void Cancel()
         {
@@ -359,7 +334,7 @@ public class Timer
                     lock ( this )
                     {
                         executeTimeMillis = 0;
-                        this.timer        = null;
+                        timer             = null;
 
                         timer?.tasks.Remove( this );
                     }
@@ -370,18 +345,18 @@ public class Timer
                 lock ( this )
                 {
                     executeTimeMillis = 0;
-                    this.timer        = null;
+                    timer             = null;
                 }
             }
         }
 
         /// <summary>
-        /// Returns true if this task is scheduled to be executed in the future by a timer.
-        /// The execution time may be reached at any time after calling this method,
-        /// which may change the scheduled state.
-        /// <p>
-        /// To prevent the scheduled state from changing, synchronize on this task object, eg:
-        /// <code>
+        ///     Returns true if this task is scheduled to be executed in the future by a timer.
+        ///     The execution time may be reached at any time after calling this method,
+        ///     which may change the scheduled state.
+        ///     <p>
+        ///         To prevent the scheduled state from changing, synchronize on this task object, eg:
+        ///         <code>
         ///     lock( task )
         ///     {
         ///         if ( !task.IsScheduled() )
@@ -390,28 +365,22 @@ public class Timer
         ///         }
         ///     }
         /// </code>
-        /// </p>
+        ///     </p>
         /// </summary>
         /// <returns></returns>
-        public bool IsScheduled()
-        {
-            return timer != null;
-        }
+        public bool IsScheduled() => timer != null;
 
         /// <summary>
-        /// Returns the time in milliseconds when this task will be executed next.
+        ///     Returns the time in milliseconds when this task will be executed next.
         /// </summary>
-        public long GetExecuteTimeMillis()
-        {
-            return executeTimeMillis;
-        }
+        public long GetExecuteTimeMillis() => executeTimeMillis;
     }
 
-    [PublicAPI]
+
     public class TimerThread : ILifecycleListener
     {
-        public readonly List< Timer > instances = new( capacity: 1 );
         public readonly IFiles?       files;
+        public readonly List< Timer > instances = new( capacity: 1 );
         public          Timer?        instance;
         public          long          pauseTimeMillis;
 
@@ -423,63 +392,12 @@ public class Timer
 
             Resume();
 
-            var thread = new Thread( this.Run )
+            var thread = new Thread( Run )
             {
                 Name = "Timer"
             };
 
             thread.Start();
-        }
-
-        public void Run()
-        {
-            lock ( ThreadLock )
-            {
-                if ( ( _thread != this ) || ( files != Gdx.Files ) )
-                {
-                    goto exitlabel;
-                }
-
-                long waitMillis = 5000;
-
-                if ( pauseTimeMillis == 0 )
-                {
-                    var timeMillis = TimeUtils.NanoTime() / 1000000;
-
-                    for ( int i = 0, n = instances.Count; i < n; i++ )
-                    {
-                        try
-                        {
-                            waitMillis = instances[ i ].Update( timeMillis, waitMillis );
-                        }
-                        catch ( System.Exception ex )
-                        {
-                            throw new GdxRuntimeException( "Task failed: " + instances[ i ].GetType().Name, ex );
-                        }
-                    }
-                }
-
-                if ( ( _thread != this ) || ( files != Gdx.Files ) )
-                {
-                    goto exitlabel;
-                }
-
-                try
-                {
-                    if ( waitMillis > 0 )
-                    {
-                        Monitor.Wait( ThreadLock, ( int )waitMillis );
-                    }
-                }
-                catch ( ThreadInterruptedException )
-                {
-                    // Ignore
-                }
-            }
-
-            exitlabel:
-
-            Dispose();
         }
 
         public void Pause()
@@ -509,6 +427,63 @@ public class Timer
             }
         }
 
+        public void Dispose()
+        {
+            Dispose( true );
+            GC.SuppressFinalize( this );
+        }
+
+        public void Run()
+        {
+            lock ( ThreadLock )
+            {
+                if ( ( _thread != this ) || ( files != Gdx.Files ) )
+                {
+                    goto exitlabel;
+                }
+
+                long waitMillis = 5000;
+
+                if ( pauseTimeMillis == 0 )
+                {
+                    var timeMillis = TimeUtils.NanoTime() / 1000000;
+
+                    for ( int i = 0, n = instances.Count; i < n; i++ )
+                    {
+                        try
+                        {
+                            waitMillis = instances[ i ].Update( timeMillis, waitMillis );
+                        }
+                        catch ( Exception ex )
+                        {
+                            throw new GdxRuntimeException( "Task failed: " + instances[ i ].GetType().Name, ex );
+                        }
+                    }
+                }
+
+                if ( ( _thread != this ) || ( files != Gdx.Files ) )
+                {
+                    goto exitlabel;
+                }
+
+                try
+                {
+                    if ( waitMillis > 0 )
+                    {
+                        Monitor.Wait( ThreadLock, ( int )waitMillis );
+                    }
+                }
+                catch ( ThreadInterruptedException )
+                {
+                    // Ignore
+                }
+            }
+
+            exitlabel:
+
+            Dispose();
+        }
+
         private void Dispose( bool disposing )
         {
             if ( disposing )
@@ -527,12 +502,6 @@ public class Timer
 
                 Gdx.App.RemoveLifecycleListener( this );
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose( true );
-            GC.SuppressFinalize( this );
         }
     }
 }

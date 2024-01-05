@@ -17,16 +17,15 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// Sets the alpha for an actor's color (or a specified color), from the
-/// current alpha to the new alpha. Note this action transitions from the
-/// alpha at the time the action starts to the specified alpha.
+///     Sets the alpha for an actor's color (or a specified color), from the
+///     current alpha to the new alpha. Note this action transitions from the
+///     alpha at the time the action starts to the specified alpha.
 /// </summary>
-[PublicAPI]
 public class AlphaAction : TemporalAction
 {
-    public float Alpha { get; set; }
 
     private float _start;
+    public  float Alpha { get; set; }
 
     protected override void Begin()
     {
@@ -34,7 +33,7 @@ public class AlphaAction : TemporalAction
         {
             throw new GdxRuntimeException( "Cannot begin with a null Target!" );
         }
-        
+
         _start = Target.Color!.A;
     }
 
@@ -55,7 +54,7 @@ public class AlphaAction : TemporalAction
         }
         else
         {
-            Target.Color.A = ( _start + ( ( Alpha - _start ) * percent ) );
+            Target.Color.A = _start + ( ( Alpha - _start ) * percent );
         }
     }
 }

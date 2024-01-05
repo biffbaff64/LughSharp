@@ -18,40 +18,37 @@ using System.Text;
 
 namespace LibGDXSharp.Files;
 
-[PublicAPI]
 public class FileHandle
 {
-    public FileType FileType { get; set; }
-    public FileInfo FileInfo { get; set; }
 
     /// <summary>
     /// </summary>
     protected FileHandle()
     {
-        this.FileInfo = default( FileInfo )!;
-        this.FileType = default( FileType );
+        FileInfo = default( FileInfo )!;
+        FileType = default( FileType );
     }
 
     /// <summary>
-    /// #Creates a new absolute FileHandle for the file name. Use this for tools
-    /// on the desktop that don't need any of the backends.
+    ///     #Creates a new absolute FileHandle for the file name. Use this for tools
+    ///     on the desktop that don't need any of the backends.
     /// </summary>
     public FileHandle( string fileName )
     {
-        this.FileInfo = new FileInfo( fileName );
-        this.FileType = FileType.Absolute;
+        FileInfo = new FileInfo( fileName );
+        FileType = FileType.Absolute;
     }
 
     /// <summary>
-    /// Creates a new absolute FileHandle for the File. Use this for tools on the
-    /// desktop that don't need any of the backends.
+    ///     Creates a new absolute FileHandle for the File. Use this for tools on the
+    ///     desktop that don't need any of the backends.
     /// </summary>
     public FileHandle( FileInfo file )
     {
         ArgumentNullException.ThrowIfNull( file );
 
-        this.FileInfo = file;
-        this.FileType = FileType.Absolute;
+        FileInfo = file;
+        FileType = FileType.Absolute;
     }
 
     /// <summary>
@@ -60,47 +57,47 @@ public class FileHandle
     /// <param name="type"></param>
     public FileHandle( string fileName, FileType type )
     {
-        this.FileInfo = new FileInfo( fileName );
-        this.FileType = type;
+        FileInfo = new FileInfo( fileName );
+        FileType = type;
     }
 
-    /// <summary>
-    /// The path of the file as specified on construction,
-    /// <para>
-    /// e.g. Gdx.files.internal("dir/file.png") -> dir/file.png.
-    /// </para>
-    /// <para>
-    /// Backward slashes will be replaced by forward slashes.
-    /// </para>
-    /// </summary>
-    public virtual string Path() => this.FileInfo.FullName;
+    public FileType FileType { get; set; }
+    public FileInfo FileInfo { get; set; }
 
     /// <summary>
-    /// The name of the file, without any parent paths.
+    ///     The path of the file as specified on construction,
+    ///     <para>
+    ///         e.g. Gdx.files.internal("dir/file.png") -> dir/file.png.
+    ///     </para>
+    ///     <para>
+    ///         Backward slashes will be replaced by forward slashes.
+    ///     </para>
     /// </summary>
-    public virtual string Name() => this.FileInfo.Name;
+    public virtual string Path() => FileInfo.FullName;
 
     /// <summary>
-    /// Returns the file extension (without the dot) or an empty string
-    /// if the file name doesn't contain a dot.
+    ///     The name of the file, without any parent paths.
     /// </summary>
-    public virtual string Extension() => this.FileInfo.Extension;
+    public virtual string Name() => FileInfo.Name;
 
     /// <summary>
-    /// The name of the file, without parent paths or the extension.
+    ///     Returns the file extension (without the dot) or an empty string
+    ///     if the file name doesn't contain a dot.
     /// </summary>
-    public virtual string NameWithoutExtension()
-    {
-        return System.IO.Path.GetFileNameWithoutExtension( FileInfo.Name );
-    }
+    public virtual string Extension() => FileInfo.Extension;
 
     /// <summary>
-    /// The path and filename without the extension, e.g. dir/dir2/file.png -> dir/dir2/file.
-    /// Backward slashes will be returned as forward slashes.
+    ///     The name of the file, without parent paths or the extension.
+    /// </summary>
+    public virtual string NameWithoutExtension() => System.IO.Path.GetFileNameWithoutExtension( FileInfo.Name );
+
+    /// <summary>
+    ///     The path and filename without the extension, e.g. dir/dir2/file.png -> dir/dir2/file.
+    ///     Backward slashes will be returned as forward slashes.
     /// </summary>
     public virtual string PathWithoutExtension()
     {
-        var filePath = this.FileInfo.FullName;
+        var filePath = FileInfo.FullName;
 
         var dotIndex = filePath.LastIndexOf( ".", StringComparison.Ordinal );
 
@@ -113,16 +110,16 @@ public class FileHandle
     }
 
     /// <summary>
-    /// Returns a stream for reading this file as bytes.
+    ///     Returns a stream for reading this file as bytes.
     /// </summary>
     /// <exception cref="GdxRuntimeException">
-    /// if the file handle represents a directory, doesn't exist, or could not be read.
+    ///     if the file handle represents a directory, doesn't exist, or could not be read.
     /// </exception>
     public virtual FileStream Read()
     {
-        if ( ( this.FileType == FileType.Classpath )
-          || ( ( this.FileType == FileType.Internal ) && !this.FileInfo.Exists )
-          || ( ( this.FileType == FileType.Local ) && !this.FileInfo.Exists ) )
+        if ( ( FileType == FileType.Classpath )
+          || ( ( FileType == FileType.Internal ) && !FileInfo.Exists )
+          || ( ( FileType == FileType.Local ) && !FileInfo.Exists ) )
         {
             try
             {
@@ -130,7 +127,7 @@ public class FileHandle
 
                 return input;
             }
-            catch ( System.Exception ex )
+            catch ( Exception ex )
             {
                 throw new GdxRuntimeException( $"File not found: {FileInfo.Name} ({FileType})", ex );
             }
@@ -140,21 +137,18 @@ public class FileHandle
     }
 
     /// <summary>
-    /// Returns a stream for reading this file as bytes.
+    ///     Returns a stream for reading this file as bytes.
     /// </summary>
     /// <exception cref="GdxRuntimeException">
-    /// if the file handle represents a directory, doesn't exist, or could not be read.
+    ///     if the file handle represents a directory, doesn't exist, or could not be read.
     /// </exception>
-    public virtual BufferedStream Read( int bufferSize )
-    {
-        return new BufferedStream( File.OpenRead( FileInfo.FullName ), bufferSize );
-    }
+    public virtual BufferedStream Read( int bufferSize ) => new( File.OpenRead( FileInfo.FullName ), bufferSize );
 
     /// <summary>
-    /// Returns a reader for reading this file as characters the platform's default charset.
+    ///     Returns a reader for reading this file as characters the platform's default charset.
     /// </summary>
     /// <exception cref="GdxRuntimeException">
-    /// if the file handle represents a directory, doesn't exist, or could not be read.
+    ///     if the file handle represents a directory, doesn't exist, or could not be read.
     /// </exception>
     public virtual StreamReader Reader() => new( Read() );
 
@@ -162,7 +156,7 @@ public class FileHandle
     /// </summary>
     /// <param name="charset"></param>
     /// <exception cref="GdxRuntimeException">
-    /// if the file handle represents a directory, doesn't exist, or could not be read.
+    ///     if the file handle represents a directory, doesn't exist, or could not be read.
     /// </exception>
     public virtual StreamReader Reader( Encoding charset )
     {
@@ -172,7 +166,7 @@ public class FileHandle
         {
             return new StreamReader( stream, charset );
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             stream.Close();
 
@@ -181,24 +175,18 @@ public class FileHandle
     }
 
     /// <summary>
-    /// Returns a buffered reader for reading this file as characters
-    /// using the platform's default charset.
+    ///     Returns a buffered reader for reading this file as characters
+    ///     using the platform's default charset.
     /// </summary>
-    public virtual BufferedStream Reader( int bufferSize )
-    {
-        return Read( bufferSize );
-    }
+    public virtual BufferedStream Reader( int bufferSize ) => Read( bufferSize );
 
     /// <summary>
-    /// Returns a buffered reader for reading this file as characters.
+    ///     Returns a buffered reader for reading this file as characters.
     /// </summary>
-    public virtual BufferedStream Reader( int bufferSize, Encoding charset )
-    {
-        return Reader( bufferSize );
-    }
+    public virtual BufferedStream Reader( int bufferSize, Encoding charset ) => Reader( bufferSize );
 
     /// <summary>
-    /// Reads the entire file into a string using the specified charset.
+    ///     Reads the entire file into a string using the specified charset.
     /// </summary>
     /// <param name="charset">If null, the default charset is used.</param>
     /// <returns></returns>
@@ -216,7 +204,7 @@ public class FileHandle
 
             output.Append( reader.ReadToEnd() );
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new GdxRuntimeException( $"Error reading layout file - {this}", ex );
         }
@@ -229,10 +217,10 @@ public class FileHandle
     }
 
     /// <summary>
-    /// Reads the entire file into a byte array.
+    ///     Reads the entire file into a byte array.
     /// </summary>
     /// <exception cref="GdxRuntimeException">
-    /// if the file handle represents a directory, doesn't exist, or could not be read.
+    ///     if the file handle represents a directory, doesn't exist, or could not be read.
     /// </exception>
     public virtual byte[] ReadBytes()
     {
@@ -253,7 +241,7 @@ public class FileHandle
 
             return ms.ToArray();
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new GdxRuntimeException( $"Error reading file: {this}", ex );
         }
@@ -310,7 +298,7 @@ public class FileHandle
                 position += count;
             }
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new GdxRuntimeException( $"Error Reading File: {this}", ex );
         }
@@ -341,9 +329,9 @@ public class FileHandle
 
         try
         {
-            return System.IO.File.OpenWrite( FileInfo.FullName );
+            return File.OpenWrite( FileInfo.FullName );
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new GdxRuntimeException( $"Error Writing File: {FileInfo.Name} ({FileType})", ex );
         }
@@ -366,7 +354,7 @@ public class FileHandle
 
             output.CopyTo( input );
         }
-        catch ( System.Exception ex )
+        catch ( Exception ex )
         {
             throw new GdxRuntimeException( $"Error stream writing to file: {FileInfo.Name} ({FileType})", ex );
         }

@@ -16,24 +16,19 @@
 
 namespace LibGDXSharp.Assets;
 
-[PublicAPI]
 public class AssetDescriptor
 {
-    public Type                   AssetType  { get; set; }
-    public string                 Filepath   { get; set; }
-    public AssetLoaderParameters? Parameters { get; set; }
-    public FileInfo               File       { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    /// Creates an empty AssetDescriptor object.
-    /// Information will need providing before this object can be used.
-    /// - AssetType  - The Type of asset ( Texture, TextureAtlas, Sound, Pixmap etc. )
-    /// - Filepath   - The full path, including filename, of the asset.
-    /// - Parameters - The <see cref="AssetLoaderParameters"/> to use.
-    /// - File       - A <see cref="FileInfo"/> object holding file/path information
+    ///     Creates an empty AssetDescriptor object.
+    ///     Information will need providing before this object can be used.
+    ///     - AssetType  - The Type of asset ( Texture, TextureAtlas, Sound, Pixmap etc. )
+    ///     - Filepath   - The full path, including filename, of the asset.
+    ///     - Parameters - The <see cref="AssetLoaderParameters" /> to use.
+    ///     - File       - A <see cref="FileInfo" /> object holding file/path information
     /// </summary>
     public AssetDescriptor()
     {
@@ -44,11 +39,11 @@ public class AssetDescriptor
     }
 
     /// <summary>
-    /// Creates a new AssetDescriptor object.
+    ///     Creates a new AssetDescriptor object.
     /// </summary>
     /// <param name="filepath"> The full path, including filename, of the asset. </param>
     /// <param name="assetType"> The Type of asset ( Texture, Pixmap, Audio, Atlas etc ). </param>
-    /// <param name="parameters"> The <see cref="AssetLoaderParameters"/> to use. </param>
+    /// <param name="parameters"> The <see cref="AssetLoaderParameters" /> to use. </param>
     public AssetDescriptor( string? filepath, Type assetType, AssetLoaderParameters parameters )
     {
         ArgumentNullException.ThrowIfNull( filepath );
@@ -60,7 +55,7 @@ public class AssetDescriptor
     }
 
     /// <summary>
-    /// Creates a new AssetDescriptor object.
+    ///     Creates a new AssetDescriptor object.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="assetType"></param>
@@ -75,9 +70,11 @@ public class AssetDescriptor
         File       = file;
     }
 
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return $"{Filepath}, {AssetType.FullName}";
-    }
+    public Type                   AssetType  { get; set; }
+    public string                 Filepath   { get; set; }
+    public AssetLoaderParameters? Parameters { get; set; }
+    public FileInfo               File       { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString() => $"{Filepath}, {AssetType.FullName}";
 }

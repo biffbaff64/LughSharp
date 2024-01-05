@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
-[PublicAPI]
 public class RandomAccessFileStream
 {
     public static FileStream CreateRandomAccessFile( string fileName, string mode )

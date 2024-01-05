@@ -17,11 +17,10 @@
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Unchecked exception thrown when a relative <i>put</i> operation reaches
-/// the target buffer's limit.
+///     Unchecked exception thrown when a relative <i>put</i> operation reaches
+///     the target buffer's limit.
 /// </summary>
-[PublicAPI]
-public class BufferOverflowException : System.Exception
+public class BufferOverflowException : Exception
 {
     public BufferOverflowException()
     {
@@ -32,12 +31,12 @@ public class BufferOverflowException : System.Exception
     {
     }
 
-    public BufferOverflowException( System.Exception e )
+    public BufferOverflowException( Exception e )
         : this( "", e )
     {
     }
 
-    public BufferOverflowException( string message, System.Exception? exception )
+    public BufferOverflowException( string message, Exception? exception )
         : base( message, exception )
     {
     }

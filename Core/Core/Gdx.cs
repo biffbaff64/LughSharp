@@ -17,10 +17,9 @@
 namespace LibGDXSharp.Core;
 
 /// <summary>
-/// Environment class holding references to the Application,
-/// Graphics, Audio, Files and Input instances.
+///     Environment class holding references to the Application,
+///     Graphics, Audio, Files and Input instances.
 /// </summary>
-[PublicAPI]
 public static class Gdx
 {
     private static IApplication? _app;
@@ -144,7 +143,7 @@ public static class Gdx
         get
         {
             ArgumentNullException.ThrowIfNull( _gl30 );
-            
+
             return _gl30;
         }
         set => _gl30 = value;

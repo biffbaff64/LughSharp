@@ -22,39 +22,56 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 namespace LibGDXSharp.Utils.Viewport;
 
 /// <summary>
-/// Manages a <see cref="Camera"/> and determines how world coordinates
-/// are mapped to and from the screen.
-/// Extending classes should initialise <see cref="Camera"/> to avoid
-/// causing exceptions.
+///     Manages a <see cref="Camera" /> and determines how world coordinates
+///     are mapped to and from the screen.
+///     Extending classes should initialise <see cref="Camera" /> to avoid
+///     causing exceptions.
 /// </summary>
-[PublicAPI]
 public abstract class Viewport
 {
 
-    #region properties
-
-    public Camera Camera       { get; set; }
-    public float  WorldWidth   { get; set; }
-    public float  WorldHeight  { get; set; }
-    public int    ScreenX      { get; set; }
-    public int    ScreenY      { get; set; }
-    public int    ScreenWidth  { get; set; }
-    public int    ScreenHeight { get; set; }
-
-    #endregion properties
-
     private Vector3 _tmp = Vector3.Zero;
 
-    protected Viewport( Camera camera )
-    {
-        this.Camera = camera;
-    }
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    protected Viewport( Camera camera ) => Camera = camera;
 
     /// <summary>
-    /// Applies the viewport to the camera and sets the glViewport.
+    ///     Returns the left gutter (black bar) width in screen coordinates.
+    /// </summary>
+    public virtual int LeftGutterWidth => ScreenX;
+
+    /// <summary>
+    ///     Returns the right gutter (black bar) x in screen coordinates.
+    /// </summary>
+    public virtual int RightGutterX => ScreenX + ScreenWidth;
+
+    /// <summary>
+    ///     Returns the right gutter (black bar) width in screen coordinates.
+    /// </summary>
+    public virtual int RightGutterWidth => Gdx.Graphics.Width - ( ScreenX + ScreenWidth );
+
+    /// <summary>
+    ///     Returns the bottom gutter (black bar) height in screen coordinates.
+    /// </summary>
+    public virtual int BottomGutterHeight => ScreenY;
+
+    /// <summary>
+    ///     Returns the top gutter (black bar) y in screen coordinates.
+    /// </summary>
+    public virtual int TopGutterY => ScreenY + ScreenHeight;
+
+    /// <summary>
+    ///     Returns the top gutter (black bar) height in screen coordinates.
+    /// </summary>
+    public virtual int TopGutterHeight => Gdx.Graphics.Height - ( ScreenY + ScreenHeight );
+
+    /// <summary>
+    ///     Applies the viewport to the camera and sets the glViewport.
     /// </summary>
     /// <param name="centerCamera">
-    /// If true, the camera position is set to the center of the world.
+    ///     If true, the camera position is set to the center of the world.
     /// </param>
     public virtual void Apply( bool centerCamera = false )
     {
@@ -77,27 +94,24 @@ public abstract class Viewport
     }
 
     /// <summary>
-    /// Configures this viewport's screen bounds using the specified screen
-    /// size and calls <see cref="Apply(bool)"/>. Typically called
-    /// from <see cref="IApplicationListener.Resize(int, int)"/> or
-    /// <see cref="IScreen.Resize(int, int)"/>.
+    ///     Configures this viewport's screen bounds using the specified screen
+    ///     size and calls <see cref="Apply(bool)" />. Typically called
+    ///     from <see cref="IApplicationListener.Resize(int, int)" /> or
+    ///     <see cref="IScreen.Resize(int, int)" />.
     /// </summary>
     /// <param name="screenWidth"></param>
     /// <param name="screenHeight"></param>
     /// <param name="centerCamera"></param>
     /// <remarks>
-    /// The default implementation only calls <see cref="Apply(bool)"/>. 
+    ///     The default implementation only calls <see cref="Apply(bool)" />.
     /// </remarks>
-    public virtual void Update( int screenWidth, int screenHeight, bool centerCamera = false )
-    {
-        Apply( centerCamera );
-    }
+    public virtual void Update( int screenWidth, int screenHeight, bool centerCamera = false ) => Apply( centerCamera );
 
     /// <summary>
-    /// Transforms the specified screen coordinate to world coordinates.
+    ///     Transforms the specified screen coordinate to world coordinates.
     /// </summary>
     /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
-    /// <see cref="Camera.Unproject(Vector3)"/>
+    /// <see cref="Camera.Unproject(Vector3)" />
     public virtual Vector2 Unproject( Vector2 screenCoords )
     {
         if ( Camera == null )
@@ -120,10 +134,10 @@ public abstract class Viewport
     }
 
     /// <summary>
-    /// Transforms the specified world coordinate to screen coordinates.
+    ///     Transforms the specified world coordinate to screen coordinates.
     /// </summary>
     /// <returns> The vector that was passed in, transformed to screen coordinates.</returns>
-    /// <see cref="Camera.Project(Vector3) "/>
+    /// <see cref="Camera.Project(Vector3) " />
     public virtual Vector2 Project( Vector2 worldCoords )
     {
         if ( Camera == null )
@@ -140,10 +154,10 @@ public abstract class Viewport
     }
 
     /// <summary>
-    /// Transforms the specified screen coordinate to world coordinates.
+    ///     Transforms the specified screen coordinate to world coordinates.
     /// </summary>
     /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
-    /// <see cref="Camera.Unproject(Vector3)"/>
+    /// <see cref="Camera.Unproject(Vector3)" />
     public virtual Vector3 Unproject( Vector3 screenCoords )
     {
         if ( Camera == null )
@@ -157,9 +171,10 @@ public abstract class Viewport
     }
 
     /// <summary>
-    /// Transforms the specified world coordinate to screen coordinates. </summary>
+    ///     Transforms the specified world coordinate to screen coordinates.
+    /// </summary>
     /// <returns> The vector that was passed in, transformed to screen coordinates. </returns>
-    /// <see cref="Camera.Project(Vector3) "/>
+    /// <see cref="Camera.Project(Vector3) " />
     public virtual Vector3 Project( Vector3 worldCoords )
     {
         if ( Camera == null )
@@ -174,7 +189,7 @@ public abstract class Viewport
 
     /// <summary>
     /// </summary>
-    /// <see cref="Camera.GetPickRay(float, float, float, float, float, float) "/>
+    /// <see cref="Camera.GetPickRay(float, float, float, float, float, float) " />
     public virtual Ray GetPickRay( float screenX, float screenY )
     {
         if ( Camera == null )
@@ -182,10 +197,13 @@ public abstract class Viewport
             throw new NullReferenceException();
         }
 
-        return Camera.GetPickRay
-            (
-             screenX, screenY, this.ScreenX,
-             this.ScreenY, ScreenWidth, ScreenHeight
+        return Camera.GetPickRay(
+            screenX,
+            screenY,
+            ScreenX,
+            ScreenY,
+            ScreenWidth,
+            ScreenHeight
             );
     }
 
@@ -193,25 +211,21 @@ public abstract class Viewport
     /// </summary>
     public virtual void CalculateScissors( Matrix4 batchTransform,
                                            RectangleShape area,
-                                           RectangleShape scissor )
-    {
-        ScissorStack.CalculateScissors
-            (
-             Camera,
-             ScreenX,
-             ScreenY,
-             ScreenWidth,
-             ScreenHeight,
-             batchTransform,
-             area,
-             scissor
-            );
-    }
+                                           RectangleShape scissor ) => ScissorStack.CalculateScissors(
+        Camera,
+        ScreenX,
+        ScreenY,
+        ScreenWidth,
+        ScreenHeight,
+        batchTransform,
+        area,
+        scissor
+        );
 
     /// <summary>
-    /// Transforms a point to real screen coordinates (as opposed to OpenGL
-    /// window coordinates), where the origin is in the top left and the
-    /// the y-axis is pointing downwards. 
+    ///     Transforms a point to real screen coordinates (as opposed to OpenGL
+    ///     window coordinates), where the origin is in the top left and the
+    ///     the y-axis is pointing downwards.
     /// </summary>
     public virtual Vector2 ToScreenCoordinates( Vector2 worldCoords, Matrix4 transformMatrix )
     {
@@ -227,7 +241,7 @@ public abstract class Viewport
 
         Debug.Assert( Gdx.Graphics != null );
 
-        _tmp.Y = ( Gdx.Graphics.Height - _tmp.Y );
+        _tmp.Y = Gdx.Graphics.Height - _tmp.Y;
 
         worldCoords.X = _tmp.X;
         worldCoords.Y = _tmp.Y;
@@ -241,69 +255,54 @@ public abstract class Viewport
     /// <param name="worldHeight"></param>
     public virtual void SetWorldSize( float worldWidth, float worldHeight )
     {
-        this.WorldWidth  = worldWidth;
-        this.WorldHeight = worldHeight;
+        WorldWidth  = worldWidth;
+        WorldHeight = worldHeight;
     }
 
     /// <summary>
-    /// Sets the viewport's position in screen coordinates.
-    /// This is typically set by <see cref="Update(int, int, bool)"/>.
+    ///     Sets the viewport's position in screen coordinates.
+    ///     This is typically set by <see cref="Update(int, int, bool)" />.
     /// </summary>
     public virtual void SetScreenPosition( int screenX, int screenY )
     {
-        this.ScreenX = screenX;
-        this.ScreenY = screenY;
+        ScreenX = screenX;
+        ScreenY = screenY;
     }
 
     /// <summary>
-    /// Sets the viewport's size in screen coordinates.
-    /// This is typically set by <see cref="Update(int, int, bool)"/>.
+    ///     Sets the viewport's size in screen coordinates.
+    ///     This is typically set by <see cref="Update(int, int, bool)" />.
     /// </summary>
     public virtual void SetScreenSize( int screenWidth, int screenHeight )
     {
-        this.ScreenWidth  = screenWidth;
-        this.ScreenHeight = screenHeight;
+        ScreenWidth  = screenWidth;
+        ScreenHeight = screenHeight;
     }
 
     /// <summary>
-    /// Sets the viewport's bounds in screen coordinates.
-    /// This is typically set by <see cref="Update(int, int, bool)"/>.
+    ///     Sets the viewport's bounds in screen coordinates.
+    ///     This is typically set by <see cref="Update(int, int, bool)" />.
     /// </summary>
     public virtual void SetScreenBounds( int screenX, int screenY, int screenWidth, int screenHeight )
     {
-        this.ScreenX      = screenX;
-        this.ScreenY      = screenY;
-        this.ScreenWidth  = screenWidth;
-        this.ScreenHeight = screenHeight;
+        ScreenX      = screenX;
+        ScreenY      = screenY;
+        ScreenWidth  = screenWidth;
+        ScreenHeight = screenHeight;
     }
 
-    /// <summary>
-    /// Returns the left gutter (black bar) width in screen coordinates.
-    /// </summary>
-    public virtual int LeftGutterWidth => ScreenX;
+    // ------------------------------------------------------------------------
 
-    /// <summary>
-    /// Returns the right gutter (black bar) x in screen coordinates.
-    /// </summary>
-    public virtual int RightGutterX => ScreenX + ScreenWidth;
+    #region properties
 
-    /// <summary>
-    /// Returns the right gutter (black bar) width in screen coordinates.
-    /// </summary>
-    public virtual int RightGutterWidth => ( Gdx.Graphics.Width - ( ScreenX + ScreenWidth ) );
+    public Camera? Camera       { get; set; }
+    public float   WorldWidth   { get; set; }
+    public float   WorldHeight  { get; set; }
+    public int     ScreenX      { get; set; }
+    public int     ScreenY      { get; set; }
+    public int     ScreenWidth  { get; set; }
+    public int     ScreenHeight { get; set; }
 
-    /// <summary>
-    /// Returns the bottom gutter (black bar) height in screen coordinates.
-    /// </summary>
-    public virtual int BottomGutterHeight => ScreenY;
+    #endregion properties
 
-    /// <summary>
-    /// Returns the top gutter (black bar) y in screen coordinates.
-    /// </summary>
-    public virtual int TopGutterY => ScreenY + ScreenHeight;
-
-    /// <summary>
-    /// Returns the top gutter (black bar) height in screen coordinates.
-    /// </summary>
-    public virtual int TopGutterHeight => ( Gdx.Graphics.Height - ( ScreenY + ScreenHeight ) );
 }

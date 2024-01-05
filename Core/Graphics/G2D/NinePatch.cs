@@ -17,21 +17,20 @@
 namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
-/// A 3x3 grid of texture regions. Any of the regions may be omitted.
-/// Padding may be set as a hint on how to inset content on top of the ninepatch
-/// (by default the eight "edge" textures of the ninepatch define the padding).
-/// When drawn, the four corner patches will not be scaled, the interior patch will
-/// be scaled in both directions, and the middle patch for each edge will be scaled
-/// in only one direction.
-/// <para>
-/// Note this class does not accept ".9.png" textures that include the metadata
-/// border pixels describing the splits (and padding) for the ninepatch. That
-/// information is either passed to a constructor or defined implicitly by the
-/// size of the individual patch textures. TextureAtlas is one way to generate
-/// a postprocessed ninepatch texture regions from ".9.png" files.
-/// </para>
+///     A 3x3 grid of texture regions. Any of the regions may be omitted.
+///     Padding may be set as a hint on how to inset content on top of the ninepatch
+///     (by default the eight "edge" textures of the ninepatch define the padding).
+///     When drawn, the four corner patches will not be scaled, the interior patch will
+///     be scaled in both directions, and the middle patch for each edge will be scaled
+///     in only one direction.
+///     <para>
+///         Note this class does not accept ".9.png" textures that include the metadata
+///         border pixels describing the splits (and padding) for the ninepatch. That
+///         information is either passed to a constructor or defined implicitly by the
+///         size of the individual patch textures. TextureAtlas is one way to generate
+///         a postprocessed ninepatch texture regions from ".9.png" files.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class NinePatch
 {
     private const float TOLERANCE = 0.1f;
@@ -46,33 +45,17 @@ public class NinePatch
     public const int BOTTOM_CENTER = 7;
     public const int BOTTOM_RIGHT  = 8;
 
-    public float[] Vertices { get; set; } = new float[ 9 * 4 * 5 ];
-    public Color   Color    { get; set; } = new( Color.White );
-
-    public Texture? Texture      { get; set; }
-    public int      Idx          { get; set; }
-    public int      BottomLeft   { get; set; }
-    public int      BottomCenter { get; set; }
-    public int      BottomRight  { get; set; }
-    public int      MiddleLeft   { get; set; }
-    public int      MiddleCenter { get; set; }
-    public int      MiddleRight  { get; set; }
-    public int      TopLeft      { get; set; }
-    public int      TopCenter    { get; set; }
-    public int      TopRight     { get; set; }
-    public float    LeftWidth    { get; set; }
-    public float    RightWidth   { get; set; }
-    public float    MiddleWidth  { get; set; }
-    public float    MiddleHeight { get; set; }
-    public float    TopHeight    { get; set; }
-    public float    BottomHeight { get; set; }
-
     private readonly static Color TmpDrawColor = new();
+    private                 float _padBottom   = -1;
+
+    private float _padLeft  = -1;
+    private float _padRight = -1;
+    private float _padTop   = -1;
 
     /// <summary>
-    /// Create a ninepatch by cutting up the given texture into nine patches.
-    /// The subsequent parameters define the 4 lines that will cut the texture
-    /// region into 9 pieces.
+    ///     Create a ninepatch by cutting up the given texture into nine patches.
+    ///     The subsequent parameters define the 4 lines that will cut the texture
+    ///     region into 9 pieces.
     /// </summary>
     /// <param name="texture"></param>
     /// <param name="left">Pixels from left edge.</param>
@@ -85,9 +68,9 @@ public class NinePatch
     }
 
     /// <summary>
-    /// Create a ninepatch by cutting up the given texture region into nine patches.
-    /// The subsequent parameters define the 4 lines that will cut the texture region
-    /// into 9 pieces.
+    ///     Create a ninepatch by cutting up the given texture region into nine patches.
+    ///     The subsequent parameters define the 4 lines that will cut the texture region
+    ///     into 9 pieces.
     /// </summary>
     /// <param name="region"></param>
     /// <param name="left"> Pixels from left edge. </param>
@@ -187,13 +170,10 @@ public class NinePatch
     }
 
     /// <summary>
-    /// Construct a degenerate "nine" patch with only a center component.
+    ///     Construct a degenerate "nine" patch with only a center component.
     /// </summary>
     public NinePatch( Texture texture, Color color )
-        : this( texture )
-    {
-        this.Color = color;
-    }
+        : this( texture ) => Color = color;
 
     /// Construct a degenerate "nine" patch with only a center component.
     public NinePatch( Texture texture )
@@ -202,41 +182,37 @@ public class NinePatch
     }
 
     /// <summary>
-    /// Construct a degenerate "nine" patch with only a center component.
+    ///     Construct a degenerate "nine" patch with only a center component.
     /// </summary>
     public NinePatch( TextureRegion region, Color color )
-        : this( region )
-    {
-        this.Color = color;
-    }
+        : this( region ) => Color = color;
 
     /// <summary>
-    /// Construct a degenerate "nine" patch with only a center component.
+    ///     Construct a degenerate "nine" patch with only a center component.
     /// </summary>
-    public NinePatch( TextureRegion region )
-    {
+    public NinePatch( TextureRegion region ) =>
+
         //@formatter:off
         Load( new[]
-             {
-                 null, null,   null,
-                 null, region, null,
-                 null, null,   null 
-             } );
-        //@formatter:on
-    }
+        {
+            null, null,   null,
+            null, region, null,
+            null, null,   null 
+        } );
 
+    //@formatter:on
     /// <summary>
-    /// Construct a nine patch from the given nine texture regions. The provided
-    /// patches must be consistently sized (e.g., any left edge textures must have
-    /// the same width, etc). Patches may be <tt>null</tt>. Patch indices are
-    /// specified via the public members <see cref="TopLeft"/>, <see cref="TopCenter"/>,
-    /// etc. 
+    ///     Construct a nine patch from the given nine texture regions. The provided
+    ///     patches must be consistently sized (e.g., any left edge textures must have
+    ///     the same width, etc). Patches may be <tt>null</tt>. Patch indices are
+    ///     specified via the public members <see cref="TopLeft" />, <see cref="TopCenter" />,
+    ///     etc.
     /// </summary>
     public NinePatch( params TextureRegion[] patches )
     {
         if ( patches is not { Length: 9 } )
         {
-            throw new System.ArgumentException( "NinePatch needs nine TextureRegions" );
+            throw new ArgumentException( "NinePatch needs nine TextureRegions" );
         }
 
         Load( patches );
@@ -283,7 +259,7 @@ public class NinePatch
     }
 
     /// <summary>
-    /// Creates a ninepatch from the supplied ninepatch.
+    ///     Creates a ninepatch from the supplied ninepatch.
     /// </summary>
     /// <param name="ninePatch"></param>
     public NinePatch( NinePatch ninePatch )
@@ -292,8 +268,8 @@ public class NinePatch
     }
 
     /// <summary>
-    /// Creates a ninepatch from the supplied ninepatch and sets
-    /// it to the supplied Color. 
+    ///     Creates a ninepatch from the supplied ninepatch and sets
+    ///     it to the supplied Color.
     /// </summary>
     /// <param name="ninePatch"></param>
     /// <param name="color"></param>
@@ -332,7 +308,56 @@ public class NinePatch
                     ninePatch.Vertices.Length );
 
         Idx = ninePatch.Idx;
-        this.Color.Set( color );
+        Color.Set( color );
+    }
+
+    public float[] Vertices { get; set; } = new float[ 9 * 4 * 5 ];
+    public Color   Color    { get; set; } = new( Color.White );
+
+    public Texture? Texture      { get; set; }
+    public int      Idx          { get; set; }
+    public int      BottomLeft   { get; set; }
+    public int      BottomCenter { get; set; }
+    public int      BottomRight  { get; set; }
+    public int      MiddleLeft   { get; set; }
+    public int      MiddleCenter { get; set; }
+    public int      MiddleRight  { get; set; }
+    public int      TopLeft      { get; set; }
+    public int      TopCenter    { get; set; }
+    public int      TopRight     { get; set; }
+    public float    LeftWidth    { get; set; }
+    public float    RightWidth   { get; set; }
+    public float    MiddleWidth  { get; set; }
+    public float    MiddleHeight { get; set; }
+    public float    TopHeight    { get; set; }
+    public float    BottomHeight { get; set; }
+
+    public float TotalWidth => LeftWidth + MiddleWidth + RightWidth;
+
+    public float TotalHeight => TopHeight + MiddleHeight + BottomHeight;
+
+    public float PadLeft
+    {
+        get => _padLeft <= 0.0001f ? LeftWidth : _padLeft;
+        set => _padLeft = value;
+    }
+
+    public float PadRight
+    {
+        get => _padRight <= 0.0001f ? RightWidth : _padRight;
+        set => _padRight = value;
+    }
+
+    public float PadTop
+    {
+        get => _padTop <= 0.0001f ? TopHeight : _padTop;
+        set => _padTop = value;
+    }
+
+    public float PadBottom
+    {
+        get => _padBottom <= 0.0001f ? BottomHeight : _padBottom;
+        set => _padBottom = value;
     }
 
     /// <summary>
@@ -479,7 +504,7 @@ public class NinePatch
         }
         else if ( Texture != region.Texture )
         {
-            throw new System.ArgumentException( "All regions must be from the same texture." );
+            throw new ArgumentException( "All regions must be from the same texture." );
         }
 
         // Add half pixel offsets on stretchable dimensions to avoid color bleeding when GL_LINEAR
@@ -510,17 +535,17 @@ public class NinePatch
 
         var i = Idx;
 
-        this.Vertices[ i + 3 ] = u;
-        this.Vertices[ i + 4 ] = v;
+        Vertices[ i + 3 ] = u;
+        Vertices[ i + 4 ] = v;
 
-        this.Vertices[ i + 8 ] = u;
-        this.Vertices[ i + 9 ] = v2;
+        Vertices[ i + 8 ] = u;
+        Vertices[ i + 9 ] = v2;
 
-        this.Vertices[ i + 13 ] = u2;
-        this.Vertices[ i + 14 ] = v2;
+        Vertices[ i + 13 ] = u2;
+        Vertices[ i + 14 ] = v2;
 
-        this.Vertices[ i + 18 ] = u2;
-        this.Vertices[ i + 19 ] = v;
+        Vertices[ i + 18 ] = u2;
+        Vertices[ i + 19 ] = v;
 
         Idx += 20;
 
@@ -528,28 +553,28 @@ public class NinePatch
     }
 
     /// <summary>
-    /// Set the coordinates and color of a ninth of the patch.
+    ///     Set the coordinates and color of a ninth of the patch.
     /// </summary>
     private void Set( int idx, float x, float y, float width, float height, float color )
     {
         var fx2 = x + width;
         var fy2 = y + height;
 
-        this.Vertices[ idx ]     = x;
-        this.Vertices[ idx + 1 ] = y;
-        this.Vertices[ idx + 2 ] = color;
+        Vertices[ idx ]     = x;
+        Vertices[ idx + 1 ] = y;
+        Vertices[ idx + 2 ] = color;
 
-        this.Vertices[ idx + 5 ] = x;
-        this.Vertices[ idx + 6 ] = fy2;
-        this.Vertices[ idx + 7 ] = color;
+        Vertices[ idx + 5 ] = x;
+        Vertices[ idx + 6 ] = fy2;
+        Vertices[ idx + 7 ] = color;
 
-        this.Vertices[ idx + 10 ] = fx2;
-        this.Vertices[ idx + 11 ] = fy2;
-        this.Vertices[ idx + 12 ] = color;
+        Vertices[ idx + 10 ] = fx2;
+        Vertices[ idx + 11 ] = fy2;
+        Vertices[ idx + 12 ] = color;
 
-        this.Vertices[ idx + 15 ] = fx2;
-        this.Vertices[ idx + 16 ] = y;
-        this.Vertices[ idx + 17 ] = color;
+        Vertices[ idx + 15 ] = fx2;
+        Vertices[ idx + 16 ] = y;
+        Vertices[ idx + 17 ] = color;
     }
 
     private void PrepareVertices( IBatch batch, float x, float y, float width, float height )
@@ -632,8 +657,8 @@ public class NinePatch
 
         float worldOriginX = x + originX, worldOriginY = y + originY;
 
-        var n        = this.Idx;
-        var vertices = this.Vertices;
+        var n        = Idx;
+        var vertices = Vertices;
 
         if ( rotation != 0 )
         {
@@ -659,58 +684,25 @@ public class NinePatch
 
         if ( Texture != null )
         {
-            batch.Draw( this.Texture, vertices, 0, n );
+            batch.Draw( Texture, vertices, 0, n );
         }
     }
 
-    public float TotalWidth => ( LeftWidth + MiddleWidth + RightWidth );
-
-    public float TotalHeight => ( TopHeight + MiddleHeight + BottomHeight );
-
     /// <summary>
-    /// Set the padding for content inside this ninepatch. By default the padding
-    /// is set to match the exterior of the ninepatch, so the content should fit
-    /// exactly within the middle patch. 
+    ///     Set the padding for content inside this ninepatch. By default the padding
+    ///     is set to match the exterior of the ninepatch, so the content should fit
+    ///     exactly within the middle patch.
     /// </summary>
     public void SetPadding( float left, float right, float top, float bottom )
     {
-        this.PadLeft   = left;
-        this.PadRight  = right;
-        this.PadTop    = top;
-        this.PadBottom = bottom;
-    }
-
-    private float _padLeft   = -1;
-    private float _padRight  = -1;
-    private float _padTop    = -1;
-    private float _padBottom = -1;
-
-    public float PadLeft
-    {
-        get => _padLeft <= 0.0001f ? LeftWidth : _padLeft;
-        set => _padLeft = value;
-    }
-
-    public float PadRight
-    {
-        get => _padRight <= 0.0001f ? RightWidth : _padRight;
-        set => _padRight = value;
-    }
-
-    public float PadTop
-    {
-        get => _padTop <= 0.0001f ? TopHeight : _padTop;
-        set => _padTop = value;
-    }
-
-    public float PadBottom
-    {
-        get => _padBottom <= 0.0001f ? BottomHeight : _padBottom;
-        set => _padBottom = value;
+        PadLeft   = left;
+        PadRight  = right;
+        PadTop    = top;
+        PadBottom = bottom;
     }
 
     /// <summary>
-    /// Multiplies the top/left/bottom/right sizes and padding by the specified amount.
+    ///     Multiplies the top/left/bottom/right sizes and padding by the specified amount.
     /// </summary>
     public void Scale( float scaleX, float scaleY )
     {

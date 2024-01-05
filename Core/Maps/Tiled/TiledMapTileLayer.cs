@@ -16,35 +16,35 @@
 
 namespace LibGDXSharp.Maps.Tiled;
 
-[PublicAPI]
 public class TiledMapTileLayer : MapLayer
 {
-    public int       Width      { get; private set; }
-    public int       Height     { get; private set; }
-    public int       TileWidth  { get; private set; }
-    public int       TileHeight { get; private set; }
-    public Cell[ , ] Cells      { get; private set; }
 
     /// <summary>
-    /// Creates TiledMap layer
-    /// @param width layer width in tiles
-    /// @param height layer height in tiles
-    /// @param tileWidth tile width in pixels
-    /// @param tileHeight tile height in pixels
+    ///     Creates TiledMap layer
+    ///     @param width layer width in tiles
+    ///     @param height layer height in tiles
+    ///     @param tileWidth tile width in pixels
+    ///     @param tileHeight tile height in pixels
     /// </summary>
     public TiledMapTileLayer( int width, int height, int tileWidth, int tileHeight )
     {
-        this.Width      = width;
-        this.Height     = height;
-        this.TileWidth  = tileWidth;
-        this.TileHeight = tileHeight;
-        this.Cells      = new Cell[ width, height ];
+        Width      = width;
+        Height     = height;
+        TileWidth  = tileWidth;
+        TileHeight = tileHeight;
+        Cells      = new Cell[ width, height ];
     }
 
+    public int       Width      { get; }
+    public int       Height     { get; }
+    public int       TileWidth  { get; private set; }
+    public int       TileHeight { get; private set; }
+    public Cell[ , ] Cells      { get; }
+
     /// <summary>
-    /// @param x X coordinate
-    /// @param y Y coordinate
-    /// @return {@link Cell} at (x, y)
+    ///     @param x X coordinate
+    ///     @param y Y coordinate
+    ///     @return {@link Cell} at (x, y)
     /// </summary>
     public Cell? GetCell( int x, int y )
     {
@@ -62,10 +62,10 @@ public class TiledMapTileLayer : MapLayer
     }
 
     /// <summary>
-    /// Sets the {@link Cell} at the given coordinates.
-    /// @param x X coordinate
-    /// @param y Y coordinate
-    /// @param cell the {@link Cell} to set at the given coordinates.
+    ///     Sets the {@link Cell} at the given coordinates.
+    ///     @param x X coordinate
+    ///     @param y Y coordinate
+    ///     @param cell the {@link Cell} to set at the given coordinates.
     /// </summary>
     public void SetCell( int x, int y, Cell cell )
     {
@@ -83,99 +83,86 @@ public class TiledMapTileLayer : MapLayer
     }
 
     /// <summary>
-    /// represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties.
+    ///     represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties.
     /// </summary>
-    [PublicAPI]
     public class Cell
     {
-        private ITiledMapTile? _tile;
-        private bool           _flipHorizontally;
-        private bool           _flipVertically;
-        private int            _rotation;
+
+        public const int            ROTATE0   = 0;
+        public const int            ROTATE90  = 1;
+        public const int            ROTATE180 = 2;
+        public const int            ROTATE270 = 3;
+        private      bool           _flipHorizontally;
+        private      bool           _flipVertically;
+        private      int            _rotation;
+        private      ITiledMapTile? _tile;
 
         /// <summary>
-        /// return The tile currently assigned to this cell.
+        ///     return The tile currently assigned to this cell.
         /// </summary>
-        public ITiledMapTile? GetTile()
-        {
-            return _tile;
-        }
+        public ITiledMapTile? GetTile() => _tile;
 
         /// <summary>
-        /// Sets the tile to be used for this cell.
-        /// @param tile the {@link TiledMapTile} to use for this cell. 
-        /// @return this, for method chaining
+        ///     Sets the tile to be used for this cell.
+        ///     @param tile the {@link TiledMapTile} to use for this cell.
+        ///     @return this, for method chaining
         /// </summary>
         public Cell SetTile( ITiledMapTile tile )
         {
-            this._tile = tile;
+            _tile = tile;
 
             return this;
         }
 
         /// <summary>
-        /// @return Whether the tile should be flipped horizontally.
+        ///     @return Whether the tile should be flipped horizontally.
         /// </summary>
-        public bool GetFlipHorizontally()
-        {
-            return _flipHorizontally;
-        }
+        public bool GetFlipHorizontally() => _flipHorizontally;
 
         /// <summary>
-        /// Sets whether to flip the tile horizontally.
-        /// @param flipHorizontally whether or not to flip the tile horizontally. 
-        /// @return this, for method chaining
+        ///     Sets whether to flip the tile horizontally.
+        ///     @param flipHorizontally whether or not to flip the tile horizontally.
+        ///     @return this, for method chaining
         /// </summary>
         public Cell SetFlipHorizontally( bool flipHorizontally )
         {
-            this._flipHorizontally = flipHorizontally;
+            _flipHorizontally = flipHorizontally;
 
             return this;
         }
 
         /// <summary>
-        /// @return Whether the tile should be flipped vertically.
+        ///     @return Whether the tile should be flipped vertically.
         /// </summary>
-        public bool GetFlipVertically()
-        {
-            return _flipVertically;
-        }
+        public bool GetFlipVertically() => _flipVertically;
 
         /// <summary>
-        /// Sets whether to flip the tile vertically.
-        /// @param flipVertically whether or not this tile should be flipped vertically. 
-        /// @return this, for method chaining
+        ///     Sets whether to flip the tile vertically.
+        ///     @param flipVertically whether or not this tile should be flipped vertically.
+        ///     @return this, for method chaining
         /// </summary>
         public Cell SetFlipVertically( bool flipVertically )
         {
-            this._flipVertically = flipVertically;
+            _flipVertically = flipVertically;
 
             return this;
         }
 
         /// <summary>
-        /// @return The rotation of this cell, in 90 degree increments.
+        ///     @return The rotation of this cell, in 90 degree increments.
         /// </summary>
-        public int GetRotation()
-        {
-            return _rotation;
-        }
+        public int GetRotation() => _rotation;
 
         /// <summary>
-        /// Sets the rotation of this cell, in 90 degree increments.
-        /// @param rotation the rotation in 90 degree increments (see ints below). 
-        /// @return this, for method chaining
+        ///     Sets the rotation of this cell, in 90 degree increments.
+        ///     @param rotation the rotation in 90 degree increments (see ints below).
+        ///     @return this, for method chaining
         /// </summary>
         public Cell SetRotation( int rotation )
         {
-            this._rotation = rotation;
+            _rotation = rotation;
 
             return this;
         }
-
-        public const int ROTATE0   = 0;
-        public const int ROTATE90  = 1;
-        public const int ROTATE180 = 2;
-        public const int ROTATE270 = 3;
     }
 }

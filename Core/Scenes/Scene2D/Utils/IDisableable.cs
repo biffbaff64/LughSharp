@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
-[PublicAPI]
 public interface IDisableable
 {
     public bool IsDisabled { get; set; }

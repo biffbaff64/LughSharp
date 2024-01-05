@@ -17,22 +17,22 @@
 namespace LibGDXSharp.Assets.Loaders.Resolvers;
 
 /// <summary>
-/// A <see cref="IFileHandleResolver"/> that adds a prefix to the filename before
-/// passing it to the base resolver. Can be used e.g. to use a given subfolder from
-/// the base resolver. The prefix is added as is, you have to include any trailing
-/// '/' character if needed.
+///     A <see cref="IFileHandleResolver" /> that adds a prefix to the filename before
+///     passing it to the base resolver. Can be used e.g. to use a given subfolder from
+///     the base resolver. The prefix is added as is, you have to include any trailing
+///     '/' character if needed.
 /// </summary>
-[PublicAPI]
 public class PrefixFileHandleResolver : IFileHandleResolver
 {
-    public string              Prefix       { get; set; }
-    public IFileHandleResolver BaseResolver { get; set; }
 
     public PrefixFileHandleResolver( IFileHandleResolver baseResolver, string prefix )
     {
-        this.BaseResolver = baseResolver;
-        this.Prefix       = prefix;
+        BaseResolver = baseResolver;
+        Prefix       = prefix;
     }
+
+    public string              Prefix       { get; set; }
+    public IFileHandleResolver BaseResolver { get; set; }
 
     /// <inheritdoc />
     public FileInfo Resolve( string fileName ) => BaseResolver.Resolve( Prefix + fileName );

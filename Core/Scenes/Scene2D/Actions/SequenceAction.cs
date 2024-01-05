@@ -17,10 +17,9 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// Executes a number of actions one at a time.
-/// @author Nathan Sweet 
+///     Executes a number of actions one at a time.
+///     @author Nathan Sweet
 /// </summary>
-[PublicAPI]
 public class SequenceAction : ParallelAction
 {
     private int _index;
@@ -29,10 +28,7 @@ public class SequenceAction : ParallelAction
     {
     }
 
-    public SequenceAction( Action action1 )
-    {
-        AddAction( action1 );
-    }
+    public SequenceAction( Action action1 ) => AddAction( action1 );
 
     public SequenceAction( Action action1, Action action2 )
     {
@@ -71,10 +67,10 @@ public class SequenceAction : ParallelAction
             return true;
         }
 
-        Pool< Action >? pool = base.Pool;
+        Pool< Action >? pool = Pool;
 
         // Ensure this action can't be returned to the pool while executings.
-        base.Pool = null;
+        Pool = null;
 
         try
         {
@@ -97,7 +93,7 @@ public class SequenceAction : ParallelAction
         }
         finally
         {
-            base.Pool = pool;
+            Pool = pool;
         }
     }
 

@@ -19,28 +19,27 @@ using File = System.IO.File;
 namespace LibGDXSharp.Assets.Loaders;
 
 /// <summary>
-/// <see cref="AssetLoader"/> for <see cref="ShaderProgram"/> instances loaded from
-/// text files. If the file suffix is ".vert", it is assumed to be a vertex shader,
-/// and a fragment shader is found using the same file name with a ".frag" suffix.
-/// And vice versa if the file suffix is ".frag". These default suffixes can be changed
-/// in the ShaderProgramLoader constructor.
-/// <para>
-/// For all other file suffixes, the same file is used for both (and therefore should
-/// internally distinguish between the programs using preprocessor directives and
-/// <see cref="ShaderProgram.PrependVertexCode"/> and <see cref="ShaderProgram.PrependFragmentCode"/>).
-/// </para>
-/// <para>
-/// The above default behavior for finding the files can be overridden by explicitly
-/// setting the file names in a <see cref="ShaderProgramParameter"/>. The parameter
-/// can also be used to prepend code to the programs.
-/// </para>
+///     <see cref="AssetLoader" /> for <see cref="ShaderProgram" /> instances loaded from
+///     text files. If the file suffix is ".vert", it is assumed to be a vertex shader,
+///     and a fragment shader is found using the same file name with a ".frag" suffix.
+///     And vice versa if the file suffix is ".frag". These default suffixes can be changed
+///     in the ShaderProgramLoader constructor.
+///     <para>
+///         For all other file suffixes, the same file is used for both (and therefore should
+///         internally distinguish between the programs using preprocessor directives and
+///         <see cref="ShaderProgram.PrependVertexCode" /> and <see cref="ShaderProgram.PrependFragmentCode" />).
+///     </para>
+///     <para>
+///         The above default behavior for finding the files can be overridden by explicitly
+///         setting the file names in a <see cref="ShaderProgramParameter" />. The parameter
+///         can also be used to prepend code to the programs.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class ShaderProgramLoader
     : AsynchronousAssetLoader< ShaderProgram, ShaderProgramLoader.ShaderProgramParameter >
 {
-    private readonly string _vertexFileSuffix   = ".vert";
     private readonly string _fragmentFileSuffix = ".frag";
+    private readonly string _vertexFileSuffix   = ".vert";
 
     public ShaderProgramLoader( IFileHandleResolver resolver ) : base( resolver )
     {
@@ -49,16 +48,13 @@ public class ShaderProgramLoader
     public ShaderProgramLoader( IFileHandleResolver resolver, string vertexFileSuffix, string fragmentFileSuffix )
         : base( resolver )
     {
-        this._vertexFileSuffix   = vertexFileSuffix;
-        this._fragmentFileSuffix = fragmentFileSuffix;
+        _vertexFileSuffix   = vertexFileSuffix;
+        _fragmentFileSuffix = fragmentFileSuffix;
     }
 
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter )
-    {
-        return null!;
-    }
+                                                             AssetLoaderParameters parameter ) => null!;
 
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
@@ -79,12 +75,12 @@ public class ShaderProgramLoader
 
         if ( parameter != null )
         {
-            if ( ( ( ( ShaderProgramParameter )parameter ).VertexFile != null ) )
+            if ( ( ( ShaderProgramParameter )parameter ).VertexFile != null )
             {
                 vertFileName = ( ( ShaderProgramParameter )parameter ).VertexFile;
             }
 
-            if ( ( ( ( ShaderProgramParameter )parameter ).FragmentFile != null ) )
+            if ( ( ( ShaderProgramParameter )parameter ).FragmentFile != null )
             {
                 fragFileName = ( ( ShaderProgramParameter )parameter ).FragmentFile;
             }
@@ -100,8 +96,8 @@ public class ShaderProgramLoader
             fragFileName = fileName[ ..^_vertexFileSuffix.Length ] + _fragmentFileSuffix;
         }
 
-        FileInfo? vertexFile   = ( vertFileName == null ) ? file : Resolve( vertFileName );
-        FileInfo? fragmentFile = ( fragFileName == null ) ? file : Resolve( fragFileName );
+        FileInfo? vertexFile   = vertFileName == null ? file : Resolve( vertFileName );
+        FileInfo? fragmentFile = fragFileName == null ? file : Resolve( fragFileName );
 
         var vertexCode = File.ReadAllText( Path.GetFullPath( vertexFile!.Name ) );
 
@@ -111,12 +107,12 @@ public class ShaderProgramLoader
 
         if ( parameter != null )
         {
-            if ( ( ( ( ShaderProgramParameter )parameter ).PrependVertexCode != null ) )
+            if ( ( ( ShaderProgramParameter )parameter ).PrependVertexCode != null )
             {
                 vertexCode = ( ( ShaderProgramParameter )parameter ).PrependVertexCode + vertexCode;
             }
 
-            if ( ( ( ( ShaderProgramParameter )parameter ).PrependFragmentCode != null ) )
+            if ( ( ( ShaderProgramParameter )parameter ).PrependFragmentCode != null )
             {
                 fragmentCode = ( ( ShaderProgramParameter )parameter ).PrependFragmentCode + fragmentCode;
             }
@@ -125,7 +121,7 @@ public class ShaderProgramLoader
         var shaderProgram = new ShaderProgram( vertexCode, fragmentCode );
 
         if ( ( ( parameter == null ) || ( ( ShaderProgramParameter )parameter ).LogOnCompileFailure )
-             && !shaderProgram.IsCompiled )
+          && !shaderProgram.IsCompiled )
         {
             manager?.Log.Error( "ShaderProgram " + fileName + " failed to compile:\n" + shaderProgram.Log );
         }
@@ -133,38 +129,38 @@ public class ShaderProgramLoader
         return shaderProgram;
     }
 
-    [PublicAPI]
+
     public class ShaderProgramParameter : AssetLoaderParameters
     {
         /// <summary>
-        /// File name to be used for the vertex program instead of the default determined
-        /// by the file name used to submit this asset to AssetManager. 
+        ///     File name to be used for the vertex program instead of the default determined
+        ///     by the file name used to submit this asset to AssetManager.
         /// </summary>
         public string? VertexFile { get; set; }
 
         /// <summary>
-        /// File name to be used for the fragment program instead of the default
-        /// determined by the file name used to submit this asset to AssetManager. 
+        ///     File name to be used for the fragment program instead of the default
+        ///     determined by the file name used to submit this asset to AssetManager.
         /// </summary>
         public string? FragmentFile { get; set; }
 
         /// <summary>
-        /// Whether to log (at the error level) the shader's log if it fails to
-        /// compile. Default true.
+        ///     Whether to log (at the error level) the shader's log if it fails to
+        ///     compile. Default true.
         /// </summary>
         public bool LogOnCompileFailure { get; set; } = true;
 
         /// <summary>
-        /// Code that is always added to the vertex shader code. This is added as-is,
-        /// and you should include a newline (`\n`) if needed.
-        /// <see cref="ShaderProgram.PrependVertexCode"/> is placed before this code. 
+        ///     Code that is always added to the vertex shader code. This is added as-is,
+        ///     and you should include a newline (`\n`) if needed.
+        ///     <see cref="ShaderProgram.PrependVertexCode" /> is placed before this code.
         /// </summary>
         public string? PrependVertexCode { get; set; }
 
         /// <summary>
-        /// Code that is always added to the fragment shader code. This is added as-is,
-        /// and you should include a newline (`\n`) if needed.
-        /// <see cref="ShaderProgram.PrependFragmentCode"/> is placed before this code. 
+        ///     Code that is always added to the fragment shader code. This is added as-is,
+        ///     and you should include a newline (`\n`) if needed.
+        ///     <see cref="ShaderProgram.PrependFragmentCode" /> is placed before this code.
         /// </summary>
         public string? PrependFragmentCode { get; set; }
     }

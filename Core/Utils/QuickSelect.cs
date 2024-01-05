@@ -17,21 +17,20 @@
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// Implementation of Tony Hoare's quickselect algorithm. Running time is generally O(n),
-/// but worst case is O(n^2) Pivot choice is median of three method, providing better
-/// performance than a random pivot for partially sorted data.
-/// http://en.wikipedia.org/wiki/Quickselect
+///     Implementation of Tony Hoare's quickselect algorithm. Running time is generally O(n),
+///     but worst case is O(n^2) Pivot choice is median of three method, providing better
+///     performance than a random pivot for partially sorted data.
+///     http://en.wikipedia.org/wiki/Quickselect
 /// </summary>
-[PublicAPI]
 public class QuickSelect<T>
 {
-    private T[]            _array   = null!;
-    private IComparer< T > _comp    = null!;
+    private T[]            _array = null!;
+    private IComparer< T > _comp  = null!;
 
     public int Select( T[] items, IComparer< T > comp, int n, int size )
     {
-        this._array = items;
-        this._comp  = comp;
+        _array = items;
+        _comp  = comp;
 
         return RecursiveSelect( 0, size - 1, n );
     }
@@ -68,7 +67,7 @@ public class QuickSelect<T>
         var pivotIndex    = MedianOfThreePivot( left, right );
         var pivotNewIndex = Partition( left, right, pivotIndex );
         var pivotDist     = ( pivotNewIndex - left ) + 1;
-        
+
         int result;
 
         if ( pivotDist == k )
@@ -88,8 +87,8 @@ public class QuickSelect<T>
     }
 
     /// <summary>
-    /// Median of Three has the potential to outperform a random pivot, especially
-    /// for partially sorted arrays
+    ///     Median of Three has the potential to outperform a random pivot, especially
+    ///     for partially sorted arrays
     /// </summary>
     private int MedianOfThreePivot( int leftIdx, int rightIdx )
     {
@@ -107,19 +106,16 @@ public class QuickSelect<T>
                 return midIdx;
             }
 
-            return ( _comp.Compare( left, right ) > 0 ) ? rightIdx : leftIdx;
+            return _comp.Compare( left, right ) > 0 ? rightIdx : leftIdx;
         }
 
         if ( _comp.Compare( left, right ) > 0 )
         {
             return leftIdx;
         }
-        
-        return ( _comp.Compare( mid, right ) > 0 ) ? rightIdx : midIdx;
+
+        return _comp.Compare( mid, right ) > 0 ? rightIdx : midIdx;
     }
 
-    private void Swap( int left, int right )
-    {
-        ( _array[ left ], _array[ right ] ) = ( _array[ right ], _array[ left ] );
-    }
+    private void Swap( int left, int right ) => ( _array[ left ], _array[ right ] ) = ( _array[ right ], _array[ left ] );
 }

@@ -18,6 +18,4 @@ namespace LibGDXSharp.Graphics.G3D.Particles.Batches;
 
 public class ModelInstanceParticleBatch
 {
-    
 }
-

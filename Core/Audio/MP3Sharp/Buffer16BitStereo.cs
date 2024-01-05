@@ -17,13 +17,11 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// public class used to queue samples that are being obtained from an Mp3 stream. 
-/// This class handles stereo 16-bit output, and can double 16-bit mono to stereo.
+///     public class used to queue samples that are being obtained from an Mp3 stream.
+///     This class handles stereo 16-bit output, and can double 16-bit mono to stereo.
 /// </summary>
-[PublicAPI]
 public class Buffer16BitStereo : ABuffer
 {
-    public bool DoubleMonoToStereo { get; set; } = false;
 
     private const int OUTPUT_CHANNELS = 2;
 
@@ -38,30 +36,28 @@ public class Buffer16BitStereo : ABuffer
     // Read offset used to read from the stream, in bytes.
     private int _offset;
 
-    public Buffer16BitStereo()
-    {
-        OnStart();
-    }
+    public Buffer16BitStereo() => OnStart();
 
-    private void OnStart()
-    {
-        // Initialize the buffer pointers
-        ClearBuffer();
-    }
-    
+    public bool DoubleMonoToStereo { get; set; } = false;
+
     /// <summary>
-    /// Gets the number of bytes remaining from the current position on the buffer.
+    ///     Gets the number of bytes remaining from the current position on the buffer.
     /// </summary>
     public int BytesLeft => _end - _offset;
 
+    private void OnStart() =>
+
+        // Initialize the buffer pointers
+        ClearBuffer();
+
     /// <summary>
-    /// Reads a sequence of bytes from the buffer and advances the position of the 
-    /// buffer by the number of bytes read.
+    ///     Reads a sequence of bytes from the buffer and advances the position of the
+    ///     buffer by the number of bytes read.
     /// </summary>
     /// <returns>
-    /// The total number of bytes read in to the buffer. This can be less than the
-    /// number of bytes requested if that many bytes are not currently available, or
-    /// zero if th eend of the buffer has been reached.
+    ///     The total number of bytes read in to the buffer. This can be less than the
+    ///     number of bytes requested if that many bytes are not currently available, or
+    ///     zero if th eend of the buffer has been reached.
     /// </returns>
     public int Read( byte[] bufferOut, int offset, int count )
     {
@@ -93,7 +89,7 @@ public class Buffer16BitStereo : ABuffer
     }
 
     /// <summary>
-    /// Writes a single sample value to the buffer.
+    ///     Writes a single sample value to the buffer.
     /// </summary>
     /// <param name="channel">The channel.</param>
     /// <param name="sampleValue">The sample value.</param>
@@ -105,13 +101,13 @@ public class Buffer16BitStereo : ABuffer
     }
 
     /// <summary>
-    /// Writes 32 samples to the buffer.
+    ///     Writes 32 samples to the buffer.
     /// </summary>
     /// <param name="channel">The channel.</param>
     /// <param name="samples">An array of sample values.</param>
     /// <remarks>
-    /// The <paramref name="samples"/> parameter must have a length equal to
-    /// or greater than 32.
+    ///     The <paramref name="samples" /> parameter must have a length equal to
+    ///     or greater than 32.
     /// </remarks>
     public override void AppendSamples( int channel, float[] samples )
     {
@@ -125,7 +121,7 @@ public class Buffer16BitStereo : ABuffer
 
         if ( ( _bufferChannelOffsets == null ) || ( channel >= _bufferChannelOffsets.Length ) )
         {
-            throw new System.Exception( "Song is closing..." );
+            throw new Exception( "Song is closing..." );
         }
 
         var pos = _bufferChannelOffsets[ channel ];
@@ -144,7 +140,7 @@ public class Buffer16BitStereo : ABuffer
                  };
 
             var sample = ( int )fs;
-            
+
             _buffer[ pos ]     = ( byte )( sample & 0xff );
             _buffer[ pos + 1 ] = ( byte )( sample >> 8 );
 
@@ -161,7 +157,7 @@ public class Buffer16BitStereo : ABuffer
     }
 
     /// <summary>
-    /// This implementation does not clear the buffer.
+    ///     This implementation does not clear the buffer.
     /// </summary>
     public override void ClearBuffer()
     {

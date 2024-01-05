@@ -16,17 +16,16 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class DesktopGLClipboard : IClipboard
 {
     /// <summary>
-    /// Check if the clipboard has contents.
+    ///     Check if the clipboard has contents.
     /// </summary>
     /// <returns> true, if the clipboard has contents</returns>
     public bool HasContents() => false;
 
     /// <summary>
-    /// The current content of the clipboard if it contains text
+    ///     The current content of the clipboard if it contains text
     /// </summary>
     /// <returns> the clipboard content or null  </returns>
     public string Contents { get; set; } = "";

@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class DesktopGLNativesLoader
 {
     public static void Load()

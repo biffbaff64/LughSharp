@@ -16,20 +16,17 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class DelayAction : DelegateAction
 {
-    public float Duration { get; set; }
-    public float Time     { get; set; }
 
     public DelayAction()
     {
     }
 
-    public DelayAction( float duration )
-    {
-        this.Duration = duration;
-    }
+    public DelayAction( float duration ) => Duration = duration;
+
+    public float Duration { get; set; }
+    public float Time     { get; set; }
 
     protected override bool Delegate( float delta )
     {
@@ -48,15 +45,12 @@ public class DelayAction : DelegateAction
         return ( Action == null ) || Action.Act( delta );
     }
 
-    public void Finish()
-    {
-        Time = Duration;
-    }
+    public void Finish() => Time = Duration;
 
     public new void Restart()
     {
         base.Restart();
-        
+
         Time = 0;
     }
 }

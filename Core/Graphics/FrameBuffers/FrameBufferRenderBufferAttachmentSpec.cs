@@ -16,14 +16,10 @@
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
-[PublicAPI]
 public class FrameBufferRenderBufferAttachmentSpec
 {
+
+    public FrameBufferRenderBufferAttachmentSpec( int internalFormat ) => InternalFormat = internalFormat;
+
     public int InternalFormat { get; set; }
-
-    public FrameBufferRenderBufferAttachmentSpec( int internalFormat )
-    {
-        this.InternalFormat = internalFormat;
-    }
 }
-

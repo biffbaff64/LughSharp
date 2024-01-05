@@ -16,20 +16,14 @@
 
 namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
-[PublicAPI]
 public class MockSound : ISound
 {
-    /// <inheritdoc />
-    public long Play() => 0;
 
     /// <inheritdoc />
     public long Play( float volume ) => 0;
 
     /// <inheritdoc />
     public long Play( float volume, float pitch, float pan ) => 0;
-
-    /// <inheritdoc />
-    public long Loop() => 0;
 
     /// <inheritdoc />
     public long Loop( float volume ) => 0;
@@ -86,4 +80,10 @@ public class MockSound : ISound
     public void SetPan( long soundId, float pan, float volume )
     {
     }
+
+    /// <inheritdoc />
+    public long Play() => 0;
+
+    /// <inheritdoc />
+    public long Loop() => 0;
 }

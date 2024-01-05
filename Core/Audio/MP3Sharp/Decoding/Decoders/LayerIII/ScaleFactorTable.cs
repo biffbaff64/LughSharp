@@ -16,18 +16,13 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
-[PublicAPI]
 public class ScaleFactorTable
 {
-    public int[] L { get; set; }
-    public int[] S { get; set; }
-
-    public LayerIIIDecoder EnclosingInstance { get; private set; } = null!;
 
     public ScaleFactorTable( LayerIIIDecoder enclosingInstance )
     {
         InitBlock( enclosingInstance );
-        
+
         L = new int[ 5 ];
         S = new int[ 3 ];
     }
@@ -35,13 +30,15 @@ public class ScaleFactorTable
     public ScaleFactorTable( LayerIIIDecoder enclosingInstance, int[] thel, int[] thes )
     {
         InitBlock( enclosingInstance );
-        
+
         L = thel;
         S = thes;
     }
 
-    private void InitBlock( LayerIIIDecoder enclosingInstance )
-    {
-        EnclosingInstance = enclosingInstance;
-    }
+    public int[] L { get; set; }
+    public int[] S { get; set; }
+
+    public LayerIIIDecoder EnclosingInstance { get; private set; } = null!;
+
+    private void InitBlock( LayerIIIDecoder enclosingInstance ) => EnclosingInstance = enclosingInstance;
 }

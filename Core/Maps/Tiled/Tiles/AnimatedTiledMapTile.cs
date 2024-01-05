@@ -20,66 +20,87 @@ using Blendmode = LibGDXSharp.Maps.Tiled.ITiledMapTile.Blendmode;
 
 namespace LibGDXSharp.Maps.Tiled.Tiles;
 
-[PublicAPI]
 public class AnimatedTiledMapTile : ITiledMapTile
 {
     private readonly static long InitialTimeOffset = DateTime.Now.Millisecond;
 
-    private static long _lastTiledMapRenderTime = 0;
+    private static   long                 _lastTiledMapRenderTime = 0;
+    private readonly int[]                _animationIntervals;
+    private readonly StaticTiledMapTile[] _frameTiles;
+
+    private readonly int         _loopDuration;
+    private          MapObjects? _mapObjects;
+
+    private MapProperties? _properties;
+
+    /// <summary>
+    ///     Creates an animated tile with the given animation interval and frame tiles.
+    /// </summary>
+    /// <param name="interval">The interval between each individual frame tile.</param>
+    /// <param name="frameTiles">
+    ///     An array of <see cref="StaticTiledMapTile" /> that make up the animation.
+    /// </param>
+    public AnimatedTiledMapTile( float interval, List< StaticTiledMapTile > frameTiles )
+    {
+        _frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
+
+        _loopDuration       = frameTiles.Count * ( int )( interval * 1000f );
+        _animationIntervals = new int[ frameTiles.Count ];
+
+        for ( var i = 0; i < frameTiles.Count; ++i )
+        {
+            _frameTiles[ i ]         = frameTiles[ i ];
+            _animationIntervals[ i ] = ( int )( interval * 1000f );
+        }
+    }
+
+    /// <summary>
+    ///     Creates an animated tile with the given animation intervals and frame tiles.
+    /// </summary>
+    /// <param name="intervals">
+    ///     The intervals between each individual frame tile in milliseconds.
+    /// </param>
+    /// <param name="frameTiles">
+    ///     An array of <see cref="StaticTiledMapTile" /> that make up the animation.
+    /// </param>
+    public AnimatedTiledMapTile( List< int > intervals, List< StaticTiledMapTile > frameTiles )
+    {
+        _frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
+
+        _animationIntervals = intervals.ToArray();
+        _loopDuration       = 0;
+
+        for ( var i = 0; i < intervals.Count; ++i )
+        {
+            _frameTiles[ i ] =  frameTiles[ i ];
+            _loopDuration    += intervals[ i ];
+        }
+    }
 
     public int       ID        { get; set; }
     public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
 
-    private readonly int                  _loopDuration;
-    private readonly StaticTiledMapTile[] _frameTiles;
-    private readonly int[]                _animationIntervals;
-
-    private MapProperties? _properties;
-    private MapObjects?    _mapObjects;
-
-    /// <summary>
-    /// Creates an animated tile with the given animation interval and frame tiles.
-    /// </summary>
-    /// <param name="interval">The interval between each individual frame tile.</param>
-    /// <param name="frameTiles">
-    /// An array of <see cref="StaticTiledMapTile"/> that make up the animation.
-    /// </param>
-    public AnimatedTiledMapTile( float interval, List< StaticTiledMapTile > frameTiles )
+    public TextureRegion TextureRegion
     {
-        this._frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
-
-        this._loopDuration       = frameTiles.Count * ( int )( interval * 1000f );
-        this._animationIntervals = new int[ frameTiles.Count ];
-
-        for ( var i = 0; i < frameTiles.Count; ++i )
-        {
-            this._frameTiles[ i ]         = frameTiles[ i ];
-            this._animationIntervals[ i ] = ( int )( interval * 1000f );
-        }
+        get => GetCurrentFrame().TextureRegion;
+        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
     }
 
-    /// <summary>
-    /// Creates an animated tile with the given animation intervals and frame tiles.
-    /// </summary>
-    /// <param name="intervals">
-    /// The intervals between each individual frame tile in milliseconds.
-    /// </param>
-    /// <param name="frameTiles">
-    /// An array of <see cref="StaticTiledMapTile"/> that make up the animation.
-    /// </param>
-    public AnimatedTiledMapTile( List< int > intervals, List< StaticTiledMapTile > frameTiles )
+    public float OffsetX
     {
-        this._frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
-
-        this._animationIntervals = intervals.ToArray();
-        this._loopDuration       = 0;
-
-        for ( int i = 0; i < intervals.Count; ++i )
-        {
-            this._frameTiles[ i ] =  frameTiles[ i ];
-            this._loopDuration    += intervals[ i ];
-        }
+        get => GetCurrentFrame().OffsetX;
+        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
     }
+
+    public float OffsetY
+    {
+        get => GetCurrentFrame().OffsetY;
+        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
+    }
+
+    public MapProperties GetProperties() => _properties ??= new MapProperties();
+
+    public MapObjects GetObjects() => _mapObjects ??= new MapObjects();
 
     public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
 
@@ -103,40 +124,9 @@ public class AnimatedTiledMapTile : ITiledMapTile
 
         throw new SystemException
             (
-             "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen."
+            "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen."
             );
     }
 
-    public static void UpdateAnimationBaseTime()
-    {
-        _lastTiledMapRenderTime = DateTime.Now.Millisecond - InitialTimeOffset;
-    }
-
-    public TextureRegion TextureRegion
-    {
-        get => GetCurrentFrame().TextureRegion;
-        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
-    }
-
-    public float OffsetX
-    {
-        get => GetCurrentFrame().OffsetX;
-        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
-    }
-
-    public float OffsetY
-    {
-        get => GetCurrentFrame().OffsetY;
-        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
-    }
-
-    public MapProperties GetProperties()
-    {
-        return _properties ??= new MapProperties();
-    }
-
-    public MapObjects GetObjects()
-    {
-        return _mapObjects ??= new MapObjects();
-    }
+    public static void UpdateAnimationBaseTime() => _lastTiledMapRenderTime = DateTime.Now.Millisecond - InitialTimeOffset;
 }

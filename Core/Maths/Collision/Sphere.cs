@@ -17,19 +17,19 @@
 namespace LibGDXSharp.Maths.Collision;
 
 /// <summary>
-/// Encapsulates a 3D sphere with a center and a radius
+///     Encapsulates a 3D sphere with a center and a radius
 /// </summary>
 [Serializable]
-[PublicAPI]
 public class Sphere
 {
-    public readonly float   radius; // the radius of the sphere
-    public readonly Vector3 center; // the center of the sphere
 
-    private readonly static float PI43 = ( MathUtils.PI * 4f ) / 3f;
+    private readonly static float   PI43 = ( MathUtils.PI * 4f ) / 3f;
+    public readonly         Vector3 center; // the center of the sphere
+    public readonly         float   radius; // the radius of the sphere
 
     /// <summary>
-    /// Constructs a sphere with the given center and radius </summary>
+    ///     Constructs a sphere with the given center and radius
+    /// </summary>
     /// <param name="center"> The center </param>
     /// <param name="radius"> The radius  </param>
     public Sphere( Vector3 center, float radius )
@@ -42,10 +42,7 @@ public class Sphere
     /// </summary>
     /// <param name="sphere"> the other sphere </param>
     /// <returns> whether this and the other sphere overlap  </returns>
-    public virtual bool Overlaps( Sphere sphere )
-    {
-        return center.Dst2( sphere.center ) < ( ( radius + sphere.radius ) * ( radius + sphere.radius ) );
-    }
+    public virtual bool Overlaps( Sphere sphere ) => center.Dst2( sphere.center ) < ( ( radius + sphere.radius ) * ( radius + sphere.radius ) );
 
     /// <summary>
     /// </summary>
@@ -54,8 +51,8 @@ public class Sphere
     {
         const int prime = 71;
 
-        var result = prime + this.center.GetHashCode();
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( this.radius );
+        var result = prime + center.GetHashCode();
+        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( radius );
 
         return result;
     }
@@ -66,28 +63,28 @@ public class Sphere
     /// <returns></returns>
     public override bool Equals( object? o )
     {
-        if ( this == o ) return true;
+        if ( this == o )
+        {
+            return true;
+        }
 
-        if ( ( o == null ) || ( o.GetType() != this.GetType() ) ) return false;
+        if ( ( o == null ) || ( o.GetType() != GetType() ) )
+        {
+            return false;
+        }
 
         var s = ( Sphere )o;
 
-        return MathUtils.IsEqual( this.radius, radius ) && this.center.Equals( s.center );
+        return MathUtils.IsEqual( radius, radius ) && center.Equals( s.center );
     }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public virtual float Volume()
-    {
-        return PI43 * this.radius * this.radius * this.radius;
-    }
+    public virtual float Volume() => PI43 * radius * radius * radius;
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public virtual float SurfaceArea()
-    {
-        return 4 * MathUtils.PI * this.radius * this.radius;
-    }
+    public virtual float SurfaceArea() => 4 * MathUtils.PI * radius * radius;
 }

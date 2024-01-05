@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Graphics.G3D.Models.Data;
 
-[PublicAPI]
 public class ModelMaterial
 {
     public enum MaterialType

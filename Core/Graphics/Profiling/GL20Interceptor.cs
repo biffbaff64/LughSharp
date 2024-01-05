@@ -20,16 +20,13 @@ using Buffer = LibGDXSharp.Files.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
-[PublicAPI]
 public class GL20Interceptor : GLInterceptor
 {
-    public IGL20 GL20 { get; set; }
 
     public GL20Interceptor( GLProfiler glProfiler, IGL20 gl20 )
-        : base( glProfiler )
-    {
-        this.GL20 = gl20;
-    }
+        : base( glProfiler ) => GL20 = gl20;
+
+    public IGL20 GL20 { get; set; }
 
     private void Check()
     {

@@ -16,10 +16,8 @@
 
 namespace LibGDXSharp.Assets.Loaders.Resolvers;
 
-[PublicAPI]
 public class ClasspathFileHandleResolver : IFileHandleResolver
 {
     /// <inheritdoc />
     public FileInfo Resolve( string fileName ) => Gdx.Files.Classpath( fileName );
 }
-

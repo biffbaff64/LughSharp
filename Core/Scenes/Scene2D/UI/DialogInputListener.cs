@@ -18,21 +18,19 @@ using LibGDXSharp.Scenes.Listeners;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
-
 //TODO: I think I was drunk when writing this class. Rip it up and start again.
 
-[PublicAPI]
 public class DialogInputListener : InputListener
 {
     private readonly Dialog  _dialog;
-    private readonly int     _thisKey;
     private readonly object? _object;
+    private readonly int     _thisKey;
 
     public DialogInputListener( Dialog d, int thisKey, object? o )
     {
-        this._dialog = d;
-        this._thisKey = thisKey;
-        this._object  = o;
+        _dialog  = d;
+        _thisKey = thisKey;
+        _object  = o;
     }
 
     /// <inheritdoc />

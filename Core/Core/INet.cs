@@ -19,10 +19,27 @@ using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Core;
 
-[PublicAPI]
 public interface INet
 {
-    [PublicAPI]
+
+
+    public enum Protocol
+    {
+        Tcp
+    }
+
+    public void SendHttpRequest( HttpRequest httpRequest, IHttpResponseListener httpResponseListener );
+
+    public void CancelHttpRequest( HttpRequest httpRequest );
+
+    public bool OpenUri( string uri );
+
+    public IServerSocket? NewServerSocket( Protocol protocol, string hostname, int port, ServerSocketHints hints );
+
+    public IServerSocket? NewServerSocket( Protocol protocol, int port, ServerSocketHints hints );
+
+    public ISocket? NewClientSocket( Protocol protocol, string host, int port, SocketHints hints );
+
     public interface IHttpResponse
     {
         byte[] GetResult();
@@ -40,7 +57,6 @@ public interface INet
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public interface IHttpMethods
     {
         public const string HEAD   = "HEAD";
@@ -51,25 +67,27 @@ public interface INet
         public const string DELETE = "DELETE";
     }
 
-    [PublicAPI]
+
     public interface IHttpResponseListener
     {
         void HandleHttpResponse( IHttpResponse httpResponse );
 
-        void Failed( System.Exception t );
+        void Failed( Exception t );
 
         void Cancelled();
     }
 
-    [PublicAPI]
-    public enum Protocol
-    {
-        Tcp
-    }
 
-    [PublicAPI]
     public class HttpRequest : IPoolable
     {
+
+        private readonly Dictionary< string, string >? _headers;
+        private          bool                          _followRedirects = true;
+
+        public HttpRequest() => _headers = new Dictionary< string, string >();
+
+        public HttpRequest( string httpMethod ) : this() => HttpMethod = httpMethod;
+
         public string?       Url                { get; set; }
         public string?       HttpMethod         { get; set; }
         public int           TimeOut            { get; set; } = 0;
@@ -78,37 +96,6 @@ public interface INet
         public long          ContentLength      { get; private set; }
         public string?       Content            { get; set; }
 
-        private readonly Dictionary< string, string >? _headers;
-        private          bool                          _followRedirects = true;
-
-        public HttpRequest()
-        {
-            this._headers = new Dictionary< string, string >();
-        }
-
-        public HttpRequest( string httpMethod ) : this()
-        {
-            this.HttpMethod = httpMethod;
-        }
-
-        public Dictionary< string, string >? GetHeaders()
-        {
-            return _headers;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        public void SetHeader( string name, string value )
-        {
-            if ( _headers != null )
-            {
-                _headers[ name ] = value;
-            }
-        }
-
         public bool FollowRedirects
         {
             get => _followRedirects;
@@ -116,7 +103,7 @@ public interface INet
             {
                 if ( value || ( Gdx.App.AppType != IApplication.ApplicationType.WebGL ) )
                 {
-                    this._followRedirects = value;
+                    _followRedirects = value;
                 }
                 else
                 {
@@ -124,12 +111,6 @@ public interface INet
                         ( "Following redirects can't be disabled using the GWT/WebGL backend!" );
                 }
             }
-        }
-
-        public void SetContent( StreamReader contentStream, long contentLength )
-        {
-            this.ContentStream = contentStream;
-            this.ContentLength = contentLength;
         }
 
         public void Reset()
@@ -145,17 +126,25 @@ public interface INet
 
             _followRedirects = true;
         }
+
+        public Dictionary< string, string >? GetHeaders() => _headers;
+
+        /// <summary>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        public void SetHeader( string name, string value )
+        {
+            if ( _headers != null )
+            {
+                _headers[ name ] = value;
+            }
+        }
+
+        public void SetContent( StreamReader contentStream, long contentLength )
+        {
+            ContentStream = contentStream;
+            ContentLength = contentLength;
+        }
     }
-
-    public void SendHttpRequest( HttpRequest httpRequest, IHttpResponseListener httpResponseListener );
-
-    public void CancelHttpRequest( HttpRequest httpRequest );
-
-    public bool OpenUri( string uri );
-
-    public IServerSocket? NewServerSocket( Protocol protocol, string hostname, int port, ServerSocketHints hints );
-
-    public IServerSocket? NewServerSocket( Protocol protocol, int port, ServerSocketHints hints );
-
-    public ISocket? NewClientSocket( Protocol protocol, string host, int port, SocketHints hints );
 }

@@ -16,15 +16,14 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
-public class UnsupportedOperationException : System.Exception
+public class UnsupportedOperationException : Exception
 {
     public UnsupportedOperationException( string? message = "" )
         : base( message )
     {
     }
 
-    public UnsupportedOperationException( string? message, System.Exception? innerException )
+    public UnsupportedOperationException( string? message, Exception? innerException )
         : base( message, innerException )
     {
     }

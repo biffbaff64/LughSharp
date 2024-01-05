@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Graphics;
 
-[PublicAPI]
 public interface ICursor
 {
     public enum SystemCursor

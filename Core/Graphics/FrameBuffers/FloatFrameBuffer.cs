@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Graphics.FrameBuffers;
 
 /// <summary>
-/// This is a <see cref="FrameBuffer"/> variant backed by a float texture.
+///     This is a <see cref="FrameBuffer" /> variant backed by a float texture.
 /// </summary>
-[PublicAPI]
 public class FloatFrameBuffer : FrameBuffer
 {
     public FloatFrameBuffer()
@@ -27,7 +26,7 @@ public class FloatFrameBuffer : FrameBuffer
     }
 
     /// <summary>
-    /// Creates a GLFrameBuffer from the specifications provided by bufferBuilder
+    ///     Creates a GLFrameBuffer from the specifications provided by bufferBuilder
     /// </summary>
     /// <param name="bufferBuilder"></param>
     public FloatFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
@@ -36,8 +35,8 @@ public class FloatFrameBuffer : FrameBuffer
     }
 
     /// <summary>
-    /// Creates a new FrameBuffer with a float backing texture, having the given dimensions
-    /// and potentially a depth buffer attached.
+    ///     Creates a new FrameBuffer with a float backing texture, having the given dimensions
+    ///     and potentially a depth buffer attached.
     /// </summary>
     /// <param name="width"> the width of the framebuffer in pixels </param>
     /// <param name="height"> the height of the framebuffer in pixels </param>
@@ -61,11 +60,13 @@ public class FloatFrameBuffer : FrameBuffer
 
     protected override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
-        var data = new FloatTextureData
-            (
-            BufferBuilder.Width, BufferBuilder.Height,
-            attachmentSpec.InternalFormat, attachmentSpec.Format,
-            attachmentSpec.Type, attachmentSpec.IsGpuOnly
+        var data = new FloatTextureData(
+            BufferBuilder.Width,
+            BufferBuilder.Height,
+            attachmentSpec.InternalFormat,
+            attachmentSpec.Format,
+            attachmentSpec.Type,
+            attachmentSpec.IsGpuOnly
             );
 
         var result = new Texture( data );

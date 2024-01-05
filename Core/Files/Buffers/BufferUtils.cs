@@ -17,10 +17,9 @@
 namespace LibGDXSharp.Files.Buffers;
 
 /// <summary>
-/// Class with static helper methods to increase the speed of array/direct
-/// buffer and direct buffer/direct buffer transfers
+///     Class with static helper methods to increase the speed of array/direct
+///     buffer and direct buffer/direct buffer transfers
 /// </summary>
-[PublicAPI]
 public class BufferUtils
 {
     private static List< ByteBuffer > _unsafeBuffers   = new();
@@ -86,35 +85,27 @@ public class BufferUtils
         return buffer.AsLongBuffer();
     }
 
-    public static byte Compare( byte x, byte y )
-    {
-        return ( byte )( x - y );
-    }
+    public static byte Compare( byte x, byte y ) => ( byte )( x - y );
 
-    public static char Compare( char x, char y )
-    {
-        return ( char )( x - y );
-    }
+    public static char Compare( char x, char y ) => ( char )( x - y );
 
-    public static int Compare( int x, int y )
-    {
-        return x - y;
-    }
+    public static int Compare( int x, int y ) => x - y;
 
-    public static float Compare( float x, float y )
-    {
-        return x - y;
-    }
+    public static float Compare( float x, float y ) => x - y;
 
     /// <summary>
-    /// Copies the contents of src to dst, starting from the current position of src,
-    /// copying numElements elements (using the data type of src, no matter the datatype
-    /// of dst). The dst <see cref="Buffer.Position"/> is used as the writing offset.
-    /// The position of both Buffers will stay the same. The limit of the src Buffer will
-    /// stay the same. The limit of the dst Buffer will be set to dst.Position + numElements,
-    /// where numElements are translated to the number of elements appropriate for the dst
-    /// Buffer data type. <b>The Buffers must be direct Buffers with native byte order.
-    /// No error checking is performed</b>.
+    ///     Copies the contents of src to dst, starting from the current position of src,
+    ///     copying numElements elements (using the data type of src, no matter the datatype
+    ///     of dst). The dst <see cref="Buffer.Position" /> is used as the writing offset.
+    ///     The position of both Buffers will stay the same. The limit of the src Buffer will
+    ///     stay the same. The limit of the dst Buffer will be set to dst.Position + numElements,
+    ///     where numElements are translated to the number of elements appropriate for the dst
+    ///     Buffer data type.
+    ///     <b>
+    ///         The Buffers must be direct Buffers with native byte order.
+    ///         No error checking is performed
+    ///     </b>
+    ///     .
     /// </summary>
     /// <param name="src"> the source Buffer. </param>
     /// <param name="dst"> the destination Buffer. </param>
@@ -123,20 +114,21 @@ public class BufferUtils
     {
         var numBytes = ElementsToBytes( src, numElements );
 
-        dst.Limit = ( dst.Position + BytesToElements( dst, numBytes ) );
+        dst.Limit = dst.Position + BytesToElements( dst, numBytes );
 
         Copy( src, PositionInBytes( src ), dst, PositionInBytes( dst ), numBytes );
     }
 
     /// <summary>
-    /// Copies the contents of src to dst, starting from src[srcOffset],
-    /// copying numElements elements. The <see cref="Buffer"/> instance's
-    /// <see cref="Buffer.Position()"/> is used to define the offset into
-    /// the Buffer itself. The position and limit will stay the same.
-    /// <para>
-    /// The Buffer must be a direct Buffer with native byte order. No error
-    /// checking is performed
-    /// </para>.
+    ///     Copies the contents of src to dst, starting from src[srcOffset],
+    ///     copying numElements elements. The <see cref="Buffer" /> instance's
+    ///     <see cref="Buffer.Position()" /> is used to define the offset into
+    ///     the Buffer itself. The position and limit will stay the same.
+    ///     <para>
+    ///         The Buffer must be a direct Buffer with native byte order. No error
+    ///         checking is performed
+    ///     </para>
+    ///     .
     /// </summary>
     /// <param name="src"> the source array. </param>
     /// <param name="srcOffset"> the offset into the source array. </param>
@@ -173,17 +165,17 @@ public class BufferUtils
         {
             return dst.Position;
         }
-        
+
         if ( dst is ShortBuffer or CharBuffer )
         {
             return dst.Position << 1;
         }
-        
+
         if ( dst is IntBuffer or FloatBuffer )
         {
             return dst.Position << 2;
         }
-        
+
         if ( dst is LongBuffer or DoubleBuffer )
         {
             return dst.Position << 3;
@@ -204,17 +196,17 @@ public class BufferUtils
         {
             return bytes;
         }
-        
+
         if ( dst is ShortBuffer or CharBuffer )
         {
             return bytes >>> 1;
         }
-        
+
         if ( dst is IntBuffer or FloatBuffer )
         {
             return bytes >>> 2;
         }
-        
+
         if ( dst is LongBuffer or DoubleBuffer )
         {
             return bytes >>> 3;
@@ -235,17 +227,17 @@ public class BufferUtils
         {
             return elements;
         }
-        
+
         if ( dst is ShortBuffer or CharBuffer )
         {
             return elements << 1;
         }
-        
+
         if ( dst is IntBuffer or FloatBuffer )
         {
             return elements << 2;
         }
-        
+
         if ( dst is LongBuffer or DoubleBuffer )
         {
             return elements << 3;

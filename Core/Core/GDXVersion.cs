@@ -17,17 +17,12 @@
 namespace LibGDXSharp.Core;
 
 /// <summary>
-/// The current LibGDXSharp Library version.
+///     The current LibGDXSharp Library version.
 /// </summary>
-[PublicAPI]
 public class GDXVersion
 {
     // the current version of LibGDXSharp as a string in the major.minor.revision format
     public const string LIBRARY_VERSION_STRING = "0.0.1";
-
-    protected static int MajorVersion    { get; set; }
-    protected static int MinorVersion    { get; set; }
-    protected static int RevisionVersion { get; set; }
 
     private readonly static Version Version = new();
 
@@ -41,28 +36,29 @@ public class GDXVersion
             MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1 ] );
             RevisionVersion = v.Length < 3 ? 0 : int.Parse( v[ 2 ] );
         }
-        catch ( System.Exception e )
+        catch ( Exception e )
         {
             throw new GdxRuntimeException( $"Invalid version {LIBRARY_VERSION_STRING}", e );
         }
     }
 
+    protected static int MajorVersion    { get; set; }
+    protected static int MinorVersion    { get; set; }
+    protected static int RevisionVersion { get; set; }
+
     /// <summary>
-    /// Checks the provided version components against the current and reports
-    /// TRUE if the CURRENT version is GREATER than the provided version.
+    ///     Checks the provided version components against the current and reports
+    ///     TRUE if the CURRENT version is GREATER than the provided version.
     /// </summary>
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
     /// <param name="revision">The Revision version component.</param>
-    public static bool IsHigher( int major, int minor, int revision )
-    {
-        return IsHigherEqual( major, minor, revision + 1 );
-    }
+    public static bool IsHigher( int major, int minor, int revision ) => IsHigherEqual( major, minor, revision + 1 );
 
     /// <summary>
-    /// Checks the provided version components against the current
-    /// and reports TRUE if the CURRENT version is GREATER than or
-    /// EQUAL to the provided version.
+    ///     Checks the provided version components against the current
+    ///     and reports TRUE if the CURRENT version is GREATER than or
+    ///     EQUAL to the provided version.
     /// </summary>
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
@@ -83,21 +79,18 @@ public class GDXVersion
     }
 
     /// <summary>
-    /// Checks the provided version components against the current and
-    /// reports TRUE if the CURRENT version is LESS than the provided version.
+    ///     Checks the provided version components against the current and
+    ///     reports TRUE if the CURRENT version is LESS than the provided version.
     /// </summary>
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
     /// <param name="revision">The Revision version component.</param>
-    public static bool IsLower( int major, int minor, int revision )
-    {
-        return IsLowerEqual( major, minor, revision - 1 );
-    }
+    public static bool IsLower( int major, int minor, int revision ) => IsLowerEqual( major, minor, revision - 1 );
 
     /// <summary>
-    /// Checks the provided version components against the current
-    /// and reports TRUE if the CURRENT version is LESS than or
-    /// EQUAL to the provided version.
+    ///     Checks the provided version components against the current
+    ///     and reports TRUE if the CURRENT version is LESS than or
+    ///     EQUAL to the provided version.
     /// </summary>
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>

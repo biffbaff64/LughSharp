@@ -16,20 +16,14 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class DesktopGLCursor : ICursor
 {
     public static List< DesktopGLCursor >                         cursors       = new();
     public static Dictionary< ICursor.SystemCursor, GLFW.Cursor > systemCursors = new();
 
-    public DesktopGLWindow Window     { get; set; }
-    public Pixmap          PixmapCopy { get; set; }
-    public GLFW.Image      GLFWImage  { get; set; }
-    public GLFW.Cursor     GLFWCursor { get; set; }
-
     public DesktopGLCursor( DesktopGLWindow window, Pixmap pixmap, int xHotspot, int yHotspot )
     {
-        this.Window = window;
+        Window = window;
 
         if ( pixmap.GetFormat() != Pixmap.Format.RGBA8888 )
         {
@@ -60,15 +54,20 @@ public class DesktopGLCursor : ICursor
                                          + $"image height bounds: [0, {pixmap.Height})." );
         }
 
-        this.PixmapCopy          = new Pixmap( pixmap.Width, pixmap.Height, Pixmap.Format.RGBA8888 );
-        this.PixmapCopy.Blending = Pixmap.BlendTypes.None;
-        this.PixmapCopy.DrawPixmap( pixmap, 0, 0 );
+        PixmapCopy          = new Pixmap( pixmap.Width, pixmap.Height, Pixmap.Format.RGBA8888 );
+        PixmapCopy.Blending = Pixmap.BlendTypes.None;
+        PixmapCopy.DrawPixmap( pixmap, 0, 0 );
 
         GLFWImage  = new GLFW.Image( PixmapCopy.Width, PixmapCopy.Height, ( IntPtr )PixmapCopy.gdx2DPixmap.basePtr );
         GLFWCursor = Glfw.CreateCursor( GLFWImage, xHotspot, yHotspot );
 
         cursors.Add( this );
     }
+
+    public DesktopGLWindow Window     { get; set; }
+    public Pixmap          PixmapCopy { get; set; }
+    public GLFW.Image      GLFWImage  { get; set; }
+    public GLFW.Cursor     GLFWCursor { get; set; }
 
     public static void SetSystemCursor( GLFW.Window window, ICursor.SystemCursor systemCursor )
     {
@@ -99,7 +98,7 @@ public class DesktopGLCursor : ICursor
         cursors.Remove( this );
         PixmapCopy.Dispose();
         PixmapCopy = null!;
-        GLFWImage = default( GLFW.Image );
+        GLFWImage  = default( GLFW.Image );
         Glfw.DestroyCursor( GLFWCursor );
     }
 

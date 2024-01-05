@@ -18,7 +18,6 @@ using System.Text;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class ParallelAction : Action
 {
     private readonly List< Action > _actions = new( 4 );
@@ -28,10 +27,7 @@ public class ParallelAction : Action
     {
     }
 
-    public ParallelAction( Action action1 )
-    {
-        AddAction( action1 );
-    }
+    public ParallelAction( Action action1 ) => AddAction( action1 );
 
     public ParallelAction( Action action1, Action action2 )
     {
@@ -72,16 +68,16 @@ public class ParallelAction : Action
 
         _complete = true;
 
-        Pool< Action >? pool = base.Pool;
+        Pool< Action >? pool = Pool;
 
         // Ensure this action can't be returned to the pool while executing.
-        base.Pool = null;
+        Pool = null;
 
         try
         {
-            for ( int i = 0, n = this._actions.Count; ( i < n ) && ( Actor != null ); i++ )
+            for ( int i = 0, n = _actions.Count; ( i < n ) && ( Actor != null ); i++ )
             {
-                Action currentAction = this._actions[ i ];
+                Action currentAction = _actions[ i ];
 
                 if ( ( currentAction.Actor != null ) && !currentAction.Act( delta ) )
                 {
@@ -98,7 +94,7 @@ public class ParallelAction : Action
         }
         finally
         {
-            base.Pool = pool;
+            Pool = pool;
         }
     }
 
@@ -106,9 +102,9 @@ public class ParallelAction : Action
     {
         _complete = false;
 
-        for ( int i = 0, n = this._actions.Count; i < n; i++ )
+        for ( int i = 0, n = _actions.Count; i < n; i++ )
         {
-            this._actions[ i ].Restart();
+            _actions[ i ].Restart();
         }
     }
 
@@ -130,18 +126,15 @@ public class ParallelAction : Action
 
     public void SetActor( Actor actor )
     {
-        for ( int i = 0, n = this._actions.Count; i < n; i++ )
+        for ( int i = 0, n = _actions.Count; i < n; i++ )
         {
-            this._actions[ i ].Actor = actor;
+            _actions[ i ].Actor = actor;
         }
 
         base.Actor = actor;
     }
 
-    public List< Action > GetActions()
-    {
-        return _actions;
-    }
+    public List< Action > GetActions() => _actions;
 
     public new string ToString()
     {
@@ -150,14 +143,14 @@ public class ParallelAction : Action
         buffer.Append( base.ToString() );
         buffer.Append( '(' );
 
-        for ( int i = 0, n = this._actions.Count; i < n; i++ )
+        for ( int i = 0, n = _actions.Count; i < n; i++ )
         {
             if ( i > 0 )
             {
                 buffer.Append( ", " );
             }
 
-            buffer.Append( this._actions[ i ] );
+            buffer.Append( _actions[ i ] );
         }
 
         buffer.Append( ')' );

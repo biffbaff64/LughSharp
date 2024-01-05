@@ -16,58 +16,18 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public abstract class DelegateAction : Action
 {
     public Action? Action { get; set; }
-
-    protected abstract bool Delegate( float delta );
-
-    /// <summary>
-    /// Updates the action based on time.
-    /// Typically this is called each frame by <see cref="Actor"/>.
-    /// </summary>
-    /// <param name="delta">Time in seconds since the last frame.</param>
-    /// <returns>
-    /// true if the action is done. This method may continue to be called after
-    /// the action is done.
-    /// </returns>
-    public override bool Act( float delta )
-    {
-        Pool< Action >? pool = base.Pool;
-        
-        // Ensure this action can't be returned to the pool inside the delegate action.
-        base.Pool = null;
-
-        try
-        {
-            return Delegate( delta );
-        }
-        finally
-        {
-            base.Pool = pool;
-        }
-    }
-
-    public override void Restart()
-    {
-        this.Action?.Restart();
-    }
-
-    public override void Reset()
-    {
-        base.Reset();
-        this.Action = null;
-    }
 
     public override Actor? Actor
     {
         get => base.Actor;
         set
         {
-            if ( this.Action != null )
+            if ( Action != null )
             {
-                this.Action.Actor = value;
+                Action.Actor = value;
             }
 
             base.Actor = value;
@@ -79,17 +39,50 @@ public abstract class DelegateAction : Action
         get => base.Target;
         set
         {
-            if ( this.Action != null )
+            if ( Action != null )
             {
-                this.Action.Target = value;
+                Action.Target = value;
             }
 
             base.Target = value;
         }
     }
 
-    public override string ToString()
+    protected abstract bool Delegate( float delta );
+
+    /// <summary>
+    ///     Updates the action based on time.
+    ///     Typically this is called each frame by <see cref="Actor" />.
+    /// </summary>
+    /// <param name="delta">Time in seconds since the last frame.</param>
+    /// <returns>
+    ///     true if the action is done. This method may continue to be called after
+    ///     the action is done.
+    /// </returns>
+    public override bool Act( float delta )
     {
-        return base.ToString() + ( this.Action == null ? "" : $"({this.Action})" );
+        Pool< Action >? pool = Pool;
+
+        // Ensure this action can't be returned to the pool inside the delegate action.
+        Pool = null;
+
+        try
+        {
+            return Delegate( delta );
+        }
+        finally
+        {
+            Pool = pool;
+        }
     }
+
+    public override void Restart() => Action?.Restart();
+
+    public override void Reset()
+    {
+        base.Reset();
+        Action = null;
+    }
+
+    public override string ToString() => base.ToString() + ( Action == null ? "" : $"({Action})" );
 }

@@ -19,29 +19,21 @@ using System.Runtime.Serialization;
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// The DecoderException represents the class of errors that can occur when decoding MPEG audio.
+///     The DecoderException represents the class of errors that can occur when decoding MPEG audio.
 /// </summary>
 [Serializable]
 public class DecoderException : Mp3SharpException
 {
+
+    public DecoderException( string message, Exception? inner )
+        : base( message, inner ) => ErrorCode = DecoderErrors.UNKNOWN_ERROR;
+
+    public DecoderException( int errorcode, Exception? inner )
+        : this( GetErrorString( errorcode ), inner ) => ErrorCode = errorcode;
+
+    protected DecoderException( SerializationInfo info, StreamingContext context ) : base( info, context ) => ErrorCode = info.GetInt32( "ErrorCode" );
+
     public int ErrorCode { get; set; }
-
-    public DecoderException( string message, System.Exception? inner )
-        : base( message, inner )
-    {
-        ErrorCode = DecoderErrors.UNKNOWN_ERROR;
-    }
-
-    public DecoderException( int errorcode, System.Exception? inner )
-        : this( GetErrorString( errorcode ), inner )
-    {
-        ErrorCode = errorcode;
-    }
-
-    protected DecoderException( SerializationInfo info, StreamingContext context ) : base( info, context )
-    {
-        ErrorCode = info.GetInt32( "ErrorCode" );
-    }
 
     public override void GetObjectData( SerializationInfo info, StreamingContext context )
     {

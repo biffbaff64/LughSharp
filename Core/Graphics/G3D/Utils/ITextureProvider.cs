@@ -19,20 +19,19 @@ using LibGDXSharp.Graphics.G3D.Models.Data;
 namespace LibGDXSharp.Graphics.G3D.Utils;
 
 /// <summary>
-/// Used by <see cref="Model"/> to load textures from <see cref="ModelData"/>.
+///     Used by <see cref="Model" /> to load textures from <see cref="ModelData" />.
 /// </summary>
-[PublicAPI]
 public interface ITextureProvider
 {
     Texture Load( string fileName );
 
     public class FileTextureProvider : ITextureProvider
     {
-        private readonly TextureFilter _minFilter;
         private readonly TextureFilter _magFilter;
+        private readonly TextureFilter _minFilter;
+        private readonly bool          _useMipMaps;
         private readonly TextureWrap   _uWrap;
         private readonly TextureWrap   _vWrap;
-        private readonly bool          _useMipMaps;
 
         public FileTextureProvider()
         {
@@ -41,14 +40,17 @@ public interface ITextureProvider
             _useMipMaps = false;
         }
 
-        public FileTextureProvider( TextureFilter minFilter, TextureFilter magFilter,
-                                    TextureWrap uWrap, TextureWrap vWrap, bool useMipMaps )
+        public FileTextureProvider( TextureFilter minFilter,
+                                    TextureFilter magFilter,
+                                    TextureWrap uWrap,
+                                    TextureWrap vWrap,
+                                    bool useMipMaps )
         {
-            this._minFilter  = minFilter;
-            this._magFilter  = magFilter;
-            this._uWrap      = uWrap;
-            this._vWrap      = vWrap;
-            this._useMipMaps = useMipMaps;
+            _minFilter  = minFilter;
+            _magFilter  = magFilter;
+            _uWrap      = uWrap;
+            _vWrap      = vWrap;
+            _useMipMaps = useMipMaps;
         }
 
         public Texture Load( string fileName )
@@ -63,17 +65,18 @@ public interface ITextureProvider
 
     public class AssetTextureProvider : ITextureProvider
     {
-        public AssetManager? AssetManager { get; }
 
-        public AssetTextureProvider( AssetManager? assetManager )
-        {
-            this.AssetManager = assetManager;
-        }
+        public AssetTextureProvider( AssetManager? assetManager ) => AssetManager = assetManager;
+
+        public AssetManager? AssetManager { get; }
 
         public Texture Load( string fileName )
         {
-            if ( AssetManager == null ) throw new NullReferenceException();
-            
+            if ( AssetManager == null )
+            {
+                throw new NullReferenceException();
+            }
+
             return AssetManager.Get< Texture >( fileName );
         }
     }

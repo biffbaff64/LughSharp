@@ -26,114 +26,112 @@
 namespace LibGDXSharp.Utils;
 
 /// <summary>
-/// A stable, adaptive, iterative mergesort that requires far fewer than n lg(n)
-/// comparisons when running on partially sorted arrays, while offering performance
-/// comparable to a traditional mergesort when run on random arrays.
-/// <para>
-/// Like all proper mergesorts, this sort is stable and runs O(n log n) time (worst case).
-/// In the worst case, this sort requires temporary storage space for n/2 object
-/// references; in the best case, it requires only a small constant amount of space.
-/// </para>
-/// <para>
-/// This implementation was adapted from Tim Peters's list sort for Python, which is
-/// described in detail here:
-/// </para>
-/// <para>
-/// http://svn.python.org/projects/python/trunk/Objects/listsort.txt
-/// </para>
-/// <para>Tim's C code may be found here:</para>
-/// <para>
-/// http://svn.python.org/projects/python/trunk/Objects/listobject.c
-/// </para>
-/// <para>
-/// The underlying techniques are described in this paper (and may have even earlier origins):
-/// "Optimistic Sorting and Information Theoretic Complexity" Peter McIlroy SODA (Fourth Annual
-/// ACM-SIAM Symposium on Discrete Algorithms), pp 467-474, Austin, Texas, 25-27 January 1993.
-/// </para>
-/// <para>
-/// While the API to this class consists solely of static methods, it is (privately) instantiable;
-/// a TimSort instance holds the state of an ongoing sort, assuming the input array is large enough
-/// to warrant the full-blown TimSort. Small arrays are sorted in place, using a binary insertion sort.
-/// </para>
+///     A stable, adaptive, iterative mergesort that requires far fewer than n lg(n)
+///     comparisons when running on partially sorted arrays, while offering performance
+///     comparable to a traditional mergesort when run on random arrays.
+///     <para>
+///         Like all proper mergesorts, this sort is stable and runs O(n log n) time (worst case).
+///         In the worst case, this sort requires temporary storage space for n/2 object
+///         references; in the best case, it requires only a small constant amount of space.
+///     </para>
+///     <para>
+///         This implementation was adapted from Tim Peters's list sort for Python, which is
+///         described in detail here:
+///     </para>
+///     <para>
+///         http://svn.python.org/projects/python/trunk/Objects/listsort.txt
+///     </para>
+///     <para>Tim's C code may be found here:</para>
+///     <para>
+///         http://svn.python.org/projects/python/trunk/Objects/listobject.c
+///     </para>
+///     <para>
+///         The underlying techniques are described in this paper (and may have even earlier origins):
+///         "Optimistic Sorting and Information Theoretic Complexity" Peter McIlroy SODA (Fourth Annual
+///         ACM-SIAM Symposium on Discrete Algorithms), pp 467-474, Austin, Texas, 25-27 January 1993.
+///     </para>
+///     <para>
+///         While the API to this class consists solely of static methods, it is (privately) instantiable;
+///         a TimSort instance holds the state of an ongoing sort, assuming the input array is large enough
+///         to warrant the full-blown TimSort. Small arrays are sorted in place, using a binary insertion sort.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class TimSort<T>
 {
     /// <summary>
-    /// This is the minimum sized sequence that will be merged. Shorter sequences will
-    /// be lengthened by calling binarySort. If the entire array is less than this length,
-    /// no merges will be performed.
-    /// <para>
-    /// This constant should be a power of two. It was 64 in Tim Peter's C implementation,
-    /// but 32 was empirically determined to work better in this implementation. In the
-    /// unlikely event that you set this constant to be a number that's not a power of two,
-    /// you'll need to change the <see cref="MinRunLength"/> computation.
-    /// </para>
-    /// <para>
-    /// If you decrease this constant, you must change the stackLen computation in the
-    /// TimSort constructor, or you risk an ArrayOutOfBounds exception. See listsort.txt
-    /// for a discussion of the minimum stack length required as a function of the
-    /// length of the array being sorted and the minimum merge sequence length. 
-    /// </para>
+    ///     This is the minimum sized sequence that will be merged. Shorter sequences will
+    ///     be lengthened by calling binarySort. If the entire array is less than this length,
+    ///     no merges will be performed.
+    ///     <para>
+    ///         This constant should be a power of two. It was 64 in Tim Peter's C implementation,
+    ///         but 32 was empirically determined to work better in this implementation. In the
+    ///         unlikely event that you set this constant to be a number that's not a power of two,
+    ///         you'll need to change the <see cref="MinRunLength" /> computation.
+    ///     </para>
+    ///     <para>
+    ///         If you decrease this constant, you must change the stackLen computation in the
+    ///         TimSort constructor, or you risk an ArrayOutOfBounds exception. See listsort.txt
+    ///         for a discussion of the minimum stack length required as a function of the
+    ///         length of the array being sorted and the minimum merge sequence length.
+    ///     </para>
     /// </summary>
     private const int MIN_MERGE = 32;
 
     /// <summary>
-    /// The array being sorted.
-    /// </summary>
-    private T[] _sortingArray;
-
-    /// <summary>
-    /// The comparator for this sort.
-    /// </summary>
-    private IComparer< T > _sortComparator;
-
-    /// <summary>
-    /// When we get into galloping mode, we stay there until both runs win less
-    /// often than MIN_GALLOP consecutive times.
+    ///     When we get into galloping mode, we stay there until both runs win less
+    ///     often than MIN_GALLOP consecutive times.
     /// </summary>
     private const int MIN_GALLOP = 7;
 
     /// <summary>
-    /// This controls when we get into 'galloping mode'. It is initialized to MIN_GALLOP.
-    /// The mergeLo and mergeHi methods nudge it higher for random data, and lower for
-    /// highly structured data. 
+    ///     Maximum initial size of tmp array, which is used for merging.
+    ///     The array can grow to accommodate demand.
+    ///     Unlike Tim's original C version, we do not allocate this much storage when sorting
+    ///     smaller arrays. This change was required for performance.
+    /// </summary>
+    private const int INITIAL_TMP_STORAGE_LENGTH = 256;
+
+    private readonly int[] _runBase;
+    private readonly int[] _runLen;
+
+    /// <summary>
+    ///     This controls when we get into 'galloping mode'. It is initialized to MIN_GALLOP.
+    ///     The mergeLo and mergeHi methods nudge it higher for random data, and lower for
+    ///     highly structured data.
     /// </summary>
     private int _minGallop = MIN_GALLOP;
 
     /// <summary>
-    /// Maximum initial size of tmp array, which is used for merging.
-    /// The array can grow to accommodate demand.
-    /// 
-    /// Unlike Tim's original C version, we do not allocate this much storage when sorting
-    /// smaller arrays. This change was required for performance. 
+    ///     The comparator for this sort.
     /// </summary>
-    private const int INITIAL_TMP_STORAGE_LENGTH = 256;
+    private IComparer< T > _sortComparator;
 
     /// <summary>
-    /// Temp storage for merges.
+    ///     The array being sorted.
     /// </summary>
-    private T[] _tmp; // Actual runtime type will be Object[], regardless of T
-    private int _tmpCount;
+    private T[] _sortingArray;
 
     /// <summary>
-    /// A stack of pending runs yet to be merged.
-    /// Run i starts at address base[i] and extends for len[i] elements.
-    /// <para>
-    /// It's always true (so long as the indices are in bounds) that:
-    /// </para>
-    /// <code>
+    ///     A stack of pending runs yet to be merged.
+    ///     Run i starts at address base[i] and extends for len[i] elements.
+    ///     <para>
+    ///         It's always true (so long as the indices are in bounds) that:
+    ///     </para>
+    ///     <code>
     /// runBase[i] + runLen[i] == runBase[i + 1]
     /// </code>
-    /// <para>
-    /// so we could cut the storage for this, but it's a minor amount, and keeping all
-    /// the info explicit simplifies the code.
-    /// </para>
+    ///     <para>
+    ///         so we could cut the storage for this, but it's a minor amount, and keeping all
+    ///         the info explicit simplifies the code.
+    ///     </para>
     /// </summary>
     private int _stackSize = 0; // Number of pending runs on stack
 
-    private readonly int[] _runBase;
-    private readonly int[] _runLen;
+    /// <summary>
+    ///     Temp storage for merges.
+    /// </summary>
+    private T[] _tmp; // Actual runtime type will be Object[], regardless of T
+    private int _tmpCount;
 
     /// <summary>
     /// </summary>
@@ -145,6 +143,34 @@ public class TimSort<T>
 
         _sortingArray   = null!;
         _sortComparator = null!;
+    }
+
+    /// <summary>
+    ///     Creates a TimSort instance to maintain the state of an ongoing sort.
+    /// </summary>
+    /// <param name="a"> the array to be sorted </param>
+    /// <param name="c"> the comparator to determine the order of the sort</param>
+    private TimSort( T[] a, IComparer< T > c )
+    {
+        _sortingArray   = a;
+        _sortComparator = c;
+
+        // Allocate temp storage (which may be increased later if necessary)
+        var len = a.Length;
+
+        _tmp = new T[ len < ( 2 * INITIAL_TMP_STORAGE_LENGTH ) ? len >>> 1 : INITIAL_TMP_STORAGE_LENGTH ];
+
+        // Allocate runs-to-be-merged stack (which cannot be expanded). The stack length
+        // requirements are described in listsort.txt. The C version always uses the same
+        // stack length (85), but this was measured to be too expensive when sorting "mid-sized"
+        // arrays (e.g., 100 elements) in the Java code this library is converted from.
+        // Therefore, we use smaller (but sufficiently large) stack lengths for smaller arrays.
+        // The "magic numbers" in the computation below must be changed if MinMerge is decreased.
+        // See the MinMerge declaration above for more information.
+        var stackLen = len < 120 ? 5 : len < 1542 ? 10 : len < 119151 ? 19 : 40;
+
+        _runBase = new int[ stackLen ];
+        _runLen  = new int[ stackLen ];
     }
 
     /// <summary>
@@ -179,9 +205,9 @@ public class TimSort<T>
             }
         }
 
-        this._sortingArray   = a;
-        this._sortComparator = c;
-        _tmpCount            = 0;
+        _sortingArray   = a;
+        _sortComparator = c;
+        _tmpCount       = 0;
 
         // March over the array once, left to right, finding natural runs, extending
         // short natural runs to minRun elements, and  merging runs to maintain stack
@@ -225,38 +251,7 @@ public class TimSort<T>
         #endif
     }
 
-    /// <summary>
-    /// Creates a TimSort instance to maintain the state of an ongoing sort.
-    /// </summary>
-    /// <param name="a"> the array to be sorted </param>
-    /// <param name="c"> the comparator to determine the order of the sort</param>
-    private TimSort( T[] a, IComparer< T > c )
-    {
-        this._sortingArray   = a;
-        this._sortComparator = c;
-
-        // Allocate temp storage (which may be increased later if necessary)
-        var len = a.Length;
-
-        _tmp = new T[ len < ( 2 * INITIAL_TMP_STORAGE_LENGTH ) ? len >>> 1 : INITIAL_TMP_STORAGE_LENGTH ];
-
-        // Allocate runs-to-be-merged stack (which cannot be expanded). The stack length
-        // requirements are described in listsort.txt. The C version always uses the same
-        // stack length (85), but this was measured to be too expensive when sorting "mid-sized"
-        // arrays (e.g., 100 elements) in the Java code this library is converted from.
-        // Therefore, we use smaller (but sufficiently large) stack lengths for smaller arrays.
-        // The "magic numbers" in the computation below must be changed if MinMerge is decreased.
-        // See the MinMerge declaration above for more information.
-        var stackLen = ( len < 120 ? 5 : len < 1542 ? 10 : len < 119151 ? 19 : 40 );
-
-        _runBase = new int[ stackLen ];
-        _runLen  = new int[ stackLen ];
-    }
-
-    public static void Sort( T[] a, IComparer< T > c )
-    {
-        Sort( a, 0, a.Length, c );
-    }
+    public static void Sort( T[] a, IComparer< T > c ) => Sort( a, 0, a.Length, c );
 
     public static void Sort( T[] a, int lo, int hi, IComparer< T >? c )
     {
@@ -330,21 +325,21 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Sorts the specified portion of the specified array using a binary insertion sort.
-    /// This is the best method for sorting small numbers of elements. It requires O(n log n)
-    /// compares, but O(n^2) data movement (worst case).
-    /// <para>
-    /// If the initial part of the specified range is already sorted, this method can take
-    /// advantage of it: the method assumes that the elements from index lo, inclusive, to
-    /// start, exclusive are already sorted.
-    /// </para>
+    ///     Sorts the specified portion of the specified array using a binary insertion sort.
+    ///     This is the best method for sorting small numbers of elements. It requires O(n log n)
+    ///     compares, but O(n^2) data movement (worst case).
+    ///     <para>
+    ///         If the initial part of the specified range is already sorted, this method can take
+    ///         advantage of it: the method assumes that the elements from index lo, inclusive, to
+    ///         start, exclusive are already sorted.
+    ///     </para>
     /// </summary>
     /// <param name="a"> the array in which a range is to be sorted </param>
     /// <param name="lo"> the index of the first element in the range to be sorted </param>
     /// <param name="hi"> the index after the last element in the range to be sorted </param>
     /// <param name="start">
-    /// the index of the first element in the range that is not already known to be sorted
-    /// <code> lo &lt;= start &lt;= hi</code>
+    ///     the index of the first element in the range that is not already known to be sorted
+    ///     <code> lo &lt;= start &lt;= hi</code>
     /// </param>
     /// <param name="c"> comparator to used for the sort</param>
     private static void BinarySort( T[] a, int lo, int hi, int start, IComparer< T > c )
@@ -416,36 +411,36 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Returns the length of the run beginning at the specified position in
-    /// the specified array and reverses the run if it is descending (ensuring
-    /// that the run will always be ascending when the method returns).
-    /// <para>
-    /// A run is the longest ascending sequence with:
-    /// </para>
-    /// <para>
-    /// a[lo] &lt;= a[lo + 1] &lt;= a[lo + 2] &lt;= ...
-    /// </para>
-    /// <para>
-    /// or the longest descending sequence with:
-    /// </para>
-    /// <para>
-    /// a[lo] > a[lo + 1] > a[lo + 2] > ...
-    /// </para>
-    /// <para>
-    /// For its intended use in a stable mergesort, the strictness of the definition of
-    /// "descending" is needed so that the call can safely reverse a descending sequence
-    /// without violating stability.
-    /// </para>
+    ///     Returns the length of the run beginning at the specified position in
+    ///     the specified array and reverses the run if it is descending (ensuring
+    ///     that the run will always be ascending when the method returns).
+    ///     <para>
+    ///         A run is the longest ascending sequence with:
+    ///     </para>
+    ///     <para>
+    ///         a[lo] &lt;= a[lo + 1] &lt;= a[lo + 2] &lt;= ...
+    ///     </para>
+    ///     <para>
+    ///         or the longest descending sequence with:
+    ///     </para>
+    ///     <para>
+    ///         a[lo] > a[lo + 1] > a[lo + 2] > ...
+    ///     </para>
+    ///     <para>
+    ///         For its intended use in a stable mergesort, the strictness of the definition of
+    ///         "descending" is needed so that the call can safely reverse a descending sequence
+    ///         without violating stability.
+    ///     </para>
     /// </summary>
     /// <param name="a"> the array in which a run is to be counted and possibly reversed </param>
     /// <param name="lo"> index of the first element in the run </param>
     /// <param name="hi">
-    /// index after the last element that may be contained in the run.
-    /// It is required that <code>lo &lt; hi</code>
+    ///     index after the last element that may be contained in the run.
+    ///     It is required that <code>lo &lt; hi</code>
     /// </param>
     /// <param name="c"> the comparator to used for the sort </param>
     /// <returns>
-    /// the length of the run beginning at the specified position in the specified array
+    ///     the length of the run beginning at the specified position in the specified array
     /// </returns>
     private static int CountRunAndMakeAscending( T[] a, int lo, int hi, IComparer< T > c )
     {
@@ -484,7 +479,7 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Reverse the specified range of the specified array.
+    ///     Reverse the specified range of the specified array.
     /// </summary>
     /// <param name="a"> the array in which a range is to be reversed </param>
     /// <param name="lo"> the index of the first element in the range to be reversed </param>
@@ -503,16 +498,18 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Returns the minimum acceptable run length for an array of the specified length.
-    /// Natural runs shorter than this will be extended with <see cref="BinarySort"/>.
-    /// <para>
-    /// Roughly speaking, the computation is:
-    /// </para>
-    /// <para>If n &lt; MinMerge, return n (it's too small to bother with fancy stuff).</para>
-    /// <para>Else if n is an exact power of 2, return MinMerge/2.</para>
-    /// <para>Else return an int k, MinMerge/2 &lt;= k &lt;= MinMerge, such that n/k is close to,
-    /// but strictly less than, an exact power of 2.</para>
-    /// <para>For the rationale, see listsort.txt.</para>
+    ///     Returns the minimum acceptable run length for an array of the specified length.
+    ///     Natural runs shorter than this will be extended with <see cref="BinarySort" />.
+    ///     <para>
+    ///         Roughly speaking, the computation is:
+    ///     </para>
+    ///     <para>If n &lt; MinMerge, return n (it's too small to bother with fancy stuff).</para>
+    ///     <para>Else if n is an exact power of 2, return MinMerge/2.</para>
+    ///     <para>
+    ///         Else return an int k, MinMerge/2 &lt;= k &lt;= MinMerge, such that n/k is close to,
+    ///         but strictly less than, an exact power of 2.
+    ///     </para>
+    ///     <para>For the rationale, see listsort.txt.</para>
     /// </summary>
     /// <param name="n"> the length of the array to be sorted </param>
     /// <returns> the length of the minimum run to be merged  </returns>
@@ -526,7 +523,7 @@ public class TimSort<T>
 
         while ( n >= MIN_MERGE )
         {
-            r |=  ( n & 1 );
+            r |=  n & 1;
             n >>= 1;
         }
 
@@ -534,34 +531,34 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Pushes the specified run onto the pending-run stack.
+    ///     Pushes the specified run onto the pending-run stack.
     /// </summary>
     /// <param name="runBase">index of the first element in the run</param>
-    ///	<param name="runLen">the number of elements in the run</param>
+    /// <param name="runLen">the number of elements in the run</param>
     private void PushRun( int runBase, int runLen )
     {
-        this._runBase[ _stackSize ] = runBase;
-        this._runLen[ _stackSize ]  = runLen;
+        _runBase[ _stackSize ] = runBase;
+        _runLen[ _stackSize ]  = runLen;
 
         _stackSize++;
     }
 
     /// <summary>
-    /// Examines the stack of runs waiting to be merged and merges adjacent
-    /// runs until the stack invariants are reestablished:
-    /// <para>
-    /// 1. runLen[n - 2] &gt; runLen[n - 1] + runLen[n] 2. runLen[n - 1] &gt; runLen[n]
-    /// </para>
-    /// where n is the index of the last run in runLen.
-    /// 
-    /// This method has been formally verified to be correct after checking
-    /// the last 4 runs. Checking for 3 runs results in an exception for large arrays.
-    /// <para>
-    /// (Source: http://envisage-project.eu/proving-android-java-and-python-sorting-algorithm-is-broken-and-how-to-fix-it/)
-    /// </para>
-    /// This method is called each time a new run is pushed onto the stack,
-    /// so the invariants are guaranteed to hold for i &lt; stackSize upon
-    /// entry to the method. 
+    ///     Examines the stack of runs waiting to be merged and merges adjacent
+    ///     runs until the stack invariants are reestablished:
+    ///     <para>
+    ///         1. runLen[n - 2] &gt; runLen[n - 1] + runLen[n] 2. runLen[n - 1] &gt; runLen[n]
+    ///     </para>
+    ///     where n is the index of the last run in runLen.
+    ///     This method has been formally verified to be correct after checking
+    ///     the last 4 runs. Checking for 3 runs results in an exception for large arrays.
+    ///     <para>
+    ///         (Source:
+    ///         http://envisage-project.eu/proving-android-java-and-python-sorting-algorithm-is-broken-and-how-to-fix-it/)
+    ///     </para>
+    ///     This method is called each time a new run is pushed onto the stack,
+    ///     so the invariants are guaranteed to hold for i &lt; stackSize upon
+    ///     entry to the method.
     /// </summary>
     private void MergeCollapse()
     {
@@ -587,8 +584,8 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Merges all runs on the stack until only one remains.
-    /// This method is called once, to complete the sort.
+    ///     Merges all runs on the stack until only one remains.
+    ///     This method is called once, to complete the sort.
     /// </summary>
     private void MergeForceCollapse()
     {
@@ -606,9 +603,9 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Merges the two runs at stack indices i and i+1. Run i must be the penultimate or
-    /// antepenultimate run on the stack. In other words, i must be equal to stackSize-2
-    /// or stackSize-3.
+    ///     Merges the two runs at stack indices i and i+1. Run i must be the penultimate or
+    ///     antepenultimate run on the stack. In other words, i must be equal to stackSize-2
+    ///     or stackSize-3.
     /// </summary>
     /// <param name="i">stack index of the first of the two runs to merge</param>
     private void MergeAt( int i )
@@ -690,26 +687,26 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Locates the position at which to insert the specified key into the specified sorted range;
-    /// if the range contains an element equal to key, returns the index of the leftmost equal element.
+    ///     Locates the position at which to insert the specified key into the specified sorted range;
+    ///     if the range contains an element equal to key, returns the index of the leftmost equal element.
     /// </summary>
     /// <param name="key">the key's insertion point to search for.</param>
     /// <param name="a"> the array in which to search. </param>
     /// <param name="baseIndex"> the index of the first element in the range </param>
     /// <param name="len"> the length of the range; must be > 0 </param>
     /// <param name="hint">
-    /// the index at which to begin the search, 0 &lt;= hint &lt; n.
-    /// The closer hint is to the result, the faster this method will run.
+    ///     the index at which to begin the search, 0 &lt;= hint &lt; n.
+    ///     The closer hint is to the result, the faster this method will run.
     /// </param>
     /// <param name="c"> the comparator used to order the range, and to search </param>
     /// <returns>
-    /// the int k, 0 &lt;= k &lt;= n such that a[b + k - 1] &lt; key &lt;= a[b + k], pretending
-    /// that a[b - 1] is minus infinity and a[b + n] is infinity.
-    /// <para>In other words, key belongs at index b + k;</para>
-    /// <para>
-    /// or in other words, the first k elements of a should precede key, and the
-    /// last n - k should follow it.
-    /// </para>
+    ///     the int k, 0 &lt;= k &lt;= n such that a[b + k - 1] &lt; key &lt;= a[b + k], pretending
+    ///     that a[b - 1] is minus infinity and a[b + n] is infinity.
+    ///     <para>In other words, key belongs at index b + k;</para>
+    ///     <para>
+    ///         or in other words, the first k elements of a should precede key, and the
+    ///         last n - k should follow it.
+    ///     </para>
     /// </returns>
     private static int GallopLeft( T key, IReadOnlyList< T > a, int baseIndex, int len, int hint, IComparer< T > c )
     {
@@ -805,20 +802,20 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Like GallopLeft, except that if the range contains an element equal to key,
-    /// GallopRight returns the index after the rightmost equal element.
+    ///     Like GallopLeft, except that if the range contains an element equal to key,
+    ///     GallopRight returns the index after the rightmost equal element.
     /// </summary>
     /// <param name="key"> the key whose insertion point to search for </param>
     /// <param name="a"> the array in which to search </param>
     /// <param name="baseIndex"> the index of the first element in the range </param>
     /// <param name="len"> the length of the range; must be > 0 </param>
     /// <param name="hint">
-    /// the index at which to begin the search, 0 &lt;= hint &lt; n. The closer hint is
-    /// to the result, the faster this method will run.
+    ///     the index at which to begin the search, 0 &lt;= hint &lt; n. The closer hint is
+    ///     to the result, the faster this method will run.
     /// </param>
     /// <param name="c"> the comparator used to order the range, and to search </param>
     /// <returns>
-    /// the int k, 0 &lt;= k &lt;= n such that a[b + k - 1] &lt;= key &lt; a[b + k].
+    ///     the int k, 0 &lt;= k &lt;= n such that a[b + k - 1] &lt;= key &lt; a[b + k].
     /// </returns>
     private static int GallopRight( T key, IReadOnlyList< T > a, int baseIndex, int len, int hint, IComparer< T > c )
     {
@@ -913,17 +910,17 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Merges two adjacent runs in place, in a stable fashion.
-    /// <para>
-    /// The first element of the first run must be greater than the first element of the
-    /// second run (a[base1] > a[base2]), and the last element of the first run
-    /// (a[base1 + len1-1]) must be greater than all elements of the second run.
-    /// </para>
-    /// <para>
-    /// For performance, this method should be called only when len1 &lt;= len2;
-    /// its twin, MergeHi should be called if len1 >= len2.
-    /// (Either method may be called if len1 == len2.)
-    /// </para>
+    ///     Merges two adjacent runs in place, in a stable fashion.
+    ///     <para>
+    ///         The first element of the first run must be greater than the first element of the
+    ///         second run (a[base1] > a[base2]), and the last element of the first run
+    ///         (a[base1 + len1-1]) must be greater than all elements of the second run.
+    ///     </para>
+    ///     <para>
+    ///         For performance, this method should be called only when len1 &lt;= len2;
+    ///         its twin, MergeHi should be called if len1 >= len2.
+    ///         (Either method may be called if len1 == len2.)
+    ///     </para>
     /// </summary>
     /// <param name="base1"> index of first element in first run to be merged </param>
     /// <param name="len1"> length of first run to be merged (must be > 0) </param>
@@ -936,7 +933,7 @@ public class TimSort<T>
         #endif
 
         // Copy first run into temp array
-        T[] a   = this._sortingArray; // For performance
+        T[] a   = _sortingArray; // For performance
         T[] tmp = EnsureCapacity( len1 );
 
         if ( a == null )
@@ -969,8 +966,8 @@ public class TimSort<T>
             return;
         }
 
-        IComparer< T > c         = this._sortComparator; // Use local variable for performance
-        var            minGallop = this._minGallop;      // "    " "     " "
+        IComparer< T > c         = _sortComparator; // Use local variable for performance
+        var            minGallop = _minGallop;      // "    " "     " "
 
         while ( true )
         {
@@ -1079,7 +1076,7 @@ public class TimSort<T>
 
         outer:
 
-        this._minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
+        _minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
 
         switch ( len1 )
         {
@@ -1110,9 +1107,9 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Like mergeLo, except that this method should be called only if len1 &gt;= len2;
-    /// mergeLo should be called if len1 &lt;= len2.
-    /// (Either method may be called if len1 == len2.)
+    ///     Like mergeLo, except that this method should be called only if len1 &gt;= len2;
+    ///     mergeLo should be called if len1 &lt;= len2.
+    ///     (Either method may be called if len1 == len2.)
     /// </summary>
     /// <param name="base1"> index of first element in first run to be merged </param>
     /// <param name="len1"> length of first run to be merged (must be > 0) </param>
@@ -1125,7 +1122,7 @@ public class TimSort<T>
         #endif
 
         // Copy second run into temp array
-        T[] a   = this._sortingArray;
+        T[] a   = _sortingArray;
         T[] tmp = EnsureCapacity( len2 );
 
         if ( a == null )
@@ -1161,9 +1158,9 @@ public class TimSort<T>
             return;
         }
 
-        IComparer< T > c = this._sortComparator; // Use local variable for performance
+        IComparer< T > c = _sortComparator; // Use local variable for performance
 
-        var minGallop = this._minGallop; // "    " "     " "
+        var minGallop = _minGallop; // "    " "     " "
 
         while ( true )
         {
@@ -1273,7 +1270,7 @@ public class TimSort<T>
 
         outer:
 
-        this._minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
+        _minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
 
         switch ( len2 )
         {
@@ -1308,9 +1305,9 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Ensures that the external array tmp has at least the specified number
-    /// of elements, increasing its size if necessary. The size increases
-    /// exponentially to ensure amortized linear time complexity.
+    ///     Ensures that the external array tmp has at least the specified number
+    ///     of elements, increasing its size if necessary. The size increases
+    ///     exponentially to ensure amortized linear time complexity.
     /// </summary>
     /// <param name="minCapacity"> the minimum required capacity of the tmp array </param>
     /// <returns> tmp, whether or not it grew </returns>
@@ -1341,7 +1338,7 @@ public class TimSort<T>
     }
 
     /// <summary>
-    /// Checks that fromIndex and toIndex are in range, and throws an appropriate exception if they aren't.
+    ///     Checks that fromIndex and toIndex are in range, and throws an appropriate exception if they aren't.
     /// </summary>
     /// <param name="arrayLen"> the length of the array </param>
     /// <param name="fromIndex"> the index of the first element of the range </param>

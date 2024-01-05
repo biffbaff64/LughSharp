@@ -16,16 +16,8 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
-[PublicAPI]
 public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
-    [PublicAPI]
-    public struct CubemapLoaderInfo
-    {
-        public string?       filename;
-        public Cubemap?      cubemap;
-        public ICubemapData? cubemapData;
-    }
 
     private CubemapLoaderInfo _loaderInfo = new()
     {
@@ -35,29 +27,26 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     };
 
     /// <summary>
-    /// Creates a new CubmapLoader using the supplied resolver.
+    ///     Creates a new CubmapLoader using the supplied resolver.
     /// </summary>
     public CubemapLoader( IFileHandleResolver resolver ) : base( resolver )
     {
     }
 
     /// <summary>
-    /// Returns the assets this asset requires to be loaded first.
-    /// This method may be called on a thread other than the GL thread.
+    ///     Returns the assets this asset requires to be loaded first.
+    ///     This method may be called on a thread other than the GL thread.
     /// </summary>
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter )
-    {
-        return default( List< AssetDescriptor > )!;
-    }
+                                                             AssetLoaderParameters parameter ) => default( List< AssetDescriptor > )!;
 
     /// <summary>
-    /// Loads the non-OpenGL part of the asset and injects any dependencies of
-    /// the asset into the AssetManager.
+    ///     Loads the non-OpenGL part of the asset and injects any dependencies of
+    ///     the asset into the AssetManager.
     /// </summary>
     /// <param name="manager">The AssetManager to use.</param>
     /// <param name="fileName">The name of the asset to load.</param>
@@ -102,7 +91,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     }
 
     /// <summary>
-    /// Loads the OpenGL part of the asset.
+    ///     Loads the OpenGL part of the asset.
     /// </summary>
     /// <param name="manager">The AssetManager to use.</param>
     /// <param name="fileName">The name of the asset to load.</param>
@@ -127,37 +116,43 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
 
         if ( parameter != null )
         {
-            cubemap.SetFilter
-                (
-                 ( ( CubemapParameter? )parameter )!.minFilter,
-                 ( ( CubemapParameter? )parameter )!.magFilter
+            cubemap.SetFilter(
+                ( ( CubemapParameter? )parameter )!.minFilter,
+                ( ( CubemapParameter? )parameter )!.magFilter
                 );
 
-            cubemap.SetWrap
-                (
-                 ( ( CubemapParameter? )parameter )!.wrapU,
-                 ( ( CubemapParameter? )parameter )!.wrapV
+            cubemap.SetWrap(
+                ( ( CubemapParameter? )parameter )!.wrapU,
+                ( ( CubemapParameter? )parameter )!.wrapV
                 );
         }
 
         return cubemap;
     }
-    
-    [PublicAPI]
+
+    public struct CubemapLoaderInfo
+    {
+        public string?       filename;
+        public Cubemap?      cubemap;
+        public ICubemapData? cubemapData;
+    }
+
+
     public class CubemapParameter : AssetLoaderParameters
     {
-        // the format of the final Texture. Uses the source images format if null
-        public Pixmap.Format? format = null;
 
         // The texture to put the TextureData in, optional.
         public Cubemap? cubemap = null;
 
         // CubemapData for textures created on the fly, optional.
         // When set, all format and genMipMaps are ignored
-        public ICubemapData?  cubemapData = null;
-        public TextureFilter minFilter   = TextureFilter.Nearest;
-        public TextureFilter magFilter   = TextureFilter.Nearest;
-        public TextureWrap   wrapU       = TextureWrap.ClampToEdge;
-        public TextureWrap   wrapV       = TextureWrap.ClampToEdge;
+        public ICubemapData? cubemapData = null;
+
+        // the format of the final Texture. Uses the source images format if null
+        public Pixmap.Format? format    = null;
+        public TextureFilter  magFilter = TextureFilter.Nearest;
+        public TextureFilter  minFilter = TextureFilter.Nearest;
+        public TextureWrap    wrapU     = TextureWrap.ClampToEdge;
+        public TextureWrap    wrapV     = TextureWrap.ClampToEdge;
     }
 }

@@ -14,63 +14,54 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Graphics.G2D;
+using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
-/// A general purpose class containing named colors that can be changed at will.
-/// For example, the markup language defined by the <see cref="BitmapFontCache"/> class
-/// uses this class to retrieve colors and the user can define his own colors.
+///     A general purpose class containing named colors that can be changed at will.
+///     For example, the markup language defined by the <see cref="BitmapFontCache" /> class
+///     uses this class to retrieve colors and the user can define his own colors.
 /// </summary>
-[PublicAPI]
 public class Colors
 {
-    public static Dictionary< string, Color? > Map { get; set; } = new();
 
-    static Colors()
-    {
-        Reset();
-    }
+    static Colors() => Reset();
 
     private Colors()
     {
     }
 
+    public static Dictionary< string, Color? > Map { get; set; } = new();
+
     /// <summary>
-    /// Convenience method to lookup a color by <code>name</code>.
-    /// The invocation of this method is equivalent to the expression
-    /// <code>Colors.GetColors().Get(name)</code>
+    ///     Convenience method to lookup a color by <code>name</code>.
+    ///     The invocation of this method is equivalent to the expression
+    ///     <code>Colors.GetColors().Get(name)</code>
     /// </summary>
     /// <param name="name">The name of the color</param>
     /// <returns>
-    /// The Color to which the specified <code>name</code> is mapped,
-    /// or <code>null</code> if no mapping was found.
+    ///     The Color to which the specified <code>name</code> is mapped,
+    ///     or <code>null</code> if no mapping was found.
     /// </returns>
-    public static Color? Get( string name )
-    {
-        return Map[ name ];
-    }
+    public static Color? Get( string name ) => Map[ name ];
 
     /// <summary>
-    /// Convenience method to add a color with its <code>name</code>.
-    /// The invocation of this method is equivalent to the expression
-    /// <tt>Colors.GetColors().Put(name, color)</tt>
+    ///     Convenience method to add a color with its <code>name</code>.
+    ///     The invocation of this method is equivalent to the expression
+    ///     <tt>Colors.GetColors().Put(name, color)</tt>
     /// </summary>
     /// <param name="name">The name of the color.</param>
     /// <param name="color">The color.</param>
     /// <returns>
-    /// The previous Color associated with <code>name</code> or <code>null</code>
-    /// if no mapping was found.
+    ///     The previous Color associated with <code>name</code> or <code>null</code>
+    ///     if no mapping was found.
     /// </returns>
-    public static Color Put( string name, Color color )
-    {
-        return Map[ name ] = color;
-    }
+    public static Color Put( string name, Color color ) => Map[ name ] = color;
 
     /// <summary>
-    /// Resets the color map to the predefined colors.
+    ///     Resets the color map to the predefined colors.
     /// </summary>
     public static void Reset()
     {

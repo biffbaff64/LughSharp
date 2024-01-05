@@ -17,41 +17,30 @@
 namespace LibGDXSharp.Utils.Pooling;
 
 /// <summary>
-/// A simple linked list that pools its nodes.
+///     A simple linked list that pools its nodes.
 /// </summary>
-[PublicAPI]
 public class PooledLinkedList<T>
 {
-    public record Item<TT>
+
+    private readonly Pool< Item< T > > _pool;
+    private          Item< T >?        _curr;
+
+    private Item< T >? _head;
+    private Item< T >? _iter;
+    private Item< T >? _tail;
+
+    /// <summary>
+    /// </summary>
+    /// <param name="maxPoolSize"></param>
+    public PooledLinkedList( int maxPoolSize ) => _pool = new Pool< Item< T > >( 16, maxPoolSize )
     {
-        internal TT?         Payload { get; set; }
-        internal Item< TT >? Next    { get; set; }
-        internal Item< TT >? Prev    { get; set; }
-    }
+        NewObject = GetNewObject
+    };
 
     public int Size { get; set; } = 0;
 
-    private Item< T >? _head;
-    private Item< T >? _tail;
-    private Item< T >? _iter;
-    private Item< T >? _curr;
-
-    private readonly Pool< Item< T > > _pool;
-
     /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="maxPoolSize"></param>
-    public PooledLinkedList( int maxPoolSize )
-    {
-        this._pool = new Pool< Item< T > >( 16, maxPoolSize )
-        {
-            NewObject = GetNewObject
-        };
-    }
-
-    /// <summary>
-    /// Adds the specified object to the end of the list regardless of iteration status
+    ///     Adds the specified object to the end of the list regardless of iteration status
     /// </summary>
     public void Add( T obj )
     {
@@ -85,7 +74,7 @@ public class PooledLinkedList<T>
     }
 
     /// <summary>
-    /// Adds the specified object to the head of the list regardless of iteration status
+    ///     Adds the specified object to the head of the list regardless of iteration status
     /// </summary>
     public void AddFirst( T obj )
     {
@@ -115,23 +104,17 @@ public class PooledLinkedList<T>
     }
 
     /// <summary>
-    /// Starts iterating over the list's items from the head of the list
+    ///     Starts iterating over the list's items from the head of the list
     /// </summary>
-    protected void Iter()
-    {
-        _iter = _head;
-    }
+    protected void Iter() => _iter = _head;
 
     /// <summary>
-    /// Starts iterating over the list's items from the tail of the list
+    ///     Starts iterating over the list's items from the tail of the list
     /// </summary>
-    public void IterReverse()
-    {
-        _iter = _tail;
-    }
+    public void IterReverse() => _iter = _tail;
 
     /// <summary>
-    /// Gets the next item in the list
+    ///     Gets the next item in the list
     /// </summary>
     /// <returns> the next item in the list or null if there are no more items</returns>
     protected T? Next()
@@ -150,7 +133,7 @@ public class PooledLinkedList<T>
     }
 
     /// <summary>
-    /// Gets the previous item in the list
+    ///     Gets the previous item in the list
     /// </summary>
     /// <returns> the previous item in the list or null if there are no more items </returns>
     public T? Previous()
@@ -169,7 +152,7 @@ public class PooledLinkedList<T>
     }
 
     /// <summary>
-    /// Removes the current list item based on the iterator position.
+    ///     Removes the current list item based on the iterator position.
     /// </summary>
     protected void Remove()
     {
@@ -220,7 +203,7 @@ public class PooledLinkedList<T>
     }
 
     /// <summary>
-    /// Removes the tail of the list regardless of iteration status
+    ///     Removes the tail of the list regardless of iteration status
     /// </summary>
     public T? RemoveLast()
     {
@@ -267,8 +250,12 @@ public class PooledLinkedList<T>
         }
     }
 
-    public Item< T > GetNewObject()
+    public Item< T > GetNewObject() => new();
+
+    public record Item<TT>
     {
-        return new Item< T >();
+        internal TT?         Payload { get; set; }
+        internal Item< TT >? Next    { get; set; }
+        internal Item< TT >? Prev    { get; set; }
     }
 }

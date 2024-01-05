@@ -18,64 +18,25 @@ using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D;
 
-[PublicAPI]
 public abstract class Action : IPoolable
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public Pool< Action >? Pool { get; set; }
 
     /// <summary>
-    /// The actor this action targets, or null if a target has not been set.
-    /// </summary>
-    public virtual Actor? Target { get; set; }
-
-    /// <summary>
-    /// The actor this action is attached to, or null if it is not attached.
+    ///     The actor this action is attached to, or null if it is not attached.
     /// </summary>
     private Actor? _actor;
 
     /// <summary>
-    /// Updates the action based on time.
-    /// Typically this is called each frame by <see cref="Actor"/>.
     /// </summary>
-    /// <param name="delta">Time in seconds since the last frame.</param>
-    /// <returns>
-    /// true if the action is done. This method may continue to be called after
-    /// the action is done.
-    /// </returns>
-    public abstract bool Act( float delta );
+    public Pool< Action >? Pool { get; set; }
 
     /// <summary>
-    /// Resets the optional state of this action to as if it were
-    /// newly created, allowing the action to be pooled and reused.
-    /// State required to be set for every usage of this action or
-    /// computed during the action does not need to be reset.
-    ///
-    /// The default implementation calls <see cref="Restart"/>
-    ///
-    /// If a subclass has optional state, it must override this method,
-    /// call super, and reset the optional state.
+    ///     The actor this action targets, or null if a target has not been set.
     /// </summary>
-    public virtual void Reset()
-    {
-        Actor  = null;
-        Target = null;
-        Pool   = null;
-
-        Restart();
-    }
+    public virtual Actor? Target { get; set; }
 
     /// <summary>
-    /// Sets the state of the action so it can be run again.
-    /// </summary>
-    public virtual void Restart()
-    {
-    }
-
-    /// <summary>
-    /// The <see cref="Actor"/> this Action is attached to.
+    ///     The <see cref="Actor" /> this Action is attached to.
     /// </summary>
     public virtual Actor? Actor
     {
@@ -96,7 +57,7 @@ public abstract class Action : IPoolable
         // For a TemporalAction, use TemporalAction#begin().
         set
         {
-            this._actor = value;
+            _actor = value;
 
             Target ??= value;
 
@@ -109,6 +70,42 @@ public abstract class Action : IPoolable
                 }
             }
         }
+    }
+
+    /// <summary>
+    ///     Resets the optional state of this action to as if it were
+    ///     newly created, allowing the action to be pooled and reused.
+    ///     State required to be set for every usage of this action or
+    ///     computed during the action does not need to be reset.
+    ///     The default implementation calls <see cref="Restart" />
+    ///     If a subclass has optional state, it must override this method,
+    ///     call super, and reset the optional state.
+    /// </summary>
+    public virtual void Reset()
+    {
+        Actor  = null;
+        Target = null;
+        Pool   = null;
+
+        Restart();
+    }
+
+    /// <summary>
+    ///     Updates the action based on time.
+    ///     Typically this is called each frame by <see cref="Actor" />.
+    /// </summary>
+    /// <param name="delta">Time in seconds since the last frame.</param>
+    /// <returns>
+    ///     true if the action is done. This method may continue to be called after
+    ///     the action is done.
+    /// </returns>
+    public abstract bool Act( float delta );
+
+    /// <summary>
+    ///     Sets the state of the action so it can be run again.
+    /// </summary>
+    public virtual void Restart()
+    {
     }
 
     /// <summary>

@@ -17,9 +17,8 @@
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-/// public class for layer II subbands in stereo mode.
+///     public class for layer II subbands in stereo mode.
 /// </summary>
-[PublicAPI]
 public class SubbandLayer2Stereo : SubbandLayer2
 {
     protected readonly float[] channel2C          = { 0 };
@@ -27,20 +26,16 @@ public class SubbandLayer2Stereo : SubbandLayer2
     protected readonly float[] channel2D          = { 0 };
     protected readonly float[] channel2Factor     = { 0 };
     protected readonly float[] channel2Samples;
+    protected          int     channel2Allocation;
     protected          float   channel2Scalefactor1;
     protected          float   channel2Scalefactor2;
     protected          float   channel2Scalefactor3;
     protected          int     channel2Scfsi;
-    protected          int     channel2Allocation;
 
     public SubbandLayer2Stereo( int subbandnumber )
-        : base( subbandnumber )
-    {
-        channel2Samples = new float[ 3 ];
-    }
+        : base( subbandnumber ) => channel2Samples = new float[ 3 ];
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadAllocation( Bitstream stream, Header? header, Crc16? crc )
     {
@@ -56,7 +51,6 @@ public class SubbandLayer2Stereo : SubbandLayer2
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadScaleFactorSelection( Bitstream stream, Crc16? crc )
     {
@@ -74,7 +68,6 @@ public class SubbandLayer2Stereo : SubbandLayer2
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
@@ -93,22 +86,24 @@ public class SubbandLayer2Stereo : SubbandLayer2
 
                 case 1:
                     channel2Scalefactor1 =
-                    channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        channel2Scalefactor2 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
                     channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 2:
                     channel2Scalefactor1 =
-                    channel2Scalefactor2 =
-                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        channel2Scalefactor2 =
+                            channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
 
                 case 3:
                     channel2Scalefactor1 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+
                     channel2Scalefactor2 =
-                    channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+                        channel2Scalefactor3 = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
 
                     break;
             }
@@ -124,7 +119,6 @@ public class SubbandLayer2Stereo : SubbandLayer2
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override bool ReadSampleData( Bitstream stream )
     {
@@ -154,7 +148,7 @@ public class SubbandLayer2Stereo : SubbandLayer2
                 var source = groupingtable[ 1 ];
                 var tmp    = 0;
                 var temp   = samplecode;
-                
+
                 target[ tmp ] = source![ temp ];
                 temp++;
                 tmp++;
@@ -180,7 +174,6 @@ public class SubbandLayer2Stereo : SubbandLayer2
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public override bool PutNextSample( int channels, SynthesisFilter? filter1, SynthesisFilter? filter2 )
     {

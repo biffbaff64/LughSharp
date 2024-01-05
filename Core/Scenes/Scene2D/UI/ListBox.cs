@@ -14,10 +14,10 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Pooling;
 
 using Color = LibGDXSharp.Graphics.Color;
@@ -25,31 +25,23 @@ using Color = LibGDXSharp.Graphics.Color;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A list box displays textual items and highlights the currently selected item.
-/// <para>
-/// <see cref="ChangeListener.ChangeEvent"/> is fired when the list selection changes.
-/// </para>
-/// <para>
-/// The preferred size of the list is determined by the text bounds of the items
-/// and the size of the <see cref="Selection{T}"/>.
-/// </para>
+///     A list box displays textual items and highlights the currently selected item.
+///     <para>
+///         <see cref="ChangeListener.ChangeEvent" /> is fired when the list selection changes.
+///     </para>
+///     <para>
+///         The preferred size of the list is determined by the text bounds of the items
+///         and the size of the <see cref="Selection{T}" />.
+///     </para>
 /// </summary>
-[PublicAPI]
 public class ListBox<T> : Widget
 {
-    public RectangleShape?      CullingArea  { get; set; }
-    public InputListener?       KeyListener  { get; set; }
-    public ArraySelection< T >? Selection    { get; set; }
-    public List< T >?           Items        { get; set; } = new();
-    public float                ItemHeight   { get; set; }
-    public int                  Alignment    { get; set; } = Align.LEFT;
-    public bool                 TypeToSelect { get; set; }
+    private int   _overIndex = -1;
+    private float _prefHeight;
+    private float _prefWidth;
+    private int   _pressedIndex = -1;
 
     private ListStyle? _style;
-    private float      _prefWidth;
-    private float      _prefHeight;
-    private int        _pressedIndex = -1;
-    private int        _overIndex    = -1;
 
     public ListBox( Skin skin )
         : this( skin.Get< ListStyle >() )
@@ -61,9 +53,36 @@ public class ListBox<T> : Widget
     {
     }
 
-    public ListBox( ListStyle style )
+    public ListBox( ListStyle style ) => Create( style );
+
+    public RectangleShape?      CullingArea  { get; set; }
+    public InputListener?       KeyListener  { get; set; }
+    public ArraySelection< T >? Selection    { get; set; }
+    public List< T >?           Items        { get; set; } = new();
+    public float                ItemHeight   { get; set; }
+    public int                  Alignment    { get; set; } = Align.LEFT;
+    public bool                 TypeToSelect { get; set; }
+
+    public override float PrefWidth
     {
-        Create( style );
+        get
+        {
+            Validate();
+
+            return _prefWidth;
+        }
+        set => _prefWidth = value;
+    }
+
+    public override float PrefHeight
+    {
+        get
+        {
+            Validate();
+
+            return _prefHeight;
+        }
+        set => _prefHeight = value;
     }
 
     private void Create( ListStyle style )
@@ -84,17 +103,14 @@ public class ListBox<T> : Widget
     }
 
     /// <summary>
-    /// Returns the list's style. Modifying the returned style may not have an
-    /// effect until <see cref="SetStyle(ListStyle)"/>" is called.
+    ///     Returns the list's style. Modifying the returned style may not have an
+    ///     effect until <see cref="SetStyle(ListStyle)" />" is called.
     /// </summary>
-    public ListStyle? GetStyle()
-    {
-        return _style;
-    }
+    public ListStyle? GetStyle() => _style;
 
     public void SetStyle( ListStyle style )
     {
-        this._style = style ?? throw new ArgumentException( "style cannot be null." );
+        _style = style ?? throw new ArgumentException( "style cannot be null." );
 
         InvalidateHierarchy();
     }
@@ -225,7 +241,7 @@ public class ListBox<T> : Widget
     }
 
     /// <summary>
-    /// Called to draw the background. Default implementation draws the style background drawable.
+    ///     Called to draw the background. Default implementation draws the style background drawable.
     /// </summary>
     protected void DrawBackground( IBatch batch, float parentAlpha )
     {
@@ -248,15 +264,12 @@ public class ListBox<T> : Widget
     }
 
     /// <summary>
-    /// Returns the first selected item, or null.
+    ///     Returns the first selected item, or null.
     /// </summary>
-    public T? GetSelected()
-    {
-        return Selection!.First();
-    }
+    public T? GetSelected() => Selection!.First();
 
     /// <summary>
-    /// Sets the selection to only the passed item, if it is a possible choice.
+    ///     Sets the selection to only the passed item, if it is a possible choice.
     /// </summary>
     /// <param name="item"> May be null. </param>
     public void SetSelected( T item )
@@ -276,8 +289,8 @@ public class ListBox<T> : Widget
     }
 
     /// <summary>
-    /// Returns the index of the first selected item. The top item has an index of 0.
-    /// Nothing selected has an index of -1.
+    ///     Returns the index of the first selected item. The top item has an index of 0.
+    ///     Nothing selected has an index of -1.
     /// </summary>
     public int GetSelectedIndex()
     {
@@ -287,7 +300,7 @@ public class ListBox<T> : Widget
     }
 
     /// <summary>
-    /// Sets the selection to only the selected index.
+    ///     Sets the selection to only the selected index.
     /// </summary>
     /// <param name="index"> -1 to clear the selection. </param>
     public void SetSelectedIndex( int index )
@@ -307,15 +320,9 @@ public class ListBox<T> : Widget
         }
     }
 
-    public T? GetOverItem()
-    {
-        return _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
-    }
+    public T? GetOverItem() => _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
 
-    public T? GetPressedItem()
-    {
-        return _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
-    }
+    public T? GetPressedItem() => _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
 
     public T? GetItemAt( float y )
     {
@@ -334,8 +341,8 @@ public class ListBox<T> : Widget
     /// <returns> -1 if not over an item. </returns>
     public int GetItemIndexAt( float y )
     {
-        var        height     = this.Height;
-        IDrawable? background = this._style?.Background;
+        var        height     = Height;
+        IDrawable? background = _style?.Background;
 
         if ( background != null )
         {
@@ -377,9 +384,9 @@ public class ListBox<T> : Widget
     }
 
     /// <summary>
-    /// Sets the items visible in the list, clearing the selection if it is no longer valid. If a
-    /// selection is <see cref="ArraySelection{T}.Required()"/>", the first item is selected. This
-    /// can safely be called with a (modified) array returned from <see cref="Items"/>"
+    ///     Sets the items visible in the list, clearing the selection if it is no longer valid. If a
+    ///     selection is <see cref="ArraySelection{T}.Required()" />", the first item is selected. This
+    ///     can safely be called with a (modified) array returned from <see cref="Items" />"
     /// </summary>
     public void SetItems( List< T > newItems )
     {
@@ -423,47 +430,22 @@ public class ListBox<T> : Widget
         InvalidateHierarchy();
     }
 
-    public override float PrefWidth
-    {
-        get
-        {
-            Validate();
-
-            return _prefWidth;
-        }
-        set => _prefWidth = value;
-    }
-
-    public override float PrefHeight
-    {
-        get
-        {
-            Validate();
-
-            return _prefHeight;
-        }
-        set => _prefHeight = value;
-    }
-
-    public string ToString( T? obj )
-    {
-        return obj?.ToString() ?? string.Empty;
-    }
+    public string ToString( T? obj ) => obj?.ToString() ?? string.Empty;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [PublicAPI]
+
     public class ListKeyListener : InputListener
     {
-        private long         _typeTimeout;
-        private string       _prefix;
-        private ListBox< T > _parent;
+        private readonly ListBox< T > _parent;
+        private          string       _prefix;
+        private          long         _typeTimeout;
 
         public ListKeyListener( ListBox< T > lb )
         {
-            this._prefix = string.Empty;
-            this._parent = lb;
+            _prefix = string.Empty;
+            _parent = lb;
         }
 
         public override bool KeyDown( InputEvent ev, int keycode )
@@ -568,15 +550,12 @@ public class ListBox<T> : Widget
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [PublicAPI]
+
     public class ListInputListener : InputListener
     {
-        private ListBox< T > _parent;
+        private readonly ListBox< T > _parent;
 
-        public ListInputListener( ListBox< T > lb )
-        {
-            this._parent = lb;
-        }
+        public ListInputListener( ListBox< T > lb ) => _parent = lb;
 
         public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
         {
@@ -623,10 +602,7 @@ public class ListBox<T> : Widget
             _parent._pressedIndex = -1;
         }
 
-        public override void TouchDragged( InputEvent ev, float x, float y, int pointer )
-        {
-            _parent._overIndex = _parent.GetItemIndexAt( y );
-        }
+        public override void TouchDragged( InputEvent ev, float x, float y, int pointer ) => _parent._overIndex = _parent.GetItemIndexAt( y );
 
         public override bool MouseMoved( InputEvent ev, float x, float y )
         {
@@ -653,30 +629,19 @@ public class ListBox<T> : Widget
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// The style for a list, see <see cref="ListBox{T}"/>.
+    ///     The style for a list, see <see cref="ListBox{T}" />.
     /// </summary>
-    [PublicAPI]
     public class ListStyle
     {
-        public BitmapFont Font                { get; set; }
-        public Color      FontColorSelected   { get; set; } = new( 1, 1, 1, 1 );
-        public Color      FontColorUnselected { get; set; } = new( 1, 1, 1, 1 );
-        public IDrawable? Selection           { get; set; }
-        public IDrawable? Down                { get; set; }
-        public IDrawable? Over                { get; set; }
-        public IDrawable? Background          { get; set; }
 
-        public ListStyle()
-        {
-            Font = new BitmapFont();
-        }
+        public ListStyle() => Font = new BitmapFont();
 
         public ListStyle( BitmapFont font, Color fontColorSelected, Color fontColorUnselected, IDrawable selection )
         {
-            this.Font = font;
-            this.FontColorSelected.Set( fontColorSelected );
-            this.FontColorUnselected.Set( fontColorUnselected );
-            this.Selection = selection;
+            Font = font;
+            FontColorSelected.Set( fontColorSelected );
+            FontColorUnselected.Set( fontColorUnselected );
+            Selection = selection;
         }
 
         public ListStyle( ListStyle style )
@@ -690,5 +655,13 @@ public class ListBox<T> : Widget
             Over       = style.Over;
             Background = style.Background;
         }
+
+        public BitmapFont Font                { get; set; }
+        public Color      FontColorSelected   { get; set; } = new( 1, 1, 1, 1 );
+        public Color      FontColorUnselected { get; set; } = new( 1, 1, 1, 1 );
+        public IDrawable? Selection           { get; set; }
+        public IDrawable? Down                { get; set; }
+        public IDrawable? Over                { get; set; }
+        public IDrawable? Background          { get; set; }
     }
 }

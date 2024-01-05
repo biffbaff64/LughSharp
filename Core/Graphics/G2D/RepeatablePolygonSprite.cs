@@ -17,49 +17,45 @@
 namespace LibGDXSharp.Graphics.G2D;
 
 /// <summary>
-/// Renders polygon filled with a repeating TextureRegion with specified
-/// density without causing an additional flush or render call
+///     Renders polygon filled with a repeating TextureRegion with specified
+///     density without causing an additional flush or render call
 /// </summary>
-[PublicAPI]
 public class RepeatablePolygonSprite
 {
-    public float X { get; set; } = 0;
-    public float Y { get; set; } = 0;
+    private          Color            _color = Color.White;
+    private          int              _cols;
+    private          float            _density;
+    private          bool             _dirty = true;
+    private          float            _gridHeight;
+    private          float            _gridWidth;
+    private readonly List< short[] >  _indices = new();
+    private readonly Vector2          _offset  = new();
+    private readonly List< float[]? > _parts   = new();
 
-    private TextureRegion?   _region;
-    private float            _density;
-    private List< float[]? > _parts    = new();
-    private List< float[] >  _vertices = new();
-    private List< short[] >  _indices  = new();
-    private Color            _color    = Color.White;
-    private Vector2          _offset   = new();
-    private bool             _dirty    = true;
-    private int              _cols;
-    private int              _rows;
-    private float            _gridWidth;
-    private float            _gridHeight;
+    private          TextureRegion?  _region;
+    private          int             _rows;
+    private readonly List< float[] > _vertices = new();
+    public           float           X { get; set; } = 0;
+    public           float           Y { get; set; } = 0;
 
     /// <summary>
-    /// Sets polygon with repeating texture region, the size of
-    /// repeating grid is equal to region size
+    ///     Sets polygon with repeating texture region, the size of
+    ///     repeating grid is equal to region size
     /// </summary>
     /// <param name="region"> region to repeat </param>
     /// <param name="vertices"> cw vertices of polygon </param>
-    public void SetPolygon( TextureRegion region, float[]? vertices )
-    {
-        SetPolygon( region, vertices, -1 );
-    }
+    public void SetPolygon( TextureRegion region, float[]? vertices ) => SetPolygon( region, vertices, -1 );
 
     /// <summary>
-    /// Sets polygon with repeating texture region, the size of repeating
-    /// grid is equal to region size
+    ///     Sets polygon with repeating texture region, the size of repeating
+    ///     grid is equal to region size
     /// </summary>
     /// <param name="region"> region to repeat </param>
     /// <param name="vertices"> cw vertices of polygon </param>
     /// <param name="density"> number of regions per polygon width bound </param>
     public void SetPolygon( TextureRegion region, float[]? vertices, float density )
     {
-        this._region = region;
+        _region = region;
 
         vertices = Offset( vertices );
 
@@ -77,7 +73,7 @@ public class RepeatablePolygonSprite
 
         var regionAspectRatio = region.RegionHeight / region.RegionWidth;
 
-        _cols       = ( int )( Math.Ceiling( density ) );
+        _cols       = ( int )Math.Ceiling( density );
         _gridWidth  = boundRect.Width / density;
         _gridHeight = regionAspectRatio * _gridWidth;
         _rows       = ( int )Math.Ceiling( boundRect.Height / _gridHeight );
@@ -92,12 +88,12 @@ public class RepeatablePolygonSprite
 
                 verts[ idx++ ] = col * _gridWidth;
                 verts[ idx++ ] = row * _gridHeight;
-                verts[ idx++ ] = ( col ) * _gridWidth;
+                verts[ idx++ ] = col * _gridWidth;
                 verts[ idx++ ] = ( row + 1 ) * _gridHeight;
                 verts[ idx++ ] = ( col + 1 ) * _gridWidth;
                 verts[ idx++ ] = ( row + 1 ) * _gridHeight;
                 verts[ idx++ ] = ( col + 1 ) * _gridWidth;
-                verts[ idx ]   = ( row ) * _gridHeight;
+                verts[ idx ]   = row * _gridHeight;
 
                 tmpPoly.Vertices = verts;
 
@@ -125,11 +121,11 @@ public class RepeatablePolygonSprite
     }
 
     /// <summary>
-    /// This is garbage, due to Intersector returning values slightly
-    /// different then the grid values Snapping exactly to grid is important,
-    /// so that during bulidVertices method, it can be figured out if points
-    /// is on the wall of it's own grid box or not, to set u/v properly.
-    /// Any other implementations are welcome
+    ///     This is garbage, due to Intersector returning values slightly
+    ///     different then the grid values Snapping exactly to grid is important,
+    ///     so that during bulidVertices method, it can be figured out if points
+    ///     is on the wall of it's own grid box or not, to set u/v properly.
+    ///     Any other implementations are welcome
     /// </summary>
     private float[]? SnapToGrid( float[]? vertices )
     {
@@ -153,8 +149,8 @@ public class RepeatablePolygonSprite
     }
 
     /// <summary>
-    /// Offsets polygon to 0 coordinate for ease of calculations, later
-    /// offset is put back on final render.
+    ///     Offsets polygon to 0 coordinate for ease of calculations, later
+    ///     offset is put back on final render.
     /// </summary>
     /// <param name="vertices"></param>
     /// <returns> offsetted vertices </returns>
@@ -187,8 +183,8 @@ public class RepeatablePolygonSprite
     }
 
     /// <summary>
-    /// Builds final vertices with vertex attributes like coordinates,
-    /// color and region u/v
+    ///     Builds final vertices with vertex attributes like coordinates,
+    ///     color and region u/v
     /// </summary>
     private void BuildVertices()
     {
@@ -257,7 +253,7 @@ public class RepeatablePolygonSprite
     public void Draw( PolygonSpriteBatch batch )
     {
         GdxRuntimeException.ThrowIfNull( _region );
-        
+
         if ( _dirty )
         {
             BuildVertices();
@@ -265,15 +261,14 @@ public class RepeatablePolygonSprite
 
         for ( var i = 0; i < _vertices.Count; i++ )
         {
-            batch.Draw
-                (
-                 _region.Texture,
-                 _vertices[ i ],
-                 0,
-                 _vertices[ i ].Length,
-                 _indices[ i ],
-                 0,
-                 _indices[ i ].Length
+            batch.Draw(
+                _region.Texture,
+                _vertices[ i ],
+                0,
+                _vertices[ i ].Length,
+                _indices[ i ],
+                0,
+                _indices[ i ].Length
                 );
         }
     }
@@ -283,14 +278,14 @@ public class RepeatablePolygonSprite
     /// <param name="color"> Tint color to be applied to entire polygon </param>
     public void SetColor( Color color )
     {
-        this._color = color;
-        _dirty      = true;
+        _color = color;
+        _dirty = true;
     }
 
     public void SetPosition( float x, float y )
     {
-        this.X = x;
-        this.Y = y;
+        X      = x;
+        Y      = y;
         _dirty = true;
     }
 }

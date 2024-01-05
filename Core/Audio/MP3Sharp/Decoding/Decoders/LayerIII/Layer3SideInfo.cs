@@ -16,12 +16,8 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
-[PublicAPI]
 public class Layer3SideInfo
 {
-    public ChannelData[] Channels      { get; set; }
-    public int           MainDataBegin { get; set; }
-    public int           PrivateBits   { get; set; }
 
     public Layer3SideInfo()
     {
@@ -29,4 +25,8 @@ public class Layer3SideInfo
         Channels[ 0 ] = new ChannelData();
         Channels[ 1 ] = new ChannelData();
     }
+
+    public ChannelData[] Channels      { get; set; }
+    public int           MainDataBegin { get; set; }
+    public int           PrivateBits   { get; set; }
 }

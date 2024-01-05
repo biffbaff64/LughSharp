@@ -16,26 +16,10 @@
 
 namespace LibGDXSharp.Graphics;
 
-using System.Collections.Generic;
-
 /// <summary>
-/// 
 /// </summary>
-[PublicAPI]
 public class TextureWrap
 {
-    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_MIRRORED_REPEAT );
-    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
-    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
-
-    private readonly static List< TextureWrap > ValueList = new();
-
-    static TextureWrap()
-    {
-        ValueList.Add( MirroredRepeat );
-        ValueList.Add( ClampToEdge );
-        ValueList.Add( Repeat );
-    }
 
     public enum InnerEnum
     {
@@ -44,13 +28,26 @@ public class TextureWrap
         Repeat
     }
 
-    public readonly  InnerEnum innerEnumValue;
-    private readonly string    _nameValue;
-    private static   int       _nextOrdinal = 0;
+    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_MIRRORED_REPEAT );
+    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
+    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
+
+    private readonly static List< TextureWrap > ValueList    = new();
+    private static          int                 _nextOrdinal = 0;
+    private readonly        string              _nameValue;
+
+    public readonly InnerEnum innerEnumValue;
+
+    static TextureWrap()
+    {
+        ValueList.Add( MirroredRepeat );
+        ValueList.Add( ClampToEdge );
+        ValueList.Add( Repeat );
+    }
 
     public TextureWrap( string name, InnerEnum innerEnum, int glEnum )
     {
-        this.GLEnum = glEnum;
+        GLEnum = glEnum;
 
         _nameValue     = name;
         OrdinalValue   = _nextOrdinal++;
@@ -64,7 +61,7 @@ public class TextureWrap
 
     public static TextureWrap ValueOf( string name )
     {
-        foreach ( TextureWrap enumInstance in TextureWrap.ValueList )
+        foreach ( TextureWrap enumInstance in ValueList )
         {
             if ( enumInstance._nameValue == name )
             {
@@ -72,11 +69,8 @@ public class TextureWrap
             }
         }
 
-        throw new System.ArgumentException( name );
+        throw new ArgumentException( name );
     }
 
-    public override string ToString()
-    {
-        return _nameValue;
-    }
+    public override string ToString() => _nameValue;
 }

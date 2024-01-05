@@ -16,15 +16,14 @@
 
 namespace LibGDXSharp.Utils;
 
-[PublicAPI]
-public class UnsupportedEncodingException : System.Exception
+public class UnsupportedEncodingException : Exception
 {
     public UnsupportedEncodingException( string? message )
         : base( message )
     {
     }
 
-    public UnsupportedEncodingException( string? message, System.Exception? innerException )
+    public UnsupportedEncodingException( string? message, Exception? innerException )
         : base( message, innerException )
     {
     }

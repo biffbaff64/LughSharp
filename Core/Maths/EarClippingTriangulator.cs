@@ -16,80 +16,73 @@
 
 namespace LibGDXSharp.Maths;
 
-[PublicAPI]
 public class EarClippingTriangulator
 {
-    private const int CONCAVE = -1;
-    private const int CONVEX  = 1;
+    private const int      CONCAVE = -1;
+    private const int      CONVEX  = 1;
+    private       short[]? _indices;
 
-    private List< short > _indicesArray = new();
-    private List< int >   _vertexTypes  = new();
-    private List< short > _triangles    = new();
-    private short[]?      _indices;
-    private float[]?      _vertices;
-    private int           _vertexCount;
+    private readonly List< short > _indicesArray = new();
+    private readonly List< short > _triangles    = new();
+    private          int           _vertexCount;
+    private readonly List< int >   _vertexTypes = new();
+    private          float[]?      _vertices;
 
-    public List< short > ComputeTriangles( List< float > vertices )
-    {
-        return ComputeTriangles( vertices.ToArray(), 0, vertices.Count );
-    }
+    public List< short > ComputeTriangles( List< float > vertices ) => ComputeTriangles( vertices.ToArray(), 0, vertices.Count );
 
-    public List< short > ComputeTriangles( float[] vertices )
-    {
-        return ComputeTriangles( vertices, 0, vertices.Length );
-    }
+    public List< short > ComputeTriangles( float[] vertices ) => ComputeTriangles( vertices, 0, vertices.Length );
 
     /// <summary>
-    /// Triangulates the given (convex or concave) simple polygon to a
-    /// list of triangle vertices.
+    ///     Triangulates the given (convex or concave) simple polygon to a
+    ///     list of triangle vertices.
     /// </summary>
     /// <param name="vertices">
-    /// pairs describing vertices of the polygon, in either clockwise
-    /// or counterclockwise order.
+    ///     pairs describing vertices of the polygon, in either clockwise
+    ///     or counterclockwise order.
     /// </param>
     /// <param name="offset"></param>
     /// <param name="count"></param>
     /// <returns>
-    /// triples of triangle indices in clockwise order. Note the returned
-    /// array is reused for later calls to the same method.
+    ///     triples of triangle indices in clockwise order. Note the returned
+    ///     array is reused for later calls to the same method.
     /// </returns>
     public List< short > ComputeTriangles( float[] vertices, int offset, int count )
     {
-        this._vertices = vertices;
+        _vertices = vertices;
 
-        var vertexCount  = this._vertexCount = count / 2;
+        var vertexCount  = _vertexCount = count / 2;
         var vertexOffset = offset / 2;
 
-        this._indicesArray.Clear();
-        this._indicesArray.EnsureCapacity( vertexCount );
+        _indicesArray.Clear();
+        _indicesArray.EnsureCapacity( vertexCount );
 
         if ( GeometryUtils.IsClockwise( vertices, offset, count ) )
         {
             for ( short i = 0; i < vertexCount; i++ )
             {
-                this._indicesArray[ i ] = ( short )( vertexOffset + i );
+                _indicesArray[ i ] = ( short )( vertexOffset + i );
             }
         }
         else
         {
             for ( int i = 0, n = vertexCount - 1; i < vertexCount; i++ )
             {
-                this._indicesArray[ i ] = ( short )( ( vertexOffset + n ) - i ); // Reversed.
+                _indicesArray[ i ] = ( short )( ( vertexOffset + n ) - i ); // Reversed.
             }
         }
 
-        this._indices = this._indicesArray.ToArray();
+        _indices = _indicesArray.ToArray();
 
-        this._vertexTypes.Clear();
-        this._vertexTypes.EnsureCapacity( vertexCount );
+        _vertexTypes.Clear();
+        _vertexTypes.EnsureCapacity( vertexCount );
 
         for ( int i = 0, n = vertexCount; i < n; ++i )
         {
-            this._vertexTypes.Add( ClassifyVertex( i ) );
+            _vertexTypes.Add( ClassifyVertex( i ) );
         }
 
         // A polygon with n vertices has a triangulation of n-2 triangles.
-        List< short > triangles = this._triangles;
+        List< short > triangles = _triangles;
         triangles.Clear();
         triangles.EnsureCapacity( Math.Max( 0, vertexCount - 2 ) * 3 );
 
@@ -111,36 +104,38 @@ public class EarClippingTriangulator
             var previousIndex = PreviousIndex( earTipIndex );
             var nextIndex     = earTipIndex == _vertexCount ? 0 : earTipIndex;
 
-            this._vertexTypes[ previousIndex ] = ClassifyVertex( previousIndex );
-            this._vertexTypes[ nextIndex ]     = ClassifyVertex( nextIndex );
+            _vertexTypes[ previousIndex ] = ClassifyVertex( previousIndex );
+            _vertexTypes[ nextIndex ]     = ClassifyVertex( nextIndex );
         }
 
         if ( _vertexCount == 3 )
         {
-            this._triangles.Add( this._indices![ 0 ] );
-            this._triangles.Add( this._indices[ 1 ] );
-            this._triangles.Add( this._indices[ 2 ] );
+            _triangles.Add( _indices![ 0 ] );
+            _triangles.Add( _indices[ 1 ] );
+            _triangles.Add( _indices[ 2 ] );
         }
     }
 
-    /** @return {@link #CONCAVE} or {@link #CONVEX} */
+    /**
+     * @return {@link #CONCAVE} or {@link #CONVEX}
+     */
     private int ClassifyVertex( int index )
     {
-        var previous = this._indices![ PreviousIndex( index ) ] * 2;
-        var current  = this._indices[ index ] * 2;
-        var next     = this._indices[ NextIndex( index ) ] * 2;
+        var previous = _indices![ PreviousIndex( index ) ] * 2;
+        var current  = _indices[ index ] * 2;
+        var next     = _indices[ NextIndex( index ) ] * 2;
 
-        return ComputeSpannedAreaSign( this._vertices![ previous ],
-                                       this._vertices[ previous + 1 ],
-                                       this._vertices[ current ],
-                                       this._vertices[ current + 1 ],
-                                       this._vertices[ next ],
-                                       this._vertices[ next + 1 ] );
+        return ComputeSpannedAreaSign( _vertices![ previous ],
+                                       _vertices[ previous + 1 ],
+                                       _vertices[ current ],
+                                       _vertices[ current + 1 ],
+                                       _vertices[ next ],
+                                       _vertices[ next + 1 ] );
     }
 
     private int FindEarTip()
     {
-        for ( var i = 0; i < this._vertexCount; i++ )
+        for ( var i = 0; i < _vertexCount; i++ )
         {
             if ( IsEarTip( i ) )
             {
@@ -158,9 +153,9 @@ public class EarClippingTriangulator
         // http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.115.291
 
         // Return a convex or tangential vertex if one exists.
-        for ( var i = 0; i < this._vertexCount; i++ )
+        for ( var i = 0; i < _vertexCount; i++ )
         {
-            if ( this._vertexTypes[ i ] != CONCAVE )
+            if ( _vertexTypes[ i ] != CONCAVE )
             {
                 return i;
             }
@@ -171,22 +166,22 @@ public class EarClippingTriangulator
 
     private bool IsEarTip( int earTipIndex )
     {
-        if ( this._vertexTypes[ earTipIndex ] == CONCAVE )
+        if ( _vertexTypes[ earTipIndex ] == CONCAVE )
         {
             return false;
         }
 
         var previousIndex = PreviousIndex( earTipIndex );
         var nextIndex     = NextIndex( earTipIndex );
-        var p1            = this._indices![ previousIndex ] * 2;
-        var p2            = this._indices[ earTipIndex ] * 2;
-        var p3            = this._indices[ nextIndex ] * 2;
-        var p1X           = this._vertices![ p1 ];
-        var p1Y           = this._vertices[ p1 + 1 ];
-        var p2X           = this._vertices[ p2 ];
-        var p2Y           = this._vertices[ p2 + 1 ];
-        var p3X           = this._vertices[ p3 ];
-        var p3Y           = this._vertices[ p3 + 1 ];
+        var p1            = _indices![ previousIndex ] * 2;
+        var p2            = _indices[ earTipIndex ] * 2;
+        var p3            = _indices[ nextIndex ] * 2;
+        var p1X           = _vertices![ p1 ];
+        var p1Y           = _vertices[ p1 + 1 ];
+        var p2X           = _vertices[ p2 ];
+        var p2Y           = _vertices[ p2 + 1 ];
+        var p3X           = _vertices[ p3 ];
+        var p3Y           = _vertices[ p3 + 1 ];
 
         // Check if any point is inside the triangle formed by previous, current and next vertices.
         // Only consider vertices that are not part of this triangle, or else we'll always find one inside.
@@ -194,11 +189,11 @@ public class EarClippingTriangulator
         {
             // Concave vertices can obviously be inside the candidate ear, but so can tangential vertices
             // if they coincide with one of the triangle's vertices.
-            if ( this._vertexTypes[ i ] != CONVEX )
+            if ( _vertexTypes[ i ] != CONVEX )
             {
-                var v  = this._indices[ i ] * 2;
-                var vx = this._vertices[ v ];
-                var vy = this._vertices[ v + 1 ];
+                var v  = _indices[ i ] * 2;
+                var vx = _vertices[ v ];
+                var vy = _vertices[ v + 1 ];
 
                 // Because the polygon has clockwise winding order, the area sign will be positive if the point is strictly inside.
                 // It will be 0 on the edge, which we want to include as well.
@@ -221,24 +216,18 @@ public class EarClippingTriangulator
 
     private void CutEarTip( int earTipIndex )
     {
-        this._triangles.Add( this._indices![ PreviousIndex( earTipIndex ) ] );
-        this._triangles.Add( this._indices[ earTipIndex ] );
-        this._triangles.Add( this._indices[ NextIndex( earTipIndex ) ] );
+        _triangles.Add( _indices![ PreviousIndex( earTipIndex ) ] );
+        _triangles.Add( _indices[ earTipIndex ] );
+        _triangles.Add( _indices[ NextIndex( earTipIndex ) ] );
 
-        this._indicesArray.RemoveAt( earTipIndex );
-        this._vertexTypes.RemoveAt( earTipIndex );
-        this._vertexCount--;
+        _indicesArray.RemoveAt( earTipIndex );
+        _vertexTypes.RemoveAt( earTipIndex );
+        _vertexCount--;
     }
 
-    private int PreviousIndex( int index )
-    {
-        return ( index == 0 ? this._vertexCount : index ) - 1;
-    }
+    private int PreviousIndex( int index ) => ( index == 0 ? _vertexCount : index ) - 1;
 
-    private int NextIndex( int index )
-    {
-        return ( index + 1 ) % this._vertexCount;
-    }
+    private int NextIndex( int index ) => ( index + 1 ) % _vertexCount;
 
     private static int ComputeSpannedAreaSign( float p1X,
                                                float p1Y,

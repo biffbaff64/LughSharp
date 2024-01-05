@@ -16,37 +16,27 @@
 
 namespace LibGDXSharp.Backends.Desktop;
 
-[PublicAPI]
 public class DesktopGLApplicationLogger : IApplicationLogger
 {
-    public void Log( string tag, string message )
-    {
-        Console.WriteLine( $@"[{tag}] {message}" );
-    }
+    public void Log( string tag, string message ) => Console.WriteLine( $@"[{tag}] {message}" );
 
-    public void Log( string tag, string message, System.Exception exception )
+    public void Log( string tag, string message, Exception exception )
     {
         Console.WriteLine( $@"[{tag}] {message}" );
         Console.WriteLine( exception.StackTrace );
     }
 
-    public void Error( string tag, string message )
-    {
-        Console.WriteLine( $@"[{tag}] {message}" );
-    }
+    public void Error( string tag, string message ) => Console.WriteLine( $@"[{tag}] {message}" );
 
-    public void Error( string tag, string message, System.Exception exception )
+    public void Error( string tag, string message, Exception exception )
     {
         Console.WriteLine( $@"[{tag}] {message}" );
         Console.WriteLine( exception.StackTrace );
     }
 
-    public void Debug( string tag, string message )
-    {
-        Console.WriteLine( $@"[{tag}] {message}" );
-    }
+    public void Debug( string tag, string message ) => Console.WriteLine( $@"[{tag}] {message}" );
 
-    public void Debug( string tag, string message, System.Exception exception )
+    public void Debug( string tag, string message, Exception exception )
     {
         Console.WriteLine( $@"[{tag}] {message}" );
         Console.WriteLine( exception.StackTrace );

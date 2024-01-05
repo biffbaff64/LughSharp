@@ -17,17 +17,13 @@
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// An action that has a float, whose value is transitioned over time.
+///     An action that has a float, whose value is transitioned over time.
 /// </summary>
-[PublicAPI]
 public class FloatAction : TemporalAction
 {
-    public float Start    { get; set; }
-    public float EndValue { get; set; }
-    public float Value    { get; set; }
 
     /// <summary>
-    /// Creates a FloatAction that transitions from 0 to 1.
+    ///     Creates a FloatAction that transitions from 0 to 1.
     /// </summary>
     public FloatAction()
     {
@@ -36,37 +32,38 @@ public class FloatAction : TemporalAction
     }
 
     /// <summary>
-    /// Creates a FloatAction that transitions from start to end.
+    ///     Creates a FloatAction that transitions from start to end.
     /// </summary>
     public FloatAction( float start, float end )
     {
-        this.Start    = start;
-        this.EndValue = end;
+        Start    = start;
+        EndValue = end;
     }
 
     /// <summary>
-    /// Creates a FloatAction that transitions from start to end.
+    ///     Creates a FloatAction that transitions from start to end.
     /// </summary>
     public FloatAction( float start, float end, float duration ) : base( duration )
     {
-        this.Start    = start;
-        this.EndValue = end;
+        Start    = start;
+        EndValue = end;
     }
 
     /// <summary>
-    /// Creates a FloatAction that transitions from start to end.
+    ///     Creates a FloatAction that transitions from start to end.
     /// </summary>
     public FloatAction( float start, float end, float duration, IInterpolation interpolation )
-            : base( duration, interpolation )
+        : base( duration, interpolation )
     {
-        this.Start    = start;
-        this.EndValue = end;
+        Start    = start;
+        EndValue = end;
     }
 
-    protected override void Begin()
-    {
-        Value = Start;
-    }
+    public float Start    { get; set; }
+    public float EndValue { get; set; }
+    public float Value    { get; set; }
+
+    protected override void Begin() => Value = Start;
 
     protected override void Update( float percent )
     {

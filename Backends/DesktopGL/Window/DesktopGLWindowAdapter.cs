@@ -17,8 +17,8 @@
 namespace LibGDXSharp.Backends.Desktop;
 
 /// <summary>
-/// Convenience implementation of <see cref="IDesktopGLWindowListener"/>.
-/// Derive from this class and only overwrite the methods you are interested in.
+///     Convenience implementation of <see cref="IDesktopGLWindowListener" />.
+///     Derive from this class and only overwrite the methods you are interested in.
 /// </summary>
 public class DesktopGLWindowAdapter : IDesktopGLWindowListener
 {
@@ -42,10 +42,7 @@ public class DesktopGLWindowAdapter : IDesktopGLWindowListener
     {
     }
 
-    public virtual bool CloseRequested()
-    {
-        return false;
-    }
+    public virtual bool CloseRequested() => false;
 
     public virtual void FilesDropped( string[] files )
     {

@@ -20,22 +20,17 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 /// <summary>
-/// Displays a <see cref="IDrawable"/>, scaled various way within the widgets
-/// bounds. The preferred size is the min size of the drawable. Only when using
-/// a <see cref="TextureRegionDrawable"/> will the actor's scale, rotation, and
-/// origin be used when drawing.
+///     Displays a <see cref="IDrawable" />, scaled various way within the widgets
+///     bounds. The preferred size is the min size of the drawable. Only when using
+///     a <see cref="TextureRegionDrawable" /> will the actor's scale, rotation, and
+///     origin be used when drawing.
 /// </summary>
-[PublicAPI]
 public class Image : Widget
 {
-    public float ImageX      { get; set; }
-    public float ImageY      { get; set; }
-    public float ImageWidth  { get; set; }
-    public float ImageHeight { get; set; }
-
-    private Scaling    _scaling;
-    private int        _alignment;      // Backing value for property Alignment
+    private int        _alignment; // Backing value for property Alignment
     private IDrawable? _drawable;
+
+    private Scaling _scaling;
 
     public Image() : this( ( IDrawable )null! )
     {
@@ -69,10 +64,25 @@ public class Image : Widget
     {
         SetDrawable( drawable );
 
-        this._scaling  = scaling;
-        this.Alignment = align;
+        _scaling  = scaling;
+        Alignment = align;
 
         SetSize( GetPrefWidth(), GetPrefHeight() );
+    }
+
+    public float ImageX      { get; set; }
+    public float ImageY      { get; set; }
+    public float ImageWidth  { get; set; }
+    public float ImageHeight { get; set; }
+
+    public int Alignment
+    {
+        get => _alignment;
+        set
+        {
+            _alignment = value;
+            Invalidate();
+        }
     }
 
     public override void SetLayout()
@@ -138,13 +148,16 @@ public class Image : Widget
 
             if ( scaleX is not 1 || scaleY is not 1 || rotation is not 0 )
             {
-                drawable.Draw
-                    (
+                drawable.Draw(
                     batch,
-                    x + ImageX, y + ImageY,
-                    OriginX - ImageX, OriginY - ImageY,
-                    ImageWidth, ImageHeight,
-                    scaleX, scaleY,
+                    x + ImageX,
+                    y + ImageY,
+                    OriginX - ImageX,
+                    OriginY - ImageY,
+                    ImageWidth,
+                    ImageHeight,
+                    scaleX,
+                    scaleY,
                     rotation
                     );
 
@@ -158,21 +171,18 @@ public class Image : Widget
         }
     }
 
-    public void SetDrawable( Skin skin, string drawableName )
-    {
-        SetDrawable( skin.GetDrawable( drawableName ) );
-    }
+    public void SetDrawable( Skin skin, string drawableName ) => SetDrawable( skin.GetDrawable( drawableName ) );
 
     /// <summary>
-    /// Sets a new drawable for the image. The image's pref size is the
-    /// drawable's min size. If using the image actor's size rather than
-    /// the pref size, <see cref="Widget.Pack"/> can be used to size the
-    /// image to its pref size.
+    ///     Sets a new drawable for the image. The image's pref size is the
+    ///     drawable's min size. If using the image actor's size rather than
+    ///     the pref size, <see cref="Widget.Pack" /> can be used to size the
+    ///     image to its pref size.
     /// </summary>
     /// <param name="drawable"> May be null. </param>
     public void SetDrawable( IDrawable? drawable )
     {
-        if ( this._drawable == drawable )
+        if ( _drawable == drawable )
         {
             return;
         }
@@ -189,30 +199,17 @@ public class Image : Widget
             InvalidateHierarchy();
         }
 
-        this._drawable = drawable;
+        _drawable = drawable;
     }
 
-    public IDrawable? GetDrawable()
-    {
-        return _drawable;
-    }
+    public IDrawable? GetDrawable() => _drawable;
 
     public void SetScaling( Scaling scale )
     {
         ArgumentNullException.ThrowIfNull( scale );
 
-        this._scaling = scale;
+        _scaling = scale;
         Invalidate();
-    }
-
-    public int Alignment
-    {
-        get => _alignment;
-        set
-        {
-            this._alignment = value;
-            Invalidate();
-        }
     }
 
     public float GetMinWidth() => 0;
@@ -248,8 +245,9 @@ public class Image : Widget
             return name;
         }
 
-        var className                   = GetType().Name;
-        var dotIndex                    = className.LastIndexOf( '.' );
+        var className = GetType().Name;
+        var dotIndex  = className.LastIndexOf( '.' );
+
         if ( dotIndex != -1 )
         {
             className = className.Substring( dotIndex + 1 );

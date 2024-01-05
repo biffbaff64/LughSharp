@@ -18,45 +18,15 @@ using LibGDXSharp.Files.Buffers;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
-[PublicAPI]
 public class OpenALSound : ISound
 {
+    private readonly OpenALAudio _audio;
+
+    private int _bufferID = -1;
+
+    public OpenALSound( OpenALAudio audio ) => _audio = audio;
+
     public float Duration { get; set; }
-
-    private int           _bufferID = -1;
-    private OpenALAudio _audio;
-
-    public OpenALSound( OpenALAudio audio )
-    {
-        this._audio = audio;
-    }
-
-    protected void Setup( byte[] pcm, int channels, int sampleRate )
-    {
-        var bytes   = pcm.Length - ( pcm.Length % ( channels > 1 ? 4 : 2 ) );
-        var samples = bytes / ( 2 * channels );
-
-        Duration = samples / ( float )sampleRate;
-
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( bytes );
-
-        buffer.Order( ByteOrder.NativeOrder )
-              .Put( pcm, 0, bytes )
-              .Flip();
-
-//TODO:
-//        if ( _bufferID == -1 )
-//        {
-//            _bufferID = AL.GenBuffers();
-//
-//            AL.BufferData( _bufferID,
-//                           channels > 1
-//                               ? AL.FORMAT_STEREO16
-//                               : AL.FORMAT_MONO16,
-//                           buffer.AsShortBuffer(),
-//                           sampleRate );
-//        }
-    }
 
     public long Play( float volume = 1f )
     {
@@ -141,6 +111,7 @@ public class OpenALSound : ISound
         }
 
         _audio.FreeBuffer( _bufferID );
+
 //TODO:        AL.DeleteBuffers( _bufferID );
 
         _bufferID = -1;
@@ -256,5 +227,32 @@ public class OpenALSound : ISound
         SetPan( id, pan, volume );
 
         return id;
+    }
+
+    protected void Setup( byte[] pcm, int channels, int sampleRate )
+    {
+        var bytes   = pcm.Length - ( pcm.Length % ( channels > 1 ? 4 : 2 ) );
+        var samples = bytes / ( 2 * channels );
+
+        Duration = samples / ( float )sampleRate;
+
+        ByteBuffer buffer = ByteBuffer.AllocateDirect( bytes );
+
+        buffer.Order( ByteOrder.NativeOrder )
+              .Put( pcm, 0, bytes )
+              .Flip();
+
+//TODO:
+//        if ( _bufferID == -1 )
+//        {
+//            _bufferID = AL.GenBuffers();
+//
+//            AL.BufferData( _bufferID,
+//                           channels > 1
+//                               ? AL.FORMAT_STEREO16
+//                               : AL.FORMAT_MONO16,
+//                           buffer.AsShortBuffer(),
+//                           sampleRate );
+//        }
     }
 }

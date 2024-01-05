@@ -19,10 +19,9 @@ using LibGDXSharp.Graphics.G2D;
 namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 /// <summary>
-/// Draws a <see cref="TextureRegion"/> repeatedly to fill the area,
-/// instead of stretching it.
+///     Draws a <see cref="TextureRegion" /> repeatedly to fill the area,
+///     instead of stretching it.
 /// </summary>
-[PublicAPI]
 public class TiledDrawable : TextureRegionDrawable
 {
     public TiledDrawable( TextureRegion region )
@@ -35,9 +34,13 @@ public class TiledDrawable : TextureRegionDrawable
     {
     }
 
+    public Color Color { get; set; } = new( 1, 1, 1, 1 );
+
+    public float Scale { set; get; } = 1;
+
     public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
-        TextureRegion? region = this.Region;
+        TextureRegion? region = Region;
 
         if ( region != null )
         {
@@ -114,22 +117,15 @@ public class TiledDrawable : TextureRegionDrawable
     }
 
     public override void Draw( IBatch batch,
-                          float x,
-                          float y,
-                          float originX,
-                          float originY,
-                          float width,
-                          float height,
-                          float scaleX,
-                          float scaleY,
-                          float rotation )
-    {
-        throw new System.NotSupportedException();
-    }
-
-    public Color Color { get; set; } = new( 1, 1, 1, 1 );
-
-    public float Scale { set; get; } = 1;
+                               float x,
+                               float y,
+                               float originX,
+                               float originY,
+                               float width,
+                               float height,
+                               float scaleX,
+                               float scaleY,
+                               float rotation ) => throw new NotSupportedException();
 
     public override TiledDrawable Tint( Color tint )
     {

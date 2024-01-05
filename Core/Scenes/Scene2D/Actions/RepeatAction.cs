@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class RepeatAction : DelegateAction
 {
     public const int FOREVER = -1;
@@ -61,17 +60,14 @@ public class RepeatAction : DelegateAction
     }
 
     /// <summary>
-    /// Causes the action to not repeat again.
+    ///     Causes the action to not repeat again.
     /// </summary>
-    public void Finish()
-    {
-        Finished = true;
-    }
+    public void Finish() => Finished = true;
 
     public new void Restart()
     {
         base.Restart();
-        
+
         ExecutedCount = 0;
         Finished      = false;
     }

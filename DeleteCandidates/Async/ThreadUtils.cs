@@ -16,12 +16,8 @@
 
 namespace LibGDXSharp.Utils.Async;
 
-[PublicAPI]
 public class ThreadUtils
 {
     //TODO: Rename to avoid confusion
-    public static void Yield()
-    {
-        throw new NotImplementedException();
-    }
+    public static void Yield() => throw new NotImplementedException();
 }

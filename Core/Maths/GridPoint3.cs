@@ -17,74 +17,76 @@
 namespace LibGDXSharp.Maths;
 
 /// <summary>
-/// A point in a 3D grid, with integer x and y coordinates
+///     A point in a 3D grid, with integer x and y coordinates
 /// </summary>
-[PublicAPI]
 public class GridPoint3
 {
-    public int X { get; set; }
-    public int Y { get; set; }
-    public int Z { get; set; }
 
     /// <summary>
-    /// Constructs a 3D grid point with all coordinates pointing to the origin (0, 0, 0).
+    ///     Constructs a 3D grid point with all coordinates pointing to the origin (0, 0, 0).
     /// </summary>
     public GridPoint3()
     {
     }
 
     /// <summary>
-    /// Constructs a 3D grid point.
+    ///     Constructs a 3D grid point.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
     /// <param name="z"> Z coordinate  </param>
     public GridPoint3( int x, int y, int z )
     {
-        this.X = x;
-        this.Y = y;
-        this.Z = z;
+        X = x;
+        Y = y;
+        Z = z;
     }
 
     /// <summary>
-    /// Copy constructor
+    ///     Copy constructor
     /// </summary>
     /// <param name="point"> The 3D grid point to make a copy of.  </param>
     public GridPoint3( GridPoint3 point )
     {
-        this.X = point.X;
-        this.Y = point.Y;
-        this.Z = point.Z;
+        X = point.X;
+        Y = point.Y;
+        Z = point.Z;
     }
 
+    public int X { get; set; }
+    public int Y { get; set; }
+    public int Z { get; set; }
+
     /// <summary>
-    /// Sets the coordinates of this 3D grid point to that of another.
+    ///     Sets the coordinates of this 3D grid point to that of another.
     /// </summary>
-    /// <param name="point"> The 3D grid point to copy coordinates of.
+    /// <param name="point">
+    ///     The 3D grid point to copy coordinates of.
     /// </param>
     /// <returns> this GridPoint3 for chaining.  </returns>
     public virtual GridPoint3 Set( GridPoint3 point )
     {
-        this.X = point.X;
-        this.Y = point.Y;
-        this.Z = point.Z;
+        X = point.X;
+        Y = point.Y;
+        Z = point.Z;
 
         return this;
     }
 
     /// <summary>
-    /// Sets the coordinates of this GridPoint3D.
+    ///     Sets the coordinates of this GridPoint3D.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
-    /// <param name="z"> Z coordinate
+    /// <param name="z">
+    ///     Z coordinate
     /// </param>
     /// <returns> this GridPoint3D for chaining.  </returns>
     public virtual GridPoint3 Set( int x, int y, int z )
     {
-        this.X = x;
-        this.Y = y;
-        this.Z = z;
+        X = x;
+        Y = y;
+        Z = z;
 
         return this;
     }
@@ -106,9 +108,9 @@ public class GridPoint3
     /// <returns> the squared distance between this point and the other point. </returns>
     public virtual float Dst2( int x, int y, int z )
     {
-        var xd = x - this.X;
-        var yd = y - this.Y;
-        var zd = z - this.Z;
+        var xd = x - X;
+        var yd = y - Y;
+        var zd = z - Z;
 
         return ( xd * xd ) + ( yd * yd ) + ( zd * zd );
     }
@@ -130,15 +132,15 @@ public class GridPoint3
     /// <returns> the distance between this point and the other point. </returns>
     public virtual float Dst( int x, int y, int z )
     {
-        var xd = x - this.X;
-        var yd = y - this.Y;
-        var zd = z - this.Z;
+        var xd = x - X;
+        var yd = y - Y;
+        var zd = z - Z;
 
         return ( float )Math.Sqrt( ( xd * xd ) + ( yd * yd ) + ( zd * zd ) );
     }
 
     /// <summary>
-    /// Adds another 3D grid point to this point.
+    ///     Adds another 3D grid point to this point.
     /// </summary>
     /// <param name="other"> The other point </param>
     /// <returns> this 3d grid point for chaining. </returns>
@@ -152,7 +154,7 @@ public class GridPoint3
     }
 
     /// <summary>
-    /// Adds another 3D grid point to this point.
+    ///     Adds another 3D grid point to this point.
     /// </summary>
     /// <param name="x"> The x-coordinate of the other point </param>
     /// <param name="y"> The y-coordinate of the other point </param>
@@ -160,15 +162,15 @@ public class GridPoint3
     /// <returns> this 3d grid point for chaining. </returns>
     public virtual GridPoint3 Add( int x, int y, int z )
     {
-        this.X += x;
-        this.Y += y;
-        this.Z += z;
+        X += x;
+        Y += y;
+        Z += z;
 
         return this;
     }
 
     /// <summary>
-    /// Subtracts another 3D grid point from this point.
+    ///     Subtracts another 3D grid point from this point.
     /// </summary>
     /// <param name="other"> The other point </param>
     /// <returns> this 3d grid point for chaining. </returns>
@@ -182,7 +184,7 @@ public class GridPoint3
     }
 
     /// <summary>
-    /// Subtracts another 3D grid point from this point.
+    ///     Subtracts another 3D grid point from this point.
     /// </summary>
     /// <param name="x"> The x-coordinate of the other point </param>
     /// <param name="y"> The y-coordinate of the other point </param>
@@ -190,18 +192,15 @@ public class GridPoint3
     /// <returns> this 3d grid point for chaining. </returns>
     public virtual GridPoint3 Sub( int x, int y, int z )
     {
-        this.X -= x;
-        this.Y -= y;
-        this.Z -= z;
+        X -= x;
+        Y -= y;
+        Z -= z;
 
         return this;
     }
 
     /// <returns> a copy of this grid point </returns>
-    public virtual GridPoint3 Cpy()
-    {
-        return new GridPoint3( this );
-    }
+    public virtual GridPoint3 Cpy() => new( this );
 
     public override bool Equals( object? o )
     {
@@ -210,23 +209,23 @@ public class GridPoint3
             return true;
         }
 
-        if ( ( o == null ) || ( o.GetType() != this.GetType() ) )
+        if ( ( o == null ) || ( o.GetType() != GetType() ) )
         {
             return false;
         }
 
         var g = ( GridPoint3 )o;
 
-        return ( this.X == g.X ) && ( this.Y == g.Y ) && ( this.Z == g.Z );
+        return ( X == g.X ) && ( Y == g.Y ) && ( Z == g.Z );
     }
 
     public override int GetHashCode()
     {
-        const int prime  = 17;
-        
-        var result = prime + this.X;
-        result = ( prime * result ) + this.Y;
-        result = ( prime * result ) + this.Z;
+        const int prime = 17;
+
+        var result = prime + X;
+        result = ( prime * result ) + Y;
+        result = ( prime * result ) + Z;
 
         return result;
     }

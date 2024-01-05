@@ -17,18 +17,13 @@
 namespace LibGDXSharp.Graphics.GLUtils;
 
 /// <summary>
-/// This class will load each contained TextureData to the chosen
-/// mipmap level. All the mipmap levels must be defined and cannot be null.
+///     This class will load each contained TextureData to the chosen
+///     mipmap level. All the mipmap levels must be defined and cannot be null.
 /// </summary>
-[PublicAPI]
 public class MipMapTextureData : ITextureData
 {
-    public bool IsPrepared { get; set; }
-    public bool UseMipMaps { get; set; }
-    public int  Width      { get; set; }
-    public int  Height     { get; set; }
 
-    private ITextureData[] _mips;
+    private readonly ITextureData[] _mips;
 
     /// <summary>
     /// </summary>
@@ -40,37 +35,39 @@ public class MipMapTextureData : ITextureData
         Array.Copy( mipMapData, 0, _mips, 0, mipMapData.Length );
     }
 
+    public bool IsPrepared { get; set; }
+    public bool UseMipMaps { get; set; }
+    public int  Width      { get; set; }
+    public int  Height     { get; set; }
+
     /// <summary>
-    /// Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap"/> or
-    /// <see cref="ITextureData.ConsumeCustomData"/>. This method can be called from a non
-    /// OpenGL thread and should thus not interact with OpenGL. 
+    ///     Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap" /> or
+    ///     <see cref="ITextureData.ConsumeCustomData" />. This method can be called from a non
+    ///     OpenGL thread and should thus not interact with OpenGL.
     /// </summary>
     public void Prepare()
     {
     }
 
     /// <summary>
-    /// Returns the <see cref="Pixmap"/> for upload by Texture.
-    /// <para>
-    /// A call to <see cref="ITextureData.Prepare"/> must precede a call to this method. Any
-    /// internal data structures created in <see cref="ITextureData.Prepare"/> should be
-    /// disposed of here.
-    /// </para>
+    ///     Returns the <see cref="Pixmap" /> for upload by Texture.
+    ///     <para>
+    ///         A call to <see cref="ITextureData.Prepare" /> must precede a call to this method. Any
+    ///         internal data structures created in <see cref="ITextureData.Prepare" /> should be
+    ///         disposed of here.
+    ///     </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
-    public Pixmap ConsumePixmap()
-    {
-        throw new GdxRuntimeException( "This Texture is compressed, use the compress method." );
-    }
+    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This Texture is compressed, use the compress method." );
 
     /// <summary>
-    /// Uploads the pixel data to the OpenGL ES texture. The caller must bind an
-    /// OpenGL ES texture. A call to <see cref="ITextureData.Prepare"/> must preceed
-    /// a call to this method.
-    /// <para>
-    /// Any internal data structures created in <see cref="ITextureData.Prepare"/>
-    /// should be disposed of here. 
-    /// </para>
+    ///     Uploads the pixel data to the OpenGL ES texture. The caller must bind an
+    ///     OpenGL ES texture. A call to <see cref="ITextureData.Prepare" /> must preceed
+    ///     a call to this method.
+    ///     <para>
+    ///         Any internal data structures created in <see cref="ITextureData.Prepare" />
+    ///         should be disposed of here.
+    ///     </para>
     /// </summary>
     public void ConsumeCustomData( int target )
     {

@@ -19,11 +19,10 @@ using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class SceneActions
 {
     /// <summary>
-    /// Returns a new or pooled action of the specified type.
+    ///     Returns a new or pooled action of the specified type.
     /// </summary>
     public static Action Action( Type a )
     {
@@ -70,7 +69,7 @@ public class SceneActions
     }
 
     /// <summary>
-    /// Moves the actor instantly.
+    ///     Moves the actor instantly.
     /// </summary>
     public static MoveToAction MoveTo( float x,
                                        float y,
@@ -189,11 +188,11 @@ public class SceneActions
     }
 
     /// <summary>
-    /// Transitions from the color at the time this action starts to the specified color.
+    ///     Transitions from the color at the time this action starts to the specified color.
     /// </summary>
     public static ColorAction Color( Color color, float duration = 0, IInterpolation? interpolation = null )
     {
-        ColorAction action = ( ColorAction )Action( typeof( ColorAction ) );
+        var action = ( ColorAction )Action( typeof( ColorAction ) );
         action.EndColor      = color;
         action.Duration      = duration;
         action.Interpolation = interpolation;
@@ -202,7 +201,7 @@ public class SceneActions
     }
 
     /// <summary>
-    /// Transitions from the alpha at the time this action starts to the specified alpha.
+    ///     Transitions from the alpha at the time this action starts to the specified alpha.
     /// </summary>
     public static AlphaAction Alpha( float a,
                                      float duration = 0,
@@ -217,15 +216,12 @@ public class SceneActions
     }
 
     /// <summary>
-    /// Transitions from the alpha at the time this action starts to an alpha of 0.
+    ///     Transitions from the alpha at the time this action starts to an alpha of 0.
     /// </summary>
-    public static AlphaAction FadeOut( float duration )
-    {
-        return Alpha( 0, duration );
-    }
+    public static AlphaAction FadeOut( float duration ) => Alpha( 0, duration );
 
     /// <summary>
-    /// Transitions from the alpha at the time this action starts to an alpha of 0.
+    ///     Transitions from the alpha at the time this action starts to an alpha of 0.
     /// </summary>
     public static AlphaAction FadeOut( float duration, IInterpolation interpolation )
     {
@@ -238,15 +234,12 @@ public class SceneActions
     }
 
     /// <summary>
-    /// Transitions from the alpha at the time this action starts to an alpha of 1.
+    ///     Transitions from the alpha at the time this action starts to an alpha of 1.
     /// </summary>
-    public static AlphaAction FadeIn( float duration )
-    {
-        return Alpha( 1, duration );
-    }
+    public static AlphaAction FadeIn( float duration ) => Alpha( 1, duration );
 
     /// <summary>
-    /// Transitions from the alpha at the time this action starts to an alpha of 1.
+    ///     Transitions from the alpha at the time this action starts to an alpha of 1.
     /// </summary>
     public static AlphaAction FadeIn( float duration, IInterpolation interpolation )
     {
@@ -258,15 +251,9 @@ public class SceneActions
         return action;
     }
 
-    public static VisibleAction Show()
-    {
-        return Visible( true );
-    }
+    public static VisibleAction Show() => Visible( true );
 
-    public static VisibleAction Hide()
-    {
-        return Visible( false );
-    }
+    public static VisibleAction Hide() => Visible( false );
 
     public static VisibleAction Visible( bool visible )
     {
@@ -278,20 +265,17 @@ public class SceneActions
 
     public static TouchableAction Touchable( Touchable touchable )
     {
-        TouchableAction action = ( TouchableAction )Action( typeof( TouchableAction ) );
+        var action = ( TouchableAction )Action( typeof( TouchableAction ) );
         action.Touchable = touchable;
 
         return action;
     }
 
-    public static RemoveActorAction RemoveActor()
-    {
-        return ( RemoveActorAction )Action( typeof( RemoveActorAction ) );
-    }
+    public static RemoveActorAction RemoveActor() => ( RemoveActorAction )Action( typeof( RemoveActorAction ) );
 
     public static RemoveActorAction RemoveActor( Actor removeActor )
     {
-        RemoveActorAction action = ( RemoveActorAction )Action( typeof( RemoveActorAction ) );
+        var action = ( RemoveActorAction )Action( typeof( RemoveActorAction ) );
         action.Target = removeActor;
 
         return action;
@@ -299,7 +283,7 @@ public class SceneActions
 
     public static DelayAction Delay( float duration )
     {
-        DelayAction action = ( DelayAction )Action( typeof( DelayAction ) );
+        var action = ( DelayAction )Action( typeof( DelayAction ) );
         action.Duration = duration;
 
         return action;
@@ -307,7 +291,7 @@ public class SceneActions
 
     public static DelayAction Delay( float duration, Action delayedAction )
     {
-        DelayAction action = ( DelayAction )Action( typeof( DelayAction ) );
+        var action = ( DelayAction )Action( typeof( DelayAction ) );
         action.Duration = duration;
         action.Action   = delayedAction;
 
@@ -385,10 +369,7 @@ public class SceneActions
         return action;
     }
 
-    public static SequenceAction Sequence()
-    {
-        return ( SequenceAction )Action( typeof( SequenceAction ) );
-    }
+    public static SequenceAction Sequence() => ( SequenceAction )Action( typeof( SequenceAction ) );
 
     public static ParallelAction Parallel( Action action1 )
     {
@@ -452,10 +433,7 @@ public class SceneActions
         return action;
     }
 
-    public static ParallelAction Parallel()
-    {
-        return ( ParallelAction )Action( typeof( ParallelAction ) );
-    }
+    public static ParallelAction Parallel() => ( ParallelAction )Action( typeof( ParallelAction ) );
 
     public static RepeatAction Repeat( int count, Action repeatedAction )
     {
@@ -538,7 +516,7 @@ public class SceneActions
     }
 
     /// <summary>
-    /// Sets the target of an action and returns the action
+    ///     Sets the target of an action and returns the action
     /// </summary>
     /// <param name="target"> the desired target of the action </param>
     /// <param name="action"> the action on which to set the target </param>

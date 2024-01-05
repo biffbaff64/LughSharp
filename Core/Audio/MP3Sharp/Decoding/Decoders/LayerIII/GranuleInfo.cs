@@ -16,7 +16,6 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
-[PublicAPI]
 public class GranuleInfo
 {
     public int   BigValues           { get; set; }
