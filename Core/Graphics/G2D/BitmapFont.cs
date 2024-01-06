@@ -29,11 +29,11 @@ public class BitmapFont
     private const    int             PAGES          = 0x10000 / PAGE_SIZE;
     private readonly BitmapFontCache _cache;
 
-    private readonly BitmapFontData        _data;
-    private readonly List< TextureRegion > _regions;
+    private readonly BitmapFontData _data;
 
-    private readonly FileType _fileType;
-    private          bool     _integer;
+    private readonly FileType              _fileType;
+    private readonly List< TextureRegion > _regions;
+    private          bool                  _integer;
 
     /// <summary>
     ///     Creates a BitmapFont using the default 15pt Arial font included in the library.
@@ -531,7 +531,6 @@ public class BitmapFont
             var page = kerning?[ ch >>> LOG2_PAGE_SIZE ];
 
             return page != null ? page[ ch & ( PAGE_SIZE - 1 ) ] : 0;
-
         }
 
         internal void SetKerning( int ch, int value )

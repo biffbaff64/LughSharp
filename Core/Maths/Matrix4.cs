@@ -166,6 +166,11 @@ public class Matrix4
     public Matrix4( Vector3 position, Quaternion rotation, Vector3 scale ) => Set( position, rotation, scale );
 
     /// <summary>
+    /// </summary>
+    /// <returns> the backing float array </returns>
+    public float[] Values => val;
+
+    /// <summary>
     ///     Sets the matrix to the given matrix.
     /// </summary>
     /// <param name="matrix"> The matrix that is to be copied.(The given matrix is not modified)</param>
@@ -406,11 +411,6 @@ public class Matrix4
 
         return this;
     }
-
-    /// <summary>
-    /// </summary>
-    /// <returns> the backing float array </returns>
-    public float[] Values => val;
 
     /// <summary>
     ///     Postmultiplies this matrix with the given matrix, storing the result in this matrix. For example:

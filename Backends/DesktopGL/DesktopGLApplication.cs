@@ -29,9 +29,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     private const string TAG = "GLApplication";
 
     private static   GLFW.ErrorCallback? _errorCallback = null;
+    private readonly Sync?               _sync          = null;
     private volatile DesktopGLWindow?    _currentWindow = null;
     private          bool                _running       = true;
-    private readonly Sync?               _sync          = null;
 
     // ------------------------------------------------------------------------
 

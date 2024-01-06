@@ -28,12 +28,12 @@ public class InstanceBufferObjectSubData : IInstanceData
 
     private readonly FloatBuffer _buffer;
     private readonly ByteBuffer  _byteBuffer;
-    private          bool        _isBound = false;
     private readonly bool        _isDirect;
-    private          bool        _isDirty = false;
-    private          bool        _isStatic;
 
-    private readonly int _usage;
+    private readonly int  _usage;
+    private          bool _isBound = false;
+    private          bool _isDirty = false;
+    private          bool _isStatic;
 
     /// <summary>
     ///     Constructs a new interleaved InstanceBufferObject.

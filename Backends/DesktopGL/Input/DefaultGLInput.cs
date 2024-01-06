@@ -18,11 +18,12 @@ namespace LibGDXSharp.Backends.Desktop;
 
 public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 {
+    private readonly InputEventQueue  _eventQueue         = new();
+    private readonly bool[]           _justPressedButtons = new bool[ 5 ];
+    private readonly DesktopGLWindow? _window;
     private          int              _deltaX;
     private          int              _deltaY;
-    private readonly InputEventQueue  _eventQueue = new();
     private          IInputProcessor? _inputProcessor;
-    private readonly bool[]           _justPressedButtons = new bool[ 5 ];
     private          bool             _justTouched;
     private          char             _lastCharacter;
     private          int              _logicalMouseX;
@@ -30,9 +31,8 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     private int _logicalMouseY;
     private int _mousePressed;
 
-    private          int              _mouseX;
-    private          int              _mouseY;
-    private readonly DesktopGLWindow? _window;
+    private int _mouseX;
+    private int _mouseY;
 
     /// <inheritdoc />
     public DefaultDesktopGLInput( DesktopGLWindow? window )
@@ -42,7 +42,6 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _window = window;
 
         WindowHandleChanged( _window.GlfwWindow );
-
     }
 
     /// <inheritdoc />
@@ -184,15 +183,11 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _eventQueue.CurrentEventTime;
 
     /// <inheritdoc />
-    public override void SetCursorCaught( bool caught )
-    {
-        GLFW.SetInputMode( _window!.GlfwWindow,
-                           CursorStateAttribute.Cursor,
-                           caught
-                               ? CursorModeValue.CursorDisabled
-                               : CursorModeValue.CursorNormal );
-
-    }
+    public override void SetCursorCaught( bool caught ) => GLFW.SetInputMode( _window!.GlfwWindow,
+                                                                              CursorStateAttribute.Cursor,
+                                                                              caught
+                                                                                  ? CursorModeValue.CursorDisabled
+                                                                                  : CursorModeValue.CursorNormal );
 
     /// <inheritdoc />
     public override bool IsCursorCaught() => GLFW.GetInputMode( _window!.GlfwWindow, CursorStateAttribute.Cursor )
@@ -211,7 +206,6 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         }
 
         GLFW.SetCursorPos( _window!.GlfwWindow, x, y );
-
     }
 
     /// <summary>

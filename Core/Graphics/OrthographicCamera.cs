@@ -23,7 +23,6 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public class OrthographicCamera : Camera
 {
-
     private readonly Vector3 _tmp = new();
 
     public OrthographicCamera()
@@ -58,14 +57,12 @@ public class OrthographicCamera : Camera
     /// <param name="updateFrustrum"></param>
     public override void Update( bool updateFrustrum = true )
     {
-        Projection.SetToOrtho(
-            ( Zoom * -ViewportWidth ) / 2,
-            Zoom * ( ViewportWidth / 2 ),
-            Zoom * -( ViewportHeight / 2 ),
-            ( Zoom * ViewportHeight ) / 2,
-            Near,
-            Far
-            );
+        Projection.SetToOrtho( ( Zoom * -ViewportWidth ) / 2,
+                               Zoom * ( ViewportWidth / 2 ),
+                               Zoom * -( ViewportHeight / 2 ),
+                               ( Zoom * ViewportHeight ) / 2,
+                               Near,
+                               Far );
 
         View.SetToLookAt( Position, _tmp.Set( Position ).Add( Direction ), Up );
 

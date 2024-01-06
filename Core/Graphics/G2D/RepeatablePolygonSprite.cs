@@ -22,21 +22,21 @@ namespace LibGDXSharp.Graphics.G2D;
 /// </summary>
 public class RepeatablePolygonSprite
 {
-    private          Color            _color = Color.White;
+    private readonly List< short[] >  _indices  = new();
+    private readonly Vector2          _offset   = new();
+    private readonly List< float[]? > _parts    = new();
+    private readonly List< float[] >  _vertices = new();
+    private          Color            _color    = Color.White;
     private          int              _cols;
     private          float            _density;
     private          bool             _dirty = true;
     private          float            _gridHeight;
     private          float            _gridWidth;
-    private readonly List< short[] >  _indices = new();
-    private readonly Vector2          _offset  = new();
-    private readonly List< float[]? > _parts   = new();
 
-    private          TextureRegion?  _region;
-    private          int             _rows;
-    private readonly List< float[] > _vertices = new();
-    public           float           X { get; set; } = 0;
-    public           float           Y { get; set; } = 0;
+    private TextureRegion? _region;
+    private int            _rows;
+    public  float          X { get; set; } = 0;
+    public  float          Y { get; set; } = 0;
 
     /// <summary>
     ///     Sets polygon with repeating texture region, the size of

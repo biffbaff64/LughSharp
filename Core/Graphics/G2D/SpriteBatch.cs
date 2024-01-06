@@ -20,20 +20,24 @@ namespace LibGDXSharp.Graphics.G2D;
 
 public class SpriteBatch : IBatch
 {
+    private const int MAX_VERTEX_INDEX = 32767;
+    private const int MAX_SPRITES      = 8191;
 
-    private readonly Color   _color          = new( 1, 1, 1, 1 );
-    private readonly Matrix4 _combinedMatrix = new();
-    private readonly Mesh    _mesh;
-
+    private readonly Color          _color          = new( 1, 1, 1, 1 );
+    private readonly Matrix4        _combinedMatrix = new();
+    private readonly Mesh           _mesh;
     private readonly bool           _ownsShader;
     private readonly ShaderProgram? _shader;
+    private          ShaderProgram? _customShader;
 
-    private ShaderProgram? _customShader;
-    public  float          colorPacked = Color.WhiteFloatBits;
+    protected float colorPacked = Color.WhiteFloatBits;
+    protected int   idx         = 0;
 
-    public int   idx          = 0;
     public float invTexHeight = 0;
     public float invTexWidth  = 0;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructs a new SpriteBatch with a size of 1000, one buffer,
@@ -64,7 +68,7 @@ public class SpriteBatch : IBatch
     protected SpriteBatch( int size, ShaderProgram? defaultShader = null )
     {
         // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
-        if ( size > 8191 )
+        if ( size > MAX_SPRITES )
         {
             throw new ArgumentException( "Can't have more than 8191 sprites per batch: " + size );
         }
@@ -133,9 +137,10 @@ public class SpriteBatch : IBatch
     /// </summary>
     public int MaxSpritesInBatch { get; set; } = 0;
 
-    public Texture? LastTexture      { get; set; }
-    public float[]  Vertices         { get; set; }
-    public bool     BlendingDisabled { get; set; } = false;
+    public bool BlendingDisabled { get; set; } = false;
+
+    protected Texture? LastTexture { get; set; }
+    protected float[]  Vertices    { get; set; }
 
     public void Begin()
     {
@@ -205,8 +210,12 @@ public class SpriteBatch : IBatch
     {
         set
         {
-            Color.Abgr8888ToColor( _color, value );
+            Color color = Color;
+
+            Color.Abgr8888ToColor( ref color, value );
             colorPacked = value;
+
+            Color = color;
         }
         get => colorPacked;
     }

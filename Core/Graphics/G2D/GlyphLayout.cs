@@ -138,7 +138,6 @@ public class GlyphLayout : IPoolable
                          bool wrap,
                          string? truncate )
     {
-
         GlyphRunPool.FreeAll( Runs );
         Runs.Clear();
 
@@ -530,7 +529,6 @@ public class GlyphLayout : IPoolable
                            int widthIndex,
                            Pool< GlyphRun >? runPool )
     {
-
         // Determine truncate string size.
         GlyphRun? truncateRun = runPool?.Obtain();
 
@@ -735,7 +733,7 @@ public class GlyphLayout : IPoolable
 
                         Color? color = colorpool.Obtain();
                         ColorStack.Add( color! );
-                        Color.Rgba8888ToColor( color!, colorInt );
+                        Color.Rgba8888ToColor( ref color!, colorInt );
 
                         return i - start;
                     }

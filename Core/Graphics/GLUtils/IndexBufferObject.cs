@@ -21,14 +21,14 @@ namespace LibGDXSharp.Graphics.GLUtils;
 public class IndexBufferObject : IIndexData
 {
     private readonly ShortBuffer _buffer;
-    private          int         _bufferHandle;
     private readonly ByteBuffer  _byteBuffer;
     private readonly bool        _empty;
+    private readonly bool        _ownsBuffer;
+    private readonly int         _usage;
+    private          int         _bufferHandle;
     private          bool        _isBound = false;
     private          bool        _isDirect;
     private          bool        _isDirty = true;
-    private readonly bool        _ownsBuffer;
-    private readonly int         _usage;
 
     public IndexBufferObject( int maxIndices )
         : this( true, maxIndices )

@@ -55,7 +55,6 @@ public class Mp3 : OpenALMusic
             {
                 throw new GdxRuntimeException( "error while preloading mp3", e );
             }
-
         }
 
         public int Read( byte[] buffer )

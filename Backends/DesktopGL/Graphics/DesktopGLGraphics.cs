@@ -24,18 +24,18 @@ using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
-    private IGraphics.DisplayModeDescriptor _displayModeBeforeFullscreen = null!;
-    private int                             _fps;
-    private long                            _frameCounterStart = 0;
-    private long                            _frameId;
-    private int                             _frames;
 
-    private long _lastFrameTime = -1;
+    private readonly IntBuffer                       _tmpBuffer                   = BufferUtils.NewIntBuffer( 1 );
+    private readonly IntBuffer                       _tmpBuffer2                  = BufferUtils.NewIntBuffer( 1 );
+    private          IGraphics.DisplayModeDescriptor _displayModeBeforeFullscreen = null!;
+    private          int                             _fps;
+    private          long                            _frameCounterStart = 0;
+    private          long                            _frameId;
+    private          int                             _frames;
 
-    private readonly IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
-    private readonly IntBuffer _tmpBuffer2 = BufferUtils.NewIntBuffer( 1 );
-    private          IntBuffer _tmpBuffer3 = BufferUtils.NewIntBuffer( 1 );
-    private          IntBuffer _tmpBuffer4 = BufferUtils.NewIntBuffer( 1 );
+    private long      _lastFrameTime = -1;
+    private IntBuffer _tmpBuffer3    = BufferUtils.NewIntBuffer( 1 );
+    private IntBuffer _tmpBuffer4    = BufferUtils.NewIntBuffer( 1 );
 
     private int _tmpInt  = 0;
     private int _tmpInt2 = 0;
@@ -143,7 +143,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             Samples          = GLWindow.Config.Samples,
             CoverageSampling = false
         };
-
     }
 
     public void Update()

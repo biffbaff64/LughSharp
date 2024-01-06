@@ -23,13 +23,13 @@ public class DragScrollListener : DragListener
 {
     private readonly static Vector2             TmpCoords      = new();
     private readonly        Interpolation.ExpIn _interpolation = Interpolation.Exp5In;
-    private                 float               _maxSpeed      = 75;
-    private                 float               _minSpeed      = 15;
-    private                 float               _padBottom;
-    private                 float               _padTop;
-    private                 long                _rampTime = 1750;
 
     private readonly ScrollPane _scroll;
+    private          float      _maxSpeed = 75;
+    private          float      _minSpeed = 15;
+    private          float      _padBottom;
+    private          float      _padTop;
+    private          long       _rampTime = 1750;
     private          long       _startTime;
     private          float      _tickSecs = 0.05f;
 

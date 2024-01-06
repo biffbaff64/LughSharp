@@ -105,7 +105,10 @@ public interface ITextureData
         /// <param name="file"></param>
         /// <param name="useMipMaps"></param>
         /// <returns></returns>
-        public static ITextureData? LoadFromFile( FileInfo? file, bool useMipMaps ) => LoadFromFile( file, null, useMipMaps );
+        public static ITextureData? LoadFromFile( FileInfo? file, bool useMipMaps )
+        {
+            return LoadFromFile( file, null, useMipMaps );
+        }
 
         /// <summary>
         /// </summary>
@@ -113,7 +116,7 @@ public interface ITextureData
         /// <param name="format"></param>
         /// <param name="useMipMaps"></param>
         /// <returns></returns>
-        public static ITextureData? LoadFromFile( FileInfo? file, Pixmap.Format? format, bool useMipMaps )
+        public static ITextureData LoadFromFile( FileInfo? file, Pixmap.Format? format, bool useMipMaps )
         {
             ArgumentNullException.ThrowIfNull( file );
 

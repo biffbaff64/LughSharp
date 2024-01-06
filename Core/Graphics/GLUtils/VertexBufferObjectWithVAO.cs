@@ -22,12 +22,12 @@ public class VertexBufferObjectWithVAO : IVertexData
 {
     private readonly static IntBuffer TmpHandle = BufferUtils.NewIntBuffer( 1 );
 
+    private readonly FloatBuffer _buffer;
+
     private readonly ByteBuffer  _byteBuffer;
     private readonly List< int > _cachedLocations = new();
     private readonly bool        _ownsBuffer;
     private readonly int         _usage;
-
-    private readonly FloatBuffer _buffer;
     private          int         _bufferHandle;
     private          bool        _isBound = false;
     private          bool        _isDirty = false;

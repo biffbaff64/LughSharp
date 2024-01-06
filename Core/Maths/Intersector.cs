@@ -1216,7 +1216,6 @@ public class Intersector
             {
                 return false;
             }
-
         }
         else if ( ( ( -e + bounds.min.Y ) > 0.0f ) || ( ( -e + bounds.max.Y ) < 0.0f ) )
         {

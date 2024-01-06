@@ -49,13 +49,6 @@ public sealed class Bitstream
         0x0000003F, 0x0000007F, 0x000000FF, 0x000001FF, 0x000003FF, 0x000007FF,
         0x00000FFF, 0x00001FFF, 0x00003FFF, 0x00007FFF, 0x0000FFFF, 0x0001FFFF
     };
-
-    private readonly PushbackStream _sourceStream;
-
-    /// <summary>
-    ///     Number (0-31, from MSB to LSB) of next bit for get_bits()
-    /// </summary>
-    private int _bitIndex;
     private readonly Crc16[] _crc;
 
     /// <summary>
@@ -68,14 +61,21 @@ public sealed class Bitstream
     /// </summary>
     private readonly sbyte[] _frameBytes;
 
+    private readonly Header _header;
+
+    private readonly PushbackStream _sourceStream;
+    private readonly sbyte[]        _syncBuffer;
+
+    /// <summary>
+    ///     Number (0-31, from MSB to LSB) of next bit for get_bits()
+    /// </summary>
+    private int _bitIndex;
+
     /// <summary>
     ///     Number of valid bytes in the frame buffer.
     /// </summary>
     private int _frameSize;
-
-    private readonly Header  _header;
-    private          bool    _singleChMode;
-    private readonly sbyte[] _syncBuffer;
+    private bool _singleChMode;
 
     /// <summary>
     ///     The current specified syncword

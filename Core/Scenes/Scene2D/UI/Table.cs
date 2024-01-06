@@ -2100,22 +2100,22 @@ public class Table : WidgetGroup
     /// </summary>
     public readonly static Value BackgroundRight = new BackgroundRightDelegate();
 
-    private class BackgroundTopDelegate : Value
+    private sealed class BackgroundTopDelegate : Value
     {
         public override float Get( Actor? context = null ) => ( ( Table? )context )?.GetBackground()?.TopHeight ?? 0;
     }
 
-    private class BackgroundBottomDelegate : Value
+    private sealed class BackgroundBottomDelegate : Value
     {
         public override float Get( Actor? context = null ) => ( ( Table? )context )?.GetBackground()?.BottomHeight ?? 0;
     }
 
-    private class BackgroundLeftDelegate : Value
+    private sealed class BackgroundLeftDelegate : Value
     {
         public override float Get( Actor? context = null ) => ( ( Table? )context )?.GetBackground()?.LeftWidth ?? 0;
     }
 
-    private class BackgroundRightDelegate : Value
+    private sealed class BackgroundRightDelegate : Value
     {
         public override float Get( Actor? context = null ) => ( ( Table? )context )?.GetBackground()?.RightWidth ?? 0;
     }

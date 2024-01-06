@@ -21,7 +21,7 @@ namespace LibGDXSharp.Graphics;
 ///     the range [0,1].
 ///     All methods perform clamping on the internal values after execution.
 /// </summary>
-public class Color
+public sealed class Color
 {
     public readonly static Color White      = new( 1, 1, 1, 1 );
     public readonly static Color LightGray  = new( 0xbfbfbfff );
@@ -63,6 +63,9 @@ public class Color
     /// </summary>
     public readonly static float WhiteFloatBits = White.ToFloatBits();
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Constructor, sets all the components to 0.
     /// </summary>
@@ -84,7 +87,7 @@ public class Color
     ///     the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
     /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
-    public Color( uint rgba8888 ) => Rgba8888ToColor( this, rgba8888 );
+    public Color( uint rgba8888 ) => Set( rgba8888 );
 
     /// <summary>
     ///     Constructor, sets the components of the color.
@@ -108,6 +111,9 @@ public class Color
     /// </summary>
     public Color( Color color ) => Set( color );
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     public float R { get; set; }
     public float G { get; set; }
     public float B { get; set; }
@@ -119,10 +125,7 @@ public class Color
     /// <returns> This Color for chaining. </returns>
     public Color Set( Color color )
     {
-        R = color.R;
-        G = color.G;
-        B = color.B;
-        A = color.A;
+        Set( color.R, color.G, color.B, color.A );
 
         return this;
     }
@@ -147,7 +150,11 @@ public class Color
     /// <returns>This color for chaining.</returns>
     public Color Set( uint rgba )
     {
-        Rgba8888ToColor( this, rgba );
+        Color color = this;
+
+        Rgba8888ToColor( ref color, rgba );
+
+        Set( color.R, color.G, color.B, color.A );
 
         return this;
     }
@@ -225,6 +232,8 @@ public class Color
     }
 
     /// <summary>
+    ///     Subtracts the elements in the supplied Color from the equivalent
+    ///     elements in this Color.
     /// </summary>
     /// <param name="color"></param>
     /// <returns></returns>
@@ -368,7 +377,7 @@ public class Color
     /// </summary>
     /// <param name="color"></param>
     /// <param name="value"></param>
-    public static void Rgb565ToColor( Color color, int value )
+    public static void Rgb565ToColor( ref Color color, int value )
     {
         color.R = ( ( value & 0x0000F800 ) >>> 11 ) / 31f;
         color.G = ( ( value & 0x000007E0 ) >>> 5 ) / 63f;
@@ -379,7 +388,7 @@ public class Color
     /// </summary>
     /// <param name="color"></param>
     /// <param name="value"></param>
-    public static void Rgba4444ToColor( Color color, int value )
+    public static void Rgba4444ToColor( ref Color color, int value )
     {
         color.R = ( ( value & 0x0000f000 ) >>> 12 ) / 15f;
         color.G = ( ( value & 0x00000f00 ) >>> 8 ) / 15f;
@@ -391,7 +400,7 @@ public class Color
     /// </summary>
     /// <param name="color"></param>
     /// <param name="value"></param>
-    public static void Rgba8888ToColor( Color color, int value )
+    public static void Rgba8888ToColor( ref Color color, int value )
     {
         color.R = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.G = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
@@ -403,7 +412,7 @@ public class Color
     /// </summary>
     /// <param name="color"></param>
     /// <param name="value"></param>
-    public static void Argb8888ToColor( Color color, int value )
+    public static void Argb8888ToColor( ref Color color, int value )
     {
         color.A = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.R = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
@@ -415,9 +424,10 @@ public class Color
     /// </summary>
     /// <param name="color"></param>
     /// <param name="value"></param>
-    public static void Abgr8888ToColor( Color color, float value )
+    public static void Abgr8888ToColor( ref Color color, float value )
     {
         var c = NumberUtils.FloatToIntColor( value );
+
         color.A = ( ( c & 0xff000000 ) >>> 24 ) / 255f;
         color.B = ( ( c & 0x00ff0000 ) >>> 16 ) / 255f;
         color.G = ( ( c & 0x0000ff00 ) >>> 8 ) / 255f;
@@ -431,7 +441,7 @@ public class Color
     /// </summary>
     /// <param name="color">The Color to be modified.</param>
     /// <param name="value">An integer color value in RGBA8888 format.</param>
-    private void Rgba8888ToColor( Color color, uint value )
+    private void Rgba8888ToColor( ref Color color, uint value )
     {
         color.R = ( ( value & 0xff000000 ) >> 24 ) / 255f;
         color.G = ( ( value & 0x00ff0000 ) >> 16 ) / 255f;
@@ -605,7 +615,10 @@ public class Color
     /// <returns></returns>
     public static float ToFloatBits( float r, float g, float b, float a )
     {
-        var color = ( ( int )( 255 * a ) << 24 ) | ( ( int )( 255 * b ) << 16 ) | ( ( int )( 255 * g ) << 8 ) | ( int )( 255 * r );
+        var color = ( ( int )( 255 * a ) << 24 )
+                  | ( ( int )( 255 * b ) << 16 )
+                  | ( ( int )( 255 * g ) << 8 )
+                  | ( int )( 255 * r );
 
         return NumberUtils.IntToFloatColor( color );
     }
@@ -657,16 +670,22 @@ public class Color
 
     public static int RGB565( float r, float g, float b ) => ( ( int )( r * 31 ) << 11 ) | ( ( int )( g * 63 ) << 5 ) | ( int )( b * 31 );
 
-    public static int RGBA4444( float r, float g, float b, float a )
-        => ( ( int )( r * 15 ) << 12 ) | ( ( int )( g * 15 ) << 8 ) | ( ( int )( b * 15 ) << 4 ) | ( int )( a * 15 );
+    public static int RGBA4444( float r, float g, float b, float a ) => ( ( int )( r * 15 ) << 12 )
+                                                                      | ( ( int )( g * 15 ) << 8 )
+                                                                      | ( ( int )( b * 15 ) << 4 )
+                                                                      | ( int )( a * 15 );
 
     public static int RGB888( float r, float g, float b ) => ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
 
-    public static int RGBA8888( float r, float g, float b, float a )
-        => ( ( int )( r * 255 ) << 24 ) | ( ( int )( g * 255 ) << 16 ) | ( ( int )( b * 255 ) << 8 ) | ( int )( a * 255 );
+    public static int RGBA8888( float r, float g, float b, float a ) => ( ( int )( r * 255 ) << 24 )
+                                                                      | ( ( int )( g * 255 ) << 16 )
+                                                                      | ( ( int )( b * 255 ) << 8 )
+                                                                      | ( int )( a * 255 );
 
-    public static int ARGB8888( float a, float r, float g, float b )
-        => ( ( int )( a * 255 ) << 24 ) | ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
+    public static int ARGB8888( float a, float r, float g, float b ) => ( ( int )( a * 255 ) << 24 )
+                                                                      | ( ( int )( r * 255 ) << 16 )
+                                                                      | ( ( int )( g * 255 ) << 8 )
+                                                                      | ( int )( b * 255 );
 
     public static int RGB565( Color color ) => ( ( int )( color.R * 31 ) << 11 ) | ( ( int )( color.G * 63 ) << 5 ) | ( int )( color.B * 31 );
 
@@ -675,7 +694,9 @@ public class Color
                                                | ( ( int )( color.B * 15 ) << 4 )
                                                | ( int )( color.A * 15 );
 
-    public static int RGB888( Color color ) => ( ( int )( color.R * 255 ) << 16 ) | ( ( int )( color.G * 255 ) << 8 ) | ( int )( color.B * 255 );
+    public static int RGB888( Color color ) => ( ( int )( color.R * 255 ) << 16 )
+                                             | ( ( int )( color.G * 255 ) << 8 )
+                                             | ( int )( color.B * 255 );
 
     public static int RGBA8888( Color color ) => ( ( int )( color.R * 255 ) << 24 )
                                                | ( ( int )( color.G * 255 ) << 16 )
@@ -688,6 +709,7 @@ public class Color
                                                | ( int )( color.B * 255 );
 
     /// <summary>
+    ///     Creates a copy of this Color object.
     /// </summary>
     /// <returns></returns>
     public Color Copy() => new( this );

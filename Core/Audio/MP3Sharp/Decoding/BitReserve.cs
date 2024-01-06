@@ -37,9 +37,9 @@ public class BitReserve
     ///     Mask that can be used to quickly implement the modulus operation on BUFSIZE.
     /// </summary>
     private const int BUFSIZE_MASK = BUFSIZE - 1;
-    private int _bufByteIdx;
 
     private readonly int[] _buffer;
+    private          int   _bufByteIdx;
     private          int   _offset;
     private          int   _totbit;
 

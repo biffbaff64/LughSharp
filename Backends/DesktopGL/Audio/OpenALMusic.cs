@@ -30,14 +30,14 @@ public abstract class OpenALMusic : IMusic
     private readonly static byte[]      _tempBytes      = new byte[ _bufferSize ];
     private readonly static ByteBuffer  _tempBuffer     = BufferUtils.NewByteBuffer( _bufferSize );
     private readonly        OpenALAudio _audio;
-    private                 uint[]?     _buffers;
-    private                 int         _format;
-    private                 bool        _isPlaying;
-    private                 float       _maxSecondsPerBuffer;
-    private                 float       _pan = 0;
-    private                 float       _renderedSeconds;
 
     private readonly List< float > _renderedSecondsQueue = new( _bufferCount );
+    private          uint[]?       _buffers;
+    private          int           _format;
+    private          bool          _isPlaying;
+    private          float         _maxSecondsPerBuffer;
+    private          float         _pan = 0;
+    private          float         _renderedSeconds;
     private          int           _sampleRate;
     private          int           _sourceID = INVALID_SOURCE_ID;
     private          float         _volume   = 1;

@@ -60,14 +60,12 @@ public class FloatFrameBuffer : FrameBuffer
 
     protected override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
-        var data = new FloatTextureData(
-            BufferBuilder.Width,
-            BufferBuilder.Height,
-            attachmentSpec.InternalFormat,
-            attachmentSpec.Format,
-            attachmentSpec.Type,
-            attachmentSpec.IsGpuOnly
-            );
+        var data = new FloatTextureData( BufferBuilder.Width,
+                                         BufferBuilder.Height,
+                                         attachmentSpec.InternalFormat,
+                                         attachmentSpec.Format,
+                                         attachmentSpec.Type,
+                                         attachmentSpec.IsGpuOnly );
 
         var result = new Texture( data );
 

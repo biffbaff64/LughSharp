@@ -82,7 +82,6 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
                     tempLength += _tmp2.Dst( _tmp3 );
                 }
             }
-
         }
 
         return tempLength;

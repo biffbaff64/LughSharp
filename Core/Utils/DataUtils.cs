@@ -31,7 +31,7 @@ public abstract class DataUtils
 
     public static char ReverseBytes( char input ) => ( char )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
 
-    public static int ReverseBytes( int input ) => input >>> 24 | ( ( input >> 8 ) & 0xFF00 ) | ( ( input << 8 ) & 0xFF0000 ) | input << 24;
+    public static int ReverseBytes( int input ) => ( input >>> 24 ) | ( ( input >> 8 ) & 0xFF00 ) | ( ( input << 8 ) & 0xFF0000 ) | ( input << 24 );
 
     public static long ReverseBytes( long input )
     {

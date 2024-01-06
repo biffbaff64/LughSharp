@@ -23,9 +23,9 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public abstract class GLTexture : IDisposable
 {
-
     private static float _maxAnisotropicFilterLevel = 0;
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     protected GLTexture( int glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
@@ -38,12 +38,15 @@ public abstract class GLTexture : IDisposable
         GLTextureHandle = glTextureHandle;
     }
 
-    public virtual int Width  { get; }
-    public virtual int Height { get; }
-    public virtual int Depth  { get; }
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public abstract int Width  { get; }
+    public abstract int Height { get; }
+    public abstract int Depth  { get; }
 
     public int   GLTextureHandle        { get; set; }
-    public int   GLTarget               { get; set; }
+    public int   GLTarget               { get; }
     public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
     /// <summary>
@@ -68,10 +71,24 @@ public abstract class GLTexture : IDisposable
 
     public virtual bool IsManaged => false;
 
-    /// <inheritdoc cref="IDisposable.Dispose" />
-    /// >
-    public virtual void Dispose() => Delete();
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
+    /// <inheritdoc cref="IDisposable.Dispose" />
+    public virtual void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            Delete();
+        }
+    }
+    
     /// <summary>
     ///     Used internally to reload after context loss. Creates a new GL handle then
     ///     calls <see cref="Texture.Load" />.

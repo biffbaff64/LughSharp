@@ -81,12 +81,12 @@ namespace LibGDXSharp.Graphics.G2D;
 /// </summary>
 public class PixmapPacker : IDisposable
 {
-    private int _alphaThreshold;
-
-    private          bool          _disposed;
     private readonly IPackStrategy _packStrategy;
     private readonly bool          _stripWhitespaceX;
     private readonly bool          _stripWhitespaceY;
+    private          int           _alphaThreshold;
+
+    private bool _disposed;
 
 //    private Pattern       _indexPattern = Pattern.Compile( "(.+)_(\\d+)$" );
 

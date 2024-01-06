@@ -180,7 +180,7 @@ public class SpriteCache
     /// </summary>
     public int TotalRenderCalls { get; set; } = 0;
 
-    public Color Color { get; } = new( 1, 1, 1, 1 );
+    public Color Color { get; set; } = new( 1, 1, 1, 1 );
 
     /// <summary>
     ///     The color of this sprite cache, expanding the alpha from 0-254 to 0-255.
@@ -190,8 +190,12 @@ public class SpriteCache
         get => _colorPacked;
         set
         {
-            Color.Abgr8888ToColor( Color, value );
+            Color color = Color;
+            Color.Abgr8888ToColor( ref color, value );
+
             _colorPacked = value;
+
+            Color = color;
         }
     }
 
@@ -598,7 +602,6 @@ public class SpriteCache
                      bool flipX,
                      bool flipY )
     {
-
         var invTexWidth  = 1.0f / texture.Width;
         var invTexHeight = 1.0f / texture.Height;
         var u            = srcX * invTexWidth;
@@ -691,7 +694,6 @@ public class SpriteCache
                      bool flipX,
                      bool flipY )
     {
-
         // bottom left and top right corner points relative to origin
         var worldOriginX = x + originX;
         var worldOriginY = y + originY;
@@ -924,7 +926,6 @@ public class SpriteCache
                      float scaleY,
                      float rotation )
     {
-
         // bottom left and top right corner points relative to origin
         var worldOriginX = x + originX;
         var worldOriginY = y + originY;
@@ -1251,7 +1252,7 @@ public class SpriteCache
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private class Cache
+    private sealed class Cache
     {
         internal readonly int    id;
         internal readonly int    offset;

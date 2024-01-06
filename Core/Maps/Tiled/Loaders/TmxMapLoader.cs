@@ -239,7 +239,6 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
                                             int imageHeight,
                                             FileInfo? image )
     {
-
         MapProperties props = tileSet.Properties;
 
         if ( image != null )

@@ -25,14 +25,17 @@ public class GestureDetector : InputAdapter
 {
     private readonly Vector2 _initialPointer1 = new();
     private readonly Vector2 _initialPointer2 = new();
-    private          bool    _inTapRectangle;
-    private          int     _lastTapButton;
-    private          int     _lastTapPointer;
-    private          long    _lastTapTime;
-    private          float   _lastTapX;
-    private          float   _lastTapY;
 
     private readonly IGestureListener?        _listener = null;
+    private readonly Vector2                  _pointer1 = new();
+    private readonly Vector2                  _pointer2 = new();
+    private readonly VelocityTracker          _tracker  = new();
+    private          bool                     _inTapRectangle;
+    private          int                      _lastTapButton;
+    private          int                      _lastTapPointer;
+    private          long                     _lastTapTime;
+    private          float                    _lastTapX;
+    private          float                    _lastTapY;
     private          CancellationToken        _longPressCancellationToken;
     private          bool                     _longPressFired;
     private          float                    _longPressSeconds;
@@ -41,8 +44,6 @@ public class GestureDetector : InputAdapter
     private          long                     _maxFlingDelay;
     private          bool                     _panning;
     private          bool                     _pinching;
-    private readonly Vector2                  _pointer1 = new();
-    private readonly Vector2                  _pointer2 = new();
     private          int                      _tapCount;
     private          long                     _tapCountInterval;
     private          float                    _tapRectangleCenterX;
@@ -50,7 +51,6 @@ public class GestureDetector : InputAdapter
     private          float                    _tapRectangleHeight;
     private          float                    _tapRectangleWidth;
     private          long                     _touchDownTime;
-    private readonly VelocityTracker          _tracker = new();
 
     /// <summary>
     ///     Creates a new GestureDetector with default values: halfTapSquareSize=20,
@@ -561,14 +561,14 @@ public class GestureDetector : InputAdapter
 
     public class VelocityTracker
     {
-        private          float   _lastX;
-        private          float   _lastY;
         private readonly long[]  _meanTime;
         private readonly float[] _meanX;
         private readonly float[] _meanY;
-        private          int     _numSamples;
 
         private readonly int   _sampleSize;
+        private          float _lastX;
+        private          float _lastY;
+        private          int   _numSamples;
         public           float deltaX;
         public           float deltaY;
         public           long  lastTime;

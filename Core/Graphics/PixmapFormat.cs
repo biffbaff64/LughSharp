@@ -25,10 +25,7 @@ public static class PixmapFormat
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static int ToGdx2DPixmapFormat( Pixmap.Format format ) =>
-
-        //@formatter:off
-        format switch
+    public static int ToGdx2DPixmapFormat( Pixmap.Format format ) => format switch
                                                                      {
                                                                          Pixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
                                                                          Pixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
@@ -37,11 +34,11 @@ public static class PixmapFormat
                                                                          Pixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
                                                                          Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
                                                                          Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
-                       
+
                                                                          _ => throw new GdxRuntimeException( $"Unknown Format: {format}" )
                                                                      };
 
-    //@formatter:on
+
     /// <summary>
     /// </summary>
     /// <param name="format"></param>

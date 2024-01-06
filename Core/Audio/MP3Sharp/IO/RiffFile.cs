@@ -48,7 +48,6 @@ public class RiffFile
             CkId   = FourCC( "RIFF" ),
             CkSize = 0
         };
-
     }
 
     /// <summary>

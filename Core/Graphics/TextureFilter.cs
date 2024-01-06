@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics;
 
 public class TextureFilter
 {
-
     public enum InnerEnum
     {
         Nearest,
@@ -48,28 +47,36 @@ public class TextureFilter
     ///     a
     ///     nearest filter.
     /// </summary>
-    public readonly static TextureFilter MipMapNearestNearest = new( "MipMapNearestNearest", InnerEnum.MipMapNearestNearest, IGL20.GL_NEAREST_MIPMAP_NEAREST );
+    public readonly static TextureFilter MipMapNearestNearest = new( "MipMapNearestNearest",
+                                                                     InnerEnum.MipMapNearestNearest,
+                                                                     IGL20.GL_NEAREST_MIPMAP_NEAREST );
 
     /// <summary>
     ///     Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with
     ///     a
     ///     linear filter.
     /// </summary>
-    public readonly static TextureFilter MipMapLinearNearest = new( "MipMapLinearNearest", InnerEnum.MipMapLinearNearest, IGL20.GL_LINEAR_MIPMAP_NEAREST );
+    public readonly static TextureFilter MipMapLinearNearest = new( "MipMapLinearNearest",
+                                                                    InnerEnum.MipMapLinearNearest,
+                                                                    IGL20.GL_LINEAR_MIPMAP_NEAREST );
 
     /// <summary>
     ///     Fetch the two best fitting images from the mip map chain and then sample the nearest texel from each of the two
     ///     images,
     ///     combining them to the final output pixel.
     /// </summary>
-    public readonly static TextureFilter MipMapNearestLinear = new( "MipMapNearestLinear", InnerEnum.MipMapNearestLinear, IGL20.GL_NEAREST_MIPMAP_LINEAR );
+    public readonly static TextureFilter MipMapNearestLinear = new( "MipMapNearestLinear",
+                                                                    InnerEnum.MipMapNearestLinear,
+                                                                    IGL20.GL_NEAREST_MIPMAP_LINEAR );
 
     /// <summary>
     ///     Fetch the two best fitting images from the mip map chain and then sample the four nearest texels from each of the
     ///     two
     ///     images, combining them to the final output pixel.
     /// </summary>
-    public readonly static TextureFilter MipMapLinearLinear = new( "MipMapLinearLinear", InnerEnum.MipMapLinearLinear, IGL20.GL_LINEAR_MIPMAP_LINEAR );
+    public readonly static TextureFilter MipMapLinearLinear = new( "MipMapLinearLinear",
+                                                                   InnerEnum.MipMapLinearLinear,
+                                                                   IGL20.GL_LINEAR_MIPMAP_LINEAR );
 
     private readonly static List< TextureFilter > ValueList = new();
 

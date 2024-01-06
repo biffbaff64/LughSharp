@@ -817,7 +817,9 @@ public class Sprite : TextureRegion
     {
         set
         {
-            Color.Abgr8888ToColor( Color, value );
+            Color color = Color;
+
+            Color.Abgr8888ToColor( ref color, value );
 
             Vertices[ IBatch.C1 ] = value;
             Vertices[ IBatch.C2 ] = value;

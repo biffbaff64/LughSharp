@@ -19,8 +19,8 @@ namespace LibGDXSharp.Files.Buffers;
 public abstract class ShortBuffer : Buffer
 {
     private readonly short[]? _hb;
-    private          bool     _isReadOnly;
     private readonly int      _offset;
+    private          bool     _isReadOnly;
 
     protected ShortBuffer()
     {

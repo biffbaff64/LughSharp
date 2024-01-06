@@ -817,7 +817,6 @@ public class ParticleEmitter
 
                 if ( SpawnShapeValue.Edges )
                 {
-
                     var spawnAngle = SpawnShapeValue.Side switch
                                      {
                                          // Note the minus sign...

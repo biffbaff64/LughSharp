@@ -45,7 +45,6 @@ public abstract class Game : IApplicationListener
 
                 _screen.Resize( Gdx.Graphics.Width, Gdx.Graphics.Height );
             }
-
         }
     }
 

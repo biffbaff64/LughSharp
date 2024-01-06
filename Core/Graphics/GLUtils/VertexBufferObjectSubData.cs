@@ -30,10 +30,10 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </summary>
 public class VertexBufferObjectSubData : IVertexData
 {
-    private readonly bool _isDirect;
-    private readonly int  _usage;
 
     private readonly FloatBuffer _buffer;
+    private readonly bool        _isDirect;
+    private readonly int         _usage;
     private          int         _bufferHandle;
     private          bool        _isBound = false;
     private          bool        _isDirty = false;

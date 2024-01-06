@@ -24,18 +24,22 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 public partial class ScrollPane : WidgetGroup
 {
-    private          int                  _draggingPointer = -1;
+    private readonly ActorGestureListener _flickScrollListener;
+    private readonly RectangleShape       _hKnobBounds       = new();
+    private readonly RectangleShape       _hScrollBounds     = new();
+    private readonly Vector2              _lastPoint         = new();
+    private readonly RectangleShape       _vKnobBounds       = new();
+    private readonly RectangleShape       _vScrollBounds     = new();
+    private readonly RectangleShape       _widgetArea        = new();
+    private readonly RectangleShape       _widgetCullingArea = new();
+    private          int                  _draggingPointer   = -1;
     private          float                _fadeAlpha;
     private          float                _fadeAlphaSeconds = 1;
     private          float                _fadeDelay;
     private          float                _fadeDelaySeconds = 1;
     private          bool                 _flickScroll      = true;
-    private readonly ActorGestureListener _flickScrollListener;
     private          float                _flingTimer;
-    private readonly RectangleShape       _hKnobBounds        = new();
-    private readonly RectangleShape       _hScrollBounds      = new();
     private          bool                 _hScrollOnBottom    = true;
-    private readonly Vector2              _lastPoint          = new();
     private          float                _overscrollSpeedMax = 200;
     private          float                _overscrollSpeedMin = 30;
     private          bool                 _overscrollX        = true;
@@ -45,13 +49,9 @@ public partial class ScrollPane : WidgetGroup
     private          bool                 _touchScrollV;
     private          float                _visualAmountX;
     private          float                _visualAmountY;
-    private readonly RectangleShape       _vKnobBounds   = new();
-    private readonly RectangleShape       _vScrollBounds = new();
 
-    private          bool           _vScrollOnRight = true;
-    private          Actor?         _widget;
-    private readonly RectangleShape _widgetArea        = new();
-    private readonly RectangleShape _widgetCullingArea = new();
+    private bool   _vScrollOnRight = true;
+    private Actor? _widget;
 
     public ScrollPane( Actor? widget )
         : this( widget, new ScrollPaneStyle() )

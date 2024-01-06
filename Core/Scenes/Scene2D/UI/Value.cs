@@ -99,7 +99,7 @@ public abstract class Value
     /// <summary>
     ///     Returns a value that is a percentage of the actor's width.
     /// </summary>
-    private class ValuePercentWidth : Value
+    private sealed class ValuePercentWidth : Value
     {
         private readonly Actor? _actor;
         private readonly float  _percent;
@@ -116,7 +116,7 @@ public abstract class Value
     /// <summary>
     ///     Returns a value that is a percentage of the actor's height.
     /// </summary>
-    private class ValuePercentHeight : Value
+    private sealed class ValuePercentHeight : Value
     {
         private readonly Actor? _actor;
         private readonly float  _percent;
@@ -135,7 +135,7 @@ public abstract class Value
     /// <summary>
     ///     Value that is the minWidth of the actor in the cell.
     /// </summary>
-    private class ValueMinWidthInnerClass : Value
+    private sealed class ValueMinWidthInnerClass : Value
     {
         public override float Get( Actor? context = null )
         {
@@ -151,7 +151,7 @@ public abstract class Value
     /// <summary>
     ///     Value that is the minHeight of the actor in the cell.
     /// </summary>
-    private class ValueMinHeightInnerClass : Value
+    private sealed class ValueMinHeightInnerClass : Value
     {
         public override float Get( Actor? context = null )
         {
@@ -167,7 +167,7 @@ public abstract class Value
     /// <summary>
     ///     Value that is the prefWidth of the actor in the cell.
     /// </summary>
-    private class ValuePrefWidthInnerClass : Value
+    private sealed class ValuePrefWidthInnerClass : Value
     {
         public override float Get( Actor? context = null )
         {
@@ -183,7 +183,7 @@ public abstract class Value
     /// <summary>
     ///     Value that is the prefHeight of the actor in the cell.
     /// </summary>
-    private class ValuePrefHeightInnerClass : Value
+    private sealed class ValuePrefHeightInnerClass : Value
     {
         public override float Get( Actor? context = null )
         {
@@ -199,7 +199,7 @@ public abstract class Value
     /// <summary>
     ///     Value that is the maxWidth of the actor in the cell.
     /// </summary>
-    private class ValueMaxWidthInnerClass : Value
+    private sealed class ValueMaxWidthInnerClass : Value
     {
         public override float Get( Actor? context = null )
         {
@@ -215,7 +215,7 @@ public abstract class Value
     /// <summary>
     ///     Value that is the maxWidth of the actor in the cell.
     /// </summary>
-    private class ValueMaxHeightInnerClass : Value
+    private sealed class ValueMaxHeightInnerClass : Value
     {
         public override float Get( Actor? context = null )
         {

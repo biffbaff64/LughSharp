@@ -389,12 +389,14 @@ public class PolygonSprite
     /// </summary>
     public Color GetPackedColor()
     {
+        Color color = Color;
+
         if ( _vertices != null )
         {
-            Color.Abgr8888ToColor( Color, _vertices[ 2 ] );
+            Color.Abgr8888ToColor( ref color, _vertices[ 2 ] );
         }
 
-        return Color;
+        return color;
     }
 
     public void SetRegion( PolygonRegion? region )
@@ -409,7 +411,7 @@ public class PolygonSprite
         var regionVertices = region.Vertices;
         var textureCoords  = region.TextureCoords;
 
-        var verticesLength = ( regionVertices.Length / 2 ) * 5;
+        var verticesLength = ( regionVertices!.Length / 2 ) * 5;
 
         if ( ( _vertices == null ) || ( _vertices.Length != verticesLength ) )
         {

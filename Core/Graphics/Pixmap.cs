@@ -40,13 +40,13 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public class Pixmap : IDisposable
 {
-
     // ----------------------------------------------------------
 
     public readonly Gdx2DPixmap gdx2DPixmap;
 
-    private int  _color     = 0;
-    public  bool isDisposed = false;
+    private int _color = 0;
+
+    public bool isDisposed = false;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -177,25 +177,15 @@ public class Pixmap : IDisposable
     }
 
     /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing,
-    ///     or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( !isDisposed );
-        GC.SuppressFinalize( this );
-    }
-
-    /// <summary>
     ///     Downloads an image from http(s) url and passes it as a Pixmap to the
     ///     specified <see cref="IDownloadPixmapResponseListener" />.
     /// </summary>
     /// <param name="url">http url to download the image from.</param>
     /// <param name="responseListener">the listener to call once the image is available as a Pixmap</param>
-    public static void DownloadFromUrl( string url, IDownloadPixmapResponseListener responseListener ) => throw
-
-        //TODO:
-        new NotImplementedException();
+    public static void DownloadFromUrl( string url, IDownloadPixmapResponseListener responseListener )
+    {
+        throw new NotImplementedException();
+    }
 
     /// <summary>
     ///     Sets the color for drawing operations.
@@ -288,17 +278,18 @@ public class Pixmap : IDisposable
                             int dstx,
                             int dsty,
                             int dstWidth,
-                            int dstHeight ) => gdx2DPixmap.DrawPixmap(
-        pixmap.gdx2DPixmap,
-        srcx,
-        srcy,
-        srcWidth,
-        srcHeight,
-        dstx,
-        dsty,
-        dstWidth,
-        dstHeight
-        );
+                            int dstHeight )
+    {
+        gdx2DPixmap.DrawPixmap( pixmap.gdx2DPixmap,
+                                srcx,
+                                srcy,
+                                srcWidth,
+                                srcHeight,
+                                dstx,
+                                dsty,
+                                dstWidth,
+                                dstHeight );
+    }
 
     /// <summary>
     ///     Fills a rectangle starting at x, y extending by width to the right and by
@@ -403,6 +394,16 @@ public class Pixmap : IDisposable
                };
     }
 
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing,
+    ///     or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( !isDisposed );
+        GC.SuppressFinalize( this );
+    }
+
     private void Dispose( bool disposing )
     {
         if ( disposing )
@@ -471,10 +472,9 @@ public class Pixmap : IDisposable
         {
             _filter = value;
 
-            gdx2DPixmap.Scale =
-                _filter == Filter.NearestNeighbour
-                    ? Gdx2DPixmap.GDX_2D_SCALE_NEAREST
-                    : Gdx2DPixmap.GDX_2D_SCALE_LINEAR;
+            gdx2DPixmap.Scale = _filter == Filter.NearestNeighbour
+                ? Gdx2DPixmap.GDX_2D_SCALE_NEAREST
+                : Gdx2DPixmap.GDX_2D_SCALE_LINEAR;
         }
     }
 
@@ -490,41 +490,17 @@ public static class PixmapFormatExtensions
 
     public static int ToGdx2DPixmapFormat( this Pixmap.Format format )
     {
-        if ( format == Pixmap.Format.Alpha )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_ALPHA;
-        }
+        return format switch
+               {
+                   Pixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+                   Pixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+                   Pixmap.Format.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
+                   Pixmap.Format.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
+                   Pixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
+                   Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
+                   Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
 
-        if ( format == Pixmap.Format.Intensity )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_ALPHA;
-        }
-
-        if ( format == Pixmap.Format.LuminanceAlpha )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA;
-        }
-
-        if ( format == Pixmap.Format.RGB565 )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_RGB565;
-        }
-
-        if ( format == Pixmap.Format.RGBA4444 )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444;
-        }
-
-        if ( format == Pixmap.Format.RGB888 )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_RGB888;
-        }
-
-        if ( format == Pixmap.Format.RGBA8888 )
-        {
-            return Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888;
-        }
-
-        throw new GdxRuntimeException( "Unknown Format: " + format );
+                   _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
+               };
     }
 }

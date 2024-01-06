@@ -20,7 +20,6 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public class TextureWrap
 {
-
     public enum InnerEnum
     {
         MirroredRepeat,
@@ -32,9 +31,10 @@ public class TextureWrap
     public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
     public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
 
-    private readonly static List< TextureWrap > ValueList    = new();
-    private static          int                 _nextOrdinal = 0;
-    private readonly        string              _nameValue;
+    private readonly static List< TextureWrap > ValueList = new();
+
+    private static   int    _nextOrdinal = 0;
+    private readonly string _nameValue;
 
     public readonly InnerEnum innerEnumValue;
 

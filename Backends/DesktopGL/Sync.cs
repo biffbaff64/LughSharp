@@ -110,7 +110,7 @@ public class Sync
 
     private long GetTime() => DateTime.UtcNow.Ticks * 100;
 
-    private class RunningAvg
+    private sealed class RunningAvg
     {
 
         private const    long   DAMPEN_THRESHOLD = 10 * 1000L * 1000L;

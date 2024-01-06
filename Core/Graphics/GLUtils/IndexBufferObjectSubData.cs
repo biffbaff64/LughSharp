@@ -37,12 +37,12 @@ namespace LibGDXSharp.Graphics.GLUtils;
 public class IndexBufferObjectSubData : IIndexData
 {
     private readonly ShortBuffer _buffer;
-    private          int         _bufferHandle;
     private readonly ByteBuffer  _byteBuffer;
+    private readonly int         _usage;
+    private          int         _bufferHandle;
     private          bool        _isBound = false;
     private          bool        _isDirect;
     private          bool        _isDirty = true;
-    private readonly int         _usage;
 
     /// <summary>
     ///     Creates a new IndexBufferObject.

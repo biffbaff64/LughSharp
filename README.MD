@@ -260,6 +260,7 @@ CORE
     - DONE - IPreferences                   
     - DONE - IScreen                        
     - DONE - ScreenAdapter                  
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1113,6 +1114,13 @@ UTILS/COLLECTIONS
     - DONE - PredicateIterator
     - DONE - SnapshotArray<T>
 
+    ----------------------------------------------------------------------------------
+
+    - DONE - DictionaryExtensions
+    - DONE - ListExtensions
+
+    ----------------------------------------------------------------------------------
+
     - The following do not need converting
 
     - **** - ArrayMap                       Use Dictionary<K, V>
@@ -1137,11 +1145,6 @@ UTILS/COLLECTIONS
     - **** - OrderedMap<K, V>               Use SortedDictionary<K, V> ?
     - **** - OrderedSet<T>                  Use SortedSet<T>
     - **** - ShortArray                     Use List< short >
-
-    ----------------------------------------------------------------------------------
-
-    - DONE - DictionaryExtensions
-    - DONE - ListExtensions
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1203,6 +1206,14 @@ UTILS/XML
     - IP   - XmlReader          Some 'unreachable code' fixes needed
     - DONE - XmlReaderData
     - DONE - XmlWriter
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+TESTS/CORE/GRAPHICS
+-------------------
+
+    - IP   - CameraTest
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

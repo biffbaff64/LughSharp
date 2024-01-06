@@ -77,7 +77,6 @@ public class Bresenham2
                                             Pool< GridPoint2 > pool,
                                             List< GridPoint2 > output )
     {
-
         var w   = endX - startX;
         var h   = endY - startY;
         var dx1 = 0;

@@ -43,7 +43,6 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public class Texture : GLTexture
 {
-
     // ------------------------------------------------------------------------
 
     private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
@@ -202,22 +201,32 @@ public class Texture : GLTexture
     /// </summary>
     public override void Dispose()
     {
-        // this is a hack. reason: we have to set the glHandle to 0 for textures that are
-        // reloaded through the asset manager as we first remove (and thus dispose) the texture
-        // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
-        // removal from the asset manager.
-        if ( GLTextureHandle == 0 )
-        {
-            return;
-        }
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
 
-        Delete();
-
-        if ( ( TextureData != null ) && TextureData.IsManaged() )
+    /// <inheritdoc />
+    protected override void Dispose( bool disposing )
+    {
+        if ( disposing )
         {
-            if ( _managedTextures[ Gdx.App ] != null )
+            // this is a hack. reason: we have to set the glHandle to 0 for textures that are
+            // reloaded through the asset manager as we first remove (and thus dispose) the texture
+            // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
+            // removal from the asset manager.
+            if ( GLTextureHandle == 0 )
             {
-                _managedTextures[ Gdx.App ]?.Remove( this );
+                return;
+            }
+
+            Delete();
+
+            if ( ( TextureData != null ) && TextureData.IsManaged() )
+            {
+                if ( _managedTextures[ Gdx.App ] != null )
+                {
+                    _managedTextures[ Gdx.App ]?.Remove( this );
+                }
             }
         }
     }
@@ -234,7 +243,7 @@ public class Texture : GLTexture
     /// <summary>
     ///     Invalidate all managed textures. This is an internal method. Do not use it!
     /// </summary>
-    public void InvalidateAllTextures( IApplication app )
+    internal void InvalidateAllTextures( IApplication app )
     {
         List< Texture >? managedTextureArray = _managedTextures[ app ];
 
@@ -327,11 +336,11 @@ public class Texture : GLTexture
     public override string? ToString() => TextureData is FileTextureData ? TextureData.ToString() : base.ToString();
 
     /// <summary>
-    ///     Clears all managed textures. This is an internal method. Do not use it!
+    ///     Clears all managed textures.
     /// </summary>
     internal void ClearAllTextures( IApplication app ) => _managedTextures.Remove( app );
 
-    private class LoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
+    private sealed class LoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
     {
         private readonly int _refCount;
 

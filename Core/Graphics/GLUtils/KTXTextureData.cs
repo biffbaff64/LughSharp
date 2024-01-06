@@ -39,14 +39,14 @@ public class KtxTextureData : ITextureData, ICubemapData
     private const int GL_TEXTURE_1D_ARRAY_EXT = 0x1234;
     private const int GL_TEXTURE_2D_ARRAY_EXT = 0x1234;
 
-    // KTX image data (only available after preparing and before consuming)
-    private ByteBuffer? _compressedData;
-
     // The file we are loading
     private readonly FileInfo? _file;
-    private          int       _glBaseInternalFormat;
-    private          int       _glFormat;
-    private          int       _glInternalFormat;
+
+    // KTX image data (only available after preparing and before consuming)
+    private ByteBuffer? _compressedData;
+    private int         _glBaseInternalFormat;
+    private int         _glFormat;
+    private int         _glInternalFormat;
 
     // KTX header (only available after preparing)
     private int _glType;

@@ -18,14 +18,14 @@ namespace LibGDXSharp.Maths;
 
 public class EarClippingTriangulator
 {
-    private const int      CONCAVE = -1;
-    private const int      CONVEX  = 1;
-    private       short[]? _indices;
+    private const int CONCAVE = -1;
+    private const int CONVEX  = 1;
 
     private readonly List< short > _indicesArray = new();
     private readonly List< short > _triangles    = new();
+    private readonly List< int >   _vertexTypes  = new();
+    private          short[]?      _indices;
     private          int           _vertexCount;
-    private readonly List< int >   _vertexTypes = new();
     private          float[]?      _vertices;
 
     public List< short > ComputeTriangles( List< float > vertices ) => ComputeTriangles( vertices.ToArray(), 0, vertices.Count );

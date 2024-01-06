@@ -234,7 +234,9 @@ public class PolygonSpriteBatch : IPolygonBatch
         get => _colorPacked;
         set
         {
-            Color.Abgr8888ToColor( _color, value );
+            Color color = Color;
+
+            Color.Abgr8888ToColor( ref color, value );
             _colorPacked = value;
         }
     }
@@ -265,8 +267,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         foreach ( var t in region.Triangles )
         {
-            _triangles[ _triangleIndex++ ]
-                = ( short )( t + ( _vertexIndex / Sprite.VertexSize ) );
+            _triangles[ _triangleIndex++ ] = ( short )( t + ( _vertexIndex / Sprite.VertexSize ) );
         }
 
         for ( var i = 0; i < region.Vertices?.Length; i += 2 )

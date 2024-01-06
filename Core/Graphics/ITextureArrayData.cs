@@ -78,6 +78,10 @@ public interface ITextureArrayData
 /// </summary>
 public class TextureArrayDataFactory
 {
-    public static ITextureArrayData LoadFromFiles( Pixmap.Format format, bool useMipMaps, params FileInfo[] files )
-        => new FileTextureArrayData( format, useMipMaps, files );
+    public static ITextureArrayData LoadFromFiles( Pixmap.Format format,
+                                                   bool useMipMaps,
+                                                   params FileInfo[] files )
+    {
+        return new FileTextureArrayData( format, useMipMaps, files );
+    }
 }

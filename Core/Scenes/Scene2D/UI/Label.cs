@@ -541,7 +541,7 @@ public class Label : Widget
     }
 
     public Label( string text, Skin skin, string styleName )
-        : this( text, ( LabelStyle )skin.Get< LabelStyle >( styleName ) )
+        : this( text, skin.Get< LabelStyle >( styleName ) )
     {
     }
 

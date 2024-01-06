@@ -27,11 +27,11 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Dialog : Window
 {
+    private readonly IgnoreTouchDown _ignoreTouchDown = null!;
 
-    private          ChangeListener  _dialogChangeListener = null!;
-    private          FocusListener   _dialogFocusListener  = null!;
-    private          InputListener   _dialogInputListener  = null!;
-    private readonly IgnoreTouchDown _ignoreTouchDown      = null!;
+    private ChangeListener _dialogChangeListener = null!;
+    private FocusListener  _dialogFocusListener  = null!;
+    private InputListener  _dialogInputListener  = null!;
 
     private Skin? _skin;
 

@@ -91,7 +91,6 @@ public class FloatTextureData : ITextureData
           || ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
           || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL ) )
         {
-
             if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
             {
                 throw new GdxRuntimeException( "Extension OES_texture_float not supported!" );

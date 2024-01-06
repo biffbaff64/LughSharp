@@ -18,8 +18,8 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 public class ETC1TextureData : ITextureData
 {
-    private          ETC1.ETC1Data? _data;
     private readonly FileInfo?      _file;
+    private          ETC1.ETC1Data? _data;
 
     public ETC1TextureData( FileInfo file, bool useMipMaps = false )
     {

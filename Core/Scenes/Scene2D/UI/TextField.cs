@@ -54,8 +54,12 @@ public class TextField : Widget
     protected const char DELETE          = '\u007f';
     protected const char BULLET          = '\u0095';
 
-    public static float keyRepeatInitialTime = 0.4f;
-    public static float keyRepeatTime        = 0.1f;
+    public static    float      keyRepeatInitialTime = 0.4f;
+    public static    float      keyRepeatTime        = 0.1f;
+    private readonly IClipboard _clipboard;
+
+    private readonly bool _onlyFontChars = true;
+    private readonly int  _textHAlign    = Align.LEFT;
 
     private readonly Vector2           _tmp1 = new();
     private readonly Vector2           _tmp2 = new();
@@ -67,12 +71,11 @@ public class TextField : Widget
     // Tasks
     // ------------------------------------------------------------------------
 
-    private          float                    _blinkTime = 0.32f;
-    private          CancellationTokenSource? _blinkTokenSource;
-    private readonly IClipboard               _clipboard;
-    private          bool                     _cursorOn;
-    private          bool                     _disabled;
-    private          ITextFieldFilter?        _filter;
+    private float                    _blinkTime = 0.32f;
+    private CancellationTokenSource? _blinkTokenSource;
+    private bool                     _cursorOn;
+    private bool                     _disabled;
+    private ITextFieldFilter?        _filter;
 
     private bool                     _focused;
     private InputListener?           _inputListener;
@@ -85,19 +88,16 @@ public class TextField : Widget
     private ITextFieldListener? _listener;
     private int                 _maxLength;
 
-    private string? _messageText;
-
-    private readonly bool           _onlyFontChars = true;
-    private          StringBuilder? _passwordBuffer;
-    private          char           _passwordCharacter = BULLET;
-    private          bool           _passwordMode;
+    private string?        _messageText;
+    private StringBuilder? _passwordBuffer;
+    private char           _passwordCharacter = BULLET;
+    private bool           _passwordMode;
 
     private bool _programmaticChangeEvents;
 
-    private          float _renderOffset;
-    private          float _selectionWidth;
-    private          float _selectionX;
-    private readonly int   _textHAlign = Align.LEFT;
+    private float _renderOffset;
+    private float _selectionWidth;
+    private float _selectionX;
 
     private string? _undoText = "";
     private int     _visibleTextEnd;
@@ -1063,7 +1063,7 @@ public class TextField : Widget
     }
 
 
-    private class BlinkTask
+    private sealed class BlinkTask
     {
         private static TextField? _tf;
 
@@ -1104,7 +1104,7 @@ public class TextField : Widget
     }
 
 
-    private class KeyRepeatTask
+    private sealed class KeyRepeatTask
     {
         private static TextField? _tf;
         private static int        _keycode;

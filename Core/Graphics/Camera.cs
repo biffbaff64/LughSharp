@@ -27,7 +27,6 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public abstract class Camera
 {
-
     /// <summary>
     ///     Recalculates the projection and view matrix of this camera and the Frustum
     ///     planes. Use this after you've manipulated any of the attributes of the camera.

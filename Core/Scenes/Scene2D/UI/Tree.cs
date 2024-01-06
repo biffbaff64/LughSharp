@@ -29,16 +29,16 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// <typeparam name="TValue"> The type of values for each node. </typeparam>
 public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue >.Node
 {
-    private readonly Vector2 _tmp = new();
-    private          TNode?  _foundNode;
-    private          float   _iconSpacingLeft  = 2;
-    private          float   _iconSpacingRight = 2;
-    private          float   _paddingLeft;
-    private          float   _paddingRight;
-    private          float   _prefHeight;
-    private          float   _prefWidth;
 
     private readonly TreeSelection _selection;
+    private readonly Vector2       _tmp = new();
+    private          TNode?        _foundNode;
+    private          float         _iconSpacingLeft  = 2;
+    private          float         _iconSpacingRight = 2;
+    private          float         _paddingLeft;
+    private          float         _paddingRight;
+    private          float         _prefHeight;
+    private          float         _prefWidth;
     private          bool          _sizeInvalid = true;
 
     /// <summary>

@@ -23,11 +23,11 @@ public class DesktopGLWindow : IDisposable
 {
     private readonly IDesktopGLApplicationBase _application;
     private readonly List< Runnable >          _executedRunnables = new();
-    private readonly List< Runnable >          _runnables         = new();
-    private readonly Vector2                   _tmpV2             = new();
 
-    private readonly bool _iconified        = false;
-    private          bool _requestRendering = false;
+    private readonly bool             _iconified        = false;
+    private readonly List< Runnable > _runnables        = new();
+    private readonly Vector2          _tmpV2            = new();
+    private          bool             _requestRendering = false;
 
     // ------------------------------------------------------------------------
 

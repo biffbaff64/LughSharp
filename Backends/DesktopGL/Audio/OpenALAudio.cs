@@ -31,11 +31,11 @@ public class OpenALAudio : IGLAudio
 
     private readonly ObjectMap< string, Type > _extensionToSoundClass = new();
     private readonly List< uint >?             _idleSources;
-    private          int                       _mostRecentSound = -1;
-    private          long                      _nextSoundId     = 0;
     private readonly OpenALSound?[]?           _recentSounds;
     private readonly Dictionary< long, int >?  _soundIdToSource;
     private readonly Dictionary< int, long >?  _sourceToSoundId;
+    private          int                       _mostRecentSound = -1;
+    private          long                      _nextSoundId     = 0;
 
     /// <summary>
     /// </summary>

@@ -23,11 +23,10 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public class PerspectiveCamera : Camera
 {
-
     private readonly Vector3 _tmp = new();
 
     // the field of view of the height, in degrees.
-    public float fieldOfView = 67;
+    public readonly float fieldOfView = 67;
 
     public PerspectiveCamera()
     {

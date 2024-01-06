@@ -73,7 +73,6 @@ public class Window : Table
 
         AddCaptureListener( new WindowCaptureListener( this ) );
         AddListener( new WindowInputListener( this ) );
-
     }
 
     public bool  DrawTitleTable  { get; set; }

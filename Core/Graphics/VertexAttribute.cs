@@ -27,6 +27,7 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public class VertexAttribute
 {
+
     private readonly int _usageIndex;
 
     /// <summary>
@@ -50,15 +51,18 @@ public class VertexAttribute
     ///     or <see cref="IGL20.GL_UNSIGNED_BYTE" />
     /// </summary>
     public readonly int type;
+
+    /// <summary>
+    ///     optional unit/index specifier, used for texture coordinates and bone weights.
+    /// </summary>
+    public readonly int unit;
     /// <summary>
     ///     The attribute <see cref="usage" />, used for identification.
     /// </summary>
     public readonly int usage;
 
-    /// <summary>
-    ///     optional unit/index specifier, used for texture coordinates and bone weights.
-    /// </summary>
-    public int unit;
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructs a new VertexAttribute. The GL data type is automatically
@@ -144,18 +148,14 @@ public class VertexAttribute
     /// </returns>
     public VertexAttribute Copy() => new( usage, numComponents, type, normalized, alias, unit );
 
-    public static VertexAttribute Position() => new(
-        VertexAttributes.Usage.POSITION,
-        3,
-        ShaderProgram.POSITION_ATTRIBUTE
-        );
+    public static VertexAttribute Position() => new( VertexAttributes.Usage.POSITION,
+                                                     3,
+                                                     ShaderProgram.POSITION_ATTRIBUTE );
 
-    public static VertexAttribute TexCoords( int unit ) => new(
-        VertexAttributes.Usage.TEXTURE_COORDINATES,
-        2,
-        ShaderProgram.TEXCOORD_ATTRIBUTE + unit,
-        unit
-        );
+    public static VertexAttribute TexCoords( int unit ) => new( VertexAttributes.Usage.TEXTURE_COORDINATES,
+                                                                2,
+                                                                ShaderProgram.TEXCOORD_ATTRIBUTE + unit,
+                                                                unit );
 
     public static VertexAttribute Normal() => new( VertexAttributes.Usage.NORMAL,
                                                    3,

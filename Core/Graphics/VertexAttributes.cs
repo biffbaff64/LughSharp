@@ -20,7 +20,6 @@ namespace LibGDXSharp.Graphics;
 
 public class VertexAttributes
 {
-
     /// <summary>
     ///     the attributes in the order they were specified
     /// </summary>
@@ -30,6 +29,9 @@ public class VertexAttributes
     ///     cache of the value calculated by <see cref="Mask" />.
     /// </summary>
     private long _mask = -1;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructor, sets the vertex attributes in a specific order.
@@ -55,7 +57,7 @@ public class VertexAttributes
     /// <summary>
     ///     the size of a single vertex in bytes
     /// </summary>
-    public int VertexSize { get; set; }
+    public int VertexSize { get; private set; }
 
     /// <summary>
     ///     Gets the number of attributes.
@@ -278,7 +280,7 @@ public class VertexAttributes
         return 0;
     }
 
-    public static class Usage
+    public struct Usage
     {
         internal const int POSITION            = 1;
         internal const int COLOR_UNPACKED      = 2;

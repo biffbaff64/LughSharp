@@ -1334,7 +1334,6 @@ public class Cell : IPoolable
                 UniformX    = default( bool ),
                 UniformY    = default( bool )
             };
-
         }
 
         return _defaults;
