@@ -16,11 +16,34 @@
 
 namespace LibGDXSharp.Utils.Async;
 
+[SuppressMessage( "ReSharper", "UnusedParameter.Local" )]
 public class AsyncExecutor
 {
-    public AsyncExecutor( int i, string assetmanager ) => throw new NotImplementedException();
+    private int _tmp;
+    
+    public AsyncExecutor( int i, string assetmanager )
+    {
+        _tmp = 0;
+    }
 
-    public AsyncResult Submit( AssetLoadingTask p0 ) => throw new NotImplementedException();
+    public static AsyncResult Submit( AssetLoadingTask task )
+    {
+        throw new NotImplementedException();
+    }
 
-    public void Dispose() => throw new NotImplementedException();
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            while ( _tmp < 10 )
+            {
+                ++_tmp;
+            }
+        }
+    }
 }

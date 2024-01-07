@@ -18,7 +18,14 @@ namespace LibGDXSharp.Utils;
 
 public class ReadOnlyBufferException : Exception
 {
-    public ReadOnlyBufferException( string? message = "" )
+    /// <summary>
+    /// Throws a new ReadOnlyBufferException.
+    /// </summary>
+    /// <param name="message">
+    /// A string holding an appropriate message.
+    /// The obvious default message for this exception is "This Buffer is Read-Only!".
+    /// </param>
+    public ReadOnlyBufferException( string? message = "This Buffer is Read-Only!" )
         : base( message )
     {
     }

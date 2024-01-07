@@ -81,6 +81,7 @@ public class Mp3Stream : Stream
     /// <summary>
     ///     Gets the chunk size.
     /// </summary>
+    [PublicAPI( "May be used externally" )]
     public static int ChunkSize => BACK_STREAM_BYTE_COUNT_REP;
 
     /// <summary>
@@ -171,6 +172,7 @@ public class Mp3Stream : Stream
     ///     These can subsequently be obtained using the Read method.
     ///     Returns the number of frames that were successfully decoded.
     /// </summary>
+    [PublicAPI( "May be used externally" )]
     public int DecodeFrames( int frameCount )
     {
         var framesDecoded = 0;

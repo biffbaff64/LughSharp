@@ -19,9 +19,9 @@ using System.Runtime.InteropServices;
 
 namespace LibGDXSharp.Audio.OpenAL;
 
+[PublicAPI]
 public class ALC
 {
-
     public readonly static int[] AttrList =
     {
         FREQUENCY,
@@ -180,5 +180,4 @@ public class ALC
     public static extern unsafe void CaptureSamples( IntPtr device, void* buffer, int samples );
 
     #endregion
-
 }

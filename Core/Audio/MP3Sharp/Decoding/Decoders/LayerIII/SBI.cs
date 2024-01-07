@@ -18,7 +18,7 @@ namespace LibGDXSharp.Audio.MP3Sharp;
 
 public class SBI
 {
-
+    [PublicAPI( "May be used externally" )]
     public SBI()
     {
         L = new int[ 23 ];
@@ -31,6 +31,6 @@ public class SBI
         S = thes;
     }
 
-    public int[] L { get; set; }
-    public int[] S { get; set; }
+    public int[] L { get; }
+    public int[] S { get; }
 }

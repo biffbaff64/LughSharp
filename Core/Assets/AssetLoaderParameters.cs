@@ -18,7 +18,6 @@ namespace LibGDXSharp.Assets;
 
 public class AssetLoaderParameters
 {
-
     public ILoadedCallback? LoadedCallback { get; set; }
 
     /// <summary>
@@ -37,5 +36,8 @@ public class DefaultLoadedCallback : AssetLoaderParameters.ILoadedCallback
 
     public DefaultLoadedCallback( int refCount ) => _refCount = refCount;
 
-    public void FinishedLoading( AssetManager assetManager, string fileName, Type type ) => assetManager.SetReferenceCount( fileName, _refCount );
+    public void FinishedLoading( AssetManager assetManager, string fileName, Type type )
+    {
+        assetManager.SetReferenceCount( fileName, _refCount );
+    }
 }

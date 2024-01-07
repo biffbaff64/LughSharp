@@ -20,8 +20,10 @@ public abstract class ShortBuffer : Buffer
 {
     private readonly short[]? _hb;
     private readonly int      _offset;
-    private          bool     _isReadOnly;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     protected ShortBuffer()
     {
     }

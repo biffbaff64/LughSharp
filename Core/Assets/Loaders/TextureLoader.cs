@@ -26,19 +26,11 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </summary>
 public class TextureLoader : AsynchronousAssetLoader, IDisposable
 {
+    private TextureLoaderInfo _loaderInfo;
 
-    private readonly TextureLoaderInfo _loaderInfo;
-
-    public TextureLoader( IFileHandleResolver resolver ) : base( resolver ) => _loaderInfo = new TextureLoaderInfo();
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
+    public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
     {
-        Dispose( true );
-        GC.SuppressFinalize( this );
+        _loaderInfo = new TextureLoaderInfo();
     }
 
     /// <summary>
@@ -122,7 +114,22 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     /// <returns></returns>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter ) => null!;
+                                                             AssetLoaderParameters parameter )
+    {
+        return null!;
+    }
+
+    #region dispose pattern
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
 
     /// <summary>
     /// </summary>
@@ -131,15 +138,24 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     {
         if ( disposing )
         {
+            _loaderInfo = null!;
         }
     }
 
+    #endregion dispose pattern
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public class TextureLoaderInfo
     {
         public string?       Filename { get; set; }
         public ITextureData? Data     { get; set; }
         public Texture?      Texture  { get; set; }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>

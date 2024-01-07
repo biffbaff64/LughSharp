@@ -57,13 +57,12 @@ namespace LibGDXSharp.Assets.Loaders.Resolvers;
 /// </summary>
 public class ResolutionFileResolver : IFileHandleResolver
 {
-
-    protected IFileHandleResolver baseResolver;
-    protected Resolution[]        descriptors;
+    protected readonly IFileHandleResolver baseResolver;
+    protected readonly Resolution[]        descriptors;
 
     /// <summary>
-    ///     Creates a <see cref="ResolutionFileResolver" /> based on a given <see cref="IFileHandleResolver" />
-    ///     and a list of <see cref="Resolution" />s.
+    ///     Creates a <see cref="ResolutionFileResolver" /> based on a given
+    ///     <see cref="IFileHandleResolver" /> and a list of <see cref="Resolution" />s.
     /// </summary>
     /// <param name="baseResolver">
     ///     The <see cref="IFileHandleResolver" /> that will ultimately used to resolve the file.
@@ -153,13 +152,14 @@ public class ResolutionFileResolver : IFileHandleResolver
 
     public class Resolution
     {
-
-        /**
-         * Constructs a {@code Resolution}.
-         * @param portraitWidth This resolution's width.
-         * @param portraitHeight This resolution's height.
-         * @param folder The name of the folder, where the assets which fit this resolution, are located.
-         */
+        /// <summary>
+        /// Constructs a {@code Resolution}.
+        /// </summary>
+        /// <param name="portraitWidth"> This resolution's width. </param>
+        /// <param name="portraitHeight"> This resolution's height. </param>
+        /// <param name="folder">
+        /// The name of the folder, where the assets which fit this resolution, are located.
+        /// </param>
         public Resolution( int portraitWidth, int portraitHeight, string folder )
         {
             PortraitWidth  = portraitWidth;
@@ -167,10 +167,10 @@ public class ResolutionFileResolver : IFileHandleResolver
             Folder         = folder;
         }
 
-        public int PortraitWidth  { get; set; }
-        public int PortraitHeight { get; set; }
+        public int PortraitWidth  { get; }
+        public int PortraitHeight { get; }
 
         // The name of the folder, where the assets which fit this resolution, are located.
-        public string Folder { get; set; }
+        public string Folder { get; }
     }
 }

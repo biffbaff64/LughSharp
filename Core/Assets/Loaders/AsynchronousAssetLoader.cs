@@ -22,7 +22,10 @@ public abstract class AsynchronousAssetLoader : AssetLoader
     /// </summary>
     /// <param name="resolver"></param>
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )
-        : base( resolver ) => IsSynchronous = false;
+        : base( resolver )
+    {
+        IsSynchronous = false;
+    }
 
     /// <summary>
     /// </summary>

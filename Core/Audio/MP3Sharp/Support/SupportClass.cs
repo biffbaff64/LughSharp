@@ -1,18 +1,18 @@
-﻿// ///////////////////////////////////////////////////////////////////////////////
-// // Copyright [2023] [Richard Ikin]
-// //
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //
-// // http: //www.apache.org/licenses/LICENSE-2.0
-// //
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// ///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///////////////////////////////////////////////////////////////////////////////
 
 namespace LibGDXSharp.Audio.MP3Sharp.Support;
 
@@ -28,6 +28,7 @@ public class SupportClass
         return ( number >> bits ) + ( 2 << ~bits );
     }
 
+    [PublicAPI( "May be used externally" )]
     public static int URShift( int number, long bits ) => URShift( number, ( int )bits );
 
     public static long URShift( long number, int bits )
@@ -40,6 +41,7 @@ public class SupportClass
         return ( number >> bits ) + ( 2L << ~bits );
     }
 
+    [PublicAPI( "May be used externally" )]
     public static long URShift( long number, long bits ) => URShift( number, ( int )bits );
 
     public static void WriteStackTrace( Exception throwable, TextWriter stream )
@@ -60,6 +62,7 @@ public class SupportClass
     /// </summary>
     /// <param name="literal">The literal to return</param>
     /// <returns>The received value</returns>
+    [PublicAPI( "May be used externally" )]
     public static ulong Identity( ulong literal ) => literal;
 
     /// <summary>
@@ -67,6 +70,7 @@ public class SupportClass
     /// </summary>
     /// <param name="literal">The literal to return</param>
     /// <returns>The received value</returns>
+    [PublicAPI( "May be used externally" )]
     public static float Identity( float literal ) => literal;
 
     /// <summary>
@@ -74,6 +78,7 @@ public class SupportClass
     /// </summary>
     /// <param name="literal">The literal to return</param>
     /// <returns>The received value</returns>
+    [PublicAPI( "May be used externally" )]
     public static double Identity( double literal ) => literal;
 
     /// <summary>
@@ -88,6 +93,7 @@ public class SupportClass
     ///     The number of characters read. The number will be less than or equal to count depending on the data available
     ///     in the source Stream.
     /// </returns>
+    [PublicAPI( "May be used externally" )]
     public static int ReadInput( Stream sourceStream, ref sbyte[] target, int start, int count )
     {
         var receiver  = new byte[ target.Length ];
@@ -123,6 +129,7 @@ public class SupportClass
     /// </summary>
     /// <param name="sourceString">The string to be converted</param>
     /// <returns>The new array of bytes</returns>
+    [PublicAPI( "May be used externally" )]
     public static byte[] ToByteArray( string sourceString )
     {
         var byteArray = new byte[ sourceString.Length ];

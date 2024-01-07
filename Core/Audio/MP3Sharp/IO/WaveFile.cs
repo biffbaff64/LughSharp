@@ -1,18 +1,18 @@
-// ///////////////////////////////////////////////////////////////////////////////
-// // Copyright [2023] [Richard Ikin]
-// //
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //
-// // http: //www.apache.org/licenses/LICENSE-2.0
-// //
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
-// ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Audio.MP3Sharp.Support;
 
@@ -21,6 +21,11 @@ namespace LibGDXSharp.Audio.MP3Sharp;
 /// <summary>
 ///     public class allowing WaveFormat Access
 /// </summary>
+/// <remarks>
+/// This class is marked as [PublicAPI] to indicate to ReSharper that
+/// methods and members etc may be called externally.
+/// </remarks>
+[PublicAPI]
 public class WaveFile : RiffFile
 {
     public const int MAX_WAVE_CHANNELS = 2;
@@ -164,7 +169,6 @@ public class WaveFile : RiffFile
 
     public class WaveFormatChunkData
     {
-
         public WaveFormatChunkData( WaveFile enclosingInstance )
         {
             EnclosingInstance = enclosingInstance;
@@ -192,10 +196,8 @@ public class WaveFile : RiffFile
         }
     }
 
-
     public class WaveFormatChunk
     {
-
         public WaveFormatChunk( WaveFile enclosingInstance )
         {
             EnclosingInstance = enclosingInstance;
@@ -220,10 +222,8 @@ public class WaveFile : RiffFile
         }
     }
 
-
     public class WaveFileSample
     {
-
         public WaveFileSample( WaveFile enclosingInstance )
         {
             EnclosingInstance = enclosingInstance;

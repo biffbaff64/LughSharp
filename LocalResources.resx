@@ -123,18 +123,7 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <assembly alias="System.Windows.Forms"
-              name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
-    <data name="arial_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
-        <value>Resources\arial-15.fnt;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </data>
-    <data name="arial_151" type="System.Resources.ResXFileRef, System.Windows.Forms">
-        <value>Resources\arial-15.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </data>
+    <assembly alias="System.Windows.Forms"/>
     <data name="ETC1Data_warning__PowerVR_GPUs" xml:space="preserve">
         <value>ETC1Data warning: non-power-of-two ETC1textures may crash the driver of PowerVR GPUs</value>
     </data>

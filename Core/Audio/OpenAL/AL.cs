@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 
 namespace LibGDXSharp.Audio.OpenAL;
 
+[PublicAPI]
 public static class AL
 {
 

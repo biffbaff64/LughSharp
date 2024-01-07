@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
-[PublicAPI, Serializable]
+[Serializable]
 public class CircularByteBuffer
 {
     private byte[] _buffer;

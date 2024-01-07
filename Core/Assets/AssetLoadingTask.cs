@@ -18,7 +18,7 @@ using LibGDXSharp.Utils.Async;
 
 namespace LibGDXSharp.Assets;
 
-public class AssetLoadingTask
+public class AssetLoadingTask : IAsyncTask
 {
     private readonly AssetLoader _loader;
 
@@ -50,11 +50,14 @@ public class AssetLoadingTask
                              AssetLoader loader,
                              AsyncExecutor threadPool )
     {
-        _manager   = manager;
-        AssetDesc  = assetDesc;
-        _loader    = loader;
-        _executor  = threadPool;
-        _startTime = manager.Log.Level == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
+        _manager  = manager;
+        AssetDesc = assetDesc;
+        _loader   = loader;
+        _executor = threadPool;
+
+        _startTime = manager.Log.Level == Logger.LOG_DEBUG
+            ? TimeUtils.NanoTime()
+            : 0;
     }
 
     public bool            DependenciesLoaded { get; set; }
@@ -228,9 +231,9 @@ public class AssetLoadingTask
         {
             if ( _depsFuture == null )
             {
-                _depsFuture = _executor.Submit( this );
+                _depsFuture = AsyncExecutor.Submit( this );
             }
-            else if ( _depsFuture.IsDone() )
+            else if ( _depsFuture.IsDone )
             {
                 try
                 {
@@ -254,7 +257,7 @@ public class AssetLoadingTask
         }
         else if ( ( _loadFuture == null ) && !_asyncDone )
         {
-            _loadFuture = _executor.Submit( this );
+            _loadFuture = AsyncExecutor.Submit( this );
         }
         else if ( _asyncDone )
         {
@@ -263,7 +266,7 @@ public class AssetLoadingTask
                                           Resolve( _loader, AssetDesc ),
                                           AssetDesc.Parameters! );
         }
-        else if ( ( _loadFuture != null ) && _loadFuture.IsDone() )
+        else if ( ( _loadFuture != null ) && _loadFuture.IsDone )
         {
             try
             {

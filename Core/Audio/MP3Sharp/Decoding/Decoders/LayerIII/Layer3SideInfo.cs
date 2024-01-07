@@ -26,7 +26,7 @@ public class Layer3SideInfo
         Channels[ 1 ] = new ChannelData();
     }
 
-    public ChannelData[] Channels      { get; set; }
+    public ChannelData[] Channels      { get; }
     public int           MainDataBegin { get; set; }
     public int           PrivateBits   { get; set; }
 }

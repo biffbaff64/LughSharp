@@ -16,14 +16,14 @@
 
 namespace LibGDXSharp.Extensions;
 
-/// <summary>
-///     Collects files recursively, filtering by file name. Callbacks are provided to
-///     process files and the results are collected, either <see cref="ProcessFile(Entry)" />
-///     or <see cref="ProcessDir(Entry, List)" /> can be overridden, or both. The
-///     entries provided to the callbacks have the original file, the output directory,
-///     and the output file. If <see cref="SetFlattenOutput(bool)" /> is false, the output
-///     will match the directory structure of the input.
-/// </summary>
+///// <summary>
+/////     Collects files recursively, filtering by file name. Callbacks are provided to
+/////     process files and the results are collected, either <see cref="ProcessFile(Entry)" />
+/////     or <see cref="ProcessDir(Entry, List)" /> can be overridden, or both. The
+/////     entries provided to the callbacks have the original file, the output directory,
+/////     and the output file. If <see cref="SetFlattenOutput(bool)" /> is false, the output
+/////     will match the directory structure of the input.
+///// </summary>
 public class FileProcessor
 {
 //    FilenameFilter inputFilter;

@@ -18,8 +18,8 @@ namespace LibGDXSharp.Audio.MP3Sharp;
 
 public class ChannelData
 {
-    public GranuleInfo[] granules;
-    public int[]         scaleFactorBits;
+    public readonly GranuleInfo[] granules;
+    public readonly int[]         scaleFactorBits;
 
     public ChannelData()
     {

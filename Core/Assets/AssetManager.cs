@@ -28,11 +28,9 @@ namespace LibGDXSharp.Assets;
 /// </summary>
 public class AssetManager
 {
-    private readonly Dictionary< string, List< string > >? _assetDependencies = new();
-
-    private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets = new();
-
-    private readonly Dictionary< string, Type? > _assetTypes = new();
+    private readonly Dictionary< string, List< string > >?                          _assetDependencies = new();
+    private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets            = new();
+    private readonly Dictionary< string, Type? >                                    _assetTypes        = new();
 
     private readonly AsyncExecutor                                           _executor;
     private readonly List< string >                                          _injected  = new();
@@ -113,28 +111,28 @@ public class AssetManager
 
             if ( type == null )
             {
-                throw new GdxRuntimeException( "Asset not loaded - " + name );
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
             Dictionary< string, IRefCountedContainer > assetsByType = _assets[ type ];
 
             if ( assetsByType == null )
             {
-                throw new GdxRuntimeException( "Asset not loaded - " + name );
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
             IRefCountedContainer? assetContainer = assetsByType[ name ];
 
             if ( assetContainer == null )
             {
-                throw new GdxRuntimeException( "Asset not loaded - " + name );
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
             asset = ( T? )assetContainer.Asset;
 
             if ( asset == null )
             {
-                throw new GdxRuntimeException( "Asset not loaded - " + name );
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
         }
 
@@ -156,21 +154,21 @@ public class AssetManager
 
             if ( assetsByType == null )
             {
-                throw new GdxRuntimeException( "Asset not loaded - " + name );
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
             IRefCountedContainer? assetContainer = assetsByType[ name ];
 
             if ( assetContainer == null )
             {
-                throw new GdxRuntimeException( "Asset not loaded - " + name );
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
             var asset = ( T? )assetContainer.Asset;
 
             if ( asset == null )
             {
-                throw new GdxRuntimeException( "Asset not loaded - " + name );
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
             return asset;
@@ -522,11 +520,8 @@ public class AssetManager
             if ( ( desc.Filepath == fileName ) && ( desc.AssetType != type ) )
             {
                 throw new GdxRuntimeException
-                    (
-                    $"Asset with name '{fileName}'"
-                  + $"' already in preload queue, but has different type (expected: {type?.Name}"
-                  + ", found: {desc.Type?.Name})"
-                    );
+                    ( $"Asset with name '{fileName}' already in preload queue, but has "
+                    + $"different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
             }
         }
 
@@ -771,7 +766,7 @@ public class AssetManager
         else
         {
             // else add a new task for the asset.
-            Log.Info( "Loading dependency: " + dependendAssetDesc );
+            Log.Info( $"Loading dependency: {dependendAssetDesc}" );
 
             AddTask( dependendAssetDesc );
         }
@@ -804,11 +799,9 @@ public class AssetManager
 
             IncrementRefCountedDependencies( assetDesc.Filepath );
 
-            assetDesc.Parameters?.LoadedCallback?.FinishedLoading(
-                this,
-                assetDesc.Filepath,
-                assetDesc.AssetType
-                );
+            assetDesc.Parameters?.LoadedCallback?.FinishedLoading( this,
+                                                                   assetDesc.Filepath,
+                                                                   assetDesc.AssetType );
 
             _loaded++;
         }
@@ -1066,11 +1059,19 @@ public class AssetManager
     /// </summary>
     public void Dispose()
     {
-        Clear();
-
-        _executor.Dispose();
+        Dispose( true );
     }
 
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            Clear();
+
+            _executor.Dispose();
+        }
+    }
+    
     /// <summary>
     ///     Clears and disposes all assets and the preloading queue.
     /// </summary>
@@ -1147,7 +1148,7 @@ public class AssetManager
 
         if ( type == null )
         {
-            throw new GdxRuntimeException( "Asset not loaded: " + fileName );
+            throw new GdxRuntimeException( $"Asset not loaded: {fileName}" );
         }
 
         if ( _assets == null )
@@ -1169,7 +1170,7 @@ public class AssetManager
 
         if ( type == null )
         {
-            throw new GdxRuntimeException( "Asset not loaded: " + fileName );
+            throw new GdxRuntimeException( $"Asset not loaded: {fileName}" );
         }
 
         _assets[ type ][ fileName ].RefCount = refCount;
@@ -1250,7 +1251,7 @@ public class AssetManager
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public List< string >? GetDependencies( string name )
+    public IEnumerable< string >? GetDependencies( string name )
     {
         lock ( this )
         {
@@ -1259,9 +1260,10 @@ public class AssetManager
     }
 
     /// <summary>
+    /// Returns the asset type for the given asset name.
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="name"> String holding the asset name. </param>
+    /// <returns> The asset type. </returns>
     public Type? GetAssetType( string name )
     {
         lock ( this )

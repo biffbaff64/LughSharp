@@ -18,7 +18,6 @@ namespace LibGDXSharp.Audio.MP3Sharp;
 
 public class ScaleFactorData
 {
-
     public ScaleFactorData()
     {
         L = new int[ 23 ];
@@ -30,6 +29,6 @@ public class ScaleFactorData
         }
     }
 
-    public int[]   L { get; set; } /* [cb] */
-    public int[][] S { get; set; } /* [window][cb] */
+    public int[]   L { get; } /* [cb] */
+    public int[][] S { get; } /* [window][cb] */
 }

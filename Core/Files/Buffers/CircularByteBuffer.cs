@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Files.Buffers;
 
-[PublicAPI, Serializable]
+[Serializable]
 public class CircularByteBuffer
 {
     private byte[] _buffer;

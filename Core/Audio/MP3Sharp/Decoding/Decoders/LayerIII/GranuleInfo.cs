@@ -29,7 +29,7 @@ public class GranuleInfo
     public int   Region1Count        { get; set; }
     public int   ScaleFacCompress    { get; set; }
     public int   ScaleFacScale       { get; set; }
-    public int[] SubblockGain        { get; set; } = new int[ 3 ];
-    public int[] TableSelect         { get; set; } = new int[ 3 ];
+    public int[] SubblockGain        { get; } = new int[ 3 ];
+    public int[] TableSelect         { get; } = new int[ 3 ];
     public int   WindowSwitchingFlag { get; set; }
 }

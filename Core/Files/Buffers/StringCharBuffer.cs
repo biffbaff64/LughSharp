@@ -33,13 +33,11 @@ public class StringCharBuffer : CharBuffer
         _string = csq;
     }
 
-    private StringCharBuffer( string s,
-                              int mark,
-                              int pos,
-                              int limit,
-                              int cap,
-                              int offset )
-        : base( mark, pos, limit, cap, null, offset ) => _string = s;
+    private StringCharBuffer( string s, int mark, int pos, int limit, int cap, int offset )
+        : base( mark, pos, limit, cap, null, offset )
+    {
+        _string = s;
+    }
 
     /// <summary>
     ///     Returns <tt>true</tt> if, and only if, this buffer is read-only.
@@ -65,14 +63,15 @@ public class StringCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Slice() => new StringCharBuffer(
-        _string,
-        -1,
-        0,
-        Remaining(),
-        Remaining(),
-        offset + Position
-        );
+    public override CharBuffer Slice()
+    {
+        return new StringCharBuffer( _string,
+                                     -1,
+                                     0,
+                                     Remaining(),
+                                     Remaining(),
+                                     offset + Position );
+    }
 
     /// <summary>
     ///     Creates a new char buffer that shares this buffer's content.
@@ -90,7 +89,10 @@ public class StringCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Duplicate() => new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, offset );
+    public override CharBuffer Duplicate()
+    {
+        return new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, offset );
+    }
 
     /// <summary>
     ///     Creates a new, read-only char buffer that shares this buffer's
@@ -184,14 +186,12 @@ public class StringCharBuffer : CharBuffer
     {
         try
         {
-            return new StringCharBuffer(
-                _string,
-                -1,
-                Position + CheckIndex( start, Position ),
-                Position + CheckIndex( end, Position ),
-                Capacity,
-                offset
-                );
+            return new StringCharBuffer( _string,
+                                         -1,
+                                         Position + CheckIndex( start, Position ),
+                                         Position + CheckIndex( end, Position ),
+                                         Capacity,
+                                         offset );
         }
         catch ( ArgumentException )
         {

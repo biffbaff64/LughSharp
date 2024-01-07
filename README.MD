@@ -316,6 +316,7 @@ FILES/BUFFERS - DELETE CANDIDATE
     - IP   - BufferUtils
     - DONE - ByteBuffer
     - DONE - CharBuffer
+    - IP   - CircularByteBuffer
     - IP   - DirectByteBuffer
     - IP   - DoubleBuffer
     - DONE - FloatBuffer

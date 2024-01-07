@@ -18,7 +18,10 @@ namespace LibGDXSharp.Utils.Async;
 
 public class AsyncResult
 {
-    public bool IsDone() => throw new NotImplementedException();
+    public bool IsDone { get; set; }
 
-    public void Get() => throw new NotImplementedException();
+    // ReSharper disable once MemberCanBeMadeStatic.Global
+    public void Get()
+    {
+    }
 }

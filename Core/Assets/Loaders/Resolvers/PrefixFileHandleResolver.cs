@@ -24,15 +24,14 @@ namespace LibGDXSharp.Assets.Loaders.Resolvers;
 /// </summary>
 public class PrefixFileHandleResolver : IFileHandleResolver
 {
-
     public PrefixFileHandleResolver( IFileHandleResolver baseResolver, string prefix )
     {
         BaseResolver = baseResolver;
         Prefix       = prefix;
     }
 
-    public string              Prefix       { get; set; }
-    public IFileHandleResolver BaseResolver { get; set; }
+    public string              Prefix       { get; }
+    public IFileHandleResolver BaseResolver { get; }
 
     /// <inheritdoc />
     public FileInfo Resolve( string fileName ) => BaseResolver.Resolve( Prefix + fileName );

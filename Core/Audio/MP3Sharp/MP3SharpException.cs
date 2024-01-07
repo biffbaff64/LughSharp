@@ -26,7 +26,7 @@ namespace LibGDXSharp.Audio.MP3Sharp;
 ///     common handling of exceptions from other domains, the class
 ///     can delegate some functionality to a contained Throwable instance.
 /// </summary>
-[PublicAPI, Serializable]
+[Serializable]
 public class Mp3SharpException : Exception
 {
     public Mp3SharpException()

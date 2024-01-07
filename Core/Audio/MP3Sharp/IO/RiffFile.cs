@@ -19,8 +19,13 @@ using LibGDXSharp.Audio.MP3Sharp.Support;
 namespace LibGDXSharp.Audio.MP3Sharp;
 
 /// <summary>
-///     public class to manage RIFF files
+///     public class to manage RIFF files.
 /// </summary>
+/// <remarks>
+/// This class is marked as [PublicAPI] to indicate to ReSharper that
+/// methods and members etc may be called externally.
+/// </remarks>
+[PublicAPI]
 public class RiffFile
 {
     protected const int DDC_SUCCESS       = 0; // The operation succeded
@@ -634,7 +639,6 @@ public class RiffFile
 
     public class RiffChunkHeader
     {
-
         // Length of data in chunk
         public RiffChunkHeader( RiffFile enclosingInstance ) => InitBlock( enclosingInstance );
 
