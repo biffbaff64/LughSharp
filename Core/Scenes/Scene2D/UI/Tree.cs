@@ -29,7 +29,6 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// <typeparam name="TValue"> The type of values for each node. </typeparam>
 public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue >.Node
 {
-
     private readonly TreeSelection _selection;
     private readonly Vector2       _tmp = new();
     private          TNode?        _foundNode;
@@ -760,7 +759,6 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     /// </summary>
     public class TreeStyle
     {
-
         public TreeStyle( IDrawable plus, IDrawable minus, IDrawable? selection )
         {
             Plus      = plus;
@@ -802,7 +800,6 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     /// </summary>
     public class Node
     {
-
         private Actor? _actor;
 
         /// <summary>

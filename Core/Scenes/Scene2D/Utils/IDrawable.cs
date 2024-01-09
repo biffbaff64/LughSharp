@@ -25,7 +25,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// </summary>
 public interface IDrawable
 {
-
     float LeftWidth { get; set; }
 
     float RightWidth { get; set; }

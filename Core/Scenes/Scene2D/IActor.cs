@@ -17,5 +17,4 @@
 namespace LibGDXSharp.Scenes.Scene2D;
 
 public interface IActor
-{
-}
+{}

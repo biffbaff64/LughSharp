@@ -24,7 +24,6 @@ namespace LibGDXSharp.Assets.Loaders;
 public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     where TP : ModelLoader< TP >.ModelParameters
 {
-
     protected readonly ModelParameters defaultParameters = new();
 
     // Check this declaration.
@@ -200,7 +199,6 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
     public class ModelParameters : AssetLoaderParameters
     {
-
         public ModelParameters()
         {
             TextureParameter           = new TextureLoader.TextureParameter();

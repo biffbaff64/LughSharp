@@ -20,7 +20,6 @@ namespace LibGDXSharp.Graphics.G2D;
 
 public class Gdx2DPixmap : IDisposable
 {
-
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -356,5 +355,4 @@ public class Gdx2DPixmap : IDisposable
     public long[]     nativeData = new long[ 4 ]; //
 
     #endregion data
-
 }

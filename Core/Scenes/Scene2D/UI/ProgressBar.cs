@@ -609,7 +609,6 @@ public class ProgressBar : Widget, IDisableable
     /// </summary>
     public class ProgressBarStyle
     {
-
         public ProgressBarStyle()
         {
         }

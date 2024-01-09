@@ -27,7 +27,6 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public class VertexAttribute
 {
-
     private readonly int _usageIndex;
 
     /// <summary>

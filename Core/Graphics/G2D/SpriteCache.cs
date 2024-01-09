@@ -70,7 +70,6 @@ namespace LibGDXSharp.Graphics.G2D;
 /// </summary>
 public class SpriteCache
 {
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -1339,5 +1338,4 @@ public class SpriteCache
     public ShaderProgram? CustomShader { get; set; }
 
     #endregion shaders
-
 }

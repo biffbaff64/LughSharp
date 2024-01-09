@@ -30,7 +30,6 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public class Selector<T>
 {
-
     private       QuickSelect< T >? _quickSelect;
     public static Selector< T >     Instance { get; } = new();
 

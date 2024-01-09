@@ -23,7 +23,6 @@ namespace LibGDXSharp.Maps.Tiled;
 
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 {
-
     /// <summary>
     ///     Creates a new TmxMapLoader using a <see cref="InternalFileHandleResolver" />.
     /// </summary>
@@ -299,6 +298,5 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
 
     public new class Parameters
         : BaseTmxMapLoader< Parameters >.Parameters
-    {
-    }
+    {}
 }

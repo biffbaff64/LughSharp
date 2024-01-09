@@ -1297,7 +1297,7 @@ public class Cell : IPoolable
         //@formatter:on
     }
 
-    public new string? ToString() => Actor != null ? Actor.ToString() : base.ToString();
+    public override string? ToString() => Actor != null ? Actor.ToString() : base.ToString();
 
     /// <summary>
     ///     Returns the defaults to use for all cells. This can be used to avoid

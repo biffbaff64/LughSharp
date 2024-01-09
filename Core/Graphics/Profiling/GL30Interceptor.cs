@@ -22,7 +22,6 @@ namespace LibGDXSharp.Graphics.Profiling;
 
 public class GL30Interceptor : GLInterceptor, IGL30
 {
-
     public GL30Interceptor( GLProfiler glProfiler, IGL30 gl30 )
         : base( glProfiler ) => GL30 = gl30;
 

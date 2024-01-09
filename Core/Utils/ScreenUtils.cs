@@ -27,7 +27,6 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public class ScreenUtils
 {
-
     /// <summary>
     ///     Returns the current framebuffer contents as a <see cref="TextureRegion" /> with
     ///     a width and height equal to the current screen size.

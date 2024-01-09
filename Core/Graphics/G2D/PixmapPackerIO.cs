@@ -23,7 +23,6 @@ namespace LibGDXSharp.Graphics.G2D;
 /// </summary>
 public class PixmapPackerIO
 {
-
     /// <summary>
     ///     Saves the provided PixmapPacker to the provided file. The resulting
     ///     file will use the standard TextureAtlas file format and can be loaded

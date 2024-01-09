@@ -18,7 +18,6 @@ namespace LibGDXSharp.Scenes.Scene2D;
 
 public class InputEvent : Event
 {
-
     /// <summary>
     ///     Types of low-level input events supported by scene2d.
     /// </summary>

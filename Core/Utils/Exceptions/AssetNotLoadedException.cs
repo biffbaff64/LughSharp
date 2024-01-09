@@ -18,7 +18,6 @@ namespace LibGDXSharp.Utils;
 
 public class AssetNotLoadedException : Exception
 {
-
     public AssetNotLoadedException( Type type, string path, AssetLoaderParameters param )
         : base( $"Asset not loaded: '{path}' ({type})" )
     {

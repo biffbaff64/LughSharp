@@ -815,5 +815,5 @@ public class Affine2 // : ISerializable
 
     /// <summary>
     /// </summary>
-    public new string ToString() => "[" + m00 + "|" + m01 + "|" + m02 + "]\n[" + m10 + "|" + m11 + "|" + m12 + "]\n[0.0|0.0|0.1]";
+    public override string ToString() => "[" + m00 + "|" + m01 + "|" + m02 + "]\n[" + m10 + "|" + m11 + "|" + m12 + "]\n[0.0|0.0|0.1]";
 }

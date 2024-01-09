@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.G2D;
 
 public class TextureAtlas
 {
-
     /// <summary>
     ///     Creates an empty atlas to which regions can be added.
     /// </summary>

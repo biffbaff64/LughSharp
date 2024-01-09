@@ -19,9 +19,8 @@ using System.Text;
 using LibGDXSharp.Files.Buffers;
 
 using Buffer = LibGDXSharp.Files.Buffers.Buffer;
-using ErrorCode = OpenGL.ErrorCode;
 
-namespace LibGDXSharp.Backends.Desktop;
+namespace LibGDXSharp.Backends.Desktop.Graphics;
 
 public class DesktopGL20 : IGL20
 {

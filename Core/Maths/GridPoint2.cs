@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maths;
 
 public class GridPoint2
 {
-
     /// <summary>
     ///     Constructs a new 2D grid point.
     /// </summary>
@@ -186,7 +185,7 @@ public class GridPoint2
     /// <returns> a copy of this grid point </returns>
     public GridPoint2 Cpy() => new( this );
 
-    public new bool Equals( object? o )
+    public override bool Equals( object? o )
     {
         if ( this == o )
         {
@@ -203,15 +202,16 @@ public class GridPoint2
         return ( X == g.X ) && ( Y == g.Y );
     }
 
-    public int HashCode()
+    //TODO: 
+    public override int GetHashCode()
     {
-        var prime = 53;
+        const int PRIME = 53;
 
-        var result = prime + X;
-        result = ( prime * result ) + Y;
+        var result = PRIME + 31;
+        result = ( PRIME * result ) + 32;
 
         return result;
     }
 
-    public new string ToString() => $"({X},{Y})";
+    public override string ToString() => $"({X},{Y})";
 }

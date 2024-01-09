@@ -29,7 +29,6 @@ namespace LibGDXSharp.Utils.Viewport;
 /// </summary>
 public abstract class Viewport
 {
-
     private Vector3 _tmp = Vector3.Zero;
 
     // ------------------------------------------------------------------------
@@ -304,5 +303,4 @@ public abstract class Viewport
     public int     ScreenHeight { get; set; }
 
     #endregion properties
-
 }

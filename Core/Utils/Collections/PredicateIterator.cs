@@ -20,7 +20,6 @@ namespace LibGDXSharp.Utils.Collections;
 
 public class PredicateIterator<T> : IEnumerator< T >
 {
-
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>

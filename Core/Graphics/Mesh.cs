@@ -1724,5 +1724,4 @@ public class Mesh
     }
 
     #endregion constructors
-
 }

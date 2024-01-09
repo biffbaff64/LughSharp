@@ -18,8 +18,6 @@ namespace LibGDXSharp.Maps.Objects;
 
 public class PolylineMapObject : MapObject
 {
-
-
     /// <summary>
     ///     Creates empty polyline
     /// </summary>

@@ -41,7 +41,6 @@ internal struct CallerID
 /// </summary>
 public static class Trace
 {
-
     private static string _debugFilePath = "";
     private static string _debugFileName = "";
 
@@ -507,5 +506,4 @@ public static class Trace
     public static int  TraceLevel        { get; set; } = LOG_NONE;
 
     #endregion properties
-
 }

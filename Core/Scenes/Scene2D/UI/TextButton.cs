@@ -172,7 +172,7 @@ public class TextButton : Button
 
     // ------------------------------------------------------------------------
 
-    public new string ToString()
+    public override string ToString()
     {
         if ( Name != null )
         {
@@ -198,7 +198,6 @@ public class TextButton : Button
     /// </summary>
     public class TextButtonStyle : ButtonStyle
     {
-
         protected TextButtonStyle()
         {
         }

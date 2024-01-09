@@ -20,7 +20,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 public class IndexArray : IIndexData, IDisposable
 {
-
     // used to work around bug: https://android-review.googlesource.com/#/c/73175/
     private readonly bool        _empty;
     private          ShortBuffer _buffer;

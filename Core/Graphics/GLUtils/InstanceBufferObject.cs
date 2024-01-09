@@ -22,7 +22,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 public class InstanceBufferObject : IInstanceData
 {
-
     private FloatBuffer _buffer = null!;
     private int         _bufferHandle;
     private ByteBuffer? _byteBuffer;

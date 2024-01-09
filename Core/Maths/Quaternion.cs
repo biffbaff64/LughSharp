@@ -103,7 +103,7 @@ public class Quaternion
     /// <returns> the euclidean length of this quaternion </returns>
     public float Len() => ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W ) );
 
-    public new string ToString() => "[" + X + "|" + Y + "|" + Z + "|" + W + "]";
+    public override string ToString() => "[" + X + "|" + Y + "|" + Z + "|" + W + "]";
 
     /// <summary></summary>
     /// Sets the quaternion to the given euler angles in degrees.

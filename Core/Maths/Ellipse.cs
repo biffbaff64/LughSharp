@@ -23,7 +23,6 @@ namespace LibGDXSharp.Maths;
 /// </summary>
 public class Ellipse : ISerializable, IShape2D
 {
-
     /// <summary>
     ///     Construct a new ellipse with all values set to zero
     /// </summary>

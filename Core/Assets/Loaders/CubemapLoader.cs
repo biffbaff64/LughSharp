@@ -18,7 +18,6 @@ namespace LibGDXSharp.Assets.Loaders;
 
 public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
-
     private CubemapLoaderInfo _loaderInfo = new()
     {
         filename    = "",
@@ -140,7 +139,6 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
 
     public class CubemapParameter : AssetLoaderParameters
     {
-
         // The texture to put the TextureData in, optional.
         public Cubemap? cubemap = null;
 

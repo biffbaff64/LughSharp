@@ -20,7 +20,6 @@ namespace LibGDXSharp.Scenes.Scene2D;
 
 public abstract class Action : IPoolable
 {
-
     /// <summary>
     ///     The actor this action is attached to, or null if it is not attached.
     /// </summary>

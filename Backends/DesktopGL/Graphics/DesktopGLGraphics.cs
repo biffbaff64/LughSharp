@@ -16,15 +16,12 @@
 
 using LibGDXSharp.Files.Buffers;
 
-using Monitor = GLFW.Monitor;
-
-namespace LibGDXSharp.Backends.Desktop;
+namespace LibGDXSharp.Backends.Desktop.Graphics;
 
 using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
-
     private readonly IntBuffer                       _tmpBuffer                   = BufferUtils.NewIntBuffer( 1 );
     private readonly IntBuffer                       _tmpBuffer2                  = BufferUtils.NewIntBuffer( 1 );
     private          IGraphics.DisplayModeDescriptor _displayModeBeforeFullscreen = null!;
@@ -500,7 +497,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
     {
-
         public DesktopGLDisplayMode( GLFW.Monitor monitor,
                                      int width,
                                      int height,
@@ -540,5 +536,4 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     #endregion IDisposable implementation
-
 }

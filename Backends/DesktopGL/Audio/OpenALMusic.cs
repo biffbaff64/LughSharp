@@ -471,5 +471,4 @@ public abstract class OpenALMusic : IMusic
     }
 
     #endregion properties
-
 }

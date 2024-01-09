@@ -20,7 +20,6 @@ namespace LibGDXSharp.Maps.Tiled;
 
 public class TiledMapImageLayer : MapLayer
 {
-
     public TiledMapImageLayer( TextureRegion? region, float x, float y )
     {
         Region = region;

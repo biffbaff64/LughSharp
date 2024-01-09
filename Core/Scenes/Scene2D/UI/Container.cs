@@ -26,7 +26,6 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Container<T> : WidgetGroup where T : Actor
 {
-
     private T?         _actor;
     private int        _align;
     private IDrawable? _background;

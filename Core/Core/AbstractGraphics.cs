@@ -20,7 +20,6 @@ using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
 public abstract class AbstractGraphics : IGraphics
 {
-
     #region implemented methods
 
     public float GetRawDeltaTime()    => DeltaTime;
@@ -119,5 +118,4 @@ public abstract class AbstractGraphics : IGraphics
     public abstract float GetPpcY();
 
     #endregion abstract methods
-
 }

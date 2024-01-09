@@ -41,8 +41,6 @@ public class ListBox<T> : Widget
     private float _prefWidth;
     private int   _pressedIndex = -1;
 
-    private ListStyle? _style;
-
     public ListBox( Skin skin )
         : this( skin.Get< ListStyle >() )
     {
@@ -106,19 +104,19 @@ public class ListBox<T> : Widget
     ///     Returns the list's style. Modifying the returned style may not have an
     ///     effect until <see cref="SetStyle(ListStyle)" />" is called.
     /// </summary>
-    public ListStyle? GetStyle() => _style;
+    public ListStyle? Style { get; set; }
 
     public void SetStyle( ListStyle style )
     {
-        _style = style ?? throw new ArgumentException( "style cannot be null." );
+        Style = style ?? throw new ArgumentException( "style cannot be null." );
 
         InvalidateHierarchy();
     }
 
     public override void SetLayout()
     {
-        BitmapFont? font             = _style?.Font;
-        IDrawable?  selectedDrawable = _style?.Selection;
+        BitmapFont? font             = Style?.Font;
+        IDrawable?  selectedDrawable = Style?.Selection;
 
         if ( font == null )
         {
@@ -148,7 +146,7 @@ public class ListBox<T> : Widget
         _prefWidth  += selectedDrawable.LeftWidth + selectedDrawable.RightWidth;
         _prefHeight =  Items.Count * ItemHeight;
 
-        IDrawable? background = _style?.Background;
+        IDrawable? background = Style?.Background;
 
         if ( background != null )
         {
@@ -163,10 +161,10 @@ public class ListBox<T> : Widget
 
         DrawBackground( batch, parentAlpha );
 
-        BitmapFont? font                = _style?.Font;
-        IDrawable?  selectedDrawable    = _style?.Selection;
-        Color?      fontColorSelected   = _style?.FontColorSelected;
-        Color?      fontColorUnselected = _style?.FontColorUnselected;
+        BitmapFont? font                = Style?.Font;
+        IDrawable?  selectedDrawable    = Style?.Selection;
+        Color?      fontColorSelected   = Style?.FontColorSelected;
+        Color?      fontColorUnselected = Style?.FontColorUnselected;
 
         batch.SetColor( Color!.R, Color.G, Color.B, Color.A * parentAlpha );
 
@@ -176,7 +174,7 @@ public class ListBox<T> : Widget
         var height = Height;
         var itemY  = height;
 
-        IDrawable? background = _style?.Background;
+        IDrawable? background = Style?.Background;
 
         if ( background != null )
         {
@@ -202,18 +200,18 @@ public class ListBox<T> : Widget
                 var        selected = Selection!.Contains( item );
                 IDrawable? drawable = null;
 
-                if ( ( _pressedIndex == i ) && ( _style?.Down != null ) )
+                if ( ( _pressedIndex == i ) && ( Style?.Down != null ) )
                 {
-                    drawable = _style.Down;
+                    drawable = Style.Down;
                 }
                 else if ( selected )
                 {
                     drawable = selectedDrawable;
                     font.SetColor( fontColorSelected!.R, fontColorSelected.G, fontColorSelected.B, fontColorSelected.A * parentAlpha );
                 }
-                else if ( ( _overIndex == i ) && ( _style?.Over != null ) )
+                else if ( ( _overIndex == i ) && ( Style?.Over != null ) )
                 {
-                    drawable = _style.Over;
+                    drawable = Style.Over;
                 }
 
                 if ( drawable != null )
@@ -245,14 +243,14 @@ public class ListBox<T> : Widget
     /// </summary>
     protected void DrawBackground( IBatch batch, float parentAlpha )
     {
-        if ( _style?.Background != null )
+        if ( Style?.Background != null )
         {
             batch.SetColor( Color!.R,
                             Color.G,
                             Color.B,
                             Color.A * parentAlpha );
 
-            _style.Background.Draw( batch, X, Y, Width, Height );
+            Style.Background.Draw( batch, X, Y, Width, Height );
         }
     }
 
@@ -342,7 +340,7 @@ public class ListBox<T> : Widget
     public int GetItemIndexAt( float y )
     {
         var        height     = Height;
-        IDrawable? background = _style?.Background;
+        IDrawable? background = Style?.Background;
 
         if ( background != null )
         {
@@ -633,7 +631,6 @@ public class ListBox<T> : Widget
     /// </summary>
     public class ListStyle
     {
-
         public ListStyle() => Font = new BitmapFont();
 
         public ListStyle( BitmapFont font, Color fontColorSelected, Color fontColorUnselected, IDrawable selection )

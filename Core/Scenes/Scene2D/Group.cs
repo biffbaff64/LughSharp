@@ -705,7 +705,7 @@ public class Group : Actor, ICullable
         return null;
     }
 
-    public void SetStage( Stage? stage )
+    public virtual void SetStage( Stage? stage )
     {
         Stage = stage;
 
@@ -829,7 +829,7 @@ public class Group : Actor, ICullable
     /// <summary>
     ///     Returns a description of the actor hierarchy, recursively.
     /// </summary>
-    public new string ToString()
+    public override string ToString()
     {
         var buffer = new StringBuilder( 128 );
 

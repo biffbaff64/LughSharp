@@ -17,5 +17,4 @@
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
 public class GdxSoundAudioRecorder : IAudioRecorder
-{
-}
+{}

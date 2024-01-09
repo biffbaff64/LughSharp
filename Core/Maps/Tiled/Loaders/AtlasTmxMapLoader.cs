@@ -32,7 +32,6 @@ namespace LibGDXSharp.Maps.Tiled;
 /// </summary>
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
-
     protected readonly List< Texture > trackedTextures = new();
     protected          IAtlasResolver? atlasResolver;
 

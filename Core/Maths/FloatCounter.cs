@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maths;
 
 public class FloatCounter
 {
-
     public FloatCounter( int windowSize )
     {
         Mean = windowSize > 1 ? new WindowedMean( windowSize ) : null;

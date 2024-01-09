@@ -21,11 +21,10 @@ using LibGDXSharp.Utils.Collections;
 
 using Sync = LibGDXSharp.Backends.Desktop.Sync;
 
-namespace LibGDXSharp;
+namespace LibGDXSharp.Backends.Desktop;
 
 public class DesktopGLApplication : IDesktopGLApplicationBase
 {
-
     private const string TAG = "GLApplication";
 
     private static   GLFW.ErrorCallback? _errorCallback = null;
@@ -730,5 +729,4 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         false;
 
     #endregion GLDebug specific
-
 }

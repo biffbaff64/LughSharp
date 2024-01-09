@@ -43,7 +43,6 @@ namespace LibGDXSharp.Graphics.G2D;
 /// </summary>
 public class GlyphLayout : IPoolable
 {
-
     private readonly static Pool< GlyphRun > GlyphRunPool = Pools< GlyphRun >.Get();
     private readonly static Pool< Color >    ColorPool    = Pools< Color >.Get();
     private readonly static List< Color >    ColorStack   = new( 4 );

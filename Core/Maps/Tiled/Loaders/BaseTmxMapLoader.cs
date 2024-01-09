@@ -31,7 +31,6 @@ namespace LibGDXSharp.Maps.Tiled;
 public abstract class BaseTmxMapLoader<TP>
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.Parameters
 {
-
     protected const uint FLAG_FLIP_HORIZONTALLY = 0x80000000;
     protected const uint FLAG_FLIP_VERTICALLY   = 0x40000000;
     protected const uint FLAG_FLIP_DIAGONALLY   = 0x20000000;

@@ -1152,7 +1152,6 @@ public class TextField : Widget
     /// </summary>
     public class TextFieldStyle
     {
-
         public TextFieldStyle()
         {
         }

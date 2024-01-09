@@ -40,8 +40,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Skin : IDisposable
 {
-
-    //@formatter:off
+//@formatter:off
     private readonly static Type[] DefaultTagClasses =
     {
         typeof( BitmapFont ),                           typeof( Color ),

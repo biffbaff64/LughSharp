@@ -119,34 +119,9 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
         return null!;
     }
 
-    #region dispose pattern
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="disposing"></param>
-    protected virtual void Dispose( bool disposing )
-    {
-        if ( disposing )
-        {
-            _loaderInfo = null!;
-        }
-    }
-
-    #endregion dispose pattern
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public class TextureLoaderInfo
     {
         public string?       Filename { get; set; }
@@ -186,4 +161,29 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
         public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
         public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
     }
+
+    #region dispose pattern
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            _loaderInfo = null!;
+        }
+    }
+
+    #endregion dispose pattern
 }

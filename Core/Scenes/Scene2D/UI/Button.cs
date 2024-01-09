@@ -330,7 +330,6 @@ public class Button : Table, IDisableable
     /// </summary>
     public class ButtonStyle
     {
-
         public ButtonStyle()
         {
         }
@@ -446,5 +445,4 @@ public class Button : Table, IDisableable
     public ButtonGroup< Button >? ButtonGroup   { get; set; }
 
     #endregion properties
-
 }

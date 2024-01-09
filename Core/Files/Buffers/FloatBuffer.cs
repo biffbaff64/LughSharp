@@ -65,7 +65,6 @@ namespace LibGDXSharp.Files.Buffers;
 /// </summary>
 public abstract class FloatBuffer : Buffer
 {
-
     protected FloatBuffer( int mark, int pos, int lim, int cap, float[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {

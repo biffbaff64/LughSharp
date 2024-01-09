@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maths;
 
 public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
 {
-
     private T? _tmp;
     private T? _tmp2;
     private T? _tmp3;

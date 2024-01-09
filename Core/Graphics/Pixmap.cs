@@ -177,6 +177,16 @@ public class Pixmap : IDisposable
     }
 
     /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing,
+    ///     or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( !isDisposed );
+        GC.SuppressFinalize( this );
+    }
+
+    /// <summary>
     ///     Downloads an image from http(s) url and passes it as a Pixmap to the
     ///     specified <see cref="IDownloadPixmapResponseListener" />.
     /// </summary>
@@ -394,16 +404,6 @@ public class Pixmap : IDisposable
                };
     }
 
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing,
-    ///     or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( !isDisposed );
-        GC.SuppressFinalize( this );
-    }
-
     private void Dispose( bool disposing )
     {
         if ( disposing )
@@ -479,7 +479,6 @@ public class Pixmap : IDisposable
     }
 
     #endregion
-
 }
 
 public static class PixmapFormatExtensions

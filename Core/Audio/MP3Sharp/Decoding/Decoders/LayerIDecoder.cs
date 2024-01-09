@@ -1,20 +1,23 @@
 // ///////////////////////////////////////////////////////////////////////////////
-// // Copyright [2023] [Richard Ikin]
-// //
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //
-// // http: //www.apache.org/licenses/LICENSE-2.0
-// //
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Audio.MP3Sharp;
+using LibGDXSharp.Audio.MP3Sharp.Decoders.LayerI;
+using LibGDXSharp.Audio.MP3Sharp.Decoding;
+
+namespace LibGDXSharp.Audio.MP3Sharp.Decoders;
 
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer I frames.
@@ -23,7 +26,7 @@ public class LayerIDecoder : IFrameDecoder
 {
     protected readonly Crc16? crc = new();
 
-    protected ABuffer?         buffer  = null!;
+    protected AudioBase?         buffer  = null!;
     protected SynthesisFilter? filter1 = null!;
     protected SynthesisFilter? filter2 = null!;
     protected Header?          header  = null!;
@@ -59,7 +62,7 @@ public class LayerIDecoder : IFrameDecoder
                                 Header header0,
                                 SynthesisFilter? filtera,
                                 SynthesisFilter? filterb,
-                                ABuffer? buffer0,
+                                AudioBase? buffer0,
                                 int whichCh0 )
     {
         stream        = stream0;

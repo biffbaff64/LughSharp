@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Backends.Desktop;
+namespace LibGDXSharp.Backends.Desktop.Input;
 
 public interface IDesktopGLInput : IInput, IDisposable
 {

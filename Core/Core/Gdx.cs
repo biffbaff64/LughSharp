@@ -22,34 +22,49 @@ namespace LibGDXSharp.Core;
 /// </summary>
 public static class Gdx
 {
-    private static IApplication? _app;
-    private static IAudio?       _audio;
-    private static IInput?       _input;
-    private static IFiles?       _files;
-    private static IGraphics?    _graphics;
-    private static INet?         _net;
-    private static IGL20?        _gl;
-    private static IGL20?        _gl20;
-    private static IGL30?        _gl30;
+    private static IApplication? _app       = null;
+    private static IAudio?       _audio     = null;
+    private static IInput?       _input     = null;
+    private static IFiles?       _files     = null;
+    private static IGraphics?    _graphics  = null;
+    private static INet?         _net       = null;
+    private static IGL20?        _gl        = null;
+    private static IGL20?        _gl20      = null;
+    private static IGL30?        _gl30      = null;
 
-    static Gdx()
-    {
-        _app      = null;
-        _graphics = null;
-        _audio    = null;
-        _input    = null;
-        _files    = null;
-        _net      = null;
-        _gl       = null;
-        _gl20     = null;
-        _gl30     = null;
-    }
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// From Wiktionary...
+    /// <para>
+    /// "1. (video games) A game mode where the player character is invulnerable to damage,
+    /// typically activated by entering a cheat code."
+    /// </para>
+    /// <para>
+    /// "2. (video games) A mode of play in (mostly) roguelike games, allowing the player to
+    /// create objects on demand, to be resurrected in the case of death, etc."
+    /// </para>
+    /// <para>
+    /// Note: Only the flag is provided by this library. It is intended for use in your local
+    /// game code.
+    /// </para>
+    /// </summary>
+    /// <seealso cref="https://en.wiktionary.org/wiki/god_mode"/>
+    [PublicAPI]
     public static bool GodMode { get; set; } = false;
+
+    /// <summary>
+    /// Test mode flag which, when TRUE, means that all developer options are enabled.
+    /// This must, however, mean that software with this enabled cannot be published.
+    /// </summary>
+    [PublicAPI]
     public static bool DevMode { get; set; } = false;
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
+    /// <inheritdoc cref="IApplication"/>
     public static IApplication App
     {
         get
@@ -61,6 +76,7 @@ public static class Gdx
         set => _app = value;
     }
 
+    /// <inheritdoc cref="IAudio"/>
     public static IAudio Audio
     {
         get
@@ -72,6 +88,7 @@ public static class Gdx
         set => _audio = value;
     }
 
+    /// <inheritdoc cref="IInput"/>
     public static IInput Input
     {
         get
@@ -83,6 +100,7 @@ public static class Gdx
         set => _input = value;
     }
 
+    /// <inheritdoc cref="IFiles"/>
     public static IFiles Files
     {
         get
@@ -94,6 +112,7 @@ public static class Gdx
         set => _files = value;
     }
 
+    /// <inheritdoc cref="IGraphics"/>
     public static IGraphics Graphics
     {
         get
@@ -105,6 +124,7 @@ public static class Gdx
         set => _graphics = value;
     }
 
+    /// <inheritdoc cref="INet"/>
     public static INet Net
     {
         get
@@ -116,6 +136,7 @@ public static class Gdx
         set => _net = value;
     }
 
+    /// <inheritdoc cref="IGL20"/>
     public static IGL20 GL
     {
         get
@@ -127,6 +148,7 @@ public static class Gdx
         set => _gl = value;
     }
 
+    /// <inheritdoc cref="IGL20"/>
     public static IGL20 GL20
     {
         get
@@ -138,6 +160,7 @@ public static class Gdx
         set => _gl20 = value;
     }
 
+    /// <inheritdoc cref="IGL30"/>
     public static IGL30? GL30
     {
         get

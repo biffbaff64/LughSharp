@@ -18,7 +18,6 @@ namespace LibGDXSharp.Backends.Desktop.Audio.Mock;
 
 public class MockSound : ISound
 {
-
     /// <inheritdoc />
     public long Play( float volume ) => 0;
 

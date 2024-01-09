@@ -272,7 +272,6 @@ public class ETC1
     /// </summary>
     public class ETC1Data : IDisposable
     {
-
         public ETC1Data( int width, int height, ByteBuffer? compressedData, int dataOffset )
         {
             Width          = width;

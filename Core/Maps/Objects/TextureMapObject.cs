@@ -20,7 +20,6 @@ namespace LibGDXSharp.Maps.Objects;
 
 public class TextureMapObject : MapObject
 {
-
     /// <summary>
     ///     Creates an empty texture map object
     /// </summary>

@@ -121,7 +121,7 @@ public class ClickListener : InputListener
         set => _tapCountInterval = value * 1000000000L;
     }
 
-    public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+    public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
     {
         if ( Pressed )
         {
@@ -143,14 +143,14 @@ public class ClickListener : InputListener
         return true;
     }
 
-    public override void TouchDragged( InputEvent ev, float x, float y, int pointer )
+    public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
     {
         if ( ( pointer != PressedPointer ) || _cancelled )
         {
             return;
         }
 
-        Pressed = IsOver( ev.ListenerActor, x, y );
+        Pressed = IsOver( ev?.ListenerActor, x, y );
 
         if ( !Pressed )
         {
@@ -159,13 +159,13 @@ public class ClickListener : InputListener
         }
     }
 
-    public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+    public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
     {
         if ( pointer == PressedPointer )
         {
             if ( !_cancelled )
             {
-                var touchUpOver = IsOver( ev.ListenerActor, x, y );
+                var touchUpOver = IsOver( ev?.ListenerActor, x, y );
 
                 // Ignore touch up if the wrong mouse button.
                 if ( touchUpOver && ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) )
@@ -185,7 +185,7 @@ public class ClickListener : InputListener
                     TapCount++;
                     _lastTapTime = time;
 
-                    Clicked( ev, x, y );
+                    Clicked( ev!, x, y );
                 }
             }
 
@@ -196,7 +196,7 @@ public class ClickListener : InputListener
         }
     }
 
-    public override void Enter( InputEvent ev, float x, float y, int pointer, Actor? fromActor )
+    public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? fromActor )
     {
         if ( ( pointer == -1 ) && !_cancelled )
         {
@@ -204,7 +204,7 @@ public class ClickListener : InputListener
         }
     }
 
-    public override void Exit( InputEvent ev, float x, float y, int pointer, Actor? toActor )
+    public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
     {
         if ( ( pointer == -1 ) && !_cancelled )
         {
@@ -216,6 +216,7 @@ public class ClickListener : InputListener
     ///     If a touch down is being monitored, the drag and touch up events are
     ///     ignored until the next touch up.
     /// </summary>
+    [PublicAPI]
     public virtual void Cancel()
     {
         if ( PressedPointer == -1 )

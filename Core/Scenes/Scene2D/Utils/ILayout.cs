@@ -24,7 +24,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// </summary>
 public interface ILayout
 {
-
     /// <summary>
     ///     If true, this actor will be sized to the parent in <see cref="Validate()" />. If the
     ///     parent is the stage, the actor will be sized to the stage. This method is for convenience

@@ -16,7 +16,7 @@
 
 using LibGDXSharp.Audio.MP3Sharp.Support;
 
-namespace LibGDXSharp.Audio.MP3Sharp;
+namespace LibGDXSharp.Audio.MP3Sharp.IO;
 
 /// <summary>
 ///     public class allowing WaveFormat Access

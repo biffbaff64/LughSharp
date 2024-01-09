@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maps.Tiled;
 
 public class TiledMap : Map, IDisposable
 {
-
     public TiledMap() => Tilesets = new TiledMapTileSets();
 
     public TiledMapTileSets Tilesets       { get; set; }

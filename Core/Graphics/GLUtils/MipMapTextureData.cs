@@ -22,7 +22,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </summary>
 public class MipMapTextureData : ITextureData
 {
-
     private readonly ITextureData[] _mips;
 
     /// <summary>

@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maps.Objects;
 
 public class PolygonMapObject : MapObject
 {
-
     /// <summary>
     ///     Creates empty polygon map object
     /// </summary>

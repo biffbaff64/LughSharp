@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maps.Objects;
 
 public class RectangleMapObject : MapObject
 {
-
     /// <summary>
     ///     Creates a rectangle object whose lower left corner is at (0, 0)
     ///     with width=1 and height=1

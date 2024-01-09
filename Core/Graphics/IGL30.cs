@@ -20,6 +20,7 @@ using Buffer = LibGDXSharp.Files.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics;
 
+[PublicAPI]
 public interface IGL30 : IGL20
 {
     // ------------------------------------------------

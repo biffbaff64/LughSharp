@@ -21,8 +21,6 @@ namespace LibGDXSharp.Core;
 
 public interface INet
 {
-
-
     public enum Protocol
     {
         Tcp
@@ -80,7 +78,6 @@ public interface INet
 
     public class HttpRequest : IPoolable
     {
-
         private readonly Dictionary< string, string >? _headers;
         private          bool                          _followRedirects = true;
 

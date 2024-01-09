@@ -38,7 +38,6 @@ namespace LibGDXSharp.Utils.Collections;
 /// </summary>
 public class ObjectMap<TK, TV>
 {
-
     // ------------------------------------------------------------------------
 
     private readonly   object _dummy = new();
@@ -884,7 +883,6 @@ public class ObjectMap<TK, TV>
     /// </summary>
     public abstract class MapIterator
     {
-
         protected readonly ObjectMap< TK, TV > map;
 
         protected int currentIndex = -1;

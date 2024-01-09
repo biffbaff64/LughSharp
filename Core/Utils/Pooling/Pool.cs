@@ -23,7 +23,6 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public class Pool<T>
 {
-
     public delegate T? NewObjectHandler();
 
     private readonly List< T? > _freeObjects;

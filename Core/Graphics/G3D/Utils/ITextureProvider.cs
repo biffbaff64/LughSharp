@@ -65,7 +65,6 @@ public interface ITextureProvider
 
     public class AssetTextureProvider : ITextureProvider
     {
-
         public AssetTextureProvider( AssetManager? assetManager ) => AssetManager = assetManager;
 
         public AssetManager? AssetManager { get; }

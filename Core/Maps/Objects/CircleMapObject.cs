@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maps.Objects;
 
 public class CircleMapObject : MapObject
 {
-
     /// <summary>
     ///     Creates a circle map object at (0,0) with r=1.0
     /// </summary>

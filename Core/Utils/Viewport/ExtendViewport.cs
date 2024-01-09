@@ -18,7 +18,6 @@ namespace LibGDXSharp.Utils.Viewport;
 
 public class ExtendViewport : Viewport
 {
-
     /// <summary>
     ///     Creates a new viewport using a new <seealso cref="OrthographicCamera" />
     ///     with no maximum world size.
@@ -145,5 +144,4 @@ public class ExtendViewport : Viewport
     public float MaxWorldHeight { get; set; }
 
     #endregion
-
 }

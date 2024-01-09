@@ -24,7 +24,6 @@ namespace LibGDXSharp.Scenes.Listeners;
 /// </summary>
 public class FocusListener : IEventListener
 {
-
     /// <summary>
     ///     Try to handle the given event, if it is applicable.
     /// </summary>
@@ -74,7 +73,6 @@ public class FocusListener : IEventListener
 
     public class FocusEvent : Event
     {
-
         public enum FeType
         {
             Keyboard,

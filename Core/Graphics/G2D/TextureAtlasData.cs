@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.G2D;
 
 public partial record TextureAtlasData
 {
-
     internal readonly static bool[] HasIndexes = { false };
 
     public List< Page >   Pages   { get; set; } = new();
@@ -280,7 +279,6 @@ public partial record TextureAtlasData
 
     public record Page
     {
-
         /// <summary>
         ///     May be null if the texture is not yet loaded.
         /// </summary>
@@ -340,5 +338,4 @@ public partial record TextureAtlasData
     }
 
     #endregion
-
 }

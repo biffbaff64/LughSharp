@@ -26,7 +26,6 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public class Colors
 {
-
     static Colors() => Reset();
 
     private Colors()

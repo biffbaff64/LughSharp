@@ -37,7 +37,6 @@ namespace LibGDXSharp.Maths;
 /// </summary>
 public class CumulativeDistribution<T>
 {
-
     private readonly List< CumulativeValue > _values;
 
     public CumulativeDistribution() => _values = new List< CumulativeValue >( 10 );

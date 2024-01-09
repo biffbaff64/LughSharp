@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maps.Objects;
 
 public class EllipseMapObject : MapObject
 {
-
     /// <symmary>
     ///     Creates an <see cref="Ellipse" /> object whose lower left corner
     ///     is at(0, 0) with width=1 and height=1

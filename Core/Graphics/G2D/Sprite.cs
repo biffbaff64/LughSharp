@@ -1039,5 +1039,4 @@ public class Sprite : TextureRegion
     public void SetCenterY( float value ) => Y = value - ( Height / 2 );
 
     #endregion
-
 }

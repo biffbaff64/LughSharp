@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.G2D;
 
 public class PolygonRegion
 {
-
     /// <summary>
     ///     Creates a PolygonRegion by triangulating the polygon coordinates in vertices
     ///     and calculates uvs based on that. TextureRegion can come from an atlas.

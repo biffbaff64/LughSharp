@@ -24,7 +24,6 @@ namespace LibGDXSharp.Scenes.Scene2D;
 
 public class Actor : IActor
 {
-
     private readonly Color _color = new( 1, 1, 1, 1 );
 
     private bool  _debug;
@@ -740,7 +739,7 @@ public class Actor : IActor
     ///     Sets the x position using the specified <see cref="Align" />.
     ///     Note this may set the position to non-integer coordinates.
     /// </summary>
-    public void SetX( float x, int alignment )
+    public void SetXWithAlignment( float x, int alignment )
     {
         if ( ( alignment & Align.RIGHT ) != 0 )
         {
@@ -763,7 +762,7 @@ public class Actor : IActor
     ///     Note this may set the position to non-integer
     ///     coordinates.
     /// </summary>
-    public void SetY( float y, int alignment )
+    public void SetYWithAlignment( float y, int alignment )
     {
         if ( ( alignment & Align.TOP ) != 0 )
         {

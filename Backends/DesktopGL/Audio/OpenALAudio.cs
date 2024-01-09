@@ -667,5 +667,4 @@ public class OpenALAudio : IGLAudio
     }
 
     #endregion IDisposable implementation
-
 }

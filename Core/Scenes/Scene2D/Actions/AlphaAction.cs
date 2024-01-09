@@ -23,7 +23,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// </summary>
 public class AlphaAction : TemporalAction
 {
-
     private float _start;
     public  float Alpha { get; set; }
 

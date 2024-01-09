@@ -21,7 +21,6 @@ namespace LibGDXSharp.Maths;
 /// </summary>
 public class GridPoint3
 {
-
     /// <summary>
     ///     Constructs a 3D grid point with all coordinates pointing to the origin (0, 0, 0).
     /// </summary>

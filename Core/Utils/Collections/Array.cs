@@ -20,7 +20,6 @@ namespace LibGDXSharp.Utils.Collections;
 
 public class Array<T>
 {
-
     private IEnumerable< T >?       _iterable;
     private PredicateIterable< T >? _predicateIEnumerable;
 
@@ -794,5 +793,4 @@ public class Array<T>
     public bool Ordered { get; set; }
 
     #endregion properties
-
 }

@@ -20,7 +20,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 public interface IImmediateModeRenderer : IDisposable
 {
-
     public int NumVertices { get; set; }
 
     public int  MaxVertices { get; set; }

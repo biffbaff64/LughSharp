@@ -23,7 +23,6 @@ namespace LibGDXSharp.Maths;
 /// </summary>
 public class Bezier<T> : IPath< T > where T : IVector< T >
 {
-
     private T? _tmp  = default( T );
     private T? _tmp2 = default( T );
     private T? _tmp3 = default( T );

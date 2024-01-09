@@ -21,7 +21,6 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </summary>
 public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundParameter >, IDisposable
 {
-
     public SoundLoader( IFileHandleResolver resolver ) : base( resolver ) => LoadedSound = null!;
 
     /// <summary>
@@ -89,6 +88,5 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundPar
     }
 
     public class SoundParameter : AssetLoaderParameters
-    {
-    }
+    {}
 }

@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 public class PixmapTextureData : ITextureData
 {
-
     public PixmapTextureData( Pixmap pixmap,
                               Pixmap.Format? format,
                               bool useMipMaps,

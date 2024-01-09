@@ -112,7 +112,6 @@ public class Sync
 
     private sealed class RunningAvg
     {
-
         private const    long   DAMPEN_THRESHOLD = 10 * 1000L * 1000L;
         private const    float  DAMPEN_FACTOR    = 0.9f;
         private readonly long[] _slots;

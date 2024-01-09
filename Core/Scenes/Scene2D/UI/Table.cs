@@ -2121,5 +2121,4 @@ public class Table : WidgetGroup
     }
 
     #endregion
-
 }

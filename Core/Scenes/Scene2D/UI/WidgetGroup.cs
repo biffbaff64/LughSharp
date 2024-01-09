@@ -37,7 +37,6 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class WidgetGroup : Group, ILayout
 {
-
     protected WidgetGroup()
     {
     }

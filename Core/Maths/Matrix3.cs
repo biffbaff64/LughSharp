@@ -271,7 +271,7 @@ public class Matrix3
         return this;
     }
 
-    public new string ToString() => $"[{val[ M00 ]} | {val[ M01 ]} | {val[ M02 ]}]\n"
+    public override string ToString() => $"[{val[ M00 ]} | {val[ M01 ]} | {val[ M02 ]}]\n"
                                   + $"[{val[ M10 ]} | {val[ M11 ]} | {val[ M12 ]}]\n"
                                   + $"[{val[ M20 ]} | {val[ M21 ]} | {val[ M22 ]}]";
 

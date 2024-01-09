@@ -14,10 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Backends.DesktopGL;
 using LibGDXSharp.Utils.Collections;
 
-namespace LibGDXSharp.Backends.Desktop;
+namespace LibGDXSharp.Backends.Desktop.Window;
 
 public class DesktopGLWindow : IDisposable
 {

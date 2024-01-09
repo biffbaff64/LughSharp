@@ -21,7 +21,6 @@ namespace LibGDXSharp.Maps.Tiled.Renderers;
 
 public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 {
-
     /// <summary>
     ///     the parameter defining the shape of the hexagon from tiled. more
     ///     specifically it represents the length of the sides that are parallel

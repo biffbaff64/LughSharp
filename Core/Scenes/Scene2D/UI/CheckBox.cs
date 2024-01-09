@@ -120,7 +120,6 @@ public class CheckBox : TextButton
     /// </summary>
     public class CheckBoxStyle : TextButtonStyle
     {
-
         public CheckBoxStyle()
         {
         }

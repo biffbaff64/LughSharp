@@ -773,7 +773,6 @@ public class PixmapPacker : IDisposable
 
     public class Page
     {
-
         /// <summary>
         ///     Creates a new page filled with the color provided by the
         ///     <see cref="PixmapPacker.TransparentColor" />"
@@ -878,7 +877,6 @@ public class PixmapPacker : IDisposable
 
     public class PixmapPackerRectangle : RectangleShape
     {
-
         public PixmapPackerRectangle( int x, int y, int width, int height )
             : base( x, y, width, height )
         {

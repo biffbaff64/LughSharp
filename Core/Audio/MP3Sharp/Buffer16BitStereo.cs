@@ -1,18 +1,20 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// // Copyright [2023] [Richard Ikin]
-// //
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //
-// // http: //www.apache.org/licenses/LICENSE-2.0
-// //
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
+
+using LibGDXSharp.Audio.MP3Sharp.Decoding;
 
 namespace LibGDXSharp.Audio.MP3Sharp;
 
@@ -20,9 +22,8 @@ namespace LibGDXSharp.Audio.MP3Sharp;
 ///     public class used to queue samples that are being obtained from an Mp3 stream.
 ///     This class handles stereo 16-bit output, and can double 16-bit mono to stereo.
 /// </summary>
-public class Buffer16BitStereo : ABuffer
+public class Buffer16BitStereo : AudioBase
 {
-
     private const int OUTPUT_CHANNELS = 2;
 
     // Write offset used in append_bytes

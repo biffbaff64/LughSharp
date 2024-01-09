@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maths;
 
 public class Vector3 : IVector< Vector3 >
 {
-
     public readonly static  Vector3 XDefault = new( 1, 0, 0 );
     public readonly static  Vector3 YDefault = new( 0, 1, 0 );
     public readonly static  Vector3 ZDefault = new( 0, 0, 1 );
@@ -638,7 +637,7 @@ public class Vector3 : IVector< Vector3 >
         return true;
     }
 
-    public new string ToString() => "(" + X + "," + Y + "," + Z + ")";
+    public override string ToString() => "(" + X + "," + Y + "," + Z + ")";
 
     public Vector3 FromString( string v )
     {

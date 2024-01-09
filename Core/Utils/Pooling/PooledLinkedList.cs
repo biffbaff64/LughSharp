@@ -21,7 +21,6 @@ namespace LibGDXSharp.Utils.Pooling;
 /// </summary>
 public class PooledLinkedList<T>
 {
-
     private readonly Pool< Item< T > > _pool;
     private          Item< T >?        _curr;
 

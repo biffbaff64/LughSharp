@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.G2D;
 
 public class AtlasRegion : TextureRegion
 {
-
     /// <summary>
     ///     Values for name/value pairs other than the fields provided on this class,
     ///     each entry corresponding to <see cref="Names" />.

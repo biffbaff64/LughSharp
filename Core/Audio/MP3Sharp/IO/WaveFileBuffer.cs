@@ -14,12 +14,14 @@
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Audio.MP3Sharp;
+using LibGDXSharp.Audio.MP3Sharp.Decoding;
+
+namespace LibGDXSharp.Audio.MP3Sharp.IO;
 
 /// <summary>
 ///     Implements an Obuffer by writing the data to a file in RIFF WAVE format.
 /// </summary>
-public class WaveFileBuffer : ABuffer
+public class WaveFileBuffer : AudioBase
 {
     private readonly short[]  _buffer;
     private readonly short[]  _bufferp;

@@ -136,7 +136,7 @@ public class ParallelAction : Action
 
     public List< Action > GetActions() => _actions;
 
-    public new string ToString()
+    public override string ToString()
     {
         var buffer = new StringBuilder( 64 );
 

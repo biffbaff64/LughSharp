@@ -21,7 +21,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// </summary>
 public class FloatAction : TemporalAction
 {
-
     /// <summary>
     ///     Creates a FloatAction that transitions from 0 to 1.
     /// </summary>

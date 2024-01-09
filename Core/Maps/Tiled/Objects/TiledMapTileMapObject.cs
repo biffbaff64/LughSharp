@@ -28,7 +28,6 @@ namespace LibGDXSharp.Maps.Tiled.Objects;
 /// </summary>
 public class TiledMapTileMapObject : TextureMapObject
 {
-
     /// <summary>
     /// </summary>
     /// <param name="tile"></param>

@@ -28,9 +28,8 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 ///     </para>
 /// </summary>
 /// <seealso cref="SortedSet{T}" />
-public class Selection<T> : IDisableable
+public class Selection<T> : IDisableable, IDisposable
 {
-
     private readonly SortedSet< T > _old = new();
     public           SortedSet< T > Selected                 { get; set; } = new();
     public           bool           Multiple                 { get; set; }
@@ -382,7 +381,7 @@ public class Selection<T> : IDisableable
     ///     the selection changes, depending on <see cref="ProgrammaticChangeEvents" />.
     /// </summary>
     /// <returns> true if the change should be undone. </returns>
-    public bool FireChangeEvent()
+    public virtual bool FireChangeEvent()
     {
         if ( Actor == null )
         {
@@ -427,18 +426,14 @@ public class Selection<T> : IDisableable
             return LastSelected;
         }
 
-        if ( Selected.Count > 0 )
-        {
-            return Selected.First();
-        }
-
-        return default( T? );
+        return Selected.Count > 0 ? Selected.First() : default( T? );
     }
-
-    public IEnumerator< T > Iterator() => Selected.GetEnumerator();
+    
+//    public IEnumerator< T >? Iterator() => Selected.GetEnumerator();
 
     public List< T > ToArray() => Selected.ToList();
 
+    [PublicAPI]
     public List< T > ToArray( List< T > array )
     {
         List< T > list = Selected.ToList();
@@ -448,5 +443,24 @@ public class Selection<T> : IDisableable
         return list;
     }
 
-    public new string? ToString() => Selected.ToString();
+    public override string? ToString() => Selected.ToString();
+
+    // ------------------------------------------------------------------------
+    
+    #region dispose pattern
+    
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    protected void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
+    }
+
+    #endregion dispose pattern
 }

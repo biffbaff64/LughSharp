@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.FrameBuffers;
 
 public class FrameBufferTextureAttachmentSpec
 {
-
     public FrameBufferTextureAttachmentSpec( int internalformat, int format, int type )
     {
         InternalFormat = internalformat;

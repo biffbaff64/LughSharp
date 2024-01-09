@@ -22,7 +22,6 @@ namespace LibGDXSharp.Graphics.Profiling;
 
 public class GL20Interceptor : GLInterceptor
 {
-
     public GL20Interceptor( GLProfiler glProfiler, IGL20 gl20 )
         : base( glProfiler ) => GL20 = gl20;
 

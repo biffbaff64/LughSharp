@@ -32,23 +32,24 @@ public partial class ScrollPane : WidgetGroup
     private readonly RectangleShape       _vScrollBounds     = new();
     private readonly RectangleShape       _widgetArea        = new();
     private readonly RectangleShape       _widgetCullingArea = new();
-    private          int                  _draggingPointer   = -1;
-    private          float                _fadeAlpha;
-    private          float                _fadeAlphaSeconds = 1;
-    private          float                _fadeDelay;
-    private          float                _fadeDelaySeconds = 1;
-    private          bool                 _flickScroll      = true;
-    private          float                _flingTimer;
-    private          bool                 _hScrollOnBottom    = true;
-    private          float                _overscrollSpeedMax = 200;
-    private          float                _overscrollSpeedMin = 30;
-    private          bool                 _overscrollX        = true;
-    private          bool                 _overscrollY        = true;
-    private          bool                 _scrollbarsOnTop;
-    private          bool                 _touchScrollH;
-    private          bool                 _touchScrollV;
-    private          float                _visualAmountX;
-    private          float                _visualAmountY;
+
+    private int   _draggingPointer = -1;
+    private float _fadeAlpha;
+    private float _fadeAlphaSeconds = 1;
+    private float _fadeDelay;
+    private float _fadeDelaySeconds = 1;
+    private bool  _flickScroll      = true;
+    private float _flingTimer;
+    private bool  _hScrollOnBottom    = true;
+    private float _overscrollSpeedMax = 200;
+    private float _overscrollSpeedMin = 30;
+    private bool  _overscrollX        = true;
+    private bool  _overscrollY        = true;
+    private bool  _scrollbarsOnTop;
+    private bool  _touchScrollH;
+    private bool  _touchScrollV;
+    private float _visualAmountX;
+    private float _visualAmountY;
 
     private bool   _vScrollOnRight = true;
     private Actor? _widget;
@@ -1224,7 +1225,6 @@ public partial class ScrollPane : WidgetGroup
 
     public class ScrollPaneStyle
     {
-
         public ScrollPaneStyle()
         {
         }
@@ -1402,5 +1402,4 @@ public partial class ScrollPane : WidgetGroup
     public bool CancelTouchFocus { get; set; } = true;
 
     #endregion properties
-
 }

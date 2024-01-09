@@ -25,7 +25,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </summary>
 public interface IInstanceData : IDisposable
 {
-
     /// <returns> the number of vertices this InstanceData stores </returns>
     int NumInstances { get; }
 

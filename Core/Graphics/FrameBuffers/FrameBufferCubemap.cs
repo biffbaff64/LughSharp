@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.FrameBuffers;
 
 public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 {
-
     /// <summary>
     ///     cubemap sides cache
     /// </summary>

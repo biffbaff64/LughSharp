@@ -22,7 +22,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// </summary>
 public class ArraySelection<T> : Selection< T >
 {
-
     private readonly List< T >? _array;
     private          T?         _rangeStart;
 
@@ -30,6 +29,10 @@ public class ArraySelection<T> : Selection< T >
     {
         _array      = array;
         _rangeStart = default( T? );
+    }
+
+    protected ArraySelection()
+    {
     }
 
     public bool RangeSelect { get; set; } = true;
@@ -52,7 +55,7 @@ public class ArraySelection<T> : Selection< T >
 
         if ( ( Selected.Count > 0 ) && UIUtils.Shift() )
         {
-            var rangeStartIndex = _rangeStart == null ? -1 : _array.IndexOf( _rangeStart, 0 );
+            var rangeStartIndex = _rangeStart == null ? -1 : _array!.IndexOf( _rangeStart, 0 );
 
             if ( rangeStartIndex != -1 )
             {
@@ -61,7 +64,7 @@ public class ArraySelection<T> : Selection< T >
 
                 // Select new range.
                 var start = rangeStartIndex;
-                var end   = _array.IndexOf( item, 0 );
+                var end   = _array!.IndexOf( item, 0 );
 
                 if ( start > end )
                 {
@@ -112,9 +115,7 @@ public class ArraySelection<T> : Selection< T >
     /// </summary>
     public void Validate()
     {
-        List< T > array = _array;
-
-        if ( array.Count == 0 )
+        if ( this._array?.Count == 0 )
         {
             Clear();
 
@@ -125,7 +126,7 @@ public class ArraySelection<T> : Selection< T >
 
         foreach ( T item in Items() )
         {
-            if ( !array.Contains( item ) )
+            if ( !this._array!.Contains( item ) )
             {
                 Items().Remove( item );
                 changed = true;
@@ -134,7 +135,7 @@ public class ArraySelection<T> : Selection< T >
 
         if ( Required && ( Selected.Count == 0 ) )
         {
-            Set( array.First() );
+            Set( this._array!.First() );
         }
         else if ( changed )
         {

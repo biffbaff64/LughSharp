@@ -21,7 +21,6 @@ namespace LibGDXSharp.Graphics.G2D;
 
 public class ParticleEmitter
 {
-
     // ------------------------------------------------------------------------
 
     public enum SpawnEllipseSide
@@ -1565,7 +1564,6 @@ public class ParticleEmitter
 
     public class Particle : Sprite
     {
-
         public Particle( Sprite sprite ) : base( sprite )
         {
         }

@@ -23,7 +23,6 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public static class Align
 {
-
     // ------------------------------------------------------------------------
 
     public static bool IsLeft( int align )             => ( align & LEFT ) != 0;
@@ -87,5 +86,4 @@ public static class Align
     public const int BOTTOM_RIGHT = BOTTOM | RIGHT;
 
     #endregion constants
-
 }

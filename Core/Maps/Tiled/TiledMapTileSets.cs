@@ -23,7 +23,6 @@ namespace LibGDXSharp.Maps.Tiled;
 /// </summary>
 public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
 {
-
     private readonly List< TiledMapTileSet > _tilesets;
 
     /// <summary>

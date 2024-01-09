@@ -22,7 +22,6 @@ namespace LibGDXSharp.Maths.Collision;
 [Serializable]
 public class Sphere
 {
-
     private readonly static float   PI43 = ( MathUtils.PI * 4f ) / 3f;
     public readonly         Vector3 center; // the center of the sphere
     public readonly         float   radius; // the radius of the sphere

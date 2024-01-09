@@ -70,6 +70,5 @@ public class PixmapLoader : AsynchronousAssetLoader
     }
 
     public class PixmapParameter
-    {
-    }
+    {}
 }

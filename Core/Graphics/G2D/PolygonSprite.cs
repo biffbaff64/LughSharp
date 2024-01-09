@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.G2D;
 
 public class PolygonSprite
 {
-
     private readonly RectangleShape _bounds = new();
     private          bool           _dirty;
     private          float[]?       _vertices;

@@ -21,7 +21,6 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public interface IClipboard
 {
-
     /// <summary>
     ///     The current content of the clipboard if it contains text
     /// </summary>

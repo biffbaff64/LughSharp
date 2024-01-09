@@ -124,7 +124,6 @@ public class TextureAtlasLoader
 
     public class TextureAtlasParameter : AssetLoaderParameters
     {
-
         public TextureAtlasParameter() => FlipVertically = false;
 
         public TextureAtlasParameter( bool flip ) => FlipVertically = flip;

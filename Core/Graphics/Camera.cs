@@ -391,5 +391,4 @@ public abstract class Camera
     private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
 
     #endregion
-
 }

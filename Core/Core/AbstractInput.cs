@@ -18,7 +18,6 @@ namespace LibGDXSharp.Core;
 
 public abstract class AbstractInput : IInput
 {
-
     private readonly List< int > _keysToCatch;
 
     /// <summary>

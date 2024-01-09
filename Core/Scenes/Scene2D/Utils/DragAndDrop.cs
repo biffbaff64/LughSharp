@@ -25,7 +25,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// </summary>
 public class DragAndDrop
 {
-
     private readonly static Vector2                                TmpVector        = new();
     private readonly        Dictionary< DragSource, DragListener > _sourceListeners = new();
     private readonly        List< DragTarget >                     _targets         = new();
@@ -396,7 +395,6 @@ public class DragAndDrop
     /// </summary>
     public class DragSource
     {
-
         public DragSource( Actor actor )
         {
             ArgumentNullException.ThrowIfNull( actor );
@@ -445,7 +443,6 @@ public class DragAndDrop
     /// </summary>
     public abstract class DragTarget
     {
-
         /// <summary>
         ///     Constructor, creates a new Target actor.
         /// </summary>

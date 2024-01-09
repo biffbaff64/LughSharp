@@ -227,5 +227,4 @@ public class TextureArray : GLTexture
     }
 
     #endregion internal methods
-
 }

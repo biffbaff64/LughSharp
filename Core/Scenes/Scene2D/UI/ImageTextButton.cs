@@ -274,7 +274,6 @@ public class ImageTextButton : Button
     /// </summary>
     public class ImageTextButtonStyle : TextButton.TextButtonStyle
     {
-
         public ImageTextButtonStyle()
         {
         }

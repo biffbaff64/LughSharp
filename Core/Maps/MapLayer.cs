@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maps;
 
 public class MapLayer
 {
-
     private float         _offsetX;
     private float         _offsetY;
     private MapLayer?     _parent            = null!;

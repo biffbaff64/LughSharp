@@ -1071,7 +1071,7 @@ public class AssetManager
             _executor.Dispose();
         }
     }
-    
+
     /// <summary>
     ///     Clears and disposes all assets and the preloading queue.
     /// </summary>

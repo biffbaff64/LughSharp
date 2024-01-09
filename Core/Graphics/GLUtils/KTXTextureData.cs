@@ -33,7 +33,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </summary>
 public class KtxTextureData : ITextureData, ICubemapData
 {
-
     private const int GL_TEXTURE_1D           = 0x1234;
     private const int GL_TEXTURE_3D           = 0x1234;
     private const int GL_TEXTURE_1D_ARRAY_EXT = 0x1234;

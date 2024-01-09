@@ -979,5 +979,4 @@ public class ShaderProgram
     public int Handle { get; private set; }
 
     #endregion properties
-
 }

@@ -28,7 +28,6 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class ImageButton : Button
 {
-
     public ImageButton( Skin skin )
         : this( skin.Get< ImageButtonStyle >() ) => Skin = skin;
 
@@ -143,7 +142,7 @@ public class ImageButton : Button
 
     public Cell? GetImageCell() => GetCell( Image );
 
-    public new string ToString()
+    public override string ToString()
     {
         if ( Name != null )
         {

@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 
 public class FileTextureArrayData : ITextureArrayData
 {
-
     private readonly Pixmap.Format   _format;
     private readonly ITextureData?[] _textureData;
     private readonly bool            _useMipMaps;

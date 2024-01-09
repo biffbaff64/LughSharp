@@ -20,7 +20,7 @@ namespace LibGDXSharp.Utils.Async;
 public class AsyncExecutor
 {
     private int _tmp;
-    
+
     public AsyncExecutor( int i, string assetmanager )
     {
         _tmp = 0;

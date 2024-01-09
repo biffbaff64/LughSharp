@@ -55,6 +55,5 @@ public class ChangeListener : IEventListener
     ///     what changed in an actor will vary.
     /// </summary>
     public class ChangeEvent : Event
-    {
-    }
+    {}
 }

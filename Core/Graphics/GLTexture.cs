@@ -88,7 +88,7 @@ public abstract class GLTexture : IDisposable
             Delete();
         }
     }
-    
+
     /// <summary>
     ///     Used internally to reload after context loss. Creates a new GL handle then
     ///     calls <see cref="Texture.Load" />.

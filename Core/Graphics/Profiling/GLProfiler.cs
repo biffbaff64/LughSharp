@@ -25,7 +25,6 @@ namespace LibGDXSharp.Graphics.Profiling;
 /// <seealso cref="GL30Interceptor" />
 public class GLProfiler
 {
-
     /// <summary>
     ///     Create a new instance of GLProfiler to monitor a <see cref="IGraphics" />
     ///     instance's gl calls

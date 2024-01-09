@@ -18,7 +18,6 @@ namespace LibGDXSharp.Maps.Tiled;
 
 public class TiledMapTileLayer : MapLayer
 {
-
     /// <summary>
     ///     Creates TiledMap layer
     ///     @param width layer width in tiles
@@ -87,7 +86,6 @@ public class TiledMapTileLayer : MapLayer
     /// </summary>
     public class Cell
     {
-
         public const int            ROTATE0   = 0;
         public const int            ROTATE90  = 1;
         public const int            ROTATE180 = 2;

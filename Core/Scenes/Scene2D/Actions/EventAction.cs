@@ -24,7 +24,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// </summary>
 public abstract class EventAction<T> : Action, IEventListener where T : Event
 {
-
     protected EventAction( T eventClass ) => EventClass = eventClass;
 
     public bool Active     { get; set; }

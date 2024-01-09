@@ -34,7 +34,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// </summary>
 public class RotateToAction : TemporalAction
 {
-
     public RotateToAction()
     {
     }

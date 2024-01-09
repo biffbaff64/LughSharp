@@ -32,7 +32,6 @@ namespace LibGDXSharp.Maths;
 /// <remarks>This class is taken directly from java.lang.Number</remarks>
 public abstract class Number
 {
-
     /// <summary>
     /// </summary>
     private const long SERIAL_VERSION_UID = -8742448824652078965L;

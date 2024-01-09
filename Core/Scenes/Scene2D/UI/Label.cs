@@ -467,7 +467,7 @@ public class Label : Widget
     /// </summary>
     public void SetEllipsis( bool ellipsis ) => _ellipsis = ellipsis ? "..." : null;
 
-    public new string ToString()
+    public override string ToString()
     {
         var name = Name;
 
@@ -497,7 +497,6 @@ public class Label : Widget
     /// </summary>
     public class LabelStyle
     {
-
         public LabelStyle()
         {
             Font       = default( BitmapFont )!;
@@ -580,5 +579,4 @@ public class Label : Widget
     }
 
     #endregion constructors
-
 }

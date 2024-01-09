@@ -20,7 +20,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 
 public class BaseDrawable : IDrawable
 {
-
     protected BaseDrawable()
     {
     }

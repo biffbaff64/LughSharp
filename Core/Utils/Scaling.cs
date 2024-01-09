@@ -18,7 +18,6 @@ namespace LibGDXSharp.Utils;
 
 public abstract class Scaling
 {
-
     protected readonly static Vector2 Temp = new();
 
     public readonly static Scaling Fit      = new FitScalingAnonymousInnerClass();

@@ -17,5 +17,4 @@
 namespace LibGDXSharp.Extensions.Tools.TexturePacker;
 
 public class TexturePacker
-{
-}
+{}

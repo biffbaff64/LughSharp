@@ -18,7 +18,6 @@ namespace LibGDXSharp.Files.Buffers;
 
 public abstract class ByteBuffer : Buffer
 {
-
     private bool _nativeByteOrder = Bits.ByteOrder == ByteOrder.BigEndian;
 
     // ------------------------------------------------------------------------

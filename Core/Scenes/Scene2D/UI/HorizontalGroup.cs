@@ -863,5 +863,4 @@ public class HorizontalGroup : WidgetGroup
     }
 
     #endregion alignment
-
 }

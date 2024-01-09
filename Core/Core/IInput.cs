@@ -32,7 +32,6 @@ namespace LibGDXSharp.Core;
 /// </summary>
 public interface IInput
 {
-
     // --------------------------------------------------------------------
 
 

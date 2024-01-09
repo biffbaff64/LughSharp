@@ -25,7 +25,6 @@ namespace LibGDXSharp.Maths;
 /// </summary>
 public class Intersector
 {
-
     private readonly static Vector3       V0          = new();
     private readonly static Vector3       V1          = new();
     private readonly static Vector3       V2          = new();
@@ -2297,7 +2296,6 @@ public class Intersector
     /// </summary>
     public record MinimumTranslationVector
     {
-
         // Distance of the translation required for the separation
         public float depth = 0;
 

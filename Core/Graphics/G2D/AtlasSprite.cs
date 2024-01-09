@@ -22,7 +22,6 @@ namespace LibGDXSharp.Graphics.G2D;
 /// </summary>
 public class AtlasSprite : Sprite
 {
-
     public AtlasSprite( AtlasSprite sprite )
     {
         Region          = sprite.Region;
@@ -187,5 +186,4 @@ public class AtlasSprite : Sprite
     public float       OriginalOffsetY { get; set; }
 
     #endregion properties
-
 }

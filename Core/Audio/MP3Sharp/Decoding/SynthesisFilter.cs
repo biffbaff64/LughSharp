@@ -1,20 +1,20 @@
 // ///////////////////////////////////////////////////////////////////////////////
-// // Copyright [2023] [Richard Ikin]
-// //
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //
-// // http: //www.apache.org/licenses/LICENSE-2.0
-// //
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Audio.MP3Sharp;
+namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     A class for the synthesis filter bank. This class does a fast downsampling from 32,
@@ -633,7 +633,7 @@ public class SynthesisFilter
         dest[ 496 + pos ] = newV16;
     }
 
-    private void ComputePcSamples0( ABuffer buffer )
+    private void ComputePcSamples0( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -662,7 +662,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSamples1( ABuffer buffer )
+    private void ComputePcSamples1( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -691,7 +691,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSamples2( ABuffer buffer )
+    private void ComputePcSamples2( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -720,7 +720,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSamples3( ABuffer buffer )
+    private void ComputePcSamples3( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -749,7 +749,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample4( ABuffer buffer )
+    private void ComputePcSample4( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -778,7 +778,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample5( ABuffer buffer )
+    private void ComputePcSample5( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -807,7 +807,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample6( ABuffer buffer )
+    private void ComputePcSample6( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -837,7 +837,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample7( ABuffer buffer )
+    private void ComputePcSample7( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -866,7 +866,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample8( ABuffer buffer )
+    private void ComputePcSample8( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -895,7 +895,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample9( ABuffer buffer )
+    private void ComputePcSample9( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -924,7 +924,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample10( ABuffer buffer )
+    private void ComputePcSample10( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -953,7 +953,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample11( ABuffer buffer )
+    private void ComputePcSample11( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -982,7 +982,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample12( ABuffer buffer )
+    private void ComputePcSample12( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -1011,7 +1011,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample13( ABuffer buffer )
+    private void ComputePcSample13( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -1040,7 +1040,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSample14( ABuffer buffer )
+    private void ComputePcSample14( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -1069,7 +1069,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSamples15( ABuffer buffer )
+    private void ComputePcSamples15( AudioBase buffer )
     {
         var dvp = 0;
 
@@ -1098,7 +1098,7 @@ public class SynthesisFilter
         }
     }
 
-    private void ComputePcSamples( ABuffer buffer )
+    private void ComputePcSamples( AudioBase buffer )
     {
         switch ( _actualWritePos )
         {
@@ -1189,7 +1189,7 @@ public class SynthesisFilter
     /// <summary>
     ///     Calculate 32 PCM samples and put the into the Obuffer-object.
     /// </summary>
-    public void CalculatePcSamples( ABuffer? buffer )
+    public void CalculatePcSamples( AudioBase? buffer )
     {
         ArgumentNullException.ThrowIfNull( buffer );
 

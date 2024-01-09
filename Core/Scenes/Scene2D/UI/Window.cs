@@ -32,7 +32,6 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Window : Table
 {
-
     private const int MOVE = 1 << 5;
 
     private readonly static Vector2 TmpPosition = new();
@@ -311,7 +310,6 @@ public class Window : Table
 
     internal class WindowInputListener : InputListener
     {
-
         private readonly Window _window;
         private          float  _lastX;
         private          float  _lastY;
@@ -542,7 +540,6 @@ public class Window : Table
     /// </summary>
     public class WindowStyle
     {
-
         public WindowStyle()
         {
         }

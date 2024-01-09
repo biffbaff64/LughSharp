@@ -26,7 +26,6 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class TextArea : TextField
 {
-
     // Last text processed. This attribute is used to avoid unnecessary
     // computations while calculating offsets
     private string? _lastText;

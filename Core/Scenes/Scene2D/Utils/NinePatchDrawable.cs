@@ -32,7 +32,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 /// </summary>
 public class NinePatchDrawable : BaseDrawable, ITransformDrawable
 {
-
     /// <summary>
     ///     Creates an uninitialized NinePatchDrawable. The ninepatch must be
     ///     set before use.

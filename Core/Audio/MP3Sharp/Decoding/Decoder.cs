@@ -1,50 +1,63 @@
 // ///////////////////////////////////////////////////////////////////////////////
-// // Copyright [2023] [Richard Ikin]
-// //
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //
-// // http: //www.apache.org/licenses/LICENSE-2.0
-// //
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
+// Copyright [2023] [Richard Ikin]
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http: //www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Audio.MP3Sharp;
+using LibGDXSharp.Audio.MP3Sharp.Decoders;
+
+namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     Encapsulates the details of decoding an MPEG audio frame.
 /// </summary>
 public class Decoder
 {
+    private const float DEFAULT_SCALE_FACTOR = 32700.0f;
+
     private readonly static Parameters DecoderDefaultParams = new();
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     private readonly Equalizer? _equalizer;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     private bool             _isInitialized;
     private LayerIDecoder?   _l1Decoder;
     private LayerIIDecoder?  _l2Decoder;
     private LayerIIIDecoder? _l3Decoder;
     private SynthesisFilter? _leftChannelFilter;
-    private ABuffer?         _output;
+    private AudioBase?         _output;
     private int              _outputChannels;
     private int              _outputFrequency;
     private SynthesisFilter? _rightChannelFilter;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Creates a new Decoder instance with custom parameters.
     /// </summary>
-    public Decoder( Parameters? params0 = null )
+    public Decoder( Parameters? parameters = null )
     {
         _equalizer = new Equalizer();
 
-        params0 ??= DecoderDefaultParams;
+        parameters ??= DecoderDefaultParams;
 
-        Equalizer? eq = params0.InitialEqualizerSettings;
+        Equalizer? eq = parameters.InitialEqualizerSettings;
 
         if ( eq != null )
         {
@@ -52,10 +65,10 @@ public class Decoder
         }
     }
 
-    public static Parameters DefaultParams => ( Parameters )DecoderDefaultParams.Clone();
-
+    [PublicAPI]
     public virtual Equalizer? Equalizer
     {
+        get => _equalizer;
         set
         {
             value ??= Equalizer.PassThruEq;
@@ -80,16 +93,20 @@ public class Decoder
     ///     Changes the output buffer. This will take effect the next time
     ///     decodeFrame() is called.
     /// </summary>
-    public virtual ABuffer OutputBuffer
+    public virtual AudioBase OutputBuffer
     {
         set => _output = value;
     }
+
+    [PublicAPI]
+    public float ScaleFactor { get; set; } = DEFAULT_SCALE_FACTOR;
 
     /// <summary>
     ///     Retrieves the sample frequency of the PCM samples output
     ///     by this decoder. This typically corresponds to the sample
     ///     rate encoded in the MPEG audio stream.
     /// </summary>
+    [PublicAPI]
     public virtual int OutputFrequency => _outputFrequency;
 
     /// <summary>
@@ -97,6 +114,7 @@ public class Decoder
     ///     this decoder. This usually corresponds to the number of
     ///     channels in the MPEG audio stream.
     /// </summary>
+    [PublicAPI]
     public virtual int OutputChannels => _outputChannels;
 
     /// <summary>
@@ -107,7 +125,10 @@ public class Decoder
     ///     an upper bound and fewer samples may actually be written, depending
     ///     upon the sample rate and number of channels.
     /// </summary>
-    public virtual int OutputBlockSize => ABuffer.OBUFFERSIZE;
+    [PublicAPI]
+    public virtual int OutputBlockSize => AudioBase.OBUFFERSIZE;
+
+    public static Parameters DefaultParams => ( Parameters )DecoderDefaultParams.Clone();
 
     /// <summary>
     ///     Decodes one frame from an MPEG audio bitstream.
@@ -121,7 +142,7 @@ public class Decoder
     /// <returns>
     ///     A SampleBuffer containing the decoded samples.
     /// </returns>
-    public virtual ABuffer? DecodeFrame( Header header, Bitstream stream )
+    public virtual AudioBase? DecodeFrame( Header header, Bitstream stream )
     {
         if ( !_isInitialized )
         {
@@ -153,6 +174,7 @@ public class Decoder
         switch ( layer )
         {
             case 3:
+            {
                 _l3Decoder ??= new LayerIIIDecoder( stream,
                                                     header,
                                                     _leftChannelFilter,
@@ -163,8 +185,10 @@ public class Decoder
                 decoder = _l3Decoder;
 
                 break;
+            }
 
             case 2:
+            {
                 if ( _l2Decoder == null )
                 {
                     _l2Decoder = new LayerIIDecoder();
@@ -180,8 +204,10 @@ public class Decoder
                 decoder = _l2Decoder;
 
                 break;
+            }
 
             case 1:
+            {
                 if ( _l1Decoder == null )
                 {
                     _l1Decoder = new LayerIDecoder();
@@ -197,6 +223,7 @@ public class Decoder
                 decoder = _l1Decoder;
 
                 break;
+            }
         }
 
         if ( decoder == null )
@@ -209,9 +236,6 @@ public class Decoder
 
     private void Initialize( Header header )
     {
-        // TODO: allow customizable scale factor
-        const float SCALEFACTOR = 32700.0f;
-
         var channels = header.Mode() == Header.SINGLE_CHANNEL ? 1 : 2;
 
         // set up output buffer if not set up by client.
@@ -219,11 +243,11 @@ public class Decoder
 
         var factors = _equalizer?.BandFactors;
 
-        _leftChannelFilter = new SynthesisFilter( 0, SCALEFACTOR, factors );
+        _leftChannelFilter = new SynthesisFilter( 0, ScaleFactor, factors );
 
         if ( channels == 2 )
         {
-            _rightChannelFilter = new SynthesisFilter( 1, SCALEFACTOR, factors );
+            _rightChannelFilter = new SynthesisFilter( 1, ScaleFactor, factors );
         }
 
         _outputChannels  = channels;

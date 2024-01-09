@@ -484,7 +484,7 @@ public class BitmapFont
     /// </para>
     public BitmapFontCache NewFontCache() => new( this, UseIntegerPositions );
 
-    public new string? ToString() => _data.Name ?? base.ToString();
+    public override string? ToString() => _data.Name ?? base.ToString();
 
     private static int IndexOf( string text, char ch, int start )
     {
@@ -547,7 +547,7 @@ public class BitmapFont
             page[ ch & ( PAGE_SIZE - 1 ) ] = ( byte )value;
         }
 
-        public new string ToString() => id.ToString();
+        public override string ToString() => id.ToString();
     }
 
     /// <summary>
@@ -555,7 +555,6 @@ public class BitmapFont
     /// </summary>
     public class BitmapFontData
     {
-
         internal readonly char[] capChars =
         {
             'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J',

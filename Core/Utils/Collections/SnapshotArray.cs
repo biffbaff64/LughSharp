@@ -34,7 +34,6 @@ namespace LibGDXSharp.Utils.Collections;
 /// </summary>
 public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 {
-
     private IEnumerable< T >? _iterable;
     private T[]?              _recycled;
     private T[]?              _snapshot;

@@ -25,7 +25,6 @@ namespace LibGDXSharp.Scenes.Listeners;
  */
 public class DragListener : InputListener
 {
-
     private float _dragLastX;
     private float _dragLastY;
     private int   _pressedPointer = -1;

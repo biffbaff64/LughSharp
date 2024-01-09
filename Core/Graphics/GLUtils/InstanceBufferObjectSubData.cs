@@ -25,7 +25,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </summary>
 public class InstanceBufferObjectSubData : IInstanceData
 {
-
     private readonly FloatBuffer _buffer;
     private readonly ByteBuffer  _byteBuffer;
     private readonly bool        _isDirect;

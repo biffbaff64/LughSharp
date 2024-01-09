@@ -22,7 +22,6 @@ namespace LibGDXSharp.Utils;
 /// <remarks>Not sure if this is still needed.</remarks>
 public class ByteOrder
 {
-
     public readonly static ByteOrder NativeOrder = new( "NativeOrder" );
 
     /// <summary>

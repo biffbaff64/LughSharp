@@ -23,7 +23,6 @@ namespace LibGDXSharp.Graphics.GLUtils;
 /// </summary>
 public class GLOnlyTextureData : ITextureData
 {
-
     public GLOnlyTextureData( int width,
                               int height,
                               int mipMapLevel,

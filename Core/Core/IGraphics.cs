@@ -18,7 +18,6 @@ namespace LibGDXSharp.Core;
 
 public interface IGraphics
 {
-
     #region nested classes
 
     /// <summary>
@@ -26,7 +25,6 @@ public interface IGraphics
     /// </summary>
     public class DisplayModeDescriptor
     {
-
         public DisplayModeDescriptor( int width, int height, int refreshRate, int bitsPerPixel )
         {
             Width        = width;
@@ -212,5 +210,4 @@ public interface IGraphics
     void SetSystemCursor( ICursor.SystemCursor systemCursor );
 
     #endregion methods
-
 }

@@ -16,7 +16,7 @@
 
 using LibGDXSharp.Files;
 
-namespace LibGDXSharp.Backends.Desktop;
+namespace LibGDXSharp.Backends.Desktop.Files;
 
 /// <summary>
 /// </summary>

@@ -18,7 +18,6 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
 public abstract class TemporalAction : Action
 {
-
     private bool _began;
     private bool _complete;
 

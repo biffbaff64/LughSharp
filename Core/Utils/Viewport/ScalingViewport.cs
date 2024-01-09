@@ -37,7 +37,6 @@ namespace LibGDXSharp.Utils.Viewport;
 /// </summary>
 public class ScalingViewport : Viewport
 {
-
     /// <summary>
     ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
     /// </summary>

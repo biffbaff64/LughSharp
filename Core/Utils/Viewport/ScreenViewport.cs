@@ -23,7 +23,6 @@ namespace LibGDXSharp.Utils.Viewport;
 /// </summary>
 public class ScreenViewport : Viewport
 {
-
     /// <summary>
     ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
     /// </summary>

@@ -26,7 +26,6 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public abstract class Value
 {
-
     public readonly static Fixed Zero = new( 0 );
 
     // ------------------------------------------------------------------------
@@ -71,7 +70,7 @@ public abstract class Value
 
         public override float Get( Actor? context = null ) => Value;
 
-        public new string ToString() => Value.ToString( CultureInfo.InvariantCulture );
+        public override string ToString() => Value.ToString( CultureInfo.InvariantCulture );
 
         public static Fixed ValueOf( float value )
         {

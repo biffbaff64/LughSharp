@@ -24,7 +24,6 @@ namespace LibGDXSharp.Graphics.G2D;
 /// </summary>
 public class BitmapFontCache
 {
-
     private readonly Color                _color         = new( 1, 1, 1, 1 );
     private readonly List< GlyphLayout >  _layouts       = new();
     private readonly List< GlyphLayout? > _pooledLayouts = new();

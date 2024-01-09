@@ -22,7 +22,6 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </summary>
 public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameters >, IDisposable
 {
-
     public MusicLoader( IFileHandleResolver resolver )
         : base( resolver ) => LoadedMusic = null!;
 

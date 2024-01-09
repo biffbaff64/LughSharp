@@ -38,7 +38,6 @@ public record BinaryHeapNode
 /// </summary>
 public class BinaryHeap<T> where T : BinaryHeapNode
 {
-
     private const int DEFAULT_CAPACITY = 16;
 
     private readonly bool              _isMaxHeap;
@@ -354,7 +353,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         return hash;
     }
 
-    public new string ToString()
+    public override string ToString()
     {
         if ( ( Size == 0 ) || ( _nodes == null ) )
         {
@@ -393,5 +392,4 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     public bool IsEmpty => Size == 0;
 
     #endregion properties
-
 }

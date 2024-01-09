@@ -191,7 +191,7 @@ public class Cubemap : GLTexture
             }
         }
     }
-    
+
     /// <summary>
     ///     Adds a new entry to the list of managed cubemnaps.
     /// </summary>
@@ -310,7 +310,6 @@ public class Cubemap : GLTexture
     /// </summary>
     public class CubemapSide
     {
-
         public enum InnerEnum
         {
             PositiveX,

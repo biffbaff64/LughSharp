@@ -17,5 +17,4 @@
 namespace LibGDXSharp.Graphics.G3D.Models.Data;
 
 public class ModelMeshPart
-{
-}
+{}

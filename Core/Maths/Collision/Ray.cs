@@ -22,7 +22,6 @@ namespace LibGDXSharp.Maths.Collision;
 [Serializable]
 public class Ray
 {
-
     private static  Vector3 _tmp      = new();
     public readonly Vector3 direction = new();
     public readonly Vector3 origin    = new();

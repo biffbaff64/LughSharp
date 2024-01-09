@@ -92,9 +92,9 @@ public class DirectByteBuffer : ByteBuffer
      * <i>get</i>
      * method.  Reads the byte at this buffer's
      * current position, and then increments the position.
-     * 
+     *
      * @return  The byte at the buffer's current position
-     * 
+     *
      * @throws  BufferUnderflowException
      * If the buffer's current position is not smaller than its limit
      */
@@ -112,12 +112,12 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  b
      * The byte to be written
-     * 
+     *
      * @return  This buffer
-     * 
+     *
      * @throws  BufferOverflowException
      * If this buffer's current position is not smaller than its limit
-     * 
+     *
      * @throws  ReadOnlyBufferException
      * If this buffer is read-only
      */
@@ -128,12 +128,12 @@ public class DirectByteBuffer : ByteBuffer
      * <i>get</i>
      * method.  Reads the byte at the given
      * index.
-     * 
+     *
      * @param  index
      * The index from which the byte will be read
-     * 
+     *
      * @return  The byte at the given index
-     * 
+     *
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
@@ -154,18 +154,18 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  index
      * The index at which the byte will be written
-     * 
+     *
      * @param  b
      * The byte value to be written
-     * 
+     *
      * @return  This buffer
-     * 
+     *
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
      * is negative
      * or not smaller than the buffer's limit
-     * 
+     *
      * @throws  ReadOnlyBufferException
      * If this buffer is read-only
      */
@@ -285,7 +285,7 @@ public class DirectByteBuffer : ByteBuffer
      *     and then increments the position by eight.
      * </p>
      * @return  The double value at the buffer's current position
-     * 
+     *
      * @throws  BufferUnderflowException
      * If there are fewer than eight bytes
      * remaining in this buffer
@@ -302,9 +302,9 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  index
      * The index from which the bytes will be read
-     * 
+     *
      * @return  The double value at the given index
-     * 
+     *
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
@@ -328,13 +328,13 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  value
      * The double value to be written
-     * 
+     *
      * @return  This buffer
-     * 
+     *
      * @throws  BufferOverflowException
      * If there are fewer than eight bytes
      * remaining in this buffer
-     * 
+     *
      * @throws  ReadOnlyBufferException
      * If this buffer is read-only
      */
@@ -353,19 +353,19 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  index
      * The index at which the bytes will be written
-     * 
+     *
      * @param  value
      * The double value to be written
-     * 
+     *
      * @return  This buffer
-     * 
+     *
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
      * is negative
      * or not smaller than the buffer's limit,
      * minus seven
-     * 
+     *
      * @throws  ReadOnlyBufferException
      * If this buffer is read-only
      */

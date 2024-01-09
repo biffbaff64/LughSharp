@@ -148,7 +148,7 @@ AUDIO/MP3SHARP
     Decoding
     --------
 
-    - DONE - ABuffer
+    - DONE - AudioBase
     - DONE - BitReserve
     - DONE - Bitstream
     - DONE - BitstreamErrors
@@ -264,8 +264,8 @@ CORE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-FILES
------
+FILES - DELETE CANDIDATE
+------------------------
 
     TODO: Remove all this and properly integrate the C# file handling classes
 
@@ -347,8 +347,8 @@ GRAPHICS
     - DONE - ICubemapData                       
     - DONE - ICursor                            
     - DONE - IDownloadPixmapResponseListener    
-    - IP   - IGL20                              
-    - IP   - IGL30                              
+    - DONE - IGL20                              
+    - DONE - IGL30                              
     - DONE - ITextureArrayData        
     - DONE - ITextureData             
     - DONE - Mesh                               
@@ -995,13 +995,13 @@ SCENES/SCENE2D/UI
     - DONE - ImageTextButton
     - DONE - Label
     - DONE - ListBox
-    - IP   - ParticleEffectActor            
+    - DONE - ParticleEffectActor            
     - DONE - ProgressBar
     - DONE - ScrollPane
     - IP   _ ScrollPaneListeners
-    -      - SelectBox
+    - IP   - SelectBox
     - DONE - Skin                           
-    -      - Slider                         
+    - IP   - Slider                         
     -      - SplitPane                      
     - DONE - Stack                          
     - DONE - Table                          

@@ -1,4 +1,4 @@
-// ///////////////////////////////////////////////////////////////////////////////
+﻿// ///////////////////////////////////////////////////////////////////////////////
 // // Copyright [2023] [Richard Ikin]
 // //
 // // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,12 @@
 // // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Audio.MP3Sharp;
+namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     Base Class for audio output.
 /// </summary>
-public abstract class ABuffer
+public abstract class AudioBase
 {
     public const int OBUFFERSIZE = 2 * 1152; // max. 2 * 1152 samples per frame
     public const int MAXCHANNELS = 2;        // max. number of channels
@@ -66,3 +66,5 @@ public abstract class ABuffer
     /// </summary>
     public abstract void SetStopFlag();
 }
+
+

@@ -22,7 +22,6 @@ namespace LibGDXSharp.Graphics.G2D;
 public class PolygonRegionLoader
     : SynchronousAssetLoader< PolygonRegion, PolygonRegionLoader.PolygonRegionParameters >
 {
-
     private readonly PolygonRegionParameters _defaultParameters = new();
     private readonly EarClippingTriangulator _triangulator      = new();
 
@@ -178,7 +177,6 @@ public class PolygonRegionLoader
 
     public class PolygonRegionParameters : AssetLoaderParameters
     {
-
         /// <summary>
         ///     the possible file name extensions of the texture file.
         /// </summary>

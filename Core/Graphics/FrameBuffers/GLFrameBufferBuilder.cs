@@ -18,7 +18,6 @@ namespace LibGDXSharp.Graphics.FrameBuffers;
 
 public class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >
 {
-
     public GLFrameBufferBuilder( int width, int height )
     {
         Width  = width;
