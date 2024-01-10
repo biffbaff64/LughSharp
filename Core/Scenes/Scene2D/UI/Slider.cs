@@ -15,7 +15,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Graphics.G2D;
+using LibGDXSharp.Scenes.Listeners;
 using LibGDXSharp.Scenes.Scene2D.Utils;
+using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
@@ -34,12 +36,11 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 /// </summary>
 public class Slider : ProgressBar
 {
-    private int          _button          = -1;
-    private int          _draggingPointer = -1;
-    private bool         _mouseOver;
-    private Interpolator _visualInterpolationInverse = Interpolation.linear;
-    private float[]      _snapValues;
-    private float        threshold;
+    public bool MouseOver { get; set; }
+
+    private int      _draggingPointer = -1;
+    private float[]? _snapValues;
+    private float    _threshold;
 
     public Slider( float min, float max, float stepSize, bool vertical, Skin skin )
         : this( min, max, stepSize, vertical, skin.Get< SliderStyle >( "default-" + ( vertical ? "vertical" : "horizontal" ) ) )
@@ -66,158 +67,166 @@ public class Slider : ProgressBar
     public Slider( float min, float max, float stepSize, bool vertical, SliderStyle style )
         : base( min, max, stepSize, vertical, style )
     {
-//        addListener( new InputListener()
-//        {
-//            public bool touchDown (InputEvent ev, float x, float y, int pointer, int button)
-//            {
-//                if (disabled) return false;
-//                if (Slider.this.button != -1 && Slider.this.button != button) return false;
-//                if (draggingPointer != -1) return false;
-//                draggingPointer = pointer;
-//                calculatePositionAndValue(x, y);
-//                return true;
-//            }
-//
-//            public void touchUp( InputEvent ev, float x, float y, int pointer, int button )
-//            {
-//                if ( pointer != draggingPointer ) return;
-//                draggingPointer = -1;
-//
-//                // The position is invalid when focus is cancelled
-//                if (event.isTouchFocusCancel() || !calculatePositionAndValue( x, y )) {
-//                    // Fire an event on touchUp even if the value didn't change, so listeners can see when a drag ends via isDragging.
-//                    ChangeEvent changeEvent = Pools.obtain( ChangeEvent.class);
-//                    fire( changeEvent );
-//                    Pools.free( changeEvent );
-//                }
-//            }
-//
-//            public void touchDragged( InputEvent ev, float x, float y, int pointer )
-//            {
-//                calculatePositionAndValue( x, y );
-//            }
-//
-//            public void enter( InputEvent ev, float x, float y, int pointer, Actor fromActor )
-//            {
-//                if ( pointer == -1 ) mouseOver = true;
-//            }
-//
-//            public void exit( InputEvent ev, float x, float y, int pointer, Actor toActor )
-//            {
-//                if ( pointer == -1 ) mouseOver = false;
-//            }
-//        } );
+        AddListener( new SliderInputListener( this ) );
     }
 
-    /// Returns the slider's style. Modifying the returned style may not have an effect until
-    /// <see cref="SetStyle(SliderStyle)"/> is called.
-    public SliderStyle GetStyle()
+    public SliderStyle GetStyle() => ( SliderStyle )base.Style;
+
+    protected IDrawable? GetBackgroundDrawable()
     {
-        return ( SliderStyle )base.Style;
+        var style = ( SliderStyle )base.Style;
+
+        if ( IsDisabled && ( style.DisabledBackground != null ) )
+        {
+            return style.DisabledBackground;
+        }
+
+        if ( IsDragging() && ( style.BackgroundDown != null ) )
+        {
+            return style.BackgroundDown;
+        }
+
+        if ( MouseOver && ( style.BackgroundOver != null ) )
+        {
+            return style.BackgroundOver;
+        }
+
+        return style.Background;
     }
 
-    public bool IsOver()
+    protected IDrawable? GetKnobDrawable()
     {
-        return _mouseOver;
+        var style = ( SliderStyle )base.Style;
+
+        if ( IsDisabled && ( style.DisabledKnob != null ) )
+        {
+            return style.DisabledKnob;
+        }
+
+        if ( IsDragging() && ( style.KnobDown != null ) )
+        {
+            return style.KnobDown;
+        }
+
+        if ( MouseOver && ( style.KnobOver != null ) )
+        {
+            return style.KnobOver;
+        }
+
+        return style.Knob;
     }
 
-    protected IDrawable? getBackgroundDrawable()
+    protected IDrawable? GetKnobBeforeDrawable()
     {
-        SliderStyle style = ( SliderStyle )super.getStyle();
+        var style = ( SliderStyle )base.Style;
 
-        if ( disabled && style.disabledBackground != null ) return style.disabledBackground;
-        if ( IsDragging() && style.BackgroundDown != null ) return style.BackgroundDown;
-        if ( _mouseOver && style.BackgroundOver != null ) return style.BackgroundOver;
+        if ( IsDisabled && ( style.DisabledKnobBefore != null ) )
+        {
+            return style.DisabledKnobBefore;
+        }
 
-        return style.background;
+        if ( IsDragging() && ( style.KnobBeforeDown != null ) )
+        {
+            return style.KnobBeforeDown;
+        }
+
+        if ( MouseOver && ( style.KnobBeforeOver != null ) )
+        {
+            return style.KnobBeforeOver;
+        }
+
+        return style.KnobBefore;
     }
 
-    protected @Null Drawable getKnobDrawable()
+    protected IDrawable? GetKnobAfterDrawable()
     {
-        SliderStyle style = ( SliderStyle )super.getStyle();
+        var style = ( SliderStyle )base.Style;
 
-        if ( disabled && style.disabledKnob != null ) return style.disabledKnob;
-        if ( IsDragging() && style.KnobDown != null ) return style.KnobDown;
-        if ( _mouseOver && style.KnobOver != null ) return style.KnobOver;
+        if ( IsDisabled && ( style.DisabledKnobAfter != null ) )
+        {
+            return style.DisabledKnobAfter;
+        }
 
-        return style.knob;
+        if ( IsDragging() && ( style.KnobAfterDown != null ) )
+        {
+            return style.KnobAfterDown;
+        }
+
+        if ( MouseOver && ( style.KnobAfterOver != null ) )
+        {
+            return style.KnobAfterOver;
+        }
+
+        return style.KnobAfter;
     }
 
-    protected Drawable getKnobBeforeDrawable()
+    private bool CalculatePositionAndValue( float x, float y )
     {
-        SliderStyle style = ( SliderStyle )super.getStyle();
-
-        if ( disabled && style.disabledKnobBefore != null ) return style.disabledKnobBefore;
-        if ( IsDragging() && style.KnobBeforeDown != null ) return style.KnobBeforeDown;
-        if ( _mouseOver && style.KnobBeforeOver != null ) return style.KnobBeforeOver;
-
-        return style.knobBefore;
-    }
-
-    protected Drawable getKnobAfterDrawable()
-    {
-        SliderStyle style = ( SliderStyle )super.getStyle();
-
-        if ( disabled && style.disabledKnobAfter != null ) return style.disabledKnobAfter;
-        if ( IsDragging() && style.KnobAfterDown != null ) return style.KnobAfterDown;
-        if ( _mouseOver && style.KnobAfterOver != null ) return style.KnobAfterOver;
-
-        return style.knobAfter;
-    }
-
-    bool calculatePositionAndValue( float x, float y )
-    {
-        SliderStyle style = getStyle();
-        Drawable    knob  = style.knob;
-        Drawable    bg    = getBackgroundDrawable();
+        SliderStyle style = GetStyle();
+        IDrawable?  knob  = style.Knob;
+        IDrawable?  bg    = GetBackgroundDrawable();
 
         float value;
-        float oldPosition = position;
+        var   oldPosition = KnobPosition;
 
-        float min = getMinValue();
-        float max = getMaxValue();
+        var min = MinValue;
+        var max = MaxValue;
 
-        if ( vertical )
+        if ( IsVertical )
         {
-            float height     = getHeight() - bg.getTopHeight() - bg.getBottomHeight();
-            float knobHeight = knob == null ? 0 : knob.getMinHeight();
-            position = y - bg.getBottomHeight() - knobHeight * 0.5f;
-            value    = min + ( max - min ) * _visualInterpolationInverse.apply( position / ( height - knobHeight ) );
-            position = Math.max( Math.min( 0, bg.getBottomHeight() ), position );
-            position = Math.min( height - knobHeight, position );
+            var height     = Height - bg!.TopHeight - bg.BottomHeight;
+            var knobHeight = knob?.MinHeight ?? 0;
+
+            KnobPosition = y - bg.BottomHeight - ( knobHeight * 0.5f );
+            value        = min + ( ( max - min ) * VisualInterpolationInverse.Apply( KnobPosition / ( height - knobHeight ) ) );
+            KnobPosition = Math.Max( Math.Min( 0, bg.BottomHeight ), KnobPosition );
+            KnobPosition = Math.Min( height - knobHeight, KnobPosition );
         }
         else
         {
-            float width     = getWidth() - bg.getLeftWidth() - bg.getRightWidth();
-            float knobWidth = knob == null ? 0 : knob.getMinWidth();
-            position = x - bg.getLeftWidth() - knobWidth * 0.5f;
-            value    = min + ( max - min ) * _visualInterpolationInverse.apply( position / ( width - knobWidth ) );
-            position = Math.max( Math.min( 0, bg.getLeftWidth() ), position );
-            position = Math.min( width - knobWidth, position );
+            var width     = Width - bg!.LeftWidth - bg.RightWidth;
+            var knobWidth = knob?.MinWidth ?? 0;
+
+            KnobPosition = x - bg.LeftWidth - ( knobWidth * 0.5f );
+            value        = min + ( ( max - min ) * VisualInterpolationInverse.Apply( KnobPosition / ( width - knobWidth ) ) );
+            KnobPosition = Math.Max( Math.Min( 0, bg.LeftWidth ), KnobPosition );
+            KnobPosition = Math.Min( width - knobWidth, KnobPosition );
         }
 
-        float oldValue                                                                                         = value;
-        if ( !Gdx.input.isKeyPressed( Keys.SHIFT_LEFT ) && !Gdx.input.isKeyPressed( Keys.SHIFT_RIGHT ) ) value = snap( value );
-        bool valueSet                                                                                          = setValue( value );
-        if ( value == oldValue ) position                                                                      = oldPosition;
+        var oldValue = value;
+
+        if ( !Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
+          && !Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT ) )
+        {
+            value = GetSnapped( value );
+        }
+
+        var valueSet = SetBarPosition( value );
+
+        if ( value.Equals( oldValue ) )
+        {
+            KnobPosition = oldPosition;
+        }
 
         return valueSet;
     }
 
-    /** Returns a snapped value. */
-    protected float snap( float value )
+    protected float GetSnapped( float value )
     {
-        if ( _snapValues == null || _snapValues.length == 0 ) return value;
+        if ( _snapValues is { Length: 0 } )
+        {
+            return value;
+        }
+
         float bestDiff = -1, bestValue = 0;
 
-        for ( int i = 0; i < _snapValues.length; i++ )
+        foreach ( var snapValue in _snapValues! )
         {
-            float snapValue = _snapValues[ i ];
-            float diff      = Math.abs( value - snapValue );
+            var diff = Math.Abs( value - snapValue );
 
-            if ( diff <= threshold )
+            if ( diff <= _threshold )
             {
-                if ( bestDiff == -1 || diff < bestDiff )
+                if ( ( bestDiff.Equals( -1 ) ) || ( diff < bestDiff ) )
                 {
                     bestDiff  = diff;
                     bestValue = snapValue;
@@ -237,38 +246,37 @@ public class Slider : ProgressBar
     public void SetSnapToValues( float[] values, float threshld )
     {
         this._snapValues = values;
-        this.threshold   = threshld;
+        this._threshold  = threshld;
     }
 
-    /** Returns true if the slider is being dragged. */
-    public bool IsDragging()
-    {
-        return _draggingPointer != -1;
-    }
+    /// <summary>
+    /// Returns true if the slider is being dragged.
+    /// </summary>
+    public bool IsDragging() => _draggingPointer != -1;
 
-    /** Sets the mouse button, which can trigger a change of the slider. Is -1, so every button, by default. */
-    public void setButton( int button )
-    {
-        this._button = button;
-    }
+    /// <summary>
+    /// Sets the mouse button, which can trigger a change of the slider.
+    /// Is set to -1, so every button, by default.
+    /// </summary>
+    public int MouseButton { get; set; } = -1;
 
-    /** Sets the inverse interpolation to use for display. This should perform the inverse of the
-   * {@link #setVisualInterpolation(Interpolation) visual interpolation}. */
-    public void setVisualInterpolationInverse( Interpolation interpolation )
-    {
-        this._visualInterpolationInverse = interpolation;
-    }
+    /// <summary>
+    /// Sets the inverse interpolation to use for display. This should perform the
+    /// inverse of setting <see cref="ProgressBar.VisualInterpolation"/>".
+    /// </summary>
+    public Interpolator VisualInterpolationInverse { get; set; } = Interpolation.linear;
 
-    /** Sets the value using the specified visual percent.
-  * @see #setVisualInterpolation(Interpolation) */
-    public void setVisualPercent( float percent )
+    /// <summary>
+    /// Sets the value using the specified visual percent.
+    /// </summary>
+    public void SetVisualPercent( float percent )
     {
-        SetValue( min + ( max - min ) * _visualInterpolationInverse.apply( percent ) );
+        base.Value = ( MinValue + ( ( MaxValue - MinValue ) * VisualInterpolationInverse.Apply( percent ) ) );
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public class SliderStyle : ProgressBarStyle
     {
         public IDrawable? BackgroundOver { get; set; }
@@ -302,6 +310,82 @@ public class Slider : ProgressBar
 
             KnobAfterOver = style.KnobAfterOver;
             KnobAfterDown = style.KnobAfterDown;
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public class SliderInputListener : InputListener
+    {
+        private readonly Slider _parent;
+
+        public SliderInputListener( Slider parent )
+        {
+            _parent = parent;
+        }
+
+        public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
+        {
+            if ( _parent.IsDisabled )
+            {
+                return false;
+            }
+
+            if ( ( _parent.MouseButton != -1 ) && ( _parent.MouseButton != button ) )
+            {
+                return false;
+            }
+
+            if ( _parent._draggingPointer != -1 )
+            {
+                return false;
+            }
+
+            _parent._draggingPointer = pointer;
+            _parent.CalculatePositionAndValue( x, y );
+
+            return true;
+        }
+
+        public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
+        {
+            if ( pointer != _parent._draggingPointer )
+            {
+                return;
+            }
+
+            // The position is invalid when focus is cancelled
+            if ( ev!.TouchFocusCancel || !_parent.CalculatePositionAndValue( x, y ) )
+            {
+                // Fire an event on touchUp even if the value didn't change, so
+                // listeners can see when a drag ends via isDragging.
+                ChangeListener.ChangeEvent? changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
+
+                _parent.Fire( changeEvent );
+                Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
+            }
+        }
+
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
+        {
+            _parent.CalculatePositionAndValue( x, y );
+        }
+
+        public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? from )
+        {
+            if ( pointer == -1 )
+            {
+                _parent.MouseOver = true;
+            }
+        }
+
+        public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? to )
+        {
+            if ( pointer == -1 )
+            {
+                _parent.MouseOver = false;
+            }
         }
     }
 }

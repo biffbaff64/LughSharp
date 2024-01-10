@@ -236,7 +236,7 @@ public class Image : Widget
         return 0;
     }
 
-    public override string ToString()
+    protected override string ToString()
     {
         var name = Name;
 

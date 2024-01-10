@@ -106,7 +106,7 @@ public class ProgressBar : Widget, IDisableable
 
     // ------------------------------------------------------------------------
 
-    public float KnobPosition { get; private set; }
+    public float KnobPosition { get; set; }
     public float MinValue     { get; set; }
     public float MaxValue     { get; set; }
     public float Value        { get; set; }
@@ -404,7 +404,7 @@ public class ProgressBar : Widget, IDisableable
     }
 
     /// <summary>
-    ///     Sets the progress bar _position, rounded to the nearest step size and
+    ///     Sets the progress bar position, rounded to the nearest step size and
     ///     clamped to the minimum and maximum values. <see cref="Clamp(float)" />
     ///     can be overridden to allow values outside of the progress bar's min/max
     ///     range.

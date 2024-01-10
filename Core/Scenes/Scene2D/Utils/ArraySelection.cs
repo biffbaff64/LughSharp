@@ -37,7 +37,7 @@ public class ArraySelection<T> : Selection< T >
 
     public bool RangeSelect { get; set; } = true;
 
-    public new void Choose( T item )
+    public override void Choose( T item )
     {
         ArgumentNullException.ThrowIfNull( item );
 

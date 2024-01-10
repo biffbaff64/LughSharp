@@ -1384,5 +1384,5 @@ public class Actor : IActor
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    protected new string? ToString() => Name;
+    protected virtual new string? ToString() => Name;
 }

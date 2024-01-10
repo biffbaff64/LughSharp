@@ -56,7 +56,7 @@ public class Selection<T> : IDisableable, IDisposable
     ///         This is typically invoked by user interaction.
     ///     </para>
     /// </summary>
-    public void Choose( T item )
+    public virtual void Choose( T item )
     {
         ArgumentNullException.ThrowIfNull( item );
 

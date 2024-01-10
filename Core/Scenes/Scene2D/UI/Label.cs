@@ -41,14 +41,65 @@ public class Label : Widget
     private                 float       _lastPrefHeight;
     private                 bool        _prefSizeInvalid = true;
 
-    private LabelStyle _style;
+    private LabelStyle _style = null!;
     private bool       _wrap;
 
-    public BitmapFontCache FontCache   { get; set; }
+    public BitmapFontCache FontCache   { get; set; } = null!;
     public StringBuilder   Text        { get; }      = new();
     public int             LabelAlign  { get; set; } = Align.LEFT;
     public int             LineAlign   { get; set; } = Align.LEFT;
     public GlyphLayout     GlyphLayout { get; set; } = new();
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region constructors
+
+    public Label( string text, Skin skin )
+        : this( text, skin.Get< LabelStyle >() )
+    {
+    }
+
+    public Label( string text, Skin skin, string styleName )
+        : this( text, skin.Get< LabelStyle >( styleName ) )
+    {
+    }
+
+    /// <summary>
+    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont with
+    ///     the specified name from the skin and the specified color.
+    /// </summary>
+    public Label( string text, Skin skin, string fontName, Color color )
+        : this( text, new LabelStyle( skin.GetFont( fontName ), color ) )
+    {
+    }
+
+    /// <summary>
+    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont
+    ///     with the specified name and the specified color from the
+    ///     skin.
+    /// </summary>
+    public Label( string text, Skin skin, string fontName, string colorName )
+        : this( text, new LabelStyle( skin.GetFont( fontName ), skin.GetColor( colorName ) ) )
+    {
+    }
+
+    public Label( string? text, LabelStyle style )
+    {
+        if ( text != null )
+        {
+            Text.Append( text );
+        }
+
+        Style = style;
+
+        if ( text is { Length: > 0 } )
+        {
+            SetSize( GetPrefWidth(), GetPrefHeight() );
+        }
+    }
+
+    #endregion constructors
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -467,7 +518,7 @@ public class Label : Widget
     /// </summary>
     public void SetEllipsis( bool ellipsis ) => _ellipsis = ellipsis ? "..." : null;
 
-    public override string ToString()
+    protected override string ToString()
     {
         var name = Name;
 
@@ -528,55 +579,4 @@ public class Label : Widget
     }
 
     #endregion labelstyle
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region constructors
-
-    public Label( string text, Skin skin )
-        : this( text, skin.Get< LabelStyle >() )
-    {
-    }
-
-    public Label( string text, Skin skin, string styleName )
-        : this( text, skin.Get< LabelStyle >( styleName ) )
-    {
-    }
-
-    /// <summary>
-    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont with
-    ///     the specified name from the skin and the specified color.
-    /// </summary>
-    public Label( string text, Skin skin, string fontName, Color color )
-        : this( text, new LabelStyle( skin.GetFont( fontName ), color ) )
-    {
-    }
-
-    /// <summary>
-    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont
-    ///     with the specified name and the specified color from the
-    ///     skin.
-    /// </summary>
-    public Label( string text, Skin skin, string fontName, string colorName )
-        : this( text, new LabelStyle( skin.GetFont( fontName ), skin.GetColor( colorName ) ) )
-    {
-    }
-
-    public Label( string? text, LabelStyle style )
-    {
-        if ( text != null )
-        {
-            Text.Append( text );
-        }
-
-        Style = style;
-
-        if ( text is { Length: > 0 } )
-        {
-            SetSize( GetPrefWidth(), GetPrefHeight() );
-        }
-    }
-
-    #endregion constructors
 }

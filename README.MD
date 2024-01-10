@@ -971,6 +971,15 @@ SCENES/SCENE2D/LISTENERS
     - IP   - IEventListener                 
     - IP   - InputListener                  
 
+TODO: Use Lambdas for these...
+i.e.    AddListener( new ClickListener()
+        {
+            // Clicked needs to be a Func<>
+            Clicked = ( ev, x, y ) =>
+            {
+            }
+        } );
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1001,7 +1010,7 @@ SCENES/SCENE2D/UI
     - IP   _ ScrollPaneListeners
     - IP   - SelectBox
     - DONE - Skin                           
-    - IP   - Slider                         
+    - DONE - Slider                         
     -      - SplitPane                      
     - DONE - Stack                          
     - DONE - Table                          
