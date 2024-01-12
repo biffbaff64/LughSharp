@@ -172,7 +172,7 @@ public class TextButton : Button
 
     // ------------------------------------------------------------------------
 
-    public override string ToString()
+    protected override string ToString()
     {
         if ( Name != null )
         {

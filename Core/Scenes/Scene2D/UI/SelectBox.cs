@@ -17,6 +17,7 @@
 using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Scenes.Listeners;
+using LibGDXSharp.Scenes.Scene2D.Actions;
 using LibGDXSharp.Utils.Collections;
 using LibGDXSharp.Utils.Pooling;
 
@@ -210,18 +211,18 @@ public class SelectBox<T> : Widget, IDisableable
 
     public void Layout()
     {
-        IDrawable?  bg   = BoxStyle.Background;
-        BitmapFont? font = BoxStyle.Font;
+        IDrawable? bg   = BoxStyle.Background;
+        BitmapFont font = BoxStyle.Font;
 
         if ( bg != null )
         {
-            _prefHeight = Math.Max( ( bg.TopHeight + bg.BottomHeight + font!.GetCapHeight() )
+            _prefHeight = Math.Max( ( bg.TopHeight + bg.BottomHeight + font.GetCapHeight() )
                                   - ( font.GetDescent() * 2 ),
                                     bg.MinHeight );
         }
         else
         {
-            _prefHeight = font!.GetCapHeight() - ( font.GetDescent() * 2 );
+            _prefHeight = font.GetCapHeight() - ( font.GetDescent() * 2 );
         }
 
         Pool< GlyphLayout > layoutPool = Pools< GlyphLayout >.Get();
@@ -236,7 +237,7 @@ public class SelectBox<T> : Widget, IDisableable
                 _prefWidth = bg.LeftWidth + bg.RightWidth;
             }
 
-            T selected = GetSelected();
+            T? selected = GetSelected();
 
             if ( selected != null )
             {
@@ -309,7 +310,9 @@ public class SelectBox<T> : Widget, IDisableable
         return BoxStyle.Background;
     }
 
-    /** Returns the appropriate label font color from the style based on the current button state. */
+    /// <summary>
+    /// Returns the appropriate label font color from the style based on the current button state.
+    /// </summary>
     protected Color GetFontColor()
     {
         if ( IsDisabled && ( BoxStyle.DisabledFontColor != null ) )
@@ -329,99 +332,116 @@ public class SelectBox<T> : Widget, IDisableable
     {
         Validate();
 
-        IDrawable?  background = GetBackgroundIDrawable();
-        Color       fontColor  = GetFontColor();
-        BitmapFont? font       = BoxStyle.Font;
+        IDrawable? background = GetBackgroundIDrawable();
+        Color      fontColor  = GetFontColor();
+        BitmapFont font       = BoxStyle.Font;
 
-        Color color = getColor();
-        float x     = getX(),     y      = getY();
-        float width = getWidth(), height = getHeight();
+        // Make copies of x,y,width and height for local modification
+        // and preserving the originals.
+        var x      = this.X;
+        var y      = this.Y;
+        var width  = this.Width;
+        var height = this.Height;
 
-        batch.setColor( color.r, color.g, color.b, color.a * parentAlpha );
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
-        if ( background != null )
-        {
-            background.Draw( batch, x, y, width, height );
-        }
+        background?.Draw( batch, x, y, width, height );
 
-        T selected = _selection.first();
+        T? selected = _selection.First();
 
         if ( selected != null )
         {
             if ( background != null )
             {
-                width  -= background.getLeftWidth() + background.getRightWidth();
-                height -= background.getBottomHeight() + background.getTopHeight();
-                x      += background.getLeftWidth();
-                y      += ( int )( ( height / 2 ) + background.getBottomHeight() + ( font.getData().capHeight / 2 ) );
+                width  -= background.LeftWidth + background.RightWidth;
+                height -= background.BottomHeight + background.TopHeight;
+                x      += background.LeftWidth;
+                y      += ( int )( ( height / 2 ) + background.BottomHeight + ( font.GetData().CapHeight / 2 ) );
             }
             else
             {
-                y += ( int )( ( height / 2 ) + ( font.getData().capHeight / 2 ) );
+                y += ( int )( ( height / 2 ) + ( font.GetData().CapHeight / 2 ) );
             }
 
-            font.setColor( fontColor.r, fontColor.g, fontColor.b, fontColor.a * parentAlpha );
+            font.SetColor( fontColor.R, fontColor.G, fontColor.B, fontColor.A * parentAlpha );
+
             DrawItem( batch, font, selected, x, y, width );
         }
     }
 
     protected GlyphLayout DrawItem( IBatch batch, BitmapFont font, T item, float x, float y, float width )
     {
-        String string = ToString( item );
+        var str = ToString( item ) ?? "";
 
-        return font.Draw( batch, string, x, y, 0, string.length(), width, _alignment, false, "..." );
+        return font.Draw( batch, str, x, y, 0, str.Length, width, _alignment, false, "..." );
     }
 
-    /** Sets the alignment of the selected item in the select box. See {@link #getList()} and {@link List#setAlignment(int)} to set
-     * the alignment in the list shown when the select box is open.
-     * @param alignment See {@link Align}. */
+    /// <summary>
+    /// Sets the alignment of the selected item in the select box. See <see cref="GetList()"/>
+    /// and <see cref="SetAlignment(int)"/> to set the alignment in the list shown when the
+    /// select box is open.
+    /// </summary>
+    /// <param name="alignment"> See <see cref="Align"/>. </param>
     public void SetAlignment( int alignment )
     {
         this._alignment = alignment;
     }
 
-    /** Get the set of selected items, useful when multiple items are selected
-     * @return a Selection object containing the selected elements */
-    public ListSelection< T > GetSelection()
+    /// <summary>
+    /// Get the set of selected items, useful when multiple items are selected
+    /// </summary>
+    /// <returns> a Selection object containing the selected elements </returns>
+    public ArraySelection< T > GetSelection()
     {
         return _selection;
     }
 
-    /** Returns the first selected item, or null. For multiple selections use {@link SelectBox#getSelection()}. */
-    public T GetSelected()
+    /// <summary>
+    /// Returns the first selected item, or null. For multiple selections
+    /// use <see cref="GetSelection()"/>.
+    /// </summary>
+    public T? GetSelected()
     {
-        return _selection.first();
+        return _selection.First();
     }
 
-    /** Sets the selection to only the passed item, if it is a possible choice, else selects the first item. */
+    /// <summary>
+    /// Sets the selection to only the passed item, if it is a possible
+    /// choice, else selects the first item.
+    /// </summary>
     public void SetSelected( T item )
     {
-        if ( _items.contains( item, false ) )
+        if ( _items.Contains( item ) )
         {
-            _selection.set( item );
+            _selection.Set( item );
         }
-        else if ( _items.size > 0 )
+        else if ( _items.Count > 0 )
         {
-            _selection.set( _items.first() );
+            _selection.Set( _items.First() );
         }
         else
         {
-            _selection.clear();
+            _selection.Clear();
         }
     }
 
-    /** @return The index of the first selected item. The top item has an index of 0. Nothing selected has an index of -1. */
+    /// <returns>
+    /// The index of the first selected item. The top item has an index of 0.
+    /// Nothing selected has an index of -1.
+    /// </returns>
     public int GetSelectedIndex()
     {
-        ObjectSet< T > selected = _selection.items();
+        SortedSet< T > selected = _selection.Items();
 
-        return selected.size == 0 ? -1 : _items.indexOf( selected.first(), false );
+        return selected.Count == 0 ? -1 : _items.IndexOf( selected.First() );
     }
 
-    /** Sets the selection to only the selected index. */
+    /// <summary>
+    /// Sets the selection to only the selected index.
+    /// </summary>
     public void SetSelectedIndex( int index )
     {
-        _selection.set( _items.get( index ) );
+        _selection.Set( _items[ index ] );
     }
 
     /** When true the pref width is based on the selected item. */
@@ -430,25 +450,27 @@ public class SelectBox<T> : Widget, IDisableable
         this._selectedPrefWidth = selectedPrefWidth;
     }
 
-    /** Returns the pref width of the select box if the widest item was selected, for use when
-     * {@link #setSelectedPrefWidth(bool)} is true. */
+    /// <summary>
+    /// Returns the pref width of the select box if the widest item was selected,
+    /// for use when <see cref="SetSelectedPrefWidth(bool)"/> is true.
+    /// </summary>
     public float GetMaxSelectedPrefWidth()
     {
-        Pool< GlyphLayout > layoutPool = Pools.get( GlyphLayout.class);
-        GlyphLayout         layout     = layoutPool.obtain();
+        Pool< GlyphLayout > layoutPool = Pools< GlyphLayout >.Get();
+        GlyphLayout?        layout     = layoutPool.Obtain();
         float               width      = 0;
 
-        for ( var i = 0; i < _items.size; i++ )
+        foreach ( T t in _items )
         {
-            layout.setText( BoxStyle.Font, ToString( _items.get( i ) ) );
-            width = Math.max( layout.width, width );
+            layout?.SetText( BoxStyle.Font, ToString( t ) ?? "" );
+            width = Math.Max( layout!.Width, width );
         }
 
-        IDrawable bg = BoxStyle.Background;
+        IDrawable? bg = BoxStyle.Background;
 
         if ( bg != null )
         {
-            width = Math.max( width + bg.getLeftWidth() + bg.getRightWidth(), bg.getMinWidth() );
+            width = Math.Max( width + bg.LeftWidth + bg.RightWidth, bg.MinWidth );
         }
 
         return width;
@@ -471,32 +493,31 @@ public class SelectBox<T> : Widget, IDisableable
 
     public void ShowList()
     {
-        if ( _items.size == 0 )
+        if ( ( _items.Count > 0 ) && ( Stage != null ) )
         {
-            return;
-        }
-
-        if ( Stage != null )
-        {
-            _selectBoxList.show( Stage );
+            _selectBoxList?.Show( Stage );
         }
     }
 
     public void HideList()
     {
-        _selectBoxList.hide();
+        _selectBoxList?.Hide();
     }
 
-    /** Returns the list shown when the select box is open. */
-    public List< T > GetList()
+    /// <summary>
+    /// Returns the list shown when the select box is open.
+    /// </summary>
+    public ListBox< T >? GetList()
     {
-        return _selectBoxList.list;
+        return _selectBoxList?.ListBox;
     }
 
-    /** Disables scrolling of the list shown when the select box is open. */
+    /// <summary>
+    /// Disables scrolling of the list shown when the select box is open.
+    /// </summary>
     public void SetScrollingDisabled( bool y )
     {
-        _selectBoxList.setScrollingDisabled( true, y );
+        _selectBoxList?.SetScrollingDisabled( true, y );
         InvalidateHierarchy();
     }
 
@@ -511,31 +532,32 @@ public class SelectBox<T> : Widget, IDisableable
 
     public bool IsOver()
     {
-        return ClickListener.IsOver();
+        return ClickListener.Over;
     }
 
-    protected void OnShow( Actor selectBoxList, bool below )
+    protected void OnShow( Actor selectBoxList )
     {
-        selectBoxList.getColor().a = 0;
-        selectBoxList.addAction( fadeIn( 0.3f, Interpolation.fade ) );
+        selectBoxList.Color.A = 0;
+        selectBoxList.AddAction( SceneActions.FadeIn( 0.3f, Interpolation.fade ) );
     }
 
     protected void OnHide( Actor selectBoxList )
     {
-        selectBoxList.getColor().a = 1;
-        selectBoxList.addAction( sequence( fadeOut( 0.15f, Interpolation.fade ), removeActor() ) );
+        selectBoxList.Color.A = 1;
+
+        selectBoxList.AddAction( SceneActions.Sequence( SceneActions.FadeOut( 0.15f, Interpolation.fade ),
+                                                        SceneActions.RemoveActor() ) );
     }
 
-    /** @author Nathan Sweet */
     public class SelectBoxList : ScrollPane
     {
         public int            MaxListCount { get; set; }
         public ListBox< T >   ListBox      { get; set; }
         public SelectBox< T > SelectBox    { get; set; }
 
-        private Vector2       _stagePosition;
-        private InputListener _hideListener;
-        private Actor?        _previousScrollFocus;
+        private readonly Vector2       _stagePosition = new();
+        private readonly InputListener _hideListener;
+        private          Actor?         _previousScrollFocus;
 
         public SelectBoxList( SelectBox< T > selectBox )
             : base( null, selectBox.BoxStyle.ScrollStyle )
@@ -546,7 +568,7 @@ public class SelectBox<T> : Widget, IDisableable
             SetFadeScrollBars( false );
             SetScrollingDisabled( true, false );
 
-            ListBox = new ListBox< T >( SelectBox.BoxStyle.ListStyle! )
+            ListBox = new ListBox< T >( SelectBox.BoxStyle.ListStyle )
             {
                 Touchable    = Touchable.Disabled,
                 TypeToSelect = true
@@ -554,9 +576,10 @@ public class SelectBox<T> : Widget, IDisableable
 
             SetActor( ListBox );
 
+            _hideListener = new SblHideListener( this );
+
             AddListener( new SelectBoxListClickListener( this ) );
             AddListener( new SelectBoxListInputListener( this ) );
-            AddListener( new SblHideListener( this ) );
         }
 
         public void Show( Stage stage )
@@ -576,7 +599,7 @@ public class SelectBox<T> : Widget, IDisableable
 
             // Show the list above or below the select box, limited to a number
             // of items and the available height in the stage.
-            float itemHeight = ListBox.ItemHeight;
+            var itemHeight = ListBox.ItemHeight;
 
             var height = itemHeight
                        * ( MaxListCount <= 0
@@ -640,9 +663,7 @@ public class SelectBox<T> : Widget, IDisableable
             Validate();
 
             ScrollTo( 0,
-                      ListBox.Height
-                    - ( SelectBox.GetSelectedIndex() * itemHeight )
-                    - ( itemHeight / 2 ),
+                      ListBox.Height - ( SelectBox.GetSelectedIndex() * itemHeight ) - ( itemHeight / 2 ),
                       0,
                       0,
                       true,
@@ -665,7 +686,7 @@ public class SelectBox<T> : Widget, IDisableable
 
             ClearActions();
 
-            SelectBox.OnShow( this, below );
+            SelectBox.OnShow( this );
         }
 
         public void Hide()
@@ -700,9 +721,9 @@ public class SelectBox<T> : Widget, IDisableable
         [PublicAPI]
         public override void Draw( IBatch batch, float parentAlpha )
         {
-            SelectBox.LocalToStageCoordinates( _temp.Set( 0, 0 ) );
+            SelectBox.LocalToStageCoordinates( SelectBox._temp.Set( 0, 0 ) );
 
-            if ( !_temp.Equals( _stagePosition ) )
+            if ( !SelectBox._temp.Equals( _stagePosition ) )
             {
                 Hide();
             }
@@ -905,13 +926,13 @@ public class SelectBox<T> : Widget, IDisableable
     /// </summary>
     public class SelectBoxStyle
     {
-        public BitmapFont?                Font               { get; }
+        public BitmapFont                 Font               { get; } = null!;
+        public ScrollPane.ScrollPaneStyle ScrollStyle        { get; } = null!;
+        public ListBox< T >.ListStyle     ListStyle          { get; } = null!;
         public Color                      FontColor          { get; } = new( 1, 1, 1, 1 );
         public Color?                     OverFontColor      { get; }
         public Color?                     DisabledFontColor  { get; }
         public IDrawable?                 Background         { get; }
-        public ScrollPane.ScrollPaneStyle ScrollStyle        { get; } = null!;
-        public ListBox< T >.ListStyle     ListStyle          { get; } = null!;
         public IDrawable?                 BackgroundOver     { get; }
         public IDrawable?                 BackgroundOpen     { get; }
         public IDrawable?                 BackgroundDisabled { get; }
@@ -951,8 +972,8 @@ public class SelectBox<T> : Widget, IDisableable
             }
 
             Background  = style.Background;
-            ScrollStyle = new ScrollPane.ScrollPaneStyle( style.ScrollStyle! );
-            ListStyle   = new ListBox< T >.ListStyle( style.ListStyle! );
+            ScrollStyle = new ScrollPane.ScrollPaneStyle( style.ScrollStyle );
+            ListStyle   = new ListBox< T >.ListStyle( style.ListStyle );
 
             BackgroundOver     = style.BackgroundOver;
             BackgroundOpen     = style.BackgroundOpen;

@@ -215,7 +215,7 @@ public class Container<T> : WidgetGroup where T : Actor
 
         if ( _actor != null )
         {
-            base.RemoveActor( _actor );
+            base.RemoveActor( _actor, unfocus: true );
         }
 
         _actor = actor;

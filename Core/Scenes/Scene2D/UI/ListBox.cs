@@ -166,7 +166,7 @@ public class ListBox<T> : Widget
         Color?      fontColorSelected   = Style?.FontColorSelected;
         Color?      fontColorUnselected = Style?.FontColorUnselected;
 
-        batch.SetColor( Color!.R, Color.G, Color.B, Color.A * parentAlpha );
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
         var x      = X;
         var y      = Y;
@@ -214,10 +214,7 @@ public class ListBox<T> : Widget
                     drawable = Style.Over;
                 }
 
-                if ( drawable != null )
-                {
-                    drawable.Draw( batch, x, ( y + itemY ) - ItemHeight, width, ItemHeight );
-                }
+                drawable?.Draw( batch, x, ( y + itemY ) - ItemHeight, width, ItemHeight );
 
                 DrawItem( batch, font, i, item, ( float )( x + textOffsetX )!, ( y + itemY ) - textOffsetY, ( float )textWidth! );
 
@@ -245,10 +242,7 @@ public class ListBox<T> : Widget
     {
         if ( Style?.Background != null )
         {
-            batch.SetColor( Color!.R,
-                            Color.G,
-                            Color.B,
-                            Color.A * parentAlpha );
+            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
             Style.Background.Draw( batch, X, Y, Width, Height );
         }
@@ -318,20 +312,21 @@ public class ListBox<T> : Widget
         }
     }
 
-    public T? GetOverItem() => _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
+    public T? GetOverItem()
+    {
+        return _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
+    }
 
-    public T? GetPressedItem() => _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
+    public T? GetPressedItem()
+    {
+        return _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
+    }
 
     public T? GetItemAt( float y )
     {
         var index = GetItemIndexAt( y );
 
-        if ( index == -1 )
-        {
-            return default( T? );
-        }
-
-        return Items![ index ];
+        return index == -1 ? default( T? ) : Items![ index ];
     }
 
     /// <summary>
@@ -432,8 +427,7 @@ public class ListBox<T> : Widget
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-
-
+    
     public class ListKeyListener : InputListener
     {
         private readonly ListBox< T > _parent;
@@ -446,7 +440,7 @@ public class ListBox<T> : Widget
             _parent = lb;
         }
 
-        public override bool KeyDown( InputEvent ev, int keycode )
+        public override bool KeyDown( InputEvent? ev, int keycode )
         {
             if ( _parent.Items?.Count == 0 )
             {
@@ -514,7 +508,7 @@ public class ListBox<T> : Widget
             return false;
         }
 
-        public override bool KeyTyped( InputEvent ev, char character )
+        public override bool KeyTyped( InputEvent? ev, char character )
         {
             if ( !_parent.TypeToSelect )
             {
@@ -555,7 +549,7 @@ public class ListBox<T> : Widget
 
         public ListInputListener( ListBox< T > lb ) => _parent = lb;
 
-        public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+        public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
             if ( ( pointer != 0 ) || ( button != 0 ) )
             {
@@ -590,7 +584,7 @@ public class ListBox<T> : Widget
             return true;
         }
 
-        public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+        public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {
             if ( ( pointer != 0 ) || ( button != 0 ) )
             {
@@ -600,16 +594,16 @@ public class ListBox<T> : Widget
             _parent._pressedIndex = -1;
         }
 
-        public override void TouchDragged( InputEvent ev, float x, float y, int pointer ) => _parent._overIndex = _parent.GetItemIndexAt( y );
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer ) => _parent._overIndex = _parent.GetItemIndexAt( y );
 
-        public override bool MouseMoved( InputEvent ev, float x, float y )
+        public override bool MouseMoved( InputEvent? ev, float x, float y )
         {
             _parent._overIndex = _parent.GetItemIndexAt( y );
 
             return false;
         }
 
-        public override void Exit( InputEvent ev, float x, float y, int pointer, Actor? toActor )
+        public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
         {
             if ( pointer == 0 )
             {

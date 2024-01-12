@@ -17,4 +17,8 @@
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
 public class TooltipManager
-{}
+{
+    public static TooltipManager Instance { get; } = new();
+    
+    public float MaxWidth { get; set; }
+}

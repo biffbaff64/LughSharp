@@ -177,7 +177,7 @@ public class ProgressBar : Widget, IDisableable
         var knobWidth  = knob?.MinWidth ?? 0;
         var percent    = GetVisualPercent();
 
-        batch.SetColor( Color!.R, Color!.G, Color!.B, Color!.A * parentAlpha );
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
         if ( IsVertical )
         {
@@ -189,13 +189,11 @@ public class ProgressBar : Widget, IDisableable
             {
                 if ( IsRound )
                 {
-                    bg.Draw(
-                        batch,
-                        ( float )Math.Round( x + ( ( width - bg.MinWidth ) * 0.5f ) ),
-                        y,
-                        ( float )Math.Round( bg.MinWidth ),
-                        height
-                        );
+                    bg.Draw( batch,
+                             ( float )Math.Round( x + ( ( width - bg.MinWidth ) * 0.5f ) ),
+                             y,
+                             ( float )Math.Round( bg.MinWidth ),
+                             height );
                 }
                 else
                 {
@@ -228,23 +226,19 @@ public class ProgressBar : Widget, IDisableable
             {
                 if ( IsRound )
                 {
-                    knobBefore.Draw(
-                        batch,
-                        ( float )Math.Round( x + ( ( width - knobBefore.MinWidth ) * 0.5f ) ),
-                        ( float )Math.Round( y + bgTopHeight ),
-                        ( float )Math.Round( knobBefore.MinWidth ),
-                        ( float )Math.Round( KnobPosition + knobHeightHalf )
-                        );
+                    knobBefore.Draw( batch,
+                                     ( float )Math.Round( x + ( ( width - knobBefore.MinWidth ) * 0.5f ) ),
+                                     ( float )Math.Round( y + bgTopHeight ),
+                                     ( float )Math.Round( knobBefore.MinWidth ),
+                                     ( float )Math.Round( KnobPosition + knobHeightHalf ) );
                 }
                 else
                 {
-                    knobBefore.Draw(
-                        batch,
-                        x + ( ( width - knobBefore.MinWidth ) * 0.5f ),
-                        y + bgTopHeight,
-                        knobBefore.MinWidth,
-                        KnobPosition + knobHeightHalf
-                        );
+                    knobBefore.Draw( batch,
+                                     x + ( ( width - knobBefore.MinWidth ) * 0.5f ),
+                                     y + bgTopHeight,
+                                     knobBefore.MinWidth,
+                                     KnobPosition + knobHeightHalf );
                 }
             }
 
@@ -252,23 +246,19 @@ public class ProgressBar : Widget, IDisableable
             {
                 if ( IsRound )
                 {
-                    knobAfter.Draw(
-                        batch,
-                        ( float )Math.Round( x + ( ( width - knobAfter.MinWidth ) * 0.5f ) ),
-                        ( float )Math.Round( y + KnobPosition + knobHeightHalf ),
-                        ( float )Math.Round( knobAfter.MinWidth ),
-                        ( float )Math.Round( height - KnobPosition - knobHeightHalf - bgBottomHeight )
-                        );
+                    knobAfter.Draw( batch,
+                                    ( float )Math.Round( x + ( ( width - knobAfter.MinWidth ) * 0.5f ) ),
+                                    ( float )Math.Round( y + KnobPosition + knobHeightHalf ),
+                                    ( float )Math.Round( knobAfter.MinWidth ),
+                                    ( float )Math.Round( height - KnobPosition - knobHeightHalf - bgBottomHeight ) );
                 }
                 else
                 {
-                    knobAfter.Draw(
-                        batch,
-                        x + ( ( width - knobAfter.MinWidth ) * 0.5f ),
-                        y + KnobPosition + knobHeightHalf,
-                        knobAfter.MinWidth,
-                        height - KnobPosition - knobHeightHalf - bgBottomHeight
-                        );
+                    knobAfter.Draw( batch,
+                                    x + ( ( width - knobAfter.MinWidth ) * 0.5f ),
+                                    y + KnobPosition + knobHeightHalf,
+                                    knobAfter.MinWidth,
+                                    height - KnobPosition - knobHeightHalf - bgBottomHeight );
                 }
             }
 
@@ -299,13 +289,11 @@ public class ProgressBar : Widget, IDisableable
             {
                 if ( IsRound )
                 {
-                    bg.Draw(
-                        batch,
-                        x,
-                        ( float )Math.Round( y + ( ( height - bg.MinHeight ) * 0.5f ) ),
-                        width,
-                        ( float )Math.Round( bg.MinHeight )
-                        );
+                    bg.Draw( batch,
+                             x,
+                             ( float )Math.Round( y + ( ( height - bg.MinHeight ) * 0.5f ) ),
+                             width,
+                             ( float )Math.Round( bg.MinHeight ) );
                 }
                 else
                 {
@@ -338,23 +326,19 @@ public class ProgressBar : Widget, IDisableable
             {
                 if ( IsRound )
                 {
-                    knobBefore.Draw(
-                        batch,
-                        ( float )Math.Round( x + bgLeftWidth ),
-                        ( float )Math.Round( y + ( ( height - knobBefore.MinHeight ) * 0.5f ) ),
-                        ( float )Math.Round( KnobPosition + knobWidthHalf ),
-                        ( float )Math.Round( knobBefore.MinHeight )
-                        );
+                    knobBefore.Draw( batch,
+                                     ( float )Math.Round( x + bgLeftWidth ),
+                                     ( float )Math.Round( y + ( ( height - knobBefore.MinHeight ) * 0.5f ) ),
+                                     ( float )Math.Round( KnobPosition + knobWidthHalf ),
+                                     ( float )Math.Round( knobBefore.MinHeight ) );
                 }
                 else
                 {
-                    knobBefore.Draw(
-                        batch,
-                        x + bgLeftWidth,
-                        y + ( ( height - knobBefore.MinHeight ) * 0.5f ),
-                        KnobPosition + knobWidthHalf,
-                        knobBefore.MinHeight
-                        );
+                    knobBefore.Draw( batch,
+                                     x + bgLeftWidth,
+                                     y + ( ( height - knobBefore.MinHeight ) * 0.5f ),
+                                     KnobPosition + knobWidthHalf,
+                                     knobBefore.MinHeight );
                 }
             }
 
@@ -362,23 +346,19 @@ public class ProgressBar : Widget, IDisableable
             {
                 if ( IsRound )
                 {
-                    knobAfter.Draw(
-                        batch,
-                        ( float )Math.Round( x + KnobPosition + knobWidthHalf ),
-                        ( float )Math.Round( y + ( ( height - knobAfter.MinHeight ) * 0.5f ) ),
-                        ( float )Math.Round( width - KnobPosition - knobWidthHalf - bgRightWidth ),
-                        ( float )Math.Round( knobAfter.MinHeight )
-                        );
+                    knobAfter.Draw( batch,
+                                    ( float )Math.Round( x + KnobPosition + knobWidthHalf ),
+                                    ( float )Math.Round( y + ( ( height - knobAfter.MinHeight ) * 0.5f ) ),
+                                    ( float )Math.Round( width - KnobPosition - knobWidthHalf - bgRightWidth ),
+                                    ( float )Math.Round( knobAfter.MinHeight ) );
                 }
                 else
                 {
-                    knobAfter.Draw(
-                        batch,
-                        x + KnobPosition + knobWidthHalf,
-                        y + ( ( height - knobAfter.MinHeight ) * 0.5f ),
-                        width - KnobPosition - knobWidthHalf - bgRightWidth,
-                        knobAfter.MinHeight
-                        );
+                    knobAfter.Draw( batch,
+                                    x + KnobPosition + knobWidthHalf,
+                                    y + ( ( height - knobAfter.MinHeight ) * 0.5f ),
+                                    width - KnobPosition - knobWidthHalf - bgRightWidth,
+                                    knobAfter.MinHeight );
                 }
             }
 

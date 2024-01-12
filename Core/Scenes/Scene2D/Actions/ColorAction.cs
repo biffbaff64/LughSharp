@@ -42,7 +42,7 @@ public class ColorAction : TemporalAction
             throw new GdxRuntimeException( "Cannot begin with a null Target!" );
         }
 
-        _startR = Target.Color!.R;
+        _startR = Target.Color.R;
         _startG = Target.Color.G;
         _startB = Target.Color.B;
         _startA = Target.Color.A;
@@ -52,11 +52,11 @@ public class ColorAction : TemporalAction
     {
         if ( percent == 0 )
         {
-            Target?.Color?.Set( _startR, _startG, _startB, _startA );
+            Target?.Color.Set( _startR, _startG, _startB, _startA );
         }
         else if ( percent is 1.0f )
         {
-            Target?.Color?.Set( _endColor );
+            Target?.Color.Set( _endColor );
         }
         else
         {
@@ -65,7 +65,7 @@ public class ColorAction : TemporalAction
             var b = _startB + ( ( _endColor.B - _startB ) * percent );
             var a = _startA + ( ( _endColor.A - _startA ) * percent );
 
-            Target?.Color?.Set( r, g, b, a );
+            Target?.Color.Set( r, g, b, a );
         }
     }
 }

@@ -33,12 +33,12 @@ public class AlphaAction : TemporalAction
             throw new GdxRuntimeException( "Cannot begin with a null Target!" );
         }
 
-        _start = Target.Color!.A;
+        _start = Target.Color.A;
     }
 
     protected override void Update( float percent )
     {
-        if ( Target!.Color == null )
+        if ( Target == null )
         {
             return;
         }

@@ -158,7 +158,7 @@ public class Selection<T> : IDisableable, IDisposable
     /// <summary>
     ///     Sets the selection to only the specified item.
     /// </summary>
-    public void Set( T item )
+    public void Set( T? item )
     {
         ArgumentNullException.ThrowIfNull( item );
 

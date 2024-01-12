@@ -27,7 +27,7 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 public abstract class Value
 {
     public readonly static Fixed Zero = new( 0 );
-
+    
     // ------------------------------------------------------------------------
 
     public static   Value MinWidth   { get; set; } = new ValueMinWidthInnerClass();
@@ -36,6 +36,9 @@ public abstract class Value
     public static   Value MaxHeight  { get; set; } = new ValueMaxHeightInnerClass();
     public static   Value PrefWidth  { get; set; } = new ValuePrefWidthInnerClass();
     public static   Value PrefHeight { get; set; } = new ValuePrefHeightInnerClass();
+
+    // ------------------------------------------------------------------------
+
     public abstract float Get( Actor? context = null );
 
     // ------------------------------------------------------------------------
@@ -56,6 +59,9 @@ public abstract class Value
 
         return new ValuePercentHeight( percent, actor );
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     A fixed value that is not computed each time it is used.
@@ -95,6 +101,9 @@ public abstract class Value
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Returns a value that is a percentage of the actor's width.
     /// </summary>
@@ -109,7 +118,7 @@ public abstract class Value
             _actor   = actor;
         }
 
-        public override float Get( Actor? actor = null ) => _actor == null ? 0 : _actor.Width * _percent;
+        public override float Get( Actor? actor = null ) => ( _actor?.Width * _percent ) ?? 0;
     }
 
     /// <summary>
@@ -126,7 +135,7 @@ public abstract class Value
             _actor   = actor;
         }
 
-        public override float Get( Actor? actor = null ) => _actor == null ? 0 : _actor.Height * _percent;
+        public override float Get( Actor? actor = null ) => ( _actor?.Height * _percent ) ?? 0;
     }
 
     // ========================================================================
@@ -147,6 +156,8 @@ public abstract class Value
         }
     }
 
+    // ========================================================================
+
     /// <summary>
     ///     Value that is the minHeight of the actor in the cell.
     /// </summary>
@@ -162,6 +173,8 @@ public abstract class Value
             return context?.Height ?? 0;
         }
     }
+
+    // ========================================================================
 
     /// <summary>
     ///     Value that is the prefWidth of the actor in the cell.
@@ -179,6 +192,8 @@ public abstract class Value
         }
     }
 
+    // ========================================================================
+
     /// <summary>
     ///     Value that is the prefHeight of the actor in the cell.
     /// </summary>
@@ -195,6 +210,8 @@ public abstract class Value
         }
     }
 
+    // ========================================================================
+
     /// <summary>
     ///     Value that is the maxWidth of the actor in the cell.
     /// </summary>
@@ -210,6 +227,8 @@ public abstract class Value
             return context?.Width ?? 0;
         }
     }
+
+    // ========================================================================
 
     /// <summary>
     ///     Value that is the maxWidth of the actor in the cell.

@@ -319,10 +319,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     {
         DrawBackground( batch, parentAlpha );
 
-        if ( Color != null )
-        {
-            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
-        }
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
         Draw( batch, RootNodes, _paddingLeft, PlusMinusWidth() );
 
@@ -338,10 +335,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     {
         if ( Style?.Background != null )
         {
-            if ( Color != null )
-            {
-                batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
-            }
+            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
             Style.Background.Draw( batch, X, Y, Width, Height );
         }
@@ -394,7 +388,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
                 {
                     var iconY = y + actorY + Math.Round( ( height - node.Icon.MinHeight ) / 2 );
 
-                    batch.Color = actor.Color!;
+                    batch.Color = actor.Color;
                     DrawIcon( node, node.Icon, batch, iconX, ( float )iconY );
                     batch.SetColor( 1, 1, 1, 1 );
                 }
@@ -1293,10 +1287,9 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
     public class TreeClickListener : ClickListener
     {
-        public Tree< TNode, TValue > tree = null!;
+        public readonly Tree< TNode, TValue > tree = null!;
 
         public override void Clicked( InputEvent ev, float x, float y )
         {
@@ -1379,20 +1372,20 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
             }
         }
 
-        public override bool MouseMoved( InputEvent ev, float x, float y )
+        public override bool MouseMoved( InputEvent? ev, float x, float y )
         {
             tree.OverNode = tree.GetNodeAt( y );
 
             return false;
         }
 
-        public override void Enter( InputEvent ev, float x, float y, int pointer, Actor? fromActor )
+        public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? fromActor )
         {
             base.Enter( ev, x, y, pointer, fromActor );
             tree.OverNode = tree.GetNodeAt( y );
         }
 
-        public override void Exit( InputEvent ev, float x, float y, int pointer, Actor? toActor )
+        public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
         {
             base.Exit( ev, x, y, pointer, toActor );
 

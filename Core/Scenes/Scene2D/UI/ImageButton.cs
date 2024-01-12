@@ -142,7 +142,7 @@ public class ImageButton : Button
 
     public Cell? GetImageCell() => GetCell( Image );
 
-    public override string ToString()
+    protected override string ToString()
     {
         if ( Name != null )
         {

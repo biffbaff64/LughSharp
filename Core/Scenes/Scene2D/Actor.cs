@@ -60,7 +60,7 @@ public class Actor : IActor
     protected float OriginX { get; set; }
     protected float OriginY { get; set; }
 
-    public Color? Color
+    public Color Color
     {
         get => _color;
         set => _color.Set( value ?? Color.Black );
@@ -445,7 +445,7 @@ public class Actor : IActor
     {
         if ( Parent != null )
         {
-            return Parent.RemoveActor( this );
+            return Parent.RemoveActor( this, unfocus: true );
         }
 
         return false;

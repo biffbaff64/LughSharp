@@ -112,7 +112,7 @@ public class Group : Actor, ICullable
     /// </summary>
     protected void DrawChildren( IBatch batch, float parentAlpha )
     {
-        parentAlpha *= Color!.A;
+        parentAlpha *= Color.A;
 
         Actor?[] actors = Children.Begin();
 
@@ -482,7 +482,7 @@ public class Group : Actor, ICullable
     ///     Adds an actor as a child of this group, removing it from its previous
     ///     parent. If the actor is already a child of this group, no changes are made.
     /// </summary>
-    public void AddActor( Actor actor )
+    public virtual void AddActor( Actor actor )
     {
         if ( actor.Parent != null )
         {
@@ -509,7 +509,7 @@ public class Group : Actor, ICullable
     /// </summary>
     /// <param name="index"> May be greater than the number of children. </param>
     /// <param name="actor"></param>
-    public void AddActorAt( int index, Actor actor )
+    public virtual void AddActorAt( int index, Actor actor )
     {
         if ( actor.Parent != null )
         {
@@ -541,7 +541,7 @@ public class Group : Actor, ICullable
     ///     actor, removing it from its previous parent. If the actor is already a
     ///     child of this group, no changes are made.
     /// </summary>
-    public void AddActorBefore( Actor actorBefore, Actor actor )
+    public virtual void AddActorBefore( Actor actorBefore, Actor actor )
     {
         if ( actor.Parent != null )
         {
@@ -603,7 +603,7 @@ public class Group : Actor, ICullable
     ///     <param name="actor"></param>
     ///     <param name="unfocus">Unfocuses the actor if true.</param>
     /// </summary>
-    public virtual bool RemoveActor( Actor actor, bool unfocus = true )
+    public virtual bool RemoveActor( Actor actor, bool unfocus )
     {
         var index = Children.IndexOf( actor );
 
@@ -628,7 +628,7 @@ public class Group : Actor, ICullable
     ///     If true, <seealso cref="Stage.Unfocus(Actor)" /> is called.
     /// </param>
     /// <returns> The actor removed from this group. </returns>
-    public Actor RemoveActorAt( int index, bool unfocus )
+    public virtual Actor RemoveActorAt( int index, bool unfocus )
     {
         Actor actor = Children.RemoveAt( index );
 
@@ -829,7 +829,7 @@ public class Group : Actor, ICullable
     /// <summary>
     ///     Returns a description of the actor hierarchy, recursively.
     /// </summary>
-    public override string ToString()
+    protected override string ToString()
     {
         var buffer = new StringBuilder( 128 );
 

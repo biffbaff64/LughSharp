@@ -819,7 +819,7 @@ public partial class ScrollPane : WidgetGroup
 
         if ( _widget != null )
         {
-            base.RemoveActor( _widget );
+            base.RemoveActor( _widget, unfocus: true );
         }
 
         _widget = actor;
