@@ -324,7 +324,7 @@ FILES/BUFFERS - DELETE CANDIDATE
     - IP   - HeapCharBuffer
     - IP   - HeapFloatBuffer
     - IP   - HeapShortBuffer
-    - IP   _ IDirectBuffer
+    - IP   - IDirectBuffer
     - IP   - IntBuffer
     - IP   - LongBuffer
     - IP   - MappedByteBuffer
@@ -1007,7 +1007,7 @@ SCENES/SCENE2D/UI
     - DONE - ParticleEffectActor            
     - DONE - ProgressBar
     - DONE - ScrollPane
-    - IP   _ ScrollPaneListeners
+    - IP   - ScrollPaneListeners
     - DONE - SelectBox
     - DONE - Skin                           
     - DONE - Slider                         
@@ -1016,11 +1016,11 @@ SCENES/SCENE2D/UI
     - DONE - Table                          
     - DONE - TextArea                       
     - DONE - TextButton
-    - DONE - TextField      Check that _blinkTask and _KeyRepeatTask are disposed of properly                      
-    - IP   - Tooltip
+    - IP   - TextField      Check that _blinkTask and _KeyRepeatTask are disposed of properly                      
+    - DONE - Tooltip
     - DONE - TextTooltip
-    - IP   - TooltipManager                 
-    -      - Touchpad                       
+    - DONE - TooltipManager                 
+    - IP   - Touchpad                       
     - DONE - Tree
     - DONE - Value                          
     - DONE - ValueExtensions
@@ -1119,7 +1119,7 @@ UTILS/COLLECTIONS
     - DONE - Array<T>                       Converted, but use List<T> for most cases.
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
-    - IP   - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - DONE - ObjectMap                      Converted, but use Dictionary< object, object >
     - DONE - PredicateIterable
     - DONE - PredicateIterator

@@ -37,10 +37,10 @@ public class GestureDetector : InputAdapter
     private          float                    _lastTapX;
     private          float                    _lastTapY;
     private          CancellationToken        _longPressCancellationToken;
+    private          CancellationTokenSource? _longPressTokenSource;
     private          bool                     _longPressFired;
     private          float                    _longPressSeconds;
     private          Task?                    _longPressTask;
-    private          CancellationTokenSource? _longPressTokenSource;
     private          long                     _maxFlingDelay;
     private          bool                     _panning;
     private          bool                     _pinching;
@@ -144,7 +144,7 @@ public class GestureDetector : InputAdapter
 
         //TODO: AARGH!! Formatting! Sort it out!
         //@formatter:off
-        _longPressTask= Task.Run( () =>
+        _longPressTask = Task.Run( () =>
         {
             if ( !_longPressFired )
             {

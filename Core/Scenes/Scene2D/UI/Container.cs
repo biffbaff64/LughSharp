@@ -32,16 +32,17 @@ public class Container<T> : WidgetGroup where T : Actor
     private bool       _clip;
     private float      _fillX;
     private float      _fillY;
-    private Value      _maxHeight  = Value.Zero;
-    private Value      _maxWidth   = Value.Zero;
-    private Value      _minHeight  = Value.MinHeight;
-    private Value      _minWidth   = Value.MinWidth;
-    private Value      _padBottom  = Value.Zero;
-    private Value      _padLeft    = Value.Zero;
-    private Value      _padRight   = Value.Zero;
-    private Value      _padTop     = Value.Zero;
-    private Value      _prefHeight = Value.PrefHeight;
-    private Value      _prefWidth  = Value.PrefWidth;
+
+    private Value _maxHeight  = Value.Zero;
+    private Value _maxWidth   = Value.Zero;
+    private Value _minHeight  = Value.MinHeight;
+    private Value _minWidth   = Value.MinWidth;
+    private Value _padBottom  = Value.Zero;
+    private Value _padLeft    = Value.Zero;
+    private Value _padRight   = Value.Zero;
+    private Value _padTop     = Value.Zero;
+    private Value _prefHeight = Value.PrefHeight;
+    private Value _prefWidth  = Value.PrefWidth;
 
     /// <summary>
     ///     Creates a container with no actor.
@@ -103,13 +104,16 @@ public class Container<T> : WidgetGroup where T : Actor
             return;
         }
 
-        var   padLeft         = _padLeft.Get( this );
-        var   padBottom       = _padBottom.Get( this );
-        var   containerWidth  = Width - padLeft - _padRight.Get( this );
-        var   containerHeight = Height - padBottom - _padTop.Get( this );
-        float minWidth        = _minWidth.Get( _actor ),  minHeight  = _minHeight.Get( _actor );
-        float prefWidth       = _prefWidth.Get( _actor ), prefHeight = _prefHeight.Get( _actor );
-        float maxWidth        = _maxWidth.Get( _actor ),  maxHeight  = _maxHeight.Get( _actor );
+        var padLeft         = _padLeft.Get( this );
+        var padBottom       = _padBottom.Get( this );
+        var containerWidth  = Width - padLeft - _padRight.Get( this );
+        var containerHeight = Height - padBottom - _padTop.Get( this );
+        var minWidth        = _minWidth.Get( _actor );
+        var minHeight       = _minHeight.Get( _actor );
+        var prefWidth       = _prefWidth.Get( _actor );
+        var prefHeight      = _prefHeight.Get( _actor );
+        var maxWidth        = _maxWidth.Get( _actor );
+        var maxHeight       = _maxHeight.Get( _actor );
 
         float width;
 
@@ -159,7 +163,7 @@ public class Container<T> : WidgetGroup where T : Actor
         {
             x += containerWidth - width;
         }
-        else if ( ( _align & Align.LEFT ) == 0 ) // center
+        else if ( ( _align & Align.LEFT ) == 0 )
         {
             x += ( containerWidth - width ) / 2;
         }
@@ -170,7 +174,7 @@ public class Container<T> : WidgetGroup where T : Actor
         {
             y += containerHeight - height;
         }
-        else if ( ( _align & Align.BOTTOM ) == 0 ) // center
+        else if ( ( _align & Align.BOTTOM ) == 0 )
         {
             y += ( containerHeight - height ) / 2;
         }

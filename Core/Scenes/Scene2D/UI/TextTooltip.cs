@@ -24,31 +24,31 @@ namespace LibGDXSharp.Scenes.Scene2D.UI;
 public class TextTooltip : Tooltip< Label >
 {
     public TextTooltip( string text, Skin skin )
-        : this( text, TooltipManager.Instance, skin.Get< TextTooltipStyle >() )
+        : this( text, new TooltipManager< Label >(), skin.Get< TextTooltipStyle >() )
     {
     }
 
     public TextTooltip( string text, Skin skin, string styleName )
-        : this( text, TooltipManager.Instance, skin.Get< TextTooltipStyle >( styleName ) )
+        : this( text, new TooltipManager< Label >(), skin.Get< TextTooltipStyle >( styleName ) )
     {
     }
 
     public TextTooltip( string text, TextTooltipStyle style )
-        : this( text, TooltipManager.Instance, style )
+        : this( text, new TooltipManager< Label >(), style )
     {
     }
 
-    public TextTooltip( string text, TooltipManager manager, Skin skin )
+    public TextTooltip( string text, TooltipManager< Label > manager, Skin skin )
         : this( text, manager, skin.Get< TextTooltipStyle >() )
     {
     }
 
-    public TextTooltip( string text, TooltipManager manager, Skin skin, string styleName )
+    public TextTooltip( string text, TooltipManager< Label > manager, Skin skin, string styleName )
         : this( text, manager, skin.Get< TextTooltipStyle >( styleName ) )
     {
     }
 
-    public TextTooltip( string text, TooltipManager manager, TextTooltipStyle style )
+    public TextTooltip( string text, TooltipManager< Label > manager, TextTooltipStyle style )
         : base( contents: null, manager )
     {
         var label = new Label( text, style.Label )
@@ -56,8 +56,8 @@ public class TextTooltip : Tooltip< Label >
             Wrap = true
         };
 
-        Container?.SetActor( label );
-        Container?.SetWidths( Math.Min( manager.MaxWidth, label.GlyphLayout.Width ) );
+        Container.SetActor( label );
+        Container.SetWidths( Math.Min( manager.MaxWidth, label.GlyphLayout.Width ) );
 
         SetStyle( style );
     }
@@ -78,7 +78,7 @@ public class TextTooltip : Tooltip< Label >
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public class TextTooltipStyle
     {
         public Label.LabelStyle Label      { get; set; } = null!;

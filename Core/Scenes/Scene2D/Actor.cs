@@ -31,9 +31,7 @@ public class Actor : IActor
     private float _rotation;
     private float _scaleX;
     private float _scaleY;
-
     private float _width;
-
     private float _x;
     private float _y;
 
@@ -63,7 +61,7 @@ public class Actor : IActor
     public Color Color
     {
         get => _color;
-        set => _color.Set( value ?? Color.Black );
+        set => _color.Set( value );
     }
 
     public DelayedRemovalArray< IEventListener > Listeners        { get; }
@@ -443,12 +441,7 @@ public class Actor : IActor
     /// <returns>True if successful.</returns>
     public bool Remove()
     {
-        if ( Parent != null )
-        {
-            return Parent.RemoveActor( this, unfocus: true );
-        }
-
-        return false;
+        return ( Parent != null ) && Parent.RemoveActor( this, unfocus: true );
     }
 
     /// <summary>

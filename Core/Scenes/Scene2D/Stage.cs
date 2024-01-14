@@ -45,23 +45,23 @@ namespace LibGDXSharp.Scenes.Scene2D;
 /// </summary>
 public class Stage : InputAdapter
 {
-    private readonly bool     _ownsBatch;
-    private readonly Actor?[] _pointerOverActors = new Actor?[ 20 ];
-    private readonly int[]    _pointerScreenX    = new int[ 20 ];
-    private readonly int[]    _pointerScreenY    = new int[ 20 ];
-    private readonly bool[]   _pointerTouched    = new bool[ 20 ];
-    private readonly Group    _root              = null!;
+    public readonly SnapshotArray< TouchFocus > touchFocuses = new( true, 4 );
 
-    private readonly Vector2                     _tempCoords  = new();
-    public readonly  SnapshotArray< TouchFocus > touchFocuses = new( true, 4 );
-    private          bool                        _debugAll;
-    private          bool                        _debugParentUnderMouse;
-    private          ShapeRenderer?              _debugShapes;
-    private          Table.DebugType             _debugTableUnderMouse = Table.DebugType.None;
-    private          bool                        _debugUnderMouse;
-    private          Actor?                      _keyboardFocus;
-    private          Actor?                      _mouseOverActor;
+    private readonly bool            _ownsBatch;
+    private readonly Actor?[]        _pointerOverActors = new Actor?[ 20 ];
+    private readonly int[]           _pointerScreenX    = new int[ 20 ];
+    private readonly int[]           _pointerScreenY    = new int[ 20 ];
+    private readonly bool[]          _pointerTouched    = new bool[ 20 ];
+    private readonly Group           _root              = null!;
+    private readonly Vector2         _tempCoords        = new();
+    private          ShapeRenderer?  _debugShapes;
+    private          Table.DebugType _debugTableUnderMouse = Table.DebugType.None;
 
+    private bool   _debugAll;
+    private bool   _debugParentUnderMouse;
+    private bool   _debugUnderMouse;
+    private Actor? _keyboardFocus;
+    private Actor? _mouseOverActor;
     private int    _mouseScreenX;
     private int    _mouseScreenY;
     private Actor? _scrollFocus;
@@ -248,7 +248,7 @@ public class Stage : InputAdapter
     /// <summary>
     ///     The viewport's camera.
     /// </summary>
-    public Camera Camera { get; set; } = null!;
+    public Camera? Camera { get; set; } = null!;
 
     /// <summary>
     ///     Returns the root group which holds all actors in the stage.
@@ -376,15 +376,15 @@ public class Stage : InputAdapter
     public void Draw()
     {
         Camera = Viewport.Camera;
-        Camera.Update();
 
-        if ( !Root.IsVisible )
+        if ( ( Camera == null ) || !Root.IsVisible )
         {
             return;
         }
 
-        Batch.SetProjectionMatrix( Camera.Combined );
+        Camera.Update();
 
+        Batch.SetProjectionMatrix( Camera.Combined );
         Batch.Begin();
         Root.Draw( Batch, 1 );
         Batch.End();
@@ -1302,7 +1302,7 @@ public class Stage : InputAdapter
 
         Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
-        _debugShapes.ProjectionMatrix = Camera.Combined;
+        _debugShapes.ProjectionMatrix = Camera!.Combined;
         _debugShapes.Begin();
 
         Root.DrawDebug( _debugShapes );

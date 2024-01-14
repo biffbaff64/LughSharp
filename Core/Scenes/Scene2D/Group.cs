@@ -50,7 +50,7 @@ public class Group : Actor, ICullable
     ///     offset by the group's position for drawing, causing the children to appear
     ///     in the correct location even though the Batch has not been transformed.
     /// </summary>
-    protected bool Transform { get; set; } = true;
+    public bool Transform { get; set; } = true;
 
     public RectangleShape? CullingArea { get; set; }
 

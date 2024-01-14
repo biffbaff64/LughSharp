@@ -50,9 +50,6 @@ namespace LibGDXSharp.Utils.Collections;
 public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
 {
     private readonly ObjectIDGenerator _objectIDGenerator = new();
-    private          bool              _firstPlaceGen     = true;
-
-    private bool _firstTimeGen = true;
 
     // ------------------------------------------------------------------------
 
@@ -69,8 +66,7 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
     /// <param name="initialCapacity">
     ///     If not a power of two, it is increased to the next nearest power of two.
     /// </param>
-    public IdentityMap( int initialCapacity )
-        : base( initialCapacity )
+    public IdentityMap( int initialCapacity ) : base( initialCapacity )
     {
     }
 
@@ -90,10 +86,11 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
     /// <summary>
     ///     Creates a new map identical to the specified map.
     /// </summary>
-    public IdentityMap( IdentityMap< TK, TV > map ) //: base( map )
+    public IdentityMap( ObjectMap< TK, TV > map ) : base( map )
     {
-        //TODO:
     }
+
+    private bool _firstPlaceGen = true;
 
     protected new int Place( TK item )
     {
@@ -129,30 +126,13 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public int HashCode()
+    public override int GetHashCode()
     {
-        var h = Size;
+        const int PRIME = 53;
 
-        TK?[] keytab   = keyTable;
-        TV?[] valuetab = valueTable;
+        var result = PRIME + 31;
+        result = ( PRIME * result ) + 32;
 
-        for ( int i = 0, n = keytab.Length; i < n; i++ )
-        {
-            TK? key = keytab[ i ];
-
-            if ( key != null )
-            {
-                h += ( int )_objectIDGenerator.GetId( this, out _firstTimeGen );
-
-                TV? value = valuetab[ i ];
-
-                if ( value != null )
-                {
-                    h += value.GetHashCode();
-                }
-            }
-        }
-
-        return h;
+        return result;
     }
 }

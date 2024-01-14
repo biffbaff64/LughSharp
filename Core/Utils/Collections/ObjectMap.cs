@@ -469,38 +469,24 @@ public class ObjectMap<TK, TV>
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public new int GetHashCode()
+    public override int GetHashCode()
     {
-        var h = Size;
+        const int PRIME = 28;
 
-        for ( int i = 0, n = keyTable.Length; i < n; i++ )
-        {
-            TK? key = keyTable[ i ];
+        var result = PRIME + 34;
+        result = ( PRIME * result ) + 43;
 
-            if ( key != null )
-            {
-                h += key.GetHashCode();
-
-                TV? value = valueTable[ i ];
-
-                if ( value != null )
-                {
-                    h += value.GetHashCode();
-                }
-            }
-        }
-
-        return h;
+        return result;
     }
 
-    public int TableSize( int capacity, float loadFactor )
+    public int TableSize( int capacity, float lf )
     {
         if ( capacity < 0 )
         {
             throw new ArgumentException( "capacity must be >= 0: " + capacity );
         }
 
-        var tableSize = MathUtils.NextPowerOfTwo( Math.Max( 2, ( int )Math.Ceiling( capacity / loadFactor ) ) );
+        var tableSize = MathUtils.NextPowerOfTwo( Math.Max( 2, ( int )Math.Ceiling( capacity / lf ) ) );
 
         if ( tableSize > ( 1 << 30 ) )
         {
