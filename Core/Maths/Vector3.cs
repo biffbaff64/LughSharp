@@ -16,12 +16,14 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public class Vector3 : IVector< Vector3 >
 {
     public readonly static  Vector3 XDefault = new( 1, 0, 0 );
     public readonly static  Vector3 YDefault = new( 0, 1, 0 );
     public readonly static  Vector3 ZDefault = new( 0, 0, 1 );
     public readonly static  Vector3 Zero     = new( 0, 0, 0 );
+    
     private readonly static Matrix4 TmpMat   = new();
 
     /// <summary>
@@ -47,7 +49,7 @@ public class Vector3 : IVector< Vector3 >
     /// <summary>
     /// </summary>
     /// <param name="values"></param>
-    public Vector3( float[] values ) => Set( values[ 0 ], values[ 1 ], values[ 2 ] );
+    public Vector3( IReadOnlyList< float > values ) => Set( values[ 0 ], values[ 1 ], values[ 2 ] );
 
     /// <summary>
     /// </summary>
@@ -258,12 +260,7 @@ public class Vector3 : IVector< Vector3 >
             return false;
         }
 
-        if ( Math.Abs( other.Z - Z ) > epsilon )
-        {
-            return false;
-        }
-
-        return true;
+        return !( Math.Abs( other.Z - Z ) > epsilon );
     }
 
     /// <summary>
@@ -565,11 +562,11 @@ public class Vector3 : IVector< Vector3 >
     /// <returns></returns>
     public new int GetHashCode()
     {
-        var prime = 31;
+        const int PRIME = 31;
 
-        var result = prime + NumberUtils.FloatToIntBits( X );
-        result = ( prime * result ) + NumberUtils.FloatToIntBits( Y );
-        result = ( prime * result ) + NumberUtils.FloatToIntBits( Z );
+        var result = PRIME + NumberUtils.FloatToIntBits( X );
+        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( Y );
+        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( Z );
 
         return result;
     }
@@ -629,12 +626,7 @@ public class Vector3 : IVector< Vector3 >
             return false;
         }
 
-        if ( Math.Abs( z - Z ) > epsilon )
-        {
-            return false;
-        }
-
-        return true;
+        return !( Math.Abs( z - Z ) > epsilon );
     }
 
     public override string ToString() => "(" + X + "," + Y + "," + Z + ")";

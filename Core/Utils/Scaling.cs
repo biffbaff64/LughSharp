@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public abstract class Scaling
 {
     protected readonly static Vector2 Temp = new();

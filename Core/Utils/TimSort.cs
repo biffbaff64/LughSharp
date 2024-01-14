@@ -251,6 +251,7 @@ public class TimSort<T>
         #endif
     }
 
+    [PublicAPI]
     public static void Sort( T[] a, IComparer< T > c ) => Sort( a, 0, a.Length, c );
 
     public static void Sort( T[] a, int lo, int hi, IComparer< T >? c )

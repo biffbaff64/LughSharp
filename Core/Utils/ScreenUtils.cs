@@ -25,6 +25,7 @@ namespace LibGDXSharp.Utils;
 ///     These methods can be used to get the entire screen content or a
 ///     portion thereof.
 /// </summary>
+[PublicAPI]
 public class ScreenUtils
 {
     /// <summary>

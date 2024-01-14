@@ -39,6 +39,7 @@ internal struct CallerID
 ///     To enable writing to file, <see cref="EnableWriteToFile" /> must be TRUE
 ///     and <see cref="OpenDebugFile" /> must be called.
 /// </summary>
+[PublicAPI]
 public static class Trace
 {
     private static string _debugFilePath = "";

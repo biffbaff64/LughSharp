@@ -81,10 +81,10 @@ public class Segment
     /// <returns></returns>
     public override int GetHashCode()
     {
-        const int prime = 71;
+        const int PRIME = 71;
 
-        var result = prime + vectorA.GetHashCode();
-        result = ( prime * result ) + vectorB.GetHashCode();
+        var result = PRIME + vectorA.GetHashCode();
+        result = ( PRIME * result ) + vectorB.GetHashCode();
 
         return result;
     }

@@ -50,6 +50,7 @@ public class PropertiesUtils
     /// <param name="reader"> the input character stream reader. </param>
     /// <exception cref="IOException"> if an error occurred when reading from the input stream. </exception>
     /// <exception cref="ArgumentException"> if a malformed Unicode escape appears in the input.  </exception>
+    [PublicAPI]
     public static void Load( Dictionary< string, string > properties, StreamReader reader )
     {
         ArgumentNullException.ThrowIfNull( properties );
@@ -108,10 +109,9 @@ public class PropertiesUtils
 
                         default:
                         {
-                            switch ( count )
+                            if ( count <= 4 )
                             {
-                                case <= 4:
-                                    throw new ArgumentException( "Invalid Unicode sequence: illegal character" );
+                                throw new ArgumentException( "Invalid Unicode sequence: illegal character" );
                             }
 
                             break;
@@ -332,10 +332,9 @@ public class PropertiesUtils
             buf[ offset++ ] = nextChar;
         }
 
-        switch ( mode )
+        if ( ( mode == UNICODE ) && ( count <= 4 ) )
         {
-            case UNICODE when count <= 4:
-                throw new ArgumentException( "Invalid Unicode sequence: expected format \\uxxxx" );
+            throw new ArgumentException( "Invalid Unicode sequence: expected format \\uxxxx" );
         }
 
         keyLength = keyLength switch
@@ -388,16 +387,16 @@ public class PropertiesUtils
     /// <param name="properties"> the Dictionary. </param>
     /// <param name="writer"> an output character stream writer. </param>
     /// <param name="comment"> an optional comment to be written, or null. </param>
+    /// <param name="escapeUnicode"></param>
     /// <exception cref="IOException">
     ///     if writing this property list to the specified output stream throws an <tt>IOException</tt>.
     /// </exception>
     /// <exception cref="NullReferenceException"> if <code>writer</code> is null.</exception>
-    public static void Store( Dictionary< string, string > properties, StreamWriter writer, string comment ) => StoreImpl( properties, writer, comment, false );
-
-    private static void StoreImpl( Dictionary< string, string > properties,
-                                   StreamWriter writer,
-                                   string? comment,
-                                   bool escapeUnicode )
+    [PublicAPI]
+    public static void Store( Dictionary< string, string > properties,
+                              StreamWriter writer,
+                              string? comment,
+                              bool escapeUnicode = false )
     {
         if ( comment != null )
         {

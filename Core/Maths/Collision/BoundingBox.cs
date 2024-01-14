@@ -21,7 +21,7 @@ namespace LibGDXSharp.Maths.Collision;
 ///     and a maximum Vector. Additionally you can query for the bounding
 ///     box's center, dimensions and corner points.
 /// </summary>
-[Serializable]
+[Serializable, PublicAPI]
 public class BoundingBox
 {
     private readonly static Vector3 TmpVector = new();

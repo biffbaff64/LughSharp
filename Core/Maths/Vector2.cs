@@ -151,12 +151,7 @@ public class Vector2 : IVector< Vector2 >
     {
         var len2 = Len2();
 
-        if ( len2 > limit2 )
-        {
-            return Scl( ( float )Math.Sqrt( limit2 / len2 ) );
-        }
-
-        return this;
+        return len2 > limit2 ? Scl( ( float )Math.Sqrt( limit2 / len2 ) ) : this;
     }
 
     public Vector2 Clamp( float min, float max )
@@ -177,12 +172,7 @@ public class Vector2 : IVector< Vector2 >
 
         var min2 = min * min;
 
-        if ( len2 < min2 )
-        {
-            return Scl( ( float )Math.Sqrt( min2 / len2 ) );
-        }
-
-        return this;
+        return len2 < min2 ? Scl( ( float )Math.Sqrt( min2 / len2 ) ) : this;
     }
 
     public Vector2 SetLength( float len ) => SetLength2( len * len );
@@ -224,12 +214,7 @@ public class Vector2 : IVector< Vector2 >
             return false;
         }
 
-        if ( Math.Abs( other.Y - Y ) > epsilon )
-        {
-            return false;
-        }
-
-        return true;
+        return !( Math.Abs( other.Y - Y ) > epsilon );
     }
 
     public bool IsUnit() => IsUnit( 0.000000001f );
@@ -496,10 +481,10 @@ public class Vector2 : IVector< Vector2 >
 
     public new int GetHashCode()
     {
-        var prime = 31;
+        const int PRIME = 31;
 
-        var result = prime + NumberUtils.FloatToIntBits( X );
-        result = ( prime * result ) + NumberUtils.FloatToIntBits( Y );
+        var result = PRIME + NumberUtils.FloatToIntBits( X );
+        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( Y );
 
         return result;
     }
@@ -528,12 +513,7 @@ public class Vector2 : IVector< Vector2 >
             return false;
         }
 
-        if ( NumberUtils.FloatToIntBits( Y ) != NumberUtils.FloatToIntBits( other.Y ) )
-        {
-            return false;
-        }
-
-        return true;
+        return NumberUtils.FloatToIntBits( Y ) == NumberUtils.FloatToIntBits( other.Y );
     }
 
     public bool EpsilonEquals( float x, float y, float epsilon )
@@ -543,12 +523,7 @@ public class Vector2 : IVector< Vector2 >
             return false;
         }
 
-        if ( Math.Abs( y - Y ) > epsilon )
-        {
-            return false;
-        }
-
-        return true;
+        return !( Math.Abs( y - Y ) > epsilon );
     }
 
     public bool EpsilonEquals( float x, float y ) => EpsilonEquals( x, y, MathUtils.FLOAT_ROUNDING_ERROR );

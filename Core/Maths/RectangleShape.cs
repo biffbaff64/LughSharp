@@ -452,12 +452,12 @@ public class RectangleShape : IShape2D
     /// <returns></returns>
     public override int GetHashCode()
     {
-        const int prime = 31;
+        const int PRIME = 31;
 
-        var result = prime + NumberUtils.FloatToRawIntBits( Height );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Width );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( X );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Y );
+        var result = PRIME + NumberUtils.FloatToRawIntBits( Height );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Width );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
 
         return result;
     }

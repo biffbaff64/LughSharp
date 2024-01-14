@@ -153,5 +153,5 @@ public class Bresenham2
         return output;
     }
 
-    public GridPoint2 GetNewObject() => new();
+    public static GridPoint2 GetNewObject() => new();
 }

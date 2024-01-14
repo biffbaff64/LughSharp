@@ -60,6 +60,7 @@ public class ComparableTimSort<T>
     // Asserts have been placed in if-statements for performace.
     // To enable them, set this field to true.
     // If you modify this class, please do test the asserts!
+    [UsedImplicitly]
     private const bool ALLOW_ASSERTS = false; // true;
 
     private readonly int[] _runBase;
@@ -194,6 +195,7 @@ public class ComparableTimSort<T>
         }
     }
 
+    [PublicAPI]
     public static void Sort( T[] a ) => Sort( a, 0, a.Length );
 
     public static void Sort( T[] a, int lo, int hi )

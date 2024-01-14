@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 ///     Executes tasks in the future on the main loop thread.
 /// </summary>
+[PublicAPI]
 public class Timer
 {
     private readonly static object ThreadLock = new();

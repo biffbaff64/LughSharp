@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public class BSpline<T> : IPath< T > where T : IVector< T >
 {
     private const float D6 = 1f / 6f;
@@ -60,10 +61,11 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
 
     public virtual float Approximate( in T v ) => Approximate( v, Nearest( v ) );
 
-    public float Locate( T v ) =>
-
+    public float Locate( T v )
+    {
         // TODO Add a precise method
-        Approximate( v );
+        return Approximate( v );
+    }
 
     public float ApproxLength( int samples )
     {
@@ -150,20 +152,14 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
 
         if ( continuous || ( i > 0 ) )
         {
-            output.Add
-                (
-                tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                   .Scl( dt * dt * dt * D6 )
-                );
+            output.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
+                           .Scl( dt * dt * dt * D6 ) );
         }
 
         if ( continuous || ( i < ( n - 1 ) ) )
         {
-            output.Add
-                (
-                tmp.Set( points[ ( i + 1 ) % n ] )
-                   .Scl( ( ( -3f * t3 ) + ( 3f * t2 ) + ( 3f * u ) + 1f ) * D6 )
-                );
+            output.Add( tmp.Set( points[ ( i + 1 ) % n ] )
+                           .Scl( ( ( -3f * t3 ) + ( 3f * t2 ) + ( 3f * u ) + 1f ) * D6 ) );
         }
 
         if ( continuous || ( i < ( n - 2 ) ) )
@@ -196,20 +192,14 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
 
         if ( continuous || ( i > 0 ) )
         {
-            output.Add
-                (
-                tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                   .Scl( -0.5f * dt * dt )
-                );
+            output.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
+                           .Scl( -0.5f * dt * dt ) );
         }
 
         if ( continuous || ( i < ( n - 1 ) ) )
         {
-            output.Add
-                (
-                tmp.Set( points[ ( i + 1 ) % n ] )
-                   .Scl( ( -1.5f * t2 ) + u + 0.5f )
-                );
+            output.Add( tmp.Set( points[ ( i + 1 ) % n ] )
+                           .Scl( ( -1.5f * t2 ) + u + 0.5f ) );
         }
 
         if ( continuous || ( i < ( n - 2 ) ) )
@@ -331,44 +321,41 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
 
         for ( var i = 0; i < SpanCount; i++ )
         {
-            Knots.Add
-                (
-                Calculate(
-                    controlPoints[ 0 ].Cpy(),
-                    continuous ? i : ( int )( i + ( 0.5f * degree ) ),
-                    0f,
-                    controlPoints,
-                    degree,
-                    continuous,
-                    _tmp
-                    )
-                );
+            Knots.Add( Calculate( controlPoints[ 0 ].Cpy(),
+                                  continuous ? i : ( int )( i + ( 0.5f * degree ) ),
+                                  0f,
+                                  controlPoints,
+                                  degree,
+                                  continuous,
+                                  _tmp ) );
         }
 
         return this;
     }
 
     /// <returns> The value of the spline at position u of the specified span </returns>
-    protected virtual T ValueAt( T output, int span, float u ) => Calculate(
-        output,
-        Continuous ? span : span + ( int )( Degree * 0.5f ),
-        u,
-        ControlPoints!,
-        Degree,
-        Continuous,
-        _tmp!
-        );
+    protected virtual T ValueAt( T output, int span, float u )
+    {
+        return Calculate( output,
+                          Continuous ? span : span + ( int )( Degree * 0.5f ),
+                          u,
+                          ControlPoints!,
+                          Degree,
+                          Continuous,
+                          _tmp! );
+    }
 
     /// <returns> The derivative of the spline at position u of the specified span </returns>
-    protected virtual T DerivativeAt( T output, int span, float u ) => Derivative(
-        output,
-        Continuous ? span : span + ( int )( Degree * 0.5f ),
-        u,
-        ControlPoints!,
-        Degree,
-        Continuous,
-        _tmp!
-        );
+    protected virtual T DerivativeAt( T output, int span, float u )
+    {
+        return Derivative( output,
+                           Continuous ? span : span + ( int )( Degree * 0.5f ),
+                           u,
+                           ControlPoints!,
+                           Degree,
+                           Continuous,
+                           _tmp! );
+    }
 
     /// <returns> The span closest to the specified value </returns>
     protected virtual int Nearest( T input ) => Nearest( input, 0, SpanCount );

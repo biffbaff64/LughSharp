@@ -30,7 +30,7 @@ public abstract class AssetLoader
     /// </summary>
     protected AssetLoader( IFileHandleResolver resolver ) => Resolver = resolver;
 
-    public IFileHandleResolver Resolver      { get; set; }
+    public IFileHandleResolver Resolver      { get; }
     public bool                IsSynchronous { get; protected init; } = false;
 
     /// <summary>

@@ -136,7 +136,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         public ICubemapData? cubemapData;
     }
 
-
+    [PublicAPI]
     public class CubemapParameter : AssetLoaderParameters
     {
         // The texture to put the TextureData in, optional.

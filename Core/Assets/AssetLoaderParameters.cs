@@ -24,6 +24,7 @@ public class AssetLoaderParameters
     ///     Callback interface that will be invoked when the
     ///     <see cref="AssetManager" /> loaded an asset.
     /// </summary>
+    [PublicAPI]
     public interface ILoadedCallback
     {
         void FinishedLoading( AssetManager assetManager, string fileName, Type type );

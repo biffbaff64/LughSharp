@@ -19,6 +19,7 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 
 namespace LibGDXSharp.Assets.Loaders;
 
+[PublicAPI]
 public class BitmapFontParameter : AssetLoaderParameters
 {
     /// <summary>
@@ -75,13 +76,6 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
     public BitmapFontLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
-    }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>
@@ -198,6 +192,13 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
 
     private void Dispose( bool disposing )
     {

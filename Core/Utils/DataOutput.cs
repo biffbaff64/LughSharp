@@ -21,10 +21,10 @@ namespace LibGDXSharp.Utils;
 /// </summary>
 public class DataOutput : BinaryWriter
 {
-    private StreamWriter _writer;
-
-    public DataOutput( StreamWriter output ) => _writer = output;
-
+    public DataOutput( Stream output ) : base( output )
+    {
+    }
+ 
     /// <summary>
     ///     Writes a 1-5 byte int.
     /// </summary>
@@ -74,6 +74,7 @@ public class DataOutput : BinaryWriter
     ///     Writes a length and then the string as UTF8.
     /// </summary>
     /// <param name="value"> May be null.  </param>
+    [PublicAPI]
     public void WriteString( string? value )
     {
         if ( value == null )

@@ -144,10 +144,10 @@ public class Ray
     /// <returns></returns>
     public override int GetHashCode()
     {
-        const int prime = 73;
+        const int PRIME = 73;
 
-        var result = prime + direction.GetHashCode();
-        result = ( prime * result ) + origin.GetHashCode();
+        var result = PRIME + direction.GetHashCode();
+        result = ( PRIME * result ) + origin.GetHashCode();
 
         return result;
     }

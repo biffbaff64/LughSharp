@@ -48,10 +48,10 @@ public class Sphere
     /// <returns></returns>
     public override int GetHashCode()
     {
-        const int prime = 71;
+        const int PRIME = 71;
 
-        var result = prime + center.GetHashCode();
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( radius );
+        var result = PRIME + center.GetHashCode();
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( radius );
 
         return result;
     }

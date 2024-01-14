@@ -266,7 +266,7 @@ public class AssetLoadingTask : IAsyncTask
                                           Resolve( _loader, AssetDesc ),
                                           AssetDesc.Parameters! );
         }
-        else if ( ( _loadFuture != null ) && _loadFuture.IsDone )
+        else if ( _loadFuture is { IsDone: true } )
         {
             try
             {
