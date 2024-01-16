@@ -12,6 +12,7 @@
         <Authors>Richard Ikin</Authors>
         <Description>A C# Conversion of the Java LibGDX 2D/3D Game development framework.</Description>
         <RepositoryUrl>https://github.com/biffbaff64/LibGDXSharp</RepositoryUrl>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

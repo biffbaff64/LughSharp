@@ -23,8 +23,6 @@ namespace LibGDXSharp.Maps.Tiled;
 /// </summary>
 public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
 {
-    private readonly List< TiledMapTileSet > _tilesets;
-
     /// <summary>
     ///     Creates an empty collection of tilesets.
     /// </summary>
@@ -33,7 +31,11 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     /// <returns> iterator to tilesets </returns>
     public virtual IEnumerator< TiledMapTileSet > GetEnumerator() => _tilesets.GetEnumerator();
 
-    /// <summary>Returns an enumerator that iterates through a collection.</summary>
+    private readonly List< TiledMapTileSet > _tilesets;
+
+    /// <summary>
+    ///     Returns an enumerator that iterates through a collection.
+    /// </summary>
     /// <returns>
     ///     An <see cref="T:System.Collections.IEnumerator" /> object that can be used
     ///     to iterate through the collection.

@@ -40,7 +40,7 @@ public abstract class BaseTmxMapLoader<TP>
     protected bool               flipY = true;
     protected XmlReader.Element? root;
 
-    protected XmlReader? xml = new();
+    protected readonly XmlReader? xml = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -894,7 +894,7 @@ public abstract class BaseTmxMapLoader<TP>
             tileSetProperties.Put( "firstgid", firstgid );
 
             // Tiles
-            List< XmlReader.Element >? tileElements = element.GetChildrenByName( "tile" );
+            List< XmlReader.Element > tileElements = element.GetChildrenByName( "tile" );
 
             //TODO: IMPROVE THIS FORMATTING
             AddStaticTiles( tmxFile,

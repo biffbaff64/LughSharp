@@ -21,7 +21,7 @@ using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
 
 namespace LibGDXSharp.Maps.Tiled;
 
-public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
+public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 {
     /// <summary>
     ///     Creates a new TmxMapLoader using a <see cref="InternalFileHandleResolver" />.
@@ -46,7 +46,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     /// </summary>
     /// <param name="fileName"> the filename </param>
     /// <returns> the TiledMap </returns>
-    public TiledMap Load( string fileName ) => Load( fileName, new Parameters() );
+    public TiledMap Load( string fileName ) => Load( fileName, new LoaderParameters() );
 
     /// <summary>
     ///     Loads the <see cref="TiledMap" /> from the given file. The file is resolved
@@ -56,7 +56,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
     /// <param name="fileName"> the filename </param>
     /// <param name="parameter"> specifies whether to use y-up, generate mip maps etc. </param>
     /// <returns> the TiledMap </returns>
-    public TiledMap Load( string fileName, Parameters parameter )
+    public TiledMap Load( string fileName, LoaderParameters parameter )
     {
         MemberNullException.ThrowIfNull( xml );
 
@@ -91,7 +91,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
         Debug.Assert( tmxFile != null );
 
         Map = LoadTiledMap( tmxFile,
-                            ( Parameters )parameter,
+                            ( LoaderParameters )parameter,
                             new IImageResolver.AssetManagerImageResolver( manager! ) );
     }
 
@@ -296,7 +296,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.Parameters >
         }
     }
 
-    public new class Parameters
-        : BaseTmxMapLoader< Parameters >.Parameters
-    {}
+    public class LoaderParameters : BaseTmxMapLoader< LoaderParameters >.Parameters
+    {
+    }
 }

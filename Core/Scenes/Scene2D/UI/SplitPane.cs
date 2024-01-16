@@ -449,19 +449,19 @@ public class SplitPane : WidgetGroup
     [Obsolete( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActor( Actor actor )
     {
-        throw new UnsupportedOperationException( "Use SplitPane#setWidget." );
+        throw new UnsupportedOperationException( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." );
     }
 
     [Obsolete( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActorAt( int index, Actor actor )
     {
-        throw new UnsupportedOperationException( "Use SplitPane#setWidget." );
+        throw new UnsupportedOperationException( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." );
     }
 
     [Obsolete( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActorBefore( Actor actorBefore, Actor actor )
     {
-        throw new UnsupportedOperationException( "Use SplitPane#setWidget." );
+        throw new UnsupportedOperationException( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." );
     }
 
     // ------------------------------------------------------------------------

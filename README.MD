@@ -881,7 +881,7 @@ MATH/COLLISION
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 NETWORK - DELETE CANDIDATE
--------
+--------------------------
 
     Note:- All this is probably already supported by C# System
 
@@ -1016,11 +1016,11 @@ SCENES/SCENE2D/UI
     - DONE - Table                          
     - DONE - TextArea                       
     - DONE - TextButton
-    - IP   - TextField      Check that _blinkTask and _KeyRepeatTask are disposed of properly                      
+    - IP   - TextField      Check that _blinkTask and _keyRepeatTask are disposed of properly                      
     - DONE - Tooltip
     - DONE - TextTooltip
     - DONE - TooltipManager                 
-    - IP   - Touchpad                       
+    - DONE - Touchpad                       
     - DONE - Tree
     - DONE - Value                          
     - DONE - ValueExtensions
@@ -1103,7 +1103,7 @@ UTILS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 UTILS/ASYNC - DELETE CANDIDATE
------------
+------------------------------
 
     - **** - AsyncExecutor
     - **** - ASyncResult
@@ -1120,6 +1120,7 @@ UTILS/COLLECTIONS
     - DONE - CollectionsData
     - DONE - DelayedRemovalArray            Convert / Extend List<>
     - DONE - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
+    - DONE - IPredicate
     - DONE - ObjectMap                      Converted, but use Dictionary< object, object >
     - DONE - PredicateIterable
     - DONE - PredicateIterator
@@ -1146,7 +1147,6 @@ UTILS/COLLECTIONS
     - **** - IntIntMap                      Use Dictionary< int, int >
     - **** - IntMap                         Use Dictionary< int, V >
     - **** - IntSet                         Use List<int>
-    - **** - IPredicate                     ????
     - **** - LongArray                      Use List< long >
     - **** - LongMap                        Use Dictionary< long, V >
     - **** - ObjectFloatMap                 Use Dictionary< object, float >
@@ -1209,8 +1209,8 @@ UTILS/VIEWPORT
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-UTILS/XML
----------
+UTILS/XML - DELETE CANDIDATE
+----------------------------
 
     - TODO: Switch to System.Xml
 

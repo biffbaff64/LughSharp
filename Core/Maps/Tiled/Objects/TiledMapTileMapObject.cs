@@ -28,6 +28,10 @@ namespace LibGDXSharp.Maps.Tiled.Objects;
 /// </summary>
 public class TiledMapTileMapObject : TextureMapObject
 {
+    public ITiledMapTile Tile             { get; set; }
+    public bool          FlipHorizontally { get; set; }
+    public bool          FlipVertically   { get; set; }
+
     /// <summary>
     /// </summary>
     /// <param name="tile"></param>
@@ -45,8 +49,4 @@ public class TiledMapTileMapObject : TextureMapObject
 
         TextureRegion = region;
     }
-
-    public ITiledMapTile Tile             { get; set; }
-    public bool          FlipHorizontally { get; set; }
-    public bool          FlipVertically   { get; set; }
 }

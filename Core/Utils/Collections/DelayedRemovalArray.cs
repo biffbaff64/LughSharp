@@ -27,14 +27,12 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public DelayedRemovalArray( IEnumerable< T > array )
-        : base( array ) => Reset();
+    public DelayedRemovalArray( IEnumerable< T > array ) : base( array ) => Reset();
 
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public DelayedRemovalArray( T[] array )
-        : base( array ) => Reset();
+    public DelayedRemovalArray( T[] array ) : base( array ) => Reset();
 
     /// <summary>
     /// </summary>
@@ -54,8 +52,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <param name="initialCapacity"></param>
-    public DelayedRemovalArray( int initialCapacity = 16 )
-        : base( initialCapacity ) => Reset();
+    public DelayedRemovalArray( int initialCapacity = 16 ) : base( initialCapacity ) => Reset();
 
     /// <summary>
     /// </summary>

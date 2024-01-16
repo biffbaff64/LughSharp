@@ -22,9 +22,7 @@ namespace LibGDXSharp.Maps;
 /// </summary>
 public class MapProperties
 {
-    private Dictionary< string, object? > _properties;
-
-    public MapProperties() => _properties = new Dictionary< string, object? >();
+    private Dictionary< string, object? > _properties = new();
 
     public bool ContainsKey( string key ) => _properties.ContainsKey( key );
 
@@ -38,13 +36,14 @@ public class MapProperties
     public T? Get<T>( string key ) => ( T? )Get( key );
 
     /// <summary>
+    ///     Gets the property matching the specified key. If the fetched property
+    ///     is null the provided <paramref name="defaultValue"/> is returned instead. 
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="defaultValue"></param>
-    /// <param name="type"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <param name="key"> The Key. </param>
+    /// <param name="defaultValue"> The default value. </param>
+    /// <typeparam name="T"> The Type of the required property. </typeparam>
     /// <returns></returns>
-    public T Get<T>( string key, T defaultValue, Type type )
+    public T Get<T>( string key, T defaultValue )
     {
         var obj = Get( key );
 

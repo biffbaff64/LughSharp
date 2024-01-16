@@ -21,7 +21,7 @@ public class PolygonMapObject : MapObject
     /// <summary>
     ///     Creates empty polygon map object
     /// </summary>
-    public PolygonMapObject() : this( new float[ 0 ] )
+    public PolygonMapObject() : this( Array.Empty< float >() )
     {
     }
 

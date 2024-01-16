@@ -18,17 +18,18 @@ namespace LibGDXSharp.Maps;
 
 public class MapLayer
 {
-    private float         _offsetX;
-    private float         _offsetY;
-    private MapLayer?     _parent            = null!;
-    private bool          _renderOffsetDirty = true;
-    private float         _renderOffsetX;
-    private float         _renderOffsetY;
     public  MapObjects    Objects    { get; private set; } = new();
     public  MapProperties Properties { get; private set; } = new();
     public  string?       Name       { get; set; }
     public  float         Opacity    { get; set; }
     public  bool          Visible    { get; set; } = true;
+
+    private float     _offsetX;
+    private float     _offsetY;
+    private MapLayer? _parent            = null!;
+    private bool      _renderOffsetDirty = true;
+    private float     _renderOffsetX;
+    private float     _renderOffsetY;
 
     public float OffsetX
     {

@@ -21,7 +21,7 @@ public class PolylineMapObject : MapObject
     /// <summary>
     ///     Creates empty polyline
     /// </summary>
-    public PolylineMapObject() : this( new float[ 0 ] )
+    public PolylineMapObject() : this( Array.Empty< float >() )
     {
     }
 
@@ -32,5 +32,5 @@ public class PolylineMapObject : MapObject
     public PolylineMapObject( Polyline polyline ) => Polyline = polyline;
 
     /// <returns> polyline shape </returns>
-    public virtual Polyline Polyline { get; set; }
+    public Polyline Polyline { get; set; }
 }

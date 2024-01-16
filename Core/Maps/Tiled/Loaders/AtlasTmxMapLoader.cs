@@ -76,11 +76,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         FileInfo? atlasHandle = GetAtlasFileHandle( tmxFile );
         atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle!.Name );
 
-        Map = LoadTiledMap(
-            tmxFile,
-            ( AtlasTiledMapLoaderParameters )parameter,
-            atlasResolver
-            );
+        Map = LoadTiledMap( tmxFile, ( AtlasTiledMapLoaderParameters )parameter, atlasResolver );
     }
 
     public override TiledMap LoadSync( AssetManager? manager,
@@ -226,7 +222,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
 
         FileInfo? fileHandle = GetRelativeFileHandle( tmxFile, atlasFilePath );
 
-        if ( ( fileHandle == null ) || fileHandle.Exists )
+        if ( fileHandle is { Exists: true } )
         {
             return fileHandle;
         }

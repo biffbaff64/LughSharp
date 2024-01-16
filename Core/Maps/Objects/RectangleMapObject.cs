@@ -34,7 +34,10 @@ public class RectangleMapObject : MapObject
     /// <param name="y"> Y coordinate</param>
     /// <param name="width"> Width of the <seealso cref="Rectangle" /> to be created.</param>
     /// <param name="height"> Height of the <seealso cref="Rectangle" /> to be created.</param>
-    public RectangleMapObject( float x, float y, float width, float height ) => Rectangle = new RectangleShape( x, y, width, height );
+    public RectangleMapObject( float x, float y, float width, float height )
+    {
+        Rectangle = new RectangleShape( x, y, width, height );
+    }
 
     public RectangleShape Rectangle { get; set; }
 }

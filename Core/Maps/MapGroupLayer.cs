@@ -17,7 +17,7 @@
 namespace LibGDXSharp.Maps;
 
 /// <summary>
-///     Map layer containing a set of MapLayers, objects and properties.
+///     Container holding a set of MapLayers, objects and properties.
 /// </summary>
 public class MapGroupLayer : MapLayer
 {

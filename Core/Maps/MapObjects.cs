@@ -67,10 +67,17 @@ public class MapObjects : IEnumerable< MapObject >
 
     public void Remove( MapObject obj ) => _objects.Remove( obj );
 
+    /// <summary>
+    /// </summary>
     /// <param name="type"> class of the objects we want to retrieve </param>
     /// <returns> array filled with all the objects in the collection matching type  </returns>
-    public List< T > GetByType<T>( T type ) where T : MapObject => GetByType( type, new List< T >() );
+    public List< T > GetByType<T>( T type ) where T : MapObject
+    {
+        return GetByType( type, new List< T >() );
+    }
 
+    /// <summary>
+    /// </summary>
     /// <param name="type"> class of the objects we want to retrieve </param>
     /// <param name="fill"> collection to put the returned objects in </param>
     /// <returns> array filled with all the objects in the collection matching type  </returns>

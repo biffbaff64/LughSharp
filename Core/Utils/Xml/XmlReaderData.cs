@@ -18,20 +18,20 @@ namespace LibGDXSharp.Utils.Xml;
 
 public partial class XmlReader
 {
-    internal static byte[] xmlActions =
+    internal readonly static byte[] XmlActions =
     {
         0, 1, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5,
         1, 6, 1, 7, 2, 0, 6, 2, 1, 4, 2, 2, 4
     };
 
-    internal static byte[] xmlKeyOffsets =
+    internal readonly static byte[] XmlKeyOffsets =
     {
         0, 0, 4, 9, 14, 20, 26, 30, 35, 36, 37, 42, 46, 50, 51,
         52, 56, 57, 62, 67, 73, 79, 83, 88, 89, 90, 95, 99, 103,
         104, 108, 109, 110, 111, 112, 115
     };
 
-    internal static char[] xmlTransKeys =
+    internal readonly static char[] XmlTransKeys =
     {
         ( char )32, ( char )60, ( char )9, ( char )13, ( char )32,
         ( char )47, ( char )62, ( char )9, ( char )13, ( char )32,
@@ -59,26 +59,26 @@ public partial class XmlReader
         ( char )0
     };
 
-    internal static byte[] xmlSingleLengths =
+    internal readonly static byte[] XmlSingleLengths =
     {
         0, 2, 3, 3, 4, 4, 2, 3, 1, 1, 3, 2, 2, 1, 1, 2, 1, 3,
         3, 4, 4, 2, 3, 1, 1, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0
     };
 
-    internal static byte[] xmlRangeLengths =
+    internal readonly static byte[] XmlRangeLengths =
     {
         0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1,
         1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0
     };
 
-    internal static short[] xmlIndexOffsets =
+    internal readonly static short[] XmlIndexOffsets =
     {
         0, 0, 4, 9, 14, 20, 26, 30, 35, 37, 39, 44, 48, 52, 54, 56, 60,
         62, 67, 72, 78, 84, 88, 93, 95, 97, 102, 106, 110, 112, 116, 118,
         120, 122, 124, 127
     };
 
-    internal static byte[] xmlIndicies =
+    internal readonly static byte[] XmlIndicies =
     {
         0, 2, 0, 1, 2, 1, 1, 2, 3, 5, 6, 7, 5, 4, 9, 10, 1, 11, 9, 8, 13,
         1, 14, 1, 13, 12, 15, 16, 15, 1, 16, 17, 18, 16, 1, 20, 19, 22, 21,
@@ -89,7 +89,7 @@ public partial class XmlReader
         57, 1, 57, 34, 57, 1, 1, 58, 59, 58, 51, 60, 53, 61, 62, 62, 1, 1, 0
     };
 
-    internal static byte[] xmlTransTargs =
+    internal readonly static byte[] XmlTransTargs =
     {
         1, 0, 2, 3, 3, 4, 11, 34, 5, 4, 11, 34, 5, 6, 7, 6, 7, 8, 13, 9, 10, 9,
         10, 12, 34, 12, 14, 14, 16, 15, 17, 16, 17, 18, 30, 18, 19, 26, 28, 20,
@@ -97,7 +97,7 @@ public partial class XmlReader
         31, 35, 33, 33, 34
     };
 
-    internal static byte[] xmlTransActions =
+    internal readonly static byte[] XmlTransActions =
     {
         0, 0, 0, 1, 0, 3, 3, 20, 1, 0, 0, 9, 0, 11, 11, 0, 0, 0, 0, 1, 17, 0, 13,
         5, 23, 0, 1, 0, 1, 0, 0, 0, 15, 1, 0, 0, 3, 3, 20, 1, 0, 0, 9, 0, 11, 11,

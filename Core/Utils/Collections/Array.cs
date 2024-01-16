@@ -20,7 +20,6 @@ namespace LibGDXSharp.Utils.Collections;
 
 public class Array<T>
 {
-    private IEnumerable< T >?       _iterable;
     private PredicateIterable< T >? _predicateIEnumerable;
 
     /// <summary>
@@ -52,8 +51,7 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
-    public Array( T[] array )
-        : this( true, array, 0, array.Length )
+    public Array( T[] array ) : this( true, array, 0, array.Length )
     {
     }
 

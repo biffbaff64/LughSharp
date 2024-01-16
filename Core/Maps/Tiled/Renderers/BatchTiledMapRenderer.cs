@@ -162,12 +162,10 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     {
         Color batchColor = Batch.Color;
 
-        var color = Color.ToFloatBits(
-            batchColor.R,
-            batchColor.G,
-            batchColor.B,
-            batchColor.A * layer.Opacity
-            );
+        var color = Color.ToFloatBits( batchColor.R,
+                                       batchColor.G,
+                                       batchColor.B,
+                                       batchColor.A * layer.Opacity );
 
         TextureRegion? region = layer.Region;
 

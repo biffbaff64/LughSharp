@@ -32,6 +32,7 @@ namespace LibGDXSharp.Utils.Xml;
 ///         methods will return null.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public partial class XmlReader
 {
     private const int XML_START           = 1;
@@ -112,12 +113,12 @@ public partial class XmlReader
     private Element? Parse( char[] data, int offset, int length )
     {
         //TODO: establish from Java LibGDX the meanings behind these variable names, then rename.
-        var cs       = XML_START;
-        var p        = offset; // position ??
-        var pe       = length; // position end ??
-        var s        = 0;
-        var hasBody  = false;
-        var gotoTarg = Ps.Stage0;
+        var cs = XML_START;
+        var s  = 0;
+
+        var index     = offset;
+        var hasBody   = false;
+        var gotoTarg  = ParseStage.Stage0;
 
         string? attributeName = null;
 
@@ -127,33 +128,33 @@ public partial class XmlReader
         {
             switch ( gotoTarg )
             {
-                case Ps.Stage0:
-                    if ( p == pe )
+                case ParseStage.Stage0:
+                    if ( index == length )
                     {
-                        gotoTarg = Ps.Stage4;
+                        gotoTarg = ParseStage.Stage4;
 
                         goto _goto;
                     }
 
                     if ( cs == XML_ERROR )
                     {
-                        gotoTarg = Ps.Stage5;
+                        gotoTarg = ParseStage.Stage5;
 
                         goto _goto;
                     }
 
                     break;
 
-                case Ps.Stage1:
+                case ParseStage.Stage1:
                     _match:
 
                     int trans;
 
                     do
                     {
-                        int keys = xmlKeyOffsets[ cs ];
-                        trans = xmlIndexOffsets[ cs ];
-                        int klen = xmlSingleLengths[ cs ];
+                        int keys = XmlKeyOffsets[ cs ];
+                        trans = XmlIndexOffsets[ cs ];
+                        int klen = XmlSingleLengths[ cs ];
 
                         if ( klen > 0 )
                         {
@@ -169,11 +170,11 @@ public partial class XmlReader
 
                                 var mid = lower + ( ( upper - lower ) >> 1 );
 
-                                if ( data[ p ] < xmlTransKeys[ mid ] )
+                                if ( data[ index ] < XmlTransKeys[ mid ] )
                                 {
                                     upper = mid - 1;
                                 }
-                                else if ( data[ p ] > xmlTransKeys[ mid ] )
+                                else if ( data[ index ] > XmlTransKeys[ mid ] )
                                 {
                                     lower = mid + 1;
                                 }
@@ -189,7 +190,7 @@ public partial class XmlReader
                             trans += klen;
                         }
 
-                        klen = xmlRangeLengths[ cs ];
+                        klen = XmlRangeLengths[ cs ];
 
                         if ( klen > 0 )
                         {
@@ -205,11 +206,11 @@ public partial class XmlReader
 
                                 var mid = lower + ( ( ( upper - lower ) >> 1 ) & ~1 );
 
-                                if ( data[ p ] < xmlTransKeys[ mid ] )
+                                if ( data[ index ] < XmlTransKeys[ mid ] )
                                 {
                                     upper = mid - 2;
                                 }
-                                else if ( data[ p ] > xmlTransKeys[ mid + 1 ] )
+                                else if ( data[ index ] > XmlTransKeys[ mid + 1 ] )
                                 {
                                     lower = mid + 2;
                                 }
@@ -226,21 +227,21 @@ public partial class XmlReader
                     }
                     while ( false );
 
-                    trans = xmlIndicies[ trans ];
-                    cs    = xmlTransTargs[ trans ];
+                    trans = XmlIndicies[ trans ];
+                    cs    = XmlTransTargs[ trans ];
 
-                    if ( xmlTransActions[ trans ] != 0 )
+                    if ( XmlTransActions[ trans ] != 0 )
                     {
-                        int acts  = xmlTransActions[ trans ];
-                        int nacts = xmlActions[ acts++ ];
+                        int acts  = XmlTransActions[ trans ];
+                        int nacts = XmlActions[ acts++ ];
 
                         while ( nacts-- > 0 )
                         {
-                            switch ( xmlActions[ acts++ ] )
+                            switch ( XmlActions[ acts++ ] )
                             {
                                 case 0:
                                 {
-                                    s = p;
+                                    s = index;
 
                                     break;
                                 }
@@ -249,7 +250,7 @@ public partial class XmlReader
                                 {
                                     var c = data[ s ];
 
-                                    if ( ( c == '?' ) || ( c == '!' ) )
+                                    if ( c is '?' or '!' )
                                     {
                                         if ( ( data[ s + 1 ] == '[' )
                                           && ( data[ s + 2 ] == 'C' )
@@ -259,43 +260,43 @@ public partial class XmlReader
                                           && ( data[ s + 6 ] == 'A' )
                                           && ( data[ s + 7 ] == '[' ) )
                                         {
-                                            s += 8;
-                                            p =  s + 2;
+                                            s     += 8;
+                                            index =  s + 2;
 
-                                            while ( ( data[ p - 2 ] != ']' )
-                                                 || ( data[ p - 1 ] != ']' )
-                                                 || ( data[ p ] != '>' ) )
+                                            while ( ( data[ index - 2 ] != ']' )
+                                                 || ( data[ index - 1 ] != ']' )
+                                                 || ( data[ index ] != '>' ) )
                                             {
-                                                p++;
+                                                index++;
                                             }
 
-                                            Text( new string( data, s, p - s - 2 ) );
+                                            Text( new string( data, s, index - s - 2 ) );
                                         }
                                         else if ( ( c == '!' )
                                                && ( data[ s + 1 ] == '-' )
                                                && ( data[ s + 2 ] == '-' ) )
                                         {
-                                            p = s + 3;
+                                            index = s + 3;
 
-                                            while ( ( data[ p ] != '-' )
-                                                 || ( data[ p + 1 ] != '-' )
-                                                 || ( data[ p + 2 ] != '>' ) )
+                                            while ( ( data[ index ] != '-' )
+                                                 || ( data[ index + 1 ] != '-' )
+                                                 || ( data[ index + 2 ] != '>' ) )
                                             {
-                                                p++;
+                                                index++;
                                             }
 
-                                            p += 2;
+                                            index += 2;
                                         }
                                         else
                                         {
-                                            while ( data[ p ] != '>' )
+                                            while ( data[ index ] != '>' )
                                             {
-                                                p++;
+                                                index++;
                                             }
                                         }
 
                                         cs       = 15;
-                                        gotoTarg = Ps.Stage2;
+                                        gotoTarg = ParseStage.Stage2;
 
                                         if ( true )
                                         {
@@ -304,7 +305,7 @@ public partial class XmlReader
                                     }
 
                                     hasBody = true;
-                                    Open( new string( data, s, p - s ) );
+                                    Open( new string( data, s, index - s ) );
 
                                     break;
                                 }
@@ -315,7 +316,7 @@ public partial class XmlReader
                                     Close();
 
                                     cs       = 15;
-                                    gotoTarg = Ps.Stage2;
+                                    gotoTarg = ParseStage.Stage2;
 
                                     if ( true )
                                     {
@@ -328,7 +329,7 @@ public partial class XmlReader
                                     Close();
 
                                     cs       = 15;
-                                    gotoTarg = Ps.Stage2;
+                                    gotoTarg = ParseStage.Stage2;
 
                                     if ( true )
                                     {
@@ -341,7 +342,7 @@ public partial class XmlReader
                                     if ( hasBody )
                                     {
                                         cs       = 15;
-                                        gotoTarg = Ps.Stage2;
+                                        gotoTarg = ParseStage.Stage2;
 
                                         if ( true )
                                         {
@@ -354,21 +355,21 @@ public partial class XmlReader
 
                                 case 5:
                                 {
-                                    attributeName = new string( data, s, p - s );
+                                    attributeName = new string( data, s, index - s );
 
                                     break;
                                 }
 
                                 case 6:
                                 {
-                                    Attribute( attributeName!, new string( data, s, p - s ) );
+                                    Attribute( attributeName!, new string( data, s, index - s ) );
 
                                     break;
                                 }
 
                                 case 7:
                                 {
-                                    var end = p;
+                                    var end = index;
 
                                     while ( end != s )
                                     {
@@ -442,37 +443,37 @@ public partial class XmlReader
 
                     break;
 
-                case Ps.Stage2:
+                case ParseStage.Stage2:
                     if ( cs == XML_ERROR )
                     {
-                        gotoTarg = Ps.Stage5;
+                        gotoTarg = ParseStage.Stage5;
 
                         goto _goto;
                     }
 
-                    if ( ++p != pe )
+                    if ( ++index != length )
                     {
-                        gotoTarg = Ps.Stage1;
+                        gotoTarg = ParseStage.Stage1;
 
                         goto _goto;
                     }
 
                     break;
 
-                case Ps.Stage3:
-                case Ps.Stage4:
-                case Ps.Stage5:
+                case ParseStage.Stage3:
+                case ParseStage.Stage4:
+                case ParseStage.Stage5:
                     break;
             }
 
             break;
         }
 
-        if ( p < pe )
+        if ( index < length )
         {
             var lineNumber = 1;
 
-            for ( var i = 0; i < p; i++ )
+            for ( var i = 0; i < index; i++ )
             {
                 if ( data[ i ] == '\n' )
                 {
@@ -480,8 +481,8 @@ public partial class XmlReader
                 }
             }
 
-            throw new SerializationException
-                ( $"Error parsing XML on line {lineNumber} near: {new string( data, p, Math.Min( 32, pe - p ) )}" );
+            throw new SerializationException( $"Error parsing XML on line {lineNumber} near: "
+                                            + $"{new string( data, index, Math.Min( 32, length - index ) )}" );
         }
 
         if ( _elements.Count != 0 )
@@ -532,7 +533,7 @@ public partial class XmlReader
         _current = _elements.Count > 0 ? _elements.Peek() : null;
     }
 
-    private enum Ps
+    private enum ParseStage
     {
         Stage0,
         Stage1,
@@ -546,7 +547,7 @@ public partial class XmlReader
     //
     // --------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class Element
     {
         private List< Element >? _children;

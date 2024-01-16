@@ -18,9 +18,7 @@ namespace LibGDXSharp.Maps.Tiled;
 
 public class TiledMap : Map, IDisposable
 {
-    public TiledMap() => Tilesets = new TiledMapTileSets();
-
-    public TiledMapTileSets Tilesets       { get; set; }
+    public TiledMapTileSets Tilesets       { get; set; } = new();
     public List< object >?  OwnedResources { get; set; }
 
     /// <summary>
@@ -56,5 +54,5 @@ public class TiledMap : Map, IDisposable
     ///     Allows an object to try to free resources and perform other cleanup
     ///     operations before it is reclaimed by garbage collection.
     /// </summary>
-    ~TiledMap() => Dispose( false );
+    ~TiledMap() => Dispose( true );
 }
