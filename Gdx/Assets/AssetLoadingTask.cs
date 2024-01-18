@@ -20,11 +20,10 @@ namespace LibGDXSharp.Assets;
 
 public class AssetLoadingTask : IAsyncTask
 {
-    private readonly AssetLoader _loader;
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    private readonly AssetLoader  _loader;
     private readonly AssetManager _manager;
 
     private volatile bool          _asyncDone = false;
@@ -33,6 +32,11 @@ public class AssetLoadingTask : IAsyncTask
     private volatile AsyncResult?  _loadFuture;
 
     private long _startTime;
+
+    public bool            DependenciesLoaded { get; set; }
+    public AssetDescriptor AssetDesc          { get; set; }
+    public bool            Cancel             { get; set; }
+    public object?         Asset              { get; set; }
 
     public List< AssetDescriptor >? dependencies;
 
@@ -59,11 +63,6 @@ public class AssetLoadingTask : IAsyncTask
             ? TimeUtils.NanoTime()
             : 0;
     }
-
-    public bool            DependenciesLoaded { get; set; }
-    public AssetDescriptor AssetDesc          { get; set; }
-    public bool            Cancel             { get; set; }
-    public object?         Asset              { get; set; }
 
     /// <summary>
     ///     Loads parts of the asset asynchronously if the loader is

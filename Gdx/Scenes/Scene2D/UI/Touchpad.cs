@@ -86,7 +86,7 @@ public class Touchpad : Widget
         this._deadzoneRadius = deadzoneRadius;
 
         _knobPosition.Set( Width / 2f, Height / 2f );
-        
+
         Style = style;
 
         SetSize( Style.Background?.MinWidth ?? 0, Style.Background?.MinHeight ?? 0 );
@@ -272,30 +272,37 @@ public class Touchpad : Widget
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    internal class TouchpadInputListener( Touchpad pad ) : InputListener
+    internal class TouchpadInputListener : InputListener
     {
+        private readonly Touchpad _pad;
+
+        public TouchpadInputListener( Touchpad pad )
+        {
+            _pad = pad;
+        }
+
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( pad.IsTouched )
+            if ( _pad.IsTouched )
             {
                 return false;
             }
-            
-            pad.IsTouched = true;
-            pad.CalculatePositionAndValue( x, y, false );
+
+            _pad.IsTouched = true;
+            _pad.CalculatePositionAndValue( x, y, false );
 
             return true;
         }
 
         public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
         {
-            pad.CalculatePositionAndValue( x, y, false );
+            _pad.CalculatePositionAndValue( x, y, false );
         }
 
         public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            pad.IsTouched = false;
-            pad.CalculatePositionAndValue( x, y, pad.ResetOnTouchUp );
+            _pad.IsTouched = false;
+            _pad.CalculatePositionAndValue( x, y, _pad.ResetOnTouchUp );
         }
     }
 

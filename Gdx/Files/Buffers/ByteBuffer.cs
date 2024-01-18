@@ -228,7 +228,7 @@ public abstract class ByteBuffer : Buffer
 
         return this;
     }
-
+    
     /// <summary>
     ///     Transfers bytes into this buffer from the given source array. If there are
     ///     more bytes to be copied from the array than remain in this buffer, no bytes

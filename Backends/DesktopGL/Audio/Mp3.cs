@@ -26,7 +26,7 @@ public class Mp3 : OpenALMusic
         private Decoder?      _decoder;
         private SampleBuffer? _outputBuffer;
 
-        public Music( OpenALAudio audio, FileHandle file )
+        public Music( OpenALAudio audio, FileInfo file )
             : base( audio, file )
         {
             if ( audio.NoDevice )
@@ -137,7 +137,7 @@ public class Mp3 : OpenALMusic
 
     public class Sound : OpenALSound
     {
-        public Sound( OpenALAudio audio, FileHandle file )
+        public Sound( OpenALAudio audio, FileInfo file )
             : base( audio )
         {
             if ( audio.NoDevice )

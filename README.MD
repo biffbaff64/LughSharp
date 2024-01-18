@@ -87,11 +87,8 @@ ASSETS
     - DONE - IAssetErrorListener
     - DONE - RefCountedContainer
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-ASSETS/LOADERS
---------------
+    LOADERS
+    -------
 
     - DONE - AssetLoader
     - DONE - AsynchronousAssetLoader
@@ -108,11 +105,8 @@ ASSETS/LOADERS
     - DONE - TextureAtlasLoader
     - DONE - TextureLoader
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-ASSETS/LOADERS/RESOLVERS
-------------------------
+    LOADERS/RESOLVERS
+    -----------------
 
     - DONE - AbsoluteFileHandleResolver
     - DONE - ClasspathFileHandleResolver
@@ -134,19 +128,16 @@ AUDIO
     - DONE - IMusic
     - DONE - ISound
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-AUDIO/MP3SHARP
---------------
+    AUDIO/MP3SHARP
+    --------------
 
     - DONE - Buffer16BitSterso
     - DONE - MP3SharpException
     - DONE - MP3Stream
     - DONE - SoundFormat
 
-    Decoding
-    --------
+    AUDIO/MP3SHARP/DECODING
+    -----------------------
 
     - DONE - AudioBase
     - DONE - BitReserve
@@ -168,8 +159,8 @@ AUDIO/MP3SHARP
     - DONE - SampleBuffer
     - DONE - SynthesisFilter
 
-    Decoders
-    --------
+    AUDIO/MP3SHARP/DECODERS
+    -----------------------
 
     - DONE - ASubband
     - DONE - IFrameDecoder
@@ -177,22 +168,22 @@ AUDIO/MP3SHARP
     - DONE - LayerIIDecoder
     - DONE - LayerIIIDecoder
 
-    Decoders/LayerI
-    ---------------
+    AUDIO/MP3SHARP/DECODERS/LAYERI
+    ------------------------------
 
     - DONE - SubbandLayer1
     - DONE - SubbandLayer1IntensityStereo
     - DONE - SubbandLayer1Stereo
 
-    Decoders/LayerII
-    ----------------
+    AUDIO/MP3SHARP/DECODERS/LAYERII
+    -------------------------------
 
     - DONE - SubbandLayer2
     - DONE - SubbandLayer2IntensityStereo
     - DONE - SubbandLayer2Stereo
 
-    Decoders/LayerIII
-    -----------------
+    AUDIO/MP3SHARP/DECODERS/LAYERIII
+    --------------------------------
 
     - DONE - ChannelData
     - DONE - GranuleInfo
@@ -201,24 +192,21 @@ AUDIO/MP3SHARP
     - DONE - ScaleFactorData
     - DONE - ScaleFactorTable
 
-    IO
-    --
+    AUDIO/MP3SHARP/IO
+    -----------------
 
     - DONE - RandomAccessFileStream
     - DONE - RiffFile
     - DONE - WaveFile
     - DONE - WaveFileBuffer
 
-    Support
-    -------
+    AUDIO/MP3SHARP/SUPPORT
+    ----------------------
 
     - DONE - SupportClass
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-AUDIO/OPENAL
-------------
+    AUDIO/OPENAL
+    ------------
 
     - DONE - AL
     - DONE - ALC
@@ -264,21 +252,28 @@ CORE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-FILES - DELETE CANDIDATE
-------------------------
+FILES
+-----
 
     TODO: Remove all this and properly integrate the C# file handling classes
 
-    - IP   - BufferedStreamExtensions
+    - IP   - BufferedReader
+    - IP   - BufferedStreamExtensions       - TO BE REMOVED
     - IP   - ByteArrayInputStream
+    - IP   - ByteArrayOutputStream
     - DONE - FileHandle
+    - DONE - FileHandleStream
+    - DONE - IDataOutput
     - DONE - InputStream
+    - IP   - Reader
 
     ------------------------------------------
+
     - java.io.BufferedReader                -> 
     - java.io.BufferedInputStream           -> BufferedStream ?
     - java.io.ByteArrayInputStream          -> 
     - java.io.ByteArrayOutputStream         -> 
+    - java.io.DataOutput                    -> (Interface)
     - java.io.DataInputStream               -> BinaryReader ?
     - java.io.DataOutputStream              -> BinaryWriter ?
     - java.io.File                          -> File ( static class )
@@ -287,12 +282,14 @@ FILES - DELETE CANDIDATE
     - java.io.FileOutputStream              -> 
     - java.io.FilterInputStream             -> 
     - java.io.FilterOutputStream            -> 
-    - java.io.DataOuput                     -> (Interface)
     - java.io.InputStream                   -> StreamReader ?
     - java.io.InputStreamReader             -> StreamReader ?
-    - java.io.IOException                   -> System.IO.IOException
     - java.io.OutputStream                  -> StreamWriter ?
     - java.io.Reader                        -> StreamReader ?
+
+    ------------------------------------------
+
+    - java.io.IOException                   -> System.IO.IOException
 
     ------------------------------------------
 
@@ -304,11 +301,8 @@ FILES - DELETE CANDIDATE
     - java.util.zip.DeflaterOutputStream    -> 
     - java.util.zip.InflaterInputStream     -> 
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-FILES/BUFFERS - DELETE CANDIDATE
---------------------------------
+    FILES/BUFFERS
+    -------------
 
     - See if these can be replaced by any C# System classes
 
@@ -364,11 +358,8 @@ GRAPHICS
     - DONE - VertexAttribute                    
     - DONE - VertexAttributes
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/FRAMEBUFFERS
----------------------
+    GRAPHICS/FRAMEBUFFERS
+    ---------------------
 
     - DONE - FloatFrameBuffer
     - DONE - FloatFrameBufferBuilder
@@ -383,11 +374,8 @@ GRAPHICS/FRAMEBUFFERS
 
     ** Restructure GLFrameBuffer.Build(), this method is too long.
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G2D
-------------
+    GRAPHICS/G2D
+    ------------
 
     - DONE - Animation                      
     - DONE - AtlasRegion                    
@@ -419,11 +407,8 @@ GRAPHICS/G2D
     - DONE - TextureAtlasDataExtensions
     - DONE - TextureRegion                  
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D
-------------
+    GRAPHICS/G3D
+    ------------
 
     -      - Attribute
     -      - AttributesGroup
@@ -437,11 +422,8 @@ GRAPHICS/G3D
     -      - RenderableProvider
     -      - Shader
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/ATTRIBUTES
------------------------
+    GRAPHICS/G3D/ATTRIBUTES
+    -----------------------
 
     -      - BlendingAttribute
     -      - ColorAttribute
@@ -454,11 +436,8 @@ GRAPHICS/G3D/ATTRIBUTES
     -      - SpotLightsAttribute
     -      - TextureAttribute
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/DECALS
--------------------
+    GRAPHICS/G3D/DECALS
+    -------------------
 
     -      - CameraGroupStrategy
     -      - Decal
@@ -469,11 +448,8 @@ GRAPHICS/G3D/DECALS
     -      - PluggableGroupStrategy
     -      - SimpleOrthoGroupStrategy
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/ENV
-----------------
+    GRAPHICS/G3D/ENV
+    ----------------
 
     -      - AmbientCubemap
     -      - BaseLight
@@ -484,20 +460,14 @@ GRAPHICS/G3D/ENV
     -      - SpericalHarmonics
     -      - SpotLight
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/LOADER
--------------------
+    GRAPHICS/G3D/LOADER
+    -------------------
 
     -      - G3ModelLoader
     -      - ObjLoader
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/MODELS
--------------------
+    GRAPHICS/G3D/MODELS
+    -------------------
 
     -      - Attribute
     -      - MeshPart
@@ -506,11 +476,8 @@ GRAPHICS/G3D/MODELS
     -      - NodeKeyframe
     -      - NodePart
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/MODELS/DATA
-------------------------
+    GRAPHICS/G3D/MODELS/DATA
+    ------------------------
 
     -      - ModelAnimation
     -      - ModelData
@@ -523,11 +490,8 @@ GRAPHICS/G3D/MODELS/DATA
     -      - ModelNodePart
     -      - ModelTexture
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/PARTICLES
-----------------------
+    GRAPHICS/G3D/PARTICLES
+    ----------------------
 
     -      - ParallelArray
     -      - ParticleChannels
@@ -540,11 +504,8 @@ GRAPHICS/G3D/PARTICLES
     -      - ParticleSystem
     -      - ResourceData
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/PARTICLES/BATCHES
-------------------------------
+    GRAPHICS/G3D/PARTICLES/BATCHES
+    ------------------------------
 
     -      - BillboardParticleBatch
     -      - BufferedParticleBatch
@@ -552,20 +513,14 @@ GRAPHICS/G3D/PARTICLES/BATCHES
     -      - ModelInstanceParticleBatch
     -      - PointSpriteParticleBatch
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/PARTICLES/EMITTERS
--------------------------------
+    GRAPHICS/G3D/PARTICLES/EMITTERS
+    -------------------------------
 
     -      - Emitter
     -      - RegulatEmitter
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/PARTICLES/INFLUENCERS
-----------------------------------
+    GRAPHICS/G3D/PARTICLES/INFLUENCERS
+    ----------------------------------
 
     -      - ColorInfluencer
     -      - DynamicsInfluencer
@@ -579,11 +534,8 @@ GRAPHICS/G3D/PARTICLES/INFLUENCERS
     -      - SimpleInfluencer
     -      - SpawnInfluencer
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/PARTICLES/RENDERERS
---------------------------------
+    GRAPHICS/G3D/PARTICLES/RENDERERS
+    --------------------------------
 
     -      - BillboardControllerRenderData
     -      - BillboardRenderer
@@ -595,11 +547,8 @@ GRAPHICS/G3D/PARTICLES/RENDERERS
     -      - PointSpriteControllerRenderData
     -      - PointSpriteRenderer
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/PARTICLES/VALUES
------------------------------
+    GRAPHICS/G3D/PARTICLES/VALUES
+    -----------------------------
 
     -      - CylinderSpawnShapeValue
     -      - EllipseSpawnShapeValue
@@ -617,21 +566,15 @@ GRAPHICS/G3D/PARTICLES/VALUES
     -      - UnweightedMeshSpawnShapeValue
     -      - WeightMeshSpawnShapeValue
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/SHADERS
---------------------
+    GRAPHICS/G3D/SHADERS
+    --------------------
 
     -      - BaseShader
     -      - DefaultShader
     -      - DepthShader
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/UTILS
-------------------
+    GRAPHICS/G3D/UTILS
+    ------------------
 
     -      - AnimationController
     -      - BaseAnimationController
@@ -653,11 +596,8 @@ GRAPHICS/G3D/UTILS
     -      - ShapeCache
     -      - TextureDescriptor
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/G3D/UTILS/SHAPEBUILDERS
---------------------------------
+    GRAPHICS/G3D/UTILS/SHAPEBUILDERS
+    --------------------------------
 
     -      - ArrowShapeBuilder
     -      - BaseShapeBuilder
@@ -671,11 +611,8 @@ GRAPHICS/G3D/UTILS/SHAPEBUILDERS
     -      - RenderableShapeBuilder
     -      - SphereShapeBuilder
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/GLUTILS
-----------------
+    GRAPHICS/GLUTILS
+    ----------------
 
     - DONE - FacedCubemapData
     - DONE - FileTextureArrayData
@@ -715,11 +652,8 @@ GRAPHICS/GLUTILS
     - **** - ETC1
     - **** - ETC1TextureData
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-GRAPHICS/PROFILING
-------------------
+    GRAPHICS/PROFILING
+    ------------------
 
     - DONE - GL20Interceptor
     - DONE - GL30Interceptor
@@ -755,11 +689,8 @@ MAPS
     - DONE - MapObjects                             
     - DONE - MapProperties                          
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-MAPS/OBJECTS
-------------
+    MAPS/OBJECTS
+    ------------
 
     - DONE - CircleMapObject                        
     - DONE - EllipseMapObject                       
@@ -768,11 +699,8 @@ MAPS/OBJECTS
     - DONE - RectangleMapObject                     
     - DONE - TextureMapObject                       
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-MAPS/TILED
-----------
+    MAPS/TILED
+    ----------
 
     - DONE - ITiledMapTile                          
     - DONE - TiledMap                               
@@ -781,30 +709,21 @@ MAPS/TILED
     - DONE - TiledMapTileSet                        
     - DONE - TiledMapTileSets                       
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-MAPS/TILED/LOADERS
-------------------
+    MAPS/TILED/LOADERS
+    ------------------
 
     - DONE - AtlasTmxMapLoader 
     - DONE - BaseTmxMapLoader
     - DONE - TmxMapLoader
     - **** - TideMapLoader
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-MAPS/TILED/OBJECTS
-------------------
+    MAPS/TILED/OBJECTS
+    ------------------
 
     - DONE - TiledMapTileMapObject                  
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-MAPS/TILED/RENDERERS
---------------------
+    MAPS/TILED/RENDERERS
+    --------------------
 
     - DONE - BatchTiledMapRenderer                  
     - DONE - HexagonalTiledMapRenderer              
@@ -814,11 +733,8 @@ MAPS/TILED/RENDERERS
     - DONE - OrthoCachedTiledMapRenderer            
     - DONE - OrthogonalTiledMapRenderer             
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-MAPS/TILED/TILES
-----------------
+    MAPS/TILED/TILES
+    ----------------
 
     - DONE - AnimatedTileMapTile                    
     - DONE - StaticTiledMapTile                     
@@ -866,11 +782,8 @@ MATHS
     - DONE - Vector3                        Convert, I prefer the way the LibGDX class works.
     - DONE - WindowedMean
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-MATH/COLLISION
---------------
+    MATH/COLLISION
+    --------------
 
     - DONE - BoundingBox
     - DONE - Ray
@@ -880,8 +793,8 @@ MATH/COLLISION
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-NETWORK - DELETE CANDIDATE
---------------------------
+NETWORK
+-------
 
     Note:- All this is probably already supported by C# System
 
@@ -914,11 +827,8 @@ SCENES/SCENE2D
     - DONE - Touchable
     - DONE - TouchFocus
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-SCENES/SCENE2D/ACTIONS
-----------------------
+    SCENES/SCENE2D/ACTIONS
+    ----------------------
 
     - DONE - Actions                        
     - DONE - AddAction                      
@@ -954,11 +864,8 @@ SCENES/SCENE2D/ACTIONS
     - DONE - TouchableAction                
     - DONE - VisibleAction                  
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-SCENES/SCENE2D/LISTENERS
-------------------------
+    SCENES/SCENE2D/LISTENERS
+    ------------------------
 
     - Base classes to be used and extended as required
 
@@ -980,11 +887,8 @@ i.e.    AddListener( new ClickListener()
             }
         } );
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-SCENES/SCENE2D/UI
------------------
+    SCENES/SCENE2D/UI
+    -----------------
 
     TODO: I don't like the way Cell and Value classes are implemented.
           They seem confusing and are candidates for a rewrite.
@@ -1029,11 +933,8 @@ SCENES/SCENE2D/UI
     - DONE - WidgetGroup                    
     - DONE - Window                         
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-SCENES/SCENE2D/UTILS
---------------------
+    SCENES/SCENE2D/UTILS
+    --------------------
 
     - DONE - ArraySelection                 
     - DONE - BaseDrawable                   
@@ -1099,22 +1000,16 @@ UTILS
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/ASYNC - DELETE CANDIDATE
-------------------------------
+    UTILS/ASYNC - DELETE CANDIDATE
+    ------------------------------
 
     - **** - AsyncExecutor
     - **** - ASyncResult
     - **** - IAsyncTask
     - **** - ThreadUtils
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/COLLECTIONS
------------------
+    UTILS/COLLECTIONS
+    -----------------
 
     - DONE - Array<T>                       Converted, but use List<T> for most cases.
     - DONE - CollectionsData
@@ -1157,11 +1052,8 @@ UTILS/COLLECTIONS
     - **** - OrderedSet<T>                  Use SortedSet<T>
     - **** - ShortArray                     Use List< short >
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/EXCEPTIONS
-----------------
+    UTILS/EXCEPTIONS
+    ----------------
 
     These need more documentation!
 
@@ -1180,11 +1072,8 @@ UTILS/EXCEPTIONS
     - DONE - UnsupportedEncodingException   
     - DONE - UnsupportedOperationException  
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/POOLING
--------------
+    UTILS/POOLING
+    -------------
 
     - DONE - FlushablePool                  
     - DONE - IPoolable                      
@@ -1192,11 +1081,8 @@ UTILS/POOLING
     - DONE - PooledLinkedList               
     - DONE - Pools                          
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/VIEWPORT
---------------
+    UTILS/VIEWPORT
+    --------------
 
     - DONE - ExtendedViewport               
     - DONE - FillViewport                   
@@ -1206,11 +1092,8 @@ UTILS/VIEWPORT
     - DONE - StretchViewport                
     - DONE - Viewport                       
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-UTILS/XML - DELETE CANDIDATE
-----------------------------
+    UTILS/XML - DELETE CANDIDATE
+    ----------------------------
 
     - TODO: Switch to System.Xml
 
@@ -1240,14 +1123,14 @@ BACKENDS/DESKTOPGL
     - DONE - IDesktopGLApplicationBase
     - IP   - Sync
 
-    Files
-    -----
+    BACKENDS/DESKTOPGL/FILES
+    ------------------------
 
     - DONE - DesktopGLFileHandle
     - DONE - DesktopGLFiles
 
-    Graphics
-    --------
+    BACKENDS/DESKTOPGL/GRAPHICS
+    ---------------------------
 
     - IP   - DesktopGL20
     - IP   - DesktopGL30
@@ -1255,33 +1138,30 @@ BACKENDS/DESKTOPGL
     - IP   - DesktopGLGraphics.DesktopGLDisplayMode   Delete candidate
     - IP   - DesktopGLGraphics.DesktopGLMonitor       Delete candidate
 
-    Input
-    -----
+    BACKENDS/DESKTOPGL/INPUT
+    ------------------------
 
     - DONE - DefaultGLInput
     - DONE - IDesktopGLInput
 
-    Utils
-    -----
+    BACKENDS/DESKTOPGL/UTILS
+    ------------------------
 
     - IP   - DesktopGLApplicationLogger
     - IP   - DesktopGLClipboard
     - DONE - DesktopGLCursor
     - IP   - DesktopGLPreferences
 
-    Window
-    ------
+    BACKENDS/DESKTOPGL/WINDOW
+    -------------------------
 
     - IP   - DesktopGLWindow
     - DONE - DesktopGLWindowConfiguration
     - DONE - DesktopGLWindowAdapter
     - DONE - IDesktopGLWindowListener
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-BACKENDS/DESKTOPGL/AUDIO
-------------------------
+    BACKENDS/DESKTOPGL/AUDIO
+    ------------------------
 
     - IP   - GdxSoundAudioRecorder
     - DONE - IGLAudio
@@ -1294,11 +1174,8 @@ BACKENDS/DESKTOPGL/AUDIO
     - IP   - OpenALSound
     - IP   - Wav
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-BACKENDS/DESKTOPGL/AUDIO/MOCK
------------------------------
+    BACKENDS/DESKTOPGL/AUDIO/MOCK
+    -----------------------------
 
     - DONE - MockAudio
     - DONE - MockAudioDevice
@@ -1313,6 +1190,7 @@ EXTENSIONS/BOX2D
 ----------------
 
     - It's most likely best to recommend the use of an already available C# port.
+    - ( It really depends on how much of a glutton for punishment you are!!!! )
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1322,39 +1200,27 @@ EXTENSIONS/GDX-TOOLS
 
     - IP   - FileProcessor
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    EXTENSIONS/GDX-TOOLS/IMAGEPACKER
+    --------------------------------
 
-EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
------------------------------------
+    - IP   - ImagePacker                - This one will require a lot opf work!
+
+    EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
+    -----------------------------------
 
     - IP   - TileMapPacker
     -      - TiledMapPackerTest
     -      - TiledMapPackerTestRender
     -      - TileSetLayout
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    EXTENSIONS/GDX-TOOLS/TOOLS
+    --------------------------
 
-EXTENSIONS/GDX-TOOLS/TOOLS
---------------------------
+    EXTENSIONS/GDX-TOOLS/TOOLS/TEXTUREPACKER
+    ----------------------------------------
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/GDX-TOOLS/TOOLS/TEXTUREPACKER
-----------------------------------------
-
-    -      - ColorBleedEffect
+    - IP   - ColorBleedEffect
     -      - TexturePacker
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-EXTENSIONS/GDX-TOOLS/IMAGEPACKER
---------------------------------
-
-    - IP   - ImagePacker
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

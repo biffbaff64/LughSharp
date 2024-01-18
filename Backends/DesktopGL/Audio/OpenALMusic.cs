@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files;
+using LibGDXSharp.Audio.OpenAL;
 using LibGDXSharp.Files.Buffers;
 using LibGDXSharp.Utils.Collections;
 
@@ -39,16 +39,15 @@ public abstract class OpenALMusic : IMusic
     private          float         _pan = 0;
     private          float         _renderedSeconds;
     private          int           _sampleRate;
-    private          int           _sourceID = INVALID_SOURCE_ID;
-    private          float         _volume   = 1;
+    private          float         _volume = 1;
 
-    protected FileHandle file;
+    protected readonly FileInfo file;
 
-    protected OpenALMusic( OpenALAudio audio, FileHandle file )
+    protected OpenALMusic( OpenALAudio audio, FileInfo file )
     {
-        _audio               = audio;
-        this.file            = file;
-        OnCompletionListener = null;
+        this._audio               = audio;
+        this.file                 = file;
+        this.OnCompletionListener = null;
     }
 
     public void Play()
@@ -58,11 +57,11 @@ public abstract class OpenALMusic : IMusic
             return;
         }
 
-        if ( _sourceID == INVALID_SOURCE_ID )
+        if ( SourceId == INVALID_SOURCE_ID )
         {
-            _sourceID = _audio.ObtainSource( true );
+            SourceId = _audio.ObtainSource( true );
 
-            if ( _sourceID == INVALID_SOURCE_ID )
+            if ( SourceId == INVALID_SOURCE_ID )
             {
                 return;
             }
@@ -83,12 +82,12 @@ public abstract class OpenALMusic : IMusic
                 }
             }
 
-            AL.Sourcei( ( uint )_sourceID, AL.DIRECT_CHANNELS_SOFT, AL.TRUE );
-            AL.Sourcei( ( uint )_sourceID, AL.LOOPING, AL.FALSE );
+            AL.Sourcei( ( uint )SourceId, AL.DIRECT_CHANNELS_SOFT, AL.TRUE );
+            AL.Sourcei( ( uint )SourceId, AL.LOOPING, AL.FALSE );
 
             SetPan( _pan, _volume );
 
-            AL.SourceQueueBuffers( ( uint )_sourceID, _bufferCount, _buffers );
+            AL.SourceQueueBuffers( ( uint )SourceId, _bufferCount, _buffers );
 
             //TODO: 
 //            var filled = false; // Check if there's anything to actually play.
@@ -122,7 +121,7 @@ public abstract class OpenALMusic : IMusic
 
         if ( !IsPlaying )
         {
-            AL.SourcePlay( ( uint )_sourceID );
+            AL.SourcePlay( ( uint )SourceId );
             _isPlaying = true;
         }
     }
@@ -134,7 +133,7 @@ public abstract class OpenALMusic : IMusic
             return;
         }
 
-        if ( _sourceID == INVALID_SOURCE_ID )
+        if ( SourceId == INVALID_SOURCE_ID )
         {
             return;
         }
@@ -143,9 +142,9 @@ public abstract class OpenALMusic : IMusic
 
         Reset();
 
-        _audio.FreeSource( _sourceID );
+        _audio.FreeSource( SourceId );
 
-        _sourceID        = INVALID_SOURCE_ID;
+        SourceId         = INVALID_SOURCE_ID;
         _renderedSeconds = 0;
 
         _renderedSecondsQueue.Clear();
@@ -160,9 +159,9 @@ public abstract class OpenALMusic : IMusic
             return;
         }
 
-        if ( _sourceID != INVALID_SOURCE_ID )
+        if ( SourceId != INVALID_SOURCE_ID )
         {
-            alSourcePause( _sourceID );
+            alSourcePause( SourceId );
         }
 
         _isPlaying = false;
@@ -177,9 +176,9 @@ public abstract class OpenALMusic : IMusic
             return;
         }
 
-        if ( _sourceID != INVALID_SOURCE_ID )
+        if ( SourceId != INVALID_SOURCE_ID )
         {
-            AL.Sourcef( _sourceID, AL.GAIN, volume );
+            AL.Sourcef( SourceId, AL.GAIN, volume );
         }
     }
 
@@ -195,18 +194,18 @@ public abstract class OpenALMusic : IMusic
             return;
         }
 
-        if ( _sourceID == INVALID_SOURCE_ID )
+        if ( SourceId == INVALID_SOURCE_ID )
         {
             return;
         }
 
-        alSource3f( _sourceID,
+        alSource3f( SourceId,
                     AL.POSITION,
                     MathUtils.cos( ( pan - 1 ) * MathUtils.HALF_PI ),
                     0,
                     MathUtils.sin( ( pan + 1 ) * MathUtils.HALF_PI ) );
 
-        AL.Sourcef( _sourceID, AL.GAIN, volume );
+        AL.Sourcef( SourceId, AL.GAIN, volume );
     }
 
     public void SetPosition( float position )
@@ -216,15 +215,15 @@ public abstract class OpenALMusic : IMusic
             return;
         }
 
-        if ( _sourceID == INVALID_SOURCE_ID )
+        if ( SourceId == INVALID_SOURCE_ID )
         {
             return;
         }
 
         var wasPlaying = IsPlaying;
         IsPlaying = false;
-        alSourceStop( _sourceID );
-        alSourceUnqueueBuffers( _sourceID, _buffers );
+        alSourceStop( SourceId );
+        alSourceUnqueueBuffers( SourceId, _buffers );
 
         while ( _renderedSecondsQueue.size > 0 )
         {
@@ -260,7 +259,7 @@ public abstract class OpenALMusic : IMusic
             }
 
             filled = true;
-            alSourceQueueBuffers( _sourceID, bufferID );
+            alSourceQueueBuffers( SourceId, bufferID );
         }
 
         _renderedSecondsQueue.pop();
@@ -275,11 +274,11 @@ public abstract class OpenALMusic : IMusic
             }
         }
 
-        AL.Sourcef( _sourceID, AL11.Al.SEC_OFFSET, position - _renderedSeconds );
+        AL.Sourcef( SourceId, AL11.Al.SEC_OFFSET, position - _renderedSeconds );
 
         if ( wasPlaying )
         {
-            AL.SourcePlay( _sourceID );
+            AL.SourcePlay( SourceId );
             IsPlaying = true;
         }
     }
@@ -291,12 +290,12 @@ public abstract class OpenALMusic : IMusic
             return 0;
         }
 
-        if ( _sourceID == INVALID_SOURCE_ID )
+        if ( SourceId == INVALID_SOURCE_ID )
         {
             return 0;
         }
 
-        return _renderedSeconds + AL.GetSourcef( _sourceID, AL.SEC_OFFSET );
+        return _renderedSeconds + AL.GetSourcef( SourceId, AL.SEC_OFFSET );
     }
 
     public void Dispose()
@@ -349,17 +348,17 @@ public abstract class OpenALMusic : IMusic
             return;
         }
 
-        if ( _sourceID == INVALID_SOURCE_ID )
+        if ( SourceId == INVALID_SOURCE_ID )
         {
             return;
         }
 
         var end     = false;
-        int buffers = AL.GetSourcei( _sourceID, AL.BUFFERS_PROCESSED );
+        int buffers = AL.GetSourcei( SourceId, AL.BUFFERS_PROCESSED );
 
         while ( buffers-- > 0 )
         {
-            int bufferID = AL.SourceUnqueueBuffers( _sourceID );
+            int bufferID = AL.SourceUnqueueBuffers( SourceId );
 
             if ( bufferID == AL.INVALID_VALUE )
             {
@@ -378,7 +377,7 @@ public abstract class OpenALMusic : IMusic
 
             if ( Fill( bufferID ) )
             {
-                AL.SourceQueueBuffers( _sourceID, bufferID );
+                AL.SourceQueueBuffers( SourceId, bufferID );
             }
             else
             {
@@ -386,7 +385,7 @@ public abstract class OpenALMusic : IMusic
             }
         }
 
-        if ( end && ( AL.GetSourcei( _sourceID, AL.BUFFERS_QUEUED ) == 0 ) )
+        if ( end && ( AL.GetSourcei( SourceId, AL.BUFFERS_QUEUED ) == 0 ) )
         {
             Stop();
 
@@ -397,26 +396,25 @@ public abstract class OpenALMusic : IMusic
         }
 
         // A buffer underflow will cause the source to stop.
-        if ( _isPlaying && ( AL.GetSourcei( _sourceID, AL.SOURCE_STATE ) != AL.PLAYING ) )
+        if ( _isPlaying && ( AL.GetSourcei( SourceId, AL.SOURCE_STATE ) != AL.PLAYING ) )
         {
-            AL.SourcePlay( _sourceID );
+            AL.SourcePlay( SourceId );
         }
     }
 
-    private bool Fill( int bufferID )
+    private bool Fill( uint bufferID )
     {
         _tempBuffer.Clear();
 
-        var length = Read( _tempBytes );
+        int length;
 
-        if ( length <= 0 )
+        if ( ( length = Read( _tempBytes ) ) <= 0 )
         {
             if ( IsLooping )
             {
                 Loop();
-                length = Read( _tempBytes );
 
-                if ( length <= 0 )
+                if ( ( length = Read( _tempBytes ) ) <= 0 )
                 {
                     return false;
                 }
@@ -439,15 +437,24 @@ public abstract class OpenALMusic : IMusic
 
         _tempBuffer.Put( _tempBytes, 0, length ).Flip();
 
-        AL.BufferData( bufferID, _format, _tempBuffer, _sampleRate );
+        unsafe
+        {
+            AL.BufferData( bufferID,
+                           _format,
+                           _tempBuffer,
+                           _tempBuffer.BackingArray().Length,
+                           _sampleRate );
+        }
 
         return true;
     }
 
-    public int GetSourceId() => _sourceID;
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     #region properties
 
+    public int                           SourceId             { get; private set; } = INVALID_SOURCE_ID;
     public IMusic.IOnCompletionListener? OnCompletionListener { get; set; }
     public bool                          IsLooping            { get; set; }
 
@@ -460,12 +467,7 @@ public abstract class OpenALMusic : IMusic
                 return false;
             }
 
-            if ( _sourceID == INVALID_SOURCE_ID )
-            {
-                return false;
-            }
-
-            return _isPlaying;
+            return ( SourceId != INVALID_SOURCE_ID ) && _isPlaying;
         }
         set => _isPlaying = value;
     }

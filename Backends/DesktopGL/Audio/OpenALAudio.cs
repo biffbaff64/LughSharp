@@ -14,28 +14,29 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Audio.OpenAL;
+using LibGDXSharp.Files.Buffers;
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
 public class OpenALAudio : IGLAudio
 {
-    private readonly uint[]? _allSources;
-    private readonly IntPtr  _context;
-
-    private readonly IntPtr _device;
-    private readonly int    _deviceBufferCount;
-
-    private readonly int                       _deviceBufferSize;
     private readonly ObjectMap< string, Type > _extensionToMusicClass = new();
-
     private readonly ObjectMap< string, Type > _extensionToSoundClass = new();
     private readonly List< uint >?             _idleSources;
     private readonly OpenALSound?[]?           _recentSounds;
     private readonly Dictionary< long, int >?  _soundIdToSource;
     private readonly Dictionary< int, long >?  _sourceToSoundId;
-    private          int                       _mostRecentSound = -1;
-    private          long                      _nextSoundId     = 0;
+
+    private readonly uint[]? _allSources;
+    private readonly IntPtr  _context;
+    private readonly IntPtr  _device;
+    private readonly int     _deviceBufferCount;
+    private readonly int     _deviceBufferSize;
+
+    private int  _mostRecentSound = -1;
+    private long _nextSoundId     = 0;
 
     /// <summary>
     /// </summary>
@@ -96,30 +97,20 @@ public class OpenALAudio : IGLAudio
         _soundIdToSource = new Dictionary< long, int >();
         _sourceToSoundId = new Dictionary< int, long >();
 
-//        FloatBuffer orientation
-//            = BufferUtils.NewFloatBuffer( 6 ).Put( new[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f } );
-//        orientation.Flip();
-// TODO: Resolve what Flip() does to a foat buffer and apply the the foat array below
+        FloatBuffer orientation = BufferUtils.NewFloatBuffer( 6 ).Put( new[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f } );
+        orientation.Flip();
 
-        var orientation = new[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f };
+        AL.Listenerfv( AL.ORIENTATION, orientation.Array() );
 
-        AL.Listenerfv( AL.ORIENTATION, orientation );
+        FloatBuffer velocity = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
+        velocity.Flip();
 
-//        FloatBuffer velocity = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
-//        velocity.Flip();
-// TODO: Resolve what Flip() does to a foat buffer and apply the the foat array below
+        AL.Listenerfv( AL.VELOCITY, velocity.Array() );
 
-        var velocity = new[] { 0.0f, 0.0f, 0.0f };
+        FloatBuffer position = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
+        position.Flip();
 
-        AL.Listenerfv( AL.VELOCITY, velocity );
-
-//        FloatBuffer position = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
-//        position.Flip();
-// TODO: Resolve what Flip() does to a foat buffer and apply the the foat array below
-
-        var position = new[] { 0.0f, 0.0f, 0.0f };
-
-        AL.Listenerfv( AL.POSITION, position );
+        AL.Listenerfv( AL.POSITION, position.Array() );
 
         _recentSounds = new OpenALSound[ simultaneousSources ];
     }

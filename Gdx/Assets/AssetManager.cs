@@ -29,6 +29,9 @@ namespace LibGDXSharp.Assets;
 [PublicAPI]
 public class AssetManager
 {
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     private readonly Dictionary< string, List< string > >?                          _assetDependencies = new();
     private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets            = new();
     private readonly Dictionary< string, Type? >                                    _assetTypes        = new();
@@ -67,18 +70,18 @@ public class AssetManager
 
         if ( defaultLoaders )
         {
-                //@formatter:off
-                SetLoader( typeof(BitmapFont),      new BitmapFontLoader( resolver ) );
-                SetLoader( typeof(Texture),         new TextureLoader( resolver ) );
-                SetLoader( typeof(TextureAtlas),    new TextureAtlasLoader( resolver ) );
-                SetLoader( typeof(Pixmap),          new PixmapLoader( resolver ) );
-                SetLoader( typeof(Skin),            new SkinLoader( resolver ) );
-                SetLoader( typeof(IMusic),          new MusicLoader( resolver ) );
-                SetLoader( typeof(ISound),          new SoundLoader( resolver ) );
-                SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
-                SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
-                SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
-                SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
+            //@formatter:off
+            SetLoader( typeof(BitmapFont),      new BitmapFontLoader( resolver ) );
+            SetLoader( typeof(Texture),         new TextureLoader( resolver ) );
+            SetLoader( typeof(TextureAtlas),    new TextureAtlasLoader( resolver ) );
+            SetLoader( typeof(Pixmap),          new PixmapLoader( resolver ) );
+            SetLoader( typeof(Skin),            new SkinLoader( resolver ) );
+            SetLoader( typeof(IMusic),          new MusicLoader( resolver ) );
+            SetLoader( typeof(ISound),          new SoundLoader( resolver ) );
+            SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
+            SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
+            SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
+            SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
             //@formatter:on
         }
 
@@ -437,14 +440,20 @@ public class AssetManager
     /// </summary>
     /// <param name="fileName">the file name of the asset</param>
     /// <returns>whether the asset is loaded</returns>
-    public bool IsLoaded( string? fileName ) => ( fileName != null ) && _assetTypes.ContainsKey( fileName );
+    public bool IsLoaded( string? fileName )
+    {
+        return ( fileName != null ) && _assetTypes.ContainsKey( fileName );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="fileName">the file name of the asset</param>
     /// <param name="type"></param>
     /// <returns>whether the asset is loaded</returns>
-    public bool IsLoaded( string fileName, Type type ) => _assets[ type ][ fileName ].Asset != null;
+    public bool IsLoaded( string fileName, Type type )
+    {
+        return _assets[ type ][ fileName ].Asset != null;
+    }
 
     /// <summary>
     ///     Returns the loader for the given type and the specified filename.
@@ -637,7 +646,10 @@ public class AssetManager
     ///     Returns true when all assets are loaded. Can be called from any thread but
     ///     note <see cref="Update()" /> or related methods must be called to process tasks.
     /// </summary>
-    public bool IsFinished() => ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
+    public bool IsFinished()
+    {
+        return ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
+    }
 
     /// <summary>
     ///     Blocks until all assets are loaded.
@@ -658,7 +670,10 @@ public class AssetManager
     ///     Blocks until the specified asset is loaded.
     /// </summary>
     /// <param name="assetDesc">the AssetDescriptor of the asset</param>
-    public T FinishLoadingAsset<T>( AssetDescriptor assetDesc ) => FinishLoadingAsset< T >( assetDesc.Filepath );
+    public T FinishLoadingAsset<T>( AssetDescriptor assetDesc )
+    {
+        return FinishLoadingAsset< T >( assetDesc.Filepath );
+    }
 
     /// <summary>
     ///     Blocks until the specified asset is loaded.
@@ -915,7 +930,10 @@ public class AssetManager
     ///     A subclass may supress the default implementation when loading assets where loading
     ///     failure is recoverable.
     /// </summary>
-    public virtual void TaskFailed( AssetDescriptor assetDesc, Exception ex ) => throw ex;
+    public virtual void TaskFailed( AssetDescriptor assetDesc, Exception ex )
+    {
+        throw ex;
+    }
 
     /// <summary>
     /// </summary>
@@ -1028,7 +1046,10 @@ public class AssetManager
     /// <summary>
     ///     Returns the number of currently queued assets.
     /// </summary>
-    public int GetQueuedAssets() => _loadQueue.Count + _tasks.Count;
+    public int GetQueuedAssets()
+    {
+        return _loadQueue.Count + _tasks.Count;
+    }
 
     /// <summary>
     ///     Returns the progress in percent of completion.
@@ -1053,7 +1074,10 @@ public class AssetManager
     /// <summary>
     ///     Sets an <see cref="IAssetErrorListener" /> to be invoked in case loading an asset failed.
     /// </summary>
-    public void SetErrorListener( IAssetErrorListener listener ) => _listener = listener;
+    public void SetErrorListener( IAssetErrorListener listener )
+    {
+        _listener = listener;
+    }
 
     /// <summary>
     ///     Disposes all assets in the manager and stops all asynchronous loading.

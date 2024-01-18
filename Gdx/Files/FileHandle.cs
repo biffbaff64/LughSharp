@@ -18,18 +18,14 @@ using System.Text;
 
 namespace LibGDXSharp.Files;
 
+[PublicAPI]
 public class FileHandle
 {
-    /// <summary>
-    /// </summary>
-    protected FileHandle()
-    {
-        FileInfo = default( FileInfo )!;
-        FileType = default( FileType );
-    }
+    public FileInfo FileInfo { get; set; }
+    public FileType FileType { get; set; }
 
     /// <summary>
-    ///     #Creates a new absolute FileHandle for the file name. Use this for tools
+    ///     Creates a new absolute FileHandle for the file name. Use this for tools
     ///     on the desktop that don't need any of the backends.
     /// </summary>
     public FileHandle( string fileName )
@@ -60,9 +56,6 @@ public class FileHandle
         FileType = type;
     }
 
-    public FileType FileType { get; set; }
-    public FileInfo FileInfo { get; set; }
-
     /// <summary>
     ///     The path of the file as specified on construction,
     ///     <para>
@@ -88,7 +81,10 @@ public class FileHandle
     /// <summary>
     ///     The name of the file, without parent paths or the extension.
     /// </summary>
-    public virtual string NameWithoutExtension() => System.IO.Path.GetFileNameWithoutExtension( FileInfo.Name );
+    public virtual string NameWithoutExtension()
+    {
+        return System.IO.Path.GetFileNameWithoutExtension( FileInfo.Name );
+    }
 
     /// <summary>
     ///     The path and filename without the extension, e.g. dir/dir2/file.png -> dir/dir2/file.
@@ -100,12 +96,7 @@ public class FileHandle
 
         var dotIndex = filePath.LastIndexOf( ".", StringComparison.Ordinal );
 
-        if ( dotIndex == -1 )
-        {
-            return filePath;
-        }
-
-        return filePath.Substring( 0, dotIndex );
+        return dotIndex == -1 ? filePath : filePath.Substring( 0, dotIndex );
     }
 
     /// <summary>
@@ -141,7 +132,10 @@ public class FileHandle
     /// <exception cref="GdxRuntimeException">
     ///     if the file handle represents a directory, doesn't exist, or could not be read.
     /// </exception>
-    public virtual BufferedStream Read( int bufferSize ) => new( File.OpenRead( FileInfo.FullName ), bufferSize );
+    public virtual BufferedStream Read( int bufferSize )
+    {
+        return new BufferedStream( File.OpenRead( FileInfo.FullName ), bufferSize );
+    }
 
     /// <summary>
     ///     Returns a reader for reading this file as characters the platform's default charset.

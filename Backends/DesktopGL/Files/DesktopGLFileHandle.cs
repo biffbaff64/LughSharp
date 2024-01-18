@@ -20,7 +20,7 @@ namespace LibGDXSharp.Backends.Desktop.Files;
 
 /// <summary>
 /// </summary>
-public class DesktopGLFileHandle : FileHandle
+public class DesktopGLFileHandle : FileInfo
 {
     public DesktopGLFileHandle( string fileName, FileType type )
         : base( fileName, type )
@@ -39,7 +39,7 @@ public class DesktopGLFileHandle : FileHandle
     /// <summary>
     ///     Returns a handle to the child with the specified name.
     /// </summary>
-    public FileHandle Child( string name )
+    public FileInfo Child( string name )
     {
         if ( System.IO.Path.GetFullPath( FileInfo.Name ).Length == 0 )
         {
@@ -53,14 +53,14 @@ public class DesktopGLFileHandle : FileHandle
     /// <summary>
     ///     Returns a handle to the sibling with the specified name.
     /// </summary>
-    public FileHandle Sibling( string name )
+    public FileInfo Sibling( string name )
     {
         if ( System.IO.Path.GetFullPath( name ).Length == 0 )
         {
             throw new GdxRuntimeException( "Cannot get the sibling of the root." );
         }
 
-        return new FileHandle( name, FileType );
+        return new FileInfo( name, FileType );
     }
 
     // ------------------------------------------------------------------------

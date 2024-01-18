@@ -35,13 +35,13 @@ public class FileProcessor
 ////            return o1.getName().compareTo(o2.getName());
 ////        }
 ////    }
-//
+
 //    private List< Pattern > inputRegex = new();
-//    private string          outputSuffix;
-//    private List< Entry >   outputFiles = new();
-//    private bool            recursive   = true;
-//    private bool            flattenOutput;
-//
+    private List< Entry >   _outputFiles = new();
+    private string _outputSuffix;
+    private bool   _recursive;
+    private bool   _flattenOutput;
+
 ////    Comparator< Entry > entryComparator = new Comparator< Entry >()
 ////    {
 ////        public int compare (Entry o1, Entry o2)
@@ -49,11 +49,15 @@ public class FileProcessor
 ////            return comparator.compare(o1.inputFile, o2.inputFile);
 ////        }
 ////    }
-//
-//    public FileProcessor()
-//    {
-//    }
-//
+
+    public FileProcessor()
+    {
+        this._outputSuffix  = string.Empty;
+        this._flattenOutput = false;
+
+        SetRecursive();
+    }
+
 //    /** Copy constructor. */
 //    public FileProcessor( FileProcessor processor )
 //    {
@@ -115,15 +119,14 @@ public class FileProcessor
 //
 //        return this;
 //    }
-//
-//    /** Default is true. */
-//    public FileProcessor setRecursive( bool recursive )
-//    {
-//        this.recursive = recursive;
-//
-//        return this;
-//    }
-//
+
+    public FileProcessor SetRecursive( bool recursive = true )
+    {
+        this._recursive = recursive;
+
+        return this;
+    }
+
 //    /** @param outputRoot May be null.
 //     * @see #process(File, File) */
 //    public List< Entry > process( string inputFileOrDir, string outputRoot )
@@ -317,48 +320,52 @@ public class FileProcessor
 //            }
 //        }
 //    }
-//
-//    /** Called with each input file. */
-//    protected void processFile( Entry entry )
-//    {
-//    }
-//
-//    /** Called for each input directory. The files will be {@link #setComparator(Comparator) sorted}. The specified files list can
-//     * be modified to change which files are processed. */
-//    protected void processDir( Entry entryDir, List< Entry > files )
-//    {
-//    }
-//
-//    /** This method should be called by {@link #processFile(Entry)} or {@link #processDir(Entry, List)} if the return value of
-//     * {@link #process(File, File)} or {@link #process(File[], File)} should return all the processed files. */
-//    protected void addProcessedFile( Entry entry )
-//    {
-//        outputFiles.add( entry );
-//    }
-//
-//    /** @author Nathan Sweet */
-//    
-//    public class Entry
-//    {
+
+    /// <summary>
+    /// Called with each input file.
+    /// </summary>
+    protected void ProcessFile( Entry entry )
+    {
+    }
+
+    /// <summary>
+    /// Called for each input directory. The files will be <see cref="SetComparator(Comparator)"/>
+    /// sorted. The specified files list can be modified to change which files are processed.
+    /// </summary>
+    protected void ProcessDir( Entry entryDir, List< Entry > files )
+    {
+    }
+
+    /// <summary>
+    /// This method should be called by <see cref="ProcessFile(Entry)"/> or <see cref="ProcessDir(Entry, List{})"/>
+    /// if the return value of <see cref="Process(File, File)"/> or <see cref="Process(File[], File)"/> should return
+    /// all the processed files.
+    /// </summary>
+    protected void AddProcessedFile( Entry entry )
+    {
+        _outputFiles.Add( entry );
+    }
+
+    public class Entry
+    {
 //        public File inputFile;
-//        /** May be null. */
 //        public File outputDir;
 //        public File outputFile;
-//        public int  depth;
-//
-//        public Entry()
-//        {
-//        }
-//
+        public int depth;
+
+        public Entry()
+        {
+        }
+
 //        public Entry( File inputFile, File outputFile )
 //        {
 //            this.inputFile  = inputFile;
 //            this.outputFile = outputFile;
 //        }
-//
+
 //        public string tostring()
 //        {
 //            return inputFile.tostring();
 //        }
-//    }
+    }
 }
