@@ -14,7 +14,30 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Graphics.G3D.Env;
+using LibGDXSharp.Utils.Collections;
+
 namespace LibGDXSharp.Graphics.G3D.Attributes;
 
-public class SpotLightsAttribute
-{}
+public class SpotLightsAttribute : Attribute
+{
+    public static string Alias => "spotLights";
+    public static long   Type  => Register( Alias );
+
+    public readonly List< SpotLight > lights;
+
+    // ------------------------------------------------------------------------
+
+    public SpotLightsAttribute() : base( Type )
+    {
+        this.lights = new List< SpotLight >( 1 );
+    }
+
+    public SpotLightsAttribute( SpotLightsAttribute copyFrom ) : this()
+    {
+        lights.AddAll( copyFrom.lights );
+    }
+
+    /// <inheritdoc />
+    public override Attribute Copy() => this;
+}

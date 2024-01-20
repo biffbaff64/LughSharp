@@ -14,7 +14,30 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Graphics.G3D.Env;
+using LibGDXSharp.Utils.Collections;
+
 namespace LibGDXSharp.Graphics.G3D.Attributes;
 
-public class DirectionalLightsAttribute
-{}
+public class DirectionalLightsAttribute : Attribute
+{
+    public static string Alias => "directionalLights";
+    public static long   Type  => Register( Alias );
+
+    public readonly List< DirectionalLight > lights;
+
+    // ------------------------------------------------------------------------
+
+    public DirectionalLightsAttribute() : base( Type )
+    {
+        this.lights = new List< DirectionalLight >( 1 );
+    }
+
+    public DirectionalLightsAttribute( DirectionalLightsAttribute copyFrom ) : this()
+    {
+        lights.AddAll( copyFrom.lights );
+    }
+
+    /// <inheritdoc />
+    public override Attribute Copy() => this;
+}

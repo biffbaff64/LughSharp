@@ -32,7 +32,7 @@ As far as I can see, I do not need to convert:-
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-LIBGDX CSharp CONVERSION - ROUND 1
+LIBGDX CSHARP CONVERSION - ROUND 1
 ----------------------------------
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -62,7 +62,7 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - IP = Conversion In Progress.
-- DONE = Class finished but may not be fully 'CSharp-ified'
+- DONE = Class finished but may not be fully 'CSHARP-ified'
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -74,6 +74,13 @@ LIBGDX CSharp CONVERSION - ROUND 1
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
 - Make more use of <inheritdoc cref=""/>> or just <inheritdoc/>
 -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- Equivalents needed for:-
+  
+  - BufferedImage
+  - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -89,6 +96,10 @@ ASSETS
 
     LOADERS
     -------
+
+    TODO:   I think most, if not all, of these classes could be modified or rewritten.
+            As I've learned more about C# I've also learned more about Tasks and Delegates,
+            I think these classes could/should use these.
 
     - DONE - AssetLoader
     - DONE - AsynchronousAssetLoader
@@ -410,9 +421,9 @@ GRAPHICS
     GRAPHICS/G3D
     ------------
 
-    -      - Attribute
-    -      - AttributesGroup
-    -      - Environment
+    - DONE - Attribute
+    - DONE - AttributesGroup
+    - DONE - Environment
     -      - Material
     -      - Model
     -      - ModelBatch
@@ -429,11 +440,11 @@ GRAPHICS
     -      - ColorAttribute
     -      - CubemapAttribute
     -      - DepthTestAttribute
-    -      - DirectionalLightsAttribute
+    - IP   - DirectionalLightsAttribute
     -      - FloatAttribute
     -      - IntAttribute
-    -      - PointLightsAttribute
-    -      - SpotLightsAttribute
+    - IP   - PointLightsAttribute
+    - IP   - SpotLightsAttribute
     -      - TextureAttribute
 
     GRAPHICS/G3D/DECALS

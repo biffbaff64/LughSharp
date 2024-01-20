@@ -21,6 +21,9 @@ namespace LibGDXSharp.Assets.Loaders;
 /// </summary>
 public abstract class AssetLoader
 {
+    public IFileHandleResolver Resolver      { get; }
+    public bool                IsSynchronous { get; protected init; } = false;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -28,25 +31,31 @@ public abstract class AssetLoader
     ///     Constructor, sets the FileHandleResolver to use to resolve the file
     ///     associated with the asset name.
     /// </summary>
-    protected AssetLoader( IFileHandleResolver resolver ) => Resolver = resolver;
-
-    public IFileHandleResolver Resolver      { get; }
-    public bool                IsSynchronous { get; protected init; } = false;
+    protected AssetLoader( IFileHandleResolver resolver )
+    {
+        Resolver = resolver;
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="fileName"></param>
     /// <returns></returns>
-    public FileInfo Resolve( string fileName ) => Resolver.Resolve( fileName );
+    public FileInfo Resolve( string fileName )
+    {
+        return Resolver.Resolve( fileName );
+    }
 
     /// <summary>
     ///     Returns the assets this asset requires to be loaded first. This method may be
     ///     called on a thread other than the GL thread.
     /// </summary>
-    /// <param name="fileName">name of the asset to load</param>
+    /// <param name="filename">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
-    /// <param name="parameter">parameters for loading the asset</param>
-    public abstract List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter );
+    /// <param name="p">parameters for loading the asset</param>
+    public virtual List< AssetDescriptor > GetDependencies( string? filename,
+                                                            FileInfo? file,
+                                                            AssetLoaderParameters? p )
+    {
+        return null!;
+    }
 }

@@ -16,5 +16,5 @@
 
 namespace LibGDXSharp.Graphics.G3D.Env;
 
-public class DirectionalLight
+public class DirectionalLight : BaseLight
 {}

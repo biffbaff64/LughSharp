@@ -340,7 +340,7 @@ public class Texture : GLTexture
     /// </summary>
     internal void ClearAllTextures( IApplication app ) => _managedTextures.Remove( app );
 
-    private sealed class LoadedCallbackInnerClass : AssetLoaderParameters.ILoadedCallback
+    private sealed class LoadedCallbackInnerClass : ILoadedCallback
     {
         private readonly int _refCount;
 

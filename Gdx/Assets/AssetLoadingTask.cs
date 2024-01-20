@@ -34,7 +34,7 @@ public class AssetLoadingTask : IAsyncTask
     private long _startTime;
 
     public bool            DependenciesLoaded { get; set; }
-    public AssetDescriptor AssetDesc          { get; set; }
+    public AssetDescriptor AssetDesc          { get; }
     public bool            Cancel             { get; set; }
     public object?         Asset              { get; set; }
 
@@ -81,7 +81,7 @@ public class AssetLoadingTask : IAsyncTask
             {
                 dependencies = asyncLoader.GetDependencies( AssetDesc.Filepath,
                                                             Resolve( asyncLoader, AssetDesc ),
-                                                            AssetDesc.Parameters! );
+                                                            AssetDesc.Parameters );
 
                 if ( dependencies != null )
                 {
@@ -186,7 +186,7 @@ public class AssetLoadingTask : IAsyncTask
 
             dependencies = syncLoader.GetDependencies( AssetDesc.Filepath,
                                                        Resolve( _loader, AssetDesc ),
-                                                       AssetDesc.Parameters! );
+                                                       AssetDesc.Parameters );
 
             if ( dependencies == null )
             {

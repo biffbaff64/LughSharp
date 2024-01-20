@@ -16,54 +16,32 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
-public abstract class AsynchronousAssetLoader : AssetLoader
-{
-    /// <summary>
-    /// </summary>
-    /// <param name="resolver"></param>
-    protected AsynchronousAssetLoader( IFileHandleResolver resolver )
-        : base( resolver )
-    {
-        IsSynchronous = false;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    public abstract void LoadAsync( AssetManager manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    AssetLoaderParameters parameter );
-
-    /// <summary>
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    public abstract object LoadSync( AssetManager manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     AssetLoaderParameters parameter );
-
-    /// <summary>
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    [PublicAPI]
-    public static void UnloadAsync( AssetManager manager,
-                                    string fileName,
-                                    FileInfo file,
-                                    AssetLoaderParameters parameter )
-    {
-    }
-}
+//public abstract class AsynchronousAssetLoader : AssetLoader
+//{
+//    protected AsynchronousAssetLoader( IFileHandleResolver resolver )
+//        : base( resolver )
+//    {
+//        IsSynchronous = false;
+//    }
+//
+//    public abstract void LoadAsync<T>( AssetManager manager,
+//                                       string? fileName,
+//                                       FileInfo? file,
+//                                       T parameter ) where T : AssetLoaderParameters;
+//
+//    public abstract object LoadSync<T>( AssetManager manager,
+//                                        string? fileName,
+//                                        FileInfo? file,
+//                                        T parameter ) where T : AssetLoaderParameters;
+//
+//    public static void UnloadAsync<T>( AssetManager manager,
+//                                       string fileName,
+//                                       FileInfo file,
+//                                       T parameter ) where T : AssetLoaderParameters
+//
+//    {
+//    }
+//}
 
 /// <summary>
 ///     Base class for asynchronous AssetLoader instances. Such loaders try to load parts
@@ -79,7 +57,10 @@ public abstract class AsynchronousAssetLoader<T, TP>
     /// </summary>
     /// <param name="resolver"></param>
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )
-        : base( resolver ) => IsSynchronous = false;
+        : base( resolver )
+    {
+        IsSynchronous = false;
+    }
 
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
@@ -90,10 +71,9 @@ public abstract class AsynchronousAssetLoader<T, TP>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     [PublicAPI]
-    public abstract void LoadAsync( AssetManager manager,
-                                    string fileName,
-                                    FileInfo file,
-                                    AssetLoaderParameters parameter );
+    public virtual void LoadAsync( AssetManager manager, string? fileName, FileInfo? file, TP? parameter )
+    {
+    }
 
     /// <summary>
     ///     Loads the OpenGL part of the asset.
@@ -104,10 +84,10 @@ public abstract class AsynchronousAssetLoader<T, TP>
     /// <param name="parameter"></param>
     /// <returns></returns>
     [PublicAPI]
-    public abstract T LoadSync( AssetManager manager,
-                                string fileName,
-                                FileInfo file,
-                                AssetLoaderParameters parameter );
+    public virtual T LoadSync( AssetManager manager, string fileName, FileInfo file, TP parameter )
+    {
+        return default( T )!;
+    }
 
     /// <summary>
     ///     Called if this task is unloaded before loadSync is called. This method may be
@@ -123,10 +103,7 @@ public abstract class AsynchronousAssetLoader<T, TP>
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public virtual void UnloadAsync( AssetManager manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     AssetLoaderParameters parameter )
+    public virtual void UnloadAsync( AssetManager manager, string? fileName, FileInfo? file, TP parameter )
     {
     }
 }

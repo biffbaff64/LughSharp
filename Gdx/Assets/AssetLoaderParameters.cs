@@ -16,29 +16,40 @@
 
 namespace LibGDXSharp.Assets;
 
-public class AssetLoaderParameters
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+public class AssetLoaderParameters : ILoaderParameters
 {
     public ILoadedCallback? LoadedCallback { get; set; }
+}
 
-    /// <summary>
-    ///     Callback interface that will be invoked when the
-    ///     <see cref="AssetManager" /> loaded an asset.
-    /// </summary>
-    [PublicAPI]
-    public interface ILoadedCallback
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+public class DefaultLoadedCallback( int refCount ) : ILoadedCallback
+{
+    public void FinishedLoading( AssetManager assetManager, string fileName, Type type )
     {
-        void FinishedLoading( AssetManager assetManager, string fileName, Type type );
+        assetManager.SetReferenceCount( fileName, refCount );
     }
 }
 
-public class DefaultLoadedCallback : AssetLoaderParameters.ILoadedCallback
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+public interface ILoaderParameters
 {
-    private readonly int _refCount;
+    ILoadedCallback? LoadedCallback { get; set; }
+}
 
-    public DefaultLoadedCallback( int refCount ) => _refCount = refCount;
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-    public void FinishedLoading( AssetManager assetManager, string fileName, Type type )
-    {
-        assetManager.SetReferenceCount( fileName, _refCount );
-    }
+/// <summary>
+///     Callback interface that will be invoked when the <see cref="AssetManager" /> loaded an asset.
+/// </summary>
+public interface ILoadedCallback
+{
+    void FinishedLoading( AssetManager assetManager, string fileName, Type type );
 }

@@ -138,6 +138,7 @@ public class ColorBleedEffect
         return ( ( a & 0xFF ) << 24 ) | ( ( r & 0xFF ) << 16 ) | ( ( g & 0xFF ) << 8 ) | ( ( b & 0xFF ) << 0 );
     }
 
+    [UsedImplicitly]
     private class Mask
     {
         private readonly bool[] _blank;
@@ -186,7 +187,7 @@ public class ColorBleedEffect
             return value;
         }
 
-        internal class MaskIterator( Mask parent )
+        internal sealed class MaskIterator( Mask parent )
         {
             private int _index;
 

@@ -18,5 +18,18 @@ namespace LibGDXSharp.Files;
 
 public abstract class Reader
 {
+    public int Read( char[] buffer )
+    {
+        return 0;
+    }
+
+    public int Read( char[] buffer, int offset, int length )
+    {
+        return 0;
+    }
+
+    public void Close()
+    {
+    }
 }
 

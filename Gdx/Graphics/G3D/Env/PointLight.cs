@@ -16,5 +16,5 @@
 
 namespace LibGDXSharp.Graphics.G3D.Env;
 
-public class PointLight
+public class PointLight : BaseLight
 {}
