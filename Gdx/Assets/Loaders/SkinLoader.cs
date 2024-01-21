@@ -19,7 +19,7 @@ using LibGDXSharp.Scenes.Scene2D.UI;
 
 namespace LibGDXSharp.Assets.Loaders;
 
-public class SkinLoader : AsynchronousAssetLoader
+public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderParameters >
 {
     public SkinLoader( IFileHandleResolver resolver ) : base( resolver )
     {
@@ -38,38 +38,27 @@ public class SkinLoader : AsynchronousAssetLoader
     {
         List< AssetDescriptor > deps = new();
 
-        if ( ( parameter == null ) || ( ( ( SkinParameter )parameter ).textureAtlasPath == null ) )
+        if ( ( ( SkinLoaderParameters? )parameter )?.textureAtlasPath == null )
         {
             var path = Path.ChangeExtension( file?.FullName, ".atlas" );
 
-            deps.Add( new AssetDescriptor( path, typeof( TextureAtlas ), new SkinParameter() ) );
+            deps.Add( new AssetDescriptor( path, typeof( TextureAtlas ), new SkinLoaderParameters() ) );
         }
-        else if ( ( ( SkinParameter )parameter ).textureAtlasPath != null )
+
+        else if ( ( ( SkinLoaderParameters? )parameter )?.textureAtlasPath != null )
         {
-            deps.Add
-                (
-                new AssetDescriptor(
-                    ( ( SkinParameter )parameter ).textureAtlasPath,
-                    typeof( TextureAtlas ),
-                    parameter
-                    )
-                );
+            deps.Add( new AssetDescriptor( ( ( SkinLoaderParameters? )parameter )?.textureAtlasPath,
+                                             typeof( TextureAtlas ),
+                                             parameter ) );
         }
 
         return deps;
     }
 
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    AssetLoaderParameters parameter )
-    {
-    }
-
-    public override object LoadSync( AssetManager manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     AssetLoaderParameters parameter )
+    public override Skin LoadSync( AssetManager manager,
+                                   string? fileName,
+                                   FileInfo? file,
+                                   SkinLoaderParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );
@@ -80,14 +69,14 @@ public class SkinLoader : AsynchronousAssetLoader
 
         if ( parameter != null )
         {
-            if ( ( ( SkinParameter )parameter ).textureAtlasPath != null )
+            if ( parameter.textureAtlasPath != null )
             {
-                textureAtlasPath = ( ( SkinParameter )parameter ).textureAtlasPath;
+                textureAtlasPath = parameter.textureAtlasPath;
             }
 
-            if ( ( ( SkinParameter )parameter ).resources != null )
+            if ( parameter.resources != null )
             {
-                resources = ( ( SkinParameter )parameter ).resources;
+                resources = parameter.resources;
             }
         }
 
@@ -109,22 +98,24 @@ public class SkinLoader : AsynchronousAssetLoader
 
     private static Skin NewSkin( TextureAtlas atlas ) => new( atlas );
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    public class SkinParameter : AssetLoaderParameters
+    public class SkinLoaderParameters : AssetLoaderParameters
     {
         public readonly Dictionary< string, object >? resources;
         public readonly string?                       textureAtlasPath;
 
-        public SkinParameter() : this( null, null )
+        public SkinLoaderParameters() : this( null, null )
         {
         }
 
-        public SkinParameter( Dictionary< string, object > resources )
+        public SkinLoaderParameters( Dictionary< string, object > resources )
             : this( null, resources )
         {
         }
 
-        public SkinParameter( string? textureAtlasPath, Dictionary< string, object >? resources = null )
+        public SkinLoaderParameters( string? textureAtlasPath, Dictionary< string, object >? resources = null )
         {
             this.textureAtlasPath = textureAtlasPath;
             this.resources        = resources;

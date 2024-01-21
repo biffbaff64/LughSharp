@@ -20,18 +20,20 @@ namespace LibGDXSharp.Utils;
 
 public class DelayedRemovalArray<T> : List< T >
 {
-    private readonly List< int > _remove    = new();
+    private readonly List< int > _remove    = [ ];
     private          int         _clear     = 0;
     private          int         _iterating = 0;
 
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
+    [PublicAPI]
     public DelayedRemovalArray( IEnumerable< T > array ) : base( array ) => Reset();
 
     /// <summary>
     /// </summary>
     /// <param name="array"></param>
+    [PublicAPI]
     public DelayedRemovalArray( T[] array ) : base( array ) => Reset();
 
     /// <summary>
@@ -39,6 +41,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <param name="array"></param>
     /// <param name="startIndex"></param>
     /// <param name="count"></param>
+    [PublicAPI]
     public DelayedRemovalArray( IReadOnlyList< T > array, int startIndex, int count )
     {
         for ( var i = 0; i < count; i++ )
@@ -52,15 +55,18 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <param name="initialCapacity"></param>
+    [PublicAPI]
     public DelayedRemovalArray( int initialCapacity = 16 ) : base( initialCapacity ) => Reset();
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public void Begin() => _iterating++;
 
     /// <summary>
     /// </summary>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public void End()
     {
         if ( _iterating == 0 )
@@ -102,6 +108,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <param name="index"></param>
+    [PublicAPI]
     public void Remove( int index )
     {
         if ( index < _clear )
@@ -133,6 +140,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
+    [PublicAPI]
     public bool RemoveValue( T value )
     {
         if ( _iterating > 0 )
@@ -157,6 +165,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// </summary>
     /// <param name="index">The zero-based index of the element to remove.</param>
     /// <returns></returns>
+    [PublicAPI]
     public T RemoveIndex( int index )
     {
         if ( _iterating > 0 )
@@ -175,6 +184,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// </summary>
     /// <param name="start"></param>
     /// <param name="end"></param>
+    [PublicAPI]
     public new void RemoveRange( int start, int end )
     {
         if ( _iterating > 0 )
@@ -192,6 +202,7 @@ public class DelayedRemovalArray<T> : List< T >
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public new void Clear()
     {
         if ( _iterating > 0 )
@@ -209,6 +220,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <param name="index"></param>
     /// <param name="value"></param>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public void Set( int index, T value )
     {
         if ( _iterating > 0 )
@@ -224,6 +236,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <param name="index"></param>
     /// <param name="value"></param>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public new void Insert( int index, T value )
     {
         if ( _iterating > 0 )
@@ -242,6 +255,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <param name="index"></param>
     /// <param name="count"></param>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public void InsertRange( int index, int count )
     {
         if ( _iterating > 0 )
@@ -262,6 +276,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <param name="first"></param>
     /// <param name="second"></param>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public void Swap( int first, int second )
     {
         if ( _iterating > 0 )
@@ -276,6 +291,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// </summary>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public T Pop()
     {
         if ( _iterating > 0 )
@@ -293,6 +309,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public new void Sort()
     {
         if ( _iterating > 0 )
@@ -306,6 +323,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <param name="comparator"></param>
+    [PublicAPI]
     public new void Sort( IComparer< T > comparator )
     {
         if ( _iterating > 0 )
@@ -319,6 +337,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public new void Reverse()
     {
         if ( _iterating > 0 )
@@ -332,6 +351,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <summary>
     /// </summary>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public void Shuffle()
     {
         if ( _iterating > 0 )
@@ -343,9 +363,11 @@ public class DelayedRemovalArray<T> : List< T >
     }
 
     /// <summary>
+    /// Truncates the array to the specified new size.
     /// </summary>
     /// <param name="newSize"></param>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public void Truncate( int newSize )
     {
         if ( _iterating > 0 )
@@ -374,6 +396,7 @@ public class DelayedRemovalArray<T> : List< T >
     /// <param name="newSize"></param>
     /// <returns>The new capacity</returns>
     /// <exception cref="GdxRuntimeException"></exception>
+    [PublicAPI]
     public int SetSize( int newSize )
     {
         if ( _iterating > 0 )

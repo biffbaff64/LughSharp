@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils.Collections;
 
+[PublicAPI]
 public static class ListExtensions
 {
     public static T[] Resize<T>( this List< T > ts, int newSize )

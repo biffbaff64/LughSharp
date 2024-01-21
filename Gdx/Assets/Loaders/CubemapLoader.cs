@@ -41,7 +41,10 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter ) => default( List< AssetDescriptor > )!;
+                                                             AssetLoaderParameters? parameter )
+    {
+        return default( List< AssetDescriptor > )!;
+    }
 
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
@@ -54,13 +57,13 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    AssetLoaderParameters? parameter )
+                                    CubemapParameter? parameter )
     {
         const bool GEN_MIP_MAPS = false;
 
         _loaderInfo.filename = fileName!;
 
-        if ( ( ( CubemapParameter? )parameter )?.cubemapData == null )
+        if ( parameter?.cubemapData == null )
         {
             _loaderInfo.cubemap = null;
 
@@ -79,8 +82,8 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         }
         else
         {
-            _loaderInfo.cubemapData = ( ( CubemapParameter? )parameter )?.cubemapData;
-            _loaderInfo.cubemap     = ( ( CubemapParameter? )parameter )?.cubemap;
+            _loaderInfo.cubemapData = parameter.cubemapData;
+            _loaderInfo.cubemap     = parameter.cubemap;
         }
 
         if ( !_loaderInfo.cubemapData!.IsPrepared )
@@ -100,7 +103,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     public override Cubemap LoadSync( AssetManager? manager,
                                       string? fileName,
                                       FileInfo? file,
-                                      AssetLoaderParameters? parameter )
+                                      CubemapParameter? parameter )
     {
         Cubemap? cubemap = _loaderInfo.cubemap;
 
@@ -115,15 +118,11 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
 
         if ( parameter != null )
         {
-            cubemap.SetFilter(
-                ( ( CubemapParameter? )parameter )!.minFilter,
-                ( ( CubemapParameter? )parameter )!.magFilter
-                );
+            cubemap.SetFilter( ( ( CubemapParameter? )parameter )!.minFilter,
+                               ( ( CubemapParameter? )parameter )!.magFilter );
 
-            cubemap.SetWrap(
-                ( ( CubemapParameter? )parameter )!.wrapU,
-                ( ( CubemapParameter? )parameter )!.wrapV
-                );
+            cubemap.SetWrap( ( ( CubemapParameter? )parameter )!.wrapU,
+                             ( ( CubemapParameter? )parameter )!.wrapV );
         }
 
         return cubemap;
@@ -139,6 +138,11 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     [PublicAPI]
     public class CubemapParameter : AssetLoaderParameters
     {
+        public TextureFilter magFilter = TextureFilter.Nearest;
+        public TextureFilter minFilter = TextureFilter.Nearest;
+        public TextureWrap   wrapU     = TextureWrap.ClampToEdge;
+        public TextureWrap   wrapV     = TextureWrap.ClampToEdge;
+
         // The texture to put the TextureData in, optional.
         public Cubemap? cubemap = null;
 
@@ -148,9 +152,5 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
 
         // the format of the final Texture. Uses the source images format if null
         public Pixmap.Format? format    = null;
-        public TextureFilter  magFilter = TextureFilter.Nearest;
-        public TextureFilter  minFilter = TextureFilter.Nearest;
-        public TextureWrap    wrapU     = TextureWrap.ClampToEdge;
-        public TextureWrap    wrapV     = TextureWrap.ClampToEdge;
     }
 }

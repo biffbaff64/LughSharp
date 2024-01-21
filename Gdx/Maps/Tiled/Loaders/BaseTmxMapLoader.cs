@@ -29,7 +29,7 @@ using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
 namespace LibGDXSharp.Maps.Tiled;
 
 public abstract class BaseTmxMapLoader<TP>
-    : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.Parameters
+    : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.BaseTmxLoaderParameters
 {
     protected const uint FLAG_FLIP_HORIZONTALLY = 0x80000000;
     protected const uint FLAG_FLIP_VERTICALLY   = 0x40000000;
@@ -64,7 +64,7 @@ public abstract class BaseTmxMapLoader<TP>
     /// <returns></returns>
     public List< AssetDescriptor >? GetDependencies( string fileName, FileInfo tmxFile, TP? parameter )
     {
-        var textureParameter = new TextureLoader.TextureParameter();
+        var textureParameter = new TextureLoader.TextureLoaderParameters();
 
         if ( parameter != null )
         {
@@ -79,10 +79,10 @@ public abstract class BaseTmxMapLoader<TP>
     /// <summary>
     /// </summary>
     /// <param name="tmxFile"></param>
-    /// <param name="textureParameter"></param>
+    /// <param name="textureLoaderParameters"></param>
     /// <returns></returns>
     protected List< AssetDescriptor >? GetDependencyAssetDescriptors( FileInfo tmxFile,
-                                                                      TextureLoader.TextureParameter textureParameter ) => default( List< AssetDescriptor >? );
+                                                                      TextureLoader.TextureLoaderParameters textureLoaderParameters ) => default( List< AssetDescriptor >? );
 
     /// <summary>
     ///     Loads the map data, given the XML root element.
@@ -1069,7 +1069,7 @@ public abstract class BaseTmxMapLoader<TP>
         tileSet.PutTile( tileId, tile );
     }
 
-    public class Parameters : AssetLoaderParameters
+    public class BaseTmxLoaderParameters : AssetLoaderParameters
     {
         // generate mipmaps?
         public bool GenerateMipMaps { get; set; } = false;

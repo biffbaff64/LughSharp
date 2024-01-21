@@ -45,6 +45,11 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a new BinaryHeap with the stated capacity.
+    /// </summary>
+    /// <param name="capacity"> The capacity to use. Deafult is 16. </param>
+    /// <param name="isMaxHeap"></param>
     public BinaryHeap( int capacity = DEFAULT_CAPACITY, bool isMaxHeap = false )
     {
         _isMaxHeap = isMaxHeap;

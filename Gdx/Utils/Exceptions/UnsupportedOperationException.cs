@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class UnsupportedOperationException : Exception
 {
     public UnsupportedOperationException( string? message = "" )

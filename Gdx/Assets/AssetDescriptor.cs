@@ -48,7 +48,7 @@ public class AssetDescriptor
     /// <param name="filepath"> The full path, including filename, of the asset. </param>
     /// <param name="assetType"> The Type of asset ( Texture, Pixmap, Audio, Atlas etc ). </param>
     /// <param name="parameters"> The <see cref="AssetLoaderParameters" /> to use. </param>
-    public AssetDescriptor( string? filepath, Type assetType, AssetLoaderParameters parameters )
+    public AssetDescriptor( string? filepath, Type assetType, AssetLoaderParameters? parameters )
     {
         ArgumentNullException.ThrowIfNull( filepath );
 
@@ -66,7 +66,7 @@ public class AssetDescriptor
     /// <param name="parameters">The loader parameters to use. Can be null.</param>
     public AssetDescriptor( FileInfo file,
                             Type assetType,
-                            [AllowNull] AssetLoaderParameters parameters = null )
+                            AssetLoaderParameters? parameters = null )
     {
         AssetType  = assetType;
         Filepath   = file.FullName.Replace( '\\', '/' );

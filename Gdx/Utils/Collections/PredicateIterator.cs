@@ -24,6 +24,7 @@ public class PredicateIterator<T> : IEnumerator< T >
     /// </summary>
     /// <param name="enumerable"></param>
     /// <param name="predicate"></param>
+    [PublicAPI]
     public PredicateIterator( IEnumerable< T? > enumerable, IPredicate< T > predicate )
         : this( enumerable.GetEnumerator(), predicate )
     {
@@ -33,6 +34,7 @@ public class PredicateIterator<T> : IEnumerator< T >
     /// </summary>
     /// <param name="enumerator"></param>
     /// <param name="predicate"></param>
+    [PublicAPI]
     public PredicateIterator( IEnumerator< T? > enumerator, IPredicate< T > predicate )
     {
         Enumerator = enumerator;
@@ -55,7 +57,7 @@ public class PredicateIterator<T> : IEnumerator< T >
 
     object? IEnumerator.Current => Current;
 
-    public T Current { get; init; }
+    public T Current { get; }
 
     public void Dispose() => Remove();
 
@@ -63,12 +65,14 @@ public class PredicateIterator<T> : IEnumerator< T >
     /// </summary>
     /// <param name="enumerable"></param>
     /// <param name="predicate"></param>
+    [PublicAPI]
     public void Set( IEnumerable< T? > enumerable, IPredicate< T > predicate ) => Set( enumerable.GetEnumerator(), predicate );
 
     /// <summary>
     /// </summary>
     /// <param name="iterator"></param>
     /// <param name="predicate"></param>
+    [PublicAPI]
     public void Set( IEnumerator< T? > iterator, IPredicate< T > predicate )
     {
         Enumerator = iterator;
@@ -78,6 +82,7 @@ public class PredicateIterator<T> : IEnumerator< T >
         NextItem   = default( T? );
     }
 
+    [PublicAPI]
     public bool HasNext()
     {
         if ( End )
@@ -109,6 +114,7 @@ public class PredicateIterator<T> : IEnumerator< T >
         return false;
     }
 
+    [PublicAPI]
     public T? Next()
     {
         if ( ( NextItem == null ) && !HasNext() )
@@ -123,6 +129,7 @@ public class PredicateIterator<T> : IEnumerator< T >
         return result;
     }
 
+    [PublicAPI]
     public void Remove()
     {
         if ( Peeked )

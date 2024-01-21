@@ -32,9 +32,9 @@ namespace LibGDXSharp.Utils.Collections;
 ///         during iteration.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 {
-    private IEnumerable< T >? _iterable;
     private T[]?              _recycled;
     private T[]?              _snapshot;
     private int               _snapshotCount;
@@ -44,7 +44,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     {
     }
 
-    public SnapshotArray( SnapshotArray< T > array )
+    public SnapshotArray( Array< T > array )
     {
         ArgumentNullException.ThrowIfNull( array );
         ArgumentNullException.ThrowIfNull( array.Items );

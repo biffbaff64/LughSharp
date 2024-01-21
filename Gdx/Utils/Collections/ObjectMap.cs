@@ -36,6 +36,7 @@ namespace LibGDXSharp.Utils.Collections;
 ///         probing continues to work even when all hashCodes collide, just more slowly.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class ObjectMap<TK, TV>
 {
     // ------------------------------------------------------------------------
@@ -867,6 +868,7 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public abstract class MapIterator
     {
         protected readonly ObjectMap< TK, TV > map;
@@ -949,6 +951,7 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public class Entries : MapIterator
     {
         private readonly Entry _entry = new();
@@ -989,6 +992,7 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public class Values : MapIterator
     {
         /// <summary>
@@ -1043,6 +1047,7 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public class Keys : MapIterator
     {
         public Keys( ObjectMap< TK, TV > map )

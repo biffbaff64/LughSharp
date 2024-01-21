@@ -23,9 +23,9 @@ namespace LibGDXSharp.Assets.Loaders;
 
 [PublicAPI]
 public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
-    where TP : ModelLoader< TP >.ModelParameters
+    where TP : ModelLoader< TP >.ModelLoaderParameters
 {
-    protected readonly ModelParameters defaultParameters = new();
+    protected readonly ModelLoaderParameters defaultLoaderParameters = new();
 
     // Check this declaration.
     // Original Java was Array< ObjectMap.Entry< string, ModelData > > items...
@@ -38,20 +38,26 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     /// <summary>
     ///     Directly load the raw model data on the calling thread.
     /// </summary>
-    protected abstract ModelData? LoadModelData<T>( in FileInfo fileHandle, T? parameters )
-        where T : ModelParameters;
+    protected virtual ModelData? LoadModelData<T>( in FileInfo fileHandle, T? parameters )
+        where T : ModelLoaderParameters
+    {
+        return default( ModelData );
+    }
 
     /// <summary>
     ///     Directly load the raw model data on the calling thread.
     /// </summary>
-    public ModelData? LoadModelData( in FileInfo fileHandle ) => LoadModelData< ModelParameters >( fileHandle, null );
+    public ModelData? LoadModelData( in FileInfo fileHandle )
+    {
+        return LoadModelData< ModelLoaderParameters >( fileHandle, null );
+    }
 
     /// <summary>
     ///     Directly load the model on the calling thread.
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
     public Model? LoadModel<T>( in FileInfo fileHandle, ITextureProvider textureProvider, T? parameters )
-        where T : ModelParameters
+        where T : ModelLoaderParameters
     {
         ModelData? data = LoadModelData( fileHandle, parameters );
 
@@ -62,20 +68,28 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     ///     Directly load the model on the calling thread.
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
-    public Model? LoadModel<T>( in FileInfo fileHandle, T parameters )
-        where T : ModelParameters => LoadModel< ModelParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), parameters );
+    public Model? LoadModel<T>( in FileInfo fileHandle, T parameters ) where T : ModelLoaderParameters
+    {
+        return LoadModel< ModelLoaderParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), parameters );
+    }
 
     /// <summary>
     ///     Directly load the model on the calling thread.
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
-    public Model? LoadModel( in FileInfo fileHandle, ITextureProvider textureProvider ) => LoadModel< ModelParameters >( fileHandle, textureProvider, null );
+    public Model? LoadModel( in FileInfo fileHandle, ITextureProvider textureProvider )
+    {
+        return LoadModel< ModelLoaderParameters >( fileHandle, textureProvider, null );
+    }
 
     /// <summary>
     ///     Directly load the model on the calling thread.
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
-    public Model? LoadModel( in FileInfo fileHandle ) => LoadModel< ModelParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), null );
+    public Model? LoadModel( in FileInfo fileHandle )
+    {
+        return LoadModel< ModelLoaderParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), null );
+    }
 
     /// <summary>
     ///     Returns the assets this asset requires to be loaded first.
@@ -110,9 +124,9 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
             items.Add( item );
         }
 
-        TextureLoader.TextureParameter textureParameter = parameters != null
-            ? ( ( ModelParameters )parameters ).TextureParameter
-            : defaultParameters.TextureParameter;
+        TextureLoader.TextureLoaderParameters textureLoaderParameters = parameters != null
+            ? ( ( ModelLoaderParameters )parameters ).TextureLoaderParameters
+            : defaultLoaderParameters.TextureLoaderParameters;
 
         foreach ( ModelMaterial? modelMaterial in data.Materials! )
         {
@@ -120,27 +134,12 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
             {
                 foreach ( ModelTexture modelTexture in modelMaterial.Textures )
                 {
-                    deps.Add( new AssetDescriptor( modelTexture.FileName, typeof( Texture ), textureParameter ) );
+                    deps.Add( new AssetDescriptor( modelTexture.FileName, typeof( Texture ), textureLoaderParameters ) );
                 }
             }
         }
 
         return deps;
-    }
-
-    /// <summary>
-    ///     Loads the non-OpenGL part of the asset and injects any dependencies of
-    ///     the asset into the AssetManager.
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    AssetLoaderParameters parameter )
-    {
     }
 
     /// <summary>
@@ -154,7 +153,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     public override Model LoadSync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    AssetLoaderParameters parameter )
+                                    TP? parameter )
     {
         ModelData? data = null;
 
@@ -179,7 +178,8 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
         // need to remove the textures from the managed disposables,
         // or ref counting won't work!
-        IEnumerator< IDisposable > disposables = result.GetManagedDisposables().GetEnumerator();
+        IEnumerator< IDisposable > disposables = result.GetManagedDisposables()
+                                                       .GetEnumerator();
 
         while ( disposables.MoveNext() )
         {
@@ -197,16 +197,15 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
-    public class ModelParameters : AssetLoaderParameters
+    public class ModelLoaderParameters : AssetLoaderParameters
     {
-        public ModelParameters()
-        {
-            TextureParameter           = new TextureLoader.TextureParameter();
-            TextureParameter.MinFilter = TextureParameter.MagFilter = TextureFilter.Linear;
-            TextureParameter.WrapU     = TextureParameter.WrapV     = TextureWrap.Repeat;
-        }
+        public TextureLoader.TextureLoaderParameters TextureLoaderParameters { get; set; }
 
-        public TextureLoader.TextureParameter TextureParameter { get; set; }
+        public ModelLoaderParameters()
+        {
+            TextureLoaderParameters           = new TextureLoader.TextureLoaderParameters();
+            TextureLoaderParameters.MinFilter = TextureLoaderParameters.MagFilter = TextureFilter.Linear;
+            TextureLoaderParameters.WrapU     = TextureLoaderParameters.WrapV     = TextureWrap.Repeat;
+        }
     }
 }

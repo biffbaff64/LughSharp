@@ -86,19 +86,22 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? tmxFile,
-                                    AssetLoaderParameters parameter )
+                                    TmxMapLoader.LoaderParameters? parameter )
     {
         Debug.Assert( tmxFile != null );
 
         Map = LoadTiledMap( tmxFile,
-                            ( LoaderParameters )parameter,
+                            parameter,
                             new IImageResolver.AssetManagerImageResolver( manager! ) );
     }
 
     public override TiledMap LoadSync( AssetManager? manager,
                                        string? fileName,
                                        FileInfo? file,
-                                       AssetLoaderParameters parameter ) => Map;
+                                       TmxMapLoader.LoaderParameters parameter )
+    {
+        return Map;
+    }
 
     protected List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile,
                                                                      AssetLoaderParameters textureParameter )
@@ -188,17 +191,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         return fileHandles;
     }
 
-    /// <summary>
-    ///     Returns the assets this asset requires to be loaded first.
-    ///     This method may be called on a thread other than the GL thread.
-    /// </summary>
-    /// <param name="fileName">name of the asset to load</param>
-    /// <param name="file">the resolved file to load</param>
-    /// <param name="parameter">parameters for loading the asset</param>
-    public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter ) => null!;
-
+    //TODO: Complete this documentation
     /// <summary>
     /// </summary>
     /// <param name="tmxFile"></param>
@@ -296,7 +289,10 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         }
     }
 
-    public class LoaderParameters : BaseTmxMapLoader< LoaderParameters >.Parameters
+    public class LoaderParameters : BaseTmxMapLoader< LoaderParameters >.BaseTmxLoaderParameters
     {
+        public LoaderParameters()
+        {
+        }
     }
 }

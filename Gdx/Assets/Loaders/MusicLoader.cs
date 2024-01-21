@@ -43,7 +43,7 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters parameter ) => null!;
+                                                             AssetLoaderParameters? parameter ) => null!;
 
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
@@ -56,7 +56,10 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    AssetLoaderParameters parameter ) => LoadedMusic = Gdx.Audio.NewMusic( file );
+                                    AssetLoaderParameters? parameter )
+    {
+        LoadedMusic = Gdx.Audio.NewMusic( file );
+    }
 
     /// <summary>
     ///     Loads the OpenGL part of the asset.

@@ -94,7 +94,7 @@ public class TextureAtlasLoader
 
         foreach ( TextureAtlasData.Page page in _data.Pages )
         {
-            var tparams = new TextureLoader.TextureParameter
+            var tparams = new TextureLoader.TextureLoaderParameters
             {
                 Format     = page.Format,
                 GenMipMaps = page.UseMipMaps,

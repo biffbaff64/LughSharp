@@ -23,6 +23,7 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 ///     Typed runtime exception used throughout LibGDXSharp.
 /// </summary>
+[PublicAPI]
 public class GdxRuntimeException : Exception
 {
     public GdxRuntimeException( string? message = "" )

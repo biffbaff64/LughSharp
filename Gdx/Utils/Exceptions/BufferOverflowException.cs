@@ -20,6 +20,7 @@ namespace LibGDXSharp.Utils;
 ///     Unchecked exception thrown when a relative <i>put</i> operation reaches
 ///     the target buffer's limit.
 /// </summary>
+[PublicAPI]
 public class BufferOverflowException : Exception
 {
     public BufferOverflowException()

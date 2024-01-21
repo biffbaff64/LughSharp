@@ -52,21 +52,10 @@ public class ShaderProgramLoader
         _fragmentFileSuffix = fragmentFileSuffix;
     }
 
-    public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter ) => null!;
-
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    AssetLoaderParameters parameter )
-    {
-    }
-
     public override ShaderProgram LoadSync( AssetManager? manager,
                                             string? fileName,
                                             FileInfo? file,
-                                            AssetLoaderParameters? parameter )
+                                            ShaderProgramParameter? parameter )
     {
         ArgumentNullException.ThrowIfNull( fileName );
 
@@ -75,14 +64,14 @@ public class ShaderProgramLoader
 
         if ( parameter != null )
         {
-            if ( ( ( ShaderProgramParameter )parameter ).VertexFile != null )
+            if ( parameter.VertexFile != null )
             {
-                vertFileName = ( ( ShaderProgramParameter )parameter ).VertexFile;
+                vertFileName = parameter.VertexFile;
             }
 
-            if ( ( ( ShaderProgramParameter )parameter ).FragmentFile != null )
+            if ( parameter.FragmentFile != null )
             {
-                fragFileName = ( ( ShaderProgramParameter )parameter ).FragmentFile;
+                fragFileName = parameter.FragmentFile;
             }
         }
 
@@ -107,23 +96,23 @@ public class ShaderProgramLoader
 
         if ( parameter != null )
         {
-            if ( ( ( ShaderProgramParameter )parameter ).PrependVertexCode != null )
+            if ( parameter.PrependVertexCode != null )
             {
-                vertexCode = ( ( ShaderProgramParameter )parameter ).PrependVertexCode + vertexCode;
+                vertexCode = parameter.PrependVertexCode + vertexCode;
             }
 
-            if ( ( ( ShaderProgramParameter )parameter ).PrependFragmentCode != null )
+            if ( parameter.PrependFragmentCode != null )
             {
-                fragmentCode = ( ( ShaderProgramParameter )parameter ).PrependFragmentCode + fragmentCode;
+                fragmentCode = parameter.PrependFragmentCode + fragmentCode;
             }
         }
 
         var shaderProgram = new ShaderProgram( vertexCode, fragmentCode );
 
-        if ( ( ( parameter == null ) || ( ( ShaderProgramParameter )parameter ).LogOnCompileFailure )
+        if ( ( ( parameter == null ) || parameter.LogOnCompileFailure )
           && !shaderProgram.IsCompiled )
         {
-            manager?.Log.Error( "ShaderProgram " + fileName + " failed to compile:\n" + shaderProgram.Log );
+            manager?.Log.Error( $"ShaderProgram {fileName} failed to compile:\n{shaderProgram.Log}" );
         }
 
         return shaderProgram;

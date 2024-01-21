@@ -77,7 +77,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
 
                 FileInfo resolved = Resolve( path );
 
-                var textureParams = new TextureLoader.TextureParameter();
+                var textureParams = new TextureLoader.TextureLoaderParameters();
 
                 if ( parameter != null )
                 {

@@ -18,6 +18,7 @@ using System.Runtime.CompilerServices;
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class MemberNullException : Exception
 {
     public MemberNullException()

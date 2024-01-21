@@ -18,6 +18,10 @@ using LibGDXSharp.Utils.Async;
 
 namespace LibGDXSharp.Assets;
 
+/// <summary>
+/// Responsible for loading an asset through an <see cref="AssetLoader"/> based
+/// on an <see cref="AssetDescriptor"/>.
+/// </summary>
 public class AssetLoadingTask : IAsyncTask
 {
     // ------------------------------------------------------------------------
@@ -59,9 +63,7 @@ public class AssetLoadingTask : IAsyncTask
         _loader   = loader;
         _executor = threadPool;
 
-        _startTime = manager.Log.Level == Logger.LOG_DEBUG
-            ? TimeUtils.NanoTime()
-            : 0;
+        _startTime = ( manager.Log.Level == Logger.LOG_DEBUG ) ? TimeUtils.NanoTime() : 0;
     }
 
     /// <summary>

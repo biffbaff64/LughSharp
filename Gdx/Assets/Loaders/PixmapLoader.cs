@@ -16,45 +16,33 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
-public class PixmapLoader : AsynchronousAssetLoader
+public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.PixmapLoaderParameter >
 {
-    private Pixmap? _pixmap;
+    private Pixmap _pixmap;
 
     public PixmapLoader( IFileHandleResolver resolver ) : base( resolver )
     {
+        this._pixmap = default( Pixmap )!;
     }
-
-    /// <summary>
-    ///     Returns the assets this asset requires to be loaded first.
-    ///     This method may be called on a thread other than the GL thread.
-    /// </summary>
-    /// <param name="fileName">name of the asset to load</param>
-    /// <param name="file">the resolved file to load</param>
-    /// <param name="parameter">parameters for loading the asset</param>
-    public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter ) => null!;
 
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    AssetLoaderParameters parameter )
+                                    PixmapLoaderParameter? parameter )
     {
-        Debug.Assert( file != null, nameof( file ) + " != null" );
-
+        ArgumentNullException.ThrowIfNull( file );
+        
         _pixmap = new Pixmap( file );
     }
 
-    public override object LoadSync( AssetManager manager,
+    public override Pixmap LoadSync( AssetManager manager,
                                      string? fileName,
                                      FileInfo? file,
-                                     AssetLoaderParameters parameter )
+                                     PixmapLoaderParameter? parameter )
     {
-        Pixmap? pixmap = _pixmap;
+        Pixmap pixmap = this._pixmap;
 
-        _pixmap = null!;
-
-        Debug.Assert( pixmap != null, nameof( pixmap ) + " != null" );
+        this._pixmap = null!;
 
         return pixmap;
     }
@@ -65,10 +53,26 @@ public class PixmapLoader : AsynchronousAssetLoader
     /// </summary>
     public void Dispose()
     {
-        _pixmap?.Dispose();
-        _pixmap = null;
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
-    public class PixmapParameter
-    {}
+    private void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            this._pixmap.Dispose();
+            this._pixmap = null!;
+        }
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    public class PixmapLoaderParameter : AssetLoaderParameters
+    {
+        public PixmapLoaderParameter()
+        {
+        }
+    }
 }

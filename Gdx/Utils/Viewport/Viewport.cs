@@ -27,6 +27,7 @@ namespace LibGDXSharp.Utils.Viewport;
 ///     Extending classes should initialise <see cref="Camera" /> to avoid
 ///     causing exceptions.
 /// </summary>
+[PublicAPI]
 public abstract class Viewport
 {
     private Vector3 _tmp = Vector3.Zero;

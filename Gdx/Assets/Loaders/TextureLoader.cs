@@ -19,12 +19,12 @@ namespace LibGDXSharp.Assets.Loaders;
 /// <summary>
 ///     <see cref="AssetLoader" /> for <see cref="Texture" /> instances.
 ///     The pixel data is loaded asynchronously. The texture is then created on the
-///     rendering thread, synchronously. Passing a <see cref="TextureParameter" />
+///     rendering thread, synchronously. Passing a <see cref="TextureLoaderParameters" />
 ///     to <see cref="AssetManager" />.Load() allows one to specify parameters as
 ///     can be passed to the various Texture constructors, e.g. filtering, whether
 ///     to generate mipmaps and so on.
 /// </summary>
-public class TextureLoader : AsynchronousAssetLoader, IDisposable
+public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.TextureLoaderParameters >, IDisposable
 {
     private TextureLoaderInfo _loaderInfo;
 
@@ -42,11 +42,11 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    AssetLoaderParameters? parameter )
+                                    TextureLoaderParameters? parameter )
     {
         _loaderInfo.Filename = fileName;
 
-        if ( ( parameter == null ) || ( ( ( TextureParameter )parameter ).TextureData == null ) )
+        if ( parameter?.TextureData == null )
         {
             Pixmap.Format? format     = null;
             var            genMipMaps = false;
@@ -55,17 +55,17 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
 
             if ( parameter != null )
             {
-                format              = ( ( TextureParameter )parameter ).Format;
-                genMipMaps          = ( ( TextureParameter )parameter ).GenMipMaps;
-                _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
+                format              = parameter.Format;
+                genMipMaps          = parameter.GenMipMaps;
+                _loaderInfo.Texture = parameter.Texture;
             }
 
             _loaderInfo.Data = ITextureData.Factory.LoadFromFile( file, format, genMipMaps );
         }
         else
         {
-            _loaderInfo.Data    = ( ( TextureParameter )parameter ).TextureData;
-            _loaderInfo.Texture = ( ( TextureParameter )parameter ).Texture;
+            _loaderInfo.Data    = parameter.TextureData;
+            _loaderInfo.Texture = parameter.Texture;
         }
 
         if ( _loaderInfo.Data is { IsPrepared: false } )
@@ -81,10 +81,10 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     /// <returns></returns>
-    public override object LoadSync( AssetManager manager,
+    public override Texture LoadSync( AssetManager manager,
                                      string? fileName,
                                      FileInfo? file,
-                                     AssetLoaderParameters parameter )
+                                     TextureLoaderParameters parameter )
     {
         Texture? texture = _loaderInfo.Texture;
 
@@ -97,26 +97,10 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
             texture = new Texture( _loaderInfo.Data );
         }
 
-        texture.SetFilter( ( ( TextureParameter )parameter ).MinFilter,
-                           ( ( TextureParameter )parameter ).MagFilter );
-
-        texture.SetWrap( ( ( TextureParameter )parameter ).WrapU,
-                         ( ( TextureParameter )parameter ).WrapV );
+        texture.SetFilter( parameter.MinFilter, parameter.MagFilter );
+        texture.SetWrap( parameter.WrapU, parameter.WrapV );
 
         return texture;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter )
-    {
-        return null!;
     }
 
     // ------------------------------------------------------------------------
@@ -134,7 +118,7 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
 
     /// <summary>
     /// </summary>
-    public class TextureParameter : AssetLoaderParameters
+    public class TextureLoaderParameters : AssetLoaderParameters
     {
         /// <summary>
         ///     the format of the final Texture. Uses the source images format if null

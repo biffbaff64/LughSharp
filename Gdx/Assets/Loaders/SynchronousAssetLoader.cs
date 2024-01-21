@@ -21,8 +21,11 @@ public abstract class SynchronousAssetLoader<T, TP> : AssetLoader
     protected SynchronousAssetLoader( IFileHandleResolver resolver )
         : base( resolver ) => IsSynchronous = true;
 
-    public abstract T? Load( AssetManager assetManager,
-                             string? fileName,
-                             FileInfo? file,
-                             TP parameter );
+    public virtual T? Load( AssetManager assetManager,
+                            string? fileName,
+                            FileInfo? file,
+                            TP parameter )
+    {
+        return default( T );
+    }
 }

@@ -18,6 +18,7 @@ using System.Text;
 
 namespace LibGDXSharp.Utils.Collections;
 
+[PublicAPI]
 public class Array<T>
 {
     private PredicateIterable< T >? _predicateIEnumerable;
@@ -110,7 +111,7 @@ public class Array<T>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public virtual void AddAll( Array< T > array, int start, int count )
+    public void AddAll( Array< T > array, int start, int count )
     {
         ArgumentNullException.ThrowIfNull( array );
 
@@ -642,21 +643,18 @@ public class Array<T>
     }
 
     /// <summary>
+    /// Returns a random element from the array.
     /// </summary>
-    /// <returns></returns>
+    [MustUseReturnValue]
     public T? Random()
     {
-        if ( Size == 0 )
-        {
-            return default( T );
-        }
-
-        return Items[ MathUtils.Random( 0, Size - 1 ) ];
+        return Size == 0 ? default( T ) : Items[ MathUtils.Random( 0, Size - 1 ) ];
     }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
+    [MustUseReturnValue]
     public virtual T[] ToArray()
     {
         Type? memberInfo = Items.GetType().BaseType;
@@ -670,6 +668,7 @@ public class Array<T>
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
+    [MustUseReturnValue]
     public virtual T[] ToArray( Type type )
     {
         var result = ( T[] )Array.CreateInstance( type, Size );

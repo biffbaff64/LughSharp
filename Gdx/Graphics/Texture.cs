@@ -291,7 +291,7 @@ public class Texture : GLTexture
 
                     // create the parameters, passing the reference to the texture as
                     // well as a callback that sets the ref count.
-                    var parameters = new TextureLoader.TextureParameter
+                    var parameters = new TextureLoader.TextureLoaderParameters
                     {
                         TextureData    = texture.TextureData,
                         MinFilter      = texture.MinFilter,

@@ -114,7 +114,7 @@ public class ParticleEffectLoader
     {
         List< AssetDescriptor >? deps = null;
 
-        if ( ( parameters != null ) && ( ( ( ParticleEffectParameter )parameters ).AtlasFile != null ) )
+        if ( ( ( ParticleEffectParameter? )parameters )?.AtlasFile != null )
         {
             deps = new List< AssetDescriptor >
             {

@@ -19,32 +19,17 @@ namespace LibGDXSharp.Assets.Loaders;
 /// <summary>
 ///     <see cref="AssetLoader" /> to load <see cref="ISound" /> instances.
 /// </summary>
-public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundParameter >, IDisposable
+public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoaderParameters >, IDisposable
 {
-    public SoundLoader( IFileHandleResolver resolver ) : base( resolver ) => LoadedSound = null!;
+    public SoundLoader( IFileHandleResolver resolver ) : base( resolver )
+    {
+        LoadedSound = null!;
+    }
 
     /// <summary>
     ///     The <see cref="ISound" /> instance currently loaded by this <see cref="SoundLoader" />.
     /// </summary>
     public ISound LoadedSound { get; set; }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
-    }
-
-    /// <summary>
-    ///     Returns the assets this asset requires to be loaded first.
-    ///     This method may be called on a thread other than the GL thread.
-    /// </summary>
-    /// <param name="fileName">name of the asset to load</param>
-    /// <param name="file">the resolved file to load</param>
-    /// <param name="parameter">parameters for loading the asset</param>
-    public override List< AssetDescriptor > GetDependencies( string? fileName,
-                                                             FileInfo? file,
-                                                             AssetLoaderParameters parameter ) => null!;
 
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
@@ -57,7 +42,10 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundPar
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
-                                    AssetLoaderParameters parameter ) => LoadedSound = Gdx.Audio.NewSound( file );
+                                    SoundLoaderParameters? parameter )
+    {
+        LoadedSound = Gdx.Audio.NewSound( file );
+    }
 
     /// <summary>
     ///     Loads the OpenGL part of the asset.
@@ -70,13 +58,20 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundPar
     public override ISound LoadSync( AssetManager? manager,
                                      string? fileName,
                                      FileInfo? file,
-                                     AssetLoaderParameters parameter )
+                                     SoundLoaderParameters? parameter )
     {
         ISound sound = LoadedSound;
 
         LoadedSound = null!;
 
         return sound;
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
     private void Dispose( bool disposing )
@@ -87,6 +82,13 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundPar
         }
     }
 
-    public class SoundParameter : AssetLoaderParameters
-    {}
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    public class SoundLoaderParameters : AssetLoaderParameters
+    {
+        public SoundLoaderParameters()
+        {
+        }
+    }
 }
