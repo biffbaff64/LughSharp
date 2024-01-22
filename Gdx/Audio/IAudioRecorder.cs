@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Audio;
 
+[PublicAPI]
 public interface IAudioRecorder : IDisposable
 {
     /// <summary>

@@ -297,6 +297,7 @@ public class Timer
     /// <summary>
     ///     A <see cref="Runnable" /> that can be scheduled on a <see cref="Timer" />
     /// </summary>
+    [PublicAPI]
     public abstract class Task
     {
         internal readonly IApplication? app;

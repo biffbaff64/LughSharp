@@ -18,6 +18,7 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class AfterAction : DelegateAction
 {
     private readonly List< Action > _waitForActions = new( 4 );
@@ -32,7 +33,7 @@ public class AfterAction : DelegateAction
         base.Target = target;
     }
 
-    public new void Restart()
+    public override void Restart()
     {
         base.Restart();
 

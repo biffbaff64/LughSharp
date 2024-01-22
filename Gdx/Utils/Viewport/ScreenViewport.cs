@@ -30,7 +30,7 @@ public class ScreenViewport : Viewport
     {
     }
 
-    public float UnitsPerPixel { get; set; } = 1;
+    public static float UnitsPerPixel => 1;
 
     public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {

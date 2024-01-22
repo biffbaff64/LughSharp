@@ -60,7 +60,7 @@ public class ScalingViewport : Viewport
         WorldHeight = worldHeight;
     }
 
-    protected Scaling Scaling { get; set; }
+    protected Scaling Scaling { get; }
 
     /// <summary>
     ///     Configures this viewports screen bounds and applies it to the camera

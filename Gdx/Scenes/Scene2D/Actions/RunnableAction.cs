@@ -16,17 +16,30 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+/// <summary>
+/// An action that runs a <see cref="Runnable"/>. Alternatively, the <see cref="Run()"/>
+/// method can be overridden instead of setting a runnable.
+/// </summary>
 public class RunnableAction : Action
 {
-    private bool _ran;
+    public Task? Runnable { get; set; }
 
-    public Runnable? Runnable { get; set; }
+    private CancellationToken        _cancellationToken;
+    private CancellationTokenSource? _tokenSource;
+    private bool                     _ran;
+
+    public RunnableAction()
+    {
+        this._tokenSource       = new CancellationTokenSource();
+        this._cancellationToken = _tokenSource.Token;
+    }
 
     public override bool Act( float delta )
     {
         if ( !_ran )
         {
             _ran = true;
+
             Run();
         }
 
@@ -43,25 +56,27 @@ public class RunnableAction : Action
             throw new GdxRuntimeException( "Runnable is not initialised!" );
         }
 
-//        Pool< object >? pool = base.Pool;
+        Pool< Action >? pool = base.Pool;
 
         // Ensure this action can't be returned to the pool inside the runnable.
         Pool = null;
 
-//        try
-//        {
-//            var thread = new Thread( Runnable! );
-//            thread.Start();
-//        }
-//        finally
-//        {
-//            base.Pool = pool;
-//        }
+        try
+        {
+            Runnable = new Task( () =>
+            {
+                //
+            }, _cancellationToken );
+        }
+        finally
+        {
+            base.Pool = pool;
+        }
     }
 
-    public new void Restart() => _ran = false;
+    public override void Restart() => _ran = false;
 
-    public new void Reset()
+    public override void Reset()
     {
         base.Reset();
         Runnable = null;

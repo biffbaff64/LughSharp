@@ -22,6 +22,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 ///     Adds a listener to the actor for a specific event type and does not complete
 ///     until <see cref="Handle" /> returns true.
 /// </summary>
+[PublicAPI]
 public abstract class EventAction<T> : Action, IEventListener where T : Event
 {
     protected EventAction( T eventClass ) => EventClass = eventClass;
@@ -49,7 +50,7 @@ public abstract class EventAction<T> : Action, IEventListener where T : Event
         return Result;
     }
 
-    public new void Restart()
+    public override void Restart()
     {
         Result = false;
         Active = false;

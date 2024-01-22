@@ -19,6 +19,7 @@ using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class SceneActions
 {
     /// <summary>
@@ -34,6 +35,17 @@ public class SceneActions
         return action;
     }
 
+//    public static T Action<T>() where T : Action
+//    {
+//        Pool< T > pool = Pools< T >.Get();
+//
+//        T? action = pool.Obtain();
+//
+//        action!.Pool = pool;
+//        
+//        return action!;
+//    }
+    
     public static AddAction AddAction( Action action )
     {
         var addAction = ( AddAction )Action( typeof( AddAction ) );
@@ -455,10 +467,12 @@ public class SceneActions
 
     public static RunnableAction Run( Runnable runnable )
     {
-        var action = ( RunnableAction )Action( typeof( RunnableAction ) );
-        action.Runnable = runnable;
+        throw new NotImplementedException( "IMPLEMENTATION TO BE COMPLETED!" );
 
-        return action;
+//        var action = ( RunnableAction )Action( typeof( RunnableAction ) );
+//        action.Runnable = runnable;
+//
+//        return action;
     }
 
     public static LayoutAction Layout( bool enabled )

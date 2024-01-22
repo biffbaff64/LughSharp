@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 ///     Provides bit flag constants for alignment.
 /// </summary>
+[PublicAPI]
 public static class Align
 {
     // ------------------------------------------------------------------------

@@ -26,7 +26,7 @@ public class SizeToAction : TemporalAction
     public float EndWidth    { get; set; }
     public float EndHeight   { get; set; }
 
-    protected new void Begin()
+    protected override void Begin()
     {
         if ( Target == null )
         {

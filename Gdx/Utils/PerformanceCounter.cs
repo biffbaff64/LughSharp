@@ -29,6 +29,7 @@ namespace LibGDXSharp.Utils;
 ///         the load value, which is the percentage of the total time.
 ///     </p>
 /// </summary>
+[PublicAPI]
 public class PerformanceCounter
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;
@@ -50,17 +51,17 @@ public class PerformanceCounter
     /// <summary>
     ///     The time value of this counter (seconds)
     /// </summary>
-    public FloatCounter Time { get; set; }
+    public FloatCounter Time { get; }
 
     /// <summary>
     ///     The load value of this counter
     /// </summary>
-    public FloatCounter Load { get; set; }
+    public FloatCounter Load { get; }
 
     /// <summary>
     ///     The name of this counter
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; }
 
     /// <summary>
     ///     The current value in seconds, you can manually increase this using your own

@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 ///     A quad tree that stores a float for each point.
 /// </summary>
+[PublicAPI]
 public class QuadTreeFloat : IPoolable
 {
     public const int VALUE   = 0;
@@ -58,8 +59,8 @@ public class QuadTreeFloat : IPoolable
         _pool.NewObject = GetNewObject;
     }
 
-    public int            MaxValues { get; set; }
-    public int            MaxDepth  { get; set; }
+    public int            MaxValues { get; }
+    public int            MaxDepth  { get; }
     public float          X         { get; set; }
     public float          Y         { get; set; }
     public float          Width     { get; set; }

@@ -98,7 +98,7 @@ public class ParallelAction : Action
         }
     }
 
-    public new void Restart()
+    public override void Restart()
     {
         _complete = false;
 
@@ -108,7 +108,7 @@ public class ParallelAction : Action
         }
     }
 
-    public new void Reset()
+    public override void Reset()
     {
         base.Reset();
         _actions.Clear();

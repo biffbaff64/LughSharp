@@ -160,77 +160,82 @@ public class WaveFile : RiffFile
     /// <summary>
     ///     Open for write using another wave file's parameters...
     /// </summary>
-    public virtual int OpenForWrite( string filename, WaveFile otherWave ) => OpenForWrite( filename,
-                                                                                            null,
-                                                                                            otherWave.SamplingRate(),
-                                                                                            otherWave.BitsPerSample(),
-                                                                                            otherWave.NumberOfChannels() );
-
-
-    public class WaveFormatChunkData
+    public virtual int OpenForWrite( string filename, WaveFile otherWave )
     {
-        public WaveFormatChunkData( WaveFile enclosingInstance )
-        {
-            EnclosingInstance = enclosingInstance;
+        return OpenForWrite( filename,
+                             null,
+                             otherWave.SamplingRate(),
+                             otherWave.BitsPerSample(),
+                             otherWave.NumberOfChannels() );
+    }
+}
 
-            FormatTag = 1; // PCM
+[PublicAPI]
+public class WaveFormatChunkData
+{
+    public WaveFormatChunkData( WaveFile enclosingInstance )
+    {
+        EnclosingInstance = enclosingInstance;
 
-            Config( 44100, 16, 1 );
-        }
+        FormatTag = 1; // PCM
 
-        public int      NumAvgBytesPerSec { get; set; }
-        public short    NumBitsPerSample  { get; set; }
-        public short    NumBlockAlign     { get; set; }
-        public short    NumChannels       { get; set; } // Number of channels (mono=1, stereo=2)
-        public int      NumSamplesPerSec  { get; set; } // Sampling rate [Hz]
-        public short    FormatTag         { get; set; } // Format category (PCM=1)
-        public WaveFile EnclosingInstance { get; set; }
-
-        public void Config( int newSamplingRate, short newBitsPerSample, short newNumChannels )
-        {
-            NumSamplesPerSec  = newSamplingRate;
-            NumChannels       = newNumChannels;
-            NumBitsPerSample  = newBitsPerSample;
-            NumAvgBytesPerSec = ( NumChannels * NumSamplesPerSec * NumBitsPerSample ) / 8;
-            NumBlockAlign     = ( short )( ( NumChannels * NumBitsPerSample ) / 8 );
-        }
+        Config( 44100, 16, 1 );
     }
 
-    public class WaveFormatChunk
+    public int      NumAvgBytesPerSec { get; set; }
+    public short    NumBitsPerSample  { get; set; }
+    public short    NumBlockAlign     { get; set; }
+    public short    NumChannels       { get; set; } // Number of channels (mono=1, stereo=2)
+    public int      NumSamplesPerSec  { get; set; } // Sampling rate [Hz]
+    public short    FormatTag         { get; set; } // Format category (PCM=1)
+    public WaveFile EnclosingInstance { get; set; }
+
+    public void Config( int newSamplingRate, short newBitsPerSample, short newNumChannels )
     {
-        public WaveFormatChunk( WaveFile enclosingInstance )
-        {
-            EnclosingInstance = enclosingInstance;
-            Header            = new RiffChunkHeader( enclosingInstance );
-            Data              = new WaveFormatChunkData( enclosingInstance );
-            Header.CkId       = FourCC( "fmt " );
-            Header.CkSize     = 16;
-        }
+        NumSamplesPerSec  = newSamplingRate;
+        NumChannels       = newNumChannels;
+        NumBitsPerSample  = newBitsPerSample;
+        NumAvgBytesPerSec = ( NumChannels * NumSamplesPerSec * NumBitsPerSample ) / 8;
+        NumBlockAlign     = ( short )( ( NumChannels * NumBitsPerSample ) / 8 );
+    }
+}
 
-        public WaveFormatChunkData Data              { get; set; }
-        public WaveFile            EnclosingInstance { get; set; }
-        public RiffChunkHeader     Header            { get; set; }
-
-        public virtual int VerifyValidity()
-        {
-            var ret = ( Header.CkId == FourCC( "fmt " ) )
-                   && Data.NumChannels is 1 or 2
-                   && ( Data.NumAvgBytesPerSec == ( ( Data.NumChannels * Data.NumSamplesPerSec * Data.NumBitsPerSample ) / 8 ) )
-                   && ( Data.NumBlockAlign == ( ( Data.NumChannels * Data.NumBitsPerSample ) / 8 ) );
-
-            return ret ? 1 : 0;
-        }
+[PublicAPI]
+public class WaveFormatChunk
+{
+    public WaveFormatChunk( WaveFile enclosingInstance )
+    {
+        EnclosingInstance = enclosingInstance;
+        Header            = new RiffFile.RiffChunkHeader( enclosingInstance );
+        Data              = new WaveFormatChunkData( enclosingInstance );
+        Header.CkId       = RiffFile.FourCC( "fmt " );
+        Header.CkSize     = 16;
     }
 
-    public class WaveFileSample
-    {
-        public WaveFileSample( WaveFile enclosingInstance )
-        {
-            EnclosingInstance = enclosingInstance;
-            Chan              = new short[ MAX_WAVE_CHANNELS ];
-        }
+    public WaveFormatChunkData Data              { get; set; }
+    public WaveFile            EnclosingInstance { get; set; }
+    public RiffFile.RiffChunkHeader     Header            { get; set; }
 
-        public short[]  Chan              { get; set; }
-        public WaveFile EnclosingInstance { get; set; }
+    public virtual int VerifyValidity()
+    {
+        var ret = ( Header.CkId == RiffFile.FourCC( "fmt " ) )
+               && Data.NumChannels is 1 or 2
+               && ( Data.NumAvgBytesPerSec == ( ( Data.NumChannels * Data.NumSamplesPerSec * Data.NumBitsPerSample ) / 8 ) )
+               && ( Data.NumBlockAlign == ( ( Data.NumChannels * Data.NumBitsPerSample ) / 8 ) );
+
+        return ret ? 1 : 0;
     }
+}
+
+[PublicAPI]
+public class WaveFileSample
+{
+    public WaveFileSample( WaveFile enclosingInstance )
+    {
+        EnclosingInstance = enclosingInstance;
+        Chan              = new short[ WaveFile.MAX_WAVE_CHANNELS ];
+    }
+
+    public short[]  Chan              { get; set; }
+    public WaveFile EnclosingInstance { get; set; }
 }

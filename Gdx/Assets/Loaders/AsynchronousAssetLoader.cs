@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
+[PublicAPI]
 public abstract class AsynchronousAssetLoader : AssetLoader
 {
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )
@@ -50,6 +51,7 @@ public abstract class AsynchronousAssetLoader : AssetLoader
 /// </summary>
 /// <typeparam name="TAssetType"></typeparam>
 /// <typeparam name="TParameters"></typeparam>
+[PublicAPI]
 public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     : AssetLoader where TParameters : AssetLoaderParameters
 {
@@ -70,7 +72,6 @@ public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    [PublicAPI]
     public virtual void LoadAsync( AssetManager manager, string? fileName, FileInfo? file, TParameters? parameter )
     {
     }
@@ -83,7 +84,6 @@ public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     /// <returns></returns>
-    [PublicAPI]
     public virtual TAssetType LoadSync( AssetManager manager, string fileName, FileInfo file, TParameters parameter )
     {
         return default( TAssetType )!;

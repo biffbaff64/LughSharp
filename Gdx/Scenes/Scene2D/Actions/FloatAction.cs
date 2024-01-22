@@ -58,8 +58,8 @@ public class FloatAction : TemporalAction
         EndValue = end;
     }
 
-    public float Start    { get; set; }
-    public float EndValue { get; set; }
+    public float Start    { get; }
+    public float EndValue { get; }
     public float Value    { get; set; }
 
     protected override void Begin() => Value = Start;

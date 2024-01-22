@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils;
 ///     The close method is invoked to release resources that the object
 ///     is holding (such as open files).
 /// </summary>
+[PublicAPI]
 public interface ICloseable
 {
     void Close();

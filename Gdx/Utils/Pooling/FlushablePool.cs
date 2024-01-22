@@ -21,24 +21,29 @@ namespace LibGDXSharp.Utils.Pooling;
 ///     (see <see cref="Obtain()" />), which can be freed all at once using the
 ///     <see cref="Flush()" /> method.
 /// </summary>
+[PublicAPI]
 public abstract class FlushablePool<T> : Pool< T >
 {
-    private readonly List< T > _obtained = new();
+    private readonly List< T > _obtained = [ ];
 
+    /// <inheritdoc />
     protected FlushablePool()
     {
     }
 
+    /// <inheritdoc />
     protected FlushablePool( int initialCapacity )
         : base( initialCapacity )
     {
     }
 
+    /// <inheritdoc />
     protected FlushablePool( int initialCapacity, int max )
         : base( initialCapacity, max )
     {
     }
 
+    /// <inheritdoc />
     public override T? Obtain()
     {
         T? result = base.Obtain();
@@ -57,6 +62,7 @@ public abstract class FlushablePool<T> : Pool< T >
         _obtained.Clear();
     }
 
+    /// <inheritdoc />
     public override void Free( T obj )
     {
         _obtained.Remove( obj );
@@ -64,6 +70,7 @@ public abstract class FlushablePool<T> : Pool< T >
         base.Free( obj );
     }
 
+    /// <inheritdoc />
     public override void FreeAll( List< T > objects )
     {
         foreach ( T obj in objects )

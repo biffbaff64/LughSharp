@@ -21,6 +21,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 ///     color. Note this action transitions from the color at the time the action
 ///     starts to the specified color.
 /// </summary>
+[PublicAPI]
 public class ColorAction : TemporalAction
 {
     private readonly Color _endColor = new();
@@ -35,7 +36,7 @@ public class ColorAction : TemporalAction
         set => _endColor.Set( value );
     }
 
-    protected new void Begin()
+    protected override void Begin()
     {
         if ( Target == null )
         {

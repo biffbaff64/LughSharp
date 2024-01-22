@@ -19,11 +19,14 @@ namespace LibGDXSharp.Utils.Pooling;
 /// <summary>
 ///     A simple linked list that pools its nodes.
 /// </summary>
+[PublicAPI]
 public class PooledLinkedList<T>
 {
-    private readonly Pool< Item< T > > _pool;
-    private          Item< T >?        _curr;
+    public int Size { get; set; } = 0;
 
+    private readonly Pool< Item< T > > _pool;
+
+    private Item< T >? _curr;
     private Item< T >? _head;
     private Item< T >? _iter;
     private Item< T >? _tail;
@@ -36,7 +39,7 @@ public class PooledLinkedList<T>
         NewObject = GetNewObject
     };
 
-    public int Size { get; set; } = 0;
+    public Item< T > GetNewObject() => new();
 
     /// <summary>
     ///     Adds the specified object to the end of the list regardless of iteration status
@@ -155,7 +158,7 @@ public class PooledLinkedList<T>
     /// </summary>
     protected void Remove()
     {
-        if ( _curr == null )
+        if ( ( _curr?.Prev == null ) || ( _curr.Next == null ) )
         {
             return;
         }
@@ -165,10 +168,6 @@ public class PooledLinkedList<T>
         Item< T >? c = _curr;
         Item< T >? n = _curr.Next;
         Item< T >? p = _curr.Prev;
-
-        Debug.Assert( c != null );
-        Debug.Assert( n != null );
-        Debug.Assert( p != null );
 
         _pool.Free( _curr );
         _curr = null;
@@ -249,8 +248,9 @@ public class PooledLinkedList<T>
         }
     }
 
-    public Item< T > GetNewObject() => new();
-
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public record Item<TT>
     {
         internal TT?         Payload { get; set; }

@@ -58,8 +58,8 @@ public class IntAction : TemporalAction
         EndValue = end;
     }
 
-    public int Start    { get; set; }
-    public int EndValue { get; set; }
+    public int Start    { get; }
+    public int EndValue { get; }
     public int Value    { get; set; }
 
     protected override void Begin() => Value = Start;

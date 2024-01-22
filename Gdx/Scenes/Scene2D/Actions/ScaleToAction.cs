@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class ScaleToAction : TemporalAction
 {
     private float _startX;
@@ -23,7 +24,7 @@ public class ScaleToAction : TemporalAction
     public  float EndX { get; set; }
     public  float EndY { get; set; }
 
-    protected new void Begin()
+    protected override void Begin()
     {
         _startX = Target!.ScaleX;
         _startY = Target.ScaleY;

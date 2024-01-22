@@ -22,11 +22,12 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoders;
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer I frames.
 /// </summary>
+[PublicAPI]
 public class LayerIDecoder : IFrameDecoder
 {
     protected readonly Crc16? crc = new();
 
-    protected AudioBase?         buffer  = null!;
+    protected AudioBase?       buffer  = null!;
     protected SynthesisFilter? filter1 = null!;
     protected SynthesisFilter? filter2 = null!;
     protected Header?          header  = null!;

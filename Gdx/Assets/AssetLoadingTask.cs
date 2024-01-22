@@ -22,6 +22,7 @@ namespace LibGDXSharp.Assets;
 /// Responsible for loading an asset through an <see cref="AssetLoader"/> based
 /// on an <see cref="AssetDescriptor"/>.
 /// </summary>
+[PublicAPI]
 public class AssetLoadingTask : IAsyncTask
 {
     // ------------------------------------------------------------------------
@@ -61,8 +62,8 @@ public class AssetLoadingTask : IAsyncTask
         _manager  = manager;
         AssetDesc = assetDesc;
         _loader   = loader;
+        
         _executor = threadPool;
-
         _startTime = ( manager.Log.Level == Logger.LOG_DEBUG ) ? TimeUtils.NanoTime() : 0;
     }
 

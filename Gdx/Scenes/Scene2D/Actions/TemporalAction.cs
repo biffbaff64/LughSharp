@@ -16,10 +16,10 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public abstract class TemporalAction : Action
 {
     private bool _began;
-    private bool _complete;
 
     protected TemporalAction()
     {
@@ -38,9 +38,14 @@ public abstract class TemporalAction : Action
     public float           Time          { get; set; }
     public IInterpolation? Interpolation { get; set; }
 
+    /// <summary>
+    ///     Returns true after <see cref="Act(float)" /> has been called where time >= duration.
+    /// </summary>
+    public bool IsComplete { get; private set; }
+
     public override bool Act( float delta )
     {
-        if ( _complete )
+        if ( IsComplete )
         {
             return true;
         }
@@ -59,9 +64,9 @@ public abstract class TemporalAction : Action
             }
 
             Time      += delta;
-            _complete =  Time >= Duration;
+            IsComplete =  Time >= Duration;
 
-            var percent = _complete ? 1 : Time / Duration;
+            var percent = IsComplete ? 1 : Time / Duration;
 
             if ( Interpolation != null )
             {
@@ -70,12 +75,12 @@ public abstract class TemporalAction : Action
 
             Update( Reverse ? 1 - percent : percent );
 
-            if ( _complete )
+            if ( IsComplete )
             {
                 End();
             }
 
-            return _complete;
+            return IsComplete;
         }
         finally
         {
@@ -94,7 +99,7 @@ public abstract class TemporalAction : Action
     /// <summary>
     ///     Called the last time <see cref="Act(float)" /> is called.
     /// </summary>
-    protected virtual void End()
+    protected void End()
     {
     }
 
@@ -116,7 +121,7 @@ public abstract class TemporalAction : Action
     {
         Time      = 0;
         _began    = false;
-        _complete = false;
+        IsComplete = false;
     }
 
     public override void Reset()
@@ -126,9 +131,4 @@ public abstract class TemporalAction : Action
         Reverse       = false;
         Interpolation = null;
     }
-
-    /// <summary>
-    ///     Returns true after <see cref="Act(float)" /> has been called where time >= duration.
-    /// </summary>
-    public bool IsComplete() => _complete;
 }

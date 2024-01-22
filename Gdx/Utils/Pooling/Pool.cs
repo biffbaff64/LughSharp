@@ -21,6 +21,7 @@ namespace LibGDXSharp.Utils;
 /// <summary>
 ///     A pool of objects that can be reused to avoid allocation.
 /// </summary>
+[PublicAPI]
 public class Pool<T>
 {
     public delegate T? NewObjectHandler();
@@ -44,10 +45,10 @@ public class Pool<T>
         Max          = max;
     }
 
-    public int Max  { get; set; } // The maximum number of objects that will be pooled.
+    public int Max  { get; }      // The maximum number of objects that will be pooled.
     public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
 
-    public virtual NewObjectHandler? NewObject { get; set; } = null;
+    public NewObjectHandler? NewObject { get; set; } = null;
 
     /// <summary>
     ///     Returns an object from this pool.
@@ -103,7 +104,7 @@ public class Pool<T>
     ///     can be used at any time.
     /// </summary>
     /// <param name="size">The number of objects to be added.</param>
-    public virtual void Fill( int size )
+    public void Fill( int size )
     {
         for ( var i = 0; i < size; i++ )
         {
@@ -147,8 +148,6 @@ public class Pool<T>
     {
         ArgumentNullException.ThrowIfNull( objects );
 
-        var max = Max;
-
         for ( int i = 0, n = objects.Count; i < n; i++ )
         {
             if ( objects[ i ] == null )
@@ -156,7 +155,7 @@ public class Pool<T>
                 continue;
             }
 
-            if ( _freeObjects.Count < max )
+            if ( _freeObjects.Count < Max )
             {
                 _freeObjects.Add( objects[ i ] );
 

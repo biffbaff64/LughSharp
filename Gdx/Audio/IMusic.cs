@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Audio;
 
+[PublicAPI]
 public interface IMusic : IDisposable
 {
     /// <returns> whether this music stream is playing </returns>

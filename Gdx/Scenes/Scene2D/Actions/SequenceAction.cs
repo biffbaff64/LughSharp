@@ -20,6 +20,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 ///     Executes a number of actions one at a time.
 ///     @author Nathan Sweet
 /// </summary>
+[PublicAPI]
 public class SequenceAction : ParallelAction
 {
     private int _index;
@@ -28,38 +29,14 @@ public class SequenceAction : ParallelAction
     {
     }
 
-    public SequenceAction( Action action1 ) => AddAction( action1 );
-
-    public SequenceAction( Action action1, Action action2 )
+    public SequenceAction( params Action[] actions )
     {
-        AddAction( action1 );
-        AddAction( action2 );
+        foreach ( Action action in actions )
+        {
+            AddAction( action );
+        }
     }
-
-    public SequenceAction( Action action1, Action action2, Action action3 )
-    {
-        AddAction( action1 );
-        AddAction( action2 );
-        AddAction( action3 );
-    }
-
-    public SequenceAction( Action action1, Action action2, Action action3, Action action4 )
-    {
-        AddAction( action1 );
-        AddAction( action2 );
-        AddAction( action3 );
-        AddAction( action4 );
-    }
-
-    public SequenceAction( Action action1, Action action2, Action action3, Action action4, Action action5 )
-    {
-        AddAction( action1 );
-        AddAction( action2 );
-        AddAction( action3 );
-        AddAction( action4 );
-        AddAction( action5 );
-    }
-
+    
     public override bool Act( float delta )
     {
         if ( _index >= GetActions().Count )
@@ -97,7 +74,7 @@ public class SequenceAction : ParallelAction
         }
     }
 
-    public new void Restart()
+    public override void Restart()
     {
         base.Restart();
         _index = 0;

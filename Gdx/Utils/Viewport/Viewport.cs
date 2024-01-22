@@ -30,6 +30,20 @@ namespace LibGDXSharp.Utils.Viewport;
 [PublicAPI]
 public abstract class Viewport
 {
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    public Camera? Camera       { get; set; }
+    public float   WorldWidth   { get; set; }
+    public float   WorldHeight  { get; set; }
+    public int     ScreenX      { get; set; }
+    public int     ScreenY      { get; set; }
+    public int     ScreenWidth  { get; set; }
+    public int     ScreenHeight { get; set; }
+
+    #endregion properties
+
     private Vector3 _tmp = Vector3.Zero;
 
     // ------------------------------------------------------------------------
@@ -209,18 +223,22 @@ public abstract class Viewport
 
     /// <summary>
     /// </summary>
-    public virtual void CalculateScissors( Matrix4 batchTransform,
-                                           RectangleShape area,
-                                           RectangleShape scissor ) => ScissorStack.CalculateScissors(
-        Camera,
-        ScreenX,
-        ScreenY,
-        ScreenWidth,
-        ScreenHeight,
-        batchTransform,
-        area,
-        scissor
-        );
+    public virtual void CalculateScissors( Matrix4 batchTransform, RectangleShape area, RectangleShape scissor )
+    {
+        if ( this.Camera == null )
+        {
+            return;
+        }
+        
+        ScissorStack.CalculateScissors( this.Camera,
+                                        ScreenX,
+                                        ScreenY,
+                                        ScreenWidth,
+                                        ScreenHeight,
+                                        batchTransform,
+                                        area,
+                                        scissor );
+    }
 
     /// <summary>
     ///     Transforms a point to real screen coordinates (as opposed to OpenGL
@@ -290,18 +308,4 @@ public abstract class Viewport
         ScreenWidth  = screenWidth;
         ScreenHeight = screenHeight;
     }
-
-    // ------------------------------------------------------------------------
-
-    #region properties
-
-    public Camera? Camera       { get; set; }
-    public float   WorldWidth   { get; set; }
-    public float   WorldHeight  { get; set; }
-    public int     ScreenX      { get; set; }
-    public int     ScreenY      { get; set; }
-    public int     ScreenWidth  { get; set; }
-    public int     ScreenHeight { get; set; }
-
-    #endregion properties
 }

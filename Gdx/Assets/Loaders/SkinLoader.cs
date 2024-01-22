@@ -36,7 +36,7 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
                                                              FileInfo? file,
                                                              AssetLoaderParameters? parameter )
     {
-        List< AssetDescriptor > deps = new();
+        List< AssetDescriptor > deps = [ ];
 
         if ( ( ( SkinLoaderParameters? )parameter )?.textureAtlasPath == null )
         {
@@ -101,6 +101,7 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SkinLoaderParameters : AssetLoaderParameters
     {
         public readonly Dictionary< string, object >? resources;

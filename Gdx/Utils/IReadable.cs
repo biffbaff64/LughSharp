@@ -22,6 +22,7 @@ namespace LibGDXSharp.Utils;
 ///     A <tt>Readable</tt> is a source of characters. Characters from a <tt>Readable</tt>
 ///     are made available to callers of the read method via a <see cref="CharBuffer" />.
 /// </summary>
+[PublicAPI]
 public interface IReadable
 {
     /// <summary>

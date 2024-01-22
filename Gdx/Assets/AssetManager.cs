@@ -29,6 +29,20 @@ namespace LibGDXSharp.Assets;
 [PublicAPI]
 public class AssetManager
 {
+    public Logger Log { get; set; }
+
+    /// <summary>
+    ///     Returns the <see cref="IFileHandleResolver" /> which this
+    ///     AssetManager was loaded with.
+    /// </summary>
+    /// <returns>the file handle resolver which this AssetManager uses.</returns>
+    public IFileHandleResolver FileHandleResolver { get; set; }
+
+    /// <summary>
+    ///     Returns the number of loaded assets.
+    /// </summary>
+    public int LoadedAssetsCount => _assetTypes.Count;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -37,10 +51,10 @@ public class AssetManager
     private readonly Dictionary< string, Type? >                                    _assetTypes        = new();
 
     private readonly AsyncExecutor                                           _executor;
-    private readonly List< string >                                          _injected  = new();
-    private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? > _loaders   = new();
-    private readonly List< AssetDescriptor >                                 _loadQueue = new();
-    private readonly Stack< AssetLoadingTask >                               _tasks     = new();
+    private readonly List< string >                                          _injected  = [ ];
+    private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? > _loaders   = [ ];
+    private readonly List< AssetDescriptor >                                 _loadQueue = [ ];
+    private readonly Stack< AssetLoadingTask >                               _tasks     = [ ];
     private          IAssetErrorListener?                                    _listener;
 
     private int _loaded;
@@ -88,20 +102,6 @@ public class AssetManager
         FileHandleResolver = resolver;
         _executor          = new AsyncExecutor( 1, "AssetManager" );
     }
-
-    public Logger Log { get; set; }
-
-    /// <summary>
-    ///     Returns the <see cref="IFileHandleResolver" /> which this
-    ///     AssetManager was loaded with.
-    /// </summary>
-    /// <returns>the file handle resolver which this AssetManager uses.</returns>
-    public IFileHandleResolver FileHandleResolver { get; set; }
-
-    /// <summary>
-    ///     Returns the number of loaded assets.
-    /// </summary>
-    public int LoadedAssetsCount => _assetTypes.Count;
 
     /// <summary>
     /// </summary>

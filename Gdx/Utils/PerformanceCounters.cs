@@ -18,14 +18,17 @@ using System.Text;
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public class PerformanceCounters
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;
 
-    public readonly List< PerformanceCounter > counters = new();
+    public readonly List< PerformanceCounter > counters = [ ];
 
     private long _lastTick = 0L;
 
+    // ------------------------------------------------------------------------
+    
     public PerformanceCounter Add( in string name, in int windowSize )
     {
         var result = new PerformanceCounter( name, windowSize );

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class DelayAction : DelegateAction
 {
     public DelayAction()
@@ -46,7 +47,7 @@ public class DelayAction : DelegateAction
 
     public void Finish() => Time = Duration;
 
-    public new void Restart()
+    public override void Restart()
     {
         base.Restart();
 

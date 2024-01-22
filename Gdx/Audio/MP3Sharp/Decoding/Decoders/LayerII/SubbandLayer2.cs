@@ -21,6 +21,7 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoders.LayerII;
 /// <summary>
 ///     public class for layer II subbands in single channel mode.
 /// </summary>
+[PublicAPI]
 public class SubbandLayer2 : ASubband
 {
     // this table contains 3 requantized samples for each legal codeword

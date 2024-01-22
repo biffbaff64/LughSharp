@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Utils;
 
+[PublicAPI]
 public static class Character
 {
     /// <summary>

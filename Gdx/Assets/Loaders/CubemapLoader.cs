@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
+[PublicAPI]
 public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
     private CubemapLoaderInfo _loaderInfo = new()
@@ -128,6 +129,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         return cubemap;
     }
 
+    [PublicAPI]
     public struct CubemapLoaderInfo
     {
         public string?       filename;

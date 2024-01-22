@@ -40,10 +40,10 @@ public interface ILayout
 
     float MinWidth   { get; }
     float MinHeight  { get; }
-    float MaxWidth   { get; set; }
-    float MaxHeight  { get; set; }
-    float PrefWidth  { get; set; }
-    float PrefHeight { get; set; }
+    float MaxWidth   { get; }
+    float MaxHeight  { get; }
+    float PrefWidth  { get; }
+    float PrefHeight { get; }
 
     /// <summary>
     ///     Computes and caches any information needed for drawing and, if this actor

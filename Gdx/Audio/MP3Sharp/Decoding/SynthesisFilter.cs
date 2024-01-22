@@ -21,6 +21,7 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 ///     44.1 or 48 kHz to 8 kHz, if ULAW is defined. Frequencies above 4 kHz are removed by
 ///     ignoring higher subbands.
 /// </summary>
+[PublicAPI]
 public class SynthesisFilter
 {
     private const double MY_PI = 3.14159265358979323846;

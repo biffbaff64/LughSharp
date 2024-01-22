@@ -27,20 +27,21 @@ namespace LibGDXSharp.Utils.Xml;
 ///  xml.element("meow")
 ///  .attribute("moo", "cow")
 ///  .element("child")
-/// 		.attribute("moo", "cow")
-/// 		.element("child")
-/// 			.attribute("moo", "cow")
-/// 			.text("All that we see or seem is but a dream within a dream.")
-/// 		.pop()
+///         .attribute("moo", "cow")
+///         .element("child")
+///             .attribute("moo", "cow")
+///             .text("All that we see or seem is but a dream within a dream.")
+///         .pop()
 ///  .pop()
 ///  .pop();
 ///  Console.WriteLn(_writer);
 ///  </code>
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class XmlWriter
 {
-    private readonly List< string >? _stack = new();
+    private readonly List< string >? _stack = [ ];
     private readonly StreamWriter?   _writer;
     private          string?         _currentElement;
     private          bool            _indentNextClose;

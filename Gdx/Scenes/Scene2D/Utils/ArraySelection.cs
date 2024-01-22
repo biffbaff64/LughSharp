@@ -20,6 +20,7 @@ namespace LibGDXSharp.Scenes.Scene2D.Utils;
 ///     A selection that supports range selection by knowing about the
 ///     array of items being selected.
 /// </summary>
+[PublicAPI]
 public class ArraySelection<T> : Selection< T >
 {
     private readonly List< T >? _array;

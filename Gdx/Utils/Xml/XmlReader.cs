@@ -33,6 +33,9 @@ namespace LibGDXSharp.Utils.Xml;
 ///     </para>
 /// </summary>
 [PublicAPI]
+[SuppressMessage( "ReSharper", "RedundantAssignment" )]
+[SuppressMessage( "ReSharper", "UnreachableSwitchCaseDueToIntegerAnalysis" )]
+[SuppressMessage( "ReSharper", "ConditionIsAlwaysTrueOrFalse" )]
 public partial class XmlReader
 {
     private const int XML_START           = 1;

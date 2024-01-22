@@ -23,6 +23,7 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoders;
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer 3 frames.
 /// </summary>
+[PublicAPI]
 public sealed class LayerIIIDecoder : IFrameDecoder
 {
     private const int SSLIMIT = 18;
@@ -201,10 +202,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     // can be reused.
     public float[] tsOutCopy = null!;
 
-    public int[] v = { 0 };
-    public int[] w = { 0 };
-    public int[] x = { 0 };
-    public int[] y = { 0 };
+    public readonly int[] v = { 0 };
+    public readonly int[] w = { 0 };
+    public readonly int[] x = { 0 };
+    public readonly int[] y = { 0 };
 
     static LayerIIIDecoder() => PowerTable = CreatePowerTable();
 
@@ -623,6 +624,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     ///     Mono   : 136 bits (= 17 bytes)
     ///     Stereo : 256 bits (= 32 bytes)
     /// </summary>
+    // ReSharper disable once UnusedMethodReturnValue.Local //TODO:
     private bool ReadSideInfo()
     {
         int ch;

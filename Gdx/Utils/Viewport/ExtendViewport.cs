@@ -18,6 +18,15 @@ namespace LibGDXSharp.Utils.Viewport;
 
 public class ExtendViewport : Viewport
 {
+    #region Properties
+
+    public float MinWorldWidth  { get; }
+    public float MinWorldHeight { get; }
+    public float MaxWorldWidth  { get; }
+    public float MaxWorldHeight { get; }
+
+    #endregion
+
     /// <summary>
     ///     Creates a new viewport using a new <seealso cref="OrthographicCamera" />
     ///     with no maximum world size.
@@ -135,13 +144,4 @@ public class ExtendViewport : Viewport
 
         Apply( centerCamera );
     }
-
-    #region Properties
-
-    public float MinWorldWidth  { get; set; }
-    public float MinWorldHeight { get; set; }
-    public float MaxWorldWidth  { get; set; }
-    public float MaxWorldHeight { get; set; }
-
-    #endregion
 }
