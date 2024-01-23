@@ -21,6 +21,7 @@ namespace LibGDXSharp.Input;
 ///     a <see cref="RemoteInput" /> at the given ip/port. Instantiate
 ///     this and call SendUpdate() periodically.
 /// </summary>
+[PublicAPI]
 public class RemoteSender : IInputProcessor
 {
     public const int KEY_DOWN  = 0;

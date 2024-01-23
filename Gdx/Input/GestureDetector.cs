@@ -21,36 +21,39 @@ namespace LibGDXSharp.Input;
 ///     (tap, long press, fling, pan, zoom, pinch) and hands them to a
 ///     <see cref="IGestureListener" />.
 /// </summary>
+[PublicAPI]
 public class GestureDetector : InputAdapter
 {
     private readonly Vector2 _initialPointer1 = new();
     private readonly Vector2 _initialPointer2 = new();
 
-    private readonly IGestureListener?        _listener = null;
-    private readonly Vector2                  _pointer1 = new();
-    private readonly Vector2                  _pointer2 = new();
-    private readonly VelocityTracker          _tracker  = new();
-    private          bool                     _inTapRectangle;
-    private          int                      _lastTapButton;
-    private          int                      _lastTapPointer;
-    private          long                     _lastTapTime;
-    private          float                    _lastTapX;
-    private          float                    _lastTapY;
-    private          CancellationToken        _longPressCancellationToken;
-    private          CancellationTokenSource? _longPressTokenSource;
-    private          bool                     _longPressFired;
-    private          float                    _longPressSeconds;
-    private          Task?                    _longPressTask;
-    private          long                     _maxFlingDelay;
-    private          bool                     _panning;
-    private          bool                     _pinching;
-    private          int                      _tapCount;
-    private          long                     _tapCountInterval;
-    private          float                    _tapRectangleCenterX;
-    private          float                    _tapRectangleCenterY;
-    private          float                    _tapRectangleHeight;
-    private          float                    _tapRectangleWidth;
-    private          long                     _touchDownTime;
+    private readonly IGestureListener? _listener = null;
+    private readonly Vector2           _pointer1 = new();
+    private readonly Vector2           _pointer2 = new();
+    private readonly VelocityTracker   _tracker  = new();
+
+    private bool  _inTapRectangle;
+    private int   _lastTapButton;
+    private int   _lastTapPointer;
+    private long  _lastTapTime;
+    private float _lastTapX;
+    private float _lastTapY;
+    private long  _maxFlingDelay;
+    private bool  _panning;
+    private bool  _pinching;
+    private int   _tapCount;
+    private long  _tapCountInterval;
+    private float _tapRectangleCenterX;
+    private float _tapRectangleCenterY;
+    private float _tapRectangleHeight;
+    private float _tapRectangleWidth;
+    private long  _touchDownTime;
+    private bool  _longPressFired;
+    private float _longPressSeconds;
+
+    private Task?                    _longPressTask;
+    private CancellationToken        _longPressCancellationToken;
+    private CancellationTokenSource? _longPressTokenSource;
 
     /// <summary>
     ///     Creates a new GestureDetector with default values: halfTapSquareSize=20,
@@ -240,7 +243,10 @@ public class GestureDetector : InputAdapter
         return ( bool )_listener?.TouchDown( x, y, pointer, button );
     }
 
-    public override bool TouchDragged( int x, int y, int pointer ) => TouchDragged( x, y, pointer );
+    public override bool TouchDragged( int x, int y, int pointer )
+    {
+        return TouchDragged( x, y, pointer );
+    }
 
     public bool TouchDragged( float x, float y, int pointer )
     {
@@ -299,7 +305,10 @@ public class GestureDetector : InputAdapter
         return false;
     }
 
-    public override bool TouchUp( int x, int y, int pointer, int button ) => TouchUp( x, y, pointer, button );
+    public override bool TouchUp( int x, int y, int pointer, int button )
+    {
+        return TouchUp( x, y, pointer, button );
+    }
 
     public bool TouchUp( float x, float y, int pointer, int button )
     {
@@ -461,6 +470,7 @@ public class GestureDetector : InputAdapter
     ///     Each method returns a bool indicating if the event should be handed to the
     ///     next listener (false to hand it to the next listener, true otherwise).
     /// </summary>
+    [PublicAPI]
     public interface IGestureListener
     {
         bool TouchDown( float x, float y, int pointer, int button );
@@ -532,6 +542,7 @@ public class GestureDetector : InputAdapter
     ///     Derrive from this if you only want to implement a subset
     ///     of <see cref="IGestureListener" />.
     /// </summary>
+    [PublicAPI]
     public class GestureAdapter : IGestureListener
     {
         public bool TouchDown( float x, float y, int pointer, int button ) => false;
@@ -557,8 +568,8 @@ public class GestureDetector : InputAdapter
         {
         }
     }
-
-
+    
+    [PublicAPI]
     public class VelocityTracker
     {
         private readonly long[]  _meanTime;

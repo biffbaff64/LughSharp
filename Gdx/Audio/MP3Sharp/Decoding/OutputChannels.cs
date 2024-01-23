@@ -20,6 +20,7 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 ///     A Type-safe representation of the the supported output channel constants.
 ///     This class is immutable and, hence, is thread safe.
 /// </summary>
+[PublicAPI]
 public class OutputChannels
 {
     /// <summary>
@@ -87,14 +88,17 @@ public class OutputChannels
     /// </summary>
     /// <param name="code"> one of the OutputChannels channel code constants. </param>
     /// <exception cref="ArgumentException"> if code is not a valid channel code.</exception>
-    public static OutputChannels FromInt( int code ) => code switch
-                                                        {
-                                                            ( int )OutputChannelsEnum.LeftChannel => Left,
-                                                            ( int )OutputChannelsEnum.RightChannel => Right,
-                                                            ( int )OutputChannelsEnum.BothChannels => Both,
-                                                            ( int )OutputChannelsEnum.DownmixChannels => DownMix,
-                                                            _ => throw new ArgumentException( "Invalid channel code: " + code )
-                                                        };
+    public static OutputChannels FromInt( int code )
+    {
+        return code switch
+               {
+                   ( int )OutputChannelsEnum.LeftChannel     => Left,
+                   ( int )OutputChannelsEnum.RightChannel    => Right,
+                   ( int )OutputChannelsEnum.BothChannels    => Both,
+                   ( int )OutputChannelsEnum.DownmixChannels => DownMix,
+                   _                                         => throw new ArgumentException( "Invalid channel code: " + code )
+               };
+    }
 
     public override bool Equals( object? obj )
     {

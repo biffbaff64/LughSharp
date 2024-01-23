@@ -20,6 +20,7 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 ///     This struct describes all error codes that can be thrown
 ///     in BistreamExceptions.
 /// </summary>
+[PublicAPI]
 public struct BitstreamErrors
 {
     public const int UNKNOWN_ERROR       = BITSTREAM_ERROR + 0;
@@ -28,7 +29,6 @@ public struct BitstreamErrors
     public const int UNEXPECTED_EOF      = BITSTREAM_ERROR + 3;
     public const int STREAM_EOF          = BITSTREAM_ERROR + 4;
     public const int BITSTREAM_LAST      = 0x1ff;
-
-    public const int BITSTREAM_ERROR = 0x100;
-    public const int DECODER_ERROR   = 0x200;
+    public const int BITSTREAM_ERROR     = 0x100;
+    public const int DECODER_ERROR       = 0x200;
 }

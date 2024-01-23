@@ -16,7 +16,7 @@
 
 namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 
-[Serializable]
+[PublicAPI, Serializable]
 public class CircularByteBuffer
 {
     private byte[] _buffer;
@@ -31,9 +31,9 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Initialize by copying the CircularByteBuffer passed in
+    ///     Initialize by copying the supplied CircularByteBuffer
     /// </summary>
-    public CircularByteBuffer( CircularByteBuffer cdb )
+    public CircularByteBuffer( in CircularByteBuffer cdb )
     {
         lock ( cdb )
         {
@@ -112,11 +112,9 @@ public class CircularByteBuffer
     /// </summary>
     public byte Push( byte newValue )
     {
-        byte ret;
-
         lock ( this )
         {
-            ret = InternalGet( _length );
+            var ret = InternalGet( _length );
 
             _buffer[ _index ] = newValue;
             _numValid++;
@@ -128,9 +126,9 @@ public class CircularByteBuffer
 
             _index++;
             _index %= _length;
-        }
 
-        return ret;
+            return ret;
+        }
     }
 
     /// <summary>

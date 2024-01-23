@@ -19,13 +19,21 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 ///     Encapsulates a 2D polygon defined by it's vertices relative to an origin point (default of 0, 0).
 /// </summary>
+[PublicAPI]
 public class Polygon : IShape2D
 {
+    public float X        { get; set; }
+    public float Y        { get; set; }
+    public float OriginX  { get; set; }
+    public float OriginY  { get; set; }
+    public float Rotation { get; set; }
+    public float ScaleX   { get; set; } = 1;
+    public float ScaleY   { get; set; } = 1;
+
     private RectangleShape? _bounds;
     private bool            _dirty = true;
-
-    private float[]? _localVertices;
-    private float[]? _worldVertices;
+    private float[]?        _localVertices;
+    private float[]?        _worldVertices;
 
     /// <summary>
     ///     Constructs a new polygon with no vertices.
@@ -44,21 +52,13 @@ public class Polygon : IShape2D
     /// </exception>
     public Polygon( float[]? vertices )
     {
-        if ( vertices.Length < 6 )
+        if ( vertices?.Length < 6 )
         {
             throw new ArgumentException( "polygons must contain at least 3 points." );
         }
 
         _localVertices = vertices;
     }
-
-    public float X        { get; set; }
-    public float Y        { get; set; }
-    public float OriginX  { get; set; }
-    public float OriginY  { get; set; }
-    public float Rotation { get; set; }
-    public float ScaleX   { get; set; } = 1;
-    public float ScaleY   { get; set; } = 1;
 
     /// <summary>
     ///     Calculates and returns the vertices of the polygon after scaling, rotation,
@@ -77,12 +77,12 @@ public class Polygon : IShape2D
 
             _dirty = false;
 
-            if ( ( _worldVertices == null ) || ( _worldVertices.Length != _localVertices.Length ) )
+            if ( ( _worldVertices == null ) || ( _worldVertices.Length != _localVertices?.Length ) )
             {
-                _worldVertices = new float[ _localVertices.Length ];
+                _worldVertices = new float[ _localVertices!.Length ];
             }
 
-            var scale = ScaleX is not 1 || ScaleY is not 1;
+            var scale = ( ScaleX is not 1 || ScaleY is not 1 );
             var cos   = MathUtils.CosDeg( Rotation );
             var sin   = MathUtils.SinDeg( Rotation );
 
@@ -135,7 +135,7 @@ public class Polygon : IShape2D
         get => _localVertices;
         set
         {
-            if ( value.Length < 6 )
+            if ( value?.Length < 6 )
             {
                 throw new ArgumentException( "polygons must contain at least 3 points." );
             }
@@ -232,6 +232,10 @@ public class Polygon : IShape2D
         return ( intersects & 1 ) == 1;
     }
 
+    /// <summary>
+    ///     Returns whether an x, y pair from the supplied Vector2 is
+    ///     contained within the polygon.
+    /// </summary>
     public bool Contains( Vector2 point ) => Contains( point.X, point.Y );
 
     /// <summary>

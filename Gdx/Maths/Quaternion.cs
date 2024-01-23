@@ -19,6 +19,7 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 ///     A simple Quaternion class.
 /// </summary>
+[PublicAPI]
 public class Quaternion
 {
     private readonly static Quaternion Tmp1 = new( 0, 0, 0, 0 );
@@ -871,12 +872,12 @@ public class Quaternion
 
     public int HashCode()
     {
-        var prime = 31;
+        const int PRIME = 31;
 
-        var result = prime + NumberUtils.FloatToRawIntBits( W );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( X );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Y );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Z );
+        var result = PRIME + NumberUtils.FloatToRawIntBits( W );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Z );
 
         return result;
     }
@@ -886,11 +887,6 @@ public class Quaternion
         if ( this == obj )
         {
             return true;
-        }
-
-        if ( obj == null )
-        {
-            return false;
         }
 
         if ( obj is not Quaternion quaternion )

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public interface IAudio
 {
     /// <summary>

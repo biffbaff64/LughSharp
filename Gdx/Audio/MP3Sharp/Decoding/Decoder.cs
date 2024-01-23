@@ -21,6 +21,7 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Encapsulates the details of decoding an MPEG audio frame.
 /// </summary>
+[PublicAPI]
 public class Decoder
 {
     private const float DEFAULT_SCALE_FACTOR = 32700.0f;
@@ -260,6 +261,7 @@ public class Decoder
     ///     The Params class presents the customizable aspects of the decoder. Instances of
     ///     this class are not thread safe.
     /// </summary>
+    [PublicAPI]
     public class Parameters : ICloneable
     {
         public virtual OutputChannels? OutputChannels { get; set; }
@@ -273,7 +275,7 @@ public class Decoder
         /// <returns>
         ///     The Equalizer used to initialize the EQ settings of the decoder.
         /// </returns>
-        public virtual Equalizer? InitialEqualizerSettings { get; } = null;
+        public virtual Equalizer? InitialEqualizerSettings => null;
 
         public object Clone()
         {

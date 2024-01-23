@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public abstract class AbstractInput : IInput
 {
     private readonly List< int > _keysToCatch;
@@ -84,11 +85,33 @@ public abstract class AbstractInput : IInput
     /// <param name="keycode"></param>
     /// <returns></returns>
     public virtual bool IsCatchKey( int keycode ) => _keysToCatch.Contains( keycode );
+    
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
+
+    /// <summary>
+    /// </summary>
+    /// <param name="catchBack"></param>
+    public virtual void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
+
+    /// <summary>
+    /// </summary>
+    /// <param name="catchMenu"></param>
+    public virtual void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
 
     // ------------------------------------------------------------------------
     // Abstract methods to be implemented by any inheriting classes.
     // ------------------------------------------------------------------------
 
+    #region abstract methods
+    
     public abstract float GetAccelerometerX();
 
     public abstract float GetAccelerometerY();
@@ -159,23 +182,5 @@ public abstract class AbstractInput : IInput
 
     public abstract long GetCurrentEventTime();
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public virtual bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
-
-    /// <summary>
-    /// </summary>
-    /// <param name="catchBack"></param>
-    public virtual void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public virtual bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
-
-    /// <summary>
-    /// </summary>
-    /// <param name="catchMenu"></param>
-    public virtual void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
+    #endregion abstract methods
 }

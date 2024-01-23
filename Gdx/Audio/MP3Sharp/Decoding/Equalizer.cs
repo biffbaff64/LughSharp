@@ -17,14 +17,13 @@
 namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 
 /// <summary>
-///     The Equalizer class can be used to specify
-///     equalization settings for the MPEG audio decoder.
-///     The equalizer consists of 32 band-pass filters.
-///     Each band of the equalizer can take on a fractional value between
-///     -1.0 and +1.0.
+///     The Equalizer class can be used to specify equalization settings for the
+///     MPEG audio decoder. The equalizer consists of 32 band-pass filters. Each
+///     band of the equalizer can take on a fractional value between -1.0 and +1.0.
 ///     At -1.0, the input signal is attenuated by 6dB, at +1.0 the signal is
 ///     amplified by 6dB.
 /// </summary>
+[PublicAPI]
 public class Equalizer
 {
     private const int BANDS = 32;
@@ -46,11 +45,6 @@ public class Equalizer
     {
     }
 
-    //    private Equalizer(float b1, float b2, float b3, float b4, float b5,
-    //                     float b6, float b7, float b8, float b9, float b10, float b11,
-    //                     float b12, float b13, float b14, float b15, float b16,
-    //                     float b17, float b18, float b19, float b20);
-
     public Equalizer( float[] settings ) => FromFloatArray = settings;
 
     public Equalizer( EQFunction eq ) => FromEQFunction = eq;
@@ -71,8 +65,8 @@ public class Equalizer
     }
 
     /// <summary>
-    ///     Sets the bands of this equalizer to the value the bands of
-    ///     another equalizer. Bands that are not present in both equalizers are ignored.
+    ///     Sets the bands of this equalizer to the value the bands of another
+    ///     equalizer. Bands that are not present in both equalizers are ignored.
     /// </summary>
     public virtual Equalizer FromEqualizer
     {
@@ -104,14 +98,12 @@ public class Equalizer
     public virtual int BandCount => _settings.Length;
 
     /// <summary>
-    ///     Retrieves an array of floats whose values represent a
-    ///     scaling factor that can be applied to linear samples
-    ///     in each band to provide the equalization represented by
-    ///     this instance.
+    ///     Retrieves an array of floats whose values represent a scaling factor
+    ///     that can be applied to linear samples in each band to provide the
+    ///     equalization represented by this instance.
     /// </summary>
     /// <returns>
-    ///     an array of factors that can be applied to the
-    ///     subbands.
+    ///     an array of factors that can be applied to the subbands.
     /// </returns>
     public virtual float[] BandFactors
     {
@@ -129,7 +121,7 @@ public class Equalizer
     }
 
     /// <summary>
-    ///     Sets all bands to 0.0
+    ///     Sets all bands to 0.0f
     /// </summary>
     public void Reset()
     {
@@ -192,7 +184,7 @@ public class Equalizer
         return f;
     }
 
-
+    [PublicAPI]
     public abstract class EQFunction
     {
         /// <summary>

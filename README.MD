@@ -32,6 +32,21 @@ As far as I can see, I do not need to convert:-
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+Inspection Results
+------------------
+
+    - Assets    - 23/01/2024
+    - Audio     - 23/01/2024
+    - Core      - 
+    - Graphics  -  
+    - Input     - 23/01/2024
+    - Maps      -  
+    - Maths     -  
+    - Scenes    -  
+    - Utils     - 23/01/2024 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 LIBGDX CSHARP CONVERSION - ROUND 1
 ----------------------------------
 

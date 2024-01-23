@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Core;
 
+[PublicAPI]
 public interface IGraphics
 {
     #region nested classes
@@ -23,6 +24,7 @@ public interface IGraphics
     /// <summary>
     ///     Describes a fullscreen display mode.
     /// </summary>
+    [PublicAPI]
     public class DisplayModeDescriptor
     {
         public DisplayModeDescriptor( int width, int height, int refreshRate, int bitsPerPixel )
@@ -44,6 +46,7 @@ public interface IGraphics
     /// <summary>
     ///     Describes a monitor, with X, Y, and Name properties.
     /// </summary>
+    [PublicAPI]
     public class MonitorDescriptor
     {
 //        public GLFW.Monitor MonitorHandle { get; set; }
@@ -64,6 +67,7 @@ public interface IGraphics
     ///     Class describing the bits per pixel, depth buffer precision,
     ///     stencil precision and number of MSAA samples.
     /// </summary>
+    [PublicAPI]
     public record BufferFormatDescriptor
     {
         public int R       { get; set; } // number of bits per color channel.

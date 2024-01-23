@@ -21,6 +21,7 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Implements a Huffman decoder.
 /// </summary>
+[PublicAPI]
 public class Huffman
 {
     private const           int     MXOFF   = 250;

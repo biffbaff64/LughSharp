@@ -20,6 +20,7 @@ namespace LibGDXSharp.Core;
 ///     Environment class holding references to the Application,
 ///     Graphics, Audio, Files and Input instances.
 /// </summary>
+[PublicAPI]
 public static class Gdx
 {
     private static IApplication? _app       = null;

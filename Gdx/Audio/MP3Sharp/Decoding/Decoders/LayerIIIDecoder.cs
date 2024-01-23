@@ -624,7 +624,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     ///     Mono   : 136 bits (= 17 bytes)
     ///     Stereo : 256 bits (= 32 bytes)
     /// </summary>
-    // ReSharper disable once UnusedMethodReturnValue.Local //TODO:
     private bool ReadSideInfo()
     {
         int ch;

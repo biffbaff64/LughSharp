@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public class Plane
 {
     /// <summary>
@@ -130,12 +131,7 @@ public class Plane
             return PlaneSide.OnPlane;
         }
 
-        if ( dist < 0 )
-        {
-            return PlaneSide.Back;
-        }
-
-        return PlaneSide.Front;
+        return ( dist < 0 ) ? PlaneSide.Back : PlaneSide.Front;  
     }
 
     /// <summary>
@@ -155,12 +151,7 @@ public class Plane
             return PlaneSide.OnPlane;
         }
 
-        if ( dist < 0 )
-        {
-            return PlaneSide.Back;
-        }
-
-        return PlaneSide.Front;
+        return ( dist < 0 ) ? PlaneSide.Back : PlaneSide.Front;
     }
 
     /// <summary>
@@ -208,5 +199,5 @@ public class Plane
         DistanceToOrigin = plane.DistanceToOrigin;
     }
 
-    public override string ToString() => Normal.ToString() + ", " + DistanceToOrigin;
+    public override string ToString() => $"{Normal}, {DistanceToOrigin}";
 }

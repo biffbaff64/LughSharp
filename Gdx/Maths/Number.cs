@@ -30,12 +30,9 @@ namespace LibGDXSharp.Maths;
 ///     See the documentation of a given Number implementation for conversion details.
 /// </summary>
 /// <remarks>This class is taken directly from java.lang.Number</remarks>
+[PublicAPI]
 public abstract class Number
 {
-    /// <summary>
-    /// </summary>
-    private const long SERIAL_VERSION_UID = -8742448824652078965L;
-
     /// <summary>
     ///     Returns the value of the specified number as an <code>int</code>
     ///     which may involve rounding or truncation.

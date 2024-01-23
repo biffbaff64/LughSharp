@@ -30,11 +30,12 @@ namespace LibGDXSharp.Core;
 ///     like vibration, compass, on-screen keyboards, and cursor capture.
 ///     Support for simple input dialogs is also provided.
 /// </summary>
+[PublicAPI]
 public interface IInput
 {
     // --------------------------------------------------------------------
 
-
+    [PublicAPI]
     public enum OnscreenKeyboardType
     {
         Default,
@@ -47,7 +48,7 @@ public interface IInput
 
     // --------------------------------------------------------------------
 
-
+    [PublicAPI]
     public enum Orientation
     {
         Landscape,
@@ -56,7 +57,7 @@ public interface IInput
 
     // --------------------------------------------------------------------
 
-
+    [PublicAPI]
     public enum Peripheral
     {
         HardwareKeyboard,
@@ -70,6 +71,8 @@ public interface IInput
         Pressure
     }
 
+    // --------------------------------------------------------------------
+    
     IInputProcessor? InputProcessor { get; set; }
 
     // --------------------------------------------------------------------
@@ -146,6 +149,7 @@ public interface IInput
     /// <summary>
     ///     Mouse Buttons
     /// </summary>
+    [PublicAPI]
     public static class Buttons
     {
         public const int LEFT    = 0;
@@ -155,7 +159,7 @@ public interface IInput
         public const int FORWARD = 4;
     }
 
-
+    [PublicAPI]
     public static class Keys
     {
         public const int ANY_KEY             = -1;
@@ -555,7 +559,7 @@ public interface IInput
 
     // --------------------------------------------------------------------
 
-
+    [PublicAPI]
     public interface ITextInputListener
     {
         void Input( string text );

@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public class Matrix4
 {
     /// <summary>
@@ -1034,7 +1035,7 @@ public class Matrix4
             return this;
         }
 
-        return Set( Quat.Set( axis, degrees ) );
+        return Set( Quat.SetFromAxis( axis, degrees ) );
     }
 
     /// <summary>
@@ -1552,9 +1553,9 @@ public class Matrix4
     }
 
     public override string ToString() => $"[{val[ M00 ]}|{val[ M01 ]}|{val[ M02 ]}|{val[ M03 ]}]\n[{val[ M10 ]}"
-                                  + $"|{val[ M11 ]}|{val[ M12 ]}|{val[ M13 ]}]\n[{val[ M20 ]}|{val[ M21 ]}"
-                                  + $"|{val[ M22 ]}|{val[ M23 ]}]\n[{val[ M30 ]}|{val[ M31 ]}|{val[ M32 ]}"
-                                  + $"|{val[ M33 ]}]\n";
+                                       + $"|{val[ M11 ]}|{val[ M12 ]}|{val[ M13 ]}]\n[{val[ M20 ]}|{val[ M21 ]}"
+                                       + $"|{val[ M22 ]}|{val[ M23 ]}]\n[{val[ M30 ]}|{val[ M31 ]}|{val[ M32 ]}"
+                                       + $"|{val[ M33 ]}]\n";
 
     /// <summary>
     ///     Multiplies the vectors with the given matrix. The matrix array is assumed to
@@ -1990,48 +1991,49 @@ public class Matrix4
     /// </summary>
     /// <param name="values"> the matrix values. </param>
     /// <returns> the determinante.  </returns>
-    public static float Det( float[] values ) => ( ( ( ( ( ( ( ( ( ( ( ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
-                                                                     - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
-                                                                     - ( values[ M30 ]
-                                                                       * values[ M11 ]
-                                                                       * values[ M22 ]
-                                                                       * values[ M03 ] ) )
-                                                                   + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
-                                                                   + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
-                                                                 - ( values[ M10 ]
-                                                                   * values[ M21 ]
-                                                                   * values[ M32 ]
-                                                                   * values[ M03 ] )
-                                                                 - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
-                                                               + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
-                                                               + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
-                                                             - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
-                                                             - ( values[ M20 ]
-                                                               * values[ M01 ]
-                                                               * values[ M32 ]
-                                                               * values[ M13 ] ) )
-                                                           + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
-                                                           + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
-                                                         - ( values[ M10 ]
-                                                           * values[ M31 ]
-                                                           * values[ M02 ]
-                                                           * values[ M23 ] )
-                                                         - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
-                                                       + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
-                                                       + ( values[ M10 ]
-                                                         * values[ M01 ]
-                                                         * values[ M32 ]
-                                                         * values[ M23 ] ) )
-                                                     - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
-                                                     - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
-                                                   + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
-                                                   + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
-                                                 - ( values[ M00 ]
-                                                   * values[ M21 ]
-                                                   * values[ M12 ]
-                                                   * values[ M33 ] )
-                                                 - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
-                                               + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
+    public static float Det( float[] values )
+    {
+        //@formatter:off
+        // BE VERY CAREFUL WITH EDITING THIS!!!!
+        return ( ( ( ( ( ( ( ( ( ( (
+              // --------------------------------------------------------------  
+                ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
+              - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
+              - ( values[ M30 ] * values[ M11 ] * values[ M22 ] * values[ M03 ] ) )
+              // --------------------------------------------------------------  
+              + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
+              + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
+              // --------------------------------------------------------------  
+              - ( values[ M10 ] * values[ M21 ] * values[ M32 ] * values[ M03 ] )
+              - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
+              // --------------------------------------------------------------  
+              + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
+              + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
+              // --------------------------------------------------------------  
+              - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
+              - ( values[ M20 ] * values[ M01 ] * values[ M32 ] * values[ M13 ] ) )
+              // --------------------------------------------------------------  
+              + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
+              + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
+              // --------------------------------------------------------------  
+              - ( values[ M10 ] * values[ M31 ] * values[ M02 ] * values[ M23 ] )
+              - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
+              // --------------------------------------------------------------  
+              + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
+              + ( values[ M10 ] * values[ M01 ] * values[ M32 ] * values[ M23 ] ) )
+              // --------------------------------------------------------------  
+              - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
+              - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
+              // --------------------------------------------------------------  
+              + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
+              + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
+              // --------------------------------------------------------------  
+              - ( values[ M00 ] * values[ M21 ] * values[ M12 ] * values[ M33 ] )
+              - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
+              // --------------------------------------------------------------  
+              + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
+        //@formatter:on
+    }
 
     /// <summary>
     ///     Postmultiplies this matrix by a translation matrix.
@@ -2073,7 +2075,7 @@ public class Matrix4
             return this;
         }
 
-        Quat.Set( axis, degrees );
+        Quat.SetFromAxis( axis, degrees );
 
         return Rotate( Quat );
     }

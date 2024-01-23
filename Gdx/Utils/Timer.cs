@@ -378,8 +378,8 @@ public class Timer
         public long GetExecuteTimeMillis() => executeTimeMillis;
     }
 
-
-    public class TimerThread : ILifecycleListener
+    [PublicAPI]
+    public class TimerThread : ILifecycleListener, IDisposable
     {
         public readonly IFiles?       files;
         public readonly List< Timer > instances = new( capacity: 1 );
@@ -427,12 +427,6 @@ public class Timer
 
                 Monitor.PulseAll( ThreadLock );
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose( true );
-            GC.SuppressFinalize( this );
         }
 
         public void Run()
@@ -484,6 +478,12 @@ public class Timer
             exitlabel:
 
             Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose( true );
+            GC.SuppressFinalize( this );
         }
 
         private void Dispose( bool disposing )

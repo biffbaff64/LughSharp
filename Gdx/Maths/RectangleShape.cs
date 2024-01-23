@@ -20,6 +20,7 @@ namespace LibGDXSharp.Maths;
 ///     Rectangle class that is independent of any backends.
 ///     This has no drawing methods, just those that handle the shape.
 /// </summary>
+[PublicAPI]
 public class RectangleShape : IShape2D
 {
     public readonly static RectangleShape Tmp = new();
@@ -270,7 +271,7 @@ public class RectangleShape : IShape2D
     /// </summary>
     /// <param name="vecs"> the vectors describing the points </param>
     /// <returns> this rectangle for chaining  </returns>
-    public RectangleShape Merge( Vector2[] vecs )
+    public RectangleShape Merge( IEnumerable< Vector2 > vecs )
     {
         var minX = X;
         var maxX = X + Width;
@@ -454,10 +455,11 @@ public class RectangleShape : IShape2D
     {
         const int PRIME = 31;
 
-        var result = PRIME + NumberUtils.FloatToRawIntBits( Height );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Width );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
+        //TODO: Do this properly without referencing Tmp.
+        var result = PRIME + NumberUtils.FloatToRawIntBits( Tmp.X );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Tmp.Y );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Tmp.Width );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Tmp.Height );
 
         return result;
     }
