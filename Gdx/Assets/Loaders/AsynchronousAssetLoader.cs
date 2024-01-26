@@ -16,34 +16,6 @@
 
 namespace LibGDXSharp.Assets.Loaders;
 
-[PublicAPI]
-public abstract class AsynchronousAssetLoader : AssetLoader
-{
-    protected AsynchronousAssetLoader( IFileHandleResolver resolver )
-        : base( resolver )
-    {
-        IsSynchronous = false;
-    }
-
-    public abstract void LoadAsync<T>( AssetManager manager,
-                                       string? fileName,
-                                       FileInfo? file,
-                                       T parameter ) where T : AssetLoaderParameters;
-
-    public abstract object LoadSync<T>( AssetManager manager,
-                                        string? fileName,
-                                        FileInfo? file,
-                                        T parameter ) where T : AssetLoaderParameters;
-
-    public static void UnloadAsync<T>( AssetManager manager,
-                                       string fileName,
-                                       FileInfo file,
-                                       T parameter ) where T : AssetLoaderParameters
-
-    {
-    }
-}
-
 /// <summary>
 ///     Base class for asynchronous AssetLoader instances. Such loaders try to load parts
 ///     of an OpenGL resource, like the Pixmap, on a separate thread to then load the actual
@@ -104,6 +76,34 @@ public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     public virtual void UnloadAsync( AssetManager manager, string? fileName, FileInfo? file, TParameters parameter )
+    {
+    }
+}
+
+[PublicAPI]
+public abstract class AsynchronousAssetLoader : AssetLoader
+{
+    protected AsynchronousAssetLoader( IFileHandleResolver resolver )
+        : base( resolver )
+    {
+        IsSynchronous = false;
+    }
+
+    public abstract void LoadAsync<T>( AssetManager manager,
+                                       string? fileName,
+                                       FileInfo? file,
+                                       T parameter ) where T : AssetLoaderParameters;
+
+    public abstract object LoadSync<T>( AssetManager manager,
+                                        string? fileName,
+                                        FileInfo? file,
+                                        T parameter ) where T : AssetLoaderParameters;
+
+    public static void UnloadAsync<T>( AssetManager manager,
+                                       string fileName,
+                                       FileInfo file,
+                                       T parameter ) where T : AssetLoaderParameters
+
     {
     }
 }

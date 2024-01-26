@@ -19,6 +19,7 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics.G2D;
 
+[PublicAPI]
 public class ParticleEmitter
 {
     // ------------------------------------------------------------------------
@@ -1130,7 +1131,7 @@ public class ParticleEmitter
     {
         if ( Sprites.Count == 0 )
         {
-            throw new IllegalStateException( "ParticleEmitter.SetSprites() must have been called before PreAllocateParticles()" );
+            throw new GdxRuntimeException( "ParticleEmitter.SetSprites() must have been called before PreAllocateParticles()" );
         }
 
         for ( var index = 0; index < _particles.Length; index++ )

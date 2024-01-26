@@ -14,8 +14,9 @@
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public class HeapByteBuffer : ByteBuffer
 {
     public HeapByteBuffer( int cap, int lim )

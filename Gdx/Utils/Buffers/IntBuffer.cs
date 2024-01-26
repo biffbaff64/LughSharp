@@ -14,20 +14,22 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Utils.Buffers;
 
 [PublicAPI]
-public class NumberFormatException : FormatException
+public abstract class IntBuffer : Buffer
 {
-    /// <inheritdoc cref="FormatException(string?)" />
-    public NumberFormatException( string? message = "" )
-        : base( message )
+    protected IntBuffer() : base( 0, 0, 0, 0 )
     {
     }
 
-    /// <inheritdoc cref="FormatException(string?,System.Exception?)" />
-    public NumberFormatException( string? message, Exception? innerException )
-        : base( message, innerException )
-    {
-    }
+    public int Get( int i ) => 0;
+
+    public int Get() => 0;
+
+    public abstract IntBuffer Put( int[] i, int i1, int i2 );
+
+    public abstract IntBuffer Put( int i, int i1 );
+
+    public abstract IntBuffer Put( int i );
 }

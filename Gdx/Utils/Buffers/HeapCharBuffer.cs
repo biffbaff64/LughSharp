@@ -14,8 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public class HeapCharBuffer : CharBuffer
 {
     public HeapCharBuffer( char[] array, int offset, int length )
@@ -39,7 +40,7 @@ public class HeapCharBuffer : CharBuffer
     ///     current position, and then increments the position.
     /// </summary>
     /// <returns>The char at the buffer's current position</returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit
     /// </exception>
     protected override char Get() => '\0';
@@ -53,10 +54,10 @@ public class HeapCharBuffer : CharBuffer
     /// </summary>
     /// <param name="c">The char to be written</param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer's current position is not smaller than its limit
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only, which it shouldn't be!
     /// </exception>
     protected override CharBuffer Put( char c ) => this;
@@ -93,7 +94,7 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only </exception>
     public override CharBuffer Put( int index, char c ) => this;
 
     /// <summary>

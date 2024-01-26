@@ -20,6 +20,7 @@ using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics.G2D;
 
+[PublicAPI]
 public class BitmapFont
 {
     private const    string          REGEX_PATTERN  = ".*id=(\\d+)";
@@ -41,11 +42,9 @@ public class BitmapFont
     ///     a bitmap font yourself.
     /// </summary>
     public BitmapFont()
-        : this(
-            Gdx.Files.Internal( FONT_NAME ),
-            Gdx.Files.Internal( FONT_NAME ),
-            false
-            ) => _fileType = FileType.Internal;
+        : this( Gdx.Files.Internal( FONT_NAME ),
+                Gdx.Files.Internal( FONT_NAME ),
+                false ) => _fileType = FileType.Internal;
 
     /// <summary>
     ///     Creates a BitmapFont using the default 15pt Arial font included in the
@@ -60,7 +59,9 @@ public class BitmapFont
     ///     the upper left corner.
     /// </param>
     public BitmapFont( bool flip )
-        : this( Gdx.Files.Internal( FONT_NAME ), Gdx.Files.Internal( FONT_NAME ), flip ) => _fileType = FileType.Internal;
+        : this( Gdx.Files.Internal( FONT_NAME ),
+                Gdx.Files.Internal( FONT_NAME ),
+                flip ) => _fileType = FileType.Internal;
 
     /// <summary>
     ///     Creates a BitmapFont with the glyphs relative to the specified region.
@@ -105,11 +106,9 @@ public class BitmapFont
     /// </param>
     /// <param name="integer"></param>
     public BitmapFont( FileInfo fontFile, FileInfo imageFile, bool flip, bool integer = true )
-        : this(
-            new BitmapFontData( fontFile, flip ),
-            new TextureRegion( new Texture( imageFile, false ) ),
-            integer
-            )
+        : this( new BitmapFontData( fontFile, flip ),
+                new TextureRegion( new Texture( imageFile, false ) ),
+                integer )
     {
         OwnsTexture = true;
         _fileType   = FileType.Local;
@@ -137,7 +136,9 @@ public class BitmapFont
     ///     artifacts.
     /// </param>
     public BitmapFont( BitmapFontData data, TextureRegion? region, bool integer )
-        : this( data, region != null ? ListExtensions.With( region ) : null, integer ) => _fileType = FileType.Local;
+        : this( data,
+                region != null ? ListExtensions.With( region ) : null,
+                integer ) => _fileType = FileType.Local;
 
     /// <summary>
     ///     Constructs a new BitmapFont from the given <see cref="BitmapFontData" /> and array
@@ -189,8 +190,10 @@ public class BitmapFont
 
         _cache = NewFontCache();
 
-        Load( data );
+        InitialLoad( data );
     }
+
+    private void InitialLoad( BitmapFontData data ) => Load( data );
 
     public bool Flipped     { get; set; }
     public bool OwnsTexture { get; set; }
@@ -229,10 +232,7 @@ public class BitmapFont
 
         if ( data.MissingGlyph != null )
         {
-            data.MissingGlyph = data.SetGlyphRegion(
-                data.MissingGlyph,
-                _regions[ data.MissingGlyph.Page ]
-                );
+            data.MissingGlyph = data.SetGlyphRegion( data.MissingGlyph, _regions[ data.MissingGlyph.Page ] );
         }
     }
 
@@ -284,16 +284,7 @@ public class BitmapFont
     {
         _cache.Clear();
 
-        GlyphLayout layout = _cache.AddText(
-            str,
-            x,
-            y,
-            start,
-            end,
-            targetWidth,
-            halign,
-            wrap
-            );
+        GlyphLayout layout = _cache.AddText( str, x, y, start, end, targetWidth, halign, wrap );
 
         _cache.Draw( batch );
 
@@ -349,7 +340,6 @@ public class BitmapFont
     public void SetColor( float r, float g, float b, float a ) => _cache.GetColor().Set( r, g, b, a );
 
     public float GetScaleX() => _data.ScaleX;
-
     public float GetScaleY() => _data.ScaleY;
 
     /// <summary>
@@ -381,14 +371,14 @@ public class BitmapFont
     /// </summary>
     public float GetLineHeight() => _data.LineHeight;
 
-    /**
-     * Returns the x-advance of the space character.
-     */
+    /// <summary>
+    /// Returns the x-advance of the space character.
+    /// </summary>
     public float GetSpaceXadvance() => _data.SpaceXadvance;
 
-    /**
-     * Returns the x-height, which is the distance from the top of most lowercase characters to the baseline.
-     */
+    /// <summary>
+    /// Returns the x-height, which is the distance from the top of most lowercase characters to the baseline.
+    /// </summary>
     public float GetXHeight() => _data.XHeight;
 
     /// <summary>
@@ -570,9 +560,7 @@ public class BitmapFont
         ///     Additional characters besides whitespace where text is wrapped.
         ///     Eg, a hypen (-).
         /// </summary>
-
-        // ReSharper disable once UnassignedField.Global
-        internal char[]? breakChars;
+        internal readonly char[]? breakChars = null;
 
         /// <summary>
         ///     Creates an empty BitmapFontData for configuration before calling
@@ -597,18 +585,14 @@ public class BitmapFont
             Load( fontFile, flip );
         }
 
-        // The name of the font, or null.
-        internal string? Name { get; private set; }
-
-        // An array of the image paths, for multiple texture pages.
+        internal string?   Name       { get; private set; }
         internal string[]? ImagePaths { get; private set; }
-
-        internal FileInfo FontFile  { get; set; }
-        internal bool     Flipped   { get; set; }
-        internal float    PadTop    { get; set; }
-        internal float    PadRight  { get; set; }
-        internal float    PadBottom { get; set; }
-        internal float    PadLeft   { get; set; }
+        internal FileInfo  FontFile   { get; set; }
+        internal bool      Flipped    { get; set; }
+        internal float     PadTop     { get; set; }
+        internal float     PadRight   { get; set; }
+        internal float     PadBottom  { get; set; }
+        internal float     PadLeft    { get; set; }
 
         /// <summary>
         ///     The distance from one line of text to the next.
@@ -754,10 +738,9 @@ public class BitmapFont
                     {
                         pageCount = Math.Max( 1, int.Parse( common[ 5 ].Substring( 6 ) ) );
                     }
-                    catch ( NumberFormatException ignored )
+                    catch ( Exception e )
                     {
-                        // Use one page.
-                        Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
+                        Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + e.Message );
                     }
                 }
 
@@ -792,7 +775,7 @@ public class BitmapFont
                                 throw new GdxRuntimeException( "Page IDs must be indices starting at 0: " + id );
                             }
                         }
-                        catch ( NumberFormatException ex )
+                        catch ( Exception ex )
                         {
                             throw new GdxRuntimeException( "Invalid page id: " + id, ex );
                         }
@@ -900,7 +883,7 @@ public class BitmapFont
                         {
                             glyph.Page = int.Parse( tokens.NextToken() );
                         }
-                        catch ( NumberFormatException ignored )
+                        catch ( Exception ignored )
                         {
                             Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
                         }
@@ -1301,6 +1284,8 @@ public class BitmapFont
         /// </param>
         public void GetGlyphs( GlyphLayout.GlyphRun? run, string str, int start, int end, Glyph? lastGlyph )
         {
+            ArgumentNullException.ThrowIfNull( run );
+            
             var max = end - start;
 
             if ( max == 0 )

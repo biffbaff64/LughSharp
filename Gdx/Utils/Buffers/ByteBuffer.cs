@@ -14,8 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
     private bool _nativeByteOrder = Bits.ByteOrder == ByteOrder.BigEndian;
@@ -117,7 +118,7 @@ public abstract class ByteBuffer : Buffer
     ///         This method transfers bytes from this buffer into the given destination
     ///         array. If there are fewer bytes remaining in the buffer than are required
     ///         to satisfy the request, that is, if <tt>length &gt; remaining()</tt>, then no
-    ///         bytes are transferred and a <see cref="BufferUnderflowException" /> is thrown.
+    ///         bytes are transferred and a <see cref="GdxRuntimeException" /> is thrown.
     ///     </para>
     ///     <para>
     ///         Otherwise, this method copies <tt>length</tt> bytes from this buffer into the
@@ -147,7 +148,7 @@ public abstract class ByteBuffer : Buffer
     ///     non-negative and no larger than <tt>dst.length - offset</tt>
     /// </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt>length</tt> bytes remaining in this buffer
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
@@ -159,7 +160,7 @@ public abstract class ByteBuffer : Buffer
 
         if ( length > Remaining() )
         {
-            throw new BufferUnderflowException();
+            throw new GdxRuntimeException( "Buffer Underflow!" );
         }
 
         var end = offset + length;
@@ -183,7 +184,7 @@ public abstract class ByteBuffer : Buffer
     /// </summary>
     /// <param name="dst">The destination array.</param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt> dst.Length </tt> bytes remaining in this buffer.
     /// </exception>
     public ByteBuffer Get( byte[] dst ) => Get( dst, 0, dst.Length );
@@ -191,17 +192,17 @@ public abstract class ByteBuffer : Buffer
     /// <summary>
     ///     Transfers the bytes remaining in the given source buffer into this buffer.
     ///     If there are more bytes remaining in the source buffer than in this buffer,
-    ///     no bytes are transferred, and a <see cref="BufferOverflowException" /> is thrown.
+    ///     no bytes are transferred, and a <see cref="GdxRuntimeException" /> is thrown.
     /// </summary>
     /// <param name="src">
     ///     The source buffer from which bytes are to be read; must not be this buffer.
     /// </param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer for the remaining bytes in the source buffer.
     /// </exception>
     /// <exception cref="ArgumentException">If the source buffer is this buffer.</exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public ByteBuffer Put( ByteBuffer src )
     {
         if ( src.Equals( this ) )
@@ -211,14 +212,14 @@ public abstract class ByteBuffer : Buffer
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is readonly!" );
         }
 
         var n = src.Remaining();
 
         if ( n > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         for ( var i = 0; i < n; i++ )
@@ -232,7 +233,7 @@ public abstract class ByteBuffer : Buffer
     /// <summary>
     ///     Transfers bytes into this buffer from the given source array. If there are
     ///     more bytes to be copied from the array than remain in this buffer, no bytes
-    ///     are transferred, and a <see cref="BufferOverflowException" /> is thrown.
+    ///     are transferred, and a <see cref="GdxRuntimeException" /> is thrown.
     /// </summary>
     /// <param name="src">The array from which bytes are to be read.</param>
     /// <param name="offset">
@@ -244,21 +245,23 @@ public abstract class ByteBuffer : Buffer
     ///     and no larger than <paramref name="src" />.Length - <paramref name="offset" />.
     /// </param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
-    ///     If there is insufficient space in this buffer.
+    /// <exception cref="GdxRuntimeException">
+    ///     If there is insufficient space in this buffer. ( With appropriate message ).
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on the <paramref name="offset" /> and <paramref name="length" />
     ///     parameters do not hold.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">
+    ///     If this buffer is read-only. ( With appropriate message ).
+    /// </exception>
     public ByteBuffer Put( byte[] src, int offset, int length )
     {
         CheckBounds( offset, length, src.Length );
 
         if ( length > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         var end = offset + length;
@@ -278,10 +281,10 @@ public abstract class ByteBuffer : Buffer
     /// </summary>
     /// <param name="src">The source byte array.</param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public ByteBuffer Put( byte[] src ) => Put( src, 0, src.Length );
 
     // ------------------------------------------------------------------------
@@ -310,22 +313,22 @@ public abstract class ByteBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is backed by an array but is read-only
     /// </exception>
-    /// <exception cref="UnsupportedOperationException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array
     /// </exception>
     public override byte[] BackingArray()
     {
         if ( Hb == null )
         {
-            throw new UnsupportedOperationException();
+            throw new GdxRuntimeException( "Backing array is null!" );
         }
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         return Hb;
@@ -347,22 +350,22 @@ public abstract class ByteBuffer : Buffer
     /// <returns>
     ///     The offset within this buffer's array of the first element of the buffer
     /// </returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is backed by an array but is read-only
     /// </exception>
-    /// <exception cref="UnsupportedOperationException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array
     /// </exception>
     public override int ArrayOffset()
     {
         if ( Hb == null )
         {
-            throw new UnsupportedOperationException();
+            throw new GdxRuntimeException( "Backing array is null!" );
         }
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         return Offset;
@@ -400,7 +403,7 @@ public abstract class ByteBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer </returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
     public abstract ByteBuffer Compact();
@@ -635,7 +638,7 @@ public abstract class ByteBuffer : Buffer
     ///     current position, and then increments the position.
     /// </summary>
     /// <returns> The byte at the buffer's current position </returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit
     /// </exception>
     public abstract byte Get();
@@ -649,10 +652,10 @@ public abstract class ByteBuffer : Buffer
     /// </summary>
     /// <param name="b"> The byte to be written </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer's current position is not smaller than its limit
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
     public abstract ByteBuffer Put( byte b );
@@ -679,7 +682,7 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public abstract ByteBuffer Put( int index, byte b );
 
     #endregion abstract methods
@@ -744,7 +747,7 @@ public abstract class ByteBuffer : Buffer
     ///     the position by eight.
     /// </summary>
     /// <returns>The double value at the buffer's current position.</returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than eight bytes remaining in this buffer.
     /// </exception>
     public abstract double GetDouble();
@@ -768,10 +771,10 @@ public abstract class ByteBuffer : Buffer
     /// </summary>
     /// <param name="value">The double value to be written.</param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than eight bytes remaining in this buffer.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public abstract ByteBuffer PutDouble( double value );
 
     /// <summary>
@@ -787,7 +790,7 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit, minus 7
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     if this buffer is read-only
     /// </exception>
     public abstract ByteBuffer PutDouble( int index, double value );

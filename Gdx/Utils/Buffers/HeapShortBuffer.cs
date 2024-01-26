@@ -14,8 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public class HeapShortBuffer : ShortBuffer
 {
     public HeapShortBuffer( int capacity, int limit )
@@ -98,7 +99,7 @@ public class HeapShortBuffer : ShortBuffer
     ///     and then increments the position.
     /// </summary>
     /// <returns>The short at the buffer's current position.</returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit.
     /// </exception>
     public override short Get() => 0;
@@ -108,10 +109,10 @@ public class HeapShortBuffer : ShortBuffer
     /// </summary>
     /// <param name="s">The short to be written.</param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer's current position is not smaller than its limit.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public override ShortBuffer Put( short s ) => null;
 
     /// <summary>
@@ -136,7 +137,7 @@ public class HeapShortBuffer : ShortBuffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <paramref name="index" /> is negative or not smaller than the buffer's limit.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public override ShortBuffer Put( int index, short s ) => null;
 
     /// <summary>
@@ -161,7 +162,7 @@ public class HeapShortBuffer : ShortBuffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer </returns>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
     public override ShortBuffer Compact() => null;
 
     /// <summary>

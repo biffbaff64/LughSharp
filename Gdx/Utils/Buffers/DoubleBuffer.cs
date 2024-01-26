@@ -14,13 +14,13 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
-public interface IDirectBuffer
+[PublicAPI]
+public abstract class DoubleBuffer : Buffer
 {
-    long Address();
-
-    object Attachment();
-
-//    Cleaner Cleaner();
+    protected DoubleBuffer( int mark, int pos, int lim, int cap, double[]? hb = null, int offset = 0 )
+        : base( mark, pos, lim, cap )
+    {
+    }
 }

@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
 /// <summary>
 ///     A char buffer.
@@ -74,6 +74,7 @@ namespace LibGDXSharp.Files.Buffers;
 /// </code>
 ///     </para>
 /// </summary>
+[PublicAPI]
 public abstract class CharBuffer : Buffer
 {
     protected readonly int offset;
@@ -173,7 +174,7 @@ public abstract class CharBuffer : Buffer
     /// </returns>
     /// <exception cref="IOException">if an I/O error occurs</exception>
     /// <exception cref="NullReferenceException">if target is null</exception>
-    /// <exception cref="ReadOnlyBufferException">if target is a read only buffer</exception>
+    /// <exception cref="GdxRuntimeException">if target is a read only buffer</exception>
     public int Read( CharBuffer target )
     {
         // Determine the number of bytes n that can be transferred
@@ -270,7 +271,7 @@ public abstract class CharBuffer : Buffer
     ///         This method transfers chars from this buffer into the given destination array.
     ///         If there are fewer chars remaining in thebuffer than are required to satisfy
     ///         the request, that is, if <tt>length</tt> <tt>&gt;</tt> <tt>Remaining()</tt>,
-    ///         then no chars are transferred and a <see cref="BufferUnderflowException" /> is
+    ///         then no chars are transferred and a <see cref="GdxRuntimeException" /> is
     ///         thrown. Otherwise, this method copies <tt>length</tt> chars from this buffer
     ///         into the given array, starting at the current position of this buffer and at
     ///         the given offset in the array.  The position of this buffer is then incremented
@@ -299,7 +300,7 @@ public abstract class CharBuffer : Buffer
     ///     and no larger than <tt>dst.length - offset</tt>
     /// </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt>length</tt> chars remaining in this buffer
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
@@ -311,7 +312,7 @@ public abstract class CharBuffer : Buffer
 
         if ( length > Remaining() )
         {
-            throw new BufferUnderflowException();
+            throw new GdxRuntimeException( "Buffer Underflow!" );
         }
 
         var end = off + length;
@@ -337,7 +338,7 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <param name="dst"> The destination array </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt>length</tt> chars remaining in this buffer
     /// </exception>
     public CharBuffer Get( char[] dst ) => Get( dst, 0, dst.Length );
@@ -354,7 +355,7 @@ public abstract class CharBuffer : Buffer
     ///         This method transfers the chars remaining in the given source buffer into this
     ///         buffer. If there are more chars remaining in the source buffer than in this
     ///         buffer, that is, if <tt>src.Remaining()</tt> <tt>&gt;</tt> <tt>Remaining()</tt>,
-    ///         then no chars are transferred and a <see cref="BufferOverflowException" /> is thrown.
+    ///         then no chars are transferred and a <see cref="GdxRuntimeException" /> is thrown.
     ///     </para>
     ///     <para>
     ///         Otherwise, this method copies <i>n</i> = <tt>src.Remaining()</tt> chars from the
@@ -377,12 +378,12 @@ public abstract class CharBuffer : Buffer
     ///     The source buffer from which chars are to be read; must not be this buffer
     /// </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer for the remaining chars in the
     ///     source buffer
     /// </exception>
     /// <exception cref="ArgumentException"> If the source buffer is this buffer </exception>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public CharBuffer Put( CharBuffer src )
     {
         if ( src == this )
@@ -392,14 +393,14 @@ public abstract class CharBuffer : Buffer
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         var n = src.Remaining();
 
         if ( n > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         for ( var i = 0; i < n; i++ )
@@ -416,7 +417,7 @@ public abstract class CharBuffer : Buffer
     ///         This method transfers chars into this buffer from the given source array.
     ///         If there are more chars to be copied from the array than remain in this
     ///         buffer, that is, if <tt>length</tt> <tt>&gt;</tt> <tt>Remaining()</tt>,
-    ///         then no chars are transferred and a <see cref="BufferOverflowException" />
+    ///         then no chars are transferred and a <see cref="GdxRuntimeException" />
     ///         is thrown.
     ///     </para>
     ///     <para>
@@ -447,18 +448,18 @@ public abstract class CharBuffer : Buffer
     ///     and no larger than <tt>array.length - offset</tt>
     /// </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException"> If there is insufficient space in this buffer </exception>
+    /// <exception cref="GdxRuntimeException"> If there is insufficient space in this buffer </exception>
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public CharBuffer Put( char[] src, int off, int length )
     {
         CheckBounds( off, length, src.Length );
 
         if ( length > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         var end = off + length;
@@ -484,8 +485,8 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <param name="src"> The source array </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException"> If there is insufficient space in this buffer </exception>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException"> If there is insufficient space in this buffer </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public CharBuffer Put( char[] src ) => Put( src, 0, src.Length );
 
     /// <summary>
@@ -494,7 +495,7 @@ public abstract class CharBuffer : Buffer
     ///         This method transfers chars from the given string into this buffer. If there are
     ///         more chars to be copied from the string than remain in this buffer, that is, if
     ///         <tt>end - start</tt> <tt>&gt;</tt> <tt>Remaining()</tt>, then no chars are transferred
-    ///         and a <see cref="BufferOverflowException" /> is thrown. Otherwise, this method copies
+    ///         and a <see cref="GdxRuntimeException" /> is thrown. Otherwise, this method copies
     ///         <i>n</i> = <tt>end</tt> - <tt>start</tt> chars from the given string into this buffer,
     ///         starting at the given <tt>start</tt> index and at the current position of this buffer.
     ///         The position of this buffer is then incremented by <i>n</i>.
@@ -522,25 +523,25 @@ public abstract class CharBuffer : Buffer
     ///     non-negative and no larger than <tt>string.length()</tt>
     /// </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on the <tt>start</tt> and <tt>end</tt> parameters do not hold
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public CharBuffer Put( string src, int start, int end )
     {
         CheckBounds( start, end - start, src.Length );
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         if ( ( end - start ) > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         for ( var i = start; i < end; i++ )
@@ -567,10 +568,10 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <param name="src"> The source string </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public CharBuffer Put( string src ) => Put( src, 0, src.Length );
 
     #endregion Bulk put operations
@@ -584,7 +585,7 @@ public abstract class CharBuffer : Buffer
     ///     current position, and then increments the position.
     /// </summary>
     /// <returns>The char at the buffer's current position</returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit
     /// </exception>
     protected abstract char Get();
@@ -598,10 +599,10 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <param name="c">The char to be written</param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer's current position is not smaller than its limit
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only, which it shouldn't be!
     /// </exception>
     protected abstract CharBuffer Put( char c );
@@ -638,7 +639,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only </exception>
     public abstract CharBuffer Put( int index, char c );
 
     /// <summary>
@@ -762,22 +763,22 @@ public abstract class CharBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns> The array that backs this buffer </returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is backed by an array but is read-only
     /// </exception>
-    /// <exception cref="UnsupportedOperationException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array.
     /// </exception>
     public override char[] BackingArray()
     {
         if ( _hb == null )
         {
-            throw new UnsupportedOperationException();
+            throw new GdxRuntimeException( "Backing Array is null!" );
         }
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         return _hb;
@@ -798,22 +799,22 @@ public abstract class CharBuffer : Buffer
     /// <returns>
     ///     The offset within this buffer's array of the first element of the buffer
     /// </returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is backed by an array but is read-only.
     /// </exception>
-    /// <exception cref="UnsupportedOperationException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array.
     /// </exception>
     public override int ArrayOffset()
     {
         if ( _hb == null )
         {
-            throw new UnsupportedOperationException();
+            throw new GdxRuntimeException( "Backing Array is null!" );
         }
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         return offset;
@@ -1031,10 +1032,10 @@ public abstract class CharBuffer : Buffer
     ///     four characters <tt>"null"</tt> are appended to this character buffer.
     /// </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
     public CharBuffer Append( string? csq ) => csq == null ? Put( "null" ) : Put( csq );
 
     /// <summary>
@@ -1054,14 +1055,14 @@ public abstract class CharBuffer : Buffer
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>start</tt> or <tt>end</tt> are negative, <tt>start</tt> is greater
     ///     than <tt>end</tt>, or <tt>end</tt> is greater than <tt>csq.length()</tt>
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
     public CharBuffer Append( string? csq, int start, int end )
     {
         var cs = csq ?? "null";
@@ -1078,12 +1079,11 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <param name="c">The 16-bit char to append</param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public CharBuffer Append( char c ) => Put( c );
 
     #endregion Methods to support IAppendable
-
 }

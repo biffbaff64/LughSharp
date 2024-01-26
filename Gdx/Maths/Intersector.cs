@@ -207,7 +207,7 @@ public class Intersector
     /// <returns>True if the point is in the polygon; otherwise, false.</returns>
     public static bool IsPointInPolygon( Vector2[] polygon, Vector2 point )
     {
-        Vector2 last     = polygon[ polygon.Length - 1 ];
+        Vector2 last     = polygon[ ^1 ];
         var     x        = point.X;
         var     y        = point.Y;
         var     oddNodes = false;
@@ -314,7 +314,7 @@ public class Intersector
                 return false;
             }
 
-            S.Set( FloatArray2[ FloatArray2.Count - 2 ], FloatArray2[ FloatArray2.Count - 1 ] );
+            S.Set( FloatArray2[ ^2 ], FloatArray2[ ^1 ] );
 
             for ( var j = 0; j < FloatArray2.Count; j += 2 )
             {
@@ -330,8 +330,8 @@ public class Intersector
                         IntersectLines( S, E, Ep1, Ep2, Ip );
 
                         if ( ( FloatArray.Count < 2 )
-                          || !FloatArray[ FloatArray.Count - 2 ].Equals( Ip.X )
-                          || !FloatArray[ FloatArray.Count - 1 ].Equals( Ip.Y ) )
+                          || !FloatArray[ ^2 ].Equals( Ip.X )
+                          || !FloatArray[ ^1 ].Equals( Ip.Y ) )
                         {
                             FloatArray.Add( Ip.X );
                             FloatArray.Add( Ip.Y );
@@ -394,17 +394,8 @@ public class Intersector
             return true;
         }
 
-        if ( IsPointInPolygon( p2Items,
-                               0,
-                               polygon2.Count,
-                               p1Items[ 0 ],
-                               p1Items[ 1 ]
-                ) )
-        {
-            return true;
-        }
-
-        return IntersectPolygonEdges( polygon1, polygon2 );
+        return IsPointInPolygon( p2Items, 0, polygon2.Count, p1Items[ 0 ], p1Items[ 1 ] )
+            || IntersectPolygonEdges( polygon1, polygon2 );
     }
 
     /// <summary>
@@ -484,12 +475,10 @@ public class Intersector
             return nearest.Set( start );
         }
 
-        if ( t > 1 )
-        {
-            return nearest.Set( end );
-        }
-
-        return nearest.Set( start.X + ( t * ( end.X - start.X ) ), start.Y + ( t * ( end.Y - start.Y ) ) );
+        return t > 1
+            ? nearest.Set( end )
+            : nearest.Set( start.X + ( t * ( end.X - start.X ) ),
+                           start.Y + ( t * ( end.Y - start.Y ) ) );
     }
 
     /// <summary>
@@ -519,12 +508,10 @@ public class Intersector
             return nearest.Set( startX, startY );
         }
 
-        if ( t > 1 )
-        {
-            return nearest.Set( endX, endY );
-        }
-
-        return nearest.Set( startX + ( t * ( endX - startX ) ), startY + ( t * ( endY - startY ) ) );
+        return ( t > 1 )
+            ? nearest.Set( endX, endY )
+            : nearest.Set( startX + ( t * ( endX - startX ) ),
+                           startY + ( t * ( endY - startY ) ) );
     }
 
     /// <summary>
@@ -797,7 +784,7 @@ public class Intersector
         Vector3 tvec = Vec3.Set( ray.origin ).Sub( t1 );
         var     u    = tvec.Dot( pvec ) * det;
 
-        if ( ( u < 0.0f ) || ( u > 1.0f ) )
+        if ( u is < 0.0f or > 1.0f )
         {
             return false;
         }
@@ -1680,22 +1667,19 @@ public class Intersector
         var xd = x1 - x3;
         var ua = ( ( ( x4 - x3 ) * yd ) - ( ( y4 - y3 ) * xd ) ) / d;
 
-        if ( ( ua < 0 ) || ( ua > 1 ) )
+        if ( ua is < 0 or > 1 )
         {
             return false;
         }
 
         var ub = ( ( ( x2 - x1 ) * yd ) - ( ( y2 - y1 ) * xd ) ) / d;
 
-        if ( ( ub < 0 ) || ( ub > 1 ) )
+        if ( ub is < 0 or > 1 )
         {
             return false;
         }
 
-        if ( intersection != null )
-        {
-            intersection.Set( x1 + ( ( x2 - x1 ) * ua ), y1 + ( ( y2 - y1 ) * ua ) );
-        }
+        intersection?.Set( x1 + ( ( x2 - x1 ) * ua ), y1 + ( ( y2 - y1 ) * ua ) );
 
         return true;
     }
@@ -1721,14 +1705,14 @@ public class Intersector
         var xd = x1 - x3;
         var ua = ( ( ( x4 - x3 ) * yd ) - ( ( y4 - y3 ) * xd ) ) / d;
 
-        if ( ( ua < 0 ) || ( ua > 1 ) )
+        if ( ua is < 0 or > 1 )
         {
             return false;
         }
 
         var ub = ( ( ( x2 - x1 ) * yd ) - ( ( y2 - y1 ) * xd ) ) / d;
 
-        if ( ( ub < 0 ) || ( ub > 1 ) )
+        if ( ub is < 0 or > 1 )
         {
             return false;
         }

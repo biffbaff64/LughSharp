@@ -18,6 +18,7 @@ using Matrix4 = LibGDXSharp.Maths.Matrix4;
 
 namespace LibGDXSharp.Graphics.G2D;
 
+[PublicAPI]
 public class SpriteBatch : IBatch
 {
     private const int MAX_VERTEX_INDEX = 32767;
@@ -872,7 +873,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "SpriteBatch.begin must be called before draw." );
+            throw new GdxRuntimeException( "SpriteBatch.begin must be called before draw." );
         }
 
         Texture texture = region.Texture;
@@ -1022,7 +1023,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "SpriteBatch.begin must be called before draw." );
+            throw new GdxRuntimeException( "SpriteBatch.begin must be called before draw." );
         }
 
         if ( region.Texture != LastTexture )
@@ -1114,12 +1115,7 @@ public class SpriteBatch : IBatch
 
             if ( BlendSrcFunc != -1 )
             {
-                Gdx.GL.GLBlendFuncSeparate(
-                    BlendSrcFunc,
-                    BlendDstFunc,
-                    BlendSrcFuncAlpha,
-                    BlendDstFuncAlpha
-                    );
+                Gdx.GL.GLBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
             }
         }
 
@@ -1175,12 +1171,9 @@ public class SpriteBatch : IBatch
         BlendDstFuncAlpha = dstFuncAlpha;
     }
 
-    public int BlendSrcFunc { get; private set; } = IGL20.GL_SRC_ALPHA;
-
-    public int BlendDstFunc { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
-
+    public int BlendSrcFunc      { get; private set; } = IGL20.GL_SRC_ALPHA;
+    public int BlendDstFunc      { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
     public int BlendSrcFuncAlpha { get; private set; } = IGL20.GL_SRC_ALPHA;
-
     public int BlendDstFuncAlpha { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
 
     public void Dispose()
@@ -1194,8 +1187,7 @@ public class SpriteBatch : IBatch
     }
 
     public Matrix4 ProjectionMatrix { get; } = new();
-
-    public Matrix4 TransformMatrix { get; } = new();
+    public Matrix4 TransformMatrix  { get; } = new();
 
     public void SetProjectionMatrix( Matrix4 projection )
     {

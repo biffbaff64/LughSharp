@@ -64,7 +64,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <returns>The specified node.</returns>
     public T Add( T node )
     {
-        MemberNullException.ThrowIfNull( _nodes );
+        GdxRuntimeException.ThrowIfNull( _nodes );
 
         // Expand if necessary.
         if ( Size == _nodes.Length )
@@ -132,7 +132,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// </summary>
     public virtual T Peek()
     {
-        MemberNullException.ThrowIfNull( _nodes );
+        GdxRuntimeException.ThrowIfNull( _nodes );
 
         if ( Size == 0 )
         {
@@ -149,7 +149,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// </summary>
     public virtual T Pop()
     {
-        MemberNullException.ThrowIfNull( _nodes );
+        GdxRuntimeException.ThrowIfNull( _nodes );
 
         BinaryHeapNode removed = _nodes[ 0 ];
 
@@ -171,7 +171,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <returns> The specified node. </returns>
     public virtual T Remove( T node )
     {
-        MemberNullException.ThrowIfNull( _nodes );
+        GdxRuntimeException.ThrowIfNull( _nodes );
 
         if ( --Size > 0 )
         {
@@ -226,7 +226,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
     private void Up( int index )
     {
-        MemberNullException.ThrowIfNull( _nodes );
+        GdxRuntimeException.ThrowIfNull( _nodes );
 
         var ix = index;
 
@@ -254,7 +254,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
     private void Down( int index )
     {
-        MemberNullException.ThrowIfNull( _nodes );
+        GdxRuntimeException.ThrowIfNull( _nodes );
 
         BinaryHeapNode node = _nodes[ index ];
 

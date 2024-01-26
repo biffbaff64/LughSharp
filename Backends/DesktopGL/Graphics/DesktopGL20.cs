@@ -16,7 +16,7 @@
 
 using System.Text;
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 
 using Buffer = LibGDXSharp.Files.Buffers.Buffer;
 
@@ -90,7 +90,7 @@ public class DesktopGL20 : IGL20
 
     private FloatBuffer ToFloatBuffer( float[] v, int offset, int count )
     {
-        MemberNullException.ThrowIfNull( _floatBuffer );
+        GdxRuntimeException.ThrowIfNull( _floatBuffer );
 
         EnsureBufferCapacity( count << 2 );
 
@@ -104,7 +104,7 @@ public class DesktopGL20 : IGL20
 
     private IntBuffer ToIntBuffer( int[] v, int offset, int count )
     {
-        MemberNullException.ThrowIfNull( _intBuffer );
+        GdxRuntimeException.ThrowIfNull( _intBuffer );
 
         EnsureBufferCapacity( count << 2 );
 

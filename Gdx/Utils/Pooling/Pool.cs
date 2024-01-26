@@ -59,7 +59,7 @@ public class Pool<T>
     {
         if ( _freeObjects.Count == 0 )
         {
-            MemberNullException.ThrowIfNull( NewObject );
+            GdxRuntimeException.ThrowIfNull( NewObject );
 
             return NewObject();
         }

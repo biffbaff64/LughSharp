@@ -14,18 +14,15 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Utils.Buffers;
 
+/// <summary>
+/// </summary>
 [PublicAPI]
-public class IllegalStateException : Exception
+public abstract class MappedByteBuffer : ByteBuffer
 {
-    public IllegalStateException( string? message = "" )
-        : base( message )
-    {
-    }
-
-    public IllegalStateException( string message, Exception exception )
-        : base( message, exception )
+    protected MappedByteBuffer( int mark, int pos, int lim, int cap, FileInfo? fd = null )
+        : base( mark, pos, lim, cap )
     {
     }
 }

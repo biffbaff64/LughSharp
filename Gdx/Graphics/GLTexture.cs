@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Utils.Buffers;
+
 namespace LibGDXSharp.Graphics;
 
 /// <summary>
@@ -272,17 +274,16 @@ public abstract class GLTexture : IDisposable
             return _maxAnisotropicFilterLevel;
         }
 
-//TODO:
-//        if ( Gdx.Graphics.SupportsExtension( "GL_EXT_texture_filter_anisotropic" ) )
-//        {
-//            FloatBuffer buffer = BufferUtils.NewFloatBuffer( 16 );
-//            buffer.SetPosition( 0 );
-//            buffer.SetLimit( buffer.Capacity );
-//
-//            Gdx.GL20.GLGetFloatv( ( GetPName )34046, out buffer ); // IGL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
-//
-//            return _maxAnisotropicFilterLevel = buffer.Get( 0 );
-//        }
+        if ( Gdx.Graphics.SupportsExtension( "GL_EXT_texture_filter_anisotropic" ) )
+        {
+            FloatBuffer buffer = BufferUtils.NewFloatBuffer( 16 );
+            buffer.SetPosition( 0 );
+            buffer.SetLimit( buffer.Capacity );
+
+            Gdx.GL20.GLGetFloatv( IGL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
+
+            return _maxAnisotropicFilterLevel = buffer.Get( 0 );
+        }
 
         return _maxAnisotropicFilterLevel = 1f;
     }

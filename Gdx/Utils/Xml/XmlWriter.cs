@@ -105,7 +105,7 @@ public class XmlWriter
     {
         if ( _currentElement == null )
         {
-            throw new IllegalStateException( "_currentElement cannot be NULL!" );
+            throw new GdxRuntimeException( "_currentElement cannot be NULL!" );
         }
 
         _writer?.Write( ' ' );

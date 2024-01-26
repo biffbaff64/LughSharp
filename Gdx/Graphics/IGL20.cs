@@ -14,9 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 
-using Buffer = LibGDXSharp.Files.Buffers.Buffer;
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics;
 
@@ -549,7 +549,7 @@ public interface IGL20
 
     void GLTexParameterf( int target, int pname, float param );
 
-    void GLGetFloatv( int pname, int parameters );
+    void GLGetFloatv( int pname, FloatBuffer parameters );
 
     void GLTexParameteri( int target, int pname, int param );
 

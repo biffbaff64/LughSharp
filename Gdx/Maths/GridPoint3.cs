@@ -19,6 +19,7 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 ///     A point in a 3D grid, with integer x and y coordinates
 /// </summary>
+[PublicAPI]
 public class GridPoint3
 {
     /// <summary>
@@ -90,6 +91,8 @@ public class GridPoint3
         return this;
     }
 
+    /// <summary>
+    /// </summary>
     /// <param name="other"> The other point </param>
     /// <returns> the squared distance between this point and the other point. </returns>
     public virtual float Dst2( GridPoint3 other )
@@ -101,6 +104,8 @@ public class GridPoint3
         return ( xd * xd ) + ( yd * yd ) + ( zd * zd );
     }
 
+    /// <summary>
+    /// </summary>
     /// <param name="x"> The x-coordinate of the other point </param>
     /// <param name="y"> The y-coordinate of the other point </param>
     /// <param name="z"> The z-coordinate of the other point </param>
@@ -114,6 +119,8 @@ public class GridPoint3
         return ( xd * xd ) + ( yd * yd ) + ( zd * zd );
     }
 
+    /// <summary>
+    /// </summary>
     /// <param name="other"> The other point </param>
     /// <returns> the distance between this point and the other vector. </returns>
     public virtual float Dst( GridPoint3 other )
@@ -125,6 +132,8 @@ public class GridPoint3
         return ( float )Math.Sqrt( ( xd * xd ) + ( yd * yd ) + ( zd * zd ) );
     }
 
+    /// <summary>
+    /// </summary>
     /// <param name="x"> The x-coordinate of the other point </param>
     /// <param name="y"> The y-coordinate of the other point </param>
     /// <param name="z"> The z-coordinate of the other point </param>
@@ -198,6 +207,8 @@ public class GridPoint3
         return this;
     }
 
+    /// <summary>
+    /// </summary>
     /// <returns> a copy of this grid point </returns>
     public virtual GridPoint3 Cpy() => new( this );
 
@@ -220,11 +231,11 @@ public class GridPoint3
 
     public override int GetHashCode()
     {
-        const int prime = 17;
+        const int PRIME = 17;
 
-        var result = prime + X;
-        result = ( prime * result ) + Y;
-        result = ( prime * result ) + Z;
+        var result = PRIME + X;
+        result = ( PRIME * result ) + Y;
+        result = ( PRIME * result ) + Z;
 
         return result;
     }

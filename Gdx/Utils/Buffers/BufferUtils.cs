@@ -14,12 +14,13 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
 /// <summary>
 ///     Class with static helper methods to increase the speed of array/direct
 ///     buffer and direct buffer/direct buffer transfers
 /// </summary>
+[PublicAPI]
 public class BufferUtils
 {
     private static List< ByteBuffer > _unsafeBuffers   = new();

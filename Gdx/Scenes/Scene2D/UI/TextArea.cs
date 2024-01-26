@@ -426,8 +426,8 @@ public class TextArea : TextField
 
     public override void CalculateOffsets()
     {
-        MemberNullException.ThrowIfNull( Text );
-        MemberNullException.ThrowIfNull( Style );
+        GdxRuntimeException.ThrowIfNull( Text );
+        GdxRuntimeException.ThrowIfNull( Style );
 
         base.CalculateOffsets();
 

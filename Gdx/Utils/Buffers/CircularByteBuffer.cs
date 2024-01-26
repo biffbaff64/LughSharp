@@ -14,9 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
-[Serializable]
+[PublicAPI, Serializable]
 public class CircularByteBuffer
 {
     private byte[] _buffer;

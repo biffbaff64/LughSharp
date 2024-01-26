@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
@@ -98,17 +98,15 @@ public class FloatTextureData : ITextureData
 
             // GLES and WebGL defines texture format by 3rd and 8th argument,
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
-            Gdx.GL.GLTexImage2D(
-                target,
-                0,
-                IGL20.GL_RGBA,
-                Width,
-                Height,
-                0,
-                IGL20.GL_RGBA,
-                IGL20.GL_FLOAT,
-                Buffer
-                );
+            Gdx.GL.GLTexImage2D( target,
+                                 0,
+                                 IGL20.GL_RGBA,
+                                 Width,
+                                 Height,
+                                 0,
+                                 IGL20.GL_RGBA,
+                                 IGL20.GL_FLOAT,
+                                 Buffer );
         }
         else
         {
@@ -122,17 +120,15 @@ public class FloatTextureData : ITextureData
 
             // in desktop OpenGL the texture format is defined only by the third argument,
             // hence we need to use GL_RGBA32F there (this constant is unavailable in GLES/WebGL)
-            Gdx.GL.GLTexImage2D(
-                target,
-                0,
-                _internalFormat,
-                Width,
-                Height,
-                0,
-                _format,
-                IGL20.GL_FLOAT,
-                Buffer
-                );
+            Gdx.GL.GLTexImage2D( target,
+                                 0,
+                                 _internalFormat,
+                                 Width,
+                                 Height,
+                                 0,
+                                 _format,
+                                 IGL20.GL_FLOAT,
+                                 Buffer );
         }
     }
 
@@ -140,7 +136,7 @@ public class FloatTextureData : ITextureData
 
     public bool DisposePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
 
-    public Pixmap.Format GetFormat() => throw new UnsupportedOperationException();
+    public Pixmap.Format GetFormat() => throw new NotSupportedException();
 
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 

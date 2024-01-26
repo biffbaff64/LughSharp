@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public interface IInterpolation
 {
     Func< float, float > Interp { get; set; }
@@ -25,6 +26,7 @@ public interface IInterpolation
     float Apply( float start, float end, float a );
 }
 
+[PublicAPI]
 public class Interpolator : IInterpolation
 {
     public Func< float, float > Interp { get; set; } = null!;
@@ -34,6 +36,7 @@ public class Interpolator : IInterpolation
     public virtual float Apply( float start, float end, float a ) => start + ( ( end - start ) * Apply( a ) );
 }
 
+[PublicAPI]
 public class Interpolation
 {
     public static Interpolator linear = new() { Interp = a => a };
@@ -161,7 +164,7 @@ public class Interpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class Pow : Interpolator
     {
         protected readonly int power;
@@ -179,7 +182,7 @@ public class Interpolation
         }
     }
 
-
+    [PublicAPI]
     public class PowIn : Pow
     {
         public PowIn( int power ) : base( power )
@@ -189,7 +192,7 @@ public class Interpolation
         public override float Apply( float a ) => ( float )Math.Pow( a, power );
     }
 
-
+    [PublicAPI]
     public class PowOut : Pow
     {
         public PowOut( int power ) : base( power )
@@ -202,7 +205,7 @@ public class Interpolation
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class Exp : Interpolator
     {
         protected readonly float min;
@@ -229,7 +232,7 @@ public class Interpolation
         }
     }
 
-
+    [PublicAPI]
     public class ExpIn : Exp
     {
         public ExpIn( float value, float power )
@@ -240,7 +243,7 @@ public class Interpolation
         public new float Apply( float a ) => ( ( float )Math.Pow( value, power * ( a - 1 ) ) - min ) * scale;
     }
 
-
+    [PublicAPI]
     public class ExpOut : Exp
     {
         public ExpOut( float value, float power )
@@ -251,7 +254,7 @@ public class Interpolation
         public new float Apply( float a ) => 1 - ( ( ( float )Math.Pow( value, -power * a ) - min ) * scale );
     }
 
-
+    [PublicAPI]
     public class ElasticImpl : Interpolator
     {
         protected readonly float bounces;
@@ -283,7 +286,7 @@ public class Interpolation
         }
     }
 
-
+    [PublicAPI]
     public class ElasticInImpl : ElasticImpl
     {
         public ElasticInImpl( float value, float power, int bounces, float scale )
@@ -302,7 +305,7 @@ public class Interpolation
         }
     }
 
-
+    [PublicAPI]
     public class ElasticOutImpl : ElasticImpl
     {
         public ElasticOutImpl( float value, float power, int bounces, float scale )
@@ -323,7 +326,7 @@ public class Interpolation
         }
     }
 
-
+    [PublicAPI]
     public class BounceImpl : BounceOutImpl
     {
         public BounceImpl( float[] widths, float[] heights )
@@ -359,7 +362,7 @@ public class Interpolation
         }
     }
 
-
+    [PublicAPI]
     public class BounceOutImpl : Interpolator
     {
         protected readonly float[] heights;
@@ -378,7 +381,7 @@ public class Interpolation
 
         public BounceOutImpl( int bounces )
         {
-            if ( ( bounces < 2 ) || ( bounces > 5 ) )
+            if ( bounces is < 2 or > 5 )
             {
                 throw new ArgumentException( "bounces cannot be < 2 or > 5: " + bounces );
             }
@@ -465,8 +468,8 @@ public class Interpolation
             return 1 - ( ( z - ( z * a ) ) * width );
         }
     }
-
-
+    
+    [PublicAPI]
     public class BounceInImpl : BounceOutImpl
     {
         public BounceInImpl( float[] widths, float[] heights )
@@ -482,7 +485,7 @@ public class Interpolation
         public new float Apply( float a ) => 1 - base.Apply( 1 - a );
     }
 
-
+    [PublicAPI]
     public class SwingImpl : Interpolator
     {
         protected readonly float scale;
@@ -505,7 +508,7 @@ public class Interpolation
         }
     }
 
-
+    [PublicAPI]
     public class SwingOutImpl : Interpolator
     {
         private readonly float _scale;
@@ -520,7 +523,7 @@ public class Interpolation
         }
     }
 
-
+    [PublicAPI]
     public class SwingInImpl : Interpolator
     {
         private readonly float _scale;

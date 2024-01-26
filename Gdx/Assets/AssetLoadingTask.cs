@@ -14,8 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Async;
-
 namespace LibGDXSharp.Assets;
 
 /// <summary>
@@ -23,7 +21,7 @@ namespace LibGDXSharp.Assets;
 /// on an <see cref="AssetDescriptor"/>.
 /// </summary>
 [PublicAPI]
-public class AssetLoadingTask : IAsyncTask
+public class AssetLoadingTask
 {
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -31,10 +29,7 @@ public class AssetLoadingTask : IAsyncTask
     private readonly AssetLoader  _loader;
     private readonly AssetManager _manager;
 
-    private volatile bool          _asyncDone = false;
-    private volatile AsyncResult?  _depsFuture;
-    private volatile AsyncExecutor _executor;
-    private volatile AsyncResult?  _loadFuture;
+    private volatile bool _asyncDone = false;
 
     private long _startTime;
 
@@ -53,17 +48,14 @@ public class AssetLoadingTask : IAsyncTask
     /// <param name="manager"></param>
     /// <param name="assetDesc"></param>
     /// <param name="loader"></param>
-    /// <param name="threadPool"></param>
     public AssetLoadingTask( AssetManager manager,
                              AssetDescriptor assetDesc,
-                             AssetLoader loader,
-                             AsyncExecutor threadPool )
+                             AssetLoader loader )
     {
         _manager  = manager;
         AssetDesc = assetDesc;
         _loader   = loader;
-        
-        _executor = threadPool;
+
         _startTime = ( manager.Log.Level == Logger.LOG_DEBUG ) ? TimeUtils.NanoTime() : 0;
     }
 
@@ -215,7 +207,7 @@ public class AssetLoadingTask : IAsyncTask
 
     /// <summary>
     /// </summary>
-    private void HandleAsyncLoader()
+    private async void HandleAsyncLoader()
     {
         if ( AssetDesc == null )
         {

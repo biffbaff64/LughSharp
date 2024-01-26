@@ -915,7 +915,7 @@ public class ObjectMap<TK, TV>
 
             if ( i < 0 )
             {
-                throw new IllegalStateException( "Next() must be called before Remove()." );
+                throw new GdxRuntimeException( "Next() must be called before Remove()." );
             }
 
             var mask = map.Mask;
@@ -970,7 +970,7 @@ public class ObjectMap<TK, TV>
         {
             if ( !HasNext )
             {
-                throw new NoSuchElementException( "HasNext : false!" );
+                throw new GdxRuntimeException( "HasNext : false!" );
             }
 
             if ( !Valid )
@@ -1007,7 +1007,7 @@ public class ObjectMap<TK, TV>
         {
             if ( !HasNext )
             {
-                throw new NoSuchElementException( "HasNext : false!" );
+                throw new GdxRuntimeException( "HasNext : false!" );
             }
 
             if ( !Valid )
@@ -1059,7 +1059,7 @@ public class ObjectMap<TK, TV>
         {
             if ( !HasNext )
             {
-                throw new NoSuchElementException( "HasNext : false!" );
+                throw new GdxRuntimeException( "HasNext : false!" );
             }
 
             if ( !Valid )

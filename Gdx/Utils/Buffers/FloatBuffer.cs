@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
 /// <summary>
 ///     A float buffer.
@@ -63,6 +63,7 @@ namespace LibGDXSharp.Files.Buffers;
 ///         to be chained.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
     protected FloatBuffer( int mark, int pos, int lim, int cap, float[]? hb = null, int offset = 0 )
@@ -223,7 +224,7 @@ public abstract class FloatBuffer : Buffer
     ///     current position, and then increments the position.
     /// </summary>
     /// <returns> The float at the buffer's current position </returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit
     /// </exception>
     public abstract float Get();
@@ -237,10 +238,10 @@ public abstract class FloatBuffer : Buffer
     /// </summary>
     /// <param name="f"> The float to be written </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer's current position is not smaller than its limit
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
     public abstract FloatBuffer Put( float f );
@@ -267,7 +268,7 @@ public abstract class FloatBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public abstract FloatBuffer Put( int index, float f );
 
     // ------------------------------------------------------------------------
@@ -280,7 +281,7 @@ public abstract class FloatBuffer : Buffer
     ///         destination array. If there are fewer floats remaining in the
     ///         buffer than are required to satisfy the request, that is, if
     ///         <tt>length &gt; Remaining()</tt>, then no floats are transferred
-    ///         and a <see cref="BufferUnderflowException" /> is thrown.
+    ///         and a <see cref="GdxRuntimeException" /> is thrown.
     ///     </para>
     ///     <para>
     ///         Otherwise, this method copies <tt>length</tt> floats from this
@@ -316,7 +317,7 @@ public abstract class FloatBuffer : Buffer
     ///     be non-negative and no larger than <tt>dst.Length - offset</tt>
     /// </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt>length</tt> floats remaining in this buffer
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
@@ -328,7 +329,7 @@ public abstract class FloatBuffer : Buffer
 
         if ( length > Remaining() )
         {
-            throw new BufferUnderflowException();
+            throw new GdxRuntimeException( "Buffer Underflow!" );
         }
 
         var end = offset + length;
@@ -354,7 +355,7 @@ public abstract class FloatBuffer : Buffer
     /// </summary>
     /// <param name="dst"> The destination array </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt>length</tt> floats remaining in this buffer
     /// </exception>
     public FloatBuffer Get( float[] dst ) => Get( dst, 0, dst.Length );
@@ -369,7 +370,7 @@ public abstract class FloatBuffer : Buffer
     ///     this buffer. If there are more floats remaining in the source buffer than
     ///     in this buffer, that is, if <tt>src.Remaining()</tt> is greater than
     ///     <tt>Remaining()</tt>, then no floats are transferred, and a
-    ///     <see cref="BufferOverflowException" /> is thrown.
+    ///     <see cref="GdxRuntimeException" /> is thrown.
     ///     <para>
     ///         Otherwise, this method copies <tt>n = src.Remaining()</tt> floats
     ///         from the given buffer into this buffer, starting at each buffer's current
@@ -392,12 +393,12 @@ public abstract class FloatBuffer : Buffer
     ///     The source buffer from which floats are to be read; must not be this buffer.
     /// </param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer for the remaining floats
     ///     in the source buffer.
     /// </exception>
     /// <exception cref="ArgumentException">If the source buffer is this buffer.</exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public FloatBuffer Put( FloatBuffer src )
     {
         if ( src.Equals( this ) )
@@ -407,14 +408,14 @@ public abstract class FloatBuffer : Buffer
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         var n = src.Remaining();
 
         if ( n > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         for ( var i = 0; i < n; i++ )
@@ -433,7 +434,7 @@ public abstract class FloatBuffer : Buffer
     ///     If there are more floats to be copied from the array than remain in this
     ///     buffer, that is, if <paramref name="length" /> is greater than
     ///     <see cref="Buffer.Remaining()" />, then no floats are transferred, and a
-    ///     <see cref="BufferOverflowException" /> is thrown.
+    ///     <see cref="GdxRuntimeException" /> is thrown.
     ///     <para>
     ///         Otherwise, this method copies <paramref name="length" /> floats from the
     ///         given array into this buffer, starting at the given offset in the array
@@ -461,21 +462,21 @@ public abstract class FloatBuffer : Buffer
     ///     and no larger than <paramref name="src" />.Length - <paramref name="offset" />.
     /// </param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer.
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on the <paramref name="offset" /> and <paramref name="length" />
     ///     parameters do not hold.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public FloatBuffer Put( float[] src, int offset, int length )
     {
         CheckBounds( offset, length, src.Length );
 
         if ( length > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         var end = offset + length;
@@ -499,10 +500,10 @@ public abstract class FloatBuffer : Buffer
     /// </remarks>
     /// <param name="src">The source array.</param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public FloatBuffer Put( float[] src ) => Put( src, 0, src.Length );
 
     // ------------------------------------------------------------------------
@@ -530,7 +531,7 @@ public abstract class FloatBuffer : Buffer
     ///     accessible backing array.
     /// </remarks>
     /// <returns>The array that backs this buffer.</returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is backed by an array but is read-only.
     /// </exception>
     /// <exception cref="NotSupportedException">
@@ -540,12 +541,12 @@ public abstract class FloatBuffer : Buffer
     {
         if ( Hb == null )
         {
-            throw new UnsupportedOperationException();
+            throw new GdxRuntimeException( "Backing array os null." );
         }
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         return Hb;
@@ -567,22 +568,22 @@ public abstract class FloatBuffer : Buffer
     /// <returns>
     ///     The offset within this buffer's array of the first element of the buffer
     /// </returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is backed by an array but is read-only
     /// </exception>
-    /// <exception cref="UnsupportedOperationException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array
     /// </exception>
     public override int ArrayOffset()
     {
         if ( Hb == null )
         {
-            throw new UnsupportedOperationException();
+            throw new GdxRuntimeException( "Backing array os null." );
         }
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         return Offset;
@@ -608,7 +609,7 @@ public abstract class FloatBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer </returns>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
     public abstract FloatBuffer Compact();
 
     /// <summary>

@@ -94,7 +94,7 @@ public class TextureArray : GLTexture
                                 0,
                                 data.InternalFormat,
                                 data.GLType,
-                                null! );
+                                0 );
 
         if ( !data.Prepared )
         {

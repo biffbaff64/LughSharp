@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Backends.Desktop.Graphics;
 
@@ -402,7 +402,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode )
     {
-        MemberNullException.ThrowIfNull( GLWindow );
+        GdxRuntimeException.ThrowIfNull( GLWindow );
 
         GLWindow.Input.ResetPollingStates();
 

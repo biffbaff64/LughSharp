@@ -14,8 +14,9 @@
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public abstract class ShortBuffer : Buffer
 {
     private readonly short[]? _hb;
@@ -163,7 +164,7 @@ public abstract class ShortBuffer : Buffer
     ///     and then increments the position.
     /// </summary>
     /// <returns>The short at the buffer's current position.</returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit.
     /// </exception>
     public abstract short Get();
@@ -173,10 +174,10 @@ public abstract class ShortBuffer : Buffer
     /// </summary>
     /// <param name="s">The short to be written.</param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer's current position is not smaller than its limit.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public abstract ShortBuffer Put( short s );
 
     /// <summary>
@@ -201,7 +202,7 @@ public abstract class ShortBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <paramref name="index" /> is negative or not smaller than the buffer's limit.
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public abstract ShortBuffer Put( int index, short s );
 
     /// <summary>
@@ -211,7 +212,7 @@ public abstract class ShortBuffer : Buffer
     ///         array. If there are fewer shorts remaining in the buffer than are required
     ///         to satisfy the request, that is if <paramref name="length" /> is greater than
     ///         <see cref="Buffer.Remaining()" />, then no shorts are transferred, and a
-    ///         <see cref="BufferUnderflowException" /> is thrown.
+    ///         <see cref="GdxRuntimeException" /> is thrown.
     ///     </para>
     ///     <para>
     ///         Otherwise, this method copies <paramref name="length" /> shorts from this buffer
@@ -242,7 +243,7 @@ public abstract class ShortBuffer : Buffer
     ///     and no larger than <c>dst.Length - offset</c>.
     /// </param>
     /// <returns>This buffer.</returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <paramref name="length" /> shorts remaining in this buffer.
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
@@ -255,7 +256,7 @@ public abstract class ShortBuffer : Buffer
 
         if ( length > Remaining() )
         {
-            throw new BufferUnderflowException();
+            throw new GdxRuntimeException( "Buffer Underflow!" );
         }
 
         var end = offset + length;
@@ -283,7 +284,7 @@ public abstract class ShortBuffer : Buffer
     ///     The destination array.
     /// </param>
     /// <returns> This buffer. </returns>
-    /// <exception cref="BufferUnderflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <paramref name="dst.length" /> shorts
     ///     remaining in this buffer.
     /// </exception>
@@ -322,11 +323,11 @@ public abstract class ShortBuffer : Buffer
     ///     must not be this buffer.
     /// </param>
     /// <returns> This buffer. </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer for the remaining shorts in the source buffer.
     /// </exception>
     /// <exception cref="ArgumentException">If the source buffer is this buffer.</exception>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only.</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public ShortBuffer Put( ShortBuffer src )
     {
         if ( src == this )
@@ -336,14 +337,14 @@ public abstract class ShortBuffer : Buffer
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         var n = src.Remaining();
 
         if ( n > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         for ( var i = 0; i < n; i++ )
@@ -395,14 +396,14 @@ public abstract class ShortBuffer : Buffer
     ///     <tt>array.length - offset</tt>
     /// </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on the <tt>offset</tt> and <tt>length</tt>
     ///     parameters do not hold
     /// </exception>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
     public ShortBuffer Put( short[] src, int offset, int length )
@@ -411,7 +412,7 @@ public abstract class ShortBuffer : Buffer
 
         if ( length > Remaining() )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer Overflow!" );
         }
 
         var end = offset + length;
@@ -436,10 +437,10 @@ public abstract class ShortBuffer : Buffer
     /// </summary>
     /// <param name="src"> The source array </param>
     /// <returns> This buffer </returns>
-    /// <exception cref="BufferOverflowException">
+    /// <exception cref="GdxRuntimeException">
     ///     If there is insufficient space in this buffer
     /// </exception>
-    /// <exception crewf="ReadOnlyBufferException">
+    /// <exception crewf="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
     public ShortBuffer Put( short[] src ) => Put( src, 0, src.Length );
@@ -470,22 +471,22 @@ public abstract class ShortBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns> The array that backs this buffer </returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is backed by an array but is read-only
     /// </exception>
-    /// <exception cref="UnsupportedOperationException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array
     /// </exception>
     public short[] Array()
     {
         if ( _hb == null )
         {
-            throw new UnsupportedOperationException();
+            throw new GdxRuntimeException( "Backing array os null." );
         }
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         return _hb;
@@ -506,22 +507,22 @@ public abstract class ShortBuffer : Buffer
     /// <returns>
     ///     The offset within this buffer's array of the first element of the buffer
     /// </returns>
-    /// <exception cref="ReadOnlyBufferException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is backed by an array but is read-only
     /// </exception>
-    /// <exception cref="UnsupportedOperationException">
+    /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array
     /// </exception>
     public override int ArrayOffset()
     {
         if ( _hb == null )
         {
-            throw new UnsupportedOperationException();
+            throw new GdxRuntimeException( "Backing array os null." );
         }
 
         if ( IsReadOnly )
         {
-            throw new ReadOnlyBufferException();
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
         return _offset;
@@ -548,7 +549,7 @@ public abstract class ShortBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer </returns>
-    /// <exception cref="ReadOnlyBufferException">If this buffer is read-only</exception>
+    /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
     public abstract ShortBuffer Compact();
 
     /// <summary>

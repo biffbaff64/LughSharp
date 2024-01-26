@@ -16,7 +16,7 @@
 
 using System.Text;
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Maths.Collision;
 
 using Matrix3 = LibGDXSharp.Maths.Matrix3;

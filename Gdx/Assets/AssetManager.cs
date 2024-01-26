@@ -50,7 +50,6 @@ public class AssetManager
     private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets            = new();
     private readonly Dictionary< string, Type? >                                    _assetTypes        = new();
 
-    private readonly AsyncExecutor                                           _executor;
     private readonly List< string >                                          _injected  = [ ];
     private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? > _loaders   = [ ];
     private readonly List< AssetDescriptor >                                 _loadQueue = [ ];
@@ -100,7 +99,6 @@ public class AssetManager
         }
 
         FileHandleResolver = resolver;
-        _executor          = new AsyncExecutor( 1, "AssetManager" );
     }
 
     /// <summary>
@@ -637,8 +635,6 @@ public class AssetManager
             {
                 return done;
             }
-
-            ThreadUtils.Yield();
         }
     }
 
@@ -660,7 +656,7 @@ public class AssetManager
 
         while ( !Update() )
         {
-            ThreadUtils.Yield();
+            //
         }
 
         Log.Debug( "Loading complete." );
@@ -712,8 +708,6 @@ public class AssetManager
 
                 Update();
             }
-
-            ThreadUtils.Yield();
         }
     }
 
@@ -842,7 +836,7 @@ public class AssetManager
             throw new GdxRuntimeException( $"No loader for type: {assetDesc.AssetType}" );
         }
 
-        _tasks.Push( new AssetLoadingTask( this, assetDesc, loader, _executor ) );
+        _tasks.Push( new AssetLoadingTask( this, assetDesc, loader ) );
 
         _peakTasks++;
     }
@@ -1092,8 +1086,6 @@ public class AssetManager
         if ( disposing )
         {
             Clear();
-
-            _executor.Dispose();
         }
     }
 

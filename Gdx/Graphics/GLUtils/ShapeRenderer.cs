@@ -137,7 +137,7 @@ public class ShapeRenderer : IDisposable
     /// <summary>
     ///     Begins a new batch without specifying a shape type.
     /// </summary>
-    /// <exception cref="IllegalStateException"> if <see cref="_autoShapeType" /> is false.</exception>
+    /// <exception cref="GdxRuntimeException"> if <see cref="_autoShapeType" /> is false.</exception>
     public void Begin()
     {
         if ( !_autoShapeType )
@@ -1472,12 +1472,12 @@ public class ShapeRenderer : IDisposable
     /// <param name="preferred"></param>
     /// <param name="other"></param>
     /// <param name="newVertices"></param>
-    /// <exception cref="IllegalStateException"></exception>
+    /// <exception cref="GdxRuntimeException"></exception>
     private void Check( ShapeTypes preferred, ShapeTypes? other, int newVertices )
     {
         if ( ShapeType == null )
         {
-            throw new IllegalStateException( "Begin() must be called first." );
+            throw new GdxRuntimeException( "Begin() must be called first." );
         }
 
         if ( ( ShapeType != preferred ) && ( ShapeType != other ) )
@@ -1487,10 +1487,10 @@ public class ShapeRenderer : IDisposable
             {
                 if ( other == null )
                 {
-                    throw new IllegalStateException( $"Must call Begin(ShapeType.{preferred})." );
+                    throw new GdxRuntimeException( $"Must call Begin(ShapeType.{preferred})." );
                 }
 
-                throw new IllegalStateException
+                throw new GdxRuntimeException
                     ( $"Must call Begin(ShapeType.{preferred}) or Begin(ShapeType.{other})." );
             }
 

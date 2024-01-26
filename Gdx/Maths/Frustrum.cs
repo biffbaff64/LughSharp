@@ -20,6 +20,7 @@ namespace LibGDXSharp.Maths;
 ///     A truncated rectangular pyramid. Used to define the viewable
 ///     region and its projection onto the screen.
 /// </summary>
+[PublicAPI]
 public class Frustrum
 {
     protected readonly static Vector3[] ClipSpacePlanePoints =
@@ -35,8 +36,6 @@ public class Frustrum
     };
 
     protected readonly static float[] ClipSpacePlanePointsArray = new float[ 8 * 3 ];
-
-    private readonly static Vector3 TmpV = new();
 
     /// <system>
     ///     eight points making up the near and far clipping "rectangles".

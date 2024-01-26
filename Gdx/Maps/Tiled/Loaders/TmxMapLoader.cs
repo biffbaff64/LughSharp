@@ -58,7 +58,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// <returns> the TiledMap </returns>
     public TiledMap Load( string fileName, LoaderParameters parameter )
     {
-        MemberNullException.ThrowIfNull( xml );
+        GdxRuntimeException.ThrowIfNull( xml );
 
         FileInfo tmxFile = Resolve( fileName );
 

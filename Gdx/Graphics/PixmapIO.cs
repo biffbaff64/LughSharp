@@ -19,7 +19,7 @@ using System.IO.Hashing;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Graphics;
 

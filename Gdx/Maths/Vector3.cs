@@ -646,9 +646,9 @@ public class Vector3 : IVector< Vector3 >
 
                 return Set( x, y, z );
             }
-            catch ( NumberFormatException )
+            catch ( Exception ex )
             {
-                // Throw a GdxRuntimeException
+                throw new GdxRuntimeException( ex.Message );
             }
         }
 

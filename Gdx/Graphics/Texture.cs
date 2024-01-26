@@ -41,6 +41,7 @@ namespace LibGDXSharp.Graphics;
 ///         A Texture must be disposed when it is no longer used
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Texture : GLTexture
 {
     // ------------------------------------------------------------------------
@@ -90,6 +91,9 @@ public class Texture : GLTexture
     {
     }
 
+    /// <summary>
+    ///     Creates a new Texture using the supplied <see cref="ITextureData"/>.
+    /// </summary>
     public Texture( ITextureData? data )
         : this( IGL20.GL_TEXTURE_2D, Gdx.GL.GLGenTexture(), data )
     {
@@ -165,6 +169,7 @@ public class Texture : GLTexture
         }
 
         GLTextureHandle = Gdx.GL.GLGenTexture();
+
         Load( TextureData );
     }
 
@@ -333,13 +338,18 @@ public class Texture : GLTexture
         return builder.ToString();
     }
 
-    public override string? ToString() => TextureData is FileTextureData ? TextureData.ToString() : base.ToString();
+    public override string? ToString() => TextureData is FileTextureData
+        ? TextureData.ToString()
+        : base.ToString();
 
     /// <summary>
     ///     Clears all managed textures.
     /// </summary>
     internal void ClearAllTextures( IApplication app ) => _managedTextures.Remove( app );
-
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     private sealed class LoadedCallbackInnerClass : ILoadedCallback
     {
         private readonly int _refCount;

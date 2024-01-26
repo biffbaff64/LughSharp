@@ -14,7 +14,6 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-
 using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Scene2D.Utils;
 using LibGDXSharp.Utils.Collections;
@@ -22,6 +21,7 @@ using LibGDXSharp.Utils.Pooling;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class Table : WidgetGroup
 {
     public enum DebugType
@@ -87,6 +87,7 @@ public class Table : WidgetGroup
     public Table( Skin? skin )
     {
         // ----------------------------
+        
         _columnWidth     = default( float[]? )!;
         _columnMinWidth  = default( float[]? )!;
         _columnPrefWidth = default( float[]? )!;
@@ -180,10 +181,7 @@ public class Table : WidgetGroup
             return;
         }
 
-        if ( Color != null )
-        {
-            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
-        }
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
         _background.Draw( batch, x, y, Width, Height );
     }
@@ -197,7 +195,7 @@ public class Table : WidgetGroup
     {
         if ( Skin == null )
         {
-            throw new IllegalStateException( "Table must have a skin set to use this method." );
+            throw new GdxRuntimeException( "Table must have a skin set to use this method." );
         }
 
         SetBackground( Skin.GetDrawable( drawableName ) );
@@ -398,7 +396,7 @@ public class Table : WidgetGroup
 
         if ( Skin == null )
         {
-            throw new IllegalStateException( "Table must have a skin set to use this method." );
+            throw new GdxRuntimeException( "Table must have a skin set to use this method." );
         }
 
         return Add( new Label( text, Skin ) );
@@ -412,7 +410,7 @@ public class Table : WidgetGroup
     {
         if ( Skin == null )
         {
-            throw new IllegalStateException( "Table must have a skin set to use this method." );
+            throw new GdxRuntimeException( "Table must have a skin set to use this method." );
         }
 
         return Add( new Label( text, Skin.Get< Label.LabelStyle >( labelStyleName ) ) );
@@ -426,7 +424,7 @@ public class Table : WidgetGroup
     {
         if ( Skin == null )
         {
-            throw new IllegalStateException( "Table must have a skin set to use this method." );
+            throw new GdxRuntimeException( "Table must have a skin set to use this method." );
         }
 
         return Add( new Label( text, new Label.LabelStyle( Skin.GetFont( fontName ), color ) ) );
@@ -440,7 +438,7 @@ public class Table : WidgetGroup
     {
         if ( Skin == null )
         {
-            throw new IllegalStateException( "Table must have a skin set to use this method." );
+            throw new GdxRuntimeException( "Table must have a skin set to use this method." );
         }
 
         return Add( new Label( text, new Label.LabelStyle( Skin.GetFont( fontName ), Skin.GetColor( colorName ) ) ) );

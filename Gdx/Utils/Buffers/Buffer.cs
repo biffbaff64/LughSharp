@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
 /// <summary>
 ///     A container for data of a specific primitive type.
@@ -53,9 +53,7 @@ namespace LibGDXSharp.Files.Buffers;
 ///             <i>Relative</i> operations read or write one or more elements starting
 ///             at the current position and then increment the position by the number of
 ///             elements transferred.  If the requested transfer exceeds the limit then a
-///             relative <i>get</i> operation throws a <see cref="BufferUnderflowException" />
-///             and a relative <i>put</i> operation throws a <see cref="BufferOverflowException" />;
-///             in either case, no data is transferred.
+///             relative <i>Get</i> or <i>Put</i> operation throws a <see cref="GdxRuntimeException" />..
 ///         </para>
 ///         <para>
 ///             <i>Absolute</i> operations take an explicit element index and do not
@@ -78,7 +76,7 @@ namespace LibGDXSharp.Files.Buffers;
 ///         than the position.  If the mark is defined then it is discarded when the
 ///         position or the limit is adjusted to a value smaller than the mark.  If the
 ///         mark is not defined then invoking the {@link #reset reset} method causes an
-///         <see cref="InvalidMarkException" /> to be thrown.
+///         <see cref="GdxRuntimeException" /> to be thrown.
 ///     </para>
 ///     <para></para>
 ///     <b> Invariants </b>
@@ -127,7 +125,7 @@ namespace LibGDXSharp.Files.Buffers;
 ///     <para>
 ///         Every buffer is readable, but not every buffer is writable.  The mutation methods
 ///         of each buffer class are specified as <i>optional operations</i> that will throw a
-///         <see cref="ReadOnlyBufferException" /> when invoked upon a read-only buffer. A read-only
+///         <see cref="GdxRuntimeException" /> when invoked upon a read-only buffer. A read-only
 ///         buffer does not allow its content to be changed, but its mark, position, and limit
 ///         values are mutable. Whether or not a buffer is read-only may be determined by checking
 ///         its <see cref="IsReadOnly" /> property.
@@ -146,16 +144,17 @@ namespace LibGDXSharp.Files.Buffers;
 ///         return the buffer upon which they are invoked.  This allows method invocations to be
 ///         chained; for example, the sequence of statements
 ///         <code>
-///     b.flip();
-///     b.position(23);
-///     b.limit(42);
-/// </code>
+///             b.flip();
+///             b.position(23);
+///             b.limit(42);
+///         </code>
 ///         can be replaced by the single, more compact statement
 ///         <code>
-///     b.flip().position(23).limit(42);
-/// </code>
+///             b.flip().position(23).limit(42);
+///         </code>
 ///     </para>
 /// </summary>
+[PublicAPI]
 public abstract class Buffer
 {
     /// <summary>
@@ -306,14 +305,14 @@ public abstract class Buffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer </returns>
-    /// <exception cref="InvalidMarkException">If the mark has not been set</exception>
+    /// <exception cref="GdxRuntimeException">If the mark has not been set</exception>
     public Buffer Reset()
     {
         int m;
 
         if ( ( m = _mark ) < 0 )
         {
-            throw new InvalidMarkException();
+            throw new GdxRuntimeException( "Mark has not been set" );
         }
 
         Position = m;
@@ -497,7 +496,7 @@ public abstract class Buffer
     {
         if ( Position >= Limit )
         {
-            throw new BufferUnderflowException();
+            throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
         }
 
         return Position++;
@@ -507,7 +506,7 @@ public abstract class Buffer
     {
         if ( ( Limit - Position ) < nb )
         {
-            throw new BufferUnderflowException();
+            throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Underflow!" );
         }
 
         var p = Position;
@@ -527,7 +526,7 @@ public abstract class Buffer
     {
         if ( Position >= Limit )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
         }
 
         return Position++;
@@ -537,7 +536,7 @@ public abstract class Buffer
     {
         if ( ( Limit - Position ) < nb )
         {
-            throw new BufferOverflowException();
+            throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
         }
 
         var p = Position;

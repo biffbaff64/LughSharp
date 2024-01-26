@@ -20,6 +20,7 @@ using LibGDXSharp.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class SplitPane : WidgetGroup
 {
     private SplitPaneStyle _style = null!;
@@ -39,12 +40,19 @@ public class SplitPane : WidgetGroup
     private readonly Vector2        _handlePosition     = new();
 
     public SplitPane( Actor? firstWidget, Actor? secondWidget, bool vertical, Skin skin )
-        : this( firstWidget, secondWidget, vertical, skin, "default-" + ( vertical ? "vertical" : "horizontal" ) )
+        : this( firstWidget,
+                secondWidget,
+                vertical,
+                skin,
+                $"default-{( vertical ? "vertical" : "horizontal" )}" )
     {
     }
 
     public SplitPane( Actor? firstWidget, Actor? secondWidget, bool vertical, Skin skin, String styleName )
-        : this( firstWidget, secondWidget, vertical, skin.Get< SplitPaneStyle >( styleName ) )
+        : this( firstWidget,
+                secondWidget,
+                vertical,
+                skin.Get< SplitPaneStyle >( styleName ) )
     {
     }
 
@@ -247,13 +255,13 @@ public class SplitPane : WidgetGroup
     {
         IDrawable handle = _style.Handle;
 
-        float width  = Width;
-        float height = Height;
+        var width  = Width;
+        var height = Height;
 
-        var   availHeight      = height - handle.MinHeight;
-        float topAreaHeight    = ( availHeight * _splitAmount );
-        var   bottomAreaHeight = availHeight - topAreaHeight;
-        float handleHeight     = handle.MinHeight;
+        var availHeight      = height - handle.MinHeight;
+        var topAreaHeight    = ( availHeight * _splitAmount );
+        var bottomAreaHeight = availHeight - topAreaHeight;
+        var handleHeight     = handle.MinHeight;
 
         _firstWidgetBounds.Set( 0, height - topAreaHeight, width, topAreaHeight );
         _secondWidgetBounds.Set( 0, 0, width, bottomAreaHeight );
@@ -340,7 +348,7 @@ public class SplitPane : WidgetGroup
 
         if ( _vertical )
         {
-            float availableHeight = Height - _style.Handle.MinHeight;
+            var availableHeight = Height - _style.Handle.MinHeight;
 
             if ( _firstWidget is ILayout layout )
             {
@@ -449,19 +457,19 @@ public class SplitPane : WidgetGroup
     [Obsolete( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActor( Actor actor )
     {
-        throw new UnsupportedOperationException( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." );
+        throw new GdxRuntimeException( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." );
     }
 
     [Obsolete( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActorAt( int index, Actor actor )
     {
-        throw new UnsupportedOperationException( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." );
+        throw new GdxRuntimeException( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." );
     }
 
     [Obsolete( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActorBefore( Actor actorBefore, Actor actor )
     {
-        throw new UnsupportedOperationException( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." );
+        throw new GdxRuntimeException( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." );
     }
 
     // ------------------------------------------------------------------------
@@ -546,7 +554,7 @@ public class SplitPane : WidgetGroup
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public class SplitPaneInputListener : InputListener
     {
         private readonly SplitPane _parent;
@@ -620,10 +628,10 @@ public class SplitPane : WidgetGroup
                 var dragY       = _parent._handlePosition.Y + delta;
 
                 _parent._handlePosition.Y = dragY;
-                
+
                 dragY = Math.Max( 0, dragY );
                 dragY = Math.Min( availHeight, dragY );
-                
+
                 _parent._splitAmount = 1 - ( dragY / availHeight );
                 _parent._lastPoint.Set( x, y );
             }

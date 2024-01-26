@@ -15,7 +15,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Audio.OpenAL;
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;

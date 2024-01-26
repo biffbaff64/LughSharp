@@ -938,14 +938,14 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
         public void Add( TNode node )
         {
-            MemberNullException.ThrowIfNull( NodeChildren );
+            GdxRuntimeException.ThrowIfNull( NodeChildren );
 
             Insert( NodeChildren.Count, node );
         }
 
         public void AddAll( List< TNode > nodes )
         {
-            MemberNullException.ThrowIfNull( NodeChildren );
+            GdxRuntimeException.ThrowIfNull( NodeChildren );
 
             for ( int i = 0, n = nodes.Count; i < n; i++ )
             {
@@ -1004,7 +1004,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         /// </summary>
         public int CountActors()
         {
-            MemberNullException.ThrowIfNull( NodeChildren );
+            GdxRuntimeException.ThrowIfNull( NodeChildren );
 
             if ( !IsExpanded )
             {

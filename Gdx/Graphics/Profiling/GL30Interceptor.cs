@@ -14,9 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 
-using Buffer = LibGDXSharp.Files.Buffers.Buffer;
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
@@ -682,7 +682,7 @@ public class GL30Interceptor : GLInterceptor, IGL30
         Check();
     }
 
-    public override void GLGetFloatv( int pname, int parameters )
+    public override void GLGetFloatv( int pname, FloatBuffer parameters )
     {
         Calls++;
         GL30.GLGetFloatv( pname, parameters );

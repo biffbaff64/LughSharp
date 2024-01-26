@@ -53,6 +53,7 @@ namespace LibGDXSharp.Graphics.G2D;
 ///         A PolygonSpriteBatch has to be disposed if it is no longer used.
 ///     </p>
 /// </summary>
+[PublicAPI]
 public class PolygonSpriteBatch : IPolygonBatch
 {
     private readonly Color          _color          = new( 1, 1, 1, 1 );
@@ -169,7 +170,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.end must be called before begin." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.end must be called before begin." );
         }
 
         renderCalls = 0;
@@ -194,7 +195,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before end." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before end." );
         }
 
         if ( _vertexIndex > 0 )
@@ -247,12 +248,12 @@ public class PolygonSpriteBatch : IPolygonBatch
     /// <param name="region"> The Polygon Region to draw </param>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
-    /// <exception cref="IllegalStateException"></exception>
+    /// <exception cref="GdxRuntimeException"></exception>
     public void Draw( PolygonRegion region, float x, float y )
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( region.Region.Texture != _lastTexture )
@@ -284,7 +285,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( region.Region.Texture != _lastTexture )
@@ -330,7 +331,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( region.Region.Texture != _lastTexture )
@@ -380,7 +381,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( texture != _lastTexture )
@@ -423,7 +424,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( texture != _lastTexture )
@@ -577,7 +578,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( texture != _lastTexture )
@@ -645,7 +646,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( texture != _lastTexture )
@@ -703,7 +704,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( texture != _lastTexture )
@@ -759,7 +760,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( texture != _lastTexture )
@@ -817,7 +818,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         var triangleCount = ( count / Sprite.SpriteSize ) * 6;
@@ -886,7 +887,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( region.Texture != _lastTexture )
@@ -953,7 +954,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( region.Texture != _lastTexture )
@@ -1097,7 +1098,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( region.Texture != _lastTexture )
@@ -1251,7 +1252,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "PolygonSpriteBatch.begin must be called before Draw." );
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
         if ( region.Texture != _lastTexture )

@@ -35,16 +35,6 @@ public class TextureAtlasLoader
     }
 
     /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-        GC.SuppressFinalize( this );
-    }
-
-    /// <summary>
     /// </summary>
     /// <param name="assetManager"></param>
     /// <param name="fileName"></param>
@@ -74,11 +64,13 @@ public class TextureAtlasLoader
         }
 
         var atlas = new TextureAtlas( _data );
+
         _data = null;
 
         return atlas;
     }
 
+    /// <inheritdoc/>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? atlasFile,
                                                              AssetLoaderParameters? parameter )
@@ -113,12 +105,23 @@ public class TextureAtlasLoader
     }
 
     /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
+    /// <summary>
     /// </summary>
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
     {
         if ( disposing )
         {
+            this._data = null;
         }
     }
 

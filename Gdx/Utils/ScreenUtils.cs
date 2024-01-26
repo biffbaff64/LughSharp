@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Graphics.G2D;
 
 namespace LibGDXSharp.Utils;
@@ -68,7 +68,10 @@ public class ScreenUtils
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
     /// <param name="clearDepth">Clears the depth buffer if true.</param>
-    public static void Clear( Color color, bool clearDepth ) => Clear( color.R, color.G, color.B, color.A, clearDepth );
+    public static void Clear( Color color, bool clearDepth )
+    {
+        Clear( color.R, color.G, color.B, color.A, clearDepth );
+    }
 
     /// <summary>
     ///     Clears the color buffers and optionally the depth buffer.

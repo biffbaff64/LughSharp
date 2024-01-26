@@ -93,8 +93,8 @@ public abstract class BaseTmxMapLoader<TP>
     /// <returns>The <see cref="TiledMap" />.</returns>
     protected TiledMap LoadTiledMap( FileInfo tmxFile, TP? parameter, IImageResolver imageResolver )
     {
-        MemberNullException.ThrowIfNull( xml );
-        MemberNullException.ThrowIfNull( root );
+        GdxRuntimeException.ThrowIfNull( xml );
+        GdxRuntimeException.ThrowIfNull( root );
 
         Map = new TiledMap();
 

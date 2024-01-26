@@ -26,6 +26,7 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
         this._pixmap = default( Pixmap )!;
     }
 
+    /// <inheritdoc/>
     public override void LoadAsync( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
@@ -36,6 +37,7 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
         _pixmap = new Pixmap( file );
     }
 
+    /// <inheritdoc/>
     public override Pixmap LoadSync( AssetManager manager,
                                      string? fileName,
                                      FileInfo? file,

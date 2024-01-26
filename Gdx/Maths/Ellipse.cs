@@ -21,6 +21,7 @@ namespace LibGDXSharp.Maths;
 /// <summary>
 ///     A convenient 2D ellipse class, based on the circle class
 /// </summary>
+[PublicAPI]
 public class Ellipse : ISerializable, IShape2D
 {
     /// <summary>
@@ -124,10 +125,11 @@ public class Ellipse : ISerializable, IShape2D
     /// <returns> true if this ellipse contains the given point; false otherwise.  </returns>
     public bool Contains( float x, float y )
     {
-        x = x - X;
-        y = y - Y;
+        x -= X;
+        y -= Y;
 
-        return ( ( ( x * x ) / ( Width * 0.5f * Width * 0.5f ) ) + ( ( y * y ) / ( Height * 0.5f * Height * 0.5f ) ) ) <= 1.0f;
+        return ( ( ( x * x ) / ( Width * 0.5f * Width * 0.5f ) )
+               + ( ( y * y ) / ( Height * 0.5f * Height * 0.5f ) ) ) <= 1.0f;
     }
 
     /// <summary>
@@ -225,7 +227,7 @@ public class Ellipse : ISerializable, IShape2D
 
     /// <returns>
     ///     The area of this <see cref="Ellipse" /> as <see cref="MathUtils.PI" />
-    ///     <see cref="Ellipse.Width" /> * <seealso cref="Ellipse.Height" />
+    ///     <see cref="Ellipse.Width" /> * <see cref="Ellipse.Height" />
     /// </returns>
     public float Area() => ( MathUtils.PI * ( Width * Height ) ) / 4;
 
@@ -274,14 +276,14 @@ public class Ellipse : ISerializable, IShape2D
             && Height.Equals( e.Height );
     }
 
-    public int HashCode()
+    public override int GetHashCode()
     {
-        var prime = 53;
+        const int PRIME = 53;
 
-        var result = prime + NumberUtils.FloatToRawIntBits( Height );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Width );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( X );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Y );
+        var result = PRIME + NumberUtils.FloatToRawIntBits( Height );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Width );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
 
         return result;
     }

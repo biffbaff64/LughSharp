@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections;
 
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
@@ -68,6 +68,7 @@ namespace LibGDXSharp.Graphics.G2D;
 ///         SpriteCache must be disposed once it is no longer needed.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class SpriteCache
 {
     // ------------------------------------------------------------------------
@@ -169,17 +170,12 @@ public class SpriteCache
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    /// <summary>
-    ///     Number of render calls since the last <see cref="Begin" />.
-    /// </summary>
-    public int RenderCalls { get; set; } = 0;
-
-    /// <summary>
-    ///     Number of rendering calls, ever. Will not be reset unless set manually.
-    /// </summary>
-    public int TotalRenderCalls { get; set; } = 0;
-
-    public Color Color { get; set; } = new( 1, 1, 1, 1 );
+    public int     RenderCallsSinceBegin { get; set; }  = 0;
+    public int     TotalRenderCalls      { get; set; }  = 0;
+    public Color   Color                 { get; set; }  = new( 1, 1, 1, 1 );
+    public Matrix4 ProjectionMatrix      { get; init; } = new();
+    public Matrix4 TransformMatrix       { get; init; } = new();
+    public bool    IsDrawing             { get; private set; }
 
     /// <summary>
     ///     The color of this sprite cache, expanding the alpha from 0-254 to 0-255.
@@ -197,10 +193,6 @@ public class SpriteCache
             Color = color;
         }
     }
-
-    public Matrix4 ProjectionMatrix { get; init; } = new();
-    public Matrix4 TransformMatrix  { get; init; } = new();
-    public bool    IsDrawing        { get; private set; }
 
     /// Sets the color used to tint images when they are added to the
     /// SpriteCache. Default is
@@ -229,12 +221,12 @@ public class SpriteCache
     {
         if ( IsDrawing )
         {
-            throw new IllegalStateException( "end must be called before beginCache" );
+            throw new GdxRuntimeException( "end must be called before beginCache" );
         }
 
         if ( _currentCache != null )
         {
-            throw new IllegalStateException( "endCache must be called before begin." );
+            throw new GdxRuntimeException( "endCache must be called before begin." );
         }
 
         _currentCache = new Cache( _caches.Count, _mesh.GetVerticesBuffer().Limit );
@@ -253,12 +245,12 @@ public class SpriteCache
     {
         if ( IsDrawing )
         {
-            throw new IllegalStateException( "end must be called before beginCache" );
+            throw new GdxRuntimeException( "end must be called before beginCache" );
         }
 
         if ( _currentCache != null )
         {
-            throw new IllegalStateException( "endCache must be called before begin." );
+            throw new GdxRuntimeException( "endCache must be called before begin." );
         }
 
         if ( cacheID == ( _caches.Count - 1 ) )
@@ -282,7 +274,7 @@ public class SpriteCache
     {
         if ( _currentCache == null )
         {
-            throw new IllegalStateException( "beginCache must be called before endCache." );
+            throw new GdxRuntimeException( "beginCache must be called before endCache." );
         }
 
         Cache cache      = _currentCache;
@@ -370,7 +362,7 @@ public class SpriteCache
     {
         if ( _currentCache == null )
         {
-            throw new IllegalStateException( "beginCache must be called before add." );
+            throw new GdxRuntimeException( "beginCache must be called before add." );
         }
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
@@ -1074,21 +1066,17 @@ public class SpriteCache
 
         Array.Copy( sprite.Vertices, 0, TempVertices, 0, 3 * Sprite.VertexSize ); // temp0,1,2=sprite0,1,2
 
-        Array.Copy(
-            sprite.Vertices,
-            2 * Sprite.VertexSize,
-            TempVertices,
-            3 * Sprite.VertexSize,
-            Sprite.VertexSize
-            ); // temp3=sprite2
+        Array.Copy( sprite.Vertices,
+                    2 * Sprite.VertexSize,
+                    TempVertices,
+                    3 * Sprite.VertexSize,
+                    Sprite.VertexSize ); // temp3=sprite2
 
-        Array.Copy(
-            sprite.Vertices,
-            3 * Sprite.VertexSize,
-            TempVertices,
-            4 * Sprite.VertexSize,
-            Sprite.VertexSize
-            ); // temp4=sprite3
+        Array.Copy( sprite.Vertices,
+                    3 * Sprite.VertexSize,
+                    TempVertices,
+                    4 * Sprite.VertexSize,
+                    Sprite.VertexSize ); // temp4=sprite3
 
         Array.Copy( sprite.Vertices, 0, TempVertices, 5 * Sprite.VertexSize, Sprite.VertexSize ); // temp5=sprite0
 
@@ -1102,15 +1090,15 @@ public class SpriteCache
     {
         if ( IsDrawing )
         {
-            throw new IllegalStateException( "end must be called before begin." );
+            throw new GdxRuntimeException( "end must be called before begin." );
         }
 
         if ( _currentCache != null )
         {
-            throw new IllegalStateException( "endCache must be called before begin" );
+            throw new GdxRuntimeException( "endCache must be called before begin" );
         }
 
-        RenderCalls = 0;
+        RenderCallsSinceBegin = 0;
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
 
         Gdx.GL20.GLDepthMask( false );
@@ -1146,7 +1134,7 @@ public class SpriteCache
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "begin must be called before end." );
+            throw new GdxRuntimeException( "begin must be called before end." );
         }
 
         IsDrawing = false;
@@ -1163,7 +1151,7 @@ public class SpriteCache
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "SpriteCache.begin must be called before draw." );
+            throw new GdxRuntimeException( "SpriteCache.begin must be called before draw." );
         }
 
         Cache cache = _caches[ cacheID ];
@@ -1184,8 +1172,8 @@ public class SpriteCache
             offset += counts[ i ];
         }
 
-        RenderCalls      += textureCount;
-        TotalRenderCalls += textureCount;
+        RenderCallsSinceBegin += textureCount;
+        TotalRenderCalls      += textureCount;
     }
 
     /// <summary>
@@ -1200,7 +1188,7 @@ public class SpriteCache
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "SpriteCache.begin must be called before draw." );
+            throw new GdxRuntimeException( "SpriteCache.begin must be called before draw." );
         }
 
         Cache cache = _caches[ cacheID ];
@@ -1235,8 +1223,8 @@ public class SpriteCache
             offset += count;
         }
 
-        RenderCalls      += cache.textureCount;
-        TotalRenderCalls += textureCount;
+        RenderCallsSinceBegin += cache.textureCount;
+        TotalRenderCalls      += textureCount;
     }
 
     /// <summary>

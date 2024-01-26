@@ -14,9 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 
-using Buffer = LibGDXSharp.Files.Buffers.Buffer;
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
@@ -282,7 +282,7 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLTexParameterf( int target, int pname, float param );
 
     /// <inheritdoc />
-    public abstract void GLGetFloatv( int pname, int parameters );
+    public abstract void GLGetFloatv( int pname, FloatBuffer parameters );
 
     /// <inheritdoc />
     public abstract void GLTexParameteri( int target, int pname, int param );

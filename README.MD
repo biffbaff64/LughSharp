@@ -32,43 +32,45 @@ As far as I can see, I do not need to convert:-
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Inspection Results
-------------------
+Modules                  Inspection
+-----------------------------------
 
-    - Assets    - 23/01/2024
-    - Audio     - 23/01/2024
-    - Core      - 
-    - Graphics  -  
-    - Input     - 23/01/2024
-    - Maps      -  
-    - Maths     -  
-    - Scenes    -  
-    - Utils     - 23/01/2024 
+    - Assets    - DONE - 23/01/2024
+    - Audio     - DONE - 23/01/2024
+    - Core      - DONE - 
+    - Graphics  -      - 
+    - Input     -      - 23/01/2024
+    - Maps      - DONE - 
+    - Maths     - DONE - 
+    - Scenes    -      - 
+    - Utils     -      - 23/01/2024
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 LIBGDX CSHARP CONVERSION - ROUND 1
 ----------------------------------
 
+ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - STEP 1: Complete all conversions so that the code will build.
-- STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
--         Some classes can become structs / records instead.
--         Some/Most Get / Set method declarations in interfaces could become Properties.
--         switch expressions instead of switch statements where appropriate.
--         switch expressions instead of if..if/else..else where appropriate.
--         Check methods to see if they can be virtual.
--         Use [PublicApi] where necessary.
--         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
--         Use of virtual for base classes/methods and classes that are likely to be extended is essential.
-- STEP 3: Resolve ALL remaining TODOs.
-- STEP 4: Ensure code is fully documented.
+  - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
+  -         Some classes can become structs / records instead.
+  -         Some/Most Get / Set method declarations in interfaces could become Properties.
+  -         switch expressions instead of switch statements where appropriate.
+  -         switch expressions instead of if..if/else..else where appropriate.
+  -         Check methods to see if they can be virtual.
+  -         Use [PublicApi] where necessary.
+  -         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
+  -         Use of virtual for base classes/methods and classes that are likely to be extended is essential.
+  - STEP 3: Resolve ALL remaining TODOs.
+  - STEP 4: Ensure code is fully documented.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - NO MAGIC NUMBERS!!!
--
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -115,6 +117,8 @@ ASSETS
     TODO:   I think most, if not all, of these classes could be modified or rewritten.
             As I've learned more about C# I've also learned more about Tasks and Delegates,
             I think these classes could/should use these.
+
+    TODO:   AsynchronousAssetLoader/SynchronousAssetLoader or just AssetLoader ??
 
     - DONE - AssetLoader
     - DONE - AsynchronousAssetLoader
@@ -262,18 +266,18 @@ CORE
     - DONE - IInput.Buttons
     - DONE - IInput.Keys
     - DONE - IInput.ITextInputListener
-    - DONE - IInputProcessor                
-    - DONE - ILifecycleListener             
+    - DONE - IInputProcessor
+    - DONE - ILifecycleListener
     - DONE - INet
     - DONE - INet.IHttpResponse
     - DONE - INet.IHttpMethods
     - DONE - INet.IHttpResponseListener
     - DONE - INet.HttpRequest
-    - DONE - InputAdapter                   
-    - DONE - InputEventQueue                
-    - DONE - IPreferences                   
-    - DONE - IScreen                        
-    - DONE - ScreenAdapter                  
+    - DONE - InputAdapter
+    - DONE - InputEventQueue
+    - DONE - IPreferences
+    - DONE - IScreen
+    - DONE - ScreenAdapter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -281,75 +285,68 @@ CORE
 FILES
 -----
 
-    TODO: Remove all this and properly integrate the C# file handling classes
-
-    - IP   - BufferedReader
-    - IP   - BufferedStreamExtensions       - TO BE REMOVED
-    - IP   - ByteArrayInputStream
-    - IP   - ByteArrayOutputStream
-    - DONE - FileHandle
-    - DONE - FileHandleStream
-    - DONE - IDataOutput
-    - DONE - InputStream
-    - IP   - Reader
+    - **** - IP   - BufferedReader
+    - **** - IP   - BufferedStreamExtensions
+    - **** - IP   - ByteArrayInputStream
+    - **** - IP   - ByteArrayOutputStream
+    - **** - DONE - FileHandle
+    - **** - DONE - FileHandleStream
+    - **** - DONE - IDataOutput
+    - **** - DONE - InputStream
+    - **** - IP   - Reader
 
     ------------------------------------------
 
-    - java.io.BufferedReader                -> 
-    - java.io.BufferedInputStream           -> BufferedStream ?
-    - java.io.ByteArrayInputStream          -> 
-    - java.io.ByteArrayOutputStream         -> 
-    - java.io.DataOutput                    -> (Interface)
-    - java.io.DataInputStream               -> BinaryReader ?
-    - java.io.DataOutputStream              -> BinaryWriter ?
-    - java.io.File                          -> File ( static class )
-    - java.io.FileHandle                    -> FileInfo + File + DirectoryInfo ?
-    - java.io.FileInputStream               -> 
-    - java.io.FileOutputStream              -> 
-    - java.io.FilterInputStream             -> 
-    - java.io.FilterOutputStream            -> 
-    - java.io.InputStream                   -> StreamReader ?
-    - java.io.InputStreamReader             -> StreamReader ?
-    - java.io.OutputStream                  -> StreamWriter ?
-    - java.io.Reader                        -> StreamReader ?
+    - **** - java.io.BufferedReader                -> 
+    - **** - java.io.BufferedInputStream           -> BufferedStream ?
+    - **** - java.io.ByteArrayInputStream          -> 
+    - **** - java.io.ByteArrayOutputStream         -> 
+    - **** - java.io.DataOutput                    -> (Interface)
+    - **** - java.io.DataInputStream               -> BinaryReader ?
+    - **** - java.io.DataOutputStream              -> BinaryWriter ?
+    - **** - java.io.File                          -> File ( static class )
+    - **** - java.io.FileHandle                    -> FileInfo + File + DirectoryInfo ?
+    - **** - java.io.FileInputStream               -> 
+    - **** - java.io.FileOutputStream              -> 
+    - **** - java.io.FilterInputStream             -> 
+    - **** - java.io.FilterOutputStream            -> 
+    - **** - java.io.InputStream                   -> StreamReader ?
+    - **** - java.io.InputStreamReader             -> StreamReader ?
+    - **** - java.io.OutputStream                  -> StreamWriter ?
+    - **** - java.io.Reader                        -> StreamReader ?
 
     ------------------------------------------
 
-    - java.io.IOException                   -> System.IO.IOException
+    - **** - java.io.IOException                   -> System.IO.IOException
 
     ------------------------------------------
 
-    - Look into existing C# ZIP libraries
+    - **** - java.util.zip.CRC32                   -> 
+    - **** - java.util.zip.CheckedOutputStream     -> 
+    - **** - java.util.zip.Deflater                -> 
+    - **** - java.util.zip.DeflaterOutputStream    -> 
+    - **** - java.util.zip.InflaterInputStream     -> 
 
-    - java.util.zip.CRC32                   -> 
-    - java.util.zip.CheckedOutputStream     -> 
-    - java.util.zip.Deflater                -> 
-    - java.util.zip.DeflaterOutputStream    -> 
-    - java.util.zip.InflaterInputStream     -> 
+    ------------------------------------------
 
-    FILES/BUFFERS
-    -------------
-
-    - See if these can be replaced by any C# System classes
-
-    - DONE - Buffer
-    - IP   - BufferUtils
-    - DONE - ByteBuffer
-    - DONE - CharBuffer
-    - IP   - CircularByteBuffer
-    - IP   - DirectByteBuffer
-    - IP   - DoubleBuffer
-    - DONE - FloatBuffer
-    - IP   - HeapByteBuffer
-    - IP   - HeapCharBuffer
-    - IP   - HeapFloatBuffer
-    - IP   - HeapShortBuffer
-    - IP   - IDirectBuffer
-    - IP   - IntBuffer
-    - IP   - LongBuffer
-    - IP   - MappedByteBuffer
-    - DONE - ShortBuffer
-    - DONE - StringCharBuffer
+    - **** - Buffer
+    - **** - BufferUtils
+    - **** - ByteBuffer
+    - **** - CharBuffer
+    - **** - CircularByteBuffer
+    - **** - DirectByteBuffer
+    - **** - DoubleBuffer
+    - **** - FloatBuffer
+    - **** - HeapByteBuffer
+    - **** - HeapCharBuffer
+    - **** - HeapFloatBuffer
+    - **** - HeapShortBuffer
+    - **** - IDirectBuffer
+    - **** - IntBuffer
+    - **** - LongBuffer
+    - **** - MappedByteBuffer
+    - **** - ShortBuffer
+    - **** - StringCharBuffer
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -357,22 +354,22 @@ FILES
 GRAPHICS
 --------
 
-    - DONE - Camera                             
-    - DONE - Color                              
-    - DONE - Colors                             
+    - DONE - Camera
+    - DONE - Color
+    - DONE - Colors
     - DONE - Cubemap
-    - DONE - FPSLogger                          
-    - DONE - GLTexture                          
-    - DONE - GraphicsType                       
-    - DONE - ICubemapData                       
-    - DONE - ICursor                            
-    - DONE - IDownloadPixmapResponseListener    
-    - DONE - IGL20                              
-    - DONE - IGL30                              
-    - DONE - ITextureArrayData        
-    - DONE - ITextureData             
-    - DONE - Mesh                               
-    - DONE - OrthographicCamera                 
+    - DONE - FPSLogger
+    - DONE - GLTexture
+    - DONE - GraphicsType
+    - DONE - ICubemapData
+    - DONE - ICursor
+    - DONE - IDownloadPixmapResponseListener
+    - DONE - IGL20
+    - DONE - IGL30
+    - DONE - ITextureArrayData
+    - DONE - ITextureData
+    - DONE - Mesh
+    - DONE - OrthographicCamera
     - DONE - PerspectiveCamera                  
     - DONE - Pixmap              
     - DONE - PixmapFormat                             
@@ -610,7 +607,7 @@ GRAPHICS
     -      - DefaultShaderProvider
     -      - DefaultTextureBinder
     -      - DepthShaderProvider
-    -      - F|irstPersonCameraController
+    -      - FirstPersonCameraController
     -      - IMeshPartBuilder
     -      - IRenderableSorter
     -      - IShaderProvider
@@ -879,7 +876,7 @@ SCENES/SCENE2D
     - DONE - RepeatAction                   
     - DONE - RotateByAction                 
     - DONE - RotateToAction                 
-    - IP   - RunnableAction                 
+    - DONE - RunnableAction                 
     - DONE - ScaleByAction                  
     - DONE - ScaleToAction                  
     - DONE - SequenceAction                 
@@ -962,21 +959,21 @@ i.e.    AddListener( new ClickListener()
     SCENES/SCENE2D/UTILS
     --------------------
 
-    - DONE - ArraySelection                 
-    - DONE - BaseDrawable                   
-    - DONE - DragAndDrop                    
-    - DONE - ICullable                      
-    - DONE - IDisableable                   
-    - DONE - IDrawable                      
-    - DONE - ILayout                        
-    - DONE - ITransformDrawable             
-    - DONE - NinePatchDrawable              
-    - DONE - ScissorStack                   
-    - DONE - Selection                      
-    - DONE - SpriteDrawable                 
-    - DONE - TextureRegionDrawable          
-    - DONE - TiledDrawable                  
-    - DONE - UIUtils                        
+    - DONE - ArraySelection
+    - DONE - BaseDrawable
+    - DONE - DragAndDrop
+    - DONE - ICullable
+    - DONE - IDisableable
+    - DONE - IDrawable
+    - DONE - ILayout
+    - DONE - ITransformDrawable
+    - DONE - NinePatchDrawable
+    - DONE - ScissorStack
+    - DONE - Selection
+    - DONE - SpriteDrawable
+    - DONE - TextureRegionDrawable
+    - DONE - TiledDrawable
+    - DONE - UIUtils
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -984,16 +981,19 @@ i.e.    AddListener( new ClickListener()
 UTILS
 -----
 
-    - DONE - Align                          
+    - DONE - Align
     - DONE - BinaryHeap
-    - DONE - Bits                           
+    - DONE - Bits
     - DONE - Character
-    - DONE - ComparableTimSort              
+    - DONE - ComparableTimSort
     - DONE - DataInput                      Check
     - DONE - DataOutput                     Check
     - DONE - DataUtils                      Added Class
-    - DONE - ICloseable                     
+    - DONE - FloatConstants
+    - DONE - GdxRuntimeException
     - DONE - IClipboard                     Convert - Interface, clipboard handled in backends.                 
+    - DONE - ICloseable
+    - DONE - IReadable
     - DONE - IRunnable                      Done, but is it needed?
     - DONE - Logger                         
     - DONE - PerformanceCounter             Check
@@ -1033,6 +1033,28 @@ UTILS
     - **** - ASyncResult
     - **** - IAsyncTask
     - **** - ThreadUtils
+
+    UTILS/BUFFERS
+    -------------
+
+    - IP   - Buffer
+    - IP   - BufferUtils
+    - IP   - ByteBuffer
+    - IP   - CharBuffer
+    - IP   - CircularByteBuffer
+    - IP   - DirectByteBuffer
+    - IP   - DoubleBuffer
+    - IP   - FloatBuffer
+    - IP   - HeapByteBuffer
+    - IP   - HeapCharBuffer
+    - IP   - HeapFloatBuffer
+    - IP   - HeapShortBuffer
+    - IP   - IDirectBuffer
+    - IP   - IntBuffer
+    - IP   - LongBuffer
+    - IP   - MappedByteBuffer
+    - IP   - ShortBuffer
+    - IP   - StringCharBuffer
 
     UTILS/COLLECTIONS
     -----------------
@@ -1083,15 +1105,14 @@ UTILS
 
     These need more documentation!
 
-    - DONE - AssetNotLoadedException        
-    - DONE - BufferOverflowException        
-    - DONE - BufferUnderflowException       
-    - DONE - GdxRuntimeException            
-    - DONE - IllegalStateException          
-    - DONE - InvalidMarkException       
-    - DONE - InvalidTypeException       
+    - DONE - AssetNotLoadedException        - Remove
+    - DONE - BufferOverflowException        - Remove
+    - DONE - BufferUnderflowException       - Remove
+    - DONE - IllegalStateException          - Remove
+    - DONE - InvalidMarkException           - Remove
+    - DONE - InvalidTypeException           - Remove
     - DONE - MemberNullException
-    - DONE - MissingResourceException
+    - DONE - MissingResourceException       - Remove
     - DONE - NoSuchElementException         
     - DONE - NumberFormatException          
     - DONE - ReadOnlyBufferException        
@@ -1130,10 +1151,12 @@ UTILS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-TESTS/CORE/GRAPHICS
--------------------
+TESTS
+-----
 
-    - IP   - CameraTest
+    - IP   - Core/Graphics/CameraTest
+    -      - Core/Graphics/SpriteTest
+    - IP   - Core/Scene/Scene2D/StageTest
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1229,7 +1252,7 @@ EXTENSIONS/GDX-TOOLS
     EXTENSIONS/GDX-TOOLS/IMAGEPACKER
     --------------------------------
 
-    - IP   - ImagePacker                - This one will require a lot opf work!
+    - IP   - ImagePacker
 
     EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
     -----------------------------------

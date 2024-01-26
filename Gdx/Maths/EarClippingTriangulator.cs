@@ -16,14 +16,15 @@
 
 namespace LibGDXSharp.Maths;
 
+[PublicAPI]
 public class EarClippingTriangulator
 {
     private const int CONCAVE = -1;
     private const int CONVEX  = 1;
 
-    private readonly List< short > _indicesArray = new();
-    private readonly List< short > _triangles    = new();
-    private readonly List< int >   _vertexTypes  = new();
+    private readonly List< short > _indicesArray = [ ];
+    private readonly List< short > _triangles    = [ ];
+    private readonly List< int >   _vertexTypes  = [ ];
     private          short[]?      _indices;
     private          int           _vertexCount;
     private          float[]?      _vertices;
@@ -76,19 +77,18 @@ public class EarClippingTriangulator
         _vertexTypes.Clear();
         _vertexTypes.EnsureCapacity( vertexCount );
 
-        for ( int i = 0, n = vertexCount; i < n; ++i )
+        for ( var i = 0; i < vertexCount; ++i )
         {
             _vertexTypes.Add( ClassifyVertex( i ) );
         }
 
         // A polygon with n vertices has a triangulation of n-2 triangles.
-        List< short > triangles = _triangles;
-        triangles.Clear();
-        triangles.EnsureCapacity( Math.Max( 0, vertexCount - 2 ) * 3 );
+        _triangles.Clear();
+        _triangles.EnsureCapacity( Math.Max( 0, vertexCount - 2 ) * 3 );
 
         Triangulate();
 
-        return triangles;
+        return _triangles;
     }
 
     private void Triangulate()

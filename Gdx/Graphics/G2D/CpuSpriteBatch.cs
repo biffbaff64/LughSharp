@@ -28,6 +28,7 @@ namespace LibGDXSharp.Graphics.G2D;
 /// </summary>
 /// <see cref="SpriteBatch.RenderCalls" />
 /// <see cref="Group.Transform" />
+[PublicAPI]
 public class CpuSpriteBatch : SpriteBatch
 {
     private readonly Affine2 _adjustAffine  = new();
@@ -715,7 +716,7 @@ public class CpuSpriteBatch : SpriteBatch
     {
         if ( !IsDrawing )
         {
-            throw new IllegalStateException( "CpuSpriteBatch.begin must be called before draw." );
+            throw new GdxRuntimeException( "CpuSpriteBatch.begin must be called before draw." );
         }
 
         if ( region.Texture != LastTexture )

@@ -14,14 +14,12 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
-/// <summary>
-/// </summary>
-public abstract class MappedByteBuffer : ByteBuffer
+[PublicAPI]
+public abstract class LongBuffer : Buffer
 {
-    protected MappedByteBuffer( int mark, int pos, int lim, int cap, FileInfo? fd = null )
-        : base( mark, pos, lim, cap )
+    protected LongBuffer() : base( 0, 0, 0, 0 )
     {
     }
 }

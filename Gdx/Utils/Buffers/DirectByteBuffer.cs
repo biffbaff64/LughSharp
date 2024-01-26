@@ -14,8 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Files.Buffers;
+namespace LibGDXSharp.Utils.Buffers;
 
+[PublicAPI]
 public class DirectByteBuffer : ByteBuffer
 {
     public DirectByteBuffer( int capacity )
@@ -118,7 +119,7 @@ public class DirectByteBuffer : ByteBuffer
      * @throws  BufferOverflowException
      * If this buffer's current position is not smaller than its limit
      *
-     * @throws  ReadOnlyBufferException
+     * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
     public override ByteBuffer Put( byte b ) => null;
@@ -166,7 +167,7 @@ public class DirectByteBuffer : ByteBuffer
      * is negative
      * or not smaller than the buffer's limit
      *
-     * @throws  ReadOnlyBufferException
+     * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
     public override ByteBuffer Put( int index, byte b ) => null;
@@ -220,7 +221,7 @@ public class DirectByteBuffer : ByteBuffer
      *         *
      *         * @return  This buffer
      *         *
-     *         * @throws  ReadOnlyBufferException
+     *         * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      *         *          If this buffer is read-only
      */
     public override ByteBuffer Compact() => null;
@@ -335,7 +336,7 @@ public class DirectByteBuffer : ByteBuffer
      * If there are fewer than eight bytes
      * remaining in this buffer
      *
-     * @throws  ReadOnlyBufferException
+     * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
     public override ByteBuffer PutDouble( double value ) => null;
@@ -366,7 +367,7 @@ public class DirectByteBuffer : ByteBuffer
      * or not smaller than the buffer's limit,
      * minus seven
      *
-     * @throws  ReadOnlyBufferException
+     * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
     public override ByteBuffer PutDouble( int index, double value ) => null;

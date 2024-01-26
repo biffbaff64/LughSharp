@@ -16,10 +16,10 @@
 
 using System.Text;
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections;
 
-using Buffer = LibGDXSharp.Files.Buffers.Buffer;
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
 using Matrix3 = LibGDXSharp.Maths.Matrix3;
 using Matrix4 = LibGDXSharp.Maths.Matrix4;
 

@@ -16,7 +16,7 @@
 
 using System.Text;
 
-using LibGDXSharp.Files.Buffers;
+using LibGDXSharp.Utils.Buffers;
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Graphics.FrameBuffers;
@@ -39,6 +39,7 @@ namespace LibGDXSharp.Graphics.FrameBuffers;
 /// <typeparam name="T">
 ///     Types which derive from GLTexture, such as Texture, Cubemap, TextureArray.
 /// </typeparam>
+[PublicAPI]
 public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 {
     public const int GL_DEPTH24_STENCIL8_OES = 0x88F0;
@@ -379,26 +380,26 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
             if ( result == IGL20.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT )
             {
-                throw new IllegalStateException( "Frame buffer couldn't be constructed: incomplete attachment" );
+                throw new GdxRuntimeException( "Frame buffer couldn't be constructed: incomplete attachment" );
             }
 
             if ( result == IGL20.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS )
             {
-                throw new IllegalStateException( "Frame buffer couldn't be constructed: incomplete dimensions" );
+                throw new GdxRuntimeException( "Frame buffer couldn't be constructed: incomplete dimensions" );
             }
 
             if ( result == IGL20.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT )
             {
-                throw new IllegalStateException( "Frame buffer couldn't be constructed: missing attachment" );
+                throw new GdxRuntimeException( "Frame buffer couldn't be constructed: missing attachment" );
             }
 
             if ( result == IGL20.GL_FRAMEBUFFER_UNSUPPORTED )
             {
-                throw new IllegalStateException
+                throw new GdxRuntimeException
                     ( "Frame buffer couldn't be constructed: unsupported combination of formats" );
             }
 
-            throw new IllegalStateException( "Frame buffer couldn't be constructed: unknown error " + result );
+            throw new GdxRuntimeException( "Frame buffer couldn't be constructed: unknown error " + result );
         }
 
         AddManagedFrameBuffer( Gdx.App, this );

@@ -22,17 +22,9 @@ namespace LibGDXSharp.Scenes.Scene2D.Actions;
 /// </summary>
 public class RunnableAction : Action
 {
-    public Task? Runnable { get; set; }
+    public Task? Runnable { get; set; } = null!;
 
-    private CancellationToken        _cancellationToken;
-    private CancellationTokenSource? _tokenSource;
-    private bool                     _ran;
-
-    public RunnableAction()
-    {
-        this._tokenSource       = new CancellationTokenSource();
-        this._cancellationToken = _tokenSource.Token;
-    }
+    private bool _ran = false;
 
     public override bool Act( float delta )
     {
@@ -49,7 +41,7 @@ public class RunnableAction : Action
     /// <summary>
     ///     Called to run the runnable.
     /// </summary>
-    public void Run()
+    public virtual void Run()
     {
         if ( Runnable == null )
         {
@@ -63,10 +55,7 @@ public class RunnableAction : Action
 
         try
         {
-            Runnable = new Task( () =>
-            {
-                //
-            }, _cancellationToken );
+            Runnable.Start();
         }
         finally
         {

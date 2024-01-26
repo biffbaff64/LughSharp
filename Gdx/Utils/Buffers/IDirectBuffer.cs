@@ -14,31 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Utils.Buffers;
 
-/// <summary>
-///     Unchecked exception thrown when a relative <i>get</i> operation reaches
-///     the source buffer's limit.
-/// </summary>
 [PublicAPI]
-public class BufferUnderflowException : Exception
+public interface IDirectBuffer
 {
-    public BufferUnderflowException()
-    {
-    }
+    long Address();
 
-    public BufferUnderflowException( string? message = "" )
-        : base( message )
-    {
-    }
+    object Attachment();
 
-    public BufferUnderflowException( Exception e )
-        : this( "", e )
-    {
-    }
-
-    public BufferUnderflowException( string message, Exception? exception )
-        : base( message, exception )
-    {
-    }
+//    Cleaner Cleaner();
 }

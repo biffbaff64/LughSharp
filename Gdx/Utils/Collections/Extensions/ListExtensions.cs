@@ -113,12 +113,12 @@ public static class ListExtensions
     /// <param name="ts"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    /// <exception cref="IllegalStateException"></exception>
+    /// <exception cref="GdxRuntimeException"></exception>
     public static T Pop<T>( this List< T > ts )
     {
         if ( ts.Count == 0 )
         {
-            throw new IllegalStateException( "Array is empty." );
+            throw new GdxRuntimeException( "Array is empty." );
         }
 
         T item = ts[ ^1 ];

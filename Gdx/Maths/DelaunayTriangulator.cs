@@ -22,6 +22,7 @@ namespace LibGDXSharp.Maths;
 ///     Delaunay triangulation. Adapted from Paul Bourke's triangulate:
 ///     http://paulbourke.net/papers/triangulate/
 /// </summary>
+[PublicAPI]
 public class DelaunayTriangulator
 {
     private const    float        EPSILON          = 0.000001f;
@@ -30,18 +31,24 @@ public class DelaunayTriangulator
     private const    int          INCOMPLETE       = 2;
     private readonly Vector2      _centroid        = new();
     private readonly List< bool > _complete        = new( 16 );
-    private readonly List< int >  _edges           = new();
+    private readonly List< int >  _edges           = [ ];
     private readonly List< int >  _originalIndices = new( 0 );
 
-    private readonly List< int > _quicksortStack = new();
+    private readonly List< int > _quicksortStack = [ ];
     private readonly float[]     _superTriangle  = new float[ 6 ];
     private readonly List< int > _triangles      = new( 16 );
 
     private float[]? _sortedPoints;
 
-    public List< int > ComputeTriangles( List< float > points, bool sorted ) => ComputeTriangles( points.ToArray(), 0, points.Count, sorted );
+    public List< int > ComputeTriangles( List< float > points, bool sorted )
+    {
+        return ComputeTriangles( points.ToArray(), 0, points.Count, sorted );
+    }
 
-    public List< int > ComputeTriangles( float[] polygon, bool sorted ) => ComputeTriangles( polygon, 0, polygon.Length, sorted );
+    public List< int > ComputeTriangles( float[] polygon, bool sorted )
+    {
+        return ComputeTriangles( polygon, 0, polygon.Length, sorted );
+    }
 
     /// <summary>
     ///     Triangulates the given point cloud to a list of triangle indices that
@@ -142,20 +149,16 @@ public class DelaunayTriangulator
         superTriangle[ 4 ] = xmid + dmax;
         superTriangle[ 5 ] = ymid - dmax;
 
-        List< int > edges = _edges;
+        _edges.EnsureCapacity( count / 2 );
 
-        edges.EnsureCapacity( count / 2 );
-
-        List< bool > complete = _complete;
-
-        complete.Clear();
-        complete.EnsureCapacity( count );
+        _complete.Clear();
+        _complete.EnsureCapacity( count );
 
         // Add super triangle.
         triangles.Add( end );
         triangles.Add( end + 2 );
         triangles.Add( end + 4 );
-        complete.Add( false );
+        _complete.Add( false );
 
         int[] trianglesArray;
 
@@ -167,7 +170,7 @@ public class DelaunayTriangulator
             // If x,y lies inside the circumcircle of a triangle, the edges
             // are stored and the triangle removed.
             trianglesArray = triangles.ToArray();
-            var completeArray = complete.ToArray();
+            var completeArray = _complete.ToArray();
 
             for ( var triangleIndex = triangles.Count - 1; triangleIndex >= 0; triangleIndex -= 3 )
             {
@@ -233,19 +236,19 @@ public class DelaunayTriangulator
                         break;
 
                     case INSIDE:
-                        edges.AddAll( p1, p2, p2, p3 );
-                        edges.AddAll( p3, p1 );
+                        _edges.AddAll( p1, p2, p2, p3 );
+                        _edges.AddAll( p3, p1 );
 
                         triangles.RemoveRange( triangleIndex - 2, triangleIndex );
-                        complete.RemoveAt( completeIndex );
+                        _complete.RemoveAt( completeIndex );
 
                         break;
                 }
             }
 
-            var edgesArray = edges.ToArray();
+            var edgesArray = _edges.ToArray();
 
-            for ( int i = 0, n = edges.Count; i < n; i += 2 )
+            for ( int i = 0, n = _edges.Count; i < n; i += 2 )
             {
                 // Skip multiple edges. If all triangles are anticlockwise then
                 // all interior edges are opposite pointing in direction.
@@ -278,10 +281,10 @@ public class DelaunayTriangulator
                 triangles.Add( p1 );
                 triangles.Add( edgesArray[ i + 1 ] );
                 triangles.Add( pointIndex );
-                complete.Add( false );
+                _complete.Add( false );
             }
 
-            edges.Clear();
+            _edges.Clear();
         }
 
         // Remove triangles with super triangle vertices.
@@ -465,34 +468,25 @@ public class DelaunayTriangulator
         var up    = upper;
         var down  = lower + 2;
 
-        float tempValue;
-        int   tempIndex;
-
         while ( down < up )
         {
             while ( ( down < up ) && ( values[ down ] <= value ) )
             {
-                down = down + 2;
+                down += 2;
             }
 
             while ( values[ up ] > value )
             {
-                up = up - 2;
+                up -= 2;
             }
 
             if ( down < up )
             {
-                tempValue      = values[ down ];
-                values[ down ] = values[ up ];
-                values[ up ]   = tempValue;
+                ( values[ down ], values[ up ] )         = ( values[ up ], values[ down ] );
+                ( values[ down + 1 ], values[ up + 1 ] ) = ( values[ up + 1 ], values[ down + 1 ] );
 
-                tempValue          = values[ down + 1 ];
-                values[ down + 1 ] = values[ up + 1 ];
-                values[ up + 1 ]   = tempValue;
-
-                tempIndex                   = originalIndices[ down / 2 ];
-                originalIndices[ down / 2 ] = originalIndices[ up / 2 ];
-                originalIndices[ up / 2 ]   = tempIndex;
+                ( originalIndices[ down / 2 ], originalIndices[ up / 2 ] )
+                    = ( originalIndices[ up / 2 ], originalIndices[ down / 2 ] );
             }
         }
 
@@ -501,13 +495,10 @@ public class DelaunayTriangulator
             values[ lower ] = values[ up ];
             values[ up ]    = value;
 
-            tempValue           = values[ lower + 1 ];
-            values[ lower + 1 ] = values[ up + 1 ];
-            values[ up + 1 ]    = tempValue;
+            ( values[ lower + 1 ], values[ up + 1 ] ) = ( values[ up + 1 ], values[ lower + 1 ] );
 
-            tempIndex                    = originalIndices[ lower / 2 ];
-            originalIndices[ lower / 2 ] = originalIndices[ up / 2 ];
-            originalIndices[ up / 2 ]    = tempIndex;
+            ( originalIndices[ lower / 2 ], originalIndices[ up / 2 ] )
+                = ( originalIndices[ up / 2 ], originalIndices[ lower / 2 ] );
         }
 
         return up;
