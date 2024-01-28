@@ -37,7 +37,7 @@ public class GDXVersion
             MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1 ] );
             RevisionVersion = v.Length < 3 ? 0 : int.Parse( v[ 2 ] );
         }
-        catch ( Exception e )
+        catch ( System.Exception e )
         {
             throw new GdxRuntimeException( $"Invalid version {LIBRARY_VERSION_STRING}", e );
         }

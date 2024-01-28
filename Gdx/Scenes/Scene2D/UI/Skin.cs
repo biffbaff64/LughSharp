@@ -711,7 +711,7 @@ public class Skin : IDisposable
         {
             style = method.Invoke( actor, null )!;
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             return;
         }
@@ -738,7 +738,7 @@ public class Skin : IDisposable
         {
             method.Invoke( actor, ( object?[]? )style );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             // ignored
         }

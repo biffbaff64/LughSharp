@@ -90,17 +90,15 @@ public class ETC1TextureData : ITextureData
         {
             Pixmap pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
 
-            Gdx.GL.GLTexImage2D(
-                target,
-                0,
-                pixmap.GLInternalFormat,
-                pixmap.Width,
-                pixmap.Height,
-                0,
-                pixmap.GLFormat,
-                pixmap.GLType,
-                pixmap.Pixels
-                );
+            Gdx.GL.GLTexImage2D( target,
+                                 0,
+                                 pixmap.GLInternalFormat,
+                                 pixmap.Width,
+                                 pixmap.Height,
+                                 0,
+                                 pixmap.GLFormat,
+                                 pixmap.GLType,
+                                 pixmap.Pixels );
 
             if ( UseMipMaps )
             {
@@ -112,16 +110,14 @@ public class ETC1TextureData : ITextureData
         }
         else
         {
-            Gdx.GL.GLCompressedTexImage2D(
-                target,
-                0,
-                ETC1.ETC1_RGB8_OES,
-                Width,
-                Height,
-                0,
-                _data.CompressedData!.Capacity - _data.DataOffset,
-                _data.CompressedData
-                );
+            Gdx.GL.GLCompressedTexImage2D( target,
+                                           0,
+                                           ETC1.ETC1_RGB8_OES,
+                                           Width,
+                                           Height,
+                                           0,
+                                           _data.CompressedData.Capacity - _data.DataOffset,
+                                           _data.CompressedData );
 
             if ( UseMipMaps )
             {

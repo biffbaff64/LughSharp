@@ -55,7 +55,7 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
         return deps;
     }
 
-    public override Skin LoadSync( AssetManager manager,
+    public override void Load( AssetManager manager,
                                    string? fileName,
                                    FileInfo? file,
                                    SkinLoaderParameters? parameter )
@@ -92,8 +92,6 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
         }
 
         skin.Load( file );
-
-        return skin;
     }
 
     private static Skin NewSkin( TextureAtlas atlas ) => new( atlas );

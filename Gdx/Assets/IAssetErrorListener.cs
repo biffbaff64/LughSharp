@@ -18,5 +18,5 @@ namespace LibGDXSharp.Assets;
 
 public interface IAssetErrorListener
 {
-    void Error( AssetDescriptor asset, Exception throwable );
+    void Error( AssetDescriptor asset, System.Exception throwable );
 }

@@ -59,7 +59,7 @@ public class GLLoggingListener : IGLErrorListener
                 }
             }
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             // ignored
         }
@@ -69,7 +69,7 @@ public class GLLoggingListener : IGLErrorListener
                            ? $"Error {GLInterceptor.ResolveErrorNumber( error )} from {place}"
 
                            // This will capture current stack trace for logging, if possible
-                           : $"Error {GLInterceptor.ResolveErrorNumber( error )} at: {new Exception()}"
+                           : $"Error {GLInterceptor.ResolveErrorNumber( error )} at: {new System.Exception()}"
             );
     }
 }

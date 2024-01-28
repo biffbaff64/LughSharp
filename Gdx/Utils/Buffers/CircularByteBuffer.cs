@@ -91,8 +91,8 @@ public class CircularByteBuffer
         {
             if ( value > _numValid )
             {
-                throw new Exception( $"Can't set NumValid to {value} which is greater"
-                                   + $" than the current numValid value of {_numValid}" );
+                throw new System.Exception( $"Can't set NumValid to {value} which is greater"
+                                          + $" than the current numValid value of {_numValid}" );
             }
 
             _numValid = value;
@@ -143,7 +143,7 @@ public class CircularByteBuffer
         {
             if ( _numValid == 0 )
             {
-                throw new Exception( "Can't pop off an empty CircularByteBuffer" );
+                throw new System.Exception( "Can't pop off an empty CircularByteBuffer" );
             }
 
             _numValid--;

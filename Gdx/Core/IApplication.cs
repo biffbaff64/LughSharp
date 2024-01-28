@@ -97,13 +97,13 @@ public interface IApplication
     IPreferences GetPreferences( string name );
 
     void Log( string tag, string message );
-    void Log( string tag, string message, Exception exception );
+    void Log( string tag, string message, System.Exception exception );
 
     void Error( string tag, string message );
-    void Error( string tag, string message, Exception exception );
+    void Error( string tag, string message, System.Exception exception );
 
     void Debug( string tag, string message );
-    void Debug( string tag, string message, Exception exception );
+    void Debug( string tag, string message, System.Exception exception );
 
     void AddLifecycleListener( ILifecycleListener listener );
     void RemoveLifecycleListener( ILifecycleListener listener );

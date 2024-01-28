@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Backends.Desktop.Window;
+
 namespace LibGDXSharp.Backends.Desktop.Input;
 
 public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
@@ -86,45 +88,25 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     /// <inheritdoc />
     public override int GetX( int pointer = 0 )
     {
-        if ( pointer == 0 )
-        {
-            return _mouseX;
-        }
-
-        return 0;
+        return ( pointer == 0 ) ? _mouseX : 0;
     }
 
     /// <inheritdoc />
     public override int GetDeltaX( int pointer = 0 )
     {
-        if ( pointer == 0 )
-        {
-            return _deltaX;
-        }
-
-        return 0;
+        return ( pointer == 0 ) ? _deltaX : 0;
     }
 
     /// <inheritdoc />
     public override int GetY( int pointer = 0 )
     {
-        if ( pointer == 0 )
-        {
-            return _mouseY;
-        }
-
-        return 0;
+        return ( pointer == 0 ) ? _mouseY : 0;
     }
 
     /// <inheritdoc />
     public override int GetDeltaY( int pointer = 0 )
     {
-        if ( pointer == 0 )
-        {
-            return _deltaX;
-        }
-
-        return 0;
+        return ( pointer == 0 ) ? _deltaY : 0;
     }
 
     /// <inheritdoc />
@@ -134,11 +116,11 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         {
             GdxRuntimeException.ThrowIfNull( _window );
 
-            return ( GLFW.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputAction.Press )
-                || ( GLFW.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputAction.Press )
-                || ( GLFW.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputAction.Press )
-                || ( GLFW.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputAction.Press )
-                || ( GLFW.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputAction.Press );
+            return ( Glfw.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputState.Press )
+                || ( Glfw.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputState.Press )
+                || ( Glfw.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputState.Press )
+                || ( Glfw.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputState.Press )
+                || ( Glfw.GetMouseButton( _window.GlfwWindow, MouseButton.Button1 ) == InputState.Press );
         }
 
         return false;
@@ -151,9 +133,9 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     public override float GetPressure( int pointer = 0 ) => IsTouched( pointer ) ? 1 : 0;
 
     /// <inheritdoc />
-    public override bool IsButtonPressed( int button ) => GLFW.GetMouseButton( _window!.GlfwWindow,
+    public override bool IsButtonPressed( int button ) => Glfw.GetMouseButton( _window!.GlfwWindow,
                                                                                TranslateToMouseButton( button ) )
-                                                       == InputAction.Press;
+                                                       == InputState.Press;
 
     /// <inheritdoc />
     public override bool IsButtonJustPressed( int button )
@@ -183,15 +165,16 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _eventQueue.CurrentEventTime;
 
     /// <inheritdoc />
-    public override void SetCursorCaught( bool caught ) => GLFW.SetInputMode( _window!.GlfwWindow,
-                                                                              CursorStateAttribute.Cursor,
-                                                                              caught
-                                                                                  ? CursorModeValue.CursorDisabled
-                                                                                  : CursorModeValue.CursorNormal );
+    public override void SetCursorCaught( bool caught )
+    {
+        Glfw.SetInputMode( _window!.GlfwWindow,
+                           InputMode.Cursor,
+                           ( int )( caught ? CursorMode.Disabled : CursorMode.Normal ) );
+    }
 
     /// <inheritdoc />
-    public override bool IsCursorCaught() => GLFW.GetInputMode( _window!.GlfwWindow, CursorStateAttribute.Cursor )
-                                          == CursorModeValue.CursorDisabled;
+    public override bool IsCursorCaught() => Glfw.GetInputMode( _window!.GlfwWindow, InputMode.Cursor )
+                                          == ( int )CursorMode.Disabled;
 
     /// <inheritdoc />
     public override void SetCursorPosition( int x, int y )
@@ -205,7 +188,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             y = ( int )( y * yScale );
         }
 
-        GLFW.SetCursorPos( _window!.GlfwWindow, x, y );
+        Glfw.SetCursorPosition( _window!.GlfwWindow, x, y );
     }
 
     /// <summary>
@@ -221,11 +204,11 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     {
         ResetPollingStates();
 
-        GLFW.SetKeyCallback( windowHandle, KeyCallback );
-        GLFW.SetCharCallback( windowHandle, CharCallback );
-        GLFW.SetMouseButtonCallback( windowHandle, MouseCallback );
-        GLFW.SetScrollCallback( windowHandle, ScrollCallback );
-        GLFW.SetCursorPosCallback( windowHandle, CursorPosCallback );
+        Glfw.SetKeyCallback( windowHandle, KeyCallback );
+        Glfw.SetCharCallback( windowHandle, CharCallback );
+        Glfw.SetMouseButtonCallback( windowHandle, MouseCallback );
+        Glfw.SetScrollCallback( windowHandle, ScrollCallback );
+        Glfw.SetCursorPositionCallback( windowHandle, CursorPosCallback );
     }
 
     // ------------------------------------------------------------------------
@@ -271,18 +254,21 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     {
     }
 
-    private MouseButton TranslateToMouseButton( int button ) => button switch
-                                                                {
-                                                                    0 => MouseButton.Button1,
-                                                                    1 => MouseButton.Button2,
-                                                                    2 => MouseButton.Button3,
-                                                                    3 => MouseButton.Button4,
-                                                                    4 => MouseButton.Button5,
-                                                                    5 => MouseButton.Button6,
-                                                                    6 => MouseButton.Button7,
-                                                                    7 => MouseButton.Button8,
-                                                                    _ => MouseButton.Last
-                                                                };
+    private MouseButton TranslateToMouseButton( int button )
+    {
+        return button switch
+               {
+                   0 => MouseButton.Button1,
+                   1 => MouseButton.Button2,
+                   2 => MouseButton.Button3,
+                   3 => MouseButton.Button4,
+                   4 => MouseButton.Button5,
+                   5 => MouseButton.Button6,
+                   6 => MouseButton.Button7,
+                   7 => MouseButton.Button8,
+                   _ => throw new GdxRuntimeException( $"Unknown MouseButton: {button}" );
+               };
+    }
 
     protected char CharacterForKeyCode( int key )
     {

@@ -21,6 +21,7 @@ namespace LibGDXSharp.Graphics;
 ///     Just invoke the Log() method in your rendering method. The output
 ///     will be logged once per second.
 /// </summary>
+[PublicAPI]
 public class FPSLogger
 {
     private readonly int  _bound;

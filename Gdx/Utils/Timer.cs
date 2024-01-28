@@ -379,7 +379,7 @@ public class Timer
     }
 
     [PublicAPI]
-    public class TimerThread : ILifecycleListener, IDisposable
+    public class TimerThread : ILifecycleListener
     {
         public readonly IFiles?       files;
         public readonly List< Timer > instances = new( capacity: 1 );
@@ -450,7 +450,7 @@ public class Timer
                         {
                             waitMillis = instances[ i ].Update( timeMillis, waitMillis );
                         }
-                        catch ( Exception ex )
+                        catch ( System.Exception ex )
                         {
                             throw new GdxRuntimeException( "Task failed: " + instances[ i ].GetType().Name, ex );
                         }

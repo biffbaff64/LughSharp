@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Extensions.Tools.TexturePacker;
 
+[PublicAPI]
 public class ColorBleedEffect
 {
     private readonly static int[] Offsets = { -1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1 };
@@ -73,8 +74,8 @@ public class ColorBleedEffect
 
                 if ( ( column < 0 ) || ( column >= width ) || ( row < 0 ) || ( row >= height ) )
                 {
-                    column = x;
-                    row    = y;
+//                    column = x;
+//                    row    = y;
 
                     continue;
                 }
@@ -106,20 +107,11 @@ public class ColorBleedEffect
         return ( y * width ) + x;
     }
 
-    private static int Red( int argb )
-    {
-        return ( argb >> 16 ) & 0xFF;
-    }
+    private static int Red( int argb ) => ( argb >> 16 ) & 0xFF;
 
-    private static int Green( int argb )
-    {
-        return ( argb >> 8 ) & 0xFF;
-    }
+    private static int Green( int argb ) => ( argb >> 8 ) & 0xFF;
 
-    private static int Blue( int argb )
-    {
-        return ( argb >> 0 ) & 0xFF;
-    }
+    private static int Blue( int argb ) => ( argb >> 0 ) & 0xFF;
 
     private static int ARGB( int a, int r, int g, int b )
     {
@@ -138,7 +130,6 @@ public class ColorBleedEffect
         return ( ( a & 0xFF ) << 24 ) | ( ( r & 0xFF ) << 16 ) | ( ( g & 0xFF ) << 8 ) | ( ( b & 0xFF ) << 0 );
     }
 
-    [UsedImplicitly]
     private class Mask
     {
         private readonly bool[] _blank;
@@ -167,10 +158,7 @@ public class ColorBleedEffect
             }
         }
 
-        public bool IsBlank( int index )
-        {
-            return _blank[ index ];
-        }
+        public bool IsBlank( int index ) => _blank[ index ];
 
         private int RemoveIndex( int index )
         {
@@ -200,7 +188,7 @@ public class ColorBleedEffect
             {
                 if ( _index >= parent._pendingSize )
                 {
-                    throw new NoSuchElementException( _index.ToString() );
+                    throw new IndexOutOfRangeException( _index.ToString() );
                 }
 
                 return parent._pending[ _index++ ];
@@ -226,9 +214,6 @@ public class ColorBleedEffect
             }
         }
 
-        private static int Alpha( int argb )
-        {
-            return ( argb >> 24 ) & 0xff;
-        }
+        private static int Alpha( int argb ) => ( argb >> 24 ) & 0xff;
     }
 }

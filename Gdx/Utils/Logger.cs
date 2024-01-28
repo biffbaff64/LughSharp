@@ -66,7 +66,7 @@ public class Logger
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
-    public void Debug( string message, Exception exception )
+    public void Debug( string message, System.Exception exception )
     {
         if ( Level >= LOG_DEBUG )
         {
@@ -89,7 +89,7 @@ public class Logger
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
-    public void Info( string message, Exception exception )
+    public void Info( string message, System.Exception exception )
     {
         if ( Level >= LOG_INFO )
         {
@@ -112,7 +112,7 @@ public class Logger
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
-    public void Error( string message, Exception exception )
+    public void Error( string message, System.Exception exception )
     {
         if ( Level >= LOG_ERROR )
         {

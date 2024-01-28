@@ -24,10 +24,10 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 [Serializable]
 public class DecoderException : Mp3SharpException
 {
-    public DecoderException( string message, Exception? inner )
+    public DecoderException( string message, System.Exception? inner )
         : base( message, inner ) => ErrorCode = DecoderErrors.UNKNOWN_ERROR;
 
-    public DecoderException( int errorcode, Exception? inner )
+    public DecoderException( int errorcode, System.Exception? inner )
         : this( GetErrorString( errorcode ), inner ) => ErrorCode = errorcode;
 
     protected DecoderException( SerializationInfo info, StreamingContext context ) : base( info, context ) => ErrorCode = info.GetInt32( "ErrorCode" );

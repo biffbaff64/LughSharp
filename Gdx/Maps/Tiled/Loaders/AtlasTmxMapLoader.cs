@@ -67,7 +67,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return map;
     }
 
-    public override void LoadAsync( AssetManager? manager,
+    public override void Load( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? tmxFile,
                                     AtlasTiledMapLoaderParameters? parameter )
@@ -79,19 +79,6 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle.Name );
 
         Map = LoadTiledMap( tmxFile, parameter, atlasResolver );
-    }
-
-    public override TiledMap LoadSync( AssetManager? manager,
-                                       string? fileName,
-                                       FileInfo? file,
-                                       AtlasTiledMapLoaderParameters? parameter )
-    {
-        if ( parameter != null )
-        {
-            SetTextureFilters( parameter.TextureMinFilter, parameter.TextureMagFilter );
-        }
-
-        return Map;
     }
 
     [PublicAPI]

@@ -257,7 +257,7 @@ public class ParticleEmitter
 
         outer:
 
-        for ( var i = 0; i < count; i++ )
+        for ( var i = 0; i < count; )
         {
             for ( ; index < n; index++ )
             {
@@ -1516,10 +1516,7 @@ public class ParticleEmitter
             {
                 SpriteMode = Enum.Parse< SpriteModes >( ReadString( line ) );
 
-                // Check the purpose of this.
-                // Is it reading the next line to effectively
-                // skip past some un-needed data?
-                line = reader.ReadLine();
+//                line = reader.ReadLine();
             }
 
             List< string > imagePaths = new();
@@ -1531,7 +1528,7 @@ public class ParticleEmitter
 
             ImagePaths = imagePaths;
         }
-        catch ( Exception ex )
+        catch ( System.Exception ex )
         {
             //TODO: ???
             throw new GdxRuntimeException( "Error parsing emitter: " + Name, ex );

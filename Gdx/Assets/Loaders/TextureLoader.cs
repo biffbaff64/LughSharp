@@ -40,10 +40,10 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    TextureLoaderParameters? parameter )
+    public override void Load( AssetManager? manager,
+                               string? fileName,
+                               FileInfo? file,
+                               TextureLoaderParameters? parameter )
     {
         _loaderInfo.Filename = fileName;
 
@@ -73,35 +73,6 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
         {
             _loaderInfo.Data.Prepare();
         }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    public override Texture LoadSync( AssetManager manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     TextureLoaderParameters parameter )
-    {
-        Texture? texture = _loaderInfo.Texture;
-
-        if ( texture != null )
-        {
-            texture.Load( _loaderInfo.Data );
-        }
-        else
-        {
-            texture = new Texture( _loaderInfo.Data );
-        }
-
-        texture.SetFilter( parameter.MinFilter, parameter.MagFilter );
-        texture.SetWrap( parameter.WrapU, parameter.WrapV );
-
-        return texture;
     }
 
     #region dispose pattern

@@ -53,32 +53,12 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    AssetLoaderParameters? parameter )
+    public override void Load( AssetManager? manager,
+                               string? fileName,
+                               FileInfo? file,
+                               AssetLoaderParameters? parameter )
     {
         LoadedMusic = Gdx.Audio.NewMusic( file );
-    }
-
-    /// <summary>
-    ///     Loads the OpenGL part of the asset.
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    public override IMusic LoadSync( AssetManager? manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     AssetLoaderParameters parameter )
-    {
-        IMusic music = LoadedMusic;
-
-        LoadedMusic = null!;
-
-        return music;
     }
 
     private void Dispose( bool disposing )

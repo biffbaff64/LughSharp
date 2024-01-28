@@ -44,7 +44,7 @@ public class SupportClass
     [PublicAPI( "May be used externally" )]
     public static long URShift( long number, long bits ) => URShift( number, ( int )bits );
 
-    public static void WriteStackTrace( Exception throwable, TextWriter stream )
+    public static void WriteStackTrace( System.Exception throwable, TextWriter stream )
     {
         stream.Write( throwable.StackTrace );
         stream.Flush();

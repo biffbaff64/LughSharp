@@ -96,7 +96,7 @@ public abstract class ShortBuffer : Buffer
         {
             return new HeapShortBuffer( array, offset, length );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             throw new IndexOutOfRangeException();
         }

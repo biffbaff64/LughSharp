@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Backends.Desktop.Window;
+
 namespace LibGDXSharp.Backends.Desktop.Utils;
 
 public class DesktopGLCursor : ICursor

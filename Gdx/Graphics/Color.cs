@@ -21,6 +21,7 @@ namespace LibGDXSharp.Graphics;
 ///     the range [0,1].
 ///     All methods perform clamping on the internal values after execution.
 /// </summary>
+[PublicAPI]
 public sealed class Color
 {
     public readonly static Color White      = new( 1, 1, 1, 1 );
@@ -456,10 +457,10 @@ public sealed class Color
     /// <param name="b"></param>
     /// <param name="a"></param>
     /// <returns></returns>
-    public int Rgba8888( float r, float g, float b, float a ) => ( ( int )( r * 255 ) << 24 )
-                                                               | ( ( int )( g * 255 ) << 16 )
-                                                               | ( ( int )( b * 255 ) << 8 )
-                                                               | ( int )( a * 255 );
+    public int Rgba8888( float r, float g, float b, float a )
+    {
+        return ( ( int )( r * 255 ) << 24 ) | ( ( int )( g * 255 ) << 16 ) | ( ( int )( b * 255 ) << 8 ) | ( int )( a * 255 );
+    }
 
     /// <summary>
     ///     Sets the RGB Color components using the specified Hue-Saturation-Value.

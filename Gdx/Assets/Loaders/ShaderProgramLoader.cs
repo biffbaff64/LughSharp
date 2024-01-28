@@ -53,10 +53,10 @@ public class ShaderProgramLoader
         _fragmentFileSuffix = fragmentFileSuffix;
     }
 
-    public override ShaderProgram LoadSync( AssetManager? manager,
-                                            string? fileName,
-                                            FileInfo? file,
-                                            ShaderProgramParameter? parameter )
+    public override void Load( AssetManager? manager,
+                               string? fileName,
+                               FileInfo? file,
+                               ShaderProgramParameter? parameter )
     {
         ArgumentNullException.ThrowIfNull( fileName );
 
@@ -115,13 +115,11 @@ public class ShaderProgramLoader
         {
             manager?.Log.Error( $"ShaderProgram {fileName} failed to compile:\n{shaderProgram.Log}" );
         }
-
-        return shaderProgram;
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     [PublicAPI]
     public class ShaderProgramParameter : AssetLoaderParameters
     {

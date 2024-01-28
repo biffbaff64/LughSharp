@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
@@ -57,7 +57,6 @@ public class Wav
 
         public override void Reset()
         {
-//            StreamUtils.closeQuietly( _input );
             _input = null;
         }
     }
@@ -144,7 +143,7 @@ public class Wav
 
                 dataRemaining = SeekToChunk( 'd', 'a', 't', 'a' );
             }
-            catch ( Exception ex )
+            catch ( System.Exception ex )
             {
 //                StreamUtils.closeQuietly( this );
 

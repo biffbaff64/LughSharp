@@ -197,7 +197,7 @@ public sealed class Bitstream
         {
             _sourceStream.UnRead( read );
         }
-        catch ( Exception e )
+        catch ( System.Exception e )
         {
             throw new Mp3SharpException( "Could not restore file after reading frame header.", e );
         }

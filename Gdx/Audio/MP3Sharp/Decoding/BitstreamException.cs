@@ -39,10 +39,10 @@ namespace LibGDXSharp.Audio.MP3Sharp.Decoding;
 [Serializable]
 public class BitstreamException : Mp3SharpException
 {
-    public BitstreamException( string message, Exception? inner = null )
+    public BitstreamException( string message, System.Exception? inner = null )
         : base( message, inner ) => ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
 
-    public BitstreamException( int errorcode, Exception? inner = null )
+    public BitstreamException( int errorcode, System.Exception? inner = null )
         : this( GetErrorString( errorcode ), inner )
     {
         ErrorCode = BitstreamErrors.UNKNOWN_ERROR;

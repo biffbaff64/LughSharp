@@ -139,7 +139,7 @@ public static class PixmapIO
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 throw new GdxRuntimeException( "Couldn't write Pixmap to file '" + file + "'", e );
             }
@@ -183,7 +183,7 @@ public static class PixmapIO
 
                 return pixmap;
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 throw new GdxRuntimeException( "Couldn't read Pixmap from file '" + file + "'", e );
             }

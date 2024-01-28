@@ -150,7 +150,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     /// <returns></returns>
-    public override Model LoadSync( AssetManager? manager,
+    public override void Load( AssetManager? manager,
                                     string? fileName,
                                     FileInfo? file,
                                     TP? parameter )
@@ -171,7 +171,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
         if ( data == null )
         {
-            return null!;
+            return;
         }
 
         Model result = new( data, new ITextureProvider.AssetTextureProvider( manager ) );
@@ -190,8 +190,6 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
                 disposables.Dispose();
             }
         }
-
-        return result;
     }
 
     // ------------------------------------------------------------------------

@@ -27,27 +27,14 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     }
 
     /// <inheritdoc/>
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    PixmapLoaderParameter? parameter )
+    public override void Load( AssetManager? manager,
+                               string? fileName,
+                               FileInfo? file,
+                               PixmapLoaderParameter? parameter )
     {
         ArgumentNullException.ThrowIfNull( file );
-        
+
         _pixmap = new Pixmap( file );
-    }
-
-    /// <inheritdoc/>
-    public override Pixmap LoadSync( AssetManager manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     PixmapLoaderParameter? parameter )
-    {
-        Pixmap pixmap = this._pixmap;
-
-        this._pixmap = null!;
-
-        return pixmap;
     }
 
     /// <summary>
@@ -68,10 +55,10 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
             this._pixmap = null!;
         }
     }
-    
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     [PublicAPI]
     public class PixmapLoaderParameter : AssetLoaderParameters
     {

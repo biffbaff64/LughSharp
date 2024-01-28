@@ -195,7 +195,7 @@ public class DesktopGLPreferences : IPreferences
 
             _xDocument.Save( _filePath + _propertiesFile );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             throw new GdxRuntimeException( "Error writing preferences!" );
         }

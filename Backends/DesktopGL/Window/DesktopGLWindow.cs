@@ -14,10 +14,14 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Backends.Desktop.Graphics;
+using LibGDXSharp.Backends.Desktop.Input;
+using LibGDXSharp.Backends.Desktop.Utils;
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Backends.Desktop.Window;
 
+[PublicAPI]
 public class DesktopGLWindow : IDisposable
 {
     private readonly IDesktopGLApplicationBase _application;
@@ -118,8 +122,7 @@ public class DesktopGLWindow : IDisposable
             runnable();
         }
 
-        var shouldRender = ( _executedRunnables.Count > 0 )
-                        || Graphics.ContinuousRendering;
+        var shouldRender = ( _executedRunnables.Count > 0 ) || Graphics.ContinuousRendering;
 
         _executedRunnables.Clear();
 
@@ -172,11 +175,10 @@ public class DesktopGLWindow : IDisposable
     ///     is full screen or not resizable, these limits are ignored. Use -1
     ///     to indicate an unrestricted dimension.
     /// </summary>
-    public void SetSizeLimits( GLFW.Window windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight ) => Glfw.SetWindowSizeLimits( windowHandle,
-                                                                                                                                                 minWidth > -1 ? minWidth : GL.GL_DONT_CARE,
-                                                                                                                                                 minHeight > -1 ? minHeight : GL.GL_DONT_CARE,
-                                                                                                                                                 maxWidth > -1 ? maxWidth : GL.GL_DONT_CARE,
-                                                                                                                                                 maxHeight > -1 ? maxHeight : GL.GL_DONT_CARE );
+    public void SetSizeLimits( GLFW.Window windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight )
+    {
+        Glfw.SetWindowSizeLimits( windowHandle, minWidth, minHeight, maxWidth, maxHeight );
+    }
 
     /// <summary>
     ///     Sets the icon that will be used in the window's title bar. Has no effect in macOS,

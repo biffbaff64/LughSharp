@@ -105,7 +105,7 @@ public class Pixmap : IDisposable
 
             gdx2DPixmap = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
         }
-        catch ( Exception e )
+        catch ( System.Exception e )
         {
             throw new GdxRuntimeException( $"Couldn't load file:  {file.Name}", e );
         }

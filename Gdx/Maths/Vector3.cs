@@ -646,7 +646,7 @@ public class Vector3 : IVector< Vector3 >
 
                 return Set( x, y, z );
             }
-            catch ( Exception ex )
+            catch ( System.Exception ex )
             {
                 throw new GdxRuntimeException( ex.Message );
             }

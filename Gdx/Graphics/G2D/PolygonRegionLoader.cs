@@ -20,7 +20,7 @@ namespace LibGDXSharp.Graphics.G2D;
 ///     loads <see cref="PolygonRegion" />s.
 /// </summary>
 public class PolygonRegionLoader
-    : SynchronousAssetLoader< PolygonRegion, PolygonRegionLoader.PolygonRegionParameters >
+    : AsynchronousAssetLoader< PolygonRegion, PolygonRegionLoader.PolygonRegionParameters >
 {
     private readonly PolygonRegionParameters _defaultParameters = new();
     private readonly EarClippingTriangulator _triangulator      = new();
@@ -35,16 +35,16 @@ public class PolygonRegionLoader
     {
     }
 
-    public override PolygonRegion Load( AssetManager manager,
+    public override void Load( AssetManager manager,
                                         string? fileName,
                                         FileInfo? file,
-                                        PolygonRegionParameters parameter )
+                                        PolygonRegionParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( fileName );
 
         var texture = manager.Get< Texture >( manager.GetDependencies( fileName )!.First() );
 
-        return Load( new TextureRegion( texture ), file! );
+        Load( new TextureRegion( texture ), file! );
     }
 
     /// <summary>
@@ -195,6 +195,6 @@ public class PolygonRegionLoader
         ///     what the line starts with that contains the file name of the
         ///     texture for this <tt>PolygonRegion</tt>.
         /// </summary>
-        public string? texturePrefix = "i ";
+        public readonly string? texturePrefix = "i ";
     }
 }

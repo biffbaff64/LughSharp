@@ -33,7 +33,7 @@ public interface IApplicationLogger
     /// <summary>
     ///     Logs a message and exception with a tag.
     /// </summary>
-    void Log( string tag, string message, Exception exception );
+    void Log( string tag, string message, System.Exception exception );
 
     /// <summary>
     ///     Logs an error message with a tag.
@@ -43,7 +43,7 @@ public interface IApplicationLogger
     /// <summary>
     ///     Logs an error message and exception with a tag.
     /// </summary>
-    void Error( string tag, string message, Exception exception );
+    void Error( string tag, string message, System.Exception exception );
 
     /// <summary>
     ///     Logs a debug message with a tag.
@@ -53,5 +53,5 @@ public interface IApplicationLogger
     /// <summary>
     ///     Logs a debug message and exception with a tag.
     /// </summary>
-    void Debug( string tag, string message, Exception exception );
+    void Debug( string tag, string message, System.Exception exception );
 }

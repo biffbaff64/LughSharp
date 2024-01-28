@@ -55,10 +55,10 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     /// <param name="fileName">The name of the asset to load.</param>
     /// <param name="file">The assets FileInfo object.</param>
     /// <param name="parameter">The AssetLoader parameters object.</param>
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    CubemapParameter? parameter )
+    public override void Load( AssetManager? manager,
+                               string? fileName,
+                               FileInfo? file,
+                               CubemapParameter? parameter )
     {
         const bool GEN_MIP_MAPS = false;
 
@@ -93,42 +93,6 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         }
     }
 
-    /// <summary>
-    ///     Loads the OpenGL part of the asset.
-    /// </summary>
-    /// <param name="manager">The AssetManager to use.</param>
-    /// <param name="fileName">The name of the asset to load.</param>
-    /// <param name="file">The assets FileInfo object.</param>
-    /// <param name="parameter">The AssetLoader parameters object.</param>
-    /// <returns></returns>
-    public override Cubemap LoadSync( AssetManager? manager,
-                                      string? fileName,
-                                      FileInfo? file,
-                                      CubemapParameter? parameter )
-    {
-        Cubemap? cubemap = _loaderInfo.cubemap;
-
-        if ( cubemap != null )
-        {
-            cubemap.Load( _loaderInfo.cubemapData! );
-        }
-        else
-        {
-            cubemap = new Cubemap( _loaderInfo.cubemapData );
-        }
-
-        if ( parameter != null )
-        {
-            cubemap.SetFilter( ( ( CubemapParameter? )parameter )!.minFilter,
-                               ( ( CubemapParameter? )parameter )!.magFilter );
-
-            cubemap.SetWrap( ( ( CubemapParameter? )parameter )!.wrapU,
-                             ( ( CubemapParameter? )parameter )!.wrapV );
-        }
-
-        return cubemap;
-    }
-
     [PublicAPI]
     public struct CubemapLoaderInfo
     {
@@ -153,6 +117,6 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         public ICubemapData? cubemapData = null;
 
         // the format of the final Texture. Uses the source images format if null
-        public Pixmap.Format? format    = null;
+        public Pixmap.Format? format = null;
     }
 }

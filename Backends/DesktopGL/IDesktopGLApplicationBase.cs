@@ -15,6 +15,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LibGDXSharp.Backends.Desktop.Audio;
+using LibGDXSharp.Backends.Desktop.Input;
+using LibGDXSharp.Backends.Desktop.Window;
 
 namespace LibGDXSharp.Backends.Desktop;
 

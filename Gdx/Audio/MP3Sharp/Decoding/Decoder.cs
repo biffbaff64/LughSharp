@@ -164,7 +164,7 @@ public class Decoder
 
     protected virtual DecoderException NewDecoderException( int errorcode ) => new( errorcode, null );
 
-    protected virtual DecoderException NewDecoderException( int errorcode, Exception? throwable ) => new( errorcode, throwable );
+    protected virtual DecoderException NewDecoderException( int errorcode, System.Exception? throwable ) => new( errorcode, throwable );
 
     protected virtual IFrameDecoder RetrieveDecoder( Header header, Bitstream stream, int layer )
     {
@@ -283,7 +283,7 @@ public class Decoder
             {
                 return MemberwiseClone();
             }
-            catch ( Exception ex )
+            catch ( System.Exception ex )
             {
                 throw new ApplicationException( this + ": " + ex );
             }

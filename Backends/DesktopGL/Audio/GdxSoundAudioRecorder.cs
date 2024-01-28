@@ -17,4 +17,14 @@
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
 public class GdxSoundAudioRecorder : IAudioRecorder
-{}
+{
+    /// <inheritdoc />
+    public void Read( short[] samples, int offset, int numSamples )
+    {
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+    }
+}

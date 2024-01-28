@@ -16,6 +16,7 @@
 
 namespace LibGDXSharp.Graphics.G2D;
 
+[PublicAPI]
 public partial record TextureAtlasData
 {
     internal readonly static bool[] HasIndexes = { false };
@@ -187,7 +188,7 @@ public partial record TextureAtlasData
                 }
             }
         }
-        catch ( Exception ex )
+        catch ( System.Exception ex )
         {
             throw new GdxRuntimeException( "Error reading texture atlas file: " + packFile, ex );
         }

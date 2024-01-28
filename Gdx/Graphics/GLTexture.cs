@@ -25,24 +25,6 @@ namespace LibGDXSharp.Graphics;
 /// </summary>
 public abstract class GLTexture : IDisposable
 {
-    private static float _maxAnisotropicFilterLevel = 0;
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    protected GLTexture( int glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
-    {
-    }
-
-    protected GLTexture( int glTarget, int glTextureHandle )
-    {
-        GLTarget        = glTarget;
-        GLTextureHandle = glTextureHandle;
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     public abstract int Width  { get; }
     public abstract int Height { get; }
     public abstract int Depth  { get; }
@@ -73,22 +55,19 @@ public abstract class GLTexture : IDisposable
 
     public virtual bool IsManaged => false;
 
+    private static float _maxAnisotropicFilterLevel = 0;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc cref="IDisposable.Dispose" />
-    public virtual void Dispose()
+    protected GLTexture( int glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
     {
-        Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
-    protected virtual void Dispose( bool disposing )
+    protected GLTexture( int glTarget, int glTextureHandle )
     {
-        if ( disposing )
-        {
-            Delete();
-        }
+        GLTarget        = glTarget;
+        GLTextureHandle = glTextureHandle;
     }
 
     /// <summary>
@@ -379,4 +358,22 @@ public abstract class GLTexture : IDisposable
     ///     Convenience method for when 'GLHandle' isn't descriptive enough.
     /// </summary>
     public int GetTextureObjectHandle() => GLTextureHandle;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <inheritdoc cref="IDisposable.Dispose" />
+    public virtual void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            Delete();
+        }
+    }
 }

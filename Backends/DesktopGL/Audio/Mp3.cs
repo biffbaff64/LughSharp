@@ -14,7 +14,7 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Files;
+using LibGDXSharp.Audio.MP3Sharp.Decoding;
 
 namespace LibGDXSharp.Backends.Desktop.Audio;
 
@@ -94,7 +94,7 @@ public class Mp3 : OpenALMusic
                     {
                         _decoder.decodeFrame( header, _bitstream );
                     }
-                    catch ( Exception ignored )
+                    catch ( System.Exception ignored )
                     {
                         // JLayer's decoder throws ArrayIndexOutOfBoundsException sometimes!?
                     }
@@ -177,7 +177,7 @@ public class Mp3 : OpenALMusic
                     {
                         decoder.decodeFrame( header, bitstream );
                     }
-                    catch ( Exception )
+                    catch ( System.Exception )
                     {
                         // Ignored
                     }
@@ -190,7 +190,7 @@ public class Mp3 : OpenALMusic
 
                 Setup( output.toByteArray(), channels, sampleRate );
             }
-            catch ( Exception ex )
+            catch ( System.Exception ex )
             {
                 throw new GdxRuntimeException( "Error reading audio data.", ex );
             }

@@ -44,21 +44,8 @@ public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public virtual void LoadAsync( AssetManager manager, string? fileName, FileInfo? file, TParameters? parameter )
+    public virtual void Load( AssetManager manager, string? fileName, FileInfo? file, TParameters? parameter )
     {
-    }
-
-    /// <summary>
-    ///     Loads the OpenGL part of the asset.
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    public virtual TAssetType LoadSync( AssetManager manager, string fileName, FileInfo file, TParameters parameter )
-    {
-        return default( TAssetType )!;
     }
 
     /// <summary>
@@ -75,7 +62,7 @@ public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public virtual void UnloadAsync( AssetManager manager, string? fileName, FileInfo? file, TParameters parameter )
+    public virtual void Unload( AssetManager manager, string? fileName, FileInfo? file, TParameters parameter )
     {
     }
 }
@@ -89,17 +76,12 @@ public abstract class AsynchronousAssetLoader : AssetLoader
         IsSynchronous = false;
     }
 
-    public abstract void LoadAsync<T>( AssetManager manager,
+    public abstract void Load<T>( AssetManager manager,
                                        string? fileName,
                                        FileInfo? file,
                                        T parameter ) where T : AssetLoaderParameters;
 
-    public abstract object LoadSync<T>( AssetManager manager,
-                                        string? fileName,
-                                        FileInfo? file,
-                                        T parameter ) where T : AssetLoaderParameters;
-
-    public static void UnloadAsync<T>( AssetManager manager,
+    public static void Unload<T>( AssetManager manager,
                                        string fileName,
                                        FileInfo file,
                                        T parameter ) where T : AssetLoaderParameters

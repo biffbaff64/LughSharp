@@ -27,7 +27,7 @@ namespace LibGDXSharp.Audio.MP3Sharp;
 ///     can delegate some functionality to a contained Throwable instance.
 /// </summary>
 [Serializable]
-public class Mp3SharpException : Exception
+public class Mp3SharpException : System.Exception
 {
     public Mp3SharpException()
     {
@@ -38,7 +38,7 @@ public class Mp3SharpException : Exception
     {
     }
 
-    public Mp3SharpException( string message, Exception? inner )
+    public Mp3SharpException( string message, System.Exception? inner )
         : base( message, inner )
     {
     }

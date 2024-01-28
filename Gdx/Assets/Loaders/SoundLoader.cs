@@ -39,32 +39,12 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void LoadAsync( AssetManager? manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    SoundLoaderParameters? parameter )
+    public override void Load( AssetManager? manager,
+                               string? fileName,
+                               FileInfo? file,
+                               SoundLoaderParameters? parameter )
     {
         LoadedSound = Gdx.Audio.NewSound( file );
-    }
-
-    /// <summary>
-    ///     Loads the OpenGL part of the asset.
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="fileName"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    public override ISound LoadSync( AssetManager? manager,
-                                     string? fileName,
-                                     FileInfo? file,
-                                     SoundLoaderParameters? parameter )
-    {
-        ISound sound = LoadedSound;
-
-        LoadedSound = null!;
-
-        return sound;
     }
 
     /// <inheritdoc />
@@ -84,7 +64,7 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public class SoundLoaderParameters : AssetLoaderParameters
     {
         public SoundLoaderParameters()

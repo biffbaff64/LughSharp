@@ -359,7 +359,7 @@ public class Vector2 : IVector< Vector2 >
 
                 return Set( x, y );
             }
-            catch ( Exception ex )
+            catch ( System.Exception ex )
             {
                 throw new GdxRuntimeException( ex.Message );
             }

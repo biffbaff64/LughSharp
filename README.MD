@@ -1,4 +1,7 @@
-﻿C# 2D Game Framework heavily inspired by the Java LibGDX Game Framework.
+﻿- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+C# 2D Game Framework heavily inspired by the Java LibGDX Game Framework.
 
 It is NOT a 100% conversion, some things may be different.
 
@@ -29,21 +32,6 @@ As far as I can see, I do not need to convert:-
     - Async?
     - Network
     - Compression?
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-Modules                  Inspection
------------------------------------
-
-    - Assets    - DONE - 23/01/2024
-    - Audio     - DONE - 23/01/2024
-    - Core      - DONE - 
-    - Graphics  -      - 
-    - Input     -      - 23/01/2024
-    - Maps      - DONE - 
-    - Maths     - DONE - 
-    - Scenes    -      - 
-    - Utils     -      - 23/01/2024
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,12 +92,18 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 ASSETS
 ------
 
-    - DONE - AssetDescriptor
-    - DONE - AssetLoaderParameters
-    - DONE - AssetLoadingTask
-    - DONE - AssetManager
-    - DONE - IAssetErrorListener
-    - DONE - RefCountedContainer
+    TODO:   Remove SynchronousAssetLoader and modify AssetLoader / AsynchronousAssetLoader
+            to be just one loading system.
+    FOR NOW: Just use basic file loading until the rest is working, then work on a proper
+             asset loading and management system. This will allow testing of everything else.
+             ( Don't forget Maps.Tiled.Loaders... )
+
+    - IP   - AssetDescriptor
+    - IP   - AssetLoaderParameters
+    - IP   - AssetLoadingTask
+    - IP   - AssetManager
+    - IP   - IAssetErrorListener
+    - IP   - RefCountedContainer
 
     LOADERS
     -------
@@ -118,34 +112,32 @@ ASSETS
             As I've learned more about C# I've also learned more about Tasks and Delegates,
             I think these classes could/should use these.
 
-    TODO:   AsynchronousAssetLoader/SynchronousAssetLoader or just AssetLoader ??
-
-    - DONE - AssetLoader
-    - DONE - AsynchronousAssetLoader
-    - DONE - BitmapFontLoader
-    - DONE - CubemapLoader
-    - DONE - ModelLoader
-    - DONE - MusicLoader
-    - DONE - ParticleEffectLoader
-    - DONE - PixmapLoader
-    - DONE - ShaderProgramLoader
-    - DONE - SkinLoader
-    - DONE - SoundLoader
-    - DONE - SynchronousAssetLoader
-    - DONE - TextureAtlasLoader
-    - DONE - TextureLoader
+    - IP   - AssetLoader
+    - IP   - AsynchronousAssetLoader
+    - IP   - BitmapFontLoader
+    - IP   - CubemapLoader
+    - IP   - ModelLoader
+    - IP   - MusicLoader
+    - IP   - ParticleEffectLoader
+    - IP   - PixmapLoader
+    - IP   - ShaderProgramLoader
+    - IP   - SkinLoader
+    - IP   - SoundLoader
+    - IP   - SynchronousAssetLoader
+    - IP   - TextureAtlasLoader
+    - IP   - TextureLoader
 
     LOADERS/RESOLVERS
     -----------------
 
-    - DONE - AbsoluteFileHandleResolver
-    - DONE - ClasspathFileHandleResolver
-    - DONE - ExternalFileHandleResolver
-    - DONE - IFileHandleResolver
-    - DONE - InternalFileHandleResolver
-    - DONE - LocalFileHandleResolver
-    - DONE - PrefixFileHandleResolver
-    - DONE - ResolutionFileResolver
+    - IP   - AbsoluteFileHandleResolver
+    - IP   - ClasspathFileHandleResolver
+    - IP   - ExternalFileHandleResolver
+    - IP   - IFileHandleResolver
+    - IP   - InternalFileHandleResolver
+    - IP   - LocalFileHandleResolver
+    - IP   - PrefixFileHandleResolver
+    - IP   - ResolutionFileResolver
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -285,68 +277,7 @@ CORE
 FILES
 -----
 
-    - **** - IP   - BufferedReader
-    - **** - IP   - BufferedStreamExtensions
-    - **** - IP   - ByteArrayInputStream
-    - **** - IP   - ByteArrayOutputStream
-    - **** - DONE - FileHandle
-    - **** - DONE - FileHandleStream
-    - **** - DONE - IDataOutput
-    - **** - DONE - InputStream
-    - **** - IP   - Reader
-
-    ------------------------------------------
-
-    - **** - java.io.BufferedReader                -> 
-    - **** - java.io.BufferedInputStream           -> BufferedStream ?
-    - **** - java.io.ByteArrayInputStream          -> 
-    - **** - java.io.ByteArrayOutputStream         -> 
-    - **** - java.io.DataOutput                    -> (Interface)
-    - **** - java.io.DataInputStream               -> BinaryReader ?
-    - **** - java.io.DataOutputStream              -> BinaryWriter ?
-    - **** - java.io.File                          -> File ( static class )
-    - **** - java.io.FileHandle                    -> FileInfo + File + DirectoryInfo ?
-    - **** - java.io.FileInputStream               -> 
-    - **** - java.io.FileOutputStream              -> 
-    - **** - java.io.FilterInputStream             -> 
-    - **** - java.io.FilterOutputStream            -> 
-    - **** - java.io.InputStream                   -> StreamReader ?
-    - **** - java.io.InputStreamReader             -> StreamReader ?
-    - **** - java.io.OutputStream                  -> StreamWriter ?
-    - **** - java.io.Reader                        -> StreamReader ?
-
-    ------------------------------------------
-
-    - **** - java.io.IOException                   -> System.IO.IOException
-
-    ------------------------------------------
-
-    - **** - java.util.zip.CRC32                   -> 
-    - **** - java.util.zip.CheckedOutputStream     -> 
-    - **** - java.util.zip.Deflater                -> 
-    - **** - java.util.zip.DeflaterOutputStream    -> 
-    - **** - java.util.zip.InflaterInputStream     -> 
-
-    ------------------------------------------
-
-    - **** - Buffer
-    - **** - BufferUtils
-    - **** - ByteBuffer
-    - **** - CharBuffer
-    - **** - CircularByteBuffer
-    - **** - DirectByteBuffer
-    - **** - DoubleBuffer
-    - **** - FloatBuffer
-    - **** - HeapByteBuffer
-    - **** - HeapCharBuffer
-    - **** - HeapFloatBuffer
-    - **** - HeapShortBuffer
-    - **** - IDirectBuffer
-    - **** - IntBuffer
-    - **** - LongBuffer
-    - **** - MappedByteBuffer
-    - **** - ShortBuffer
-    - **** - StringCharBuffer
+    See Documents/TODO_FILES.MD
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -433,206 +364,7 @@ GRAPHICS
     GRAPHICS/G3D
     ------------
 
-    - DONE - Attribute
-    - DONE - AttributesGroup
-    - DONE - Environment
-    -      - Material
-    -      - Model
-    -      - ModelBatch
-    -      - ModelCache
-    -      - ModelInstance
-    -      - Renderable
-    -      - RenderableProvider
-    -      - Shader
-
-    GRAPHICS/G3D/ATTRIBUTES
-    -----------------------
-
-    -      - BlendingAttribute
-    -      - ColorAttribute
-    -      - CubemapAttribute
-    -      - DepthTestAttribute
-    - IP   - DirectionalLightsAttribute
-    -      - FloatAttribute
-    -      - IntAttribute
-    - IP   - PointLightsAttribute
-    - IP   - SpotLightsAttribute
-    -      - TextureAttribute
-
-    GRAPHICS/G3D/DECALS
-    -------------------
-
-    -      - CameraGroupStrategy
-    -      - Decal
-    -      - DecalBatch
-    -      - DecalMaterial
-    -      - IGroupPlug
-    -      - IGroupStrategy
-    -      - PluggableGroupStrategy
-    -      - SimpleOrthoGroupStrategy
-
-    GRAPHICS/G3D/ENV
-    ----------------
-
-    -      - AmbientCubemap
-    -      - BaseLight
-    -      - DirectionalLight
-    -      - DirectionalShadowLight
-    -      - IShadowMap
-    -      - PointLight
-    -      - SpericalHarmonics
-    -      - SpotLight
-
-    GRAPHICS/G3D/LOADER
-    -------------------
-
-    -      - G3ModelLoader
-    -      - ObjLoader
-
-    GRAPHICS/G3D/MODELS
-    -------------------
-
-    -      - Attribute
-    -      - MeshPart
-    -      - Node
-    -      - NodeAnimation
-    -      - NodeKeyframe
-    -      - NodePart
-
-    GRAPHICS/G3D/MODELS/DATA
-    ------------------------
-
-    -      - ModelAnimation
-    -      - ModelData
-    -      - ModelMaterial
-    -      - ModelMesh
-    -      - ModelMeshPart
-    -      - ModelNode
-    -      - ModelNodeAnimation
-    -      - ModelNodeKeyframe
-    -      - ModelNodePart
-    -      - ModelTexture
-
-    GRAPHICS/G3D/PARTICLES
-    ----------------------
-
-    -      - ParallelArray
-    -      - ParticleChannels
-    -      - ParticleController
-    -      - ParticleControllerComponent
-    -      - ParticleEffect
-    -      - ParticleEffectLoader
-    -      - ParticleShader
-    -      - ParticleSorter
-    -      - ParticleSystem
-    -      - ResourceData
-
-    GRAPHICS/G3D/PARTICLES/BATCHES
-    ------------------------------
-
-    -      - BillboardParticleBatch
-    -      - BufferedParticleBatch
-    -      - IParticleBatch
-    -      - ModelInstanceParticleBatch
-    -      - PointSpriteParticleBatch
-
-    GRAPHICS/G3D/PARTICLES/EMITTERS
-    -------------------------------
-
-    -      - Emitter
-    -      - RegulatEmitter
-
-    GRAPHICS/G3D/PARTICLES/INFLUENCERS
-    ----------------------------------
-
-    -      - ColorInfluencer
-    -      - DynamicsInfluencer
-    -      - DynamicsModifier
-    -      - Influencer
-    -      - ModelInfluencer
-    -      - ParticleControllerFinalizerInfluencer
-    -      - ParticleControllerInfluencer
-    -      - RegionInfluencer
-    -      - ScaleInfluencer
-    -      - SimpleInfluencer
-    -      - SpawnInfluencer
-
-    GRAPHICS/G3D/PARTICLES/RENDERERS
-    --------------------------------
-
-    -      - BillboardControllerRenderData
-    -      - BillboardRenderer
-    -      - ModelInstanceControllerRenderData
-    -      - ModelInstanceRenderer
-    -      - ParticleControllerControllerRenderer
-    -      - ParticleControllerRenderData
-    -      - ParticleControllerRenderer
-    -      - PointSpriteControllerRenderData
-    -      - PointSpriteRenderer
-
-    GRAPHICS/G3D/PARTICLES/VALUES
-    -----------------------------
-
-    -      - CylinderSpawnShapeValue
-    -      - EllipseSpawnShapeValue
-    -      - GradientColorValue
-    -      - LineSpawnShapeValue
-    -      - MeshSpawnShapeValue
-    -      - NumericValue
-    -      - ParticleValue
-    -      - PointSpawnShapeValue
-    -      - PrimitiveSpawnShapeValue
-    -      - RangedNumericValue
-    -      - RectangleSpawnShapeValue
-    -      - ScaledNumericValue
-    -      - SpawnShapeValue
-    -      - UnweightedMeshSpawnShapeValue
-    -      - WeightMeshSpawnShapeValue
-
-    GRAPHICS/G3D/SHADERS
-    --------------------
-
-    -      - BaseShader
-    -      - DefaultShader
-    -      - DepthShader
-
-    GRAPHICS/G3D/UTILS
-    ------------------
-
-    -      - AnimationController
-    -      - BaseAnimationController
-    -      - BaseShaderProvider
-    -      - CameraInputController
-    -      - DefaultRenderableSorter
-    -      - DefaultShaderProvider
-    -      - DefaultTextureBinder
-    -      - DepthShaderProvider
-    -      - FirstPersonCameraController
-    -      - IMeshPartBuilder
-    -      - IRenderableSorter
-    -      - IShaderProvider
-    -      - ITextureBinder
-    -      - ITextureProvider
-    -      - MeshBuilder
-    -      - ModelBuilder
-    -      - RenderContext
-    -      - ShapeCache
-    -      - TextureDescriptor
-
-    GRAPHICS/G3D/UTILS/SHAPEBUILDERS
-    --------------------------------
-
-    -      - ArrowShapeBuilder
-    -      - BaseShapeBuilder
-    -      - BoxShapeBuilder
-    -      - CapsuleShapeBuilder
-    -      - ConeShapeBuilder
-    -      - CylinderShapeBuilder
-    -      - EllipseShapeBuilder
-    -      - FrustrumShapeBuilder
-    -      - PatchShapeBuilder
-    -      - RenderableShapeBuilder
-    -      - SphereShapeBuilder
+    See Documents/TODO_G3D.MD
 
     GRAPHICS/GLUTILS
     ----------------
@@ -690,7 +422,7 @@ GRAPHICS
 INPUT
 -----
 
-    - Not sure about these. Am I supporting mobile? Probably?
+    - Not sure about these. Am I supporting mobile?
 
     -      - GestureDetector
     -      - RemoteInput
@@ -735,9 +467,9 @@ MAPS
     MAPS/TILED/LOADERS
     ------------------
 
-    - DONE - AtlasTmxMapLoader 
-    - DONE - BaseTmxMapLoader
-    - DONE - TmxMapLoader
+    - IP   - AtlasTmxMapLoader 
+    - IP   - BaseTmxMapLoader
+    - IP   - TmxMapLoader
     - **** - TideMapLoader
 
     MAPS/TILED/OBJECTS
@@ -1145,8 +877,8 @@ UTILS
     - TODO: Switch to System.Xml
 
     - IP   - XmlReader          Some 'unreachable code' fixes needed
-    - DONE - XmlReaderData
-    - DONE - XmlWriter
+    - IP   - XmlReaderData
+    - IP   - XmlWriter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

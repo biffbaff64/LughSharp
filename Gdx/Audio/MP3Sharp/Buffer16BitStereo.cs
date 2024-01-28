@@ -122,7 +122,7 @@ public class Buffer16BitStereo : AudioBase
 
         if ( ( _bufferChannelOffsets == null ) || ( channel >= _bufferChannelOffsets.Length ) )
         {
-            throw new Exception( "Song is closing..." );
+            throw new System.Exception( "Song is closing..." );
         }
 
         var pos = _bufferChannelOffsets[ channel ];

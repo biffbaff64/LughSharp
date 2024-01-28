@@ -25,7 +25,7 @@ namespace LibGDXSharp.Assets.Loaders;
 ///     Per default images are loaded from the directory in which the effect file is found.
 /// </summary>
 public class ParticleEffectLoader
-    : SynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
+    : AsynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
 {
     public ParticleEffectLoader( IFileHandleResolver resolver )
         : base( resolver )
@@ -54,10 +54,10 @@ public class ParticleEffectLoader
     /// <seealso cref="ParticleEffect" />
     /// <seealso cref="ParticleEffectParameter" />
     /// <seealso cref="TextureAtlas" />
-    public override ParticleEffect Load( AssetManager? am,
-                                         string? fileName,
-                                         FileInfo? file,
-                                         ParticleEffectParameter? param )
+    public override void Load( AssetManager? am,
+                               string? fileName,
+                               FileInfo? file,
+                               ParticleEffectParameter? param )
     {
         ArgumentNullException.ThrowIfNull( am );
         ArgumentNullException.ThrowIfNull( file );
@@ -67,11 +67,9 @@ public class ParticleEffectLoader
         switch ( param )
         {
             case { AtlasFile: not null }:
-                effect.Load(
-                    file,
-                    am.Get< TextureAtlas >( param.AtlasFile, typeof( TextureAtlas ) ),
-                    param.AtlasPrefix
-                    );
+                effect.Load( file,
+                             am.Get< TextureAtlas >( param.AtlasFile, typeof( TextureAtlas ) ),
+                             param.AtlasPrefix );
 
                 break;
 
@@ -85,8 +83,6 @@ public class ParticleEffectLoader
 
                 break;
         }
-
-        return effect;
     }
 
     /// <summary>

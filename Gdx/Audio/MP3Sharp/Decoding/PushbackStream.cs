@@ -79,7 +79,7 @@ public class PushbackStream
 
         if ( _numForwardBytesInBuffer > _backBufferSize )
         {
-            throw new Exception( "The backstream cannot unread the requested number of bytes." );
+            throw new System.Exception( "The backstream cannot unread the requested number of bytes." );
         }
     }
 

@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Backends.Desktop.Utils;
+using LibGDXSharp.Backends.Desktop.Window;
 using LibGDXSharp.Utils.Buffers;
 
 namespace LibGDXSharp.Backends.Desktop.Graphics;

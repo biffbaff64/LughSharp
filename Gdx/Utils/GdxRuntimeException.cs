@@ -24,19 +24,19 @@ namespace LibGDXSharp.Utils;
 ///     Typed runtime exception used throughout LibGDXSharp.
 /// </summary>
 [PublicAPI]
-public class GdxRuntimeException : Exception
+public class GdxRuntimeException : System.Exception
 {
     public GdxRuntimeException( string? message = "" )
         : base( message )
     {
     }
 
-    public GdxRuntimeException( Exception e )
+    public GdxRuntimeException( System.Exception e )
         : this( "", e )
     {
     }
 
-    public GdxRuntimeException( string message, Exception? exception )
+    public GdxRuntimeException( string message, System.Exception? exception )
         : base( message, exception )
     {
     }

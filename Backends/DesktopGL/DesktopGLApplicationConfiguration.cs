@@ -14,6 +14,9 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Backends.Desktop.Graphics;
+using LibGDXSharp.Backends.Desktop.Window;
+
 namespace LibGDXSharp.Backends.Desktop;
 
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
@@ -220,7 +223,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
     /// <summary>
     ///     Return the available <see cref="IGraphics.DisplayModeDescriptor" />"s
-    ///     of the given <see cref="GLFW.Monitor" />
+    ///     of the given <see cref="Monitor" />
     /// </summary>
     public static IGraphics.DisplayModeDescriptor[] GetDisplayModes( GLFW.Monitor monitor )
     {

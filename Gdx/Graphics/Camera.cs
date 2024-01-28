@@ -25,8 +25,42 @@ namespace LibGDXSharp.Graphics;
 /// <summary>
 ///     Base class for <see cref="OrthographicCamera" /> and <see cref="PerspectiveCamera" />.
 /// </summary>
+[PublicAPI]
 public abstract class Camera
 {
+    // the position of the camera
+    public Vector3 Position { get; set; } = new();
+
+    // the unit length direction vector of the camera
+    protected Vector3 Direction { get; set; } = new( 0, 0, -1 );
+
+    // the unit length up vector of the camera
+    public Vector3 Up { get; set; } = new( 0, 1, 0 );
+
+    protected Matrix4 Projection        { get; set; } = new();
+    protected Matrix4 View              { get; set; } = new();
+    public    Matrix4 Combined          { get; set; } = new();
+    protected Matrix4 InvProjectionView { get; set; } = new();
+
+    // the near clipping plane distance, has to be positive
+    protected float Near { get; set; } = 1;
+
+    // the far clipping plane distance, has to be positive
+    protected float Far { get; set; } = 100;
+
+    public    float    ViewportWidth  { get; set; } = 0;
+    public    float    ViewportHeight { get; set; } = 0;
+    protected Frustrum Frustum        { get; set; } = new();
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    private readonly Vector3 _tmpVec = new();
+    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Recalculates the projection and view matrix of this camera and the Frustum
     ///     planes. Use this after you've manipulated any of the attributes of the camera.
@@ -204,13 +238,9 @@ public abstract class Camera
                               float viewportWidth,
                               float viewportHeight )
     {
-        var x = screenCoords.X;
-        var y = screenCoords.Y;
-
-        x -= viewportX;
-        y =  Gdx.Graphics.Height - y;
-        y -= viewportY;
-
+        var x = screenCoords.X - viewportX;
+        var y = ( Gdx.Graphics.Height - screenCoords.Y ) - viewportY;
+        
         screenCoords.X = ( ( 2 * x ) / viewportWidth ) - 1;
         screenCoords.Y = ( ( 2 * y ) / viewportHeight ) - 1;
         screenCoords.Z = ( 2 * screenCoords.Z ) - 1;
@@ -319,21 +349,17 @@ public abstract class Camera
                            float viewportWidth,
                            float viewportHeight )
     {
-        Unproject(
-            _ray.origin.Set( screenX, screenY, 0 ),
-            viewportX,
-            viewportY,
-            viewportWidth,
-            viewportHeight
-            );
+        Unproject( _ray.origin.Set( screenX, screenY, 0 ),
+                   viewportX,
+                   viewportY,
+                   viewportWidth,
+                   viewportHeight );
 
-        Unproject(
-            _ray.direction.Set( screenX, screenY, 1 ),
-            viewportX,
-            viewportY,
-            viewportWidth,
-            viewportHeight
-            );
+        Unproject( _ray.direction.Set( screenX, screenY, 1 ),
+                   viewportX,
+                   viewportY,
+                   viewportWidth,
+                   viewportHeight );
 
         _ray.direction.Sub( _ray.origin ).Nor();
 
@@ -348,47 +374,8 @@ public abstract class Camera
     ///     instance but an internal member only accessible via this function.
     /// </summary>
     /// <returns>The picking Ray.</returns>
-    public Ray GetPickRay( float screenX, float screenY ) => GetPickRay(
-        screenX,
-        screenY,
-        0,
-        0,
-        Gdx.Graphics.Width,
-        Gdx.Graphics.Height
-        );
-
-    #region Properties
-
-    // the position of the camera
-    public Vector3 Position { get; set; } = new();
-
-    // the unit length direction vector of the camera
-    protected Vector3 Direction { get; set; } = new( 0, 0, -1 );
-
-    // the unit length up vector of the camera
-    public Vector3 Up { get; set; } = new( 0, 1, 0 );
-
-    protected Matrix4 Projection        { get; set; } = new();
-    protected Matrix4 View              { get; set; } = new();
-    public    Matrix4 Combined          { get; set; } = new();
-    protected Matrix4 InvProjectionView { get; set; } = new();
-
-    // the near clipping plane distance, has to be positive
-    protected float Near { get; set; } = 1;
-
-    // the far clipping plane distance, has to be positive
-    protected float Far { get; set; } = 100;
-
-    public    float    ViewportWidth  { get; set; } = 0;
-    public    float    ViewportHeight { get; set; } = 0;
-    protected Frustrum Frustum        { get; set; } = new();
-
-    #endregion
-
-    #region PrivateMembers
-
-    private readonly Vector3 _tmpVec = new();
-    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
-
-    #endregion
+    public Ray GetPickRay( float screenX, float screenY )
+    {
+        return GetPickRay( screenX, screenY, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+    }
 }

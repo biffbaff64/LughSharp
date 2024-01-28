@@ -31,6 +31,7 @@ namespace LibGDXSharp.Graphics.GLUtils;
 ///         <see cref="Cubemap" />.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class KtxTextureData : ITextureData, ICubemapData
 {
     private const int GL_TEXTURE_1D           = 0x1234;
@@ -87,15 +88,6 @@ public class KtxTextureData : ITextureData, ICubemapData
         set { }
     }
 
-//    /// <summary>
-//    /// Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap"/> or
-//    /// <see cref="ITextureData.ConsumeCustomData"/>. This method can be called from a non
-//    /// OpenGL thread and should thus not interact with OpenGL. 
-//    /// </summary>
-//    public void Prepare()
-//    {
-//    }
-
     /// <summary>
     ///     Prepares the TextureData for a call to <see cref="ICubemapData.ConsumeCubemapData" />.
     ///     This method can be called from a non OpenGL thread and should thus not
@@ -139,7 +131,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                 _compressedData.Position = 0;
                 _compressedData.Limit    = _compressedData.Capacity;
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 throw new GdxRuntimeException( $"Couldn't load zktx file '{_file}'", e );
             }
@@ -361,17 +353,9 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             // Load normal texture
             if ( ( target != glTarget )
-              && !( ( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X <= target )
-                 && ( target <= IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z )
-                 && ( target == IGL20.GL_TEXTURE_2D ) ) )
+              && !( target is >= IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X and <= IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
             {
-                throw new GdxRuntimeException
-                    (
-                    "Invalid target requested : 0x"
-                  + target.ToString( "X" )
-                  + ", expecting : 0x"
-                  + glTarget.ToString( "X" )
-                    );
+                throw new GdxRuntimeException( $"Invalid target requested : 0x{target:X}, expecting : 0x{glTarget:X}" );
             }
         }
 
@@ -393,7 +377,8 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             var pixelWidth  = Math.Max( 1, _pixelWidth >> level );
             var pixelHeight = Math.Max( 1, _pixelHeight >> level );
-            var pixelDepth  = Math.Max( 1, _pixelDepth >> level );
+
+//            var pixelDepth  = Math.Max( 1, _pixelDepth >> level );
 
             _compressedData.Position = pos;
 
@@ -500,10 +485,10 @@ public class KtxTextureData : ITextureData, ICubemapData
                 }
                 else if ( textureDimensions == 3 )
                 {
-                    if ( _numberOfArrayElements > 0 )
-                    {
-                        pixelDepth = _numberOfArrayElements;
-                    }
+//                    if ( _numberOfArrayElements > 0 )
+//                    {
+//                        pixelDepth = _numberOfArrayElements;
+//                    }
 
                     // if (compressed)
                     // Gdx.gl.glCompressedTexImage3D(target + face, level, glInternalFormat, pixelWidth, pixelHeight, pixelDepth, 0,

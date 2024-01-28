@@ -88,7 +88,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( KEY_DOWN );
             _out.Write( keycode );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             lock ( this )
             {
@@ -114,7 +114,7 @@ public class RemoteSender : IInputProcessor
             _out?.Write( KEY_UP );
             _out?.Write( keycode );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             lock ( this )
             {
@@ -140,7 +140,7 @@ public class RemoteSender : IInputProcessor
             _out?.Write( KEY_TYPED );
             _out?.Write( character );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             lock ( this )
             {
@@ -170,7 +170,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( y );
             _out.Write( pointer );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             lock ( this )
             {
@@ -200,7 +200,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( y );
             _out.Write( pointer );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             lock ( this )
             {
@@ -230,7 +230,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( y );
             _out.Write( pointer );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             lock ( this )
             {
@@ -275,7 +275,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( Gdx.Input.GetGyroscopeY() );
             _out.Write( Gdx.Input.GetGyroscopeZ() );
         }
-        catch ( Exception )
+        catch ( System.Exception )
         {
             _out       = null;
             _connected = false;

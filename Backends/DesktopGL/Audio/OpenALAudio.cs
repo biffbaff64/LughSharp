@@ -141,7 +141,7 @@ public class OpenALAudio : IGLAudio
 
             return snd ?? throw new NullReferenceException();
         }
-        catch ( Exception ex )
+        catch ( System.Exception ex )
         {
             throw new GdxRuntimeException( $"Error creating sound {soundClass.Name} for file: {file}", ex );
         }
@@ -171,7 +171,7 @@ public class OpenALAudio : IGLAudio
 
             return snd ?? throw new NullReferenceException();
         }
-        catch ( Exception ex )
+        catch ( System.Exception ex )
         {
             throw new GdxRuntimeException( $"Error creating music {musicClass.Name} for file: {file}", ex );
         }

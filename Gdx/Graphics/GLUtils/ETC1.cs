@@ -58,8 +58,8 @@ public class ETC1
     /// <returns> the <see cref="ETC1Data" /> </returns>
     public static ETC1Data EncodeImage( Pixmap pixmap )
     {
-        var         pixelSize      = GetPixelSize( pixmap.GetFormat() );
-        ByteBuffer? compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
+        var        pixelSize      = GetPixelSize( pixmap.GetFormat() );
+        ByteBuffer compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
 //        BufferUtils.NewByteBuffer( compressedData );
 
@@ -75,8 +75,8 @@ public class ETC1
     /// <returns> the <see cref="ETC1Data" /> </returns>
     public static ETC1Data EncodeImagePKM( Pixmap pixmap )
     {
-        var         pixelSize      = GetPixelSize( pixmap.GetFormat() );
-        ByteBuffer? compressedData = EncodeImagePKM( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
+        var        pixelSize      = GetPixelSize( pixmap.GetFormat() );
+        ByteBuffer compressedData = EncodeImagePKM( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
 //        BufferUtils.NewByteBuffer( compressedData );
 
@@ -232,11 +232,11 @@ public class ETC1
     /// <returns>
     ///     a new direct native order ByteBuffer containing the compressed image data
     /// </returns>
-    private static extern ByteBuffer? EncodeImage( ByteBuffer imageData,
-                                                   int offset,
-                                                   int width,
-                                                   int height,
-                                                   int pixelSize );
+    private static extern ByteBuffer EncodeImage( ByteBuffer imageData,
+                                                  int offset,
+                                                  int width,
+                                                  int height,
+                                                  int pixelSize );
 
 //    {
 //            int compressedSize = etc1_get_encoded_data_size(width, height);
@@ -261,18 +261,18 @@ public class ETC1
     /// <returns>
     ///     a new direct native order ByteBuffer containing the compressed image data
     /// </returns>
-    private static extern ByteBuffer? EncodeImagePKM( ByteBuffer imageData,
-                                                      int offset,
-                                                      int width,
-                                                      int height,
-                                                      int pixelSize );
+    private static extern ByteBuffer EncodeImagePKM( ByteBuffer imageData,
+                                                     int offset,
+                                                     int width,
+                                                     int height,
+                                                     int pixelSize );
 
     /// <summary>
     ///     Class for storing ETC1 compressed image data.
     /// </summary>
     public class ETC1Data : IDisposable
     {
-        public ETC1Data( int width, int height, ByteBuffer? compressedData, int dataOffset )
+        public ETC1Data( int width, int height, ByteBuffer compressedData, int dataOffset )
         {
             Width          = width;
             Height         = height;
@@ -289,16 +289,10 @@ public class ETC1
 
             try
             {
-                input = new BinaryReader
-                    (
-                    new BufferedStream
-                        (
-                        new GZipStream(
-                            pkmFile.OpenRead(),
-                            CompressionMode.Decompress
-                            )
-                        )
-                    );
+                var zipStream      = new GZipStream( pkmFile.OpenRead(), CompressionMode.Decompress );
+                var bufferedStream = new BufferedStream( zipStream );
+
+                input = new BinaryReader( bufferedStream );
 
                 var fileSize = input.ReadInt32();
 
@@ -313,7 +307,7 @@ public class ETC1
                 CompressedData.Position = 0;
                 CompressedData.Limit    = CompressedData.Capacity;
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 throw new GdxRuntimeException( "Couldn't load pkm file '" + pkmFile + "'", e );
             }
@@ -343,7 +337,7 @@ public class ETC1
         /// <summary>
         ///     the optional PKM header and compressed image data.
         /// </summary>
-        public ByteBuffer? CompressedData { get; set; }
+        public ByteBuffer CompressedData { get; set; }
 
         /// <summary>
         ///     the offset in bytes to the actual compressed data.
@@ -365,14 +359,14 @@ public class ETC1
         }
 
         /// <summary>
+        /// Returns whether this ETC1Data has a PKM header.
         /// </summary>
-        /// <returns> whether this ETC1Data has a PKM header </returns>
         public bool HasPKMHeader() => DataOffset == 16;
 
         /// <summary>
         ///     Writes the ETC1Data with a PKM header to the given file.
         /// </summary>
-        /// <param name="file"> the file.  </param>
+        /// <param name="file"> the file. </param>
         public void Write( FileInfo file )
         {
 //            DataOutputStream? write        = null;
@@ -412,28 +406,14 @@ public class ETC1
 
         public override string ToString()
         {
-            if ( CompressedData == null )
-            {
-                return "WARNING: CompressedData: NULL";
-            }
-
             if ( HasPKMHeader() )
             {
-                return ( IsValidPKM( CompressedData, 0 ) ? "valid" : "invalid" )
-                     + " pkm ["
-                     + GetWidthPKM( CompressedData, 0 )
-                     + "x"
-                     + GetHeightPKM( CompressedData, 0 )
-                     + "], compressed: "
-                     + ( CompressedData.Capacity - PKM_HEADER_SIZE );
+                return $"{( IsValidPKM( CompressedData, 0 ) ? "valid" : "invalid" )} "
+                     + $"pkm [{GetWidthPKM( CompressedData, 0 )}x{GetHeightPKM( CompressedData, 0 )}], "
+                     + $"compressed: {( CompressedData.Capacity - PKM_HEADER_SIZE )}";
             }
 
-            return "raw ["
-                 + Width
-                 + "x"
-                 + Height
-                 + "], compressed: "
-                 + ( CompressedData.Capacity - PKM_HEADER_SIZE );
+            return $"raw [{Width}x{Height}], compressed: {( CompressedData.Capacity - PKM_HEADER_SIZE )}";
         }
     }
 

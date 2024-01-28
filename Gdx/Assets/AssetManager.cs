@@ -18,7 +18,6 @@ using System.Text;
 
 using LibGDXSharp.Graphics.G2D;
 using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Utils.Async;
 using LibGDXSharp.Utils.Collections;
 
 namespace LibGDXSharp.Assets;
@@ -608,7 +607,7 @@ public class AssetManager
 
             return UpdateTask() && ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
         }
-        catch ( Exception t )
+        catch ( System.Exception t )
         {
             HandleTaskError( t );
 
@@ -924,7 +923,7 @@ public class AssetManager
     ///     A subclass may supress the default implementation when loading assets where loading
     ///     failure is recoverable.
     /// </summary>
-    public virtual void TaskFailed( AssetDescriptor assetDesc, Exception ex )
+    public virtual void TaskFailed( AssetDescriptor assetDesc, System.Exception ex )
     {
         throw ex;
     }
@@ -960,7 +959,7 @@ public class AssetManager
     ///     invoking the <see cref="IAssetErrorListener" />.
     /// </summary>
     /// <param name="t"></param>
-    public void HandleTaskError( Exception t )
+    public void HandleTaskError( System.Exception t )
     {
         Log.Error( $"Error loading asset: {t}" );
 

@@ -738,7 +738,7 @@ public class BitmapFont
                     {
                         pageCount = Math.Max( 1, int.Parse( common[ 5 ].Substring( 6 ) ) );
                     }
-                    catch ( Exception e )
+                    catch ( System.Exception e )
                     {
                         Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + e.Message );
                     }
@@ -775,7 +775,7 @@ public class BitmapFont
                                 throw new GdxRuntimeException( "Page IDs must be indices starting at 0: " + id );
                             }
                         }
-                        catch ( Exception ex )
+                        catch ( System.Exception ex )
                         {
                             throw new GdxRuntimeException( "Invalid page id: " + id, ex );
                         }
@@ -883,7 +883,7 @@ public class BitmapFont
                         {
                             glyph.Page = int.Parse( tokens.NextToken() );
                         }
-                        catch ( Exception ignored )
+                        catch ( System.Exception ignored )
                         {
                             Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
                         }
@@ -1078,7 +1078,7 @@ public class BitmapFont
                     XHeight       = overrideXHeight;
                 }
             }
-            catch ( Exception ex )
+            catch ( System.Exception ex )
             {
                 throw new GdxRuntimeException( "Error loading font file: " + file, ex );
             }
