@@ -22,6 +22,7 @@ namespace LibGDXSharp.Backends.Desktop.Graphics;
 
 using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
+[PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
     private readonly IntBuffer                       _tmpBuffer                   = BufferUtils.NewIntBuffer( 1 );
@@ -311,7 +312,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        return Glfw.GetWindowMonitor( GLWindow.GlfwWindow ) != Monitor.None;
+        return Glfw.GetWindowMonitor( GLWindow.GlfwWindow ) != GLFW.Monitor.None;
     }
 
     /// <summary>
@@ -320,7 +321,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="xHotspot"></param>
     /// <param name="yHotspot"></param>
     /// <returns></returns>
-    public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot ) => new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
+    public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot )
+        => new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
 
     /// <summary>
     ///     Browsers that support cursor:url() and support the png format (the pixmap
@@ -376,8 +378,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override IGraphics.MonitorDescriptor[] GetMonitors()
     {
-        Monitor[] glfwMonitors = Glfw.Monitors;
-        var       monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
+        GLFW.Monitor[] glfwMonitors = Glfw.Monitors;
+        var            monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
 
         for ( var i = 0; i < Glfw.Monitors.Length; i++ )
         {
@@ -387,19 +389,25 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         return monitors;
     }
 
+    // ------------------------------------------------------------------------
+
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes() => DesktopGLApplicationConfiguration.GetDisplayModes();
+    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes()
+        => DesktopGLApplicationConfiguration.GetDisplayModes();
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor )
         => DesktopGLApplicationConfiguration.GetDisplayModes( monitor.MonitorHandle );
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor GetDisplayMode() => DesktopGLApplicationConfiguration.GetDisplayMode( GetMonitor().MonitorHandle );
+    public override IGraphics.DisplayModeDescriptor GetDisplayMode()
+        => DesktopGLApplicationConfiguration.GetDisplayMode( GetMonitor().MonitorHandle );
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor )
         => DesktopGLApplicationConfiguration.GetDisplayMode( monitor.MonitorHandle );
+
+    // ------------------------------------------------------------------------
 
     /// <inheritdoc />
     public override bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode )
@@ -496,7 +504,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
     public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
     {
         public DesktopGLDisplayMode( GLFW.Monitor monitor,
@@ -509,9 +516,13 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         public GLFW.Monitor MonitorHandle { get; set; }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     public class DesktopGLMonitor : IGraphics.MonitorDescriptor
     {
+        public GLFW.Monitor MonitorHandle { get; private set; }
+
         public DesktopGLMonitor( GLFW.Monitor monitor,
                                  int virtualX,
                                  int virtualY,

@@ -17,12 +17,13 @@
 using LibGDXSharp.Utils.Buffers;
 
 using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
 public abstract class GLInterceptor : IGL20
 {
-    protected GLProfiler glProfiler;
+    protected readonly GLProfiler glProfiler;
 
     protected GLInterceptor( GLProfiler profiler ) => glProfiler = profiler;
 
@@ -33,16 +34,16 @@ public abstract class GLInterceptor : IGL20
     public FloatCounter VertexCount     { get; set; } = new( 0 );
 
     /// <inheritdoc />
-    public abstract void GLActiveTexture( int texture );
+    public abstract void GLActiveTexture( TextureUnit texture );
 
     /// <inheritdoc />
-    public abstract void GLAttachShader( int program, int shader );
+    public abstract void GLAttachShader( uint program, uint shader );
 
     /// <inheritdoc />
-    public abstract void GLBindTexture( int target, int texture );
+    public abstract void GLBindTexture( TextureTarget target, uint texture );
 
     /// <inheritdoc />
-    public abstract void GLBlendFunc( int sfactor, int dfactor );
+    public abstract void GLBlendFunc( BlendingFactor sfactor, BlendingFactor dfactor );
 
     /// <inheritdoc />
     public abstract void GLClear( int mask );
@@ -72,7 +73,7 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLCullFace( int mode );
 
     /// <inheritdoc />
-    public abstract void GLDeleteTextures( params int[] textures );
+    public abstract void GLDeleteTextures( params uint[] textures );
 
     /// <inheritdoc />
     public abstract void GLDepthFunc( int func );
@@ -108,10 +109,10 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLGenTextures( int[] textures );
 
     /// <inheritdoc />
-    public abstract int GLGenTexture();
+    public abstract uint GLGenTexture();
 
     /// <inheritdoc />
-    public abstract int GLGetError();
+    public abstract ErrorCode GLGetError();
 
     /// <inheritdoc />
     public abstract string GLGetString( int name );
@@ -147,7 +148,15 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLTexImage2D( int target, int level, int internalformat, int width, int height, int border, int format, int type, Buffer pixels );
 
     /// <inheritdoc />
-    public abstract void GLTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels );
+    public abstract void GLTexSubImage2D( TextureTarget target,
+                                          int level,
+                                          int xoffset,
+                                          int yoffset,
+                                          int width,
+                                          int height,
+                                          int format,
+                                          int type,
+                                          Buffer pixels );
 
     /// <inheritdoc />
     public abstract void GLViewport( int x, int y, int width, int height );
@@ -156,7 +165,7 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLBindAttribLocation( int program, int index, string name );
 
     /// <inheritdoc />
-    public abstract void GLBindBuffer( int target, int buffer );
+    public abstract void GLBindBuffer( int target, uint buffer );
 
     /// <inheritdoc />
     public abstract void GLBindFramebuffer( int target, int framebuffer );
@@ -186,16 +195,16 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLCompileShader( int shader );
 
     /// <inheritdoc />
-    public abstract int GLCreateProgram();
+    public abstract uint GLCreateProgram();
 
     /// <inheritdoc />
     public abstract int GLCreateShader( int type );
 
     /// <inheritdoc />
-    public abstract void GLDeleteBuffers( params int[] buffer );
+    public abstract void GLDeleteBuffers( params uint[] buffer );
 
     /// <inheritdoc />
-    public abstract void GLDeleteProgram( int program );
+    public abstract void GLDeleteProgram( uint program );
 
     /// <inheritdoc />
     public abstract void GLDeleteShader( int shader );
@@ -213,25 +222,25 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLEnableVertexAttribArray( int index );
 
     /// <inheritdoc />
-    public abstract int GLGenBuffer();
+    public abstract uint GLGenBuffer();
 
     /// <inheritdoc />
     public abstract void GLGenBuffers( Buffer buffers );
 
     /// <inheritdoc />
-    public abstract string GLGetActiveAttrib( int program, int index, Buffer size, Buffer type );
+    public abstract string GLGetActiveAttrib( uint program, int index, Buffer size, Buffer type );
 
     /// <inheritdoc />
-    public abstract string GLGetActiveUniform( int program, int index, Buffer size, Buffer type );
+    public abstract string GLGetActiveUniform( uint program, int index, Buffer size, Buffer type );
 
     /// <inheritdoc />
     public abstract void GLGetAttachedShaders( int program, int maxCount, Buffer count, IntBuffer shaders );
 
     /// <inheritdoc />
-    public abstract int GLGetAttribLocation( int program, string name );
+    public abstract int GLGetAttribLocation( uint program, string name );
 
     /// <inheritdoc />
-    public abstract int GLGetUniformLocation( int program, string name );
+    public abstract int GLGetUniformLocation( uint program, string name );
 
     /// <inheritdoc />
     public abstract bool GLIsBuffer( int buffer );
@@ -249,7 +258,7 @@ public abstract class GLInterceptor : IGL20
     public abstract bool GLIsTexture( int texture );
 
     /// <inheritdoc />
-    public abstract void GLLinkProgram( int program );
+    public abstract void GLLinkProgram( uint program );
 
     /// <inheritdoc />
     public abstract void GLSampleCoverage( float value, bool invert );
@@ -273,7 +282,7 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLIntSeparate( int face, int fail, int zfail, int zpass );
 
     /// <inheritdoc />
-    public abstract void GLUseProgram( int program );
+    public abstract void GLUseProgram( uint program );
 
     /// <inheritdoc />
     public abstract void GLValidateProgram( int program );
@@ -285,7 +294,7 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLGetFloatv( int pname, FloatBuffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLTexParameteri( int target, int pname, int param );
+    public abstract void GLTexParameteri( TextureTarget target, int pname, int param );
 
     /// <inheritdoc />
     public abstract void GLUniform1F( int location, float x );
@@ -392,10 +401,10 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLGetProgramiv( int program, int pname, IntBuffer parameters );
+    public abstract void GLGetProgramiv( uint program, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
-    public abstract string GLGetProgramInfoLog( int program );
+    public abstract string GLGetProgramInfoLog( uint program );
 
     /// <inheritdoc />
     public abstract void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters );
@@ -526,15 +535,23 @@ public abstract class GLInterceptor : IGL20
     /// <inheritdoc />
     public abstract void GLVertexAttrib4F( int indx, float x, float y, float z, float w );
 
-    public static string ResolveErrorNumber( int error ) => error switch
-                                                            {
-                                                                IGL20.GL_INVALID_VALUE => "InvalidValue",
-                                                                IGL20.GL_INVALID_OPERATION => "InvalidOperation",
-                                                                IGL20.GL_INVALID_FRAMEBUFFER_OPERATION => "InvalidFramebufferOperation",
-                                                                IGL20.GL_INVALID_ENUM => "InvalidEnum",
-                                                                IGL20.GL_OUT_OF_MEMORY => "OutOfMemory",
-                                                                _ => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
-                                                            };
+    public static string ResolveErrorNumber( ErrorCode error )
+    {
+        return error switch
+               {
+                   ErrorCode.InvalidValue                => "InvalidValue",
+                   ErrorCode.InvalidOperation            => "InvalidOperation",
+                   ErrorCode.InvalidFramebufferOperation => "InvalidFramebufferOperation",
+                   ErrorCode.InvalidEnum                 => "InvalidEnum",
+                   ErrorCode.OutOfMemory                 => "OutOfMemory",
+                   ErrorCode.StackOverflow               => "StackOverflow",
+                   ErrorCode.StackUnderflow              => "StackUnderflow",
+                   ErrorCode.TableTooLarge               => "TableTooLarge",
+                   ErrorCode.TextureTooLargeExt          => "TextureTooLarge",
+                   ErrorCode.NoError                     => "NoError",
+                   _                                     => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
+               };
+    }
 
     public void Reset()
     {

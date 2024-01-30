@@ -17,6 +17,7 @@
 using LibGDXSharp.Utils.Buffers;
 
 using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Graphics;
 
@@ -337,13 +338,13 @@ public interface IGL20
 
     // ------------------------------------------------
 
-    void GLActiveTexture( int texture );
+    void GLActiveTexture( TextureUnit texture );
 
-    void GLAttachShader( int program, int shader );
+    void GLAttachShader( uint program, uint shader );
 
-    void GLBindTexture( int target, int texture );
+    void GLBindTexture( TextureTarget target, uint texture );
 
-    void GLBlendFunc( int sfactor, int dfactor );
+    void GLBlendFunc( BlendingFactor sfactor, BlendingFactor dfactor );
 
     void GLClear( int mask );
 
@@ -384,7 +385,7 @@ public interface IGL20
 
     void GLCullFace( int mode );
 
-    void GLDeleteTextures( params int[] textures );
+    void GLDeleteTextures( params uint[] textures );
 
     void GLDepthFunc( int func );
 
@@ -408,9 +409,9 @@ public interface IGL20
 
     void GLGenTextures( int[] textures );
 
-    int GLGenTexture();
+    uint GLGenTexture();
 
-    int GLGetError();
+    ErrorCode GLGetError();
 
     string GLGetString( int name );
 
@@ -442,7 +443,7 @@ public interface IGL20
                        int type,
                        Buffer pixels );
 
-    void GLTexSubImage2D( int target,
+    void GLTexSubImage2D( TextureTarget target,
                           int level,
                           int xoffset,
                           int yoffset,
@@ -456,7 +457,7 @@ public interface IGL20
 
     void GLBindAttribLocation( int program, int index, string name );
 
-    void GLBindBuffer( int target, int buffer );
+    void GLBindBuffer( int target, uint buffer );
 
     void GLBindFramebuffer( int target, int framebuffer );
 
@@ -476,13 +477,13 @@ public interface IGL20
 
     void GLCompileShader( int shader );
 
-    int GLCreateProgram();
+    uint GLCreateProgram();
 
     int GLCreateShader( int type );
 
-    void GLDeleteBuffers( params int[] buffer );
+    void GLDeleteBuffers( params uint[] buffer );
 
-    void GLDeleteProgram( int program );
+    void GLDeleteProgram( uint program );
 
     void GLDeleteShader( int shader );
 
@@ -494,25 +495,25 @@ public interface IGL20
 
     void GLEnableVertexAttribArray( int index );
 
-    int GLGenBuffer();
+    uint GLGenBuffer();
 
     void GLGenBuffers( Buffer buffers );
 
-    string GLGetActiveAttrib( int program,
+    string GLGetActiveAttrib( uint program,
                               int index,
                               Buffer size,
                               Buffer type );
 
-    string GLGetActiveUniform( int program,
+    string GLGetActiveUniform( uint program,
                                int index,
                                Buffer size,
                                Buffer type );
 
     void GLGetAttachedShaders( int program, int maxCount, Buffer count, IntBuffer shaders );
 
-    int GLGetAttribLocation( int program, string name );
+    int GLGetAttribLocation( uint program, string name );
 
-    int GLGetUniformLocation( int program, string name );
+    int GLGetUniformLocation( uint program, string name );
 
     bool GLIsBuffer( int buffer );
 
@@ -524,7 +525,7 @@ public interface IGL20
 
     bool GLIsTexture( int texture );
 
-    void GLLinkProgram( int program );
+    void GLLinkProgram( uint program );
 
     void GLSampleCoverage( float value, bool invert );
 
@@ -540,7 +541,7 @@ public interface IGL20
 
     void GLIntSeparate( int face, int fail, int zfail, int zpass );
 
-    void GLUseProgram( int program );
+    void GLUseProgram( uint program );
 
     void GLValidateProgram( int program );
 
@@ -551,7 +552,7 @@ public interface IGL20
 
     void GLGetFloatv( int pname, FloatBuffer parameters );
 
-    void GLTexParameteri( int target, int pname, int param );
+    void GLTexParameteri( TextureTarget target, int pname, int param );
 
     void GLUniform1F( int location, float x );
 
@@ -630,9 +631,9 @@ public interface IGL20
 
     void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters );
 
-    void GLGetProgramiv( int program, int pname, IntBuffer parameters );
+    void GLGetProgramiv( uint program, int pname, IntBuffer parameters );
 
-    string GLGetProgramInfoLog( int program );
+    string GLGetProgramInfoLog( uint program );
 
     void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters );
 

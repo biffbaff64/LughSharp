@@ -68,7 +68,7 @@ public class InstanceBufferObjectSubData : IInstanceData
         _byteBuffer.Flip();
     }
 
-    public int              BufferHandle { get; set; }
+    public uint             BufferHandle { get; set; }
     public VertexAttributes Attributes   { get; set; }
 
     /// <summary>
@@ -324,7 +324,7 @@ public class InstanceBufferObjectSubData : IInstanceData
         BufferHandle = 0;
     }
 
-    private int CreateBufferObject()
+    private uint CreateBufferObject()
     {
         var result = Gdx.GL20.GLGenBuffer();
 

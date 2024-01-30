@@ -49,7 +49,7 @@ public interface IGraphics
     [PublicAPI]
     public class MonitorDescriptor
     {
-//        public GLFW.Monitor MonitorHandle { get; set; }
+        public GLFW.Monitor MonitorHandle { get; set; }
 
         public MonitorDescriptor( int x, int y, string name )
         {

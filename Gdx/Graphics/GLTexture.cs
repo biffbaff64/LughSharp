@@ -23,15 +23,16 @@ namespace LibGDXSharp.Graphics;
 ///     its state like the TextureFilter and TextureWrap. Also provides some static
 ///     methods to create TextureData and upload image data.
 /// </summary>
+[PublicAPI]
 public abstract class GLTexture : IDisposable
 {
     public abstract int Width  { get; }
     public abstract int Height { get; }
     public abstract int Depth  { get; }
 
-    public int   GLTextureHandle        { get; set; }
-    public int   GLTarget               { get; }
-    public float AnisotropicFilterLevel { get; private set; } = 1.0f;
+    public uint          GLTextureHandle        { get; set; }
+    public TextureTarget GLTarget               { get; }
+    public float         AnisotropicFilterLevel { get; private set; } = 1.0f;
 
     /// <summary>
     ///     Returns the <see cref="TextureFilter" /> used for minification.
@@ -60,11 +61,11 @@ public abstract class GLTexture : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    protected GLTexture( int glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
+    protected GLTexture( TextureTarget glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
     {
     }
 
-    protected GLTexture( int glTarget, int glTextureHandle )
+    protected GLTexture( TextureTarget glTarget, uint glTextureHandle )
     {
         GLTarget        = glTarget;
         GLTextureHandle = glTextureHandle;
@@ -91,7 +92,7 @@ public abstract class GLTexture : IDisposable
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        Gdx.GL.GLActiveTexture( IGL20.GL_TEXTURE0 + unit );
+        Gdx.GL.GLActiveTexture( TextureUnit.Texture0 + unit );
         Gdx.GL.GLBindTexture( GLTarget, GLTextureHandle );
     }
 
@@ -357,7 +358,7 @@ public abstract class GLTexture : IDisposable
     /// <summary>
     ///     Convenience method for when 'GLHandle' isn't descriptive enough.
     /// </summary>
-    public int GetTextureObjectHandle() => GLTextureHandle;
+    public uint GetTextureObjectHandle() => GLTextureHandle;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

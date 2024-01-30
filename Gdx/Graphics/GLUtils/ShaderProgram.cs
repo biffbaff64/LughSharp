@@ -170,7 +170,7 @@ public class ShaderProgram
                 // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
                 // int infoLogLength = intbuf.get(0);
                 // if (infoLogLength > 1) {
-                _log = Gdx.GL20.GLGetProgramInfoLog( Handle );
+                _log = Gdx.GL20.GLGetProgramInfoLog( ( uint )Handle );
 
                 // }
             }
@@ -244,11 +244,11 @@ public class ShaderProgram
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    protected int CreateProgram()
+    protected static int CreateProgram()
     {
         var program = Gdx.GL20.GLCreateProgram();
 
-        return program != 0 ? program : -1;
+        return program != 0 ? ( int )program : -1;
     }
 
     private int LinkProgram( int program )
@@ -258,15 +258,15 @@ public class ShaderProgram
             return -1;
         }
 
-        Gdx.GL20.GLAttachShader( program, _vertexShaderHandle );
-        Gdx.GL20.GLAttachShader( program, _fragmentShaderHandle );
-        Gdx.GL20.GLLinkProgram( program );
+        Gdx.GL20.GLAttachShader( ( uint )program, ( uint )_vertexShaderHandle );
+        Gdx.GL20.GLAttachShader( ( uint )program, ( uint )_fragmentShaderHandle );
+        Gdx.GL20.GLLinkProgram( ( uint )program );
 
         ByteBuffer tmp = ByteBuffer.Allocate( 4 );
         tmp.Order( ByteOrder.NativeOrder );
         IntBuffer intbuf = tmp.AsIntBuffer();
 
-        Gdx.GL20.GLGetProgramiv( program, IGL20.GL_LINK_STATUS, intbuf );
+        Gdx.GL20.GLGetProgramiv( ( uint )program, IGL20.GL_LINK_STATUS, intbuf );
 
         var linked = intbuf.Get( 0 );
 
@@ -275,7 +275,7 @@ public class ShaderProgram
 // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            _log = Gdx.GL20.GLGetProgramInfoLog( program );
+            _log = Gdx.GL20.GLGetProgramInfoLog( ( uint )program );
 
 // }
             return -1;
@@ -292,7 +292,7 @@ public class ShaderProgram
 
         if ( ( location = _attributes.Get( name, -2 ) ) == -2 )
         {
-            location            = Gdx.GL20.GLGetAttribLocation( Handle, name );
+            location            = Gdx.GL20.GLGetAttribLocation( ( uint )Handle, name );
             _attributes[ name ] = location;
         }
 
@@ -309,7 +309,7 @@ public class ShaderProgram
 
         if ( ( location = _uniforms.Get( name, -2 ) ) == -2 )
         {
-            location = Gdx.GL20.GLGetUniformLocation( Handle, name );
+            location = Gdx.GL20.GLGetUniformLocation( ( uint )Handle, name );
 
             if ( ( location == -1 ) && pedant )
             {
@@ -721,7 +721,7 @@ public class ShaderProgram
     public void Bind()
     {
         CheckManaged();
-        Gdx.GL20.GLUseProgram( Handle );
+        Gdx.GL20.GLUseProgram( ( uint )Handle );
     }
 
     /// <summary>
@@ -733,7 +733,7 @@ public class ShaderProgram
         Gdx.GL20.GLUseProgram( 0 );
         Gdx.GL20.GLDeleteShader( _vertexShaderHandle );
         Gdx.GL20.GLDeleteShader( _fragmentShaderHandle );
-        Gdx.GL20.GLDeleteProgram( Handle );
+        Gdx.GL20.GLDeleteProgram( ( uint )Handle );
 
         Shaders.Get( Gdx.App ).Remove( this );
     }
@@ -838,7 +838,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
+        Gdx.GL20.GLGetProgramiv( ( uint )Handle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
 
         var numUniforms = _parameters.Get( 0 );
 
@@ -851,9 +851,9 @@ public class ShaderProgram
 
             _progType.Clear();
 
-            var name = Gdx.GL20.GLGetActiveUniform( Handle, i, _parameters, _progType );
+            var name = Gdx.GL20.GLGetActiveUniform( ( uint )Handle, i, _parameters, _progType );
 
-            var location = Gdx.GL20.GLGetUniformLocation( Handle, name );
+            var location = Gdx.GL20.GLGetUniformLocation( ( uint )Handle, name );
 
             _uniforms[ name ]     = location;
             _uniformTypes[ name ] = _progType.Get( 0 );
@@ -868,7 +868,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
+        Gdx.GL20.GLGetProgramiv( ( uint )Handle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
 
         var numAttributes = _parameters.Get( 0 );
 
@@ -881,8 +881,8 @@ public class ShaderProgram
 
             _progType.Clear();
 
-            var name     = Gdx.GL20.GLGetActiveAttrib( Handle, i, _parameters, _progType );
-            var location = Gdx.GL20.GLGetAttribLocation( Handle, name );
+            var name     = Gdx.GL20.GLGetActiveAttrib( ( uint )Handle, i, _parameters, _progType );
+            var location = Gdx.GL20.GLGetAttribLocation( ( uint )Handle, name );
 
             _attributes[ name ]     = location;
             _attributeTypes[ name ] = _progType.Get( 0 );

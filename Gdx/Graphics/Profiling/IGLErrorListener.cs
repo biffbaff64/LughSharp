@@ -16,6 +16,8 @@
 
 using System.Reflection;
 
+using ErrorCode = OpenGL.ErrorCode;
+
 namespace LibGDXSharp.Graphics.Profiling;
 
 /// <summary>
@@ -27,8 +29,8 @@ public interface IGLErrorListener
     /// <summary>
     ///     Put your error logging code here.
     /// </summary>
-    /// <seealso cref="GLInterceptor.ResolveErrorNumber(int) " />
-    void OnError( int error );
+    /// <seealso cref="GLInterceptor.ResolveErrorNumber(ErrorCode) " />
+    void OnError( ErrorCode error );
 }
 
 /// <summary>
@@ -36,7 +38,7 @@ public interface IGLErrorListener
 /// </summary>
 public class GLLoggingListener : IGLErrorListener
 {
-    public void OnError( int error )
+    public void OnError( ErrorCode error )
     {
         string? place = null;
 
@@ -79,6 +81,8 @@ public class GLLoggingListener : IGLErrorListener
 /// </summary>
 public class ThrowingListener : IGLErrorListener
 {
-    public void OnError( int error ) => throw new GdxRuntimeException
-        ( $"GLProfiler: Got GL error {GLInterceptor.ResolveErrorNumber( error )}" );
+    public void OnError( ErrorCode error )
+    {
+        throw new GdxRuntimeException( $"GLProfiler: Got GL error {GLInterceptor.ResolveErrorNumber( error )}" );
+    }
 }

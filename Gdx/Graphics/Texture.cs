@@ -95,11 +95,11 @@ public class Texture : GLTexture
     ///     Creates a new Texture using the supplied <see cref="ITextureData"/>.
     /// </summary>
     public Texture( ITextureData? data )
-        : this( IGL20.GL_TEXTURE_2D, Gdx.GL.GLGenTexture(), data )
+        : this( TextureTarget.Texture2d, Gdx.GL.GLGenTexture(), data )
     {
     }
 
-    protected Texture( int glTarget, int glTextureHandle, ITextureData? data )
+    protected Texture( TextureTarget glTarget, uint glTextureHandle, ITextureData? data )
         : base( glTarget, glTextureHandle )
     {
         ArgumentNullException.ThrowIfNull( data );

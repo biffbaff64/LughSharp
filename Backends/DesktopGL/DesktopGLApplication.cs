@@ -439,11 +439,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             windowHandle = Glfw.CreateWindow( appConfig.WindowWidth,
                                               appConfig.WindowHeight,
                                               appConfig.Title ?? "",
-                                              Monitor.None,
-                                              Window.None );
+                                              GLFW.Monitor.None,
+                                              GLFW.Window.None );
         }
 
-        if ( windowHandle == Window.None )
+        if ( windowHandle == GLFW.Window.None )
         {
             throw new GdxRuntimeException( "Couldn't create window" );
         }
@@ -505,9 +505,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         Glfw.MakeContextCurrent( windowHandle );
         Glfw.SwapInterval( appConfig.VSyncEnabled ? 1 : 0 );
-
-        //TODO: What do I do here????
-//        Glfw.CreateCapabilities();
 
         InitiateGL();
 

@@ -25,7 +25,7 @@ public class IndexBufferObject : IIndexData
     private readonly bool        _empty;
     private readonly bool        _ownsBuffer;
     private readonly int         _usage;
-    private          int         _bufferHandle;
+    private          uint        _bufferHandle;
     private          bool        _isBound = false;
     private          bool        _isDirect;
     private          bool        _isDirty = true;

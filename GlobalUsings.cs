@@ -44,6 +44,7 @@ global using JetBrains.Annotations;
 global using GLFW;
 global using GLFW.Game;
 global using LibGDXSharp.Audio.OpenAL;
+global using OpenGL;
 
 // -----------------------------------------------------------------------
 // LibGDXSharp

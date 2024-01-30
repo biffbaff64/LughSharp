@@ -688,7 +688,9 @@ public sealed class Color
                                                                       | ( ( int )( g * 255 ) << 8 )
                                                                       | ( int )( b * 255 );
 
-    public static int RGB565( Color color ) => ( ( int )( color.R * 31 ) << 11 ) | ( ( int )( color.G * 63 ) << 5 ) | ( int )( color.B * 31 );
+    public static int RGB565( Color color ) => ( ( int )( color.R * 31 ) << 11 )
+                                             | ( ( int )( color.G * 63 ) << 5 )
+                                             | ( int )( color.B * 31 );
 
     public static int RGBA4444( Color color ) => ( ( int )( color.R * 15 ) << 12 )
                                                | ( ( int )( color.G * 15 ) << 8 )

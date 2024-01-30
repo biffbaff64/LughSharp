@@ -42,7 +42,7 @@ public class Cubemap : GLTexture
     /// <summary>
     ///     Construct a Cubemap based on the given CubemapData.
     /// </summary>
-    public Cubemap( ICubemapData? data ) : base( IGL20.GL_TEXTURE_CUBE_MAP )
+    public Cubemap( ICubemapData? data ) : base( TextureTarget.TextureCubeMap )
     {
         ArgumentNullException.ThrowIfNull( data );
 

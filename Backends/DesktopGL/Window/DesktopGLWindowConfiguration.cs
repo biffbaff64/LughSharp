@@ -14,6 +14,8 @@
 // limitations under the License.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LibGDXSharp.Backends.Desktop.Graphics;
+
 namespace LibGDXSharp.Backends.Desktop.Window;
 
 public class DesktopGLWindowConfiguration

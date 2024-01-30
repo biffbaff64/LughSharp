@@ -21,6 +21,7 @@ namespace LibGDXSharp.Graphics;
 /// <summary>
 ///     Open GLES wrapper for TextureArray.
 /// </summary>
+[PublicAPI]
 public class TextureArray : GLTexture
 {
     private readonly static Dictionary< IApplication, List< TextureArray > > ManagedTextureArrays = new();
@@ -177,7 +178,7 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL30.GL_TEXTURE_2D_ARRAY, Gdx.GL.GLGenTexture() )
+        : base( TextureTarget.Texture2dArray, Gdx.GL.GLGenTexture() )
     {
         if ( Gdx.GL30 == null )
         {

@@ -18,10 +18,12 @@ using System.Text;
 
 using LibGDXSharp.Utils.Buffers;
 
-using Buffer = LibGDXSharp.Files.Buffers.Buffer;
+using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Backends.Desktop.Graphics;
 
+[PublicAPI]
 public class DesktopGL20 : IGL20
 {
     private ByteBuffer?  _buffer      = null;

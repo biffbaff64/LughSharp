@@ -39,7 +39,7 @@ public class IndexBufferObjectSubData : IIndexData
     private readonly ShortBuffer _buffer;
     private readonly ByteBuffer  _byteBuffer;
     private readonly int         _usage;
-    private          int         _bufferHandle;
+    private          uint         _bufferHandle;
     private          bool        _isBound = false;
     private          bool        _isDirect;
     private          bool        _isDirty = true;
@@ -219,7 +219,7 @@ public class IndexBufferObjectSubData : IIndexData
         _bufferHandle = 0;
     }
 
-    private int CreateBufferObject()
+    private uint CreateBufferObject()
     {
         var result = Gdx.GL20.GLGenBuffer();
 

@@ -17,9 +17,11 @@
 using LibGDXSharp.Utils.Buffers;
 
 using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Graphics.Profiling;
 
+[PublicAPI]
 public class GL20Interceptor : GLInterceptor
 {
     public GL20Interceptor( GLProfiler glProfiler, IGL20 gl20 )
@@ -29,7 +31,7 @@ public class GL20Interceptor : GLInterceptor
 
     private void Check()
     {
-        var error = GL20.GLGetError();
+        ErrorCode error = GL20.GLGetError();
 
         while ( error != IGL20.GL_NO_ERROR )
         {
@@ -38,14 +40,14 @@ public class GL20Interceptor : GLInterceptor
         }
     }
 
-    public override void GLActiveTexture( int texture )
+    public override void GLActiveTexture( TextureUnit texture )
     {
         Calls++;
         GL20.GLActiveTexture( texture );
         Check();
     }
 
-    public override void GLBindTexture( int target, int texture )
+    public override void GLBindTexture( TextureTarget target, uint texture )
     {
         TextureBindings++;
         Calls++;
@@ -53,7 +55,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLBlendFunc( int sfactor, int dfactor )
+    public override void GLBlendFunc( BlendingFactor sfactor, BlendingFactor dfactor )
     {
         Calls++;
         GL20.GLBlendFunc( sfactor, dfactor );
@@ -145,7 +147,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLDeleteTextures( params int[] textures )
+    public override void GLDeleteTextures( params uint[] textures )
     {
         Calls++;
         GL20.GLDeleteTextures( textures );
@@ -233,7 +235,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override int GLGenTexture()
+    public override uint GLGenTexture()
     {
         Calls++;
         var result = GL20.GLGenTexture();
@@ -242,10 +244,10 @@ public class GL20Interceptor : GLInterceptor
         return result;
     }
 
-    public override int GLGetError()
+    public override ErrorCode GLGetError()
     {
         Calls++;
-        var result = GL20.GLGetError();
+        ErrorCode result = GL20.GLGetError();
         Check();
 
         return result;
@@ -357,7 +359,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLTexSubImage2D( int target,
+    public override void GLTexSubImage2D( TextureTarget target,
                                           int level,
                                           int xoffset,
                                           int yoffset,
@@ -379,7 +381,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLAttachShader( int program, int shader )
+    public override void GLAttachShader( uint program, uint shader )
     {
         Calls++;
         GL20.GLAttachShader( program, shader );
@@ -393,7 +395,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLBindBuffer( int target, int buffer )
+    public override void GLBindBuffer( int target, uint buffer )
     {
         Calls++;
         GL20.GLBindBuffer( target, buffer );
@@ -472,7 +474,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override int GLCreateProgram()
+    public override uint GLCreateProgram()
     {
         Calls++;
         var result = GL20.GLCreateProgram();
@@ -490,7 +492,7 @@ public class GL20Interceptor : GLInterceptor
         return result;
     }
 
-    public override void GLDeleteBuffers( params int[] buffers )
+    public override void GLDeleteBuffers( params uint[] buffers )
     {
         Calls++;
         GL20.GLDeleteBuffers( buffers );
@@ -511,7 +513,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLDeleteProgram( int program )
+    public override void GLDeleteProgram( uint program )
     {
         Calls++;
         GL20.GLDeleteProgram( program );
@@ -583,7 +585,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override int GLGenBuffer()
+    public override uint GLGenBuffer()
     {
         Calls++;
         var result = GL20.GLGenBuffer();
@@ -638,7 +640,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override string GLGetActiveAttrib( int program, int index, Buffer size, Buffer type )
+    public override string GLGetActiveAttrib( uint program, int index, Buffer size, Buffer type )
     {
         Calls++;
         var result = GL20.GLGetActiveAttrib( program, index, size, type );
@@ -647,7 +649,7 @@ public class GL20Interceptor : GLInterceptor
         return result;
     }
 
-    public override string GLGetActiveUniform( int program, int index, Buffer size, Buffer type )
+    public override string GLGetActiveUniform( uint program, int index, Buffer size, Buffer type )
     {
         Calls++;
         var result = GL20.GLGetActiveUniform( program, index, size, type );
@@ -663,7 +665,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override int GLGetAttribLocation( int program, string name )
+    public override int GLGetAttribLocation( uint program, string name )
     {
         Calls++;
         var result = GL20.GLGetAttribLocation( program, name );
@@ -700,14 +702,14 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLGetProgramiv( int program, int pname, IntBuffer parameters )
+    public override void GLGetProgramiv( uint program, int pname, IntBuffer parameters )
     {
         Calls++;
         GL20.GLGetProgramiv( program, pname, parameters );
         Check();
     }
 
-    public override string GLGetProgramInfoLog( int program )
+    public override string GLGetProgramInfoLog( uint program )
     {
         Calls++;
         var result = GL20.GLGetProgramInfoLog( program );
@@ -774,7 +776,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override int GLGetUniformLocation( int program, string name )
+    public override int GLGetUniformLocation( uint program, string name )
     {
         Calls++;
         var result = GL20.GLGetUniformLocation( program, name );
@@ -867,7 +869,7 @@ public class GL20Interceptor : GLInterceptor
         return result;
     }
 
-    public override void GLLinkProgram( int program )
+    public override void GLLinkProgram( uint program )
     {
         Calls++;
         GL20.GLLinkProgram( program );
@@ -945,7 +947,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLTexParameteri( int target, int pname, int param )
+    public override void GLTexParameteri( TextureTarget target, int pname, int param )
     {
         Calls++;
         GL20.GLTexParameteri( target, pname, param );
@@ -1169,7 +1171,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLUseProgram( int program )
+    public override void GLUseProgram( uint program )
     {
         Calls++;
         GL20.GLUseProgram( program );
