@@ -578,7 +578,7 @@ public class GL20Interceptor : GLInterceptor
         Check();
     }
 
-    public override void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level )
+    public override void GLFramebufferTexture2D( int target, int attachment, int textarget, uint texture, int level )
     {
         Calls++;
         GL20.GLFramebufferTexture2D( target, attachment, textarget, texture, level );

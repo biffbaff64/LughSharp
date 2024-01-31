@@ -613,7 +613,7 @@ public interface IGL20
 
     void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer );
 
-    void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level );
+    void GLFramebufferTexture2D( int target, int attachment, int textarget, uint texture, int level );
 
     void GLGenerateMipmap( int target );
 

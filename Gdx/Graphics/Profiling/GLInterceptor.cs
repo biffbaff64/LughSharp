@@ -374,7 +374,7 @@ public abstract class GLInterceptor : IGL20
     public abstract void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer );
 
     /// <inheritdoc />
-    public abstract void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level );
+    public abstract void GLFramebufferTexture2D( int target, int attachment, int textarget, uint texture, int level );
 
     /// <inheritdoc />
     public abstract void GLGenerateMipmap( int target );

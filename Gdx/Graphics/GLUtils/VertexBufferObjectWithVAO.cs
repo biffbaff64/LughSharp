@@ -28,11 +28,12 @@ public class VertexBufferObjectWithVAO : IVertexData
     private readonly List< int > _cachedLocations = new();
     private readonly bool        _ownsBuffer;
     private readonly int         _usage;
-    private          int         _bufferHandle;
-    private          bool        _isBound = false;
-    private          bool        _isDirty = false;
-    private          bool        _isStatic;
-    private          int         _vaoHandle = -1;
+
+    private uint _bufferHandle;
+    private bool _isBound = false;
+    private bool _isDirty = false;
+    private bool _isStatic;
+    private int  _vaoHandle = -1;
 
     /// <summary>
     ///     Constructs a new interleaved VertexBufferObjectWithVAO.

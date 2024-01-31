@@ -33,11 +33,11 @@ public class VertexBufferObjectSubData : IVertexData
     private readonly FloatBuffer _buffer;
     private readonly bool        _isDirect;
     private readonly int         _usage;
-    private          int         _bufferHandle;
-    private          bool        _isBound = false;
-    private          bool        _isDirty = false;
 
-    private bool _isStatic;
+    private uint _bufferHandle;
+    private bool _isBound  = false;
+    private bool _isDirty  = false;
+    private bool _isStatic = false;
 
     /// <summary>
     ///     Constructs a new interleaved VertexBufferObject.
@@ -285,7 +285,7 @@ public class VertexBufferObjectSubData : IVertexData
         _bufferHandle = 0;
     }
 
-    private int CreateBufferObject()
+    private uint CreateBufferObject()
     {
         var result = Gdx.GL20.GLGenBuffer();
 

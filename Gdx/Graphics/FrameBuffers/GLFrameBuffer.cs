@@ -361,7 +361,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
             if ( HasDepthStencilPackedBuffer )
             {
-                Gdx.GL20.GLDeleteBuffers( DepthStencilPackedBufferHandle );
+                Gdx.GL20.GLDeleteBuffers( ( uint )DepthStencilPackedBufferHandle );
             }
             else
             {

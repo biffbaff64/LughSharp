@@ -21,10 +21,11 @@ using Trace = LibGDXSharp.Utils.Trace;
 
 namespace LibGDXSharp.Graphics.GLUtils;
 
+[PublicAPI]
 public class VertexBufferObject : IVertexData
 {
     private FloatBuffer _buffer;
-    private int         _bufferHandle;
+    private uint        _bufferHandle;
     private ByteBuffer? _byteBuffer;
     private bool        _isBound = false;
     private bool        _isDirty = false;
